@@ -1,21 +1,69 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
+import { AppLoading, Asset, Font, Icon } from "expo";
+import AppNavigator from "./components/Navigation";
+import { Provider } from "react-redux";
+import { Icon as BIcon, Root } from "native-base";
+
+import store from "./store";
 
 export default class App extends React.Component {
+  state = {
+    isLoadingComplete: false
+  };
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <Provider store={store}>
+          <View style={styles.container}>
+            <StatusBar barStyle="light-content" />
+            <Root>
+              <AppNavigator />
+            </Root>
+          </View>
+        </Provider>
+      );
+    }
   }
+
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Asset.loadAsync([require("./assets/images/logo01.png")]),
+      Font.loadAsync({
+        "benton-sans-regular": require("./assets/fonts/BentonSans-Regular.otf"),
+        "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf")
+      })
+    ]);
+  };
+
+  _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "stretch",
+    backgroundColor: "#751AFF",
+    justifyContent: "center"
   },
+
+  text: { color: "#fff" }
 });

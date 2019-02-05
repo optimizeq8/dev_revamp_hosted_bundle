@@ -4483,6 +4483,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-animated-swiper@^0.0.23:
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/react-native-animated-swiper/-/react-native-animated-swiper-0.0.23.tgz#799f7a4819ff6b9d1ae0458065b67b29d38235bd"
+  integrity sha512-Bo6OlvDpaz8euq4+1EHezx44pZeVT/6NTOGVK6TMggWfI8Kpht+XYhLtyh0kW7YnsWXgNQnic+UIJf+8FGKxjg==
+
 react-native-branch@2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.2.5.tgz#4074dd63b4973e6397d9ce50e97b57c77a518e9d"
@@ -4542,6 +4547,11 @@ react-native-reanimated@1.0.0-alpha.10:
   version "1.0.0-alpha.10"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.0.0-alpha.10.tgz#e9e6fb35a2cf52fdc912b9fbc76f34f80698e530"
   integrity sha512-dbZG/Lh5Q+6zRvS7+gIkZKmXTG7XVqHbpMROL1LApBBMQwuLq/uLtKk/nBSn1+mNmazPrPMTehI7TG3AEkctww==
+
+react-native-responsive-screen@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-responsive-screen/-/react-native-responsive-screen-1.2.0.tgz#82cc22902c5424527aba74d724611d989735f884"
+  integrity sha512-Mat3aWHu9LD/BoIzLpiSMVJt2cfnoETF95ecXmtUAs3LHTRoxWpgH1yNPBme9FclYaHYuWeqyQlf2S/re9Xspw==
 
 react-native-safe-area-view@^0.12.0:
   version "0.12.0"
