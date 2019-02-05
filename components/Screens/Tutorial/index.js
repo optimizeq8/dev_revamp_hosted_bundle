@@ -49,28 +49,12 @@ class Tutorial extends Component {
         />
 
         <Image
-          style={{
-            alignSelf: "center",
-            height: 100,
-            width: 100,
-            margin: 15
-          }}
+          style={styles.image}
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
         />
         <Card padder style={styles.mainCard}>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: "#717171",
-                paddingTop: 40,
-                paddingBottom: 10
-              }
-            ]}
-          >
-            Start Optimizing {"\n"} your Ads
-          </Text>
+          <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
           <Swiper
             backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
             dots

@@ -33,7 +33,7 @@ class MainForm extends Component {
             height: 250,
             width: 250
           }}
-          source={require("../../../../assets/images/tutorial/inst01.png")}
+          source={require("../../../assets/images/tutorial/inst01.png")}
           resizeMode="contain"
         />
       </View>
@@ -46,15 +46,30 @@ class MainForm extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-
         <Image
           style={styles.image}
-          source={require("../../../../assets/images/logo01.png")}
+          source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
         />
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="Email" />
+          </Item>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="Password" />
+          </Item>
+          <Button block dark style={styles.button}>
+            <Text style={styles.buttontext}>Login</Text>
+          </Button>
         </Card>
+        <View style={{ backgroundColor: "#fff" }}>
+          <Card padder style={styles.bottomCard}>
+            <Text onPress={() => alert("hi")} style={styles.link}>
+              I Don’t Have an Account
+            </Text>
+          </Card>
+        </View>
       </Container>
     );
   }

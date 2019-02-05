@@ -12,6 +12,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
+  image: {
+    alignSelf: "center",
+    height: 100,
+    width: 100,
+    margin: 15
+  },
   mainCard: {
     top: 15,
     shadowColor: "#595959",
@@ -22,43 +28,17 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     flex: 1
   },
-
-  shadow: {
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 10,
-    flex: 1,
-    marginVertical: 5
-  },
-  label: {
-    color: "#258779",
-    marginTop: 15,
-    marginLeft: 40,
-    marginRight: 40,
-    textAlign: "center"
-  },
   text: {
     textAlign: "center",
-    color: "#BDA747",
+    color: "#717171",
+    paddingTop: 40,
+    paddingBottom: 10,
     fontFamily: "benton-sans-regular",
     fontSize: 15,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-  contentContainer: {
-    paddingTop: 30
-  },
 
-  header: {
-    alignSelf: "center",
-    color: "#258779",
-    fontFamily: "benton-sans-regular",
-    fontSize: 25
-  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   }

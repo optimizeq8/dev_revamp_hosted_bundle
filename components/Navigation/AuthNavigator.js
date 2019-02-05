@@ -4,15 +4,17 @@ import { createStackNavigator } from "react-navigation";
 import SplashScreen from "../Screens/SplashScreen";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
+import Signin from "../Screens/Signin";
 
 export default createStackNavigator(
   {
     SplashScreen: SplashScreen,
     Tutorial: Tutorial,
-    MainForm: MainForm
+    MainForm: MainForm,
+    Signin: Signin
   },
   {
-    initialRouteName: "Tutorial",
+    initialRouteName: "Signin",
     navigationOptions: {
       header: null,
 

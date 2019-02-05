@@ -14,26 +14,17 @@ class SplashScreen extends Component {
   };
   render() {
     return (
-      <Container>
+      <Container style={styles.contentContainer}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-        <Content padder style={styles.container}>
-          <View>
-            <Image
-              style={{
-                alignSelf: "center",
-                height: 230,
-                width: 230
-              }}
-              source={require("../../../assets/images/logo01.png")}
-              resizeMode="contain"
-            />
-          </View>
-        </Content>
+
+        <Image
+          style={styles.image}
+          source={require("../../../assets/images/logo01.png")}
+          resizeMode="contain"
+        />
       </Container>
     );
   }
