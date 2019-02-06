@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView } from "react-native";
+import { View } from "react-native";
 import {
   Card,
   Button,
@@ -13,10 +13,13 @@ import {
   Input,
   Container,
   Icon,
-  H1
+  H1,
+  Badge
 } from "native-base";
 import { LinearGradient } from "expo";
-
+import PersonalInfo from "../PersonalInfo";
+import PhoneNo from "../PhoneNo";
+import Verification from "../Verification";
 // Style
 import styles, { colors } from "./styles";
 
@@ -26,18 +29,6 @@ class MainForm extends Component {
   };
 
   render() {
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 250,
-            width: 250
-          }}
-          source={require("../../../../assets/images/tutorial/inst01.png")}
-          resizeMode="contain"
-        />
-      </View>
-    );
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -47,13 +38,26 @@ class MainForm extends Component {
           style={styles.gradient}
         />
 
-        <Image
-          style={styles.image}
-          source={require("../../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        />
         <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
+          <Text style={styles.text}>Registration</Text>
+          <View style={styles.content}>
+            <Badge style={styles.activeBadege}>
+              <Text>1</Text>
+            </Badge>
+            <Text> - </Text>
+            <Badge style={styles.badge}>
+              <Text style={{ color: "#5F5F5F" }}>2</Text>
+            </Badge>
+            <Text> - </Text>
+            <Badge style={styles.badge}>
+              <Text style={{ color: "#5F5F5F" }}>3</Text>
+            </Badge>
+            <Text> - </Text>
+            <Badge style={styles.badge}>
+              <Text style={{ color: "#5F5F5F" }}>4</Text>
+            </Badge>
+          </View>
+          <PhoneNo />
         </Card>
       </Container>
     );

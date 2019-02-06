@@ -39,7 +39,8 @@ export default class App extends React.Component {
       Asset.loadAsync([require("./assets/images/logo01.png")]),
       Font.loadAsync({
         "benton-sans-regular": require("./assets/fonts/BentonSans-Regular.otf"),
-        "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf")
+        "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf"),
+        "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf")
       })
     ]);
   };

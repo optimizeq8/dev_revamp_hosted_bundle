@@ -14,7 +14,7 @@ export default createStackNavigator(
     Signin: Signin
   },
   {
-    initialRouteName: "Signin",
+    initialRouteName: "MainForm",
     navigationOptions: {
       header: null,
 

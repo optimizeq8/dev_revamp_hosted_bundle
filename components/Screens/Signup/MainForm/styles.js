@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   image: {
     alignSelf: "center",
     height: 100,
@@ -26,19 +31,34 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 8, height: 8 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    flex: 1
+    flex: 1,
+    marginLeft: 0,
+    marginRight: 0
   },
   text: {
     textAlign: "center",
     color: "#717171",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 15,
+    fontFamily: "benton-sans-medium",
+    fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-
+  activeBadege: {
+    backgroundColor: "#5F5F5F",
+    width: 40,
+    height: 40,
+    borderRadius: 20
+  },
+  badge: {
+    backgroundColor: "#fff",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderColor: "#5F5F5F",
+    borderWidth: 2
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   }
