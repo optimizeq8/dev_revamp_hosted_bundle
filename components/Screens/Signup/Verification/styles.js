@@ -62,13 +62,8 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
+    marginTop: 20,
+    padding: 10
   },
   link: {
     textAlign: "center",

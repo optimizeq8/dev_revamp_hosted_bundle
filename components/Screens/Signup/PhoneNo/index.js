@@ -40,6 +40,8 @@ class PhoneNo extends Component {
     });
     if (this.phone.isValidNumber()) {
       this.props.sendMobileNo({ mobile: this.phone.getValue() });
+    } else {
+      alert("not valid");
     }
   }
 

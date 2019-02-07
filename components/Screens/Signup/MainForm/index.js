@@ -38,6 +38,9 @@ class MainForm extends Component {
     if (this.props.verificationCode) {
       content = <Verification />;
     }
+    if (this.props.successNo) {
+      content = <PersonalInfo />;
+    }
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -68,12 +71,14 @@ class MainForm extends Component {
             <Text> - </Text>
             <Badge
               style={
-                this.props.verificationCode ? styles.activeBadege : styles.badge
+                this.props.verificationCode && !this.props.successNo
+                  ? styles.activeBadege
+                  : styles.badge
               }
             >
               <Text
                 style={
-                  this.props.verificationCode
+                  this.props.verificationCode && !this.props.successNo
                     ? { color: "#fff" }
                     : { color: "#5F5F5F" }
                 }
@@ -82,8 +87,18 @@ class MainForm extends Component {
               </Text>
             </Badge>
             <Text> - </Text>
-            <Badge style={styles.badge}>
-              <Text style={{ color: "#5F5F5F" }}>3</Text>
+            <Badge
+              style={this.props.successNo ? styles.activeBadege : styles.badge}
+            >
+              <Text
+                style={
+                  this.props.successNo
+                    ? { color: "#fff" }
+                    : { color: "#5F5F5F" }
+                }
+              >
+                3
+              </Text>
             </Badge>
             <Text> - </Text>
             <Badge style={styles.badge}>
@@ -98,7 +113,8 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  verificationCode: state.auth.verificationCode
+  verificationCode: state.auth.verificationCode,
+  successNo: state.auth.successNo
 });
 
 const mapDispatchToProps = dispatch => ({});
