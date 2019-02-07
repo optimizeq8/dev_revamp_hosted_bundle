@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PhoneInput from "react-native-phone-input";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import {
   Card,
   Button,
@@ -27,25 +27,39 @@ class PersonalInfo extends Component {
   render() {
     return (
       <View>
-        <Text style={styles.text}>Personal Info</Text>
-        <Item rounded style={styles.input}>
-          <Input style={styles.inputtext} placeholder="First Name" />
-        </Item>
-        <Item rounded style={styles.input}>
-          <Input style={styles.inputtext} placeholder="Last Name" />
-        </Item>
-        <Item rounded style={styles.input}>
-          <Input style={styles.inputtext} placeholder="Email" />
-        </Item>
-        <Item rounded style={styles.input}>
-          <Input style={styles.inputtext} placeholder="Password" />
-        </Item>
-        <Item rounded style={styles.input}>
-          <Input style={styles.inputtext} placeholder="Retype Password" />
-        </Item>
-        <Button block dark style={styles.button}>
-          <Text style={styles.buttontext}>Login</Text>
-        </Button>
+        <View style={{ paddingBottom: 0 }}>
+          <Text style={styles.text}>Personal Info</Text>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="First Name" />
+          </Item>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="Last Name" />
+          </Item>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="Email" />
+          </Item>
+          <Item rounded style={styles.input}>
+            <Input style={styles.inputtext} placeholder="Password" />
+          </Item>
+          <Item
+            rounded
+            style={[styles.input, { marginBottom: 0, paddingBottom: 0 }]}
+          >
+            <Input style={styles.inputtext} placeholder="Retype Password" />
+          </Item>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            alert("Next");
+          }}
+          style={[styles.buttonN, { paddingTop: 0, bottom: 15 }]}
+        >
+          <Image
+            style={styles.image}
+            source={require("../../../../assets/images/button.png")}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
     );
   }

@@ -20,6 +20,8 @@ import { LinearGradient } from "expo";
 import PersonalInfo from "../PersonalInfo";
 import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
+import BusinessInfo from "../BusinessInfo";
+
 // Style
 import styles, { colors } from "./styles";
 
@@ -27,8 +29,15 @@ class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
+  componentDidUpdate() {
+    if (this.props.verificationCode) alert(this.props.verificationCode);
+  }
 
   render() {
+    let content = <PhoneNo />;
+    if (this.props.verificationCode) {
+      content = <Verification />;
+    }
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -41,12 +50,36 @@ class MainForm extends Component {
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Registration</Text>
           <View style={styles.content}>
-            <Badge style={styles.activeBadege}>
-              <Text>1</Text>
+            <Badge
+              style={
+                this.props.verificationCode ? styles.badge : styles.activeBadege
+              }
+            >
+              <Text
+                style={
+                  this.props.verificationCode
+                    ? { color: "#5F5F5F" }
+                    : { color: "#fff" }
+                }
+              >
+                1
+              </Text>
             </Badge>
             <Text> - </Text>
-            <Badge style={styles.badge}>
-              <Text style={{ color: "#5F5F5F" }}>2</Text>
+            <Badge
+              style={
+                this.props.verificationCode ? styles.activeBadege : styles.badge
+              }
+            >
+              <Text
+                style={
+                  this.props.verificationCode
+                    ? { color: "#fff" }
+                    : { color: "#5F5F5F" }
+                }
+              >
+                2
+              </Text>
             </Badge>
             <Text> - </Text>
             <Badge style={styles.badge}>
@@ -57,14 +90,16 @@ class MainForm extends Component {
               <Text style={{ color: "#5F5F5F" }}>4</Text>
             </Badge>
           </View>
-          <PhoneNo />
+          {content}
         </Card>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  verificationCode: state.auth.verificationCode
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

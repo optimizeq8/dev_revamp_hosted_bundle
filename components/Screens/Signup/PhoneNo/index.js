@@ -9,6 +9,7 @@ import {
   Text,
   Image
 } from "react-native";
+import * as actionCreators from "../../../../store/actions";
 
 // Style
 import styles, { colors } from "./styles";
@@ -37,6 +38,9 @@ class PhoneNo extends Component {
       type: this.phone.getNumberType(),
       value: this.phone.getValue()
     });
+    if (this.phone.isValidNumber()) {
+      this.props.sendMobileNo({ mobile: this.phone.getValue() });
+    }
   }
 
   renderInfo() {
@@ -95,7 +99,9 @@ class PhoneNo extends Component {
 }
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

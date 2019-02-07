@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
-
+  buttonN: {
+    padding: 10
+  },
   image: {
     alignSelf: "center",
-    height: 100,
-    width: 100,
+    height: 70,
+    width: 70,
     margin: 15
   },
   mainCard: {
@@ -52,8 +54,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   input: {
-    bottom: 30,
-    marginBottom: 10,
+    bottom: 25,
+    marginBottom: 15,
     backgroundColor: "#D9D9D9",
     paddingHorizontal: 50,
     borderRadius: 15,

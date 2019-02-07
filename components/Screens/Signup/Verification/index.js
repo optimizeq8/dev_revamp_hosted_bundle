@@ -27,12 +27,15 @@ class Verification extends Component {
   render() {
     return (
       <View>
-        <Text style={styles.text}>Personal Info</Text>
+        <Text style={styles.text}>
+          Please Enter the {"\n"}
+          Verification code sent to{"\n"} {this.props.mobileNo}
+        </Text>
       </View>
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ mobileNo: state.auth.mobileNo });
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(
