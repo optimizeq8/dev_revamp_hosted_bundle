@@ -25,12 +25,10 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
+
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
+    borderColor: "#fff",
     flex: 1,
     marginLeft: 0,
     marginRight: 0

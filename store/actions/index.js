@@ -1,1 +1,6 @@
-export { sendMobileNo, verifyMobileCode } from "./authActions";
+export {
+  sendMobileNo,
+  verifyMobileCode,
+  verifyEmail,
+  registerUser
+} from "./authActions";

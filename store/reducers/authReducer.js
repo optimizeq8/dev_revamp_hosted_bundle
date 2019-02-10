@@ -4,7 +4,9 @@ const initialState = {
   mobileNo: "",
   verificationCode: false,
   successNo: false,
-  message: ""
+  message: "",
+  userinfo: null,
+  successEmail: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,7 +24,19 @@ const reducer = (state = initialState, action) => {
         successNo: action.payload.success,
         message: action.payload.message
       };
-
+    case actionTypes.VERIFY_EMAIL:
+      return {
+        ...state,
+        successEmail: action.payload.success,
+        userinfo: action.payload.userInfo,
+        message: action.payload.message
+      };
+    case actionTypes.SIGN_UP_USER:
+      return {
+        ...state,
+        userinfo: action.payload.userinfo,
+        message: action.payload.message
+      };
     default:
       return state;
   }

@@ -46,3 +46,43 @@ export const verifyMobileCode = mobileAuth => {
       });
   };
 };
+
+export const verifyEmail = (email, userInfo) => {
+  return dispatch => {
+    instance
+      .post(`verifyEmail`, email)
+      .then(res => {
+        console.log(res.data.success);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.VERIFY_EMAIL,
+          payload: { success: data.success, userInfo }
+        });
+      })
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};
+
+export const registerUser = userinfo => {
+  return dispatch => {
+    instance
+      .post(`registerUser`, userInfo)
+      .then(res => {
+        console.log(res.data.message);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SIGN_UP_USER,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};

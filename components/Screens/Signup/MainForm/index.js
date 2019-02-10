@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View } from "react-native";
+import { View, KeyboardAvoidingView } from "react-native";
 import {
   Card,
   Button,
@@ -21,6 +21,7 @@ import PersonalInfo from "../PersonalInfo";
 import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
 import BusinessInfo from "../BusinessInfo";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // Style
 import styles, { colors } from "./styles";
@@ -41,6 +42,10 @@ class MainForm extends Component {
     if (this.props.successNo) {
       content = <PersonalInfo />;
     }
+    if (this.props.successEmail) {
+      content = <BusinessInfo />;
+    }
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -49,64 +54,102 @@ class MainForm extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-
-        <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>Registration</Text>
-          <View style={styles.content}>
-            <Badge
-              style={
-                this.props.verificationCode ? styles.badge : styles.activeBadege
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={false}
+          style={{
+            backgroundColor: "#fff",
+            borderTopStartRadius: 30,
+            borderTopEndRadius: 30
+          }}
+        >
+          <Card
+            style={[
+              styles.mainCard,
+              {
+                margin: 0,
+                shadowColor: "#fff",
+                shadowRadius: 1,
+                shadowOpacity: 0.7,
+                shadowOffset: { width: 8, height: 8 }
               }
-            >
-              <Text
+            ]}
+          >
+            <Text style={styles.text}>Registration</Text>
+            <View style={styles.content}>
+              <Badge
                 style={
                   this.props.verificationCode
-                    ? { color: "#5F5F5F" }
-                    : { color: "#fff" }
+                    ? styles.badge
+                    : styles.activeBadege
                 }
               >
-                1
-              </Text>
-            </Badge>
-            <Text> - </Text>
-            <Badge
-              style={
-                this.props.verificationCode && !this.props.successNo
-                  ? styles.activeBadege
-                  : styles.badge
-              }
-            >
-              <Text
+                <Text
+                  style={
+                    this.props.verificationCode
+                      ? { color: "#5F5F5F" }
+                      : { color: "#fff" }
+                  }
+                >
+                  1
+                </Text>
+              </Badge>
+              <Text> - </Text>
+              <Badge
                 style={
                   this.props.verificationCode && !this.props.successNo
-                    ? { color: "#fff" }
-                    : { color: "#5F5F5F" }
+                    ? styles.activeBadege
+                    : styles.badge
                 }
               >
-                2
-              </Text>
-            </Badge>
-            <Text> - </Text>
-            <Badge
-              style={this.props.successNo ? styles.activeBadege : styles.badge}
-            >
-              <Text
+                <Text
+                  style={
+                    this.props.verificationCode && !this.props.successNo
+                      ? { color: "#fff" }
+                      : { color: "#5F5F5F" }
+                  }
+                >
+                  2
+                </Text>
+              </Badge>
+              <Text> - </Text>
+              <Badge
                 style={
-                  this.props.successNo
-                    ? { color: "#fff" }
-                    : { color: "#5F5F5F" }
+                  this.props.successNo && !this.props.successEmail
+                    ? styles.activeBadege
+                    : styles.badge
                 }
               >
-                3
-              </Text>
-            </Badge>
-            <Text> - </Text>
-            <Badge style={styles.badge}>
-              <Text style={{ color: "#5F5F5F" }}>4</Text>
-            </Badge>
-          </View>
-          {content}
-        </Card>
+                <Text
+                  style={
+                    this.props.successNo && !this.props.successEmail
+                      ? { color: "#fff" }
+                      : { color: "#5F5F5F" }
+                  }
+                >
+                  3
+                </Text>
+              </Badge>
+              <Text> - </Text>
+              <Badge
+                style={
+                  this.props.successEmail ? styles.activeBadege : styles.badge
+                }
+              >
+                <Text
+                  style={
+                    this.props.successEmail
+                      ? { color: "#fff" }
+                      : { color: "#5F5F5F" }
+                  }
+                >
+                  4
+                </Text>
+              </Badge>
+            </View>
+            {content}
+          </Card>
+        </KeyboardAwareScrollView>
       </Container>
     );
   }
@@ -114,7 +157,8 @@ class MainForm extends Component {
 
 const mapStateToProps = state => ({
   verificationCode: state.auth.verificationCode,
-  successNo: state.auth.successNo
+  successNo: state.auth.successNo,
+  successEmail: state.auth.successEmail
 });
 
 const mapDispatchToProps = dispatch => ({});
