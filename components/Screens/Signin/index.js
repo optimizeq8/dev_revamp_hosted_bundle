@@ -19,12 +19,20 @@ import { LinearGradient } from "expo";
 
 // Style
 import styles, { colors } from "./styles";
+import * as actionCreators from "../../../store/actions";
 
 class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
   render() {
     const Slide = ({ title }) => (
       <View style={styles.slide}>
@@ -54,18 +62,49 @@ class MainForm extends Component {
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
           <Item rounded style={styles.input}>
-            <Input style={styles.inputtext} placeholder="Email" />
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              style={styles.inputtext}
+              onChangeText={value => {
+                this.setState({
+                  email: value
+                });
+              }}
+              placeholder="Email"
+            />
           </Item>
           <Item rounded style={styles.input}>
-            <Input style={styles.inputtext} placeholder="Password" />
+            <Input
+              secureTextEntry={true}
+              autoCorrect={false}
+              autoCapitalize="none"
+              style={styles.inputtext}
+              onChangeText={value => {
+                this.setState({
+                  password: value
+                });
+              }}
+              placeholder="Password"
+            />
           </Item>
-          <Button block dark style={styles.button}>
+          <Button
+            block
+            dark
+            style={styles.button}
+            onPress={() => {
+              this.props.login(this.state, this.props.navigation);
+            }}
+          >
             <Text style={styles.buttontext}>Login</Text>
           </Button>
         </Card>
         <View style={{ backgroundColor: "#fff" }}>
           <Card padder style={styles.bottomCard}>
-            <Text onPress={() => alert("hi")} style={styles.link}>
+            <Text
+              onPress={() => this.props.navigation.navigate("MainForm")}
+              style={styles.link}
+            >
               I Don’t Have an Account
             </Text>
           </Card>
@@ -77,7 +116,10 @@ class MainForm extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  login: (userInfo, navigation) =>
+    dispatch(actionCreators.login(userInfo, navigation))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

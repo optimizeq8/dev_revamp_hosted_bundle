@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image } from "react-native";
+import { View, Image, Animated, Easing } from "react-native";
 import { Button, Content, Text, Container } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import { LinearGradient } from "expo";
@@ -12,6 +12,25 @@ class SplashScreen extends Component {
   static navigationOptions = {
     header: null
   };
+
+  constructor(props) {
+    super(props);
+    this.animatedValue = new Animated.Value(0.5);
+    this.animatedValue2 = new Animated.Value(0);
+  }
+  componentDidMount() {
+    Animated.spring(this.animatedValue, {
+      toValue: 1,
+      friction: 4,
+      delay: 2500
+    }).start();
+
+    Animated.timing(this.animatedValue2, {
+      toValue: 1,
+      delay: 200,
+      duration: 3000
+    }).start();
+  }
   render() {
     return (
       <Container style={styles.contentContainer}>

@@ -2,5 +2,6 @@ export {
   sendMobileNo,
   verifyMobileCode,
   verifyEmail,
-  registerUser
+  registerUser,
+  login
 } from "./authActions";

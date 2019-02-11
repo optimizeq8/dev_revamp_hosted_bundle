@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-
+import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
@@ -67,7 +67,7 @@ export const verifyEmail = (email, userInfo) => {
   };
 };
 
-export const registerUser = userinfo => {
+export const registerUser = userInfo => {
   return dispatch => {
     instance
       .post(`registerUser`, userInfo)
@@ -85,4 +85,61 @@ export const registerUser = userinfo => {
         // dispatch(console.log(err.response.data));
       });
   };
+};
+
+export const login = (userData, navigation) => {
+  return dispatch => {
+    instance
+      .post("userLogin", userData)
+      .then(res => {
+        console.log(res.data);
+        return res.data.userinfo;
+      })
+      .then(user => {
+        const decodedUser = jwt_decode(user.token);
+        console.log("decodedUser");
+
+        setAuthToken(user.token).then(() =>
+          dispatch(setCurrentUser(decodedUser))
+        );
+      })
+      .then(() => {
+        navigation.navigate("Tutorial");
+      })
+
+      .catch(err => {});
+  };
+};
+
+const setAuthToken = token => {
+  if (token) {
+    return AsyncStorage.setItem("token", token)
+      .then(
+        () => (axios.defaults.headers.common.Authorization = `jwt ${token}`)
+      )
+      .catch(err => alert(err));
+  } else {
+    return AsyncStorage.removeItem("token")
+      .then(() => {
+        delete axios.defaults.headers.common.Authorization;
+      })
+      .catch(err => alert(err));
+  }
+};
+
+const setCurrentUser = user => {
+  return dispatch => {
+    if (user) {
+      dispatch({ type: actionTypes.SET_CURRENT_USER, payload: user });
+    } else {
+      dispatch({ type: actionTypes.LOGOUT_USER, payload: user });
+    }
+  };
+};
+
+export const logout = navigation => {
+  navigation.navigate("SplashScreen");
+
+  setAuthToken();
+  return setCurrentUser(null);
 };

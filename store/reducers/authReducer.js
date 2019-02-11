@@ -5,7 +5,7 @@ const initialState = {
   verificationCode: false,
   successNo: false,
   message: "",
-  userinfo: null,
+  userInfo: null,
   successEmail: false
 };
 
@@ -28,13 +28,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         successEmail: action.payload.success,
-        userinfo: action.payload.userInfo,
+        userInfo: action.payload.userInfo,
         message: action.payload.message
       };
     case actionTypes.SIGN_UP_USER:
       return {
         ...state,
-        userinfo: action.payload.userinfo,
+        userInfo: action.payload.userinfo,
         message: action.payload.message
       };
     default:

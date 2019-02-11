@@ -21,6 +21,7 @@ import RadioGroup from "react-native-radio-buttons-group";
 
 // Style
 import styles, { colors } from "./styles";
+import * as actionCreators from "../../../../store/actions";
 
 class BusinessInfo extends Component {
   static navigationOptions = {
@@ -30,37 +31,65 @@ class BusinessInfo extends Component {
     super(props);
 
     this.state = {
+      userInfo: {
+        ...this.props.userInfo,
+        businessname: "",
+        businesstype: "",
+        country: "",
+        usertype: "1"
+      },
+
       data: [
         {
-          label: "Default value is same as label"
+          label: "Individual",
+          value: "1"
         },
         {
-          label: "Value is different",
-          value: "I'm not same as label"
+          label: "Business",
+          value: "2"
         }
       ],
-
-      value: 0,
-      favColor: "",
       items: [
         {
-          label: "Red",
-          value: "red"
+          label: "Home Business",
+          value: "1"
         },
         {
-          label: "Orange",
-          value: "orange"
+          label: "Tech Business",
+          value: "2"
+        }
+      ],
+      countries: [
+        {
+          label: "Kuwait",
+          value: "Kuwait"
         },
         {
-          label: "Blue",
-          value: "blue"
+          label: "UAE",
+          value: "UAE"
+        },
+        {
+          label: "KSA",
+          value: "KSA"
+        },
+        {
+          label: "Bahrain",
+          value: "Bahrain"
+        },
+        {
+          label: "Qatar",
+          value: "Qatar"
+        },
+        {
+          label: "Oman",
+          value: "Oman"
         }
       ]
     };
   }
-  onPress = data => this.setState({ data });
 
   render() {
+    console.log(this.state.userInfo);
     return (
       <View
         style={{
@@ -71,75 +100,122 @@ class BusinessInfo extends Component {
       >
         <View style={{ flex: 1 }}>
           <Text style={styles.text}>Business Info</Text>
-
-          <Item rounded style={styles.input}>
-            <Input style={styles.inputtext} placeholder="Business Name" />
-          </Item>
-          <RNPickerSelect
-            items={this.state.items}
-            placeholder={{}}
-            onValueChange={value => {
-              this.setState({
-                favColor: value
-              });
+          <View
+            style={{
+              bottom: 30,
+              paddingHorizontal: 50,
+              alignSelf: "center",
+              height: 50
             }}
           >
+            <RadioGroup
+              flexDirection="row"
+              color="#5F5F5F"
+              radioButtons={this.state.data}
+              onPress={value => {
+                var data = value.find(data => data.selected === true);
+                this.setState({
+                  userInfo: { ...this.state.userInfo, usertype: data.value }
+                });
+              }}
+            />
+          </View>
+          <View style={{ marginTop: 0 }}>
             <Item rounded style={styles.input}>
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }
-                ]}
-              >
-                Country
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20 }}
-                />
-              </Text>
+              <Input
+                style={styles.inputtext}
+                placeholder={
+                  this.state.userInfo.usertype === "1"
+                    ? "Your Name"
+                    : "Company Name"
+                }
+                onChangeText={value => {
+                  this.setState({
+                    userInfo: {
+                      ...this.state.userInfo,
+                      businessname: value
+                    }
+                  });
+                }}
+              />
             </Item>
-          </RNPickerSelect>
 
-          <RNPickerSelect
-            items={this.state.items}
-            placeholder={{}}
-            onValueChange={value => {
-              this.setState({
-                favColor: value
-              });
-            }}
-          >
-            <Item style={styles.input}>
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between"
-                  }
-                ]}
-              >
-                Business Type
+            <RNPickerSelect
+              items={this.state.countries}
+              placeholder={{}}
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, country: value }
+                });
+              }}
+            >
+              <Item rounded style={styles.input}>
+                <Text
+                  style={[
+                    styles.inputtext,
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      color: "rgb(113,113,113)"
+                    }
+                  ]}
+                >
+                  {this.state.userInfo.country === ""
+                    ? this.state.userInfo.usertype === "1"
+                      ? "Where do you live?"
+                      : "Country"
+                    : this.state.userInfo.country}
+                </Text>
                 <Icon
                   type="AntDesign"
                   name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20 }}
+                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
                 />
-              </Text>
-            </Item>
-          </RNPickerSelect>
-          <RadioGroup
-            flexDirection="row"
-            color="#5F5F5F"
-            radioButtons={this.state.data}
-            onPress={this.onPress}
-          />
+              </Item>
+            </RNPickerSelect>
+
+            <RNPickerSelect
+              items={this.state.items}
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, businesstype: value }
+                });
+              }}
+            >
+              <Item style={styles.input}>
+                <Text
+                  placeholder={
+                    this.state.userInfo.businesstype !== ""
+                      ? this.state.userInfo.businesstype
+                      : ""
+                  }
+                  style={[
+                    styles.inputtext,
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      color: "rgb(113,113,113)"
+                    }
+                  ]}
+                >
+                  {this.state.userInfo.businesstype === ""
+                    ? this.state.userInfo.usertype === "1"
+                      ? "What do you do?"
+                      : "Business Type"
+                    : this.state.items.find(
+                        i => i.value === this.state.userInfo.businesstype
+                      ).label}
+                </Text>
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                />
+              </Item>
+            </RNPickerSelect>
+          </View>
         </View>
         <View
           style={{
@@ -150,7 +226,14 @@ class BusinessInfo extends Component {
             By tapping the button below you {"\n"}
             Agree to the Terms & Conditions
           </Text>
-          <Button block dark style={styles.button}>
+          <Button
+            block
+            dark
+            style={styles.button}
+            onPress={() => {
+              this.props.registerUser(this.state.userInfo);
+            }}
+          >
             <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
           </Button>
         </View>
@@ -158,9 +241,13 @@ class BusinessInfo extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  registerUser: userInfo => dispatch(actionCreators.registerUser(userInfo))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

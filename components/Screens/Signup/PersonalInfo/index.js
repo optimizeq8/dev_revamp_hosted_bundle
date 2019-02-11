@@ -14,7 +14,8 @@ import {
   Container,
   Icon,
   H1,
-  Badge
+  Badge,
+  Toast
 } from "native-base";
 
 // Style
@@ -25,11 +26,13 @@ class PersonalInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: "",
-      lastname: "",
-      email: "",
-      mobile: "",
-      password: "",
+      userInfo: {
+        firstname: "",
+        lastname: "",
+        email: "",
+        mobile: this.props.mobileNo,
+        password: ""
+      },
       repassword: ""
     };
   }
@@ -45,7 +48,11 @@ class PersonalInfo extends Component {
               placeholder="First Name"
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.setState({ firstname: value })}
+              onChangeText={value =>
+                this.setState({
+                  userInfo: { ...this.state.userInfo, firstname: value }
+                })
+              }
             />
           </Item>
           <Item rounded style={styles.input}>
@@ -54,7 +61,11 @@ class PersonalInfo extends Component {
               placeholder="Last Name"
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.setState({ lastname: value })}
+              onChangeText={value =>
+                this.setState({
+                  userInfo: { ...this.state.userInfo, lastname: value }
+                })
+              }
             />
           </Item>
           <Item rounded style={styles.input}>
@@ -63,7 +74,11 @@ class PersonalInfo extends Component {
               placeholder="Email"
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.setState({ email: value })}
+              onChangeText={value =>
+                this.setState({
+                  userInfo: { ...this.state.userInfo, email: value }
+                })
+              }
             />
           </Item>
           <Item rounded style={styles.input}>
@@ -73,7 +88,11 @@ class PersonalInfo extends Component {
               secureTextEntry={true}
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={value => this.setState({ password: value })}
+              onChangeText={value =>
+                this.setState({
+                  userInfo: { ...this.state.userInfo, password: value }
+                })
+              }
             />
           </Item>
           <Item
@@ -92,7 +111,7 @@ class PersonalInfo extends Component {
         </View>
         <TouchableOpacity
           onPress={() => {
-            if (this.state.password !== this.state.repassword) {
+            if (this.state.userInfo.password !== this.state.repassword) {
               Toast.show({
                 text: "Your passwords don't match!",
                 buttonText: "Okay",
@@ -105,7 +124,10 @@ class PersonalInfo extends Component {
                 }
               });
             } else {
-              this.props.verifyEmail(this.state.email, this.state);
+              this.props.verifyEmail(
+                this.state.userInfo.email,
+                this.state.userInfo
+              );
             }
           }}
           style={[styles.buttonN, { paddingTop: 0, bottom: 15 }]}
@@ -120,7 +142,9 @@ class PersonalInfo extends Component {
     );
   }
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  mobileNo: state.auth.mobileNo
+});
 
 const mapDispatchToProps = dispatch => ({
   verifyEmail: (email, userInfo) =>
