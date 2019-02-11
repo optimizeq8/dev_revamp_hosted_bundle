@@ -37,6 +37,12 @@ const reducer = (state = initialState, action) => {
         userInfo: action.payload.userinfo,
         message: action.payload.message
       };
+    case actionTypes.SET_CURRENT_USER:
+      return {
+        ...state,
+        userInfo: action.payload.user
+      };
+
     default:
       return state;
   }

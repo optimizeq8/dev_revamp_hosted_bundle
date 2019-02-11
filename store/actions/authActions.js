@@ -92,13 +92,10 @@ export const login = (userData, navigation) => {
     instance
       .post("userLogin", userData)
       .then(res => {
-        console.log(res.data);
-        return res.data.userinfo;
+        return res.data;
       })
       .then(user => {
         const decodedUser = jwt_decode(user.token);
-        console.log("decodedUser");
-
         setAuthToken(user.token).then(() =>
           dispatch(setCurrentUser(decodedUser))
         );
