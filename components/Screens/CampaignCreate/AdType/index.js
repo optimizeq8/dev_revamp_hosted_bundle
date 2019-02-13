@@ -16,7 +16,7 @@ import {
   H1
 } from "native-base";
 import { LinearGradient } from "expo";
-import Swiper from "../../MiniComponents/Swiper";
+import Swiper from "../../../MiniComponents/Swiper";
 
 // Style
 import styles, { colors } from "./styles";
@@ -31,10 +31,10 @@ class Tutorial extends Component {
       <View style={styles.slide}>
         <Image
           style={{
-            height: 250,
-            width: 250
+            height: 450,
+            width: 300
           }}
-          source={require("../../../assets/images/tutorial/inst01.png")}
+          source={require("../../../../assets/images/adtype.png")}
           resizeMode="contain"
         />
       </View>
@@ -46,12 +46,6 @@ class Tutorial extends Component {
           startPoint={{ x: 1, y: 0 }}
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
-        />
-
-        <Image
-          style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
         />
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>

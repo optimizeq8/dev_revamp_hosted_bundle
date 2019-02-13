@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import {
   Card,
   Button,

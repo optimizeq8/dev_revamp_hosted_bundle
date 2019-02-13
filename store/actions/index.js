@@ -5,3 +5,4 @@ export {
   registerUser,
   login
 } from "./authActions";
+export { ad_objective } from "./campaignActions";
