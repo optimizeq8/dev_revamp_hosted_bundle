@@ -3,13 +3,15 @@ import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
+import AdDesign from "../Screens/CampaignCreate/AdDesign";
 export default createStackNavigator(
   {
     AdType: AdType,
-    AdObjective: AdObjective
+    AdObjective: AdObjective,
+    AdDesign: AdDesign
   },
   {
-    initialRouteName: "AdObjective",
+    initialRouteName: "AdDesign",
     navigationOptions: {
       header: null,
 

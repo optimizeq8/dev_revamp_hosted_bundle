@@ -22,3 +22,30 @@ export const ad_objective = info => {
       });
   };
 };
+
+export const ad_design = info => {
+  return (dispatch, getState) => {
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data"
+    };
+    instance
+      .post(`savebrandmedia`, info)
+      .then(res => {
+        console.log(res.data);
+        console.log("SUCCESS!!");
+
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_AD_DESIGN,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};

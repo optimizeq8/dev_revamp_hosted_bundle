@@ -9,3 +9,4 @@ export const LOGOUT_USER = "LOGOUT_USER";
 //Campaign Action Types
 export const SET_AD_TYPE = "SET_AD_TYPE";
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";
+export const SET_AD_DESIGN = "SER_AD_DESIGN";
