@@ -18,7 +18,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AD_DESIGN:
       return {
         ...state,
-        campaign_id: action.payload.campaign_id,
+        data: { ...state.data, ...action.payload.data },
+        message: action.payload.message
+      };
+    case actionTypes.SET_AD_DETAILS:
+      return {
+        ...state,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message
       };

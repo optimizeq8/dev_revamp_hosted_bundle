@@ -49,3 +49,34 @@ export const ad_design = info => {
       });
   };
 };
+
+export const ad_details = info => {
+  var body = new FormData();
+  body.append("campaign_id", "8");
+  body.append("lifetime_budget_micro", "500");
+  body.append("targeting", {
+    demographics: [
+      {
+        gender: ["MALE", "FEMALE"]
+      }
+    ]
+  });
+
+  return (dispatch, getState) => {
+    instance
+      .post(`savetargeting`, info)
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_AD_DETAILS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        dispatch(console.log(err.response.data));
+      });
+  };
+};

@@ -37,7 +37,6 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        ad_account_id: "0e7d4eb3-f8d2-4387-a55f-3370cdbd5d9a",
         campaign_id: "9",
         brand_name: "",
         headline: "",

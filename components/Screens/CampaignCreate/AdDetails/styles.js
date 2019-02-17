@@ -12,12 +12,24 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
+  textCon: {
+    width: 320,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  colorGrey: {
+    color: "#d3d3d3"
+  },
+  colorYellow: {
+    color: "rgb(252, 228, 149)"
+  },
   inputtext: {
     fontFamily: "benton-sans-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
   },
+  slidercontainer: { marginHorizontal: 30 },
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
