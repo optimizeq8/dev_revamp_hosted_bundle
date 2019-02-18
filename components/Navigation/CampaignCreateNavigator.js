@@ -13,7 +13,7 @@ export default createStackNavigator(
     AdDetails: AdDetails
   },
   {
-    initialRouteName: "AdDetails",
+    initialRouteName: "AdObjective",
     navigationOptions: {
       header: null,
 

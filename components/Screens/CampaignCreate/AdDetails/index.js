@@ -44,7 +44,9 @@ class AdDetails extends Component {
         campaign_id: "9",
         lifetime_budget_micro: 50,
         targeting: {
-          demographic: [{ gender: "", languages: [], minAge: 13, maxAge: 29 }],
+          demographics: [
+            { gender: "", languages: [], min_age: 13, max_age: 29 }
+          ],
           geos: [{ country_code: "kw", region_id: [] }]
         }
       },
@@ -102,12 +104,12 @@ class AdDetails extends Component {
   };
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
-    replace.targeting.demographic[0].languages = selectedItems;
+    replace.targeting.demographics[0].languages = selectedItems;
     this.setState({ campaignInfo: replace });
   };
   onSelectedGenderChange = selectedItems => {
     let replace = this.state.campaignInfo;
-    replace.targeting.demographic[0].gender = selectedItems;
+    replace.targeting.demographics[0].gender = selectedItems;
     this.setState({ campaignInfo: replace });
   };
   onSelectedBudgetChange = budget => {
@@ -183,7 +185,7 @@ class AdDetails extends Component {
                   var data = value.find(data => data.selected === true);
                   if (data.value !== "All") {
                     let replace = this.state.campaignInfo;
-                    replace.targeting.demographic[0].gender = data.value;
+                    replace.targeting.demographics[0].gender = data.value;
                   }
                 }}
               />
@@ -196,7 +198,7 @@ class AdDetails extends Component {
                 autoCapitalize="none"
                 onChangeText={value => {
                   let rep = this.state.campaignInfo;
-                  rep.targeting.demographic[0].minAge = value;
+                  rep.targeting.demographics[0].min_age = value;
                   this.setState({
                     campaignInfo: rep
                   });
@@ -211,7 +213,7 @@ class AdDetails extends Component {
                 autoCapitalize="none"
                 onChangeText={value => {
                   let rep = this.state.campaignInfo;
-                  rep.targeting.demographic[0].maxAge = value;
+                  rep.targeting.demographics[0].max_age = value;
                   this.setState({
                     campaignInfo: rep
                   });
@@ -250,7 +252,7 @@ class AdDetails extends Component {
                 uniqueKey="value"
                 onSelectedItemsChange={this.onSelectedLangsChange}
                 selectedItems={
-                  this.state.campaignInfo.targeting.demographic[0].languages
+                  this.state.campaignInfo.targeting.demographics[0].languages
                 }
                 selectText="Pick Languages"
                 searchInputPlaceholderText="Search..."

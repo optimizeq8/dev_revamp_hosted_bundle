@@ -38,8 +38,8 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "0e7d4eb3-f8d2-4387-a55f-3370cdbd5d9a",
-        start_time: "",
-        end_time: "",
+        start_date: "",
+        end_date: "",
         name: "",
         objective: "BRAND_AWARENESS"
       },
@@ -90,7 +90,10 @@ class AdObjective extends Component {
   handleStartDatePicked = date => {
     console.log("A date has been picked: ", date);
     this.setState({
-      campaignInfo: { ...this.state.campaignInfo, start_time: date }
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        start_date: date.toISOString()
+      }
     });
 
     this.hideStartDateTimePicker();
@@ -99,7 +102,7 @@ class AdObjective extends Component {
   handleEndDatePicked = date => {
     console.log("A date has been picked: ", date);
     this.setState({
-      campaignInfo: { ...this.state.campaignInfo, end_time: date }
+      campaignInfo: { ...this.state.campaignInfo, end_date: date.toISOString() }
     });
 
     this.hideEndDateTimePicker();
@@ -174,7 +177,9 @@ class AdObjective extends Component {
                 >
                   {this.state.campaignInfo.objective === ""
                     ? this.state.objectives[0].label
-                    : this.state.campaignInfo.objective}
+                    : this.state.objectives.find(
+                        c => this.state.campaignInfo.objective === c.value
+                      ).label}
                 </Text>
                 <Icon
                   type="AntDesign"
@@ -183,35 +188,74 @@ class AdObjective extends Component {
                 />
               </Item>
             </RNPickerSelect>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                style={styles.input}
-                onPress={this.showStartDateTimePicker}
+
+            <Item
+              rounded
+              style={styles.input}
+              onPress={this.showStartDateTimePicker}
+            >
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
               >
-                <Text>Start DatePicker</Text>
-              </TouchableOpacity>
+                {this.state.campaignInfo.start_date === ""
+                  ? "Set your start date..."
+                  : this.state.campaignInfo.start_date.split("T")[0]}
+              </Text>
+              <Icon
+                type="AntDesign"
+                name="down"
+                style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+              />
               <DateTimePicker
                 isVisible={this.state.startDateTimePickerVisible}
                 onConfirm={this.handleStartDatePicked}
                 onCancel={this.hideStartDateTimePicker}
-                minimumDate={new Date()}
+                minimumDate={new Date("2016-09-05 00:00")}
                 mode="date"
               />
-            </View>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                style={styles.input}
-                onPress={this.showEndDateTimePicker}
+            </Item>
+
+            <Item
+              rounded
+              style={styles.input}
+              onPress={this.showEndDateTimePicker}
+            >
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
               >
-                <Text>End DatePicker</Text>
-              </TouchableOpacity>
+                {this.state.campaignInfo.end_date === ""
+                  ? "Set your end date..."
+                  : this.state.campaignInfo.end_date.split("T")[0]}
+              </Text>
+              <Icon
+                type="AntDesign"
+                name="down"
+                style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+              />
               <DateTimePicker
                 isVisible={this.state.endDateTimePickerVisible}
                 onConfirm={this.handleEndDatePicked}
                 onCancel={this.hideEndDateTimePicker}
                 mode="date"
               />
-            </View>
+            </Item>
+
             <TouchableOpacity
               onPress={() => {
                 console.log(this.state.campaignInfo);
