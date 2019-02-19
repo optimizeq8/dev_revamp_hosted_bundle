@@ -67,7 +67,7 @@ export const verifyEmail = (email, userInfo) => {
   };
 };
 
-export const registerUser = userInfo => {
+export const registerUser = (userInfo, navigation) => {
   return dispatch => {
     instance
       .post(`registerUser`, userInfo)
@@ -81,6 +81,9 @@ export const registerUser = userInfo => {
           payload: data
         });
       })
+      .then(() => {
+        navigation.navigate("Home");
+      })
       .catch(err => {
         // dispatch(console.log(err.response.data));
       });
@@ -88,7 +91,7 @@ export const registerUser = userInfo => {
 };
 
 export const login = (userData, navigation) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     instance
       .post("userLogin", userData)
       .then(res => {
@@ -96,14 +99,14 @@ export const login = (userData, navigation) => {
       })
       .then(user => {
         const decodedUser = jwt_decode(user.token);
-        setAuthToken(user.token).then(() =>
-          dispatch(setCurrentUser(decodedUser))
-        );
+        setAuthToken(user.token);
+        return decodedUser;
       })
+      .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
-        navigation.navigate("Tutorial");
+        console.log(getState().auth);
+        navigation.navigate("Home");
       })
-
       .catch(err => {});
   };
 };
@@ -126,17 +129,39 @@ const setAuthToken = token => {
 
 const setCurrentUser = user => {
   return dispatch => {
+    console.log("user", { user });
     if (user) {
-      dispatch({ type: actionTypes.SET_CURRENT_USER, payload: user });
+      return dispatch({
+        type: actionTypes.SET_CURRENT_USER,
+        payload: { user }
+      });
     } else {
-      dispatch({ type: actionTypes.LOGOUT_USER, payload: user });
+      return dispatch({ type: actionTypes.LOGOUT_USER, payload: { user } });
     }
   };
 };
 
 export const logout = navigation => {
-  navigation.navigate("SplashScreen");
+  navigation.replace("Signin");
 
   setAuthToken();
   return setCurrentUser(null);
+};
+
+export const create_ad_account = navigation => {
+  return dispatch => {
+    instance
+      .post("snapadaccounts")
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .then(() => {
+        navigation.navigate("Home");
+      })
+
+      .catch(err => {});
+  };
 };

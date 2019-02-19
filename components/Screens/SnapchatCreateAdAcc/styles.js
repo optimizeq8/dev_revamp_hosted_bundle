@@ -14,32 +14,29 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 120,
-    width: 120,
+    height: 100,
+    width: 100,
     margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
   },
   mainCard: {
     top: 15,
-    borderColor: "#751AFF",
-    backgroundColor: "#751AFF",
+    shadowColor: "#595959",
+    shadowRadius: 1,
+    shadowOpacity: 0.7,
+    shadowOffset: { width: 8, height: 8 },
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
     flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0,
     marginLeft: 0,
     marginRight: 0
   },
   text: {
     textAlign: "center",
-    color: "#fff",
+    color: "#717171",
     paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "benton-sans-regular",
-    fontSize: 13,
+    fontSize: 15,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
@@ -67,20 +64,26 @@ const styles = StyleSheet.create({
     top: 30,
     marginBottom: 10,
     backgroundColor: "#5F5F5F",
+    paddingHorizontal: 50,
+    borderRadius: 15,
     alignSelf: "center",
-    width: 50,
+    width: 250,
     height: 50
   },
   link: {
     textAlign: "center",
     color: "#fff",
+    paddingTop: 40,
+    paddingBottom: 10,
     fontFamily: "benton-sans-regular",
-    fontSize: 20,
-    paddingHorizontal: 10
+    fontSize: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    textDecorationLine: "underline"
   },
   bottomCard: {
     top: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#6C6C6C",
     shadowColor: "#6C6C6C",
     shadowRadius: 1,
     shadowOpacity: 0.7,

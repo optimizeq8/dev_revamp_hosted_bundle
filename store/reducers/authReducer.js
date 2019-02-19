@@ -6,10 +6,13 @@ const initialState = {
   successNo: false,
   message: "",
   userInfo: null,
-  successEmail: false
+  successEmail: false,
+  loading: true
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(action.payload);
+
   switch (action.type) {
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
@@ -40,7 +43,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_USER:
       return {
         ...state,
-        userInfo: action.payload.user
+        userInfo: action.payload.user,
+        loading: false
       };
 
     default:

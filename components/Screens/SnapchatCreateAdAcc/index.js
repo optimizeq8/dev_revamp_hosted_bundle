@@ -22,7 +22,7 @@ import { LinearGradient } from "expo";
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
 
-class Home extends Component {
+class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
@@ -58,43 +58,38 @@ class Home extends Component {
           resizeMode="contain"
         />
         <Card padder style={styles.mainCard}>
-          <Text style={styles.link}>
-            Welcome {"\n"}
-            {this.props.userInfo.businessInfoName}
-          </Text>
-          <Text style={styles.text}>
-            You’re one step away from
-            {"\n"} Optimizing your digital Ads
-          </Text>
-        </Card>
-        <View>
-          <Card padder style={styles.bottomCard}>
+          <Text style={styles.text}>Terms And Conditions</Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "space-between"
+            }}
+          >
             <Button
+              block
+              dark
               style={styles.button}
               onPress={() => {
-                if (this.props.userInfo.ad_account_id === "")
-                  this.props.navigation.push("SnapchatCreateAdAcc");
+                this.props.create_ad_account(this.props.navigation);
               }}
             >
-              <Image
-                style={styles.imageIcon}
-                source={require("../../../assets/images/snap-ghost.png")}
-                resizeMode="contain"
-              />
+              <Text style={styles.buttontext}>Accept</Text>
             </Button>
-          </Card>
-        </View>
+          </View>
+        </Card>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
-});
+const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  create_ad_account: navigation =>
+    dispatch(actionCreators.create_ad_account(navigation))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(MainForm);

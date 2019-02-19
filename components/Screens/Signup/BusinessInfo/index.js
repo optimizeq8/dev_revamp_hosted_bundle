@@ -230,7 +230,10 @@ class BusinessInfo extends Component {
             dark
             style={styles.button}
             onPress={() => {
-              this.props.registerUser(this.state.userInfo);
+              this.props.registerUser(
+                this.state.userInfo,
+                this.props.navigation
+              );
             }}
           >
             <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
@@ -245,7 +248,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: userInfo => dispatch(actionCreators.registerUser(userInfo))
+  registerUser: (userInfo, navigation) =>
+    dispatch(actionCreators.registerUser(userInfo, navigation))
 });
 export default connect(
   mapStateToProps,

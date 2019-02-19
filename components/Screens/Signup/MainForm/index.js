@@ -43,7 +43,7 @@ class MainForm extends Component {
       content = <PersonalInfo />;
     }
     if (this.props.successEmail) {
-      content = <BusinessInfo />;
+      content = <BusinessInfo navigation={this.props.navigation} />;
     }
 
     return (
