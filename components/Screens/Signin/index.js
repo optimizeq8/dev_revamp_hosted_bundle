@@ -33,6 +33,9 @@ class MainForm extends Component {
       password: ""
     };
   }
+  componentDidMount() {
+    this.props.checkForExpiredToken(this.props.navigation);
+  }
   render() {
     const Slide = ({ title }) => (
       <View style={styles.slide}>
@@ -118,7 +121,9 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>
-    dispatch(actionCreators.login(userInfo, navigation))
+    dispatch(actionCreators.login(userInfo, navigation)),
+  checkForExpiredToken: navigation =>
+    dispatch(actionCreators.checkForExpiredToken(navigation))
 });
 export default connect(
   mapStateToProps,

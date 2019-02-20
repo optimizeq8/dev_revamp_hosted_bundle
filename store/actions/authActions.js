@@ -6,6 +6,26 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const checkForExpiredToken = navigation => {
+  return dispatch => {
+    return AsyncStorage.getItem("token").then(token => {
+      if (token) {
+        const currentTime = Date.now() / 1000;
+        const user = jwt_decode(token);
+        console.log(user);
+        console.log(currentTime);
+        if (user.exp >= currentTime) {
+          setAuthToken(token)
+            .then(() => dispatch(setCurrentUser(user)))
+            .then(() => {
+              navigation.navigate("Home");
+            });
+        }
+      }
+    });
+  };
+};
+
 export const sendMobileNo = mobileNo => {
   return (dispatch, getState) => {
     instance
@@ -142,7 +162,7 @@ const setCurrentUser = user => {
 };
 
 export const logout = navigation => {
-  navigation.replace("Signin");
+  navigation.navigate("Signin");
 
   setAuthToken();
   return setCurrentUser(null);

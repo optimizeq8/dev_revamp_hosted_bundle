@@ -41,7 +41,7 @@ class AdDetails extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        campaign_id: "9",
+        campaign_id: "",
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
@@ -92,15 +92,27 @@ class AdDetails extends Component {
       value: 0
     };
   }
+
+  async componentDidMount() {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        campaign_id: this.props.campaign_id
+      }
+    });
+  }
   onSelectedItemsChange = selectedItems => {
     let replace = this.state.campaignInfo;
-    replace.targeting.geos[0].country_code = selectedItems.pop();
-    replace.targeting.geos[0].region_id = [];
-    let reg = country_regions.find(
-      c => c.country_code === replace.targeting.geos[0].country_code
-    );
+    let newCountry = selectedItems.pop();
 
-    this.setState({ campaignInfo: replace, regions: reg.regions });
+    if (typeof newCountry !== "undefined") {
+      replace.targeting.geos[0].country_code = newCountry;
+      replace.targeting.geos[0].region_id = [];
+      let reg = country_regions.find(
+        c => c.country_code === replace.targeting.geos[0].country_code
+      );
+      this.setState({ campaignInfo: replace, regions: reg.regions });
+    }
   };
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
@@ -302,7 +314,7 @@ class AdDetails extends Component {
                 rep.targeting = JSON.stringify(
                   this.state.campaignInfo.targeting
                 );
-                this.props.ad_details(rep);
+                this.props.ad_details(rep, this.props.navigation);
               }}
               style={styles.buttonN}
             >
@@ -319,10 +331,13 @@ class AdDetails extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id
+});
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: info => dispatch(actionCreators.ad_details(info))
+  ad_details: (info, navigation) =>
+    dispatch(actionCreators.ad_details(info, navigation))
 });
 export default connect(
   mapStateToProps,

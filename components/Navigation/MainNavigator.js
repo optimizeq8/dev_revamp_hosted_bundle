@@ -2,11 +2,13 @@ import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import Home from "../Screens/Home";
+import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
 
 export default createStackNavigator(
   {
     Home: Home,
+    Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc
   },
   {

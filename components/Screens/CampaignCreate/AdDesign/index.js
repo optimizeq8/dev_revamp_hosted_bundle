@@ -37,7 +37,7 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        campaign_id: "9",
+        campaign_id: "",
         brand_name: "",
         headline: "",
         destination: "BLANK",
@@ -52,24 +52,37 @@ class AdDesign extends Component {
     };
   }
   async componentDidMount() {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        campaign_id: this.props.campaign_id
+      }
+    });
+
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
   }
+
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "All",
       base64: false,
-      exif: false
+      exif: false,
+      quality: 0.1,
+      aspect: [9, 16]
     });
 
     console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri, type: result.type.toUpperCase() });
-    }
-    this.formatMedia();
+    console.log(Math.floor(result.width / 9), "width");
+    console.log(Math.floor(result.height / 16), "height");
+    //if (result.width >= 1080 && result.height >= 1920)
+    if (Math.floor(result.width / 9) === Math.floor(result.height / 16))
+      if (!result.cancelled) {
+        this.setState({ image: result.uri, type: result.type.toUpperCase() });
+        this.formatMedia();
+      }
   };
 
   formatMedia() {
@@ -179,10 +192,25 @@ class AdDesign extends Component {
               />
             </TouchableOpacity>
             <Text> {Math.round(this.state.loaded, 2)} %</Text>
+            <Button
+              onPress={() => {
+                if (this.state.image)
+                  this.props.navigation.push("AdDesignReview", {
+                    image: this.state.image,
+                    headline: this.state.campaignInfo.headline,
+                    brand_name: this.state.campaignInfo.brand_name
+                  });
+              }}
+            >
+              <Text> Preview</Text>
+            </Button>
             <TouchableOpacity
               onPress={() => {
                 console.log(this.state.campaignInfo);
-                this.props.ad_design(this.state.formatted);
+                this.props.ad_design(
+                  this.state.formatted,
+                  this.props.navigation
+                );
               }}
               style={styles.buttonN}
             >
@@ -199,10 +227,13 @@ class AdDesign extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id
+});
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: info => dispatch(actionCreators.ad_design(info))
+  ad_design: (info, navigation) =>
+    dispatch(actionCreators.ad_design(info, navigation))
 });
 export default connect(
   mapStateToProps,

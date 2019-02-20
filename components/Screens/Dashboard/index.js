@@ -22,7 +22,7 @@ import { LinearGradient } from "expo";
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
 
-class Home extends Component {
+class Dashboard extends Component {
   static navigationOptions = {
     header: null
   };
@@ -57,48 +57,37 @@ class Home extends Component {
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
         />
-        <Card padder style={styles.mainCard}>
+        <Card
+          padder
+          style={[
+            styles.mainCard,
+            {
+              margin: 0,
+              shadowColor: "#fff",
+              shadowRadius: 1,
+              shadowOpacity: 0.7,
+              shadowOffset: { width: 8, height: 8 }
+            }
+          ]}
+        >
           <Text style={styles.link}>
             Welcome {"\n"}
             {this.props.userInfo.businessInfoName}
           </Text>
-          <Text style={styles.text}>
-            You’re one step away from
-            {"\n"} Optimizing your digital Ads
-          </Text>
+          <Text style={styles.text}>Create campaigns!</Text>
           <Button
-            style={[styles.button, { backgroundColor: "red" }]}
+            style={styles.button}
             onPress={() => {
-              this.props.logout(this.props.navigation);
+              this.props.navigation.navigate("AdObjective");
             }}
           >
-            <Text> Logout </Text>
+            <Image
+              style={styles.imageIcon}
+              source={require("../../../assets/images/snap-ghost.png")}
+              resizeMode="contain"
+            />
           </Button>
         </Card>
-        <View>
-          <Card padder style={styles.bottomCard}>
-            <Button
-              style={styles.button}
-              onPress={() => {
-                if (this.props.userInfo.ad_account_id === "")
-                  this.props.navigation.push("SnapchatCreateAdAcc");
-                else {
-                  this.props.navigation.push("Dashboard");
-                }
-              }}
-            >
-              {this.props.userInfo.ad_account_id === "" ? (
-                <Image
-                  style={styles.imageIcon}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-              ) : (
-                <Text> Dashboard </Text>
-              )}
-            </Button>
-          </Card>
-        </View>
       </Container>
     );
   }
@@ -107,10 +96,9 @@ class Home extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo
 });
-const mapDispatchToProps = dispatch => ({
-  logout: navigation => dispatch(actionCreators.logout(navigation))
-});
+
+const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Dashboard);

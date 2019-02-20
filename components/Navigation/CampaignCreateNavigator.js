@@ -5,12 +5,14 @@ import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
 import AdDetails from "../Screens/CampaignCreate/AdDetails";
+import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
 export default createStackNavigator(
   {
     AdType: AdType,
     AdObjective: AdObjective,
     AdDesign: AdDesign,
-    AdDetails: AdDetails
+    AdDetails: AdDetails,
+    AdDesignReview: AdDesignReview
   },
   {
     initialRouteName: "AdObjective",

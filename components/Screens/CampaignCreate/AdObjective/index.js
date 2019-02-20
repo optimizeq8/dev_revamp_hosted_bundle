@@ -37,9 +37,9 @@ class AdObjective extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        ad_account_id: "0e7d4eb3-f8d2-4387-a55f-3370cdbd5d9a",
-        start_date: "",
-        end_date: "",
+        ad_account_id: "",
+        start_time: "",
+        end_time: "",
         name: "",
         objective: "BRAND_AWARENESS"
       },
@@ -75,6 +75,14 @@ class AdObjective extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        ad_account_id: this.props.userInfo.ad_account_id
+      }
+    });
+  }
   showStartDateTimePicker = () =>
     this.setState({ startDateTimePickerVisible: true });
 
@@ -92,7 +100,7 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_date: date.toISOString()
+        start_time: date.toISOString()
       }
     });
 
@@ -102,7 +110,7 @@ class AdObjective extends Component {
   handleEndDatePicked = date => {
     console.log("A date has been picked: ", date);
     this.setState({
-      campaignInfo: { ...this.state.campaignInfo, end_date: date.toISOString() }
+      campaignInfo: { ...this.state.campaignInfo, end_time: date.toISOString() }
     });
 
     this.hideEndDateTimePicker();
@@ -205,9 +213,9 @@ class AdObjective extends Component {
                   }
                 ]}
               >
-                {this.state.campaignInfo.start_date === ""
+                {this.state.campaignInfo.start_time === ""
                   ? "Set your start date..."
-                  : this.state.campaignInfo.start_date.split("T")[0]}
+                  : this.state.campaignInfo.start_time.split("T")[0]}
               </Text>
               <Icon
                 type="AntDesign"
@@ -239,9 +247,9 @@ class AdObjective extends Component {
                   }
                 ]}
               >
-                {this.state.campaignInfo.end_date === ""
+                {this.state.campaignInfo.end_time === ""
                   ? "Set your end date..."
-                  : this.state.campaignInfo.end_date.split("T")[0]}
+                  : this.state.campaignInfo.end_time.split("T")[0]}
               </Text>
               <Icon
                 type="AntDesign"
@@ -259,7 +267,10 @@ class AdObjective extends Component {
             <TouchableOpacity
               onPress={() => {
                 console.log(this.state.campaignInfo);
-                this.props.ad_objective(this.state.campaignInfo);
+                this.props.ad_objective(
+                  this.state.campaignInfo,
+                  this.props.navigation
+                );
               }}
               style={styles.buttonN}
             >
@@ -276,10 +287,13 @@ class AdObjective extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo
+});
 
 const mapDispatchToProps = dispatch => ({
-  ad_objective: info => dispatch(actionCreators.ad_objective(info))
+  ad_objective: (info, navigation) =>
+    dispatch(actionCreators.ad_objective(info, navigation))
 });
 export default connect(
   mapStateToProps,

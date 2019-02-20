@@ -3,8 +3,9 @@ import * as actionTypes from "./actionTypes";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
-export const ad_objective = info => {
+export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
+    console.log(info);
     instance
       .post(`savecampaign`, info)
       .then(res => {
@@ -12,18 +13,22 @@ export const ad_objective = info => {
         return res.data;
       })
       .then(data => {
+        console.log(data);
         return dispatch({
           type: actionTypes.SET_AD_OBJECTIVE,
           payload: data
         });
       })
+      .then(() => {
+        navigation.replace("AdDesign");
+      })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response.data);
       });
   };
 };
 
-export const ad_design = info => {
+export const ad_design = (info, navigation) => {
   return (dispatch, getState) => {
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
@@ -43,6 +48,9 @@ export const ad_design = info => {
           payload: data
         });
       })
+      .then(() => {
+        navigation.replace("AdDetails");
+      })
       .catch(err => {
         console.log(err.response);
         // dispatch(console.log(err.response.data));
@@ -50,7 +58,7 @@ export const ad_design = info => {
   };
 };
 
-export const ad_details = info => {
+export const ad_details = (info, navigation) => {
   var body = new FormData();
   body.append("campaign_id", "8");
   body.append("lifetime_budget_micro", "500");
@@ -74,6 +82,9 @@ export const ad_details = info => {
           type: actionTypes.SET_AD_DETAILS,
           payload: data
         });
+      })
+      .then(() => {
+        navigation.navigate("Home");
       })
       .catch(err => {
         dispatch(console.log(err.response.data));
