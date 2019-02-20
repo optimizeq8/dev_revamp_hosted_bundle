@@ -88,7 +88,7 @@ class BusinessInfo extends Component {
   }
 
   render() {
-    console.log(this.state.userInfo);
+    console.log("form", this.state.userInfo);
     return (
       <View
         style={{

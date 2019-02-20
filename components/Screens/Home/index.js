@@ -60,7 +60,7 @@ class Home extends Component {
         <Card padder style={styles.mainCard}>
           <Text style={styles.link}>
             Welcome {"\n"}
-            {this.props.userInfo.businessInfoName}
+            {this.props.userInfo.businessname}
           </Text>
           <Text style={styles.text}>
             You’re one step away from

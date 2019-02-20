@@ -31,7 +31,7 @@ export const sendMobileNo = mobileNo => {
     instance
       .post(`addMobile`, mobileNo)
       .then(res => {
-        console.log(res.data.message);
+        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -51,7 +51,7 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
-        console.log(res.data.message);
+        console.log(res.data);
 
         return res.data;
       })
@@ -72,7 +72,7 @@ export const verifyEmail = (email, userInfo) => {
     instance
       .post(`verifyEmail`, email)
       .then(res => {
-        console.log(res.data.success);
+        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -88,24 +88,25 @@ export const verifyEmail = (email, userInfo) => {
 };
 
 export const registerUser = (userInfo, navigation) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     instance
       .post(`registerUser`, userInfo)
       .then(res => {
-        console.log(res.data.message);
+        console.log(res.data);
         return res.data;
       })
-      .then(data => {
-        return dispatch({
-          type: actionTypes.SIGN_UP_USER,
-          payload: data
-        });
+      .then(user => {
+        const decodedUser = jwt_decode(user.token);
+        setAuthToken(user.token);
+        return decodedUser;
       })
+      .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
+        console.log("state", getState().auth);
         navigation.navigate("Home");
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
