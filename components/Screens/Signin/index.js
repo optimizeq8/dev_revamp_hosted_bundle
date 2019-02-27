@@ -13,7 +13,8 @@ import {
   Input,
   Container,
   Icon,
-  H1
+  H1,
+  Toast
 } from "native-base";
 import { LinearGradient } from "expo";
 
@@ -32,7 +33,57 @@ class MainForm extends Component {
       email: "",
       password: ""
     };
+    this._handleSubmission = this._handleSubmission.bind(this);
   }
+  _handleSubmission = () => {
+    let message = [];
+    if (this.state.email === "") {
+      message.push("Please enter your email.");
+    } else {
+      message = message.filter(m => m == !"Please enter your email.");
+    }
+    if (this.state.password === "") {
+      message.push("Please enter your password.");
+    } else {
+      message = message.filter(m => m == !"Please enter your password.");
+    }
+    console.log(message);
+    if (message.length !== 0) {
+      message.forEach(m => {
+        console.log(m);
+        Toast.show({
+          text: m,
+          buttonText: "Okay",
+          duration: 3000,
+          type: "danger",
+          buttonTextStyle: { color: "#fff" },
+          buttonStyle: {
+            backgroundColor: "#717171",
+            alignSelf: "center"
+          }
+        });
+      });
+    } else {
+      console.log("in");
+      this.props.login(this.state, this.props.navigation);
+      if (
+        this.props.message === "Invalid Password" ||
+        this.props.message === "Invalid Email"
+      ) {
+        Toast.show({
+          text: this.props.message,
+          buttonText: "Okay",
+          duration: 3000,
+          type: "danger",
+          buttonTextStyle: { color: "#fff" },
+          buttonStyle: {
+            backgroundColor: "#717171",
+            alignSelf: "center"
+          }
+        });
+      }
+    }
+  };
   componentDidMount() {
     this.props.checkForExpiredToken(this.props.navigation);
   }
@@ -96,7 +147,7 @@ class MainForm extends Component {
             dark
             style={styles.button}
             onPress={() => {
-              this.props.login(this.state, this.props.navigation);
+              this._handleSubmission();
             }}
           >
             <Text style={styles.buttontext}>Login</Text>
@@ -117,7 +168,9 @@ class MainForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  message: state.auth.message
+});
 
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>

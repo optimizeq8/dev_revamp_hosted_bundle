@@ -31,24 +31,12 @@ class BusinessInfo extends Component {
     super(props);
 
     this.state = {
-      userInfo: {
-        ...this.props.userInfo,
+      businessAccount: {
         businessname: "",
         businesstype: "",
         country: "",
-        usertype: "1"
+        businessemail: ""
       },
-
-      data: [
-        {
-          label: "Individual",
-          value: "1"
-        },
-        {
-          label: "Business",
-          value: "2"
-        }
-      ],
       items: [
         {
           label: "Home Business",
@@ -90,13 +78,16 @@ class BusinessInfo extends Component {
   }
   _handleSubmission = () => {
     let message = [];
-    if (this.state.userInfo.businessname === "") {
+    if (this.state.businessAccount.businessname === "") {
       message.push("Please enter your Business Name.");
     }
-    if (this.state.userInfo.businesstype === "") {
+    if (this.state.businessAccount.businessemail === "") {
+      message.push("Please enter your Business Email.");
+    }
+    if (this.state.businessAccount.businesstype === "") {
       message.push("Please select your type of Business.");
     }
-    if (this.state.userInfo.country === "") {
+    if (this.state.businessAccount.country === "") {
       message.push("Please select your country.");
     }
 
@@ -116,11 +107,13 @@ class BusinessInfo extends Component {
         });
       });
     } else {
-      this.props.registerUser(this.state.userInfo, this.props.navigation);
+      this.props.createBusinessAccount(
+        this.state.businessAccount,
+        this.props.navigation
+      );
     }
   };
   render() {
-    console.log("form", this.state.userInfo);
     return (
       <View
         style={{
@@ -131,40 +124,32 @@ class BusinessInfo extends Component {
       >
         <View style={{ flex: 1 }}>
           <Text style={styles.text}>Business Info</Text>
-          <View
-            style={{
-              bottom: 30,
-              paddingHorizontal: 50,
-              alignSelf: "center",
-              height: 50
-            }}
-          >
-            <RadioGroup
-              flexDirection="row"
-              color="#5F5F5F"
-              radioButtons={this.state.data}
-              onPress={value => {
-                var data = value.find(data => data.selected === true);
-                this.setState({
-                  userInfo: { ...this.state.userInfo, usertype: data.value }
-                });
-              }}
-            />
-          </View>
+
           <View style={{ marginTop: 0 }}>
             <Item rounded style={styles.input}>
               <Input
                 style={styles.inputtext}
-                placeholder={
-                  this.state.userInfo.usertype === "1"
-                    ? "Your Name"
-                    : "Company Name"
-                }
+                placeholder={"Business Name"}
                 onChangeText={value => {
                   this.setState({
-                    userInfo: {
-                      ...this.state.userInfo,
+                    businessAccount: {
+                      ...this.state.businessAccount,
                       businessname: value
+                    }
+                  });
+                }}
+              />
+            </Item>
+
+            <Item rounded style={styles.input}>
+              <Input
+                style={styles.inputtext}
+                placeholder={"Business Email"}
+                onChangeText={value => {
+                  this.setState({
+                    businessAccount: {
+                      ...this.state.businessAccount,
+                      businessemail: value
                     }
                   });
                 }}
@@ -176,7 +161,10 @@ class BusinessInfo extends Component {
               placeholder={{}}
               onValueChange={value => {
                 this.setState({
-                  userInfo: { ...this.state.userInfo, country: value }
+                  businessAccount: {
+                    ...this.state.businessAccount,
+                    country: value
+                  }
                 });
               }}
             >
@@ -192,11 +180,9 @@ class BusinessInfo extends Component {
                     }
                   ]}
                 >
-                  {this.state.userInfo.country === ""
-                    ? this.state.userInfo.usertype === "1"
-                      ? "Where do you live?"
-                      : "Country"
-                    : this.state.userInfo.country}
+                  {this.state.businessAccount.country === ""
+                    ? "Country"
+                    : this.state.businessAccount.country}
                 </Text>
                 <Icon
                   type="AntDesign"
@@ -210,15 +196,18 @@ class BusinessInfo extends Component {
               items={this.state.items}
               onValueChange={value => {
                 this.setState({
-                  userInfo: { ...this.state.userInfo, businesstype: value }
+                  businessAccount: {
+                    ...this.state.businessAccount,
+                    businesstype: value
+                  }
                 });
               }}
             >
               <Item style={styles.input}>
                 <Text
                   placeholder={
-                    this.state.userInfo.businesstype !== ""
-                      ? this.state.userInfo.businesstype
+                    this.state.businessAccount.businesstype !== ""
+                      ? this.state.businessAccount.businesstype
                       : ""
                   }
                   style={[
@@ -231,12 +220,10 @@ class BusinessInfo extends Component {
                     }
                   ]}
                 >
-                  {this.state.userInfo.businesstype === ""
-                    ? this.state.userInfo.usertype === "1"
-                      ? "What do you do?"
-                      : "Business Type"
+                  {this.state.businessAccount.businesstype === ""
+                    ? "Business Type"
                     : this.state.items.find(
-                        i => i.value === this.state.userInfo.businesstype
+                        i => i.value === this.state.businessAccount.businesstype
                       ).label}
                 </Text>
                 <Icon
@@ -273,13 +260,12 @@ class BusinessInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo,
   message: state.auth.message
 });
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: (userInfo, navigation) =>
-    dispatch(actionCreators.registerUser(userInfo, navigation))
+  createBusinessAccount: (account, navigation) =>
+    dispatch(actionCreators.createBusinessAccount(account, navigation))
 });
 export default connect(
   mapStateToProps,

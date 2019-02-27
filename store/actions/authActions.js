@@ -6,6 +6,49 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const getBusinessAccounts = () => {
+  return dispatch => {
+    instance
+      .get(`businessaccounts`)
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+          payload: data
+        });
+      })
+
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};
+
+export const createBusinessAccount = (account, navigation) => {
+  return dispatch => {
+    instance
+      .post(`businessaccount`, account)
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.ADD_BUSINESS_ACCOUNT,
+          payload: data.data
+        });
+      })
+      .then(navigation.navigate("Home"))
+
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};
+
 export const checkForExpiredToken = navigation => {
   return dispatch => {
     return AsyncStorage.getItem("token").then(token => {
@@ -17,6 +60,8 @@ export const checkForExpiredToken = navigation => {
         if (user.exp >= currentTime) {
           setAuthToken(token)
             .then(() => dispatch(setCurrentUser(user)))
+            .then(() => dispatch(getBusinessAccounts()))
+
             .then(() => {
               navigation.navigate("Home");
             });
@@ -31,7 +76,6 @@ export const sendMobileNo = mobileNo => {
     instance
       .post(`addMobile`, mobileNo)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -116,23 +160,46 @@ export const login = (userData, navigation) => {
     instance
       .post("userLogin", userData)
       .then(res => {
+        console.log(res.data);
         return res.data;
       })
-      .then(user => {
-        const decodedUser = jwt_decode(user.token);
-        setAuthToken(user.token);
-        return decodedUser;
+      .then(async user => {
+        console.log("user", user);
+        let decodedUser = null;
+        if (typeof user.token !== "undefined") {
+          decodedUser = jwt_decode(user.token);
+          console.log("decodedUser", decodedUser);
+          let promise = await setAuthToken(user.token);
+        } else {
+          console.log("decodedUser", decodedUser);
+        }
+        const obj = { user: decodedUser, message: user.message };
+        console.log("obj", obj);
+
+        return obj;
       })
-      .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
+      .then(decodedUser => {
+        console.log(decodedUser);
+        dispatch(setCurrentUser(decodedUser));
+      })
+      .then(() => {})
+
       .then(() => {
-        console.log(getState().auth);
-        navigation.navigate("Home");
+        if (getState().auth.userInfo) {
+          navigation.navigate("Home");
+          console.log(
+            "auth token",
+            axios.defaults.headers.common.Authorization
+          );
+          dispatch(getBusinessAccounts());
+        }
       })
       .catch(err => {});
   };
 };
 
 const setAuthToken = token => {
+  console.log("token", token);
   if (token) {
     return AsyncStorage.setItem("token", token)
       .then(
@@ -150,11 +217,11 @@ const setAuthToken = token => {
 
 const setCurrentUser = user => {
   return dispatch => {
-    console.log("user", { user });
+    console.log("message", user);
     if (user) {
       return dispatch({
         type: actionTypes.SET_CURRENT_USER,
-        payload: { user }
+        payload: user
       });
     } else {
       return dispatch({ type: actionTypes.LOGOUT_USER, payload: { user } });
@@ -168,7 +235,7 @@ export const logout = navigation => {
   setAuthToken();
   return setCurrentUser(null);
 };
-
+// IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = navigation => {
   return dispatch => {
     instance
@@ -177,7 +244,10 @@ export const create_ad_account = navigation => {
         return res.data;
       })
       .then(data => {
-        console.log(data);
+        return dispatch({
+          type: actionTypes.CREATE_AD_ACCOUNT,
+          payload: data
+        });
       })
       .then(() => {
         navigation.navigate("Home");

@@ -4,12 +4,13 @@ import { createStackNavigator } from "react-navigation";
 import Home from "../Screens/Home";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
-
+import CreateBusinessAccount from "../Screens/CreateBusinessAccount";
 export default createStackNavigator(
   {
     Home: Home,
     Dashboard: Dashboard,
-    SnapchatCreateAdAcc: SnapchatCreateAdAcc
+    SnapchatCreateAdAcc: SnapchatCreateAdAcc,
+    CreateBusinessAccount: CreateBusinessAccount
   },
   {
     initialRouteName: "Home",

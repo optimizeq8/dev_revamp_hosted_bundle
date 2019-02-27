@@ -35,8 +35,58 @@ class PersonalInfo extends Component {
       },
       repassword: ""
     };
+    this._handleSubmission = this._handleSubmission.bind(this);
   }
+  _handleSubmission = () => {
+    let message = [];
+    if (this.state.userInfo.firstname === "") {
+      message.push("Please enter your First Name.");
+    }
+    if (this.state.userInfo.lastname === "") {
+      message.push("Please enter your Last Name.");
+    }
+    if (this.state.userInfo.email === "") {
+      message.push("Please enter your email.");
+    }
+    if (this.state.userInfo.password === "") {
+      message.push("Please enter a password.");
+    }
+    if (this.state.userInfo.password !== this.state.repassword) {
+      message.push("Your Passwords don't match.");
+    }
 
+    if (message.length !== 0) {
+      message.forEach(m => {
+        console.log(m);
+        Toast.show({
+          text: m,
+          buttonText: "Okay",
+          duration: 3000,
+          type: "danger",
+          buttonTextStyle: { color: "#fff" },
+          buttonStyle: {
+            backgroundColor: "#717171",
+            alignSelf: "center"
+          }
+        });
+      });
+    } else {
+      this.props.verifyEmail(this.state.userInfo.email, this.state.userInfo);
+      if (this.props.message === "Email already exist") {
+        Toast.show({
+          text: this.props.message,
+          buttonText: "Okay",
+          duration: 3000,
+          type: "danger",
+          buttonTextStyle: { color: "#fff" },
+          buttonStyle: {
+            backgroundColor: "#717171",
+            alignSelf: "center"
+          }
+        });
+      }
+    }
+  };
   render() {
     return (
       <View>
@@ -110,26 +160,7 @@ class PersonalInfo extends Component {
           </Item>
         </View>
         <TouchableOpacity
-          onPress={() => {
-            if (this.state.userInfo.password !== this.state.repassword) {
-              Toast.show({
-                text: "Your passwords don't match!",
-                buttonText: "Okay",
-                duration: 6000,
-                type: "danger",
-                buttonTextStyle: { color: "#000" },
-                buttonStyle: {
-                  backgroundColor: "#F1C04F",
-                  alignSelf: "center"
-                }
-              });
-            } else {
-              this.props.verifyEmail(
-                this.state.userInfo.email,
-                this.state.userInfo
-              );
-            }
-          }}
+          onPress={() => this._handleSubmission()}
           style={[styles.buttonN, { paddingTop: 0, bottom: 15 }]}
         >
           <Image
@@ -143,6 +174,8 @@ class PersonalInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
+  message: state.auth.message,
+
   mobileNo: state.auth.mobileNo
 });
 

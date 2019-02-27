@@ -7,7 +7,8 @@ const initialState = {
   message: "",
   userInfo: null,
   successEmail: false,
-  loading: true
+  loading: true,
+  businessAccounts: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,19 +35,37 @@ const reducer = (state = initialState, action) => {
         userInfo: action.payload.userInfo,
         message: action.payload.message
       };
-    case actionTypes.SIGN_UP_USER:
+    case actionTypes.CREATE_AD_ACCOUNT:
       return {
         ...state,
-        userInfo: action.payload.userinfo,
+        userInfo: {
+          ...state.userInfo,
+          ad_account_id: action.payload.ad_account_id
+        },
         message: action.payload.message
       };
     case actionTypes.SET_CURRENT_USER:
       return {
         ...state,
-        userInfo: action.payload.user,
-        loading: false
+        userInfo: action.payload,
+        loading: false,
+        message: action.payload.message
+      };
+    case actionTypes.SET_BUSINESS_ACCOUNTS:
+      return {
+        ...state,
+        businessAccounts: action.payload.business_accounts,
+        message: action.payload.message
       };
 
+    case actionTypes.ADD_BUSINESS_ACCOUNT:
+      let arr = state.businessAccounts;
+      arr.push(action.payload);
+      return {
+        ...state,
+        businessAccounts: arr,
+        message: action.payload.message
+      };
     default:
       return state;
   }

@@ -6,6 +6,8 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const VERIFY_EMAIL = "VERIFY_EMAIL";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const CREATE_AD_ACCOUNT = "CREATE_AD_ACCOUNT";
+export const SET_BUSINESS_ACCOUNTS = "SET_BUSINESS_ACCOUNTS";
+export const ADD_BUSINESS_ACCOUNT = "ADD_BUSINESS_ACCOUNT";
 //Campaign Action Types
 export const SET_AD_TYPE = "SET_AD_TYPE";
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";

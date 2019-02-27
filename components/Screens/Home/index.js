@@ -74,6 +74,13 @@ class Home extends Component {
           >
             <Text> Logout </Text>
           </Button>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("CreateBusinessAccount");
+            }}
+          >
+            <Text> Get B Accs </Text>
+          </Button>
         </Card>
         <View>
           <Card padder style={styles.bottomCard}>
@@ -108,7 +115,10 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo
 });
 const mapDispatchToProps = dispatch => ({
-  logout: navigation => dispatch(actionCreators.logout(navigation))
+  logout: navigation => dispatch(actionCreators.logout(navigation)),
+  getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
+  createBusinessAccount: account =>
+    dispatch(actionCreators.createBusinessAccount(account))
 });
 export default connect(
   mapStateToProps,
