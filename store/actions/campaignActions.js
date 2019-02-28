@@ -7,7 +7,7 @@ export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
     console.log(info);
     instance
-      .post(`savecampaign`, info)
+      .post(`savecampaign`, { ...info, businessid: 14 })
       .then(res => {
         console.log(res.data);
         return res.data;

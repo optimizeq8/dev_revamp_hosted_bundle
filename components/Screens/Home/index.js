@@ -75,17 +75,28 @@ class Home extends Component {
             <Text> Logout </Text>
           </Button>
           <Button
+            style={[styles.button]}
             onPress={() => {
               this.props.navigation.navigate("CreateBusinessAccount");
             }}
           >
-            <Text> Get B Accs </Text>
+            <Text> Create New Business </Text>
+          </Button>
+
+          <Button
+            style={[styles.button]}
+            onPress={() => {
+              this.props.navigation.navigate("SwipeUpDestination");
+            }}
+          >
+            <Text> Check </Text>
           </Button>
         </Card>
         <View>
           <Card padder style={styles.bottomCard}>
             <Button
-              style={styles.button}
+              block
+              style={styles.snapbutton}
               onPress={() => {
                 if (this.props.userInfo.ad_account_id === "")
                   this.props.navigation.push("SnapchatCreateAdAcc");
@@ -101,7 +112,7 @@ class Home extends Component {
                   resizeMode="contain"
                 />
               ) : (
-                <Text> Dashboard </Text>
+                <Text style={{ color: "#000" }}> Dashboard </Text>
               )}
             </Button>
           </Card>

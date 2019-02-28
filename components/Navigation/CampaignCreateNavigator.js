@@ -6,13 +6,17 @@ import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
 import AdDetails from "../Screens/CampaignCreate/AdDetails";
 import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
+import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
+import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
 export default createStackNavigator(
   {
     AdType: AdType,
     AdObjective: AdObjective,
     AdDesign: AdDesign,
     AdDetails: AdDetails,
-    AdDesignReview: AdDesignReview
+    AdDesignReview: AdDesignReview,
+    SwipeUpDestination: SwipeUpDestination,
+    SwipeUpChoice: SwipeUpChoice
   },
   {
     initialRouteName: "AdObjective",

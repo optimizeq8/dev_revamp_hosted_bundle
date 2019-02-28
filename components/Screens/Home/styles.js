@@ -67,9 +67,12 @@ const styles = StyleSheet.create({
     top: 30,
     marginBottom: 10,
     backgroundColor: "#5F5F5F",
-    alignSelf: "center",
-    width: 50,
-    height: 50
+    alignSelf: "center"
+  },
+  snapbutton: {
+    top: 30,
+    marginBottom: 10,
+    backgroundColor: "#fff"
   },
   link: {
     textAlign: "center",
