@@ -11,6 +11,7 @@ class CampaignCard extends Component {
       <TouchableOpacity
         onPress={() => {
           this.props.getCampaign(this.props.campaign.campaign_id);
+          this.props.navigation.push("CampaignDetails");
         }}
         style={styles.campaignButton}
       >

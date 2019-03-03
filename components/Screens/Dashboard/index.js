@@ -33,7 +33,11 @@ class Dashboard extends Component {
   }
   render() {
     const list = this.props.campaignList.map(campaign => (
-      <CampaignCard campaign={campaign} key={campaign.campaign_id} />
+      <CampaignCard
+        campaign={campaign}
+        navigation={this.props.navigation}
+        key={campaign.campaign_id}
+      />
     ));
     return (
       <Container style={styles.container}>
