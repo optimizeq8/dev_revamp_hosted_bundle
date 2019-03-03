@@ -11,7 +11,7 @@ export const getBusinessAccounts = () => {
     instance
       .get(`businessaccounts`)
       .then(res => {
-        console.log(res.data);
+        console.log("BA", res.data);
         return res.data;
       })
       .then(data => {

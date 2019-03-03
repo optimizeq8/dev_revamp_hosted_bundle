@@ -8,7 +8,8 @@ const initialState = {
   userInfo: null,
   successEmail: false,
   loading: true,
-  businessAccounts: []
+  businessAccounts: [],
+  mainBusiness: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -52,12 +53,13 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
+      console.log(action.payload.business_accounts[0]);
       return {
         ...state,
+        mainBusiness: action.payload.business_accounts[0],
         businessAccounts: action.payload.business_accounts,
         message: action.payload.message
       };
-
     case actionTypes.ADD_BUSINESS_ACCOUNT:
       let arr = state.businessAccounts;
       arr.push(action.payload);

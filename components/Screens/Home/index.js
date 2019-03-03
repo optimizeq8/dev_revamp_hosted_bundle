@@ -14,7 +14,8 @@ import {
   Container,
   Icon,
   H1,
-  Thumbnail
+  Thumbnail,
+  Spinner
 } from "native-base";
 import { LinearGradient } from "expo";
 
@@ -32,98 +33,91 @@ class Home extends Component {
     this.state = {};
   }
   render() {
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 250,
-            width: 250
-          }}
-          source={require("../../../assets/images/tutorial/inst01.png")}
-          resizeMode="contain"
-        />
-      </View>
-    );
-    return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
-          style={styles.gradient}
-        />
-        <Image
-          style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        />
-        <Card padder style={styles.mainCard}>
-          <Text style={styles.link}>
-            Welcome {"\n"}
-            {this.props.userInfo.businessname}
-          </Text>
-          <Text style={styles.text}>
-            You’re one step away from
-            {"\n"} Optimizing your digital Ads
-          </Text>
-          <Button
-            style={[styles.button, { backgroundColor: "red" }]}
-            onPress={() => {
-              this.props.logout(this.props.navigation);
-            }}
-          >
-            <Text> Logout </Text>
-          </Button>
-          <Button
-            style={[styles.button]}
-            onPress={() => {
-              this.props.navigation.navigate("CreateBusinessAccount");
-            }}
-          >
-            <Text> Create New Business </Text>
-          </Button>
-
-          <Button
-            style={[styles.button]}
-            onPress={() => {
-              this.props.navigation.navigate("SwipeUpDestination");
-            }}
-          >
-            <Text> Check </Text>
-          </Button>
-        </Card>
-        <View>
-          <Card padder style={styles.bottomCard}>
+    console.log("main", this.props.mainBusiness);
+    if (!this.props.mainBusiness) {
+      return <Spinner color="red" />;
+    } else
+      return (
+        <Container style={styles.container}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            startPoint={{ x: 1, y: 0 }}
+            endPoint={{ x: 0, y: 1 }}
+            style={styles.gradient}
+          />
+          <Image
+            style={styles.image}
+            source={require("../../../assets/images/logo01.png")}
+            resizeMode="contain"
+          />
+          <Card padder style={styles.mainCard}>
+            <Text style={styles.link}>
+              Welcome {"\n"}
+              {this.props.userInfo.firstname}
+            </Text>
+            <Text style={styles.text}>
+              You’re one step away from
+              {"\n"} Optimizing your digital Ads
+            </Text>
             <Button
-              block
-              style={styles.snapbutton}
+              style={[styles.button, { backgroundColor: "red" }]}
               onPress={() => {
-                if (this.props.userInfo.ad_account_id === "")
-                  this.props.navigation.push("SnapchatCreateAdAcc");
-                else {
-                  this.props.navigation.push("Dashboard");
-                }
+                this.props.logout(this.props.navigation);
               }}
             >
-              {this.props.userInfo.ad_account_id === "" ? (
-                <Image
-                  style={styles.imageIcon}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-              ) : (
-                <Text style={{ color: "#000" }}> Dashboard </Text>
-              )}
+              <Text> Logout </Text>
+            </Button>
+            <Button
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("CreateBusinessAccount");
+              }}
+            >
+              <Text> Create New Business </Text>
+            </Button>
+
+            <Button
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("SwipeUpDestination");
+              }}
+            >
+              <Text> Check </Text>
             </Button>
           </Card>
-        </View>
-      </Container>
-    );
+          <View>
+            <Card padder style={styles.bottomCard}>
+              <Button
+                block
+                style={styles.snapbutton}
+                onPress={() => {
+                  if (this.props.mainBusiness.snap_ad_account_id === "")
+                    this.props.navigation.push("SnapchatCreateAdAcc");
+                  else {
+                    this.props.navigation.push("Dashboard");
+                  }
+                }}
+              >
+                {this.props.mainBusiness.snap_ad_account_id === "" ? (
+                  <Image
+                    style={styles.imageIcon}
+                    source={require("../../../assets/images/snap-ghost.png")}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Text style={{ color: "#000" }}> Dashboard </Text>
+                )}
+              </Button>
+            </Card>
+          </View>
+        </Container>
+      );
   }
 }
 
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
+  mainBusiness: state.auth.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
   logout: navigation => dispatch(actionCreators.logout(navigation)),
