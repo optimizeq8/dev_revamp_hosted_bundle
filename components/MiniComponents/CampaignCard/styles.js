@@ -6,7 +6,6 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
@@ -23,16 +22,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50
   },
-  mainCard: {
-    top: 15,
 
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
-  },
   text: {
     textAlign: "center",
     color: "#5F5F5F",
@@ -75,17 +65,6 @@ const styles = StyleSheet.create({
     color: "#5F5F5F",
     fontFamily: "benton-sans-regular",
     fontSize: 20
-  },
-  bottomCard: {
-    top: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: 100
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

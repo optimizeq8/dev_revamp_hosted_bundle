@@ -8,6 +8,8 @@ export const LOGOUT_USER = "LOGOUT_USER";
 export const CREATE_AD_ACCOUNT = "CREATE_AD_ACCOUNT";
 export const SET_BUSINESS_ACCOUNTS = "SET_BUSINESS_ACCOUNTS";
 export const ADD_BUSINESS_ACCOUNT = "ADD_BUSINESS_ACCOUNT";
+export const SET_CAMPAIGN_LIST = "SET_CAMPAIGN_LIST";
+export const SET_CAMPAIGN = "SET_CAMPAIGN";
 //Campaign Action Types
 export const SET_AD_TYPE = "SET_AD_TYPE";
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";

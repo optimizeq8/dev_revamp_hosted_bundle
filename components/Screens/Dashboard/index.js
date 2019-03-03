@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, TouchableOpacity } from "react-native";
 import {
   Card,
   Button,
@@ -14,10 +14,11 @@ import {
   Container,
   Icon,
   H1,
-  Thumbnail
+  Thumbnail,
+  Spinner
 } from "native-base";
 import { LinearGradient } from "expo";
-
+import CampaignCard from "../../MiniComponents/CampaignCard";
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -28,22 +29,12 @@ class Dashboard extends Component {
   };
   constructor(props) {
     super(props);
-
     this.state = {};
   }
   render() {
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 250,
-            width: 250
-          }}
-          source={require("../../../assets/images/tutorial/inst01.png")}
-          resizeMode="contain"
-        />
-      </View>
-    );
+    const list = this.props.campaignList.map(campaign => (
+      <CampaignCard campaign={campaign} key={campaign.campaign_id} />
+    ));
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -70,23 +61,29 @@ class Dashboard extends Component {
             }
           ]}
         >
-          <Text style={styles.link}>
-            Welcome {"\n"}
-            {this.props.userInfo.businessInfoName}
-          </Text>
-          <Text style={styles.text}>Create campaigns!</Text>
-          <Button
-            style={styles.button}
-            onPress={() => {
-              this.props.navigation.navigate("AdObjective");
+          <View
+            style={{
+              flexDirection: "row",
+              alignSelf: "center",
+              marginBottom: 20,
+              paddingBottom: 10
             }}
           >
-            <Image
-              style={styles.imageIcon}
-              source={require("../../../assets/images/snap-ghost.png")}
-              resizeMode="contain"
-            />
-          </Button>
+            <Text style={[styles.text, { alignSelf: "center" }]}>
+              {this.props.mainBusiness.businessname}
+            </Text>
+            <Button
+              style={styles.button}
+              onPress={() => {
+                this.props.navigation.navigate("AdObjective");
+              }}
+            >
+              <Text> Create campaign </Text>
+            </Button>
+          </View>
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            {list}
+          </ScrollView>
         </Card>
       </Container>
     );
@@ -94,10 +91,14 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
+  mainBusiness: state.auth.mainBusiness,
+  campaignList: state.auth.campaignList
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  getCampaign: id => dispatch(actionCreators.getCampaign(id))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

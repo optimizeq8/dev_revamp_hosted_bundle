@@ -32,6 +32,11 @@ class Home extends Component {
 
     this.state = {};
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.mainBusiness !== this.props.mainBusiness) {
+      this.props.getCampaignList(this.props.mainBusiness.businessid);
+    }
+  }
   render() {
     console.log("main", this.props.mainBusiness);
     if (!this.props.mainBusiness) {
@@ -117,13 +122,15 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.auth.mainBusiness,
+  campaignList: state.auth.campaignList
 });
 const mapDispatchToProps = dispatch => ({
   logout: navigation => dispatch(actionCreators.logout(navigation)),
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
-    dispatch(actionCreators.createBusinessAccount(account))
+    dispatch(actionCreators.createBusinessAccount(account)),
+  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
 });
 export default connect(
   mapStateToProps,

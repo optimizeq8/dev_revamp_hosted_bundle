@@ -9,7 +9,9 @@ const initialState = {
   successEmail: false,
   loading: true,
   businessAccounts: [],
-  mainBusiness: null
+  mainBusiness: null,
+  campaignList: [],
+  selectedCampaign: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,7 +55,6 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
-      console.log(action.payload.business_accounts[0]);
       return {
         ...state,
         mainBusiness: action.payload.business_accounts[0],
@@ -66,6 +67,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         businessAccounts: arr,
+        message: action.payload.message
+      };
+    case actionTypes.SET_CAMPAIGN_LIST:
+      return {
+        ...state,
+        campaignList: action.payload.data,
+        message: action.payload.message
+      };
+    case actionTypes.SET_CAMPAIGN:
+      return {
+        ...state,
+        selectedCampaign: action.payload.data,
         message: action.payload.message
       };
     default:

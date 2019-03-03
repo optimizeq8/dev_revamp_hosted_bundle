@@ -6,12 +6,50 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const getCampaign = id => {
+  return dispatch => {
+    instance
+      .get(`campaigndetail/${id}`)
+      .then(res => {
+        console.log("data", res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};
+
+export const getCampaignList = id => {
+  return dispatch => {
+    instance
+      .get(`campaignlist/${id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN_LIST,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // dispatch(console.log(err.response.data));
+      });
+  };
+};
+
 export const getBusinessAccounts = () => {
   return dispatch => {
     instance
       .get(`businessaccounts`)
       .then(res => {
-        console.log("BA", res.data);
         return res.data;
       })
       .then(data => {
@@ -32,7 +70,6 @@ export const createBusinessAccount = (account, navigation) => {
     instance
       .post(`businessaccount`, account)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -50,13 +87,12 @@ export const createBusinessAccount = (account, navigation) => {
 };
 
 export const checkForExpiredToken = navigation => {
-  return dispatch => {
+  return (dispatch, getState) => {
     return AsyncStorage.getItem("token").then(token => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
         console.log(user);
-        console.log(currentTime);
         if (user.exp >= currentTime) {
           setAuthToken(token)
             .then(() => dispatch(setCurrentUser(user)))
@@ -95,8 +131,6 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
-        console.log(res.data);
-
         return res.data;
       })
       .then(data => {
@@ -116,7 +150,6 @@ export const verifyEmail = (email, userInfo) => {
     instance
       .post(`verifyEmail`, email)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -136,7 +169,6 @@ export const registerUser = (userInfo, navigation) => {
     instance
       .post(`registerUser`, userInfo)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(user => {
@@ -146,7 +178,6 @@ export const registerUser = (userInfo, navigation) => {
       })
       .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
-        console.log("state", getState().auth);
         navigation.navigate("Home");
       })
       .catch(err => {
@@ -160,22 +191,17 @@ export const login = (userData, navigation) => {
     instance
       .post("userLogin", userData)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(async user => {
-        console.log("user", user);
         let decodedUser = null;
         if (typeof user.token !== "undefined") {
           decodedUser = jwt_decode(user.token);
-          console.log("decodedUser", decodedUser);
           let promise = await setAuthToken(user.token);
         } else {
           console.log("decodedUser", decodedUser);
         }
         const obj = { user: decodedUser, message: user.message };
-        console.log("obj", obj);
-
         return obj;
       })
       .then(decodedUser => {
