@@ -33,12 +33,14 @@ class Home extends Component {
     this.state = {};
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.mainBusiness !== this.props.mainBusiness) {
+    if (
+      prevProps.mainBusiness !== this.props.mainBusiness &&
+      this.props.mainBusiness
+    ) {
       this.props.getCampaignList(this.props.mainBusiness.businessid);
     }
   }
   render() {
-    console.log("lknjbhkjnl", this.props.userInfo);
     if (!this.props.mainBusiness) {
       return <Spinner color="red" />;
     } else

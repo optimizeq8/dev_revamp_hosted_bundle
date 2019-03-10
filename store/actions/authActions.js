@@ -92,16 +92,23 @@ export const checkForExpiredToken = navigation => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
-        console.log(user);
         if (user.exp >= currentTime) {
           setAuthToken(token)
-            .then(() => dispatch(setCurrentUser({user:user, message:"Logged-in Successfully"})))
+            .then(() =>
+              dispatch(
+                setCurrentUser({
+                  user: user,
+                  message: "Logged-in Successfully"
+                })
+              )
+            )
             .then(() => dispatch(getBusinessAccounts()))
-
             .then(() => {
               navigation.navigate("Home");
             });
         }
+      } else {
+        dispatch(logout(navigation));
       }
     });
   };
@@ -151,7 +158,7 @@ export const verifyEmail = (email, userInfo) => {
       .post(`verifyEmail`, email)
       .then(res => {
         console.log("verifyEmail", email);
-        
+
         return res.data;
       })
       .then(data => {
@@ -167,15 +174,14 @@ export const verifyEmail = (email, userInfo) => {
 };
 
 export const registerUser = (userInfo, navigation) => {
-  
   return (dispatch, getState) => {
     instance
-    .post(`registerUser`, userInfo)
-    .then(res => {
-      return res.data;
-    })
-    .then(user => {
-      console.log("userInfo", user);
+      .post(`registerUser`, userInfo)
+      .then(res => {
+        return res.data;
+      })
+      .then(user => {
+        console.log("userInfo", user);
         const decodedUser = jwt_decode(user.token);
         setAuthToken(user.token);
         return decodedUser;
@@ -212,8 +218,6 @@ export const login = (userData, navigation) => {
         console.log(decodedUser);
         dispatch(setCurrentUser(decodedUser));
       })
-      .then(() => {})
-
       .then(() => {
         if (getState().auth.userInfo) {
           navigation.navigate("Home");
@@ -224,7 +228,8 @@ export const login = (userData, navigation) => {
           dispatch(getBusinessAccounts());
         }
       })
-      .catch(err => {console.log(err.response);
+      .catch(err => {
+        console.log(err.response);
       });
   };
 };
