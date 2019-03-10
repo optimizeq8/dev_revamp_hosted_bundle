@@ -38,7 +38,7 @@ class Home extends Component {
     }
   }
   render() {
-    console.log("main", this.props.mainBusiness);
+    console.log("lknjbhkjnl", this.props.userInfo);
     if (!this.props.mainBusiness) {
       return <Spinner color="red" />;
     } else

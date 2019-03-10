@@ -50,7 +50,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_CURRENT_USER:
       return {
         ...state,
-        userInfo: action.payload,
+        userInfo: action.payload.user,
         loading: false,
         message: action.payload.message
       };
@@ -80,6 +80,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedCampaign: action.payload.data,
         message: action.payload.message
+      };
+      case actionTypes.LOGOUT_USER:
+      return {
+        ...state,
+        mobileNo: "",
+        verificationCode: false,
+        successNo: false,
+        message: "",
+        userInfo: null,
+        successEmail: false,
+        loading: true,
+        businessAccounts: [],
+        mainBusiness: null,
+        campaignList: [],
+        selectedCampaign: null
       };
     default:
       return state;
