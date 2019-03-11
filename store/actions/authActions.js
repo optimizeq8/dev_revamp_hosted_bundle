@@ -133,6 +133,13 @@ export const sendMobileNo = mobileNo => {
   };
 };
 
+export const resetMessages = () => {
+  return dispatch =>
+    dispatch({
+      type: actionTypes.RESET_MESSAGE
+    });
+};
+
 export const verifyMobileCode = mobileAuth => {
   return dispatch => {
     instance
@@ -153,18 +160,16 @@ export const verifyMobileCode = mobileAuth => {
 };
 
 export const verifyEmail = (email, userInfo) => {
+  console.log("email", email);
+
   return dispatch => {
     instance
-      .post(`verifyEmail`, email)
-      .then(res => {
-        console.log("verifyEmail", email);
-
-        return res.data;
-      })
+      .post(`verifyEmail`, { email: email })
+      .then(res => res.data)
       .then(data => {
         return dispatch({
           type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.success, userInfo }
+          payload: { success: data.success, userInfo, message: data.message }
         });
       })
       .catch(err => {

@@ -30,16 +30,13 @@ class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
-  componentDidUpdate() {
-    if (this.props.verificationCode) alert(this.props.verificationCode);
-  }
 
   render() {
-    let content = <PhoneNo />;
-    if (this.props.verificationCode) {
+    let content = <PhoneNo navigation={this.props.navigation} />;
+    if (this.props.verificationCode && !this.props.verified) {
       content = <Verification />;
     }
-    if (this.props.successNo) {
+    if (!this.props.registered && this.props.verified) {
       content = <PersonalInfo />;
     }
     if (this.props.successEmail) {
@@ -79,14 +76,14 @@ class MainForm extends Component {
             <View style={styles.content}>
               <Badge
                 style={
-                  this.props.verificationCode
+                  !this.props.verified && !this.props.registered
                     ? styles.badge
                     : styles.activeBadege
                 }
               >
                 <Text
                   style={
-                    this.props.verificationCode
+                    !this.props.verified && !this.props.registered
                       ? { color: "#5F5F5F" }
                       : { color: "#fff" }
                   }
@@ -115,14 +112,18 @@ class MainForm extends Component {
               <Text> - </Text>
               <Badge
                 style={
-                  this.props.successNo && !this.props.successEmail
+                  this.props.verified &&
+                  !this.props.successEmail &&
+                  !this.props.registered
                     ? styles.activeBadege
                     : styles.badge
                 }
               >
                 <Text
                   style={
-                    this.props.successNo && !this.props.successEmail
+                    this.props.verified &&
+                    !this.props.successEmail &&
+                    !this.props.registered
                       ? { color: "#fff" }
                       : { color: "#5F5F5F" }
                   }
@@ -158,7 +159,9 @@ class MainForm extends Component {
 const mapStateToProps = state => ({
   verificationCode: state.auth.verificationCode,
   successNo: state.auth.successNo,
-  successEmail: state.auth.successEmail
+  successEmail: state.auth.successEmail,
+  verified: state.auth.verified,
+  registered: state.auth.registered
 });
 
 const mapDispatchToProps = dispatch => ({});

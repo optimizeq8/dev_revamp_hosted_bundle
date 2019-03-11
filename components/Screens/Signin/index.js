@@ -17,9 +17,7 @@ import {
   Toast
 } from "native-base";
 import { LinearGradient } from "expo";
-import validate from "validate.js";
 import validateWrapper from "./ValidateWrapper";
-import validation from "./validation";
 
 // Style
 import styles, { colors } from "./styles";
@@ -43,10 +41,14 @@ class MainForm extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
       this.setState({
-        emailError: this.props.message.includes("Email") ? "Invalid Email" : "",
-        passwordError: this.props.message.includes("Password")
-          ? "Invalid Password "
-          : ""
+        emailError:
+          this.props.message.includes("Email") && this.props.message
+            ? "Invalid Email"
+            : "",
+        passwordError:
+          this.props.message.includes("Password") && this.props.message
+            ? "Invalid Password "
+            : ""
       });
     }
   }
@@ -59,15 +61,6 @@ class MainForm extends Component {
     });
     if (!emailError && !passwordError) {
       this.props.login(this.state, this.props.navigation);
-      if (
-        this.props.message === "Invalid Password" ||
-        this.props.message === "Invalid Email"
-      ) {
-        this.setState({
-          emailError: "Invalid Email",
-          passwordError: "Invalid Password "
-        });
-      }
     }
   };
   componentDidMount() {
@@ -101,7 +94,6 @@ class MainForm extends Component {
         />
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
-
           <Item
             rounded
             style={[

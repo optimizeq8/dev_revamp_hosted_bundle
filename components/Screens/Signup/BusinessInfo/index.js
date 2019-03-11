@@ -18,7 +18,7 @@ import {
 } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";
-
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../../store/actions";
@@ -38,7 +38,9 @@ class BusinessInfo extends Component {
         country: "",
         usertype: "1"
       },
-
+      nameError: "",
+      countryError: "",
+      businesstypeError: "",
       data: [
         {
           label: "Individual",
@@ -89,38 +91,28 @@ class BusinessInfo extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   _handleSubmission = () => {
-    let message = [];
-    if (this.state.userInfo.businessname === "") {
-      message.push("Please enter your Business Name.");
-    }
-    if (this.state.userInfo.businesstype === "") {
-      message.push("Please select your type of Business.");
-    }
-    if (this.state.userInfo.country === "") {
-      message.push("Please select your country.");
-    }
+    const nameError = validateWrapper("name", this.state.userInfo.businessname);
+    const countryError = validateWrapper("name", this.state.userInfo.country);
+    const businesstypeError = validateWrapper(
+      "name",
+      this.state.userInfo.businesstype
+    );
+    this.setState({
+      nameError,
+      countryError,
+      businesstypeError
+    });
+    if (
+      !this.state.nameError &&
+      !this.state.countryError &&
+      !this.state.businesstypeError
+    ) {
+      console.log("ljukgyjvhkuijo");
 
-    if (message.length !== 0) {
-      message.forEach(m => {
-        console.log(m);
-        Toast.show({
-          text: m,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
-      });
-    } else {
       this.props.registerUser(this.state.userInfo, this.props.navigation);
     }
   };
   render() {
-    console.log("form", this.state.userInfo);
     return (
       <View
         style={{
@@ -152,7 +144,15 @@ class BusinessInfo extends Component {
             />
           </View>
           <View style={{ marginTop: 0 }}>
-            <Item rounded style={styles.input}>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.nameError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder={
@@ -168,6 +168,14 @@ class BusinessInfo extends Component {
                     }
                   });
                 }}
+                onBlur={() =>
+                  this.setState({
+                    nameError: validateWrapper(
+                      "name",
+                      this.state.userInfo.businessname
+                    )
+                  })
+                }
               />
             </Item>
 
@@ -176,11 +184,23 @@ class BusinessInfo extends Component {
               placeholder={{}}
               onValueChange={value => {
                 this.setState({
-                  userInfo: { ...this.state.userInfo, country: value }
+                  userInfo: { ...this.state.userInfo, country: value },
+                  countryError: validateWrapper(
+                    "name",
+                    this.state.userInfo.country
+                  )
                 });
               }}
             >
-              <Item rounded style={styles.input}>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.countryError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
                 <Text
                   style={[
                     styles.inputtext,
@@ -208,13 +228,28 @@ class BusinessInfo extends Component {
 
             <RNPickerSelect
               items={this.state.items}
+              placeholder={{}}
               onValueChange={value => {
                 this.setState({
-                  userInfo: { ...this.state.userInfo, businesstype: value }
+                  userInfo: { ...this.state.userInfo, businesstype: value },
+                  businesstypeError: validateWrapper(
+                    "name",
+                    this.state.userInfo.businesstype
+                  )
                 });
               }}
             >
-              <Item style={styles.input}>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.businesstypeError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
                 <Text
                   placeholder={
                     this.state.userInfo.businesstype !== ""

@@ -21,6 +21,7 @@ import {
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../../store/actions";
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -33,58 +34,67 @@ class PersonalInfo extends Component {
         mobile: this.props.mobileNo,
         password: ""
       },
-      repassword: ""
+      repassword: "",
+      emailError: "",
+      passwordError: "",
+      lastnameError: "",
+      firstnameError: "",
+      repasswordError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
+    this._passwordVarification = this._passwordVarification.bind(this);
   }
-  _handleSubmission = () => {
-    let message = [];
-    if (this.state.userInfo.firstname === "") {
-      message.push("Please enter your First Name.");
-    }
-    if (this.state.userInfo.lastname === "") {
-      message.push("Please enter your Last Name.");
-    }
-    if (this.state.userInfo.email === "") {
-      message.push("Please enter your email.");
-    }
-    if (this.state.userInfo.password === "") {
-      message.push("Please enter a password.");
-    }
-    if (this.state.userInfo.password !== this.state.repassword) {
-      message.push("Your Passwords don't match.");
-    }
-
-    if (message.length !== 0) {
-      message.forEach(m => {
-        console.log(m);
-        Toast.show({
-          text: m,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      this.setState({
+        emailError:
+          this.props.message.includes("exist") && this.props.message
+            ? this.props.message
+            : ""
       });
-    } else {
+    }
+  }
+
+  _passwordVarification = () => {
+    if (
+      this.state.userInfo.password !== this.state.repassword ||
+      this.state.repassword === ""
+    ) {
+      this.setState({ repasswordError: "Your Passwords don't match." });
+      return false;
+    } else if (
+      this.state.userInfo.password === this.state.repassword &&
+      this.state.repassword !== ""
+    ) {
+      this.setState({ repasswordError: "" });
+      return true;
+    }
+  };
+  _handleSubmission = () => {
+    const emailError = validateWrapper("email", this.state.userInfo.email);
+    const passwordError = validateWrapper(
+      "password",
+      this.state.userInfo.password
+    );
+    const lastnameError = validateWrapper("name", this.state.userInfo.lastname);
+    const firstnameError = validateWrapper(
+      "name",
+      this.state.userInfo.firstname
+    );
+    this.setState({
+      emailError,
+      passwordError,
+      lastnameError,
+      firstnameError
+    });
+    if (
+      this._passwordVarification() &&
+      !this.state.firstnameError &&
+      !this.state.lastError &&
+      !this.state.emailError &&
+      !this.state.passwordError
+    ) {
       this.props.verifyEmail(this.state.userInfo.email, this.state.userInfo);
-      if (this.props.message === "Email already exist") {
-        Toast.show({
-          text: this.props.message,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
-      }
     }
   };
   render() {
@@ -92,7 +102,15 @@ class PersonalInfo extends Component {
       <View>
         <View style={{ paddingBottom: 0 }}>
           <Text style={styles.text}>Personal Info</Text>
-          <Item rounded style={styles.input}>
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.firstnameError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               style={styles.inputtext}
               placeholder="First Name"
@@ -103,9 +121,25 @@ class PersonalInfo extends Component {
                   userInfo: { ...this.state.userInfo, firstname: value }
                 })
               }
+              onBlur={() => {
+                this.setState({
+                  firstnameError: validateWrapper(
+                    "name",
+                    this.state.userInfo.firstname
+                  )
+                });
+              }}
             />
           </Item>
-          <Item rounded style={styles.input}>
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.lastnameError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               style={styles.inputtext}
               placeholder="Last Name"
@@ -116,9 +150,25 @@ class PersonalInfo extends Component {
                   userInfo: { ...this.state.userInfo, lastname: value }
                 })
               }
+              onBlur={() => {
+                this.setState({
+                  lastnameError: validateWrapper(
+                    "name",
+                    this.state.userInfo.lastname
+                  )
+                });
+              }}
             />
           </Item>
-          <Item rounded style={styles.input}>
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.emailError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               style={styles.inputtext}
               placeholder="Email"
@@ -129,9 +179,38 @@ class PersonalInfo extends Component {
                   userInfo: { ...this.state.userInfo, email: value }
                 })
               }
+              onBlur={() => {
+                this.setState({
+                  emailError: validateWrapper(
+                    "email",
+                    this.state.userInfo.email
+                  )
+                });
+              }}
             />
           </Item>
-          <Item rounded style={styles.input}>
+          {this.state.emailError ? (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#717171",
+                fontFamily: "benton-sans-regular",
+                fontSize: 15,
+                bottom: 30
+              }}
+            >
+              {this.state.emailError}
+            </Text>
+          ) : null}
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.passwordError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               style={styles.inputtext}
               placeholder="Password"
@@ -143,11 +222,41 @@ class PersonalInfo extends Component {
                   userInfo: { ...this.state.userInfo, password: value }
                 })
               }
+              onBlur={() => {
+                this.setState({
+                  passwordError: validateWrapper(
+                    "password",
+                    this.state.userInfo.password
+                  )
+                });
+              }}
             />
           </Item>
+          {this.state.passwordError &&
+          this.state.passwordError.includes("8 characters") ? (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#717171",
+                fontFamily: "benton-sans-regular",
+                fontSize: 15,
+                paddingBottom: "10%"
+              }}
+            >
+              {this.state.passwordError}
+            </Text>
+          ) : null}
           <Item
             rounded
-            style={[styles.input, { marginBottom: 0, paddingBottom: 0 }]}
+            style={[
+              styles.input,
+              {
+                marginBottom: 0,
+                paddingBottom: 0,
+                borderColor:
+                  this.state.repasswordError !== "" ? "red" : "#D9D9D9"
+              }
+            ]}
           >
             <Input
               style={styles.inputtext}
@@ -156,8 +265,23 @@ class PersonalInfo extends Component {
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={value => this.setState({ repassword: value })}
+              onBlur={() => this._passwordVarification()}
             />
           </Item>
+          {this.state.repasswordError !== "" ? (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#717171",
+                fontFamily: "benton-sans-regular",
+                fontSize: 15,
+                marginTop: 0,
+                marginBottom: 15
+              }}
+            >
+              {this.state.repasswordError}
+            </Text>
+          ) : null}
         </View>
         <TouchableOpacity
           onPress={() => this._handleSubmission()}
@@ -175,7 +299,6 @@ class PersonalInfo extends Component {
 }
 const mapStateToProps = state => ({
   message: state.auth.message,
-
   mobileNo: state.auth.mobileNo
 });
 
