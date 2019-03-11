@@ -17,6 +17,7 @@ import {
   Toast
 } from "native-base";
 import { LinearGradient } from "expo";
+import validateWrapper from "./ValidateWrapper";
 
 // Style
 import styles, { colors } from "./styles";
@@ -31,57 +32,35 @@ class MainForm extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      emailError: "",
+      passwordError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-  _handleSubmission = () => {
-    let message = [];
-    if (this.state.email === "") {
-      message.push("Please enter your email.");
-    } else {
-      message = message.filter(m => m == !"Please enter your email.");
-    }
-    if (this.state.password === "") {
-      message.push("Please enter your password.");
-    } else {
-      message = message.filter(m => m == !"Please enter your password.");
-    }
-    console.log(message);
-    if (message.length !== 0) {
-      message.forEach(m => {
-        console.log(m);
-        Toast.show({
-          text: m,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      this.setState({
+        emailError:
+          this.props.message.includes("Email") && this.props.message
+            ? "Invalid Email"
+            : "",
+        passwordError:
+          this.props.message.includes("Password") && this.props.message
+            ? "Invalid Password "
+            : ""
       });
-    } else {
-      console.log("in");
+    }
+  }
+  _handleSubmission = () => {
+    const emailError = validateWrapper("email", this.state.email);
+    const passwordError = validateWrapper("password", this.state.password);
+    this.setState({
+      emailError: emailError,
+      passwordError: passwordError
+    });
+    if (!emailError && !passwordError) {
       this.props.login(this.state, this.props.navigation);
-      if (
-        this.props.message === "Invalid Password" ||
-        this.props.message === "Invalid Email"
-      ) {
-        Toast.show({
-          text: this.props.message,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
-      }
     }
   };
   componentDidMount() {
@@ -115,7 +94,15 @@ class MainForm extends Component {
         />
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
-          <Item rounded style={styles.input}>
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.emailError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               autoCorrect={false}
               autoCapitalize="none"
@@ -125,10 +112,37 @@ class MainForm extends Component {
                   email: value
                 });
               }}
+              onBlur={() => {
+                this.setState({
+                  emailError: validateWrapper("email", this.state.email)
+                });
+              }}
               placeholder="Email"
             />
           </Item>
-          <Item rounded style={styles.input}>
+          {this.state.emailError ? (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#717171",
+                fontFamily: "benton-sans-regular",
+                fontSize: 15,
+                marginTop: 25
+              }}
+            >
+              {this.state.emailError}
+            </Text>
+          ) : null}
+
+          <Item
+            rounded
+            style={[
+              styles.input,
+              {
+                borderColor: this.state.passwordError ? "red" : "#D9D9D9"
+              }
+            ]}
+          >
             <Input
               secureTextEntry={true}
               autoCorrect={false}
@@ -139,9 +153,30 @@ class MainForm extends Component {
                   password: value
                 });
               }}
+              onBlur={() => {
+                this.setState({
+                  passwordError: validateWrapper(
+                    "password",
+                    this.state.password
+                  )
+                });
+              }}
               placeholder="Password"
             />
           </Item>
+          {this.state.passwordError ? (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#717171",
+                fontFamily: "benton-sans-regular",
+                fontSize: 15,
+                marginTop: 25
+              }}
+            >
+              {this.state.passwordError}
+            </Text>
+          ) : null}
           <Button
             block
             dark

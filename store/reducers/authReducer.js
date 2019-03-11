@@ -4,10 +4,12 @@ const initialState = {
   mobileNo: "",
   verificationCode: false,
   successNo: false,
+  verified: false,
   message: "",
   userInfo: null,
   successEmail: false,
   loading: true,
+  registered: false,
   businessAccounts: [],
   mainBusiness: null,
   campaignList: [],
@@ -15,20 +17,21 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("reducer", action.payload);
-
   switch (action.type) {
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
         ...state,
         mobileNo: action.payload.mobile,
+        verified: action.payload.verified,
         verificationCode: action.payload.verificationCode,
+        registered: action.payload.registered,
         message: action.payload.message
       };
     case actionTypes.VERIFY_MOBILE_NUMBER:
       return {
         ...state,
         successNo: action.payload.success,
+
         message: action.payload.message
       };
     case actionTypes.VERIFY_EMAIL:
@@ -81,7 +84,12 @@ const reducer = (state = initialState, action) => {
         selectedCampaign: action.payload.data,
         message: action.payload.message
       };
-      case actionTypes.LOGOUT_USER:
+    case actionTypes.RESET_MESSAGE:
+      return {
+        ...state,
+        message: ""
+      };
+    case actionTypes.LOGOUT_USER:
       return {
         ...state,
         mobileNo: "",

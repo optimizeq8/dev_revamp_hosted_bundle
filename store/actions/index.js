@@ -1,5 +1,6 @@
 export {
   sendMobileNo,
+  resetMessages,
   verifyMobileCode,
   verifyEmail,
   registerUser,

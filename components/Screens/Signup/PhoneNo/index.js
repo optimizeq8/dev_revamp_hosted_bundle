@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Toast } from "native-base";
 import * as actionCreators from "../../../../store/actions";
-
 // Style
 import styles, { colors } from "./styles";
 
@@ -24,76 +23,68 @@ class PhoneNo extends Component {
     super();
 
     this.state = {
-      valid: "",
+      valid: true,
       type: "",
-      value: ""
+      value: "",
+      numExists: ""
     };
 
     this.updateInfo = this.updateInfo.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
   }
 
-  updateInfo() {
-    this.setState({
-      valid: this.phone.isValidNumber(),
-      type: this.phone.getNumberType(),
-      value: this.phone.getValue()
-    });
-
-    if (this.phone.isValidNumber()) {
-      this.props.sendMobileNo({ mobile: this.phone.getValue() });
-      if (
-        this.props.message !==
-          "Please enter the verification code sent on your mobile" ||
-        this.props.message !== ""
-      ) {
-        Toast.show({
-          text: this.props.message,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
-      }
-    } else {
-      Toast.show({
-        text: "The number is not valid, please try again.",
-        buttonText: "Okay",
-        duration: 3000,
-        type: "danger",
-        buttonTextStyle: { color: "#fff" },
-        buttonStyle: {
-          backgroundColor: "#717171",
-          alignSelf: "center"
-        }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.message !== this.props.message &&
+      prevProps.mobileNo !== this.state.value
+    ) {
+      this.setState({
+        numExists:
+          this.props.message.includes("registered") && this.props.message
+            ? this.props.message
+            : ""
       });
     }
   }
 
-  renderInfo() {
-    if (this.state.value) {
-      return (
-        <View style={styles.info}>
-          <Text>
-            Is Valid:{" "}
-            <Text style={{ fontWeight: "bold" }}>
-              {this.state.valid.toString()}
-            </Text>
-          </Text>
-          <Text>
-            Type: <Text style={{ fontWeight: "bold" }}>{this.state.type}</Text>
-          </Text>
-          <Text>
-            Value:{" "}
-            <Text style={{ fontWeight: "bold" }}>{this.state.value}</Text>
-          </Text>
-        </View>
-      );
+  updateInfo() {
+    this.props.resetMessages();
+    this.setState({
+      valid: this.phone.isValidNumber(),
+      type: this.phone.getNumberType(),
+      value: this.phone.getValue(),
+      numExists: !this.phone.isValidNumber() && ""
+    });
+
+    if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
+      console.log("Updating", this.state.value);
+
+      this.props.sendMobileNo({ mobile: this.phone.getValue() });
     }
+  }
+
+  renderInfo() {
+    return (
+      <View>
+        {this.state.type !== "MOBILE" &&
+          this.state.type !== "" &&
+          this.state.type !== "UNKNOWN" && (
+            <View style={styles.info}>
+              <Text>Please Enter a valid Mobile number.</Text>
+            </View>
+          )}
+        {!this.state.valid ? (
+          <View style={styles.info}>
+            <Text>Please Enter a valid Mobile number.</Text>
+          </View>
+        ) : null}
+        {this.state.numExists !== "" ? (
+          <View style={styles.info}>
+            <Text>{this.state.numExists}</Text>
+          </View>
+        ) : null}
+      </View>
+    );
   }
 
   render() {
@@ -106,7 +97,10 @@ class PhoneNo extends Component {
           </Text>
 
           <PhoneInput
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderBottomColor: this.state.valid ? "#5F5F5F" : "red" }
+            ]}
             ref={ref => {
               this.phone = ref;
             }}
@@ -116,6 +110,7 @@ class PhoneNo extends Component {
             offset={15}
           />
 
+          {this.renderInfo()}
           <TouchableOpacity onPress={this.updateInfo} style={styles.button}>
             <Image
               style={styles.image}
@@ -129,11 +124,13 @@ class PhoneNo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  message: state.auth.message
+  message: state.auth.message,
+  verified: state.auth.verified
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo))
+  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo)),
+  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,
