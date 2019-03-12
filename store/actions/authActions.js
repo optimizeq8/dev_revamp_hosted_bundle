@@ -21,7 +21,7 @@ export const getCampaign = id => {
         });
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -31,6 +31,8 @@ export const getCampaignList = id => {
     instance
       .get(`campaignlist/${id}`)
       .then(res => {
+        console.log(res.data);
+
         return res.data;
       })
       .then(data => {
@@ -40,7 +42,7 @@ export const getCampaignList = id => {
         });
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -53,6 +55,8 @@ export const getBusinessAccounts = () => {
         return res.data;
       })
       .then(data => {
+        console.log("businessacc", data);
+
         return dispatch({
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
           payload: data
@@ -60,7 +64,7 @@ export const getBusinessAccounts = () => {
       })
 
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -81,7 +85,7 @@ export const createBusinessAccount = (account, navigation) => {
       .then(navigation.navigate("Home"))
 
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -128,7 +132,7 @@ export const sendMobileNo = mobileNo => {
         });
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -154,7 +158,7 @@ export const verifyMobileCode = mobileAuth => {
         });
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -173,7 +177,7 @@ export const verifyEmail = (email, userInfo) => {
         });
       })
       .catch(err => {
-        // dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };
@@ -277,10 +281,10 @@ export const logout = navigation => {
   return setCurrentUser(null);
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
-export const create_ad_account = navigation => {
+export const create_ad_account = (id, navigation) => {
   return dispatch => {
     instance
-      .post("snapadaccounts")
+      .post("snapadaccounts", id)
       .then(res => {
         return res.data;
       })

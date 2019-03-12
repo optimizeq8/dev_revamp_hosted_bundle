@@ -38,7 +38,9 @@ class AdDesignReview extends Component {
   render() {
     return (
       <ImageBackground
-        source={{ uri: this.props.navigation.state.params.image }}
+        source={{
+          uri: this.props.navigation.state.params.image
+        }}
         style={{ width: "100%", height: "100%" }}
       >
         <Text style={styles.brand_name}>

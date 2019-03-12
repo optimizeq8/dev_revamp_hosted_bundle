@@ -32,6 +32,7 @@ class Home extends Component {
 
     this.state = {};
   }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.mainBusiness !== this.props.mainBusiness &&
@@ -86,7 +87,7 @@ class Home extends Component {
             <Button
               style={[styles.button]}
               onPress={() => {
-                this.props.navigation.navigate("SwipeUpDestination");
+                this.props.navigation.navigate("AdDetails");
               }}
             >
               <Text> Check </Text>

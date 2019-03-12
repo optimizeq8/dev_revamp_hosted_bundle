@@ -91,10 +91,16 @@ class BusinessInfo extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   _handleSubmission = () => {
-    const nameError = validateWrapper("name", this.state.userInfo.businessname);
-    const countryError = validateWrapper("name", this.state.userInfo.country);
+    const nameError = validateWrapper(
+      "mandatory",
+      this.state.userInfo.businessname
+    );
+    const countryError = validateWrapper(
+      "mandatory",
+      this.state.userInfo.country
+    );
     const businesstypeError = validateWrapper(
-      "name",
+      "mandatory",
       this.state.userInfo.businesstype
     );
     this.setState({
@@ -171,7 +177,7 @@ class BusinessInfo extends Component {
                 onBlur={() =>
                   this.setState({
                     nameError: validateWrapper(
-                      "name",
+                      "mandatory",
                       this.state.userInfo.businessname
                     )
                   })
@@ -182,13 +188,17 @@ class BusinessInfo extends Component {
             <RNPickerSelect
               items={this.state.countries}
               placeholder={{}}
-              onValueChange={value => {
+              onClose={() =>
                 this.setState({
-                  userInfo: { ...this.state.userInfo, country: value },
                   countryError: validateWrapper(
-                    "name",
+                    "mandatory",
                     this.state.userInfo.country
                   )
+                })
+              }
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, country: value }
                 });
               }}
             >
@@ -229,13 +239,17 @@ class BusinessInfo extends Component {
             <RNPickerSelect
               items={this.state.items}
               placeholder={{}}
-              onValueChange={value => {
+              onClose={() =>
                 this.setState({
-                  userInfo: { ...this.state.userInfo, businesstype: value },
                   businesstypeError: validateWrapper(
-                    "name",
+                    "mandatory",
                     this.state.userInfo.businesstype
                   )
+                })
+              }
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, businesstype: value }
                 });
               }}
             >

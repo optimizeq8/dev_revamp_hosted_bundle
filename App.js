@@ -4,7 +4,7 @@ import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 import store from "./store";
 export default class App extends React.Component {
   state = {

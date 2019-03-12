@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, TouchableOpacity } from "react-native";
 import {
   Card,
   Button,
@@ -27,17 +27,24 @@ class Tutorial extends Component {
   };
 
   render() {
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 450,
-            width: 300
-          }}
-          source={require("../../../../assets/images/adtype.png")}
-          resizeMode="contain"
-        />
-      </View>
+    const Slide = ({ title, id }) => (
+      <TouchableOpacity
+        onPress={() =>
+          id === 1 && this.props.navigation.navigate("AdObjective")
+        }
+        style={styles.slide}
+      >
+        <View>
+          <Image
+            style={{
+              height: 450,
+              width: 300
+            }}
+            source={require("../../../../assets/images/adtype.png")}
+            resizeMode="contain"
+          />
+        </View>
+      </TouchableOpacity>
     );
     return (
       <Container style={styles.container}>
@@ -55,10 +62,10 @@ class Tutorial extends Component {
             dotsColor="rgba(147, 147, 147, 0.25)"
             dotsColorActive=" rgba(147, 147, 147, 1)"
           >
-            <Slide title="Lorem" />
-            <Slide title="ipsum" />
-            <Slide title="dolor" />
-            <Slide title="sit" />
+            <Slide id={1} title="Lorem" />
+            <Slide id={2} title="ipsum" />
+            <Slide id={3} title="dolor" />
+            <Slide id={4} title="sit" />
           </Swiper>
         </Card>
       </Container>

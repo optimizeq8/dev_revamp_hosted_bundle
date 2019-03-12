@@ -25,9 +25,11 @@ import {
 import { LinearGradient } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as actionCreators from "../../../../store/actions";
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
 import styles, { colors } from "./styles";
+import { ScrollView } from "react-native-gesture-handler";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -48,8 +50,12 @@ class AdDesign extends Component {
       image: null,
       loaded: 0,
       type: "",
-      formatted: null
+      formatted: null,
+      brand_nameError: "",
+      headlineError: "",
+      imageError: ""
     };
+    this._handleSubmission = this._handleSubmission.bind(this);
   }
   async componentDidMount() {
     this.setState({
@@ -80,6 +86,8 @@ class AdDesign extends Component {
     //if (result.width >= 1080 && result.height >= 1920)
     if (Math.floor(result.width / 9) === Math.floor(result.height / 16))
       if (!result.cancelled) {
+        console.log(result);
+
         this.setState({ image: result.uri, type: result.type.toUpperCase() });
         this.formatMedia();
       }
@@ -110,6 +118,30 @@ class AdDesign extends Component {
       formatted: body
     });
   }
+
+  _handleSubmission = () => {
+    const brand_nameError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.brand_name
+    );
+    const headlineError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.headline
+    );
+    const imageError = validateWrapper("mandatory", this.state.image);
+    this.setState({
+      brand_nameError,
+      headlineError,
+      imageError
+    });
+    console.log(imageError);
+
+    if (!brand_nameError && !headlineError && !imageError) {
+      console.log(this.state.campaignInfo);
+      this.props.ad_design(this.state.formatted, this.props.navigation);
+      // this.props.navigation.navigate("AdDetails");
+    }
+  };
   render() {
     let { image } = this.state;
 
@@ -121,107 +153,138 @@ class AdDesign extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={false}
-          style={{
-            backgroundColor: "#fff",
-            borderTopStartRadius: 30,
-            borderTopEndRadius: 30
-          }}
-        >
-          <Card
-            style={[
-              styles.mainCard,
-              {
-                margin: 0,
-                shadowColor: "#fff",
-                shadowRadius: 1,
-                shadowOpacity: 0.7,
-                shadowOffset: { width: 8, height: 8 }
-              }
-            ]}
+        <ScrollView>
+          <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={false}
+            style={{
+              backgroundColor: "#fff",
+              borderTopStartRadius: 30,
+              borderTopEndRadius: 30
+            }}
           >
-            <Text style={styles.text}>Input your Snapchat AD Details</Text>
-            <Item rounded style={styles.input}>
-              <Input
-                style={styles.inputtext}
-                placeholder="Brand Name (Business name)"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value =>
-                  this.setState({
-                    campaignInfo: {
-                      ...this.state.campaignInfo,
-                      brand_name: value
-                    }
-                  })
+            <Card
+              style={[
+                styles.mainCard,
+                {
+                  margin: 0,
+                  shadowColor: "#fff",
+                  shadowRadius: 1,
+                  shadowOpacity: 0.7,
+                  shadowOffset: { width: 8, height: 8 }
                 }
-              />
-            </Item>
-            <Item rounded style={styles.input}>
-              <Input
-                style={styles.inputtext}
-                placeholder="Headline"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value =>
-                  this.setState({
-                    campaignInfo: {
-                      ...this.state.campaignInfo,
-                      headline: value
-                    }
-                  })
-                }
-              />
-            </Item>
-            <TouchableOpacity
-              onPress={() => {
-                this._pickImage();
-              }}
-              style={styles.buttonN}
+              ]}
             >
-              <Image
-                style={styles.placeholder}
-                source={
-                  !image
-                    ? require("../../../../assets/images/placeholder.png")
-                    : { uri: image }
-                }
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-            <Text> {Math.round(this.state.loaded, 2)} %</Text>
-            <Button
-              onPress={() => {
-                if (this.state.image)
-                  this.props.navigation.push("AdDesignReview", {
-                    image: this.state.image,
-                    headline: this.state.campaignInfo.headline,
-                    brand_name: this.state.campaignInfo.brand_name
-                  });
-              }}
-            >
-              <Text> Preview</Text>
-            </Button>
-            <TouchableOpacity
-              onPress={() => {
-                console.log(this.state.campaignInfo);
-                this.props.ad_design(
-                  this.state.formatted,
-                  this.props.navigation
-                );
-              }}
-              style={styles.buttonN}
-            >
-              <Image
-                style={styles.image}
-                source={require("../../../../assets/images/button.png")}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </Card>
-        </KeyboardAwareScrollView>
+              <Text style={styles.text}>Input your Snapchat AD Details</Text>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.brand_nameError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Input
+                  style={styles.inputtext}
+                  placeholder="Brand Name (Business name)"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        brand_name: value
+                      }
+                    })
+                  }
+                  onBlur={() => {
+                    this.setState({
+                      brand_nameError: validateWrapper(
+                        "mandatory",
+                        this.state.campaignInfo.brand_name
+                      )
+                    });
+                  }}
+                />
+              </Item>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.headlineError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Input
+                  style={styles.inputtext}
+                  placeholder="Headline"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        headline: value
+                      }
+                    })
+                  }
+                  onBlur={() => {
+                    this.setState({
+                      headlineError: validateWrapper(
+                        "mandatory",
+                        this.state.campaignInfo.headline
+                      )
+                    });
+                  }}
+                />
+              </Item>
+              <TouchableOpacity
+                onPress={() => {
+                  this._pickImage();
+                }}
+                style={styles.buttonN}
+              >
+                <Image
+                  style={styles.placeholder}
+                  source={
+                    !image
+                      ? require("../../../../assets/images/placeholder.png")
+                      : { uri: image }
+                  }
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              {!this.state.imageError ? null : (
+                <Text style={styles.text}>Please choose an image.</Text>
+              )}
+              <Text> {Math.round(this.state.loaded, 2)} %</Text>
+              <Button
+                onPress={() => {
+                  if (this.state.image)
+                    this.props.navigation.push("AdDesignReview", {
+                      image: this.state.image,
+                      headline: this.state.campaignInfo.headline,
+                      brand_name: this.state.campaignInfo.brand_name
+                    });
+                }}
+              >
+                <Text> Preview</Text>
+              </Button>
+              <TouchableOpacity
+                onPress={this._handleSubmission}
+                style={styles.buttonN}
+              >
+                <Image
+                  style={styles.image}
+                  source={require("../../../../assets/images/button.png")}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </Card>
+          </KeyboardAwareScrollView>
+        </ScrollView>
       </Container>
     );
   }
