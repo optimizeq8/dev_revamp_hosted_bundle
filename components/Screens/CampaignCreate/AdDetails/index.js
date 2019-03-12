@@ -8,7 +8,7 @@ import {
   Slider,
   ScrollView
 } from "react-native";
-import MultiSelect from "react-native-multiple-select";
+import MultiSelect from "./MultiSelect";
 import { CheckBox } from "react-native-elements";
 import {
   Card,
@@ -29,6 +29,7 @@ import RadioGroup from "react-native-radio-buttons-group";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as actionCreators from "../../../../store/actions";
 import country_regions from "./regions";
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
 import styles, { colors } from "./styles";
@@ -45,7 +46,7 @@ class AdDetails extends Component {
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
-            { gender: "", languages: [], min_age: 13, max_age: 29 }
+            { gender: "FEMALE", languages: ["en"], min_age: "", max_age: "" }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
         }
@@ -117,7 +118,13 @@ class AdDetails extends Component {
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].languages = selectedItems;
-    this.setState({ campaignInfo: replace });
+    this.setState({
+      campaignInfo: replace,
+      languagesError:
+        this.state.campaignInfo.targeting.demographics[0].languages.length === 0
+          ? "Please choose a language."
+          : null
+    });
   };
   onSelectedGenderChange = selectedItems => {
     let replace = this.state.campaignInfo;
@@ -135,6 +142,36 @@ class AdDetails extends Component {
     replace.targeting.geos[0].region_id = selectedItems;
     this.setState({ campaignInfo: replace });
   };
+
+  _handleSubmission = () => {
+    const min_ageError = validateWrapper(
+      "age",
+      this.state.campaignInfo.targeting.demographics[0].min_age
+    );
+    const max_ageError = validateWrapper(
+      "age",
+      this.state.campaignInfo.targeting.demographics[0].max_age
+    );
+    const languagesError =
+      this.state.campaignInfo.targeting.demographics[0].languages.length === 0
+        ? "Please choose a language."
+        : null;
+
+    this.setState({
+      min_ageError,
+      max_ageError,
+      languagesError
+    });
+    if (!min_ageError && !max_ageError && !languagesError) {
+      console.log(this.state.campaignInfo);
+      var rep = { ...this.state.campaignInfo };
+
+      rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
+
+      this.props.ad_details(rep, this.props.navigation);
+      // this.props.navigation.navigate("AdDesignReview");
+    }
+  };
   render() {
     return (
       <Container style={styles.container}>
@@ -144,7 +181,6 @@ class AdDetails extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-
         <Card
           style={[
             styles.mainCard,
@@ -159,7 +195,7 @@ class AdDetails extends Component {
         >
           <ScrollView>
             <Text style={styles.text}>Input your Snapchat AD Details</Text>
-            <View style={styles.slidercontainer}>
+            <View style={[styles.slidercontainer, { alignSelf: "center" }]}>
               <View style={styles.textCon}>
                 <Text style={styles.colorGrey}>
                   {this.state.minValueBudget} $
@@ -202,12 +238,21 @@ class AdDetails extends Component {
                 }}
               />
             </View>
-            <Item rounded style={styles.input}>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder="Minimum age limit is 13..."
                 autoCorrect={false}
                 autoCapitalize="none"
+                keyboardType="numeric"
                 onChangeText={value => {
                   let rep = this.state.campaignInfo;
                   rep.targeting.demographics[0].min_age = value;
@@ -215,13 +260,36 @@ class AdDetails extends Component {
                     campaignInfo: rep
                   });
                 }}
+                onBlur={() => {
+                  this.setState({
+                    min_ageError: validateWrapper(
+                      "age",
+                      this.state.campaignInfo.targeting.demographics[0].min_age
+                    )
+                  });
+                }}
               />
             </Item>
-            <Item rounded style={styles.input}>
+            {this.state.min_ageError && (
+              <Text style={[styles.text, { paddingTop: 0 }]}>
+                Min {this.state.min_ageError}{" "}
+              </Text>
+            )}
+
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder="Maximum Age"
                 autoCorrect={false}
+                keyboardType="numeric"
                 autoCapitalize="none"
                 onChangeText={value => {
                   let rep = this.state.campaignInfo;
@@ -230,92 +298,40 @@ class AdDetails extends Component {
                     campaignInfo: rep
                   });
                 }}
+                onBlur={() => {
+                  this.setState({
+                    max_ageError: validateWrapper(
+                      "age",
+                      this.state.campaignInfo.targeting.demographics[0].max_age
+                    )
+                  });
+                }}
               />
             </Item>
-            <View style={styles.slidercontainer}>
-              <MultiSelect
-                hideTags
-                items={this.state.countries}
-                uniqueKey="value"
-                onSelectedItemsChange={this.onSelectedItemsChange}
-                selectedItems={[
-                  this.state.campaignInfo.targeting.geos[0].country_code
-                ]}
-                selectText="Pick Countries"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={text => console.log(text)}
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                displayKey="label"
-                searchInputStyle={{ color: "#CCC" }}
-                submitButtonColor="#CCC"
-                submitButtonText="Confirm Select"
-              />
-            </View>
-
-            <View style={styles.slidercontainer}>
-              <MultiSelect
-                hideTags
-                items={this.state.languages}
-                uniqueKey="value"
-                onSelectedItemsChange={this.onSelectedLangsChange}
-                selectedItems={
-                  this.state.campaignInfo.targeting.demographics[0].languages
-                }
-                selectText="Pick Languages"
-                searchInputPlaceholderText="Search..."
-                onChangeInput={text => console.log(text)}
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                displayKey="label"
-                searchInputStyle={{ color: "#CCC" }}
-                submitButtonColor="#CCC"
-                submitButtonText="Confirm Select"
-              />
-            </View>
-            <View style={styles.slidercontainer}>
-              <MultiSelect
-                hideTags
-                items={this.state.regions}
-                uniqueKey="id"
-                onSelectedItemsChange={this.onSelectedRegionChange}
-                selectedItems={
-                  this.state.campaignInfo.targeting.geos[0].region_id
-                }
-                selectText="Pick Regions"
-                searchInputPlaceholderText="Search..."
-                onChangeInput={text => console.log(text)}
-                tagRemoveIconColor="#CCC"
-                tagBorderColor="#CCC"
-                tagTextColor="#CCC"
-                selectedItemTextColor="#CCC"
-                selectedItemIconColor="#CCC"
-                itemTextColor="#000"
-                displayKey="name"
-                searchInputStyle={{ color: "#CCC" }}
-                submitButtonColor="#CCC"
-                submitButtonText="Confirm Select"
-              />
-            </View>
+            {this.state.max_ageError && (
+              <Text style={[styles.text, { paddingTop: 0 }]}>
+                Max {this.state.max_ageError}
+              </Text>
+            )}
+            <MultiSelect
+              countries={this.state.countries}
+              languages={this.state.languages}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              country_codes={
+                this.state.campaignInfo.targeting.geos[0].country_code
+              }
+              languagesError={this.state.languagesError}
+              onSelectedLangsChange={this.onSelectedLangsChange}
+              selectedLangs={
+                this.state.campaignInfo.targeting.demographics[0].languages
+              }
+              regions={this.state.regions}
+              onSelectedRegionChange={this.onSelectedRegionChange}
+              region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
+            />
 
             <TouchableOpacity
-              onPress={() => {
-                console.log(this.state.campaignInfo);
-                var rep = this.state.campaignInfo;
-
-                rep.targeting = JSON.stringify(
-                  this.state.campaignInfo.targeting
-                );
-                this.props.ad_details(rep, this.props.navigation);
-              }}
+              onPress={this._handleSubmission}
               style={styles.buttonN}
             >
               <Image

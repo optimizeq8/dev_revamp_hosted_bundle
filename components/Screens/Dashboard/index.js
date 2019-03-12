@@ -31,6 +31,9 @@ class Dashboard extends Component {
     super(props);
     this.state = {};
   }
+  componentDidMount() {
+    this.props.getCampaignList(this.props.mainBusiness.businessid);
+  }
   render() {
     const list = this.props.campaignList.map(campaign => (
       <CampaignCard
@@ -79,7 +82,7 @@ class Dashboard extends Component {
             <Button
               style={styles.button}
               onPress={() => {
-                this.props.navigation.navigate("AdObjective");
+                this.props.navigation.navigate("AdType");
               }}
             >
               <Text> Create campaign </Text>
@@ -101,7 +104,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCampaign: id => dispatch(actionCreators.getCampaign(id))
+  getCampaign: id => dispatch(actionCreators.getCampaign(id)),
+  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
 });
 export default connect(
   mapStateToProps,

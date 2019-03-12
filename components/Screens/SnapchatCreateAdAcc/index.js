@@ -83,11 +83,13 @@ class MainForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  mainBusiness: state.auth.mainBusiness
+});
 
 const mapDispatchToProps = dispatch => ({
-  create_ad_account: navigation =>
-    dispatch(actionCreators.create_ad_account(navigation))
+  create_ad_account: (id, navigation) =>
+    dispatch(actionCreators.create_ad_account(id, navigation))
 });
 export default connect(
   mapStateToProps,

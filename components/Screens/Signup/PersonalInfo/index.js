@@ -76,9 +76,12 @@ class PersonalInfo extends Component {
       "password",
       this.state.userInfo.password
     );
-    const lastnameError = validateWrapper("name", this.state.userInfo.lastname);
+    const lastnameError = validateWrapper(
+      "mandatory",
+      this.state.userInfo.lastname
+    );
     const firstnameError = validateWrapper(
-      "name",
+      "mandatory",
       this.state.userInfo.firstname
     );
     this.setState({
@@ -124,7 +127,7 @@ class PersonalInfo extends Component {
               onBlur={() => {
                 this.setState({
                   firstnameError: validateWrapper(
-                    "name",
+                    "mandatory",
                     this.state.userInfo.firstname
                   )
                 });
@@ -153,7 +156,7 @@ class PersonalInfo extends Component {
               onBlur={() => {
                 this.setState({
                   lastnameError: validateWrapper(
-                    "name",
+                    "mandatory",
                     this.state.userInfo.lastname
                   )
                 });

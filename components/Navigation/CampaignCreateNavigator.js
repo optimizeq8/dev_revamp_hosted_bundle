@@ -19,7 +19,7 @@ export default createStackNavigator(
     SwipeUpChoice: SwipeUpChoice
   },
   {
-    initialRouteName: "AdObjective",
+    initialRouteName: "AdType",
     navigationOptions: {
       header: null,
 

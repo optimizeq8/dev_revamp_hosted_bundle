@@ -18,7 +18,7 @@ import {
 } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";
-
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../../store/actions";
@@ -37,6 +37,10 @@ class BusinessInfo extends Component {
         country: "",
         businessemail: ""
       },
+      businessnameError: "",
+      businessemailError: "",
+      businesstypeError: "",
+      countryError: "",
       items: [
         {
           label: "Home Business",
@@ -77,36 +81,35 @@ class BusinessInfo extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   _handleSubmission = () => {
-    let message = [];
-    if (this.state.businessAccount.businessname === "") {
-      message.push("Please enter your Business Name.");
-    }
-    if (this.state.businessAccount.businessemail === "") {
-      message.push("Please enter your Business Email.");
-    }
-    if (this.state.businessAccount.businesstype === "") {
-      message.push("Please select your type of Business.");
-    }
-    if (this.state.businessAccount.country === "") {
-      message.push("Please select your country.");
-    }
+    const businessnameError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.businessname
+    );
+    const businessemailError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.businessemail
+    );
+    const businesstypeError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.businesstype
+    );
+    const countryError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.country
+    );
 
-    if (message.length !== 0) {
-      message.forEach(m => {
-        console.log(m);
-        Toast.show({
-          text: m,
-          buttonText: "Okay",
-          duration: 3000,
-          type: "danger",
-          buttonTextStyle: { color: "#fff" },
-          buttonStyle: {
-            backgroundColor: "#717171",
-            alignSelf: "center"
-          }
-        });
-      });
-    } else {
+    this.setState({
+      businessnameError,
+      businessemailError,
+      businesstypeError,
+      countryError
+    });
+    if (
+      !businessnameError &&
+      !businessemailError &&
+      !businesstypeError &&
+      !countryError
+    ) {
       this.props.createBusinessAccount(
         this.state.businessAccount,
         this.props.navigation
@@ -126,7 +129,15 @@ class BusinessInfo extends Component {
           <Text style={styles.text}>Business Info</Text>
 
           <View style={{ marginTop: 0 }}>
-            <Item rounded style={styles.input}>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.businessnameError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder={"Business Name"}
@@ -138,10 +149,26 @@ class BusinessInfo extends Component {
                     }
                   });
                 }}
+                onBlur={() => {
+                  this.setState({
+                    businessnameError: validateWrapper(
+                      "mandatory",
+                      this.state.businessAccount.businessname
+                    )
+                  });
+                }}
               />
             </Item>
 
-            <Item rounded style={styles.input}>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.businessemailError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder={"Business Email"}
@@ -153,12 +180,28 @@ class BusinessInfo extends Component {
                     }
                   });
                 }}
+                onBlur={() => {
+                  this.setState({
+                    businessemailError: validateWrapper(
+                      "mandatory",
+                      this.state.businessAccount.businessemail
+                    )
+                  });
+                }}
               />
             </Item>
 
             <RNPickerSelect
               items={this.state.countries}
-              placeholder={{}}
+              placeholder={{ label: "Select a country", value: "" }}
+              onClose={() =>
+                this.setState({
+                  countryError: validateWrapper(
+                    "mandatory",
+                    this.state.businessAccount.country
+                  )
+                })
+              }
               onValueChange={value => {
                 this.setState({
                   businessAccount: {
@@ -168,7 +211,15 @@ class BusinessInfo extends Component {
                 });
               }}
             >
-              <Item rounded style={styles.input}>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.countryError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
                 <Text
                   style={[
                     styles.inputtext,
@@ -194,6 +245,16 @@ class BusinessInfo extends Component {
 
             <RNPickerSelect
               items={this.state.items}
+              placeholder={{ label: "Select a bussiness type", value: "" }}
+              value={this.state.businessAccount.businesstype}
+              onClose={() =>
+                this.setState({
+                  businesstypeError: validateWrapper(
+                    "mandatory",
+                    this.state.businessAccount.businesstype
+                  )
+                })
+              }
               onValueChange={value => {
                 this.setState({
                   businessAccount: {
@@ -203,7 +264,17 @@ class BusinessInfo extends Component {
                 });
               }}
             >
-              <Item style={styles.input}>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.businesstypeError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
                 <Text
                   placeholder={
                     this.state.businessAccount.businesstype !== ""

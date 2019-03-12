@@ -42,12 +42,16 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.CREATE_AD_ACCOUNT:
+      let newMainBusiness = state.businessAccounts.find(
+        bus => bus.businessid === mainBusiness.businessid
+      );
+      if (newMainBusiness) {
+        newMainBusiness.snap_ad_account_id = action.payload.ad_account_id;
+      }
       return {
         ...state,
-        userInfo: {
-          ...state.userInfo,
-          ad_account_id: action.payload.ad_account_id
-        },
+        mainBusiness: newMainBusiness,
+        businessAccounts: [...businessAccounts],
         message: action.payload.message
       };
     case actionTypes.SET_CURRENT_USER:

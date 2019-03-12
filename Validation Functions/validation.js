@@ -15,8 +15,16 @@ const validation = {
       message: "must be at least 8 characters long."
     }
   },
-  name: {
+  mandatory: {
     presence: { allowEmpty: false }
+  },
+  age: {
+    presence: { allowEmpty: false },
+    numericality: {
+      onlyInteger: true,
+      greaterThanOrEqualTo: 13,
+      lessThanOrEqualTo: 90
+    }
   }
 };
 

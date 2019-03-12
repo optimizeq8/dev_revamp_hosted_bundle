@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: 50,
     margin: 15
   },
-  placeholder: { alignSelf: "center", height: 300, width: 300, margin: 0 },
+  placeholder: { alignSelf: "center", height: 300, width: 300, marginTop: 15 },
 
   mainCard: {
     top: 15,

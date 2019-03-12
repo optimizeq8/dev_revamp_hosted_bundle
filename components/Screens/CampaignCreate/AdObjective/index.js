@@ -25,6 +25,7 @@ import { LinearGradient } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
 import styles, { colors } from "./styles";
@@ -41,7 +42,7 @@ class AdObjective extends Component {
         start_time: "",
         end_time: "",
         name: "",
-        objective: "BRAND_AWARENESS"
+        objective: ""
       },
       objectiveLabel: "Brand Awereness",
       startDateTimePickerVisible: false,
@@ -71,15 +72,21 @@ class AdObjective extends Component {
           label: "Lead Generation",
           value: "LEAD_GENERATION"
         }
-      ]
+      ],
+      nameError: "",
+      objectiveError: "",
+      start_timeError: "",
+      endt_time: ""
     };
+    this._handleSubmission = this._handleSubmission.bind(this);
   }
 
   componentDidMount() {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        ad_account_id: this.props.userInfo.ad_account_id
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid
       }
     });
   }
@@ -90,10 +97,23 @@ class AdObjective extends Component {
     this.setState({ endDateTimePickerVisible: true });
 
   hideStartDateTimePicker = () =>
-    this.setState({ startDateTimePickerVisible: false });
+    this.setState({
+      startDateTimePickerVisible: false,
+      start_timeError: validateWrapper(
+        "mandatory",
+        this.state.campaignInfo.start_time
+      )
+    });
 
   hideEndDateTimePicker = () =>
-    this.setState({ endDateTimePickerVisible: false });
+    this.setState({
+      endDateTimePickerVisible: false,
+      startDateTimePickerVisible: false,
+      end_timeError: validateWrapper(
+        "mandatory",
+        this.state.campaignInfo.end_time
+      )
+    });
 
   handleStartDatePicked = date => {
     console.log("A date has been picked: ", date);
@@ -110,13 +130,48 @@ class AdObjective extends Component {
   handleEndDatePicked = date => {
     console.log("A date has been picked: ", date);
     this.setState({
-      campaignInfo: { ...this.state.campaignInfo, end_time: date.toISOString() }
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: date.toISOString()
+      }
     });
 
     this.hideEndDateTimePicker();
   };
 
+  _handleSubmission = () => {
+    const nameError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.name
+    );
+    const objectiveError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.objective
+    );
+    const start_timeError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.start_time
+    );
+    const end_timeError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.end_time
+    );
+    this.setState({
+      nameError,
+      objectiveError,
+      start_timeError,
+      end_timeError
+    });
+    if (!nameError && !objectiveError && !start_timeError && !end_timeError) {
+      console.log(this.state.campaignInfo);
+      // this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
+      this.props.navigation.navigate("AdDesign");
+    }
+  };
+
   render() {
+    console.log(this.state.campaignInfo);
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -148,7 +203,15 @@ class AdObjective extends Component {
           >
             <Text style={styles.text}>Story Ad</Text>
             <Text style={styles.text}>Input a name for your Ad</Text>
-            <Item rounded style={styles.input}>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.nameError ? "red" : "#D9D9D9"
+                }
+              ]}
+            >
               <Input
                 style={styles.inputtext}
                 placeholder="Ad Name"
@@ -159,19 +222,46 @@ class AdObjective extends Component {
                     campaignInfo: { ...this.state.campaignInfo, name: value }
                   })
                 }
+                onBlur={() => {
+                  this.setState({
+                    nameError: validateWrapper(
+                      "mandatory",
+                      this.state.campaignInfo.name
+                    )
+                  });
+                }}
               />
             </Item>
             <Text style={styles.text}>Objective</Text>
             <RNPickerSelect
               items={this.state.objectives}
-              placeholder={{}}
+              placeholder={{ label: "Select an objective", value: "" }}
+              onClose={() =>
+                this.setState({
+                  objectiveError: validateWrapper(
+                    "mandatory",
+                    this.state.campaignInfo.objective
+                  )
+                })
+              }
               onValueChange={value => {
                 this.setState({
-                  campaignInfo: { ...this.state.campaignInfo, objective: value }
+                  campaignInfo: {
+                    ...this.state.campaignInfo,
+                    objective: value
+                  }
                 });
               }}
             >
-              <Item rounded style={styles.input}>
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.objectiveError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
                 <Text
                   style={[
                     styles.inputtext,
@@ -199,7 +289,12 @@ class AdObjective extends Component {
 
             <Item
               rounded
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
+                }
+              ]}
               onPress={this.showStartDateTimePicker}
             >
               <Text
@@ -223,17 +318,30 @@ class AdObjective extends Component {
                 style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
               />
               <DateTimePicker
+                minimumDate={new Date()}
                 isVisible={this.state.startDateTimePickerVisible}
                 onConfirm={this.handleStartDatePicked}
                 onCancel={this.hideStartDateTimePicker}
-                minimumDate={new Date("2016-09-05 00:00")}
                 mode="date"
+                onHideAfterConfirm={() =>
+                  this.setState({
+                    start_timeError: validateWrapper(
+                      "mandatory",
+                      this.state.start_timeError
+                    )
+                  })
+                }
               />
             </Item>
 
             <Item
               rounded
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.end_timeError ? "red" : "#D9D9D9"
+                }
+              ]}
               onPress={this.showEndDateTimePicker}
             >
               <Text
@@ -257,21 +365,24 @@ class AdObjective extends Component {
                 style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
               />
               <DateTimePicker
+                minimumDate={new Date()}
                 isVisible={this.state.endDateTimePickerVisible}
                 onConfirm={this.handleEndDatePicked}
                 onCancel={this.hideEndDateTimePicker}
                 mode="date"
+                onHideAfterConfirm={() =>
+                  this.setState({
+                    end_timeError: validateWrapper(
+                      "mandatory",
+                      this.state.end_timeError
+                    )
+                  })
+                }
               />
             </Item>
 
             <TouchableOpacity
-              onPress={() => {
-                console.log(this.state.campaignInfo);
-                this.props.ad_objective(
-                  this.state.campaignInfo,
-                  this.props.navigation
-                );
-              }}
+              onPress={this._handleSubmission}
               style={styles.buttonN}
             >
               <Image
@@ -288,7 +399,8 @@ class AdObjective extends Component {
 }
 
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
+  mainBusiness: state.auth.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
