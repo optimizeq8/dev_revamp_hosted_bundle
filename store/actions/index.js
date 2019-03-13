@@ -11,6 +11,7 @@ export {
   getBusinessAccounts,
   createBusinessAccount,
   getCampaignList,
-  getCampaign
+  getCampaign,
+  changeBusiness
 } from "./authActions";
 export { ad_objective, ad_design, ad_details } from "./campaignActions";
