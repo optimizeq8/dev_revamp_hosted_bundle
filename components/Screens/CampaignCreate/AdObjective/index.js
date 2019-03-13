@@ -164,8 +164,8 @@ class AdObjective extends Component {
     });
     if (!nameError && !objectiveError && !start_timeError && !end_timeError) {
       console.log(this.state.campaignInfo);
-      // this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
-      this.props.navigation.navigate("AdDesign");
+      this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
+      // this.props.navigation.navigate("AdDesign");
     }
   };
 
