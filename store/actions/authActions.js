@@ -5,6 +5,16 @@ import * as actionTypes from "./actionTypes";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+export const changeBusiness = business => {
+  return dispatch => {
+    console.log("chosen business", business);
+
+    return dispatch({
+      type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+      payload: { business: business }
+    });
+  };
+};
 
 export const getCampaign = id => {
   return dispatch => {

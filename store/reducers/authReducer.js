@@ -93,6 +93,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         message: ""
       };
+    case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
+      console.log("main B", state.mainBusiness);
+      console.log("choice B", action.payload.business);
+      return {
+        ...state,
+        message: "Changed business account",
+        mainBusiness: action.payload.business
+      };
     case actionTypes.LOGOUT_USER:
       return {
         ...state,

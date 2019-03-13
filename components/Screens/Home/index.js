@@ -87,10 +87,10 @@ class Home extends Component {
             <Button
               style={[styles.button]}
               onPress={() => {
-                this.props.navigation.navigate("AdDetails");
+                this.props.navigation.navigate("BusinessList");
               }}
             >
-              <Text> Check </Text>
+              <Text> Business List </Text>
             </Button>
           </Card>
           <View>

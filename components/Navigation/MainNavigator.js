@@ -6,14 +6,15 @@ import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
 import CreateBusinessAccount from "../Screens/CreateBusinessAccount";
 import CampaignDetails from "../Screens/CampaignDetails";
-
+import BusinessList from "../Screens/BusinessList";
 export default createStackNavigator(
   {
     Home: Home,
     Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
     CreateBusinessAccount: CreateBusinessAccount,
-    CampaignDetails: CampaignDetails
+    CampaignDetails: CampaignDetails,
+    BusinessList: BusinessList
   },
   {
     initialRouteName: "Home",
