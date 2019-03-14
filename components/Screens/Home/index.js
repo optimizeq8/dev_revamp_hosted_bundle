@@ -44,7 +44,7 @@ class Home extends Component {
   render() {
     if (!this.props.mainBusiness) {
       return <Spinner color="red" />;
-    } else
+    } else {
       return (
         <Container style={styles.container}>
           <LinearGradient
@@ -120,6 +120,7 @@ class Home extends Component {
           </View>
         </Container>
       );
+    }
   }
 }
 

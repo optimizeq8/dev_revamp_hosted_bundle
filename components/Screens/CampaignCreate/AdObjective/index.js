@@ -5,8 +5,10 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+
   ScrollView,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import {
   Card,
@@ -211,6 +213,10 @@ class AdObjective extends Component {
         key={o.value}
       />
     ));
+
+    let width = Dimensions.get("window").width * 0.5 - 100;
+    console.log(width);
+
     return (
       <>
         <Container style={styles.container}>
@@ -229,8 +235,8 @@ class AdObjective extends Component {
               borderTopEndRadius: 30
             }}
           >
-            <Card
-              style={[
+
+            <Card style={[
                 styles.mainCard,
                 {
                   margin: 0,
@@ -241,10 +247,37 @@ class AdObjective extends Component {
                 }
               ]}
             >
-              <Text style={styles.text}>Story Ad</Text>
-              <Text style={styles.text}>Input a name for your Ad</Text>
-              <Item
-                rounded
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row"
+              }}
+            >
+              <Button
+                onLayout={event => {
+                  var { x, y, width, height } = event.nativeEvent.layout;
+                  console.log("width", width);
+                }}
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                  marginRight: width
+                }}
+              >
+                <Icon
+                  style={{
+                    top: 20,
+                    fontSize: 35
+                  }}
+                  name="arrow-back"
+                />
+              </Button>
+              <Text style={[styles.text]}>Snap Ad</Text>
+            </View>
+            <Text style={styles.text}>Input a name for your Ad</Text>
+            <Item
+              rounded
                 style={[
                   styles.input,
                   {

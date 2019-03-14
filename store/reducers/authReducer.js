@@ -13,7 +13,8 @@ const initialState = {
   businessAccounts: [],
   mainBusiness: null,
   campaignList: [],
-  selectedCampaign: null
+  selectedCampaign: null,
+  successName: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,7 +32,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         successNo: action.payload.success,
+        verified: action.payload.success,
 
+        message: action.payload.message
+      };
+    case actionTypes.RESEND_VERIFICATION:
+      return {
+        ...state,
+        successNo: action.payload.success,
+        verificationCode: action.payload.verificationCode,
         message: action.payload.message
       };
     case actionTypes.VERIFY_EMAIL:
@@ -41,20 +50,29 @@ const reducer = (state = initialState, action) => {
         userInfo: action.payload.userInfo,
         message: action.payload.message
       };
+    case actionTypes.VERIFY_BUSINESSNAME:
+      return {
+        ...state,
+        successName: action.payload.success,
+        message: action.payload.message
+      };
     case actionTypes.CREATE_AD_ACCOUNT:
       let newMainBusiness = state.businessAccounts.find(
-        bus => bus.businessid === mainBusiness.businessid
+        bus => bus.businessid === state.mainBusiness.businessid
       );
+
       if (newMainBusiness) {
         newMainBusiness.snap_ad_account_id = action.payload.ad_account_id;
       }
       return {
         ...state,
         mainBusiness: newMainBusiness,
-        businessAccounts: [...businessAccounts],
+        businessAccounts: [...state.businessAccounts],
         message: action.payload.message
       };
     case actionTypes.SET_CURRENT_USER:
+      console.log("signup", action.payload);
+
       return {
         ...state,
         userInfo: action.payload.user,

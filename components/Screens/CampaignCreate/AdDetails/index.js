@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Slider,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import MultiSelect from "./MultiSelect";
 import { CheckBox } from "react-native-elements";
@@ -30,7 +31,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import * as actionCreators from "../../../../store/actions";
 import country_regions from "./regions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-
+import InputNumber from "rmc-input-number";
+import inputNumberStyles from "./inputNumber";
 // Style
 import styles, { colors } from "./styles";
 
@@ -46,7 +48,7 @@ class AdDetails extends Component {
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
-            { gender: "FEMALE", languages: ["en"], min_age: "", max_age: "" }
+            { gender: "FEMALE", languages: ["en"], min_age: 13, max_age: 13 }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
         }
@@ -102,6 +104,25 @@ class AdDetails extends Component {
       }
     });
   }
+
+  _handleMaxAge = value => {
+    console.log(value);
+
+    let rep = this.state.campaignInfo;
+    rep.targeting.demographics[0].max_age = parseInt(value);
+    this.setState({
+      campaignInfo: rep
+    });
+  };
+
+  _handleMinAge = value => {
+    console.log(value);
+    let rep = this.state.campaignInfo;
+    rep.targeting.demographics[0].min_age = value;
+    this.setState({
+      campaignInfo: rep
+    });
+  };
   onSelectedItemsChange = selectedItems => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItems.pop();
@@ -165,11 +186,17 @@ class AdDetails extends Component {
     if (!min_ageError && !max_ageError && !languagesError) {
       console.log(this.state.campaignInfo);
       var rep = { ...this.state.campaignInfo };
-
+      if (rep.targeting.demographics[0].gender === "") {
+        delete rep.targeting.demographics[0].gender;
+      }
+      if (rep.targeting.geos[0].region_id.length === 0) {
+        delete rep.targeting.geos[0].region_id;
+      }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
+      console.log(rep);
 
-      this.props.ad_details(rep, this.props.navigation);
-      // this.props.navigation.navigate("AdDesignReview");
+      // this.props.ad_details(rep, this.props.navigation);
+      // this.props.navigation.navigate("Home");
     }
   };
   render() {
@@ -194,8 +221,25 @@ class AdDetails extends Component {
           ]}
         >
           <ScrollView>
-            <Text style={styles.text}>Input your Snapchat AD Details</Text>
-            <View style={[styles.slidercontainer, { alignSelf: "center" }]}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <Button
+                iconLeft
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon
+                  style={{ paddingLeft: 10, marginRight: 20, top: 25 }}
+                  name="arrow-back"
+                />
+              </Button>
+              <Text style={styles.text}>Input your Snapchat AD Details</Text>
+            </View>
+            <View
+              style={[
+                styles.slidercontainer,
+                { alignSelf: "center", paddingTop: 40 }
+              ]}
+            >
               <View style={styles.textCon}>
                 <Text style={styles.colorGrey}>
                   {this.state.minValueBudget} $
@@ -234,10 +278,14 @@ class AdDetails extends Component {
                   if (data.value !== "All") {
                     let replace = this.state.campaignInfo;
                     replace.targeting.demographics[0].gender = data.value;
+                  } else {
+                    let replace = this.state.campaignInfo;
+                    replace.targeting.demographics[0].gender = "";
                   }
                 }}
               />
             </View>
+
             <Item
               rounded
               style={[
@@ -247,28 +295,24 @@ class AdDetails extends Component {
                 }
               ]}
             >
-              <Input
-                style={styles.inputtext}
-                placeholder="Minimum age limit is 13..."
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="numeric"
-                onChangeText={value => {
-                  let rep = this.state.campaignInfo;
-                  rep.targeting.demographics[0].min_age = value;
-                  this.setState({
-                    campaignInfo: rep
-                  });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    min_ageError: validateWrapper(
-                      "age",
-                      this.state.campaignInfo.targeting.demographics[0].min_age
-                    )
-                  });
-                }}
+              <InputNumber
+                keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
+                min={13}
+                max={
+                  this.state.campaignInfo.targeting.demographics[0].max_age ===
+                  0
+                    ? 90
+                    : this.state.campaignInfo.targeting.demographics[0].max_age
+                }
+                styles={inputNumberStyles}
+                defaultValue={
+                  this.state.campaignInfo.targeting.demographics[0].min_age
+                }
+                onChange={value => this._handleMinAge(value)}
               />
+              <Text style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}>
+                Min Age
+              </Text>
             </Item>
             {this.state.min_ageError && (
               <Text style={[styles.text, { paddingTop: 0 }]}>
@@ -285,28 +329,24 @@ class AdDetails extends Component {
                 }
               ]}
             >
-              <Input
-                style={styles.inputtext}
-                placeholder="Maximum Age"
-                autoCorrect={false}
-                keyboardType="numeric"
-                autoCapitalize="none"
-                onChangeText={value => {
-                  let rep = this.state.campaignInfo;
-                  rep.targeting.demographics[0].max_age = value;
-                  this.setState({
-                    campaignInfo: rep
-                  });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    max_ageError: validateWrapper(
-                      "age",
-                      this.state.campaignInfo.targeting.demographics[0].max_age
-                    )
-                  });
-                }}
+              <InputNumber
+                keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
+                max={90}
+                min={
+                  this.state.campaignInfo.targeting.demographics[0].min_age ===
+                  0
+                    ? 13
+                    : this.state.campaignInfo.targeting.demographics[0].min_age
+                }
+                styles={inputNumberStyles}
+                defaultValue={
+                  this.state.campaignInfo.targeting.demographics[0].max_age
+                }
+                onChange={value => this._handleMaxAge(value)}
               />
+              <Text style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}>
+                Max Age
+              </Text>
             </Item>
             {this.state.max_ageError && (
               <Text style={[styles.text, { paddingTop: 0 }]}>
