@@ -238,13 +238,15 @@ class PersonalInfo extends Component {
           {this.state.passwordError &&
           this.state.passwordError.includes("8 characters") ? (
             <Text
-              style={{
-                textAlign: "center",
-                color: "#717171",
-                fontFamily: "benton-sans-regular",
-                fontSize: 15,
-                paddingBottom: "10%"
-              }}
+              style={[
+                styles.text,
+                {
+                  bottom: 20,
+                  paddingVertical: 0,
+                  paddingTop: 0,
+                  marginBottom: 20
+                }
+              ]}
             >
               {this.state.passwordError}
             </Text>
@@ -273,14 +275,12 @@ class PersonalInfo extends Component {
           </Item>
           {this.state.repasswordError !== "" ? (
             <Text
-              style={{
-                textAlign: "center",
-                color: "#717171",
-                fontFamily: "benton-sans-regular",
-                fontSize: 15,
-                marginTop: 0,
-                marginBottom: 15
-              }}
+              style={[
+                styles.text,
+                {
+                  paddingTop: 0
+                }
+              ]}
             >
               {this.state.repasswordError}
             </Text>

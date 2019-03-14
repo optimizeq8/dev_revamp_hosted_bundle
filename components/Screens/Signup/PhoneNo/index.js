@@ -57,8 +57,6 @@ class PhoneNo extends Component {
     });
 
     if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
-      console.log("Updating", this.state.value);
-
       this.props.sendMobileNo({ mobile: this.phone.getValue() });
     }
   }

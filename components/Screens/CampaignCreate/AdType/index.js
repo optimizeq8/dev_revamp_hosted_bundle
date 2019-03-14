@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions
+} from "react-native";
 import {
   Card,
   Button,
@@ -27,6 +33,7 @@ class Tutorial extends Component {
   };
 
   render() {
+    let width = Dimensions.get("window").width * 0.5 - 120;
     const Slide = ({ title, id }) => (
       <TouchableOpacity
         onPress={() =>
@@ -55,7 +62,27 @@ class Tutorial extends Component {
           style={styles.gradient}
         />
         <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Button
+              iconLeft
+              large
+              transparent
+              onPress={() => this.props.navigation.navigate("Dashboard")}
+              style={{
+                paddingLeft: 10,
+                marginRight: width
+              }}
+            >
+              <Icon
+                style={{
+                  top: 25,
+                  fontSize: 45
+                }}
+                name="close"
+              />
+            </Button>
+            <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
+          </View>
           <Swiper
             backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
             dots
