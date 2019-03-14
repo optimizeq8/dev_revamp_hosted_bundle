@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { View, Image, ScrollView } from "react-native";
 import {
   Card,
@@ -91,6 +90,14 @@ class Home extends Component {
               }}
             >
               <Text> Business List </Text>
+            </Button>
+            <Button
+              style={[styles.button]}
+              onPress={() => {
+                this.props.navigation.navigate("AdDesign");
+              }}
+            >
+              <Text> Test </Text>
             </Button>
           </Card>
           <View>

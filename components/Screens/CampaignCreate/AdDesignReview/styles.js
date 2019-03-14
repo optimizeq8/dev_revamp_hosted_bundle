@@ -93,6 +93,24 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#000"
+  },
+  backgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)"
+  },
+  title: {
+    color: "#fff",
+    fontSize: 20,
+    marginTop: 90,
+    paddingHorizontal: 20,
+    textAlign: "center"
   }
 });
 

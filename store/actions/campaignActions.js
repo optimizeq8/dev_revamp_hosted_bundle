@@ -28,14 +28,17 @@ export const ad_objective = (info, navigation) => {
   };
 };
 
-export const ad_design = (info, navigation) => {
-  return (dispatch, getState) => {
+export const ad_design = (info, laoding, navigation) => {
+  return dispatch => {
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
     };
     instance
-      .post(`savebrandmedia`, info)
+      .post(`savebrandmedia`, info, {
+        onUploadProgress: ProgressEvent =>
+          laoding((ProgressEvent.loaded / ProgressEvent.total) * 100)
+      })
       .then(res => {
         console.log(res.data);
         console.log("SUCCESS!!");
@@ -52,8 +55,9 @@ export const ad_design = (info, navigation) => {
         navigation.replace("AdDetails");
       })
       .catch(err => {
-        console.log(err.response);
-        // dispatch(console.log(err.response.data));
+        laoding(0);
+
+        console.log(err);
       });
   };
 };
