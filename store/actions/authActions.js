@@ -342,7 +342,7 @@ export const logout = navigation => {
 export const create_ad_account = (id, navigation) => {
   return dispatch => {
     instance
-      .post("snapadaccounts", id)
+      .post("snapadaccounts", { businessid: id })
       .then(res => {
         return res.data;
       })
