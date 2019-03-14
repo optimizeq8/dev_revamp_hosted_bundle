@@ -5,7 +5,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 
 import {
@@ -144,6 +145,7 @@ class AdDesign extends Component {
   };
   render() {
     let { image } = this.state;
+    let width = Dimensions.get("window").width * 0.5 - 185;
 
     return (
       <Container style={styles.container}>
@@ -153,15 +155,16 @@ class AdDesign extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
-        <ScrollView>
+        <ScrollView
+          style={{
+            backgroundColor: "#fff",
+            borderTopStartRadius: 30,
+            borderTopEndRadius: 30
+          }}
+        >
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
-            style={{
-              backgroundColor: "#fff",
-              borderTopStartRadius: 30,
-              borderTopEndRadius: 30
-            }}
           >
             <Card
               style={[
@@ -175,7 +178,29 @@ class AdDesign extends Component {
                 }
               ]}
             >
-              <Text style={styles.text}>Input your Snapchat AD Details</Text>
+              <View style={{ flexDirection: "row", marginBottom: 35 }}>
+                <Button
+                  onLayout={event => {
+                    var { x, y, width, height } = event.nativeEvent.layout;
+                    console.log("width", width);
+                  }}
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}
+                  style={{
+                    paddingLeft: 10,
+                    marginRight: width
+                  }}
+                >
+                  <Icon
+                    style={{
+                      top: 20,
+                      fontSize: 35
+                    }}
+                    name="arrow-back"
+                  />
+                </Button>
+                <Text style={styles.text}>Input your Snapchat AD Details</Text>
+              </View>
               <Item
                 rounded
                 style={[

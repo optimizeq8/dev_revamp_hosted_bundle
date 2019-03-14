@@ -5,7 +5,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import {
   Card,
@@ -164,13 +165,15 @@ class AdObjective extends Component {
     });
     if (!nameError && !objectiveError && !start_timeError && !end_timeError) {
       console.log(this.state.campaignInfo);
-      // this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
-      this.props.navigation.navigate("AdDesign");
+      this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
+      // this.props.navigation.navigate("AdDesign");
     }
   };
 
   render() {
     console.log(this.state.campaignInfo);
+    let width = Dimensions.get("window").width * 0.5 - 100;
+    console.log(width);
 
     return (
       <Container style={styles.container}>
@@ -201,7 +204,34 @@ class AdObjective extends Component {
               }
             ]}
           >
-            <Text style={styles.text}>Story Ad</Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row"
+              }}
+            >
+              <Button
+                onLayout={event => {
+                  var { x, y, width, height } = event.nativeEvent.layout;
+                  console.log("width", width);
+                }}
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                  marginRight: width
+                }}
+              >
+                <Icon
+                  style={{
+                    top: 20,
+                    fontSize: 35
+                  }}
+                  name="arrow-back"
+                />
+              </Button>
+              <Text style={[styles.text]}>Snap Ad</Text>
+            </View>
             <Text style={styles.text}>Input a name for your Ad</Text>
             <Item
               rounded

@@ -76,14 +76,14 @@ class MainForm extends Component {
             <View style={styles.content}>
               <Badge
                 style={
-                  !this.props.verified && !this.props.registered
+                  this.props.verified && !this.props.registered
                     ? styles.badge
                     : styles.activeBadege
                 }
               >
                 <Text
                   style={
-                    !this.props.verified && !this.props.registered
+                    this.props.verified && !this.props.registered
                       ? { color: "#5F5F5F" }
                       : { color: "#fff" }
                   }

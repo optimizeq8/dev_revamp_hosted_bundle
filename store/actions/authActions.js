@@ -149,11 +149,33 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
+        console.log(res.data);
+
         return res.data;
       })
       .then(data => {
         return dispatch({
           type: actionTypes.VERIFY_MOBILE_NUMBER,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
+export const resendVerifyMobileCode = mobileAuth => {
+  return dispatch => {
+    instance
+      .post(`resendVerificationCode`, { mobile: mobileAuth })
+      .then(res => {
+        console.log("resendVerifyMobileCode", res.date);
+
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.RESEND_VERIFICATION,
           payload: data
         });
       })
@@ -182,6 +204,27 @@ export const verifyEmail = (email, userInfo) => {
   };
 };
 
+export const verifyBusinessName = businessName => {
+  console.log("businessName", businessName);
+
+  return dispatch => {
+    instance
+      .post(`verifyBusinessName`, { businessname: businessName })
+      .then(res => res.data)
+      .then(data => {
+        console.log("data", data);
+
+        return dispatch({
+          type: actionTypes.VERIFY_BUSINESSNAME,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
+
 export const registerUser = (userInfo, navigation) => {
   return (dispatch, getState) => {
     instance
@@ -189,15 +232,22 @@ export const registerUser = (userInfo, navigation) => {
       .then(res => {
         return res.data;
       })
-      .then(user => {
+      .then(async user => {
         console.log("userInfo", user);
         const decodedUser = jwt_decode(user.token);
-        setAuthToken(user.token);
-        return decodedUser;
+        let peomise = await setAuthToken(user.token);
+        return { user: decodedUser, message: user.message };
       })
       .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
-        navigation.navigate("Home");
+        if (getState().auth.userInfo) {
+          navigation.navigate("Home");
+          console.log(
+            "auth token",
+            axios.defaults.headers.common.Authorization
+          );
+          dispatch(getBusinessAccounts());
+        }
       })
       .catch(err => {
         console.log(err.response);
@@ -244,7 +294,6 @@ export const login = (userData, navigation) => {
 };
 
 const setAuthToken = token => {
-  console.log("token", token);
   if (token) {
     return AsyncStorage.setItem("token", token)
       .then(
@@ -262,7 +311,6 @@ const setAuthToken = token => {
 
 const setCurrentUser = user => {
   return dispatch => {
-    console.log("message", user);
     if (user) {
       return dispatch({
         type: actionTypes.SET_CURRENT_USER,

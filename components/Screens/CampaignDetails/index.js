@@ -82,7 +82,9 @@ class CampaignDetails extends Component {
               >
                 <Text style={styles.link}>Gender</Text>
                 <Text style={styles.link}>
-                  {this.props.campaign.targeting.demographics[0].gender === ""
+                  {!this.props.campaign.targeting.demographics[0].hasOwnProperty(
+                    "gender"
+                  )
                     ? "All"
                     : this.props.campaign.targeting.demographics[0].gender}
                 </Text>

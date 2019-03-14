@@ -80,6 +80,26 @@ class BusinessInfo extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      this.setState({
+        nameError: this.props.message ? this.props.message : null
+      });
+    }
+  }
+  _verifyBusinessName(name) {
+    if (name !== "") {
+      this.props.resetMessages();
+      this.props.verifyBusinessName(name);
+    } else {
+      this.setState({
+        businessnameError: validateWrapper(
+          "mandatory",
+          this.state.businessAccount.businessname
+        )
+      });
+    }
+  }
   _handleSubmission = () => {
     const businessnameError = validateWrapper(
       "mandatory",
@@ -150,15 +170,22 @@ class BusinessInfo extends Component {
                   });
                 }}
                 onBlur={() => {
-                  this.setState({
-                    businessnameError: validateWrapper(
-                      "mandatory",
-                      this.state.businessAccount.businessname
-                    )
-                  });
+                  this._verifyBusinessName(
+                    this.state.businessAccount.businessname
+                  );
                 }}
               />
             </Item>
+            {this.state.nameError && (
+              <Text
+                style={[
+                  styles.text,
+                  { paddingTop: 0, marginBottom: 0, bottom: 20 }
+                ]}
+              >
+                {this.state.nameError}
+              </Text>
+            )}
 
             <Item
               rounded
@@ -336,7 +363,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createBusinessAccount: (account, navigation) =>
-    dispatch(actionCreators.createBusinessAccount(account, navigation))
+    dispatch(actionCreators.createBusinessAccount(account, navigation)),
+  verifyBusinessName: businessName =>
+    dispatch(actionCreators.verifyBusinessName(businessName)),
+  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,

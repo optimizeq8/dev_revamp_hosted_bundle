@@ -90,6 +90,46 @@ class BusinessInfo extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
+  componentDidMount() {
+    this.props.resetMessages();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      if (this.props.message === "Business name already exist") {
+        console.log(this.props.message);
+
+        this.setState({
+          nameError: this.props.message ? this.props.message : null
+        });
+      } else {
+        this.setState({
+          nameError: null
+        });
+      }
+    }
+  }
+  _verifyBusinessName(userType, name) {
+    if (userType === "2" && name !== "") {
+      this.props.resetMessages();
+      this.props.verifyBusinessName(name);
+
+      this.setState({
+        nameError: validateWrapper(
+          "mandatory",
+          this.state.userInfo.businessname
+        )
+      });
+    } else {
+      this.props.resetMessages();
+      this.setState({
+        nameError: validateWrapper(
+          "mandatory",
+          this.state.userInfo.businessname
+        )
+      });
+    }
+  }
   _handleSubmission = () => {
     const nameError = validateWrapper(
       "mandatory",
@@ -175,19 +215,27 @@ class BusinessInfo extends Component {
                   });
                 }}
                 onBlur={() =>
-                  this.setState({
-                    nameError: validateWrapper(
-                      "mandatory",
-                      this.state.userInfo.businessname
-                    )
-                  })
+                  this._verifyBusinessName(
+                    this.state.userInfo.usertype,
+                    this.state.userInfo.businessname
+                  )
                 }
               />
             </Item>
+            {this.state.nameError !== "" && this.state.nameError && (
+              <Text
+                style={[
+                  styles.text,
+                  { paddingTop: 0, marginBottom: 0, bottom: 20 }
+                ]}
+              >
+                {this.state.nameError}
+              </Text>
+            )}
 
             <RNPickerSelect
               items={this.state.countries}
-              placeholder={{}}
+              placeholder={{ label: "Select a country", value: "" }}
               onClose={() =>
                 this.setState({
                   countryError: validateWrapper(
@@ -238,7 +286,7 @@ class BusinessInfo extends Component {
 
             <RNPickerSelect
               items={this.state.items}
-              placeholder={{}}
+              placeholder={{ label: "Select a business type", value: "" }}
               onClose={() =>
                 this.setState({
                   businesstypeError: validateWrapper(
@@ -323,12 +371,16 @@ class BusinessInfo extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  message: state.auth.message
+  message: state.auth.message,
+  successName: state.auth.successName
 });
 
 const mapDispatchToProps = dispatch => ({
   registerUser: (userInfo, navigation) =>
-    dispatch(actionCreators.registerUser(userInfo, navigation))
+    dispatch(actionCreators.registerUser(userInfo, navigation)),
+  verifyBusinessName: businessName =>
+    dispatch(actionCreators.verifyBusinessName(businessName)),
+  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,
