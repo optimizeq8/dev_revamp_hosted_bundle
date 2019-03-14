@@ -189,13 +189,16 @@ class AdDetails extends Component {
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
-      if (rep.targeting.geos[0].region_id.length === 0) {
+      if (
+        rep.targeting.geos[0].hasOwnProperty("region_id") &&
+        rep.targeting.geos[0].region_id.length === 0
+      ) {
         delete rep.targeting.geos[0].region_id;
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
       console.log(rep);
 
-      // this.props.ad_details(rep, this.props.navigation);
+      this.props.ad_details(rep, this.props.navigation);
       // this.props.navigation.navigate("Home");
     }
   };

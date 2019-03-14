@@ -9,8 +9,9 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    paddingTop: 30,
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.7)"
   },
   image: {
     alignSelf: "center",
@@ -25,8 +26,8 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-    borderColor: "#751AFF",
-    backgroundColor: "#751AFF",
+    borderColor: "transparent",
+    backgroundColor: "transparent",
     flex: 1,
     shadowRadius: 0,
     shadowOpacity: 0,
@@ -87,6 +88,24 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#000"
+  },
+  backgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)"
+  },
+  title: {
+    color: "#fff",
+    fontSize: 20,
+    marginTop: 90,
+    paddingHorizontal: 20,
+    textAlign: "center"
   }
 });
 

@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions
 } from "react-native";
-
+import { Video } from "expo";
 import {
   Card,
   Button,
@@ -120,6 +120,13 @@ class AdDesign extends Component {
     });
   }
 
+  _getUploadState = loading => {
+    console.log("loading", loading);
+
+    this.setState({
+      loaded: loading
+    });
+  };
   _handleSubmission = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -138,8 +145,12 @@ class AdDesign extends Component {
     console.log(imageError);
 
     if (!brand_nameError && !headlineError && !imageError) {
-      console.log(this.state.campaignInfo);
-      this.props.ad_design(this.state.formatted, this.props.navigation);
+      this.props.ad_design(
+        this.state.formatted,
+        this._getUploadState,
+        this.props.navigation
+      );
+
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -271,15 +282,26 @@ class AdDesign extends Component {
                 }}
                 style={styles.buttonN}
               >
-                <Image
-                  style={styles.placeholder}
-                  source={
-                    !image
-                      ? require("../../../../assets/images/placeholder.png")
-                      : { uri: image }
-                  }
-                  resizeMode="contain"
-                />
+                {this.state.type === "VIDEO" ? (
+                  <Video
+                    source={{
+                      uri: image
+                    }}
+                    shouldPlay
+                    resizeMode="contain"
+                    style={{ width: 350, height: 300 }}
+                  />
+                ) : (
+                  <Image
+                    style={styles.placeholder}
+                    source={
+                      !image
+                        ? require("../../../../assets/images/placeholder.png")
+                        : { uri: image }
+                    }
+                    resizeMode="contain"
+                  />
+                )}
               </TouchableOpacity>
               {!this.state.imageError ? null : (
                 <Text style={styles.text}>Please choose an image.</Text>
@@ -290,6 +312,7 @@ class AdDesign extends Component {
                   if (this.state.image)
                     this.props.navigation.push("AdDesignReview", {
                       image: this.state.image,
+                      type: this.state.type,
                       headline: this.state.campaignInfo.headline,
                       brand_name: this.state.campaignInfo.brand_name
                     });
@@ -320,8 +343,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, navigation) =>
-    dispatch(actionCreators.ad_design(info, navigation))
+  ad_design: (info, loading, navigation) =>
+    dispatch(actionCreators.ad_design(info, loading, navigation))
 });
 export default connect(
   mapStateToProps,
