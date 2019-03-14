@@ -18,6 +18,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center"
   },
+  popupOverlay: {
+    height: "100%"
+  },
+  popupContent: {
+    margin: 25
+  },
+  btnClose: {
+    alignSelf: "center",
+    paddingHorizontal: 15,
+    borderRadius: 20
+  },
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
