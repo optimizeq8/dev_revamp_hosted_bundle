@@ -19,6 +19,8 @@ import {
 } from "native-base";
 import { LinearGradient } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
+import SearchBar from "../../MiniComponents/SearchBar";
+
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
@@ -35,7 +37,7 @@ class Dashboard extends Component {
     this.props.getCampaignList(this.props.mainBusiness.businessid);
   }
   render() {
-    const list = this.props.campaignList.map(campaign => (
+    const list = this.props.filteredCampaigns.map(campaign => (
       <CampaignCard
         campaign={campaign}
         navigation={this.props.navigation}
@@ -88,6 +90,8 @@ class Dashboard extends Component {
               <Text> Create campaign </Text>
             </Button>
           </View>
+
+          <SearchBar />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
           </ScrollView>
@@ -100,12 +104,14 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.auth.mainBusiness,
-  campaignList: state.auth.campaignList
+  campaignList: state.auth.campaignList,
+  filteredCampaigns: state.auth.filteredCampaigns
 });
 
 const mapDispatchToProps = dispatch => ({
   getCampaign: id => dispatch(actionCreators.getCampaign(id)),
-  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
+  getCampaignList: id => dispatch(actionCreators.getCampaignList(id)),
+  onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query))
 });
 export default connect(
   mapStateToProps,

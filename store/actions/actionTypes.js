@@ -19,3 +19,4 @@ export const SET_AD_TYPE = "SET_AD_TYPE";
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";
 export const SET_AD_DESIGN = "SER_AD_DESIGN";
 export const SET_AD_DETAILS = "SET_AD_DETAILS";
+export const FILTER_CAMPAIGNS = "FILTER_CAMPAIGNS";
