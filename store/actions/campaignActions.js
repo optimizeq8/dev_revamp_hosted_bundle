@@ -84,3 +84,10 @@ export const ad_details = (info, navigation) => {
       });
   };
 };
+
+export const filterCampaigns = query => {
+  return {
+    type: actionTypes.FILTER_CAMPAIGNS,
+    payload: query
+  };
+};
