@@ -90,6 +90,7 @@ class Dashboard extends Component {
               <Text> Create campaign </Text>
             </Button>
           </View>
+
           <SearchBar />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
@@ -109,7 +110,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCampaign: id => dispatch(actionCreators.getCampaign(id)),
-  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
+  getCampaignList: id => dispatch(actionCreators.getCampaignList(id)),
+  onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query))
 });
 export default connect(
   mapStateToProps,

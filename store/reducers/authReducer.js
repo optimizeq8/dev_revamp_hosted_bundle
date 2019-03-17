@@ -116,12 +116,18 @@ const reducer = (state = initialState, action) => {
         mainBusiness: action.payload.business
       };
     case actionTypes.FILTER_CAMPAIGNS:
-      let newFilter = state.campaignList.filter(campaign =>
-        campaign.name.toLowerCase().includes(action.payload.toLowerCase())
+      console.log(action.payload);
+      let filterStatus = state.campaignList.filter(campaign =>
+        campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
       );
+
+      if (action.payload.selected !== "A")
+        filterStatus = filterStatus.filter(campaign =>
+          campaign.status.includes(action.payload.selected)
+        );
       return {
         ...state,
-        filteredCampaigns: newFilter
+        filteredCampaigns: filterStatus
       };
     case actionTypes.LOGOUT_USER:
       return {
