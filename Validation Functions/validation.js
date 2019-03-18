@@ -25,6 +25,10 @@ const validation = {
       greaterThanOrEqualTo: 13,
       lessThanOrEqualTo: 90
     }
+  },
+  website: {
+    url: { schemes: [".+"] },
+    presence: { allowEmpty: false }
   }
 };
 

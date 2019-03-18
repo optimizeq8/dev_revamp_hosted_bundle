@@ -48,7 +48,7 @@ class AdDetails extends Component {
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
-            { gender: "FEMALE", languages: ["en"], min_age: 13, max_age: 13 }
+            { gender: "FEMALE", languages: ["en"], min_age: 13, max_age: 35 }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
         }
@@ -116,7 +116,6 @@ class AdDetails extends Component {
   };
 
   _handleMinAge = value => {
-    console.log(value);
     let rep = this.state.campaignInfo;
     rep.targeting.demographics[0].min_age = value;
     this.setState({
@@ -194,6 +193,9 @@ class AdDetails extends Component {
         rep.targeting.geos[0].region_id.length === 0
       ) {
         delete rep.targeting.geos[0].region_id;
+      }
+      if (rep.targeting.demographics[0].max_age >= 35) {
+        rep.targeting.demographics[0].max_age = "35+";
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
       console.log(rep);
@@ -304,7 +306,7 @@ class AdDetails extends Component {
                 max={
                   this.state.campaignInfo.targeting.demographics[0].max_age ===
                   0
-                    ? 90
+                    ? 35
                     : this.state.campaignInfo.targeting.demographics[0].max_age
                 }
                 styles={inputNumberStyles}
@@ -319,7 +321,7 @@ class AdDetails extends Component {
             </Item>
             {this.state.min_ageError && (
               <Text style={[styles.text, { paddingTop: 0 }]}>
-                Min {this.state.min_ageError}{" "}
+                Min {this.state.min_ageError}
               </Text>
             )}
 
@@ -334,7 +336,7 @@ class AdDetails extends Component {
             >
               <InputNumber
                 keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
-                max={90}
+                max={35}
                 min={
                   this.state.campaignInfo.targeting.demographics[0].min_age ===
                   0
@@ -342,9 +344,7 @@ class AdDetails extends Component {
                     : this.state.campaignInfo.targeting.demographics[0].min_age
                 }
                 styles={inputNumberStyles}
-                defaultValue={
-                  this.state.campaignInfo.targeting.demographics[0].max_age
-                }
+                defaultValue={35}
                 onChange={value => this._handleMaxAge(value)}
               />
               <Text style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}>
