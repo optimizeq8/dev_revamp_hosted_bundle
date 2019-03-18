@@ -28,9 +28,12 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   subtext: {
+    alignSelf: "center",
     fontFamily: "benton-sans-regular",
     fontSize: 12,
     paddingTop: 5,
+    marginBottom: 10,
+
     color: "#fff",
     textAlign: "left"
   },
@@ -61,7 +64,6 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   image: {
-    alignSelf: "center",
     height: 70,
     width: 70,
     margin: 15
@@ -118,6 +120,59 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     color: "#fff"
+  },
+  root: {
+    marginTop: 20,
+    padding: 10
+  },
+  titleContainer: {
+    shadowColor: "#00000021",
+    shadowOffset: {
+      width: 2
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    marginVertical: 8,
+    backgroundColor: "#DCDCDC",
+    padding: 10
+  },
+  title: {
+    fontSize: 25,
+    color: "#000000"
+  },
+  // container: {
+  //   paddingVertical: 12,
+  //   flexDirection: "row",
+  //   alignItems: "flex-start",
+  //   flexDirection: "row",
+  //   alignItems: "flex-start"
+  // },
+  content: {
+    marginLeft: 16,
+    flex: 1
+  },
+  contentHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#CCCCCC"
+  },
+  image: {
+    width: 45,
+    height: 45,
+    borderRadius: 20,
+    marginLeft: 20
+  },
+  time: {
+    fontSize: 11,
+    color: "#808080"
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "bold"
   }
 });
 

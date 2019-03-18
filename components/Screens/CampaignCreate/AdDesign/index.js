@@ -48,6 +48,7 @@ class AdDesign extends Component {
         attachment: "BLANK",
         media_type: ""
       },
+      objective: "",
       image: null,
       loaded: 0,
       type: "",
@@ -57,13 +58,15 @@ class AdDesign extends Component {
       imageError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
+    this._changeDestination = this._changeDestination.bind(this);
   }
   async componentDidMount() {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
         campaign_id: this.props.campaign_id
-      }
+      },
+      objective: this.props.data.objective
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -72,6 +75,16 @@ class AdDesign extends Component {
     }
   }
 
+  _changeDestination = (destination, call_to_action, attachment) => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        destination,
+        call_to_action,
+        attachment: attachment
+      }
+    });
+  };
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "All",
@@ -145,19 +158,19 @@ class AdDesign extends Component {
     console.log(imageError);
 
     if (!brand_nameError && !headlineError && !imageError) {
-      this.props.ad_design(
-        this.state.formatted,
-        this._getUploadState,
-        this.props.navigation
-      );
+      // this.props.ad_design(
+      //   this.state.formatted,
+      //   this._getUploadState,
+      //   this.props.navigation
+      // );
+      console.log(this.state.campaignInfo);
 
-      // this.props.navigation.navigate("AdDetails");
+      this.props.navigation.navigate("AdDetails");
     }
   };
   render() {
     let { image } = this.state;
     let width = Dimensions.get("window").width * 0.5 - 185;
-
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -212,70 +225,6 @@ class AdDesign extends Component {
                 </Button>
                 <Text style={styles.text}>Input your Snapchat AD Details</Text>
               </View>
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.brand_nameError ? "red" : "#D9D9D9"
-                  }
-                ]}
-              >
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Brand Name (Business name)"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        brand_name: value
-                      }
-                    })
-                  }
-                  onBlur={() => {
-                    this.setState({
-                      brand_nameError: validateWrapper(
-                        "mandatory",
-                        this.state.campaignInfo.brand_name
-                      )
-                    });
-                  }}
-                />
-              </Item>
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.headlineError ? "red" : "#D9D9D9"
-                  }
-                ]}
-              >
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Headline"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        headline: value
-                      }
-                    })
-                  }
-                  onBlur={() => {
-                    this.setState({
-                      headlineError: validateWrapper(
-                        "mandatory",
-                        this.state.campaignInfo.headline
-                      )
-                    });
-                  }}
-                />
-              </Item>
               <TouchableOpacity
                 onPress={() => {
                   this._pickImage();
@@ -288,8 +237,9 @@ class AdDesign extends Component {
                       uri: image
                     }}
                     shouldPlay
-                    resizeMode="contain"
-                    style={{ width: 350, height: 300 }}
+                    isLooping
+                    resizeMode="cover"
+                    style={styles.placeholder}
                   />
                 ) : (
                   <Image
@@ -299,12 +249,125 @@ class AdDesign extends Component {
                         ? require("../../../../assets/images/placeholder.png")
                         : { uri: image }
                     }
-                    resizeMode="contain"
+                    resizeMode="cover"
                   />
                 )}
+                <Item
+                  style={[
+                    styles.inputBrand,
+                    {
+                      borderColor: this.state.brand_nameError
+                        ? "red"
+                        : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <Icon
+                    type="SimpleLineIcons"
+                    name="pencil"
+                    style={{ color: "white" }}
+                  />
+                  <Input
+                    style={styles.inputtext}
+                    placeholder="Brand Name (Business name)"
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          brand_name: value
+                        }
+                      })
+                    }
+                    onBlur={() => {
+                      this.setState({
+                        brand_nameError: validateWrapper(
+                          "mandatory",
+                          this.state.campaignInfo.brand_name
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+
+                <Item
+                  style={[
+                    styles.inputHeadline,
+                    {
+                      borderColor: this.state.headlineError ? "red" : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <Icon
+                    type="SimpleLineIcons"
+                    name="pencil"
+                    style={{ color: "white" }}
+                  />
+                  <Input
+                    style={styles.inputtext}
+                    placeholder="Headline"
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          headline: value
+                        }
+                      })
+                    }
+                    onBlur={() => {
+                      this.setState({
+                        headlineError: validateWrapper(
+                          "mandatory",
+                          this.state.campaignInfo.headline
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+                <TouchableOpacity
+                  style={styles.swipeUp}
+                  onPress={() => {
+                    this.state.objective === "Traffic"
+                      ? this.props.navigation.navigate("SwipeUpDestination", {
+                          _changeDestination: this._changeDestination
+                        })
+                      : this.props.navigation.navigate("SwipeUpChoice", {
+                          _changeDestination: this._changeDestination,
+                          objective: this.state.objective
+                        });
+                  }}
+                >
+                  <Text style={styles.swipeUpText}>
+                    {this.state.campaignInfo.destination === "BLANK"
+                      ? "Swipe Up Destination"
+                      : this.state.campaignInfo.destination.includes(
+                          "REMOTE"
+                        ) && "Website"}
+                    <Icon
+                      type="MaterialIcons"
+                      name="arrow-drop-down"
+                      style={{ color: "white" }}
+                    />
+                  </Text>
+                </TouchableOpacity>
               </TouchableOpacity>
               {!this.state.imageError ? null : (
-                <Text style={styles.text}>Please choose an image.</Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#717171",
+
+                    fontFamily: "benton-sans-medium",
+                    fontSize: 16
+                  }}
+                >
+                  Please choose an image.
+                </Text>
               )}
               <Text> {Math.round(this.state.loaded, 2)} %</Text>
               <Button
@@ -313,6 +376,7 @@ class AdDesign extends Component {
                     this.props.navigation.push("AdDesignReview", {
                       image: this.state.image,
                       type: this.state.type,
+                      call_to_action: this.state.campaignInfo.call_to_action,
                       headline: this.state.campaignInfo.headline,
                       brand_name: this.state.campaignInfo.brand_name
                     });

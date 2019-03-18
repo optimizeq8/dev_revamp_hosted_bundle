@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { hidden } from "ansi-colors";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -15,22 +16,37 @@ const styles = StyleSheet.create({
   inputtext: {
     fontFamily: "benton-sans-light",
     fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
+    textAlign: "left",
+    color: "#fff"
   },
-  input: {
-    marginBottom: 15,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
+  inputBrand: {
+    ...StyleSheet.absoluteFillObject,
     alignSelf: "center",
-    width: 300,
-    height: 50
+    width: 250,
+    height: 50,
+    top: 30,
+    left: 50
   },
+  inputHeadline: {
+    ...StyleSheet.absoluteFillObject,
+    alignSelf: "center",
+    width: 250,
+    height: 50,
+    top: 80,
+    left: 50
+  },
+  swipeUp: {
+    ...StyleSheet.absoluteFillObject,
+    height: 50,
+    top: 450,
+    alignItems: "center"
+  },
+
+  swipeUpText: { color: "white", flex: 1 },
   buttonN: {
-    padding: 10,
     paddingTop: 0,
-    bottom: 15
+    bottom: 15,
+    height: 530
   },
   content: {
     flexDirection: "row",
@@ -43,7 +59,14 @@ const styles = StyleSheet.create({
     width: 50,
     margin: 15
   },
-  placeholder: { alignSelf: "center", height: 300, width: 300, marginTop: 15 },
+  placeholder: {
+    borderRadius: 34,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "95%",
+    height: "100%",
+    marginTop: 0
+  },
 
   mainCard: {
     top: 15,

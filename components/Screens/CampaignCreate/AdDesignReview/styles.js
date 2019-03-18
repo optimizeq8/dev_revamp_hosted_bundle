@@ -77,6 +77,16 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1
   },
+  call_to_action: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "benton-sans-medium",
+    fontSize: 16,
+    top: "80%",
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 1
+  },
   activeBadege: {
     backgroundColor: "#5F5F5F",
     width: 40,
