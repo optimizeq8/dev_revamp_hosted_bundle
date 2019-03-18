@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 70,
-    width: 70,
+    height: 40,
+    width: 40,
     margin: 15
   },
   mainCard: {

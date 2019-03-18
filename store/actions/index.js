@@ -20,5 +20,6 @@ export {
   ad_objective,
   ad_design,
   ad_details,
-  filterCampaigns
+  filterCampaigns,
+  snap_ad_audience_size
 } from "./campaignActions";
