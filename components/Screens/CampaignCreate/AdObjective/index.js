@@ -5,7 +5,6 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-
   ScrollView,
   Image,
   Dimensions
@@ -235,8 +234,8 @@ class AdObjective extends Component {
               borderTopEndRadius: 30
             }}
           >
-
-            <Card style={[
+            <Card
+              style={[
                 styles.mainCard,
                 {
                   margin: 0,
@@ -247,37 +246,37 @@ class AdObjective extends Component {
                 }
               ]}
             >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row"
-              }}
-            >
-              <Button
-                onLayout={event => {
-                  var { x, y, width, height } = event.nativeEvent.layout;
-                  console.log("width", width);
-                }}
-                transparent
-                onPress={() => this.props.navigation.goBack()}
+              <View
                 style={{
-                  paddingLeft: 10,
-                  marginRight: width
+                  flex: 1,
+                  flexDirection: "row"
                 }}
               >
-                <Icon
-                  style={{
-                    top: 20,
-                    fontSize: 35
+                <Button
+                  onLayout={event => {
+                    var { x, y, width, height } = event.nativeEvent.layout;
+                    console.log("width", width);
                   }}
-                  name="arrow-back"
-                />
-              </Button>
-              <Text style={[styles.text]}>Snap Ad</Text>
-            </View>
-            <Text style={styles.text}>Input a name for your Ad</Text>
-            <Item
-              rounded
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}
+                  style={{
+                    paddingLeft: 10,
+                    marginRight: width
+                  }}
+                >
+                  <Icon
+                    style={{
+                      top: 20,
+                      fontSize: 35
+                    }}
+                    name="arrow-back"
+                  />
+                </Button>
+                <Text style={[styles.text]}>Snap Ad</Text>
+              </View>
+              <Text style={styles.text}>Input a name for your Ad</Text>
+              <Item
+                rounded
                 style={[
                   styles.input,
                   {
