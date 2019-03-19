@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Image, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  Animated,
+  Easing,
+  TouchableWithoutFeedback,
+  StyleSheet
+} from "react-native";
 import {
   Card,
   Button,
@@ -17,6 +25,7 @@ import {
   Spinner
 } from "native-base";
 import { LinearGradient } from "expo";
+import LottieView from "lottie-react-native";
 
 // Style
 import styles, { colors } from "./styles";
@@ -29,8 +38,28 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      menu: new Animated.Value(0),
+      open: false
+    };
   }
+
+  startAnimation = () => {
+    Animated.timing(this.state.menu, {
+      toValue: 1,
+      duration: 350
+    }).start(() => {
+      this.setState({ open: true });
+    });
+  };
+  closeAnimation = () => {
+    Animated.timing(this.state.menu, {
+      toValue: 0,
+      duration: 350
+    }).start(() => {
+      this.setState({ open: false });
+    });
+  };
 
   componentDidUpdate(prevProps) {
     if (
@@ -52,6 +81,34 @@ class Home extends Component {
             endPoint={{ x: 0, y: 1 }}
             style={styles.gradient}
           />
+          <View
+            style={{
+              justifyContent: "center",
+              marginTop: 10,
+              marginLeft: 20
+            }}
+          >
+            <TouchableWithoutFeedback
+              onPress={() => {
+                if (this.state.open === false) {
+                  this.startAnimation();
+                } else {
+                  this.closeAnimation();
+                }
+              }}
+            >
+              <LottieView
+                style={{
+                  width: 50,
+                  height: 47
+                }}
+                resizeMode="contain"
+                source={require("../../../assets/animation/menu-btn.json")}
+                progress={this.state.menu}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+
           <Image
             style={styles.image}
             source={require("../../../assets/images/logo01.png")}
@@ -66,6 +123,7 @@ class Home extends Component {
               You’re one step away from
               {"\n"} Optimizing your digital Ads
             </Text>
+
             <Button
               style={[styles.button, { backgroundColor: "red" }]}
               onPress={() => {
@@ -91,12 +149,8 @@ class Home extends Component {
             >
               <Text> Business List </Text>
             </Button>
-            <Button
-              style={[styles.button]}
-              onPress={() => {
-                this.props.navigation.navigate("AdDesign");
-              }}
-            >
+
+            <Button style={[styles.button]} onPress={() => {}}>
               <Text> Test </Text>
             </Button>
           </Card>

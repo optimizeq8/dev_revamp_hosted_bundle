@@ -16,4 +16,10 @@ export {
   getCampaign,
   changeBusiness
 } from "./authActions";
-export { ad_objective, ad_design, ad_details } from "./campaignActions";
+export {
+  ad_objective,
+  ad_design,
+  ad_details,
+  filterCampaigns,
+  snap_ad_audience_size
+} from "./campaignActions";

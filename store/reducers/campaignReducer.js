@@ -3,7 +3,8 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   message: "",
   data: null,
-  campaign_id: ""
+  campaign_id: "",
+  average_reach: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -26,6 +27,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message
+      };
+    case actionTypes.SET_SNAP_AUDIENCE_SIZE:
+      return {
+        ...state,
+        average_reach: action.payload.average_reach
       };
     default:
       return state;

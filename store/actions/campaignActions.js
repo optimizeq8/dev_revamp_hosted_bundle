@@ -3,6 +3,29 @@ import * as actionTypes from "./actionTypes";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+
+export const snap_ad_audience_size = info => {
+  return (dispatch, getState) => {
+    console.log(info);
+    instance
+      .post(`snapaudiencesize`, info)
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+        return dispatch({
+          type: actionTypes.SET_SNAP_AUDIENCE_SIZE,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err.response.data);
+      });
+  };
+};
+
 export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
     console.log(info);
@@ -77,10 +100,17 @@ export const ad_details = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.navigate("Home");
+        navigation.navigate("AdPaymentReview");
       })
       .catch(err => {
         dispatch(console.log(err.response.data));
       });
+  };
+};
+
+export const filterCampaigns = query => {
+  return {
+    type: actionTypes.FILTER_CAMPAIGNS,
+    payload: query
   };
 };

@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",

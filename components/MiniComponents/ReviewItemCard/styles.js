@@ -6,7 +6,6 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
@@ -16,26 +15,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 120,
     width: 120,
-    margin: 10
+    margin: 15
   },
   imageIcon: {
     alignSelf: "center",
     height: 50,
     width: 50
   },
-  mainCard: {
-    top: 15,
-    borderColor: "#751AFF",
-    backgroundColor: "#751AFF",
-    flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    marginLeft: 0,
-    marginRight: 0
-  },
   text: {
     textAlign: "center",
-    color: "#fff",
+    color: "#5F5F5F",
+    paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "benton-sans-regular",
     fontSize: 13,
@@ -68,31 +58,55 @@ const styles = StyleSheet.create({
     backgroundColor: "#5F5F5F",
     alignSelf: "center"
   },
-  snapbutton: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#fff"
-  },
   link: {
+    marginTop: 20,
     textAlign: "center",
-    color: "#fff",
+    color: "#5F5F5F",
     fontFamily: "benton-sans-regular",
-    fontSize: 20,
-    paddingHorizontal: 10
-  },
-  bottomCard: {
-    top: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: 100
+    fontSize: 20
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+
+  textcontainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    paddingHorizontal: 7
+  },
+  titletext: {
+    textAlign: "left",
+    color: "#fff",
+    paddingTop: 10,
+    fontFamily: "benton-sans-medium",
+    fontSize: 16,
+    paddingVertical: 0
+  },
+  subtext: {
+    fontFamily: "benton-sans-regular",
+    fontSize: 12,
+    paddingTop: 5,
+    color: "#fff",
+    textAlign: "left"
+  },
+  campaignButton: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    flex: 1,
+    marginHorizontal: 10,
+
+    padding: 10
+  },
+  icon: {
+    alignSelf: "center",
+    color: "#FF9D00",
+    fontSize: 40,
+    paddingVertical: 10,
+    paddingHorizontal: 7
+  },
+  contentContainer: {
+    paddingTop: 30
   }
 });
 

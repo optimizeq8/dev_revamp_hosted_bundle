@@ -166,7 +166,6 @@ class AdDesign extends Component {
         this._getUploadState,
         this.props.navigation
       );
-
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -410,8 +409,9 @@ class AdDesign extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  data: state.campaignC.data,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.auth.mainBusiness,
+  data: state.campaignC.data
+
 });
 
 const mapDispatchToProps = dispatch => ({
