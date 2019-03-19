@@ -68,6 +68,14 @@ const styles = StyleSheet.create({
     width: 70,
     margin: 15
   },
+  video: {
+    height: 95,
+    width: 95,
+    borderRadius: 50,
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    marginBottom: 35
+  },
   mainCard: {
     top: 15,
     borderTopStartRadius: 30,

@@ -32,6 +32,7 @@ import Website from "./Website";
 import styles, { colors } from "./styles";
 import App_Install from "./App_Install";
 import Deep_Link from "./Deep_Link";
+import Long_Form_Video from "./Long_Form_Video";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
@@ -51,6 +52,8 @@ class SwipeUpChoice extends Component {
   }
 
   render() {
+    console.log(this.props.navigation.state.params.objective);
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -63,24 +66,42 @@ class SwipeUpChoice extends Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={false}
         >
-          {/* <Website
-            _changeDestination={
-              this.props.navigation.state.params._changeDestination
-            }
-            navigation={this.props.navigation}
-          /> */}
-          {/* <App_Install
-            _changeDestination={
-              this.props.navigation.state.params._changeDestination
-            }
-            navigation={this.props.navigation}
-          /> */}
-          <Deep_Link
-            _changeDestination={
-              this.props.navigation.state.params._changeDestination
-            }
-            navigation={this.props.navigation}
-          />
+          {this.props.navigation.state.params.objective.includes("website") && (
+            <Website
+              _changeDestination={
+                this.props.navigation.state.params._changeDestination
+              }
+              navigation={this.props.navigation}
+            />
+          )}
+          {this.props.navigation.state.params.objective === "deep link" && (
+            <Deep_Link
+              _changeDestination={
+                this.props.navigation.state.params._changeDestination
+              }
+              navigation={this.props.navigation}
+            />
+          )}
+          {this.props.navigation.state.params.objective
+            .toLowerCase()
+            .includes("Video") && (
+            <Long_Form_Video
+              _changeDestination={
+                this.props.navigation.state.params._changeDestination
+              }
+              navigation={this.props.navigation}
+            />
+          )}
+          {this.props.navigation.state.params.objective
+            .toLowerCase()
+            .includes("app") && (
+            <App_Install
+              _changeDestination={
+                this.props.navigation.state.params._changeDestination
+              }
+              navigation={this.props.navigation}
+            />
+          )}
         </KeyboardAwareScrollView>
       </Container>
     );

@@ -46,7 +46,8 @@ export default class Deep_Link extends Component {
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
-        deep_link_url: ""
+        deep_link_url: "",
+        icon_media_url: ""
       },
       data: [],
       androidData: [],
@@ -118,7 +119,7 @@ export default class Deep_Link extends Component {
         ...this.state.attachment,
         app_name: iosApp.title,
         ios_app_id: iosApp.id,
-        icon_media_id: iosApp.icon,
+        icon_media_url: iosApp.icon,
         android_app_url: androidUrl ? androidUrl.id : "Android app not found"
       },
       image: "",
@@ -262,7 +263,7 @@ export default class Deep_Link extends Component {
               //   this._pickImage();
               // }}
               >
-                {this.state.attachment.icon_media_id ? (
+                {this.state.attachment.icon_media_url ? (
                   <Image
                     style={{
                       borderRadius: 10,
@@ -271,7 +272,7 @@ export default class Deep_Link extends Component {
                       alignSelf: "center"
                     }}
                     source={{
-                      uri: this.state.attachment.icon_media_id
+                      uri: this.state.attachment.icon_media_url
                     }}
                   />
                 ) : (

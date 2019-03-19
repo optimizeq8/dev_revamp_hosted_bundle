@@ -81,7 +81,7 @@ class AdDesign extends Component {
         ...this.state.campaignInfo,
         destination,
         call_to_action,
-        attachment: attachment
+        attachment
       }
     });
   };
@@ -120,13 +120,16 @@ class AdDesign extends Component {
 
     body.append("media", photo);
     body.append("media_type", this.state.type);
-    body.append("ad_account_id", this.state.campaignInfo.ad_account_id);
+    body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("campaign_id", this.state.campaignInfo.campaign_id);
     body.append("brand_name", this.state.campaignInfo.brand_name);
     body.append("headline", this.state.campaignInfo.headline);
     body.append("destination", this.state.campaignInfo.destination);
     body.append("call_to_action", this.state.campaignInfo.call_to_action);
-    body.append("attachment", this.state.campaignInfo.attachment);
+    body.append(
+      "attachment",
+      JSON.stringify(this.state.campaignInfo.attachment)
+    );
 
     this.setState({
       formatted: body
@@ -140,7 +143,7 @@ class AdDesign extends Component {
       loaded: loading
     });
   };
-  _handleSubmission = () => {
+  _handleSubmission = async () => {
     const brand_nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.brand_name
@@ -155,17 +158,16 @@ class AdDesign extends Component {
       headlineError,
       imageError
     });
-    console.log(imageError);
 
     if (!brand_nameError && !headlineError && !imageError) {
-      // this.props.ad_design(
-      //   this.state.formatted,
-      //   this._getUploadState,
-      //   this.props.navigation
-      // );
-      console.log(this.state.campaignInfo);
+      let t = await this.formatMedia();
+      this.props.ad_design(
+        this.state.formatted,
+        this._getUploadState,
+        this.props.navigation
+      );
 
-      this.props.navigation.navigate("AdDetails");
+      // this.props.navigation.navigate("AdDetails");
     }
   };
   render() {
@@ -329,32 +331,36 @@ class AdDesign extends Component {
                     }}
                   />
                 </Item>
-                <TouchableOpacity
-                  style={styles.swipeUp}
-                  onPress={() => {
-                    this.state.objective === "Traffic"
-                      ? this.props.navigation.navigate("SwipeUpDestination", {
-                          _changeDestination: this._changeDestination
-                        })
-                      : this.props.navigation.navigate("SwipeUpChoice", {
-                          _changeDestination: this._changeDestination,
-                          objective: this.state.objective
-                        });
-                  }}
-                >
-                  <Text style={styles.swipeUpText}>
-                    {this.state.campaignInfo.destination === "BLANK"
-                      ? "Swipe Up Destination"
-                      : this.state.campaignInfo.destination.includes(
-                          "REMOTE"
-                        ) && "Website"}
-                    <Icon
-                      type="MaterialIcons"
-                      name="arrow-drop-down"
-                      style={{ color: "white" }}
-                    />
-                  </Text>
-                </TouchableOpacity>
+                {!["Brand Awareness", "Reach"].find(
+                  obj => this.state.objective === obj
+                ) && (
+                  <TouchableOpacity
+                    style={styles.swipeUp}
+                    onPress={() => {
+                      this.state.objective.toLowerCase() === "traffic"
+                        ? this.props.navigation.navigate("SwipeUpDestination", {
+                            _changeDestination: this._changeDestination
+                          })
+                        : this.props.navigation.navigate("SwipeUpChoice", {
+                            _changeDestination: this._changeDestination,
+                            objective: "app"
+                          });
+                    }}
+                  >
+                    <Text style={styles.swipeUpText}>
+                      {this.state.campaignInfo.destination !== "BLANK"
+                        ? this.state.campaignInfo.destination
+                        : this.state.campaignInfo.destination.includes("REMOTE")
+                        ? "Website"
+                        : "Swipe Up destination"}
+                      <Icon
+                        type="MaterialIcons"
+                        name="arrow-drop-down"
+                        style={{ color: "white" }}
+                      />
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </TouchableOpacity>
               {!this.state.imageError ? null : (
                 <Text
@@ -403,7 +409,9 @@ class AdDesign extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data,
+  mainBusiness: state.auth.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -70,85 +70,46 @@ class SwipeUpDestination extends Component {
           >
             <Text style={styles.text}>Swipe Up Destination</Text>
             <View style={{ flexDirection: "column", paddingTop: 30 }}>
-              {this.props.navigation.state.params.objective === "Traffic" && (
-                <>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.push("SwipeUpChoice", {
-                        _changeDestination: this.props.navigation.state.params
-                          ._changeDestination
-                      });
-                    }}
-                    style={styles.buttonN}
-                  >
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="web"
-                      style={styles.icon}
-                    />
-                    <View style={styles.textcontainer}>
-                      <Text style={[styles.titletext]}>Website</Text>
-                      <Text style={[styles.subtext]}>
-                        The user will be taken to your website
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log("hi");
-                    }}
-                    style={styles.buttonN}
-                  >
-                    <Icon type="Entypo" name="layers" style={styles.icon} />
-                    <View style={styles.textcontainer}>
-                      <Text style={[styles.titletext]}>Deep Link</Text>
-                      <Text style={[styles.subtext]}>
-                        The user will be sent to a specific {"\n"} page in your
-                        app
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </>
-              )}
-
-              {this.props.navigation.state.params.objective ===
-                "Video Views" && (
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("hi");
-                  }}
-                  style={styles.buttonN}
-                >
-                  <Icon
-                    type="FontAwesome"
-                    name="video-camera"
-                    style={styles.icon}
-                  />
-                  <View style={styles.textcontainer}>
-                    <Text style={[styles.titletext]}>Longform Video</Text>
-                    <Text style={[styles.subtext]}>
-                      The user will be shown A video of {"\n"} 10 Mins.
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              {this.props.navigation.state.params.objective ===
-                "App Install" && (
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("hi");
-                  }}
-                  style={styles.buttonN}
-                >
-                  <Icon type="AntDesign" name="download" style={styles.icon} />
-                  <View style={styles.textcontainer}>
-                    <Text style={[styles.titletext]}>App Install</Text>
-                    <Text style={[styles.subtext]}>
-                      The user will be sent to Download {"\n"} your app.
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.push("SwipeUpChoice", {
+                    _changeDestination: this.props.navigation.state.params
+                      ._changeDestination,
+                    objective: "website"
+                  });
+                }}
+                style={styles.buttonN}
+              >
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="web"
+                  style={styles.icon}
+                />
+                <View style={styles.textcontainer}>
+                  <Text style={[styles.titletext]}>Website</Text>
+                  <Text style={[styles.subtext]}>
+                    The user will be taken to your website
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.push("SwipeUpChoice", {
+                    _changeDestination: this.props.navigation.state.params
+                      ._changeDestination,
+                    objective: "deep link"
+                  });
+                }}
+                style={styles.buttonN}
+              >
+                <Icon type="Entypo" name="layers" style={styles.icon} />
+                <View style={styles.textcontainer}>
+                  <Text style={[styles.titletext]}>Deep Link</Text>
+                  <Text style={[styles.subtext]}>
+                    The user will be sent to a specific {"\n"} page in your app
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </Card>
         </KeyboardAwareScrollView>

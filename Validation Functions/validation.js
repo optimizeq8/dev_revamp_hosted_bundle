@@ -18,12 +18,16 @@ const validation = {
   mandatory: {
     presence: { allowEmpty: false }
   },
-  age: {
-    presence: { allowEmpty: false },
+  duration: {
     numericality: {
-      onlyInteger: true,
-      greaterThanOrEqualTo: 13,
-      lessThanOrEqualTo: 90
+      greaterThanOrEqualTo: 15000,
+      message: "^Video must be longer than 15 seconds"
+    }
+  },
+  video: {
+    presence: {
+      allowEmpty: false,
+      message: "^Please upload a video"
     }
   },
   website: {
@@ -32,7 +36,7 @@ const validation = {
   },
   deepLink: {
     format: {
-      pattern: /^((?!https|http).)\w*:\/\/≈?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*(:[0-9]{1,5})?(\/.*)?$/,
+      pattern: /^((?!https|http))([a-z]{2,5}\.\w*)?\w*:\/\/=?([a-z0-9]+([\-\.])?[a-z0-9]+)*(\??[a-z]*\=?[a-z0-9]+)(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/,
       message:
         "^Invalid deep link url. A few format examples: my-app://your_url_here or my-app://?content="
     },
