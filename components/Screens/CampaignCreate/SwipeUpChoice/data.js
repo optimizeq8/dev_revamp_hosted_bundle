@@ -65,17 +65,29 @@ const data = [
     title: "Memes Generator + Meme Creator"
   },
   {
-    developer: "Pinterest",
+    developer: "Tap Payments",
     devices: ["iphone", "ipad", "ipod"],
     genres: ["6005", "6008"],
     icon:
       "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/ed/6f/42/ed6f42d3-890e-5157-3f1b-b2939f7cd4e6/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-6.png/170x170bb.png",
-    id: 429047995,
+    id: 1175978897,
     in_apps: false,
     price: "$0.00",
     rating: 5,
     slug: "pinterest",
-    title: "Pinterest"
+    title: "goCollect! by Tap"
+  }
+];
+
+export const androidDataTest = [
+  {
+    developer: "Tap Payments",
+    icon:
+      "https://lh3.googleusercontent.com/iyBOpyMXl7yrAp7kuy-2FSaQd06czRaMsIPp4YxYvWfag_Zc3vn-UkEeEsT9IxL-p3s",
+    id: "tap.gocollect",
+    price: "",
+    rating: 3.819672107696533,
+    title: "goCollect! by Tap"
   }
 ];
 

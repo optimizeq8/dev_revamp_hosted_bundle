@@ -34,7 +34,7 @@ import * as actionCreators from "../../../../store/actions";
 import styles, { colors } from "./styles";
 import axios from "axios";
 import data, { androidDataTest } from "./data";
-export default class App_Install extends Component {
+export default class Deep_Link extends Component {
   static navigationOptions = {
     header: null
   };
@@ -46,14 +46,18 @@ export default class App_Install extends Component {
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
+        deep_link_url: "",
         icon_media_url: ""
       },
       data: [],
-      callaction: list[1].call_to_action_list[0],
-      callactions: list[1].call_to_action_list,
+      androidData: [],
+      image: "",
+      callaction: list[3].call_to_action_list[0],
+      callactions: list[3].call_to_action_list,
       nameError: "",
       ios_app_idError: "",
       android_app_urlError: "",
+      deep_link_urlError: "",
       showList: false
     };
 
@@ -83,12 +87,7 @@ export default class App_Install extends Component {
         console.log("ios", res.data.content);
         return res.data.content;
       })
-      .then(data =>
-        this.setState({
-          data: data,
-          showList: true
-        })
-      )
+      .then(data => this.setState({ data: data, showList: true }))
       .catch(err => console.log(err));
   };
   _searchAndroidApps = () => {
@@ -107,12 +106,7 @@ export default class App_Install extends Component {
 
         return res.data.content;
       })
-      .then(data =>
-        this.setState({
-          androidData: data,
-          showList: true
-        })
-      )
+      .then(data => this.setState({ androidData: data, showList: true }))
       .catch(err => console.log(err));
   };
 
@@ -129,12 +123,67 @@ export default class App_Install extends Component {
         android_app_url: androidUrl ? androidUrl.id : "Android app not found"
       },
       image: "",
-      android_app_urlError: androidUrl
-        ? validateWrapper("mandatory", "")
-        : null,
       showList: false
     });
   };
+  //commented until futher notice
+  // _pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: "Images",
+  //     base64: false,
+  //     exif: false,
+  //     quality: 0.1,
+  //     aspect: [9, 16]
+  //   });
+
+  //   console.log(result);
+  //   console.log(result.width, "width");
+  //   console.log(result.height, "height");
+  //   //if (result.width >= 1080 && result.height >= 1920)
+  //   if (
+  //     result.width >= 200 &&
+  //     result.height >= 200 &&
+  //     result.width === result.height
+  //   ) {
+  //     if (!result.cancelled) {
+  //       // console.log(result);
+
+  //       this.setState({
+  //         image: result.uri,
+  //         type: result.type.toUpperCase()
+  //       });
+  //       console.log("image", result);
+
+  //       // this.formatMedia();
+  //     }
+  //   }
+  // };
+
+  formatMedia() {
+    let res = this.state.image.split("/ImagePicker/");
+    let format = res[1].split(".");
+    let mime = "application/octet-stream";
+    var photo = {
+      uri: this.state.image,
+      type: this.state.type + "/" + format[1],
+      name: res[1]
+    };
+    var body = new FormData();
+
+    body.append("media", photo);
+    body.append("media_type", this.state.type);
+    body.append("ad_account_id", this.state.campaignInfo.ad_account_id);
+    body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append("brand_name", this.state.campaignInfo.brand_name);
+    body.append("headline", this.state.campaignInfo.headline);
+    body.append("destination", this.state.campaignInfo.destination);
+    body.append("call_to_action", this.state.campaignInfo.call_to_action);
+    body.append("attachment", this.state.campaignInfo.attachment);
+
+    this.setState({
+      formatted: body
+    });
+  }
 
   _handleSubmission = () => {
     const nameError = validateWrapper(
@@ -145,23 +194,38 @@ export default class App_Install extends Component {
       "mandatory",
       this.state.attachment.ios_app_id
     );
-    const android_app_urlError =
-      this.state.attachment.android_app_url === "Android app not found"
-        ? "Android app not found"
-        : validateWrapper("mandatory", this.state.attachment.android_app_url);
+    const android_app_urlError = validateWrapper(
+      "mandatory",
+      this.state.attachment.android_app_url
+    );
+    const deep_link_urlError = validateWrapper(
+      "deepLink",
+      this.state.attachment.deep_link_url
+    );
     this.setState({
       nameError,
       ios_app_idError,
-      android_app_urlError
+      android_app_urlError,
+      deep_link_urlError
     });
-
-    if (!nameError && !ios_app_idError && !android_app_urlError) {
-      this.props._changeDestination(
+    if (
+      !nameError &&
+      !ios_app_idError &&
+      !android_app_urlError &&
+      !deep_link_urlError
+    ) {
+      //   this.props._changeDestination(
+      //     "APP_INSTALL",
+      //     this.state.callaction.label,
+      //     this.state.attachment.attachment
+      //   );
+      //   this.props.navigation.navigate("AdDesign");
+      //
+      console.log(
         "APP_INSTALL",
         this.state.callaction.label,
         this.state.attachment
       );
-      this.props.navigation.navigate("AdDesign");
     }
   };
   render() {
@@ -185,27 +249,27 @@ export default class App_Install extends Component {
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
           >
-            <View
-              style={{
-                flexDirection: "column",
-                paddingTop: 30
-              }}
-            >
+            <View style={{ flexDirection: "column", paddingTop: 30 }}>
               <Icon type="Feather" name="download" style={styles.icon} />
               <View style={styles.textcontainer}>
-                <Text style={[styles.titletext]}>App Install</Text>
+                <Text style={[styles.titletext]}>Deep Link</Text>
                 <Text style={[styles.subtext]}>
-                  The user will be taken to download your app
+                  The user will be taken to a specific page in your app or
+                  website
                 </Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity
+              // onPress={() => {
+              //   this._pickImage();
+              // }}
+              >
                 {this.state.attachment.icon_media_url ? (
                   <Image
                     style={{
+                      borderRadius: 10,
                       height: 70,
                       width: 70,
-                      alignSelf: "center",
-                      borderRadius: 10
+                      alignSelf: "center"
                     }}
                     source={{
                       uri: this.state.attachment.icon_media_url
@@ -226,7 +290,7 @@ export default class App_Install extends Component {
                 onValueChange={(value, index) => {
                   this.setState({
                     callaction: {
-                      label: list[1].call_to_action_list[index].label,
+                      label: list[3].call_to_action_list[index].label,
                       value
                     }
                   });
@@ -253,11 +317,7 @@ export default class App_Install extends Component {
                   <Icon
                     type="AntDesign"
                     name="down"
-                    style={{
-                      color: "#fff",
-                      fontSize: 20,
-                      left: 25
-                    }}
+                    style={{ color: "#fff", fontSize: 20, left: 25 }}
                   />
                 </Item>
               </RNPickerSelect>
@@ -272,8 +332,7 @@ export default class App_Install extends Component {
               >
                 <Input
                   style={styles.inputtext}
-                  placeholder="Search App Name"
-                  defaultValue={this.state.attachment.app_name + ""}
+                  placeholder="App Name"
                   placeholderTextColor="white"
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -286,8 +345,12 @@ export default class App_Install extends Component {
                     })
                   }
                   onBlur={() => {
-                    // this._searchIosApps();
-                    // this._searchAndroidApps();
+                    if (this.state.attachment.app_name) {
+                      console.log("what");
+
+                      // this._searchIosApps();
+                      // this._searchAndroidApps();
+                    }
                     this.setState({
                       nameError: validateWrapper(
                         "mandatory",
@@ -302,20 +365,9 @@ export default class App_Install extends Component {
                 // data={this.state.showList ? this.state.data : []}
                 data={this.state.showList ? data : []}
                 renderItem={({ item }) => (
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      margin: 1
-                    }}
-                  >
+                  <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
                     <TouchableOpacity onPress={() => this._getAppIds(item)}>
-                      <Image
-                        style={styles.image}
-                        source={{
-                          uri: item.icon
-                        }}
-                      />
+                      <Image style={styles.image} source={{ uri: item.icon }} />
                     </TouchableOpacity>
                     <View style={styles.content}>
                       <View style={styles.contentHeader}>
@@ -380,9 +432,9 @@ export default class App_Install extends Component {
                   style={styles.inputtext}
                   placeholder="ANDROID APP ID"
                   placeholderTextColor="white"
+                  defaultValue={this.state.attachment.android_app_url + ""}
                   autoCorrect={false}
                   disabled
-                  defaultValue={this.state.attachment.android_app_url + ""}
                   autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({
@@ -402,7 +454,46 @@ export default class App_Install extends Component {
                   }}
                 />
               </Item>
+
+              <Item
+                rounded
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.deep_link_urlError
+                      ? "red"
+                      : "transparent"
+                  }
+                ]}
+              >
+                <Input
+                  style={styles.inputtext}
+                  placeholder="Deep Link URL"
+                  placeholderTextColor="white"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      attachment: {
+                        ...this.state.attachment,
+                        deep_link_url: value
+                      }
+                    })
+                  }
+                  onBlur={() => {
+                    this.setState({
+                      deep_link_urlError: validateWrapper(
+                        "deepLink",
+                        this.state.attachment.deep_link_url
+                      )
+                    });
+                  }}
+                />
+              </Item>
             </View>
+            {this.state.deep_link_urlError ? (
+              <Text style={styles.text}>{this.state.deep_link_urlError}</Text>
+            ) : null}
             <TouchableOpacity onPress={this._handleSubmission}>
               <Image
                 style={styles.image}

@@ -153,7 +153,7 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_time: date.toISOString()
+        start_time: date.toISOString().split("T")[0]
       }
     });
 
@@ -161,11 +161,12 @@ class AdObjective extends Component {
   };
 
   handleEndDatePicked = date => {
-    console.log("A date has been picked: ", date);
+    console.log("A date has been picked: ", date.toISOString().split("T")[0]);
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date.toISOString()
+        end_time: date.toISOString().split("T")[0]
       }
     });
 
@@ -374,6 +375,11 @@ class AdObjective extends Component {
                 />
                 <DateTimePicker
                   minimumDate={new Date()}
+                  maximumDate={
+                    this.state.campaignInfo.end_time !== ""
+                      ? new Date(this.state.campaignInfo.end_time)
+                      : null
+                  }
                   isVisible={this.state.startDateTimePickerVisible}
                   onConfirm={this.handleStartDatePicked}
                   onCancel={this.hideStartDateTimePicker}
@@ -420,8 +426,12 @@ class AdObjective extends Component {
                   style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
                 />
                 <DateTimePicker
-                  minimumDate={new Date()}
                   isVisible={this.state.endDateTimePickerVisible}
+                  minimumDate={
+                    this.state.campaignInfo.start_time !== ""
+                      ? new Date(this.state.campaignInfo.start_time)
+                      : new Date()
+                  }
                   onConfirm={this.handleEndDatePicked}
                   onCancel={this.hideEndDateTimePicker}
                   mode="date"

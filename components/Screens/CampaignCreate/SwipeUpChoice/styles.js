@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
+    paddingBottom: 30,
     backgroundColor: "#751AFF"
   },
   textcontainer: {
@@ -68,6 +68,14 @@ const styles = StyleSheet.create({
     width: 70,
     margin: 15
   },
+  video: {
+    height: 95,
+    width: 95,
+    borderRadius: 50,
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    marginBottom: 35
+  },
   mainCard: {
     top: 15,
     borderTopStartRadius: 30,
@@ -79,13 +87,12 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
+    color: "white",
+
     paddingBottom: 10,
     fontFamily: "benton-sans-medium",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    fontSize: 14,
+    paddingHorizontal: 10
   },
   activeBadege: {
     backgroundColor: "#5F5F5F",
@@ -161,6 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCCCCC"
   },
   image: {
+    alignSelf: "center",
     width: 45,
     height: 45,
     borderRadius: 20,
