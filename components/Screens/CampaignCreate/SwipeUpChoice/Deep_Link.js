@@ -126,64 +126,6 @@ export default class Deep_Link extends Component {
       showList: false
     });
   };
-  //commented until futher notice
-  // _pickImage = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: "Images",
-  //     base64: false,
-  //     exif: false,
-  //     quality: 0.1,
-  //     aspect: [9, 16]
-  //   });
-
-  //   console.log(result);
-  //   console.log(result.width, "width");
-  //   console.log(result.height, "height");
-  //   //if (result.width >= 1080 && result.height >= 1920)
-  //   if (
-  //     result.width >= 200 &&
-  //     result.height >= 200 &&
-  //     result.width === result.height
-  //   ) {
-  //     if (!result.cancelled) {
-  //       // console.log(result);
-
-  //       this.setState({
-  //         image: result.uri,
-  //         type: result.type.toUpperCase()
-  //       });
-  //       console.log("image", result);
-
-  //       // this.formatMedia();
-  //     }
-  //   }
-  // };
-
-  formatMedia() {
-    let res = this.state.image.split("/ImagePicker/");
-    let format = res[1].split(".");
-    let mime = "application/octet-stream";
-    var photo = {
-      uri: this.state.image,
-      type: this.state.type + "/" + format[1],
-      name: res[1]
-    };
-    var body = new FormData();
-
-    body.append("media", photo);
-    body.append("media_type", this.state.type);
-    body.append("ad_account_id", this.state.campaignInfo.ad_account_id);
-    body.append("campaign_id", this.state.campaignInfo.campaign_id);
-    body.append("brand_name", this.state.campaignInfo.brand_name);
-    body.append("headline", this.state.campaignInfo.headline);
-    body.append("destination", this.state.campaignInfo.destination);
-    body.append("call_to_action", this.state.campaignInfo.call_to_action);
-    body.append("attachment", this.state.campaignInfo.attachment);
-
-    this.setState({
-      formatted: body
-    });
-  }
 
   _handleSubmission = () => {
     const nameError = validateWrapper(
@@ -214,13 +156,13 @@ export default class Deep_Link extends Component {
       !android_app_urlError &&
       !deep_link_urlError
     ) {
-      //   this.props._changeDestination(
-      //     "APP_INSTALL",
-      //     this.state.callaction.label,
-      //     this.state.attachment.attachment
-      //   );
-      //   this.props.navigation.navigate("AdDesign");
-      //
+      this.props._changeDestination(
+        "DEEP_LINK",
+        this.state.callaction.label,
+        this.state.attachment
+      );
+      this.props.navigation.navigate("AdDesign");
+
       console.log(
         "APP_INSTALL",
         this.state.callaction.label,
@@ -229,8 +171,6 @@ export default class Deep_Link extends Component {
     }
   };
   render() {
-    console.log(this.state.attachment);
-
     return (
       <Container style={styles.container}>
         <ScrollView
@@ -335,6 +275,7 @@ export default class Deep_Link extends Component {
                   placeholder="App Name"
                   placeholderTextColor="white"
                   autoCorrect={false}
+                  defaultValue={this.state.attachment.app_name}
                   autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({
