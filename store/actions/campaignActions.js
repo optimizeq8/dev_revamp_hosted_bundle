@@ -100,7 +100,7 @@ export const ad_details = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.navigate("Home");
+        navigation.navigate("AdPaymentReview");
       })
       .catch(err => {
         dispatch(console.log(err.response.data));
