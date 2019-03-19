@@ -150,12 +150,7 @@ class Home extends Component {
               <Text> Business List </Text>
             </Button>
 
-            <Button
-              style={[styles.button]}
-              onPress={() => {
-                this.props.navigation.navigate("AdDesign");
-              }}
-            >
+            <Button style={[styles.button]} onPress={() => {}}>
               <Text> Test </Text>
             </Button>
           </Card>

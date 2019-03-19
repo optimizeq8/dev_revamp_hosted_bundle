@@ -158,11 +158,11 @@ class AdDesign extends Component {
     console.log(imageError);
 
     if (!brand_nameError && !headlineError && !imageError) {
-      // this.props.ad_design(
-      //   this.state.formatted,
-      //   this._getUploadState,
-      //   this.props.navigation
-      // );
+      this.props.ad_design(
+        this.state.formatted,
+        this._getUploadState,
+        this.props.navigation
+      );
       console.log(this.state.campaignInfo);
 
       this.props.navigation.navigate("AdDetails");
@@ -403,7 +403,8 @@ class AdDesign extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data
 });
 
 const mapDispatchToProps = dispatch => ({

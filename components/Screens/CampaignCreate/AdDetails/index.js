@@ -385,6 +385,9 @@ class AdDetails extends Component {
                 ) {
                   delete r.geos[0].region_id;
                 }
+                if (r.demographics[0].max_age >= 35) {
+                  r.demographics[0].max_age = "35+";
+                }
                 const obj = {
                   targeting: JSON.stringify(r),
                   ad_account_id: this.props.mainBusiness.snap_ad_account_id
