@@ -31,6 +31,7 @@ import Website from "./Website";
 // Style
 import styles, { colors } from "./styles";
 import App_Install from "./App_Install";
+import Deep_Link from "./Deep_Link";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
@@ -68,7 +69,13 @@ class SwipeUpChoice extends Component {
             }
             navigation={this.props.navigation}
           /> */}
-          <App_Install
+          {/* <App_Install
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+          /> */}
+          <Deep_Link
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }

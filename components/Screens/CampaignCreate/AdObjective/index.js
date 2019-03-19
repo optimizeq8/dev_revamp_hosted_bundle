@@ -5,7 +5,6 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-
   ScrollView,
   Image,
   Dimensions
@@ -154,7 +153,7 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_time: date.toISOString()
+        start_time: date.toISOString().split("T")[0]
       }
     });
 
@@ -162,11 +161,12 @@ class AdObjective extends Component {
   };
 
   handleEndDatePicked = date => {
-    console.log("A date has been picked: ", date);
+    console.log("A date has been picked: ", date.toISOString().split("T")[0]);
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date.toISOString()
+        end_time: date.toISOString().split("T")[0]
       }
     });
 
@@ -198,7 +198,7 @@ class AdObjective extends Component {
     });
     if (!nameError && !objectiveError && !start_timeError && !end_timeError) {
       console.log(this.state.campaignInfo);
-      this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
+      // this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
       // this.props.navigation.navigate("AdDesign");
     }
   };
@@ -235,8 +235,8 @@ class AdObjective extends Component {
               borderTopEndRadius: 30
             }}
           >
-
-            <Card style={[
+            <Card
+              style={[
                 styles.mainCard,
                 {
                   margin: 0,
@@ -247,37 +247,37 @@ class AdObjective extends Component {
                 }
               ]}
             >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row"
-              }}
-            >
-              <Button
-                onLayout={event => {
-                  var { x, y, width, height } = event.nativeEvent.layout;
-                  console.log("width", width);
-                }}
-                transparent
-                onPress={() => this.props.navigation.goBack()}
+              <View
                 style={{
-                  paddingLeft: 10,
-                  marginRight: width
+                  flex: 1,
+                  flexDirection: "row"
                 }}
               >
-                <Icon
-                  style={{
-                    top: 20,
-                    fontSize: 35
+                <Button
+                  onLayout={event => {
+                    var { x, y, width, height } = event.nativeEvent.layout;
+                    console.log("width", width);
                   }}
-                  name="arrow-back"
-                />
-              </Button>
-              <Text style={[styles.text]}>Snap Ad</Text>
-            </View>
-            <Text style={styles.text}>Input a name for your Ad</Text>
-            <Item
-              rounded
+                  transparent
+                  onPress={() => this.props.navigation.goBack()}
+                  style={{
+                    paddingLeft: 10,
+                    marginRight: width
+                  }}
+                >
+                  <Icon
+                    style={{
+                      top: 20,
+                      fontSize: 35
+                    }}
+                    name="arrow-back"
+                  />
+                </Button>
+                <Text style={[styles.text]}>Snap Ad</Text>
+              </View>
+              <Text style={styles.text}>Input a name for your Ad</Text>
+              <Item
+                rounded
                 style={[
                   styles.input,
                   {
@@ -375,6 +375,11 @@ class AdObjective extends Component {
                 />
                 <DateTimePicker
                   minimumDate={new Date()}
+                  maximumDate={
+                    this.state.campaignInfo.end_time !== ""
+                      ? new Date(this.state.campaignInfo.end_time)
+                      : null
+                  }
                   isVisible={this.state.startDateTimePickerVisible}
                   onConfirm={this.handleStartDatePicked}
                   onCancel={this.hideStartDateTimePicker}
@@ -421,8 +426,12 @@ class AdObjective extends Component {
                   style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
                 />
                 <DateTimePicker
-                  minimumDate={new Date()}
                   isVisible={this.state.endDateTimePickerVisible}
+                  minimumDate={
+                    this.state.campaignInfo.start_time !== ""
+                      ? new Date(this.state.campaignInfo.start_time)
+                      : new Date()
+                  }
                   onConfirm={this.handleEndDatePicked}
                   onCancel={this.hideEndDateTimePicker}
                   mode="date"
