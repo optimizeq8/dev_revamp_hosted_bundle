@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 120,
     width: 120,
-    margin: 10
+    margin: 15
   },
   imageIcon: {
     alignSelf: "center",
@@ -25,13 +25,15 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-    borderColor: "#751AFF",
-    backgroundColor: "#751AFF",
+    borderColor: "#000",
+    backgroundColor: "#000",
     flex: 1,
     shadowRadius: 0,
     shadowOpacity: 0,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30
   },
   text: {
     textAlign: "center",
@@ -80,16 +82,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 10
   },
+  header: {
+    fontSize: 20,
+    color: "#fff",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10
+  },
   bottomCard: {
     top: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
+    backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100
+    height: 127,
+    marginLeft: 0,
+    marginRight: 0
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

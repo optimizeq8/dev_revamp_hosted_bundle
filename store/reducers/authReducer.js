@@ -14,7 +14,8 @@ const initialState = {
   mainBusiness: null,
   campaignList: [],
   selectedCampaign: null,
-  successName: false
+  successName: false,
+  filteredCampaigns: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,7 +34,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         successNo: action.payload.success,
         verified: action.payload.success,
-
         message: action.payload.message
       };
     case actionTypes.RESEND_VERIFICATION:
@@ -60,7 +60,6 @@ const reducer = (state = initialState, action) => {
       let newMainBusiness = state.businessAccounts.find(
         bus => bus.businessid === state.mainBusiness.businessid
       );
-
       if (newMainBusiness) {
         newMainBusiness.snap_ad_account_id = action.payload.ad_account_id;
       }
@@ -71,8 +70,6 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.SET_CURRENT_USER:
-      console.log("signup", action.payload);
-
       return {
         ...state,
         userInfo: action.payload.user,
@@ -98,6 +95,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaignList: action.payload.data,
+        filteredCampaigns: action.payload.data,
         message: action.payload.message
       };
     case actionTypes.SET_CAMPAIGN:
@@ -112,12 +110,24 @@ const reducer = (state = initialState, action) => {
         message: ""
       };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
-      console.log("main B", state.mainBusiness);
-      console.log("choice B", action.payload.business);
       return {
         ...state,
         message: "Changed business account",
         mainBusiness: action.payload.business
+      };
+    case actionTypes.FILTER_CAMPAIGNS:
+      console.log(action.payload);
+      let filterStatus = state.campaignList.filter(campaign =>
+        campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
+      );
+
+      if (action.payload.selected !== "A")
+        filterStatus = filterStatus.filter(campaign =>
+          campaign.status.includes(action.payload.selected)
+        );
+      return {
+        ...state,
+        filteredCampaigns: filterStatus
       };
     case actionTypes.LOGOUT_USER:
       return {

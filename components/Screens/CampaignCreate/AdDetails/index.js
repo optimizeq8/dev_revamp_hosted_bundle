@@ -372,6 +372,32 @@ class AdDetails extends Component {
               onSelectedRegionChange={this.onSelectedRegionChange}
               region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
             />
+            <Button
+              onPress={() => {
+                let r = { ...this.state.campaignInfo.targeting };
+                console.log(r);
+                if (r.demographics[0].gender === "") {
+                  delete r.demographics[0].gender;
+                }
+                if (
+                  r.geos[0].hasOwnProperty("region_id") &&
+                  r.geos[0].region_id.length === 0
+                ) {
+                  delete r.geos[0].region_id;
+                }
+                if (r.demographics[0].max_age >= 35) {
+                  r.demographics[0].max_age = "35+";
+                }
+                const obj = {
+                  targeting: JSON.stringify(r),
+                  ad_account_id: this.props.mainBusiness.snap_ad_account_id
+                };
+                console.log(obj);
+                this.props.snap_ad_audience_size(obj);
+              }}
+            >
+              <Text> Reach {this.props.average_reach}</Text>
+            </Button>
 
             <TouchableOpacity
               onPress={this._handleSubmission}
@@ -391,12 +417,16 @@ class AdDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  average_reach: state.campaignC.average_reach,
+  mainBusiness: state.auth.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
   ad_details: (info, navigation) =>
-    dispatch(actionCreators.ad_details(info, navigation))
+    dispatch(actionCreators.ad_details(info, navigation)),
+  snap_ad_audience_size: info =>
+    dispatch(actionCreators.snap_ad_audience_size(info))
 });
 export default connect(
   mapStateToProps,
