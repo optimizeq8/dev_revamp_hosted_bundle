@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableWithoutFeedback
+} from "react-native";
 import {
   Card,
   Button,
@@ -67,43 +72,35 @@ class MainForm extends Component {
     this.props.checkForExpiredToken(this.props.navigation);
   }
   render() {
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 250,
-            width: 250
-          }}
-          source={require("../../../assets/images/tutorial/inst01.png")}
-          resizeMode="contain"
-        />
-      </View>
-    );
     return (
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Image
-          style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        />
-        <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
+        <View style={{ marginTop: 25 }}>
+          <Image
+            style={styles.image}
+            source={require("../../../assets/images/logo.png")}
+            resizeMode="contain"
+          />
+          <Text style={styles.logo}>optimize</Text>
+        </View>
+        <Text style={styles.text}>Sign In</Text>
+
+        <View style={styles.mainView}>
           <Item
             rounded
             style={[
               styles.input,
               {
-                borderColor: this.state.emailError ? "red" : "#D9D9D9"
+                borderColor: this.state.emailError ? "red" : "rgba(0, 0, 0, 0)"
               }
             ]}
           >
             <Input
+              placeholderTextColor="#fff"
               autoCorrect={false}
               autoCapitalize="none"
               style={styles.inputtext}
@@ -124,8 +121,8 @@ class MainForm extends Component {
             <Text
               style={{
                 textAlign: "center",
-                color: "#717171",
-                fontFamily: "benton-sans-regular",
+                color: "#fff",
+                fontFamily: "montserrat-regular",
                 fontSize: 15,
                 marginTop: 25
               }}
@@ -139,11 +136,14 @@ class MainForm extends Component {
             style={[
               styles.input,
               {
-                borderColor: this.state.passwordError ? "red" : "#D9D9D9"
+                borderColor: this.state.passwordError
+                  ? "red"
+                  : "rgba(0, 0, 0, 0)"
               }
             ]}
           >
             <Input
+              placeholderTextColor="#fff"
               secureTextEntry={true}
               autoCorrect={false}
               autoCapitalize="none"
@@ -168,8 +168,8 @@ class MainForm extends Component {
             <Text
               style={{
                 textAlign: "center",
-                color: "#717171",
-                fontFamily: "benton-sans-regular",
+                color: "#fff",
+                fontFamily: "montserrat-regular",
                 fontSize: 15,
                 marginTop: 25
               }}
@@ -177,6 +177,12 @@ class MainForm extends Component {
               {this.state.passwordError}
             </Text>
           ) : null}
+          <Text
+            onPress={() => {}}
+            style={[styles.link, { paddingVertical: 25, fontSize: 12 }]}
+          >
+            Forgot Password?
+          </Text>
           <Button
             block
             dark
@@ -185,18 +191,21 @@ class MainForm extends Component {
               this._handleSubmission();
             }}
           >
-            <Text style={styles.buttontext}>Login</Text>
+            <Text style={styles.buttontext}>Sign in</Text>
           </Button>
-        </Card>
-        <View style={{ backgroundColor: "#fff" }}>
-          <Card padder style={styles.bottomCard}>
-            <Text
-              onPress={() => this.props.navigation.navigate("MainForm")}
-              style={styles.link}
-            >
-              I Don’t Have an Account
-            </Text>
-          </Card>
+        </View>
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate("MainForm")}
+            style={styles.bottomView}
+          >
+            <View style={{ marginBottom: 30 }}>
+              <Text style={styles.link}>I Don’t Have an Account</Text>
+              <Text style={[styles.link, { color: "#FF9D00" }]}>
+                Create one!
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </Container>
     );

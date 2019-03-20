@@ -39,7 +39,10 @@ export default class App extends React.Component {
       Font.loadAsync({
         "benton-sans-regular": require("./assets/fonts/BentonSans-Regular.otf"),
         "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf"),
-        "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf")
+        "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf"),
+        "montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
+        "montserrat-light": require("./assets/fonts/Montserrat-Light.ttf"),
+        "montserrat-medium": require("./assets/fonts/Montserrat-Medium.ttf")
       })
     ]);
   };
