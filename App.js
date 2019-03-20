@@ -39,7 +39,9 @@ export default class App extends React.Component {
       Font.loadAsync({
         "benton-sans-regular": require("./assets/fonts/BentonSans-Regular.otf"),
         "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf"),
-        "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf")
+        "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf"),
+        Roboto: require("native-base/Fonts/Roboto.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
       })
     ]);
   };

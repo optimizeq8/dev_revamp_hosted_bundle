@@ -4,7 +4,8 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
-  average_reach: 0
+  average_reach: 0,
+  interests: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +33,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         average_reach: action.payload.average_reach
+      };
+    case actionTypes.SET_INTERESTS:
+      return {
+        ...state,
+        interests: action.payload
       };
     default:
       return state;

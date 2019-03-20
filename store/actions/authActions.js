@@ -159,8 +159,6 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
-        console.log(res.data);
-
         return res.data;
       })
       .then(data => {
@@ -177,7 +175,7 @@ export const verifyMobileCode = mobileAuth => {
 export const resendVerifyMobileCode = mobileAuth => {
   return dispatch => {
     instance
-      .post(`resendVerificationCode`, { mobile: mobileAuth })
+      .post(`resendVerificationCode`, mobileAuth)
       .then(res => {
         console.log("resendVerifyMobileCode", res.date);
 

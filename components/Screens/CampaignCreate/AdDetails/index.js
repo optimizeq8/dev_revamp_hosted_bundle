@@ -25,6 +25,7 @@ import {
   H1,
   Badge
 } from "native-base";
+import cloneDeep from "clone-deep";
 import { LinearGradient } from "expo";
 import RadioGroup from "react-native-radio-buttons-group";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -48,8 +49,15 @@ class AdDetails extends Component {
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
-            { gender: "FEMALE", languages: ["en"], min_age: 13, max_age: 35 }
+            {
+              gender: "FEMALE",
+
+              languages: ["en"],
+              min_age: 13,
+              max_age: 35
+            }
           ],
+          interests: [{ category_id: [] }],
           geos: [{ country_code: "kw", region_id: [] }]
         }
       },
@@ -106,8 +114,6 @@ class AdDetails extends Component {
   }
 
   _handleMaxAge = value => {
-    console.log(value);
-
     let rep = this.state.campaignInfo;
     rep.targeting.demographics[0].max_age = parseInt(value);
     this.setState({
@@ -134,6 +140,11 @@ class AdDetails extends Component {
       );
       this.setState({ campaignInfo: replace, regions: reg.regions });
     }
+  };
+  onSelectedInterestsChange = selectedItems => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    replace.targeting.interests[0].category_id = selectedItems;
+    this.setState({ campaignInfo: replace });
   };
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
@@ -183,8 +194,7 @@ class AdDetails extends Component {
       languagesError
     });
     if (!min_ageError && !max_ageError && !languagesError) {
-      console.log(this.state.campaignInfo);
-      var rep = { ...this.state.campaignInfo };
+      let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
@@ -194,11 +204,16 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.geos[0].region_id;
       }
+      if (
+        rep.targeting.hasOwnProperty("interests") &&
+        rep.targeting.interests[0].category_id.length === 0
+      ) {
+        delete rep.targeting.interests;
+      }
       if (rep.targeting.demographics[0].max_age >= 35) {
         rep.targeting.demographics[0].max_age = "35+";
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
-      console.log(rep);
 
       this.props.ad_details(rep, this.props.navigation);
       // this.props.navigation.navigate("Home");
@@ -358,6 +373,9 @@ class AdDetails extends Component {
             )}
             <MultiSelect
               countries={this.state.countries}
+              country_code={
+                this.state.campaignInfo.targeting.geos[0].country_code
+              }
               languages={this.state.languages}
               onSelectedItemsChange={this.onSelectedItemsChange}
               country_codes={
@@ -371,11 +389,11 @@ class AdDetails extends Component {
               regions={this.state.regions}
               onSelectedRegionChange={this.onSelectedRegionChange}
               region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
+              onSelectedInterestsChange={this.onSelectedInterestsChange}
             />
             <Button
               onPress={() => {
-                let r = { ...this.state.campaignInfo.targeting };
-                console.log(r);
+                let r = cloneDeep(this.state.campaignInfo.targeting);
                 if (r.demographics[0].gender === "") {
                   delete r.demographics[0].gender;
                 }
@@ -387,6 +405,12 @@ class AdDetails extends Component {
                 }
                 if (r.demographics[0].max_age >= 35) {
                   r.demographics[0].max_age = "35+";
+                }
+                if (
+                  r.hasOwnProperty("interests") &&
+                  r.interests[0].category_id.length === 0
+                ) {
+                  delete r.interests;
                 }
                 const obj = {
                   targeting: JSON.stringify(r),

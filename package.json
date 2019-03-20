@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^8.1.0",
     "axios": "^0.18.0",
+    "clone-deep": "^4.0.1",
     "dateformat": "^3.0.3",
     "expo": "^31.0.2",
     "jwt-decode": "^2.2.0",
@@ -29,6 +30,7 @@
     "react-native-picker-select": "^5.2.4",
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-responsive-screen": "^1.2.0",
+    "react-native-sectioned-multi-select": "^0.6.5",
     "react-native-slider": "^0.11.0",
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.1.2",

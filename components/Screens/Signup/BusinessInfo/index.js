@@ -36,7 +36,8 @@ class BusinessInfo extends Component {
         businessname: "",
         businesstype: "",
         country: "",
-        usertype: "1"
+        usertype: "1",
+        country_code: this.props.countryCode
       },
       nameError: "",
       countryError: "",
@@ -221,8 +222,6 @@ class BusinessInfo extends Component {
       !this.state.countryError &&
       !this.state.businesstypeError
     ) {
-      console.log("ljukgyjvhkuijo");
-
       this.props.registerUser(this.state.userInfo, this.props.navigation);
     }
   };
@@ -440,7 +439,8 @@ class BusinessInfo extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   message: state.auth.message,
-  successName: state.auth.successName
+  successName: state.auth.successName,
+  countryCode: state.auth.countryCode
 });
 
 const mapDispatchToProps = dispatch => ({
