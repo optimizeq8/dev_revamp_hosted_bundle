@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   mobileNo: "",
+  countryCode: "",
   verificationCode: false,
   successNo: false,
   verified: false,
@@ -24,6 +25,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         mobileNo: action.payload.mobile,
+        countryCode: action.payload.country_code,
         verified: action.payload.verified,
         verificationCode: action.payload.verificationCode,
         registered: action.payload.registered,

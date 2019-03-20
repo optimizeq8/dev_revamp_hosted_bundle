@@ -18,17 +18,14 @@ class PhoneNo extends Component {
   static navigationOptions = {
     header: null
   };
-
   constructor() {
     super();
-
     this.state = {
       valid: true,
       type: "",
       value: "",
       numExists: ""
     };
-
     this.updateInfo = this.updateInfo.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
   }
@@ -57,7 +54,10 @@ class PhoneNo extends Component {
     });
 
     if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
-      this.props.sendMobileNo({ mobile: this.phone.getValue() });
+      this.props.sendMobileNo({
+        country_code: this.phone.getCountryCode(),
+        mobile: this.phone.getValue().split(this.phone.getCountryCode())[1]
+      });
     }
   }
 

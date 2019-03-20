@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     bottom: 15
   },
+  indicator: {
+    fontSize: 30,
+    marginRight: 20,
+    color: "#a9a"
+  },
   content: {
     flexDirection: "row",
     alignItems: "center",
