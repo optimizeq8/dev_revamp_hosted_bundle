@@ -1,32 +1,25 @@
+//// components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableWithoutFeedback
-} from "react-native";
+import { View, Image, TouchableWithoutFeedback } from "react-native";
 import {
   Card,
   Button,
   Content,
   Text,
-  CardItem,
-  Body,
   Item,
   Input,
-  Container,
-  Icon,
-  H1,
-  Toast
+  Container
 } from "native-base";
 import { LinearGradient } from "expo";
+//Validation
 import validateWrapper from "./ValidateWrapper";
 
 // Style
 import styles, { colors } from "./styles";
+
+//Redux
 import * as actionCreators from "../../../store/actions";
+import { connect } from "react-redux";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -43,6 +36,7 @@ class MainForm extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
       this.setState({
@@ -57,6 +51,7 @@ class MainForm extends Component {
       });
     }
   }
+
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
     const passwordError = validateWrapper("password", this.state.password);
@@ -68,6 +63,7 @@ class MainForm extends Component {
       this.props.login(this.state, this.props.navigation);
     }
   };
+
   componentDidMount() {
     this.props.checkForExpiredToken(this.props.navigation);
   }
@@ -118,17 +114,7 @@ class MainForm extends Component {
             />
           </Item>
           {this.state.emailError ? (
-            <Text
-              style={{
-                textAlign: "center",
-                color: "#fff",
-                fontFamily: "montserrat-regular",
-                fontSize: 15,
-                marginTop: 25
-              }}
-            >
-              {this.state.emailError}
-            </Text>
+            <Text style={styles.error}>{this.state.emailError}</Text>
           ) : null}
 
           <Item
@@ -165,17 +151,7 @@ class MainForm extends Component {
             />
           </Item>
           {this.state.passwordError ? (
-            <Text
-              style={{
-                textAlign: "center",
-                color: "#fff",
-                fontFamily: "montserrat-regular",
-                fontSize: 15,
-                marginTop: 25
-              }}
-            >
-              {this.state.passwordError}
-            </Text>
+            <Text style={styles.error}>{this.state.passwordError}</Text>
           ) : null}
           <Text
             onPress={() => {}}

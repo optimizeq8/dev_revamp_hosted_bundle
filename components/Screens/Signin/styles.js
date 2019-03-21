@@ -6,7 +6,6 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -81,6 +80,13 @@ const styles = StyleSheet.create({
   bottomView: {
     top: 15,
     height: 100
+  },
+  error: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    marginTop: 25
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

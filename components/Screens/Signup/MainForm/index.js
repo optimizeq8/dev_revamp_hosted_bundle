@@ -1,30 +1,18 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import { View, KeyboardAvoidingView } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button, Text, Container, Icon, Badge } from "native-base";
 import { LinearGradient } from "expo";
 import PersonalInfo from "../PersonalInfo";
 import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
 import BusinessInfo from "../BusinessInfo";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // Style
 import styles, { colors } from "./styles";
+//Redux
+import { connect } from "react-redux";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -32,15 +20,19 @@ class MainForm extends Component {
   };
 
   render() {
+    let title = "Phone Number";
     let content = <PhoneNo navigation={this.props.navigation} />;
     if (this.props.verificationCode && !this.props.verified) {
       content = <Verification />;
+      title = "Verification";
     }
     if (!this.props.registered && this.props.verified) {
       content = <PersonalInfo />;
+      title = "Personal Info";
     }
     if (this.props.successEmail) {
       content = <BusinessInfo navigation={this.props.navigation} />;
+      title = "Business Info";
     }
 
     return (
@@ -51,105 +43,105 @@ class MainForm extends Component {
           endPoint={{ x: 0, y: 1 }}
           style={styles.gradient}
         />
+        <Button
+          transparent
+          onPress={() => this.props.navigation.goBack()}
+          style={{
+            paddingLeft: 10
+          }}
+        >
+          <Icon
+            style={{
+              top: 20,
+              fontSize: 35,
+              color: "#fff"
+            }}
+            name="arrow-back"
+          />
+        </Button>
+        <Text style={styles.title}>Registration</Text>
+        <View style={styles.content}>
+          <Badge
+            style={
+              this.props.verified && !this.props.registered
+                ? styles.badge
+                : styles.activeBadege
+            }
+          >
+            <Text
+              style={
+                this.props.verified && !this.props.registered
+                  ? styles.badgeText
+                  : styles.activeBadegeText
+              }
+            >
+              1
+            </Text>
+          </Badge>
+          <View style={styles.dash} />
+
+          <Badge
+            style={
+              this.props.verificationCode && !this.props.successNo
+                ? styles.activeBadege
+                : styles.badge
+            }
+          >
+            <Text
+              style={
+                this.props.verificationCode && !this.props.successNo
+                  ? styles.activeBadegeText
+                  : styles.badgeText
+              }
+            >
+              2
+            </Text>
+          </Badge>
+          <View style={styles.dash} />
+          <Badge
+            style={
+              this.props.verified &&
+              !this.props.successEmail &&
+              !this.props.registered
+                ? styles.activeBadege
+                : styles.badge
+            }
+          >
+            <Text
+              style={
+                this.props.verified &&
+                !this.props.successEmail &&
+                !this.props.registered
+                  ? styles.activeBadegeText
+                  : styles.badgeText
+              }
+            >
+              3
+            </Text>
+          </Badge>
+          <View style={styles.dash} />
+          <Badge
+            style={this.props.successEmail ? styles.activeBadege : styles.badge}
+          >
+            <Text
+              style={
+                this.props.successEmail
+                  ? styles.activeBadegeText
+                  : styles.badgeText
+              }
+            >
+              4
+            </Text>
+          </Badge>
+        </View>
+        <Text style={styles.subtitle}>{title}</Text>
+
         <KeyboardAwareScrollView
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={false}
-          style={{
-            backgroundColor: "#fff",
-            borderTopStartRadius: 30,
-            borderTopEndRadius: 30
-          }}
+          style={styles.keyboard}
         >
-          <Card
-            style={[
-              styles.mainCard,
-              {
-                margin: 0,
-                shadowColor: "#fff",
-                shadowRadius: 1,
-                shadowOpacity: 0.7,
-                shadowOffset: { width: 8, height: 8 }
-              }
-            ]}
-          >
-            <Text style={styles.text}>Registration</Text>
-            <View style={styles.content}>
-              <Badge
-                style={
-                  this.props.verified && !this.props.registered
-                    ? styles.badge
-                    : styles.activeBadege
-                }
-              >
-                <Text
-                  style={
-                    this.props.verified && !this.props.registered
-                      ? { color: "#5F5F5F" }
-                      : { color: "#fff" }
-                  }
-                >
-                  1
-                </Text>
-              </Badge>
-              <Text> - </Text>
-              <Badge
-                style={
-                  this.props.verificationCode && !this.props.successNo
-                    ? styles.activeBadege
-                    : styles.badge
-                }
-              >
-                <Text
-                  style={
-                    this.props.verificationCode && !this.props.successNo
-                      ? { color: "#fff" }
-                      : { color: "#5F5F5F" }
-                  }
-                >
-                  2
-                </Text>
-              </Badge>
-              <Text> - </Text>
-              <Badge
-                style={
-                  this.props.verified &&
-                  !this.props.successEmail &&
-                  !this.props.registered
-                    ? styles.activeBadege
-                    : styles.badge
-                }
-              >
-                <Text
-                  style={
-                    this.props.verified &&
-                    !this.props.successEmail &&
-                    !this.props.registered
-                      ? { color: "#fff" }
-                      : { color: "#5F5F5F" }
-                  }
-                >
-                  3
-                </Text>
-              </Badge>
-              <Text> - </Text>
-              <Badge
-                style={
-                  this.props.successEmail ? styles.activeBadege : styles.badge
-                }
-              >
-                <Text
-                  style={
-                    this.props.successEmail
-                      ? { color: "#fff" }
-                      : { color: "#5F5F5F" }
-                  }
-                >
-                  4
-                </Text>
-              </Badge>
-            </View>
-            {content}
-          </Card>
+          <View style={[styles.mainCard]}>{content}</View>
         </KeyboardAwareScrollView>
       </Container>
     );
