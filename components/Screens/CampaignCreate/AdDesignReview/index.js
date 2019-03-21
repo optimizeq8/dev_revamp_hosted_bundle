@@ -43,7 +43,8 @@ class AdDesignReview extends Component {
           {this.props.navigation.state.params.headline}
         </Text>
         <Text style={styles.call_to_action}>
-          {this.props.navigation.state.params.call_to_action}
+          {this.props.navigation.state.params.call_to_action !== "BLANK" &&
+            this.props.navigation.state.params.call_to_action}
         </Text>
       </ImageBackground>
     );
