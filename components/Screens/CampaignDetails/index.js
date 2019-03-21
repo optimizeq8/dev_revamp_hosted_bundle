@@ -23,7 +23,7 @@ import dateFormat from "dateformat";
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { Video } from "expo";
-
+import { interestNames } from "./interesetNames";
 class CampaignDetails extends Component {
   static navigationOptions = {
     header: null
@@ -39,11 +39,19 @@ class CampaignDetails extends Component {
     if (!this.props.campaign) {
       return <Spinner color="red" />;
     } else {
+      let interesetNames = this.props.campaign.targeting.interests[0].category_id.map(
+        interest =>
+          ` ${
+            interestNames.interests.scls.find(
+              interestObj => interestObj.id === interest
+            ).name
+          } \n`
+      );
       let end_time = new Date(this.props.campaign.end_time.split(".")[0]);
       let start_time = new Date(this.props.campaign.start_time.split(".")[0]);
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
-      console.log(this.props.campaign);
+      console.log(interesetNames);
 
       return (
         <>
@@ -148,6 +156,10 @@ class CampaignDetails extends Component {
                     <Text style={styles.link}>
                       {this.props.campaign.targeting.geos[0].country_code}
                     </Text>
+                  </View>
+                  <View style={{ alignSelf: "center" }}>
+                    <Text style={styles.link}>Interests</Text>
+                    <Text style={styles.link}>{interesetNames} </Text>
                   </View>
                 </View>
               </Card>
