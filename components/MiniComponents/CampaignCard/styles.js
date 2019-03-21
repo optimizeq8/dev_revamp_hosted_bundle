@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
+
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -69,48 +71,75 @@ const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
-
+  header: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 0
+  },
   textcontainer: {
     flex: 1,
     flexDirection: "column",
-    alignItems: "flex-start",
-    paddingHorizontal: 7
+    alignItems: "flex-start"
   },
   titletext: {
     textAlign: "left",
     color: "#fff",
-    paddingTop: 10,
     fontFamily: "benton-sans-medium",
     fontSize: 16,
-    paddingVertical: 0
+    paddingVertical: 0,
+    width: "50%"
   },
+
   subtext: {
+    paddingTop: 10,
     fontFamily: "benton-sans-regular",
     fontSize: 12,
-    paddingTop: 5,
-    color: "#fff",
-    textAlign: "left"
+    color: "#fff"
   },
   campaignButton: {
-    justifyContent: "space-between",
-    flexDirection: "row",
     flex: 1,
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    backgroundColor: "#FF9D00",
-    padding: 10,
-    marginBottom: 20,
-    bottom: 15
+    padding: 20
+  },
+  chart: {
+    paddingHorizontal: 5,
+    top: 15
+  },
+  chartText: {
+    color: "#fff",
+    fontFamily: "benton-sans-medium",
+    fontSize: 16,
+    marginLeft: 10
+  },
+  chartSubtext: {
+    alignSelf: "center",
+    paddingTop: 17,
+    fontFamily: "benton-sans-regular",
+    fontSize: 12,
+    color: "#fff"
+  },
+  containerStyle: {
+    ...StyleSheet.absoluteFillObject,
+    left: "73%",
+    top: "80%"
+  },
+  toggleStyle: {
+    left: "80%",
+    width: 60,
+    height: 30,
+    borderRadius: 20,
+    padding: 5
+  },
+  circleStyle: {
+    width: 25,
+    height: 25,
+    borderRadius: 19,
+    backgroundColor: "white"
   },
   icon: {
-    alignSelf: "center",
+    ...StyleSheet.absoluteFillObject,
     color: "#fff",
-    fontSize: 40,
-    paddingVertical: 10,
-    paddingHorizontal: 7
+    left: "85%",
+    fontSize: 40
   },
   contentContainer: {
     paddingTop: 30

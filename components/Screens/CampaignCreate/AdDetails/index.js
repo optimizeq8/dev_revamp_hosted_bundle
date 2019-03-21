@@ -250,11 +250,11 @@ class AdDetails extends Component {
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
 
-      // this.props.ad_details(
-      //   rep,
-      //   this.state.interestNames,
-      //   this.props.navigation
-      // );
+      this.props.ad_details(
+        rep,
+        this.state.interestNames,
+        this.props.navigation
+      );
       // this.props.navigation.navigate("Home");
     }
   };
