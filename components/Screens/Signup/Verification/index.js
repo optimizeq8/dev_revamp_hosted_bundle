@@ -1,25 +1,15 @@
+//Components
 import React, { Component, createRef } from "react";
-import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
-import { View, TouchableOpacity, Image } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { View, Image } from "react-native";
+import { Text, Container, Icon } from "native-base";
+import CodeInput from "react-native-confirmation-code-field";
+
 // Style
 import styles, { colors } from "./styles";
+
+//Redux
 import * as actionCreators from "../../../../store/actions";
-import CodeInput from "react-native-confirmation-code-field";
+import { connect } from "react-redux";
 
 class Verification extends Component {
   inputRef = createRef();
@@ -34,8 +24,6 @@ class Verification extends Component {
     if (prevProps.verificationCode !== this.props.verificationCode)
       alert(this.props.verificationCode);
     if (prevProps.message !== this.props.message) {
-      console.log("hu", this.props.message);
-
       if (this.props.message.includes("Invalid")) {
         this.handlerOnIvalidCode();
 
@@ -59,7 +47,7 @@ class Verification extends Component {
   }
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text style={styles.text}>
           Please Enter the {"\n"}
           Verification code sent to{"\n"} {this.props.mobileNo}
@@ -81,35 +69,18 @@ class Verification extends Component {
           ref={this.inputRef}
         />
         {this.state.codeError !== "" && (
-          <Text style={[styles.text, { marginBottom: 0, paddingVertical: 0 }]}>
-            {this.state.codeError}
-          </Text>
+          <Text style={[styles.errorText]}>{this.state.codeError}</Text>
         )}
-        <TouchableOpacity
+
+        <Text
           onPress={() => {
             this.props.resetMessages();
             this.props.resendVerifyMobileCode(this.props.mobileNo);
           }}
+          style={[styles.link]}
         >
-          <Text style={[styles.text, { textDecorationLine: "underline" }]}>
-            Resend Code
-          </Text>
-        </TouchableOpacity>
-        {/*<TouchableOpacity
-          onPress={() => {
-            this.props.verifyMobileCode({
-              mobile: this.props.mobileNo,
-              verificationCode: this.props.verificationCode
-            });
-          }}
-          style={styles.button}
-        >
-          <Image
-            style={styles.image}
-            source={require("../../../../assets/images/button.png")}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>*/}
+          Resend Code
+        </Text>
       </View>
     );
   }

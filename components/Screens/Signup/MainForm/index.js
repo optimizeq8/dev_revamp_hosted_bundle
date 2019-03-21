@@ -45,34 +45,29 @@ class MainForm extends Component {
         />
         <Button
           transparent
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => this.props.navigation.navigate("Signin")}
           style={{
-            paddingLeft: 10
+            marginLeft: 10
           }}
         >
           <Icon
             style={{
-              top: 20,
-              fontSize: 35,
+              fontSize: 40,
               color: "#fff"
             }}
-            name="arrow-back"
+            name="close"
           />
         </Button>
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
           <Badge
-            style={
-              this.props.verified && !this.props.registered
-                ? styles.badge
-                : styles.activeBadege
-            }
+            style={!this.props.successNo ? styles.activeBadege : styles.badge}
           >
             <Text
               style={
-                this.props.verified && !this.props.registered
-                  ? styles.badgeText
-                  : styles.activeBadegeText
+                !this.props.successNo
+                  ? styles.activeBadegeText
+                  : styles.badgeText
               }
             >
               1
@@ -82,14 +77,14 @@ class MainForm extends Component {
 
           <Badge
             style={
-              this.props.verificationCode && !this.props.successNo
+              this.props.verificationCode && !this.props.verified
                 ? styles.activeBadege
                 : styles.badge
             }
           >
             <Text
               style={
-                this.props.verificationCode && !this.props.successNo
+                this.props.verificationCode && !this.props.verified
                   ? styles.activeBadegeText
                   : styles.badgeText
               }
