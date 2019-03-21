@@ -33,13 +33,13 @@ class BusinessInfo extends Component {
     this.state = {
       businessAccount: {
         businessname: "",
-        businesstype: "",
+        businesscategory: "",
         country: "",
         businessemail: ""
       },
       businessnameError: "",
       businessemailError: "",
-      businesstypeError: "",
+      businesscategoryError: "",
       countryError: "",
       items: [
         {
@@ -177,9 +177,9 @@ class BusinessInfo extends Component {
       "mandatory",
       this.state.businessAccount.businessemail
     );
-    const businesstypeError = validateWrapper(
+    const businesscategoryError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businesstype
+      this.state.businessAccount.businesscategory
     );
     const countryError = validateWrapper(
       "mandatory",
@@ -189,13 +189,13 @@ class BusinessInfo extends Component {
     this.setState({
       businessnameError,
       businessemailError,
-      businesstypeError,
+      businesscategoryError,
       countryError
     });
     if (
       !businessnameError &&
       !businessemailError &&
-      !businesstypeError &&
+      !businesscategoryError &&
       !countryError
     ) {
       this.props.createBusinessAccount(
@@ -341,12 +341,12 @@ class BusinessInfo extends Component {
             <RNPickerSelect
               items={this.state.items}
               placeholder={{ label: "Select a bussiness type", value: "" }}
-              value={this.state.businessAccount.businesstype}
+              value={this.state.businessAccount.businesscategory}
               onClose={() =>
                 this.setState({
-                  businesstypeError: validateWrapper(
+                  businesscategoryError: validateWrapper(
                     "mandatory",
-                    this.state.businessAccount.businesstype
+                    this.state.businessAccount.businesscategory
                   )
                 })
               }
@@ -354,7 +354,7 @@ class BusinessInfo extends Component {
                 this.setState({
                   businessAccount: {
                     ...this.state.businessAccount,
-                    businesstype: value
+                    businesscategory: value
                   }
                 });
               }}
@@ -364,7 +364,7 @@ class BusinessInfo extends Component {
                 style={[
                   styles.input,
                   {
-                    borderColor: this.state.businesstypeError
+                    borderColor: this.state.businesscategoryError
                       ? "red"
                       : "#D9D9D9"
                   }
@@ -372,8 +372,8 @@ class BusinessInfo extends Component {
               >
                 <Text
                   placeholder={
-                    this.state.businessAccount.businesstype !== ""
-                      ? this.state.businessAccount.businesstype
+                    this.state.businessAccount.businesscategory !== ""
+                      ? this.state.businessAccount.businesscategory
                       : ""
                   }
                   style={[
@@ -386,10 +386,12 @@ class BusinessInfo extends Component {
                     }
                   ]}
                 >
-                  {this.state.businessAccount.businesstype === ""
+                  {this.state.businessAccount.businesscategory === ""
                     ? "Business Type"
                     : this.state.items.find(
-                        i => i.value === this.state.businessAccount.businesstype
+                        i =>
+                          i.value ===
+                          this.state.businessAccount.businesscategory
                       ).label}
                 </Text>
                 <Icon
