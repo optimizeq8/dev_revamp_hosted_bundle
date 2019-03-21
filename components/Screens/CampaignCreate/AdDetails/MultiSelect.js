@@ -21,7 +21,6 @@ class MultiSelectList extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.interests !== this.props.interests) {
-      console.log("kjnwev", this.props.interests);
       let interests = [];
       let lenOfLists = 0;
 
@@ -35,7 +34,7 @@ class MultiSelectList extends Component {
         }
         lenOfLists += this.props.interests[key].length;
       });
-      // console.log("interests", interests);
+
       if (lenOfLists === 0) {
         this.setState({ interests: [] });
       } else this.setState({ interests });
@@ -44,7 +43,10 @@ class MultiSelectList extends Component {
       this.props.get_interests(this.props.country_code);
     }
   }
-
+  onSelectedItemObjectsChange = selectedItems => {
+    this.props.onSelectedInterestsNamesChange(selectedItems);
+    this.setState({ selectedItemObjects: selectedItems });
+  };
   onSelectedItemsChange = selectedItems => {
     this.props.onSelectedInterestsChange(selectedItems);
     this.setState({ selectedItems });
@@ -146,6 +148,7 @@ class MultiSelectList extends Component {
             modalAnimationType="fade"
             modalWithTouchable={true}
             onSelectedItemsChange={this.onSelectedItemsChange}
+            onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
             selectedItems={this.state.selectedItems}
           />
         </View>

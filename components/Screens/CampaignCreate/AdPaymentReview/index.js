@@ -63,6 +63,11 @@ class AdPaymentReview extends Component {
             min_age: 13
           }
         ],
+        interests: [
+          {
+            category_id: ["SLC_1", "SLC_103"]
+          }
+        ],
         geos: [
           {
             country_code: "kw",
@@ -79,6 +84,10 @@ class AdPaymentReview extends Component {
     this.setState({ ...this.props.data });
   }
   render() {
+    let interestNames = this.props.navigation.state.params.interestNames.map(
+      interest => interest.name
+    );
+
     let width = Dimensions.get("window").width * 0.5 - 100;
     let end_time = new Date(this.state.end_time.split(".")[0]);
     let start_time = new Date(this.state.start_time.split(".")[0]);
@@ -186,6 +195,10 @@ class AdPaymentReview extends Component {
                     this.state.targeting.demographics[0].min_age +
                     "-" +
                     this.state.targeting.demographics[0].max_age
+                },
+                interestNames.length > 0 && {
+                  title: "Interests",
+                  content: interestNames + ""
                 }
               ]}
             />
@@ -242,7 +255,8 @@ class AdPaymentReview extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
   getCampaignList: id => dispatch(actionCreators.getCampaignList(id))

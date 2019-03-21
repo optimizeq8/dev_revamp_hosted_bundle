@@ -103,7 +103,7 @@ export const get_interests = countryCode => {
   };
 };
 
-export const ad_details = (info, navigation) => {
+export const ad_details = (info, interestNames, navigation) => {
   return (dispatch, getState) => {
     instance
       .post(`savetargeting`, info)
@@ -118,7 +118,9 @@ export const ad_details = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.navigate("AdPaymentReview");
+        navigation.navigate("AdPaymentReview", {
+          interestNames: interestNames
+        });
       })
       .catch(err => {
         dispatch(console.log(err.response.data));

@@ -100,7 +100,8 @@ class AdDetails extends Component {
       budget: 50,
       minValueBudget: 20,
       maxValueBudget: 1000,
-      value: 0
+      value: 0,
+      interestNames: []
     };
   }
 
@@ -141,11 +142,17 @@ class AdDetails extends Component {
       this.setState({ campaignInfo: replace, regions: reg.regions });
     }
   };
+
   onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
     this.setState({ campaignInfo: replace });
   };
+
+  onSelectedInterestsNamesChange = selectedItems => {
+    this.setState({ interestNames: selectedItems });
+  };
+
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].languages = selectedItems;
@@ -215,11 +222,17 @@ class AdDetails extends Component {
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
 
-      this.props.ad_details(rep, this.props.navigation);
+      this.props.ad_details(
+        rep,
+        this.state.interestNames,
+        this.props.navigation
+      );
       // this.props.navigation.navigate("Home");
     }
   };
   render() {
+    console.log(this.state.interestNames);
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -390,6 +403,9 @@ class AdDetails extends Component {
               onSelectedRegionChange={this.onSelectedRegionChange}
               region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
               onSelectedInterestsChange={this.onSelectedInterestsChange}
+              onSelectedInterestsNamesChange={
+                this.onSelectedInterestsNamesChange
+              }
             />
             <Button
               onPress={() => {
@@ -447,8 +463,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, navigation) =>
-    dispatch(actionCreators.ad_details(info, navigation)),
+  ad_details: (info, interestNames, navigation) =>
+    dispatch(actionCreators.ad_details(info, interestNames, navigation)),
   snap_ad_audience_size: info =>
     dispatch(actionCreators.snap_ad_audience_size(info))
 });
