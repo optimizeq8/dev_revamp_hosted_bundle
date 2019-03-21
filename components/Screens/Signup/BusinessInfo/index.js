@@ -34,14 +34,14 @@ class BusinessInfo extends Component {
       userInfo: {
         ...this.props.userInfo,
         businessname: "",
-        businesstype: "",
+        businesscategory: "",
         country: "",
-        usertype: "1",
+        businesscategory: "1",
         country_code: this.props.countryCode
       },
       nameError: "",
       countryError: "",
-      businesstypeError: "",
+      businesscategoryError: "",
       data: [
         {
           label: "Individual",
@@ -208,19 +208,19 @@ class BusinessInfo extends Component {
       "mandatory",
       this.state.userInfo.country
     );
-    const businesstypeError = validateWrapper(
+    const businesscategoryError = validateWrapper(
       "mandatory",
-      this.state.userInfo.businesstype
+      this.state.userInfo.businesscategory
     );
     this.setState({
       nameError,
       countryError,
-      businesstypeError
+      businesscategoryError
     });
     if (
       !this.state.nameError &&
       !this.state.countryError &&
-      !this.state.businesstypeError
+      !this.state.businesscategoryError
     ) {
       this.props.registerUser(this.state.userInfo, this.props.navigation);
     }
@@ -251,7 +251,10 @@ class BusinessInfo extends Component {
               onPress={value => {
                 var data = value.find(data => data.selected === true);
                 this.setState({
-                  userInfo: { ...this.state.userInfo, usertype: data.value }
+                  userInfo: {
+                    ...this.state.userInfo,
+                    businesscategory: data.value
+                  }
                 });
               }}
             />
@@ -269,7 +272,7 @@ class BusinessInfo extends Component {
               <Input
                 style={styles.inputtext}
                 placeholder={
-                  this.state.userInfo.usertype === "1"
+                  this.state.userInfo.businesscategory === "1"
                     ? "Your Name"
                     : "Company Name"
                 }
@@ -283,7 +286,7 @@ class BusinessInfo extends Component {
                 }}
                 onBlur={() =>
                   this._verifyBusinessName(
-                    this.state.userInfo.usertype,
+                    this.state.userInfo.businesscategory,
                     this.state.userInfo.businessname
                   )
                 }
@@ -338,7 +341,7 @@ class BusinessInfo extends Component {
                   ]}
                 >
                   {this.state.userInfo.country === ""
-                    ? this.state.userInfo.usertype === "1"
+                    ? this.state.userInfo.businesscategory === "1"
                       ? "Where do you live?"
                       : "Country"
                     : this.state.userInfo.country}
@@ -356,15 +359,15 @@ class BusinessInfo extends Component {
               placeholder={{ label: "Select a business type", value: "" }}
               onClose={() =>
                 this.setState({
-                  businesstypeError: validateWrapper(
+                  businesscategoryError: validateWrapper(
                     "mandatory",
-                    this.state.userInfo.businesstype
+                    this.state.userInfo.businesscategory
                   )
                 })
               }
               onValueChange={value => {
                 this.setState({
-                  userInfo: { ...this.state.userInfo, businesstype: value }
+                  userInfo: { ...this.state.userInfo, businesscategory: value }
                 });
               }}
             >
@@ -373,7 +376,7 @@ class BusinessInfo extends Component {
                 style={[
                   styles.input,
                   {
-                    borderColor: this.state.businesstypeError
+                    borderColor: this.state.businesscategoryError
                       ? "red"
                       : "#D9D9D9"
                   }
@@ -381,8 +384,8 @@ class BusinessInfo extends Component {
               >
                 <Text
                   placeholder={
-                    this.state.userInfo.businesstype !== ""
-                      ? this.state.userInfo.businesstype
+                    this.state.userInfo.businesscategory !== ""
+                      ? this.state.userInfo.businesscategory
                       : ""
                   }
                   style={[
@@ -395,12 +398,12 @@ class BusinessInfo extends Component {
                     }
                   ]}
                 >
-                  {this.state.userInfo.businesstype === ""
-                    ? this.state.userInfo.usertype === "1"
+                  {this.state.userInfo.businesscategory === ""
+                    ? this.state.userInfo.businesscategory === "1"
                       ? "What do you do?"
                       : "Business Type"
                     : this.state.items.find(
-                        i => i.value === this.state.userInfo.businesstype
+                        i => i.value === this.state.userInfo.businesscategory
                       ).label}
                 </Text>
                 <Icon

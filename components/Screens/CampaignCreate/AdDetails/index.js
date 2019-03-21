@@ -36,7 +36,7 @@ import InputNumber from "rmc-input-number";
 import inputNumberStyles from "./inputNumber";
 // Style
 import styles, { colors } from "./styles";
-
+import DateField from "./DateFields";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null
@@ -59,7 +59,9 @@ class AdDetails extends Component {
           ],
           interests: [{ category_id: [] }],
           geos: [{ country_code: "kw", region_id: [] }]
-        }
+        },
+        start_time: "",
+        end_time: ""
       },
       gender: [
         { label: "Female", value: "FEMALE" },
@@ -142,7 +144,26 @@ class AdDetails extends Component {
       this.setState({ campaignInfo: replace, regions: reg.regions });
     }
   };
+  handleStartDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        start_time: date.toISOString().split("T")[0]
+      }
+    });
 
+    this.dateField.hideStartDateTimePicker();
+  };
+  handleEndDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: date.toISOString().split("T")[0]
+      }
+    });
+
+    this.dateField.hideEndDateTimePicker();
+  };
   onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
@@ -194,13 +215,20 @@ class AdDetails extends Component {
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
         : null;
+    let dateErrors = this.dateField.getErrors();
 
     this.setState({
       min_ageError,
       max_ageError,
       languagesError
     });
-    if (!min_ageError && !max_ageError && !languagesError) {
+    if (
+      !min_ageError &&
+      !max_ageError &&
+      !languagesError &&
+      !dateErrors.end_timeError &&
+      !dateErrors.start_timeError
+    ) {
       let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
@@ -222,17 +250,15 @@ class AdDetails extends Component {
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
 
-      this.props.ad_details(
-        rep,
-        this.state.interestNames,
-        this.props.navigation
-      );
+      // this.props.ad_details(
+      //   rep,
+      //   this.state.interestNames,
+      //   this.props.navigation
+      // );
       // this.props.navigation.navigate("Home");
     }
   };
   render() {
-    console.log(this.state.interestNames);
-
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -384,6 +410,14 @@ class AdDetails extends Component {
                 Max {this.state.max_ageError}
               </Text>
             )}
+
+            <DateField
+              onRef={ref => (this.dateField = ref)}
+              handleStartDatePicked={this.handleStartDatePicked}
+              handleEndDatePicked={this.handleEndDatePicked}
+              start_time={this.state.campaignInfo.start_time}
+              end_time={this.state.campaignInfo.end_time}
+            />
             <MultiSelect
               countries={this.state.countries}
               country_code={
@@ -432,7 +466,6 @@ class AdDetails extends Component {
                   targeting: JSON.stringify(r),
                   ad_account_id: this.props.mainBusiness.snap_ad_account_id
                 };
-                console.log(obj);
                 this.props.snap_ad_audience_size(obj);
               }}
             >
