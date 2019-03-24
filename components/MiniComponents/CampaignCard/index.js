@@ -34,16 +34,7 @@ class CampaignCard extends Component {
     return (
       <LinearGradient
         colors={["#751AFF", "#6C52FF", "#6268FF"]}
-        style={{
-          justifyContent: "space-between",
-          flexDirection: "row",
-          flex: 1,
-          marginHorizontal: 25,
-          borderTopStartRadius: 20,
-          borderTopEndRadius: 20,
-          borderBottomStartRadius: 20,
-          borderBottomEndRadius: 20
-        }}
+        style={styles.cardStyle}
       >
         <TouchableOpacity
           onPress={() => {

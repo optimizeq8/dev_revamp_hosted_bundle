@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     margin: 15
   },
   placeholder: {
+    opacity: 0.6,
     borderRadius: 34,
     overflow: "hidden",
     alignSelf: "center",
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
 
   mainCard: {
     top: 15,
-
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",

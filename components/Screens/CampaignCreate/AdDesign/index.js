@@ -239,6 +239,7 @@ class AdDesign extends Component {
                     }}
                     shouldPlay
                     isLooping
+                    isMuted
                     resizeMode="cover"
                     style={styles.placeholder}
                   />
@@ -330,7 +331,7 @@ class AdDesign extends Component {
                     }}
                   />
                 </Item>
-                {!["brand awareness", "Reach"].find(
+                {!["BRAND_AWARENESS", "reach"].find(
                   obj =>
                     this.state.objective.toLowerCase() === obj.toLowerCase()
                 ) && (
