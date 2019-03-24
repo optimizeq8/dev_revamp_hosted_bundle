@@ -40,6 +40,12 @@ export default class App extends React.Component {
         "benton-sans-regular": require("./assets/fonts/BentonSans-Regular.otf"),
         "benton-sans-light": require("./assets/fonts/BentonSans-Light.otf"),
         "benton-sans-medium": require("./assets/fonts/BentonSans-Medium.otf"),
+        "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
+        "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+        "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
+        "Montserrat-Light": require("./assets/fonts/Montserrat-Light.ttf"),
+        "Montserrat-ExtraLight": require("./assets/fonts/Montserrat-ExtraLight.ttf"),
+        "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
       })
