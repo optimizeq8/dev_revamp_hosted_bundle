@@ -20,6 +20,7 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-animated-swiper": "^0.0.23",
+    "react-native-calendars": "^1.22.0",
     "react-native-circular-progress": "^1.1.0",
     "react-native-confirmation-code-field": "^3.2.2",
     "react-native-elements": "^1.0.0",

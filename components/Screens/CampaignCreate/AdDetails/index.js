@@ -103,7 +103,8 @@ class AdDetails extends Component {
       minValueBudget: 20,
       maxValueBudget: 1000,
       value: 0,
-      interestNames: []
+      interestNames: [],
+      modalVisible: false
     };
   }
 
@@ -148,21 +149,17 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        start_time: date.toISOString().split("T")[0]
+        start_time: date
       }
     });
-
-    this.dateField.hideStartDateTimePicker();
   };
   handleEndDatePicked = date => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        end_time: date.toISOString().split("T")[0]
+        end_time: date
       }
     });
-
-    this.dateField.hideEndDateTimePicker();
   };
   onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
@@ -220,7 +217,9 @@ class AdDetails extends Component {
     this.setState({
       min_ageError,
       max_ageError,
-      languagesError
+      languagesError,
+      start_timeError: dateErrors.start_timeError,
+      end_time: dateErrors.end_timeError
     });
     if (
       !min_ageError &&
@@ -249,6 +248,7 @@ class AdDetails extends Component {
         rep.targeting.demographics[0].max_age = "35+";
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
+      // console.log( /  rep);
 
       this.props.ad_details(
         rep,
@@ -410,6 +410,50 @@ class AdDetails extends Component {
                 Max {this.state.max_ageError}
               </Text>
             )}
+            <Item
+              rounded
+              style={[
+                styles.dateInput,
+                {
+                  borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
+                }
+              ]}
+              onPress={() => {
+                this.dateField.showModal();
+              }}
+            >
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
+              >
+                {this.state.campaignInfo.start_time === ""
+                  ? "Start date"
+                  : this.state.campaignInfo.start_time}
+              </Text>
+              <Text style={[styles.inputtext]}>To</Text>
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
+              >
+                {this.state.campaignInfo.end_time === ""
+                  ? "End date"
+                  : this.state.campaignInfo.end_time}
+              </Text>
+            </Item>
 
             <DateField
               onRef={ref => (this.dateField = ref)}
