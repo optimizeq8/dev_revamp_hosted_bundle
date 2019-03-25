@@ -23,14 +23,18 @@ import {
   H1,
   Badge
 } from "native-base";
-import { LinearGradient } from "expo";
+import { BlurView } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
-
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import CloseIcon from "../../../../assets/SVGs/Close.svg";
+import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import CalenderkIcon from "../../../../assets/SVGs/Calender.svg";
+import DateRangePicker from "./DateRangePicker";
 // Style
 import styles, { colors } from "./styles";
 
@@ -38,12 +42,11 @@ export default class DateFields extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      campaignInfo: {
-        start_time: "",
-        end_time: ""
-      },
-      startDateTimePickerVisible: false,
-      endDateTimePickerVisible: false,
+      markedDates: {},
+      modalVisible: false,
+      start_choice: false,
+      end_choice: false,
+
       start_timeError: "",
       endt_time: ""
     };
@@ -55,17 +58,6 @@ export default class DateFields extends Component {
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
-  showStartDateTimePicker = () =>
-    this.setState({ startDateTimePickerVisible: true });
-
-  showEndDateTimePicker = () =>
-    this.setState({ endDateTimePickerVisible: true });
-
-  hideStartDateTimePicker = () =>
-    this.setState({
-      startDateTimePickerVisible: false,
-      start_timeError: validateWrapper("mandatory", this.props.start_time)
-    });
 
   getErrors = () => {
     this.setState({
@@ -77,113 +69,98 @@ export default class DateFields extends Component {
       start_timeError: validateWrapper("mandatory", this.props.end_time)
     };
   };
-  hideEndDateTimePicker = () =>
+
+  startDatePicked = () => {
     this.setState({
-      endDateTimePickerVisible: false,
-      startDateTimePickerVisible: false,
-      end_timeError: validateWrapper("mandatory", this.props.end_time)
+      start_choice: true
     });
+  };
+  endDatePicked = () => {
+    this.setState({
+      end_choice: true
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      modalVisible: true
+    });
+  };
 
   render() {
     return (
-      <View>
-        <Item
-          rounded
-          style={[
-            styles.input,
-            {
-              borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
-            }
-          ]}
-          onPress={this.showStartDateTimePicker}
+      <View
+        style={[
+          styles.dateModal,
+          this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 }
+        ]}
+      >
+        <Modal
+          onDismiss={() => this.setState({ modalVisible: false })}
+          onRequestClose={() => this.setState({ modalVisible: false })}
+          visible={this.state.modalVisible}
         >
-          <Text
-            style={[
-              styles.inputtext,
-              {
-                flex: 1,
+          <BlurView tint="dark" intensity={95} style={styles.BlurView}>
+            <View
+              style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
-                color: "rgb(113,113,113)"
-              }
-            ]}
-          >
-            {this.props.start_time === ""
-              ? "Set your start date..."
-              : this.props.start_time.split("T")[0]}
-          </Text>
-          <Icon
-            type="AntDesign"
-            name="down"
-            style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-          />
-          <DateTimePicker
-            minimumDate={new Date()}
-            maximumDate={
-              this.props.end_time !== "" ? new Date(this.props.end_time) : null
-            }
-            isVisible={this.state.startDateTimePickerVisible}
-            onConfirm={this.props.handleStartDatePicked}
-            onCancel={this.hideStartDateTimePicker}
-            mode="date"
-            onHideAfterConfirm={() =>
-              this.setState({
-                start_timeError: validateWrapper(
-                  "mandatory",
-                  this.props.start_time
-                )
-              })
-            }
-          />
-        </Item>
+                // alignSelf: "center",
+                justifyContent: "space-around"
+              }}
+            >
+              <Button
+                transparent
+                onPress={() => {
+                  this.setState({ modalVisible: false });
+                }}
+                style={styles.btnClose}
+              >
+                <CloseIcon width={20} height={20} />
+              </Button>
+              <Text style={styles.title}>Duration</Text>
+              <Text
+                style={[styles.textModal, { fontFamily: "Montserrat-Light" }]}
+              >
+                Reset
+              </Text>
+            </View>
+            <Text style={styles.textModal}>
+              Please select your ad launch and end dates
+            </Text>
+            <CalenderkIcon width={60} height={60} style={styles.icon} />
+            <Text style={[styles.textModal, { color: "#FF9D00" }]}>
+              Select the {!this.state.start_choice ? "Start Date" : "End Date"}
+            </Text>
+            <DateRangePicker
+              startDatePicked={this.startDatePicked}
+              endDatePicked={this.endDatePicked}
+              initialRange={[this.props.start_time, this.props.end_time]}
+              onSuccess={async (s, e) => {
+                this.endDatePicked();
+                this.setState({
+                  start_date: s,
+                  end_date: e
+                });
+              }}
+              theme={{ markColor: "#FF9D00", markTextColor: "white" }}
+            />
 
-        <Item
-          rounded
-          style={[
-            styles.input,
-            {
-              borderColor: this.state.end_timeError ? "red" : "#D9D9D9"
-            }
-          ]}
-          onPress={this.showEndDateTimePicker}
-        >
-          <Text
-            style={[
-              styles.inputtext,
-              {
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                color: "rgb(113,113,113)"
-              }
-            ]}
-          >
-            {this.props.end_time === ""
-              ? "Set your end date..."
-              : this.props.end_time.split("T")[0]}
-          </Text>
-          <Icon
-            type="AntDesign"
-            name="down"
-            style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-          />
-          <DateTimePicker
-            isVisible={this.state.endDateTimePickerVisible}
-            minimumDate={
-              this.props.start_time !== ""
-                ? new Date(this.props.start_time)
-                : new Date()
-            }
-            onConfirm={this.props.handleEndDatePicked}
-            onCancel={this.hideEndDateTimePicker}
-            mode="date"
-            onHideAfterConfirm={() =>
-              this.setState({
-                end_timeError: validateWrapper("mandatory", this.props.end_time)
-              })
-            }
-          />
-        </Item>
+            {this.state.end_choice ? (
+              <Button
+                style={styles.button}
+                onPress={async () => {
+                  await this.props.handleStartDatePicked(this.state.start_date);
+                  await this.props.handleEndDatePicked(this.state.end_date);
+                  this.setState({
+                    modalVisible: false
+                  });
+                }}
+              >
+                <CheckmarkIcon width={53} height={53} />
+              </Button>
+            ) : null}
+          </BlurView>
+        </Modal>
       </View>
     );
   }
