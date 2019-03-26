@@ -3,57 +3,57 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
+  logo: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 22,
+    fontFamily: "montserrat-regular"
+  },
   image: {
     alignSelf: "center",
     height: 100,
     width: 100,
-    margin: 15
+    margin: 10
   },
-  mainCard: {
-    top: 15,
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
+  mainView: {
     flex: 1,
-    marginLeft: 0,
-    marginRight: 0
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
   text: {
     textAlign: "center",
-    color: "#717171",
+    color: "#fff",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 15,
+    fontFamily: "montserrat-medium",
+    fontSize: 24,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    color: "#7039FF",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
+    color: "#fff",
     alignSelf: "center",
     textAlign: "center"
   },
   input: {
     top: 30,
     marginBottom: 10,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "rgba(0, 0, 0, 0.16)",
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
@@ -61,9 +61,11 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: 30,
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
     marginBottom: 10,
-    backgroundColor: "#5F5F5F",
+    backgroundColor: "#fff",
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
@@ -73,24 +75,19 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    textDecorationLine: "underline"
+    fontFamily: "montserrat-light",
+    fontSize: 14
   },
-  bottomCard: {
+  bottomView: {
     top: 15,
-    backgroundColor: "#6C6C6C",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
     height: 100
+  },
+  error: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    marginTop: 25
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

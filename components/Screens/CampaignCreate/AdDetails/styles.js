@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "Montserrat-Medium",
+    fontFamily: "montserrat-medium",
     fontSize: 18,
     width: 150,
     alignSelf: "center"
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
 
-    fontFamily: "Montserrat-Regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingVertical: 20
   }

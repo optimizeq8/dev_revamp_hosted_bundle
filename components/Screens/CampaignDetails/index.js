@@ -238,7 +238,7 @@ class CampaignDetails extends Component {
                   <Text
                     style={[
                       styles.numbers,
-                      { fontSize: 32, fontFamily: "Montserrat-SemiBold" }
+                      { fontSize: 32, fontFamily: "montserrat-semibold" }
                     ]}
                   >
                     {this.props.campaign.lifetime_budget_micro}
@@ -424,7 +424,6 @@ class CampaignDetails extends Component {
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>
-                  </View>
                 )}
               </SlidingUpPanel>
             </Container>
@@ -458,7 +457,7 @@ class CampaignDetails extends Component {
                   <Text
                     style={[
                       {
-                        fontFamily: "Montserrat-SemiBold",
+                        fontFamily: "montserrat-semibold",
                         color: "#fff",
                         fontSize: 14
                       }
@@ -471,7 +470,7 @@ class CampaignDetails extends Component {
                 <Text
                   style={[
                     styles.numbers,
-                    { fontSize: 37, fontFamily: "Montserrat-SemiBold" }
+                    { fontSize: 37, fontFamily: "montserrat-semibold" }
                   ]}
                 >
                   200
@@ -479,7 +478,7 @@ class CampaignDetails extends Component {
                     style={{
                       color: "white",
                       fontSize: 25,
-                      fontFamily: "Montserrat-SemiBold"
+                      fontFamily: "montserrat-semibold"
                     }}
                   >
                     $
@@ -488,7 +487,7 @@ class CampaignDetails extends Component {
                 <Text
                   style={[
                     styles.subHeadings,
-                    { fontFamily: "Montserrat-Regular", fontSize: 14 }
+                    { fontFamily: "montserrat-regular", fontSize: 14 }
                   ]}
                 >
                   Will be added to your wallet If the Ad has been paused for 3
