@@ -131,13 +131,7 @@ class MainForm extends Component {
         </View>
         <Text style={styles.subtitle}>{title}</Text>
 
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={false}
-          style={styles.keyboard}
-        >
-          <View style={[styles.mainCard]}>{content}</View>
-        </KeyboardAwareScrollView>
+        <View style={[styles.mainCard]}>{content}</View>
       </Container>
     );
   }

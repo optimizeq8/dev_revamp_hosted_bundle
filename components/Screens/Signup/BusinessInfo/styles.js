@@ -9,8 +9,16 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    justifyContent: "center",
+    borderTopStartRadius: 30,
+    backgroundColor: "#fff",
+    paddingTop: 10,
+    borderTopEndRadius: 30,
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -3 },
+    flex: 1
   },
 
   image: {
@@ -27,7 +35,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 8, height: 8 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    flex: 1,
     marginLeft: 0,
     marginRight: 0
   },
@@ -35,60 +42,61 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#717171",
     paddingTop: 40,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginBottom: 40
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
-    fontSize: 14
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    marginBottom: 30
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
   },
   input: {
     marginBottom: 30,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 30,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 300,
-    height: 50
-  },
-  button: {
-    backgroundColor: "#5F5F5F",
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
     width: 300,
-    height: 50
+    height: 50,
+    borderColor: "#7039FF"
+  },
+  button: {
+    backgroundColor: "#fff",
+    alignSelf: "center",
+    height: 70
+  },
+  activebutton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    height: 70
   },
   link: {
     textAlign: "center",
-    color: "#fff",
+    color: "#707070",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 15,
+    fontFamily: "montserrat-light",
+    fontSize: 12,
     paddingHorizontal: 10,
-    paddingVertical: 10,
-    textDecorationLine: "underline"
+    paddingVertical: 10
   },
   bottomCard: {
-    top: 15,
-    backgroundColor: "#6C6C6C",
+    backgroundColor: "#FF9D00",
     shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
+    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100
+    height: 80
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
