@@ -37,13 +37,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-Regular",
+    fontFamily: "benton-sans-regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-Regular",
+    fontFamily: "benton-sans-regular",
     fontSize: 14
   },
   inputtext: {
@@ -158,6 +158,43 @@ const styles = StyleSheet.create({
 
     marginVertical: 20,
     padding: 20
+  },
+  dragHandler: {
+    // alignSelf: "stretch",
+    // height: 64,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  bottomContainer: {
+    flex: 1,
+    zIndex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  tab: {
+    // position: "absolute",
+    // backgroundColor: "red",
+    bottom: -43,
+    alignSelf: "center",
+    width: wp("63%"),
+    borderRadius: 30,
+    paddingBottom: 20
+  },
+  handlerIcon: {
+    ...StyleSheet.absoluteFillObject,
+    left: wp("26%"),
+    top: hp("1.7%")
+  },
+  handlerText: {
+    textAlign: "center",
+    color: "#fff",
+    paddingTop: 25,
+    paddingBottom: 20,
+    fontFamily: "Montserrat-Medium",
+    fontSize: 18
+  },
+  chartPosition: {
+    ...StyleSheet.absoluteFillObject
   }
 });
 

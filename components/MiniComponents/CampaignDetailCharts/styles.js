@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -12,8 +15,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "transparent",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "space-evenly"
+    alignItems: "center"
   },
   image: {
     alignSelf: "center",
@@ -27,22 +29,20 @@ const styles = StyleSheet.create({
     width: 50
   },
   cardStyle: {
-    width: 100,
-    height: 120,
+    width: wp("100%"),
+    height: hp("20%"),
+    // flexDirection: "row",
     borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center"
+    alignSelf: "center"
   },
 
   text: {
     textAlign: "center",
-    color: "#5F5F5F",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    color: "#fff",
+    paddingTop: 25,
+    paddingBottom: 20,
+    fontFamily: "Montserrat-Medium",
+    fontSize: 18
   },
   buttontext: {
     fontFamily: "benton-sans-regular",
@@ -110,9 +110,8 @@ const styles = StyleSheet.create({
     padding: 20
   },
   chart: {
-    alignItems: "center"
-    // paddingHorizontal: 5,
-    // top: 15
+    alignItems: "center",
+    paddingHorizontal: 5
   },
   chartText: {
     color: "#fff",
@@ -147,12 +146,19 @@ const styles = StyleSheet.create({
   },
   icon: {
     ...StyleSheet.absoluteFillObject,
-    color: "#fff",
-    left: "85%",
-    fontSize: 40
+    left: wp("26%"),
+    top: hp("1.7%")
   },
   contentContainer: {
     paddingTop: 30
+  },
+  tab: {
+    position: "absolute",
+    // backgroundColor: "red",
+    bottom: 130,
+    alignSelf: "center",
+    width: wp("63%"),
+    borderRadius: 30
   }
 });
 
