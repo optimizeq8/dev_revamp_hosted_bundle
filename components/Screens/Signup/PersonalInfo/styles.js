@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 40,
     flex: 1,
-    justifyContent: "space-between"
+    justifyContent: "space-around"
   },
   icon: {
     fontSize: 45,

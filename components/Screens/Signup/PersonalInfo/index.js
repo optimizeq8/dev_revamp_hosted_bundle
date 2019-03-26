@@ -125,6 +125,7 @@ class PersonalInfo extends Component {
                     style={[
                       styles.inputtext,
                       {
+                        bottom: 5,
                         flexDirection: "column",
                         color: this.state.inputF ? "#FF9D00" : "#717171"
                       }
@@ -181,7 +182,10 @@ class PersonalInfo extends Component {
                     style={[
                       styles.inputtext,
 
-                      { color: this.state.inputL ? "#FF9D00" : "#717171" }
+                      {
+                        bottom: 5,
+                        color: this.state.inputL ? "#FF9D00" : "#717171"
+                      }
                     ]}
                   >
                     Last Name
@@ -230,6 +234,8 @@ class PersonalInfo extends Component {
                     style={[
                       styles.inputtext,
                       {
+                        bottom: 5,
+                        flexDirection: "row",
                         color: this.state.inputE ? "#FF9D00" : "#717171"
                       }
                     ]}
@@ -298,7 +304,7 @@ class PersonalInfo extends Component {
                     style={[
                       styles.inputtext,
                       {
-                        flexDirection: "column",
+                        bottom: 5,
 
                         color: this.state.inputP ? "#FF9D00" : "#717171"
                       }
@@ -374,7 +380,10 @@ class PersonalInfo extends Component {
                     <Label
                       style={[
                         styles.inputtext,
-                        { color: this.state.inputPR ? "#FF9D00" : "#717171" }
+                        {
+                          bottom: 5,
+                          color: this.state.inputPR ? "#FF9D00" : "#717171"
+                        }
                       ]}
                     >
                       Retype Password

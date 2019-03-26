@@ -78,6 +78,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 70
   },
+  inactivetext: {
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    color: "#7039FF"
+  },
+  activetext: {
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    color: "#fff"
+  },
   link: {
     textAlign: "center",
     color: "#707070",
@@ -96,7 +106,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 80
+    height: 100
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

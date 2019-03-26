@@ -241,7 +241,8 @@ class BusinessInfo extends Component {
             backgroundColor: "#751AFF",
             flexDirection: "row",
             alignSelf: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            marginBottom: 20
           }}
         >
           <Button
@@ -264,15 +265,25 @@ class BusinessInfo extends Component {
               });
             }}
           >
-            <Text style={{ textAlign: "center" }}>
+            <Text
+              style={[
+                this.state.userInfo.businesstype === "1"
+                  ? styles.activetext
+                  : styles.inactivetext,
+                { textAlign: "center" }
+              ]}
+            >
               <Icon
                 type="AntDesign"
                 name="down"
-                style={{
-                  color: "#5F5F5F",
-                  fontSize: 12,
-                  left: 25
-                }}
+                style={[
+                  this.state.userInfo.businesstype === "1"
+                    ? styles.activetext
+                    : styles.inactivetext,
+                  {
+                    left: 25
+                  }
+                ]}
               />
               {"\n"}An Individual
             </Text>
@@ -296,15 +307,25 @@ class BusinessInfo extends Component {
               });
             }}
           >
-            <Text style={{ textAlign: "center" }}>
+            <Text
+              style={[
+                this.state.userInfo.businesstype === "2"
+                  ? styles.activetext
+                  : styles.inactivetext,
+                { textAlign: "center" }
+              ]}
+            >
               <Icon
                 type="AntDesign"
                 name="down"
-                style={{
-                  color: "#5F5F5F",
-                  fontSize: 12,
-                  left: 25
-                }}
+                style={[
+                  this.state.userInfo.businesstype === "2"
+                    ? styles.activetext
+                    : styles.inactivetext,
+                  {
+                    left: 25
+                  }
+                ]}
               />
               {"\n"}A Company
             </Text>
@@ -518,16 +539,18 @@ class BusinessInfo extends Component {
             Agree to the Terms & Conditions
           </Text>
         </View>
-        <Button
-          block
-          dark
-          style={[styles.bottomCard, { justifyContent: "flex-end" }]}
-          onPress={() => {
-            this._handleSubmission();
-          }}
-        >
-          <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
-        </Button>
+        <View style={{ backgroundColor: "#fff" }}>
+          <Button
+            block
+            dark
+            style={[styles.bottomCard, { justifyContent: "center" }]}
+            onPress={() => {
+              this._handleSubmission();
+            }}
+          >
+            <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
+          </Button>
+        </View>
       </View>
     );
   }
