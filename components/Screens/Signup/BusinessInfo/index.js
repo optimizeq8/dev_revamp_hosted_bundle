@@ -35,7 +35,7 @@ class BusinessInfo extends Component {
         businessname: "",
         businesscategory: "",
         country: "",
-        businesstype: "1"
+        businesstype: "1",
         country_code: this.props.countryCode
       },
       inputT: false,
@@ -387,7 +387,6 @@ class BusinessInfo extends Component {
                   userInfo: {
                     ...this.state.userInfo,
                     businessname: value
-
                   }
                 });
               }}
@@ -504,7 +503,6 @@ class BusinessInfo extends Component {
                     : "#D9D9D9"
                 }
               ]}
-
             >
               <Text
                 placeholder={
@@ -538,7 +536,6 @@ class BusinessInfo extends Component {
             </Item>
           </RNPickerSelect>
           <Text style={[styles.link, { marginBottom: 10 }]}>
-
             By tapping the button below you {"\n"}
             Agree to the Terms & Conditions
           </Text>

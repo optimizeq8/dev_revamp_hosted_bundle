@@ -119,7 +119,7 @@ export default class DateFields extends Component {
               </Button>
               <Text style={styles.title}>Duration</Text>
               <Text
-                style={[styles.textModal, { fontFamily: "Montserrat-Light" }]}
+                style={[styles.textModal, { fontFamily: "montserrat-light" }]}
               >
                 Reset
               </Text>

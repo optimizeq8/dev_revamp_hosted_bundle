@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   inputtext: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
+    color: "#fff",
     alignSelf: "center",
     textAlign: "center"
   },
