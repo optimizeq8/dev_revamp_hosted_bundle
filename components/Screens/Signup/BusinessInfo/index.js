@@ -1,6 +1,11 @@
 //Components
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import {
   Button,
   Text,
@@ -229,330 +234,321 @@ class BusinessInfo extends Component {
   };
   render() {
     return (
-      <View
-        style={{
-          backgroundColor: "#751AFF",
-          flex: 1
-        }}
-      >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
           style={{
-            alignSelf: "center",
-            width: 380,
             backgroundColor: "#751AFF",
-            flexDirection: "row",
-            alignSelf: "center",
-            justifyContent: "center",
-            marginBottom: 20
+            flex: 1
           }}
         >
-          <Button
-            block
-            dark
-            style={[
-              this.state.userInfo.businesstype === "1"
-                ? styles.activebutton
-                : styles.button,
-              {
-                borderBottomEndRadius: 0,
-                borderTopEndRadius: 0,
-                borderBottomStartRadius: 15,
-                borderTopStartRadius: 15
-              }
-            ]}
-            onPress={() => {
-              this.setState({
-                userInfo: { ...this.state.userInfo, businesstype: "1" }
-              });
+          <View
+            style={{
+              alignSelf: "center",
+              width: 380,
+              backgroundColor: "#751AFF",
+              flexDirection: "row",
+              alignSelf: "center",
+              justifyContent: "center",
+              marginBottom: 20
             }}
           >
-            <Text
+            <Button
+              block
+              dark
               style={[
                 this.state.userInfo.businesstype === "1"
-                  ? styles.activetext
-                  : styles.inactivetext,
-                { textAlign: "center" }
+                  ? styles.activebutton
+                  : styles.button,
+                {
+                  borderBottomEndRadius: 0,
+                  borderTopEndRadius: 0,
+                  borderBottomStartRadius: 15,
+                  borderTopStartRadius: 15
+                }
               ]}
+              onPress={() => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, businesstype: "1" }
+                });
+              }}
             >
-              <Icon
-                type="AntDesign"
-                name="down"
+              <Text
                 style={[
                   this.state.userInfo.businesstype === "1"
                     ? styles.activetext
                     : styles.inactivetext,
-                  {
-                    left: 25
-                  }
+                  { textAlign: "center" }
                 ]}
-              />
-              {"\n"}An Individual
-            </Text>
-          </Button>
-          <Button
-            dark
-            style={[
-              this.state.userInfo.businesstype === "2"
-                ? styles.activebutton
-                : styles.button,
-              {
-                borderTopStartRadius: 0,
-                borderBottomStartRadius: 0,
-                borderBottomEndRadius: 15,
-                borderTopEndRadius: 15
-              }
-            ]}
-            onPress={() => {
-              this.setState({
-                userInfo: { ...this.state.userInfo, businesstype: "2" }
-              });
-            }}
-          >
-            <Text
+              >
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={[
+                    this.state.userInfo.businesstype === "1"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    {
+                      left: 25
+                    }
+                  ]}
+                />
+                {"\n"}An Individual
+              </Text>
+            </Button>
+            <Button
+              dark
               style={[
                 this.state.userInfo.businesstype === "2"
-                  ? styles.activetext
-                  : styles.inactivetext,
-                { textAlign: "center" }
+                  ? styles.activebutton
+                  : styles.button,
+                {
+                  borderTopStartRadius: 0,
+                  borderBottomStartRadius: 0,
+                  borderBottomEndRadius: 15,
+                  borderTopEndRadius: 15
+                }
               ]}
+              onPress={() => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, businesstype: "2" }
+                });
+              }}
             >
-              <Icon
-                type="AntDesign"
-                name="down"
+              <Text
                 style={[
                   this.state.userInfo.businesstype === "2"
                     ? styles.activetext
                     : styles.inactivetext,
-                  {
-                    left: 25
-                  }
+                  { textAlign: "center" }
                 ]}
-              />
-              {"\n"}A Company
-            </Text>
-          </Button>
-          {
-            // <RadioGroup
-            //   flexDirection="row"
-            //   color="#5F5F5F"
-            //   radioButtons={this.state.data}
-            //   onPress={value => {
-            //     var data = value.find(data => data.selected === true);
-            //     this.setState({
-            //       userInfo: { ...this.state.userInfo, businesstype: data.value }
-            //     });
-            //   }}
-            // />
-          }
-        </View>
-        <View style={styles.container}>
-          <Item
-            floatingLabel
-            style={[
-              styles.input,
-              {
-                borderColor: this.state.inputN
-                  ? "#7039FF"
-                  : this.state.nameError
-                  ? "red"
-                  : "#D9D9D9"
-              }
-            ]}
-          >
-            <Label
+              >
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={[
+                    this.state.userInfo.businesstype === "2"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    {
+                      left: 25
+                    }
+                  ]}
+                />
+                {"\n"}A Company
+              </Text>
+            </Button>
+          </View>
+          <View style={styles.container}>
+            <Item
+              floatingLabel
               style={[
-                styles.inputtext,
+                styles.input,
                 {
-                  flexDirection: "column",
-                  color: this.state.inputN ? "#FF9D00" : "#717171"
+                  borderColor: this.state.inputN
+                    ? "#7039FF"
+                    : this.state.nameError
+                    ? "red"
+                    : "#D9D9D9"
                 }
               ]}
             >
-              <Icon
-                style={{
-                  fontSize: 20,
-                  color: this.state.inputN ? "#FF9D00" : "#717171"
-                }}
-                name="person"
-              />
-              {"  "}
-              {this.state.userInfo.businesstype === "1"
-                ? "Your Name"
-                : "Company Name"}
-            </Label>
-            <Input
-              style={styles.inputtext}
-              onChangeText={value => {
-                this.setState({
-                  userInfo: {
-                    ...this.state.userInfo,
-                    businessname: value
+              <Label
+                style={[
+                  styles.inputtext,
+                  {
+                    flexDirection: "column",
+                    color: this.state.inputN ? "#FF9D00" : "#717171"
                   }
+                ]}
+              >
+                <Icon
+                  style={{
+                    fontSize: 20,
+                    color: this.state.inputN ? "#FF9D00" : "#717171"
+                  }}
+                  name="person"
+                />
+                {"  "}
+                {this.state.userInfo.businesstype === "1"
+                  ? "Your Name"
+                  : "Company Name"}
+              </Label>
+              <Input
+                style={styles.inputtext}
+                onChangeText={value => {
+                  this.setState({
+                    userInfo: {
+                      ...this.state.userInfo,
+                      businessname: value
+                    }
+                  });
+                }}
+                onFocus={() => {
+                  this.setState({ inputN: true });
+                }}
+                onBlur={() => {
+                  this.setState({ inputN: false });
+                  this._verifyBusinessName(
+                    this.state.userInfo.businesstype,
+                    this.state.userInfo.businessname
+                  );
+                }}
+              />
+            </Item>
+            {this.state.nameError !== "" &&
+              this.state.nameError &&
+              !this.state.nameError.includes("blank") && (
+                <Text
+                  style={[
+                    styles.text,
+                    { paddingTop: 0, marginBottom: 0, bottom: 20 }
+                  ]}
+                >
+                  {this.state.nameError}
+                </Text>
+              )}
+
+            <RNPickerSelect
+              items={this.state.countries}
+              placeholder={{ label: "Select a country", value: "" }}
+              onOpen={() => {
+                this.setState({ inputC: true });
+              }}
+              onClose={() => {
+                this.setState({ inputC: false });
+                this.setState({
+                  countryError: validateWrapper(
+                    "mandatory",
+                    this.state.userInfo.country
+                  )
                 });
               }}
-              onFocus={() => {
-                this.setState({ inputN: true });
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, country: value }
+                });
               }}
-              onBlur={() => {
-                this.setState({ inputN: false });
-                this._verifyBusinessName(
-                  this.state.userInfo.businesstype,
-                  this.state.userInfo.businessname
-                );
-              }}
-            />
-          </Item>
-          {this.state.nameError !== "" && this.state.nameError && (
-            <Text
-              style={[
-                styles.text,
-                { paddingTop: 0, marginBottom: 0, bottom: 20 }
-              ]}
             >
-              {this.state.nameError}
+              <Item
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.inputC
+                      ? "#7039FF"
+                      : this.state.countryError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.inputtext,
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      color: "rgb(113,113,113)"
+                    }
+                  ]}
+                >
+                  {this.state.userInfo.country === ""
+                    ? this.state.userInfo.businesstype === "1"
+                      ? "Where do you live?"
+                      : "Country"
+                    : this.state.userInfo.country}
+                </Text>
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                />
+              </Item>
+            </RNPickerSelect>
+
+            <RNPickerSelect
+              items={this.state.items}
+              placeholder={{ label: "Select a business type", value: "" }}
+              onOpen={() => {
+                this.setState({ inputT: true });
+              }}
+              onClose={() => {
+                this.setState({ inputT: false });
+                this.setState({
+                  businesscategoryError: validateWrapper(
+                    "mandatory",
+                    this.state.userInfo.businesscategory
+                  )
+                });
+              }}
+              onValueChange={value => {
+                this.setState({
+                  userInfo: { ...this.state.userInfo, businesscategory: value }
+                });
+              }}
+            >
+              <Item
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.inputT
+                      ? "#7039FF"
+                      : this.state.businesscategoryError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Text
+                  placeholder={
+                    this.state.userInfo.businesscategory !== ""
+                      ? this.state.userInfo.businesscategory
+                      : ""
+                  }
+                  style={[
+                    styles.inputtext,
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      color: "rgb(113,113,113)"
+                    }
+                  ]}
+                >
+                  {this.state.userInfo.businesscategory === ""
+                    ? this.state.userInfo.businesstype === "1"
+                      ? "What do you do?"
+                      : "Business Type"
+                    : this.state.items.find(
+                        i => i.value === this.state.userInfo.businesscategory
+                      ).label}
+                </Text>
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                />
+              </Item>
+            </RNPickerSelect>
+            <Text style={[styles.link]}>
+              By tapping the button below you {"\n"}
+              Agree to the Terms & Conditions
             </Text>
-          )}
-
-          <RNPickerSelect
-            items={this.state.countries}
-            placeholder={{ label: "Select a country", value: "" }}
-            onOpen={() => {
-              this.setState({ inputC: true });
-            }}
-            onClose={() => {
-              this.setState({ inputC: false });
-              this.setState({
-                countryError: validateWrapper(
-                  "mandatory",
-                  this.state.userInfo.country
-                )
-              });
-            }}
-            onValueChange={value => {
-              this.setState({
-                userInfo: { ...this.state.userInfo, country: value }
-              });
-            }}
-          >
-            <Item
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.inputC
-                    ? "#7039FF"
-                    : this.state.countryError
-                    ? "red"
-                    : "#D9D9D9"
-                }
-              ]}
+          </View>
+          <View style={{ backgroundColor: "#fff" }}>
+            <Button
+              block
+              dark
+              style={[styles.bottomCard, { justifyContent: "center" }]}
+              onPress={() => {
+                this._handleSubmission();
+              }}
             >
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "rgb(113,113,113)"
-                  }
-                ]}
-              >
-                {this.state.userInfo.country === ""
-                  ? this.state.userInfo.businesstype === "1"
-                    ? "Where do you live?"
-                    : "Country"
-                  : this.state.userInfo.country}
-              </Text>
-              <Icon
-                type="AntDesign"
-                name="down"
-                style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-              />
-            </Item>
-          </RNPickerSelect>
-
-          <RNPickerSelect
-            items={this.state.items}
-            placeholder={{ label: "Select a business type", value: "" }}
-            onOpen={() => {
-              this.setState({ inputT: true });
-            }}
-            onClose={() => {
-              this.setState({ inputT: false });
-              this.setState({
-                businesscategoryError: validateWrapper(
-                  "mandatory",
-                  this.state.userInfo.businesscategory
-                )
-              });
-            }}
-            onValueChange={value => {
-              this.setState({
-                userInfo: { ...this.state.userInfo, businesscategory: value }
-              });
-            }}
-          >
-            <Item
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.inputT
-                    ? "#7039FF"
-                    : this.state.businesscategoryError
-                    ? "red"
-                    : "#D9D9D9"
-                }
-              ]}
-            >
-              <Text
-                placeholder={
-                  this.state.userInfo.businesscategory !== ""
-                    ? this.state.userInfo.businesscategory
-                    : ""
-                }
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "rgb(113,113,113)"
-                  }
-                ]}
-              >
-                {this.state.userInfo.businesscategory === ""
-                  ? this.state.userInfo.businesstype === "1"
-                    ? "What do you do?"
-                    : "Business Type"
-                  : this.state.items.find(
-                      i => i.value === this.state.userInfo.businesscategory
-                    ).label}
-              </Text>
-              <Icon
-                type="AntDesign"
-                name="down"
-                style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-              />
-            </Item>
-          </RNPickerSelect>
-          <Text style={[styles.link, { marginBottom: 10 }]}>
-            By tapping the button below you {"\n"}
-            Agree to the Terms & Conditions
-          </Text>
+              <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
+            </Button>
+          </View>
         </View>
-        <View style={{ backgroundColor: "#fff" }}>
-          <Button
-            block
-            dark
-            style={[styles.bottomCard, { justifyContent: "center" }]}
-            onPress={() => {
-              this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttontext}>CREATE ACCOUNT</Text>
-          </Button>
-        </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

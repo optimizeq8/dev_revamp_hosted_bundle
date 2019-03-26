@@ -13,8 +13,7 @@ import {
   Container,
   H1,
   Badge,
-  Icon,
-  Toast
+  Icon
 } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";

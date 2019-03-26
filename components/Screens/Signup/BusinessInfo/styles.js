@@ -6,37 +6,18 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     justifyContent: "center",
     borderTopStartRadius: 30,
     backgroundColor: "#fff",
-    paddingTop: 10,
+    paddingTop: 70,
     borderTopEndRadius: 30,
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: -3 },
     flex: 1
-  },
-
-  image: {
-    alignSelf: "center",
-    height: 100,
-    width: 100,
-    margin: 15
-  },
-  mainCard: {
-    top: 15,
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    marginLeft: 0,
-    marginRight: 0
   },
   text: {
     textAlign: "center",
@@ -91,8 +72,8 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#707070",
-    paddingTop: 40,
-    paddingBottom: 10,
+    paddingTop: 0,
+    paddingBottom: 50,
     fontFamily: "montserrat-light",
     fontSize: 12,
     paddingHorizontal: 10,
