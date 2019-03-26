@@ -6,7 +6,6 @@ const instance = axios.create({
 
 export const snap_ad_audience_size = info => {
   return (dispatch, getState) => {
-    console.log(info);
     instance
       .post(`snapaudiencesize`, info)
       .then(res => {
@@ -85,7 +84,26 @@ export const ad_design = (info, laoding, navigation) => {
   };
 };
 
-export const ad_details = (info, navigation) => {
+export const get_interests = countryCode => {
+  return (dispatch, getState) => {
+    instance
+      .get(`interestsbycountry/${countryCode}`)
+      .then(res => {
+        return res.data.interests;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_INTERESTS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        dispatch(console.log(err));
+      });
+  };
+};
+
+export const ad_details = (info, interestNames, navigation) => {
   return (dispatch, getState) => {
     instance
       .post(`savetargeting`, info)
@@ -100,7 +118,9 @@ export const ad_details = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.navigate("AdPaymentReview");
+        navigation.navigate("AdPaymentReview", {
+          interestNames: interestNames
+        });
       })
       .catch(err => {
         dispatch(console.log(err.response.data));

@@ -150,7 +150,10 @@ class Home extends Component {
               <Text> Business List </Text>
             </Button>
 
-            <Button style={[styles.button]} onPress={() => {}}>
+            <Button
+              style={[styles.button]}
+              onPress={() => this.props.navigation.navigate("AdDetails")}
+            >
               <Text> Test </Text>
             </Button>
           </Card>

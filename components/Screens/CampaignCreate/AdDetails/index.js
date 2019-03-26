@@ -25,6 +25,7 @@ import {
   H1,
   Badge
 } from "native-base";
+import cloneDeep from "clone-deep";
 import { LinearGradient } from "expo";
 import RadioGroup from "react-native-radio-buttons-group";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -35,7 +36,7 @@ import InputNumber from "rmc-input-number";
 import inputNumberStyles from "./inputNumber";
 // Style
 import styles, { colors } from "./styles";
-
+import DateField from "./DateFields";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null
@@ -48,10 +49,19 @@ class AdDetails extends Component {
         lifetime_budget_micro: 50,
         targeting: {
           demographics: [
-            { gender: "FEMALE", languages: ["en"], min_age: 13, max_age: 35 }
+            {
+              gender: "FEMALE",
+
+              languages: ["en"],
+              min_age: 13,
+              max_age: 35
+            }
           ],
+          interests: [{ category_id: [] }],
           geos: [{ country_code: "kw", region_id: [] }]
-        }
+        },
+        start_time: "",
+        end_time: ""
       },
       gender: [
         { label: "Female", value: "FEMALE" },
@@ -92,7 +102,9 @@ class AdDetails extends Component {
       budget: 50,
       minValueBudget: 20,
       maxValueBudget: 1000,
-      value: 0
+      value: 0,
+      interestNames: [],
+      modalVisible: false
     };
   }
 
@@ -106,8 +118,6 @@ class AdDetails extends Component {
   }
 
   _handleMaxAge = value => {
-    console.log(value);
-
     let rep = this.state.campaignInfo;
     rep.targeting.demographics[0].max_age = parseInt(value);
     this.setState({
@@ -135,6 +145,32 @@ class AdDetails extends Component {
       this.setState({ campaignInfo: replace, regions: reg.regions });
     }
   };
+  handleStartDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        start_time: date
+      }
+    });
+  };
+  handleEndDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: date
+      }
+    });
+  };
+  onSelectedInterestsChange = selectedItems => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    replace.targeting.interests[0].category_id = selectedItems;
+    this.setState({ campaignInfo: replace });
+  };
+
+  onSelectedInterestsNamesChange = selectedItems => {
+    this.setState({ interestNames: selectedItems });
+  };
+
   onSelectedLangsChange = selectedItems => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].languages = selectedItems;
@@ -176,15 +212,23 @@ class AdDetails extends Component {
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
         : null;
+    let dateErrors = this.dateField.getErrors();
 
     this.setState({
       min_ageError,
       max_ageError,
-      languagesError
+      languagesError,
+      start_timeError: dateErrors.start_timeError,
+      end_time: dateErrors.end_timeError
     });
-    if (!min_ageError && !max_ageError && !languagesError) {
-      console.log(this.state.campaignInfo);
-      var rep = { ...this.state.campaignInfo };
+    if (
+      !min_ageError &&
+      !max_ageError &&
+      !languagesError &&
+      !dateErrors.end_timeError &&
+      !dateErrors.start_timeError
+    ) {
+      let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
       }
@@ -194,13 +238,23 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.geos[0].region_id;
       }
+      if (
+        rep.targeting.hasOwnProperty("interests") &&
+        rep.targeting.interests[0].category_id.length === 0
+      ) {
+        delete rep.targeting.interests;
+      }
       if (rep.targeting.demographics[0].max_age >= 35) {
         rep.targeting.demographics[0].max_age = "35+";
       }
       rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
-      console.log(rep);
+      // console.log( /  rep);
 
-      this.props.ad_details(rep, this.props.navigation);
+      this.props.ad_details(
+        rep,
+        this.state.interestNames,
+        this.props.navigation
+      );
       // this.props.navigation.navigate("Home");
     }
   };
@@ -356,8 +410,63 @@ class AdDetails extends Component {
                 Max {this.state.max_ageError}
               </Text>
             )}
+            <Item
+              rounded
+              style={[
+                styles.dateInput,
+                {
+                  borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
+                }
+              ]}
+              onPress={() => {
+                this.dateField.showModal();
+              }}
+            >
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
+              >
+                {this.state.campaignInfo.start_time === ""
+                  ? "Start date"
+                  : this.state.campaignInfo.start_time}
+              </Text>
+              <Text style={[styles.inputtext]}>To</Text>
+              <Text
+                style={[
+                  styles.inputtext,
+                  {
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    color: "rgb(113,113,113)"
+                  }
+                ]}
+              >
+                {this.state.campaignInfo.end_time === ""
+                  ? "End date"
+                  : this.state.campaignInfo.end_time}
+              </Text>
+            </Item>
+
+            <DateField
+              onRef={ref => (this.dateField = ref)}
+              handleStartDatePicked={this.handleStartDatePicked}
+              handleEndDatePicked={this.handleEndDatePicked}
+              start_time={this.state.campaignInfo.start_time}
+              end_time={this.state.campaignInfo.end_time}
+            />
             <MultiSelect
               countries={this.state.countries}
+              country_code={
+                this.state.campaignInfo.targeting.geos[0].country_code
+              }
               languages={this.state.languages}
               onSelectedItemsChange={this.onSelectedItemsChange}
               country_codes={
@@ -371,11 +480,14 @@ class AdDetails extends Component {
               regions={this.state.regions}
               onSelectedRegionChange={this.onSelectedRegionChange}
               region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
+              onSelectedInterestsChange={this.onSelectedInterestsChange}
+              onSelectedInterestsNamesChange={
+                this.onSelectedInterestsNamesChange
+              }
             />
             <Button
               onPress={() => {
-                let r = { ...this.state.campaignInfo.targeting };
-                console.log(r);
+                let r = cloneDeep(this.state.campaignInfo.targeting);
                 if (r.demographics[0].gender === "") {
                   delete r.demographics[0].gender;
                 }
@@ -388,11 +500,16 @@ class AdDetails extends Component {
                 if (r.demographics[0].max_age >= 35) {
                   r.demographics[0].max_age = "35+";
                 }
+                if (
+                  r.hasOwnProperty("interests") &&
+                  r.interests[0].category_id.length === 0
+                ) {
+                  delete r.interests;
+                }
                 const obj = {
                   targeting: JSON.stringify(r),
                   ad_account_id: this.props.mainBusiness.snap_ad_account_id
                 };
-                console.log(obj);
                 this.props.snap_ad_audience_size(obj);
               }}
             >
@@ -423,8 +540,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, navigation) =>
-    dispatch(actionCreators.ad_details(info, navigation)),
+  ad_details: (info, interestNames, navigation) =>
+    dispatch(actionCreators.ad_details(info, interestNames, navigation)),
   snap_ad_audience_size: info =>
     dispatch(actionCreators.snap_ad_audience_size(info))
 });

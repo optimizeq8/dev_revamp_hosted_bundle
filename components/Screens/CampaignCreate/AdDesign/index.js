@@ -239,6 +239,7 @@ class AdDesign extends Component {
                     }}
                     shouldPlay
                     isLooping
+                    isMuted
                     resizeMode="cover"
                     style={styles.placeholder}
                   />
@@ -330,8 +331,9 @@ class AdDesign extends Component {
                     }}
                   />
                 </Item>
-                {!["Brand Awareness", "Reach"].find(
-                  obj => this.state.objective === obj
+                {!["BRAND_AWARENESS", "reach"].find(
+                  obj =>
+                    this.state.objective.toLowerCase() === obj.toLowerCase()
                 ) && (
                   <TouchableOpacity
                     style={styles.swipeUp}
@@ -411,7 +413,6 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.auth.mainBusiness,
   data: state.campaignC.data
-
 });
 
 const mapDispatchToProps = dispatch => ({

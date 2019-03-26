@@ -17,12 +17,21 @@ import {
   Thumbnail,
   Spinner
 } from "native-base";
-import { LinearGradient } from "expo";
 import dateFormat from "dateformat";
 // Style
 import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
-import { Video } from "expo";
+import { Video, LinearGradient, BlurView } from "expo";
+import { interestNames } from "./interesetNames";
+import Chart from "../../MiniComponents/CampaignDetailCharts";
+import InterestIcon from "../../../assets/SVGs/Interest.svg";
+import GenderIcon from "../../../assets/SVGs/Gender.svg";
+import LocationIcon from "../../../assets/SVGs/Location.svg";
+import PauseIcon from "../../../assets/SVGs/Pause.svg";
+import CloseIcon from "../../../assets/SVGs/Close.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import Toggle from "react-native-switch-toggle";
+import { Modal } from "react-native-paper";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -31,7 +40,7 @@ class CampaignDetails extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { modalVisible: false };
   }
 
   render() {
@@ -39,11 +48,22 @@ class CampaignDetails extends Component {
     if (!this.props.campaign) {
       return <Spinner color="red" />;
     } else {
+      let interesetNames = this.props.campaign.targeting.interests[0].category_id.map(
+        interest =>
+          ` ${
+            interestNames.interests.scls.find(
+              interestObj => interestObj.id === interest
+            ).name
+          } \n`
+      );
+      console.log(interesetNames);
+
       let end_time = new Date(this.props.campaign.end_time.split(".")[0]);
       let start_time = new Date(this.props.campaign.start_time.split(".")[0]);
-      end_time = dateFormat(end_time, "d mmm yyyy");
-      start_time = dateFormat(start_time, "d mmm yyyy");
-      console.log(this.props.campaign);
+      let end_year = end_time.getFullYear();
+      let start_year = start_time.getFullYear();
+      end_time = dateFormat(end_time, "d mmm");
+      start_time = dateFormat(start_time, "d mmm");
 
       return (
         <>
@@ -53,8 +73,7 @@ class CampaignDetails extends Component {
                 source={{
                   uri: "http://" + this.props.campaign.media
                 }}
-                isLooping
-                shouldPlay
+                isMuted
                 resizeMode="cover"
                 style={{
                   width: "100%",
@@ -80,16 +99,27 @@ class CampaignDetails extends Component {
               style={styles.gradient}
             /> */}
 
-              <Image
-                style={styles.image}
-                source={require("../../../assets/images/logo01.png")}
-                resizeMode="contain"
-              />
-
               <Card padder style={styles.mainCard}>
-                <Text style={styles.link}>{this.props.campaign.name}</Text>
-                <Text style={styles.link}>Budget</Text>
-                <Text style={styles.link}>Duration</Text>
+                <Image
+                  style={styles.image}
+                  source={require("../../../assets/images/snap-ghost.png")}
+                  resizeMode="contain"
+                />
+                <Text style={styles.title}>{this.props.campaign.name}</Text>
+                <Chart campaign={this.props.campaign} />
+                <Text style={styles.subHeadings}>
+                  Budget{"\n"}
+                  <Text
+                    style={[
+                      styles.numbers,
+                      { fontSize: 32, fontFamily: "Montserrat-SemiBold" }
+                    ]}
+                  >
+                    {this.props.campaign.lifetime_budget_micro}
+                  </Text>
+                  <Text style={{ color: "white" }}>$</Text>
+                </Text>
+                <Text style={styles.subHeadings}>Duration</Text>
                 <View style={{ flexDirection: "row", alignSelf: "center" }}>
                   <View
                     style={{
@@ -97,8 +127,15 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={styles.link}>Start</Text>
-                    <Text style={styles.link}>{start_time}</Text>
+                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                      Start
+                    </Text>
+                    <Text style={styles.numbers}>
+                      {start_time}{" "}
+                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                        {start_year}
+                      </Text>
+                    </Text>
                   </View>
                   <View
                     style={{
@@ -106,59 +143,202 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={styles.link}>End</Text>
-                    <Text style={styles.link}>{end_time}</Text>
+                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                      End
+                    </Text>
+                    <Text style={styles.numbers}>
+                      {end_time}{" "}
+                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                        {end_year}
+                      </Text>
+                    </Text>
                   </View>
                 </View>
-                <Text style={styles.link}>Audience</Text>
-                <View style={{ flexDirection: "column", alignSelf: "center" }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignSelf: "center",
-                      justifyContent: "flex-end"
-                    }}
-                  >
-                    <Text style={styles.link}>Gender</Text>
-                    <Text style={styles.link}>
-                      {!this.props.campaign.targeting.demographics[0].hasOwnProperty(
-                        "gender"
-                      )
-                        ? "All"
-                        : this.props.campaign.targeting.demographics[0].gender}
-                    </Text>
+                <Text style={styles.subHeadings}>Audience</Text>
+                <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                  <View style={{ flexDirection: "column" }}>
+                    <View
+                      style={{
+                        flexDirection: "row"
+                      }}
+                    >
+                      <GenderIcon width={25} height={25} />
+                      <Text style={styles.categories}>
+                        Gender{"\n "}
+                        <Text style={styles.subtext}>
+                          {!this.props.campaign.targeting.demographics[0].hasOwnProperty(
+                            "gender"
+                          )
+                            ? "All"
+                            : this.props.campaign.targeting.demographics[0]
+                                .gender}
+                        </Text>
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                      <Icon
+                        style={styles.icon}
+                        type="FontAwesome"
+                        name="language"
+                      />
+                      <Text style={styles.categories}>
+                        Languages{"\n "}
+                        <Text style={styles.subtext}>
+                          {this.props.campaign.targeting.demographics[0].languages.join(
+                            ", "
+                          )}
+                        </Text>
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                      <Icon
+                        style={styles.icon}
+                        type="MaterialCommunityIcons"
+                        name="human-male-girl"
+                      />
+                      <Text style={styles.categories}>
+                        Age range{"\n"}
+                        <Text style={styles.subtext}>
+                          {
+                            this.props.campaign.targeting.demographics[0]
+                              .min_age
+                          }{" "}
+                          -{" "}
+                          {
+                            this.props.campaign.targeting.demographics[0]
+                              .max_age
+                          }
+                        </Text>
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <LocationIcon width={25} height={25} />
+                      <Text style={styles.categories}>
+                        Location(s) {"\n"}
+                        {this.props.campaign.targeting.geos[0].country_code}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                    <Text style={styles.link}>Languages</Text>
-                    <Text style={styles.link}>
-                      {this.props.campaign.targeting.demographics[0].languages.join(
-                        ", "
-                      )}
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                    <Text style={styles.link}>Age range</Text>
-                    <Text style={styles.link}>
-                      {this.props.campaign.targeting.demographics[0].min_age} -{" "}
-                      {this.props.campaign.targeting.demographics[0].max_age}
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                    <Text style={styles.link}>Country</Text>
-                    <Text style={styles.link}>
-                      {this.props.campaign.targeting.geos[0].country_code}
-                    </Text>
-                  </View>
+
+                  {interesetNames.length > 0 && (
+                    <View
+                      style={{ flexDirection: "column", alignItems: "left" }}
+                    >
+                      <Text style={styles.categories}>
+                        {" "}
+                        {/* <Icon
+                        type="SimpleLineIcons"
+                        name="screen-desktop"
+                        style={[styles.icon]}
+                      /> */}
+                        <InterestIcon width={25} height={25} />
+                        {"   "}
+                        Interests
+                      </Text>
+                      <Text style={[styles.subtext, { textAlign: "left" }]}>
+                        {interesetNames}{" "}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </Card>
               <View>
                 <View padder style={styles.bottomCard}>
-                  <Button rounded style={[styles.button]} onPress={() => {}}>
-                    <Text> {this.props.campaign.status} </Text>
-                  </Button>
+                  <View style={{ alignSelf: "center" }}>
+                    <Toggle
+                      buttonTextStyle={{
+                        fontFamily: "Montserrat-Medium",
+                        fontSize: 10,
+                        color: "#fff",
+                        top: 7,
+                        textAlign: "center"
+                      }}
+                      buttonText={this.props.campaign.status}
+                      containerStyle={styles.toggleStyle}
+                      switchOn={this.props.campaign.status === "Paused"}
+                      onPress={() => this.setState({ modalVisible: true })}
+                      backgroundColorOff="rgba(255,255,255,0.1)"
+                      backgroundColorOn="rgba(0,0,0,0.1)"
+                      circleColorOff="#FF9D00"
+                      circleColorOn="#66D072"
+                      duration={200}
+                      buttonStyle={{ width: 50, height: 27 }}
+                    />
+                  </View>
                 </View>
               </View>
             </Container>
+            <Modal
+              animationType={"slide"}
+              transparent={true}
+              onDismiss={() => this.setState({ modalVisible: false })}
+              onRequestClose={() => this.setState({ modalVisible: false })}
+              visible={this.state.modalVisible}
+            >
+              <BlurView tint="dark" intensity={95} style={styles.BlurView}>
+                <Button
+                  transparent
+                  onPress={() => {
+                    this.setState({ modalVisible: false });
+                  }}
+                  style={styles.btnClose}
+                >
+                  <CloseIcon width={20} height={20} />
+                </Button>
+
+                <PauseIcon
+                  width={43}
+                  height={58}
+                  style={{ alignSelf: "center", marginBottom: 20 }}
+                />
+                <Text style={styles.title}>Ad Pause</Text>
+                <Text style={[styles.subHeadings, styles.pauseDes]}>
+                  Your ad will be Paused.{"\n"} You will receive the amount
+                  remaining from your budget in your
+                  <Text
+                    style={[
+                      {
+                        fontFamily: "Montserrat-SemiBold",
+                        color: "#fff",
+                        fontSize: 14
+                      }
+                    ]}
+                  >
+                    {" "}
+                    wallet
+                  </Text>
+                </Text>
+                <Text
+                  style={[
+                    styles.numbers,
+                    { fontSize: 37, fontFamily: "Montserrat-SemiBold" }
+                  ]}
+                >
+                  200
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 25,
+                      fontFamily: "Montserrat-SemiBold"
+                    }}
+                  >
+                    $
+                  </Text>
+                </Text>
+                <Text
+                  style={[
+                    styles.subHeadings,
+                    { fontFamily: "Montserrat-Regular", fontSize: 14 }
+                  ]}
+                >
+                  Will be added to your wallet If the Ad has been paused for 3
+                  Days
+                </Text>
+                <Button style={styles.button}>
+                  <CheckmarkIcon width={53} height={53} />
+                </Button>
+              </BlurView>
+            </Modal>
           </ImageBackground>
         </>
       );

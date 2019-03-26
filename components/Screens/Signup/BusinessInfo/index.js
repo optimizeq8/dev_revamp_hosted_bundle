@@ -36,6 +36,7 @@ class BusinessInfo extends Component {
         businesscategory: "",
         country: "",
         businesstype: "1"
+        country_code: this.props.countryCode
       },
       inputT: false,
       inputN: false,
@@ -386,6 +387,7 @@ class BusinessInfo extends Component {
                   userInfo: {
                     ...this.state.userInfo,
                     businessname: value
+
                   }
                 });
               }}
@@ -502,6 +504,7 @@ class BusinessInfo extends Component {
                     : "#D9D9D9"
                 }
               ]}
+
             >
               <Text
                 placeholder={
@@ -535,6 +538,7 @@ class BusinessInfo extends Component {
             </Item>
           </RNPickerSelect>
           <Text style={[styles.link, { marginBottom: 10 }]}>
+
             By tapping the button below you {"\n"}
             Agree to the Terms & Conditions
           </Text>
@@ -558,7 +562,8 @@ class BusinessInfo extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   message: state.auth.message,
-  successName: state.auth.successName
+  successName: state.auth.successName,
+  countryCode: state.auth.countryCode
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,4 +1,9 @@
 import { StyleSheet } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -6,8 +11,6 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
     paddingTop: 30,
     height: "100%",
@@ -15,15 +18,10 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
+    height: 45,
+    width: 45
   },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
+
   mainCard: {
     top: 15,
     borderColor: "transparent",
@@ -39,13 +37,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "benton-sans-Regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "benton-sans-Regular",
     fontSize: 14
   },
   inputtext: {
@@ -54,37 +52,70 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center"
   },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
+
   button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#FFC400",
-    alignSelf: "center"
+    alignSelf: "center",
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: hp("5%")
   },
-  snapbutton: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#fff"
-  },
-  link: {
+
+  categories: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "benton-sans-regular",
+    flexDirection: "column",
+    fontFamily: "Montserrat-Regular",
+    fontSize: 13,
+    paddingHorizontal: 10
+  },
+  subHeadings: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 20,
+    paddingVertical: 10
+  },
+
+  title: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "Montserrat-Bold",
+    fontSize: 20,
+    width: 150,
+    alignSelf: "center"
+  },
+  subtext: {
+    fontFamily: "Montserrat-ExtraLight",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff"
+    // textAlign: "left"
+  },
+  numbers: {
+    textAlign: "center",
+    color: "#FF9D00",
+    fontFamily: "Montserrat-Medium",
+    fontSize: 16,
     paddingHorizontal: 10
   },
   bottomCard: {
     top: 15,
     height: 100
+  },
+  icon: {
+    flexDirection: "column",
+    alignSelf: "center",
+    color: "#FF9D00",
+    fontSize: 25,
+    bottom: 5
+  },
+  gender: {
+    // ...StyleSheet.absoluteFillObject,
+    left: 17,
+
+    top: 5,
+
+    transform: [{ rotate: "-45deg" }]
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -100,12 +131,33 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.4)"
   },
-  title: {
-    color: "#fff",
-    fontSize: 20,
-    marginTop: 90,
-    paddingHorizontal: 20,
-    textAlign: "center"
+  toggleStyle: {
+    width: 105,
+    height: 33,
+    borderRadius: 20,
+    padding: 5
+  },
+  circleStyle: {
+    width: 25,
+    height: 25,
+    borderRadius: 19
+  },
+
+  btnClose: {
+    ...StyleSheet.absoluteFillObject,
+    top: hp("10%"),
+    left: wp("10%")
+  },
+  BlurView: {
+    height: "100%",
+    paddingTop: hp("20%")
+  },
+  pauseDes: {
+    fontFamily: "Montserrat-Light",
+    fontSize: wp("4%"),
+
+    marginVertical: 20,
+    padding: 20
   }
 });
 

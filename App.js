@@ -43,6 +43,14 @@ export default class App extends React.Component {
         "montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
         "montserrat-light": require("./assets/fonts/Montserrat-Light.ttf"),
         "montserrat-medium": require("./assets/fonts/Montserrat-Medium.ttf")
+        "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
+        "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+        "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
+        "Montserrat-Light": require("./assets/fonts/Montserrat-Light.ttf"),
+        "Montserrat-ExtraLight": require("./assets/fonts/Montserrat-ExtraLight.ttf"),
+        "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
+        Roboto: require("native-base/Fonts/Roboto.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
       })
     ]);
   };

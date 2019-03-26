@@ -117,7 +117,7 @@ class BusinessCard extends Component {
           <Text style={[styles.subtext, { color: changeState.color }]}>
             {
               this.state.type.find(
-                b => b.value === this.props.business.businesstype
+                b => b.value === this.props.business.businesscategory
               ).label
             }
           </Text>

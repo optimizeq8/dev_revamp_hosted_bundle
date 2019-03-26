@@ -51,8 +51,7 @@ class AdObjective extends Component {
         objective: ""
       },
       objectiveLabel: "Brand Awereness",
-      startDateTimePickerVisible: false,
-      endDateTimePickerVisible: false,
+
       objectives: [
         {
           label: "Brand Awereness",
@@ -92,9 +91,7 @@ class AdObjective extends Component {
         }
       ],
       nameError: "",
-      objectiveError: "",
-      start_timeError: "",
-      endt_time: ""
+      objectiveError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
@@ -123,56 +120,6 @@ class AdObjective extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  showStartDateTimePicker = () =>
-    this.setState({ startDateTimePickerVisible: true });
-
-  showEndDateTimePicker = () =>
-    this.setState({ endDateTimePickerVisible: true });
-
-  hideStartDateTimePicker = () =>
-    this.setState({
-      startDateTimePickerVisible: false,
-      start_timeError: validateWrapper(
-        "mandatory",
-        this.state.campaignInfo.start_time
-      )
-    });
-
-  hideEndDateTimePicker = () =>
-    this.setState({
-      endDateTimePickerVisible: false,
-      startDateTimePickerVisible: false,
-      end_timeError: validateWrapper(
-        "mandatory",
-        this.state.campaignInfo.end_time
-      )
-    });
-
-  handleStartDatePicked = date => {
-    console.log("A date has been picked: ", date);
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        start_time: date.toISOString().split("T")[0]
-      }
-    });
-
-    this.hideStartDateTimePicker();
-  };
-
-  handleEndDatePicked = date => {
-    console.log("A date has been picked: ", date.toISOString().split("T")[0]);
-
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        end_time: date.toISOString().split("T")[0]
-      }
-    });
-
-    this.hideEndDateTimePicker();
-  };
-
   _handleSubmission = () => {
     const nameError = validateWrapper(
       "mandatory",
@@ -182,29 +129,18 @@ class AdObjective extends Component {
       "mandatory",
       this.state.campaignInfo.objective
     );
-    const start_timeError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.start_time
-    );
-    const end_timeError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.end_time
-    );
+
     this.setState({
       nameError,
-      objectiveError,
-      start_timeError,
-      end_timeError
+      objectiveError
     });
-    if (!nameError && !objectiveError && !start_timeError && !end_timeError) {
-      console.log(this.state.campaignInfo);
+    if (!nameError && !objectiveError) {
       this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
       // this.props.navigation.navigate("AdDesign");
     }
   };
 
   render() {
-    console.log(this.state.campaignInfo);
     const list = this.state.objectives.map(o => (
       <ObjectivesCard
         choice={o}
@@ -216,7 +152,6 @@ class AdObjective extends Component {
 
     let width = Dimensions.get("window").width * 0.5 - 100;
     console.log(width);
-
     return (
       <>
         <Container style={styles.container}>
@@ -256,7 +191,6 @@ class AdObjective extends Component {
                 <Button
                   onLayout={event => {
                     var { x, y, width, height } = event.nativeEvent.layout;
-                    console.log("width", width);
                   }}
                   transparent
                   onPress={() => this.props.navigation.goBack()}
@@ -340,109 +274,6 @@ class AdObjective extends Component {
                   type="AntDesign"
                   name="down"
                   style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                />
-              </Item>
-
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
-                  }
-                ]}
-                onPress={this.showStartDateTimePicker}
-              >
-                <Text
-                  style={[
-                    styles.inputtext,
-                    {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "rgb(113,113,113)"
-                    }
-                  ]}
-                >
-                  {this.state.campaignInfo.start_time === ""
-                    ? "Set your start date..."
-                    : this.state.campaignInfo.start_time.split("T")[0]}
-                </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                />
-                <DateTimePicker
-                  minimumDate={new Date()}
-                  maximumDate={
-                    this.state.campaignInfo.end_time !== ""
-                      ? new Date(this.state.campaignInfo.end_time)
-                      : null
-                  }
-                  isVisible={this.state.startDateTimePickerVisible}
-                  onConfirm={this.handleStartDatePicked}
-                  onCancel={this.hideStartDateTimePicker}
-                  mode="date"
-                  onHideAfterConfirm={() =>
-                    this.setState({
-                      start_timeError: validateWrapper(
-                        "mandatory",
-                        this.state.start_timeError
-                      )
-                    })
-                  }
-                />
-              </Item>
-
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.end_timeError ? "red" : "#D9D9D9"
-                  }
-                ]}
-                onPress={this.showEndDateTimePicker}
-              >
-                <Text
-                  style={[
-                    styles.inputtext,
-                    {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "rgb(113,113,113)"
-                    }
-                  ]}
-                >
-                  {this.state.campaignInfo.end_time === ""
-                    ? "Set your end date..."
-                    : this.state.campaignInfo.end_time.split("T")[0]}
-                </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                />
-                <DateTimePicker
-                  isVisible={this.state.endDateTimePickerVisible}
-                  minimumDate={
-                    this.state.campaignInfo.start_time !== ""
-                      ? new Date(this.state.campaignInfo.start_time)
-                      : new Date()
-                  }
-                  onConfirm={this.handleEndDatePicked}
-                  onCancel={this.hideEndDateTimePicker}
-                  mode="date"
-                  onHideAfterConfirm={() =>
-                    this.setState({
-                      end_timeError: validateWrapper(
-                        "mandatory",
-                        this.state.end_timeError
-                      )
-                    })
-                  }
                 />
               </Item>
 

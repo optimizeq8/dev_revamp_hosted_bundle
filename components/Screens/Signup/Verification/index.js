@@ -63,6 +63,7 @@ class Verification extends Component {
             this.props.resetMessages();
             this.props.verifyMobileCode({
               mobile: this.props.mobileNo,
+              country_code: this.props.countryCode,
               verificationCode: code
             });
           }}
@@ -75,7 +76,10 @@ class Verification extends Component {
         <Text
           onPress={() => {
             this.props.resetMessages();
-            this.props.resendVerifyMobileCode(this.props.mobileNo);
+            this.props.resendVerifyMobileCode({
+              mobile: this.props.mobileNo,
+              country_code: this.props.countryCode
+            });
           }}
           style={[styles.link]}
         >
@@ -87,6 +91,7 @@ class Verification extends Component {
 }
 const mapStateToProps = state => ({
   mobileNo: state.auth.mobileNo,
+  countryCode: state.auth.countryCode,
   verificationCode: state.auth.verificationCode,
   message: state.auth.message
 });

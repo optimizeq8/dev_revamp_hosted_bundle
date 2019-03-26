@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
 
 export const colors = {
   black: "#1a1917",
@@ -11,7 +10,10 @@ const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF"
+    backgroundColor: "transparent",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-evenly"
   },
   image: {
     alignSelf: "center",
@@ -25,20 +27,13 @@ const styles = StyleSheet.create({
     width: 50
   },
   cardStyle: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    marginVertical: 10,
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 }
+    width: 100,
+    height: 120,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center"
   },
+
   text: {
     textAlign: "center",
     color: "#5F5F5F",
@@ -115,8 +110,9 @@ const styles = StyleSheet.create({
     padding: 20
   },
   chart: {
-    paddingHorizontal: 5,
-    top: 15
+    alignItems: "center"
+    // paddingHorizontal: 5,
+    // top: 15
   },
   chartText: {
     color: "#fff",
@@ -126,7 +122,7 @@ const styles = StyleSheet.create({
   },
   chartSubtext: {
     alignSelf: "center",
-    paddingTop: 17,
+    paddingTop: 10,
     fontFamily: "benton-sans-regular",
     fontSize: 12,
     color: "#fff"

@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -7,7 +11,14 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
+  title: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "Montserrat-Medium",
+    fontSize: 18,
+    width: 150,
+    alignSelf: "center"
+  },
   container: {
     marginTop: 30,
     backgroundColor: "#751AFF"
@@ -17,6 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
+
   colorGrey: {
     color: "#d3d3d3"
   },
@@ -44,6 +56,11 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     bottom: 15
   },
+  indicator: {
+    fontSize: 30,
+    marginRight: 20,
+    color: "#a9a"
+  },
   content: {
     flexDirection: "row",
     alignItems: "center",
@@ -57,7 +74,6 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",
@@ -75,22 +91,53 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-  activeBadege: {
-    backgroundColor: "#5F5F5F",
-    width: 40,
-    height: 40,
-    borderRadius: 20
-  },
-  badge: {
-    backgroundColor: "#fff",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderColor: "#5F5F5F",
-    borderWidth: 2
-  },
+
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  btnClose: {
+    top: hp("1%")
+  },
+  BlurView: {
+    height: hp("100%"),
+    paddingTop: hp("10%")
+  },
+  dateModal: {
+    ...StyleSheet.absoluteFillObject,
+    height: hp("100%")
+  },
+  button: {
+    alignSelf: "center",
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: hp("10%")
+  },
+  dateInput: {
+    marginBottom: 15,
+
+    backgroundColor: "#D9D9D9",
+
+    paddingHorizontal: 50,
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 300,
+    height: 50
+  },
+  icon: {
+    alignSelf: "center",
+    marginBottom: 10
+  },
+  calender: {
+    width: wp("85%"),
+    alignSelf: "center"
+  },
+  textModal: {
+    textAlign: "center",
+    color: "#fff",
+
+    fontFamily: "Montserrat-Regular",
+    fontSize: 14,
+    paddingVertical: 20
   }
 });
 
