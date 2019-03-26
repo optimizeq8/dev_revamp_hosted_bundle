@@ -6,22 +6,37 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    paddingTop: 20
   },
-  buttonN: {
-    padding: 10
-  },
-  image: {
+  button: {
+    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    height: 70,
-    width: 70,
-    margin: 15
+    width: 65,
+    height: 65,
+    borderRadius: 32.5,
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2
   },
-
+  contentContainer: {
+    paddingVertical: 40,
+    flex: 1,
+    justifyContent: "space-around"
+  },
+  icon: {
+    fontSize: 45,
+    color: "#fff",
+    paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
   text: {
     textAlign: "center",
     color: "#717171",
@@ -32,56 +47,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 40
   },
-  buttontext: {
-    fontFamily: "benton-sans-regular",
-    fontSize: 14
-  },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
   },
   input: {
     bottom: 25,
-    marginBottom: 15,
-    backgroundColor: "#D9D9D9",
+    marginBottom: 20,
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
     width: 300,
-    height: 50
-  },
-  button: {
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  link: {
-    textAlign: "center",
-    color: "#fff",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    textDecorationLine: "underline"
-  },
-  bottomCard: {
-    top: 15,
-    backgroundColor: "#6C6C6C",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: 100
+    height: 45,
+    borderColor: "#7039FF"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

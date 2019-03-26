@@ -1,18 +1,20 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
-  Text,
-  Image
+  Text
 } from "react-native";
-import { Toast } from "native-base";
-import * as actionCreators from "../../../../store/actions";
+import { Button, Icon } from "native-base";
+
 // Style
 import styles, { colors } from "./styles";
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -68,17 +70,21 @@ class PhoneNo extends Component {
           this.state.type !== "" &&
           this.state.type !== "UNKNOWN" && (
             <View style={styles.info}>
-              <Text>Please Enter a valid Mobile number.</Text>
+              <Text style={styles.errorText}>
+                Please Enter a valid Mobile number.
+              </Text>
             </View>
           )}
         {!this.state.valid ? (
           <View style={styles.info}>
-            <Text>Please Enter a valid Mobile number.</Text>
+            <Text style={styles.errorText}>
+              Please Enter a valid Mobile number.
+            </Text>
           </View>
         ) : null}
         {this.state.numExists !== "" ? (
           <View style={styles.info}>
-            <Text>{this.state.numExists}</Text>
+            <Text style={styles.errorText}>{this.state.numExists}</Text>
           </View>
         ) : null}
       </View>
@@ -95,10 +101,15 @@ class PhoneNo extends Component {
           </Text>
 
           <PhoneInput
-            style={[
-              styles.input,
-              { borderBottomColor: this.state.valid ? "#5F5F5F" : "red" }
-            ]}
+            textStyle={{
+              ...styles.input,
+              borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
+            }}
+            buttonTextStyle={{ backgroundColor: "#000" }}
+            flagStyle={{
+              left: 30,
+              bottom: 2
+            }}
             ref={ref => {
               this.phone = ref;
             }}
@@ -109,13 +120,9 @@ class PhoneNo extends Component {
           />
 
           {this.renderInfo()}
-          <TouchableOpacity onPress={this.updateInfo} style={styles.button}>
-            <Image
-              style={styles.image}
-              source={require("../../../../assets/images/button.png")}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
+          <Button onPress={this.updateInfo} style={styles.button}>
+            <Icon style={styles.icon} name="arrow-forward" />
+          </Button>
         </View>
       </TouchableWithoutFeedback>
     );

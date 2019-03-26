@@ -24,6 +24,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
         ...state,
+        successNo: action.payload.success,
+
         mobileNo: action.payload.mobile,
         countryCode: action.payload.country_code,
         verified: action.payload.verified,
@@ -34,7 +36,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.VERIFY_MOBILE_NUMBER:
       return {
         ...state,
-        successNo: action.payload.success,
         verified: action.payload.success,
         message: action.payload.message
       };
