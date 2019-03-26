@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView, ImageBackground } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+  Dimensions,
+  Animated
+} from "react-native";
 import {
   Card,
   Button,
@@ -32,19 +39,105 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Toggle from "react-native-switch-toggle";
 import { Modal } from "react-native-paper";
+import LineChart from "./LineChart";
+import SlidingUpPanel from "rn-sliding-up-panel";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import BarIcon from "../../../assets/SVGs/Bar.svg";
+
+const { height } = Dimensions.get("window");
 
 class CampaignDetails extends Component {
+  static defaultProps = {
+    draggableRange: {
+      top: height / 1.25,
+      bottom: 200
+    }
+  };
+
+  _draggedValue = new Animated.Value(0);
+
   static navigationOptions = {
     header: null
   };
   constructor(props) {
     super(props);
 
-    this.state = { modalVisible: false };
+    this.state = {
+      modalVisible: false,
+      chartAnimation: new Animated.Value(1),
+      LineAnimation: new Animated.Value(0),
+      visible: true
+    };
   }
 
+  hideCharts = () => {
+    Animated.timing(this.state.chartAnimation, {
+      toValue: 0,
+      duration: 100
+    }).start();
+    Animated.timing(this.state.LineAnimation, {
+      toValue: 1,
+      duration: 500
+    }).start();
+  };
+
+  showCharts = () => {
+    Animated.timing(this.state.chartAnimation, {
+      toValue: 1,
+      duration: 200
+    }).start();
+    Animated.timing(this.state.LineAnimation, {
+      toValue: 0,
+      duration: 500
+    }).start();
+  };
   render() {
-    console.log("main", this.props.mainBusiness);
+    // this._draggedValue.addListener(({ value }) => {
+    //   this.hideCharts(value);
+    //   // if (value > hp("50%")) {
+    //   //   //
+    //   // } else {
+    //   //   this.showCharts(value);
+    //   // }
+    //   // if (value < 600) this.hideCharts();
+    // });
+    const translateYInterpolate = this.state.chartAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [500, 0]
+    });
+    const ScaleInterpolate = this.state.LineAnimation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1]
+    });
+    const animatedStyles = {
+      opacity: this.state.chartAnimation,
+      transform: [
+        {
+          translateY: translateYInterpolate
+        }
+      ]
+    };
+    const lineAnimatedStyles = {
+      opacity: this.state.LineAnimation,
+      transform: [
+        {
+          scaleX: ScaleInterpolate
+        },
+        { scaleY: ScaleInterpolate }
+      ]
+    };
+
+    const { top, bottom } = this.props.draggableRange;
+
+    const draggedValue = this._draggedValue.interpolate({
+      inputRange: [bottom, top],
+      outputRange: [0, 1],
+      extrapolate: "clamp"
+    });
+
     if (!this.props.campaign) {
       return <Spinner color="red" />;
     } else {
@@ -56,8 +149,6 @@ class CampaignDetails extends Component {
             ).name
           } \n`
       );
-      console.log(interesetNames);
-
       let end_time = new Date(this.props.campaign.end_time.split(".")[0]);
       let start_time = new Date(this.props.campaign.start_time.split(".")[0]);
       let end_year = end_time.getFullYear();
@@ -106,7 +197,42 @@ class CampaignDetails extends Component {
                   resizeMode="contain"
                 />
                 <Text style={styles.title}>{this.props.campaign.name}</Text>
-                <Chart campaign={this.props.campaign} />
+                <View>
+                  <View padder style={styles.bottomCard}>
+                    <View style={{ alignSelf: "center" }}>
+                      <Toggle
+                        buttonTextStyle={{
+                          fontFamily: "Montserrat-Medium",
+                          fontSize: 10,
+                          color: "#fff",
+                          top: 7,
+                          textAlign: "center"
+                        }}
+                        buttonText={this.props.campaign.status}
+                        containerStyle={styles.toggleStyle}
+                        switchOn={this.props.campaign.status === "Paused"}
+                        onPress={() => this.setState({ modalVisible: true })}
+                        backgroundColorOff="rgba(255,255,255,0.1)"
+                        backgroundColorOn="rgba(0,0,0,0.1)"
+                        circleColorOff="#FF9D00"
+                        circleColorOn="#66D072"
+                        duration={200}
+                        buttonStyle={{ width: 50, height: 27 }}
+                      />
+                      <Text
+                        style={{
+                          fontFamily: "Montserrat-Medium",
+                          fontSize: 10,
+                          paddingTop: 5,
+                          color: "#fff",
+                          textAlign: "center"
+                        }}
+                      >
+                        Tap to pause AD
+                      </Text>
+                    </View>
+                  </View>
+                </View>
                 <Text style={styles.subHeadings}>
                   Budget{"\n"}
                   <Text
@@ -166,9 +292,8 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Gender{"\n "}
                         <Text style={styles.subtext}>
-                          {!this.props.campaign.targeting.demographics[0].hasOwnProperty(
-                            "gender"
-                          )
+                          {this.props.campaign.targeting.demographics[0]
+                            .gender === ""
                             ? "All"
                             : this.props.campaign.targeting.demographics[0]
                                 .gender}
@@ -242,31 +367,66 @@ class CampaignDetails extends Component {
                   )}
                 </View>
               </Card>
-              <View>
-                <View padder style={styles.bottomCard}>
-                  <View style={{ alignSelf: "center" }}>
-                    <Toggle
-                      buttonTextStyle={{
-                        fontFamily: "Montserrat-Medium",
-                        fontSize: 10,
-                        color: "#fff",
-                        top: 7,
-                        textAlign: "center"
-                      }}
-                      buttonText={this.props.campaign.status}
-                      containerStyle={styles.toggleStyle}
-                      switchOn={this.props.campaign.status === "Paused"}
-                      onPress={() => this.setState({ modalVisible: true })}
-                      backgroundColorOff="rgba(255,255,255,0.1)"
-                      backgroundColorOn="rgba(0,0,0,0.1)"
-                      circleColorOff="#FF9D00"
-                      circleColorOn="#66D072"
-                      duration={200}
-                      buttonStyle={{ width: 50, height: 27 }}
-                    />
+              <SlidingUpPanel
+                showBackdrop={false}
+                ref={c => (this._panel = c)}
+                allowMomentum={true}
+                draggableRange={this.props.draggableRange}
+                animatedValue={this._draggedValue}
+                allowMomentum={false}
+                onDragEnd={(position, gesture) => {
+                  if (parseInt(position) > 210 && parseInt(position) <= 450) {
+                    {
+                      this.hideCharts();
+                      this._panel.show();
+                    }
+                  } else if (
+                    parseInt(position) > 450 &&
+                    parseInt(position) <= 600
+                  ) {
+                    this.showCharts();
+                    this._panel.hide();
+                  } else if (position === this.props.draggableRange.top) {
+                    this.hideCharts();
+                    this._panel.show();
+                  } else if (position === this.props.draggableRange.bottom) {
+                    this.showCharts();
+                    this._panel.hide();
+                  }
+                }}
+                friction={0.4}
+              >
+                {dragHandler => (
+                  <View style={styles.bottomContainer}>
+                    <View style={styles.dragHandler} {...dragHandler}>
+                      <LinearGradient
+                        colors={["#751AFF", "#751AFF"]}
+                        style={styles.tab}
+                      >
+                        <BarIcon style={styles.handlerIcon} />
+                        <Text style={styles.handlerText}>Dashboard</Text>
+                      </LinearGradient>
+                    </View>
+                    <LinearGradient
+                      colors={["#751AFF", "#6C52FF", "#6268FF"]}
+                      style={{ borderRadius: 30, overflow: "hidden" }}
+                    >
+                      <Animated.View
+                        style={[styles.chartPosition, animatedStyles]}
+                      >
+                        <Chart campaign={this.props.campaign} />
+                      </Animated.View>
+                      <Animated.View style={[lineAnimatedStyles]}>
+                        <ScrollView
+                          contentInset={{ bottom: hp("30%"), top: 0 }}
+                        >
+                          <LineChart />
+                        </ScrollView>
+                      </Animated.View>
+                    </LinearGradient>
                   </View>
-                </View>
-              </View>
+                )}
+              </SlidingUpPanel>
             </Container>
             <Modal
               animationType={"slide"}

@@ -10,29 +10,24 @@ export default class Charts extends Component {
 
     return (
       <TouchableOpacity style={styles.container}>
-        <LinearGradient
-          colors={["#751AFF", "#6C52FF", "#6268FF"]}
-          style={styles.cardStyle}
-        >
-          <View>
-            <AnimatedCircularProgress
-              size={75}
-              width={6}
-              fill={30}
-              rotation={0}
-              lineCap="round"
-              style={styles.chart}
-              tintColor="#FEFB00"
-              onAnimationComplete={() => console.log("onAnimationComplete")}
-              backgroundColor="rgba(255,255,255,0.3)"
-            >
-              {fill => <Text style={styles.chartText}>{parseInt(fill)}</Text>}
-            </AnimatedCircularProgress>
-            <Text style={[styles.chartSubtext]}>
-              {Object.keys(this.props.chartCategory)[0]}
-            </Text>
-          </View>
-        </LinearGradient>
+        <View>
+          <AnimatedCircularProgress
+            size={75}
+            width={6}
+            fill={30}
+            rotation={0}
+            lineCap="round"
+            style={styles.chart}
+            tintColor="#FEFB00"
+            onAnimationComplete={() => console.log("onAnimationComplete")}
+            backgroundColor="rgba(255,255,255,0.3)"
+          >
+            {fill => <Text style={styles.chartText}>{parseInt(fill)}</Text>}
+          </AnimatedCircularProgress>
+          <Text style={[styles.chartSubtext]}>
+            {Object.keys(this.props.chartCategory)[0]}
+          </Text>
+        </View>
       </TouchableOpacity>
     );
   }
