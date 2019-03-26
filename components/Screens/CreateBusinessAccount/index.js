@@ -9,7 +9,6 @@ import {
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
 import { LinearGradient } from "expo";
 import RNPickerSelect from "react-native-picker-select";
-import BusinessInfo from "./BusinessInfo";
 
 // Style
 import styles, { colors } from "./styles";
