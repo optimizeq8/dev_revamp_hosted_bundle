@@ -424,6 +424,7 @@ class CampaignDetails extends Component {
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>
+                  </View>
                 )}
               </SlidingUpPanel>
             </Container>
