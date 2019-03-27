@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export const colors = {
   black: "#1a1917",
@@ -137,9 +138,10 @@ const styles = StyleSheet.create({
     top: "80%"
   },
   toggleStyle: {
-    left: "80%",
-    width: 60,
-    height: 30,
+    left: widthPercentageToDP("10%"),
+    top: widthPercentageToDP("4%"),
+    width: 50,
+    height: 20,
     borderRadius: 20,
     padding: 5
   },
@@ -152,8 +154,9 @@ const styles = StyleSheet.create({
   icon: {
     ...StyleSheet.absoluteFillObject,
     color: "#fff",
-    left: "85%",
-    fontSize: 40
+    left: widthPercentageToDP("63%"),
+    fontSize: widthPercentageToDP("15%"),
+    top: widthPercentageToDP("-3%")
   },
   contentContainer: {
     paddingTop: 30

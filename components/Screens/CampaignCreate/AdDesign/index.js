@@ -153,6 +153,15 @@ class AdDesign extends Component {
       type: this.state.type + "/" + format[1],
       name: res[1]
     };
+    let resVideo = this.state.longformvideo_media
+      ? this.state.longformvideo_media.split("/ImagePicker/")
+      : "";
+    let formatVideo = resVideo[1].split(".");
+    var video = {
+      uri: this.state.longformvideo_media,
+      type: this.state.longformvideo_media_type + "/" + formatVideo[1],
+      name: resVideo[1]
+    };
     var body = new FormData();
 
     body.append("media", photo);
@@ -167,7 +176,7 @@ class AdDesign extends Component {
       "attachment",
       JSON.stringify(this.state.campaignInfo.attachment)
     );
-    body.append("longformvideo_media", this.state.longformvideo_media);
+    body.append("longformvideo_media", video);
     body.append(
       "longformvideo_media_type",
       this.state.longformvideo_media_type
@@ -202,12 +211,13 @@ class AdDesign extends Component {
 
     if (!brand_nameError && !headlineError && !imageError) {
       let t = await this.formatMedia();
+      console.log(this.state.formatted);
 
-      // this.props.ad_design(
-      //   this.state.formatted,
-      //   this._getUploadState,
-      //   this.props.navigation
-      // );
+      this.props.ad_design(
+        this.state.formatted,
+        this._getUploadState,
+        this.props.navigation
+      );
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -386,7 +396,7 @@ class AdDesign extends Component {
                           })
                         : this.props.navigation.navigate("SwipeUpChoice", {
                             _changeDestination: this._changeDestination,
-                            objective: "app"
+                            objective: this.state.objective
                           });
                     }}
                   >

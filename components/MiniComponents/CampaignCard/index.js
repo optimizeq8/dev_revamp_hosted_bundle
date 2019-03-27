@@ -23,8 +23,6 @@ class CampaignCard extends Component {
     this.setState({ paused: !this.state.paused });
   };
   render() {
-    console.log(Dimensions.get("window").width * 0.008);
-
     let campaign = this.props.campaign;
     let charts = [
       { spend: campaign.spends },
@@ -66,7 +64,7 @@ class CampaignCard extends Component {
                 circleColorOff="#FF9D00"
                 circleColorOn="#66D072"
                 duration={200}
-                buttonStyle={{ width: 25 }}
+                buttonStyle={{ width: 20, height: 20 }}
               />
             </View>
           </View>

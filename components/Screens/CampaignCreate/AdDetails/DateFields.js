@@ -72,7 +72,8 @@ export default class DateFields extends Component {
 
   startDatePicked = () => {
     this.setState({
-      start_choice: true
+      start_choice: true,
+      end_choice: false
     });
   };
   endDatePicked = () => {
@@ -149,10 +150,21 @@ export default class DateFields extends Component {
               <Button
                 style={styles.button}
                 onPress={async () => {
+                  let timeDiff = Math.round(
+                    Math.abs(
+                      (new Date(this.state.start_date).getTime() -
+                        new Date(this.state.end_date).getTime()) /
+                        86400000
+                    )
+                  );
+                  console.log("timeDiff", timeDiff + 1);
+                  this.props.getMinimumCash(timeDiff + 1);
                   await this.props.handleStartDatePicked(this.state.start_date);
                   await this.props.handleEndDatePicked(this.state.end_date);
                   this.setState({
-                    modalVisible: false
+                    modalVisible: false,
+                    start_choice: false,
+                    end_choice: false
                   });
                 }}
               >

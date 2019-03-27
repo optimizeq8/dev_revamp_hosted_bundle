@@ -66,14 +66,17 @@ class SwipeUpChoice extends Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={false}
         >
-          {this.props.navigation.state.params.objective.includes("website") && (
-            <Website
-              _changeDestination={
-                this.props.navigation.state.params._changeDestination
-              }
-              navigation={this.props.navigation}
-            />
-          )}
+          {this.props.navigation.state.params.objective.includes("website") ||
+            (this.props.navigation.state.params.objective ===
+              "LEAD_GENERATION" && (
+              <Website
+                objective={this.props.navigation.state.params.objective}
+                _changeDestination={
+                  this.props.navigation.state.params._changeDestination
+                }
+                navigation={this.props.navigation}
+              />
+            ))}
           {this.props.navigation.state.params.objective === "deep link" && (
             <Deep_Link
               _changeDestination={
@@ -82,9 +85,7 @@ class SwipeUpChoice extends Component {
               navigation={this.props.navigation}
             />
           )}
-          {this.props.navigation.state.params.objective
-            .toLowerCase()
-            .includes("video") && (
+          {this.props.navigation.state.params.objective === "VIDEO_VIEWS" && (
             <Long_Form_Video
               _changeDestination={
                 this.props.navigation.state.params._changeDestination

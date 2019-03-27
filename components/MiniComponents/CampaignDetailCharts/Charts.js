@@ -6,10 +6,8 @@ import styles, { colors } from "./styles";
 
 export default class Charts extends Component {
   render() {
-    console.log(this.props.chartCategory);
-
     return (
-      <TouchableOpacity style={styles.container}>
+      <View style={styles.container}>
         <View>
           <AnimatedCircularProgress
             size={75}
@@ -19,7 +17,6 @@ export default class Charts extends Component {
             lineCap="round"
             style={styles.chart}
             tintColor="#FEFB00"
-            onAnimationComplete={() => console.log("onAnimationComplete")}
             backgroundColor="rgba(255,255,255,0.3)"
           >
             {fill => <Text style={styles.chartText}>{parseInt(fill)}</Text>}
@@ -28,7 +25,7 @@ export default class Charts extends Component {
             {Object.keys(this.props.chartCategory)[0]}
           </Text>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
