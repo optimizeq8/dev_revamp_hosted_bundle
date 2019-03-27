@@ -18,11 +18,11 @@ class MainForm extends Component {
   static navigationOptions = {
     header: null
   };
-
+  state = { verified: false };
   render() {
     let title = "Phone Number";
     let content = <PhoneNo navigation={this.props.navigation} />;
-    if (this.props.verificationCode && !this.props.verified) {
+    if (this.props.verificationCode) {
       content = <Verification />;
       title = "Verification";
     }
@@ -61,11 +61,15 @@ class MainForm extends Component {
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
           <Badge
-            style={!this.props.successNo ? styles.activeBadege : styles.badge}
+            style={
+              !this.props.successNo && !this.props.verificationCode
+                ? styles.activeBadege
+                : styles.badge
+            }
           >
             <Text
               style={
-                !this.props.successNo
+                !this.props.successNo && !this.props.verificationCode
                   ? styles.activeBadegeText
                   : styles.badgeText
               }

@@ -336,6 +336,11 @@ export const logout = navigation => {
   setAuthToken();
   return setCurrentUser(null);
 };
+
+export const resetRegister = () => {
+  setAuthToken();
+  return setCurrentUser(null);
+};
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = (id, navigation) => {
   return dispatch => {

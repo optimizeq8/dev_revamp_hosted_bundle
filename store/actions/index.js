@@ -14,7 +14,8 @@ export {
   createBusinessAccount,
   getCampaignList,
   getCampaign,
-  changeBusiness
+  changeBusiness,
+  resetRegister
 } from "./authActions";
 export {
   ad_objective,

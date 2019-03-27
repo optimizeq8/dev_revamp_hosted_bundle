@@ -133,20 +133,28 @@ const reducer = (state = initialState, action) => {
         filteredCampaigns: filterStatus
       };
     case actionTypes.LOGOUT_USER:
+      console.log("reset");
+
       return {
         ...state,
         mobileNo: "",
+        countryCode: "",
         verificationCode: false,
         successNo: false,
+        verified: false,
         message: "",
         userInfo: null,
         successEmail: false,
         loading: true,
+        registered: false,
         businessAccounts: [],
         mainBusiness: null,
         campaignList: [],
-        selectedCampaign: null
+        selectedCampaign: null,
+        successName: false,
+        filteredCampaigns: []
       };
+
     default:
       return state;
   }

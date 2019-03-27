@@ -172,7 +172,10 @@ class MainForm extends Component {
         </View>
         <View>
           <TouchableWithoutFeedback
-            onPress={() => this.props.navigation.navigate("MainForm")}
+            onPress={() => {
+              this.props.resetRegister();
+              this.props.navigation.navigate("MainForm");
+            }}
             style={styles.bottomView}
           >
             <View style={{ marginBottom: 30 }}>
@@ -195,6 +198,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
+  resetRegister: () => dispatch(actionCreators.resetRegister()),
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))
 });
