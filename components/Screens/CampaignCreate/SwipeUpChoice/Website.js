@@ -54,7 +54,9 @@ export default class Website extends Component {
     });
     if (!urlError) {
       this.props._changeDestination(
-        "REMOTE_WEBPAGE",
+        this.props.objective !== "LEAD_GENERATION"
+          ? "REMOTE_WEBPAGE"
+          : "LEAD_GENERATION",
         this.state.campaignInfo.callaction,
         { url: this.state.campaignInfo.attachment }
       );
