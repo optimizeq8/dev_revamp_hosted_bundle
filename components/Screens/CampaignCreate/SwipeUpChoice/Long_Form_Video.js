@@ -93,7 +93,7 @@ export default class Long_Form_Video extends Component {
       videoError
     });
     if (!videoError && !this.state.durationError) {
-      this.props._changeDestination("LONG_FORM_VIDEO", this.state.callaction, {
+      this.props._changeDestination("LONGFORM_VIDEO", this.state.callaction, {
         longformvideo_media: this.state.longformvideo_media,
         longformvideo_media_type: this.state.longformvideo_media_type
       });

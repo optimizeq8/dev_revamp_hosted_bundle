@@ -185,10 +185,10 @@ class BusinessInfo extends Component {
       }
     }
   }
-  _verifyBusinessName(businesstype, name) {
+  async _verifyBusinessName(businesstype, name) {
     if (businesstype === "2" && name !== "") {
       this.props.resetMessages();
-      this.props.verifyBusinessName(name);
+      await this.props.verifyBusinessName(name);
 
       this.setState({
         nameError: validateWrapper(
@@ -224,8 +224,13 @@ class BusinessInfo extends Component {
       countryError,
       businesscategoryError
     });
+    this._verifyBusinessName(
+      this.state.userInfo.businesstype,
+      this.state.userInfo.businessname
+    );
     if (
       !this.state.nameError &&
+      !nameError &&
       !this.state.countryError &&
       !this.state.businesscategoryError
     ) {
@@ -308,10 +313,14 @@ class BusinessInfo extends Component {
                   borderTopEndRadius: 15
                 }
               ]}
-              onPress={() => {
-                this.setState({
+              onPress={async () => {
+                await this.setState({
                   userInfo: { ...this.state.userInfo, businesstype: "2" }
                 });
+                this._verifyBusinessName(
+                  this.state.userInfo.businesstype,
+                  this.state.userInfo.businessname
+                );
               }}
             >
               <Text
