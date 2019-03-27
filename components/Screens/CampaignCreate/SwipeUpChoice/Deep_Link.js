@@ -158,7 +158,7 @@ export default class Deep_Link extends Component {
     ) {
       this.props._changeDestination(
         "DEEP_LINK",
-        this.state.callaction.label,
+        this.state.callaction,
         this.state.attachment
       );
       this.props.navigation.navigate("AdDesign");

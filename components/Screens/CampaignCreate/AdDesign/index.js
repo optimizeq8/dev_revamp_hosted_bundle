@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { ImagePicker, Permissions } from "expo";
+import { ImagePicker, Permissions, Video, FileSystem } from "expo";
 import {
   View,
   KeyboardAvoidingView,
@@ -8,7 +8,6 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import { Video } from "expo";
 import {
   Card,
   Button,
@@ -76,35 +75,73 @@ class AdDesign extends Component {
   }
 
   _changeDestination = (destination, call_to_action, attachment) => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        destination,
-        call_to_action,
-        attachment
-      }
-    });
+    if (attachment.hasOwnProperty("longformvideo_media")) {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          destination,
+          call_to_action: call_to_action
+        },
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      });
+    } else {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          destination,
+          call_to_action: call_to_action,
+          attachment
+        }
+      });
+    }
   };
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "All",
       base64: false,
       exif: false,
-      quality: 0.1,
+      quality: 1,
       aspect: [9, 16]
     });
 
-    console.log(result);
-    console.log(Math.floor(result.width / 9), "width");
-    console.log(Math.floor(result.height / 16), "height");
+    // console.log(result);
+    console.log(result.width, "width");
+    console.log(result.height, "height");
+    Image.getSize(result.uri, (width, height) => {
+      console.log(width, height);
+    });
     //if (result.width >= 1080 && result.height >= 1920)
-    if (Math.floor(result.width / 9) === Math.floor(result.height / 16))
+    if (Math.floor(result.width / 9) === Math.floor(result.height / 16)) {
       if (!result.cancelled) {
-        console.log(result);
-
-        this.setState({ image: result.uri, type: result.type.toUpperCase() });
-        this.formatMedia();
+        FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
+          console.log(file);
+          if (result.type === "video" && file.size > 32000000) {
+            this.setState({
+              imageError: "Video must be less than 32 MBs",
+              image: null
+            });
+          } else if (result.type === "image" && file.size > 5000000) {
+            this.setState({
+              imageError: "Image must be less than 5 MBs",
+              image: null
+            });
+          } else {
+            this.setState({
+              image: result.uri,
+              type: result.type.toUpperCase(),
+              imageError: null
+            });
+            this.formatMedia();
+          }
+        });
       }
+    } else {
+      this.setState({
+        imageError: "Media size must be in 9:16 aspect ratio",
+        image: null
+      });
+    }
   };
 
   formatMedia() {
@@ -125,10 +162,15 @@ class AdDesign extends Component {
     body.append("brand_name", this.state.campaignInfo.brand_name);
     body.append("headline", this.state.campaignInfo.headline);
     body.append("destination", this.state.campaignInfo.destination);
-    body.append("call_to_action", this.state.campaignInfo.call_to_action);
+    body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
     body.append(
       "attachment",
       JSON.stringify(this.state.campaignInfo.attachment)
+    );
+    body.append("longformvideo_media", this.state.longformvideo_media);
+    body.append(
+      "longformvideo_media_type",
+      this.state.longformvideo_media_type
     );
 
     this.setState({
@@ -137,8 +179,6 @@ class AdDesign extends Component {
   }
 
   _getUploadState = loading => {
-    console.log("loading", loading);
-
     this.setState({
       loaded: loading
     });
@@ -153,6 +193,7 @@ class AdDesign extends Component {
       this.state.campaignInfo.headline
     );
     const imageError = validateWrapper("mandatory", this.state.image);
+
     this.setState({
       brand_nameError,
       headlineError,
@@ -161,11 +202,12 @@ class AdDesign extends Component {
 
     if (!brand_nameError && !headlineError && !imageError) {
       let t = await this.formatMedia();
-      this.props.ad_design(
-        this.state.formatted,
-        this._getUploadState,
-        this.props.navigation
-      );
+
+      // this.props.ad_design(
+      //   this.state.formatted,
+      //   this._getUploadState,
+      //   this.props.navigation
+      // );
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -373,7 +415,9 @@ class AdDesign extends Component {
                     fontSize: 16
                   }}
                 >
-                  Please choose an image.
+                  {!this.state.imageError.includes("blank")
+                    ? this.state.imageError
+                    : "Please choose an image"}
                 </Text>
               )}
               <Text> {Math.round(this.state.loaded, 2)} %</Text>
@@ -383,7 +427,8 @@ class AdDesign extends Component {
                     this.props.navigation.push("AdDesignReview", {
                       image: this.state.image,
                       type: this.state.type,
-                      call_to_action: this.state.campaignInfo.call_to_action,
+                      call_to_action: this.state.campaignInfo.call_to_action
+                        .label,
                       headline: this.state.campaignInfo.headline,
                       brand_name: this.state.campaignInfo.brand_name
                     });
