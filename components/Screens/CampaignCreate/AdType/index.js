@@ -34,67 +34,80 @@ class Tutorial extends Component {
 
   render() {
     let width = Dimensions.get("window").width * 0.5 - 120;
-    const Slide = ({ title, id }) => (
-      <TouchableOpacity
-        onPress={() =>
-          id === 1 && this.props.navigation.navigate("AdObjective")
-        }
-        style={styles.slide}
-      >
-        <View>
-          <Image
-            style={{
-              height: 450,
-              width: 300
-            }}
-            source={require("../../../../assets/images/adtype.png")}
-            resizeMode="contain"
-          />
-        </View>
-      </TouchableOpacity>
+    const Slide = ({ title, id, icon, rout, text }) => (
+      <View>
+        <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
+        <Text style={styles.slidtitle}>{title} </Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate(rout)}
+          style={styles.placeholder}
+        >
+          <Text style={styles.slidetext}> {text} </Text>
+        </TouchableOpacity>
+      </View>
     );
     return (
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Card padder style={styles.mainCard}>
-          <View style={{ flexDirection: "row" }}>
-            <Button
-              iconLeft
-              large
-              transparent
-              onPress={() => this.props.navigation.navigate("Dashboard")}
-              style={{
-                paddingLeft: 10,
-                marginRight: width
-              }}
-            >
-              <Icon
-                style={{
-                  top: 25,
-                  fontSize: 45
-                }}
-                name="close"
-              />
-            </Button>
-            <Text style={styles.text}>Start Optimizing {"\n"} your Ads</Text>
-          </View>
-          <Swiper
-            backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
-            dots
-            dotsColor="rgba(147, 147, 147, 0.25)"
-            dotsColorActive=" rgba(147, 147, 147, 1)"
-          >
-            <Slide id={1} title="Lorem" />
-            <Slide id={2} title="ipsum" />
-            <Slide id={3} title="dolor" />
-            <Slide id={4} title="sit" />
-          </Swiper>
-        </Card>
+        <Button
+          iconLeft
+          large
+          transparent
+          onPress={() => this.props.navigation.navigate("Signin")}
+          style={{
+            marginLeft: 10
+          }}
+        >
+          <Icon
+            style={{
+              top: 25,
+              fontSize: 60,
+              color: "#fff"
+            }}
+            name="close"
+          />
+        </Button>
+        <Text style={styles.title}>Choose your Ad Type</Text>
+
+        <Swiper
+          backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
+          dots
+          dotsColor="rgba(255, 255, 255, 0.25)"
+          dotsColorActive=" rgba(255, 255, 255, 1)"
+        >
+          <Slide
+            id={1}
+            text="Create Your Ad Now!"
+            rout="AdObjective"
+            icon="snapchat-ghost"
+            title="Snap Ad"
+          />
+          <Slide
+            id={2}
+            text="Coming Soon!"
+            rout="Home"
+            icon="twitter"
+            title="Twitter Ad"
+          />
+          <Slide
+            id={3}
+            text="Coming Soon!"
+            rout="Home"
+            icon="instagram"
+            title="Instagram Ad"
+          />
+          <Slide
+            id={4}
+            text="Coming Soon!"
+            rout="Home"
+            icon="snapchat-ghost"
+            title="Story Ad "
+          />
+        </Swiper>
       </Container>
     );
   }

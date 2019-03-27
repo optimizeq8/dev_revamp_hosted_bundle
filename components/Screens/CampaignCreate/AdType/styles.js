@@ -3,13 +3,14 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#6268FF"
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
+    flex: 1,
     backgroundColor: "#751AFF"
   },
   image: {
@@ -20,12 +21,6 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
     flex: 1
   },
   text: {
@@ -38,7 +33,59 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-
+  title: {
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center",
+    paddingTop: 0,
+    textAlign: "center",
+    fontFamily: "montserrat-semibold"
+  },
+  slidtitle: {
+    fontSize: 22,
+    color: "#fff",
+    textAlign: "center",
+    paddingTop: 15,
+    textAlign: "center",
+    fontFamily: "montserrat-bold"
+  },
+  slideicon: {
+    fontSize: 60,
+    color: "#fff",
+    paddingTop: 15,
+    textAlign: "center",
+    fontFamily: "montserrat-bold",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5
+  },
+  slidetext: {
+    fontSize: 18,
+    color: "#fff",
+    textAlign: "center",
+    paddingTop: 15,
+    textAlign: "center",
+    fontFamily: "montserrat-bold",
+    zIndex: 10
+  },
+  buttonN: {
+    paddingTop: 0,
+    bottom: 15,
+    height: 530
+  },
+  placeholder: {
+    opacity: 0.26,
+    borderRadius: 34,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "78%",
+    height: "76%",
+    zIndex: 0,
+    marginTop: 17,
+    backgroundColor: "black",
+    justifyContent: "center"
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   }
