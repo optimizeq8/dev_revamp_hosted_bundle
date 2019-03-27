@@ -145,6 +145,13 @@ class AdDetails extends Component {
       this.setState({ campaignInfo: replace, regions: reg.regions });
     }
   };
+  getMinimumCash = days => {
+    let minValueBudget = days !== 0 ? 20 * days : 20;
+    this.onSelectedBudgetChange(minValueBudget);
+    this.setState({
+      minValueBudget
+    });
+  };
   handleStartDatePicked = date => {
     this.setState({
       campaignInfo: {
@@ -259,6 +266,8 @@ class AdDetails extends Component {
     }
   };
   render() {
+    console.log("min", this.state.minValueBudget);
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -303,13 +312,19 @@ class AdDetails extends Component {
                 <Text style={styles.colorGrey}>
                   {this.state.minValueBudget} $
                 </Text>
-                <Text style={styles.colorYellow}>
-                  {this.state.campaignInfo.lifetime_budget_micro + "$"}
-                </Text>
+                <View style={{ alignItems: "center" }}>
+                  <Text style={styles.colorYellow}>
+                    {this.state.campaignInfo.lifetime_budget_micro + "$"}
+                  </Text>
+                  <Text style={[styles.colorGrey, { fontSize: 11 }]}>
+                    20$/day
+                  </Text>
+                </View>
                 <Text style={styles.colorGrey}>
                   {this.state.maxValueBudget} $
                 </Text>
               </View>
+
               <Slider
                 style={{ width: 300 }}
                 step={10}
@@ -456,6 +471,7 @@ class AdDetails extends Component {
             </Item>
 
             <DateField
+              getMinimumCash={this.getMinimumCash}
               onRef={ref => (this.dateField = ref)}
               handleStartDatePicked={this.handleStartDatePicked}
               handleEndDatePicked={this.handleEndDatePicked}
