@@ -25,7 +25,7 @@ import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
-import { ImagePicker, Permissions, LinearGradient } from "expo";
+import { ImagePicker, Permissions, LinearGradient, FileSystem } from "expo";
 
 // Style
 import styles, { colors } from "./styles";
@@ -36,12 +36,10 @@ export default class Long_Form_Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      attachment: {
-        callaction: list[2].call_to_action_list[0]
-      },
-      video: null,
+      callaction: list[2].call_to_action_list[0],
+      longformvideo_media: null,
       duration: 0,
-      type: "",
+      longformvideo_media_type: "",
       callactions: list[2].call_to_action_list,
       videoError: "",
       durationError: ""
@@ -60,46 +58,45 @@ export default class Long_Form_Video extends Component {
       mediaTypes: "Videos",
       base64: false,
       exif: false,
-      quality: 0.1,
+      quality: 1,
       aspect: [9, 16]
     });
-
-    console.log(Math.floor(result.width / 9), "width");
-    console.log(Math.floor(result.height / 16), "height");
     //if (result.width >= 1080 && result.height >= 1920)
     if (result.duration >= 15000) {
       if (!result.cancelled) {
-        console.log(result);
-
-        this.setState({
-          video: result.uri,
-          type: result.type.toUpperCase(),
-          durationError: null,
-          videoError: null
+        FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
+          if (file.size > 1073741824) {
+            this.setState({
+              videoError: "Video must be less than 1 GB",
+              longformvideo_media: null
+            });
+          } else {
+            this.setState({
+              longformvideo_media: result.uri,
+              longformvideo_media_type: result.type.toUpperCase(),
+              durationError: null,
+              videoError: null
+            });
+          }
         });
       }
     } else {
       this.setState({
-        durationError: validateWrapper("video", this.state.duration)
+        durationError: validateWrapper("duration", this.state.duration)
       });
     }
   };
 
   _handleSubmission = () => {
-    const videoError = validateWrapper("video", this.state.video);
+    const videoError = validateWrapper("video", this.state.longformvideo_media);
     this.setState({
       videoError
     });
-
     if (!videoError && !this.state.durationError) {
-      console.log("video", this.state);
-
-      //   this.props._changeDestination(
-      //     "REMOTE_WEBPAGE",
-      //     this.state.attachment.callaction.label,
-      //     this.state.attachment.attachment
-      //   );
-      //   this.props.navigation.navigate("AdDesign");
+      this.props._changeDestination("LONG_FORM_VIDEO", this.state.callaction, {
+        longformvideo_media: this.state.longformvideo_media,
+        longformvideo_media_type: this.state.longformvideo_media_type
+      });
     }
   };
   render() {
@@ -152,12 +149,9 @@ export default class Long_Form_Video extends Component {
             placeholder={{}}
             onValueChange={(value, index) => {
               this.setState({
-                attachment: {
-                  ...this.state.attachment,
-                  callaction: {
-                    label: list[2].call_to_action_list[index].label,
-                    value
-                  }
+                callaction: {
+                  label: list[2].call_to_action_list[index].label,
+                  value
                 }
               });
             }}
@@ -174,10 +168,10 @@ export default class Long_Form_Video extends Component {
                   }
                 ]}
               >
-                {this.state.attachment.callaction === ""
+                {this.state.callaction === ""
                   ? this.state.callactions[0].label
                   : this.state.callactions.find(
-                      c => this.state.attachment.callaction.value === c.value
+                      c => this.state.callaction.value === c.value
                     ).label}
               </Text>
               <Icon

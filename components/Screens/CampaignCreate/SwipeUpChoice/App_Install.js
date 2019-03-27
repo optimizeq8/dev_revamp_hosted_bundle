@@ -158,7 +158,7 @@ export default class App_Install extends Component {
     if (!nameError && !ios_app_idError && !android_app_urlError) {
       this.props._changeDestination(
         "APP_INSTALL",
-        this.state.callaction.label,
+        this.state.callaction,
         this.state.attachment
       );
       this.props.navigation.navigate("AdDesign");

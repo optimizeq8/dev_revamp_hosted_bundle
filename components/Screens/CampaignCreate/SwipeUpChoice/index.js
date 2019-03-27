@@ -84,7 +84,7 @@ class SwipeUpChoice extends Component {
           )}
           {this.props.navigation.state.params.objective
             .toLowerCase()
-            .includes("Video") && (
+            .includes("video") && (
             <Long_Form_Video
               _changeDestination={
                 this.props.navigation.state.params._changeDestination

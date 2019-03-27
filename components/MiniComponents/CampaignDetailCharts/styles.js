@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 25,
     paddingBottom: 20,
-    fontFamily: "Montserrat-Medium",
+    fontFamily: "montserrat-medium",
     fontSize: 18
   },
   buttontext: {

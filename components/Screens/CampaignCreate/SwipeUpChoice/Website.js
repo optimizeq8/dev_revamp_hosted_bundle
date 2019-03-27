@@ -55,7 +55,7 @@ export default class Website extends Component {
     if (!urlError) {
       this.props._changeDestination(
         "REMOTE_WEBPAGE",
-        this.state.campaignInfo.callaction.label,
+        this.state.campaignInfo.callaction,
         { url: this.state.campaignInfo.attachment }
       );
       this.props.navigation.navigate("AdDesign");

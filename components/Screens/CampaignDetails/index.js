@@ -202,7 +202,7 @@ class CampaignDetails extends Component {
                     <View style={{ alignSelf: "center" }}>
                       <Toggle
                         buttonTextStyle={{
-                          fontFamily: "Montserrat-Medium",
+                          fontFamily: "montserrat-medium",
                           fontSize: 10,
                           color: "#fff",
                           top: 7,
@@ -221,7 +221,7 @@ class CampaignDetails extends Component {
                       />
                       <Text
                         style={{
-                          fontFamily: "Montserrat-Medium",
+                          fontFamily: "montserrat-medium",
                           fontSize: 10,
                           paddingTop: 5,
                           color: "#fff",
