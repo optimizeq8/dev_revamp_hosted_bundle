@@ -53,6 +53,7 @@ class MainForm extends Component {
   }
 
   _handleSubmission = () => {
+    this.props.resetMessages();
     const emailError = validateWrapper("email", this.state.email);
     const passwordError = validateWrapper("password", this.state.password);
     this.setState({
@@ -198,6 +199,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
+  resetMessages: () => dispatch(actionCreators.resetMessages()),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))
