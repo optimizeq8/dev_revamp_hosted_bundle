@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
-export const snap_ad_audience_size = info => {
+export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
     instance
       .post(`snapaudiencesize`, info)
@@ -19,8 +19,9 @@ export const snap_ad_audience_size = info => {
           payload: data
         });
       })
+      .then(() => totalReach())
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 };
