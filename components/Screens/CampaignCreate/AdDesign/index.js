@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Image,
-  Dimensions
+  Dimensions,
+  Platform
 } from "react-native";
 import {
   Card,
@@ -54,7 +55,8 @@ class AdDesign extends Component {
       formatted: null,
       brand_nameError: "",
       headlineError: "",
-      imageError: ""
+      imageError: "",
+      isVisible: false
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._changeDestination = this._changeDestination.bind(this);
@@ -102,12 +104,13 @@ class AdDesign extends Component {
       base64: false,
       exif: false,
       quality: 1,
-      aspect: [9, 16]
+      aspect: [9, 16],
+      allowsEditing: Platform.OS === "android"
     });
 
     // console.log(result);
-    console.log(result.width, "width");
-    console.log(result.height, "height");
+    console.log(Math.floor(result.width / 9), "width");
+    console.log(Math.floor(result.height / 16), "height");
     Image.getSize(result.uri, (width, height) => {
       console.log(width, height);
     });
@@ -130,7 +133,8 @@ class AdDesign extends Component {
             this.setState({
               image: result.uri,
               type: result.type.toUpperCase(),
-              imageError: null
+              imageError: null,
+              isVisible: true
             });
             this.formatMedia();
           }
@@ -145,6 +149,8 @@ class AdDesign extends Component {
   };
 
   formatMedia() {
+    var body = new FormData();
+
     let res = this.state.image.split("/ImagePicker/");
     let format = res[1].split(".");
     let mime = "application/octet-stream";
@@ -153,16 +159,26 @@ class AdDesign extends Component {
       type: this.state.type + "/" + format[1],
       name: res[1]
     };
-    let resVideo = this.state.longformvideo_media
-      ? this.state.longformvideo_media.split("/ImagePicker/")
-      : "";
-    let formatVideo = resVideo[1].split(".");
-    var video = {
-      uri: this.state.longformvideo_media,
-      type: this.state.longformvideo_media_type + "/" + formatVideo[1],
-      name: resVideo[1]
-    };
-    var body = new FormData();
+    if (this.state.longformvideo_media) {
+      let resVideo = this.state.longformvideo_media;
+      this.state.longformvideo_media.split("/ImagePicker/");
+
+      let formatVideo = resVideo[1].split(".");
+      var video = {
+        uri: this.state.longformvideo_media,
+        type: this.state.longformvideo_media_type + "/" + formatVideo[1],
+        name: resVideo[1]
+      };
+      body.append(
+        "attachment",
+        JSON.stringify(this.state.campaignInfo.attachment)
+      );
+      body.append("longformvideo_media", video);
+      body.append(
+        "longformvideo_media_type",
+        this.state.longformvideo_media_type
+      );
+    }
 
     body.append("media", photo);
     body.append("media_type", this.state.type);
@@ -172,15 +188,6 @@ class AdDesign extends Component {
     body.append("headline", this.state.campaignInfo.headline);
     body.append("destination", this.state.campaignInfo.destination);
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
-    body.append(
-      "attachment",
-      JSON.stringify(this.state.campaignInfo.attachment)
-    );
-    body.append("longformvideo_media", video);
-    body.append(
-      "longformvideo_media_type",
-      this.state.longformvideo_media_type
-    );
 
     this.setState({
       formatted: body
@@ -221,8 +228,20 @@ class AdDesign extends Component {
       // this.props.navigation.navigate("AdDetails");
     }
   };
+  onToggleModal = () => {
+    const { isVisible } = this.state;
+    this.setState({ isVisible: !isVisible });
+  };
   render() {
     let { image } = this.state;
+    {
+      image &&
+        Image.getSize(image, (width, height) => {
+          console.log(Math.floor(width / 9), "new width");
+          console.log(Math.floor(height / 16), "new height");
+        });
+    }
+
     let width = Dimensions.get("window").width * 0.5 - 185;
     return (
       <Container style={styles.container}>
