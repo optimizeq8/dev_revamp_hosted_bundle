@@ -34,9 +34,12 @@ import country_regions from "./regions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import InputNumber from "rmc-input-number";
 import inputNumberStyles from "./inputNumber";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import ReachBar from "./ReachBar";
 // Style
 import styles, { colors } from "./styles";
 import DateField from "./DateFields";
+import Axios from "axios";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null
@@ -104,12 +107,13 @@ class AdDetails extends Component {
       maxValueBudget: 1000,
       value: 0,
       interestNames: [],
-      modalVisible: false
+      modalVisible: false,
+      totalReach: 0
     };
   }
 
   async componentDidMount() {
-    this.setState({
+    await this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
         campaign_id: this.props.campaign_id
@@ -132,7 +136,7 @@ class AdDetails extends Component {
       campaignInfo: rep
     });
   };
-  onSelectedItemsChange = selectedItems => {
+  onSelectedItemsChange = async selectedItems => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItems.pop();
 
@@ -142,7 +146,8 @@ class AdDetails extends Component {
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
-      this.setState({ campaignInfo: replace, regions: reg.regions });
+      await this.setState({ campaignInfo: replace, regions: reg.regions });
+      // this.getTotalReach();
     }
   };
   getMinimumCash = days => {
@@ -265,8 +270,36 @@ class AdDetails extends Component {
       // this.props.navigation.navigate("Home");
     }
   };
+
+  getTotalReach = () => {
+    let totalReach = {
+      demographics: [
+        {
+          languages: ["en", "ar"],
+          min_age: 13,
+          max_age: "35+"
+        }
+      ],
+      geos: [
+        { country_code: this.state.campaignInfo.targeting.geos[0].country_code }
+      ]
+    };
+    const obj = {
+      targeting: JSON.stringify(totalReach),
+      ad_account_id: this.props.mainBusiness.snap_ad_account_id
+    };
+    // this.props.snap_ad_audience_size(obj);
+    Axios.post(
+      `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
+      obj
+    ).then(res => {
+      this.setState({
+        totalReach: (this.props.average_reach / res.data.average_reach) * 100
+      });
+    });
+  };
   render() {
-    console.log("min", this.state.minValueBudget);
+    console.log(this.state.totalReach);
 
     return (
       <Container style={styles.container}>
@@ -359,7 +392,6 @@ class AdDetails extends Component {
                 }}
               />
             </View>
-
             <Item
               rounded
               style={[
@@ -393,7 +425,6 @@ class AdDetails extends Component {
                 Min {this.state.min_ageError}
               </Text>
             )}
-
             <Item
               rounded
               style={[
@@ -469,7 +500,6 @@ class AdDetails extends Component {
                   : this.state.campaignInfo.end_time}
               </Text>
             </Item>
-
             <DateField
               getMinimumCash={this.getMinimumCash}
               onRef={ref => (this.dateField = ref)}
@@ -501,37 +531,66 @@ class AdDetails extends Component {
                 this.onSelectedInterestsNamesChange
               }
             />
-            <Button
-              onPress={() => {
-                let r = cloneDeep(this.state.campaignInfo.targeting);
-                if (r.demographics[0].gender === "") {
-                  delete r.demographics[0].gender;
-                }
-                if (
-                  r.geos[0].hasOwnProperty("region_id") &&
-                  r.geos[0].region_id.length === 0
-                ) {
-                  delete r.geos[0].region_id;
-                }
-                if (r.demographics[0].max_age >= 35) {
-                  r.demographics[0].max_age = "35+";
-                }
-                if (
-                  r.hasOwnProperty("interests") &&
-                  r.interests[0].category_id.length === 0
-                ) {
-                  delete r.interests;
-                }
-                const obj = {
-                  targeting: JSON.stringify(r),
-                  ad_account_id: this.props.mainBusiness.snap_ad_account_id
-                };
-                this.props.snap_ad_audience_size(obj);
-              }}
+            {/* <AnimatedCircularProgress
+              size={300}
+              width={10}
+              fill={this.state.totalReach}
+              arcSweepAngle={180}
+              rotation={270}
+              lineCap="round"
+              style={styles.chart}
+              tintColor="#FEFB00"
+              backgroundColor="rgba(255,255,255,0.3)"
             >
-              <Text> Reach {this.props.average_reach}</Text>
-            </Button>
-
+              {fill => {
+                return (
+                  <View style={styles.chartItems}>
+                    <Text style={styles.chartText}>{parseInt(fill)}</Text>
+                    <Button
+                      onPress={async () => {
+                        let r = cloneDeep(this.state.campaignInfo.targeting);
+                        if (r.demographics[0].gender === "") {
+                          delete r.demographics[0].gender;
+                        }
+                        if (
+                          r.geos[0].hasOwnProperty("region_id") &&
+                          r.geos[0].region_id.length === 0
+                        ) {
+                          delete r.geos[0].region_id;
+                        }
+                        if (r.demographics[0].max_age >= 35) {
+                          r.demographics[0].max_age = "35+";
+                        }
+                        if (
+                          r.hasOwnProperty("interests") &&
+                          r.interests[0].category_id.length === 0
+                        ) {
+                          delete r.interests;
+                        }
+                        const obj = {
+                          targeting: JSON.stringify(r),
+                          ad_account_id: this.props.mainBusiness
+                            .snap_ad_account_id
+                        };
+                        await this.props.snap_ad_audience_size(
+                          obj,
+                          this.getTotalReach
+                        );
+                      }}
+                      style={{ top: 15 }}
+                    >
+                      <Text> Reach {this.props.average_reach}</Text>
+                    </Button>
+                  </View>
+                );
+              }}
+            </AnimatedCircularProgress> */}
+            <ReachBar
+              country_code={
+                this.state.campaignInfo.targeting.geos[0].country_code
+              }
+              targeting={this.state.campaignInfo.targeting}
+            />
             <TouchableOpacity
               onPress={this._handleSubmission}
               style={styles.buttonN}
@@ -558,8 +617,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   ad_details: (info, interestNames, navigation) =>
     dispatch(actionCreators.ad_details(info, interestNames, navigation)),
-  snap_ad_audience_size: info =>
-    dispatch(actionCreators.snap_ad_audience_size(info))
+  snap_ad_audience_size: (info, totalReach) =>
+    dispatch(actionCreators.snap_ad_audience_size(info, totalReach))
 });
 export default connect(
   mapStateToProps,

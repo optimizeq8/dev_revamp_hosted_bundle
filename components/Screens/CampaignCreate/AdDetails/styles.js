@@ -138,6 +138,20 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingVertical: 20
+  },
+  chart: {
+    alignItems: "center",
+    height: hp("20%")
+  },
+  chartText: {
+    color: "#000",
+    fontFamily: "benton-sans-medium",
+    fontSize: 16
+  },
+  chartItems: {
+    alignItems: "center",
+    left: wp("9%"),
+    bottom: hp("10%")
   }
 });
 
