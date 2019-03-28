@@ -163,15 +163,23 @@ class CreateBusinessAccount extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
-      this.setState({
-        businessnameError: this.props.message ? this.props.message : null
-      });
+      if (this.props.message === "Business name already exist") {
+        console.log(this.props.message);
+
+        this.setState({
+          businessnameError: this.props.message ? this.props.message : null
+        });
+      } else {
+        this.setState({
+          nameError: null
+        });
+      }
     }
   }
-  _verifyBusinessName(businesstype, name) {
+  async _verifyBusinessName(businesstype, name) {
     if (businesstype === "2" && name !== "") {
       this.props.resetMessages();
-      this.props.verifyBusinessName(name);
+      await this.props.verifyBusinessName(name);
 
       this.setState({
         businessnameError: validateWrapper(
@@ -206,19 +214,19 @@ class CreateBusinessAccount extends Component {
       "mandatory",
       this.state.businessAccount.country
     );
-    this.setState(
-      {
-        businessnameError,
-        businessemailError,
-        businesscategoryError,
-        countryError
-      },
-      () => {
-        console.log(this.state.businessAccount);
-      }
+    this.setState({
+      businessnameError,
+      businessemailError,
+      businesscategoryError,
+      countryError
+    });
+    this._verifyBusinessName(
+      this.state.businessAccount.businesstype,
+      this.state.businessAccount.businessname
     );
     if (
       !businessnameError &&
+      !this.state.businessnameError &&
       !businessemailError &&
       !businesscategoryError &&
       !countryError
@@ -325,13 +333,17 @@ class CreateBusinessAccount extends Component {
                 borderTopEndRadius: 15
               }
             ]}
-            onPress={() => {
-              this.setState({
+            onPress={async () => {
+              await this.setState({
                 businessAccount: {
                   ...this.state.businessAccount,
                   businesstype: "2"
                 }
               });
+              this._verifyBusinessName(
+                this.state.businessAccount.businesstype,
+                this.state.businessAccount.businessname
+              );
             }}
           >
             <Text
