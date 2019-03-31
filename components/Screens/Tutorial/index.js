@@ -19,7 +19,8 @@ import { LinearGradient } from "expo";
 import Swiper from "../../MiniComponents/Swiper";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -43,8 +44,7 @@ class Tutorial extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
 

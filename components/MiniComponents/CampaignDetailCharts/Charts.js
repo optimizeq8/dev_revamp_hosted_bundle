@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import styles, { colors } from "./styles";
+import styles from "./styles";
 
 export default class Charts extends Component {
   render() {

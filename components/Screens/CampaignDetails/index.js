@@ -27,8 +27,7 @@ import {
   Spinner
 } from "native-base";
 import dateFormat from "dateformat";
-// Style
-import styles, { colors } from "./styles";
+
 import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView } from "expo";
 import { interestNames } from "./interesetNames";
@@ -48,6 +47,10 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import BarIcon from "../../../assets/SVGs/Bar.svg";
+
+// Style
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 const { height } = Dimensions.get("window");
 
@@ -77,14 +80,16 @@ class CampaignDetails extends Component {
 
   hideCharts = value => {
     let vl = (value / hp("100%")) * 100 + 20;
-    Animated.timing(this.state.chartAnimation, {
-      toValue: 100 - vl * 1.5,
-      duration: 100
-    }).start();
-    Animated.timing(this.state.LineAnimation, {
-      toValue: vl,
-      duration: 100
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.state.chartAnimation, {
+        toValue: 100 - vl * 1.5,
+        duration: 200
+      }),
+      Animated.timing(this.state.LineAnimation, {
+        toValue: vl,
+        duration: 200
+      })
+    ]).start();
   };
 
   render() {
@@ -360,6 +365,15 @@ class CampaignDetails extends Component {
                 draggableRange={this.props.draggableRange}
                 animatedValue={this._draggedValue}
                 friction={0.4}
+                onDragEnd={value => {
+                  console.log(value);
+
+                  if (value > hp("50%")) {
+                    this._panel.show();
+                  } else {
+                    this._panel.hide();
+                  }
+                }}
               >
                 {dragHandler => (
                   <View style={styles.bottomContainer}>
@@ -376,7 +390,8 @@ class CampaignDetails extends Component {
                         }}
                       >
                         <LinearGradient
-                          colors={["#751AFF", "#751AFF"]}
+                          colors={[colors.background1, colors.background2]}
+                          locations={[0.7, 1]}
                           style={styles.tab}
                         >
                           <BarIcon style={styles.handlerIcon} />
@@ -385,7 +400,8 @@ class CampaignDetails extends Component {
                       </TouchableWithoutFeedback>
                     </View>
                     <LinearGradient
-                      colors={["#751AFF", "#6C52FF", "#6268FF"]}
+                      colors={[colors.background1, colors.background2]}
+                      locations={[0.7, 1]}
                       style={{ borderRadius: 30, overflow: "hidden" }}
                     >
                       <Animated.View

@@ -15,7 +15,8 @@ import { LinearGradient } from "expo";
 import validateWrapper from "./ValidateWrapper";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../store/actions";

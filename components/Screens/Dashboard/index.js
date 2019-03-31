@@ -21,9 +21,10 @@ import { LinearGradient } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 
-// Style
-import styles, { colors } from "./styles";
 import * as actionCreators from "../../../store/actions";
+// Style
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -48,8 +49,7 @@ class Dashboard extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <Image

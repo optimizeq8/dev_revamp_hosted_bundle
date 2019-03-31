@@ -13,7 +13,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";

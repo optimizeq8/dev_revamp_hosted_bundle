@@ -33,7 +33,8 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Validator
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
@@ -56,7 +57,6 @@ class AdDesign extends Component {
       },
       inputH: false,
       inputB: false,
-
       objective: "",
       image: null,
       loaded: 0,

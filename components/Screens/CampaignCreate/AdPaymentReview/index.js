@@ -30,7 +30,9 @@ import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import dateFormat from "dateformat";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 import * as actionCreators from "../../../../store/actions";
 
 class AdPaymentReview extends Component {
@@ -101,8 +103,7 @@ class AdPaymentReview extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <View

@@ -5,7 +5,8 @@ import { Text, Container, Icon } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";

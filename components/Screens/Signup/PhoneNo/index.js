@@ -11,7 +11,9 @@ import {
 import { Button, Icon } from "native-base";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";

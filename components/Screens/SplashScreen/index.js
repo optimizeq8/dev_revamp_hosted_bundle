@@ -6,7 +6,8 @@ import { Button, Content, Text, Container } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import { LinearGradient } from "expo";
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 class SplashScreen extends Component {
   static navigationOptions = {
@@ -36,6 +37,7 @@ class SplashScreen extends Component {
       <Container style={styles.contentContainer}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
 

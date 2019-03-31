@@ -1,18 +1,8 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Dimensions
-} from "react-native";
-import { Text, Icon } from "native-base";
-import styles, { colors } from "./styles";
+import { View } from "react-native";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Chart from "./Charts";
-import { LinearGradient } from "expo";
 class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
