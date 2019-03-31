@@ -27,7 +27,8 @@ import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
 import CloseButtonIcon from "../../../../assets/SVGs/Close.svg";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";

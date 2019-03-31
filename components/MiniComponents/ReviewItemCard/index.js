@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, Image, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 class ReviewItemCard extends Component {
   render() {

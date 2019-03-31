@@ -8,7 +8,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import * as actionCreators from "../../../../store/actions";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 class AdDesignReview extends Component {
   static navigationOptions = {

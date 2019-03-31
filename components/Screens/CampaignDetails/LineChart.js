@@ -12,7 +12,7 @@ import styles from "./styles";
 export default class LineChart extends Component {
   render() {
     return (
-      <View style={{ paddingTop: 30 }}>
+      <View style={{ paddingTop: 30, paddingLeft: 20 }}>
         <Text style={styles.chartTitle}>Spend</Text>
         <Line
           withDots={false}

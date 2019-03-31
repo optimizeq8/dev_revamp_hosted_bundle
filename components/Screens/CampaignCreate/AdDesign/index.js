@@ -29,7 +29,8 @@ import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 import { ScrollView } from "react-native-gesture-handler";
 
 class AdDesign extends Component {
@@ -247,8 +248,7 @@ class AdDesign extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <ScrollView

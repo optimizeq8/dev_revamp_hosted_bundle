@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, Icon, View, Input, Item, Button } from "native-base";
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import RadioGroup from "react-native-radio-buttons-group";

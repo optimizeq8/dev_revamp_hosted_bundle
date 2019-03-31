@@ -36,7 +36,8 @@ import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 import CalenderkIcon from "../../../../assets/SVGs/Calender.svg";
 import DateRangePicker from "./DateRangePicker";
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 export default class DateFields extends Component {
   constructor(props) {

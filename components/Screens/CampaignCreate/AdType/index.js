@@ -14,7 +14,9 @@ import { LinearGradient } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 //Redux
 import { connect } from "react-redux";
 

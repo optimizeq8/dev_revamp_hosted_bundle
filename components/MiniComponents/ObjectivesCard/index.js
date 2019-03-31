@@ -1,13 +1,14 @@
 //Components
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { Text } from "native-base";
 //Style
 import styles from "./styles";
+
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-
+import Icons from "../../../assets/SVGs/Objectives/";
 class BusinessCard extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,9 @@ class BusinessCard extends Component {
     this.props.setObjective(this.props.choice.value);
   };
   render() {
+    let va = this.props.choice.value;
+    console.log(Icons[va].default);
+    let IconName = Icons[va].default;
     let changeState = { backgroundColor: "transparent", color: "#fff" };
     if (this.props.selected === this.props.choice.value) {
       changeState.backgroundColor = "#FF9D00";
@@ -29,11 +33,13 @@ class BusinessCard extends Component {
           { backgroundColor: changeState.backgroundColor }
         ]}
       >
-        <Icon
+        {/* <Icon
           type="MaterialCommunityIcons"
           name="web"
           style={[styles.icon, { color: changeState.color }]}
-        />
+        /> */}
+
+        <IconName />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
             {this.props.choice.label}

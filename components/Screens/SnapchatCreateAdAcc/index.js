@@ -17,10 +17,11 @@ import {
   Thumbnail
 } from "native-base";
 import { LinearGradient } from "expo";
+import * as actionCreators from "../../../store/actions";
 
 // Style
-import styles, { colors } from "./styles";
-import * as actionCreators from "../../../store/actions";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -48,8 +49,7 @@ class MainForm extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <Image
