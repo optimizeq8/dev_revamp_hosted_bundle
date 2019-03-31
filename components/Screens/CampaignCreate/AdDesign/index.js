@@ -1,37 +1,43 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { ImagePicker, Permissions, Video, FileSystem } from "expo";
+import {
+  LinearGradient,
+  ImagePicker,
+  Permissions,
+  Video,
+  FileSystem
+} from "expo";
 import {
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
   Dimensions,
-  Platform
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback
 } from "react-native";
 import {
-  Card,
   Button,
   Content,
   Text,
-  CardItem,
-  Body,
   Item,
   Input,
   Container,
-  Icon,
-  H1,
-  Badge
+  Icon
 } from "native-base";
-import { LinearGradient } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import PenIcon from "../../../../assets/SVGs/Pen.svg";
+
+//Redux
 import * as actionCreators from "../../../../store/actions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import { connect } from "react-redux";
 
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
-import { ScrollView } from "react-native-gesture-handler";
+
+//Validator
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -49,6 +55,8 @@ class AdDesign extends Component {
         attachment: "BLANK",
         media_type: ""
       },
+      inputH: false,
+      inputB: false,
       objective: "",
       image: null,
       loaded: 0,
@@ -251,206 +259,210 @@ class AdDesign extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <ScrollView
-          style={{
-            backgroundColor: "#fff",
-            borderTopStartRadius: 30,
-            borderTopEndRadius: 30
-          }}
+
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={false}
         >
-          <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={false}
-          >
-            <Card
-              style={[
-                styles.mainCard,
-                {
-                  margin: 0,
-                  shadowColor: "#fff",
-                  shadowRadius: 1,
-                  shadowOpacity: 0.7,
-                  shadowOffset: { width: 8, height: 8 }
-                }
-              ]}
-            >
-              <View style={{ flexDirection: "row", marginBottom: 35 }}>
-                <Button
-                  onLayout={event => {
-                    var { x, y, width, height } = event.nativeEvent.layout;
-                    console.log("width", width);
-                  }}
-                  transparent
-                  onPress={() => this.props.navigation.goBack()}
+          <View style={[styles.mainCard]}>
+            <View style={{ flexDirection: "row", marginBottom: 30 }}>
+              <Button
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+                style={{
+                  paddingLeft: 10
+                }}
+              >
+                <Icon
                   style={{
-                    paddingLeft: 10,
-                    marginRight: width
+                    top: 20,
+                    fontSize: 35,
+                    color: "#fff"
                   }}
-                >
-                  <Icon
-                    style={{
-                      top: 20,
-                      fontSize: 35
-                    }}
-                    name="arrow-back"
-                  />
-                </Button>
-                <Text style={styles.text}>Input your Snapchat AD Details</Text>
-              </View>
-              <TouchableOpacity
+                  name="arrow-back"
+                />
+              </Button>
+              <Text style={styles.title}>Compose Ad</Text>
+            </View>
+            <View style={styles.buttonN}>
+              {this.state.type === "VIDEO" ? (
+                <Video
+                  source={{
+                    uri: image
+                  }}
+                  shouldPlay
+                  isLooping
+                  isMuted
+                  resizeMode="cover"
+                  style={styles.placeholder}
+                />
+              ) : !image ? (
+                <View style={styles.placeholder} />
+              ) : (
+                <Image
+                  style={styles.placeholder}
+                  source={{ uri: image }}
+                  resizeMode="cover"
+                />
+              )}
+              <Item
+                style={[
+                  styles.inputBrand,
+                  {
+                    borderColor: this.state.brand_nameError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
+                <PenIcon fill={this.state.inputB ? "#FF9D00" : "#fff"} />
+
+                <Input
+                  style={styles.inputtext}
+                  placeholder="Brand Name"
+                  placeholderLabel={styles.inputtext}
+                  placeholderTextColor="white"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        brand_name: value
+                      }
+                    })
+                  }
+                  onFocus={() => {
+                    this.setState({ inputB: true });
+                  }}
+                  onBlur={() => {
+                    this.setState({ inputB: false });
+                    this.setState({
+                      brand_nameError: validateWrapper(
+                        "mandatory",
+                        this.state.campaignInfo.brand_name
+                      )
+                    });
+                  }}
+                />
+              </Item>
+
+              <Item
+                style={[
+                  styles.inputHeadline,
+                  {
+                    borderColor: this.state.headlineError ? "red" : "#D9D9D9"
+                  }
+                ]}
+              >
+                <PenIcon fill={this.state.inputH ? "#FF9D00" : "#fff"} />
+                <Input
+                  style={styles.inputtext}
+                  placeholder="Headline"
+                  placeholderTextColor="white"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        headline: value
+                      }
+                    })
+                  }
+                  onFocus={() => {
+                    this.setState({ inputH: true });
+                  }}
+                  onBlur={() => {
+                    this.setState({ inputH: false });
+                    this.setState({
+                      headlineError: validateWrapper(
+                        "mandatory",
+                        this.state.campaignInfo.headline
+                      )
+                    });
+                  }}
+                />
+              </Item>
+              <Button
+                style={[styles.inputMiddleButton, { flexDirection: "column" }]}
                 onPress={() => {
                   this._pickImage();
                 }}
-                style={styles.buttonN}
               >
-                {this.state.type === "VIDEO" ? (
-                  <Video
-                    source={{
-                      uri: image
-                    }}
-                    shouldPlay
-                    isLooping
-                    isMuted
-                    resizeMode="cover"
-                    style={styles.placeholder}
-                  />
-                ) : (
-                  <Image
-                    style={styles.placeholder}
-                    source={
-                      !image
-                        ? require("../../../../assets/images/placeholder.png")
-                        : { uri: image }
-                    }
-                    resizeMode="cover"
-                  />
-                )}
-                <Item
-                  style={[
-                    styles.inputBrand,
-                    {
-                      borderColor: this.state.brand_nameError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Icon
-                    type="SimpleLineIcons"
-                    name="pencil"
-                    style={{ color: "white" }}
-                  />
-                  <Input
-                    style={styles.inputtext}
-                    placeholder="Brand Name (Business name)"
-                    placeholderTextColor="white"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          brand_name: value
-                        }
-                      })
-                    }
-                    onBlur={() => {
-                      this.setState({
-                        brand_nameError: validateWrapper(
-                          "mandatory",
-                          this.state.campaignInfo.brand_name
-                        )
-                      });
-                    }}
-                  />
-                </Item>
-
-                <Item
-                  style={[
-                    styles.inputHeadline,
-                    {
-                      borderColor: this.state.headlineError ? "red" : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Icon
-                    type="SimpleLineIcons"
-                    name="pencil"
-                    style={{ color: "white" }}
-                  />
-                  <Input
-                    style={styles.inputtext}
-                    placeholder="Headline"
-                    placeholderTextColor="white"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          headline: value
-                        }
-                      })
-                    }
-                    onBlur={() => {
-                      this.setState({
-                        headlineError: validateWrapper(
-                          "mandatory",
-                          this.state.campaignInfo.headline
-                        )
-                      });
-                    }}
-                  />
-                </Item>
-                {!["BRAND_AWARENESS", "reach"].find(
-                  obj =>
-                    this.state.objective.toLowerCase() === obj.toLowerCase()
-                ) && (
-                  <TouchableOpacity
-                    style={styles.swipeUp}
-                    onPress={() => {
-                      this.state.objective.toLowerCase() === "traffic"
-                        ? this.props.navigation.navigate("SwipeUpDestination", {
-                            _changeDestination: this._changeDestination
-                          })
-                        : this.props.navigation.navigate("SwipeUpChoice", {
-                            _changeDestination: this._changeDestination,
-                            objective: this.state.objective
-                          });
-                    }}
-                  >
-                    <Text style={styles.swipeUpText}>
-                      {this.state.campaignInfo.destination !== "BLANK"
-                        ? this.state.campaignInfo.destination
-                        : this.state.campaignInfo.destination.includes("REMOTE")
-                        ? "Website"
-                        : "Swipe Up destination"}
-                      <Icon
-                        type="MaterialIcons"
-                        name="arrow-drop-down"
-                        style={{ color: "white" }}
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              </TouchableOpacity>
-              {!this.state.imageError ? null : (
+                <Icon
+                  style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
+                  name="camera"
+                />
                 <Text
                   style={{
                     textAlign: "center",
-                    color: "#717171",
-
-                    fontFamily: "benton-sans-medium",
-                    fontSize: 16
+                    paddingTop: 23,
+                    fontFamily: "montserrat-medium",
+                    fontSize: 14,
+                    width: 150,
+                    color: "#FF9D00"
                   }}
                 >
-                  {!this.state.imageError.includes("blank")
-                    ? this.state.imageError
-                    : "Please choose an image"}
+                  {image ? "Edit Media" : "Add Media"}
                 </Text>
+              </Button>
+              {!["BRAND_AWARENESS", "reach"].find(
+                obj => this.state.objective.toLowerCase() === obj.toLowerCase()
+              ) && (
+                <TouchableOpacity
+                  style={styles.swipeUp}
+                  onPress={() => {
+                    this.state.objective.toLowerCase() === "traffic"
+                      ? this.props.navigation.navigate("SwipeUpDestination", {
+                          _changeDestination: this._changeDestination
+                        })
+                      : this.props.navigation.navigate("SwipeUpChoice", {
+                          _changeDestination: this._changeDestination,
+                          objective: this.state.objective
+                        });
+                  }}
+                >
+                  <Text style={styles.swipeUpText}>
+                    {this.state.campaignInfo.destination !== "BLANK"
+                      ? this.state.campaignInfo.destination
+                      : this.state.campaignInfo.destination.includes("REMOTE")
+                      ? "Website"
+                      : "Swipe Up destination"}
+                  </Text>
+                  <Icon
+                    type="MaterialIcons"
+                    name="arrow-drop-down"
+                    style={{ color: "orange" }}
+                  />
+                </TouchableOpacity>
               )}
-              <Text> {Math.round(this.state.loaded, 2)} %</Text>
+            </View>
+            {!this.state.imageError ? null : (
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "#fff",
+                  paddingTop: 20,
+                  fontFamily: "montserrat-medium",
+                  fontSize: 16
+                }}
+              >
+                {!this.state.imageError.includes("blank")
+                  ? this.state.imageError
+                  : "Please choose an image"}
+              </Text>
+            )}
+            {
+              //              <Text> {Math.round(this.state.loaded, 2)} %</Text>
+            }
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                justifyContent: "space-around"
+              }}
+            >
               <Button
+                style={[styles.button, { backgroundColor: "#fff" }]}
                 onPress={() => {
                   if (this.state.image)
                     this.props.navigation.push("AdDesignReview", {
@@ -463,21 +475,18 @@ class AdDesign extends Component {
                     });
                 }}
               >
-                <Text> Preview</Text>
-              </Button>
-              <TouchableOpacity
-                onPress={this._handleSubmission}
-                style={styles.buttonN}
-              >
-                <Image
-                  style={styles.image}
-                  source={require("../../../../assets/images/button.png")}
-                  resizeMode="contain"
+                <Icon
+                  style={{ color: "#751AFF", fontSize: 22 }}
+                  type="SimpleLineIcons"
+                  name="eye"
                 />
-              </TouchableOpacity>
-            </Card>
-          </KeyboardAwareScrollView>
-        </ScrollView>
+              </Button>
+              <Button onPress={this._handleSubmission} style={styles.button}>
+                <Icon style={styles.icon} name="arrow-forward" />
+              </Button>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </Container>
     );
   }
