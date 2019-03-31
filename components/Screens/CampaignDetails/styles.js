@@ -84,6 +84,12 @@ const styles = StyleSheet.create({
     width: 150,
     alignSelf: "center"
   },
+  chartTitle: {
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 20,
+    width: 150
+  },
   subtext: {
     fontFamily: "montserrat-extralight",
     fontSize: 14,

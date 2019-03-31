@@ -7,13 +7,18 @@ import {
   TouchableOpacity
 } from "react-native";
 import { LineChart as Line } from "react-native-chart-kit";
-
+import LineChartDevider from "../../../assets/SVGs/LineChartDevider.svg";
+import styles from "./styles";
 export default class LineChart extends Component {
   render() {
     return (
-      <View style={{ marginTop: 20 }}>
-        <Text>Spend</Text>
+      <View style={{ paddingTop: 30 }}>
+        <Text style={styles.chartTitle}>Spend</Text>
         <Line
+          withDots={false}
+          withShadow={false}
+          withInnerLines={false}
+          withOuterLines={false}
           data={{
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
             datasets: [
@@ -29,31 +34,52 @@ export default class LineChart extends Component {
               }
             ]
           }}
-          width={Dimensions.get("window").width} // from react-native
+          width={Dimensions.get("window").width * 1.5} // from react-native
           height={220}
           yAxisLabel={"$"}
           chartConfig={{
-            backgroundGradientFrom: "#751AFF",
-            backgroundGradientTo: "#751AFF",
+            strokeWidth: 5,
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: (opacity = 1) => `#FFFC00`,
             style: {
-              borderRadius: 16
+              borderRadius: 16,
+              color: "#fff"
             }
           }}
           bezier
           style={{
-            marginVertical: 8,
-            borderRadius: 16
+            borderRadius: 16,
+            paddingBottom: 30
           }}
         />
-        <Text>Imprissions</Text>
+        <LineChartDevider style={{ alignSelf: "center" }} />
+        <Text style={styles.chartTitle}>Imprissions</Text>
         <Line
+          withDots={false}
+          withShadow={false}
+          withInnerLines={false}
+          withOuterLines={false}
           data={{
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sept"
+            ],
             datasets: [
               {
                 data: [
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
+                  Math.random() * 100,
                   Math.random() * 100,
                   Math.random() * 100,
                   Math.random() * 100,
@@ -64,27 +90,37 @@ export default class LineChart extends Component {
               }
             ]
           }}
-          width={Dimensions.get("window").width} // from react-native
+          width={Dimensions.get("window").width * 1.5} // from react-native
           height={220}
           yAxisLabel={"$"}
+          onDataPointClick={({ value, getColor }) =>
+            console.log({
+              message: `${value}`,
+              description: "You selected this value",
+              backgroundColor: getColor(0.9)
+            })
+          }
           chartConfig={{
-            backgroundColor: "#e26a00",
-            backgroundGradientFrom: "#751AFF",
-            backgroundGradientTo: "#751AFF",
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            strokeWidth: 5,
+            color: (opacity = 1) => `#FFFC00`,
             style: {
               borderRadius: 16
             }
           }}
           bezier
           style={{
-            marginVertical: 8,
-            borderRadius: 16
+            borderRadius: 16,
+            paddingBottom: 30
           }}
         />
-        <Text>Swipes</Text>
+        <LineChartDevider style={{ alignSelf: "center" }} />
+        <Text style={styles.chartTitle}>Swipes</Text>
         <Line
+          withDots={false}
+          withShadow={false}
+          withInnerLines={false}
+          withOuterLines={false}
           data={{
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
             datasets: [
@@ -100,23 +136,21 @@ export default class LineChart extends Component {
               }
             ]
           }}
-          width={Dimensions.get("window").width} // from react-native
+          width={Dimensions.get("window").width * 1.5} // from react-native
           height={220}
           yAxisLabel={"$"}
           chartConfig={{
-            backgroundColor: "#e26a00",
-            backgroundGradientFrom: "#751AFF",
-            backgroundGradientTo: "#751AFF",
+            strokeWidth: 5,
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: (opacity = 1) => `#FFFC00`,
             style: {
               borderRadius: 16
             }
           }}
           bezier
           style={{
-            marginVertical: 8,
-            borderRadius: 16
+            borderRadius: 16,
+            paddingBottom: 30
           }}
         />
       </View>
