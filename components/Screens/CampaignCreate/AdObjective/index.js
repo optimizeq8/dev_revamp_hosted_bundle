@@ -1,38 +1,40 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import {
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   ScrollView,
-  Image,
-  Dimensions
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import {
-  Card,
   Button,
   Content,
   Text,
-  CardItem,
-  Body,
   Item,
   Input,
   Container,
   Icon,
-  H1,
-  Badge
+  Label
 } from "native-base";
-import { LinearGradient } from "expo";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import { LinearGradient, BlurView } from "expo";
+
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
+import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
+import CloseButtonIcon from "../../../../assets/SVGs/Close.svg";
 
 // Style
 import styles, { colors } from "./styles";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
+
+//Validators
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -41,8 +43,6 @@ class AdObjective extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
-
       campaignInfo: {
         ad_account_id: "",
         start_time: "",
@@ -50,8 +50,9 @@ class AdObjective extends Component {
         name: "",
         objective: ""
       },
-      objectiveLabel: "Brand Awereness",
-
+      modalVisible: false,
+      objectiveLabel: "Select Objective",
+      inputN: false,
       objectives: [
         {
           label: "Brand Awereness",
@@ -150,78 +151,55 @@ class AdObjective extends Component {
       />
     ));
 
-    let width = Dimensions.get("window").width * 0.5 - 100;
-    console.log(width);
     return (
       <>
-        <Container style={styles.container}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            startPoint={{ x: 1, y: 0 }}
-            endPoint={{ x: 0, y: 1 }}
-            style={styles.gradient}
-          />
-          <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={false}
-            style={{
-              backgroundColor: "#fff",
-              borderTopStartRadius: 30,
-              borderTopEndRadius: 30
-            }}
-          >
-            <Card
-              style={[
-                styles.mainCard,
-                {
-                  margin: 0,
-                  shadowColor: "#fff",
-                  shadowRadius: 1,
-                  shadowOpacity: 0.7,
-                  shadowOffset: { width: 8, height: 8 }
-                }
-              ]}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row"
-                }}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <Container style={styles.container}>
+            <LinearGradient
+              colors={[colors.background1, colors.background2]}
+              locations={[0.7, 1]}
+              style={styles.gradient}
+            />
+            <View>
+              <Button
+                iconLeft
+                large
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+                style={styles.backbutton}
               >
-                <Button
-                  onLayout={event => {
-                    var { x, y, width, height } = event.nativeEvent.layout;
-                  }}
-                  transparent
-                  onPress={() => this.props.navigation.goBack()}
-                  style={{
-                    paddingLeft: 10,
-                    marginRight: width
-                  }}
-                >
-                  <Icon
-                    style={{
-                      top: 20,
-                      fontSize: 35
-                    }}
-                    name="arrow-back"
-                  />
-                </Button>
-                <Text style={[styles.text]}>Snap Ad</Text>
-              </View>
-              <Text style={styles.text}>Input a name for your Ad</Text>
+                <BackButtonIcon style={styles.backbuttonicon} width={20} />
+              </Button>
+              <Text style={styles.title}>Snap Ad</Text>
+              <PhoneIcon style={styles.phoneicon} width={70} />
+            </View>
+            <View style={styles.maincontent}>
               <Item
-                rounded
+                floatingLabel
                 style={[
-                  styles.input,
+                  styles.input1,
                   {
-                    borderColor: this.state.nameError ? "red" : "#D9D9D9"
+                    borderColor: this.state.inputN
+                      ? "#fff"
+                      : this.state.nameError
+                      ? "red"
+                      : "#D9D9D9"
                   }
                 ]}
               >
+                <Label
+                  style={[
+                    styles.inputtext,
+                    {
+                      color: this.state.inputN ? "#FF9D00" : "#fff"
+                    }
+                  ]}
+                >
+                  Your Ad Name
+                </Label>
+
                 <Input
                   style={styles.inputtext}
-                  placeholder="Ad Name"
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={value =>
@@ -229,7 +207,11 @@ class AdObjective extends Component {
                       campaignInfo: { ...this.state.campaignInfo, name: value }
                     })
                   }
+                  onFocus={() => {
+                    this.setState({ inputN: true });
+                  }}
                   onBlur={() => {
+                    this.setState({ inputN: false });
                     this.setState({
                       nameError: validateWrapper(
                         "mandatory",
@@ -239,83 +221,69 @@ class AdObjective extends Component {
                   }}
                 />
               </Item>
+              <Text style={styles.subtext}>This will not show on your ad</Text>
+
               <Text style={styles.text}>Objective</Text>
 
               <Item
                 rounded
                 style={[
-                  styles.input,
+                  styles.input2,
                   {
-                    borderColor: this.state.objectiveError ? "red" : "#D9D9D9"
+                    borderColor: this.state.objectiveError
+                      ? "red"
+                      : "transparent"
                   }
                 ]}
                 onPress={() => {
                   this.setModalVisible(true);
                 }}
               >
-                <Text
-                  style={[
-                    styles.inputtext,
-                    {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "rgb(113,113,113)"
-                    }
-                  ]}
-                >
+                <Text style={[styles.inputtext, { flex: 1 }]}>
                   {this.state.campaignInfo.objective === ""
-                    ? this.state.objectives[0].label
+                    ? this.state.objectiveLabel
                     : this.state.objectives.find(
                         c => this.state.campaignInfo.objective === c.value
                       ).label}
                 </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                />
+                <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
+            </View>
 
-              <TouchableOpacity
-                onPress={this._handleSubmission}
-                style={styles.buttonN}
-              >
-                <Image
-                  style={styles.image}
-                  source={require("../../../../assets/images/button.png")}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            </Card>
-          </KeyboardAwareScrollView>
-        </Container>
+            <Button onPress={this._handleSubmission} style={styles.button}>
+              <Icon style={styles.icon} name="arrow-forward" />
+            </Button>
+          </Container>
+        </TouchableWithoutFeedback>
         <Modal
           animationType={"slide"}
           transparent={true}
           onRequestClose={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
-          <View style={styles.popupOverlay}>
-            <View style={styles.popupContent}>
-              <Button
-                transparent
-                onPress={() => {
-                  this.setModalVisible(false);
+          <BlurView intensity={95} tint="dark">
+            <View style={styles.popupOverlay}>
+              <View style={styles.popupContent}>
+                <Button
+                  iconRight
+                  large
+                  transparent
+                  onPress={() => this.setModalVisible(false)}
+                  style={styles.modalclosebtn}
+                >
+                  <CloseButtonIcon style={styles.closeicon} width={20} />
+                </Button>
+                <Text style={styles.modaltitle}>Objectives</Text>
+              </View>
+              <ScrollView
+                contentContainerStyle={{
+                  marginTop: 20
                 }}
-                style={styles.btnClose}
               >
-                <Text style={{ color: "wheat" }}>X</Text>
-              </Button>
+                {list}
+              </ScrollView>
             </View>
-            <ScrollView
-              contentContainerStyle={{
-                marginTop: 40
-              }}
-            >
-              {list}
-            </ScrollView>
-          </View>
+          </BlurView>
         </Modal>
       </>
     );

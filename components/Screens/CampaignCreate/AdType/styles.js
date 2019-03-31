@@ -7,9 +7,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
     flex: 1,
     backgroundColor: "#751AFF"
   },

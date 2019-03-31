@@ -1,31 +1,22 @@
+// Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
-import {
-  Card,
   Button,
   Content,
   Text,
-  CardItem,
-  Body,
   Item,
   Input,
   Container,
-  Icon,
-  H1
+  Icon
 } from "native-base";
 import { LinearGradient } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
 
 // Style
 import styles, { colors } from "./styles";
+//Redux
+import { connect } from "react-redux";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -57,7 +48,7 @@ class Tutorial extends Component {
           iconLeft
           large
           transparent
-          onPress={() => this.props.navigation.navigate("Signin")}
+          onPress={() => this.props.navigation.navigate("Home")}
           style={{
             marginLeft: 10
           }}
