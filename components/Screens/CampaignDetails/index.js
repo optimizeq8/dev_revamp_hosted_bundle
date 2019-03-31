@@ -77,14 +77,16 @@ class CampaignDetails extends Component {
 
   hideCharts = value => {
     let vl = (value / hp("100%")) * 100 + 20;
-    Animated.timing(this.state.chartAnimation, {
-      toValue: 100 - vl * 1.5,
-      duration: 100
-    }).start();
-    Animated.timing(this.state.LineAnimation, {
-      toValue: vl,
-      duration: 100
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.state.chartAnimation, {
+        toValue: 100 - vl * 1.5,
+        duration: 200
+      }),
+      Animated.timing(this.state.LineAnimation, {
+        toValue: vl,
+        duration: 200
+      })
+    ]).start();
   };
 
   render() {
@@ -360,6 +362,15 @@ class CampaignDetails extends Component {
                 draggableRange={this.props.draggableRange}
                 animatedValue={this._draggedValue}
                 friction={0.4}
+                onDragEnd={value => {
+                  console.log(value);
+
+                  if (value > hp("50%")) {
+                    this._panel.show();
+                  } else {
+                    this._panel.hide();
+                  }
+                }}
               >
                 {dragHandler => (
                   <View style={styles.bottomContainer}>
