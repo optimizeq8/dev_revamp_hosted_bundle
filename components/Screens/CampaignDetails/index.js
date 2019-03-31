@@ -7,7 +7,9 @@ import {
   ScrollView,
   ImageBackground,
   Dimensions,
-  Animated
+  Animated,
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from "react-native";
 import {
   Card,
@@ -73,43 +75,28 @@ class CampaignDetails extends Component {
     };
   }
 
-  hideCharts = () => {
+  hideCharts = value => {
+    let vl = (value / hp("100%")) * 100 + 20;
     Animated.timing(this.state.chartAnimation, {
-      toValue: 0,
+      toValue: 100 - vl * 1.5,
       duration: 100
     }).start();
     Animated.timing(this.state.LineAnimation, {
-      toValue: 1,
-      duration: 500
+      toValue: vl,
+      duration: 100
     }).start();
   };
 
-  showCharts = () => {
-    Animated.timing(this.state.chartAnimation, {
-      toValue: 1,
-      duration: 200
-    }).start();
-    Animated.timing(this.state.LineAnimation, {
-      toValue: 0,
-      duration: 500
-    }).start();
-  };
   render() {
-    // this._draggedValue.addListener(({ value }) => {
-    //   this.hideCharts(value);
-    //   // if (value > hp("50%")) {
-    //   //   //
-    //   // } else {
-    //   //   this.showCharts(value);
-    //   // }
-    //   // if (value < 600) this.hideCharts();
-    // });
+    this._draggedValue.addListener(({ value }) => {
+      this.hideCharts(value);
+    });
     const translateYInterpolate = this.state.chartAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [500, 0]
+      inputRange: [0, 30],
+      outputRange: [100, 0]
     });
     const ScaleInterpolate = this.state.LineAnimation.interpolate({
-      inputRange: [0, 1],
+      inputRange: [0, 100],
       outputRange: [0, 1]
     });
     const animatedStyles = {
@@ -370,42 +357,32 @@ class CampaignDetails extends Component {
               <SlidingUpPanel
                 showBackdrop={false}
                 ref={c => (this._panel = c)}
-                allowMomentum={true}
                 draggableRange={this.props.draggableRange}
                 animatedValue={this._draggedValue}
-                allowMomentum={false}
-                onDragEnd={(position, gesture) => {
-                  if (parseInt(position) > 210 && parseInt(position) <= 450) {
-                    {
-                      this.hideCharts();
-                      this._panel.show();
-                    }
-                  } else if (
-                    parseInt(position) > 450 &&
-                    parseInt(position) <= 600
-                  ) {
-                    this.showCharts();
-                    this._panel.hide();
-                  } else if (position === this.props.draggableRange.top) {
-                    this.hideCharts();
-                    this._panel.show();
-                  } else if (position === this.props.draggableRange.bottom) {
-                    this.showCharts();
-                    this._panel.hide();
-                  }
-                }}
                 friction={0.4}
               >
                 {dragHandler => (
                   <View style={styles.bottomContainer}>
                     <View style={styles.dragHandler} {...dragHandler}>
-                      <LinearGradient
-                        colors={["#751AFF", "#751AFF"]}
-                        style={styles.tab}
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          if (this.state.visible) {
+                            this._panel.hide();
+                            this.setState({ visible: false });
+                          } else {
+                            this._panel.show();
+                            this.setState({ visible: true });
+                          }
+                        }}
                       >
-                        <BarIcon style={styles.handlerIcon} />
-                        <Text style={styles.handlerText}>Dashboard</Text>
-                      </LinearGradient>
+                        <LinearGradient
+                          colors={["#751AFF", "#751AFF"]}
+                          style={styles.tab}
+                        >
+                          <BarIcon style={styles.handlerIcon} />
+                          <Text style={styles.handlerText}>Dashboard</Text>
+                        </LinearGradient>
+                      </TouchableWithoutFeedback>
                     </View>
                     <LinearGradient
                       colors={["#751AFF", "#6C52FF", "#6268FF"]}
@@ -414,8 +391,11 @@ class CampaignDetails extends Component {
                       <Animated.View
                         style={[styles.chartPosition, animatedStyles]}
                       >
-                        <Chart campaign={this.props.campaign} />
+                        <TouchableOpacity onPress={() => this._panel.show()}>
+                          <Chart campaign={this.props.campaign} />
+                        </TouchableOpacity>
                       </Animated.View>
+
                       <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView
                           contentInset={{ bottom: hp("30%"), top: 0 }}
