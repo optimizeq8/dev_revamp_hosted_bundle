@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -7,7 +11,13 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
+  title: {
+    fontFamily: "montserrat-medium",
+    color: "#C6C6C6",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 20
+  },
   container: {
     marginTop: 30,
     backgroundColor: "#751AFF"
@@ -24,24 +34,26 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    top: 15,
-
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    borderColor: "#fff",
+    backgroundColor: "#fff",
+    borderColor: "transparent",
     flex: 1,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    marginBottom: 0,
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -3 },
+    paddingTop: 15
   },
   text: {
     textAlign: "center",
-    color: "#5F5F5F",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    color: "#C6C6C6",
+
+    fontFamily: "montserrat-regular",
+    fontSize: 14
   },
   buttontext: {
     fontFamily: "benton-sans-regular",
@@ -77,12 +89,11 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   bottomCard: {
-    top: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#FF9D00",
     shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
+    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     height: 100
@@ -106,11 +117,11 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   subtext: {
-    fontFamily: "benton-sans-regular",
-    fontSize: 12,
-    paddingTop: 5,
-    color: "#fff",
-    textAlign: "left"
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    paddingBottom: 20,
+    alignSelf: "center",
+    color: "#fff"
   },
   campaignButton: {
     justifyContent: "space-between",
