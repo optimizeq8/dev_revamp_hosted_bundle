@@ -8,7 +8,8 @@ import {
   Dimensions
 } from "react-native";
 import { Text, Icon } from "native-base";
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
@@ -31,7 +32,8 @@ class CampaignCard extends Component {
     ].map((category, i) => <Chart chartCategory={category} key={i} />);
     return (
       <LinearGradient
-        colors={["#751AFF", "#6C52FF", "#6268FF"]}
+        colors={[colors.background1, colors.background2]}
+        locations={[0.7, 1]}
         style={styles.cardStyle}
       >
         <TouchableOpacity

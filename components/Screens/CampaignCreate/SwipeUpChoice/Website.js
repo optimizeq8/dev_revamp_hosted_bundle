@@ -26,7 +26,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 export default class Website extends Component {
   static navigationOptions = {
     header: null

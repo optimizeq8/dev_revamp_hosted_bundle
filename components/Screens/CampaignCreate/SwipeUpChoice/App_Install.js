@@ -30,10 +30,12 @@ import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
-// Style
-import styles, { colors } from "./styles";
+
 import axios from "axios";
 import data, { androidDataTest } from "./data";
+// Style
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 export default class App_Install extends Component {
   static navigationOptions = {
     header: null
@@ -177,8 +179,7 @@ export default class App_Install extends Component {
         >
           <LinearGradient
             colors={[colors.background1, colors.background2]}
-            startPoint={{ x: 1, y: 0 }}
-            endPoint={{ x: 0, y: 1 }}
+            locations={[0.7, 1]}
             style={styles.gradient}
           />
           <KeyboardAwareScrollView

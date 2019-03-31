@@ -28,11 +28,12 @@ import * as actionCreators from "../../../../store/actions";
 import list from "./callactions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import Website from "./Website";
-// Style
-import styles, { colors } from "./styles";
 import App_Install from "./App_Install";
 import Deep_Link from "./Deep_Link";
 import Long_Form_Video from "./Long_Form_Video";
+// Style
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
@@ -58,8 +59,7 @@ class SwipeUpChoice extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <KeyboardAwareScrollView

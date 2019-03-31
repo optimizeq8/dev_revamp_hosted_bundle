@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import styles, { colors } from "./styles";
+import styles from "./styles";
 
 export default class Charts extends Component {
   render() {

@@ -10,7 +10,9 @@ import Verification from "../Verification";
 import BusinessInfo from "../BusinessInfo";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 //Redux
 import { connect } from "react-redux";
 
@@ -39,8 +41,7 @@ class MainForm extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <Button

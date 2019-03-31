@@ -21,7 +21,8 @@ import RadioGroup from "react-native-radio-buttons-group";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";

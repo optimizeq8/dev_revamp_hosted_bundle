@@ -37,7 +37,9 @@ import inputNumberStyles from "./inputNumber";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import ReachBar from "./ReachBar";
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 import DateField from "./DateFields";
 import Axios from "axios";
 class AdDetails extends Component {
@@ -305,8 +307,7 @@ class AdDetails extends Component {
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          startPoint={{ x: 1, y: 0 }}
-          endPoint={{ x: 0, y: 1 }}
+          locations={[0.7, 1]}
           style={styles.gradient}
         />
         <Card

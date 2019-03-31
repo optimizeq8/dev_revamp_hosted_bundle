@@ -28,7 +28,9 @@ import * as actionCreators from "../../../../store/actions";
 import { ImagePicker, Permissions, LinearGradient, FileSystem } from "expo";
 
 // Style
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
+
 export default class Long_Form_Video extends Component {
   static navigationOptions = {
     header: null

@@ -27,8 +27,7 @@ import {
   Spinner
 } from "native-base";
 import dateFormat from "dateformat";
-// Style
-import styles, { colors } from "./styles";
+
 import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView } from "expo";
 import { interestNames } from "./interesetNames";
@@ -48,6 +47,10 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import BarIcon from "../../../assets/SVGs/Bar.svg";
+
+// Style
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 const { height } = Dimensions.get("window");
 
@@ -387,7 +390,8 @@ class CampaignDetails extends Component {
                         }}
                       >
                         <LinearGradient
-                          colors={["#751AFF", "#751AFF"]}
+                          colors={[colors.background1, colors.background2]}
+                          locations={[0.7, 1]}
                           style={styles.tab}
                         >
                           <BarIcon style={styles.handlerIcon} />
@@ -396,7 +400,8 @@ class CampaignDetails extends Component {
                       </TouchableWithoutFeedback>
                     </View>
                     <LinearGradient
-                      colors={["#751AFF", "#6C52FF", "#6268FF"]}
+                      colors={[colors.background1, colors.background2]}
+                      locations={[0.7, 1]}
                       style={{ borderRadius: 30, overflow: "hidden" }}
                     >
                       <Animated.View
