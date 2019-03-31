@@ -1,7 +1,10 @@
+//Components
 import React, { Component } from "react";
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
-import styles, { colors } from "./styles";
+//Style
+import styles from "./styles";
+//Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
@@ -13,7 +16,7 @@ class BusinessCard extends Component {
     this.props.setObjective(this.props.choice.value);
   };
   render() {
-    let changeState = { backgroundColor: "#fff", color: "#5F5F5F" };
+    let changeState = { backgroundColor: "transparent", color: "#fff" };
     if (this.props.selected === this.props.choice.value) {
       changeState.backgroundColor = "#FF9D00";
       changeState.color = "#fff";

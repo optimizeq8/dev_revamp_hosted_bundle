@@ -3,92 +3,133 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF"
+    flex: 1,
+    justifyContent: "space-between"
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject
+  },
+  backbutton: {
+    marginLeft: 10
+  },
+  backbuttonicon: {
+    justifyContent: "center",
+    top: 25,
+    marginLeft: 20
+  },
+  title: {
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center",
+    textAlign: "center",
+    fontFamily: "montserrat-semibold"
+  },
+  phoneicon: {
+    flex: 1,
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 30
+  },
+  maincontent: {
+    flex: 1,
+    justifyContent: "flex-start",
+    paddingTop: 30
+  },
+  input1: {
+    marginBottom: 10,
+    paddingHorizontal: 50,
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 250,
+    height: 50
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
+    color: "#fff",
     alignSelf: "center",
+    textAlign: "center"
+  },
+  subtext: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-light",
+    fontSize: 12
+  },
+  text: {
+    textAlign: "center",
+    color: "#fff",
+    paddingTop: 30,
+    paddingBottom: 10,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    paddingHorizontal: 10
+  },
+  input2: {
+    backgroundColor: "rgba(0, 0, 0, 0.16)",
+    paddingHorizontal: 50,
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 250,
+    height: 50,
+    marginTop: 10,
+    marginBottom: 20
+  },
+  downicon: {
+    color: "#fff",
+    fontSize: 20,
+    left: 25
+  },
+  button: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 55,
+    height: 55,
+    borderRadius: 27.5,
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    marginVertical: 35
+  },
+  icon: {
+    fontSize: 35,
+    color: "#fff",
+    paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
     textAlign: "center"
   },
   popupOverlay: {
     height: "100%"
   },
   popupContent: {
-    margin: 25
+    marginTop: 10,
+    flexDirection: "column"
   },
-  btnClose: {
-    alignSelf: "center",
-    paddingHorizontal: 15,
-    borderRadius: 20
-  },
-  input: {
-    marginBottom: 15,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 300,
-    height: 50
-  },
-  buttonN: {
-    padding: 10,
-    paddingTop: 0,
-    bottom: 15
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  image: {
-    alignSelf: "center",
-    height: 70,
-    width: 70,
-    margin: 15
-  },
-  mainCard: {
-    top: 15,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
-  },
-  text: {
+  modaltitle: {
+    fontSize: 18,
+    color: "#fff",
     textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-medium",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    fontFamily: "montserrat-medium",
+    marginVertical: 5
   },
-  activeBadege: {
-    backgroundColor: "#5F5F5F",
-    width: 40,
-    height: 40,
-    borderRadius: 20
+  modalclosebtn: {
+    marginRight: 30,
+    alignSelf: "flex-end"
   },
-  badge: {
-    backgroundColor: "#fff",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderColor: "#5F5F5F",
-    borderWidth: 2
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
+  closeicon: {
+    justifyContent: "center",
+    top: 25
   }
 });
 
