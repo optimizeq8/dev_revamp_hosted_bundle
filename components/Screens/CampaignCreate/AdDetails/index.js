@@ -310,256 +310,280 @@ class AdDetails extends Component {
   };
   render() {
     console.log(this.state.totalReach);
+    console.log(this.state.campaignInfo);
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
         menu = (
-          <View
-            style={{
-              flex: 1,
-              top: 60,
-              alignItems: "center",
-              flexDirection: "colum"
-            }}
-          >
-            <View style={{ felx: 1, justifyContent: "flex-start" }}>
-              <GenderIcon width={130} height={130} fill="#fff" />
-              <Text style={[styles.title]}> Select Gender </Text>
-            </View>
+          <>
             <View
               style={{
-                felx: 1,
-                justifyContent: "space-between",
-                paddingTop: 50
+                flex: 1,
+                top: 40,
+                alignItems: "center",
+                flexDirection: "colum"
               }}
             >
-              <Button
-                block
-                dark
-                style={[
-                  this.state.campaignInfo.targeting.demographics[0].gender ===
-                  "FEMALE"
-                    ? styles.activebutton
-                    : styles.inactivebutton
-                ]}
-                onPress={() => {
-                  let replace = this.state.campaignInfo;
-                  replace.targeting.demographics[0].gender = "FEMALE";
-                  this.setState({ campaignInfo: { ...replace } });
+              <View
+                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
+              >
+                <GenderIcon width={110} height={110} fill="#fff" />
+                <Text style={[styles.title]}> Select Gender </Text>
+              </View>
+              <View
+                style={{
+                  felx: 1,
+                  justifyContent: "space-between",
+                  paddingTop: 20
                 }}
               >
-                <Text
+                <Button
+                  block
+                  dark
                   style={[
                     this.state.campaignInfo.targeting.demographics[0].gender ===
                     "FEMALE"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    { textAlign: "center" }
+                      ? styles.activebutton
+                      : styles.inactivebutton
                   ]}
+                  onPress={() => {
+                    let replace = this.state.campaignInfo;
+                    replace.targeting.demographics[0].gender = "FEMALE";
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
                 >
-                  <Icon
-                    type="Ionicons"
-                    name="ios-female"
+                  <Text
                     style={[
                       this.state.campaignInfo.targeting.demographics[0]
                         .gender === "FEMALE"
                         ? styles.activetext
                         : styles.inactivetext,
-                      {
-                        fontSize: 30,
-                        left: 25
-                      }
+                      { textAlign: "center" }
                     ]}
-                  />
-                  {"\n"}Female
-                </Text>
-              </Button>
-              <Button
-                block
-                dark
-                style={[
-                  this.state.campaignInfo.targeting.demographics[0].gender ===
-                  "MALE"
-                    ? styles.activebutton
-                    : styles.inactivebutton
-                ]}
-                onPress={() => {
-                  let replace = this.state.campaignInfo;
-                  replace.targeting.demographics[0].gender = "MALE";
-                  this.setState({ campaignInfo: { ...replace } });
-                }}
-              >
-                <Text
+                  >
+                    <Icon
+                      type="Ionicons"
+                      name="ios-female"
+                      style={[
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === "FEMALE"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        {
+                          fontSize: 30,
+                          left: 25
+                        }
+                      ]}
+                    />
+                    {"\n"}Female
+                  </Text>
+                </Button>
+                <Button
+                  block
+                  dark
                   style={[
                     this.state.campaignInfo.targeting.demographics[0].gender ===
                     "MALE"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    { textAlign: "center" }
+                      ? styles.activebutton
+                      : styles.inactivebutton
                   ]}
+                  onPress={() => {
+                    let replace = this.state.campaignInfo;
+                    replace.targeting.demographics[0].gender = "MALE";
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
                 >
-                  <Icon
-                    type="Ionicons"
-                    name="ios-male"
+                  <Text
                     style={[
                       this.state.campaignInfo.targeting.demographics[0]
                         .gender === "MALE"
                         ? styles.activetext
                         : styles.inactivetext,
-                      {
-                        left: 25,
-                        fontSize: 30
-                      }
+                      { textAlign: "center" }
                     ]}
-                  />
-                  {"\n"}Male
-                </Text>
-              </Button>
+                  >
+                    <Icon
+                      type="Ionicons"
+                      name="ios-male"
+                      style={[
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === "MALE"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        {
+                          left: 25,
+                          fontSize: 30
+                        }
+                      ]}
+                    />
+                    {"\n"}Male
+                  </Text>
+                </Button>
 
-              <Button
-                block
-                dark
-                style={[
-                  this.state.campaignInfo.targeting.demographics[0].gender ===
-                  ""
-                    ? styles.activebutton
-                    : styles.inactivebutton,
-                  { flexDirection: "column" }
-                ]}
-                onPress={() => {
-                  let replace = this.state.campaignInfo;
-                  replace.targeting.demographics[0].gender = "";
-                  this.setState({ campaignInfo: { ...replace } });
-                }}
-              >
-                <Text style={{ left: 20 }}>
-                  <GenderIcon
-                    width={30}
-                    height={30}
-                    fill={
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender === ""
-                        ? "#fff"
-                        : "#7039FF"
-                    }
-                  />
-                </Text>
-                <Text
+                <Button
+                  block
+                  dark
                   style={[
                     this.state.campaignInfo.targeting.demographics[0].gender ===
                     ""
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    { textAlign: "center" }
+                      ? styles.activebutton
+                      : styles.inactivebutton,
+                    { flexDirection: "column" }
                   ]}
+                  onPress={() => {
+                    let replace = this.state.campaignInfo;
+                    replace.targeting.demographics[0].gender = "";
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
                 >
-                  All
-                </Text>
-              </Button>
+                  <Text style={{ left: 20 }}>
+                    <GenderIcon
+                      width={30}
+                      height={30}
+                      fill={
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === ""
+                          ? "#fff"
+                          : "#7039FF"
+                      }
+                    />
+                  </Text>
+                  <Text
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === ""
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      { textAlign: "center" }
+                    ]}
+                  >
+                    All
+                  </Text>
+                </Button>
+              </View>
             </View>
             <Button
-              style={styles.button}
+              style={[styles.button, { marginBottom: 25 }]}
               onPress={() => this._handleSideMenuState(false)}
             >
               <CheckmarkIcon width={53} height={53} />
             </Button>
-          </View>
+          </>
         );
         break;
       }
       case "age": {
         menu = (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "space-around",
-              alignItem: "center",
-              flexDirection: "colum",
-              marginVertical: 50
-            }}
-          >
-            <View style={{ felx: 1, justifyContent: "flex-start" }}>
-              <GenderIcon width={130} height={130} fill="#fff" />
-              <Text style={styles.title}> Select Gender </Text>
-            </View>
-            <View>
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
-                  }
-                ]}
+          <>
+            <View
+              style={{
+                flex: 1,
+                top: 40,
+                flexDirection: "colum"
+              }}
+            >
+              <View
+                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
               >
-                <InputNumber
-                  keyboardType={
-                    Platform.OS === "ios" ? "number-pad" : "numeric"
-                  }
-                  min={13}
-                  max={
-                    this.state.campaignInfo.targeting.demographics[0]
-                      .max_age === 0
-                      ? 35
-                      : this.state.campaignInfo.targeting.demographics[0]
-                          .max_age
-                  }
-                  styles={inputNumberStyles}
-                  defaultValue={
-                    this.state.campaignInfo.targeting.demographics[0].min_age
-                  }
-                  onChange={value => this._handleMinAge(value)}
-                />
-                <Text
-                  style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
-                >
-                  Min Age
-                </Text>
-              </Item>
-              {this.state.min_ageError && (
-                <Text style={[styles.text, { paddingTop: 0 }]}>
-                  Min {this.state.min_ageError}
-                </Text>
-              )}
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
-                  }
-                ]}
+                <Text style={[styles.title, { fontSize: 50 }]}> AGE </Text>
+                <Text style={[styles.title]}> Select Age Range </Text>
+              </View>
+              <View
+                style={{
+                  paddingTop: 20,
+                  marginVertical: "40%",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
               >
-                <InputNumber
-                  keyboardType={
-                    Platform.OS === "ios" ? "number-pad" : "numeric"
-                  }
-                  max={35}
-                  min={
-                    this.state.campaignInfo.targeting.demographics[0]
-                      .min_age === 0
-                      ? 13
-                      : this.state.campaignInfo.targeting.demographics[0]
-                          .min_age
-                  }
-                  styles={inputNumberStyles}
-                  defaultValue={35}
-                  onChange={value => this._handleMaxAge(value)}
-                />
-                <Text
-                  style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
+                <Item
+                  rounded
+                  style={[
+                    styles.input,
+                    {
+                      marginBottom: 30,
+                      borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
+                    }
+                  ]}
                 >
-                  Max Age
-                </Text>
-              </Item>
-              {this.state.max_ageError && (
-                <Text style={[styles.text, { paddingTop: 0 }]}>
-                  Max {this.state.max_ageError}
-                </Text>
-              )}
+                  <InputNumber
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
+                    min={13}
+                    max={
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .max_age === 0
+                        ? 35
+                        : this.state.campaignInfo.targeting.demographics[0]
+                            .max_age
+                    }
+                    styles={inputNumberStyles}
+                    defaultValue={
+                      this.state.campaignInfo.targeting.demographics[0].min_age
+                    }
+                    onChange={value => this._handleMinAge(value)}
+                  />
+                  <Text
+                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
+                  >
+                    Min Age
+                  </Text>
+                </Item>
+                {this.state.min_ageError && (
+                  <Text style={[styles.text, { paddingTop: 0 }]}>
+                    Min {this.state.min_ageError}
+                  </Text>
+                )}
+                <Item
+                  rounded
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <InputNumber
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
+                    max={35}
+                    min={
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .min_age === 0
+                        ? 13
+                        : this.state.campaignInfo.targeting.demographics[0]
+                            .min_age
+                    }
+                    styles={inputNumberStyles}
+                    defaultValue={
+                      this.state.campaignInfo.targeting.demographics[0].max_age
+                    }
+                    onChange={value => this._handleMaxAge(value)}
+                  />
+                  <Text
+                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
+                  >
+                    Max Age
+                  </Text>
+                </Item>
+                {this.state.max_ageError && (
+                  <Text style={[styles.text, { paddingTop: 0 }]}>
+                    Max {this.state.max_ageError}
+                  </Text>
+                )}
+              </View>
             </View>
-          </View>
+            <Button
+              style={[styles.button, { marginBottom: 25 }]}
+              onPress={() => this._handleSideMenuState(false)}
+            >
+              <CheckmarkIcon width={53} height={53} />
+            </Button>
+          </>
         );
+
         break;
       }
       case "countries": {

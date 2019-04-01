@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     width: 150,
-    paddingTop: 30,
+    paddingTop: 20,
     alignSelf: "center"
   },
   container: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   BlurView: {
     height: hp("100%"),
-    paddingTop: hp("15%")
+    paddingTop: hp("5%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 35
+    marginVertical: 5
   },
   icon: {
     fontSize: 35,
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 15
+    marginBottom: 10
   },
   activebutton: {
     backgroundColor: "#FF9D00",
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 15
+    marginBottom: 10
   },
   inactivetext: {
     fontFamily: "montserrat-bold",
