@@ -91,10 +91,9 @@ class BusinessCard extends Component {
     };
   }
   render() {
-    let changeState = { backgroundColor: "#fff", color: "#5F5F5F" };
+    let changeState = { color: "#5F5F5F" };
     if (this.props.mainBusiness.businessid === this.props.business.businessid) {
-      changeState.backgroundColor = "#FF9D00";
-      changeState.color = "#fff";
+      changeState.color = "#FF9D00";
     }
     return (
       <TouchableOpacity

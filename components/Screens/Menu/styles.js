@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -35,13 +38,9 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   text: {
-    textAlign: "center",
     color: "#fff",
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    fontFamily: "montserrat-medium",
+    fontSize: 13
   },
   buttontext: {
     fontFamily: "benton-sans-regular",
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#fff"
   },
-  link: {
+  businessTitle: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "benton-sans-regular",
@@ -96,8 +95,31 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   menuModal: {
-    margin: 0,
-    top: heightPercentageToDP("50")
+    ...StyleSheet.absoluteFillObject,
+    top: -heightPercentageToDP("50%")
+  },
+  backDrop: {
+    ...StyleSheet.absoluteFillObject,
+    top: -heightPercentageToDP("50%"),
+    left: -widthPercentageToDP("15%")
+  },
+  DropIcon: {
+    position: "relative",
+    top: heightPercentageToDP("5"),
+    left: widthPercentageToDP("46%"),
+    zIndex: 100
+  },
+  CloseIcon: {
+    position: "absolute",
+    top: heightPercentageToDP("1"),
+    left: widthPercentageToDP("46%"),
+    zIndex: 100
+  },
+  logoutIcon: {
+    position: "absolute",
+    top: heightPercentageToDP("6.5"),
+    left: widthPercentageToDP("85%"),
+    zIndex: 100
   }
 });
 

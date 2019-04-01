@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableWithoutFeedback
+} from "react-native";
 import {
   Card,
   Button,
@@ -44,24 +49,13 @@ class BusinessList extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Image
+        {/* <Image
           style={styles.image}
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
-        />
-        <Card
-          padder
-          style={[
-            styles.mainCard,
-            {
-              margin: 0,
-              shadowColor: "#fff",
-              shadowRadius: 1,
-              shadowOpacity: 0.7,
-              shadowOffset: { width: 8, height: 8 }
-            }
-          ]}
-        >
+        /> */}
+        <View padder style={[styles.mainCard]}>
+          <Text style={styles.title}>Switch Business</Text>
           <View
             style={{
               flexDirection: "row",
@@ -77,7 +71,19 @@ class BusinessList extends Component {
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
           </ScrollView>
-        </Card>
+        </View>
+        <View style={{ backgroundColor: "#fff" }}>
+          <Button
+            block
+            dark
+            style={[styles.bottomCard, { justifyContent: "center" }]}
+            onPress={() =>
+              this.props.navigation.navigate("CreateBusinessAccount")
+            }
+          >
+            <Text style={styles.subtext}>+ Add a new Business </Text>
+          </Button>
+        </View>
       </Container>
     );
   }

@@ -116,14 +116,6 @@ class AdDesign extends Component {
       aspect: [9, 16],
       allowsEditing: Platform.OS === "android"
     });
-
-    // console.log(result);
-    console.log(Math.floor(result.width / 9), "width");
-    console.log(Math.floor(result.height / 16), "height");
-    Image.getSize(result.uri, (width, height) => {
-      console.log(width, height);
-    });
-    //if (result.width >= 1080 && result.height >= 1920)
     if (Math.floor(result.width / 9) === Math.floor(result.height / 16)) {
       if (!result.cancelled) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {

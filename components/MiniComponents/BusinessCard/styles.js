@@ -78,10 +78,9 @@ const styles = StyleSheet.create({
   },
   titletext: {
     textAlign: "left",
-    color: "#fff",
-    paddingTop: 10,
-    fontFamily: "benton-sans-medium",
-    fontSize: 16,
+    paddingTop: 5,
+    fontFamily: "montserrat-medium",
+    fontSize: 18,
     paddingVertical: 0
   },
   subtext: {
@@ -96,13 +95,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
+
     backgroundColor: "#FF9D00",
     padding: 10,
-    marginBottom: 20,
     bottom: 15
   },
   icon: {
