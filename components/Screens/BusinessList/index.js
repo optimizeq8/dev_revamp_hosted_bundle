@@ -49,11 +49,11 @@ class BusinessList extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Image
+        {/* <Image
           style={styles.image}
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
-        />
+        /> */}
         <View padder style={[styles.mainCard]}>
           <Text style={styles.title}>Switch Business</Text>
           <View
