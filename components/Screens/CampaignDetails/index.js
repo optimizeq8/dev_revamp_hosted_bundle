@@ -122,14 +122,6 @@ class CampaignDetails extends Component {
       ]
     };
 
-    const { top, bottom } = this.props.draggableRange;
-
-    const draggedValue = this._draggedValue.interpolate({
-      inputRange: [bottom, top],
-      outputRange: [0, 1],
-      extrapolate: "clamp"
-    });
-
     if (!this.props.campaign) {
       return <Spinner color="red" />;
     } else {

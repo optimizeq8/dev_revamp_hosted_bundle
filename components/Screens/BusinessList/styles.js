@@ -96,7 +96,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100
+    height: 100,
+    position: "absolute",
+    bottom: hp("25"),
+    width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -145,7 +148,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7
   },
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 30,
+    paddingBottom: hp("50")
   }
 });
 
