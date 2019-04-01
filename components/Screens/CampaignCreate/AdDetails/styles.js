@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     borderColor: "#fff",
     flex: 1,
+    backgroundColor: "#fff",
     marginLeft: 0,
     marginRight: 0
   },
@@ -100,11 +101,13 @@ const styles = StyleSheet.create({
   },
   BlurView: {
     height: hp("100%"),
-    paddingTop: hp("10%")
+    paddingTop: hp("15%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
-    height: hp("100%")
+    height: hp("100%"),
+
+    marginTop: 0
   },
   button: {
     alignSelf: "center",
@@ -145,13 +148,38 @@ const styles = StyleSheet.create({
   },
   chartText: {
     color: "#000",
-    fontFamily: "benton-sans-medium",
-    fontSize: 16
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    textAlign: "center"
   },
   chartItems: {
     alignItems: "center",
     left: wp("9%"),
     bottom: hp("10%")
+  },
+  button: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 55,
+    height: 55,
+    borderRadius: 27.5,
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    marginVertical: 35
+  },
+  icon: {
+    fontSize: 35,
+    color: "#fff",
+    paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
   }
 });
 
