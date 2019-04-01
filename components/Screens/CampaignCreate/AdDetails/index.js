@@ -11,6 +11,7 @@ import Sidemenu from "react-native-side-menu";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
+import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 
 //Data
 import country_regions from "./regions";
@@ -297,7 +298,9 @@ class AdDetails extends Component {
   };
 
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status });
+    this.setState({ sidemenustate: status }, () => {
+      console.log(this.state.sidemenustate);
+    });
   };
 
   _renderSideMenu = component => {
@@ -314,36 +317,152 @@ class AdDetails extends Component {
           <View
             style={{
               flex: 1,
-              justifyContent: "space-around",
+              top: 60,
               alignItems: "center",
               flexDirection: "colum"
             }}
           >
             <View style={{ felx: 1, justifyContent: "flex-start" }}>
               <GenderIcon width={130} height={130} fill="#fff" />
-              <Text style={styles.title}> Select Gender </Text>
+              <Text style={[styles.title]}> Select Gender </Text>
             </View>
             <View
               style={{
-                justifyContent: "flex-start"
+                felx: 1,
+                justifyContent: "space-between",
+                paddingTop: 50
               }}
             >
-              <RadioGroup
-                flexDirection="row"
-                color="#5F5F5F"
-                radioButtons={this.state.gender}
-                onPress={value => {
-                  var data = value.find(data => data.selected === true);
-                  if (data.value !== "All") {
-                    let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = data.value;
-                  } else {
-                    let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = "";
-                  }
+              <Button
+                block
+                dark
+                style={[
+                  this.state.campaignInfo.targeting.demographics[0].gender ===
+                  "FEMALE"
+                    ? styles.activebutton
+                    : styles.inactivebutton
+                ]}
+                onPress={() => {
+                  let replace = this.state.campaignInfo;
+                  replace.targeting.demographics[0].gender = "FEMALE";
+                  this.setState({ campaignInfo: { ...replace } });
                 }}
-              />
+              >
+                <Text
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    "FEMALE"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    { textAlign: "center" }
+                  ]}
+                >
+                  <Icon
+                    type="Ionicons"
+                    name="ios-female"
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === "FEMALE"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      {
+                        fontSize: 30,
+                        left: 25
+                      }
+                    ]}
+                  />
+                  {"\n"}Female
+                </Text>
+              </Button>
+              <Button
+                block
+                dark
+                style={[
+                  this.state.campaignInfo.targeting.demographics[0].gender ===
+                  "MALE"
+                    ? styles.activebutton
+                    : styles.inactivebutton
+                ]}
+                onPress={() => {
+                  let replace = this.state.campaignInfo;
+                  replace.targeting.demographics[0].gender = "MALE";
+                  this.setState({ campaignInfo: { ...replace } });
+                }}
+              >
+                <Text
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    "MALE"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    { textAlign: "center" }
+                  ]}
+                >
+                  <Icon
+                    type="Ionicons"
+                    name="ios-male"
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === "MALE"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      {
+                        left: 25,
+                        fontSize: 30
+                      }
+                    ]}
+                  />
+                  {"\n"}Male
+                </Text>
+              </Button>
+
+              <Button
+                block
+                dark
+                style={[
+                  this.state.campaignInfo.targeting.demographics[0].gender ===
+                  ""
+                    ? styles.activebutton
+                    : styles.inactivebutton,
+                  { flexDirection: "column" }
+                ]}
+                onPress={() => {
+                  let replace = this.state.campaignInfo;
+                  replace.targeting.demographics[0].gender = "";
+                  this.setState({ campaignInfo: { ...replace } });
+                }}
+              >
+                <Text style={{ left: 20 }}>
+                  <GenderIcon
+                    width={30}
+                    height={30}
+                    fill={
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === ""
+                        ? "#fff"
+                        : "#7039FF"
+                    }
+                  />
+                </Text>
+                <Text
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    ""
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    { textAlign: "center" }
+                  ]}
+                >
+                  All
+                </Text>
+              </Button>
             </View>
+            <Button
+              style={styles.button}
+              onPress={() => this._handleSideMenuState(false)}
+            >
+              <CheckmarkIcon width={53} height={53} />
+            </Button>
           </View>
         );
         break;
@@ -489,7 +608,6 @@ class AdDetails extends Component {
             menuPosition="right"
             openMenuOffset={wp("85%")}
             isOpen={this.state.sidemenustate}
-            autoClosing={false}
           >
             <View
               style={[

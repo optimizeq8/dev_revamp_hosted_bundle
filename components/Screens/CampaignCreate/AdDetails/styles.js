@@ -14,9 +14,10 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-medium",
-    fontSize: 18,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
     width: 150,
+    paddingTop: 30,
     alignSelf: "center"
   },
   container: {
@@ -180,6 +181,32 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center"
+  },
+  inactivebutton: {
+    backgroundColor: "#fff",
+    alignSelf: "center",
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 15
+  },
+  activebutton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 15
+  },
+  inactivetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#7039FF"
+  },
+  activetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#fff"
   }
 });
 
