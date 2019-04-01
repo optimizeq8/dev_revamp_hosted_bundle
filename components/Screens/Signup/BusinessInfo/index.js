@@ -18,7 +18,6 @@ import {
 } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 // Style
 import styles from "./styles";
@@ -27,6 +26,9 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
+
+//Validator
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 
 class BusinessInfo extends Component {
   static navigationOptions = {

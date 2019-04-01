@@ -1,50 +1,42 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  Slider,
-  ScrollView,
-  Platform
-} from "react-native";
+import { View, Slider, Platform } from "react-native";
 import MultiSelect from "./MultiSelect";
-import { CheckBox } from "react-native-elements";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
 import { LinearGradient } from "expo";
 import RadioGroup from "react-native-radio-buttons-group";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as actionCreators from "../../../../store/actions";
-import country_regions from "./regions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import InputNumber from "rmc-input-number";
-import inputNumberStyles from "./inputNumber";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
+import Sidemenu from "react-native-side-menu";
+import GenderIcon from "../../../../assets/SVGs/Gender.svg";
+import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
+import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+
+//Data
+import country_regions from "./regions";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import inputNumberStyles from "./inputNumber";
 
-import DateField from "./DateFields";
+//Redux Axios
 import Axios from "axios";
+import * as actionCreators from "../../../../store/actions";
+import { connect } from "react-redux";
+
+//Validators
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+
 class AdDetails extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
   constructor(props) {
     super(props);
@@ -68,6 +60,8 @@ class AdDetails extends Component {
         start_time: "",
         end_time: ""
       },
+      sidemenustate: false,
+      sidemenu: "gender",
       gender: [
         { label: "Female", value: "FEMALE" },
         { label: "Male", value: "MALE" },
@@ -196,11 +190,13 @@ class AdDetails extends Component {
           : null
     });
   };
+
   onSelectedGenderChange = selectedItems => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].gender = selectedItems;
     this.setState({ campaignInfo: replace });
   };
+
   onSelectedBudgetChange = budget => {
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
@@ -300,311 +296,496 @@ class AdDetails extends Component {
       });
     });
   };
+
+  _handleSideMenuState = status => {
+    this.setState({ sidemenustate: status }, () => {
+      console.log(this.state.sidemenustate);
+    });
+  };
+
+  _renderSideMenu = component => {
+    this.setState({ sidemenu: component }, () =>
+      this._handleSideMenuState(true)
+    );
+  };
   render() {
     console.log(this.state.totalReach);
-
-    return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <Card
-          style={[
-            styles.mainCard,
-            {
-              margin: 0,
-              shadowColor: "#fff",
-              shadowRadius: 1,
-              shadowOpacity: 0.7,
-              shadowOffset: { width: 8, height: 8 }
-            }
-          ]}
-        >
-          <ScrollView>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Button
-                iconLeft
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-              >
-                <Icon
-                  style={{ paddingLeft: 10, marginRight: 20, top: 25 }}
-                  name="arrow-back"
-                />
-              </Button>
-              <Text style={styles.text}>Input your Snapchat AD Details</Text>
-            </View>
-            <View
-              style={[
-                styles.slidercontainer,
-                { alignSelf: "center", paddingTop: 40 }
-              ]}
-            >
-              <View style={styles.textCon}>
-                <Text style={styles.colorGrey}>
-                  {this.state.minValueBudget} $
-                </Text>
-                <View style={{ alignItems: "center" }}>
-                  <Text style={styles.colorYellow}>
-                    {this.state.campaignInfo.lifetime_budget_micro + "$"}
-                  </Text>
-                  <Text style={[styles.colorGrey, { fontSize: 11 }]}>
-                    20$/day
-                  </Text>
-                </View>
-                <Text style={styles.colorGrey}>
-                  {this.state.maxValueBudget} $
-                </Text>
-              </View>
-
-              <Slider
-                style={{ width: 300 }}
-                step={10}
-                minimumValue={this.state.minValueBudget}
-                maximumValue={this.state.maxValueBudget}
-                value={this.state.campaignInfo.lifetime_budget_micro}
-                onValueChange={val => this.onSelectedBudgetChange(val)}
-                thumbTintColor="rgb(252, 228, 149)"
-                maximumTrackTintColor="#d3d3d3"
-                minimumTrackTintColor="rgb(252, 228, 149)"
-              />
-            </View>
+    console.log(this.state.campaignInfo);
+    let menu;
+    switch (this.state.sidemenu) {
+      case "gender": {
+        menu = (
+          <>
             <View
               style={{
-                alignSelf: "center",
-                height: 50
+                flex: 1,
+                top: 40,
+                alignItems: "center",
+                flexDirection: "colum"
               }}
             >
-              <RadioGroup
-                flexDirection="row"
-                color="#5F5F5F"
-                radioButtons={this.state.gender}
-                onPress={value => {
-                  var data = value.find(data => data.selected === true);
-                  if (data.value !== "All") {
+              <View
+                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
+              >
+                <GenderIcon width={110} height={110} fill="#fff" />
+                <Text style={[styles.title]}> Select Gender </Text>
+              </View>
+              <View
+                style={{
+                  felx: 1,
+                  justifyContent: "space-between",
+                  paddingTop: 20
+                }}
+              >
+                <Button
+                  block
+                  dark
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    "FEMALE"
+                      ? styles.activebutton
+                      : styles.inactivebutton
+                  ]}
+                  onPress={() => {
                     let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = data.value;
-                  } else {
+                    replace.targeting.demographics[0].gender = "FEMALE";
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
+                >
+                  <Text
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === "FEMALE"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      { textAlign: "center" }
+                    ]}
+                  >
+                    <Icon
+                      type="Ionicons"
+                      name="ios-female"
+                      style={[
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === "FEMALE"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        {
+                          fontSize: 30,
+                          left: 25
+                        }
+                      ]}
+                    />
+                    {"\n"}Female
+                  </Text>
+                </Button>
+                <Button
+                  block
+                  dark
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    "MALE"
+                      ? styles.activebutton
+                      : styles.inactivebutton
+                  ]}
+                  onPress={() => {
+                    let replace = this.state.campaignInfo;
+                    replace.targeting.demographics[0].gender = "MALE";
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
+                >
+                  <Text
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === "MALE"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      { textAlign: "center" }
+                    ]}
+                  >
+                    <Icon
+                      type="Ionicons"
+                      name="ios-male"
+                      style={[
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === "MALE"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        {
+                          left: 25,
+                          fontSize: 30
+                        }
+                      ]}
+                    />
+                    {"\n"}Male
+                  </Text>
+                </Button>
+
+                <Button
+                  block
+                  dark
+                  style={[
+                    this.state.campaignInfo.targeting.demographics[0].gender ===
+                    ""
+                      ? styles.activebutton
+                      : styles.inactivebutton,
+                    { flexDirection: "column" }
+                  ]}
+                  onPress={() => {
                     let replace = this.state.campaignInfo;
                     replace.targeting.demographics[0].gender = "";
-                  }
-                }}
-              />
+                    this.setState({ campaignInfo: { ...replace } });
+                  }}
+                >
+                  <Text style={{ left: 20 }}>
+                    <GenderIcon
+                      width={30}
+                      height={30}
+                      fill={
+                        this.state.campaignInfo.targeting.demographics[0]
+                          .gender === ""
+                          ? "#fff"
+                          : "#7039FF"
+                      }
+                    />
+                  </Text>
+                  <Text
+                    style={[
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .gender === ""
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      { textAlign: "center" }
+                    ]}
+                  >
+                    All
+                  </Text>
+                </Button>
+              </View>
             </View>
-            <Item
-              rounded
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
-                }
-              ]}
+            <Button
+              style={[styles.button, { marginBottom: 25 }]}
+              onPress={() => this._handleSideMenuState(false)}
             >
-              <InputNumber
-                keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
-                min={13}
-                max={
-                  this.state.campaignInfo.targeting.demographics[0].max_age ===
-                  0
-                    ? 35
-                    : this.state.campaignInfo.targeting.demographics[0].max_age
-                }
-                styles={inputNumberStyles}
-                defaultValue={
-                  this.state.campaignInfo.targeting.demographics[0].min_age
-                }
-                onChange={value => this._handleMinAge(value)}
-              />
-              <Text style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}>
-                Min Age
-              </Text>
-            </Item>
-            {this.state.min_ageError && (
-              <Text style={[styles.text, { paddingTop: 0 }]}>
-                Min {this.state.min_ageError}
-              </Text>
-            )}
-            <Item
-              rounded
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
-                }
-              ]}
-            >
-              <InputNumber
-                keyboardType={Platform.OS === "ios" ? "number-pad" : "numeric"}
-                max={35}
-                min={
-                  this.state.campaignInfo.targeting.demographics[0].min_age ===
-                  0
-                    ? 13
-                    : this.state.campaignInfo.targeting.demographics[0].min_age
-                }
-                styles={inputNumberStyles}
-                defaultValue={35}
-                onChange={value => this._handleMaxAge(value)}
-              />
-              <Text style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}>
-                Max Age
-              </Text>
-            </Item>
-            {this.state.max_ageError && (
-              <Text style={[styles.text, { paddingTop: 0 }]}>
-                Max {this.state.max_ageError}
-              </Text>
-            )}
-            <Item
-              rounded
-              style={[
-                styles.dateInput,
-                {
-                  borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
-                }
-              ]}
-              onPress={() => {
-                this.dateField.showModal();
+              <CheckmarkIcon width={53} height={53} />
+            </Button>
+          </>
+        );
+        break;
+      }
+      case "age": {
+        menu = (
+          <>
+            <View
+              style={{
+                flex: 1,
+                top: 40,
+                flexDirection: "colum"
               }}
             >
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "rgb(113,113,113)"
-                  }
-                ]}
+              <View
+                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
               >
-                {this.state.campaignInfo.start_time === ""
-                  ? "Start date"
-                  : this.state.campaignInfo.start_time}
-              </Text>
-              <Text style={[styles.inputtext]}>To</Text>
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "rgb(113,113,113)"
-                  }
-                ]}
+                <Text style={[styles.title, { fontSize: 50 }]}> AGE </Text>
+                <Text style={[styles.title]}> Select Age Range </Text>
+              </View>
+              <View
+                style={{
+                  paddingTop: 20,
+                  marginVertical: "40%",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
               >
-                {this.state.campaignInfo.end_time === ""
-                  ? "End date"
-                  : this.state.campaignInfo.end_time}
-              </Text>
-            </Item>
-            <DateField
-              getMinimumCash={this.getMinimumCash}
-              onRef={ref => (this.dateField = ref)}
-              handleStartDatePicked={this.handleStartDatePicked}
-              handleEndDatePicked={this.handleEndDatePicked}
-              start_time={this.state.campaignInfo.start_time}
-              end_time={this.state.campaignInfo.end_time}
-            />
-            <MultiSelect
-              countries={this.state.countries}
-              country_code={
-                this.state.campaignInfo.targeting.geos[0].country_code
-              }
-              languages={this.state.languages}
-              onSelectedItemsChange={this.onSelectedItemsChange}
-              country_codes={
-                this.state.campaignInfo.targeting.geos[0].country_code
-              }
-              languagesError={this.state.languagesError}
-              onSelectedLangsChange={this.onSelectedLangsChange}
-              selectedLangs={
-                this.state.campaignInfo.targeting.demographics[0].languages
-              }
-              regions={this.state.regions}
-              onSelectedRegionChange={this.onSelectedRegionChange}
-              region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
-              onSelectedInterestsChange={this.onSelectedInterestsChange}
-              onSelectedInterestsNamesChange={
-                this.onSelectedInterestsNamesChange
-              }
-            />
-            {/* <AnimatedCircularProgress
-              size={300}
-              width={10}
-              fill={this.state.totalReach}
-              arcSweepAngle={180}
-              rotation={270}
-              lineCap="round"
-              style={styles.chart}
-              tintColor="#FEFB00"
-              backgroundColor="rgba(255,255,255,0.3)"
+                <Item
+                  rounded
+                  style={[
+                    styles.input,
+                    {
+                      marginBottom: 30,
+                      borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <InputNumber
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
+                    min={13}
+                    max={
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .max_age === 0
+                        ? 35
+                        : this.state.campaignInfo.targeting.demographics[0]
+                            .max_age
+                    }
+                    styles={inputNumberStyles}
+                    defaultValue={
+                      this.state.campaignInfo.targeting.demographics[0].min_age
+                    }
+                    onChange={value => this._handleMinAge(value)}
+                  />
+                  <Text
+                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
+                  >
+                    Min Age
+                  </Text>
+                </Item>
+                {this.state.min_ageError && (
+                  <Text style={[styles.text, { paddingTop: 0 }]}>
+                    Min {this.state.min_ageError}
+                  </Text>
+                )}
+                <Item
+                  rounded
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <InputNumber
+                    keyboardType={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
+                    }
+                    max={35}
+                    min={
+                      this.state.campaignInfo.targeting.demographics[0]
+                        .min_age === 0
+                        ? 13
+                        : this.state.campaignInfo.targeting.demographics[0]
+                            .min_age
+                    }
+                    styles={inputNumberStyles}
+                    defaultValue={
+                      this.state.campaignInfo.targeting.demographics[0].max_age
+                    }
+                    onChange={value => this._handleMaxAge(value)}
+                  />
+                  <Text
+                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
+                  >
+                    Max Age
+                  </Text>
+                </Item>
+                {this.state.max_ageError && (
+                  <Text style={[styles.text, { paddingTop: 0 }]}>
+                    Max {this.state.max_ageError}
+                  </Text>
+                )}
+              </View>
+            </View>
+            <Button
+              style={[styles.button, { marginBottom: 25 }]}
+              onPress={() => this._handleSideMenuState(false)}
             >
-              {fill => {
-                return (
-                  <View style={styles.chartItems}>
-                    <Text style={styles.chartText}>{parseInt(fill)}</Text>
-                    <Button
-                      onPress={async () => {
-                        let r = cloneDeep(this.state.campaignInfo.targeting);
-                        if (r.demographics[0].gender === "") {
-                          delete r.demographics[0].gender;
-                        }
-                        if (
-                          r.geos[0].hasOwnProperty("region_id") &&
-                          r.geos[0].region_id.length === 0
-                        ) {
-                          delete r.geos[0].region_id;
-                        }
-                        if (r.demographics[0].max_age >= 35) {
-                          r.demographics[0].max_age = "35+";
-                        }
-                        if (
-                          r.hasOwnProperty("interests") &&
-                          r.interests[0].category_id.length === 0
-                        ) {
-                          delete r.interests;
-                        }
-                        const obj = {
-                          targeting: JSON.stringify(r),
-                          ad_account_id: this.props.mainBusiness
-                            .snap_ad_account_id
-                        };
-                        await this.props.snap_ad_audience_size(
-                          obj,
-                          this.getTotalReach
-                        );
-                      }}
-                      style={{ top: 15 }}
-                    >
-                      <Text> Reach {this.props.average_reach}</Text>
-                    </Button>
+              <CheckmarkIcon width={53} height={53} />
+            </Button>
+          </>
+        );
+
+        break;
+      }
+      case "countries": {
+        menu = (
+          <MultiSelect
+            countries={this.state.countries}
+            country_code={
+              this.state.campaignInfo.targeting.geos[0].country_code
+            }
+            languages={this.state.languages}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            country_codes={
+              this.state.campaignInfo.targeting.geos[0].country_code
+            }
+            languagesError={this.state.languagesError}
+            onSelectedLangsChange={this.onSelectedLangsChange}
+            selectedLangs={
+              this.state.campaignInfo.targeting.demographics[0].languages
+            }
+            regions={this.state.regions}
+            onSelectedRegionChange={this.onSelectedRegionChange}
+            region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
+            onSelectedInterestsChange={this.onSelectedInterestsChange}
+            onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
+          />
+        );
+        break;
+      }
+    }
+
+    return (
+      <>
+        <Container style={styles.container}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <Sidemenu
+            onChange={isOpen => {
+              console.log("State", isOpen);
+              if (isOpen === false) this._handleSideMenuState(isOpen);
+            }}
+            disableGestures={true}
+            menu={menu}
+            menuPosition="right"
+            openMenuOffset={wp("85%")}
+            isOpen={this.state.sidemenustate}
+          >
+            <View
+              style={[
+                styles.mainCard,
+                {
+                  margin: 0,
+                  flex: 1
+                }
+              ]}
+            >
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: "row" }}>
+                  <Button
+                    iconLeft
+                    transparent
+                    onPress={() => this.props.navigation.goBack()}
+                  >
+                    <Icon
+                      style={{ paddingLeft: 10, marginRight: 20, top: 25 }}
+                      name="arrow-back"
+                    />
+                  </Button>
+                  <Text style={styles.text}>
+                    Input your Snapchat AD Details
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.slidercontainer,
+                    { alignSelf: "center", paddingTop: 40 }
+                  ]}
+                >
+                  <View style={styles.textCon}>
+                    <Text style={styles.colorGrey}>
+                      {this.state.minValueBudget} $
+                    </Text>
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={styles.colorYellow}>
+                        {this.state.campaignInfo.lifetime_budget_micro + "$"}
+                      </Text>
+                      <Text style={[styles.colorGrey, { fontSize: 11 }]}>
+                        20$/day
+                      </Text>
+                    </View>
+                    <Text style={styles.colorGrey}>
+                      {this.state.maxValueBudget} $
+                    </Text>
                   </View>
-                );
-              }}
-            </AnimatedCircularProgress> */}
-            <ReachBar
-              country_code={
-                this.state.campaignInfo.targeting.geos[0].country_code
-              }
-              targeting={this.state.campaignInfo.targeting}
-            />
-            <TouchableOpacity
-              onPress={this._handleSubmission}
-              style={styles.buttonN}
-            >
-              <Image
-                style={styles.image}
-                source={require("../../../../assets/images/button.png")}
-                resizeMode="contain"
+
+                  <Slider
+                    style={{ width: 300 }}
+                    step={10}
+                    minimumValue={this.state.minValueBudget}
+                    maximumValue={this.state.maxValueBudget}
+                    value={this.state.campaignInfo.lifetime_budget_micro}
+                    onValueChange={val => this.onSelectedBudgetChange(val)}
+                    thumbTintColor="rgb(252, 228, 149)"
+                    maximumTrackTintColor="#d3d3d3"
+                    minimumTrackTintColor="rgb(252, 228, 149)"
+                  />
+                </View>
+                <Item
+                  rounded
+                  style={[
+                    styles.dateInput,
+                    {
+                      borderColor: this.state.start_timeError
+                        ? "red"
+                        : "#D9D9D9"
+                    }
+                  ]}
+                  onPress={() => {
+                    this.dateField.showModal();
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.inputtext,
+                      {
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        color: "rgb(113,113,113)"
+                      }
+                    ]}
+                  >
+                    {this.state.campaignInfo.start_time === ""
+                      ? "Start date"
+                      : this.state.campaignInfo.start_time}
+                  </Text>
+                  <Text style={[styles.inputtext]}>To</Text>
+                  <Text
+                    style={[
+                      styles.inputtext,
+                      {
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        color: "rgb(113,113,113)"
+                      }
+                    ]}
+                  >
+                    {this.state.campaignInfo.end_time === ""
+                      ? "End date"
+                      : this.state.campaignInfo.end_time}
+                  </Text>
+                </Item>
+
+                <Button
+                  onPress={() => {
+                    this._renderSideMenu("gender");
+                  }}
+                >
+                  <Text> Gender</Text>
+                </Button>
+                <Button
+                  onPress={() => {
+                    this._renderSideMenu("age");
+                  }}
+                >
+                  <Text> Age</Text>
+                </Button>
+
+                <Button
+                  onPress={() => {
+                    this._renderSideMenu("countries");
+                  }}
+                >
+                  <Text> Country</Text>
+                </Button>
+              </View>
+
+              <ReachBar
+                style={{ justifyContent: "flex-end" }}
+                country_code={
+                  this.state.campaignInfo.targeting.geos[0].country_code
+                }
+                targeting={this.state.campaignInfo.targeting}
               />
-            </TouchableOpacity>
-          </ScrollView>
-        </Card>
-      </Container>
+              <Button onPress={this._handleSubmission} style={styles.button}>
+                <Icon style={styles.icon} name="arrow-forward" />
+              </Button>
+            </View>
+          </Sidemenu>
+        </Container>
+        <DateField
+          getMinimumCash={this.getMinimumCash}
+          onRef={ref => (this.dateField = ref)}
+          handleStartDatePicked={this.handleStartDatePicked}
+          handleEndDatePicked={this.handleEndDatePicked}
+          start_time={this.state.campaignInfo.start_time}
+          end_time={this.state.campaignInfo.end_time}
+        />
+      </>
     );
   }
 }

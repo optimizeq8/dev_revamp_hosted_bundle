@@ -11,7 +11,11 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
+  slide: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center"
+  },
   title: {
     flex: 1,
     fontSize: 14,

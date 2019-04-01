@@ -39,62 +39,63 @@ class ReachBar extends Component {
       });
     });
   };
+  _calcReach = async () => {
+    let r = cloneDeep(this.props.targeting);
+    if (r.demographics[0].gender === "") {
+      delete r.demographics[0].gender;
+    }
+    if (
+      r.geos[0].hasOwnProperty("region_id") &&
+      r.geos[0].region_id.length === 0
+    ) {
+      delete r.geos[0].region_id;
+    }
+    if (r.demographics[0].max_age >= 35) {
+      r.demographics[0].max_age = "35+";
+    }
+    if (
+      r.hasOwnProperty("interests") &&
+      r.interests[0].category_id.length === 0
+    ) {
+      delete r.interests;
+    }
+    const obj = {
+      targeting: JSON.stringify(r),
+      ad_account_id: this.props.mainBusiness.snap_ad_account_id
+    };
+    await this.props.snap_ad_audience_size(obj, this.getTotalReach);
+  };
   render() {
     return (
-      <View>
-        <AnimatedCircularProgress
-          size={300}
-          width={10}
-          fill={this.state.totalReach}
-          arcSweepAngle={180}
-          rotation={270}
-          lineCap="round"
-          style={styles.chart}
-          tintColor="#FEFB00"
-          backgroundColor="rgba(255,255,255,0.3)"
-        >
-          {fill => {
-            return (
-              <View style={styles.chartItems}>
-                <Text style={styles.chartText}>{parseInt(fill)}</Text>
-                <Button
-                  onPress={async () => {
-                    let r = cloneDeep(this.props.targeting);
-                    if (r.demographics[0].gender === "") {
-                      delete r.demographics[0].gender;
-                    }
-                    if (
-                      r.geos[0].hasOwnProperty("region_id") &&
-                      r.geos[0].region_id.length === 0
-                    ) {
-                      delete r.geos[0].region_id;
-                    }
-                    if (r.demographics[0].max_age >= 35) {
-                      r.demographics[0].max_age = "35+";
-                    }
-                    if (
-                      r.hasOwnProperty("interests") &&
-                      r.interests[0].category_id.length === 0
-                    ) {
-                      delete r.interests;
-                    }
-                    const obj = {
-                      targeting: JSON.stringify(r),
-                      ad_account_id: this.props.mainBusiness.snap_ad_account_id
-                    };
-                    await this.props.snap_ad_audience_size(
-                      obj,
-                      this.getTotalReach
-                    );
-                  }}
-                  style={{ top: 15 }}
-                >
-                  <Text> Reach {this.props.average_reach}</Text>
-                </Button>
-              </View>
-            );
-          }}
-        </AnimatedCircularProgress>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Button onPress={this._calcReach} style={{ marginHorizontal: "45%" }}>
+          <Text> Reach </Text>
+        </Button>
+
+        <View style={{ top: 50 }}>
+          <AnimatedCircularProgress
+            size={350}
+            width={15}
+            fill={this.state.totalReach}
+            arcSweepAngle={180}
+            rotation={270}
+            lineCap="round"
+            style={styles.chart}
+            tintColor="#FF9D00"
+            backgroundColor="rgba(255,255,255,0.3)"
+          >
+            {fill => {
+              return (
+                <View style={styles.chartItems}>
+                  <Text style={styles.chartText}>
+                    {this.props.average_reach}
+                    {"\n"}Potential Reach
+                  </Text>
+                </View>
+              );
+            }}
+          </AnimatedCircularProgress>
+        </View>
       </View>
     );
   }
