@@ -90,6 +90,8 @@ export const get_interests = countryCode => {
     instance
       .get(`interestsbycountry/${countryCode}`)
       .then(res => {
+        console.log(res.data.interests);
+
         return res.data.interests;
       })
       .then(data => {

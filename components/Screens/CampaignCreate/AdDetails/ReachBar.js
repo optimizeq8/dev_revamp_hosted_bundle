@@ -67,12 +67,12 @@ class ReachBar extends Component {
   };
   render() {
     return (
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={{ top: 30 }}>
         <Button onPress={this._calcReach} style={{ marginHorizontal: "45%" }}>
           <Text> Reach </Text>
         </Button>
 
-        <View style={{ top: 50 }}>
+        <View style={{ top: 20 }}>
           <AnimatedCircularProgress
             size={350}
             width={15}

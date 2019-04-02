@@ -8,7 +8,6 @@ import { LinearGradient } from "expo";
 import RadioGroup from "react-native-radio-buttons-group";
 import InputNumber from "rmc-input-number";
 import Sidemenu from "react-native-side-menu";
-import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
@@ -24,7 +23,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import inputNumberStyles from "./inputNumber";
 
 //Redux Axios
 import Axios from "axios";
@@ -33,7 +31,9 @@ import { connect } from "react-redux";
 
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-
+import GenderOptions from "./GenderOptions";
+import AgeOption from "./AgeOption";
+import MultiSelectSections from "./MultiSelect";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -105,7 +105,8 @@ class AdDetails extends Component {
       value: 0,
       interestNames: [],
       modalVisible: false,
-      totalReach: 0
+      totalReach: 0,
+      selectionOption: ""
     };
   }
 
@@ -299,297 +300,49 @@ class AdDetails extends Component {
   };
 
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {
-      console.log(this.state.sidemenustate);
-    });
+    this.setState({ sidemenustate: status }, () => {});
   };
 
-  _renderSideMenu = component => {
-    this.setState({ sidemenu: component }, () =>
+  _renderSideMenu = (component, option = "") => {
+    this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)
     );
   };
+
+  _changeGender = gender => {
+    let replace = this.state.campaignInfo;
+    replace.targeting.demographics[0].gender = gender;
+    this.setState({ campaignInfo: { ...replace } });
+  };
   render() {
-    console.log(this.state.totalReach);
     console.log(this.state.campaignInfo);
+
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
         menu = (
-          <>
-            <View
-              style={{
-                flex: 1,
-                top: 40,
-                alignItems: "center",
-                flexDirection: "colum"
-              }}
-            >
-              <View
-                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
-              >
-                <GenderIcon width={110} height={110} fill="#fff" />
-                <Text style={[styles.title]}> Select Gender </Text>
-              </View>
-              <View
-                style={{
-                  felx: 1,
-                  justifyContent: "space-between",
-                  paddingTop: 20
-                }}
-              >
-                <Button
-                  block
-                  dark
-                  style={[
-                    this.state.campaignInfo.targeting.demographics[0].gender ===
-                    "FEMALE"
-                      ? styles.activebutton
-                      : styles.inactivebutton
-                  ]}
-                  onPress={() => {
-                    let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = "FEMALE";
-                    this.setState({ campaignInfo: { ...replace } });
-                  }}
-                >
-                  <Text
-                    style={[
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender === "FEMALE"
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      { textAlign: "center" }
-                    ]}
-                  >
-                    <Icon
-                      type="Ionicons"
-                      name="ios-female"
-                      style={[
-                        this.state.campaignInfo.targeting.demographics[0]
-                          .gender === "FEMALE"
-                          ? styles.activetext
-                          : styles.inactivetext,
-                        {
-                          fontSize: 30,
-                          left: 25
-                        }
-                      ]}
-                    />
-                    {"\n"}Female
-                  </Text>
-                </Button>
-                <Button
-                  block
-                  dark
-                  style={[
-                    this.state.campaignInfo.targeting.demographics[0].gender ===
-                    "MALE"
-                      ? styles.activebutton
-                      : styles.inactivebutton
-                  ]}
-                  onPress={() => {
-                    let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = "MALE";
-                    this.setState({ campaignInfo: { ...replace } });
-                  }}
-                >
-                  <Text
-                    style={[
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender === "MALE"
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      { textAlign: "center" }
-                    ]}
-                  >
-                    <Icon
-                      type="Ionicons"
-                      name="ios-male"
-                      style={[
-                        this.state.campaignInfo.targeting.demographics[0]
-                          .gender === "MALE"
-                          ? styles.activetext
-                          : styles.inactivetext,
-                        {
-                          left: 25,
-                          fontSize: 30
-                        }
-                      ]}
-                    />
-                    {"\n"}Male
-                  </Text>
-                </Button>
-
-                <Button
-                  block
-                  dark
-                  style={[
-                    this.state.campaignInfo.targeting.demographics[0].gender ===
-                    ""
-                      ? styles.activebutton
-                      : styles.inactivebutton,
-                    { flexDirection: "column" }
-                  ]}
-                  onPress={() => {
-                    let replace = this.state.campaignInfo;
-                    replace.targeting.demographics[0].gender = "";
-                    this.setState({ campaignInfo: { ...replace } });
-                  }}
-                >
-                  <Text style={{ left: 20 }}>
-                    <GenderIcon
-                      width={30}
-                      height={30}
-                      fill={
-                        this.state.campaignInfo.targeting.demographics[0]
-                          .gender === ""
-                          ? "#fff"
-                          : "#7039FF"
-                      }
-                    />
-                  </Text>
-                  <Text
-                    style={[
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender === ""
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      { textAlign: "center" }
-                    ]}
-                  >
-                    All
-                  </Text>
-                </Button>
-              </View>
-            </View>
-            <Button
-              style={[styles.button, { marginBottom: 25 }]}
-              onPress={() => this._handleSideMenuState(false)}
-            >
-              <CheckmarkIcon width={53} height={53} />
-            </Button>
-          </>
+          <GenderOptions
+            campaignInfo={this.state.campaignInfo}
+            _changeGender={this._changeGender}
+            _handleSideMenuState={this._handleSideMenuState}
+          />
         );
         break;
       }
       case "age": {
         menu = (
-          <>
-            <View
-              style={{
-                flex: 1,
-                top: 40,
-                flexDirection: "colum"
-              }}
-            >
-              <View
-                style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
-              >
-                <Text style={[styles.title, { fontSize: 50 }]}> AGE </Text>
-                <Text style={[styles.title]}> Select Age Range </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 20,
-                  marginVertical: "40%",
-                  justifyContent: "space-between",
-                  alignItems: "center"
-                }}
-              >
-                <Item
-                  rounded
-                  style={[
-                    styles.input,
-                    {
-                      marginBottom: 30,
-                      borderColor: this.state.min_ageError ? "red" : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <InputNumber
-                    keyboardType={
-                      Platform.OS === "ios" ? "number-pad" : "numeric"
-                    }
-                    min={13}
-                    max={
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .max_age === 0
-                        ? 35
-                        : this.state.campaignInfo.targeting.demographics[0]
-                            .max_age
-                    }
-                    styles={inputNumberStyles}
-                    defaultValue={
-                      this.state.campaignInfo.targeting.demographics[0].min_age
-                    }
-                    onChange={value => this._handleMinAge(value)}
-                  />
-                  <Text
-                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
-                  >
-                    Min Age
-                  </Text>
-                </Item>
-                {this.state.min_ageError && (
-                  <Text style={[styles.text, { paddingTop: 0 }]}>
-                    Min {this.state.min_ageError}
-                  </Text>
-                )}
-                <Item
-                  rounded
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: this.state.max_ageError ? "red" : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <InputNumber
-                    keyboardType={
-                      Platform.OS === "ios" ? "number-pad" : "numeric"
-                    }
-                    max={35}
-                    min={
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .min_age === 0
-                        ? 13
-                        : this.state.campaignInfo.targeting.demographics[0]
-                            .min_age
-                    }
-                    styles={inputNumberStyles}
-                    defaultValue={
-                      this.state.campaignInfo.targeting.demographics[0].max_age
-                    }
-                    onChange={value => this._handleMaxAge(value)}
-                  />
-                  <Text
-                    style={[styles.text, { paddingTop: 0, paddingBottom: 0 }]}
-                  >
-                    Max Age
-                  </Text>
-                </Item>
-                {this.state.max_ageError && (
-                  <Text style={[styles.text, { paddingTop: 0 }]}>
-                    Max {this.state.max_ageError}
-                  </Text>
-                )}
-              </View>
-            </View>
-            <Button
-              style={[styles.button, { marginBottom: 25 }]}
-              onPress={() => this._handleSideMenuState(false)}
-            >
-              <CheckmarkIcon width={53} height={53} />
-            </Button>
-          </>
+          <AgeOption
+            state={this.state}
+            _handleMaxAge={this._handleMaxAge}
+            _handleMinAge={this._handleMinAge}
+            _handleSideMenuState={this._handleSideMenuState}
+          />
         );
-
         break;
       }
-      case "countries": {
+      case "selectors": {
         menu = (
-          <MultiSelect
+          <MultiSelectSections
             countries={this.state.countries}
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
@@ -609,6 +362,7 @@ class AdDetails extends Component {
             region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
+            option={this.state.selectionOption}
           />
         );
         break;
@@ -639,7 +393,6 @@ class AdDetails extends Component {
           />
           <Sidemenu
             onChange={isOpen => {
-              console.log("State", isOpen);
               if (isOpen === false) this._handleSideMenuState(isOpen);
             }}
             disableGestures={true}
@@ -779,33 +532,70 @@ class AdDetails extends Component {
                     </View>
                   </View>
                 </TouchableHighlight>
+                <View
+                  style={{
+                    flexDirection: "row"
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "column"
+                    }}
+                  >
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("gender");
+                      }}
+                    >
+                      <Text> Gender</Text>
+                    </Button>
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("age");
+                      }}
+                    >
+                      <Text> Age</Text>
+                    </Button>
 
-                <Button
-                  onPress={() => {
-                    this._renderSideMenu("gender");
-                  }}
-                >
-                  <Text> Gender</Text>
-                </Button>
-                <Button
-                  onPress={() => {
-                    this._renderSideMenu("age");
-                  }}
-                >
-                  <Text> Age</Text>
-                </Button>
-
-                <Button
-                  onPress={() => {
-                    this._renderSideMenu("countries");
-                  }}
-                >
-                  <Text> Country</Text>
-                </Button>
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("selectors", "countries");
+                      }}
+                    >
+                      <Text> Country</Text>
+                    </Button>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "column"
+                    }}
+                  >
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("selectors", "regions");
+                      }}
+                    >
+                      <Text> Regions</Text>
+                    </Button>
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("selectors", "languages");
+                      }}
+                    >
+                      <Text> Language</Text>
+                    </Button>
+                    <Button
+                      onPress={() => {
+                        this._renderSideMenu("selectors", "interests");
+                      }}
+                    >
+                      <Text> Interests</Text>
+                    </Button>
+                  </View>
+                </View>
               </View>
 
               <ReachBar
-                style={{ justifyContent: "flex-end" }}
                 country_code={
                   this.state.campaignInfo.targeting.geos[0].country_code
                 }
