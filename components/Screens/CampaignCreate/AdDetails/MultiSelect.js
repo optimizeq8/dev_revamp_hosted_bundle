@@ -51,118 +51,143 @@ class MultiSelectList extends Component {
     this.props.onSelectedInterestsChange(selectedItems);
     this.setState({ selectedItems });
   };
-  render() {
-    return (
-      <>
-        <View style={styles.slidercontainer}>
-          <MultiSelect
-            hideTags
-            items={this.props.countries}
-            uniqueKey="value"
-            onSelectedItemsChange={this.props.onSelectedItemsChange}
-            selectedItems={[this.props.country_codes]}
-            selectText="Pick Countries"
-            searchInputPlaceholderText="Search Items..."
-            onChangeInput={text => console.log(text)}
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="label"
-            searchInputStyle={{ color: "#CCC" }}
-            submitButtonColor="#CCC"
-            submitButtonText="Confirm Select"
-          />
-        </View>
+  selectCountry = () => (
+    <View style={styles.slidercontainer}>
+      <MultiSelect
+        hideTags
+        items={this.props.countries}
+        uniqueKey="value"
+        onSelectedItemsChange={this.props.onSelectedItemsChange}
+        selectedItems={[this.props.country_codes]}
+        selectText="Pick Countries"
+        searchInputPlaceholderText="Search Items..."
+        onChangeInput={text => console.log(text)}
+        selectedItemTextColor="#CCC"
+        selectedItemIconColor="#CCC"
+        itemTextColor="#000"
+        displayKey="label"
+        searchInputStyle={{ color: "#CCC" }}
+        submitButtonColor="#CCC"
+        submitButtonText="Confirm Select"
+      />
+    </View>
+  );
+  selectRegion = () => (
+    <View style={styles.slidercontainer}>
+      <MultiSelect
+        hideTags
+        items={this.props.regions}
+        uniqueKey="id"
+        onSelectedItemsChange={this.props.onSelectedRegionChange}
+        selectedItems={this.props.region_ids}
+        selectText="Pick Regions (optional)"
+        searchInputPlaceholderText="Search..."
+        onChangeInput={text => console.log(text)}
+        selectedItemTextColor="#CCC"
+        selectedItemIconColor="#CCC"
+        itemTextColor="#000"
+        displayKey="name"
+        searchInputStyle={{ color: "#CCC" }}
+        submitButtonColor="#CCC"
+        submitButtonText="Confirm Select"
+      />
+    </View>
+  );
 
-        <View style={styles.slidercontainer}>
-          <MultiSelect
-            hideTags
-            textColor={this.props.languagesError ? "red" : "#525966"}
-            items={this.props.languages}
-            uniqueKey="value"
-            onSelectedItemsChange={this.props.onSelectedLangsChange}
-            selectedItems={this.props.selectedLangs}
-            selectText="Pick Languages"
-            searchInputPlaceholderText="Search..."
-            onChangeInput={text => console.log(text)}
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="label"
-            searchInputStyle={{ color: "#CCC" }}
-            submitButtonColor="#CCC"
-            submitButtonText="Confirm Select"
+  selectLanguage = () => (
+    <View style={styles.slidercontainer}>
+      <MultiSelect
+        hideTags
+        textColor={this.props.languagesError ? "red" : "#525966"}
+        items={this.props.languages}
+        uniqueKey="value"
+        onSelectedItemsChange={this.props.onSelectedLangsChange}
+        selectedItems={this.props.selectedLangs}
+        selectText="Pick Languages"
+        searchInputPlaceholderText="Search..."
+        onChangeInput={text => console.log(text)}
+        selectedItemTextColor="#CCC"
+        selectedItemIconColor="#CCC"
+        itemTextColor="#000"
+        displayKey="label"
+        searchInputStyle={{ color: "#CCC" }}
+        submitButtonColor="#CCC"
+        submitButtonText="Confirm Select"
+      />
+    </View>
+  );
+
+  selectInteres = () => (
+    <View style={styles.slidercontainer}>
+      <SectionedMultiSelect
+        loading={!this.props.interests ? true : false}
+        items={this.state.interests}
+        uniqueKey="id"
+        selectToggleIconComponent={
+          <Icon
+            type="MaterialCommunityIcons"
+            name="menu-down"
+            style={styles.indicator}
           />
-        </View>
-        <View style={styles.slidercontainer}>
-          <MultiSelect
-            hideTags
-            items={this.props.regions}
-            uniqueKey="id"
-            onSelectedItemsChange={this.props.onSelectedRegionChange}
-            selectedItems={this.props.region_ids}
-            selectText="Pick Regions (optional)"
-            searchInputPlaceholderText="Search..."
-            onChangeInput={text => console.log(text)}
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
-            searchInputStyle={{ color: "#CCC" }}
-            submitButtonColor="#CCC"
-            submitButtonText="Confirm Select"
-          />
-        </View>
-        <View style={styles.slidercontainer}>
-          <SectionedMultiSelect
-            loading={!this.props.interests ? true : false}
-            items={this.state.interests}
-            uniqueKey="id"
-            selectToggleIconComponent={
-              <Icon
-                type="MaterialCommunityIcons"
-                name="menu-down"
-                style={styles.indicator}
-              />
-            }
-            subKey="children"
-            colors={{ chipColor: "red" }}
-            styles={{
-              selectToggle: {
-                marginBottom: 30,
-                borderBottomWidth: 0.5,
-                borderColor: "#ccc"
-              },
-              selectToggleText: { color: "#525966", fontSize: 14 }
-            }}
-            iconKey="icon"
-            selectText="Pick some interests (optional)"
-            showDropDowns={true}
-            showRemoveAll={true}
-            readOnlyHeadings={true}
-            noItemsComponent={
-              <Text style={styles.text}>
-                Sorry, no interests for selected country
-              </Text>
-            }
-            modalAnimationType="fade"
-            modalWithTouchable={true}
-            onSelectedItemsChange={this.onSelectedItemsChange}
-            onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
-            selectedItems={this.state.selectedItems}
-          />
-        </View>
-      </>
-    );
+        }
+        subKey="children"
+        colors={{ chipColor: "red" }}
+        styles={{
+          selectToggle: {
+            marginBottom: 30,
+            borderBottomWidth: 0.5,
+            borderColor: "#ccc"
+          },
+          selectToggleText: { color: "#525966", fontSize: 14 }
+        }}
+        iconKey="icon"
+        selectText="Pick some interests (optional)"
+        showDropDowns={true}
+        showRemoveAll={true}
+        readOnlyHeadings={true}
+        noItemsComponent={
+          <Text style={styles.text}>
+            Sorry, no interests for selected country
+          </Text>
+        }
+        modalAnimationType="fade"
+        modalWithTouchable={true}
+        onSelectedItemsChange={this.onSelectedItemsChange}
+        onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
+        selectedItems={this.state.selectedItems}
+      />
+    </View>
+  );
+
+  render() {
+    console.log("poin", this.props.option);
+    switch (this.props.option) {
+      case "countries":
+        return this.selectCountry();
+        break;
+      case "regions":
+        return this.selectRegion();
+        break;
+      case "languages":
+        return this.selectLanguage();
+        break;
+      case "interests":
+        return this.selectInteres();
+        break;
+    }
   }
 }
 const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id,
+  average_reach: state.campaignC.average_reach,
+  mainBusiness: state.auth.mainBusiness,
   interests: state.campaignC.interests
 });
 
 const mapDispatchToProps = dispatch => ({
-  get_interests: countryCode =>
-    dispatch(actionCreators.get_interests(countryCode))
+  snap_ad_audience_size: (info, totalReach) =>
+    dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
+  get_interests: info => dispatch(actionCreators.get_interests(info))
 });
 export default connect(
   mapStateToProps,

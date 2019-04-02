@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     borderRadius: 27.5,
     borderColor: "transparent",
     borderWidth: 1,
-    alignItems: "center",
     justifyContent: "flex-end",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
@@ -184,17 +183,17 @@ const styles = StyleSheet.create({
   inactivebutton: {
     backgroundColor: "#fff",
     alignSelf: "center",
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: hp("15"),
+    height: hp("15"),
+    borderRadius: 100,
     marginBottom: 10
   },
   activebutton: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: hp("15"),
+    height: hp("15"),
+    borderRadius: 100,
     marginBottom: 10
   },
   inactivetext: {
