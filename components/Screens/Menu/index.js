@@ -150,7 +150,7 @@ class Menu extends Component {
                 onPress={() => this.slidePanelShow()}
                 style={styles.CloseIcon}
               />
-              <BusinessList />
+              <BusinessList navigation={this.props.navigation} />
             </>
           </SlidingUpPanel>
         </LinearGradient>

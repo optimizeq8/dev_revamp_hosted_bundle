@@ -197,7 +197,7 @@ class Home extends Component {
             </View>
           </Container>
           <Modal dismissable={false} visible={this.state.open}>
-            <Menu />
+            <Menu navigation={this.props.navigation} />
           </Modal>
         </>
       );
