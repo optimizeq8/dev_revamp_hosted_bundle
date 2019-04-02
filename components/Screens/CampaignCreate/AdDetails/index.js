@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { View, Slider, Platform } from "react-native";
+import { View, Slider, Platform, TouchableHighlight } from "react-native";
 import MultiSelect from "./MultiSelect";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
@@ -12,6 +12,7 @@ import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import dateFormat from "dateformat";
 
 //Data
 import country_regions from "./regions";
@@ -613,7 +614,21 @@ class AdDetails extends Component {
         break;
       }
     }
-
+    let end_time = "";
+    let start_time = "";
+    let end_year = "";
+    let start_year = "";
+    if (
+      this.state.campaignInfo.start_time !== "" &&
+      this.state.campaignInfo.end_time !== ""
+    ) {
+      end_time = new Date(this.state.campaignInfo.end_time.split(".")[0]);
+      start_time = new Date(this.state.campaignInfo.start_time.split(".")[0]);
+      end_year = end_time.getFullYear();
+      start_year = start_time.getFullYear();
+      end_time = dateFormat(end_time, "d mmm");
+      start_time = dateFormat(start_time, "d mmm");
+    }
     return (
       <>
         <Container style={styles.container}>
@@ -643,19 +658,26 @@ class AdDetails extends Component {
               ]}
             >
               <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: "row" }}>
+                <View style={{}}>
                   <Button
                     iconLeft
                     transparent
                     onPress={() => this.props.navigation.goBack()}
+                    style={{ justifyContent: "flex-start" }}
                   >
                     <Icon
-                      style={{ paddingLeft: 10, marginRight: 20, top: 25 }}
+                      style={{
+                        paddingLeft: 10,
+                        marginRight: 20,
+                        top: 25,
+                        fontSize: 30,
+                        color: "#fff"
+                      }}
                       name="arrow-back"
                     />
                   </Button>
-                  <Text style={styles.text}>
-                    Input your Snapchat AD Details
+                  <Text style={styles.headline}>
+                    Input your Snapchat {"\n"} AD Details
                   </Text>
                 </View>
                 <View
@@ -689,12 +711,14 @@ class AdDetails extends Component {
                     value={this.state.campaignInfo.lifetime_budget_micro}
                     onValueChange={val => this.onSelectedBudgetChange(val)}
                     thumbTintColor="rgb(252, 228, 149)"
-                    maximumTrackTintColor="#d3d3d3"
-                    minimumTrackTintColor="rgb(252, 228, 149)"
+                    maximumTrackTintColor="#fff"
+                    minimumTrackTintColor="#751AFF"
                   />
                 </View>
-                <Item
-                  rounded
+                <Text style={styles.subHeadings}>Duration</Text>
+
+                <TouchableHighlight
+                  underlayColor="rgba(0,0,0,0.2)"
                   style={[
                     styles.dateInput,
                     {
@@ -707,38 +731,54 @@ class AdDetails extends Component {
                     this.dateField.showModal();
                   }}
                 >
-                  <Text
-                    style={[
-                      styles.inputtext,
-                      {
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        color: "rgb(113,113,113)"
-                      }
-                    ]}
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "center" }}
                   >
-                    {this.state.campaignInfo.start_time === ""
-                      ? "Start date"
-                      : this.state.campaignInfo.start_time}
-                  </Text>
-                  <Text style={[styles.inputtext]}>To</Text>
-                  <Text
-                    style={[
-                      styles.inputtext,
-                      {
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        color: "rgb(113,113,113)"
-                      }
-                    ]}
-                  >
-                    {this.state.campaignInfo.end_time === ""
-                      ? "End date"
-                      : this.state.campaignInfo.end_time}
-                  </Text>
-                </Item>
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        textAlign: "center"
+                      }}
+                    >
+                      <Text style={[styles.categories, { fontSize: 16 }]}>
+                        Start
+                      </Text>
+                      {this.state.campaignInfo.start_time !== "" && (
+                        <Text style={styles.numbers}>
+                          {start_time}
+                          {"\n"}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {start_year}
+                          </Text>
+                        </Text>
+                      )}
+                    </View>
+
+                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                      To
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: "column"
+                      }}
+                    >
+                      <Text style={[styles.categories, { fontSize: 16 }]}>
+                        End
+                      </Text>
+
+                      {this.state.campaignInfo.end_time !== "" && (
+                        <Text style={styles.numbers}>
+                          {end_time}
+                          {"\n"}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {end_year}
+                          </Text>
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                </TouchableHighlight>
 
                 <Button
                   onPress={() => {

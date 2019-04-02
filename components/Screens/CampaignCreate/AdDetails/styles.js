@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
 
   colorGrey: {
-    color: "#d3d3d3"
+    color: "#fff"
   },
   colorYellow: {
     color: "rgb(252, 228, 149)"
@@ -77,9 +77,10 @@ const styles = StyleSheet.create({
     top: 15,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    borderColor: "#fff",
+    borderColor: "transparent",
     flex: 1,
-    backgroundColor: "#fff",
+
+    backgroundColor: "#ffcc00",
     marginLeft: 0,
     marginRight: 0
   },
@@ -118,14 +119,12 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     marginBottom: 15,
-
-    backgroundColor: "#D9D9D9",
-
-    paddingHorizontal: 50,
+    backgroundColor: "rgba(0,0,0,0.5)",
     borderRadius: 15,
     alignSelf: "center",
-    width: 300,
-    height: 50
+    width: 270,
+    height: 65,
+    justifyContent: "center"
   },
   icon: {
     alignSelf: "center",
@@ -207,6 +206,38 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     color: "#fff"
+  },
+  categories: {
+    textAlign: "center",
+    color: "#fff",
+    flexDirection: "column",
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    paddingHorizontal: 10
+  },
+  subHeadings: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    paddingVertical: 10
+  },
+  numbers: {
+    textAlign: "center",
+    color: "#FF9D00",
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    paddingHorizontal: 10
+  },
+  headline: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    fontSize: 14,
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignSelf: "center"
   }
 });
 
