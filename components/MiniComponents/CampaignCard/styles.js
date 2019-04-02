@@ -30,15 +30,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
+    borderRadius: 20,
     marginVertical: 10,
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 }
+    shadowOffset: { height: 6, width: 0 },
+    elevation: 5
   },
   text: {
     textAlign: "center",

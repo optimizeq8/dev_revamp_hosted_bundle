@@ -9,7 +9,8 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform
 } from "react-native";
 import {
   Card,
@@ -57,8 +58,8 @@ const { height } = Dimensions.get("window");
 class CampaignDetails extends Component {
   static defaultProps = {
     draggableRange: {
-      top: height / 1.25,
-      bottom: 200
+      top: hp("78"),
+      bottom: hp("23")
     }
   };
 
@@ -167,13 +168,6 @@ class CampaignDetails extends Component {
             }}
           >
             <Container style={styles.container}>
-              {/* <LinearGradient
-              colors={[colors.background1, colors.background2]}
-              startPoint={{ x: 1, y: 0 }}
-              endPoint={{ x: 0, y: 1 }}
-              style={styles.gradient}
-            /> */}
-
               <Card padder style={styles.mainCard}>
                 <Image
                   style={styles.image}
@@ -182,12 +176,12 @@ class CampaignDetails extends Component {
                 />
                 <Text style={styles.title}>{this.props.campaign.name}</Text>
                 <View>
-                  <View padder style={styles.bottomCard}>
+                  <View padder style={styles.toggleSpace}>
                     <View style={{ alignSelf: "center" }}>
                       <Toggle
                         buttonTextStyle={{
                           fontFamily: "montserrat-medium",
-                          fontSize: 10,
+                          fontSize: wp("2.7"),
                           color: "#fff",
                           top: 7,
                           textAlign: "center"
@@ -201,7 +195,7 @@ class CampaignDetails extends Component {
                         circleColorOff="#FF9D00"
                         circleColorOn="#66D072"
                         duration={200}
-                        buttonStyle={{ width: 50, height: 27 }}
+                        buttonStyle={{ width: wp("13"), height: hp("3.8") }}
                       />
                       <Text
                         style={{
@@ -222,7 +216,7 @@ class CampaignDetails extends Component {
                   <Text
                     style={[
                       styles.numbers,
-                      { fontSize: 32, fontFamily: "montserrat-semibold" }
+                      { fontSize: hp("3.4"), fontFamily: "montserrat-semibold" }
                     ]}
                   >
                     {this.props.campaign.lifetime_budget_micro}
@@ -237,12 +231,12 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                    <Text style={[styles.categories, { fontSize: hp("2.5") }]}>
                       Start
                     </Text>
                     <Text style={styles.numbers}>
                       {start_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                      <Text style={[styles.numbers, { fontSize: hp("2") }]}>
                         {start_year}
                       </Text>
                     </Text>
@@ -253,12 +247,12 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                    <Text style={[styles.categories, { fontSize: hp("2.5") }]}>
                       End
                     </Text>
                     <Text style={styles.numbers}>
                       {end_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                      <Text style={[styles.numbers, { fontSize: hp("2") }]}>
                         {end_year}
                       </Text>
                     </Text>
@@ -272,7 +266,7 @@ class CampaignDetails extends Component {
                         flexDirection: "row"
                       }}
                     >
-                      <GenderIcon width={25} height={25} />
+                      <GenderIcon width={hp("2")} height={hp("2")} />
                       <Text style={styles.categories}>
                         Gender{"\n "}
                         <Text style={styles.subtext}>
@@ -299,13 +293,19 @@ class CampaignDetails extends Component {
                         </Text>
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignSelf: "center"
+                      }}
+                    >
                       <Icon
                         style={styles.icon}
                         type="MaterialCommunityIcons"
                         name="human-male-girl"
                       />
-                      <Text style={styles.categories}>
+
+                      <Text style={[styles.categories]}>
                         Age range{"\n"}
                         <Text style={styles.subtext}>
                           {
@@ -321,7 +321,7 @@ class CampaignDetails extends Component {
                       </Text>
                     </View>
                     <View style={{ flexDirection: "row" }}>
-                      <LocationIcon width={25} height={25} />
+                      <LocationIcon width={hp("2")} height={hp("2")} />
                       <Text style={styles.categories}>
                         Location(s) {"\n"}
                         {this.props.campaign.targeting.geos[0].country_code}
@@ -340,13 +340,15 @@ class CampaignDetails extends Component {
                         name="screen-desktop"
                         style={[styles.icon]}
                       /> */}
-                        <InterestIcon width={25} height={25} />
+                        <InterestIcon width={hp("2")} height={hp("2")} />
                         {"   "}
                         Interests
                       </Text>
-                      <Text style={[styles.subtext, { textAlign: "left" }]}>
-                        {interesetNames}{" "}
-                      </Text>
+                      <ScrollView>
+                        <Text style={[styles.subtext, { textAlign: "left" }]}>
+                          {interesetNames}{" "}
+                        </Text>
+                      </ScrollView>
                     </View>
                   )}
                 </View>
@@ -358,8 +360,6 @@ class CampaignDetails extends Component {
                 animatedValue={this._draggedValue}
                 friction={0.4}
                 onDragEnd={value => {
-                  console.log(value);
-
                   if (value > hp("50%")) {
                     this._panel.show();
                   } else {
@@ -382,8 +382,16 @@ class CampaignDetails extends Component {
                         }}
                       >
                         <LinearGradient
-                          colors={[colors.background1, colors.background2]}
-                          locations={[0.7, 1]}
+                          colors={
+                            Platform.OS === "ios"
+                              ? ["#751AFF", "#751AFF"]
+                              : ["#6C52FF", "#751AFF"]
+                          }
+                          locations={
+                            Platform.OS === "ios" ? [0.2, 0.8] : [0.1, 0.9]
+                          }
+                          start={[0, 0.2]}
+                          end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
                           style={styles.tab}
                         >
                           <BarIcon style={styles.handlerIcon} />
@@ -392,8 +400,10 @@ class CampaignDetails extends Component {
                       </TouchableWithoutFeedback>
                     </View>
                     <LinearGradient
-                      colors={[colors.background1, colors.background2]}
-                      locations={[0.7, 1]}
+                      colors={["#751AFF", "#6C52FF", colors.background2]}
+                      locations={[0.2, 0.6, 1]}
+                      start={[0.2, 0.4]}
+                      end={[1, 1]}
                       style={{ borderRadius: 30, overflow: "hidden" }}
                     >
                       <Animated.View
@@ -405,9 +415,7 @@ class CampaignDetails extends Component {
                       </Animated.View>
 
                       <Animated.View style={[lineAnimatedStyles]}>
-                        <ScrollView
-                          contentInset={{ bottom: hp("30%"), top: 0 }}
-                        >
+                        <ScrollView contentInset={{ top: 0 }}>
                           <LineChart />
                         </ScrollView>
                       </Animated.View>

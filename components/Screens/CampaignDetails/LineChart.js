@@ -9,10 +9,17 @@ import {
 import { LineChart as Line } from "react-native-chart-kit";
 import LineChartDevider from "../../../assets/SVGs/LineChartDevider.svg";
 import styles from "./styles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export default class LineChart extends Component {
   render() {
     return (
-      <View style={{ paddingTop: 30, paddingLeft: 20 }}>
+      <View
+        style={{
+          paddingTop: 30,
+          paddingLeft: 20,
+          paddingBottom: heightPercentageToDP("34")
+        }}
+      >
         <Text style={styles.chartTitle}>Spend</Text>
         <Line
           withDots={false}

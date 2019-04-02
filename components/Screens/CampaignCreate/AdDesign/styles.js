@@ -58,14 +58,13 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     borderColor: "transparent",
-    alignSelf: "center",
-    top: 250,
-    left: 143
+    top: hp("32"),
+    left: wp("38")
   },
   swipeUp: {
     ...StyleSheet.absoluteFillObject,
     height: 50,
-    top: 450,
+    top: hp("60"),
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
   buttonN: {
     paddingTop: 0,
     bottom: 15,
-    height: 530
+    height: hp("68")
   },
   content: {
     flexDirection: "row",
