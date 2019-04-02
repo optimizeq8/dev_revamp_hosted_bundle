@@ -33,21 +33,12 @@ class SearchBar extends Component {
   _handleSubmit() {
     this.props.onSearch({
       value: this.state.value,
-      selected: this.state.selected
+      selected: this.props.filterStatus
     });
   }
   render() {
     return (
       <View>
-        <RadioGroup
-          flexDirection="row"
-          color="#5F5F5F"
-          radioButtons={this.state.data}
-          onPress={value => {
-            var data = value.find(data => data.selected === true);
-            this.setState({ selected: data.value }, () => this._handleSubmit());
-          }}
-        />
         <View searchBar>
           <Item>
             <Icon name="ios-search" />
@@ -65,7 +56,8 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaignList: state.auth.campaignList
+  campaignList: state.auth.campaignList,
+  filterStatus: state.auth.filterStatus
 });
 
 const mapDispatchToProps = dispatch => ({

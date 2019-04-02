@@ -16,7 +16,9 @@ const initialState = {
   campaignList: [],
   selectedCampaign: null,
   successName: false,
-  filteredCampaigns: []
+  filteredCampaigns: [],
+  filterValue: "",
+  filterStatus: "A"
 };
 
 const reducer = (state = initialState, action) => {
@@ -120,17 +122,19 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.FILTER_CAMPAIGNS:
       console.log(action.payload);
-      let filterStatus = state.campaignList.filter(campaign =>
+      let filtered = state.campaignList.filter(campaign =>
         campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
       );
 
       if (action.payload.selected !== "A")
-        filterStatus = filterStatus.filter(campaign =>
+        filtered = filtered.filter(campaign =>
           campaign.status.includes(action.payload.selected)
         );
       return {
         ...state,
-        filteredCampaigns: filterStatus
+        filterValue: action.payload.value,
+        filteredCampaigns: filtered,
+        filterStatus: action.payload.selected
       };
     case actionTypes.LOGOUT_USER:
       console.log("reset");
