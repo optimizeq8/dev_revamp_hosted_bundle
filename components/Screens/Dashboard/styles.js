@@ -7,7 +7,15 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
+  title: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    width: 150,
+    paddingTop: 20,
+    alignSelf: "center"
+  },
   container: {
     marginTop: 30,
     backgroundColor: "#751AFF"
@@ -25,13 +33,10 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-
+    backgroundColor: "#fff",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
+    flex: 1
   },
   text: {
     textAlign: "center",
@@ -66,8 +71,11 @@ const styles = StyleSheet.create({
   button: {
     top: 30,
     marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    marginHorizontal: 20,
+    height: 55,
+    borderRadius: 33
   },
   link: {
     marginTop: 20,
@@ -106,9 +114,9 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   subtext: {
-    fontFamily: "benton-sans-regular",
-    fontSize: 12,
-    paddingTop: 5,
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingTop: 25,
     color: "#fff",
     textAlign: "left"
   },
@@ -135,6 +143,32 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30
+  },
+  checkbutton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 55,
+    height: 55,
+    borderRadius: 27.5,
+    borderColor: "transparent",
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    marginVertical: 5
+  },
+  activebutton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    justifyContent: "center",
+    width: 55,
+    height: 55,
+    borderRadius: 33,
+    top: 30,
+    marginBottom: 10
   }
 });
 
