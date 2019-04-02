@@ -9,8 +9,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    paddingBottom: 30,
-    backgroundColor: "#751AFF"
+    backgroundColor: "transparent"
   },
   textcontainer: {
     flex: 1,

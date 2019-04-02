@@ -181,11 +181,6 @@ export default class Deep_Link extends Component {
             borderTopEndRadius: 30
           }}
         >
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
-            style={styles.gradient}
-          />
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}

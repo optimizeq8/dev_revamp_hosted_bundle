@@ -18,19 +18,20 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 45,
-    width: 45
+    height: hp("5"),
+    width: hp("5")
   },
 
   mainCard: {
-    top: 15,
+    top: hp("2"),
     borderColor: "transparent",
     backgroundColor: "transparent",
     flex: 1,
     shadowRadius: 0,
     shadowOpacity: 0,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    elevation: -10
   },
   text: {
     textAlign: "center",
@@ -65,22 +66,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: 13,
+    fontSize: hp("2"),
     paddingHorizontal: 10
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-semibold",
-    fontSize: 20,
-    paddingVertical: 10
+    fontSize: hp("2.3"),
+    paddingVertical: hp("1")
   },
 
   title: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 20,
+    fontSize: hp("2.45"),
     width: 150,
     alignSelf: "center"
   },
@@ -101,12 +102,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
+    fontSize: hp("2.5"),
     paddingHorizontal: 10
   },
-  bottomCard: {
-    top: 15,
-    height: 100
+  toggleSpace: {
+    top: hp("2"),
+    height: hp("10")
   },
   icon: {
     flexDirection: "column",
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)"
   },
   toggleStyle: {
-    width: 105,
-    height: 33,
+    width: wp("28"),
+    height: hp("4"),
     borderRadius: 20,
     padding: 5
   },
@@ -172,8 +173,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   bottomContainer: {
-    flex: 1,
-    zIndex: 1,
+    // flex: 1,
+    width: wp("100"),
+    // height: hp("100"),
+    elevation: 10,
     alignItems: "center",
     justifyContent: "center"
   },

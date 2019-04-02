@@ -177,11 +177,11 @@ export default class App_Install extends Component {
             borderTopEndRadius: 30
           }}
         >
-          <LinearGradient
+          {/* <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[0.7, 1]}
             style={styles.gradient}
-          />
+          /> */}
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}

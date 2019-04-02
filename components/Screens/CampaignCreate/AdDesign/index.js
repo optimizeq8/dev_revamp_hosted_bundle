@@ -38,6 +38,7 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Validator
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -257,7 +258,12 @@ class AdDesign extends Component {
           scrollEnabled={false}
         >
           <View style={[styles.mainCard]}>
-            <View style={{ flexDirection: "row", marginBottom: 30 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: heightPercentageToDP("2.5")
+              }}
+            >
               <Button
                 transparent
                 onPress={() => this.props.navigation.goBack()}
@@ -433,9 +439,10 @@ class AdDesign extends Component {
                 style={{
                   textAlign: "center",
                   color: "#fff",
-                  paddingTop: 20,
+                  paddingTop: 10,
                   fontFamily: "montserrat-medium",
-                  fontSize: 16
+                  fontSize: 14,
+                  marginBottom: -heightPercentageToDP("3")
                 }}
               >
                 {!this.state.imageError.includes("blank")
