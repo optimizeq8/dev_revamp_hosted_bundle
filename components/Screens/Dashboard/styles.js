@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 25,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "center"
   },
   campaignButton: {
     justifyContent: "space-between",
@@ -169,6 +170,36 @@ const styles = StyleSheet.create({
     borderRadius: 33,
     top: 30,
     marginBottom: 10
+  },
+  dateInput: {
+    marginBottom: 15,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 270,
+    height: 65,
+    justifyContent: "center"
+  },
+  categories: {
+    textAlign: "center",
+    color: "#fff",
+    flexDirection: "column",
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    paddingHorizontal: 10
+  },
+  numbers: {
+    textAlign: "center",
+    color: "#FF9D00",
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    paddingHorizontal: 10
+  },
+  dateModal: {
+    ...StyleSheet.absoluteFillObject,
+    height: heightPercentageToDP("100%"),
+
+    marginTop: 0
   }
 });
 
