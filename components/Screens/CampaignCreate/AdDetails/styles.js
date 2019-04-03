@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center"
   },
-  slidercontainer: { marginHorizontal: 30 },
+  slidercontainer: { marginHorizontal: 40 },
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
