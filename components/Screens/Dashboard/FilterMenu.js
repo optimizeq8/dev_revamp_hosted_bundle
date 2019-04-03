@@ -103,7 +103,7 @@ class FilterMenu extends Component {
             flex: 1,
             top: "20%",
             alignItems: "center",
-            flexDirection: "colum",
+            flexDirection: "column",
             opacity: 1
           }}
         >

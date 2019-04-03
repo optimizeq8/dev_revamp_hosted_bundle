@@ -249,9 +249,9 @@ class LineChart extends AbstractChart {
     };
     const datas = this.getDatas(data.datasets);
     return (
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <View style={[style, { flexDirection: "column" }]}>
-          <Svg height={height} width={widthPercentageToDP("15")}>
+      <View style={{ flexDirection: "row" }}>
+        <View style={[style]}>
+          <Svg height={height} width={widthPercentageToDP("21")}>
             <G>
               {this.renderDefs({
                 ...config,
@@ -338,7 +338,7 @@ class LineChart extends AbstractChart {
               width={width}
               style={{
                 marginLeft: -widthPercentageToDP("13"),
-                marginRight: widthPercentageToDP("5")
+                marginRight: widthPercentageToDP("15")
               }}
             >
               <G>

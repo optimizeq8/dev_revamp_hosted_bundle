@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import { LinearGradient, Line, Text, Defs, Stop } from "react-native-svg";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class AbstractChart extends Component {
   calcScaler = data => Math.max(...data) - Math.min(...data) || 1;
@@ -65,10 +66,10 @@ class AbstractChart extends Component {
       return (
         <Text
           key={Math.random()}
-          x={paddingRight - yLabelsOffset}
+          x={widthPercentageToDP("17")}
           textAnchor="end"
           y={(height * 3) / 4 - ((height - paddingTop) / count) * i + 12}
-          fontSize={12}
+          fontSize={widthPercentageToDP("3")}
           fill={this.props.chartConfig.color(0.5)}
         >
           {yLabel}

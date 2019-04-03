@@ -16,7 +16,7 @@ export default class LineChartGraphs extends Component {
       <View
         style={{
           paddingTop: 30,
-          paddingLeft: 20,
+          paddingLeft: 25,
           paddingBottom: heightPercentageToDP("34")
         }}
       >
@@ -31,12 +31,12 @@ export default class LineChartGraphs extends Component {
             datasets: [
               {
                 data: [
+                  Math.random() * 1003114,
+                  Math.random() * 12200,
+                  Math.random() * 1022140,
                   Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100
+                  Math.random() * 1200,
+                  Math.random() * 1131300
                 ]
               }
             ]
@@ -46,7 +46,7 @@ export default class LineChartGraphs extends Component {
           yAxisLabel={"$"}
           chartConfig={{
             strokeWidth: 5,
-            decimalPlaces: 2, // optional, defaults to 2dp
+            decimalPlaces: 0, // optional, defaults to 2dp
             color: (opacity = 1) => `#FFFC00`,
             style: {
               borderRadius: 16,
@@ -54,10 +54,6 @@ export default class LineChartGraphs extends Component {
             }
           }}
           bezier
-          style={{
-            borderRadius: 16,
-            paddingBottom: 30
-          }}
         />
         <LineChartDevider style={{ alignSelf: "center" }} />
         <Text style={styles.chartTitle}>Imprissions</Text>
