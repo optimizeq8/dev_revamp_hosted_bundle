@@ -313,7 +313,7 @@ export default class Deep_Link extends Component {
                     </View>
                   </View>
                 )}
-                numColumns={3}
+                numcolumnns={3}
                 keyExtractor={(item, index) => index}
               />
 
