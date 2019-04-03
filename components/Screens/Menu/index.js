@@ -169,7 +169,7 @@ const mapDispatchToProps = dispatch => ({
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
-  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
 export default connect(
   mapStateToProps,

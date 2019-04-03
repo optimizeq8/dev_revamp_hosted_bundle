@@ -12,10 +12,11 @@ export {
   checkForExpiredToken,
   getBusinessAccounts,
   createBusinessAccount,
-  getCampaignList,
+  updateCampaignList,
   getCampaign,
   changeBusiness,
-  resetRegister
+  resetRegister,
+  getCampaignList
 } from "./authActions";
 export {
   ad_objective,
