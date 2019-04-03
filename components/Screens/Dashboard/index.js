@@ -6,7 +6,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  TouchableHighlight
 } from "react-native";
 import {
   Card,
@@ -41,7 +42,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
-
+import FilterMenu from "./FilterMenu";
 class Dashboard extends Component {
   static navigationOptions = {
     header: null
@@ -90,61 +91,19 @@ class Dashboard extends Component {
     );
   }
   render() {
-    const list = this.props.filteredCampaigns.map(campaign => (
-      <CampaignCard
-        campaign={campaign}
-        navigation={this.props.navigation}
-        key={campaign.campaign_id}
-      />
-    ));
+    // const list = this.props.filteredCampaigns.map(campaign => (
+    //   <CampaignCard
+    //     campaign={campaign}
+    //     navigation={this.props.navigation}
+    //     key={campaign.campaign_id}
+    //   />
+    // ));
 
     let menu = (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: "20%",
-            alignItems: "center",
-            flexDirection: "colum",
-            opacity: 1
-          }}
-        >
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "flex-start",
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
-            <FilterIcon width={60} height={60} fill="#fff" />
-            <Text style={[styles.title]}> Filter </Text>
-          </View>
-          <Text style={[styles.subtext]}>
-            Select which Ads you'd like to see
-          </Text>
-
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 10
-            }}
-          >
-            <Text style={[styles.title, { paddingBottom: 10 }]}>
-              Ad Activity
-            </Text>
-            <FilterStatus />
-            <Text style={[styles.title]}> Date </Text>
-          </View>
-        </View>
-        <Button
-          style={[styles.checkbutton, { marginBottom: 35 }]}
-          onPress={() => this._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      <FilterMenu
+        _handleSideMenuState={this._handleSideMenuState}
+        open={this.state.sidemenustate}
+      />
     );
 
     return (
@@ -157,7 +116,6 @@ class Dashboard extends Component {
           />
           <Sidemenu
             onChange={isOpen => {
-              console.log("State", isOpen);
               if (isOpen === false) this._handleSideMenuState(isOpen);
             }}
             disableGestures={true}

@@ -38,12 +38,12 @@ import DateRangePicker from "./DateRangePicker";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default class DateFields extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markedDates: {},
       modalVisible: false,
       start_choice: false,
       end_choice: false,
@@ -94,15 +94,29 @@ export default class DateFields extends Component {
       <View
         style={[
           styles.dateModal,
-          this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 }
+          this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 },
+          this.props.filterMenu && { marginLeft: -80 }
         ]}
       >
         <Modal
           onDismiss={() => this.setState({ modalVisible: false })}
           onRequestClose={() => this.setState({ modalVisible: false })}
-          visible={this.state.modalVisible}
+          visible={
+            this.props.filterMenu
+              ? this.state.modalVisible && this.props.open
+              : this.state.modalVisible
+          }
         >
-          <BlurView tint="dark" intensity={95} style={styles.BlurView}>
+          <BlurView
+            tint="dark"
+            intensity={95}
+            style={[
+              styles.BlurView,
+              this.props.filterMenu && {
+                paddingLeft: widthPercentageToDP("20")
+              }
+            ]}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -122,12 +136,23 @@ export default class DateFields extends Component {
               <Text style={styles.title}>Duration</Text>
               <Text
                 style={[styles.textModal, { fontFamily: "montserrat-light" }]}
+                onPress={() =>
+                  this.setState({
+                    start_choice: false,
+                    end_choice: false,
+
+                    start_timeError: "",
+                    endt_time: ""
+                  })
+                }
               >
                 Reset
               </Text>
             </View>
             <Text style={styles.textModal}>
-              Please select your ad launch and end dates
+              {this.props.filterMenu
+                ? "Select a date range to filter from"
+                : "Please select your ad launch and end dates"}
             </Text>
             <CalenderkIcon width={60} height={60} style={styles.icon} />
             <Text style={[styles.textModal, { color: "#FF9D00" }]}>
@@ -136,7 +161,7 @@ export default class DateFields extends Component {
             <DateRangePicker
               startDatePicked={this.startDatePicked}
               endDatePicked={this.endDatePicked}
-              initialRange={[this.props.start_time, this.props.end_time]}
+              // initialRange={[this.props.start_time, this.props.end_time]}
               onSuccess={async (s, e) => {
                 this.endDatePicked();
                 this.setState({
@@ -151,17 +176,26 @@ export default class DateFields extends Component {
               <Button
                 style={styles.button}
                 onPress={async () => {
-                  let timeDiff = Math.round(
-                    Math.abs(
-                      (new Date(this.state.start_date).getTime() -
-                        new Date(this.state.end_date).getTime()) /
-                        86400000
-                    )
-                  );
-                  console.log("timeDiff", timeDiff + 1);
-                  this.props.getMinimumCash(timeDiff + 1);
-                  await this.props.handleStartDatePicked(this.state.start_date);
-                  await this.props.handleEndDatePicked(this.state.end_date);
+                  if (!this.props.filterMenu) {
+                    let timeDiff = Math.round(
+                      Math.abs(
+                        (new Date(this.state.start_date).getTime() -
+                          new Date(this.state.end_date).getTime()) /
+                          86400000
+                      )
+                    );
+                    console.log("timeDiff", timeDiff + 1);
+                    this.props.getMinimumCash(timeDiff + 1);
+                    await this.props.handleStartDatePicked(
+                      this.state.start_date
+                    );
+                    await this.props.handleEndDatePicked(this.state.end_date);
+                  } else {
+                    await this.props.handleStartDatePicked(
+                      this.state.start_date
+                    );
+                    await this.props.handleEndDatePicked(this.state.end_date);
+                  }
                   this.setState({
                     modalVisible: false,
                     start_choice: false,

@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
     top: hp("1%")
   },
   BlurView: {
-    height: hp("100%"),
-    paddingTop: hp("5%")
+    height: hp("110%"),
+    paddingTop: hp("10%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
-    height: hp("100%"),
-
-    marginTop: 0
+    height: hp("110%"),
+    marginTop: -hp("5"),
+    borderRadius: 30
   },
   button: {
     alignSelf: "center",

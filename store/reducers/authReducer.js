@@ -154,6 +154,19 @@ const reducer = (state = initialState, action) => {
         filtered = filtered.filter(campaign =>
           campaign.status.includes(action.payload.selected)
         );
+
+      if (action.payload.dateRange[0] !== "") {
+        let startSearch = Date.parse(action.payload.dateRange[0]);
+        let endSearch = Date.parse(action.payload.dateRange[1]);
+
+        filtered = filtered.filter(campaign => {
+          if (
+            startSearch <= Date.parse(campaign.start_time) &&
+            endSearch >= Date.parse(campaign.end_time)
+          )
+            return campaign;
+        });
+      }
       return {
         ...state,
         filterValue: action.payload.value,
