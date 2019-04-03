@@ -21,14 +21,24 @@ class MultiSelectList extends Component {
       selectedItems: [],
       selectedItemObjects: [],
       filteredCountreis: [],
+      filteredRegions: [],
       interests: []
     };
   }
   componentDidMount() {
     this.props.get_interests(this.props.country_code);
-    this.setState({ filteredCountreis: this.props.countries });
+    this.setState({
+      filteredCountreis: this.props.countries,
+      filteredRegions: this.props.regions
+    });
   }
   componentDidUpdate(prevProps) {
+    if (prevProps.regions !== this.props.regions) {
+      this.setState({
+        filteredRegions: this.props.regions
+      });
+    }
+
     if (prevProps.interests !== this.props.interests) {
       let interests = [];
       let lenOfLists = 0;
@@ -143,27 +153,105 @@ class MultiSelectList extends Component {
       </>
     );
   };
-  selectRegion = () => (
-    <View style={styles.slidercontainer}>
-      <MultiSelect
-        hideTags
-        items={this.props.regions}
-        uniqueKey="id"
-        onSelectedItemsChange={this.props.onSelectedRegionChange}
-        selectedItems={this.props.region_ids}
-        selectText="Pick Regions (optional)"
-        searchInputPlaceholderText="Search..."
-        onChangeInput={text => console.log(text)}
-        selectedItemTextColor="#CCC"
-        selectedItemIconColor="#CCC"
-        itemTextColor="#000"
-        displayKey="name"
-        searchInputStyle={{ color: "#CCC" }}
-        submitButtonColor="#CCC"
-        submitButtonText="Confirm Select"
-      />
-    </View>
-  );
+  selectRegion = () => {
+    let regionlist = this.state.filteredRegions.map(c => {
+      return (
+        <TouchableOpacity
+          key={c.id}
+          style={{
+            paddingVertical: 20
+          }}
+          onPress={() => {
+            this.props.onSelectedRegionChange(c.id);
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              color: this.props.region_ids.find(r => r === c.id)
+                ? "#FF9D00"
+                : "#fff",
+              fontSize: 14
+            }}
+          >
+            {c.name}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+    return (
+      <>
+        <View
+          style={{
+            flex: 1,
+            top: 40,
+            flexDirection: "column"
+          }}
+        >
+          <View
+            style={{
+              marginTop: 10,
+              alignItems: "center"
+            }}
+          >
+            <LocationIcon width={110} height={110} fill="#fff" />
+            <Text style={[styles.title]}> Select Country </Text>
+          </View>
+          <View
+            style={{
+              felx: 1,
+              justifyContent: "space-between",
+              paddingTop: 20,
+              elevation: -1
+            }}
+          >
+            <View style={styles.slidercontainer}>
+              <Item>
+                <Input
+                  placeholder="Search Country..."
+                  style={{
+                    fontFamily: "montserrat-regular",
+                    color: "#fff",
+                    fontSize: 14
+                  }}
+                  placeholderTextColor="#fff"
+                  onChangeText={value => {
+                    let filteredR = this.props.regions.filter(c =>
+                      c.name.toLowerCase().includes(value.toLowerCase())
+                    );
+                    this.setState({ filteredRegions: filteredR });
+                  }}
+                />
+              </Item>
+
+              <View style={{ height: "75%" }}>
+                <ScrollView>{regionlist}</ScrollView>
+              </View>
+              {
+                //   <MultiSelect
+                //   hideTags
+                //   items={this.props.regions}
+                //   uniqueKey="id"
+                //   onSelectedItemsChange={this.props.onSelectedRegionChange}
+                //   selectedItems={this.props.region_ids}
+                //   selectText="Pick Regions (optional)"
+                //   searchInputPlaceholderText="Search..."
+                //   onChangeInput={text => console.log(text)}
+                //   selectedItemTextColor="#CCC"
+                //   selectedItemIconColor="#CCC"
+                //   itemTextColor="#000"
+                //   displayKey="name"
+                //   searchInputStyle={{ color: "#CCC" }}
+                //   submitButtonColor="#CCC"
+                //   submitButtonText="Confirm Select"
+                // />
+              }
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  };
 
   selectLanguage = () => (
     <View style={styles.slidercontainer}>
@@ -231,7 +319,9 @@ class MultiSelectList extends Component {
   );
 
   render() {
-    console.log("poin", this.props.option);
+    console.log("regionslklk", this.props.region_ids);
+
+    // console.log("poin", this.props.option);
     switch (this.props.option) {
       case "countries":
         return this.selectCountry();

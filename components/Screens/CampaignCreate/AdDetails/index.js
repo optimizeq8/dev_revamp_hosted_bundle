@@ -205,9 +205,15 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: replace });
   };
 
-  onSelectedRegionChange = selectedItems => {
+  onSelectedRegionChange = selectedItem => {
     let replace = this.state.campaignInfo;
-    replace.targeting.geos[0].region_id = selectedItems;
+    if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
+      replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
+        r => r !== selectedItem
+      );
+    } else {
+      replace.targeting.geos[0].region_id.push(selectedItem);
+    }
     this.setState({ campaignInfo: replace });
   };
 
@@ -315,7 +321,7 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: { ...replace } });
   };
   render() {
-    console.log(this.state.campaignInfo);
+    console.log(this.state.campaignInfo.targeting.geos[0]);
 
     let menu;
     switch (this.state.sidemenu) {
