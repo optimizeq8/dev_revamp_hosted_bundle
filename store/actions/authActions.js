@@ -36,20 +36,55 @@ export const getCampaign = id => {
   };
 };
 
-export const getCampaignList = id => {
+export const getCampaignList = (id, increasePage) => {
   return dispatch => {
+    dispatch({
+      type: actionTypes.GOT_ALL_CAMPAIGNS,
+      payload: { isListEnd: false, fetching_from_server: false, loading: true }
+    });
     instance
-      .get(`campaignlist/${id}`)
+      .get(`campaignlist/${id}/${1}`)
       .then(res => {
-        console.log(res.data);
-
         return res.data;
       })
       .then(data => {
+        increasePage();
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_LIST,
           payload: data
         });
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
+
+export const updateCampaignList = (id, page, increasePage) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.GOT_ALL_CAMPAIGNS,
+      payload: { isListEnd: false, fetching_from_server: true }
+    });
+    instance
+      .get(`campaignlist/${id}/${page}`)
+      .then(res => {
+        // console.log("dataaaa", res.data);
+        return res.data;
+      })
+      .then(JSONobj => {
+        if (JSONobj.data.length > 0) {
+          increasePage();
+          return dispatch({
+            type: actionTypes.UPDATE_CAMPAIGN_LIST,
+            payload: { data: JSONobj.data, fetching_from_server: false }
+          });
+        } else {
+          return dispatch({
+            type: actionTypes.GOT_ALL_CAMPAIGNS,
+            payload: { isListEnd: true, fetching_from_server: false }
+          });
+        }
       })
       .catch(err => {
         console.log(err.response);
@@ -65,7 +100,7 @@ export const getBusinessAccounts = () => {
         return res.data;
       })
       .then(data => {
-        console.log("businessacc", data);
+        // console.log("businessacc", data);
 
         return dispatch({
           type: actionTypes.SET_BUSINESS_ACCOUNTS,

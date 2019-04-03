@@ -18,7 +18,9 @@ const initialState = {
   successName: false,
   filteredCampaigns: [],
   filterValue: "",
-  filterStatus: "A"
+  filterStatus: "A",
+  isListEnd: false,
+  fetching_from_server: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -96,12 +98,34 @@ const reducer = (state = initialState, action) => {
         businessAccounts: arr,
         message: action.payload.message
       };
+    case actionTypes.UPDATE_CAMPAIGN_LIST:
+      console.log("payload", action.payload);
+
+      return {
+        ...state,
+        campaignList: [...state.campaignList, ...action.payload.data],
+        filteredCampaigns: [...state.filteredCampaigns, ...action.payload.data],
+        fetching_from_server: action.payload.fetching_from_server,
+        message: action.payload.message
+      };
     case actionTypes.SET_CAMPAIGN_LIST:
       return {
         ...state,
         campaignList: action.payload.data,
         filteredCampaigns: action.payload.data,
+        fetching_from_server: false,
+        isListEnd: false,
+        loading: false,
         message: action.payload.message
+      };
+    case actionTypes.GOT_ALL_CAMPAIGNS:
+      console.log("payload", action.payload);
+
+      return {
+        ...state,
+        fetching_from_server: action.payload.fetching_from_server,
+        isListEnd: action.payload.isListEnd,
+        loading: action.payload.loading
       };
     case actionTypes.SET_CAMPAIGN:
       return {

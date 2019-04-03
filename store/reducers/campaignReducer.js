@@ -24,6 +24,8 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.SET_AD_DETAILS:
+      console.log("ad detail", { ...state.data, ...action.payload.data });
+
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },

@@ -96,7 +96,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCampaignList: id => dispatch(actionCreators.getCampaignList(id))
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
 export default connect(
   mapStateToProps,
