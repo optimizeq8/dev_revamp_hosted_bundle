@@ -6,11 +6,11 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
-import { LineChart as Line } from "react-native-chart-kit";
+import LineChart from "./line-chart";
 import LineChartDevider from "../../../assets/SVGs/LineChartDevider.svg";
 import styles from "./styles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-export default class LineChart extends Component {
+export default class LineChartGraphs extends Component {
   render() {
     return (
       <View
@@ -21,7 +21,7 @@ export default class LineChart extends Component {
         }}
       >
         <Text style={styles.chartTitle}>Spend</Text>
-        <Line
+        <LineChart
           withDots={false}
           withShadow={false}
           withInnerLines={false}
@@ -61,7 +61,7 @@ export default class LineChart extends Component {
         />
         <LineChartDevider style={{ alignSelf: "center" }} />
         <Text style={styles.chartTitle}>Imprissions</Text>
-        <Line
+        <LineChart
           withDots={false}
           withShadow={false}
           withInnerLines={false}
@@ -123,7 +123,7 @@ export default class LineChart extends Component {
         />
         <LineChartDevider style={{ alignSelf: "center" }} />
         <Text style={styles.chartTitle}>Swipes</Text>
-        <Line
+        <LineChart
           withDots={false}
           withShadow={false}
           withInnerLines={false}
