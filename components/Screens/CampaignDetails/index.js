@@ -41,7 +41,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Toggle from "react-native-switch-toggle";
 import { Modal } from "react-native-paper";
-import LineChart from "./LineChart";
+import LineChartGraphs from "./LineChartGraphs";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import {
   widthPercentageToDP as wp,
@@ -416,7 +416,7 @@ class CampaignDetails extends Component {
 
                       <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView contentInset={{ top: 0 }}>
-                          <LineChart />
+                          <LineChartGraphs />
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>
