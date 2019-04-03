@@ -157,7 +157,7 @@ export default class DateRangePicker extends Component<Props> {
   render() {
     return (
       <Calendar
-        minDate={Date()}
+        minDate={!this.props.filterMenu ? Date() : null}
         {...this.props}
         markingType={"period"}
         current={this.state.fromDate}

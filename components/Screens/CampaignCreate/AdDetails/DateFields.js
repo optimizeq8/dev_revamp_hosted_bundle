@@ -146,7 +146,7 @@ export default class DateFields extends Component {
                   })
                 }
               >
-                Reset
+                {" "}
               </Text>
             </View>
             <Text style={styles.textModal}>
@@ -159,6 +159,7 @@ export default class DateFields extends Component {
               Select the {!this.state.start_choice ? "Start Date" : "End Date"}
             </Text>
             <DateRangePicker
+              filterMenu={this.props.filterMenu}
               startDatePicked={this.startDatePicked}
               endDatePicked={this.endDatePicked}
               // initialRange={[this.props.start_time, this.props.end_time]}
