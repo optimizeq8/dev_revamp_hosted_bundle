@@ -1,6 +1,13 @@
 //Components
 import React, { Component } from "react";
-import { View, Slider, Platform, TouchableHighlight } from "react-native";
+import {
+  View,
+  Slider,
+  Platform,
+  TouchableHighlight,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import MultiSelect from "./MultiSelect";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
@@ -11,6 +18,8 @@ import Sidemenu from "react-native-side-menu";
 import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import LocationIcon from "../../../../assets/SVGs/Location.svg";
+
 import dateFormat from "dateformat";
 
 //Data
@@ -61,6 +70,7 @@ class AdDetails extends Component {
         start_time: "",
         end_time: ""
       },
+      filteredRegions: country_regions[0].regions,
       sidemenustate: false,
       sidemenu: "gender",
       gender: [
@@ -144,7 +154,11 @@ class AdDetails extends Component {
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
-      await this.setState({ campaignInfo: replace, regions: reg.regions });
+      await this.setState({
+        campaignInfo: replace,
+        regions: reg.regions,
+        filteredRegions: reg.regions
+      });
       // this.getTotalReach();
     }
   };
@@ -320,6 +334,90 @@ class AdDetails extends Component {
     replace.targeting.demographics[0].gender = gender;
     this.setState({ campaignInfo: { ...replace } });
   };
+
+  selectRegion = () => {
+    let regionlist = this.state.filteredRegions.map(c => {
+      return (
+        <TouchableOpacity
+          key={c.id}
+          style={{
+            paddingVertical: 20
+          }}
+          onPress={() => {
+            this.onSelectedRegionChange(c.id);
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "montserrat-bold",
+              color: this.state.campaignInfo.targeting.geos[0].region_id.find(
+                r => r === c.id
+              )
+                ? "#FF9D00"
+                : "#fff",
+              fontSize: 14
+            }}
+          >
+            {c.name}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+    return (
+      <>
+        <View
+          style={{
+            flex: 1,
+            top: 40,
+            flexDirection: "column"
+          }}
+        >
+          <View
+            style={{
+              marginTop: 10,
+              alignItems: "center"
+            }}
+          >
+            <LocationIcon width={110} height={110} fill="#fff" />
+            <Text style={[styles.title]}> Select Country </Text>
+          </View>
+          <View
+            style={{
+              felx: 1,
+              justifyContent: "space-between",
+              paddingTop: 20,
+              elevation: -1
+            }}
+          >
+            <View style={styles.slidercontainer}>
+              <Item>
+                <Input
+                  placeholder="Search Country..."
+                  style={{
+                    fontFamily: "montserrat-regular",
+                    color: "#fff",
+                    fontSize: 14
+                  }}
+                  placeholderTextColor="#fff"
+                  onChangeText={value => {
+                    let filteredR = this.state.regions.filter(c =>
+                      c.name.toLowerCase().includes(value.toLowerCase())
+                    );
+                    this.setState({ filteredRegions: filteredR });
+                  }}
+                />
+              </Item>
+
+              <View style={{ height: "75%" }}>
+                <ScrollView>{regionlist}</ScrollView>
+              </View>
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  };
+
   render() {
     console.log(this.state.campaignInfo.targeting.geos[0]);
 
@@ -346,6 +444,12 @@ class AdDetails extends Component {
         );
         break;
       }
+      case "regions": {
+        menu = this.selectRegion();
+
+        break;
+      }
+
       case "selectors": {
         menu = (
           <MultiSelectSections
@@ -579,7 +683,7 @@ class AdDetails extends Component {
                   >
                     <Button
                       onPress={() => {
-                        this._renderSideMenu("selectors", "regions");
+                        this._renderSideMenu("regions");
                       }}
                     >
                       <Text> Regions</Text>
