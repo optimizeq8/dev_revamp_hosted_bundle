@@ -28,6 +28,9 @@ export default class AgeOption extends Component {
             <Text style={[styles.title, { fontSize: 50 }]}> AGE </Text>
             <Text style={[styles.title]}> Select Age Range </Text>
           </View>
+          <Text style={[styles.subHeadings, { paddingHorizontal: 15 }]}>
+            Selecting 35 for max age includes 35 and above.
+          </Text>
           <View
             style={{
               paddingTop: 20,

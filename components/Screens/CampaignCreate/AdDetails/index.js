@@ -19,6 +19,7 @@ import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
+import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 
 import dateFormat from "dateformat";
 
@@ -71,6 +72,10 @@ class AdDetails extends Component {
         end_time: ""
       },
       filteredRegions: country_regions[0].regions,
+      filteredLanguages: [
+        { value: "ar", label: "Arabic" },
+        { value: "en", label: "English" }
+      ],
       sidemenustate: false,
       sidemenu: "gender",
       gender: [
@@ -195,9 +200,18 @@ class AdDetails extends Component {
     this.setState({ interestNames: selectedItems });
   };
 
-  onSelectedLangsChange = selectedItems => {
+  onSelectedLangsChange = selectedItem => {
     let replace = this.state.campaignInfo;
-    replace.targeting.demographics[0].languages = selectedItems;
+    if (
+      replace.targeting.demographics[0].languages.find(r => r === selectedItem)
+    ) {
+      replace.targeting.demographics[0].languages = replace.targeting.demographics[0].languages.filter(
+        r => r !== selectedItem
+      );
+    } else {
+      replace.targeting.demographics[0].languages.push(selectedItem);
+    }
+
     this.setState({
       campaignInfo: replace,
       languagesError:
@@ -207,9 +221,9 @@ class AdDetails extends Component {
     });
   };
 
-  onSelectedGenderChange = selectedItems => {
+  onSelectedGenderChange = selectedItem => {
     let replace = this.state.campaignInfo;
-    replace.targeting.demographics[0].gender = selectedItems;
+    replace.targeting.demographics[0].gender = selectedItem;
     this.setState({ campaignInfo: replace });
   };
 
@@ -392,7 +406,7 @@ class AdDetails extends Component {
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Country..."
+                  placeholder="Search Region..."
                   style={{
                     fontFamily: "montserrat-regular",
                     color: "#fff",
@@ -414,6 +428,103 @@ class AdDetails extends Component {
             </View>
           </View>
         </View>
+        <Button
+          style={[styles.button, { marginBottom: 30 }]}
+          onPress={() => this._handleSideMenuState(false)}
+        >
+          <CheckmarkIcon width={53} height={53} />
+        </Button>
+      </>
+    );
+  };
+
+  selectLanguage = () => {
+    let languagelist = this.state.filteredLanguages.map(c => (
+      <TouchableOpacity
+        key={c.value}
+        style={{
+          paddingVertical: 10,
+          marginVertical: 10,
+          backgroundColor: this.state.campaignInfo.targeting.demographics[0].languages.find(
+            l => l === c.value
+          )
+            ? "#FF9D00"
+            : "transparent",
+          borderRadius: 10,
+          paddingLeft: 5
+        }}
+        onPress={() => {
+          this.onSelectedLangsChange(c.value);
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "montserrat-bold",
+            color: "#fff",
+            fontSize: 14
+          }}
+        >
+          {c.label}
+        </Text>
+      </TouchableOpacity>
+    ));
+    return (
+      <>
+        <View
+          style={{
+            flex: 1,
+            top: 40,
+            flexDirection: "column"
+          }}
+        >
+          <View
+            style={{
+              marginTop: 10,
+              alignItems: "center"
+            }}
+          >
+            <LocationIcon width={110} height={110} fill="#fff" />
+            <Text style={[styles.title]}>Select Languages</Text>
+          </View>
+          <View
+            style={{
+              felx: 1,
+              justifyContent: "space-between",
+              paddingTop: 20,
+              elevation: -1
+            }}
+          >
+            <View style={styles.slidercontainer}>
+              <Item>
+                <Input
+                  placeholder="Search Language..."
+                  style={{
+                    fontFamily: "montserrat-regular",
+                    color: "#fff",
+                    fontSize: 14
+                  }}
+                  placeholderTextColor="#fff"
+                  onChangeText={value => {
+                    let filteredC = this.state.languages.filter(c =>
+                      c.label.toLowerCase().includes(value.toLowerCase())
+                    );
+                    this.setState({ filteredLanguages: filteredC });
+                  }}
+                />
+              </Item>
+
+              <View style={{ height: "75%" }}>
+                <ScrollView>{languagelist}</ScrollView>
+              </View>
+            </View>
+          </View>
+        </View>
+        <Button
+          style={[styles.button, { marginBottom: 30 }]}
+          onPress={() => this._handleSideMenuState(false)}
+        >
+          <CheckmarkIcon width={53} height={53} />
+        </Button>
       </>
     );
   };
@@ -449,7 +560,11 @@ class AdDetails extends Component {
 
         break;
       }
+      case "languages": {
+        menu = this.selectLanguage();
 
+        break;
+      }
       case "selectors": {
         menu = (
           <MultiSelectSections
@@ -690,7 +805,7 @@ class AdDetails extends Component {
                     </Button>
                     <Button
                       onPress={() => {
-                        this._renderSideMenu("selectors", "languages");
+                        this._renderSideMenu("languages");
                       }}
                     >
                       <Text> Language</Text>
