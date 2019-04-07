@@ -8,6 +8,7 @@ import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../../store/actions";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
+import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 import {
   widthPercentageToDP as wp,
@@ -21,15 +22,13 @@ class MultiSelectList extends Component {
       selectedItems: [],
       selectedItemObjects: [],
       filteredCountreis: [],
-      filteredRegions: [],
       interests: []
     };
   }
   componentDidMount() {
     this.props.get_interests(this.props.country_code);
     this.setState({
-      filteredCountreis: this.props.countries,
-      filteredRegions: this.props.regions
+      filteredCountreis: this.props.countries
     });
   }
   componentDidUpdate(prevProps) {
@@ -47,7 +46,6 @@ class MultiSelectList extends Component {
         if (this.props.interests[key].length > 0) {
           interests.push({
             id: key,
-            name: `Category ${i + 1}`,
             children: this.props.interests[key]
           });
         }
@@ -153,184 +151,100 @@ class MultiSelectList extends Component {
       </>
     );
   };
-  selectRegion = () => {
-    let regionlist = this.state.filteredRegions.map(c => {
-      return (
-        <TouchableOpacity
-          key={c.id}
-          style={{
-            paddingVertical: 20
-          }}
-          onPress={() => {
-            this.props.onSelectedRegionChange(c.id);
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "montserrat-bold",
-              color: this.props.region_ids.find(r => r === c.id)
-                ? "#FF9D00"
-                : "#fff",
-              fontSize: 14
-            }}
-          >
-            {c.name}
-          </Text>
-        </TouchableOpacity>
-      );
-    });
-    return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
-            <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Country </Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <View style={styles.slidercontainer}>
-              <Item>
-                <Input
-                  placeholder="Search Country..."
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
-                    fontSize: 14
-                  }}
-                  placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredR = this.props.regions.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
-                    );
-                    this.setState({ filteredRegions: filteredR });
-                  }}
-                />
-              </Item>
-
-              <View style={{ height: "75%" }}>
-                <ScrollView>{regionlist}</ScrollView>
-              </View>
-              {
-                //   <MultiSelect
-                //   hideTags
-                //   items={this.props.regions}
-                //   uniqueKey="id"
-                //   onSelectedItemsChange={this.props.onSelectedRegionChange}
-                //   selectedItems={this.props.region_ids}
-                //   selectText="Pick Regions (optional)"
-                //   searchInputPlaceholderText="Search..."
-                //   onChangeInput={text => console.log(text)}
-                //   selectedItemTextColor="#CCC"
-                //   selectedItemIconColor="#CCC"
-                //   itemTextColor="#000"
-                //   displayKey="name"
-                //   searchInputStyle={{ color: "#CCC" }}
-                //   submitButtonColor="#CCC"
-                //   submitButtonText="Confirm Select"
-                // />
-              }
-            </View>
-          </View>
-        </View>
-      </>
-    );
-  };
-
-  selectLanguage = () => (
-    <View style={styles.slidercontainer}>
-      <MultiSelect
-        hideTags
-        textColor={this.props.languagesError ? "red" : "#525966"}
-        items={this.props.languages}
-        uniqueKey="value"
-        onSelectedItemsChange={this.props.onSelectedLangsChange}
-        selectedItems={this.props.selectedLangs}
-        selectText="Pick Languages"
-        searchInputPlaceholderText="Search..."
-        onChangeInput={text => console.log(text)}
-        selectedItemTextColor="#CCC"
-        selectedItemIconColor="#CCC"
-        itemTextColor="#000"
-        displayKey="label"
-        searchInputStyle={{ color: "#CCC" }}
-        submitButtonColor="#CCC"
-        submitButtonText="Confirm Select"
-      />
-    </View>
-  );
 
   selectInteres = () => (
-    <View style={styles.slidercontainer}>
-      <SectionedMultiSelect
-        loading={!this.props.interests ? true : false}
-        items={this.state.interests}
-        uniqueKey="id"
-        selectToggleIconComponent={
-          <Icon
-            type="MaterialCommunityIcons"
-            name="menu-down"
-            style={styles.indicator}
-          />
-        }
-        subKey="children"
-        colors={{ chipColor: "red" }}
-        styles={{
-          selectToggle: {
-            marginBottom: 30,
-            borderBottomWidth: 0.5,
-            borderColor: "#ccc"
-          },
-          selectToggleText: { color: "#525966", fontSize: 14 }
+    <>
+      <View
+        style={{
+          flex: 1,
+          top: 40,
+          flexDirection: "column"
         }}
-        iconKey="icon"
-        selectText="Pick some interests (optional)"
-        showDropDowns={true}
-        showRemoveAll={true}
-        readOnlyHeadings={true}
-        noItemsComponent={
-          <Text style={styles.text}>
-            Sorry, no interests for selected country
+      >
+        <View
+          style={{
+            marginTop: 10,
+            alignItems: "center"
+          }}
+        >
+          <InterestsIcon width={110} height={110} fill="#fff" />
+          <Text style={[styles.title]}> Select Interests</Text>
+        </View>
+        <View
+          style={{
+            felx: 1,
+            justifyContent: "space-between",
+            paddingTop: 20,
+            elevation: -1
+          }}
+        >
+          <Text style={[styles.subHeadings]}>
+            It is optional to select interests
           </Text>
-        }
-        modalAnimationType="fade"
-        modalWithTouchable={true}
-        onSelectedItemsChange={this.onSelectedItemsChange}
-        onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
-        selectedItems={this.state.selectedItems}
-      />
-    </View>
+
+          <View style={styles.slidercontainer}>
+            <SectionedMultiSelect
+              loading={!this.props.interests ? true : false}
+              items={this.state.interests}
+              uniqueKey="id"
+              selectToggleIconComponent={
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="menu-down"
+                  style={styles.indicator}
+                />
+              }
+              subKey="children"
+              colors={{ chipColor: "#fff", primary: "#FF9D00" }}
+              itemFontFamily={{ fontFamily: "montserrat-medium" }}
+              confirmFontFamily={{ fontFamily: "montserrat-regular" }}
+              subItemFontFamily={{ fontFamily: "montserrat-medium" }}
+              searchTextFontFamily={{ fontFamily: "montserrat-medium" }}
+              styles={{
+                selectToggle: {
+                  marginBottom: 30,
+                  borderBottomWidth: 0.5,
+                  borderColor: "#fff",
+                  fontFamily: "montserrat-medium"
+                },
+                selectToggleText: {
+                  color: "#fff",
+                  fontSize: 14,
+                  fontFamily: "montserrat-medium"
+                }
+              }}
+              iconKey="icon"
+              selectText="Select Interests"
+              showDropDowns={false}
+              showRemoveAll={true}
+              readOnlyHeadings={true}
+              noItemsComponent={
+                <Text style={styles.text}>
+                  Sorry, no interests for selected country
+                </Text>
+              }
+              modalAnimationType="fade"
+              modalWithTouchable={true}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
+              selectedItems={this.state.selectedItems}
+            />
+          </View>
+        </View>
+      </View>
+      <Button
+        style={[styles.button, { marginBottom: 30 }]}
+        onPress={() => this.props._handleSideMenuState(false)}
+      >
+        <CheckmarkIcon width={53} height={53} />
+      </Button>
+    </>
   );
 
   render() {
-    console.log("regionslklk", this.props.region_ids);
-
-    // console.log("poin", this.props.option);
     switch (this.props.option) {
       case "countries":
         return this.selectCountry();
-        break;
-      case "regions":
-        return this.selectRegion();
-        break;
-      case "languages":
-        return this.selectLanguage();
         break;
       case "interests":
         return this.selectInteres();

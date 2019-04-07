@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: "rgb(252, 228, 149)"
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   indicator: {
     fontSize: 30,
     marginRight: 20,
-    color: "#a9a"
+    color: "#fff"
   },
   content: {
     flexDirection: "row",
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     color: "#717171",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 10
