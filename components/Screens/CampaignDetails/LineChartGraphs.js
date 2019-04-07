@@ -10,6 +10,7 @@ import LineChart from "./line-chart";
 import LineChartDevider from "../../../assets/SVGs/LineChartDevider.svg";
 import styles from "./styles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { VictoryChart, VictoryLine } from "victory-native";
 export default class LineChartGraphs extends Component {
   render() {
     return (
@@ -21,44 +22,18 @@ export default class LineChartGraphs extends Component {
         }}
       >
         <Text style={styles.chartTitle}>Spend</Text>
-        <LineChart
-          withDots={false}
-          withShadow={false}
-          withInnerLines={false}
-          withOuterLines={false}
-          data={{
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [
-              {
-                data: [
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100
-                ]
-              }
-            ]
-          }}
-          width={Dimensions.get("window").width * 1.5} // from react-native
-          height={220}
-          yAxisLabel={"$"}
-          chartConfig={{
-            strokeWidth: 5,
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `#FFFC00`,
-            style: {
-              borderRadius: 16,
-              color: "#fff"
-            }
-          }}
-          bezier
-          style={{
-            borderRadius: 16,
-            paddingBottom: 30
-          }}
-        />
+        <VictoryChart>
+          <VictoryLine
+            interpolation="natural"
+            data={[
+              { x: 1, y: 2 },
+              { x: 2, y: 3 },
+              { x: 3, y: 5 },
+              { x: 4, y: 4 },
+              { x: 5, y: 6 }
+            ]}
+          />
+        </VictoryChart>
         <LineChartDevider style={{ alignSelf: "center" }} />
         <Text style={styles.chartTitle}>Imprissions</Text>
         <LineChart
