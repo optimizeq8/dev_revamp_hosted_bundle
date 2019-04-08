@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   container: {
-    marginTop: 30,
+    marginTop: heightPercentageToDP("4"),
     backgroundColor: "#751AFF"
   },
   image: {

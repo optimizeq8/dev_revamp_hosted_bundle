@@ -336,8 +336,10 @@ class CampaignDetails extends Component {
                         alignItems: "flex-start"
                       }}
                     >
-                      <InterestIcon width={hp("2")} height={hp("2")} />
-                      <Text style={styles.categories}>Interests</Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <InterestIcon width={hp("2")} height={hp("2")} />
+                        <Text style={styles.categories}>Interests</Text>
+                      </View>
                       <ScrollView>
                         <Text style={[styles.subtext, { textAlign: "left" }]}>
                           {interesetNames}{" "}
@@ -410,7 +412,7 @@ class CampaignDetails extends Component {
 
                       <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView contentInset={{ top: 0 }}>
-                          <LineChartGraphs />
+                          <LineChartGraphs campaign={this.props.campaign} />
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>
