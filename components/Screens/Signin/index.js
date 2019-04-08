@@ -156,7 +156,7 @@ class MainForm extends Component {
             <Text style={styles.error}>{this.state.passwordError}</Text>
           ) : null}
           <Text
-            onPress={() => {}}
+            onPress={() => this.props.navigation.push("ForgotPassword")}
             style={[styles.link, { paddingVertical: 25, fontSize: 12 }]}
           >
             Forgot Password?

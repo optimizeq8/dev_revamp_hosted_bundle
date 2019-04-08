@@ -28,7 +28,7 @@ export default class App extends React.Component {
             <Root>
               <AppNavigator />
             </Root>
-            <FlashMessage position="bottom" />
+            <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
         </Provider>
       );

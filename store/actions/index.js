@@ -8,6 +8,7 @@ export {
   registerUser,
   login,
   changePassword,
+  forgotPassword,
   logout,
   create_ad_account,
   checkForExpiredToken,
