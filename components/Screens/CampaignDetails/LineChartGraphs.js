@@ -34,7 +34,7 @@ export default class LineChartGraphs extends Component {
       <View
         style={{
           paddingTop: 30,
-          paddingLeft: 20,
+          paddingLeft: 25,
           paddingBottom: heightPercentageToDP("34")
         }}
       >
