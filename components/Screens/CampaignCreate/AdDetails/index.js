@@ -18,8 +18,11 @@ import Sidemenu from "react-native-side-menu";
 import DateField from "./DateFields";
 import ReachBar from "./ReachBar";
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
+import GenderIcon from "../../../../assets/SVGs/Gender.svg";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
 
 import dateFormat from "dateformat";
 
@@ -530,8 +533,7 @@ class AdDetails extends Component {
   };
 
   render() {
-    console.log(this.state.campaignInfo.targeting.geos[0]);
-
+    console.log(this.state.campaignInfo.targeting.demographics[0].gender);
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -594,6 +596,37 @@ class AdDetails extends Component {
         break;
       }
     }
+
+    let regions_names = [];
+    this.state.regions.forEach(r => {
+      if (
+        this.state.campaignInfo.targeting.geos[0].region_id.find(
+          i => i === r.id
+        )
+      ) {
+        regions_names.push(r.name);
+      }
+    });
+    regions_names = regions_names.join(", ");
+
+    let languages_names = [];
+    this.state.languages.forEach(r => {
+      if (
+        this.state.campaignInfo.targeting.demographics[0].languages.find(
+          i => i === r.value
+        )
+      ) {
+        languages_names.push(r.label);
+      }
+    });
+    languages_names = languages_names.join(", ");
+
+    let interests_names = [];
+    this.state.interestNames.forEach(r => {
+      interests_names.push(r.name);
+    });
+    interests_names = interests_names.join(", ");
+
     let end_time = "";
     let start_time = "";
     let end_year = "";
@@ -659,24 +692,34 @@ class AdDetails extends Component {
                     Input your Snapchat {"\n"} AD Details
                   </Text>
                 </View>
+                <Text style={styles.subHeadings}>
+                  Budget {"\n"}
+                  <Text style={styles.colorYellow}>
+                    {this.state.campaignInfo.lifetime_budget_micro}
+                  </Text>
+                  $
+                </Text>
+
                 <View
                   style={[
                     styles.slidercontainer,
-                    { alignSelf: "center", paddingTop: 40 }
+                    { alignSelf: "center", paddingTop: 0 }
                   ]}
                 >
                   <View style={styles.textCon}>
                     <Text style={styles.colorGrey}>
-                      {this.state.minValueBudget} $
+                      {this.state.minValueBudget}
                     </Text>
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={styles.colorYellow}>
-                        {this.state.campaignInfo.lifetime_budget_micro + "$"}
-                      </Text>
-                      <Text style={[styles.colorGrey, { fontSize: 11 }]}>
-                        20$/day
-                      </Text>
-                    </View>
+                    <Text
+                      style={[
+                        styles.colorGrey,
+                        {
+                          fontSize: 11
+                        }
+                      ]}
+                    >
+                      {"         "}20$/day
+                    </Text>
                     <Text style={styles.colorGrey}>
                       {this.state.maxValueBudget} $
                     </Text>
@@ -694,7 +737,7 @@ class AdDetails extends Component {
                     minimumTrackTintColor="#751AFF"
                   />
                 </View>
-                <Text style={styles.subHeadings}>Duration</Text>
+                <Text style={[styles.subHeadings]}>Duration</Text>
 
                 <TouchableHighlight
                   underlayColor="rgba(0,0,0,0.2)"
@@ -758,78 +801,244 @@ class AdDetails extends Component {
                     </View>
                   </View>
                 </TouchableHighlight>
+                <Text style={styles.subHeadings}>
+                  Who would you like to reach?
+                </Text>
+
                 <View
                   style={{
-                    flexDirection: "row"
+                    flexDirection: "row",
+                    justifyContent: "center"
                   }}
                 >
-                  <View
+                  <ScrollView
                     style={{
-                      flexDirection: "column"
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      marginHorizontal: 20,
+                      borderRadius: 15,
+                      paddingHorizontal: 25,
+                      height: "60%"
                     }}
                   >
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("gender");
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        paddingVertical: 20
                       }}
                     >
-                      <Text> Gender</Text>
-                    </Button>
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("age");
-                      }}
-                    >
-                      <Text> Age</Text>
-                    </Button>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("gender");
+                        }}
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          textAlign: "center",
+                          justifyContent: "space-between",
+                          marginVertical: 5
+                        }}
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <GenderIcon width={25} height={25} />
 
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "countries");
-                      }}
-                    >
-                      <Text> Country</Text>
-                    </Button>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "column"
-                    }}
-                  >
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("regions");
-                      }}
-                    >
-                      <Text> Regions</Text>
-                    </Button>
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("languages");
-                      }}
-                    >
-                      <Text> Language</Text>
-                    </Button>
-                    <Button
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "interests");
-                      }}
-                    >
-                      <Text> Interests</Text>
-                    </Button>
-                  </View>
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Gender</Text>
+                            <Text style={styles.menudetails}>
+                              {
+                                this.state.gender.find(r => {
+                                  if (
+                                    r.value ===
+                                    this.state.campaignInfo.targeting
+                                      .demographics[0].gender
+                                  )
+                                    return r;
+                                }).label
+                              }
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "column" }}>
+                          {this.state.campaignInfo.targeting.demographics[0]
+                            .gender === "" ||
+                          this.state.campaignInfo.targeting.demographics[0]
+                            .gender ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                          ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("age");
+                        }}
+                        style={{
+                          flexDirection: "row",
+                          marginVertical: 5,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <GenderIcon width={25} height={25} />
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Age</Text>
+                            <Text style={styles.menudetails}>
+                              {
+                                this.state.campaignInfo.targeting
+                                  .demographics[0].min_age
+                              }{" "}
+                              -{" "}
+                              {
+                                this.state.campaignInfo.targeting
+                                  .demographics[0].max_age
+                              }
+                            </Text>
+                          </View>
+                        </View>
+
+                        {this.state.campaignInfo.targeting.demographics[0]
+                          .max_age ? (
+                          <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                          <PlusCircleIcon width={25} height={25} />
+                        )}
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("selectors", "countries");
+                        }}
+                        style={{
+                          flexDirection: "row",
+                          marginVertical: 5,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <LocationIcon width={25} height={25} />
+
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Country</Text>
+                            <Text style={styles.menudetails}>
+                              {
+                                this.state.countries.find(c => {
+                                  if (
+                                    c.value ===
+                                    this.state.campaignInfo.targeting.geos[0]
+                                      .country_code
+                                  )
+                                    return c;
+                                }).label
+                              }
+                            </Text>
+                          </View>
+                        </View>
+                        {this.state.campaignInfo.targeting.geos[0]
+                          .country_code ? (
+                          <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                          <PlusCircleIcon width={25} height={25} />
+                        )}
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("regions");
+                        }}
+                        style={{
+                          flexDirection: "row",
+                          marginVertical: 5,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <View style={{ flexDirection: "row", width: "80%" }}>
+                          <LocationIcon width={25} height={25} />
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Regions</Text>
+                            <Text style={styles.menudetails}>
+                              {regions_names}
+                            </Text>
+                          </View>
+                        </View>
+                        {this.state.campaignInfo.targeting.geos[0].region_id
+                          .length !== 0 ? (
+                          <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                          <PlusCircleIcon width={25} height={25} />
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("languages");
+                        }}
+                        style={{
+                          flexDirection: "row",
+                          marginVertical: 5,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <View style={{ flexDirection: "row", width: "80%" }}>
+                          <LocationIcon width={25} height={25} />
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Language</Text>
+                            <Text style={styles.menudetails}>
+                              {languages_names}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {this.state.campaignInfo.targeting.demographics[0]
+                          .languages.length !== 0 ? (
+                          <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                          <PlusCircleIcon width={25} height={25} />
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._renderSideMenu("selectors", "interests");
+                        }}
+                        style={{
+                          flexDirection: "row",
+                          marginVertical: 5,
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <View style={{ flexDirection: "row", width: "80%" }}>
+                          <InterestsIcon width={25} height={25} />
+                          <View style={{ flexDirection: "column" }}>
+                            <Text style={styles.menutext}>Interests</Text>
+                            <Text style={styles.menudetails}>
+                              {interests_names}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: "column" }}>
+                          {this.state.campaignInfo.targeting.interests[0]
+                            .category_id.length !== 0 ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                          ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </ScrollView>
                 </View>
+                <Button onPress={this._handleSubmission} style={styles.button}>
+                  <Icon style={styles.icon} name="arrow-forward" />
+                </Button>
               </View>
 
-              <ReachBar
-                country_code={
-                  this.state.campaignInfo.targeting.geos[0].country_code
-                }
-                targeting={this.state.campaignInfo.targeting}
-              />
-              <Button onPress={this._handleSubmission} style={styles.button}>
-                <Icon style={styles.icon} name="arrow-forward" />
-              </Button>
+              {
+                <ReachBar
+                  country_code={
+                    this.state.campaignInfo.targeting.geos[0].country_code
+                  }
+                  targeting={this.state.campaignInfo.targeting}
+                />
+              }
             </View>
           </Sidemenu>
         </Container>

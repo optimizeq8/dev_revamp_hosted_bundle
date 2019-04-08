@@ -27,14 +27,17 @@ const styles = StyleSheet.create({
   textCon: {
     width: 320,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    textAlign: "center"
   },
 
   colorGrey: {
     color: "#fff"
   },
   colorYellow: {
-    color: "rgb(252, 228, 149)"
+    color: "#FF9D00",
+    fontSize: 27,
+    fontFamily: "montserrat-medium"
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     bottom: hp("10%")
   },
   dateInput: {
-    marginBottom: 15,
+    marginBottom: 5,
     backgroundColor: "rgba(0,0,0,0.5)",
     borderRadius: 15,
     alignSelf: "center",
@@ -147,15 +150,18 @@ const styles = StyleSheet.create({
     height: hp("20%")
   },
   chartText: {
-    color: "#000",
-    fontFamily: "montserrat-bold",
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
+    justifyContent: "center"
   },
   chartItems: {
+    flex: 1,
     alignItems: "center",
-    left: wp("9%"),
-    bottom: hp("10%")
+    flexDirection: "column",
+    top: 50,
+    left: 40
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -169,8 +175,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginVertical: 5
+    shadowOpacity: 0.2
   },
   icon: {
     fontSize: 35,
@@ -237,6 +242,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "center",
     alignSelf: "center"
+  },
+  menutext: {
+    paddingLeft: 15,
+    fontSize: 13,
+    fontFamily: "montserrat-light",
+    color: "#fff",
+    paddingVertical: 3
+  },
+  menudetails: {
+    paddingLeft: 15,
+    color: "#fff",
+    fontFamily: "montserrat-extralight",
+    fontSize: 11
   }
 });
 

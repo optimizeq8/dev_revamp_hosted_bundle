@@ -7,6 +7,10 @@ import { Button } from "native-base";
 import cloneDeep from "clone-deep";
 import * as actionCreators from "../../../../store/actions";
 import Axios from "axios";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 class ReachBar extends Component {
   state = { totalReach: 0 };
@@ -67,18 +71,20 @@ class ReachBar extends Component {
   };
   render() {
     return (
-      <View style={{ top: 30 }}>
-        <Button onPress={this._calcReach} style={{ marginHorizontal: "45%" }}>
-          <Text> Reach </Text>
+      <View style={{}}>
+        <Button
+          style={{ alignSelf: "center", backgroundColor: "#751AFF" }}
+          onPress={this._calcReach}
+        >
+          <Text style={styles.chartText}>Calculate Reach </Text>
         </Button>
-
-        <View style={{ top: 20 }}>
+        <View style={{}}>
           <AnimatedCircularProgress
-            size={350}
-            width={15}
+            size={300}
+            width={20}
             fill={this.state.totalReach}
-            arcSweepAngle={180}
-            rotation={270}
+            arcSweepAngle={200}
+            rotation={260}
             lineCap="round"
             style={styles.chart}
             tintColor="#FF9D00"
@@ -86,7 +92,7 @@ class ReachBar extends Component {
           >
             {fill => {
               return (
-                <View style={styles.chartItems}>
+                <View style={[styles.chartItems]}>
                   <Text style={styles.chartText}>
                     {this.props.average_reach}
                     {"\n"}Potential Reach
