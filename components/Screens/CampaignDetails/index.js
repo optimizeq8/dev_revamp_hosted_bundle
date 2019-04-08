@@ -331,19 +331,15 @@ class CampaignDetails extends Component {
 
                   {interesetNames.length > 0 && (
                     <View
-                      style={{ flexDirection: "column", alignItems: "left" }}
+                      style={{
+                        flexDirection: "column",
+                        alignItems: "flex-start"
+                      }}
                     >
-                      <Text style={styles.categories}>
-                        {" "}
-                        {/* <Icon
-                        type="SimpleLineIcons"
-                        name="screen-desktop"
-                        style={[styles.icon]}
-                      /> */}
+                      <View style={{ flexDirection: "row" }}>
                         <InterestIcon width={hp("2")} height={hp("2")} />
-                        {"   "}
-                        Interests
-                      </Text>
+                        <Text style={styles.categories}>Interests</Text>
+                      </View>
                       <ScrollView>
                         <Text style={[styles.subtext, { textAlign: "left" }]}>
                           {interesetNames}{" "}
@@ -416,7 +412,7 @@ class CampaignDetails extends Component {
 
                       <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView contentInset={{ top: 0 }}>
-                          <LineChartGraphs />
+                          <LineChartGraphs campaign={this.props.campaign} />
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>

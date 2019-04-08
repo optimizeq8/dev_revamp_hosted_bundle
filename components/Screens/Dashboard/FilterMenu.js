@@ -101,10 +101,11 @@ class FilterMenu extends Component {
         <View
           style={{
             flex: 1,
-            top: "20%",
+            top: hp("24"),
             alignItems: "center",
-            flexDirection: "colum",
-            opacity: 1
+            flexDirection: "column",
+            opacity: 1,
+            elevation: 0
           }}
         >
           <View
@@ -194,7 +195,7 @@ class FilterMenu extends Component {
           Rest
         </Text>
         <Button
-          style={[styles.checkbutton, { marginBottom: 35 }]}
+          style={[styles.checkbutton, { marginBottom: 35, elevation: 0 }]}
           onPress={() => this._handleSubmission()}
         >
           <CheckmarkIcon width={53} height={53} />

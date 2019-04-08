@@ -155,7 +155,7 @@ const reducer = (state = initialState, action) => {
           campaign.status.includes(action.payload.selected)
         );
 
-      if (action.payload.dateRange[0] !== "") {
+      if (action.payload.dateRange && action.payload.dateRange[0] !== "") {
         let startSearch = Date.parse(action.payload.dateRange[0]);
         let endSearch = Date.parse(action.payload.dateRange[1]);
 
