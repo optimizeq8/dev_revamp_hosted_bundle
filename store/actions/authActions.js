@@ -373,6 +373,33 @@ export const changePassword = (currentPass, newPass, navigation) => {
   };
 };
 
+export const forgotPassword = (email, navigation) => {
+  return dispatch => {
+    // dispatch({
+    //   type: actionTypes.CHANGE_PASSWORD,
+    //   payload: { success: false }
+    // });
+    instance
+      .post("forgotPassword", {
+        email: email
+      })
+      .then(response => {
+        showMessage({
+          message: response.data.success
+            ? "An email with a random generated password has been sent to your email account."
+            : "No account exists with the provided email.",
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        // return dispatch({
+        //   type: actionTypes.CHANGE_PASSWORD,
+        //   payload: response.data
+        // });
+      })
+      .catch(err => console.log(err));
+  };
+};
+
 const setAuthToken = token => {
   if (token) {
     return AsyncStorage.setItem("token", token)
