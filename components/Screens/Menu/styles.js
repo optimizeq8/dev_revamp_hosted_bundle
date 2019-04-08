@@ -96,7 +96,9 @@ const styles = StyleSheet.create({
   },
   menuModal: {
     ...StyleSheet.absoluteFillObject,
-    top: -heightPercentageToDP("50%")
+    top: -heightPercentageToDP("50%"),
+    zIndex: 10,
+    elevation: 1
   },
   backDrop: {
     ...StyleSheet.absoluteFillObject,
@@ -107,7 +109,8 @@ const styles = StyleSheet.create({
     position: "relative",
     top: heightPercentageToDP("5"),
     left: widthPercentageToDP("46%"),
-    zIndex: 100
+    zIndex: 100,
+    elevation: 10
   },
   CloseIcon: {
     position: "absolute",

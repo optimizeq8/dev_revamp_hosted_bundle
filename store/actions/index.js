@@ -7,6 +7,7 @@ export {
   verifyBusinessName,
   registerUser,
   login,
+  changePassword,
   logout,
   create_ad_account,
   checkForExpiredToken,

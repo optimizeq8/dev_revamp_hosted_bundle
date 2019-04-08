@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
+import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
@@ -333,6 +334,42 @@ export const login = (userData, navigation) => {
       .catch(err => {
         console.log(err.response);
       });
+  };
+};
+export const changePassword = (currentPass, newPass, navigation) => {
+  console.log({
+    current_paddword: currentPass,
+    password: newPass
+  });
+
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    "Content-Type": "application/x-www-form-urlencoded"
+  };
+  return dispatch => {
+    dispatch({
+      type: actionTypes.CHANGE_PASSWORD,
+      payload: { success: false }
+    });
+    instance
+      .put("changePassword", {
+        current_password: currentPass,
+        password: newPass
+      })
+      .then(response => {
+        console.log(response.data);
+
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.CHANGE_PASSWORD,
+          payload: response.data
+        });
+      })
+      .catch(err => console.log(err));
   };
 };
 

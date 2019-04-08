@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
 // console.disableYellowBox = true;
 import store from "./store";
+import FlashMessage from "react-native-flash-message";
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
@@ -27,6 +28,7 @@ export default class App extends React.Component {
             <Root>
               <AppNavigator />
             </Root>
+            <FlashMessage position="bottom" />
           </View>
         </Provider>
       );
