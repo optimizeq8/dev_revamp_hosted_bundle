@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "optimize_app",
+    "name": "optimize",
     "description": "This project is really great.",
     "slug": "optimize_app",
     "privacy": "public",
@@ -19,10 +19,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.optimizekw.optimize"
     },
     "packagerOpts": {
       "config": "metro.config.js"
+    },
+
+    "android": {
+      "package": "com.optimizekw.optimizw"
     }
   }
 }

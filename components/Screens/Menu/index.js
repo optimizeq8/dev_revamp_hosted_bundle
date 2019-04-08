@@ -121,10 +121,16 @@ class Menu extends Component {
                   <Icons.BusinessIcon />
                   <Text style={styles.text}>Business Info</Text>
                 </View>
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
-                  <Icons.ChangePassIcon />
-                  <Text style={[styles.text]}> Change{"\n"}Password</Text>
-                </View>
+                <TouchableWithoutFeedback
+                  onPress={() =>
+                    this.props.navigation.navigate("ChangePassword")
+                  }
+                >
+                  <View style={{ alignItems: "center", marginBottom: 20 }}>
+                    <Icons.ChangePassIcon />
+                    <Text style={[styles.text]}> Change{"\n"}Password</Text>
+                  </View>
+                </TouchableWithoutFeedback>
               </View>
               <View style={{ flexDirection: "column" }}>
                 <View style={{ alignItems: "center", marginBottom: 20 }}>

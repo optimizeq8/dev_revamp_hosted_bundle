@@ -7,6 +7,7 @@ import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
 import CreateBusinessAccount from "../Screens/CreateBusinessAccount";
 import CampaignDetails from "../Screens/CampaignDetails";
 import BusinessList from "../Screens/BusinessList";
+import ChangePassword from "../Screens/Change Password/index";
 export default createStackNavigator(
   {
     Home: Home,
@@ -14,7 +15,8 @@ export default createStackNavigator(
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
-    BusinessList: BusinessList
+    BusinessList: BusinessList,
+    ChangePassword: ChangePassword
   },
   {
     initialRouteName: "Home",

@@ -20,7 +20,8 @@ const initialState = {
   filterValue: "",
   filterStatus: "A",
   isListEnd: false,
-  fetching_from_server: false
+  fetching_from_server: false,
+  passwordChanged: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -81,6 +82,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         userInfo: action.payload.user,
         loading: false,
+        message: action.payload.message
+      };
+    case actionTypes.CHANGE_PASSWORD:
+      return {
+        ...state,
+        passwordChanged: action.payload.success,
         message: action.payload.message
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
