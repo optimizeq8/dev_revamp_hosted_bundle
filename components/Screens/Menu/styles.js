@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   menuModal: {
     ...StyleSheet.absoluteFillObject,
-    top: -heightPercentageToDP("50%"),
+    // top: -heightPercentageToDP("50%"),
     zIndex: 10,
     elevation: 1
   },

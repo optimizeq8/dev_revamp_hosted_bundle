@@ -27,6 +27,8 @@ import {
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
+import LottieView from "lottie-react-native";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -35,6 +37,7 @@ import * as actionCreators from "../../../store/actions";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
+import { Transition } from "react-navigation-fluid-transitions";
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
@@ -74,6 +77,38 @@ class Menu extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         >
+          <Transition shared="close">
+            <View
+              style={{
+                justifyContent: "center",
+                marginTop: heightPercentageToDP("5%"),
+                marginLeft: 20,
+                zIndex: 1000
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  if (!this.props.navigation.state.params.open) {
+                    this.props.navigation.state.params.startAnimation();
+                  } else {
+                    // console.log(this.props.navigation.state.params);
+
+                    this.props.navigation.state.params.closeAnimation();
+                  }
+                }}
+              >
+                <LottieView
+                  style={{
+                    width: 50,
+                    height: 47
+                  }}
+                  resizeMode="contain"
+                  source={require("../../../assets/animation/menu-btn.json")}
+                  progress={this.props.navigation.state.params.menu}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+          </Transition>
           <View
             style={{
               marginTop: heightPercentageToDP("20%")
@@ -87,9 +122,11 @@ class Menu extends Component {
           />
 
           <View>
-            <Text style={styles.businessTitle}>
-              {this.props.mainBusiness.businessname}
-            </Text>
+            <Transition shared="menu">
+              <Text style={styles.businessTitle}>
+                {this.props.mainBusiness.businessname}
+              </Text>
+            </Transition>
             <View style={{ marginBottom: heightPercentageToDP("10") }}>
               <BackdropIcon style={styles.backDrop} />
 

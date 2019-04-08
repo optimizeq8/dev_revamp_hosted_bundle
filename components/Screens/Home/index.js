@@ -39,6 +39,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import { Transition } from "react-navigation-fluid-transitions";
 
 class Home extends Component {
   static navigationOptions = {
@@ -58,15 +59,24 @@ class Home extends Component {
       toValue: 1,
       duration: 350
     }).start(() => {
-      this.setState({ open: true });
+      this.setState({ open: true }, () =>
+        this.props.navigation.navigate("Menu", {
+          open: this.state.open,
+          closeAnimation: this.closeAnimation,
+          menu: this.state.menu
+        })
+      );
     });
   };
   closeAnimation = () => {
+    // this.props.navigation.goBack();
+    console.log("lkjhkugjvhcfgvjh");
+
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350
     }).start(() => {
-      this.setState({ open: false });
+      this.setState({ open: false }, () => this.props.navigation.pop());
     });
   };
 
@@ -85,35 +95,36 @@ class Home extends Component {
     } else {
       return (
         <>
-          <View
-            style={{
-              justifyContent: "center",
-              marginTop: heightPercentageToDP("5%"),
-              marginLeft: 20,
-              zIndex: 1000
-            }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                if (this.state.open === false) {
-                  this.startAnimation();
-                } else {
-                  this.closeAnimation();
-                }
+          <Transition shared="close">
+            <View
+              style={{
+                justifyContent: "center",
+                marginTop: heightPercentageToDP("5%"),
+                marginLeft: 20,
+                zIndex: 1000
               }}
             >
-              <LottieView
-                style={{
-                  width: 50,
-                  height: 47
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  if (this.state.open === false) {
+                    this.startAnimation();
+                  } else {
+                    this.closeAnimation();
+                  }
                 }}
-                resizeMode="contain"
-                source={require("../../../assets/animation/menu-btn.json")}
-                progress={this.state.menu}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-
+              >
+                <LottieView
+                  style={{
+                    width: 50,
+                    height: 47
+                  }}
+                  resizeMode="contain"
+                  source={require("../../../assets/animation/menu-btn.json")}
+                  progress={this.state.menu}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+          </Transition>
           <Container style={styles.container}>
             <LinearGradient
               colors={[colors.background1, colors.background2]}
@@ -127,10 +138,14 @@ class Home extends Component {
               resizeMode="contain"
             />
             <Card padder style={styles.mainCard}>
-              <Text style={styles.link}>
-                Welcome {"\n"}
-                {this.props.userInfo.firstname}
-              </Text>
+              <Transition shared="menu">
+                <Text style={styles.link}>
+                  {this.props.mainBusiness.businessname}
+                  {/* Welcome {"\n"} */}
+                  {/* {this.props.userInfo.firstname} */}
+                </Text>
+              </Transition>
+
               <Text style={styles.text}>
                 You’re one step away from
                 {"\n"} Optimizing your digital Ads
@@ -187,9 +202,9 @@ class Home extends Component {
               </Card>
             </View>
           </Container>
-          <Modal dismissable={false} visible={this.state.open}>
+          {/* <Modal dismissable={false} visible={this.state.open}>
             <Menu navigation={this.props.navigation} />
-          </Modal>
+          </Modal> */}
         </>
       );
     }
