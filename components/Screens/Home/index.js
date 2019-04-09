@@ -59,19 +59,15 @@ class Home extends Component {
       toValue: 1,
       duration: 350
     }).start(() => {
-      this.setState({ open: true }, () =>
-        this.props.navigation.navigate("Menu", {
-          open: this.state.open,
-          closeAnimation: this.closeAnimation,
-          menu: this.state.menu
-        })
-      );
+      this.props.navigation.navigate("Menu", {
+        open: true,
+        closeAnimation: this.closeAnimation,
+        menu: this.state.menu
+      });
+      this.setState({ open: true });
     });
   };
   closeAnimation = () => {
-    // this.props.navigation.goBack();
-    console.log("lkjhkugjvhcfgvjh");
-
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350

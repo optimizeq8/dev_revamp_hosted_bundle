@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF"
+    backgroundColor: "#751AFF",
+    elevation: 10,
+    zIndex: 10
   },
   image: {
     alignSelf: "center",
@@ -96,10 +98,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100,
-    position: "absolute",
-    bottom: hp("25"),
-    width: "100%"
+    height: hp("14"),
+    // position: "absolute",
+    bottom: hp("22"),
+    width: "100%",
+    elevation: 10
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
