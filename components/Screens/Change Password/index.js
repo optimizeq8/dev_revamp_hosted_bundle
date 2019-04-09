@@ -49,16 +49,6 @@ class ChangePassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
   }
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.message !== this.props.message &&this.props.message) {
-  //     this.setState({
-  //       emailError:
-  //         this.props.message.includes("exist") && this.props.message
-  //           ? this.props.message
-  //           : ""
-  //     });
-  //   }
-  // }
 
   _passwordVarification = () => {
     if (

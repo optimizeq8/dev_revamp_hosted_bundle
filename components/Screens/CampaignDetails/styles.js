@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
     marginLeft: 0,
     marginRight: 0,
-    elevation: -10
+    elevation: -10,
+    zIndex: -1
   },
   text: {
     textAlign: "center",
@@ -58,7 +59,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "transparent",
     position: "absolute",
-    bottom: hp("5%")
+    bottom: hp("5%"),
+    elevation: 0
   },
 
   categories: {
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
   },
 
   btnClose: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     top: hp("10%"),
     left: wp("10%")
   },
