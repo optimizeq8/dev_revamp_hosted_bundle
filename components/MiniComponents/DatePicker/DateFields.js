@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
 import {
   View,
   KeyboardAvoidingView,
@@ -24,20 +22,14 @@ import {
   Badge
 } from "native-base";
 import { BlurView } from "expo";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../Validation Functions/ValidateWrapper";
 import { Modal } from "react-native-paper";
-import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
-import CloseIcon from "../../../../assets/SVGs/Close.svg";
-import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
-import CalenderkIcon from "../../../../assets/SVGs/Calender.svg";
+import CloseIcon from "../../../assets/SVGs/Close.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
 import DateRangePicker from "./DateRangePicker";
 // Style
-import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default class DateFields extends Component {

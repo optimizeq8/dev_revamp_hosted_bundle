@@ -10,7 +10,9 @@ import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
 import CreateBusinessAccount from "../Screens/CreateBusinessAccount";
 import CampaignDetails from "../Screens/CampaignDetails";
 import BusinessList from "../Screens/BusinessList";
-import ChangePassword from "../Screens/Change Password/index";
+import ChangePassword from "../Screens/Change Password/";
+import AddressForm from "../Screens/AddressForm";
+
 // export default createStackNavigator(
 //   {
 //     Home: Home,
@@ -49,7 +51,8 @@ export default FluidNavigator(
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
     BusinessList: BusinessList,
-    ChangePassword: ChangePassword
+    ChangePassword: ChangePassword,
+    AddressForm: AddressForm
   },
   {
     initialRouteName: "Home",

@@ -8,26 +8,29 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import MultiSelect from "./MultiSelect";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
 import { LinearGradient } from "expo";
-import RadioGroup from "react-native-radio-buttons-group";
-import InputNumber from "rmc-input-number";
 import Sidemenu from "react-native-side-menu";
-import DateField from "./DateFields";
+import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import ReachBar from "./ReachBar";
+import SelectRegions from "../../../MiniComponents/SelectRegions";
+import SelectLanguages from "../../../MiniComponents/SelectLanguages";
+import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
+import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
+import dateFormat from "dateformat";
+import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
+
+//Data
+import country_regions from "./regions";
+
+//Icnos
 import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
-
-import dateFormat from "dateformat";
-
-//Data
-import country_regions from "./regions";
 
 // Style
 import styles from "./styles";
@@ -44,9 +47,7 @@ import { connect } from "react-redux";
 
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-import GenderOptions from "./GenderOptions";
-import AgeOption from "./AgeOption";
-import MultiSelectSections from "./MultiSelect";
+
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -352,188 +353,15 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: { ...replace } });
   };
 
-  selectRegion = () => {
-    let regionlist = this.state.filteredRegions.map(c => {
-      return (
-        <TouchableOpacity
-          key={c.id}
-          style={{
-            paddingVertical: 20
-          }}
-          onPress={() => {
-            this.onSelectedRegionChange(c.id);
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "montserrat-bold",
-              color: this.state.campaignInfo.targeting.geos[0].region_id.find(
-                r => r === c.id
-              )
-                ? "#FF9D00"
-                : "#fff",
-              fontSize: 14
-            }}
-          >
-            {c.name}
-          </Text>
-        </TouchableOpacity>
-      );
-    });
-    return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
-            <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Country </Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <View style={styles.slidercontainer}>
-              <Item>
-                <Input
-                  placeholder="Search Region..."
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
-                    fontSize: 14
-                  }}
-                  placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredR = this.state.regions.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
-                    );
-                    this.setState({ filteredRegions: filteredR });
-                  }}
-                />
-              </Item>
-
-              <View style={{ height: "75%" }}>
-                <ScrollView>{regionlist}</ScrollView>
-              </View>
-            </View>
-          </View>
-        </View>
-        <Button
-          style={[styles.button, { marginBottom: 30 }]}
-          onPress={() => this._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
-    );
+  filterRegions = value => {
+    this.setState({ filteredRegions: value });
   };
 
-  selectLanguage = () => {
-    let languagelist = this.state.filteredLanguages.map(c => (
-      <TouchableOpacity
-        key={c.value}
-        style={{
-          paddingVertical: 10,
-          marginVertical: 10,
-          backgroundColor: this.state.campaignInfo.targeting.demographics[0].languages.find(
-            l => l === c.value
-          )
-            ? "#FF9D00"
-            : "transparent",
-          borderRadius: 10,
-          paddingLeft: 5
-        }}
-        onPress={() => {
-          this.onSelectedLangsChange(c.value);
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: "montserrat-bold",
-            color: "#fff",
-            fontSize: 14
-          }}
-        >
-          {c.label}
-        </Text>
-      </TouchableOpacity>
-    ));
-    return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
-            <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}>Select Languages</Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <View style={styles.slidercontainer}>
-              <Item>
-                <Input
-                  placeholder="Search Language..."
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
-                    fontSize: 14
-                  }}
-                  placeholderTextColor="#fff"
-                  onChangeText={value => {
-                    let filteredC = this.state.languages.filter(c =>
-                      c.label.toLowerCase().includes(value.toLowerCase())
-                    );
-                    this.setState({ filteredLanguages: filteredC });
-                  }}
-                />
-              </Item>
-
-              <View style={{ height: "75%" }}>
-                <ScrollView>{languagelist}</ScrollView>
-              </View>
-            </View>
-          </View>
-        </View>
-        <Button
-          style={[styles.button, { marginBottom: 30 }]}
-          onPress={() => this._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
-    );
+  filterLanguages = value => {
+    this.setState({ filteredLanguages: value });
   };
 
   render() {
-    console.log(this.state.campaignInfo.targeting.demographics[0].gender);
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -558,12 +386,30 @@ class AdDetails extends Component {
         break;
       }
       case "regions": {
-        menu = this.selectRegion();
+        menu = (
+          <SelectRegions
+            filteredRegions={this.state.filteredRegions}
+            onSelectedRegionChange={this.onSelectedRegionChange}
+            _handleSideMenuState={this._handleSideMenuState}
+            regions={this.state.regions}
+            region_id={this.state.campaignInfo.targeting.geos[0].region_id}
+            filterRegions={this.filterRegions}
+          />
+        );
 
         break;
       }
       case "languages": {
-        menu = this.selectLanguage();
+        menu = (
+          <SelectLanguages
+            filteredLanguages={this.state.filteredLanguages}
+            onSelectedLangsChange={this.onSelectedLangsChange}
+            _handleSideMenuState={this._handleSideMenuState}
+            languages={this.state.languages}
+            demographics={this.state.campaignInfo.targeting.demographics}
+            filterLanguages={this.filterLanguages}
+          />
+        );
 
         break;
       }

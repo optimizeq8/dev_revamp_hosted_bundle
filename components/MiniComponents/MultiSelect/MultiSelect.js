@@ -5,11 +5,11 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 
-import styles from "./styles";
-import * as actionCreators from "../../../../store/actions";
-import LocationIcon from "../../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
-import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import * as actionCreators from "../../../store/actions";
+import LocationIcon from "../../../assets/SVGs/Location.svg";
+import InterestsIcon from "../../../assets/SVGs/Interests.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp

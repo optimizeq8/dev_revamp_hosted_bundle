@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import styles from "./styles";
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 
 const XDate = require("xdate");
 
