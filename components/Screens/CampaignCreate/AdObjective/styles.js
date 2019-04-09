@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-medium",
-    marginVertical: 5
+    marginVertical: 15
   },
   modalclosebtn: {
     marginRight: 30,

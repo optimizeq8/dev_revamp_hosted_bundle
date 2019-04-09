@@ -39,7 +39,7 @@ class BusinessCard extends Component {
           style={[styles.icon, { color: changeState.color }]}
         /> */}
 
-        <IconName />
+        <IconName style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
             {this.props.choice.label}

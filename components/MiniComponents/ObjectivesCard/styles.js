@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    paddingHorizontal: 7
+    paddingLeft: 15
   },
   titletext: {
     textAlign: "left",
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 5,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
+    width: "80%"
   },
   campaignButton: {
     justifyContent: "space-between",
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 20,
     backgroundColor: "#FF9D00",
     padding: 10,
+    height: 90,
     marginBottom: 10,
     bottom: 15
   },
