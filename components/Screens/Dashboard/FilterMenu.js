@@ -42,7 +42,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
-import DateFields from "../CampaignCreate/AdDetails/DateFields";
+import DateFields from "../../MiniComponents/DatePicker/DateFields";
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
