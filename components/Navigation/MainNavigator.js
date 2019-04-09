@@ -43,7 +43,7 @@ import ChangePassword from "../Screens/Change Password/index";
 export default FluidNavigator(
   {
     Home: Home,
-    Menu: Menu,
+    Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
     CreateBusinessAccount: CreateBusinessAccount,
@@ -53,12 +53,9 @@ export default FluidNavigator(
   },
   {
     initialRouteName: "Home",
+    mode: "card",
     navigationOptions: {
       gesturesEnabled: true,
-      gestureResponseDistance: {
-        horizontal: 25,
-        vertical: 10
-      },
       headerStyle: {
         backgroundColor: "transparent"
       },
