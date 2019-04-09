@@ -28,14 +28,11 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    top: 15,
-    borderColor: "#751AFF",
-    backgroundColor: "#751AFF",
     flex: 1,
     shadowRadius: 0,
-    shadowOpacity: 0,
-    marginLeft: 0,
-    marginRight: 0
+    shadowOpacity: 0
+    // elevation: 10,
+    // zIndex: -1
   },
   text: {
     color: "#fff",
@@ -63,16 +60,17 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
+    top: heightPercentageToDP("8.5"),
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+    // marginBottom: heightPercentageToDP(2),
+    backgroundColor: "#FF9D00",
+    borderRadius: 30,
+    alignSelf: "center",
+    zIndex: 2
   },
-  snapbutton: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#fff"
-  },
+
   businessTitle: {
     textAlign: "center",
     color: "#fff",
@@ -80,49 +78,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 10
   },
-  bottomCard: {
-    top: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: 100
-  },
+
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
+    height: heightPercentageToDP("110")
   },
   menuModal: {
-    ...StyleSheet.absoluteFillObject,
-    top: -heightPercentageToDP("50%"),
+    // ...StyleSheet.absoluteFillObject
     zIndex: 10,
     elevation: 1
   },
   backDrop: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     top: -heightPercentageToDP("50%"),
-    left: -widthPercentageToDP("15%")
+    alignSelf: "center"
   },
   DropIcon: {
     position: "relative",
     top: heightPercentageToDP("5"),
-    left: widthPercentageToDP("46%"),
-    zIndex: 100,
-    elevation: 10
+    left: widthPercentageToDP("46%")
   },
   CloseIcon: {
     position: "absolute",
-    top: heightPercentageToDP("1"),
-    left: widthPercentageToDP("46%"),
-    zIndex: 100
+    top: heightPercentageToDP("6.5"),
+    left: widthPercentageToDP("7.5%"),
+    zIndex: 15,
+    color: "grey",
+
+    elevation: 10
   },
   logoutIcon: {
     position: "absolute",
     top: heightPercentageToDP("6.5"),
     left: widthPercentageToDP("85%"),
-    zIndex: 100
+    zIndex: 10
   }
 });
 

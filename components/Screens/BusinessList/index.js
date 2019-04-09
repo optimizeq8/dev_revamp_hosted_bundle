@@ -74,8 +74,6 @@ class BusinessList extends Component {
         </View>
         <View style={{ backgroundColor: "#fff" }}>
           <Button
-            block
-            dark
             style={[styles.bottomCard, { justifyContent: "center" }]}
             onPress={() =>
               this.props.navigation.navigate("CreateBusinessAccount")
