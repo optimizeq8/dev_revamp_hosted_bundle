@@ -248,7 +248,7 @@ class CreateBusinessAccount extends Component {
         />
         <Button
           transparent
-          onPress={() => this.props.navigation.navigate("Home")}
+          onPress={() => this.props.navigation.goBack()}
           style={{
             marginLeft: 10
           }}

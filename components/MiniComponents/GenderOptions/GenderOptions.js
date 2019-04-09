@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
-import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import styles from "./styles";
+import GenderIcon from "../../../assets/SVGs/Gender.svg";
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class GenderOptions extends Component {
   render() {

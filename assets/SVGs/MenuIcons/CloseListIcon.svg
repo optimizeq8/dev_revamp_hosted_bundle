@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
-  <circle id="Ellipse_151" data-name="Ellipse 151" cx="18" cy="18" r="18" fill="#ff9d00"/>
-  <g id="Menu_icon" data-name="Menu icon" transform="translate(241.046 -137.014) rotate(90)">
-    <rect id="Rectangle_1468" data-name="Rectangle 1468" width="18.299" height="2.707" rx="1.353" transform="translate(146 222.052)" fill="#fff" opacity="0"/>
-    <rect id="Rectangle_1469" data-name="Rectangle 1469" width="18.299" height="2.707" rx="1.353" transform="translate(149.637 215.928) rotate(45)" fill="#fff"/>
-    <rect id="Rectangle_1470" data-name="Rectangle 1470" width="18.299" height="2.707" rx="1.353" transform="translate(147.723 228.816) rotate(-45)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24.434" height="30" viewBox="0 0 24.434 30">
+  <g id="Menu_icon" data-name="Menu icon" transform="translate(240.311 -146) rotate(90)">
+    <rect id="Rectangle_1468" data-name="Rectangle 1468" width="30" height="4.438" rx="2.219" transform="translate(146 226)" fill="#c6c6c6" opacity="0"/>
+    <rect id="Rectangle_1469" data-name="Rectangle 1469" width="30" height="4.438" rx="2.219" transform="translate(151.962 215.96) rotate(45)" fill="#c6c6c6"/>
+    <rect id="Rectangle_1470" data-name="Rectangle 1470" width="30" height="4.438" rx="2.219" transform="translate(148.824 237.09) rotate(-45)" fill="#c6c6c6"/>
   </g>
 </svg>

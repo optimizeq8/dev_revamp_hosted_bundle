@@ -27,24 +27,27 @@ import {
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
+import LottieView from "lottie-react-native";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 import * as actionCreators from "../../../store/actions";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
+import { Transition } from "react-navigation-fluid-transitions";
 class Menu extends Component {
-  _draggedValue = new Animated.Value(0);
+  _draggedValue = new Animated.Value(-20);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP(100),
-      bottom: -heightPercentageToDP(100)
+      top: heightPercentageToDP("100"),
+      bottom: -heightPercentageToDP("115")
     }
-  };
-  static navigationOptions = {
-    header: null
   };
   constructor(props) {
     super(props);
@@ -58,6 +61,7 @@ class Menu extends Component {
     }).start();
   }
   slidePanelShow() {
+    console.log(this.state.slidePanel);
     if (this.state.slidePanel) {
       this._panel.hide();
       this.setState({ slidePanel: false });
@@ -74,50 +78,114 @@ class Menu extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         >
+          <Transition shared="close">
+            <View
+              style={{
+                justifyContent: "center",
+                marginTop: heightPercentageToDP("5%"),
+                marginLeft: 20,
+                zIndex: 10
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.props.navigation.state.params.closeAnimation();
+                }}
+              >
+                <LottieView
+                  style={{
+                    width: 50,
+                    height: 47
+                  }}
+                  resizeMode="contain"
+                  source={require("../../../assets/animation/menu-btn.json")}
+                  progress={this.props.navigation.state.params.menu}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+          </Transition>
           <View
             style={{
-              marginTop: heightPercentageToDP("20%")
+              marginTop: heightPercentageToDP("8.7%")
             }}
           />
-          <Icons.LogoutIcon
-            style={styles.logoutIcon}
+          <TouchableWithoutFeedback
             onPress={() => {
               this.props.logout(this.props.navigation);
             }}
-          />
-
+          >
+            <Icons.LogoutIcon style={styles.logoutIcon} />
+          </TouchableWithoutFeedback>
           <View>
-            <Text style={styles.businessTitle}>
-              {this.props.mainBusiness.businessname}
-            </Text>
-            <View style={{ marginBottom: heightPercentageToDP("10") }}>
+            <Transition shared="menu">
+              <Text style={styles.businessTitle}>
+                {this.props.mainBusiness.businessname}
+              </Text>
+            </Transition>
+            <View
+              style={{
+                marginBottom: heightPercentageToDP("10")
+              }}
+            >
+              <Button
+                style={[
+                  styles.button,
+                  {
+                    elevation: this.state.slidePanel ? -1 : 1
+                    // zIndex: this.state.slidePanel ? -1 : 1
+                  }
+                ]}
+                onPress={() => this.slidePanelShow()}
+              >
+                <Text>Switch Account</Text>
+              </Button>
               <BackdropIcon style={styles.backDrop} />
 
-              <Icons.DropDownIcon
-                onPress={() => this.slidePanelShow()}
+              {/* <Icons.DropDownIcon
                 style={styles.DropIcon}
-              />
+              /> */}
             </View>
 
             <View
-              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+              style={{
+                paddingLeft: 20,
+                flexDirection: "column",
+                justifyContent: "space-evenly"
+              }}
             >
-              <View style={{ flexDirection: "column" }}>
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
-                  <Icons.PersonalInfo />
-                  <Text style={styles.text}>Personal Info</Text>
-                </View>
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
-                  <Icons.TransactionIcon />
-                  <Text style={styles.text}>Transactions</Text>
-                </View>
+              <View
+                style={{
+                  alignItems: "center",
+
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.PersonalInfo />
+                <Text style={styles.text}>Personal Info</Text>
               </View>
+              <View
+                style={{
+                  alignItems: "center",
+
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.TransactionIcon />
+                <Text style={styles.text}>Transactions</Text>
+              </View>
+
               <View
                 style={{
                   flexDirection: "column"
                 }}
               >
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
+                <View
+                  style={{
+                    alignItems: "center",
+
+                    flexDirection: "row"
+                  }}
+                >
                   <Icons.BusinessIcon />
                   <Text style={styles.text}>Business Info</Text>
                 </View>
@@ -126,21 +194,38 @@ class Menu extends Component {
                     this.props.navigation.navigate("ChangePassword")
                   }
                 >
-                  <View style={{ alignItems: "center", marginBottom: 20 }}>
+                  <View
+                    style={{
+                      alignItems: "center",
+
+                      flexDirection: "row"
+                    }}
+                  >
                     <Icons.ChangePassIcon />
                     <Text style={[styles.text]}> Change{"\n"}Password</Text>
                   </View>
                 </TouchableWithoutFeedback>
               </View>
-              <View style={{ flexDirection: "column" }}>
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
-                  <Icons.AddressIcon />
-                  <Text style={styles.text}>Addresses</Text>
-                </View>
-                <View style={{ alignItems: "center", marginBottom: 20 }}>
-                  <Icons.CreditCardIcon />
-                  <Text style={styles.text}>Credit Cards</Text>
-                </View>
+
+              <View
+                style={{
+                  alignItems: "center",
+                  marginBottom: 10,
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.AddressIcon />
+                <Text style={styles.text}>Addresses</Text>
+              </View>
+              <View
+                style={{
+                  alignItems: "center",
+                  left: widthPercentageToDP(5),
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.Wallet />
+                <Text style={styles.text}>{"    "}Wallet</Text>
               </View>
             </View>
           </View>

@@ -17,12 +17,14 @@ import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
+//Data
+import country_regions from "./regions";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../Validation Functions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 
-class ChangePassword extends Component {
+class AddressForm extends Component {
   static navigationOptions = {
     header: null
   };
@@ -33,37 +35,30 @@ class ChangePassword extends Component {
         currentPassword: "",
         password: ""
       },
-
+      sidemenustate: false,
+      sidemenu: "",
+      filteredRegions: country_regions[0].regions,
       inputF: false,
       inputL: false,
       inputE: false,
       inputP: false,
       inputPR: false,
-
       repassword: "",
       currentPasswordError: "",
       passwordError: "",
-
       repasswordError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
-    this._passwordVarification = this._passwordVarification.bind(this);
   }
 
-  _passwordVarification = () => {
-    if (
-      this.state.userInfo.password !== this.state.repassword ||
-      this.state.repassword === ""
-    ) {
-      this.setState({ repasswordError: "Your Passwords don't match." });
-      return false;
-    } else if (
-      this.state.userInfo.password === this.state.repassword &&
-      this.state.repassword !== ""
-    ) {
-      this.setState({ repasswordError: "" });
-      return true;
-    }
+  _renderSideMenu = (component, option = "") => {
+    this.setState({ sidemenu: component, selectionOption: option }, () =>
+      this._handleSideMenuState(true)
+    );
+  };
+
+  _handleSideMenuState = status => {
+    this.setState({ sidemenustate: status }, () => {});
   };
   _handleSubmission = () => {
     const currentPasswordError = validateWrapper(
@@ -79,7 +74,7 @@ class ChangePassword extends Component {
       currentPasswordError,
       passwordError
     });
-    if (this._passwordVarification() && !this.state.passwordError) {
+    if (!this.state.passwordError) {
       this.props.changePassword(
         this.state.userInfo.currentPassword,
         this.state.userInfo.password,
@@ -88,6 +83,30 @@ class ChangePassword extends Component {
     }
   };
   render() {
+    let menu;
+    switch (this.state.sidemenu) {
+      case "countries": {
+        menu = (
+          <GenderOptions
+            campaignInfo={this.state.campaignInfo}
+            _changeGender={this._changeGender}
+            _handleSideMenuState={this._handleSideMenuState}
+          />
+        );
+        break;
+      }
+      case "regions": {
+        menu = (
+          <AgeOption
+            state={this.state}
+            _handleMaxAge={this._handleMaxAge}
+            _handleMinAge={this._handleMinAge}
+            _handleSideMenuState={this._handleSideMenuState}
+          />
+        );
+        break;
+      }
+    }
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -350,4 +369,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChangePassword);
+)(AddressForm);

@@ -1,7 +1,7 @@
 export { default as AddressIcon } from "./AddressIcon.svg";
 export { default as BusinessIcon } from "./BusinessIcon.svg";
 export { default as ChangePassIcon } from "./ChangePassIcon.svg";
-export { default as CreditCardIcon } from "./CreditCardIcon.svg";
+export { default as Wallet } from "./Wallet.svg";
 export { default as PersonalInfo } from "./PersonalInfo.svg";
 export { default as TransactionIcon } from "./TransactionIcon.svg";
 export { default as DropDownIcon } from "./DropDownIcon.svg";

@@ -10,7 +10,8 @@ import {
   Animated,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Platform
+  Platform,
+  Modal
 } from "react-native";
 import {
   Card,
@@ -40,7 +41,7 @@ import PauseIcon from "../../../assets/SVGs/Pause.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Toggle from "react-native-switch-toggle";
-import { Modal } from "react-native-paper";
+// import { Modal } from "react-native-paper";
 import LineChartGraphs from "./LineChartGraphs";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import {
@@ -48,7 +49,6 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import BarIcon from "../../../assets/SVGs/Bar.svg";
-
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -168,6 +168,13 @@ class CampaignDetails extends Component {
             }}
           >
             <Container style={styles.container}>
+              <CloseIcon
+                onPress={() => {
+                  this.props.navigation.goBack();
+                  console.log("iugvbknjl");
+                }}
+                style={styles.btnClose}
+              />
               <Card padder style={styles.mainCard}>
                 <Image
                   style={styles.image}
@@ -421,13 +428,13 @@ class CampaignDetails extends Component {
               </SlidingUpPanel>
             </Container>
             <Modal
-              animationType={"slide"}
-              transparent={true}
+              animationType={"fade"}
+              transparent={Platform.OS === "ios"}
               onDismiss={() => this.setState({ modalVisible: false })}
               onRequestClose={() => this.setState({ modalVisible: false })}
               visible={this.state.modalVisible}
             >
-              <BlurView tint="dark" intensity={95} style={styles.BlurView}>
+              <BlurView tint="dark" intensity={100} style={styles.BlurView}>
                 <Button
                   transparent
                   onPress={() => {
