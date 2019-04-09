@@ -100,9 +100,11 @@ const styles = StyleSheet.create({
   },
   CloseIcon: {
     position: "absolute",
-    top: heightPercentageToDP("1"),
-    left: widthPercentageToDP("46.2%"),
+    top: heightPercentageToDP("6.5"),
+    left: widthPercentageToDP("7.5%"),
     zIndex: 15,
+    color: "grey",
+
     elevation: 10
   },
   logoutIcon: {
