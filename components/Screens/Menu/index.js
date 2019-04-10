@@ -207,16 +207,20 @@ class Menu extends Component {
                 </TouchableWithoutFeedback>
               </View>
 
-              <View
-                style={{
-                  alignItems: "center",
-                  marginBottom: 10,
-                  flexDirection: "row"
-                }}
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate("AddressForm")}
               >
-                <Icons.AddressIcon />
-                <Text style={styles.text}>Addresses</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    marginBottom: 10,
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.AddressIcon />
+                  <Text style={styles.text}>Addresses</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <View
                 style={{
                   alignItems: "center",

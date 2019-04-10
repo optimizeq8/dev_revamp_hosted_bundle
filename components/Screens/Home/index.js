@@ -166,7 +166,6 @@ class Home extends Component {
 
               <Button
                 style={[styles.button]}
-
                 onPress={() => this.props.navigation.navigate("AddressForm")}
               >
                 <Text> Test </Text>

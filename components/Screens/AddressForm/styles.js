@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -10,8 +14,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   title: {
-    top: -15,
-    fontSize: 24,
+    fontSize: widthPercentageToDP(5),
     color: "#fff",
     textAlign: "center",
     paddingTop: 0,
@@ -24,14 +27,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "transparent",
     flex: 1,
-    marginLeft: 0,
-    marginRight: 0,
-    marginBottom: 0,
+    top: heightPercentageToDP(23),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    paddingTop: 15
+    shadowOffset: { width: 0, height: -3 }
   },
   content: {
     flexDirection: "row",
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   button: {
+    bottom: heightPercentageToDP(20),
     backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 65,
@@ -58,13 +59,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around"
   },
-  icon: {
-    fontSize: 45,
-    color: "#fff",
-    paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center"
+  closeIcon: {
+    top: heightPercentageToDP(2.3),
+    left: widthPercentageToDP(4),
+    zIndex: 10,
+    elevation: 5
   },
   text: {
     textAlign: "center",
@@ -83,14 +82,20 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   input: {
-    bottom: 25,
-    marginBottom: 20,
-    paddingHorizontal: 50,
-    borderRadius: 15,
     alignSelf: "center",
-    width: 300,
-    height: 45,
-    borderColor: "#7039FF"
+    justifyContent: "center",
+    width: 100,
+
+    borderColor: "#7039FF",
+    flexDirection: "row"
+  },
+  selector: {
+    bottom: 25,
+    alignSelf: "center",
+    justifyContent: "center",
+    width: 250,
+    borderColor: "#7039FF",
+    flexDirection: "row"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

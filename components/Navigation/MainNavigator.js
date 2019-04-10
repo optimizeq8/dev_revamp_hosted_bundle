@@ -12,7 +12,7 @@ import CampaignDetails from "../Screens/CampaignDetails";
 import BusinessList from "../Screens/BusinessList";
 import ChangePassword from "../Screens/Change Password/";
 import AddressForm from "../Screens/AddressForm";
-
+import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
 // export default createStackNavigator(
 //   {
 //     Home: Home,
@@ -52,7 +52,8 @@ export default FluidNavigator(
     CampaignDetails: CampaignDetails,
     BusinessList: BusinessList,
     ChangePassword: ChangePassword,
-    AddressForm: AddressForm
+    AddressForm: AddressForm,
+    MultiSelect: MultiSelect
   },
   {
     initialRouteName: "Home",
