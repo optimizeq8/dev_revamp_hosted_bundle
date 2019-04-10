@@ -77,13 +77,12 @@ const styles = StyleSheet.create({
     margin: 15
   },
   mainCard: {
-    top: 15,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "transparent",
     flex: 1,
 
-    backgroundColor: "#ffcc00",
+    backgroundColor: "#000",
     marginLeft: 0,
     marginRight: 0
   },
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     marginBottom: 5,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(255,255,255,0.3)",
     borderRadius: 15,
     alignSelf: "center",
     width: 270,
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    top: 50,
+    top: 25,
     left: 40
   },
   button: {
