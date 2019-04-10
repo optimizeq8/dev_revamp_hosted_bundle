@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
+  address: {},
   mobileNo: "",
   countryCode: "",
   verificationCode: false,
@@ -88,6 +89,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         passwordChanged: action.payload.success,
+        message: action.payload.message
+      };
+    case actionTypes.ADD_ADDRESS:
+      return {
+        ...state,
+        address: action.payload.data,
         message: action.payload.message
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:

@@ -14,7 +14,9 @@ export default class SelectRegions extends Component {
             paddingVertical: 20
           }}
           onPress={() => {
-            this.props.onSelectedRegionChange(c.id);
+            this.props.onSelectedRegionChange(
+              this.props.addressForm ? c : c.id
+            );
           }}
         >
           <Text
@@ -47,7 +49,10 @@ export default class SelectRegions extends Component {
             }}
           >
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Country </Text>
+            <Text style={[styles.title]}>
+              {" "}
+              {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
+            </Text>
           </View>
           <View
             style={{

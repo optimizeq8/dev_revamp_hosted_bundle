@@ -1,28 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
-import {
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  ScrollView
-} from "react-native";
+import { View, TouchableWithoutFeedback, Keyboard, Image } from "react-native";
 import { LinearGradient } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon";
+import Sidemenu from "react-native-side-menu";
+import MultiSelect from "../../MiniComponents/MultiSelect/MultiSelect";
+import SelectRegions from "../../MiniComponents/SelectRegions";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+//Icons
+import Address from "../../../assets/SVGs/MenuIcons/AddressIcon";
+import DownButton from "../../../assets/SVGs/DownButton";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import BackIcon from "../../../assets/SVGs/BackButton.svg";
 
 //Data
 import country_regions from "./regions";
+import countries from "./Countries";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../Validation Functions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -31,22 +36,33 @@ class AddressForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userInfo: {
-        currentPassword: "",
-        password: ""
+      address: {
+        country: "",
+        area: "",
+        block: "",
+        street: "",
+        building: "",
+        office: "",
+        avenue: ""
       },
+      country_code: "",
+      region_id: [],
+      regions: country_regions[0].regions,
       sidemenustate: false,
       sidemenu: "",
       filteredRegions: country_regions[0].regions,
-      inputF: false,
-      inputL: false,
-      inputE: false,
-      inputP: false,
-      inputPR: false,
-      repassword: "",
-      currentPasswordError: "",
-      passwordError: "",
-      repasswordError: ""
+      inputC: false,
+      inputA: false,
+      inputBL: false,
+      inputS: false,
+      inputB: false,
+      inputO: false,
+      inputAv: false,
+      countryError: "",
+      areaError: "",
+      blockError: "",
+      streetError: "",
+      buildingError: ""
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -56,52 +72,104 @@ class AddressForm extends Component {
       this._handleSideMenuState(true)
     );
   };
+  onSelectedItemsChange = async selectedItem => {
+    let replace = this.state.address;
+    if (selectedItem) {
+      replace.country = selectedItem.label;
+      replace.area = "";
+      let reg = country_regions.find(
+        c => c.country_code === selectedItem.value
+      );
+      await this.setState({
+        address: replace,
+        country_code: selectedItem.value,
+        regions: reg.regions,
+        filteredRegions: reg.regions,
+        countryError: ""
+      });
+      // this.getTotalReach();
+    }
+  };
 
+  onSelectedRegionChange = async selectedItem => {
+    let replace = this.state.address;
+    if (selectedItem) {
+      replace.area = selectedItem.name;
+      await this.setState({
+        address: replace,
+        region_id: [selectedItem.id],
+        areaError: ""
+      });
+      // this.getTotalReach();
+    }
+  };
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
   };
   _handleSubmission = () => {
-    const currentPasswordError = validateWrapper(
+    const countryError = validateWrapper(
       "mandatory",
-      this.state.userInfo.currentPassword
+      this.state.address.country
     );
-    const passwordError = validateWrapper(
-      "password",
-      this.state.userInfo.password
+    const areaError = validateWrapper("mandatory", this.state.address.area);
+    const blockError = validateWrapper("mandatory", this.state.address.block);
+    const streetError = validateWrapper("mandatory", this.state.address.street);
+    const buildingError = validateWrapper(
+      "mandatory",
+      this.state.address.building
     );
-
     this.setState({
-      currentPasswordError,
-      passwordError
+      countryError,
+      areaError,
+      blockError,
+      streetError,
+      buildingError
     });
-    if (!this.state.passwordError) {
-      this.props.changePassword(
-        this.state.userInfo.currentPassword,
-        this.state.userInfo.password,
+    if (
+      !countryError &&
+      !areaError &&
+      !blockError &&
+      !streetError &&
+      !buildingError
+    ) {
+      console.log("here");
+
+      this.props.addressForm(
+        this.state.address,
+
         this.props.navigation
       );
     }
+  };
+  filterRegions = value => {
+    this.setState({ filteredRegions: value });
   };
   render() {
     let menu;
     switch (this.state.sidemenu) {
       case "countries": {
         menu = (
-          <GenderOptions
-            campaignInfo={this.state.campaignInfo}
-            _changeGender={this._changeGender}
+          <MultiSelect
+            countries={countries}
+            country_code={this.state.country_code}
+            onSelectedItemsChange={this.onSelectedItemsChange}
             _handleSideMenuState={this._handleSideMenuState}
+            option={"countries"}
+            addressForm={true}
           />
         );
         break;
       }
       case "regions": {
         menu = (
-          <AgeOption
-            state={this.state}
-            _handleMaxAge={this._handleMaxAge}
-            _handleMinAge={this._handleMinAge}
+          <SelectRegions
+            filteredRegions={this.state.filteredRegions}
+            onSelectedRegionChange={this.onSelectedRegionChange}
             _handleSideMenuState={this._handleSideMenuState}
+            regions={this.state.regions}
+            region_id={this.state.region_id}
+            filterRegions={this.filterRegions}
+            addressForm={true}
           />
         );
         break;
@@ -114,186 +182,238 @@ class AddressForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
-          transparent
-          onPress={() => this.props.navigation.goBack()}
-          style={{
-            marginLeft: 10
+        {!this.state.sidemenustate && (
+          <>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.goBack()}
+              style={styles.closeIcon}
+            >
+              <BackIcon style={styles.closeIcon} name="close" />
+            </Button>
+            <Text style={styles.title}>Billing Address</Text>
+            <Address
+              style={{
+                alignSelf: "center"
+              }}
+              width={85}
+              height={85}
+            />
+          </>
+        )}
+        <Sidemenu
+          onChange={isOpen => {
+            if (isOpen === false) this._handleSideMenuState(isOpen);
           }}
+          disableGestures={true}
+          menu={this.state.sidemenustate && menu}
+          menuPosition="right"
+          openMenuOffset={wp("85%")}
+          isOpen={this.state.sidemenustate}
         >
-          <Icon
-            style={{
-              fontSize: 40,
-              color: "#fff"
-            }}
-            name="close"
-          />
-        </Button>
-        <Text style={styles.title}>Change Password</Text>
-        <View style={styles.mainCard}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <KeyboardShift>
-              {() => (
-                <View style={styles.contentContainer}>
-                  <ChangePassIcon
-                    style={{
-                      alignSelf: "center"
-                    }}
-                  />
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.inputP
-                          ? "#7039FF"
-                          : this.state.currentPasswordError
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        {
-                          bottom: 5,
-
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
-                        }
-                      ]}
+          <View style={styles.mainCard}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <KeyboardShift>
+                {() => (
+                  <View style={styles.contentContainer}>
+                    <TouchableWithoutFeedback
+                      onPress={() => this._renderSideMenu("countries")}
                     >
-                      <Icon
-                        style={{
-                          fontSize: 20,
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
-                        }}
-                        name="key"
-                      />
-                      {"  "}
-                      Current Password
-                    </Label>
-                    <Input
-                      style={styles.inputtext}
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({
-                          userInfo: {
-                            ...this.state.userInfo,
-                            currentPassword: value
+                      <View
+                        style={[
+                          styles.selector,
+                          {
+                            borderColor: this.state.inputC
+                              ? "#7039FF"
+                              : this.state.countryError
+                              ? "red"
+                              : "#D9D9D9",
+                            borderBottomWidth: 0.5,
+                            marginBottom: -hp(11)
                           }
-                        })
-                      }
-                      onFocus={() => {
-                        this.setState({ inputF: true });
-                      }}
-                      onBlur={() => {
-                        this.setState({
-                          inputF: false,
-                          currentPasswordError: validateWrapper(
-                            "mandatory",
-                            this.state.userInfo.currentPassword
-                          )
-                        });
-                      }}
-                    />
-                  </Item>
-
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.inputP
-                          ? "#7039FF"
-                          : this.state.passwordError
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        {
-                          bottom: 5,
-
-                          color: this.state.inputP ? "#FF9D00" : "#717171"
-                        }
-                      ]}
+                        ]}
+                      >
+                        <>
+                          <Label
+                            style={[
+                              styles.inputtext,
+                              {
+                                bottom: 5,
+                                color: this.state.inputC ? "#FF9D00" : "#717171"
+                              }
+                            ]}
+                          >
+                            {"  "}
+                            {this.state.address.country === ""
+                              ? "Country*"
+                              : this.state.address.country}
+                          </Label>
+                          <DownButton style={{ left: 80, bottom: 5 }} />
+                        </>
+                      </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                      onPress={() => this._renderSideMenu("regions")}
                     >
-                      <Icon
-                        style={{
-                          fontSize: 20,
-                          color: this.state.inputP ? "#FF9D00" : "#717171"
-                        }}
-                        name="key"
-                      />
-                      {"  "}
-                      New Password
-                    </Label>
-                    <Input
-                      style={styles.inputtext}
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({
-                          userInfo: {
-                            ...this.state.userInfo,
-                            password: value
+                      <View
+                        style={[
+                          styles.selector,
+                          {
+                            borderColor: this.state.inputA
+                              ? "#7039FF"
+                              : this.state.areaError
+                              ? "red"
+                              : "#D9D9D9",
+                            borderBottomWidth: 0.5,
+                            marginBottom: -hp(5)
                           }
-                        })
-                      }
-                      onFocus={() => {
-                        this.setState({ inputP: true });
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputA ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          {"  "}
+                          {this.state.address.area === ""
+                            ? "Area*"
+                            : this.state.address.area}
+                        </Label>
+                        <DownButton style={{ left: 90, bottom: 5 }} />
+                      </View>
+                    </TouchableWithoutFeedback>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        top: -hp("10")
                       }}
-                      onBlur={() => {
-                        this.setState({
-                          inputP: false,
-                          passwordError: validateWrapper(
-                            "password",
-                            this.state.userInfo.password
-                          )
-                        });
-                      }}
-                    />
-                  </Item>
-                  {this.state.passwordError &&
-                  this.state.passwordError.includes("8 characters") ? (
-                    <Text
-                      style={[
-                        styles.text,
-                        {
-                          bottom: 40,
-                          paddingVertical: 0,
-                          paddingTop: 0,
-                          marginBottom: 0,
-                          paddingVertical: 0
-                        }
-                      ]}
                     >
-                      {this.state.passwordError}
-                    </Text>
-                  ) : null}
-                  {this.state.userInfo.password !== "" && (
+                      <Item
+                        floatingLabel
+                        style={[
+                          styles.input,
+                          {
+                            borderColor: this.state.inputBL
+                              ? "#7039FF"
+                              : this.state.blockError
+                              ? "red"
+                              : "#D9D9D9"
+                          }
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputBL ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          {"  "}
+                          Block*
+                        </Label>
+                        <Input
+                          multiline={true}
+                          maxLength={100}
+                          style={styles.inputtext}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={block =>
+                            this.setState({
+                              address: { ...this.state.address, block }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputBL: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputBL: false,
+                              blockError: validateWrapper(
+                                "mandatory",
+                                this.state.address.block
+                              )
+                            });
+                          }}
+                        />
+                      </Item>
+                      <View style={{ width: 25 }} />
+                      <Item
+                        floatingLabel
+                        style={[
+                          styles.input,
+                          {
+                            borderColor: this.state.inputS
+                              ? "#7039FF"
+                              : this.state.streetError
+                              ? "red"
+                              : "#D9D9D9"
+                          }
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputS ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          {"  "}
+                          Street*
+                        </Label>
+                        <Input
+                          multiline={true}
+                          maxLength={100}
+                          style={styles.inputtext}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={street =>
+                            this.setState({
+                              address: { ...this.state.address, street }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputS: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputS: false,
+                              streetError: validateWrapper(
+                                "mandatory",
+                                this.state.address.street
+                              )
+                            });
+                          }}
+                        />
+                      </Item>
+                    </View>
+
                     <Item
                       floatingLabel
                       style={[
                         styles.input,
                         {
-                          marginBottom: 0,
-                          paddingBottom: 0,
-                          borderColor: this.state.inputPR
+                          borderColor: this.state.inputB
                             ? "#7039FF"
-                            : this.state.repasswordError !== ""
+                            : this.state.buildingError
                             ? "red"
-                            : "#D9D9D9"
+                            : "#D9D9D9",
+                          width: 250,
+                          top: -hp("23")
                         }
                       ]}
                     >
@@ -302,58 +422,165 @@ class AddressForm extends Component {
                           styles.inputtext,
                           {
                             bottom: 5,
-                            color: this.state.inputPR ? "#FF9D00" : "#717171"
+
+                            color: this.state.inputB ? "#FF9D00" : "#717171"
                           }
                         ]}
                       >
-                        Retype Password
+                        {"  "}
+                        Building*
                       </Label>
-
                       <Input
+                        multiline={true}
+                        maxLength={100}
+                        onContentSizeChange={({
+                          nativeEvent: {
+                            contentSize: { width: txtWidth, height: txtHeight }
+                          }
+                        }) => {
+                          if (txtHeight > 40) {
+                            this.setState({
+                              height: txtHeight
+                            });
+                          }
+                        }}
                         style={styles.inputtext}
-                        secureTextEntry={true}
                         autoCorrect={false}
                         autoCapitalize="none"
-                        onChangeText={value =>
-                          this.setState({ repassword: value })
+                        onChangeText={building =>
+                          this.setState({
+                            address: { ...this.state.address, building }
+                          })
                         }
                         onFocus={() => {
-                          this.setState({ inputPR: true });
+                          this.setState({ inputB: true });
                         }}
                         onBlur={() => {
-                          this.setState({ inputPR: false });
-                          this._passwordVarification();
+                          this.setState({
+                            inputB: false,
+                            buildingError: validateWrapper(
+                              "mandatory",
+                              this.state.address.building
+                            )
+                          });
                         }}
                       />
                     </Item>
-                  )}
-                  {this.state.repasswordError !== "" &&
-                  this.state.userInfo.password !== "" ? (
-                    <Text
-                      style={[
-                        styles.text,
-                        {
-                          bottom: 15,
-                          paddingTop: 0,
-                          marginBottom: 0,
-                          paddingVertical: 0
-                        }
-                      ]}
+
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        position: "absolute",
+                        top: hp(45),
+                        alignSelf: "center"
+                      }}
                     >
-                      {this.state.repasswordError}
-                    </Text>
-                  ) : null}
-                  <Button
-                    onPress={() => this._handleSubmission()}
-                    style={styles.button}
-                  >
-                    <Icon style={styles.icon} name="arrow-forward" />
-                  </Button>
-                </View>
-              )}
-            </KeyboardShift>
-          </TouchableWithoutFeedback>
-        </View>
+                      <Item
+                        floatingLabel
+                        style={[
+                          styles.input,
+                          {
+                            borderColor: this.state.inputO
+                              ? "#7039FF"
+                              : "#D9D9D9"
+                          }
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputO ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          {"  "}
+                          Office No.
+                        </Label>
+                        <Input
+                          multiline={true}
+                          maxLength={100}
+                          style={styles.inputtext}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={office =>
+                            this.setState({
+                              address: { ...this.state.address, office }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputO: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputO: false
+                            });
+                          }}
+                        />
+                      </Item>
+                      <View style={{ width: 25 }} />
+                      <Item
+                        floatingLabel
+                        style={[
+                          styles.input,
+                          {
+                            borderColor: this.state.inputAv
+                              ? "#7039FF"
+                              : "#D9D9D9"
+                          }
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputAv ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          {"  "}
+                          Avenu
+                        </Label>
+                        <Input
+                          multiline={true}
+                          maxLength={100}
+                          style={styles.inputtext}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={avenue =>
+                            this.setState({
+                              address: { ...this.state.address, avenue }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputAv: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputAv: false
+                            });
+                          }}
+                        />
+                      </Item>
+                    </View>
+
+                    <Button
+                      onPress={() => this._handleSubmission()}
+                      style={styles.button}
+                    >
+                      <CheckmarkIcon />
+                    </Button>
+                  </View>
+                )}
+              </KeyboardShift>
+            </TouchableWithoutFeedback>
+          </View>
+        </Sidemenu>
       </Container>
     );
   }
@@ -363,8 +590,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changePassword: (currentPass, newPass, navigation) =>
-    dispatch(actionCreators.changePassword(currentPass, newPass, navigation))
+  addressForm: (address, navigation) =>
+    dispatch(actionCreators.addressForm(address, navigation))
 });
 export default connect(
   mapStateToProps,

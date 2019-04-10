@@ -12,7 +12,11 @@ import { LinearGradient } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon";
+
+//icons
+import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
+import BackIcon from "../../../assets/SVGs/BackButton.svg";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -98,19 +102,20 @@ class ChangePassword extends Component {
         <Button
           transparent
           onPress={() => this.props.navigation.goBack()}
-          style={{
-            marginLeft: 10
-          }}
+          style={styles.closeIcon}
         >
-          <Icon
-            style={{
-              fontSize: 40,
-              color: "#fff"
-            }}
-            name="close"
-          />
+          <BackIcon style={styles.closeIcon} name="close" />
         </Button>
         <Text style={styles.title}>Change Password</Text>
+        <ChangePassIcon
+          style={{
+            alignSelf: "center"
+          }}
+          fill="#fff"
+          fillOpacity={1}
+          width={100}
+          height={100}
+        />
         <View style={styles.mainCard}>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
@@ -119,11 +124,6 @@ class ChangePassword extends Component {
             <KeyboardShift>
               {() => (
                 <View style={styles.contentContainer}>
-                  <ChangePassIcon
-                    style={{
-                      alignSelf: "center"
-                    }}
-                  />
                   <Item
                     floatingLabel
                     style={[

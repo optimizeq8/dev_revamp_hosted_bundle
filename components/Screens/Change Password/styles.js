@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -10,7 +14,6 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   title: {
-    top: -15,
     fontSize: 24,
     color: "#fff",
     textAlign: "center",
@@ -58,13 +61,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around"
   },
-  icon: {
-    fontSize: 45,
-    color: "#fff",
-    paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center"
+  closeIcon: {
+    top: heightPercentageToDP(2.3),
+    left: widthPercentageToDP(4),
+    zIndex: 10,
+    elevation: 5
   },
   text: {
     textAlign: "center",

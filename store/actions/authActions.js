@@ -337,11 +337,6 @@ export const login = (userData, navigation) => {
   };
 };
 export const changePassword = (currentPass, newPass, navigation) => {
-  console.log({
-    current_paddword: currentPass,
-    password: newPass
-  });
-
   axios.defaults.headers.common = {
     ...axios.defaults.headers.common,
     "Content-Type": "application/x-www-form-urlencoded"
@@ -372,7 +367,29 @@ export const changePassword = (currentPass, newPass, navigation) => {
       .catch(err => console.log(err));
   };
 };
+export const addressForm = (address, navigation) => {
+  return (dispatch, getState) => {
+    instance
+      .post("businessaddress", {
+        businessid: getState().auth.mainBusiness.businessid,
+        ...address
+      })
+      .then(response => {
+        console.log(response.data);
 
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.ADD_ADDRESS,
+          payload: response.data
+        });
+      })
+      .catch(err => console.log(err));
+  };
+};
 export const forgotPassword = (email, navigation) => {
   return dispatch => {
     // dispatch({
