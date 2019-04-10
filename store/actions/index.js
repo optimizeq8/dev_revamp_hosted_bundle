@@ -27,5 +27,6 @@ export {
   ad_details,
   filterCampaigns,
   snap_ad_audience_size,
-  get_interests
+  get_interests,
+  get_total_reach
 } from "./campaignActions";

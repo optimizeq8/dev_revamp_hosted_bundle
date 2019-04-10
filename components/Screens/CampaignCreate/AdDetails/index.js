@@ -361,6 +361,52 @@ class AdDetails extends Component {
     this.setState({ filteredLanguages: value });
   };
 
+  _calcReach = async () => {
+    let r = cloneDeep(this.state.campaignInfo.targeting);
+    if (r.demographics[0].gender === "") {
+      delete r.demographics[0].gender;
+    }
+    if (
+      r.geos[0].hasOwnProperty("region_id") &&
+      r.geos[0].region_id.length === 0
+    ) {
+      delete r.geos[0].region_id;
+    }
+    if (r.demographics[0].max_age >= 35) {
+      r.demographics[0].max_age = "35+";
+    }
+    if (
+      r.hasOwnProperty("interests") &&
+      r.interests[0].category_id.length === 0
+    ) {
+      delete r.interests;
+    }
+    const obj = {
+      targeting: JSON.stringify(r),
+      ad_account_id: this.props.mainBusiness.snap_ad_account_id
+    };
+
+    let totalReach = {
+      demographics: [
+        {
+          languages: ["en", "ar"],
+          min_age: 13,
+          max_age: "35+"
+        }
+      ],
+      geos: [
+        {
+          country_code: this.state.campaignInfo.targeting.geos[0].country_code
+        }
+      ]
+    };
+    const obj2 = {
+      targeting: JSON.stringify(totalReach),
+      ad_account_id: this.props.mainBusiness.snap_ad_account_id
+    };
+    await this.props.snap_ad_audience_size(obj, obj2);
+  };
+
   render() {
     let menu;
     switch (this.state.sidemenu) {
@@ -498,7 +544,10 @@ class AdDetails extends Component {
           />
           <Sidemenu
             onChange={isOpen => {
-              if (isOpen === false) this._handleSideMenuState(isOpen);
+              if (isOpen === false) {
+                this._handleSideMenuState(isOpen);
+                this._calcReach();
+              }
             }}
             disableGestures={true}
             menu={menu}
@@ -653,17 +702,18 @@ class AdDetails extends Component {
 
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "center"
+                    felx: 1,
+                    flexDirection: "column"
                   }}
                 >
                   <ScrollView
                     style={{
-                      backgroundColor: "rgba(0,0,0,0.6)",
+                      backgroundColor: "rgba(255,255,255,0.1)",
                       marginHorizontal: 20,
                       borderRadius: 15,
                       paddingHorizontal: 25,
-                      height: "60%"
+                      marginBottom: 5,
+                      height: hp("25%")
                     }}
                   >
                     <View
@@ -871,19 +921,21 @@ class AdDetails extends Component {
                       </TouchableOpacity>
                     </View>
                   </ScrollView>
+                  <ReachBar
+                    country_code={
+                      this.state.campaignInfo.targeting.geos[0].country_code
+                    }
+                    targeting={this.state.campaignInfo.targeting}
+                  />
                 </View>
-                <Button onPress={this._handleSubmission} style={styles.button}>
-                  <Icon style={styles.icon} name="arrow-forward" />
-                </Button>
               </View>
 
               {
-                <ReachBar
-                  country_code={
-                    this.state.campaignInfo.targeting.geos[0].country_code
-                  }
-                  targeting={this.state.campaignInfo.targeting}
-                />
+                //   <View style={{ top: -35 }}>
+                //   <Button onPress={this._handleSubmission} style={styles.button}>
+                //     <Icon style={styles.icon} name="arrow-forward" />
+                //   </Button>
+                // </View>
               }
             </View>
           </Sidemenu>

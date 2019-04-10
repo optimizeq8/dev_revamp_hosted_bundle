@@ -19,7 +19,27 @@ export const snap_ad_audience_size = (info, totalReach) => {
           payload: data
         });
       })
-      .then(() => totalReach())
+      .then(() => dispatch(get_total_reach(totalReach)))
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const get_total_reach = info => {
+  return dispatch => {
+    instance
+      .post("snapaudiencesize", info)
+      .then(res => {
+        console.log("get total", res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE,
+          payload: data
+        });
+      })
       .catch(err => {
         console.log(err);
       });
