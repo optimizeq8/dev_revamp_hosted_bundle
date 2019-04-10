@@ -5,6 +5,7 @@ const initialState = {
   data: null,
   campaign_id: "",
   average_reach: 0,
+  total_reach: 0,
   interests: null
 };
 
@@ -35,6 +36,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         average_reach: action.payload.average_reach
+      };
+    case actionTypes.SET_SNAP_TOTAL_AUDIENCE_SIZE:
+      return {
+        ...state,
+        total_reach: (state.average_reach / action.payload.average_reach) * 100
       };
     case actionTypes.SET_INTERESTS:
       return {

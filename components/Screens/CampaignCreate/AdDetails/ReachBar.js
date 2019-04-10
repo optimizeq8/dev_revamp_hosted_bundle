@@ -13,36 +13,6 @@ import {
 } from "react-native-responsive-screen";
 
 class ReachBar extends Component {
-  state = { totalReach: 0 };
-  getTotalReach = () => {
-    let totalReach = {
-      demographics: [
-        {
-          languages: ["en", "ar"],
-          min_age: 13,
-          max_age: "35+"
-        }
-      ],
-      geos: [
-        {
-          country_code: this.props.country_code
-        }
-      ]
-    };
-    const obj = {
-      targeting: JSON.stringify(totalReach),
-      ad_account_id: this.props.mainBusiness.snap_ad_account_id
-    };
-    // this.props.snap_ad_audience_size(obj);
-    Axios.post(
-      `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
-      obj
-    ).then(res => {
-      this.setState({
-        totalReach: (this.props.average_reach / res.data.average_reach) * 100
-      });
-    });
-  };
   _calcReach = async () => {
     let r = cloneDeep(this.props.targeting);
     if (r.demographics[0].gender === "") {
@@ -67,7 +37,26 @@ class ReachBar extends Component {
       targeting: JSON.stringify(r),
       ad_account_id: this.props.mainBusiness.snap_ad_account_id
     };
-    await this.props.snap_ad_audience_size(obj, this.getTotalReach);
+
+    let totalReach = {
+      demographics: [
+        {
+          languages: ["en", "ar"],
+          min_age: 13,
+          max_age: "35+"
+        }
+      ],
+      geos: [
+        {
+          country_code: this.props.country_code
+        }
+      ]
+    };
+    const obj2 = {
+      targeting: JSON.stringify(totalReach),
+      ad_account_id: this.props.mainBusiness.snap_ad_account_id
+    };
+    await this.props.snap_ad_audience_size(obj, obj2);
   };
   render() {
     return (
@@ -82,7 +71,7 @@ class ReachBar extends Component {
           <AnimatedCircularProgress
             size={300}
             width={20}
-            fill={this.state.totalReach}
+            fill={this.props.total_reach}
             arcSweepAngle={200}
             rotation={260}
             lineCap="round"
@@ -108,6 +97,7 @@ class ReachBar extends Component {
 }
 const mapStateToProps = state => ({
   average_reach: state.campaignC.average_reach,
+  total_reach: state.campaignC.total_reach,
   mainBusiness: state.auth.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
