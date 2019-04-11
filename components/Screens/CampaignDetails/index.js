@@ -126,21 +126,30 @@ class CampaignDetails extends Component {
     if (!this.props.campaign) {
       return <Spinner color="red" />;
     } else {
-      let interesetNames = this.props.campaign.targeting.interests[0].category_id.map(
-        interest =>
-          ` ${
-            interestNames.interests.scls.find(
-              interestObj => interestObj.id === interest
-            ).name
-          } \n`
-      );
-      let end_time = new Date(this.props.campaign.end_time.split(".")[0]);
-      let start_time = new Date(this.props.campaign.start_time.split(".")[0]);
-      let end_year = end_time.getFullYear();
-      let start_year = start_time.getFullYear();
-      end_time = dateFormat(end_time, "d mmm");
-      start_time = dateFormat(start_time, "d mmm");
-
+      let interesetNames =
+        this.props.campaign.targeting &&
+        this.props.campaign.targeting.hasOwnProperty("interests")
+          ? this.props.campaign.targeting.interests[0].category_id.map(
+              interest =>
+                ` ${
+                  interestNames.interests.scls.find(
+                    interestObj => interestObj.id === interest
+                  ).name
+                } \n`
+            )
+          : [];
+      let start_time = "";
+      let end_year = "";
+      let start_year = "";
+      let end_time = "";
+      if (this.props.campaign.start_time && this.props.campaign.end_time) {
+        end_time = new Date(this.props.campaign.end_time.split("T")[0]);
+        start_time = new Date(this.props.campaign.start_time.split("T")[0]);
+        end_year = end_time.getFullYear();
+        start_year = start_time.getFullYear();
+        end_time = dateFormat(end_time, "d mmm");
+        start_time = dateFormat(start_time, "d mmm");
+      }
       return (
         <>
           {this.props.campaign.media.includes(".mov") && (
@@ -175,6 +184,26 @@ class CampaignDetails extends Component {
                 }}
                 style={styles.btnClose}
               />
+
+              <Text
+                onPress={() =>
+                  this.props.navigation.push("AdDetails", {
+                    editCampaign: true,
+                    campaign: this.props.campaign
+                  })
+                }
+                style={[
+                  styles.subtext,
+                  {
+                    position: "absolute",
+                    left: wp(85),
+                    top: hp(10),
+                    fontFamily: "montserrat-regular"
+                  }
+                ]}
+              >
+                Edit
+              </Text>
               <Card padder style={styles.mainCard}>
                 <Image
                   style={styles.image}
@@ -277,10 +306,14 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Gender{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.campaign.targeting.demographics[0]
-                            .gender === ""
+                          {this.props.campaign.targeting &&
+                          (this.props.campaign.targeting.gender === "" ||
+                            !this.props.campaign.targeting.hasOwnProperty(
+                              "gender"
+                            ))
                             ? "All"
-                            : this.props.campaign.targeting.demographics[0]
+                            : this.props.campaign.targeting &&
+                              this.props.campaign.targeting.demographics[0]
                                 .gender}
                         </Text>
                       </Text>
@@ -294,9 +327,10 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Languages{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.campaign.targeting.demographics[0].languages.join(
-                            ", "
-                          )}
+                          {this.props.campaign.targeting &&
+                            this.props.campaign.targeting.demographics[0].languages.join(
+                              ", "
+                            )}
                         </Text>
                       </Text>
                     </View>
@@ -315,15 +349,13 @@ class CampaignDetails extends Component {
                       <Text style={[styles.categories]}>
                         Age range{"\n"}
                         <Text style={styles.subtext}>
-                          {
+                          {this.props.campaign.targeting &&
                             this.props.campaign.targeting.demographics[0]
-                              .min_age
-                          }{" "}
+                              .min_age}{" "}
                           -{" "}
-                          {
+                          {this.props.campaign.targeting &&
                             this.props.campaign.targeting.demographics[0]
-                              .max_age
-                          }
+                              .max_age}
                         </Text>
                       </Text>
                     </View>
@@ -331,7 +363,8 @@ class CampaignDetails extends Component {
                       <LocationIcon width={hp("2")} height={hp("2")} />
                       <Text style={styles.categories}>
                         Location(s) {"\n"}
-                        {this.props.campaign.targeting.geos[0].country_code}
+                        {this.props.campaign.targeting &&
+                          this.props.campaign.targeting.geos[0].country_code}
                       </Text>
                     </View>
                   </View>

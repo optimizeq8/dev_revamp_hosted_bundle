@@ -20,7 +20,7 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import dateFormat from "dateformat";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
-
+import deepmerge from "deepmerge";
 //Data
 import country_regions from "./regions";
 
@@ -130,12 +130,72 @@ class AdDetails extends Component {
   }
 
   async componentDidMount() {
-    await this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        campaign_id: this.props.campaign_id
+    if (
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.editCampaign
+    ) {
+      const overwriteMerge = (destinationArray, sourceArray, options) =>
+        sourceArray;
+      const emptyTarget = value => (Array.isArray(value) ? [] : {});
+      const clone = (value, options) =>
+        deepmerge(emptyTarget(value), value, options);
+      function combineMerge(target, source, options) {
+        const destination = target.slice();
+
+        source.forEach(function(e, i) {
+          if (typeof destination[i] === "undefined") {
+            const cloneRequested = options.clone !== false;
+            const shouldClone = cloneRequested && options.isMergeableObject(e);
+            destination[i] = shouldClone ? clone(e, options) : e;
+          } else if (options.isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, options);
+          } else if (target.indexOf(e) === -1) {
+            destination.push(e);
+          }
+        });
+        return destination;
       }
-    });
+      const mergeRegions = (a, b) => {
+        if (!b.hasOwnProperty("region_id")) {
+          let re = { country_code: b[0].country_code };
+          re.region_id = [];
+          console.log("ihuigyuvghbk", re);
+          return re;
+        }
+      };
+      const options = {
+        customMerge: key => {
+          if (key === "geos") {
+            return mergeRegions;
+          }
+        }
+      };
+      let editedCampaign = deepmerge(
+        this.state.campaignInfo,
+        this.props.navigation.state.params.campaign,
+        { arrayMerge: combineMerge }
+      );
+      editedCampaign.targeting.demographics[0].max_age = parseInt(
+        editedCampaign.targeting.demographics[0].max_age
+      );
+      // console.log(
+      //   "interests",
+      //   this.props.navigation.state.params.campaign.targeting
+      // );
+
+      // console.log("edit", editedCampaign);
+
+      await this.setState({
+        campaignInfo: editedCampaign
+      });
+    } else {
+      await this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          campaign_id: this.props.campaign_id
+        }
+      });
+    }
   }
 
   _handleMaxAge = value => {
@@ -269,7 +329,7 @@ class AdDetails extends Component {
       max_ageError,
       languagesError,
       start_timeError: dateErrors.start_timeError,
-      end_time: dateErrors.end_timeError
+      end_timeError: dateErrors.end_timeError
     });
     if (
       !min_ageError &&
@@ -297,15 +357,24 @@ class AdDetails extends Component {
       if (rep.targeting.demographics[0].max_age >= 35) {
         rep.targeting.demographics[0].max_age = "35+";
       }
-      rep.targeting = JSON.stringify(this.state.campaignInfo.targeting);
-      // console.log( /  rep);
+      rep.targeting = JSON.stringify(rep.targeting);
 
-      this.props.ad_details(
-        rep,
-        this.state.interestNames,
-        this.props.navigation
-      );
-      // this.props.navigation.navigate("Home");
+      if (
+        this.props.navigation.state.params &&
+        this.props.navigation.state.params.editCampaign
+      ) {
+        this.props.updateCampaign(
+          rep,
+          this.props.mainBusiness.businessid,
+          this.props.navigation
+        );
+      } else {
+        this.props.ad_details(
+          rep,
+          this.state.interestNames,
+          this.props.navigation
+        );
+      }
     }
   };
 
@@ -408,6 +477,8 @@ class AdDetails extends Component {
   };
 
   render() {
+    // console.log("editeeee", this.state.campaignInfo);
+
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -482,6 +553,9 @@ class AdDetails extends Component {
             region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
+            selectedItems={
+              this.state.campaignInfo.targeting.interests[0].category_id
+            }
             option={this.state.selectionOption}
           />
         );
@@ -492,6 +566,7 @@ class AdDetails extends Component {
     let regions_names = [];
     this.state.regions.forEach(r => {
       if (
+        this.state.campaignInfo.targeting.geos[0].region_id &&
         this.state.campaignInfo.targeting.geos[0].region_id.find(
           i => i === r.id
         )
@@ -527,8 +602,8 @@ class AdDetails extends Component {
       this.state.campaignInfo.start_time !== "" &&
       this.state.campaignInfo.end_time !== ""
     ) {
-      end_time = new Date(this.state.campaignInfo.end_time.split(".")[0]);
-      start_time = new Date(this.state.campaignInfo.start_time.split(".")[0]);
+      end_time = new Date(this.state.campaignInfo.end_time.split("T")[0]);
+      start_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
       end_year = end_time.getFullYear();
       start_year = start_time.getFullYear();
       end_time = dateFormat(end_time, "d mmm");
@@ -569,7 +644,7 @@ class AdDetails extends Component {
                   <Button
                     iconLeft
                     transparent
-                    onPress={() => this.props.navigation.goBack()}
+                    onPress={() => this.props.navigation.pop()}
                     style={{ justifyContent: "flex-start" }}
                   >
                     <Icon
@@ -621,6 +696,10 @@ class AdDetails extends Component {
                   </View>
 
                   <Slider
+                    disabled={
+                      this.props.navigation.state.params &&
+                      this.props.navigation.state.params.editCampaign
+                    }
                     style={{ width: 300 }}
                     step={10}
                     minimumValue={this.state.minValueBudget}
@@ -645,7 +724,11 @@ class AdDetails extends Component {
                     }
                   ]}
                   onPress={() => {
-                    this.dateField.showModal();
+                    if (
+                      this.props.navigation.state.params &&
+                      !this.props.navigation.state.params.editCampaign
+                    )
+                      this.dateField.showModal();
                   }}
                 >
                   <View
@@ -922,6 +1005,7 @@ class AdDetails extends Component {
                     </View>
                   </ScrollView>
                   <ReachBar
+                    _handleSubmission={this._handleSubmission}
                     country_code={
                       this.state.campaignInfo.targeting.geos[0].country_code
                     }
@@ -962,6 +1046,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   ad_details: (info, interestNames, navigation) =>
     dispatch(actionCreators.ad_details(info, interestNames, navigation)),
+  updateCampaign: (info, businessid, navigation) =>
+    dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
+
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach))
 });

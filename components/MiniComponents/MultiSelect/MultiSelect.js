@@ -29,7 +29,8 @@ class MultiSelectList extends Component {
     !this.props.addressForm &&
       this.props.get_interests(this.props.country_code);
     this.setState({
-      filteredCountreis: this.props.countries
+      filteredCountreis: this.props.countries,
+      selectedItems: this.props.selectedItems
     });
   }
   componentDidUpdate(prevProps) {

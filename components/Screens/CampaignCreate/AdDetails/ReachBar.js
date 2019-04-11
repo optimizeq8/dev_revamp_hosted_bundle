@@ -40,7 +40,10 @@ class ReachBar extends Component {
                   Potential Reach
                 </Text>
               </Text>
-              <Button style={styles.button}>
+              <Button
+                onPress={() => this.props._handleSubmission()}
+                style={styles.button}
+              >
                 <Icon style={styles.icon} name="arrow-forward" />
               </Button>
             </View>

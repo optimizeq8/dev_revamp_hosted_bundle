@@ -192,7 +192,7 @@ class FilterMenu extends Component {
           </View>
         </View>
         <Text onPress={() => this._resetFilter()} style={styles.subtext}>
-          Rest
+          Reset
         </Text>
         <Button
           style={[styles.checkbutton, { marginBottom: 35, elevation: 0 }]}
