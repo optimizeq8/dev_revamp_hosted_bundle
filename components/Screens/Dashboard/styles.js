@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     top: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     flex: 1
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   activebutton: {
-    backgroundColor: "#FF9D00",
+    backgroundColor: "#fff",
     alignSelf: "center",
     justifyContent: "center",
     width: 55,

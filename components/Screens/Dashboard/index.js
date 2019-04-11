@@ -52,7 +52,8 @@ class Dashboard extends Component {
     this.state = {
       sidemenustate: false,
       isListEnd: false,
-      fetching_from_server: false
+      fetching_from_server: false,
+      showSearchBar: false
     };
     this.page = 1;
   }
@@ -62,7 +63,9 @@ class Dashboard extends Component {
       this.increasePage
     );
   }
-
+  renderSearchBar = () => {
+    this.setState({ showSearchBar: !this.state.showSearchBar });
+  };
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {
       console.log(this.state.sidemenustate);
@@ -153,13 +156,23 @@ class Dashboard extends Component {
                 }
                 <View style={{ flexDirection: "row" }}>
                   <Button
-                    style={styles.activebutton}
-                    onPress={() => {
-                      this._handleSideMenuState(true);
-                    }}
+                    style={[
+                      styles.activebutton,
+                      {
+                        backgroundColor: this.state.showSearchBar
+                          ? "#FF9D00"
+                          : "#fff"
+                      }
+                    ]}
+                    onPress={this.renderSearchBar}
                   >
-                    <FilterIcon width={23} height={23} fill="#fff" />
+                    <SearchIcon
+                      width={23}
+                      height={23}
+                      stroke={this.state.showSearchBar ? "#fff" : "#575757"}
+                    />
                   </Button>
+
                   <Button
                     style={styles.button}
                     onPress={() => {
@@ -169,16 +182,23 @@ class Dashboard extends Component {
                     <Text
                       style={[styles.title, { paddingTop: 0, fontSize: 12 }]}
                     >
-                      New{"\n"}
+                      New {"\n"}
                       Campaign
                     </Text>
                   </Button>
-                  <Button style={styles.activebutton} onPress={() => {}}>
-                    <SearchIcon width={23} height={23} stroke="#fff" />
+                  <Button
+                    style={styles.activebutton}
+                    onPress={() => {
+                      this._handleSideMenuState(true);
+                    }}
+                  >
+                    <FilterIcon width={23} height={23} fill="#575757" />
                   </Button>
                 </View>
               </View>
-              <SearchBar />
+              {this.state.showSearchBar && (
+                <SearchBar renderSearchBar={this.renderSearchBar} />
+              )}
 
               {/* <ScrollView contentContainerStyle={styles.contentContainer}>
               {list}
