@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "clone-deep": "^4.0.1",
     "dateformat": "^3.0.3",
+    "deepmerge": "^3.2.0",
     "expo": "^31.0.2",
     "jwt-decode": "^2.2.0",
     "lottie-react-native": "2.3.2",

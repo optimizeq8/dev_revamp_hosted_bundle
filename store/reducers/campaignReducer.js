@@ -32,6 +32,14 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message
       };
+    case actionTypes.UPDATE_CAMPAIGN_DETAILS:
+      console.log("ad detail", { ...state.data, ...action.payload.data });
+
+      return {
+        ...state,
+        data: { ...state.data, ...action.payload.data },
+        message: action.payload.message
+      };
     case actionTypes.SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,

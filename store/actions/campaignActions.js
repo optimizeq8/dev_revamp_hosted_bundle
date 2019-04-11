@@ -131,7 +131,7 @@ export const ad_details = (info, interestNames, navigation) => {
     instance
       .post(`savetargeting`, info)
       .then(res => {
-        console.log(res.data);
+        console.log("back end", res.data);
         return res.data;
       })
       .then(data => {
@@ -147,6 +147,29 @@ export const ad_details = (info, interestNames, navigation) => {
       })
       .catch(err => {
         dispatch(console.log(err.response.data));
+      });
+  };
+};
+
+export const updateCampaign = (info, businessid, navigation) => {
+  return (dispatch, getState) => {
+    instance
+      .put(`savetargeting`, { ...info, businessid })
+      .then(res => {
+        console.log("back end", res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.UPDATE_CAMPAIGN_DETAILS,
+          payload: data
+        });
+      })
+      .then(() => {
+        navigation.navigate("Dashboard");
+      })
+      .catch(err => {
+        console.log(err.response.data);
       });
   };
 };
