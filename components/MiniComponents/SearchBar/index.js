@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { TouchableOpacity } from "react-native";
 import { Text, Icon, View, Input, Item, Button } from "native-base";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import RadioGroup from "react-native-radio-buttons-group";
+import SearchIcon from "../../../assets/SVGs/Search.svg";
+import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -39,15 +42,34 @@ class SearchBar extends Component {
   render() {
     return (
       <View>
-        <View searchBar>
-          <Item>
-            <Icon name="ios-search" />
+        <View
+          searchBar
+          style={{
+            marginHorizontal: 15
+          }}
+        >
+          <Item
+            rounded
+            style={{
+              backgroundColor: "#fff",
+              borderColor: "#fff",
+              paddingHorizontal: 15
+            }}
+          >
+            <SearchIcon width={18} height={18} stroke="#575757" />
             <Input
               placeholder="Search"
               onChangeText={value => {
                 this.setState({ value: value }, () => this._handleSubmit());
               }}
             />
+            <TouchableOpacity
+              onPress={() => {
+                this.props.renderSearchBar();
+              }}
+            >
+              <CloseIcon width={18} height={18} stroke="#C6C6C6" />
+            </TouchableOpacity>
           </Item>
         </View>
       </View>
