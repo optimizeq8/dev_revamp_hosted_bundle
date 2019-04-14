@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { LinearGradient } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
@@ -16,9 +17,11 @@ import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
 
 //Redux
@@ -99,13 +102,12 @@ class ChangePassword extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
-          transparent
+        <TouchableOpacity
           onPress={() => this.props.navigation.goBack()}
-          style={styles.closeIcon}
+          style={globalStyles.backButton}
         >
-          <BackIcon style={styles.closeIcon} name="close" />
-        </Button>
+          <BackIcon />
+        </TouchableOpacity>
         <Text style={styles.title}>Change Password</Text>
         <ChangePassIcon
           style={{
@@ -324,12 +326,12 @@ class ChangePassword extends Component {
                       {this.state.repasswordError}
                     </Text>
                   ) : null}
-                  <Button
+                  <TouchableOpacity
                     onPress={() => this._handleSubmission()}
                     style={styles.button}
                   >
-                    <Icon style={styles.icon} name="arrow-forward" />
-                  </Button>
+                    <CheckmarkIcon />
+                  </TouchableOpacity>
                 </View>
               )}
             </KeyboardShift>

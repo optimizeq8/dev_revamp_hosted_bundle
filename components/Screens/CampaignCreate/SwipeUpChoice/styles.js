@@ -36,20 +36,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "left"
   },
-  buttonN: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    backgroundColor: "#FF9D00",
-    padding: 10,
-    marginBottom: 20,
-    bottom: 15
-  },
+
   icon: {
     alignSelf: "center",
     color: "#fff",

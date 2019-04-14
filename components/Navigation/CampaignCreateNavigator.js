@@ -1,5 +1,7 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Animated, Easing } from "react-native";
+import { FluidNavigator } from "react-navigation-fluid-transitions";
+
 import { createStackNavigator } from "react-navigation";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
@@ -9,7 +11,7 @@ import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
 import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
 import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
 import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
-export default createStackNavigator(
+export default FluidNavigator(
   {
     AdType: AdType,
     AdObjective: AdObjective,
@@ -20,6 +22,12 @@ export default createStackNavigator(
     SwipeUpChoice: SwipeUpChoice,
     AdPaymentReview: AdPaymentReview
   },
+  // {
+  //   duration: 6000,
+  //   timing: Animated.timing,
+  //   easing: Easing.bezier(0.175, 0.885, 0.32, 1.275),
+  //   useNativeDriver: true
+  // },
   {
     initialRouteName: "AdType",
     navigationOptions: {

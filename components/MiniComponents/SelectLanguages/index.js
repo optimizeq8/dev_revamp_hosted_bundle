@@ -87,7 +87,7 @@ export default class SelectLanguages extends Component {
           </View>
         </View>
         <Button
-          style={[styles.button, { marginBottom: 30 }]}
+          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
           onPress={() => this.props._handleSideMenuState(false)}
         >
           <CheckmarkIcon width={53} height={53} />

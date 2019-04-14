@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 0,
+    paddingTop: 10,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
@@ -42,15 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   button: {
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    width: 65,
-    height: 65,
-    borderRadius: 32.5,
-    borderColor: "transparent",
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,

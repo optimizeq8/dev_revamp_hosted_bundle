@@ -31,9 +31,10 @@ import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
-
+import BackButton from "../../../../assets/SVGs/BackButton.svg";
 // Style
 import styles from "./styles";
+import globalStyles from "../../../../Global Styles";
 import { colors } from "../../../GradiantColors/colors";
 import {
   widthPercentageToDP as wp,
@@ -477,8 +478,6 @@ class AdDetails extends Component {
   };
 
   render() {
-    // console.log("editeeee", this.state.campaignInfo);
-
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -640,23 +639,14 @@ class AdDetails extends Component {
               ]}
             >
               <View style={{ flex: 1 }}>
-                <View style={{}}>
+                <View>
                   <Button
                     iconLeft
                     transparent
-                    onPress={() => this.props.navigation.pop()}
-                    style={{ justifyContent: "flex-start" }}
+                    onPress={() => this.props.navigation.goBack()}
+                    style={globalStyles.backButton}
                   >
-                    <Icon
-                      style={{
-                        paddingLeft: 10,
-                        marginRight: 20,
-                        top: 25,
-                        fontSize: 30,
-                        color: "#fff"
-                      }}
-                      name="arrow-back"
-                    />
+                    <BackButton />
                   </Button>
                   <Text style={styles.headline}>
                     Input your Snapchat {"\n"} AD Details
@@ -724,10 +714,7 @@ class AdDetails extends Component {
                     }
                   ]}
                   onPress={() => {
-                    if (
-                      this.props.navigation.state.params &&
-                      !this.props.navigation.state.params.editCampaign
-                    )
+                    if (!this.props.navigation.state.params)
                       this.dateField.showModal();
                   }}
                 >

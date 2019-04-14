@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontSize: widthPercentageToDP(5),
     color: "#fff",
     textAlign: "center",
-    paddingTop: 0,
+    paddingTop: 10,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   closeIcon: {
-    top: heightPercentageToDP(2.3),
-    left: widthPercentageToDP(4),
+    top: heightPercentageToDP(4),
+    left: widthPercentageToDP(7),
     zIndex: 10,
     elevation: 5
   },

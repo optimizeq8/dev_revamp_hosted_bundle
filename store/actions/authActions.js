@@ -19,6 +19,10 @@ export const changeBusiness = business => {
 
 export const getCampaign = id => {
   return dispatch => {
+    dispatch({
+      type: actionTypes.SET_CAMPAIGN,
+      payload: { loading: true, data: {}, message: "" }
+    });
     instance
       .get(`campaigndetail/${id}`)
       .then(res => {

@@ -123,7 +123,7 @@ class CampaignDetails extends Component {
       ]
     };
 
-    if (!this.props.campaign) {
+    if (this.props.loading) {
       return <Spinner color="red" />;
     } else {
       let interesetNames =
@@ -180,7 +180,6 @@ class CampaignDetails extends Component {
               <CloseIcon
                 onPress={() => {
                   this.props.navigation.goBack();
-                  console.log("iugvbknjl");
                 }}
                 style={styles.btnClose}
               />
@@ -539,7 +538,8 @@ class CampaignDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign: state.auth.selectedCampaign
+  campaign: state.auth.selectedCampaign,
+  loading: state.auth.loading
 });
 const mapDispatchToProps = dispatch => ({});
 export default connect(

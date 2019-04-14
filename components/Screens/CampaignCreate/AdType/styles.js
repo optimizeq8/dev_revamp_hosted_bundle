@@ -1,26 +1,17 @@
 import { StyleSheet } from "react-native";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
+    paddingTop: hp(5),
     flex: 1,
     backgroundColor: "#751AFF"
   },
-  image: {
-    alignSelf: "center",
-    height: 100,
-    width: 100,
-    margin: 15
-  },
-  mainCard: {
-    top: 15,
-    flex: 1
-  },
+
   text: {
     textAlign: "center",
     color: "#717171",
@@ -35,7 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 0,
+    paddingTop: hp(2),
     textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
@@ -67,11 +58,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     zIndex: 10
   },
-  buttonN: {
-    paddingTop: 0,
-    bottom: 15,
-    height: 530
-  },
+
   placeholder: {
     opacity: 0.26,
     borderRadius: 34,
@@ -86,6 +73,10 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  closeIcon: {
+    top: hp(6),
+    left: wp(4.5)
   }
 });
 

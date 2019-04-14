@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginHorizontal: 20,
     height: 55,
-    borderRadius: 33
+    borderRadius: 33,
+    elevation: 0
   },
   link: {
     marginTop: 20,
@@ -169,7 +170,8 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 33,
     top: 30,
-    marginBottom: 10
+    marginBottom: 10,
+    elevation: 0
   },
   dateInput: {
     marginBottom: 15,

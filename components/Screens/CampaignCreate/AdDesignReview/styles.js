@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -9,8 +13,9 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    paddingTop: 20,
+    backgroundColor: "black",
+    height: heightPercentageToDP(110)
   },
   inputtext: {
     fontFamily: "benton-sans-light",
@@ -28,9 +33,9 @@ const styles = StyleSheet.create({
     height: 50
   },
   buttonN: {
-    padding: 10,
     paddingTop: 0,
-    bottom: 15
+    bottom: 15,
+    height: heightPercentageToDP("73")
   },
   content: {
     flexDirection: "row",
@@ -43,24 +48,28 @@ const styles = StyleSheet.create({
     width: 50,
     margin: 15
   },
-  placeholder: { alignSelf: "center", height: 300, width: 300, margin: 0 },
+  placeholder: {
+    borderRadius: 20,
+    alignSelf: "center",
+    width: widthPercentageToDP("100%"),
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "black",
+    justifyContent: "center"
+  },
 
   mainCard: {
-    top: 15,
-
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
+    borderRadius: 40,
+    marginTop: 5,
+    height: heightPercentageToDP(85),
+    marginHorizontal: widthPercentageToDP(0.5)
   },
   brand_name: {
     textAlign: "left",
     color: "#fff",
-    paddingTop: 40,
-    fontFamily: "benton-sans-medium",
-    fontSize: 18,
+    paddingTop: 30,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
     paddingLeft: 20,
     shadowColor: "#000",
     shadowRadius: 5,
@@ -69,10 +78,11 @@ const styles = StyleSheet.create({
   headline: {
     textAlign: "left",
     color: "#fff",
-    fontFamily: "benton-sans-medium",
-    fontSize: 16,
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
     paddingLeft: 20,
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: -10,
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 1
@@ -82,7 +92,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "benton-sans-medium",
     fontSize: 16,
-    top: "80%",
+    bottom: "7%",
+    paddingVertical: 17,
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 1

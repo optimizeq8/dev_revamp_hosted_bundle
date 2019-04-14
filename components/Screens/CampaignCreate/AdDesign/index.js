@@ -32,13 +32,20 @@ import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
+//icons
+import BackButton from "../../../../assets/SVGs/BackButton";
+import EyeIcon from "../../../../assets/SVGs/Eye";
+import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+
 // Style
 import styles from "./styles";
+import globalStyles from "../../../../Global Styles/";
 import { colors } from "../../../GradiantColors/colors";
 
 //Validator
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import { Transition } from "react-navigation-fluid-transitions";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -75,7 +82,9 @@ class AdDesign extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        campaign_id: this.props.campaign_id
+        campaign_id: this.props.campaign_id,
+        brand_name: this.props.mainBusiness.businessname,
+        headline: !this.props.data ? "Headline" : this.props.data.name
       },
       objective: this.props.data.objective
     });
@@ -201,7 +210,23 @@ class AdDesign extends Component {
       loaded: loading
     });
   };
-  _handleSubmission = async () => {
+  perviewHandler = async () => {
+    await this.validator();
+    if (
+      !this.state.brand_nameError &&
+      !this.state.headlineError &&
+      !this.state.imageError
+    )
+      this.props.navigation.push("AdDesignReview", {
+        image: this.state.image,
+        type: this.state.type,
+        call_to_action: this.state.campaignInfo.call_to_action.label,
+        headline: this.state.campaignInfo.headline,
+        brand_name: this.state.campaignInfo.brand_name
+      });
+  };
+
+  validator = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.brand_name
@@ -217,8 +242,14 @@ class AdDesign extends Component {
       headlineError,
       imageError
     });
-
-    if (!brand_nameError && !headlineError && !imageError) {
+  };
+  _handleSubmission = async () => {
+    await this.validator();
+    if (
+      !this.state.brand_nameError &&
+      !this.state.headlineError &&
+      !this.state.imageError
+    ) {
       let t = await this.formatMedia();
       console.log(this.state.formatted);
 
@@ -264,176 +295,178 @@ class AdDesign extends Component {
                 marginBottom: heightPercentageToDP("2.5")
               }}
             >
-              <Button
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-                style={{
-                  paddingLeft: 10
-                }}
+              <TouchableOpacity
+                onPress={() => this.props.navigation.pop()}
+                style={globalStyles.backButton}
               >
-                <Icon
-                  style={{
-                    top: 20,
-                    fontSize: 35,
-                    color: "#fff"
-                  }}
-                  name="arrow-back"
-                />
-              </Button>
+                <BackButton />
+              </TouchableOpacity>
               <Text style={styles.title}>Compose Ad</Text>
             </View>
-            <View style={styles.buttonN}>
-              {this.state.type === "VIDEO" ? (
-                <Video
-                  source={{
-                    uri: image
-                  }}
-                  shouldPlay
-                  isLooping
-                  isMuted
-                  resizeMode="cover"
-                  style={styles.placeholder}
-                />
-              ) : !image ? (
-                <View style={styles.placeholder} />
-              ) : (
-                <Image
-                  style={styles.placeholder}
-                  source={{ uri: image }}
-                  resizeMode="cover"
-                />
-              )}
-              <Item
-                style={[
-                  styles.inputBrand,
-                  {
-                    borderColor: this.state.brand_nameError ? "red" : "#D9D9D9"
-                  }
-                ]}
-              >
-                <PenIcon fill={this.state.inputB ? "#FF9D00" : "#fff"} />
-
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Brand Name"
-                  placeholderLabel={styles.inputtext}
-                  placeholderTextColor="white"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        brand_name: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputB: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputB: false });
-                    this.setState({
-                      brand_nameError: validateWrapper(
-                        "mandatory",
-                        this.state.campaignInfo.brand_name
-                      )
-                    });
-                  }}
-                />
-              </Item>
-
-              <Item
-                style={[
-                  styles.inputHeadline,
-                  {
-                    borderColor: this.state.headlineError ? "red" : "#D9D9D9"
-                  }
-                ]}
-              >
-                <PenIcon fill={this.state.inputH ? "#FF9D00" : "#fff"} />
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Headline"
-                  placeholderTextColor="white"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        headline: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputH: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputH: false });
-                    this.setState({
-                      headlineError: validateWrapper(
-                        "mandatory",
-                        this.state.campaignInfo.headline
-                      )
-                    });
-                  }}
-                />
-              </Item>
-              <Button
-                style={[styles.inputMiddleButton, { flexDirection: "column" }]}
-                onPress={() => {
-                  this._pickImage();
-                }}
-              >
-                <Icon
-                  style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
-                  name="camera"
-                />
-                <Text
-                  style={{
-                    textAlign: "center",
-                    paddingTop: 23,
-                    fontFamily: "montserrat-medium",
-                    fontSize: 14,
-                    width: 150,
-                    color: "#FF9D00"
-                  }}
-                >
-                  {image ? "Edit Media" : "Add Media"}
-                </Text>
-              </Button>
-              {!["BRAND_AWARENESS", "reach"].find(
-                obj => this.state.objective.toLowerCase() === obj.toLowerCase()
-              ) && (
-                <TouchableOpacity
-                  style={styles.swipeUp}
-                  onPress={() => {
-                    this.state.objective.toLowerCase() === "traffic"
-                      ? this.props.navigation.navigate("SwipeUpDestination", {
-                          _changeDestination: this._changeDestination
-                        })
-                      : this.props.navigation.navigate("SwipeUpChoice", {
-                          _changeDestination: this._changeDestination,
-                          objective: this.state.objective
-                        });
-                  }}
-                >
-                  <Text style={styles.swipeUpText}>
-                    {this.state.campaignInfo.destination !== "BLANK"
-                      ? this.state.campaignInfo.destination
-                      : this.state.campaignInfo.destination.includes("REMOTE")
-                      ? "Website"
-                      : "Swipe Up destination"}
-                  </Text>
-                  <Icon
-                    type="MaterialIcons"
-                    name="arrow-drop-down"
-                    style={{ color: "orange" }}
+            <Transition style={{ height: "100%" }} shared="image">
+              <View style={styles.buttonN}>
+                {this.state.type === "VIDEO" ? (
+                  <Video
+                    source={{
+                      uri: image
+                    }}
+                    shouldPlay
+                    isLooping
+                    isMuted
+                    resizeMode="cover"
+                    style={styles.placeholder}
                   />
-                </TouchableOpacity>
-              )}
-            </View>
+                ) : !image ? (
+                  <View style={styles.placeholder} />
+                ) : (
+                  <Image
+                    style={styles.placeholder}
+                    source={{ uri: image }}
+                    resizeMode="cover"
+                  />
+                )}
+                <Item
+                  style={[
+                    styles.inputBrand,
+                    {
+                      borderColor: this.state.brand_nameError
+                        ? "red"
+                        : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <PenIcon fill={this.state.inputB ? "#FF9D00" : "#fff"} />
+                  <Input
+                    style={styles.inputtext}
+                    defaultValue={
+                      this.props.mainBusiness.businessname
+                        ? this.props.mainBusiness.businessname
+                        : "Brand Name"
+                    }
+                    placeholderLabel={styles.inputtext}
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          brand_name: value
+                        }
+                      })
+                    }
+                    onFocus={() => {
+                      this.setState({ inputB: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputB: false });
+                      this.setState({
+                        brand_nameError: validateWrapper(
+                          "mandatory",
+                          this.state.campaignInfo.brand_name
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+                <Item
+                  style={[
+                    styles.inputHeadline,
+                    {
+                      borderColor: this.state.headlineError ? "red" : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <PenIcon fill={this.state.inputH ? "#FF9D00" : "#fff"} />
+                  <Input
+                    style={styles.inputtext}
+                    defaultValue={
+                      !this.props.data ? "Headline" : this.props.data.name
+                    }
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          headline: value
+                        }
+                      })
+                    }
+                    onFocus={() => {
+                      this.setState({ inputH: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputH: false });
+                      this.setState({
+                        headlineError: validateWrapper(
+                          "mandatory",
+                          this.state.campaignInfo.headline
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+                <Button
+                  style={[
+                    styles.inputMiddleButton,
+                    { flexDirection: "column" }
+                  ]}
+                  onPress={() => {
+                    this._pickImage();
+                  }}
+                >
+                  <Icon
+                    style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
+                    name="camera"
+                  />
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      paddingTop: 23,
+                      fontFamily: "montserrat-medium",
+                      fontSize: 14,
+                      width: 150,
+                      color: "#FF9D00"
+                    }}
+                  >
+                    {image ? "Edit Media" : "Add Media"}
+                  </Text>
+                </Button>
+                {!["BRAND_AWARENESS", "reach"].find(
+                  obj =>
+                    this.state.objective.toLowerCase() === obj.toLowerCase()
+                ) && (
+                  <TouchableOpacity
+                    style={styles.swipeUp}
+                    onPress={() => {
+                      this.state.objective.toLowerCase() === "traffic"
+                        ? this.props.navigation.navigate("SwipeUpDestination", {
+                            _changeDestination: this._changeDestination
+                          })
+                        : this.props.navigation.navigate("SwipeUpChoice", {
+                            _changeDestination: this._changeDestination,
+                            objective: this.state.objective
+                          });
+                    }}
+                  >
+                    <Text style={styles.swipeUpText}>
+                      {this.state.campaignInfo.destination !== "BLANK"
+                        ? this.state.campaignInfo.destination
+                        : this.state.campaignInfo.destination.includes("REMOTE")
+                        ? "Website"
+                        : "Swipe Up destination"}
+                    </Text>
+                    <Icon
+                      type="MaterialIcons"
+                      name="arrow-drop-down"
+                      style={{ color: "orange" }}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </Transition>
             {!this.state.imageError ? null : (
               <Text
                 style={{
@@ -457,32 +490,21 @@ class AdDesign extends Component {
               style={{
                 flexDirection: "row",
                 flex: 1,
-                justifyContent: "space-around"
+                alignSelf: "center"
               }}
             >
-              <Button
-                style={[styles.button, { backgroundColor: "#fff" }]}
-                onPress={() => {
-                  if (this.state.image)
-                    this.props.navigation.push("AdDesignReview", {
-                      image: this.state.image,
-                      type: this.state.type,
-                      call_to_action: this.state.campaignInfo.call_to_action
-                        .label,
-                      headline: this.state.campaignInfo.headline,
-                      brand_name: this.state.campaignInfo.brand_name
-                    });
-                }}
+              <TouchableOpacity
+                style={[styles.button]}
+                onPress={() => this.perviewHandler()}
               >
-                <Icon
-                  style={{ color: "#751AFF", fontSize: 22 }}
-                  type="SimpleLineIcons"
-                  name="eye"
-                />
-              </Button>
-              <Button onPress={this._handleSubmission} style={styles.button}>
-                <Icon style={styles.icon} name="arrow-forward" />
-              </Button>
+                <EyeIcon />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this._handleSubmission}
+                style={styles.button}
+              >
+                <ForwardButton />
+              </TouchableOpacity>
             </View>
           </View>
         </KeyboardAwareScrollView>

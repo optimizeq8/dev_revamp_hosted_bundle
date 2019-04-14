@@ -55,11 +55,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 50
   },
-  buttonN: {
-    padding: 10,
-    paddingTop: 0,
-    bottom: 15
-  },
+
   indicator: {
     fontSize: 30,
     marginRight: 20,
@@ -75,27 +71,6 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     margin: 15
-  },
-  mainCard: {
-    top: 15,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "transparent",
-    flex: 1,
-
-    backgroundColor: "#ffcc00",
-    marginLeft: 0,
-    marginRight: 0
-  },
-  text: {
-    textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 10
   },
 
   gradient: {

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import styles from "./styles";
-import { Button, Icon } from "native-base";
-import cloneDeep from "clone-deep";
+import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 import * as actionCreators from "../../../../store/actions";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { TouchableRipple } from "react-native-paper";
 
 class ReachBar extends Component {
   render() {
@@ -40,12 +40,12 @@ class ReachBar extends Component {
                   Potential Reach
                 </Text>
               </Text>
-              <Button
+              <TouchableOpacity
                 onPress={() => this.props._handleSubmission()}
                 style={styles.button}
               >
-                <Icon style={styles.icon} name="arrow-forward" />
-              </Button>
+                <ForwardButton />
+              </TouchableOpacity>
             </View>
           );
         }}

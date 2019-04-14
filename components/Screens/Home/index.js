@@ -153,9 +153,9 @@ class Home extends Component {
                   this.props.logout(this.props.navigation);
                 }}
               >
-                <Text> Logout </Text>
+                <Text> Log out </Text>
               </Button>
-              <Button
+              {/* <Button
                 style={[styles.button]}
                 onPress={() => {
                   this.props.navigation.navigate("CreateBusinessAccount");
@@ -164,9 +164,9 @@ class Home extends Component {
                 <Text> Create New Business </Text>
               </Button>
 
+            */}
               <Button
                 style={[styles.button]}
-
                 onPress={() => this.props.navigation.navigate("AdDetails")}
               >
                 <Text> Test </Text>

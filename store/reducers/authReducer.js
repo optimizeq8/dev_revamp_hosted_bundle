@@ -145,7 +145,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCampaign: action.payload.data,
-        message: action.payload.message
+        message: action.payload.message,
+        loading: action.payload.loading
       };
     case actionTypes.RESET_MESSAGE:
       return {

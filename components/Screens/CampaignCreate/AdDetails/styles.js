@@ -55,11 +55,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 50
   },
-  buttonN: {
-    padding: 10,
-    paddingTop: 0,
-    bottom: 15
-  },
+
   indicator: {
     fontSize: 30,
     marginRight: 20,
@@ -86,16 +82,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0
   },
-  text: {
-    textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
 
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -113,12 +99,7 @@ const styles = StyleSheet.create({
     marginTop: -hp("5"),
     borderRadius: 30
   },
-  button: {
-    alignSelf: "center",
-    backgroundColor: "transparent",
-    position: "absolute",
-    bottom: hp("10%")
-  },
+
   dateInput: {
     marginBottom: 5,
     backgroundColor: "rgba(255,255,255,0.3)",
@@ -157,20 +138,17 @@ const styles = StyleSheet.create({
   },
   chartItems: {
     flex: 1,
-    alignItems: "center",
     flexDirection: "column",
     top: 25,
-    left: 40
+    left: wp(8)
   },
   button: {
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    width: 55,
-    height: 55,
+
     borderRadius: 27.5,
     borderColor: "transparent",
     borderWidth: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,

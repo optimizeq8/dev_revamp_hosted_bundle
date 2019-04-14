@@ -7,6 +7,10 @@ import { Icon as BIcon, Root } from "native-base";
 // console.disableYellowBox = true;
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
