@@ -113,7 +113,7 @@ export default class AgeOption extends Component {
           </View>
         </View>
         <Button
-          style={[styles.button, { marginBottom: 25 }]}
+          style={[styles.button, { marginBottom: 25, elevation: -1 }]}
           onPress={() => this.props._handleSideMenuState(false)}
         >
           <CheckmarkIcon width={53} height={53} />

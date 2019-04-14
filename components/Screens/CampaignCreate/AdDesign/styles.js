@@ -3,7 +3,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { hidden } from "ansi-colors";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -38,6 +37,17 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff"
   },
+  brand_name: {
+    textAlign: "left",
+    color: "#fff",
+    paddingTop: 30,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    paddingLeft: 20,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 1
+  },
   inputBrand: {
     ...StyleSheet.absoluteFillObject,
     alignSelf: "center",
@@ -62,13 +72,13 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     borderColor: "transparent",
-    top: hp("32"),
+    top: hp("35"),
     left: wp("38")
   },
   swipeUp: {
     ...StyleSheet.absoluteFillObject,
     height: 50,
-    top: hp("60"),
+    top: hp("65"),
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
@@ -81,9 +91,9 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   buttonN: {
-    paddingTop: 0,
-    bottom: 15,
-    height: hp("68")
+    // paddingTop: 0,
+    // bottom: 20,
+    height: hp("73")
   },
   content: {
     flexDirection: "row",
@@ -98,19 +108,19 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     opacity: 0.5,
-    borderRadius: 34,
+    borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
     width: "94%",
     height: "100%",
     zIndex: 0,
-    marginTop: 17,
+    // top: 17,
     backgroundColor: "black",
     justifyContent: "center"
   },
 
   mainCard: {
-    top: 15,
+    top: 25,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",
@@ -118,16 +128,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 0
   },
-  text: {
-    textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
+
   activeBadege: {
     backgroundColor: "#5F5F5F",
     width: 40,
@@ -143,20 +144,18 @@ const styles = StyleSheet.create({
     borderWidth: 2
   },
   button: {
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 55,
     height: 55,
-    borderRadius: 27.5,
-    borderColor: "transparent",
-    borderWidth: 1,
+
     alignItems: "center",
     justifyContent: "flex-end",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 35
+    marginVertical: 35,
+    marginHorizontal: wp(10)
   },
   icon: {
     fontSize: 35,

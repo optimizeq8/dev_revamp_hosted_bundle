@@ -87,7 +87,7 @@ class Dashboard extends Component {
   renderFooter() {
     return (
       <View style={styles.footer}>
-        {this.state.fetching_from_server ? (
+        {this.props.fetching_from_server ? (
           <ActivityIndicator color="black" style={{ margin: 15 }} />
         ) : null}
       </View>
@@ -208,11 +208,11 @@ class Dashboard extends Component {
               ) : (
                 <Content contentContainerStyle={{ flex: 1 }}>
                   <FlatList
-                    style={{ width: "100%" }}
+                    contentContainerStyle={{ paddingBottom: 100 }}
                     keyExtractor={item => item.campaign_id}
                     data={this.props.filteredCampaigns}
                     onEndReached={() => this.loadMoreData()}
-                    onEndReachedThreshold={0}
+                    onEndReachedThreshold={1}
                     renderItem={({ item, index }) => (
                       <CampaignCard
                         campaign={item}
@@ -223,7 +223,7 @@ class Dashboard extends Component {
                     ItemSeparatorComponent={() => (
                       <View style={styles.separator} />
                     )}
-                    ListFooterComponent={this.renderFooter.bind(this)}
+                    ListFooterComponent={() => this.renderFooter()}
                     //Adding Load More button as footer component
                   />
                 </Content>

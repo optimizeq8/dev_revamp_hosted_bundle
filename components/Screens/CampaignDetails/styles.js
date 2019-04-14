@@ -155,7 +155,9 @@ const styles = StyleSheet.create({
   btnClose: {
     position: "absolute",
     top: hp("10%"),
-    left: wp("10%")
+    left: wp("10%"),
+    height: 100,
+    width: 100
   },
   BlurView: {
     height: "100%",

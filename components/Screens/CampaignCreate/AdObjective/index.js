@@ -22,9 +22,11 @@ import { LinearGradient, BlurView } from "expo";
 
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
+
+//icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
-import CloseButtonIcon from "../../../../assets/SVGs/Close.svg";
+import ForwardButton from "../../../../assets/SVGs/ForwardButton.svg";
 
 // Style
 import styles from "./styles";
@@ -36,6 +38,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -251,9 +254,12 @@ class AdObjective extends Component {
               </Item>
             </View>
 
-            <Button onPress={this._handleSubmission} style={styles.button}>
-              <Icon style={styles.icon} name="arrow-forward" />
-            </Button>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => this._handleSubmission()}
+            >
+              <ForwardButton />
+            </TouchableOpacity>
           </Container>
         </TouchableWithoutFeedback>
         <Modal
@@ -265,24 +271,26 @@ class AdObjective extends Component {
           <BlurView intensity={95} tint="dark">
             <View style={styles.popupOverlay}>
               <View style={styles.popupContent}>
-                <Button
-                  iconRight
-                  large
-                  transparent
-                  onPress={() => this.setModalVisible(false)}
-                  style={styles.modalclosebtn}
-                >
-                  <CloseButtonIcon style={styles.closeicon} width={20} />
-                </Button>
                 <Text style={styles.modaltitle}>Objectives</Text>
               </View>
               <ScrollView
+                indicatorStyle="white"
                 contentContainerStyle={{
-                  marginTop: 20
+                  marginTop: 20,
+                  marginBottom: 20
                 }}
               >
                 {list}
               </ScrollView>
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  { marginVertical: heightPercentageToDP(2) }
+                ]}
+                onPress={() => this.setModalVisible(false)}
+              >
+                <ForwardButton />
+              </TouchableOpacity>
             </View>
           </BlurView>
         </Modal>

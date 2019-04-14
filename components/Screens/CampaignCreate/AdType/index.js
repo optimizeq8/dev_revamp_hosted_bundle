@@ -13,8 +13,12 @@ import {
 import { LinearGradient } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
 
+//icons
+import CloseIcon from "../../../../assets/SVGs/Close";
 // Style
 import styles from "./styles";
+import globalStyles from "../../../../Global Styles";
+
 import { colors } from "../../../GradiantColors/colors";
 
 //Redux
@@ -46,24 +50,12 @@ class Tutorial extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
-          iconLeft
-          large
-          transparent
+        <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Home")}
-          style={{
-            marginLeft: 10
-          }}
+          style={globalStyles.backButton}
         >
-          <Icon
-            style={{
-              top: 25,
-              fontSize: 60,
-              color: "#fff"
-            }}
-            name="close"
-          />
-        </Button>
+          <CloseIcon />
+        </TouchableOpacity>
         <Text style={styles.title}>Choose your Ad Type</Text>
 
         <Swiper

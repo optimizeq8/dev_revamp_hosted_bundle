@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, TouchableWithoutFeedback, Keyboard, Image } from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Keyboard,
+  Image
+} from "react-native";
 import { LinearGradient } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -17,6 +23,7 @@ import Address from "../../../assets/SVGs/MenuIcons/AddressIcon";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
+import globalStyles from "../../../Global Styles";
 
 //Data
 import country_regions from "./regions";
@@ -184,13 +191,12 @@ class AddressForm extends Component {
         />
         {!this.state.sidemenustate && (
           <>
-            <Button
-              transparent
+            <TouchableOpacity
               onPress={() => this.props.navigation.goBack()}
-              style={styles.closeIcon}
+              style={globalStyles.backButton}
             >
-              <BackIcon style={styles.closeIcon} name="close" />
-            </Button>
+              <BackIcon />
+            </TouchableOpacity>
             <Text style={styles.title}>Billing Address</Text>
             <Address
               style={{
@@ -569,12 +575,12 @@ class AddressForm extends Component {
                       </Item>
                     </View>
 
-                    <Button
+                    <TouchableOpacity
                       onPress={() => this._handleSubmission()}
                       style={styles.button}
                     >
                       <CheckmarkIcon />
-                    </Button>
+                    </TouchableOpacity>
                   </View>
                 )}
               </KeyboardShift>

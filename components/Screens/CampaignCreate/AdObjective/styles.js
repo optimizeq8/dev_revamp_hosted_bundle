@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -86,20 +87,13 @@ const styles = StyleSheet.create({
     left: 25
   },
   button: {
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 27.5,
-    borderColor: "transparent",
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
+
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 35
+    marginVertical: heightPercentageToDP(20)
   },
   icon: {
     fontSize: 35,
@@ -113,7 +107,7 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   popupContent: {
-    marginTop: 10,
+    marginTop: heightPercentageToDP(5),
     flexDirection: "column"
   },
   modaltitle: {
