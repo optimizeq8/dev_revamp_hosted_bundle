@@ -29,7 +29,7 @@ class AdDesignReview extends Component {
           onPress={() => this.props.navigation.goBack()}
           style={[
             globalStyles.backButton,
-            { left: widthPercentageToDP(85), top: heightPercentageToDP(8) }
+            { left: widthPercentageToDP(85), top: heightPercentageToDP(6) }
           ]}
         >
           <CloseIcon />

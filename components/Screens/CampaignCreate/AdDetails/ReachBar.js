@@ -15,7 +15,7 @@ class ReachBar extends Component {
   render() {
     return (
       <AnimatedCircularProgress
-        size={300}
+        size={wp(83)}
         width={20}
         fill={this.props.total_reach}
         arcSweepAngle={200}
