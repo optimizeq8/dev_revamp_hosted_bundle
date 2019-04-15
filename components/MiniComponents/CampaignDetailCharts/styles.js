@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20
   },
   gradient: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "left",
     color: "#fff",
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0,
     width: "50%"
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 
   subtext: {
     paddingTop: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff"
   },
@@ -115,14 +115,14 @@ const styles = StyleSheet.create({
   },
   chartText: {
     color: "#fff",
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     marginLeft: 10
   },
   chartSubtext: {
     alignSelf: "center",
     paddingTop: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff"
   },

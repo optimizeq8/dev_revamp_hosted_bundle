@@ -38,17 +38,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20,
     paddingHorizontal: 10
   },

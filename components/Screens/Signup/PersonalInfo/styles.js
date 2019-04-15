@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#717171",
     paddingTop: 40,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
     paddingVertical: 10,

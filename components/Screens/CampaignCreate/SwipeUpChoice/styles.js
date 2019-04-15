@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     paddingTop: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0
   },
   subtext: {
     alignSelf: "center",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     paddingTop: 5,
     marginBottom: 10,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: "white",
 
     paddingBottom: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 14,
     paddingHorizontal: 10
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center",

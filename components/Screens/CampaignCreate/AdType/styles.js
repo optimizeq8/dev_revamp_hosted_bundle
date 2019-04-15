@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     color: "#717171",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 15,
     paddingHorizontal: 10,
     paddingVertical: 10

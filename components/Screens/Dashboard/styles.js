@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -40,21 +43,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
   text: {
-    textAlign: "center",
-    color: "#5F5F5F",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    alignSelf: "flex-start",
+    color: "#fff",
+    paddingLeft: widthPercentageToDP(4),
+    fontFamily: "montserrat-semibold",
+    fontSize: heightPercentageToDP(2)
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20
   },
   bottomCard: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     paddingTop: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0
   },

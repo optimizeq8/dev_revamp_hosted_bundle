@@ -26,6 +26,7 @@ export {
   ad_design,
   ad_details,
   updateCampaign,
+  updateStatus,
   filterCampaigns,
   snap_ad_audience_size,
   get_interests,

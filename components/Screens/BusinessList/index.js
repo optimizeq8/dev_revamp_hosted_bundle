@@ -28,6 +28,7 @@ import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class BusinessList extends Component {
   static navigationOptions = {
@@ -49,11 +50,6 @@ class BusinessList extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        {/* <Image
-          style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        /> */}
         <View padder style={[styles.mainCard]}>
           <Text style={styles.title}>Switch Business</Text>
           <View
@@ -71,8 +67,6 @@ class BusinessList extends Component {
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
           </ScrollView>
-        </View>
-        <View style={{ backgroundColor: "#fff" }}>
           <Button
             style={[styles.bottomCard, { justifyContent: "center" }]}
             onPress={() =>

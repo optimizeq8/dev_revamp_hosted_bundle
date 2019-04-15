@@ -51,7 +51,9 @@ import {
 import BarIcon from "../../../assets/SVGs/Bar.svg";
 // Style
 import styles from "./styles";
+import globalStyles from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
+import { ActivityIndicator } from "react-native-paper";
 
 const { height } = Dimensions.get("window");
 
@@ -73,12 +75,22 @@ class CampaignDetails extends Component {
 
     this.state = {
       modalVisible: false,
+      toggle: false,
+      toggleText: "",
       chartAnimation: new Animated.Value(1),
       LineAnimation: new Animated.Value(0),
       visible: true
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.campaign !== this.props.campaign) {
+      this.setState({
+        toggleText: this.props.campaign.status,
+        toggle: this.props.campaign.status !== "PAUSED"
+      });
+    }
+  }
   hideCharts = value => {
     let vl = (value / hp("100%")) * 100 + 20;
     Animated.parallel([
@@ -93,6 +105,25 @@ class CampaignDetails extends Component {
     ]).start();
   };
 
+  handleToggle = status => {
+    console.log("status", status);
+    this.setState({
+      toggle: status !== "PAUSED",
+      modalVisible: false,
+      toggleText: status
+    });
+  };
+
+  updateStatus = () => {
+    this.props.updateStatus(
+      {
+        campaign_id: this.props.campaign.campaign_id,
+        spends: this.props.campaign.spends,
+        status: this.state.toggleText === "PAUSED" ? "LIVE" : "PAUSED"
+      },
+      this.handleToggle
+    );
+  };
   render() {
     this._draggedValue.addListener(({ value }) => {
       this.hideCharts(value);
@@ -124,7 +155,9 @@ class CampaignDetails extends Component {
     };
 
     if (this.props.loading) {
-      return <Spinner color="red" />;
+      return (
+        <ActivityIndicator style={{ top: hp(50) }} size="large" color="red" />
+      );
     } else {
       let interesetNames =
         this.props.campaign.targeting &&
@@ -181,7 +214,7 @@ class CampaignDetails extends Component {
                 onPress={() => {
                   this.props.navigation.goBack();
                 }}
-                style={styles.btnClose}
+                style={globalStyles.backButton}
               />
 
               <Text
@@ -213,25 +246,35 @@ class CampaignDetails extends Component {
                 <View>
                   <View padder style={styles.toggleSpace}>
                     <View style={{ alignSelf: "center" }}>
-                      <Toggle
-                        buttonTextStyle={{
-                          fontFamily: "montserrat-medium",
-                          fontSize: wp("2.7"),
-                          color: "#fff",
-                          top: 7,
-                          textAlign: "center"
-                        }}
-                        buttonText={this.props.campaign.status}
-                        containerStyle={styles.toggleStyle}
-                        switchOn={this.props.campaign.status === "Paused"}
-                        onPress={() => this.setState({ modalVisible: true })}
-                        backgroundColorOff="rgba(255,255,255,0.1)"
-                        backgroundColorOn="rgba(0,0,0,0.1)"
-                        circleColorOff="#FF9D00"
-                        circleColorOn="#66D072"
-                        duration={200}
-                        buttonStyle={{ width: wp("13"), height: hp("3.8") }}
-                      />
+                      {this.props.campaign && (
+                        <Toggle
+                          buttonTextStyle={{
+                            fontFamily: "montserrat-medium",
+                            fontSize: wp("2.7"),
+                            color: "#fff",
+                            top: 7,
+                            textAlign: "center"
+                          }}
+                          buttonText={
+                            this.state.toggleText !== "PAUSED"
+                              ? "LIVE"
+                              : "PAUSED"
+                          }
+                          containerStyle={styles.toggleStyle}
+                          switchOn={this.state.toggle}
+                          onPress={() => this.setState({ modalVisible: true })}
+                          backgroundColorOff="rgba(255,255,255,0.1)"
+                          backgroundColorOn="rgba(255,255,255,0.1)"
+                          circleColorOff="#FF9D00"
+                          circleColorOn="#66D072"
+                          duration={500}
+                          circleStyle={{
+                            width: wp("13"),
+                            height: hp("3.8"),
+                            borderRadius: 25
+                          }}
+                        />
+                      )}
                       <Text
                         style={{
                           fontFamily: "montserrat-medium",
@@ -525,7 +568,10 @@ class CampaignDetails extends Component {
                   Will be added to your wallet If the Ad has been paused for 3
                   Days
                 </Text>
-                <Button style={styles.button}>
+                <Button
+                  onPress={() => this.updateStatus()}
+                  style={styles.button}
+                >
                   <CheckmarkIcon width={53} height={53} />
                 </Button>
               </BlurView>
@@ -541,7 +587,10 @@ const mapStateToProps = state => ({
   campaign: state.auth.selectedCampaign,
   loading: state.auth.loading
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  updateStatus: (info, handleToggle) =>
+    dispatch(actionCreators.updateStatus(info, handleToggle))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
