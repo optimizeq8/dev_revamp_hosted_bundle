@@ -8,7 +8,7 @@ class ReviewItemCard extends Component {
   render() {
     const list = this.props.subtitles.map(e => (
       <View key={e.title}>
-        <Text style={[styles.subtext, { fontFamily: "benton-sans-medium" }]}>
+        <Text style={[styles.subtext, { fontFamily: "montserrat-medium" }]}>
           {e.title}
         </Text>
         <Text style={[styles.subtext, { color: "#FF9D00" }]}>{e.content}</Text>

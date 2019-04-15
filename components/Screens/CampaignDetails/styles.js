@@ -39,17 +39,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -141,10 +141,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)"
   },
   toggleStyle: {
+    marginTop: 0,
     width: wp("28"),
     height: hp("4"),
-    borderRadius: 20,
-    padding: 5
+    borderRadius: 25,
+    padding: 0
   },
   circleStyle: {
     width: 25,

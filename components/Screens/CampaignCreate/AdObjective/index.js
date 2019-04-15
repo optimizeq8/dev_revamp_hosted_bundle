@@ -211,6 +211,7 @@ class AdObjective extends Component {
                       campaignInfo: { ...this.state.campaignInfo, name: value }
                     })
                   }
+                  autoFocus={true}
                   onFocus={() => {
                     this.setState({ inputN: true });
                   }}

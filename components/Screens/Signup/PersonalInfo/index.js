@@ -281,7 +281,7 @@ class PersonalInfo extends Component {
                     style={{
                       textAlign: "center",
                       color: "#717171",
-                      fontFamily: "benton-sans-regular",
+                      fontFamily: "montserrat-regular",
                       fontSize: 15,
                       bottom: 40
                     }}

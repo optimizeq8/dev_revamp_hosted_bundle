@@ -174,6 +174,27 @@ export const updateCampaign = (info, businessid, navigation) => {
   };
 };
 
+export const updateStatus = (info, handleToggle) => {
+  return (dispatch, getState) => {
+    instance
+      .put(`updateCampaignStatus`, info)
+      .then(res => {
+        console.log("back end", res.data);
+        return res.data;
+      })
+      .then(data => {
+        handleToggle(data.status);
+        return dispatch({
+          type: actionTypes.UPDATE_CAMPAIGN_STATUS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err.response.data);
+      });
+  };
+};
+
 export const filterCampaigns = query => {
   return {
     type: actionTypes.FILTER_CAMPAIGNS,

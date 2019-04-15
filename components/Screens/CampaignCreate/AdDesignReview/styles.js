@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(110)
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   call_to_action: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     bottom: "7%",
     paddingVertical: 17,

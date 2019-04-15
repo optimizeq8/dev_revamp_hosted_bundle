@@ -513,7 +513,7 @@ class CreateBusinessAccount extends Component {
                   style={{
                     textAlign: "center",
                     color: "#717171",
-                    fontFamily: "benton-sans-regular",
+                    fontFamily: "montserrat-regular",
                     fontSize: 15
                   }}
                 >

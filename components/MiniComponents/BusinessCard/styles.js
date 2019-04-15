@@ -28,17 +28,17 @@ const styles = StyleSheet.create({
     color: "#5F5F5F",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20
   },
   gradient: {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   subtext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     paddingTop: 5,
     color: "#fff",

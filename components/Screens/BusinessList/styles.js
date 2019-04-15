@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     backgroundColor: "#751AFF",
-    elevation: 10,
     zIndex: 10
   },
   image: {
@@ -58,11 +57,11 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20
   },
   bottomCard: {
@@ -101,8 +100,7 @@ const styles = StyleSheet.create({
     height: hp("14"),
     // position: "absolute",
     bottom: hp("22"),
-    width: "100%",
-    elevation: 10
+    width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     paddingTop: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0
   },
@@ -151,8 +149,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7
   },
   contentContainer: {
-    paddingTop: 30,
-    paddingBottom: hp("50")
+    // paddingTop: 30,
+    paddingBottom: hp("30")
   }
 });
 

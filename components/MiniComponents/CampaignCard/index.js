@@ -15,6 +15,10 @@ import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
 import { LinearGradient } from "expo";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 class CampaignCard extends Component {
   state = {
     paused: false,
@@ -55,18 +59,21 @@ class CampaignCard extends Component {
             <Text style={[styles.subtext]}>Tap to view more</Text>
 
             <View style={{ flexDirection: "row" }}>{charts}</View>
-            <View style={styles.containerStyle}>
+            <View pointerEvents="none" style={styles.containerStyle}>
               <Toggle
                 containerStyle={styles.toggleStyle}
-                circleStyle={styles.circleStyle}
-                switchOn={this.state.paused}
+                switchOn={campaign.status !== "PAUSED"}
                 onPress={this.toggleStatus}
                 backgroundColorOff="rgba(255,255,255,0.1)"
-                backgroundColorOn="rgba(0,0,0,0.1)"
+                backgroundColorOn="rgba(255,255,255,0.1)"
                 circleColorOff="#FF9D00"
                 circleColorOn="#66D072"
                 duration={200}
-                buttonStyle={{ width: 20, height: 20 }}
+                circleStyle={{
+                  width: widthPercentageToDP(4.3),
+                  height: heightPercentageToDP(2.1),
+                  borderRadius: 25
+                }}
               />
             </View>
           </View>

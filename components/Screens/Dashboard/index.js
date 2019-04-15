@@ -29,20 +29,22 @@ import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import FilterStatus from "../../MiniComponents/FilterStatus";
 import Sidemenu from "react-native-side-menu";
-import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-
-import * as actionCreators from "../../../store/actions";
-// Style
-import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "./FilterMenu";
+
+//icons
+import FilterIcon from "../../../assets/SVGs/Filter.svg";
+import SearchIcon from "../../../assets/SVGs/Search.svg";
+import OptimizeLogo from "../../../assets/SVGs/Optimize.svg";
+
+// Style
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
+import * as actionCreators from "../../../store/actions";
 class Dashboard extends Component {
   static navigationOptions = {
     header: null
@@ -58,11 +60,20 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
+    console.log("jnojnon");
+
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage
     );
   }
+
+  // componentDidUpdate() {
+  //   this.props.getCampaignList(
+  //     this.props.mainBusiness.businessid,
+  //     this.increasePage
+  //   );
+  // }
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
@@ -93,22 +104,20 @@ class Dashboard extends Component {
       </View>
     );
   }
-  render() {
-    // const list = this.props.filteredCampaigns.map(campaign => (
-    //   <CampaignCard
-    //     campaign={campaign}
-    //     navigation={this.props.navigation}
-    //     key={campaign.campaign_id}
-    //   />
-    // ));
 
+  reloadData = () => {
+    this.props.getCampaignList(
+      this.props.mainBusiness.businessid,
+      this.increasePage
+    );
+  };
+  render() {
     let menu = (
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
       />
     );
-
     return (
       <Container style={styles.container}>
         <>
@@ -117,6 +126,7 @@ class Dashboard extends Component {
             locations={[0.7, 1]}
             style={styles.gradient}
           />
+
           <Sidemenu
             onChange={isOpen => {
               if (isOpen === false) this._handleSideMenuState(isOpen);
@@ -127,11 +137,10 @@ class Dashboard extends Component {
             openMenuOffset={wp("85%")}
             isOpen={this.state.sidemenustate}
           >
-            <Image
-              style={styles.image}
-              source={require("../../../assets/images/logo01.png")}
-              resizeMode="contain"
-            />
+            <OptimizeLogo style={styles.image} />
+            <Text style={[styles.text]}>
+              {this.props.mainBusiness.businessname}
+            </Text>
             <View
               padder
               style={[
@@ -149,11 +158,6 @@ class Dashboard extends Component {
                   paddingBottom: 10
                 }}
               >
-                {
-                  //     <Text style={[styles.text, { alignSelf: "center" }]}>
-                  //     {this.props.mainBusiness.businessname}
-                  //   </Text>
-                }
                 <View style={{ flexDirection: "row" }}>
                   <Button
                     style={[
@@ -220,11 +224,9 @@ class Dashboard extends Component {
                         key={item.campaign_id}
                       />
                     )}
-                    ItemSeparatorComponent={() => (
-                      <View style={styles.separator} />
-                    )}
+                    onRefresh={() => this.reloadData()}
+                    refreshing={this.state.fetching_from_server}
                     ListFooterComponent={() => this.renderFooter()}
-                    //Adding Load More button as footer component
                   />
                 </Content>
               )}

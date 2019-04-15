@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     paddingTop: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0
   },
   subtext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     paddingTop: 5,
     color: "#fff",
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     color: "#717171",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 10

@@ -43,17 +43,17 @@ const styles = StyleSheet.create({
     color: "#5F5F5F",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 13,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     color: "#5F5F5F",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20
   },
   gradient: {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "left",
     color: "#fff",
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0,
     width: "50%"
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 
   subtext: {
     paddingTop: 10,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff"
   },
@@ -119,35 +119,29 @@ const styles = StyleSheet.create({
   },
   chartText: {
     color: "#fff",
-    fontFamily: "benton-sans-medium",
+    fontFamily: "montserrat-medium",
     fontSize: 16,
     marginLeft: 10
   },
   chartSubtext: {
     alignSelf: "center",
     paddingTop: 17,
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff"
   },
   containerStyle: {
-    ...StyleSheet.absoluteFillObject,
-    left: "73%",
-    top: "80%"
+    position: "absolute",
+    left: "87%",
+    top: "87%",
+    backgroundColor: "transparent",
+    borderRadius: 20
   },
   toggleStyle: {
-    left: widthPercentageToDP("10%"),
-    top: widthPercentageToDP("4%"),
-    width: 50,
+    width: widthPercentageToDP(10),
     height: 20,
     borderRadius: 20,
-    padding: 5
-  },
-  circleStyle: {
-    width: 25,
-    height: 25,
-    borderRadius: 19,
-    backgroundColor: "white"
+    padding: 0
   },
   icon: {
     ...StyleSheet.absoluteFillObject,

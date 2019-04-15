@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   buttontext: {
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 14
   },
   inputtext: {
-    fontFamily: "benton-sans-light",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   businessTitle: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "benton-sans-regular",
+    fontFamily: "montserrat-regular",
     fontSize: 20,
     paddingHorizontal: 10
   },
@@ -103,9 +103,7 @@ const styles = StyleSheet.create({
     top: heightPercentageToDP("6.5"),
     left: widthPercentageToDP("7.5%"),
     zIndex: 15,
-    color: "grey",
-
-    elevation: 10
+    color: "grey"
   },
   logoutIcon: {
     position: "absolute",
