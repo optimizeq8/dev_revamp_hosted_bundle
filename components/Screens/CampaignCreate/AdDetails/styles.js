@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     borderColor: "transparent",
     flex: 1,
-
+    overflow: "hidden",
     backgroundColor: "#000",
     marginLeft: 0,
     marginRight: 0
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
   chartItems: {
     flex: 1,
     flexDirection: "column",
-    top: 25,
-    left: wp(8)
+    top: hp(5),
+    left: wp(9)
   },
   button: {
     alignSelf: "center",

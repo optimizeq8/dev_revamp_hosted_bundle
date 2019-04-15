@@ -95,7 +95,7 @@ export const ad_design = (info, laoding, navigation) => {
         });
       })
       .then(() => {
-        navigation.replace("AdDetails");
+        navigation.replace("AdDetails", { image: info._parts[0][1].uri });
       })
       .catch(err => {
         laoding(0);
