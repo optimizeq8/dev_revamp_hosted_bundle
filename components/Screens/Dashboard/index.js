@@ -45,10 +45,12 @@ import OptimizeLogo from "../../../assets/SVGs/Optimize.svg";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
+import Axios from "axios";
 class Dashboard extends Component {
   static navigationOptions = {
     header: null
   };
+  signal = Axios.CancelToken.source();
   constructor(props) {
     super(props);
     this.state = {
@@ -60,20 +62,16 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
-    console.log("jnojnon");
-
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
-      this.increasePage
+      this.increasePage,
+      this.signal.token
     );
   }
 
-  // componentDidUpdate() {
-  //   this.props.getCampaignList(
-  //     this.props.mainBusiness.businessid,
-  //     this.increasePage
-  //   );
-  // }
+  componentWillUnmount() {
+    this.signal.cancel("Api is being canceled");
+  }
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
@@ -108,7 +106,8 @@ class Dashboard extends Component {
   reloadData = () => {
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
-      this.increasePage
+      this.increasePage,
+      this.signal.token
     );
   };
   render() {
@@ -253,8 +252,8 @@ const mapDispatchToProps = dispatch => ({
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
-  getCampaignList: (id, increasePage) =>
-    dispatch(actionCreators.getCampaignList(id, increasePage))
+  getCampaignList: (id, increasePage, cancelToken) =>
+    dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken))
 });
 export default connect(
   mapStateToProps,

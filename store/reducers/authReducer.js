@@ -76,7 +76,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainBusiness: newMainBusiness,
         businessAccounts: [...state.businessAccounts],
-        message: action.payload.message
+        message: action.payload.message,
+        loading: false
       };
     case actionTypes.SET_CURRENT_USER:
       return {
@@ -187,6 +188,11 @@ const reducer = (state = initialState, action) => {
         filterValue: action.payload.value,
         filteredCampaigns: filtered,
         filterStatus: action.payload.selected
+      };
+    case actionTypes.SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload
       };
     case actionTypes.LOGOUT_USER:
       console.log("reset");

@@ -646,14 +646,16 @@ class AdDetails extends Component {
               >
                 <View style={{ flex: 1 }}>
                   <View>
-                    <Button
+                    {/* <Button
                       iconLeft
                       transparent
                       onPress={() => this.props.navigation.goBack()}
                       style={globalStyles.backButton}
                     >
                       <BackButton />
-                    </Button>
+                    </Button> */}
+                    <BackButton navigation={this.props.navigation.goBack} />
+
                     <Text style={styles.headline}>
                       Input your Snapchat {"\n"} AD Details
                     </Text>
@@ -720,7 +722,11 @@ class AdDetails extends Component {
                       }
                     ]}
                     onPress={() => {
-                      if (!this.props.navigation.state.params)
+                      if (
+                        !this.props.navigation.state.params.hasOwnProperty(
+                          "editCampaign"
+                        )
+                      )
                         this.dateField.showModal();
                     }}
                   >

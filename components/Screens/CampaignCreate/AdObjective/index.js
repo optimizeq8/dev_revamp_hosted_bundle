@@ -22,7 +22,8 @@ import { LinearGradient, BlurView } from "expo";
 
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
-
+import LowerButton from "../../../MiniComponents/LowerButton";
+import BackButton from "../../../MiniComponents/BackButton";
 //icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
@@ -165,7 +166,7 @@ class AdObjective extends Component {
               style={styles.gradient}
             />
             <View>
-              <Button
+              {/* <Button
                 iconLeft
                 large
                 transparent
@@ -173,7 +174,8 @@ class AdObjective extends Component {
                 style={styles.backbutton}
               >
                 <BackButtonIcon style={styles.backbuttonicon} width={20} />
-              </Button>
+              </Button> */}
+              <BackButton navigation={this.props.navigation.goBack} />
               <Text style={styles.title}>Snap Ad</Text>
               <PhoneIcon style={styles.phoneicon} width={70} />
             </View>
@@ -255,12 +257,7 @@ class AdObjective extends Component {
               </Item>
             </View>
 
-            <TouchableOpacity
-              style={[styles.button]}
-              onPress={() => this._handleSubmission()}
-            >
-              <ForwardButton />
-            </TouchableOpacity>
+            <LowerButton bottom={10} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
         <Modal
@@ -283,15 +280,7 @@ class AdObjective extends Component {
               >
                 {list}
               </ScrollView>
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  { marginVertical: heightPercentageToDP(2) }
-                ]}
-                onPress={() => this.setModalVisible(false)}
-              >
-                <ForwardButton />
-              </TouchableOpacity>
+              <LowerButton bottom={3} function={this.setModalVisible} />
             </View>
           </BlurView>
         </Modal>

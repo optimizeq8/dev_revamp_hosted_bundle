@@ -27,14 +27,14 @@ import {
   Icon
 } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import PenIcon from "../../../../assets/SVGs/Pen.svg";
-
+import BackButton from "../../../MiniComponents/BackButton";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //icons
-import BackButton from "../../../../assets/SVGs/BackButton";
+import PenIcon from "../../../../assets/SVGs/Pen.svg";
+// import BackButton from "../../../../assets/SVGs/BackButton";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 
@@ -74,6 +74,7 @@ class AdDesign extends Component {
       brand_nameError: "",
       headlineError: "",
       imageError: "",
+      swipeUpError: "",
       isVisible: false
     };
     this._handleSubmission = this._handleSubmission.bind(this);
@@ -238,10 +239,22 @@ class AdDesign extends Component {
     );
     const imageError = validateWrapper("mandatory", this.state.image);
 
+    let swipeUpError = "";
+    if (
+      this.state.objective !== "REACH" &&
+      this.state.objective !== "BRAND_AWARENESS" &&
+      this.state.campaignInfo.attachment === "BLANK"
+    ) {
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else {
+      swipeUpError = null;
+    }
+
     this.setState({
       brand_nameError,
       headlineError,
-      imageError
+      imageError,
+      swipeUpError
     });
   };
   _handleSubmission = async () => {
@@ -249,6 +262,7 @@ class AdDesign extends Component {
     if (
       !this.state.brand_nameError &&
       !this.state.headlineError &&
+      !this.state.swipeUpError &&
       !this.state.imageError
     ) {
       let t = await this.formatMedia();
@@ -296,12 +310,14 @@ class AdDesign extends Component {
                 marginBottom: heightPercentageToDP("2.5")
               }}
             >
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => this.props.navigation.pop()}
                 style={globalStyles.backButton}
               >
                 <BackButton />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <BackButton navigation={this.props.navigation.goBack} />
+
               <Text style={styles.title}>Compose Ad</Text>
             </View>
             <Transition style={{ height: "100%" }} shared="image">
@@ -330,13 +346,19 @@ class AdDesign extends Component {
                   style={[
                     styles.inputBrand,
                     {
-                      borderColor: this.state.brand_nameError
-                        ? "red"
-                        : "#D9D9D9"
+                      borderColor: "transparent"
                     }
                   ]}
                 >
-                  <PenIcon fill={this.state.inputB ? "#FF9D00" : "#fff"} />
+                  <PenIcon
+                    fill={
+                      this.state.inputB
+                        ? "#FF9D00"
+                        : this.state.brand_nameError
+                        ? "red"
+                        : "#fff"
+                    }
+                  />
                   <Input
                     style={styles.inputtext}
                     defaultValue={
@@ -374,11 +396,19 @@ class AdDesign extends Component {
                   style={[
                     styles.inputHeadline,
                     {
-                      borderColor: this.state.headlineError ? "red" : "#D9D9D9"
+                      borderColor: "transparent"
                     }
                   ]}
                 >
-                  <PenIcon fill={this.state.inputH ? "#FF9D00" : "#fff"} />
+                  <PenIcon
+                    fill={
+                      this.state.inputH
+                        ? "#FF9D00"
+                        : this.state.headlineError
+                        ? "red"
+                        : "#fff"
+                    }
+                  />
                   <Input
                     style={styles.inputtext}
                     defaultValue={
@@ -453,9 +483,11 @@ class AdDesign extends Component {
                     }}
                   >
                     <Text style={styles.swipeUpText}>
-                      {this.state.campaignInfo.destination !== "BLANK"
+                      {this.state.campaignInfo.destination !== "BLANK" &&
+                      this.state.campaignInfo.destination !== "REMOTE_WEBPAGE"
                         ? this.state.campaignInfo.destination
-                        : this.state.campaignInfo.destination.includes("REMOTE")
+                        : this.state.campaignInfo.destination ===
+                          "REMOTE_WEBPAGE"
                         ? "Website"
                         : "Swipe Up destination"}
                     </Text>
@@ -473,15 +505,29 @@ class AdDesign extends Component {
                 style={{
                   textAlign: "center",
                   color: "#fff",
+                  paddingTop: 7,
+                  fontFamily: "montserrat-medium",
+                  fontSize: 14,
+                  marginBottom: -heightPercentageToDP("2")
+                }}
+              >
+                {!this.state.imageError.includes("blank")
+                  ? this.state.imageError
+                  : "Please choose an image"}
+              </Text>
+            )}
+            {!this.state.swipeUpError ? null : (
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "#fff",
                   paddingTop: 10,
                   fontFamily: "montserrat-medium",
                   fontSize: 14,
                   marginBottom: -heightPercentageToDP("3")
                 }}
               >
-                {!this.state.imageError.includes("blank")
-                  ? this.state.imageError
-                  : "Please choose an image"}
+                {this.state.swipeUpError}
               </Text>
             )}
             {

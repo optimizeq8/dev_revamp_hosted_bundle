@@ -165,12 +165,12 @@ class Home extends Component {
               </Button>
 
             */}
-              <Button
+              {/* <Button
                 style={[styles.button]}
                 onPress={() => this.props.navigation.navigate("AdDesign")}
               >
                 <Text> Test </Text>
-              </Button>
+              </Button> */}
             </Card>
 
             <View>

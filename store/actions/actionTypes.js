@@ -18,6 +18,8 @@ export const ADD_BUSINESS_ACCOUNT = "ADD_BUSINESS_ACCOUNT";
 export const SET_CAMPAIGN_LIST = "SET_CAMPAIGN_LIST";
 export const SET_CAMPAIGN = "SET_CAMPAIGN";
 export const RESET_REGISTER = "RESET_REGISTER";
+export const SET_LOADING = "SET_LOADING";
+
 //Campaign Action Types
 export const SET_AD_TYPE = "SET_AD_TYPE";
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";

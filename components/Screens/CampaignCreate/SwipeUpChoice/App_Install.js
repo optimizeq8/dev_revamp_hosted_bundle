@@ -119,7 +119,9 @@ export default class App_Install extends Component {
   };
 
   _getAppIds = iosApp => {
-    let androidUrl = androidDataTest.find(app => app.title === iosApp.title);
+    let androidUrl = this.state.androidData.find(
+      app => app.title === iosApp.title
+    );
     console.log("found", iosApp.id);
 
     this.setState({
@@ -287,8 +289,8 @@ export default class App_Install extends Component {
                     })
                   }
                   onBlur={() => {
-                    // this._searchIosApps();
-                    // this._searchAndroidApps();
+                    this._searchIosApps();
+                    this._searchAndroidApps();
                     this.setState({
                       nameError: validateWrapper(
                         "mandatory",
@@ -300,8 +302,8 @@ export default class App_Install extends Component {
                 />
               </Item>
               <FlatList
-                // data={this.state.showList ? this.state.data : []}
-                data={this.state.showList ? data : []}
+                data={this.state.showList ? this.state.data : []}
+                // data={this.state.showList ? data : []}
                 renderItem={({ item }) => (
                   <View
                     style={{

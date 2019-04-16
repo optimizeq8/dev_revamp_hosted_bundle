@@ -41,14 +41,16 @@ export const getCampaign = id => {
   };
 };
 
-export const getCampaignList = (id, increasePage) => {
+export const getCampaignList = (id, increasePage, cancelToken) => {
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: { isListEnd: false, fetching_from_server: false, loading: true }
     });
     instance
-      .get(`campaignlist/${id}/${1}`)
+      .get(`campaignlist/${id}/${1}`, {
+        cancelToken
+      })
       .then(res => {
         return res.data;
       })
@@ -60,12 +62,17 @@ export const getCampaignList = (id, increasePage) => {
         });
       })
       .catch(err => {
-        console.log(err.response);
+        // console.log(err.response);
+        if (axios.isCancel(err)) {
+          console.log("Error: ", err.message); // => prints: Api is being canceled
+        }
       });
   };
 };
 
 export const updateCampaignList = (id, page, increasePage) => {
+  console.log("svwevwvwev");
+
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
@@ -463,7 +470,10 @@ export const resetRegister = () => {
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = (id, navigation) => {
+  console.log("kjwnvoivnow");
+
   return dispatch => {
+    dispatch({ type: actionTypes.SET_LOADING, payload: true });
     instance
       .post("snapadaccounts", { businessid: id })
       .then(res => {
