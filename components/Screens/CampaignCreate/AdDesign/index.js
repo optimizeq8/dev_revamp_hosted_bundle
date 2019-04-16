@@ -88,7 +88,7 @@ class AdDesign extends Component {
         brand_name: this.props.mainBusiness.businessname,
         headline: !this.props.data ? "Headline" : this.props.data.name
       },
-      objective: this.props.data ? this.props.data.objective : ""
+      objective: this.props.data ? this.props.data.objective : "APP_INSTALLS"
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);

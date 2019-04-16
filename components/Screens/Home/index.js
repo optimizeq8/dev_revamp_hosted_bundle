@@ -76,6 +76,13 @@ class Home extends Component {
     });
   };
 
+  componentDidMount() {
+    console.log("lknjkhjgvhcfghgv");
+
+    this.setState({ menu: new Animated.Value(0) });
+    this.closeAnimation();
+  }
+
   // componentDidUpdate(prevProps) {
   //   if (
   //     prevProps.mainBusiness !== this.props.mainBusiness &&
@@ -165,12 +172,12 @@ class Home extends Component {
               </Button>
 
             */}
-              {/* <Button
+              <Button
                 style={[styles.button]}
                 onPress={() => this.props.navigation.navigate("AdDesign")}
               >
                 <Text> Test </Text>
-              </Button> */}
+              </Button>
             </Card>
 
             <View>

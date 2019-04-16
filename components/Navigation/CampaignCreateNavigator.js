@@ -28,8 +28,10 @@ export default FluidNavigator(
   //   easing: Easing.bezier(0.175, 0.885, 0.32, 1.275),
   //   useNativeDriver: true
   // },
+
   {
     initialRouteName: "AdType",
+    mode: "card",
     navigationOptions: {
       header: null,
 

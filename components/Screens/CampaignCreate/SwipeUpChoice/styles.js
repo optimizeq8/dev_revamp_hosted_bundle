@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -39,9 +43,7 @@ const styles = StyleSheet.create({
 
   icon: {
     alignSelf: "center",
-    color: "#fff",
-    fontSize: 100,
-    paddingVertical: 10,
+    paddingVertical: heightPercentageToDP(7),
     paddingHorizontal: 7
   },
   content: {
@@ -49,11 +51,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  image: {
-    height: 70,
-    width: 70,
-    margin: 15
-  },
+
   video: {
     height: 95,
     width: 95,
@@ -154,11 +152,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCCCCC"
   },
   image: {
-    alignSelf: "center",
-    width: 45,
-    height: 45,
-    borderRadius: 20,
-    marginLeft: 20
+    width: widthPercentageToDP(11.5),
+    height: widthPercentageToDP(11.5),
+    borderRadius: 13,
+    marginHorizontal: 20
   },
   time: {
     fontSize: 11,
@@ -167,6 +164,16 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "bold"
+  },
+  campaignButton: {
+    flexDirection: "row",
+    marginHorizontal: 25,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 20,
+    backgroundColor: "#FF9D00",
+    height: heightPercentageToDP(7.3)
   }
 });
 

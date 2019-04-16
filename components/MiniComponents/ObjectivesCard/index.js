@@ -33,12 +33,6 @@ class BusinessCard extends Component {
           { backgroundColor: changeState.backgroundColor }
         ]}
       >
-        {/* <Icon
-          type="MaterialCommunityIcons"
-          name="web"
-          style={[styles.icon, { color: changeState.color }]}
-        /> */}
-
         <IconName style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
