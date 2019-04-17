@@ -13,35 +13,7 @@ import BusinessList from "../Screens/BusinessList";
 import ChangePassword from "../Screens/Change Password/";
 import AddressForm from "../Screens/AddressForm";
 import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
-// export default createStackNavigator(
-//   {
-//     Home: Home,
-//     Menu: Menu,
-//     Dashboard: Dashboard,
-//     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
-//     CreateBusinessAccount: CreateBusinessAccount,
-//     CampaignDetails: CampaignDetails,
-//     BusinessList: BusinessList,
-//     ChangePassword: ChangePassword
-//   },
-//   {
-//     initialRouteName: "Home",
-//     navigationOptions: {
-//       header: null,
 
-//       headerStyle: {
-//         backgroundColor: "transparent"
-//       },
-//       headerTintColor: "#fff",
-//       headerTextStyle: {
-//         fontWeight: "bold"
-//       }
-//     },
-//     cardStyle: {
-//       backgroundColor: "#751AFF"
-//     }
-//   }
-// );
 export default FluidNavigator(
   {
     Home: Home,

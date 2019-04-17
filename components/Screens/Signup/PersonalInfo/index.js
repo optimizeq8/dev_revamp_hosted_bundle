@@ -363,52 +363,50 @@ class PersonalInfo extends Component {
                     {this.state.passwordError}
                   </Text>
                 ) : null}
-                {this.state.userInfo.password !== "" && (
-                  <Item
-                    floatingLabel
+
+                <Item
+                  floatingLabel
+                  style={[
+                    styles.input,
+                    {
+                      marginBottom: 0,
+                      paddingBottom: 0,
+                      borderColor: this.state.inputPR
+                        ? "#7039FF"
+                        : this.state.repasswordError !== ""
+                        ? "red"
+                        : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <Label
                     style={[
-                      styles.input,
+                      styles.inputtext,
                       {
-                        marginBottom: 0,
-                        paddingBottom: 0,
-                        borderColor: this.state.inputPR
-                          ? "#7039FF"
-                          : this.state.repasswordError !== ""
-                          ? "red"
-                          : "#D9D9D9"
+                        bottom: 5,
+                        color: this.state.inputPR ? "#FF9D00" : "#717171"
                       }
                     ]}
                   >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        {
-                          bottom: 5,
-                          color: this.state.inputPR ? "#FF9D00" : "#717171"
-                        }
-                      ]}
-                    >
-                      Retype Password
-                    </Label>
+                    Retype Password
+                  </Label>
 
-                    <Input
-                      style={styles.inputtext}
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({ repassword: value })
-                      }
-                      onFocus={() => {
-                        this.setState({ inputPR: true });
-                      }}
-                      onBlur={() => {
-                        this.setState({ inputPR: false });
-                        this._passwordVarification();
-                      }}
-                    />
-                  </Item>
-                )}
+                  <Input
+                    style={styles.inputtext}
+                    secureTextEntry={true}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value => this.setState({ repassword: value })}
+                    onFocus={() => {
+                      this.setState({ inputPR: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputPR: false });
+                      this._passwordVarification();
+                    }}
+                  />
+                </Item>
+
                 {this.state.repasswordError !== "" &&
                 this.state.userInfo.password !== "" ? (
                   <Text

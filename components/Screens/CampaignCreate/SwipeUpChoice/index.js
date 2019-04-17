@@ -25,7 +25,7 @@ import { LinearGradient } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
-import list from "./callactions";
+// import list from "./callactions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import Website from "./Website";
 import App_Install from "./App_Install";
@@ -39,18 +39,18 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      campaignInfo: {
-        attachment: "",
-        callaction: list[0].call_to_action_list[0]
-      },
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     campaignInfo: {
+  //       attachment: "",
+  //       callaction: list[0].call_to_action_list[0]
+  //     },
 
-      callactions: list[0].call_to_action_list,
-      urlError: ""
-    };
-  }
+  //     callactions: list[0].call_to_action_list,
+  //     urlError: ""
+  //   };
+  // }
 
   render() {
     console.log(this.props.navigation.state.params.objective);

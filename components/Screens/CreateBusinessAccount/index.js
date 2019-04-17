@@ -4,12 +4,15 @@ import {
   View,
   ScrollView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  TouchableOpacity
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
 import { LinearGradient } from "expo";
 import RNPickerSelect from "react-native-picker-select";
-
+import CloseButton from "../../MiniComponents/CloseButton";
+//icons
+import CloseIcon from "../../../assets/SVGs/Close";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -246,21 +249,7 @@ class CreateBusinessAccount extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
-          transparent
-          onPress={() => this.props.navigation.goBack()}
-          style={{
-            marginLeft: 10
-          }}
-        >
-          <Icon
-            style={{
-              fontSize: 40,
-              color: "#fff"
-            }}
-            name="close"
-          />
-        </Button>
+        <CloseButton navigation={this.props.navigation.goBack} />
         <Text style={styles.title}>New Business</Text>
         <Text style={styles.subtitle}>
           You can create a new Business under you!

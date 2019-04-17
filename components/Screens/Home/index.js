@@ -76,6 +76,13 @@ class Home extends Component {
     });
   };
 
+  componentDidMount() {
+    console.log("lknjkhjgvhcfghgv");
+
+    this.setState({ menu: new Animated.Value(0) });
+    this.closeAnimation();
+  }
+
   // componentDidUpdate(prevProps) {
   //   if (
   //     prevProps.mainBusiness !== this.props.mainBusiness &&

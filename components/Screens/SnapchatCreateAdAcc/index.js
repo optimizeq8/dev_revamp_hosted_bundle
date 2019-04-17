@@ -22,6 +22,7 @@ import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import { ActivityIndicator } from "react-native-paper";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -45,6 +46,7 @@ class MainForm extends Component {
         />
       </View>
     );
+
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -66,19 +68,23 @@ class MainForm extends Component {
               justifyContent: "space-between"
             }}
           >
-            <Button
-              block
-              dark
-              style={styles.button}
-              onPress={() => {
-                this.props.create_ad_account(
-                  this.props.mainBusiness.businessid,
-                  this.props.navigation
-                );
-              }}
-            >
-              <Text style={styles.buttontext}>Accept</Text>
-            </Button>
+            {this.props.loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <Button
+                block
+                dark
+                style={styles.button}
+                onPress={() => {
+                  this.props.create_ad_account(
+                    this.props.mainBusiness.businessid,
+                    this.props.navigation
+                  );
+                }}
+              >
+                <Text style={styles.buttontext}>Accept</Text>
+              </Button>
+            )}
           </View>
         </Card>
       </Container>
@@ -87,7 +93,8 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.auth.mainBusiness,
+  loading: state.auth.loading
 });
 
 const mapDispatchToProps = dispatch => ({

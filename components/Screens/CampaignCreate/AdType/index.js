@@ -12,9 +12,11 @@ import {
 } from "native-base";
 import { LinearGradient } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
-
+import LowerButton from "../../../MiniComponents/LowerButton";
+import CloseButton from "../../../MiniComponents/CloseButton";
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
+import Placeholder from "../../../../assets/SVGs/AdType/Placeholder";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../Global Styles";
@@ -28,19 +30,32 @@ class Tutorial extends Component {
   static navigationOptions = {
     header: null
   };
+  state = { route: "AdObjective" };
+  navigationRouteHandler = id => {
+    let route = "";
+    switch (id) {
+      case 0:
+        route = "AdObjective";
+        break;
+    }
+    this.setState({ route });
+  };
+
+  navigationHandler = () => {
+    this.props.navigation.navigate(this.state.route);
+  };
 
   render() {
-    let width = Dimensions.get("window").width * 0.5 - 120;
     const Slide = ({ title, id, icon, rout, text }) => (
       <View>
         <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
         <Text style={styles.slidtitle}>{title} </Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate(rout)}
+        <View
+          // onPress={() => this.props.navigation.navigate(rout)}
           style={styles.placeholder}
         >
           <Text style={styles.slidetext}> {text} </Text>
-        </TouchableOpacity>
+        </View>
       </View>
     );
     return (
@@ -50,12 +65,15 @@ class Tutorial extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Home")}
           style={globalStyles.backButton}
         >
           <CloseIcon />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <CloseButton
+          navigation={() => this.props.navigation.navigate("Home")}
+        />
         <Text style={styles.title}>Choose your Ad Type</Text>
 
         <Swiper
@@ -63,6 +81,7 @@ class Tutorial extends Component {
           dots
           dotsColor="rgba(255, 255, 255, 0.25)"
           dotsColorActive=" rgba(255, 255, 255, 1)"
+          onSwipe={(event, i) => this.navigationRouteHandler(i)}
         >
           <Slide
             id={1}
@@ -93,6 +112,7 @@ class Tutorial extends Component {
             title="Story Ad "
           />
         </Swiper>
+        <LowerButton function={this.navigationHandler} bottom={2} />
       </Container>
     );
   }

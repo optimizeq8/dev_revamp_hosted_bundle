@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -7,7 +11,6 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
     backgroundColor: "transparent"
   },
@@ -32,16 +35,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 5,
     marginBottom: 10,
+    color: "#fff",
+    textAlign: "left"
+  },
+  appTexts: {
+    alignSelf: "center",
+    fontFamily: "montserrat-medium",
+    fontSize: widthPercentageToDP(3.2),
+    marginBottom: 6,
 
     color: "#fff",
     textAlign: "left"
   },
-
   icon: {
     alignSelf: "center",
-    color: "#fff",
-    fontSize: 100,
-    paddingVertical: 10,
+    paddingVertical: heightPercentageToDP(7),
     paddingHorizontal: 7
   },
   content: {
@@ -49,11 +57,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  image: {
-    height: 70,
-    width: 70,
-    margin: 15
-  },
+
   video: {
     height: 95,
     width: 95,
@@ -72,13 +76,11 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   text: {
-    textAlign: "center",
     color: "white",
-
     paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 14,
-    paddingHorizontal: 10
+    fontFamily: "montserrat-semibold",
+    fontSize: widthPercentageToDP(4),
+    alignSelf: "center"
   },
   activeBadege: {
     backgroundColor: "#5F5F5F",
@@ -95,7 +97,8 @@ const styles = StyleSheet.create({
     borderWidth: 2
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
+    height: heightPercentageToDP(100)
   },
   input: {
     marginBottom: 15,
@@ -130,8 +133,13 @@ const styles = StyleSheet.create({
     padding: 10
   },
   title: {
-    fontSize: 25,
-    color: "#000000"
+    textAlign: "center",
+    color: "white",
+    paddingBottom: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: widthPercentageToDP(5),
+    // paddingHorizontal: 20,
+    width: widthPercentageToDP(55)
   },
   // container: {
   //   paddingVertical: 12,
@@ -154,11 +162,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCCCCC"
   },
   image: {
-    alignSelf: "center",
-    width: 45,
-    height: 45,
-    borderRadius: 20,
-    marginLeft: 20
+    width: widthPercentageToDP(11.5),
+    height: widthPercentageToDP(11.5),
+    borderRadius: 13,
+    marginHorizontal: 20
   },
   time: {
     fontSize: 11,
@@ -167,6 +174,42 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "bold"
+  },
+  campaignButton: {
+    flexDirection: "row",
+    marginHorizontal: 25,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 20,
+    backgroundColor: "#FF9D00",
+    height: heightPercentageToDP(7.3)
+  },
+  OS: {
+    padding: widthPercentageToDP(4),
+    marginHorizontal: widthPercentageToDP(2),
+    borderRadius: 90,
+    height: parseInt(heightPercentageToDP(7.2)),
+    width: parseInt(widthPercentageToDP(16)),
+    justifyContent: "center"
+  },
+  OSText: {
+    fontSize: widthPercentageToDP(2.9),
+    fontFamily: "montserrat-semibold",
+    alignSelf: "center"
+  },
+  toggleStyle: {
+    alignSelf: "center",
+    marginTop: 10,
+    width: widthPercentageToDP("13"),
+    height: heightPercentageToDP("2.7"),
+    borderRadius: 25,
+    padding: 0
+  },
+  toggleCircle: {
+    width: widthPercentageToDP("5"),
+    height: heightPercentageToDP("2.4"),
+    borderRadius: 50
   }
 });
 
