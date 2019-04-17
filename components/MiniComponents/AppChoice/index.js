@@ -157,8 +157,10 @@ class AppChoice extends Component {
     });
   };
   render() {
+    console.log(this.state.attachment);
+
     return (
-      <>
+      <View>
         <RNPickerSelect
           items={this.state.callactions}
           placeholder={{ label: "Call to Action", value: "" }}
@@ -332,10 +334,10 @@ class AppChoice extends Component {
                       // this._searchIosApps();
                       break;
                     case "android apps":
-                      // this._searchAndroidApps();
+                      //this._searchAndroidApps();
                       break;
                     case "Apps":
-                      // this._searchAndroidApps();
+                      //this._searchAndroidApps();
                       // this._searchIosApps();
                       break;
                   }
@@ -355,79 +357,81 @@ class AppChoice extends Component {
         {this.state.loading ? (
           <ActivityIndicator />
         ) : (
-          <FlatList
-            //-----------This is for actual app data searches-----------
-            // data={
-            //   this.state.showList
-            //     ? this.state.choice !== "android apps"
-            //       ? this.state.data
-            //       : this.state.androidData
-            //     : []
-            // }
-            //-----------This is for dummy app data searches-----------
-            data={
-              this.state.showList
-                ? this.state.choice !== "android apps"
-                  ? data
-                  : androidDataTest
-                : []
-            }
-            contentContainerStyle={{ height: heightPercentageToDP(35) }}
-            contentInset={{ bottom: heightPercentageToDP(15) }}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => this._getAppIds(item)}
-                style={[
-                  styles.campaignButton,
-                  {
-                    backgroundColor:
-                      this.state.attachment.ios_app_id === item.id ||
-                      this.state.attachment.android_app_url === item.id
-                        ? "#FF9D00"
-                        : "transparent"
-                  }
-                ]}
-              >
-                <Animatable.View
-                  animation={!this.state.AppError ? "" : "shake"}
-                  onAnimationEnd={() => this.setState({ AppError: null })}
+          <View style={{ height: heightPercentageToDP(35) }}>
+            <FlatList
+              style={{ flex: 1 }}
+              //-----------This is for actual app data searches-----------
+              // data={
+              //   this.state.showList
+              //     ? this.state.choice !== "android apps"
+              //       ? this.state.data
+              //       : this.state.androidData
+              //     : []
+              // }
+              //-----------This is for dummy app data searches-----------
+              data={
+                this.state.showList
+                  ? this.state.choice !== "android apps"
+                    ? data
+                    : androidDataTest
+                  : []
+              }
+              // contentContainerStyle={{ height: heightPercentageToDP(35) }}
+              // contentInset={{ bottom: heightPercentageToDP(15) }}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => this._getAppIds(item)}
                   style={[
+                    styles.campaignButton,
                     {
-                      flexDirection: "row",
-                      alignItems: "center"
+                      backgroundColor:
+                        this.state.attachment.ios_app_id === item.id ||
+                        this.state.attachment.android_app_url === item.id
+                          ? "#FF9D00"
+                          : "transparent"
                     }
                   ]}
                 >
-                  <Image
-                    style={styles.image}
-                    source={{
-                      uri: item.icon
-                    }}
-                  />
-                  <Text
+                  <Animatable.View
+                    animation={!this.state.AppError ? "" : "shake"}
+                    onAnimationEnd={() => this.setState({ AppError: null })}
                     style={[
-                      styles.titletext,
                       {
-                        color: "#fff",
-                        fontSize: heightPercentageToDP(1.7)
+                        flexDirection: "row",
+                        alignItems: "center"
                       }
                     ]}
                   >
-                    {item.title}
-                  </Text>
-                </Animatable.View>
-              </TouchableOpacity>
-            )}
-            numcolumnns={3}
-            keyExtractor={(item, index) => item.id}
-          />
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri: item.icon
+                      }}
+                    />
+                    <Text
+                      style={[
+                        styles.titletext,
+                        {
+                          color: "#fff",
+                          fontSize: heightPercentageToDP(1.7)
+                        }
+                      ]}
+                    >
+                      {item.title}
+                    </Text>
+                  </Animatable.View>
+                </TouchableOpacity>
+              )}
+              numcolumnns={3}
+              keyExtractor={(item, index) => item.id}
+            />
+          </View>
         )}
-
         <LowerButton
           function={() => this.validate()}
           bottom={heightPercentageToDP(0.1)}
         />
-      </>
+      </View>
     );
   }
 }

@@ -12,7 +12,8 @@ export const colors = {
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    height: heightPercentageToDP(100)
   },
   textcontainer: {
     flex: 1,
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,
-    height: heightPercentageToDP(100)
+    height: heightPercentageToDP(105)
   },
   input: {
     marginBottom: 15,
