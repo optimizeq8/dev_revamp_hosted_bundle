@@ -128,7 +128,7 @@ export default class index extends Component {
         </Text>
         <LowerButton
           function={this.props._handleSubmission}
-          bottom={-heightPercentageToDP(3.2)}
+          bottom={-heightPercentageToDP(3.6)}
         />
       </View>
     );

@@ -94,7 +94,12 @@ export default class App_Install extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <ScrollView
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[0.7, 1]}
+          style={styles.gradient}
+        />
+        <View
           style={{
             borderTopStartRadius: 30,
             borderTopEndRadius: 30
@@ -132,7 +137,7 @@ export default class App_Install extends Component {
               )}
             </View>
           </KeyboardAwareScrollView>
-        </ScrollView>
+        </View>
       </Container>
     );
   }
