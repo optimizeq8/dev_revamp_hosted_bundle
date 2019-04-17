@@ -82,7 +82,7 @@ export default class App_Install extends Component {
       appError
     });
 
-    if (!appError && !android_app_urlError) {
+    if (!appError) {
       this.props._changeDestination(
         "APP_INSTALL",
         this.state.callaction,
