@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14,
-    alignSelf: "center",
     textAlign: "center"
   },
   input: {

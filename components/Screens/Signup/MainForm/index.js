@@ -23,7 +23,8 @@ class MainForm extends Component {
   state = { verified: false };
   render() {
     let title = "Phone Number";
-    let content = <PhoneNo navigation={this.props.navigation} />;
+    let content = <BusinessInfo navigation={this.props.navigation} />;
+    //  <PhoneNo navigation={this.props.navigation} />;
     if (this.props.verificationCode) {
       content = <Verification />;
       title = "Verification";

@@ -37,13 +37,16 @@ class CreateBusinessAccount extends Component {
         businesscategory: "",
         country: "",
         businesstype: "1",
-        businessemail: ""
+        businessemail: "",
+        brandname: ""
       },
       inputT: false,
       inputN: false,
       inputC: false,
       inputE: false,
+      inputBN: false,
       businessnameError: "",
+      brandNameError: "",
       businessemailError: "",
       businesscategoryError: "",
       countryError: "",
@@ -162,14 +165,11 @@ class CreateBusinessAccount extends Component {
         }
       ]
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
       if (this.props.message === "Business name already exist") {
-        console.log(this.props.message);
-
         this.setState({
           businessnameError: this.props.message ? this.props.message : null
         });
@@ -180,8 +180,18 @@ class CreateBusinessAccount extends Component {
       }
     }
   }
-  async _verifyBusinessName(businesstype, name) {
-    if (businesstype === "2" && name !== "") {
+
+  _handleBusinessCategories = async type => {
+    await this.setState({
+      businessAccount: {
+        ...this.state.businessAccount,
+        businesstype: type
+      }
+    });
+    this._verifyBusinessName(this.state.businessAccount.businessname);
+  };
+  async _verifyBusinessName(name) {
+    if (name !== "") {
       this.props.resetMessages();
       await this.props.verifyBusinessName(name);
 
@@ -191,20 +201,17 @@ class CreateBusinessAccount extends Component {
           this.state.businessAccount.businessname
         )
       });
-    } else {
-      this.props.resetMessages();
-      this.setState({
-        businessnameError: validateWrapper(
-          "mandatory",
-          this.state.businessAccount.businessname
-        )
-      });
     }
   }
+
   _handleSubmission = () => {
     const businessnameError = validateWrapper(
       "mandatory",
       this.state.businessAccount.businessname
+    );
+    const brandNameError = validateWrapper(
+      "mandatory",
+      this.state.businessAccount.brandname
     );
     const businessemailError = validateWrapper(
       "mandatory",
@@ -220,16 +227,15 @@ class CreateBusinessAccount extends Component {
     );
     this.setState({
       businessnameError,
+      brandNameError,
       businessemailError,
       businesscategoryError,
       countryError
     });
-    this._verifyBusinessName(
-      this.state.businessAccount.businesstype,
-      this.state.businessAccount.businessname
-    );
+    this._verifyBusinessName(this.state.businessAccount.businessname);
     if (
       !businessnameError &&
+      !brandNameError &&
       !this.state.businessnameError &&
       !businessemailError &&
       !businesscategoryError &&
@@ -278,12 +284,7 @@ class CreateBusinessAccount extends Component {
               }
             ]}
             onPress={() => {
-              this.setState({
-                businessAccount: {
-                  ...this.state.businessAccount,
-                  businesstype: "1"
-                }
-              });
+              this._handleBusinessCategories("1");
             }}
           >
             <Text
@@ -306,33 +307,25 @@ class CreateBusinessAccount extends Component {
                   }
                 ]}
               />
-              {"\n"}An Individual
+              {"\n"}Home{"\n"} Business
             </Text>
           </Button>
           <Button
+            block
             dark
             style={[
               this.state.businessAccount.businesstype === "2"
                 ? styles.activebutton
                 : styles.button,
               {
-                borderTopStartRadius: 0,
+                borderBottomEndRadius: 0,
+                borderTopEndRadius: 0,
                 borderBottomStartRadius: 0,
-                borderBottomEndRadius: 15,
-                borderTopEndRadius: 15
+                borderTopStartRadius: 0
               }
             ]}
-            onPress={async () => {
-              await this.setState({
-                businessAccount: {
-                  ...this.state.businessAccount,
-                  businesstype: "2"
-                }
-              });
-              this._verifyBusinessName(
-                this.state.businessAccount.businesstype,
-                this.state.businessAccount.businessname
-              );
+            onPress={() => {
+              this._handleBusinessCategories("2");
             }}
           >
             <Text
@@ -355,7 +348,48 @@ class CreateBusinessAccount extends Component {
                   }
                 ]}
               />
-              {"\n"}A Company
+              {"\n"}Agencies
+            </Text>
+          </Button>
+
+          <Button
+            dark
+            style={[
+              this.state.businessAccount.businesstype === "3"
+                ? styles.activebutton
+                : styles.button,
+              {
+                borderTopStartRadius: 0,
+                borderBottomStartRadius: 0,
+                borderBottomEndRadius: 15,
+                borderTopEndRadius: 15
+              }
+            ]}
+            onPress={() => {
+              this._handleBusinessCategories("3");
+            }}
+          >
+            <Text
+              style={[
+                this.state.businessAccount.businesstype === "3"
+                  ? styles.activetext
+                  : styles.inactivetext,
+                { textAlign: "center" }
+              ]}
+            >
+              <Icon
+                type="AntDesign"
+                name="down"
+                style={[
+                  this.state.businessAccount.businesstype === "3"
+                    ? styles.activetext
+                    : styles.inactivetext,
+                  {
+                    left: 25
+                  }
+                ]}
+              />
+              {"\n"}Company
             </Text>
           </Button>
         </View>
@@ -396,7 +430,9 @@ class CreateBusinessAccount extends Component {
                   />
                   {"  "}
                   {this.state.businessAccount.businesstype === "1"
-                    ? "Your Name"
+                    ? "Business Name"
+                    : this.state.businessAccount.businesstype === "2"
+                    ? "Agency Name"
                     : "Company Name"}
                 </Label>
                 <Input
@@ -415,7 +451,6 @@ class CreateBusinessAccount extends Component {
                   onBlur={() => {
                     this.setState({ inputN: false });
                     this._verifyBusinessName(
-                      this.state.businessAccount.businesstype,
                       this.state.businessAccount.businessname
                     );
                   }}
@@ -497,18 +532,71 @@ class CreateBusinessAccount extends Component {
                   }}
                 />
               </Item>
-              {this.state.businessemailError ? (
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#717171",
-                    fontFamily: "montserrat-regular",
-                    fontSize: 15
-                  }}
+
+              <Item
+                ref={r => {
+                  this._textInputRef = r;
+                }}
+                floatingLabel
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.inputBN
+                      ? "#7039FF"
+                      : this.state.brandNameError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Label
+                  style={[
+                    styles.inputtext,
+                    {
+                      bottom: 5,
+                      flexDirection: "row",
+                      color: this.state.inputBN ? "#FF9D00" : "#717171"
+                    }
+                  ]}
                 >
-                  {this.state.businessemailError}
-                </Text>
-              ) : null}
+                  <Icon
+                    type="MaterialIcons"
+                    style={{
+                      fontSize: 20,
+                      color: this.state.inputBN ? "#FF9D00" : "#717171"
+                    }}
+                    name="label"
+                  />
+                  {"  "}
+                  Brand Name
+                </Label>
+
+                <Input
+                  style={styles.inputtext}
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        brandname: value
+                      }
+                    })
+                  }
+                  onFocus={() => {
+                    this.setState({ inputBN: true });
+                  }}
+                  onBlur={() => {
+                    this.setState({ inputBN: false });
+                    this.setState({
+                      brandNameError: validateWrapper(
+                        "mandatory",
+                        this.state.businessAccount.brandname
+                      )
+                    });
+                  }}
+                />
+              </Item>
 
               <RNPickerSelect
                 items={this.state.countries}
@@ -558,9 +646,7 @@ class CreateBusinessAccount extends Component {
                     ]}
                   >
                     {this.state.businessAccount.country === ""
-                      ? this.state.businessAccount.businesstype === "1"
-                        ? "Where do you live?"
-                        : "Country"
+                      ? "Country"
                       : this.state.businessAccount.country}
                   </Text>
                   <Icon
@@ -623,9 +709,7 @@ class CreateBusinessAccount extends Component {
                     ]}
                   >
                     {this.state.businessAccount.businesscategory === ""
-                      ? this.state.businessAccount.businesstype === "1"
-                        ? "What do you do?"
-                        : "Business Type"
+                      ? "Industry Type"
                       : this.state.items.find(
                           i =>
                             i.value ===
