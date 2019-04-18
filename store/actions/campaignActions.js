@@ -71,7 +71,8 @@ export const ad_objective = (info, navigation) => {
   };
 };
 
-export const ad_design = (info, laoding, navigation) => {
+export const ad_design = (info, laoding, navigation, onToggleModal) => {
+  onToggleModal();
   return dispatch => {
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
@@ -95,6 +96,7 @@ export const ad_design = (info, laoding, navigation) => {
         });
       })
       .then(() => {
+        onToggleModal();
         navigation.replace("AdDetails", { image: info._parts[0][1].uri });
       })
       .catch(err => {

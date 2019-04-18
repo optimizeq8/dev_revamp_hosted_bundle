@@ -4,12 +4,6 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
 const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
