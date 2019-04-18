@@ -43,6 +43,12 @@ class AppChoice extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      callactions: list[this.props.listNum].call_to_action_list
+    });
+  }
+
   _searchIosApps = () => {
     this.setState({ loading: true });
     const instance = Axios.create({
@@ -157,7 +163,7 @@ class AppChoice extends Component {
     });
   };
   render() {
-    console.log(this.state.attachment);
+    console.log(this.state.callaction);
 
     return (
       <View>
@@ -167,9 +173,8 @@ class AppChoice extends Component {
           onValueChange={(value, index) => {
             this.setState({
               callaction: {
-                label:
-                  list[1].call_to_action_list[index - 1 > 0 ? index - 1 : 0]
-                    .label,
+                label: this.state.callactions[index - 1 > 0 ? index - 1 : 0]
+                  .label,
                 value
               },
               callActionError: validateWrapper(

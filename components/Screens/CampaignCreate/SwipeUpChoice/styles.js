@@ -83,6 +83,16 @@ const styles = StyleSheet.create({
     fontSize: widthPercentageToDP(4),
     alignSelf: "center"
   },
+
+  deepLinkError: {
+    color: "white",
+    // paddingBottom: 10,
+    fontFamily: "montserrat-semibold",
+    fontSize: widthPercentageToDP(3),
+    alignSelf: "center",
+    width: widthPercentageToDP(75),
+    top: heightPercentageToDP(5)
+  },
   activeBadege: {
     backgroundColor: "#5F5F5F",
     width: 40,
