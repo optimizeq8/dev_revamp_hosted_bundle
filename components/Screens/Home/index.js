@@ -26,7 +26,7 @@ import {
   Spinner
 } from "native-base";
 import { Modal } from "react-native-paper";
-
+import Loading from "../../MiniComponents/LoadingScreen";
 import { LinearGradient } from "expo";
 import LottieView from "lottie-react-native";
 import Menu from "../Menu";
@@ -77,8 +77,6 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    console.log("lknjkhjgvhcfghgv");
-
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
   }
@@ -94,7 +92,7 @@ class Home extends Component {
 
   render() {
     if (!this.props.mainBusiness) {
-      return <Spinner color="red" />;
+      return <Loading />;
     } else {
       return (
         <>
@@ -162,16 +160,7 @@ class Home extends Component {
               >
                 <Text> Log out </Text>
               </Button>
-              {/* <Button
-                style={[styles.button]}
-                onPress={() => {
-                  this.props.navigation.navigate("CreateBusinessAccount");
-                }}
-              >
-                <Text> Create New Business </Text>
-              </Button>
 
-            */}
               <Button
                 style={[styles.button]}
                 onPress={() => this.props.navigation.navigate("AdDesign")}

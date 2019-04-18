@@ -35,6 +35,7 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "./FilterMenu";
+import Loading from "../../MiniComponents/LoadingScreen";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";

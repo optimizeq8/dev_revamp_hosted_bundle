@@ -22,17 +22,16 @@ import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import dateFormat from "dateformat";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import deepmerge from "deepmerge";
+import BackButton from "../../../MiniComponents/BackButton";
 //Data
 import country_regions from "./regions";
 
 //Icnos
-import CheckmarkIcon from "../../../../assets/SVGs/Checkmark.svg";
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
-import BackButton from "../../../../assets/SVGs/BackButton.svg";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../Global Styles";
@@ -646,14 +645,6 @@ class AdDetails extends Component {
               >
                 <View style={{ flex: 1 }}>
                   <View>
-                    {/* <Button
-                      iconLeft
-                      transparent
-                      onPress={() => this.props.navigation.goBack()}
-                      style={globalStyles.backButton}
-                    >
-                      <BackButton />
-                    </Button> */}
                     <BackButton navigation={this.props.navigation.goBack} />
 
                     <Text style={styles.headline}>
