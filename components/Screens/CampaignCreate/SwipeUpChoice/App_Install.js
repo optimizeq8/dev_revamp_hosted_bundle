@@ -15,7 +15,7 @@ import { Text, Item, Input, Container, Icon } from "native-base";
 
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import AppSearch from "../../../MiniComponents/AppSearch";
+import AppSearch from "../../../MiniComponents/AppSearch(old)";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
@@ -124,7 +124,7 @@ export default class App_Install extends Component {
               </View>
               {!this.state.firstStepDone ? (
                 // <AppSearch renderNextStep={this.renderNextStep} />
-                <AppChoice renderNextStep={this.renderNextStep} />
+                <AppChoice listNum={1} renderNextStep={this.renderNextStep} />
               ) : (
                 <AppConfirm
                   icon_media_url={this.state.attachment.icon_media_url}

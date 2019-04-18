@@ -8,7 +8,22 @@ import Toggle from "react-native-switch-toggle";
 //styles
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
 import LowerButton from "../LowerButton";
+import { Item, Input } from "native-base";
+import validateWrapper from "../../../Validation Functions/ValidateWrapper";
 export default class index extends Component {
+  state = { deep_link_url: "", deep_link_urlError: "" };
+
+  validate = () => {
+    const deep_link_urlError = validateWrapper(
+      "deepLink",
+      this.state.deep_link_url
+    );
+    this.setState({ deep_link_urlError });
+
+    if (!deep_link_urlError) {
+      this.props._handleSubmission(this.state.deep_link_url);
+    }
+  };
   render() {
     return (
       <View style={{ alignSelf: "center", height: heightPercentageToDP(80) }}>
@@ -112,12 +127,55 @@ export default class index extends Component {
             </View>
           </View>
         </View>
+        {this.props.deepLink && (
+          <>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.deep_link_urlError
+                    ? "red"
+                    : "transparent",
+                  marginBottom: 0,
+                  top: heightPercentageToDP(4)
+                }
+              ]}
+            >
+              <Input
+                style={styles.inputtext}
+                placeholder="Deep Link URL"
+                placeholderTextColor="white"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value =>
+                  this.setState({
+                    deep_link_url: value
+                  })
+                }
+                onBlur={() => {
+                  this.setState({
+                    deep_link_urlError: validateWrapper(
+                      "deepLink",
+                      this.state.deep_link_url
+                    )
+                  });
+                }}
+              />
+            </Item>
+            {this.state.deep_link_urlError ? (
+              <Text style={styles.deepLinkError}>
+                {this.state.deep_link_urlError}
+              </Text>
+            ) : null}
+          </>
+        )}
         <Text
           style={[
             styles.subtext,
             {
               marginBottom: 0,
-              top: heightPercentageToDP(25),
+              top: heightPercentageToDP(17),
               textDecorationLine: "underline",
               fontSize: heightPercentageToDP(1.5)
             }
@@ -127,8 +185,10 @@ export default class index extends Component {
           Change app
         </Text>
         <LowerButton
-          function={this.props._handleSubmission}
-          bottom={-heightPercentageToDP(3.6)}
+          function={
+            this.props.deepLink ? this.validate : this.props._handleSubmission
+          }
+          bottom={-heightPercentageToDP(2.5)}
         />
       </View>
     );
