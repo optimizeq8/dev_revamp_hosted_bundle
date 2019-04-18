@@ -1,6 +1,7 @@
 // Components
 import React, { Component } from "react";
-import { View, TouchableOpacity, Dimensions } from "react-native";
+
+import { View, Image } from "react-native";
 import {
   Button,
   Content,
@@ -14,6 +15,7 @@ import { LinearGradient } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CloseButton from "../../../MiniComponents/CloseButton";
+
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
 import Placeholder from "../../../../assets/SVGs/AdType/Placeholder";
@@ -25,8 +27,9 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
-class Tutorial extends Component {
+class AdType extends Component {
   static navigationOptions = {
     header: null
   };
@@ -51,10 +54,21 @@ class Tutorial extends Component {
         <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
         <Text style={styles.slidtitle}>{title} </Text>
         <View
-          // onPress={() => this.props.navigation.navigate(rout)}
-          style={styles.placeholder}
+          style={[
+            styles.placeholder,
+            { backgroundColor: title.includes("Snap") ? "transparent" : "#000" }
+          ]}
         >
-          <Text style={styles.slidetext}> {text} </Text>
+          {title.includes("Snap") && (
+            <Image
+              style={{ width: "100%", height: "100%", position: "absolute" }}
+              resizeMode="stretch"
+              source={require("../../../../assets/images/SnapAd.gif")}
+            />
+          )}
+          {text.includes("Soon") && (
+            <Text style={styles.slidetext}> {text} </Text>
+          )}
         </View>
       </View>
     );
@@ -79,6 +93,12 @@ class Tutorial extends Component {
         <Swiper
           backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
           dots
+          dotsStyle={{
+            padding: 7,
+            borderRadius: 50,
+            marginHorizontal: 5,
+            top: heightPercentageToDP(3)
+          }}
           dotsColor="rgba(255, 255, 255, 0.25)"
           dotsColorActive=" rgba(255, 255, 255, 1)"
           onSwipe={(event, i) => this.navigationRouteHandler(i)}
@@ -124,4 +144,4 @@ const mapDispatchToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Tutorial);
+)(AdType);

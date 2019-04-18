@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold"
   },
   slidtitle: {
-    fontSize: 22,
+    fontSize: hp(2.4),
     color: "#fff",
     textAlign: "center",
     paddingTop: 15,
     textAlign: "center",
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-semibold"
   },
   slideicon: {
-    fontSize: 60,
+    fontSize: hp(6),
     color: "#fff",
     paddingTop: 15,
     textAlign: "center",
@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
   },
 
   placeholder: {
-    opacity: 0.26,
-    borderRadius: 34,
+    opacity: 1,
+    borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
-    width: "78%",
-    height: "76%",
+    width: wp(75),
+    height: hp(61),
     zIndex: 0,
-    marginTop: 17,
+    marginTop: 10,
     backgroundColor: "black",
     justifyContent: "center"
   },
