@@ -268,11 +268,12 @@ class AdDesign extends Component {
     ) {
       let t = await this.formatMedia();
       // console.log(this.state.formatted);
-      this.onToggleModal();
+      // this.onToggleModal();
       this.props.ad_design(
         this.state.formatted,
         this._getUploadState,
-        this.props.navigation
+        this.props.navigation,
+        this.onToggleModal
       );
       // this.props.navigation.navigate("AdDetails");
     }
@@ -545,11 +546,7 @@ class AdDesign extends Component {
                 <ForwardButton />
               </TouchableOpacity>
             </View>
-            <Modal
-              isVisible={
-                this.state.isVisible && Math.round(this.state.loaded, 2) < 100
-              }
-            >
+            <Modal isVisible={this.state.isVisible}>
               <LoadingScreen />
             </Modal>
           </View>
@@ -566,8 +563,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, loading, navigation) =>
-    dispatch(actionCreators.ad_design(info, loading, navigation))
+  ad_design: (info, loading, navigation, onToggleModal) =>
+    dispatch(actionCreators.ad_design(info, loading, navigation, onToggleModal))
 });
 export default connect(
   mapStateToProps,
