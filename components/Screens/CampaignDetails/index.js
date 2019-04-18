@@ -29,6 +29,7 @@ import {
   Spinner
 } from "native-base";
 import dateFormat from "dateformat";
+import Loading from "../../MiniComponents/LoadingScreen";
 
 import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView } from "expo";
@@ -155,9 +156,7 @@ class CampaignDetails extends Component {
     };
 
     if (this.props.loading) {
-      return (
-        <ActivityIndicator style={{ top: hp(50) }} size="large" color="red" />
-      );
+      return <Loading />;
     } else {
       let interesetNames =
         this.props.campaign.targeting &&

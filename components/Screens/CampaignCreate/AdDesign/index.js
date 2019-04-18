@@ -47,6 +47,8 @@ import { colors } from "../../../GradiantColors/colors";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
+import Modal from "react-native-modal";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -88,7 +90,7 @@ class AdDesign extends Component {
         brand_name: this.props.mainBusiness.businessname,
         headline: !this.props.data ? "Headline" : this.props.data.name
       },
-      objective: this.props.data ? this.props.data.objective : "APP_INSTALLS"
+      objective: this.props.data ? this.props.data.objective : "REACH"
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -146,8 +148,7 @@ class AdDesign extends Component {
             this.setState({
               image: result.uri,
               type: result.type.toUpperCase(),
-              imageError: null,
-              isVisible: true
+              imageError: null
             });
             this.formatMedia();
           }
@@ -266,8 +267,8 @@ class AdDesign extends Component {
       !this.state.imageError
     ) {
       let t = await this.formatMedia();
-      console.log(this.state.formatted);
-
+      // console.log(this.state.formatted);
+      this.onToggleModal();
       this.props.ad_design(
         this.state.formatted,
         this._getUploadState,
@@ -281,16 +282,9 @@ class AdDesign extends Component {
     this.setState({ isVisible: !isVisible });
   };
   render() {
-    let { image } = this.state;
-    {
-      image &&
-        Image.getSize(image, (width, height) => {
-          console.log(Math.floor(width / 9), "new width");
-          console.log(Math.floor(height / 16), "new height");
-        });
-    }
+    console.log(this.state.loaded);
 
-    let width = Dimensions.get("window").width * 0.5 - 185;
+    let { image } = this.state;
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -530,9 +524,7 @@ class AdDesign extends Component {
                 {this.state.swipeUpError}
               </Text>
             )}
-            {
-              //              <Text> {Math.round(this.state.loaded, 2)} %</Text>
-            }
+            {/* {<Text> {Math.round(this.state.loaded, 2)} %</Text>} */}
             <View
               style={{
                 flexDirection: "row",
@@ -553,6 +545,13 @@ class AdDesign extends Component {
                 <ForwardButton />
               </TouchableOpacity>
             </View>
+            <Modal
+              isVisible={
+                this.state.isVisible && Math.round(this.state.loaded, 2) < 100
+              }
+            >
+              <LoadingScreen />
+            </Modal>
           </View>
         </KeyboardAwareScrollView>
       </Container>
