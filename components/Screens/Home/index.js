@@ -77,6 +77,8 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    console.log("props", this.props.userInfo);
+
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
   }

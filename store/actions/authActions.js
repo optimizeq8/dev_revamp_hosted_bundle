@@ -296,11 +296,10 @@ export const registerUser = (userInfo, navigation) => {
       .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
         if (getState().auth.userInfo) {
+          console.log("state user", getState().auth.userInfo);
+
           navigation.navigate("Home");
-          console.log(
-            "auth token",
-            axios.defaults.headers.common.Authorization
-          );
+
           dispatch(getBusinessAccounts());
         }
       })
@@ -470,13 +469,13 @@ export const resetRegister = () => {
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = (id, navigation) => {
-  console.log("kjwnvoivnow");
-
   return dispatch => {
     dispatch({ type: actionTypes.SET_LOADING, payload: true });
     instance
       .post("snapadaccounts", { businessid: id })
       .then(res => {
+        console.log("create_ad_account", res.data);
+
         return res.data;
       })
       .then(data => {
@@ -489,6 +488,6 @@ export const create_ad_account = (id, navigation) => {
         navigation.navigate("Home");
       })
 
-      .catch(err => {});
+      .catch(err => console.log(err.response));
   };
 };

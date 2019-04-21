@@ -215,7 +215,9 @@ class CreateBusinessAccount extends Component {
     );
     const businessemailError = validateWrapper(
       "mandatory",
-      this.state.businessAccount.businessemail
+      this.props.registering
+        ? "not empty"
+        : this.state.businessAccount.businessemail
     );
     const businesscategoryError = validateWrapper(
       "mandatory",
@@ -241,25 +243,45 @@ class CreateBusinessAccount extends Component {
       !businesscategoryError &&
       !countryError
     ) {
-      this.props.createBusinessAccount(
-        this.state.businessAccount,
-        this.props.navigation
-      );
+      if (this.props.registering) {
+        let { businessemail, ...business } = this.state.businessAccount;
+        let userInfo = {
+          ...this.props.userInfo,
+          ...business
+        };
+        console.log(userInfo);
+
+        this.props.registerUser(userInfo, this.props.navigation);
+      } else {
+        this.props.createBusinessAccount(
+          this.state.businessAccount,
+          this.props.navigation
+        );
+      }
     }
   };
   render() {
     return (
-      <Container style={styles.maincontainer}>
+      <Container
+        style={[
+          styles.maincontainer,
+          { marginTop: this.props.registering && 0 }
+        ]}
+      >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <CloseButton navigation={this.props.navigation.goBack} />
-        <Text style={styles.title}>New Business</Text>
-        <Text style={styles.subtitle}>
-          You can create a new Business under you!
-        </Text>
+        {!this.props.registering && (
+          <>
+            <CloseButton navigation={this.props.navigation.goBack} />
+            <Text style={styles.title}>New Business</Text>
+            <Text style={styles.subtitle}>
+              You can create a new Business under you!
+            </Text>
+          </>
+        )}
         <View
           style={{
             paddingVertical: 10,
@@ -468,71 +490,71 @@ class CreateBusinessAccount extends Component {
                     {this.state.businessnameError}
                   </Text>
                 )}
-
-              <Item
-                ref={r => {
-                  this._textInputRef = r;
-                }}
-                floatingLabel
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.inputE
-                      ? "#7039FF"
-                      : this.state.businessemailError
-                      ? "red"
-                      : "#D9D9D9"
-                  }
-                ]}
-              >
-                <Label
+              {!this.props.registering && (
+                <Item
+                  ref={r => {
+                    this._textInputRef = r;
+                  }}
+                  floatingLabel
                   style={[
-                    styles.inputtext,
+                    styles.input,
                     {
-                      bottom: 5,
-                      flexDirection: "row",
-                      color: this.state.inputE ? "#FF9D00" : "#717171"
+                      borderColor: this.state.inputE
+                        ? "#7039FF"
+                        : this.state.businessemailError
+                        ? "red"
+                        : "#D9D9D9"
                     }
                   ]}
                 >
-                  <Icon
-                    style={{
-                      fontSize: 20,
-                      color: this.state.inputE ? "#FF9D00" : "#717171"
-                    }}
-                    name="mail"
-                  />
-                  {"  "}
-                  Email
-                </Label>
-
-                <Input
-                  style={styles.inputtext}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessemail: value
+                  <Label
+                    style={[
+                      styles.inputtext,
+                      {
+                        bottom: 5,
+                        flexDirection: "row",
+                        color: this.state.inputE ? "#FF9D00" : "#717171"
                       }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputE: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputE: false });
-                    this.setState({
-                      businessemailError: validateWrapper(
-                        "email",
-                        this.state.businessAccount.businessemail
-                      )
-                    });
-                  }}
-                />
-              </Item>
+                    ]}
+                  >
+                    <Icon
+                      style={{
+                        fontSize: 20,
+                        color: this.state.inputE ? "#FF9D00" : "#717171"
+                      }}
+                      name="mail"
+                    />
+                    {"  "}
+                    Email
+                  </Label>
 
+                  <Input
+                    style={styles.inputtext}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        businessAccount: {
+                          ...this.state.businessAccount,
+                          businessemail: value
+                        }
+                      })
+                    }
+                    onFocus={() => {
+                      this.setState({ inputE: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputE: false });
+                      this.setState({
+                        businessemailError: validateWrapper(
+                          "email",
+                          this.state.businessAccount.businessemail
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+              )}
               <Item
                 ref={r => {
                   this._textInputRef = r;
@@ -574,7 +596,6 @@ class CreateBusinessAccount extends Component {
                 <Input
                   style={styles.inputtext}
                   autoCorrect={false}
-                  autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({
                       businessAccount: {
@@ -725,6 +746,13 @@ class CreateBusinessAccount extends Component {
               </RNPickerSelect>
             </View>
           </TouchableWithoutFeedback>
+          {this.props.registering && (
+            <Text style={[styles.link]}>
+              By tapping the button below you {"\n"}
+              Agree to the Terms & Conditions
+            </Text>
+          )}
+
           <View style={{ backgroundColor: "#fff" }}>
             <Button
               block
@@ -744,10 +772,14 @@ class CreateBusinessAccount extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message
+  message: state.auth.message,
+  userInfo: state.auth.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
+  registerUser: (userInfo, navigation) =>
+    dispatch(actionCreators.registerUser(userInfo, navigation)),
+
   createBusinessAccount: (account, navigation) =>
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
   verifyBusinessName: businessName =>

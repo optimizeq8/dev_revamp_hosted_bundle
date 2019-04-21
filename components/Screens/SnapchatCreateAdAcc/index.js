@@ -76,6 +76,8 @@ class MainForm extends Component {
                 dark
                 style={styles.button}
                 onPress={() => {
+                  console.log(this.props.mainBusiness);
+
                   this.props.create_ad_account(
                     this.props.mainBusiness.businessid,
                     this.props.navigation
