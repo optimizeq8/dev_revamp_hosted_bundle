@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "optimize",
+    "scheme": "optimize",
     "description": "This project is really great.",
     "slug": "optimize_app",
     "privacy": "public",
