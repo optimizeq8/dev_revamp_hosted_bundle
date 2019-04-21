@@ -8,6 +8,7 @@ import PersonalInfo from "../PersonalInfo";
 import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
 import BusinessInfo from "../BusinessInfo";
+import CreateBusinessAccount from "../../CreateBusinessAccount";
 
 // Style
 import styles from "./styles";
@@ -24,7 +25,7 @@ class MainForm extends Component {
   render() {
     let title = "Phone Number";
     let content =  <PhoneNo navigation={this.props.navigation} />;
-   
+
     if (this.props.verificationCode) {
       content = <Verification />;
       title = "Verification";
@@ -34,7 +35,13 @@ class MainForm extends Component {
       title = "Personal Info";
     }
     if (this.props.successEmail) {
-      content = <BusinessInfo navigation={this.props.navigation} />;
+      content = (
+        <CreateBusinessAccount
+          registering={true}
+          navigation={this.props.navigation}
+        />
+      );
+      //  <BusinessInfo navigation={this.props.navigation} />;
       title = "Business Info";
     }
 

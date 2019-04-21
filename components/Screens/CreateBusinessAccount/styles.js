@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 70
+    height: heightPercentageToDP(10)
   },
   link: {
     textAlign: "center",
