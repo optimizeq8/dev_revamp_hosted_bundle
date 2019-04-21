@@ -18,6 +18,7 @@ import {
   Spinner
 } from "native-base";
 import { LinearGradient, WebBrowser, Linking } from "expo";
+import KnetIcon from "../../../assets/SVGs/Knet.svg";
 
 // Style
 import styles from "./styles";
@@ -78,83 +79,112 @@ class PaymentForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <View
-          style={{
-            justifyContent: "center",
-            marginTop: 10,
-            marginLeft: 20
-          }}
-        />
 
-        <View>
-          <View
-            style={{
-              flexDirection: "row"
-            }}
-          >
+        <View style={styles.headerview}>
+          <Text style={styles.header}>Payment</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Button disabled style={styles.whitebutton}>
+              <Text style={styles.whitebuttontext}> WALLET </Text>
+            </Button>
+            <Button style={styles.button}>
+              <Text style={styles.buttontext}> K-NET </Text>
+            </Button>
+            <Button disabled style={styles.whitebutton2}>
+              <Text style={styles.whitebuttontext}> CREDIT{"\n"}CARD </Text>
+            </Button>
+          </View>
+        </View>
+
+        <View
+          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
+        >
+          <Image
+            style={styles.image}
+            source={require("../../../assets/images/knet.png")}
+            resizeMode="contain"
+          />
+          <Text style={styles.errortext}>
+            You will be redirected to KNET’s {"\n"}
+            Payment gateway for the {"\n"}
+            payment process
+          </Text>
+        </View>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }}
+        >
+          <View style={[styles.mainCard]}>
             <Text
-              style={[
-                styles.header,
-                {
-                  paddingHorizontal: 50,
-                  paddingVertical: 30,
-                  textAlign: "center"
-                }
-              ]}
+              style={styles.boldtext}
+              onPress={() => this.props.navigation.navigate("AdPaymentReview")}
             >
-              Payment
+              Review Purchase
             </Text>
           </View>
-
-          <View
+        </View>
+        <Card padder style={[styles.bottomCard]}>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              this.props.payment_request_knet(
+                this.props.campaign_id,
+                this._openWebBrowserAsync
+              )
+            }
             style={{
-              borderBottomColor: "#fff",
-              borderBottomWidth: 1,
-              marginHorizontal: 40
+              flex: 1,
+              justifyContent: "center",
+              alignSelf: "center",
+              alignItems: "center"
             }}
-          />
-
-          <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <View style={{ flexDirection: "column", alignSelf: "center" }}>
-              <Text style={styles.text}>Campaign budget</Text>
-              {/* <Text style={styles.text}>Agency Fee</Text> */}
-            </View>
+          >
+            <View>
+                          {/* <Text style={styles.text}>Agency Fee</Text> */}
             {/* <View style={{ flexDirection: "column", alignSelf: "center" }}>
               <Text style={styles.text}>
-                {" "}
                 {2500 - this._handleAgencyFee()} $
               </Text>
               <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
             </View> */}
-          </View>
-        </View>
-        <View style={{ backgroundColor: "#000" }}>
-          <Card padder style={styles.bottomCard}>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                this.props.payment_request_knet(
-                  this.props.campaign_id,
-                  this._openWebBrowserAsync
-                )
-              }
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignSelf: "center",
-                alignItems: "center"
-              }}
-            >
+
               <Text
                 style={{
                   color: "#fff",
-                  textAlign: "center"
+                  textAlign: "center",
+                  fontSize: 13,
+                  fontFamily: "montserrat-medium"
                 }}
               >
-                Total {"\n"} {this.props.data.lifetime_budget_micro} ${"\n"} Pay now{" "}
+                TOTAL
               </Text>
-            </TouchableWithoutFeedback>
-          </Card>
-        </View>
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  fontSize: 18,
+                  fontFamily: "montserrat-bold",
+                  paddingTop: 3
+                }}
+              >
+                {this.props.data.lifetime_budget_micro + 20}$
+
+              </Text>
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  fontSize: 13,
+                  fontFamily: "montserrat-medium",
+                  paddingBottom: 3
+                }}
+              >
+                Pay now
+              </Text>
+              <Text style={styles.link}>
+                By tapping this button you {"\n"}
+                Agree to the Terms & Conditions
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </Card>
       </Container>
     );
   }

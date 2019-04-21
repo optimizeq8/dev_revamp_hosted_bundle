@@ -9,31 +9,35 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    flex: 1
+  },
+  errortext: {
+    marginTop: 5,
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-light",
+    textAlign: "center",
+    lineHeight: 18
   },
   image: {
     alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
+    height: 170,
+    width: 170
   },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
+
   mainCard: {
-    top: 15,
-    borderColor: "#000",
-    backgroundColor: "#000",
-    flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0,
+    top: 20,
+    borderColor: "#FF9D00",
+    backgroundColor: "#FF9D00",
+    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    height: 45,
+    width: 200,
     marginLeft: 0,
     marginRight: 0,
     borderTopStartRadius: 30,
-    borderTopEndRadius: 30
+    borderTopEndRadius: 30,
+    justifyContent: "center"
   },
   text: {
     textAlign: "center",
@@ -44,32 +48,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
+
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"
   },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
+  boldtext: {
+    color: "#fff",
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
     alignSelf: "center"
   },
+
   snapbutton: {
     top: 30,
     marginBottom: 10,
@@ -78,25 +70,77 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 20,
-    paddingHorizontal: 10
+    fontFamily: "montserrat-light",
+    fontSize: 12,
+    paddingHorizontal: 10,
+    lineHeight: 15
   },
   header: {
-    fontSize: 20,
-    color: "#fff",
+    fontFamily: "montserrat-medium",
+    paddingHorizontal: 50,
+    paddingVertical: 30,
     textAlign: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center"
+  },
+  headerview: {
+    justifyContent: "center",
+    marginTop: 10,
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 20,
+    justifyContent: "flex-start"
   },
   bottomCard: {
+    paddingBottom: 15,
     top: 15,
+    borderColor: "#FF9D00",
+    justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 127,
+    height: 130,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    shadowRadius: 5,
+    shadowOpacity: 0.2
+  },
+  button: {
+    marginTop: 15,
+    backgroundColor: "#FF9D00",
+    borderRadius: 0,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  buttontext: {
+    color: "#fff",
+    fontSize: 12,
+    fontFamily: "montserrat-medium"
+  },
+  whitebutton: {
+    marginTop: 15,
+    backgroundColor: "#fff",
+    borderRadius: 0,
+    borderTopStartRadius: 15,
+    borderBottomStartRadius: 15,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  whitebutton2: {
+    marginTop: 15,
+    backgroundColor: "#fff",
+    borderRadius: 0,
+    borderTopEndRadius: 15,
+    borderBottomEndRadius: 15,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  whitebuttontext: {
+    color: "#751AFF",
+    fontSize: 12,
+    fontFamily: "montserrat-medium",
+    textAlign: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
