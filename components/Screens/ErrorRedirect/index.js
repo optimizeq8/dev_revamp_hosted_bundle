@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { Linking } from "expo";
+import { View, Image } from "react-native";
+import { Linking, LinearGradient } from "expo";
+import { Button, Text, Container } from "native-base";
+import ErrorIcon from "../../../assets/SVGs/Error.svg";
+
+//styles
+import styles, { colors } from "./styles";
+
 //Reddux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -17,19 +23,39 @@ class ErrorRedirect extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text> Something went wrong... </Text>
-        <Button
-          style={styles.paragraph}
-          title="Retry"
-          onPress={() => this.props.navigation.navigate("PaymentForm")}
+      <Container style={styles.container}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[0.7, 1]}
+          style={styles.gradient}
         />
-        <Button
-          style={styles.paragraph}
-          title="Home"
-          onPress={() => this.props.navigation.navigate("Home")}
+        <Image
+          style={styles.image}
+          source={require("../../../assets/images/logo01.png")}
+          resizeMode="contain"
         />
-      </View>
+        <View style={styles.view}>
+          <ErrorIcon width={93} height={93} />
+
+          <Text style={styles.title}> Sorry </Text>
+          <Text style={styles.errortext}>
+            There seems to be a problem with {"\n"}
+            your payment method
+          </Text>
+          <Button
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate("PaymentForm")}
+          >
+            <Text style={styles.buttontext}> Retry </Text>
+          </Button>
+          <Button
+            style={styles.whitebutton}
+            onPress={() => this.props.navigation.navigate("Home")}
+          >
+            <Text style={styles.whitebuttontext}> Home </Text>
+          </Button>
+        </View>
+      </Container>
     );
   }
 }
@@ -45,16 +71,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ErrorRedirect);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  header: {
-    fontSize: 25,
-    marginBottom: 25
-  }
-});
