@@ -153,16 +153,20 @@ class Menu extends Component {
                 justifyContent: "space-evenly"
               }}
             >
-              <View
-                style={{
-                  alignItems: "center",
-
-                  flexDirection: "row"
-                }}
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate("PersonalInfo")}
               >
-                <Icons.PersonalInfo />
-                <Text style={styles.text}>Personal Info</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.PersonalInfo />
+                  <Text style={styles.text}>Personal Info</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <View
                 style={{
                   alignItems: "center",

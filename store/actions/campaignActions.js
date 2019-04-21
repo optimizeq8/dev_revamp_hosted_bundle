@@ -117,10 +117,10 @@ export const ad_design = (info, laoding, navigation, onToggleModal) => {
           payload: data
         });
       })
-      .then(() => {
-        onToggleModal();
-        navigation.replace("AdDetails", { image: info._parts[0][1].uri });
-      })
+
+      .then(() =>
+        navigation.replace("AdDetails", { image: info._parts[0][1].uri })
+      )
       .catch(err => {
         laoding(0);
 
@@ -152,6 +152,10 @@ export const get_interests = countryCode => {
 
 export const ad_details = (info, interestNames, navigation) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
     instance
       .post(`savetargeting`, info)
       .then(res => {
@@ -170,7 +174,7 @@ export const ad_details = (info, interestNames, navigation) => {
         });
       })
       .catch(err => {
-        dispatch(console.log(err.response.data));
+        console.log(err.response);
       });
   };
 };

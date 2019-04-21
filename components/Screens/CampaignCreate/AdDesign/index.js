@@ -62,7 +62,7 @@ class AdDesign extends Component {
         brand_name: "",
         headline: "",
         destination: "BLANK",
-        call_to_action: "BLANK",
+        call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK",
         media_type: ""
       },
