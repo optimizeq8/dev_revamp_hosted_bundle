@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading, Asset, Font, Icon } from "expo";
+import { AppLoading, Asset, Font, Icon, Linking } from "expo";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
@@ -25,12 +25,14 @@ export default class App extends React.Component {
         />
       );
     } else {
+      const prefix = Linking.makeUrl("/");
+
       return (
         <Provider store={store}>
           <View style={styles.container}>
             <StatusBar barStyle="light-content" />
             <Root>
-              <AppNavigator />
+              <AppNavigator uriPrefix={prefix} />
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
