@@ -62,12 +62,12 @@ class PaymentForm extends Component {
   };
 
   _handleAgencyFee = () => {
-    if (2500 < 3000) {
-      return 2500 * 0.15;
-    } else if (2500 < 10000) {
-      return 2500 * 0.1;
+    if (this.props.data.lifetime_budget_micro < 3000) {
+      return this.props.data.lifetime_budget_micro * 0.15;
+    } else if (this.props.data.lifetime_budget_micro < 10000) {
+      return this.props.data.lifetime_budget_micro * 0.1;
     } else {
-      return 2500 * 0.05;
+      return this.props.data.lifetime_budget_micro * 0.05;
     }
   };
   render() {
@@ -150,7 +150,7 @@ class PaymentForm extends Component {
                   textAlign: "center"
                 }}
               >
-                Total {"\n"} {2500} ${"\n"} Pay now{" "}
+                Total {"\n"} {this.props.data.lifetime_budget_micro} ${"\n"} Pay now{" "}
               </Text>
             </TouchableWithoutFeedback>
           </Card>
