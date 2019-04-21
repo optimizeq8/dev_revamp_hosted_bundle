@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   text: {
     alignSelf: "flex-start",
     color: "#fff",
-    paddingLeft: widthPercentageToDP(4),
+    marginLeft: widthPercentageToDP(4),
     fontFamily: "montserrat-semibold",
     fontSize: heightPercentageToDP(2)
   },
