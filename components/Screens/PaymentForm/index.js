@@ -60,6 +60,16 @@ class PaymentForm extends Component {
     console.log("data", data);
     this.setState({ redirectData: data });
   };
+
+  _handleAgencyFee = () => {
+    if (2500 < 3000) {
+      return 2500 * 0.15;
+    } else if (2500 < 10000) {
+      return 2500 * 0.1;
+    } else {
+      return 2500 * 0.05;
+    }
+  };
   render() {
     return (
       <Container style={styles.container}>
@@ -106,15 +116,16 @@ class PaymentForm extends Component {
 
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
             <View style={{ flexDirection: "column", alignSelf: "center" }}>
-              <Text style={styles.text}>Budget</Text>
-              <Text style={styles.text}>Agency Fee</Text>
+              <Text style={styles.text}>Campaign budget</Text>
+              {/* <Text style={styles.text}>Agency Fee</Text> */}
             </View>
-            <View style={{ flexDirection: "column", alignSelf: "center" }}>
+            {/* <View style={{ flexDirection: "column", alignSelf: "center" }}>
               <Text style={styles.text}>
-                {this.props.data.lifetime_budget_micro} $
+                {" "}
+                {2500 - this._handleAgencyFee()} $
               </Text>
-              <Text style={styles.text}>20 $</Text>
-            </View>
+              <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
+            </View> */}
           </View>
         </View>
         <View style={{ backgroundColor: "#000" }}>
@@ -139,8 +150,7 @@ class PaymentForm extends Component {
                   textAlign: "center"
                 }}
               >
-                Total {"\n"} {this.props.data.lifetime_budget_micro + 20} $
-                {"\n"} Pay now{" "}
+                Total {"\n"} {2500} ${"\n"} Pay now{" "}
               </Text>
             </TouchableWithoutFeedback>
           </Card>

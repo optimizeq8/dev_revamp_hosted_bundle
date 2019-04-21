@@ -223,13 +223,13 @@ class AdPaymentReview extends Component {
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 <Text style={styles.text}>Budget</Text>
-                <Text style={styles.text}>Agency Fee</Text>
+                {/* <Text style={styles.text}>Agency Fee</Text> */}
               </View>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 <Text style={styles.text}>
                   {this.state.lifetime_budget_micro} $
                 </Text>
-                <Text style={styles.text}>20 $</Text>
+                {/* <Text style={styles.text}>20 $</Text> */}
               </View>
             </View>
           </Card>
@@ -250,7 +250,7 @@ class AdPaymentReview extends Component {
                     textAlign: "center"
                   }}
                 >
-                  Total {"\n"} {this.state.lifetime_budget_micro + 20} ${"\n"}{" "}
+                  Total {"\n"} {this.state.lifetime_budget_micro} ${"\n"}{" "}
                   proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>

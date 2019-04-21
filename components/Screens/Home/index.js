@@ -165,7 +165,7 @@ class Home extends Component {
 
               <Button
                 style={[styles.button]}
-                onPress={() => this.props.navigation.navigate("ErrorRedirect")}
+                onPress={() => this.props.navigation.navigate("PaymentForm")}
               >
                 <Text> PaymentForm </Text>
               </Button>
