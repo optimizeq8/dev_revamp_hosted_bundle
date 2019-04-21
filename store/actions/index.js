@@ -30,5 +30,6 @@ export {
   filterCampaigns,
   snap_ad_audience_size,
   get_interests,
-  get_total_reach
+  get_total_reach,
+  payment_request_knet
 } from "./campaignActions";

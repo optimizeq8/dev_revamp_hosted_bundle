@@ -7,7 +7,8 @@ const initialState = {
   average_reach: 0,
   total_reach: 0,
   interests: null,
-  loading: false
+  loading: false,
+  payment_data: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -51,6 +52,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         total_reach: (state.average_reach / action.payload.average_reach) * 100
+      };
+    case actionTypes.PAYMENT_REQUEST_URL:
+      return {
+        ...state,
+        payment_data: action.payload
       };
     case actionTypes.SET_INTERESTS:
       return {

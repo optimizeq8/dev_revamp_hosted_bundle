@@ -4,6 +4,28 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const payment_request_knet = (campaign_id, openBrowser) => {
+  return dispatch => {
+    instance
+      .get(`makeknetpayment/${campaign_id}`)
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+        return dispatch({
+          type: actionTypes.PAYMENT_REQUEST_URL,
+          payload: data
+        });
+      })
+      .then(() => dispatch(openBrowser()))
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
     instance
