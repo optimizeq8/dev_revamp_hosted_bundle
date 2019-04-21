@@ -35,9 +35,12 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   colorYellow: {
+    alignSelf: "center",
+    width: wp(50),
     color: "#FF9D00",
     fontSize: 27,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-medium",
+    textAlign: "center"
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -107,7 +110,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 270,
     height: 65,
-    justifyContent: "center"
+    justifyContent: "center",
+    borderWidth: 0.5
   },
   icon: {
     alignSelf: "center",

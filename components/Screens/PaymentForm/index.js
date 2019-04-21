@@ -61,6 +61,16 @@ class PaymentForm extends Component {
     console.log("data", data);
     this.setState({ redirectData: data });
   };
+
+  _handleAgencyFee = () => {
+    if (this.props.data.lifetime_budget_micro < 3000) {
+      return this.props.data.lifetime_budget_micro * 0.15;
+    } else if (this.props.data.lifetime_budget_micro < 10000) {
+      return this.props.data.lifetime_budget_micro * 0.1;
+    } else {
+      return this.props.data.lifetime_budget_micro * 0.05;
+    }
+  };
   render() {
     return (
       <Container style={styles.container}>
@@ -127,6 +137,14 @@ class PaymentForm extends Component {
             }}
           >
             <View>
+                          {/* <Text style={styles.text}>Agency Fee</Text> */}
+            {/* <View style={{ flexDirection: "column", alignSelf: "center" }}>
+              <Text style={styles.text}>
+                {2500 - this._handleAgencyFee()} $
+              </Text>
+              <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
+            </View> */}
+
               <Text
                 style={{
                   color: "#fff",
@@ -147,6 +165,7 @@ class PaymentForm extends Component {
                 }}
               >
                 {this.props.data.lifetime_budget_micro + 20}$
+
               </Text>
               <Text
                 style={{

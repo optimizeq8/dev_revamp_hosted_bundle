@@ -82,18 +82,21 @@ class AdPaymentReview extends Component {
   }
 
   componentDidMount() {
-    console.log("data", this.props.data);
+    // console.log("data", this.props.data);
     this.setState({ ...this.props.data });
   }
   render() {
+    console.log(this.props.navigation.state.params.interestNames);
+
     if (!this.state.ad_account_id) {
       return <Spinner color="red" />;
     } else {
-      let interestNames = this.props.navigation.state.params.interestNames.map(
-        interest => interest.name
-      );
-
-      let width = Dimensions.get("window").width * 0.5 - 100;
+      let interestNames = [];
+      if (this.props.navigation.state.params.interestNames.length > 0) {
+        interestNames = this.props.navigation.state.params.interestNames.map(
+          interest => interest.name
+        );
+      }
       let end_time = new Date(this.state.end_time);
       let start_time = new Date(this.state.start_time);
       end_time = dateFormat(end_time, "d mmm yyyy");
@@ -220,13 +223,13 @@ class AdPaymentReview extends Component {
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 <Text style={styles.text}>Budget</Text>
-                <Text style={styles.text}>Agency Fee</Text>
+                {/* <Text style={styles.text}>Agency Fee</Text> */}
               </View>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 <Text style={styles.text}>
                   {this.state.lifetime_budget_micro} $
                 </Text>
-                <Text style={styles.text}>20 $</Text>
+                {/* <Text style={styles.text}>20 $</Text> */}
               </View>
             </View>
           </Card>
@@ -247,7 +250,7 @@ class AdPaymentReview extends Component {
                     textAlign: "center"
                   }}
                 >
-                  Total {"\n"} {this.state.lifetime_budget_micro + 20} ${"\n"}{" "}
+                  Total {"\n"} {this.state.lifetime_budget_micro} ${"\n"}{" "}
                   proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>

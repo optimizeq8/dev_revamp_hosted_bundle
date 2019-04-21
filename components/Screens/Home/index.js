@@ -165,7 +165,7 @@ class Home extends Component {
 
               <Button
                 style={[styles.button]}
-                onPress={() => this.props.navigation.navigate("ErrorRedirect")}
+                onPress={() => this.props.navigation.navigate("PaymentForm")}
               >
                 <Text> PaymentForm </Text>
               </Button>
@@ -197,9 +197,6 @@ class Home extends Component {
               </Card>
             </View>
           </Container>
-          {/* <Modal dismissable={false} visible={this.state.open}>
-            <Menu navigation={this.props.navigation} />
-          </Modal> */}
         </>
       );
     }
