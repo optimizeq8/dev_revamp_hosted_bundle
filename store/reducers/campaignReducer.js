@@ -6,7 +6,8 @@ const initialState = {
   campaign_id: "",
   average_reach: 0,
   total_reach: 0,
-  interests: null
+  interests: null,
+  loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,7 +31,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
-        message: action.payload.message
+        message: action.payload.message,
+        loading: false
       };
     case actionTypes.UPDATE_CAMPAIGN_DETAILS:
       console.log("ad detail", { ...state.data, ...action.payload.data });
@@ -54,6 +56,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         interests: action.payload
+      };
+    case actionTypes.SET_AD_LOADING:
+      return {
+        ...state,
+        loading: action.payload
       };
     default:
       return state;

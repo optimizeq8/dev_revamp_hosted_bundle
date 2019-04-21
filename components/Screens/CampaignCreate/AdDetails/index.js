@@ -9,6 +9,7 @@ import {
   ScrollView,
   ImageBackground
 } from "react-native";
+import Modal from "react-native-modal";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
 import { LinearGradient } from "expo";
@@ -48,6 +49,7 @@ import { connect } from "react-redux";
 
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -120,8 +122,8 @@ class AdDetails extends Component {
         }
       ],
       budget: 50,
-      minValueBudget: 20,
-      maxValueBudget: 1000,
+      minValueBudget: 25,
+      maxValueBudget: 1500,
       value: 0,
       interestNames: [],
       modalVisible: false,
@@ -295,7 +297,9 @@ class AdDetails extends Component {
   onSelectedBudgetChange = budget => {
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
-    this.setState({ campaignInfo: replace });
+    this.setState({
+      campaignInfo: replace
+    });
   };
 
   onSelectedRegionChange = selectedItem => {
@@ -641,7 +645,11 @@ class AdDetails extends Component {
               <ImageBackground
                 imageStyle={{ opacity: 0.4 }}
                 style={{ width: "100%", height: "100%" }}
-                source={{ uri: this.props.navigation.state.params.image }}
+                source={{
+                  uri: this.props.navigation.state.params
+                    ? this.props.navigation.state.params.image
+                    : ""
+                }}
               >
                 <View style={{ flex: 1 }}>
                   <View>
@@ -651,14 +659,25 @@ class AdDetails extends Component {
                       Input your Snapchat {"\n"} AD Details
                     </Text>
                   </View>
-                  <Text style={styles.subHeadings}>
-                    Budget {"\n"}
-                    <Text style={styles.colorYellow}>
-                      {this.state.campaignInfo.lifetime_budget_micro}
-                    </Text>
-                    $
-                  </Text>
-
+                  <Text style={styles.subHeadings}>Budget</Text>
+                  <View style={{ height: hp(7) }}>
+                    <Input
+                      keyboardType="numeric"
+                      defaultValue={
+                        this.state.campaignInfo.lifetime_budget_micro + ""
+                      }
+                      onChangeText={value =>
+                        this.setState({
+                          campaignInfo: {
+                            ...this.state.campaignInfo,
+                            lifetime_budget_micro:
+                              value !== "" ? parseInt(value) : 0
+                          }
+                        })
+                      }
+                      style={styles.colorYellow}
+                    />
+                  </View>
                   <View
                     style={[
                       styles.slidercontainer,
@@ -669,16 +688,34 @@ class AdDetails extends Component {
                       <Text style={styles.colorGrey}>
                         {this.state.minValueBudget}
                       </Text>
-                      <Text
-                        style={[
-                          styles.colorGrey,
-                          {
-                            fontSize: 11
-                          }
-                        ]}
+                      <View
+                        style={{
+                          left: wp(4),
+                          justifyContent: "center"
+                        }}
                       >
-                        {"         "}20$/day
-                      </Text>
+                        <Text
+                          style={[
+                            styles.colorGrey,
+                            {
+                              fontSize: 11,
+                              bottom: hp(1.2)
+                            }
+                          ]}
+                        >
+                          Tap to enter manually
+                        </Text>
+                        <Text
+                          style={[
+                            styles.colorGrey,
+                            {
+                              fontSize: 11
+                            }
+                          ]}
+                        >
+                          {"         "}25$/day
+                        </Text>
+                      </View>
                       <Text style={styles.colorGrey}>
                         {this.state.maxValueBudget} $
                       </Text>
@@ -714,6 +751,7 @@ class AdDetails extends Component {
                     ]}
                     onPress={() => {
                       if (
+                        this.props.navigation.state.params &&
                         !this.props.navigation.state.params.hasOwnProperty(
                           "editCampaign"
                         )
@@ -722,7 +760,10 @@ class AdDetails extends Component {
                     }}
                   >
                     <View
-                      style={{ flexDirection: "row", justifyContent: "center" }}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center"
+                      }}
                     >
                       <View
                         style={{
@@ -1015,6 +1056,9 @@ class AdDetails extends Component {
             </View>
           </Sidemenu>
         </Container>
+        <Modal isVisible={this.props.loading}>
+          <LoadingScreen />
+        </Modal>
         <DateField
           getMinimumCash={this.getMinimumCash}
           onRef={ref => (this.dateField = ref)}
@@ -1031,6 +1075,7 @@ class AdDetails extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   average_reach: state.campaignC.average_reach,
+  loading: state.campaignC.loading,
   mainBusiness: state.auth.mainBusiness
 });
 

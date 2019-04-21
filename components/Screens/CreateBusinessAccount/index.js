@@ -247,7 +247,8 @@ class CreateBusinessAccount extends Component {
         let { businessemail, ...business } = this.state.businessAccount;
         let userInfo = {
           ...this.props.userInfo,
-          ...business
+          ...business,
+          country_code: this.props.countryCode
         };
         console.log(userInfo);
 
@@ -265,7 +266,7 @@ class CreateBusinessAccount extends Component {
       <Container
         style={[
           styles.maincontainer,
-          { marginTop: this.props.registering && 0 }
+          { marginTop: this.props.registering ? 0 : 30 }
         ]}
       >
         <LinearGradient
@@ -490,6 +491,71 @@ class CreateBusinessAccount extends Component {
                     {this.state.businessnameError}
                   </Text>
                 )}
+
+              <Item
+                ref={r => {
+                  this._textInputRef = r;
+                }}
+                floatingLabel
+                style={[
+                  styles.input,
+                  {
+                    borderColor: this.state.inputBN
+                      ? "#7039FF"
+                      : this.state.brandNameError
+                      ? "red"
+                      : "#D9D9D9"
+                  }
+                ]}
+              >
+                <Label
+                  style={[
+                    styles.inputtext,
+                    {
+                      bottom: 5,
+                      flexDirection: "row",
+                      color: this.state.inputBN ? "#FF9D00" : "#717171"
+                    }
+                  ]}
+                >
+                  <Icon
+                    type="MaterialIcons"
+                    style={{
+                      fontSize: 20,
+                      color: this.state.inputBN ? "#FF9D00" : "#717171"
+                    }}
+                    name="label"
+                  />
+                  {"  "}
+                  Brand Name
+                </Label>
+
+                <Input
+                  style={styles.inputtext}
+                  autoCorrect={false}
+                  onChangeText={value =>
+                    this.setState({
+                      businessAccount: {
+                        ...this.state.businessAccount,
+                        brandname: value
+                      }
+                    })
+                  }
+                  onFocus={() => {
+                    this.setState({ inputBN: true });
+                  }}
+                  onBlur={() => {
+                    this.setState({ inputBN: false });
+                    this.setState({
+                      brandNameError: validateWrapper(
+                        "mandatory",
+                        this.state.businessAccount.brandname
+                      )
+                    });
+                  }}
+                />
+              </Item>
+
               {!this.props.registering && (
                 <Item
                   ref={r => {
@@ -555,69 +621,6 @@ class CreateBusinessAccount extends Component {
                   />
                 </Item>
               )}
-              <Item
-                ref={r => {
-                  this._textInputRef = r;
-                }}
-                floatingLabel
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.inputBN
-                      ? "#7039FF"
-                      : this.state.brandNameError
-                      ? "red"
-                      : "#D9D9D9"
-                  }
-                ]}
-              >
-                <Label
-                  style={[
-                    styles.inputtext,
-                    {
-                      bottom: 5,
-                      flexDirection: "row",
-                      color: this.state.inputBN ? "#FF9D00" : "#717171"
-                    }
-                  ]}
-                >
-                  <Icon
-                    type="MaterialIcons"
-                    style={{
-                      fontSize: 20,
-                      color: this.state.inputBN ? "#FF9D00" : "#717171"
-                    }}
-                    name="label"
-                  />
-                  {"  "}
-                  Brand Name
-                </Label>
-
-                <Input
-                  style={styles.inputtext}
-                  autoCorrect={false}
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        brandname: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputBN: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputBN: false });
-                    this.setState({
-                      brandNameError: validateWrapper(
-                        "mandatory",
-                        this.state.businessAccount.brandname
-                      )
-                    });
-                  }}
-                />
-              </Item>
 
               <RNPickerSelect
                 items={this.state.countries}
@@ -773,7 +776,8 @@ class CreateBusinessAccount extends Component {
 
 const mapStateToProps = state => ({
   message: state.auth.message,
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
+  countryCode: state.auth.countryCode
 });
 
 const mapDispatchToProps = dispatch => ({
