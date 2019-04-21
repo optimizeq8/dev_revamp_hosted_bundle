@@ -30,7 +30,7 @@ export default FluidNavigator(
     MultiSelect: MultiSelect
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Dashboard",
     mode: "card",
     navigationOptions: {
       gesturesEnabled: true,

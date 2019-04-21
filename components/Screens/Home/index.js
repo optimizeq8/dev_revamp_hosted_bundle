@@ -197,9 +197,6 @@ class Home extends Component {
               </Card>
             </View>
           </Container>
-          {/* <Modal dismissable={false} visible={this.state.open}>
-            <Menu navigation={this.props.navigation} />
-          </Modal> */}
         </>
       );
     }

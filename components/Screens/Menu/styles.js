@@ -72,11 +72,11 @@ const styles = StyleSheet.create({
   },
 
   businessTitle: {
-    textAlign: "center",
+    alignSelf: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 20,
-    paddingHorizontal: 10
+    fontFamily: "montserrat-semibold",
+    fontSize: heightPercentageToDP(2),
+    marginLeft: 0
   },
 
   gradient: {
