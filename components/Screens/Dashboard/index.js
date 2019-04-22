@@ -39,7 +39,6 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "./FilterMenu";
-import Loading from "../../MiniComponents/LoadingScreen";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
@@ -50,6 +49,7 @@ import OptimizeLogo from "../../../assets/SVGs/Optimize.svg";
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
+
 import * as actionCreators from "../../../store/actions";
 import Axios from "axios";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -168,7 +168,8 @@ class Dashboard extends Component {
     );
     if (!this.props.mainBusiness) {
       return <LoadingScreen />;
-    } else
+    } else {
+      console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
           <>
@@ -250,7 +251,6 @@ class Dashboard extends Component {
                         stroke={this.state.showSearchBar ? "#fff" : "#575757"}
                       />
                     </Button>
-
                     <Button
                       style={styles.button}
                       onPress={() => {
@@ -266,6 +266,7 @@ class Dashboard extends Component {
                         Campaign
                       </Text>
                     </Button>
+
                     <Button
                       style={styles.activebutton}
                       onPress={() => {
@@ -311,6 +312,7 @@ class Dashboard extends Component {
           </>
         </Container>
       );
+    }
   }
 }
 

@@ -70,14 +70,14 @@ const reducer = (state = initialState, action) => {
         bus => bus.businessid === state.mainBusiness.businessid
       );
       if (newMainBusiness) {
-        newMainBusiness.snap_ad_account_id = action.payload.ad_account_id;
+        newMainBusiness.snap_ad_account_id = action.payload.data.ad_account_id;
       }
       return {
         ...state,
         mainBusiness: newMainBusiness,
         businessAccounts: [...state.businessAccounts],
-        message: action.payload.message,
-        loading: false
+        message: action.payload.data.message,
+        loading: !action.payload.data.success
       };
     case actionTypes.SET_CURRENT_USER:
       return {

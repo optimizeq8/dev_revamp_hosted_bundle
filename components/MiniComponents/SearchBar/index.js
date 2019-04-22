@@ -34,10 +34,16 @@ class SearchBar extends Component {
   }
 
   _handleSubmit() {
-    this.props.onSearch({
-      value: this.state.value,
-      selected: this.props.filterStatus
-    });
+    if (!this.props.transactionSearch) {
+      this.props.onSearch({
+        value: this.state.value,
+        selected: this.props.filterStatus
+      });
+    } else {
+      this.props.filterTransactions({
+        value: this.state.value
+      });
+    }
   }
   render() {
     return (
@@ -63,13 +69,15 @@ class SearchBar extends Component {
                 this.setState({ value: value }, () => this._handleSubmit());
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-                this.props.renderSearchBar();
-              }}
-            >
-              <CloseIcon width={18} height={18} stroke="#C6C6C6" />
-            </TouchableOpacity>
+            {!this.props.transactionSearch && (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.renderSearchBar();
+                }}
+              >
+                <CloseIcon width={18} height={18} stroke="#C6C6C6" />
+              </TouchableOpacity>
+            )}
           </Item>
         </View>
       </View>
@@ -83,7 +91,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query))
+  onSearch: query => dispatch(actionCreators.filterCampaigns(query)),
+  filterTransactions: query =>
+    dispatch(actionCreators.filterTransactions(query))
 });
 export default connect(
   mapStateToProps,

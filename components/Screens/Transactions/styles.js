@@ -11,15 +11,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
-  },
+
   container: {
     marginTop: heightPercentageToDP("4"),
     backgroundColor: "#751AFF"
@@ -36,15 +28,13 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    top: -heightPercentageToDP(1.1),
     backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    width: "100%",
-    height: "100%"
+    flex: 1
   },
   text: {
-    bottom: heightPercentageToDP(2),
+    bottom: heightPercentageToDP(1),
     alignSelf: "flex-start",
     color: "#fff",
     marginLeft: widthPercentageToDP(4),
@@ -166,14 +156,12 @@ const styles = StyleSheet.create({
   },
   activebutton: {
     backgroundColor: "#fff",
-    alignSelf: "center",
     justifyContent: "center",
     width: 55,
     height: 55,
-    borderRadius: 33,
-    top: 30,
-    marginBottom: 10,
-    elevation: 0
+    borderRadius: 50,
+    elevation: 0,
+    marginRight: 10
   },
   dateInput: {
     marginBottom: 15,
