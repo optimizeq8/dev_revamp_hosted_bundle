@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, BackHandler } from "react-native";
 import { Linking, LinearGradient } from "expo";
 import { Button, Text, Container } from "native-base";
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
@@ -13,7 +13,8 @@ import { connect } from "react-redux";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
   constructor(props) {
     super(props);
@@ -22,9 +23,15 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
   }
-
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton() {
+    return true;
+  }
   render() {
     return (
       <Container style={styles.container}>
