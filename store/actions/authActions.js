@@ -483,14 +483,22 @@ export const create_ad_account = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        return dispatch({
-          type: actionTypes.CREATE_AD_ACCOUNT,
-          payload: data
-        });
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.CREATE_AD_ACCOUNT,
+            payload: { data: data, navigation: navigation.navigate }
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "info"
+          });
+          dispatch({ type: actionTypes.SET_LOADING, payload: false });
+        }
       })
-      .then(() => {
-        navigation.navigate("Dashboard");
-      })
+      // .then(() => {
+      //   navigation.navigate("Dashboard");
+      // })
 
       .catch(err => console.log(err.response));
   };

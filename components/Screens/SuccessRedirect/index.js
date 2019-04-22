@@ -50,11 +50,11 @@ class SuccessRedirect extends Component {
           <Text style={styles.title}> Success! </Text>
           <Text style={styles.errortext}>Your Ad is now being processed</Text>
           <View style={styles.details}>
-            <Text style={styles.text}>payment ID: {this.state.paymentId}</Text>
-            <Text style={styles.text}>track ID: {this.state.trackID}</Text>
-            <Text style={styles.text}>amount: {this.state.amount}</Text>
-            <Text style={styles.text}>date: {this.state.paymentId}</Text>
-            <Text style={styles.text}>status: {this.state.status}</Text>
+            <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
+            <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
+            <Text style={styles.text}>Amount: {this.state.amount}</Text>
+            <Text style={styles.text}>Date: {this.state.date}</Text>
+            <Text style={styles.text}>Status: {this.state.status}</Text>
           </View>
           <Button
             style={styles.button}

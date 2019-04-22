@@ -167,17 +167,22 @@ class Menu extends Component {
                   <Text style={styles.text}>Personal Info</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <View
-                style={{
-                  alignItems: "center",
-
-                  flexDirection: "row"
-                }}
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  this.props.navigation.navigate("TransactionList")
+                }
               >
-                <Icons.TransactionIcon />
-                <Text style={styles.text}>Transactions</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
 
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.TransactionIcon />
+                  <Text style={styles.text}>Transactions</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <View
                 style={{
                   flexDirection: "column"
