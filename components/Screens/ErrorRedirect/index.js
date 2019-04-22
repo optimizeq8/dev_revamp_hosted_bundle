@@ -50,7 +50,7 @@ class ErrorRedirect extends Component {
           </Button>
           <Button
             style={styles.whitebutton}
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={() => this.props.navigation.navigate("Dashboard")}
           >
             <Text style={styles.whitebuttontext}> Home </Text>
           </Button>

@@ -134,12 +134,16 @@ export const createBusinessAccount = (account, navigation) => {
         return res.data;
       })
       .then(data => {
+        dispatch({
+          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+          payload: { business: data.data }
+        });
         return dispatch({
           type: actionTypes.ADD_BUSINESS_ACCOUNT,
           payload: data.data
         });
       })
-      .then(navigation.navigate("Home"))
+      .then(navigation.navigate("Dashboard"))
 
       .catch(err => {
         console.log(err.response);
@@ -165,7 +169,7 @@ export const checkForExpiredToken = navigation => {
             )
             .then(() => dispatch(getBusinessAccounts()))
             .then(() => {
-              navigation.navigate("Home");
+              navigation.navigate("Dashboard");
             });
         }
       } else {
@@ -298,7 +302,7 @@ export const registerUser = (userInfo, navigation) => {
         if (getState().auth.userInfo) {
           console.log("state user", getState().auth.userInfo);
 
-          navigation.navigate("Home");
+          navigation.navigate("Dashboard");
 
           dispatch(getBusinessAccounts());
         }
@@ -333,7 +337,7 @@ export const login = (userData, navigation) => {
       })
       .then(() => {
         if (getState().auth.userInfo) {
-          navigation.navigate("Home");
+          navigation.navigate("Dashboard");
           console.log(
             "auth token",
             axios.defaults.headers.common.Authorization
@@ -485,7 +489,7 @@ export const create_ad_account = (id, navigation) => {
         });
       })
       .then(() => {
-        navigation.navigate("Home");
+        navigation.navigate("Dashboard");
       })
 
       .catch(err => console.log(err.response));

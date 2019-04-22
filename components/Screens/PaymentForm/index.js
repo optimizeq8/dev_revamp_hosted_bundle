@@ -115,7 +115,12 @@ class PaymentForm extends Component {
           <View style={[styles.mainCard]}>
             <Text
               style={styles.boldtext}
-              onPress={() => this.props.navigation.navigate("AdPaymentReview")}
+              onPress={() =>
+                this.props.navigation.navigate("AdPaymentReview", {
+                  interestNames: this.props.navigation.state.params
+                    .interestNames
+                })
+              }
             >
               Review Purchase
             </Text>
@@ -137,8 +142,9 @@ class PaymentForm extends Component {
             }}
           >
             <View>
-                          {/* <Text style={styles.text}>Agency Fee</Text> */}
-            {/* <View style={{ flexDirection: "column", alignSelf: "center" }}>
+              {/* 
+              <Text style={styles.text}>Agency Fee</Text>
+              <View style={{ flexDirection: "column", alignSelf: "center" }}>
               <Text style={styles.text}>
                 {2500 - this._handleAgencyFee()} $
               </Text>
@@ -165,7 +171,6 @@ class PaymentForm extends Component {
                 }}
               >
                 {this.props.data.lifetime_budget_micro + 20}$
-
               </Text>
               <Text
                 style={{

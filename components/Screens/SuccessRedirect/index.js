@@ -51,7 +51,7 @@ class SuccessRedirect extends Component {
           </View>
           <Button
             style={styles.button}
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={() => this.props.navigation.navigate("Dashboard")}
           >
             <Text style={styles.buttontext}> Home </Text>
           </Button>

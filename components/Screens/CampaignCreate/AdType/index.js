@@ -86,7 +86,7 @@ class AdType extends Component {
           <CloseIcon />
         </TouchableOpacity> */}
         <CloseButton
-          navigation={() => this.props.navigation.navigate("Home")}
+          navigation={() => this.props.navigation.navigate("Dashboard")}
         />
         <Text style={styles.title}>Choose your Ad Type</Text>
 
