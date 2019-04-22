@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, BackHandler } from "react-native";
 import {
   Card,
   Button,
@@ -32,6 +32,23 @@ class MainForm extends Component {
     super(props);
 
     this.state = {};
+  }
+
+  componentDidMount() {
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    if (this.props.mainBusiness.snap_ad_account_id !== "")
+      this.props.navigation.navigate("Dashboard");
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.mainBusiness.snap_ad_account_id !== "")
+      this.props.navigation.navigate("Dashboard");
+  }
+
+  componentWillUnmount() {
+    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton() {
+    return true;
   }
   render() {
     const Slide = ({ title }) => (

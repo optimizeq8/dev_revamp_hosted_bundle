@@ -236,7 +236,12 @@ class AdPaymentReview extends Component {
           <View style={{ backgroundColor: "#000" }}>
             <Card padder style={styles.bottomCard}>
               <TouchableWithoutFeedback
-                onPress={() => this.props.navigation.navigate("PaymentForm")}
+                onPress={() =>
+                  this.props.navigation.navigate("PaymentForm", {
+                    interestNames: this.props.navigation.state.params
+                      .interestNames
+                  })
+                }
                 style={{
                   flex: 1,
                   justifyContent: "center",

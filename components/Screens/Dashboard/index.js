@@ -72,15 +72,23 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
-    if (this.props.mainBusiness)
+    //
+    if (this.props.mainBusiness) {
+      if (this.props.mainBusiness.snap_ad_account_id === "")
+        this.props.navigation.navigate("SnapchatCreateAdAcc");
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
         this.signal.token
       );
+    }
+    this.setState({ menu: new Animated.Value(0) });
+    this.closeAnimation();
   }
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
+      if (this.props.mainBusiness.snap_ad_account_id === "")
+        this.props.navigation.navigate("SnapchatCreateAdAcc");
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -246,7 +254,9 @@ class Dashboard extends Component {
                     <Button
                       style={styles.button}
                       onPress={() => {
-                        this.props.navigation.navigate("AdType");
+                        if (this.props.mainBusiness.snap_ad_account_id === "")
+                          this.props.navigation.navigate("SnapchatCreateAdAcc");
+                        else this.props.navigation.navigate("AdType");
                       }}
                     >
                       <Text

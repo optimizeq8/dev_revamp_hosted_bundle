@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    top: 15,
     backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     flex: 1
   },
   text: {
+    bottom: heightPercentageToDP(1),
     alignSelf: "flex-start",
     color: "#fff",
     marginLeft: widthPercentageToDP(4),
