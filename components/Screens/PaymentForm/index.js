@@ -172,7 +172,8 @@ class PaymentForm extends Component {
                   paddingTop: 3
                 }}
               >
-                {this.props.data.lifetime_budget_micro}$
+                {this.props.data.lifetime_budget_micro}${"\n"}(
+                {this.props.navigation.state.params.kdamount} kwd)
               </Text>
               <Text
                 style={{
@@ -201,6 +202,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
   campaign_id: state.campaignC.campaign_id,
+  kdamount: state.campaignC.kdamount,
   payment_data: state.campaignC.payment_data
 });
 const mapDispatchToProps = dispatch => ({
