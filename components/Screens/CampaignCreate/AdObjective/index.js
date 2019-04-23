@@ -40,6 +40,7 @@ import * as actionCreators from "../../../../store/actions";
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -260,6 +261,9 @@ class AdObjective extends Component {
             <LowerButton bottom={10} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
+        <Modal isVisible={this.props.loading}>
+          <LoadingScreen />
+        </Modal>
         <Modal
           animationType={"slide"}
           transparent={true}
@@ -291,7 +295,8 @@ class AdObjective extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.auth.mainBusiness,
+  loading: state.campaignC.loading
 });
 
 const mapDispatchToProps = dispatch => ({

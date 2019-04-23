@@ -18,7 +18,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaign_id: action.payload.campaign_id,
         data: action.payload.data,
-        message: action.payload.message
+        message: action.payload.message,
+        loading: false
       };
     case actionTypes.SET_AD_DESIGN:
       return {

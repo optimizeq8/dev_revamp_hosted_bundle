@@ -70,6 +70,10 @@ export const get_total_reach = info => {
 
 export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
     console.log(info);
     instance
       .post(`savecampaign`, info)

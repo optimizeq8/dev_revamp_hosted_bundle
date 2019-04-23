@@ -29,6 +29,18 @@
 
     "android": {
       "package": "com.optimizekw.optimizw"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "optimize",
+            "project": "react-native-optimize",
+            "authToken": "cea83a7cc6f54a4b8a67f3db6a1ad43951b1145659c444f8b0f3931ec6e914c1"
+          }
+        }
+      ]
     }
   }
 }
