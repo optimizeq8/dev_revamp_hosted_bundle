@@ -16,45 +16,75 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import FilterMenu from "../../MiniComponents/FilterMenu";
+import Sidemenu from "react-native-side-menu";
 
 class Transactions extends Component {
+  state = {
+    sidemenustate: false,
+    open: false
+  };
   componentDidMount() {
     this.props.getTransactions();
   }
+  _handleSideMenuState = status => {
+    this.setState({ sidemenustate: status }, () => {});
+  };
   render() {
     if (this.props.loading) return <LoadingScreen />;
     else {
+      let menu = (
+        <FilterMenu
+          transactionFilter={true}
+          _handleSideMenuState={this._handleSideMenuState}
+          open={this.state.sidemenustate}
+        />
+      );
       let transList = this.props.filteredTransactions.map(transaction => (
         <TransactionCard key={transaction.id} transaction={transaction} />
       ));
       return (
-        <View style={styles.container}>
-          <BackButton navigation={this.props.navigation.goBack} />
-          <Text style={globalStyles.title}>Transactions</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingVertical: widthPercentageToDP(5)
-            }}
-          >
-            <View style={{ flex: 1, zIndex: 10 }}>
-              <SearchBar transactionSearch={true} />
-            </View>
-            <Button
-              style={styles.activebutton}
-              onPress={() => {
-                // this._handleSideMenuState(true);
+        <Sidemenu
+          onChange={isOpen => {
+            if (isOpen === false) this._handleSideMenuState(isOpen);
+          }}
+          disableGestures={true}
+          menu={menu}
+          menuPosition="right"
+          openMenuOffset={widthPercentageToDP("85%")}
+          isOpen={this.state.sidemenustate}
+        >
+          <View style={styles.container}>
+            <BackButton navigation={this.props.navigation.goBack} />
+            <Text style={globalStyles.title}>Transactions</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingVertical: widthPercentageToDP(5)
               }}
             >
-              <FilterIcon width={23} height={23} fill="#575757" />
-            </Button>
+              <View style={{ flex: 1, zIndex: 10 }}>
+                <SearchBar transactionSearch={true} />
+              </View>
+              <Button
+                style={styles.activebutton}
+                onPress={() => {
+                  this._handleSideMenuState(true);
+                }}
+              >
+                <FilterIcon width={23} height={23} fill="#575757" />
+              </Button>
+            </View>
+            <ScrollView
+              contentContainerStyle={{
+                paddingBottom: heightPercentageToDP(30),
+                marginBottom: heightPercentageToDP(50)
+              }}
+            >
+              {transList}
+            </ScrollView>
           </View>
-          <ScrollView
-            contentContainerStyle={{ paddingBottom: heightPercentageToDP(30) }}
-          >
-            {transList}
-          </ScrollView>
-        </View>
+        </Sidemenu>
       );
     }
   }

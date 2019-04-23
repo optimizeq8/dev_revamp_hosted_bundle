@@ -38,7 +38,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
-import FilterMenu from "./FilterMenu";
+import FilterMenu from "../../MiniComponents/FilterMenu";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";

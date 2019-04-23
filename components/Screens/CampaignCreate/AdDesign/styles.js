@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   buttonN: {
     // paddingTop: 0,
     // bottom: 20,
-    height: hp("73")
+    height: hp("71")
   },
   content: {
     flexDirection: "row",
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    top: 25,
+    top: hp(1),
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",

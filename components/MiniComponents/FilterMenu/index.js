@@ -66,11 +66,18 @@ class FilterMenu extends Component {
     this.setState({ start_time: "", end_time: "" });
   };
   _handleSubmission = () => {
-    this.props.onSearch({
-      value: this.props.filterValue,
-      selected: this.props.filterStatus,
-      dateRange: [this.state.start_time, this.state.end_time]
-    });
+    if (!this.props.transactionFilter) {
+      this.props.onSearch({
+        value: this.props.filterValue,
+        selected: this.props.filterStatus,
+        dateRange: [this.state.start_time, this.state.end_time]
+      });
+    } else {
+      this.props.filterTransactions({
+        value: this.props.transactionValue,
+        dateRange: [this.state.start_time, this.state.end_time]
+      });
+    }
     this.props._handleSideMenuState(false);
   };
   render() {
@@ -101,7 +108,7 @@ class FilterMenu extends Component {
         <View
           style={{
             flex: 1,
-            top: hp("24"),
+            top: hp("25"),
             alignItems: "center",
             flexDirection: "column",
             opacity: 1,
@@ -116,24 +123,29 @@ class FilterMenu extends Component {
               alignItems: "center"
             }}
           >
-            <FilterIcon width={60} height={60} fill="#fff" />
+            <FilterIcon width={hp(7)} height={hp(7)} fill="#fff" />
             <Text style={[styles.title]}> Filter </Text>
           </View>
           <Text style={[styles.subtext]}>
-            Select which Ads you'd like to see
+            {this.props.transactionFilter
+              ? "Filter transactions by date"
+              : "Select which Ads you'd like to see"}
           </Text>
 
           <View
             style={{
               felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 10
+              justifyContent: "space-between"
             }}
           >
-            <Text style={[styles.title, { paddingBottom: 10 }]}>
-              Ad Activity
-            </Text>
-            <FilterStatus />
+            {!this.props.transactionFilter && (
+              <>
+                <Text style={[styles.title, { paddingBottom: 10 }]}>
+                  Ad Activity
+                </Text>
+                <FilterStatus />
+              </>
+            )}
             <Text style={[styles.title]}> Date </Text>
             <TouchableHighlight
               underlayColor="rgba(0,0,0,0.2)"
@@ -207,11 +219,16 @@ class FilterMenu extends Component {
 const mapStateToProps = state => ({
   campaignList: state.auth.campaignList,
   filterStatus: state.auth.filterStatus,
-  filterValue: state.auth.filterValue
+  filterValue: state.auth.filterValue,
+  transactionValue: state.transA.transactionValue,
+  startSearch: state.transA.startSearch,
+  endSearch: state.transA.endSearch
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSearch: query => dispatch(actionCreators.filterCampaigns(query))
+  onSearch: query => dispatch(actionCreators.filterCampaigns(query)),
+  filterTransactions: query =>
+    dispatch(actionCreators.filterTransactions(query))
 });
 export default connect(
   mapStateToProps,

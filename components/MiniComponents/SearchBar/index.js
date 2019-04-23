@@ -37,11 +37,16 @@ class SearchBar extends Component {
     if (!this.props.transactionSearch) {
       this.props.onSearch({
         value: this.state.value,
-        selected: this.props.filterStatus
+        selected: this.props.filterStatus,
+        dateRange: [
+          this.props.campaignStartSearch,
+          this.props.campaignEndSearch
+        ]
       });
     } else {
       this.props.filterTransactions({
-        value: this.state.value
+        value: this.state.value,
+        dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
       });
     }
   }
@@ -87,7 +92,11 @@ class SearchBar extends Component {
 
 const mapStateToProps = state => ({
   campaignList: state.auth.campaignList,
-  filterStatus: state.auth.filterStatus
+  filterStatus: state.auth.filterStatus,
+  campaignStartSearch: state.auth.campaignStartSearch,
+  campaignEndSearch: state.auth.campaignEndSearch,
+  tranStartSearch: state.transA.tranStartSearch,
+  tranEndSearch: state.transA.tranEndSearch
 });
 
 const mapDispatchToProps = dispatch => ({
