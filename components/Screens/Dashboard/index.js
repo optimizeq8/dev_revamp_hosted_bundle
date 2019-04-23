@@ -289,7 +289,7 @@ class Dashboard extends Component {
                 ) : (
                   <Content contentContainerStyle={{ flex: 1 }}>
                     <FlatList
-                      contentContainerStyle={{ paddingBottom: 100 }}
+                      contentContainerStyle={{ paddingBottom: hp(35) }}
                       keyExtractor={item => item.campaign_id}
                       data={this.props.filteredCampaigns}
                       onEndReached={() => this.loadMoreData()}
