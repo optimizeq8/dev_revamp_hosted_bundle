@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
+    fontSize: hp(2.5),
     paddingVertical: 10
   },
   numbers: {
@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-semibold",
     fontSize: 14,
-    paddingBottom: 10,
     paddingHorizontal: 10,
     justifyContent: "center",
     alignSelf: "center"

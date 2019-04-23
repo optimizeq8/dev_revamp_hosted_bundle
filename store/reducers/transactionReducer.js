@@ -3,6 +3,9 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   transactionList: [],
   filteredTransactions: [],
+  transactionValue: "",
+  tranStartSearch: "",
+  tranEndSearch: "",
   message: "",
   loading: false
 };
@@ -38,23 +41,26 @@ const reducer = (state = initialState, action) => {
             .toLowerCase()
             .includes(action.payload.value.toLowerCase())
       );
-
+      let startSearch = "";
+      let endSearch = "";
       if (action.payload.dateRange && action.payload.dateRange[0] !== "") {
-        let startSearch = Date.parse(action.payload.dateRange[0]);
-        let endSearch = Date.parse(action.payload.dateRange[1]);
+        startSearch = Date.parse(action.payload.dateRange[0]);
+        endSearch = Date.parse(action.payload.dateRange[1]);
 
         filtered = filtered.filter(transaction => {
           if (
-            startSearch <= Date.parse(transaction.start_time) &&
-            endSearch >= Date.parse(transaction.end_time)
+            startSearch <= Date.parse(transaction.payment_date.split(" ")[0]) &&
+            endSearch >= Date.parse(transaction.payment_date.split(" ")[0])
           )
             return transaction;
         });
       }
       return {
         ...state,
-        filterValue: action.payload.value,
-        filteredTransactions: filtered
+        transactionValue: action.payload.value,
+        filteredTransactions: filtered,
+        tranStartSearch: action.payload.dateRange[0],
+        tranEndSearch: action.payload.dateRange[1]
       };
     default:
       return state;

@@ -302,7 +302,7 @@ class AdDesign extends Component {
             <View
               style={{
                 flexDirection: "row",
-                marginBottom: heightPercentageToDP("2.5")
+                marginBottom: heightPercentageToDP("2")
               }}
             >
               {/* <TouchableOpacity

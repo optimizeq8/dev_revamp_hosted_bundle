@@ -652,15 +652,17 @@ class AdDetails extends Component {
                 }}
               >
                 <View style={{ flex: 1 }}>
-                  <View>
+                  <View style={{ height: hp(7) }}>
                     <BackButton navigation={this.props.navigation.goBack} />
 
                     <Text style={styles.headline}>
                       Input your Snapchat {"\n"} AD Details
                     </Text>
                   </View>
-                  <Text style={styles.subHeadings}>Budget</Text>
-                  <View style={{ height: hp(7) }}>
+                  <Text style={[styles.subHeadings, { top: hp(1) }]}>
+                    Budget
+                  </Text>
+                  <View style={{ height: hp(6) }}>
                     <Input
                       keyboardType="numeric"
                       defaultValue={
@@ -726,7 +728,7 @@ class AdDetails extends Component {
                         this.props.navigation.state.params &&
                         this.props.navigation.state.params.editCampaign
                       }
-                      style={{ width: 300 }}
+                      style={{ width: 300, height: hp(2) }}
                       step={10}
                       minimumValue={this.state.minValueBudget}
                       maximumValue={this.state.maxValueBudget}
@@ -827,7 +829,7 @@ class AdDetails extends Component {
                         borderRadius: 15,
                         paddingHorizontal: 25,
                         marginBottom: 5,
-                        height: hp("28%")
+                        height: hp("25%")
                       }}
                     >
                       <View
