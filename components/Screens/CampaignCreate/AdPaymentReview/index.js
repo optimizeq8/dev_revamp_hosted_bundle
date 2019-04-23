@@ -239,7 +239,8 @@ class AdPaymentReview extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("PaymentForm", {
                     interestNames: this.props.navigation.state.params
-                      .interestNames
+                      .interestNames,
+                    kdamount: this.props.kdamount
                   })
                 }
                 style={{
@@ -255,8 +256,8 @@ class AdPaymentReview extends Component {
                     textAlign: "center"
                   }}
                 >
-                  Total {"\n"} {this.state.lifetime_budget_micro} ${"\n"}{" "}
-                  proceed to payment{" "}
+                  Total {"\n"} {this.state.lifetime_budget_micro}$ {"\n"}(
+                  {this.props.kdamount} KWD){"\n"} proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>
             </Card>
@@ -270,6 +271,7 @@ class AdPaymentReview extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
+  kdamount: state.campaignC.kdamount,
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({

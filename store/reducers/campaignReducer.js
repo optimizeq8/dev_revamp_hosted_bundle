@@ -5,6 +5,7 @@ const initialState = {
   data: null,
   campaign_id: "",
   average_reach: 0,
+  kdamount: 0,
   total_reach: 0,
   interests: null,
   loading: false,
@@ -33,6 +34,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
+        kdamount: action.payload.kdamount,
         loading: false
       };
     case actionTypes.UPDATE_CAMPAIGN_DETAILS:
