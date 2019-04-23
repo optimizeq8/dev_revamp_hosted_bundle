@@ -5,12 +5,18 @@ import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
 // console.disableYellowBox = true;
+import Sentry from "sentry-expo";
+
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+
+// Sentry.enableInExpoDevelopment = true;
+
+Sentry.config(
+  "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
+).install();
+
+// Sentry.captureException(new Error("Oops!"));
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
@@ -19,6 +25,7 @@ export default class App extends React.Component {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
+          // console.log(kmav)
           startAsync={this._loadResourcesAsync}
           onError={this._handleLoadingError}
           onFinish={this._handleFinishLoading}
