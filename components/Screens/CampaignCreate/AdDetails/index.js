@@ -65,7 +65,7 @@ class AdDetails extends Component {
         targeting: {
           demographics: [
             {
-              gender: "FEMALE",
+              gender: "",
 
               languages: ["en"],
               min_age: 13,

@@ -77,7 +77,8 @@ class AdDesign extends Component {
       headlineError: "",
       imageError: "",
       swipeUpError: "",
-      isVisible: false
+      isVisible: false,
+      imageLoading: false
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._changeDestination = this._changeDestination.bind(this);
@@ -121,8 +122,8 @@ class AdDesign extends Component {
       });
     }
   };
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  pick = () => {
+    let result = ImagePicker.launchImageLibraryAsync({
       mediaTypes: "All",
       base64: false,
       exif: false,
@@ -130,6 +131,14 @@ class AdDesign extends Component {
       aspect: [9, 16],
       allowsEditing: Platform.OS === "android"
     });
+
+    this.onToggleModal();
+
+    return result;
+  };
+  _pickImage = async () => {
+    let result = await this.pick();
+
     if (Math.floor(result.width / 9) === Math.floor(result.height / 16)) {
       if (!result.cancelled) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
@@ -151,6 +160,7 @@ class AdDesign extends Component {
               imageError: null
             });
             this.formatMedia();
+            this.onToggleModal();
           }
         });
       }
@@ -159,6 +169,7 @@ class AdDesign extends Component {
         imageError: "Media size must be in 9:16 aspect ratio",
         image: null
       });
+      this.onToggleModal();
     }
   };
 
@@ -283,8 +294,6 @@ class AdDesign extends Component {
     this.setState({ isVisible: !isVisible });
   };
   render() {
-    console.log(this.state.loaded);
-
     let { image } = this.state;
     return (
       <Container style={styles.container}>
@@ -546,7 +555,7 @@ class AdDesign extends Component {
                 <ForwardButton />
               </TouchableOpacity>
             </View>
-            <Modal isVisible={this.state.isVisible}>
+            <Modal isVisible={this.state.isVisible || this.state.imageLoading}>
               <LoadingScreen />
             </Modal>
           </View>

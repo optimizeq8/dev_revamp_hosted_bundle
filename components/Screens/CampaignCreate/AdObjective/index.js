@@ -261,7 +261,7 @@ class AdObjective extends Component {
             <LowerButton bottom={10} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
-        <Modal isVisible={this.props.loading}>
+        <Modal visible={this.props.loading}>
           <LoadingScreen />
         </Modal>
         <Modal
@@ -278,7 +278,7 @@ class AdObjective extends Component {
               <ScrollView
                 indicatorStyle="white"
                 contentContainerStyle={{
-                  marginTop: 20,
+                  paddingTop: heightPercentageToDP(7),
                   marginBottom: 20
                 }}
               >
