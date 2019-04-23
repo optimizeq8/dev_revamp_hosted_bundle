@@ -83,15 +83,17 @@ class PaymentForm extends Component {
         <View style={styles.headerview}>
           <Text style={styles.header}>Payment</Text>
           <View style={{ flexDirection: "row" }}>
-            <Button disabled style={styles.whitebutton}>
+            {/* <Button disabled style={styles.whitebutton}>
               <Text style={styles.whitebuttontext}> WALLET </Text>
             </Button>
+            */}
             <Button style={styles.button}>
               <Text style={styles.buttontext}> K-NET </Text>
             </Button>
-            <Button disabled style={styles.whitebutton2}>
+            {/* <Button disabled style={styles.whitebutton2}>
               <Text style={styles.whitebuttontext}> CREDIT{"\n"}CARD </Text>
             </Button>
+           */}
           </View>
         </View>
 
@@ -170,7 +172,7 @@ class PaymentForm extends Component {
                   paddingTop: 3
                 }}
               >
-                {this.props.data.lifetime_budget_micro + 20}$
+                {this.props.data.lifetime_budget_micro}$
               </Text>
               <Text
                 style={{

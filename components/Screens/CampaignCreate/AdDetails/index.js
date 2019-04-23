@@ -235,7 +235,7 @@ class AdDetails extends Component {
     }
   };
   getMinimumCash = days => {
-    let minValueBudget = days !== 0 ? 20 * days : 20;
+    let minValueBudget = days !== 0 ? 25 * days : 25;
     this.onSelectedBudgetChange(minValueBudget);
     this.setState({
       minValueBudget
