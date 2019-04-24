@@ -71,7 +71,7 @@ class ChangePassword extends Component {
         >
           <BackIcon />
         </TouchableOpacity>
-        <Text style={styles.title}>Perisnal Info</Text>
+        <Text style={styles.title}>Personal Info</Text>
 
         <View style={styles.mainCard}>
           <TouchableWithoutFeedback
@@ -112,13 +112,51 @@ class ChangePassword extends Component {
                         name="key"
                       /> */}
                       {"  "}
-                      Full Name
+                      First Name
                     </Label>
                     <Input
                       style={styles.inputtext}
-                      value={`${this.props.userInfo.firstname} ${
-                        this.props.userInfo.lastname
-                      }`}
+                      value={`${this.props.userInfo.firstname}`}
+                      disabled
+                    />
+                  </Item>
+
+                  <Item
+                    floatingLabel
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: this.state.inputP
+                          ? "#7039FF"
+                          : this.state.currentPasswordError
+                          ? "red"
+                          : "#D9D9D9"
+                      }
+                    ]}
+                  >
+                    <Label
+                      style={[
+                        styles.inputtext,
+                        {
+                          bottom: 5,
+
+                          color: this.state.inputF ? "#FF9D00" : "#717171"
+                        }
+                      ]}
+                    >
+                      {/* <Icon
+                        style={{
+                          fontSize: 20,
+                          color: this.state.inputF ? "#FF9D00" : "#717171"
+                        }}
+                        name="key"
+                      /> */}
+                      {"  "}
+                      Last Name
+                    </Label>
+                    <Input
+                      style={styles.inputtext}
+                      value={`${this.props.userInfo.lastname}`}
                       disabled
                     />
                   </Item>
@@ -186,7 +224,9 @@ class ChangePassword extends Component {
                           color: this.state.inputPR ? "#FF9D00" : "#717171"
                         }
                       ]}
-                    />
+                    >
+                      Mobile No.
+                    </Label>
 
                     <Input
                       style={styles.inputtext}
@@ -194,12 +234,12 @@ class ChangePassword extends Component {
                     />
                   </Item>
 
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => this._handleSubmission()}
                     style={styles.button}
                   >
                     <CheckmarkIcon />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
               )}
             </KeyboardShift>

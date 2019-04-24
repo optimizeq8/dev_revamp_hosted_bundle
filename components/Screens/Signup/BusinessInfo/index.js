@@ -19,6 +19,10 @@ import {
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";
 
+//icons
+import HomeBussinesIcon from "../../../../assets/SVGs/Person";
+import CompanyIcon from "../../../../assets/SVGs/Group";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -288,7 +292,7 @@ class BusinessInfo extends Component {
                   { textAlign: "center" }
                 ]}
               >
-                <Icon
+                {/* <Icon
                   type="AntDesign"
                   name="down"
                   style={[
@@ -299,7 +303,8 @@ class BusinessInfo extends Component {
                       left: 25
                     }
                   ]}
-                />
+                /> */}
+                <HomeBussinesIcon />
                 {"\n"}An Individual
               </Text>
             </Button>

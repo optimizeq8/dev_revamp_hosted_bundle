@@ -24,7 +24,11 @@ import { colors } from "../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
+import LowerButton from "../../MiniComponents/LowerButton";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -132,14 +136,18 @@ class ForgotPassword extends Component {
               placeholder="Email"
             />
           </Item>
-          <Button
+          <LowerButton
+            function={() => this._handleSubmission()}
+            bottom={-heightPercentageToDP(1.5)}
+          />
+          {/* <Button
             style={styles.button}
             onPress={() => {
               this._handleSubmission();
             }}
           >
             <Icon style={styles.icon} name="arrow-forward" />
-          </Button>
+          </Button> */}
         </View>
       </Container>
     );

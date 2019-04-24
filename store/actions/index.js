@@ -34,4 +34,8 @@ export {
   payment_request_knet
 } from "./campaignActions";
 
-export { getTransactions, filterTransactions } from "./transactionActions";
+export {
+  getTransactions,
+  filterTransactions,
+  getWalletAmount
+} from "./transactionActions";

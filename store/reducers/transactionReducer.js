@@ -1,6 +1,7 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
+  wallet: 0,
   transactionList: [],
   filteredTransactions: [],
   transactionValue: "",
@@ -17,6 +18,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         transactionList: action.payload.data,
         filteredTransactions: action.payload.data,
+        loading: false,
+        message: action.payload.message
+      };
+    case actionTypes.SET_WALLET_AMOUNT:
+      return {
+        ...state,
+        wallet: action.payload.walletamount,
         loading: false,
         message: action.payload.message
       };

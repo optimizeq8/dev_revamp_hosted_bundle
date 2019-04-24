@@ -13,6 +13,9 @@ import RNPickerSelect from "react-native-picker-select";
 import CloseButton from "../../MiniComponents/CloseButton";
 //icons
 import CloseIcon from "../../../assets/SVGs/Close";
+import HomeBussinesIcon from "../../../assets/SVGs/Person";
+import CompanyIcon from "../../../assets/SVGs/Group";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -319,20 +322,22 @@ class CreateBusinessAccount extends Component {
               ]}
             >
               <Icon
-                type="AntDesign"
-                name="down"
+                type="MaterialCommunityIcons"
+                name="home-account"
                 style={[
                   this.state.businessAccount.businesstype === "1"
                     ? styles.activetext
                     : styles.inactivetext,
                   {
-                    left: 25
+                    left: 25,
+                    fontSize: 25
                   }
                 ]}
               />
               {"\n"}Home{"\n"} Business
             </Text>
           </Button>
+
           <Button
             block
             dark
@@ -360,14 +365,15 @@ class CreateBusinessAccount extends Component {
               ]}
             >
               <Icon
-                type="AntDesign"
-                name="down"
+                type="Foundation"
+                name="torsos-all"
                 style={[
                   this.state.businessAccount.businesstype === "2"
                     ? styles.activetext
                     : styles.inactivetext,
                   {
-                    left: 25
+                    alignSelf: "center",
+                    fontSize: 25
                   }
                 ]}
               />
@@ -401,14 +407,15 @@ class CreateBusinessAccount extends Component {
               ]}
             >
               <Icon
-                type="AntDesign"
-                name="down"
+                type="FontAwesome"
+                name="building"
                 style={[
                   this.state.businessAccount.businesstype === "3"
                     ? styles.activetext
                     : styles.inactivetext,
                   {
-                    left: 25
+                    left: 25,
+                    fontSize: 25
                   }
                 ]}
               />

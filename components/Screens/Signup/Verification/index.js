@@ -53,6 +53,22 @@ class Verification extends Component {
           Please Enter the {"\n"}
           Verification code sent to{"\n"} {this.props.mobileNo}
         </Text>
+        <Text
+          onPress={() => {
+            this.props.resetMessages();
+            this.props.resendVerifyMobileCode({
+              mobile: this.props.mobileNo,
+              country_code: this.props.countryCode
+            });
+          }}
+          style={[styles.link]}
+        >
+          Resend Code
+        </Text>
+
+        {this.state.codeError !== "" && (
+          <Text style={[styles.errorText]}>{this.state.codeError}</Text>
+        )}
         <CodeInput
           inactiveColor="black"
           activeColor="purple"
@@ -70,22 +86,6 @@ class Verification extends Component {
           }}
           ref={this.inputRef}
         />
-        {this.state.codeError !== "" && (
-          <Text style={[styles.errorText]}>{this.state.codeError}</Text>
-        )}
-
-        <Text
-          onPress={() => {
-            this.props.resetMessages();
-            this.props.resendVerifyMobileCode({
-              mobile: this.props.mobileNo,
-              country_code: this.props.countryCode
-            });
-          }}
-          style={[styles.link]}
-        >
-          Resend Code
-        </Text>
       </View>
     );
   }

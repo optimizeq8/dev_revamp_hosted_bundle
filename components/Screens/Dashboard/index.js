@@ -76,6 +76,7 @@ class Dashboard extends Component {
     if (this.props.mainBusiness) {
       if (this.props.mainBusiness.snap_ad_account_id === "")
         this.props.navigation.navigate("SnapchatCreateAdAcc");
+      this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -200,9 +201,9 @@ class Dashboard extends Component {
               >
                 <LottieView
                   style={{
-                    width: 50,
-                    height: 47,
-                    top: hp(0.38),
+                    width: wp(5),
+                    height: hp(5),
+                    top: hp(1.2),
                     left: wp(1.67)
                   }}
                   resizeMode="contain"
@@ -210,12 +211,73 @@ class Dashboard extends Component {
                   progress={this.state.menu}
                 />
               </TouchableWithoutFeedback>
-              <OptimizeLogo style={styles.image} />
-              <Transition shared="menu">
-                <Text style={[styles.text]}>
-                  {this.props.mainBusiness.businessname}
-                </Text>
-              </Transition>
+              <Image
+                resizeMode="contain"
+                style={styles.image}
+                source={require("../../../assets/images/logo02.png")}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  bottom: hp(6.5)
+                }}
+              >
+                <Transition shared="menu">
+                  <Text style={[styles.text]}>
+                    {this.props.mainBusiness.businessname}
+                  </Text>
+                </Transition>
+                <View
+                  style={{
+                    bottom: hp(2),
+                    right: wp(3)
+                  }}
+                >
+                  <Icon
+                    name="info"
+                    type="MaterialIcons"
+                    style={{
+                      color: "#fff",
+                      fontSize: 19,
+                      position: "relative",
+                      top: "40%"
+                    }}
+                  />
+                  <Text
+                    style={[
+                      globalStyles.numbers,
+                      {
+                        paddingLeft: 20,
+                        fontSize: wp(6),
+                        fontFamily: "montserrat-semibold"
+                      }
+                    ]}
+                  >
+                    {/* {this.props.wallet} */} 150
+                    <Text
+                      style={[
+                        globalStyles.numbers,
+                        {
+                          padding: 0,
+                          fontSize: 15,
+                          fontFamily: "montserrat-semibold"
+                        }
+                      ]}
+                    >
+                      $
+                    </Text>
+                  </Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      { fontSize: 10, top: 0, alignSelf: "center" }
+                    ]}
+                  >
+                    Wallet Balance
+                  </Text>
+                </View>
+              </View>
               <View
                 padder
                 style={[
@@ -318,6 +380,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
+  wallet: state.transA.wallet,
   loading: state.auth.loading,
   mainBusiness: state.auth.mainBusiness,
   campaignList: state.auth.campaignList,
@@ -328,6 +391,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCampaign: id => dispatch(actionCreators.getCampaign(id)),
+  getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),

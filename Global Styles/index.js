@@ -3,6 +3,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+export const globalColors = {
+  orange: "#FF9D00",
+  purple: "#751AFF"
+};
 export default (styles = {
   container: {
     marginTop: 30,

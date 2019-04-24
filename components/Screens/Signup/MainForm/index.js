@@ -16,6 +16,7 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
+import CloseButton from "../../../MiniComponents/CloseButton";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -24,7 +25,7 @@ class MainForm extends Component {
   state = { verified: false };
   render() {
     let title = "Phone Number";
-    let content =  <PhoneNo navigation={this.props.navigation} />;
+    let content = <PhoneNo navigation={this.props.navigation} />;
 
     if (this.props.verificationCode) {
       content = <Verification />;
@@ -52,7 +53,10 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
+        <CloseButton
+          navigation={() => this.props.navigation.navigate("Signin")}
+        />
+        {/* <Button
           transparent
           onPress={() => this.props.navigation.navigate("Signin")}
           style={{
@@ -67,6 +71,7 @@ class MainForm extends Component {
             name="close"
           />
         </Button>
+         */}
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
           <Badge

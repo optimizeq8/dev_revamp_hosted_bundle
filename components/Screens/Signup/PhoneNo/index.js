@@ -9,7 +9,7 @@ import {
   Text
 } from "react-native";
 import { Button, Icon } from "native-base";
-
+import CountryModal from "./CountryModal";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -17,6 +17,8 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -28,12 +30,17 @@ class PhoneNo extends Component {
       valid: true,
       type: "",
       value: "",
-      numExists: ""
+      numExists: "",
+      pickerData: null
     };
-    this.updateInfo = this.updateInfo.bind(this);
-    this.renderInfo = this.renderInfo.bind(this);
   }
 
+  componentDidMount() {
+    this.phone.focus();
+    this.setState({
+      pickerData: this.phone.getPickerData()
+    });
+  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.message !== this.props.message &&
@@ -48,7 +55,7 @@ class PhoneNo extends Component {
     }
   }
 
-  updateInfo() {
+  updateInfo = () => {
     this.props.resetMessages();
     this.setState({
       valid: this.phone.isValidNumber(),
@@ -63,9 +70,17 @@ class PhoneNo extends Component {
         mobile: this.phone.getValue().split(this.phone.getCountryCode())[1]
       });
     }
-  }
+  };
 
-  renderInfo() {
+  onPressFlag = () => {
+    this.myCountryPicker.open();
+  };
+
+  selectCountry = country => {
+    this.phone.selectCountry(country.iso2);
+  };
+
+  renderInfo = () => {
     return (
       <View>
         {this.state.type !== "MOBILE" &&
@@ -91,7 +106,7 @@ class PhoneNo extends Component {
         ) : null}
       </View>
     );
-  }
+  };
 
   render() {
     return (
@@ -101,30 +116,42 @@ class PhoneNo extends Component {
             Please Provide your {"\n"}
             Mobile Number
           </Text>
-
           <PhoneInput
             textStyle={{
               ...styles.input,
               borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
             }}
-            buttonTextStyle={{ backgroundColor: "#000" }}
             flagStyle={{
-              left: 30,
-              bottom: 2
+              left: 40,
+              top: 5
             }}
             ref={ref => {
               this.phone = ref;
             }}
+            onPressFlag={this.onPressFlag}
             initialCountry="kw"
             countriesList={require("./countries.json")}
             value="965"
             offset={15}
           />
-
+          <CountryModal
+            ref={ref => {
+              this.myCountryPicker = ref;
+            }}
+            data={this.state.pickerData}
+            onChange={country => {
+              this.selectCountry(country);
+            }}
+            cancelText="Cancel"
+          />
           {this.renderInfo()}
-          <Button onPress={this.updateInfo} style={styles.button}>
+          <LowerButton
+            function={() => this.updateInfo()}
+            bottom={heightPercentageToDP(0.1)}
+          />
+          {/* <Button onPress={this.updateInfo} style={styles.button}>
             <Icon style={styles.icon} name="arrow-forward" />
-          </Button>
+          </Button> */}
         </View>
       </TouchableWithoutFeedback>
     );
