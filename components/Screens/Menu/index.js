@@ -45,7 +45,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP("105"),
+      top: heightPercentageToDP("100"),
       bottom: -heightPercentageToDP("115")
     }
   };
@@ -98,7 +98,8 @@ class Menu extends Component {
                   style={{
                     width: widthPercentageToDP(5),
                     height: heightPercentageToDP(5),
-                    top: heightPercentageToDP(0.85),
+                    top: heightPercentageToDP(0.7),
+                    right: widthPercentageToDP(0.8),
                     zIndex: 10
                   }}
                   resizeMode="contain"

@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: heightPercentageToDP("8.5"),
+    top: heightPercentageToDP("10"),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.5,
-    // marginBottom: heightPercentageToDP(2),
+    marginBottom: heightPercentageToDP(2),
     backgroundColor: "#FF9D00",
     borderRadius: 30,
     alignSelf: "center",
