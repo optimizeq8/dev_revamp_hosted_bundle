@@ -254,7 +254,6 @@ class Dashboard extends Component {
                       }
                     ]}
                   >
-                    {/* {this.props.wallet} */} 150
                     <Text
                       style={[
                         globalStyles.numbers,
@@ -267,6 +266,7 @@ class Dashboard extends Component {
                     >
                       $
                     </Text>
+                    {this.props.wallet}
                   </Text>
                   <Text
                     style={[

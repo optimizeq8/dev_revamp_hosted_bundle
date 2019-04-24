@@ -57,8 +57,9 @@ export const getWalletAmount = () => {
 };
 
 export const filterTransactions = query => {
-  return {
-    type: actionTypes.FILTER_TRANSACTION,
-    payload: query
-  };
+  return dispatch =>
+    dispatch({
+      type: actionTypes.FILTER_TRANSACTION,
+      payload: query
+    });
 };
