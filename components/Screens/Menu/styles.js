@@ -107,9 +107,16 @@ const styles = StyleSheet.create({
   },
   logoutIcon: {
     position: "absolute",
-    top: heightPercentageToDP("6.5"),
+    top: heightPercentageToDP("8.5"),
     left: widthPercentageToDP("85%"),
     zIndex: 10
+  },
+  options: {
+    alignItems: "center",
+    paddingBottom: 5,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: 120
   }
 });
 

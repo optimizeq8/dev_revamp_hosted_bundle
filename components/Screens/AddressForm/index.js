@@ -550,7 +550,7 @@ class AddressForm extends Component {
                           ]}
                         >
                           {"  "}
-                          Avenu
+                          Avenue
                         </Label>
                         <Input
                           multiline={true}

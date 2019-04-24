@@ -35,13 +35,6 @@
     "areaCodes": null
   },
   {
-    "name": "Egypt (‫مصر‬‎)",
-    "iso2": "eg",
-    "dialCode": "20",
-    "priority": 0,
-    "areaCodes": null
-  },
-  {
     "name": "Oman (‫عُمان‬‎)",
     "iso2": "om",
     "dialCode": "968",

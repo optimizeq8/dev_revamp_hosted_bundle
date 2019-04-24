@@ -80,10 +80,9 @@ class MainForm extends Component {
         <View style={{ marginTop: 25 }}>
           <Image
             style={styles.image}
-            source={require("../../../assets/images/logo.png")}
+            source={require("../../../assets/images/logo01.png")}
             resizeMode="contain"
           />
-          <Text style={styles.logo}>optimize</Text>
         </View>
         <Text style={styles.text}>Sign In</Text>
 
@@ -163,7 +162,6 @@ class MainForm extends Component {
           </Text>
           <Button
             block
-            dark
             style={styles.button}
             onPress={() => {
               this._handleSubmission();
@@ -173,20 +171,28 @@ class MainForm extends Component {
           </Button>
         </View>
         <View>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.props.resetRegister();
-              this.props.navigation.navigate("MainForm");
-            }}
-            style={styles.bottomView}
-          >
-            <View style={{ marginBottom: 30 }}>
-              <Text style={styles.link}>I Don’t Have an Account</Text>
-              <Text style={[styles.link, { color: "#FF9D00" }]}>
-                Create one!
+          <View style={{ marginBottom: 30 }}>
+            <Text style={[styles.link, { paddingBottom: 7 }]}>
+              Don’t Have an Account?
+            </Text>
+            <Button
+              rounded
+              onPress={() => {
+                this.props.resetRegister();
+                this.props.navigation.navigate("MainForm");
+              }}
+              style={styles.bottomView}
+            >
+              <Text
+                style={[
+                  styles.buttontext,
+                  { color: "#fff", fontFamily: "montserrat-semibold" }
+                ]}
+              >
+                Sign Up Now!
               </Text>
-            </View>
-          </TouchableWithoutFeedback>
+            </Button>
+          </View>
         </View>
       </Container>
     );

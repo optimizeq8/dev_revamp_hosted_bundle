@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
+    height: heightPercentageToDP(10),
+    width: heightPercentageToDP(15),
+    bottom: heightPercentageToDP(3.5)
   },
   imageIcon: {
     alignSelf: "center",
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    top: -heightPercentageToDP(1.1),
+    bottom: heightPercentageToDP(8),
     backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   text: {
-    bottom: heightPercentageToDP(2),
+    top: heightPercentageToDP(2.5),
     alignSelf: "flex-start",
     color: "#fff",
     marginLeft: widthPercentageToDP(4),

@@ -1,4 +1,9 @@
 import { StyleSheet } from "react-native";
+import { globalColors } from "../../../Global Styles";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -19,8 +24,8 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 100,
-    width: 100,
+    height: heightPercentageToDP(17),
+    width: heightPercentageToDP(17),
     margin: 10
   },
   mainView: {
@@ -39,8 +44,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   buttontext: {
-    color: "#7039FF",
-    fontFamily: "montserrat-regular",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
     fontSize: 14
   },
   inputtext: {
@@ -48,13 +53,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#fff",
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
+    paddingHorizontal: widthPercentageToDP(20)
   },
   input: {
     top: 30,
     marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.16)",
-    paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
     width: 250,
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.5,
     marginBottom: 10,
-    backgroundColor: "#fff",
+    backgroundColor: globalColors.orange,
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
@@ -75,12 +80,19 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-light",
-    fontSize: 14
+    fontFamily: "montserrat-regular",
+    fontSize: heightPercentageToDP(1.7)
   },
   bottomView: {
-    top: 15,
-    height: 100
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    borderRadius: 13,
+    width: 150,
+    height: 40,
+    justifyContent: "center"
   },
   error: {
     textAlign: "center",

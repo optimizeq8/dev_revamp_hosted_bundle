@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#717171",
     fontFamily: "montserrat-light",
-    fontSize: 14,
-    marginBottom: 40
+    fontSize: 14
   },
   button: {
     marginTop: 20,
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    marginBottom: 0,
+    marginBottom: 30,
     paddingVertical: 10
   },
   gradient: {

@@ -19,6 +19,8 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -307,7 +309,6 @@ class PersonalInfo extends Component {
                       styles.inputtext,
                       {
                         bottom: 5,
-
                         color: this.state.inputP ? "#FF9D00" : "#717171"
                       }
                     ]}
@@ -423,12 +424,13 @@ class PersonalInfo extends Component {
                     {this.state.repasswordError}
                   </Text>
                 ) : null}
-                <Button
+                <LowerButton function={() => this._handleSubmission()} />
+                {/* <Button
                   onPress={() => this._handleSubmission()}
                   style={styles.button}
                 >
                   <Icon style={styles.icon} name="arrow-forward" />
-                </Button>
+                </Button> */}
               </View>
             )}
           </KeyboardShift>

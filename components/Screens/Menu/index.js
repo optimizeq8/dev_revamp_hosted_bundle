@@ -42,10 +42,10 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
 import { Transition } from "react-navigation-fluid-transitions";
 class Menu extends Component {
-  _draggedValue = new Animated.Value(-20);
+  _draggedValue = new Animated.Value(0);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP("100"),
+      top: heightPercentageToDP("105"),
       bottom: -heightPercentageToDP("115")
     }
   };
@@ -84,7 +84,9 @@ class Menu extends Component {
                 justifyContent: "center",
                 marginTop: heightPercentageToDP("5%"),
                 marginLeft: 20,
-                zIndex: 10
+                zIndex: 10,
+                paddingBottom: 30,
+                marginBottom: -heightPercentageToDP(5)
               }}
             >
               <TouchableWithoutFeedback
@@ -94,8 +96,10 @@ class Menu extends Component {
               >
                 <LottieView
                   style={{
-                    width: 50,
-                    height: 47
+                    width: widthPercentageToDP(5),
+                    height: heightPercentageToDP(5),
+                    top: heightPercentageToDP(0.85),
+                    zIndex: 10
                   }}
                   resizeMode="contain"
                   source={require("../../../assets/animation/menu-btn.json")}
@@ -156,15 +160,9 @@ class Menu extends Component {
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.navigate("PersonalInfo")}
               >
-                <View
-                  style={{
-                    alignItems: "center",
-
-                    flexDirection: "row"
-                  }}
-                >
+                <View style={styles.options}>
                   <Icons.PersonalInfo />
-                  <Text style={styles.text}>Personal Info</Text>
+                  <Text style={styles.text}>Personal{"\n    "}Info</Text>
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
@@ -172,15 +170,9 @@ class Menu extends Component {
                   this.props.navigation.navigate("TransactionList")
                 }
               >
-                <View
-                  style={{
-                    alignItems: "center",
-
-                    flexDirection: "row"
-                  }}
-                >
+                <View style={[styles.options, { paddingLeft: 15 }]}>
                   <Icons.TransactionIcon />
-                  <Text style={styles.text}>Transactions</Text>
+                  <Text style={styles.text}> Transactions</Text>
                 </View>
               </TouchableWithoutFeedback>
               <View
@@ -188,28 +180,16 @@ class Menu extends Component {
                   flexDirection: "column"
                 }}
               >
-                <View
-                  style={{
-                    alignItems: "center",
-
-                    flexDirection: "row"
-                  }}
-                >
+                <View style={styles.options}>
                   <Icons.BusinessIcon />
-                  <Text style={styles.text}>Business Info</Text>
+                  <Text style={styles.text}>Business{"\n    "}Info</Text>
                 </View>
                 <TouchableWithoutFeedback
                   onPress={() =>
                     this.props.navigation.navigate("ChangePassword")
                   }
                 >
-                  <View
-                    style={{
-                      alignItems: "center",
-
-                      flexDirection: "row"
-                    }}
-                  >
+                  <View style={styles.options}>
                     <Icons.ChangePassIcon />
                     <Text style={[styles.text]}> Change{"\n"}Password</Text>
                   </View>
@@ -219,13 +199,7 @@ class Menu extends Component {
               <TouchableWithoutFeedback
                 onPress={() => this.props.navigation.navigate("AddressForm")}
               >
-                <View
-                  style={{
-                    alignItems: "center",
-                    marginBottom: 10,
-                    flexDirection: "row"
-                  }}
-                >
+                <View style={styles.options}>
                   <Icons.AddressIcon />
                   <Text style={styles.text}>Addresses</Text>
                 </View>
@@ -233,13 +207,24 @@ class Menu extends Component {
               <View
                 style={{
                   alignItems: "center",
-                  left: widthPercentageToDP(5),
+                  left: widthPercentageToDP(4),
+                  marginBottom: 20,
                   flexDirection: "row"
                 }}
               >
                 <Icons.Wallet />
                 <Text style={styles.text}>{"    "}Wallet</Text>
               </View>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.props.logout(this.props.navigation);
+                }}
+              >
+                <View style={styles.options}>
+                  <Icons.LogoutIcon />
+                  <Text style={styles.text}>{"   "}Logout</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </View>
           <SlidingUpPanel
