@@ -15,6 +15,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  text: {
+    marginTop: 3,
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-medium",
+    textAlign: "center"
+  },
+  details: {
+    marginTop: 10,
+    paddingVertical: 10,
+    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    width: 250
+  },
   view: {
     flex: 2,
     alignItems: "center",
