@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -179,12 +180,12 @@ const styles = StyleSheet.create({
   inactivetext: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#7039FF"
+    color: "#fff"
   },
   activetext: {
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#fff"
+    color: globalColors.orange
   },
   categories: {
     textAlign: "center",

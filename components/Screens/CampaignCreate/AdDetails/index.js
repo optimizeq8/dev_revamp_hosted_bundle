@@ -648,7 +648,7 @@ class AdDetails extends Component {
                 source={{
                   uri: this.props.navigation.state.params
                     ? this.props.navigation.state.params.image
-                    : ""
+                    : "www.go.com"
                 }}
               >
                 <View style={{ flex: 1 }}>
@@ -901,10 +901,11 @@ class AdDetails extends Component {
                                     .demographics[0].min_age
                                 }{" "}
                                 -{" "}
-                                {
-                                  this.state.campaignInfo.targeting
-                                    .demographics[0].max_age
-                                }
+                                {this.state.campaignInfo.targeting
+                                  .demographics[0].max_age === 35
+                                  ? "35+"
+                                  : this.state.campaignInfo.targeting
+                                      .demographics[0].max_age}
                               </Text>
                             </View>
                           </View>

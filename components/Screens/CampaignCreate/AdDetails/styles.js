@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../Global Styles/";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-regular",
     fontSize: 16,
     width: 150,
     paddingTop: 20,
@@ -63,6 +64,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginRight: 20,
     color: "#fff"
+  },
+  itemCircles: {
+    fontSize: 30,
+    color: globalColors.orange
   },
   content: {
     flexDirection: "row",
@@ -147,9 +152,9 @@ const styles = StyleSheet.create({
     left: wp(9)
   },
   button: {
+    backgroundColor: "transparent",
     alignSelf: "center",
-
-    borderRadius: 27.5,
+    borderRadius: 50,
     borderColor: "transparent",
     borderWidth: 1,
     justifyContent: "center",
@@ -158,6 +163,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     marginVertical: 5
+  },
+  interestButton: {
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+    borderRadius: 50,
+    height: 50,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2
   },
   icon: {
     fontSize: 35,
@@ -168,30 +184,27 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   inactivebutton: {
-    backgroundColor: "#fff",
     alignSelf: "center",
     width: hp("15"),
     height: hp("15"),
-    borderRadius: 100,
     marginBottom: 10
   },
   activebutton: {
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: hp("15"),
-    height: hp("15"),
-    borderRadius: 100,
-    marginBottom: 10
+    height: hp("15")
   },
   inactivetext: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-semibold",
     fontSize: 16,
-    color: "#7039FF"
+    color: "#fff",
+    marginLeft: 20
   },
   activetext: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-semibold",
     fontSize: 16,
-    color: "#fff"
+    color: globalColors.orange,
+    marginLeft: 20
   },
   categories: {
     textAlign: "center",
@@ -204,8 +217,8 @@ const styles = StyleSheet.create({
   subHeadings: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-medium",
-    fontSize: hp(2.5),
+    fontFamily: "montserrat-regular",
+    fontSize: hp(2),
     paddingVertical: 10
   },
   numbers: {

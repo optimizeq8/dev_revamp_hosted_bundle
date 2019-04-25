@@ -190,27 +190,40 @@ class Dashboard extends Component {
               openMenuOffset={wp("85%")}
               isOpen={this.state.sidemenustate}
             >
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  if (this.state.open === false) {
-                    this.startAnimation();
-                  } else {
-                    this.closeAnimation();
-                  }
-                }}
-              >
-                <LottieView
+              <Transition shared="close">
+                <View
                   style={{
-                    width: wp(5),
-                    height: hp(5),
-                    top: hp(1.2),
-                    left: wp(1.67)
+                    justifyContent: "center",
+                    top: hp(3),
+                    left: wp(5),
+                    zIndex: 10,
+                    paddingBottom: 30,
+                    marginBottom: -hp(5)
                   }}
-                  resizeMode="contain"
-                  source={require("../../../assets/animation/menu-btn.json")}
-                  progress={this.state.menu}
-                />
-              </TouchableWithoutFeedback>
+                >
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      if (this.state.open === false) {
+                        this.startAnimation();
+                      } else {
+                        this.closeAnimation();
+                      }
+                    }}
+                  >
+                    <LottieView
+                      style={{
+                        width: wp(5),
+                        height: hp(5)
+                        // top: hp(1.2),
+                        // left: wp(1.67)
+                      }}
+                      resizeMode="contain"
+                      source={require("../../../assets/animation/menu-btn.json")}
+                      progress={this.state.menu}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </Transition>
               <Image
                 resizeMode="contain"
                 style={styles.image}
@@ -318,7 +331,7 @@ class Dashboard extends Component {
                       onPress={() => {
                         if (this.props.mainBusiness.snap_ad_account_id === "")
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
-                        else this.props.navigation.navigate("AdType");
+                        else this.props.navigation.navigate("AdDetails");
                       }}
                     >
                       <Text

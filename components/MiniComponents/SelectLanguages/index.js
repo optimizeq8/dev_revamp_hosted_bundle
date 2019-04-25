@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import LocationIcon from "../../../assets/SVGs/Location";
-import { Input, Button, Item } from "native-base";
+import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 export default class SelectLanguages extends Component {
@@ -12,23 +12,38 @@ export default class SelectLanguages extends Component {
         style={{
           paddingVertical: 10,
           marginVertical: 10,
-          backgroundColor: this.props.demographics[0].languages.find(
-            l => l === c.value
-          )
-            ? "#FF9D00"
-            : "transparent",
           borderRadius: 10,
-          paddingLeft: 5
+          paddingLeft: 5,
+          flexDirection: "row",
+          alignItems: "center",
+          alignContent: "flex-start"
         }}
         onPress={() => {
           this.props.onSelectedLangsChange(c.value);
         }}
       >
+        <Icon
+          type="MaterialCommunityIcons"
+          name={
+            this.props.demographics[0].languages.find(l => l === c.value)
+              ? "circle"
+              : "circle-outline"
+          }
+          style={[
+            this.props.demographics[0].languages.find(l => l === c.value)
+              ? styles.activetext
+              : styles.inactivetext,
+            {
+              fontSize: 25
+            }
+          ]}
+        />
         <Text
           style={{
             fontFamily: "montserrat-bold",
             color: "#fff",
-            fontSize: 14
+            fontSize: 14,
+            paddingLeft: 20
           }}
         >
           {c.label}
