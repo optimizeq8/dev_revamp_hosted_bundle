@@ -162,12 +162,30 @@ class CampaignDetails extends Component {
         this.props.campaign.targeting &&
         this.props.campaign.targeting.hasOwnProperty("interests")
           ? this.props.campaign.targeting.interests[0].category_id.map(
-              interest =>
-                ` ${
-                  interestNames.interests.scls.find(
-                    interestObj => interestObj.id === interest
-                  ).name
-                } \n`
+              interest => {
+                if (
+                  this.props.campaign.targeting.interests[0].category_id.hasOwnProperty(
+                    "scls"
+                  )
+                ) {
+                  return ` ${
+                    interestNames.interests.scls.find(
+                      interestObj => interestObj.id === interest
+                    ).name
+                  } \n`;
+                } else {
+                  console.log(interest);
+
+                  return (
+                    interest !== "scls" &&
+                    ` ${
+                      interestNames.interests.scls.find(
+                        interestObj => interestObj.id === interest
+                      ).name
+                    } \n`
+                  );
+                }
+              }
             )
           : [];
       let start_time = "";
@@ -421,7 +439,9 @@ class CampaignDetails extends Component {
                         <InterestIcon width={hp("2")} height={hp("2")} />
                         <Text style={styles.categories}>Interests</Text>
                       </View>
-                      <ScrollView>
+                      <ScrollView
+                        contentContainerStyle={{ paddingBottom: hp(80) }}
+                      >
                         <Text style={[styles.subtext, { textAlign: "left" }]}>
                           {interesetNames}{" "}
                         </Text>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import LocationIcon from "../../../assets/SVGs/Location";
-import { Input, Button, Item } from "native-base";
+import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 export default class SelectRegions extends Component {
@@ -11,7 +11,8 @@ export default class SelectRegions extends Component {
         <TouchableOpacity
           key={c.id}
           style={{
-            paddingVertical: 20
+            paddingVertical: 20,
+            flexDirection: "row"
           }}
           onPress={() => {
             this.props.onSelectedRegionChange(
@@ -19,13 +20,28 @@ export default class SelectRegions extends Component {
             );
           }}
         >
+          <Icon
+            type="MaterialCommunityIcons"
+            name={
+              this.props.region_id.find(r => r === c.id)
+                ? "circle"
+                : "circle-outline"
+            }
+            style={[
+              this.props.region_id.find(r => r === c.id)
+                ? styles.activetext
+                : styles.inactivetext,
+              {
+                fontSize: 25
+              }
+            ]}
+          />
           <Text
             style={{
               fontFamily: "montserrat-bold",
-              color: this.props.region_id.find(r => r === c.id)
-                ? "#FF9D00"
-                : "#fff",
-              fontSize: 14
+              color: "#fff",
+              fontSize: 14,
+              paddingLeft: 20
             }}
           >
             {c.name}
