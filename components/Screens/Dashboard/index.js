@@ -168,7 +168,7 @@ class Dashboard extends Component {
       />
     );
     if (!this.props.mainBusiness) {
-      return <LoadingScreen />;
+      return <LoadingScreen dash={true} />;
     } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
@@ -331,7 +331,7 @@ class Dashboard extends Component {
                       onPress={() => {
                         if (this.props.mainBusiness.snap_ad_account_id === "")
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
-                        else this.props.navigation.navigate("AdDetails");
+                        else this.props.navigation.navigate("AdType");
                       }}
                     >
                       <Text

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Platform, StyleSheet } from "react-native";
+import { View, Platform, StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo";
 import LottieView from "lottie-react-native";
 import {
@@ -26,16 +26,32 @@ class Loading extends React.Component {
       <View
         style={{
           position: "absolute",
-          top: heightPercentageToDP(20),
+          top: this.props.dash
+            ? heightPercentageToDP(40)
+            : heightPercentageToDP(20),
 
           alignSelf: "center"
         }}
       >
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.4, 1]}
-          style={styles.gradient}
-        />
+        {this.props.dash && (
+          <>
+            <LinearGradient
+              colors={[colors.background1, colors.background2]}
+              locations={[0.4, 1]}
+              style={styles.gradient}
+            />
+            <View>
+              <Image
+                source={require("../../assets/images/logo01.png")}
+                style={{
+                  width: 200,
+                  height: 200
+                }}
+                resizeMode="contain"
+              />
+            </View>
+          </>
+        )}
         {Platform.OS === "android" ? (
           <ActivityIndicator color="#FF9D00" size="large" />
         ) : (
@@ -67,9 +83,9 @@ export default connect(mapStateToProps)(Loading);
 
 const styles = {
   gradient: {
-    ...StyleSheet.absoluteFillObject,
-    top: 0,
-    left: 0,
-    height: heightPercentageToDP(100)
+    position: "absolute",
+    alignSelf: "center",
+    height: heightPercentageToDP(100),
+    width: widthPercentageToDP(100)
   }
 };
