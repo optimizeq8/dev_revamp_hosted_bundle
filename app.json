@@ -28,7 +28,7 @@
     },
 
     "android": {
-      "package": "com.optimizekw.optimizw"
+      "package": "com.optimizekw.optimize"
     },
     "hooks": {
       "postPublish": [

@@ -33,9 +33,11 @@ import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
+import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
+
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../Global Styles";
+import globalStyles, { globalColors } from "../../../../Global Styles";
 import { colors } from "../../../GradiantColors/colors";
 import {
   widthPercentageToDP as wp,
@@ -67,12 +69,20 @@ class AdDetails extends Component {
             {
               gender: "",
 
-              languages: ["en"],
+              languages: ["en", "ar"],
               min_age: 13,
               max_age: 35
             }
           ],
           interests: [{ category_id: [] }],
+          devices: [
+            {
+              marketing_name: []
+              // os_type: "",
+              // os_version_min: "",
+              // os_version_max: ""
+            }
+          ],
           geos: [{ country_code: "kw", region_id: [] }]
         },
         start_time: "",
@@ -258,11 +268,18 @@ class AdDetails extends Component {
     });
   };
   onSelectedInterestsChange = selectedItems => {
+    console.log(selectedItems);
+
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
     this.setState({ campaignInfo: replace });
   };
 
+  onSelectedDevicesChange = selectedItems => {
+    let replace = cloneDeep(this.state.campaignInfo);
+    replace.targeting.devices[0].marketing_name = selectedItems;
+    this.setState({ campaignInfo: replace });
+  };
   onSelectedInterestsNamesChange = selectedItems => {
     this.setState({ interestNames: selectedItems });
   };
@@ -383,33 +400,33 @@ class AdDetails extends Component {
     }
   };
 
-  getTotalReach = () => {
-    let totalReach = {
-      demographics: [
-        {
-          languages: ["en", "ar"],
-          min_age: 13,
-          max_age: "35+"
-        }
-      ],
-      geos: [
-        { country_code: this.state.campaignInfo.targeting.geos[0].country_code }
-      ]
-    };
-    const obj = {
-      targeting: JSON.stringify(totalReach),
-      ad_account_id: this.props.mainBusiness.snap_ad_account_id
-    };
-    // this.props.snap_ad_audience_size(obj);
-    Axios.post(
-      `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
-      obj
-    ).then(res => {
-      this.setState({
-        totalReach: (this.props.average_reach / res.data.average_reach) * 100
-      });
-    });
-  };
+  // getTotalReach = () => {
+  //   let totalReach = {
+  //     demographics: [
+  //       {
+  //         languages: ["en", "ar"],
+  //         min_age: 13,
+  //         max_age: "35+"
+  //       }
+  //     ],
+  //     geos: [
+  //       { country_code: this.state.campaignInfo.targeting.geos[0].country_code }
+  //     ]
+  //   };
+  //   const obj = {
+  //     targeting: JSON.stringify(totalReach),
+  //     ad_account_id: this.props.mainBusiness.snap_ad_account_id
+  //   };
+  //   // this.props.snap_ad_audience_size(obj);
+  //   Axios.post(
+  //     `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
+  //     obj
+  //   ).then(res => {
+  //     this.setState({
+  //       totalReach: (this.props.average_reach / res.data.average_reach) * 100
+  //     });
+  //   });
+  // };
 
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
@@ -540,25 +557,20 @@ class AdDetails extends Component {
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
-            languages={this.state.languages}
             onSelectedItemsChange={this.onSelectedItemsChange}
             country_codes={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
-            languagesError={this.state.languagesError}
-            onSelectedLangsChange={this.onSelectedLangsChange}
-            selectedLangs={
-              this.state.campaignInfo.targeting.demographics[0].languages
-            }
             _handleSideMenuState={this._handleSideMenuState}
-            regions={this.state.regions}
-            onSelectedRegionChange={this.onSelectedRegionChange}
-            region_ids={this.state.campaignInfo.targeting.geos[0].region_id}
             onSelectedInterestsChange={this.onSelectedInterestsChange}
             onSelectedInterestsNamesChange={this.onSelectedInterestsNamesChange}
             selectedItems={
               this.state.campaignInfo.targeting.interests[0].category_id
             }
+            selectedDevices={
+              this.state.campaignInfo.targeting.devices[0].marketing_name
+            }
+            onSelectedDevicesChange={this.onSelectedDevicesChange}
             option={this.state.selectionOption}
           />
         );
@@ -597,6 +609,15 @@ class AdDetails extends Component {
     });
     interests_names = interests_names.join(", ");
 
+    // let device_makes = [];
+    // this.state.campaignInfo.targeting.devices[0].marketing_name.forEach(r => {
+    //   if (
+    //     this.state.campaignInfo.targeting.devices[0].find(i => i === r.value)
+    //   ) {
+    //     languages_names.push(r.label);
+    //   }
+    // });
+    // languages_names = languages_names.join(", ");
     let end_time = "";
     let start_time = "";
     let end_year = "";
@@ -612,6 +633,9 @@ class AdDetails extends Component {
       end_time = dateFormat(end_time, "d mmm");
       start_time = dateFormat(start_time, "d mmm");
     }
+
+    console.log(this.state.campaignInfo.targeting.interests[0].category_id);
+
     return (
       <>
         <Container style={styles.container}>
@@ -892,7 +916,11 @@ class AdDetails extends Component {
                           }}
                         >
                           <View style={{ flexDirection: "row" }}>
-                            <GenderIcon width={25} height={25} />
+                            <AgeIcon
+                              fill={globalColors.orange}
+                              width={25}
+                              height={25}
+                            />
                             <View style={{ flexDirection: "column" }}>
                               <Text style={styles.menutext}>Age</Text>
                               <Text style={styles.menudetails}>
@@ -992,7 +1020,16 @@ class AdDetails extends Component {
                           }}
                         >
                           <View style={{ flexDirection: "row", width: "80%" }}>
-                            <LocationIcon width={25} height={25} />
+                            <Icon
+                              name="language"
+                              type="MaterialIcons"
+                              width={25}
+                              height={25}
+                              style={{
+                                color: globalColors.orange,
+                                right: 3
+                              }}
+                            />
                             <View style={{ flexDirection: "column" }}>
                               <Text style={styles.menutext}>Language</Text>
                               <Text style={styles.menudetails}>
@@ -1008,6 +1045,7 @@ class AdDetails extends Component {
                             <PlusCircleIcon width={25} height={25} />
                           )}
                         </TouchableOpacity>
+
                         <TouchableOpacity
                           onPress={() => {
                             this._renderSideMenu("selectors", "interests");
@@ -1035,6 +1073,46 @@ class AdDetails extends Component {
                               <PlusCircleIcon width={25} height={25} />
                             )}
                           </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          onPress={() => {
+                            this._renderSideMenu("selectors", "deviceBrands");
+                          }}
+                          style={{
+                            flexDirection: "row",
+                            marginVertical: 5,
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <View style={{ flexDirection: "row", width: "80%" }}>
+                            <Icon
+                              name="cellphone-settings"
+                              type="MaterialCommunityIcons"
+                              width={25}
+                              height={25}
+                              style={{
+                                color: globalColors.orange,
+                                right: 2
+                              }}
+                            />
+                            <View style={{ flexDirection: "column" }}>
+                              <Text style={styles.menutext}>Device Make</Text>
+                              <Text style={styles.menudetails}>
+                                {
+                                  this.state.campaignInfo.targeting.devices[0]
+                                    .marketing_name
+                                }
+                              </Text>
+                            </View>
+                          </View>
+
+                          {this.state.campaignInfo.targeting.devices[0]
+                            .marketing_name.length !== 0 ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                          ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                          )}
                         </TouchableOpacity>
                       </View>
                     </ScrollView>

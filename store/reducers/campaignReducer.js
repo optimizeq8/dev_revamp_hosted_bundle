@@ -8,6 +8,7 @@ const initialState = {
   kdamount: 0,
   total_reach: 0,
   interests: null,
+  deviceBrands: null,
   loading: false,
   payment_data: null
 };
@@ -65,6 +66,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         interests: action.payload
+      };
+    case actionTypes.SET_DEVICE_MAKES:
+      return {
+        ...state,
+        deviceBrands: action.payload
       };
     case actionTypes.SET_AD_LOADING:
       return {

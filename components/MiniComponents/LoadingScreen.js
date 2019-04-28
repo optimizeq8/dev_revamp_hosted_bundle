@@ -60,15 +60,15 @@ class Loading extends React.Component {
               this.animation = animation;
             }}
             style={{
+              alignSelf: "center",
               width: widthPercentageToDP(150),
-              height: widthPercentageToDP(150)
+              height: widthPercentageToDP(150),
+              position: "absolute"
             }}
             resizeMode="contain"
             source={require("../../assets/animation/loading.json")}
             loop
             autoPlay
-            ardwareAccelerationAndroid={true}
-            renderToHardwareTextureAndroid={true}
           />
         )}
       </View>

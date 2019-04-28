@@ -187,6 +187,8 @@ export const sendMobileNo = mobileNo => {
         return res.data;
       })
       .then(data => {
+        console.log("phone ", data);
+
         return dispatch({
           type: actionTypes.SEND_MOBILE_NUMBER,
           payload: data
@@ -228,7 +230,7 @@ export const resendVerifyMobileCode = mobileAuth => {
     instance
       .post(`resendVerificationCode`, mobileAuth)
       .then(res => {
-        console.log("resendVerifyMobileCode", res.date);
+        console.log("resendVerifyMobileCode", res.data);
 
         return res.data;
       })
@@ -240,6 +242,31 @@ export const resendVerifyMobileCode = mobileAuth => {
       })
       .catch(err => {
         console.log(err.response);
+      });
+  };
+};
+
+export const resendVerifyMobileCodeByEmail = mobileAuth => {
+  return dispatch => {
+    instance
+      .post(`resendVerificationCodebyEmail`, mobileAuth)
+      .then(res => {
+        console.log("resendVerificationCodebyEmail--", res.data);
+
+        return res.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        });
+        return dispatch({
+          type: actionTypes.RESEND_VERIFICATION_EMAIL,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err);
       });
   };
 };

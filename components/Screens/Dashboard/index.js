@@ -233,7 +233,8 @@ class Dashboard extends Component {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  bottom: hp(6.5)
+                  bottom: hp(6.5),
+                  height: 60
                 }}
               >
                 <Transition shared="menu">
@@ -241,55 +242,62 @@ class Dashboard extends Component {
                     {this.props.mainBusiness.businessname}
                   </Text>
                 </Transition>
-                <View
-                  style={{
-                    bottom: hp(2),
-                    right: wp(3)
-                  }}
-                >
-                  <Icon
-                    name="info"
-                    type="MaterialIcons"
+                {this.props.wallet > 0 && (
+                  <View
                     style={{
-                      color: "#fff",
-                      fontSize: 19,
-                      position: "relative",
-                      top: "40%"
+                      bottom: hp(2),
+                      right: wp(3)
                     }}
-                  />
-                  <Text
-                    style={[
-                      globalStyles.numbers,
-                      {
-                        paddingLeft: 20,
-                        fontSize: wp(6),
-                        fontFamily: "montserrat-semibold"
-                      }
-                    ]}
                   >
+                    <Icon
+                      name="info"
+                      type="MaterialIcons"
+                      style={{
+                        color: "#fff",
+                        fontSize: 19,
+                        position: "relative",
+                        top: "40%"
+                      }}
+                    />
                     <Text
+                      numberOfLines={1}
                       style={[
                         globalStyles.numbers,
                         {
-                          padding: 0,
-                          fontSize: 15,
-                          fontFamily: "montserrat-semibold"
+                          paddingLeft: 20,
+                          fontSize: wp(6),
+                          fontFamily: "montserrat-semibold",
+                          width:
+                            this.props.wallet.toString().length > 7
+                              ? wp(50)
+                              : "100%"
                         }
                       ]}
                     >
-                      $
+                      <Text
+                        style={[
+                          globalStyles.numbers,
+                          {
+                            paddingHorizontal: 0,
+                            fontSize: 15,
+                            fontFamily: "montserrat-semibold"
+                          }
+                        ]}
+                      >
+                        $
+                      </Text>
+                      {this.props.wallet}
                     </Text>
-                    {this.props.wallet}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { fontSize: 10, top: 0, alignSelf: "center" }
-                    ]}
-                  >
-                    Wallet Balance
-                  </Text>
-                </View>
+                    <Text
+                      style={[
+                        styles.text,
+                        { fontSize: 10, top: 0, alignSelf: "center" }
+                      ]}
+                    >
+                      Wallet Balance
+                    </Text>
+                  </View>
+                )}
               </View>
               <View
                 padder
