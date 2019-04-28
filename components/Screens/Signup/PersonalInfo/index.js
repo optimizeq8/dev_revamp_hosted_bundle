@@ -53,7 +53,7 @@ class PersonalInfo extends Component {
     if (prevProps.message !== this.props.message) {
       this.setState({
         emailError:
-          this.props.message.includes("exist") && this.props.message
+          this.props.message && this.props.message.includes("exist")
             ? this.props.message
             : ""
       });

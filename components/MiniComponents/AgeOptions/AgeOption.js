@@ -40,7 +40,7 @@ export default class AgeOption extends Component {
           <View
             style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
           >
-            <AgeIcon style={{ alignSelf: "center" }} />
+            <AgeIcon fill="#fff" style={{ alignSelf: "center" }} />
             <Text
               style={[
                 styles.title,

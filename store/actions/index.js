@@ -3,6 +3,7 @@ export {
   resetMessages,
   verifyMobileCode,
   resendVerifyMobileCode,
+  resendVerifyMobileCodeByEmail,
   verifyEmail,
   verifyBusinessName,
   registerUser,
@@ -30,6 +31,7 @@ export {
   filterCampaigns,
   snap_ad_audience_size,
   get_interests,
+  get_device_brands,
   get_total_reach,
   payment_request_knet
 } from "./campaignActions";

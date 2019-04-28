@@ -156,7 +156,7 @@ class CampaignDetails extends Component {
     };
 
     if (this.props.loading) {
-      return <Loading />;
+      return <Loading dash={true} />;
     } else {
       let interesetNames =
         this.props.campaign.targeting &&

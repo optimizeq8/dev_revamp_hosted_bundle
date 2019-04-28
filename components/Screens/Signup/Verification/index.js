@@ -1,7 +1,7 @@
 //Components
 import React, { Component, createRef } from "react";
 import { View, Image } from "react-native";
-import { Text, Container, Icon } from "native-base";
+import { Text, Container, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 
 // Style
@@ -11,13 +11,22 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
+import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import { globalColors } from "../../../../Global Styles";
 
 class Verification extends Component {
   inputRef = createRef();
   static navigationOptions = {
     header: null
   };
-  state = { codeError: "" };
+  state = {
+    codeError: "",
+    showEmail: false,
+    email: "",
+    emailError: "",
+    InputE: false
+  };
   componentDidMount() {
     alert(this.props.verificationCode);
   }
@@ -38,6 +47,17 @@ class Verification extends Component {
       }
     }
   }
+  _handleSubmission = () => {
+    const emailError = validateWrapper("email", this.state.email);
+    this.setState({ emailError });
+    if (!emailError) {
+      this.props.resendVerifyMobileCodeByEmail({
+        mobile: this.props.mobileNo,
+        country_code: this.props.countryCode,
+        email: this.state.email
+      });
+    }
+  };
   handlerOnIvalidCode() {
     const { current } = this.inputRef;
 
@@ -65,7 +85,81 @@ class Verification extends Component {
         >
           Resend Code
         </Text>
+        <Text
+          onPress={() => {
+            this.setState({ showEmail: true });
+            this.props.resetMessages();
+            // this.props.resendVerifyMobileCode({
+            //   mobile: this.props.mobileNo,
+            //   country_code: this.props.countryCode
+            // });
+          }}
+          style={[styles.link, { paddingVertical: 0 }]}
+        >
+          Not receiving an SMS? Try by email!
+        </Text>
+        {this.state.showEmail && (
+          <>
+            <Item
+              floatingLabel
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.InputE
+                    ? "#7039FF"
+                    : this.state.emailError
+                    ? "red"
+                    : "#D9D9D9"
+                }
+              ]}
+            >
+              <Label
+                style={[
+                  styles.inputtext,
+                  {
+                    bottom: 5,
+                    color: this.state.InputE ? "#FF9D00" : "#717171"
+                  }
+                ]}
+              >
+                Email
+              </Label>
 
+              <Input
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value => this.setState({ email: value })}
+                onFocus={() => {
+                  this.setState({ InputE: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    InputE: false
+                  });
+                  this.setState({
+                    emailError: validateWrapper("email", this.state.email)
+                  });
+                }}
+              />
+            </Item>
+            <Button
+              transparent
+              style={{
+                position: "relative",
+                bottom: "15%",
+                left: "45%"
+              }}
+              onPress={() => this._handleSubmission()}
+            >
+              <Icon
+                type="MaterialIcons"
+                name="send"
+                style={{ color: this.state.InputE ? "#FF9D00" : "#717171" }}
+              />
+            </Button>
+          </>
+        )}
         {this.state.codeError !== "" && (
           <Text style={[styles.errorText]}>{this.state.codeError}</Text>
         )}
@@ -101,6 +195,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.verifyMobileCode(mobileAuth)),
   resendVerifyMobileCode: mobileAuth =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
+  resendVerifyMobileCodeByEmail: mobileAuth =>
+    dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
   resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(

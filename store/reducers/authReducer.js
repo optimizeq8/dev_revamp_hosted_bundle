@@ -55,6 +55,13 @@ const reducer = (state = initialState, action) => {
         verificationCode: action.payload.verificationCode,
         message: action.payload.message
       };
+    case actionTypes.RESEND_VERIFICATION_EMAIL:
+      return {
+        ...state,
+        successNo: action.payload.success,
+        verificationCode: action.payload.verificationCode,
+        message: action.payload.message
+      };
     case actionTypes.VERIFY_EMAIL:
       return {
         ...state,

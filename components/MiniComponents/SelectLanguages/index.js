@@ -4,6 +4,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import { globalColors } from "../../../Global Styles";
 export default class SelectLanguages extends Component {
   render() {
     let languagelist = this.props.filteredLanguages.map(c => (
@@ -65,7 +66,13 @@ export default class SelectLanguages extends Component {
               alignItems: "center"
             }}
           >
-            <LocationIcon width={110} height={110} fill="#fff" />
+            <Icon
+              name="language"
+              type="MaterialIcons"
+              width={110}
+              height={110}
+              style={{ color: globalColors.orange }}
+            />
             <Text style={[styles.title]}>Select Languages</Text>
           </View>
           <View

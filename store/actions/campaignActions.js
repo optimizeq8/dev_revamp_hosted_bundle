@@ -28,10 +28,12 @@ export const payment_request_knet = (campaign_id, openBrowser) => {
 
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
+    console.log("sanp ad", info);
+
     instance
       .post(`snapaudiencesize`, info)
       .then(res => {
-        console.log(res.data);
+        console.log("snap_ad_audience_size", res.data);
         return res.data;
       })
       .then(data => {
@@ -143,6 +145,25 @@ export const get_interests = countryCode => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_INTERESTS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        dispatch(console.log(err));
+      });
+  };
+};
+
+export const get_device_brands = () => {
+  return (dispatch, getState) => {
+    instance
+      .get(`deviceBrands`)
+      .then(res => {
+        return res.data.targeting_dimensions;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_DEVICE_MAKES,
           payload: data
         });
       })

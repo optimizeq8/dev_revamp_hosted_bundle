@@ -4,25 +4,31 @@ import MultiSelect from "react-native-multiple-select";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
-import BackButton from "../../MiniComponents/BackButton";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 import * as actionCreators from "../../../store/actions";
-import LocationIcon from "../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../assets/SVGs/Interests.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import CustomChips from "./CustomChips";
+import SelectDevices from "./SelectDevices";
+import SelectInterests from "./SelectInterests";
+
+//icon
+import BackButton from "../../MiniComponents/BackButton";
+import LocationIcon from "../../../assets/SVGs/Location.svg";
+import InterestsIcon from "../../../assets/SVGs/Interests.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+//styles
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import SectionStyle from "./SectionStyle";
 
 class MultiSelectList extends Component {
   constructor() {
     super();
     this.state = {
       selectedItems: [],
+      selectedDevices: [],
       selectedItemObjects: [],
       filteredCountreis: [],
       interests: []
@@ -33,16 +39,11 @@ class MultiSelectList extends Component {
       this.props.get_interests(this.props.country_code);
     this.setState({
       filteredCountreis: this.props.countries,
-      selectedItems: this.props.selectedItems
+      selectedItems: this.props.selectedItems,
+      selectedDevices: this.props.selectedDevices
     });
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.regions !== this.props.regions) {
-      this.setState({
-        filteredRegions: this.props.regions
-      });
-    }
-
     if (
       prevProps.interests !== this.props.interests &&
       !this.props.addressForm
@@ -71,13 +72,26 @@ class MultiSelectList extends Component {
       this.props.get_interests(this.props.country_code);
     }
   }
-  onSelectedItemObjectsChange = selectedItems => {
+  onSelectedItemObjectsChange = (selectedItems, option) => {
     this.props.onSelectedInterestsNamesChange(selectedItems);
     this.setState({ selectedItemObjects: selectedItems });
   };
-  onSelectedItemsChange = selectedItems => {
-    this.props.onSelectedInterestsChange(selectedItems);
-    this.setState({ selectedItems });
+  onSelectedItemsChange = (selectedItems, option) => {
+    // console.log(selectedItems);
+    if (option === "devices") {
+      if (selectedItems[0] === "Devices") {
+        selectedItems.shift();
+      }
+      this.props.onSelectedDevicesChange(selectedItems);
+      this.setState({ selectedDevices: selectedItems });
+    } else {
+      let selectedInterests = selectedItems;
+      if (selectedInterests[0] === "scls") {
+        selectedInterests.shift();
+      }
+      this.props.onSelectedInterestsChange(selectedInterests);
+      this.setState({ selectedItems });
+    }
   };
 
   selectCountry = () => {
@@ -230,55 +244,7 @@ class MultiSelectList extends Component {
               hideSelect
               hideConfirm
               subKey="children"
-              styles={{
-                selectToggle: {
-                  marginBottom: 30,
-                  borderBottomWidth: 0.5,
-                  borderColor: "#fff",
-                  fontFamily: "montserrat-medium"
-                },
-                selectToggleText: {
-                  color: "#fff",
-                  fontSize: 14,
-                  fontFamily: "montserrat-medium"
-                },
-                container: {
-                  // marginTop: hp(5),
-                  marginVertical: -"100%",
-                  marginLeft: 0,
-                  backgroundColor: "rgba(0,0,0,0.8)",
-                  width: wp(100)
-                },
-                searchBar: {
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  borderRadius: 15,
-                  color: "#fff",
-                  width: wp(80),
-                  alignSelf: "center"
-                },
-                searchTextInput: { color: "#FFF" },
-                item: {
-                  backgroundColor: "rgba(0,0,0,0)"
-                },
-
-                subItemText: {
-                  color: "#fff",
-                  fontSize: 14,
-                  fontFamily: "montserrat-bold"
-                },
-                scrollView: {
-                  width: wp(80),
-                  marginBottom: hp(5),
-                  alignSelf: "center"
-                },
-                button: {
-                  borderRadius: 50,
-                  width: 50,
-                  height: 50,
-                  alignSelf: "center"
-                },
-                confirmText: { color: "#fff" }
-              }}
+              styles={SectionStyle}
               confirmText={"\u2714"}
               stickyFooterComponent={
                 <Button
@@ -295,14 +261,7 @@ class MultiSelectList extends Component {
                   />
                 </View>
               }
-              colors={{
-                subItemBackground: "transparent",
-                itemBackground: "transparent",
-                chipColor: "#fff",
-                primary: "#FF9D00",
-                searchPlaceholderTextColor: "#fff",
-                searchSelectionColor: "#fff"
-              }}
+              colors={SectionStyle.colors}
               searchIconComponent={
                 <Icon
                   type="MaterialCommunityIcons"
@@ -360,21 +319,35 @@ class MultiSelectList extends Component {
         return this.selectCountry();
         break;
       case "interests":
-        return this.selectInteres();
+        return (
+          <SelectInterests
+            onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={this.state.selectedItems}
+            _handleSideMenuState={this.props._handleSideMenuState}
+            country_code={this.props.country_code}
+          />
+        );
+        break;
+      case "deviceBrands":
+        return (
+          <SelectDevices
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={this.state.selectedDevices}
+            _handleSideMenuState={this.props._handleSideMenuState}
+          />
+        );
         break;
     }
   }
 }
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  average_reach: state.campaignC.average_reach,
   mainBusiness: state.auth.mainBusiness,
   interests: state.campaignC.interests
 });
 
 const mapDispatchToProps = dispatch => ({
-  snap_ad_audience_size: (info, totalReach) =>
-    dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
   get_interests: info => dispatch(actionCreators.get_interests(info))
 });
 export default connect(
