@@ -12,6 +12,7 @@ import {
 import CustomChips from "./CustomChips";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
+import SelectVersions from "./SelectVersions";
 
 //icon
 import BackButton from "../../MiniComponents/BackButton";
@@ -29,6 +30,7 @@ class MultiSelectList extends Component {
     this.state = {
       selectedItems: [],
       selectedDevices: [],
+      selectedVersions: [],
       selectedItemObjects: [],
       filteredCountreis: [],
       interests: []
@@ -84,6 +86,9 @@ class MultiSelectList extends Component {
       }
       this.props.onSelectedDevicesChange(selectedItems);
       this.setState({ selectedDevices: selectedItems });
+    } else if (option === "versions") {
+      this.props.onSelectedVersionsChange(selectedItems);
+      this.setState({ selectedVersions: selectedItems });
     } else {
       let selectedInterests = selectedItems;
       if (selectedInterests[0] === "scls") {
@@ -200,6 +205,16 @@ class MultiSelectList extends Component {
           <SelectDevices
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedDevices}
+            _handleSideMenuState={this.props._handleSideMenuState}
+          />
+        );
+        break;
+      case "deviceVersions":
+        return (
+          <SelectVersions
+            OSType={this.props.OSType}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            selectedItems={this.state.selectedVersions}
             _handleSideMenuState={this.props._handleSideMenuState}
           />
         );

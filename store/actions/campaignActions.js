@@ -99,7 +99,13 @@ export const ad_objective = (info, navigation) => {
   };
 };
 
-export const ad_design = (info, laoding, navigation, onToggleModal) => {
+export const ad_design = (
+  info,
+  laoding,
+  navigation,
+  onToggleModal,
+  appChoice
+) => {
   onToggleModal();
   return dispatch => {
     axios.defaults.headers.common = {
@@ -120,10 +126,13 @@ export const ad_design = (info, laoding, navigation, onToggleModal) => {
           payload: data
         });
       })
-      .then(() => {
+      .then(() =>
         onToggleModal();
-        navigation.push("AdDetails", { image: info._parts[0][1].uri });
-      })
+        navigation.replace("AdDetails", {
+          image: info._parts[0][1].uri,
+          appChoice: appChoice
+        })
+      )
       .catch(err => {
         laoding(0);
 
@@ -165,7 +174,45 @@ export const get_device_brands = () => {
         });
       })
       .catch(err => {
-        dispatch(console.log(err));
+        console.log(err);
+      });
+  };
+};
+
+export const get_ios_versions = () => {
+  return (dispatch, getState) => {
+    instance
+      .get(`osversion/iOS`)
+      .then(res => {
+        return res.data.targeting_dimensions;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_IOS_VERSIONS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+export const get_android_versions = () => {
+  return (dispatch, getState) => {
+    instance
+      .get(`osversion/ANDROID`)
+      .then(res => {
+        return res.data.targeting_dimensions;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_ANDROID_VERSIONS,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(err);
       });
   };
 };

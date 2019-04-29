@@ -264,7 +264,7 @@ class AdObjective extends Component {
           </Container>
         </TouchableWithoutFeedback>
         <Modal visible={this.props.loading}>
-          <LoadingScreen />
+          <LoadingScreen top={0} />
         </Modal>
         <Modal
           animationType={"slide"}

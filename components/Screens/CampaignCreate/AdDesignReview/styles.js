@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     margin: 15
   },
   placeholder: {
-    borderRadius: 20,
+    borderRadius: 10,
     alignSelf: "center",
-    width: widthPercentageToDP("100%"),
+    width: "100%",
     height: "100%",
     zIndex: 0,
     backgroundColor: "black",
@@ -59,10 +59,9 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    borderRadius: 40,
+    borderRadius: 10,
     marginTop: 5,
-    height: heightPercentageToDP(85),
-    marginHorizontal: widthPercentageToDP(0.5)
+    height: heightPercentageToDP(90)
   },
   brand_name: {
     textAlign: "left",
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 12,
     paddingLeft: 20,
-    paddingTop: 10,
+    // paddingTop: 10,
     paddingBottom: -10,
     shadowColor: "#000",
     shadowRadius: 5,

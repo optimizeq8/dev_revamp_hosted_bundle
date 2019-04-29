@@ -41,6 +41,15 @@ const validation = {
         "^Invalid deep link url. A few format examples: my-app://your_url_here or my-app://?content="
     },
     presence: { allowEmpty: false }
+  },
+  Budget: {
+    numericality: {
+      onlyInteger: true,
+      lessThanOrEqualTo: 10000000000000000000
+    },
+    presence: {
+      allowEmpty: false
+    }
   }
 };
 

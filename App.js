@@ -51,6 +51,7 @@ export default class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
+
     this._loadAsync()
       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
       .catch(error =>

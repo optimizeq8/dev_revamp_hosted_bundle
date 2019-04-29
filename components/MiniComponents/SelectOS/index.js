@@ -1,15 +1,12 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
-import GenderIcon from "../../../assets/SVGs/Gender.svg";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import LocationIcon from "../../../assets/SVGs/Location";
+import { Input, Button, Item, Icon } from "native-base";
+import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-
-export default class GenderOptions extends Component {
+import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.svg";
+import { globalColors } from "../../../Global Styles";
+export default class SelectOS extends Component {
   render() {
     return (
       <>
@@ -24,13 +21,13 @@ export default class GenderOptions extends Component {
           <View
             style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
           >
-            <GenderIcon
-              width={110}
-              height={110}
+            <OperatingSystemIcon
               fill="#fff"
-              style={{ alignSelf: "center" }}
+              width={100}
+              height={100}
+              style={styles.icon}
             />
-            <Text style={[styles.title]}>Select your audience's Gender</Text>
+            <Text style={[styles.title]}>Select your audience's OS </Text>
           </View>
           <View
             style={{
@@ -49,19 +46,17 @@ export default class GenderOptions extends Component {
                 alignItems: "center",
                 paddingBottom: 20
               }}
-              onPress={() => this.props.onSelectedGenderChange("")}
+              onPress={() => this.props.onSelectedOSChange("")}
             >
               <Icon
                 type="MaterialCommunityIcons"
                 name={
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  ""
+                  this.props.campaignInfo.targeting.devices[0].os_type === ""
                     ? "circle"
                     : "circle-outline"
                 }
                 style={[
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  ""
+                  this.props.campaignInfo.targeting.devices[0].os_type === ""
                     ? styles.activetext
                     : styles.inactivetext,
                   {
@@ -80,19 +75,17 @@ export default class GenderOptions extends Component {
                 alignItems: "center",
                 paddingBottom: 20
               }}
-              onPress={() => this.props.onSelectedGenderChange("MALE")}
+              onPress={() => this.props.onSelectedOSChange("iOS")}
             >
               <Icon
                 type="MaterialCommunityIcons"
                 name={
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  "MALE"
+                  this.props.campaignInfo.targeting.devices[0].os_type === "iOS"
                     ? "circle"
                     : "circle-outline"
                 }
                 style={[
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  "MALE"
+                  this.props.campaignInfo.targeting.devices[0].os_type === "iOS"
                     ? styles.activetext
                     : styles.inactivetext,
                   {
@@ -101,7 +94,7 @@ export default class GenderOptions extends Component {
                 ]}
               />
               <Text style={[styles.inactivetext, { textAlign: "center" }]}>
-                Male
+                iOS
               </Text>
             </TouchableOpacity>
 
@@ -111,19 +104,19 @@ export default class GenderOptions extends Component {
                 alignItems: "center",
                 paddingBottom: 20
               }}
-              onPress={() => this.props.onSelectedGenderChange("FEMALE")}
+              onPress={() => this.props.onSelectedOSChange("ANDROID")}
             >
               <Icon
                 type="MaterialCommunityIcons"
                 name={
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  "FEMALE"
+                  this.props.campaignInfo.targeting.devices[0].os_type ===
+                  "ANDROID"
                     ? "circle"
                     : "circle-outline"
                 }
                 style={[
-                  this.props.campaignInfo.targeting.demographics[0].gender ===
-                  "FEMALE"
+                  this.props.campaignInfo.targeting.devices[0].os_type ===
+                  "ANDROID"
                     ? styles.activetext
                     : styles.inactivetext,
                   {
@@ -132,7 +125,7 @@ export default class GenderOptions extends Component {
                 ]}
               />
               <Text style={[styles.inactivetext, { textAlign: "center" }]}>
-                Female
+                ANDROID
               </Text>
             </TouchableOpacity>
           </View>

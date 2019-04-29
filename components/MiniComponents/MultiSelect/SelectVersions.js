@@ -1,66 +1,92 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
-import MultiSelect from "react-native-multiple-select";
+import { connect } from "react-redux";
+
+import { Text, View, ScrollView } from "react-native";
+import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import CustomChips from "./CustomChips";
-//icon
-import BackButton from "../../MiniComponents/BackButton";
-import LocationIcon from "../../../assets/SVGs/Location.svg";
+import compareVersions from "compare-versions"; //icons
 import InterestsIcon from "../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
-//styles
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import SectionStyle from "./SectionStyle";
-import LoadingScreen from "../LoadingScreen";
+import BackButton from "../../MiniComponents/BackButton";
 
-class SelectInterests extends Component {
-  state = { interests: [] };
+//Styles
+import SectionStyle from "./SectionStyle";
+import CustomChips2 from "./CustomChips2";
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import { globalColors } from "../../../Global Styles";
+import LoadingScreen from "../LoadingScreen";
+import { showMessage } from "react-native-flash-message";
+class SelectVersions extends Component {
+  state = {
+    versions: [],
+    os_version_min: "",
+    os_version_max: "",
+    selectedItems: []
+  };
+
   componentDidMount() {
-    !this.props.addressForm &&
-      this.props.get_interests(this.props.country_code);
+    this.props.OSType === "iOS"
+      ? this.props.get_ios_verisons()
+      : this.props.get_android_versions();
     this.setState({
-      filteredCountreis: this.props.countries,
-      selectedItems: this.props.selectedItems,
-      selectedDevices: this.props.selectedDevices
+      selectedItems: this.props.selectedItems
     });
   }
   componentDidUpdate(prevProps) {
     if (
-      prevProps.interests !== this.props.interests &&
-      !this.props.addressForm
+      this.props.OSType === "iOS" &&
+      prevProps.isoVersions !== this.props.isoVersions &&
+      this.props.isoVersions.length > 0
     ) {
-      let interests = [];
-      let lenOfLists = 0;
-
-      Object.keys(this.props.interests).forEach((key, i) => {
-        if (this.props.interests[key].length > 0) {
-          interests.push({
-            id: key,
-            children: this.props.interests[key]
-          });
-        }
-        lenOfLists += this.props.interests[key].length;
+      let children = [];
+      this.props.isoVersions.forEach((version, i) => {
+        children.push({ ...version.os_version });
       });
 
-      if (lenOfLists === 0) {
-        this.setState({ interests: [] });
-      } else this.setState({ interests });
-    }
-    if (
-      prevProps.country_code !== this.props.country_code &&
-      !this.props.addressForm
+      this.setState({ versions: [{ name: "Versions", id: 0, children }] });
+    } else if (
+      this.props.OSType === "ANDROID" &&
+      prevProps.androidVersions !== this.props.androidVersions &&
+      this.props.androidVersions.length > 0
     ) {
-      this.props.get_interests(this.props.country_code);
+      let children = [];
+      this.props.androidVersions.forEach((version, i) => {
+        children.push({ ...version.os_version });
+      });
+
+      this.setState({ versions: [{ name: "Versions", id: 0, children }] });
     }
   }
+  onSelectedItemsChange = selectedItems => {
+    if (selectedItems.length > 2) {
+      return;
+    } else if (selectedItems.length === 2) {
+      this.props.onSelectedItemsChange(
+        selectedItems.sort(compareVersions),
+        "versions"
+      );
+    }
+
+    this.setState({
+      selectedItems
+    });
+  };
+
+  _handleSubmission = () => {
+    if (this.state.selectedItems.length === 2)
+      this.props._handleSideMenuState(false);
+    else
+      showMessage({
+        message: "Please choose at least two versions",
+        type: "warning"
+      });
+  };
   render() {
     return (
       <>
@@ -77,8 +103,12 @@ class SelectInterests extends Component {
               alignItems: "center"
             }}
           >
-            <InterestsIcon width={100} height={100} fill="#fff" />
-            <Text style={[styles.title]}> Select Interests</Text>
+            <Icon
+              name="versions"
+              type="Octicons"
+              style={{ fontSize: 60, color: "#fff" }}
+            />
+            <Text style={[styles.title]}> Select OS Versions</Text>
           </View>
           <View
             style={{
@@ -88,22 +118,44 @@ class SelectInterests extends Component {
               elevation: -1
             }}
           >
-            <Text style={[styles.subHeadings, { fontSize: wp(4) }]}>
-              Choose Interests that best describe your audience
+            <Text
+              style={[
+                styles.subHeadings,
+                { fontSize: wp(4), width: wp(70), alignSelf: "center" }
+              ]}
+            >
+              Choose which {this.props.OSType} versions you want to taregt
             </Text>
             <View style={styles.slidercontainer}>
-              <Button
-                style={[styles.interestButton, { elevation: -1 }]}
-                onPress={() => this.Section._toggleSelector()}
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "space-evenly"
+                }}
               >
-                <PlusCircle width={53} height={53} />
-              </Button>
+                <Button
+                  style={[styles.interestButton, { elevation: -1 }]}
+                  onPress={() => this.VersionSection._toggleSelector()}
+                >
+                  <PlusCircle width={53} height={53} />
+                </Button>
+                <Text style={styles.inputtext}>
+                  Choose Minimum and Maximum versions
+                </Text>
+              </View>
               <ScrollView style={{ height: hp(45) }}>
                 <SectionedMultiSelect
-                  ref={ref => (this.Section = ref)}
-                  loading={!this.props.interests ? true : false}
-                  items={this.state.interests}
-                  uniqueKey="id"
+                  ref={ref => (this.VersionSection = ref)}
+                  loading={this.state.versions.length === 0 ? true : false}
+                  items={this.state.versions}
+                  uniqueKey="name"
+                  // filterItems={(searchText, items) =>
+                  //   items[0].children.filter(device =>
+                  //     device.name
+                  //       .toLowerCase()
+                  //       .includes(searchText.toLowerCase())
+                  //   )
+                  // }
                   selectToggleIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
@@ -129,14 +181,13 @@ class SelectInterests extends Component {
                   hideConfirm
                   subKey="children"
                   styles={SectionStyle}
-                  confirmText={"\u2714"}
                   stickyFooterComponent={
                     <Button
                       style={[
                         styles.button,
                         { marginBottom: 30, elevation: -1 }
                       ]}
-                      onPress={() => this.Section._submitSelection()}
+                      onPress={() => this.VersionSection._submitSelection()}
                     >
                       <CheckmarkIcon width={53} height={53} />
                     </Button>
@@ -146,9 +197,9 @@ class SelectInterests extends Component {
                       style={{ height: 70, marginBottom: hp(5), top: hp(3) }}
                     >
                       <BackButton
-                        screenname="Select Interests"
-                        businessname={this.props.mainBusiness.businessname}
-                        navigation={() => this.Section._cancelSelection()}
+                        navigation={() =>
+                          this.VersionSection._cancelSelection()
+                        }
                       />
                     </View>
                   }
@@ -162,8 +213,8 @@ class SelectInterests extends Component {
                   }
                   // customChipsRenderer={info => {
                   //   return (
-                  //     <CustomChips
-                  //       Section={this.Section}
+                  //     <CustomChips2
+                  //       VersionSection={this.VersionSection}
                   //       uniqueKey={info.uniqueKey}
                   //       subKey={info.subKey}
                   //       displayKey={info.displayKey}
@@ -173,28 +224,25 @@ class SelectInterests extends Component {
                   //   );
                   // }}
                   iconKey="icon"
+                  showRemoveAll
                   selectText="Select Interests"
                   showDropDowns={false}
-                  showRemoveAll={true}
-                  // readOnlyHeadings={true}
                   noItemsComponent={
                     <Text style={styles.text}>
                       Sorry, no interests for selected country
                     </Text>
                   }
                   onCancel={() => {
-                    this.props.onSelectedItemsChange([]);
-                    this.props.onSelectedItemObjectsChange([]);
+                    this.onSelectedItemsChange([], "version");
                   }}
                   selectChildren
                   modalAnimationType="fade"
-                  onSelectedItemsChange={this.props.onSelectedItemsChange}
-                  onSelectedItemObjectsChange={
-                    this.props.onSelectedItemObjectsChange
+                  onSelectedItemsChange={items =>
+                    this.onSelectedItemsChange(items, "version")
                   }
-                  selectedItems={this.props.selectedItems}
+                  selectedItems={this.state.selectedItems}
                 />
-                {this.state.interests.length === 0 && (
+                {this.state.versions.length === 0 && (
                   <LoadingScreen top={-10} />
                 )}
               </ScrollView>
@@ -203,7 +251,7 @@ class SelectInterests extends Component {
         </View>
         <Button
           style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this.props._handleSideMenuState(false)}
+          onPress={() => this._handleSubmission()}
         >
           <CheckmarkIcon width={53} height={53} />
         </Button>
@@ -211,16 +259,19 @@ class SelectInterests extends Component {
     );
   }
 }
+
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.auth.mainBusiness,
-  interests: state.campaignC.interests
+  isoVersions: state.campaignC.isoVersions,
+  androidVersions: state.campaignC.androidVersions
 });
 
 const mapDispatchToProps = dispatch => ({
-  get_interests: info => dispatch(actionCreators.get_interests(info))
+  get_ios_verisons: () => dispatch(actionCreators.get_ios_versions()),
+  get_android_versions: () => dispatch(actionCreators.get_android_versions())
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SelectInterests);
+)(SelectVersions);

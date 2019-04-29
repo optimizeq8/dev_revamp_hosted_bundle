@@ -26,7 +26,7 @@ import {
   Spinner
 } from "native-base";
 import { Modal } from "react-native-paper";
-import Loading from "../../MiniComponents/LoadingScreen";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { LinearGradient } from "expo";
 import LottieView from "lottie-react-native";
 import Menu from "../Menu";
@@ -94,7 +94,7 @@ class Home extends Component {
 
   render() {
     if (!this.props.mainBusiness) {
-      return <Loading />;
+      return <LoadingScreen top={0} />;
     } else {
       return (
         <>

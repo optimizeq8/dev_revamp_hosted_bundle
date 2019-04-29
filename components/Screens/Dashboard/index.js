@@ -176,7 +176,7 @@ class Dashboard extends Component {
       />
     );
     if (!this.props.mainBusiness) {
-      return <LoadingScreen dash={true} />;
+      return <LoadingScreen dash={true} top={0} />;
     } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
@@ -351,7 +351,7 @@ class Dashboard extends Component {
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
                         } else {
                           Segment.track("Create Campaign Button Pressed");
-                          this.props.navigation.navigate("AdType");
+                          this.props.navigation.navigate("AdDetails");
                         }
                       }}
                     >

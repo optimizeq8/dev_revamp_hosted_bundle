@@ -7,30 +7,11 @@ var list = [
         code: "ah",
         name: "Al Ahmadi"
       },
-      {
-        id: "25679",
-        code: "ja",
-        name: "Al Jahrah"
-      },
+
       {
         id: "25680",
         code: "ku",
         name: "Al Kuwayt"
-      },
-      {
-        id: "29195",
-        code: "fa",
-        name: "Al Farwaniyah"
-      },
-      {
-        id: "29196",
-        code: "ha",
-        name: "Hawalli"
-      },
-      {
-        id: "29197",
-        code: "mu",
-        name: "Mubarak Al Kabir"
       }
     ]
   },
@@ -57,11 +38,7 @@ var list = [
         code: "fu",
         name: "Fujairah"
       },
-      {
-        id: "25155",
-        code: "rk",
-        name: "Ras Al - Khaimah"
-      },
+
       {
         id: "25156",
         code: "sh",
@@ -107,26 +84,13 @@ var list = [
         code: "09",
         name: "Jizan"
       },
-      {
-        id: "24818",
-        code: "05",
-        name: "Al Qasim"
-      },
+
       {
         id: "24819",
         code: "08",
         name: "Northern Borders"
       },
-      {
-        id: "24820",
-        code: "06",
-        name: "Ha'il"
-      },
-      {
-        id: "24969",
-        code: "11",
-        name: "Al Batah"
-      },
+
       {
         id: "24970",
         code: "12",

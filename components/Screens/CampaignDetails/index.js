@@ -35,7 +35,7 @@ import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView, Segment } from "expo";
 import { interestNames } from "./interesetNames";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
-import InterestIcon from "../../../assets/SVGs/Interest.svg";
+import InterestIcon from "../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import PauseIcon from "../../../assets/SVGs/Pause.svg";

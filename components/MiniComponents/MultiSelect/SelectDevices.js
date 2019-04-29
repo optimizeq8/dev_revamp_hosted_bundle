@@ -20,6 +20,8 @@ import BackButton from "../../MiniComponents/BackButton";
 import SectionStyle from "./SectionStyle";
 import CustomChips2 from "./CustomChips2";
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import { globalColors } from "../../../Global Styles";
+import LoadingScreen from "../LoadingScreen";
 class SelectDevices extends Component {
   state = { deviceBrands: [] };
 
@@ -55,8 +57,12 @@ class SelectDevices extends Component {
               alignItems: "center"
             }}
           >
-            <InterestsIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Interests</Text>
+            <Icon
+              name="cellphone-settings"
+              type="MaterialCommunityIcons"
+              style={[styles.icon]}
+            />
+            <Text style={[styles.title]}> Select Devices Make</Text>
           </View>
           <View
             style={{
@@ -67,7 +73,7 @@ class SelectDevices extends Component {
             }}
           >
             <Text style={[styles.subHeadings, { fontSize: wp(4) }]}>
-              Choose Interests that best describe your audience
+              Choose which phones you want to taregt
             </Text>
             <View style={styles.slidercontainer}>
               <Button
@@ -168,7 +174,6 @@ class SelectDevices extends Component {
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");
-                    this.props.onSelectedItemObjectsChange([], "devices");
                   }}
                   selectChildren
                   modalAnimationType="fade"
@@ -177,6 +182,9 @@ class SelectDevices extends Component {
                   }
                   selectedItems={this.props.selectedItems}
                 />
+                {this.state.deviceBrands.length === 0 && (
+                  <LoadingScreen top={-10} />
+                )}
               </ScrollView>
             </View>
           </View>
