@@ -26,6 +26,9 @@ import deepmerge from "deepmerge";
 import BackButton from "../../../MiniComponents/BackButton";
 //Data
 import country_regions from "./regions";
+import countries from "./countries";
+import OSType from "./OSType";
+import { gender, languages } from "./demograph";
 
 //Icnos
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
@@ -34,6 +37,7 @@ import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
+import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 
 // Style
 import styles from "./styles";
@@ -52,6 +56,7 @@ import { connect } from "react-redux";
 //Validators
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import SelectOS from "../../../MiniComponents/SelectOS";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -68,7 +73,6 @@ class AdDetails extends Component {
           demographics: [
             {
               gender: "",
-
               languages: ["en", "ar"],
               min_age: 13,
               max_age: 35
@@ -77,8 +81,8 @@ class AdDetails extends Component {
           interests: [{ category_id: [] }],
           devices: [
             {
-              marketing_name: []
-              // os_type: "",
+              marketing_name: [],
+              os_type: ""
               // os_version_min: "",
               // os_version_max: ""
             }
@@ -95,46 +99,10 @@ class AdDetails extends Component {
       ],
       sidemenustate: false,
       sidemenu: "gender",
-      gender: [
-        { label: "Female", value: "FEMALE" },
-        { label: "Male", value: "MALE" },
-        { label: "All", value: "" }
-      ],
-      languages: [
-        { value: "ar", label: "Arabic" },
-        { value: "en", label: "English" }
-      ],
       regions: country_regions[0].regions,
-      countries: [
-        {
-          label: "Kuwait",
-          value: "kw"
-        },
-        {
-          label: "UAE",
-          value: "ae"
-        },
-        {
-          label: "KSA",
-          value: "sa"
-        },
-        {
-          label: "Bahrain",
-          value: "bh"
-        },
-        {
-          label: "Qatar",
-          value: "qa"
-        },
-        {
-          label: "Oman",
-          value: "om"
-        }
-      ],
       budget: 50,
       minValueBudget: 25,
       maxValueBudget: 1500,
-      value: 0,
       interestNames: [],
       modalVisible: false,
       totalReach: 0,
@@ -147,8 +115,6 @@ class AdDetails extends Component {
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign
     ) {
-      const overwriteMerge = (destinationArray, sourceArray, options) =>
-        sourceArray;
       const emptyTarget = value => (Array.isArray(value) ? [] : {});
       const clone = (value, options) =>
         deepmerge(emptyTarget(value), value, options);
@@ -168,21 +134,7 @@ class AdDetails extends Component {
         });
         return destination;
       }
-      const mergeRegions = (a, b) => {
-        if (!b.hasOwnProperty("region_id")) {
-          let re = { country_code: b[0].country_code };
-          re.region_id = [];
-          console.log("ihuigyuvghbk", re);
-          return re;
-        }
-      };
-      const options = {
-        customMerge: key => {
-          if (key === "geos") {
-            return mergeRegions;
-          }
-        }
-      };
+
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
         this.props.navigation.state.params.campaign,
@@ -191,12 +143,6 @@ class AdDetails extends Component {
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
       );
-      // console.log(
-      //   "interests",
-      //   this.props.navigation.state.params.campaign.targeting
-      // );
-
-      // console.log("edit", editedCampaign);
 
       await this.setState({
         campaignInfo: editedCampaign
@@ -208,6 +154,7 @@ class AdDetails extends Component {
           campaign_id: this.props.campaign_id
         }
       });
+      this._calcReach();
     }
   }
 
@@ -268,8 +215,6 @@ class AdDetails extends Component {
     });
   };
   onSelectedInterestsChange = selectedItems => {
-    console.log(selectedItems);
-
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
     this.setState({ campaignInfo: replace });
@@ -305,10 +250,10 @@ class AdDetails extends Component {
     });
   };
 
-  onSelectedGenderChange = selectedItem => {
+  onSelectedOSChange = selectedItem => {
     let replace = this.state.campaignInfo;
-    replace.targeting.demographics[0].gender = selectedItem;
-    this.setState({ campaignInfo: replace });
+    replace.targeting.devices[0].os_type = selectedItem;
+    this.setState({ campaignInfo: { ...replace } });
   };
 
   onSelectedBudgetChange = budget => {
@@ -400,34 +345,6 @@ class AdDetails extends Component {
     }
   };
 
-  // getTotalReach = () => {
-  //   let totalReach = {
-  //     demographics: [
-  //       {
-  //         languages: ["en", "ar"],
-  //         min_age: 13,
-  //         max_age: "35+"
-  //       }
-  //     ],
-  //     geos: [
-  //       { country_code: this.state.campaignInfo.targeting.geos[0].country_code }
-  //     ]
-  //   };
-  //   const obj = {
-  //     targeting: JSON.stringify(totalReach),
-  //     ad_account_id: this.props.mainBusiness.snap_ad_account_id
-  //   };
-  //   // this.props.snap_ad_audience_size(obj);
-  //   Axios.post(
-  //     `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
-  //     obj
-  //   ).then(res => {
-  //     this.setState({
-  //       totalReach: (this.props.average_reach / res.data.average_reach) * 100
-  //     });
-  //   });
-  // };
-
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
   };
@@ -438,7 +355,7 @@ class AdDetails extends Component {
     );
   };
 
-  _changeGender = gender => {
+  onSelectedGenderChange = gender => {
     let replace = this.state.campaignInfo;
     replace.targeting.demographics[0].gender = gender;
     this.setState({ campaignInfo: { ...replace } });
@@ -456,6 +373,9 @@ class AdDetails extends Component {
     let r = cloneDeep(this.state.campaignInfo.targeting);
     if (r.demographics[0].gender === "") {
       delete r.demographics[0].gender;
+    }
+    if (r.devices[0].os_type === "") {
+      delete r.devices[0].os_type;
     }
     if (
       r.geos[0].hasOwnProperty("region_id") &&
@@ -505,7 +425,7 @@ class AdDetails extends Component {
         menu = (
           <GenderOptions
             campaignInfo={this.state.campaignInfo}
-            _changeGender={this._changeGender}
+            onSelectedGenderChange={this.onSelectedGenderChange}
             _handleSideMenuState={this._handleSideMenuState}
           />
         );
@@ -542,7 +462,7 @@ class AdDetails extends Component {
             filteredLanguages={this.state.filteredLanguages}
             onSelectedLangsChange={this.onSelectedLangsChange}
             _handleSideMenuState={this._handleSideMenuState}
-            languages={this.state.languages}
+            languages={languages}
             demographics={this.state.campaignInfo.targeting.demographics}
             filterLanguages={this.filterLanguages}
           />
@@ -550,10 +470,20 @@ class AdDetails extends Component {
 
         break;
       }
+      case "OS": {
+        menu = (
+          <SelectOS
+            campaignInfo={this.state.campaignInfo}
+            onSelectedOSChange={this.onSelectedOSChange}
+            _handleSideMenuState={this._handleSideMenuState}
+          />
+        );
+        break;
+      }
       case "selectors": {
         menu = (
           <MultiSelectSections
-            countries={this.state.countries}
+            countries={countries}
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
@@ -592,7 +522,7 @@ class AdDetails extends Component {
     regions_names = regions_names.join(", ");
 
     let languages_names = [];
-    this.state.languages.forEach(r => {
+    languages.forEach(r => {
       if (
         this.state.campaignInfo.targeting.demographics[0].languages.find(
           i => i === r.value
@@ -633,8 +563,6 @@ class AdDetails extends Component {
       end_time = dateFormat(end_time, "d mmm");
       start_time = dateFormat(start_time, "d mmm");
     }
-
-    console.log(this.state.campaignInfo.targeting.interests[0].category_id);
 
     return (
       <>
@@ -882,7 +810,7 @@ class AdDetails extends Component {
                               <Text style={styles.menutext}>Gender</Text>
                               <Text style={styles.menudetails}>
                                 {
-                                  this.state.gender.find(r => {
+                                  gender.find(r => {
                                     if (
                                       r.value ===
                                       this.state.campaignInfo.targeting
@@ -963,7 +891,7 @@ class AdDetails extends Component {
                               <Text style={styles.menutext}>Country</Text>
                               <Text style={styles.menudetails}>
                                 {
-                                  this.state.countries.find(c => {
+                                  countries.find(c => {
                                     if (
                                       c.value ===
                                       this.state.campaignInfo.targeting.geos[0]
@@ -1074,6 +1002,50 @@ class AdDetails extends Component {
                             )}
                           </View>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this._renderSideMenu("OS");
+                          }}
+                          style={{
+                            flexDirection: "row",
+                            marginVertical: 5,
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <View style={{ flexDirection: "row", width: "80%" }}>
+                            <OperatingSystemIcon
+                              width={25}
+                              height={25}
+                              fill={globalColors.orange}
+                            />
+                            <View style={{ flexDirection: "column" }}>
+                              <Text style={styles.menutext}>
+                                Operating System
+                              </Text>
+                              <Text style={styles.menudetails}>
+                                {
+                                  OSType.find(r => {
+                                    if (
+                                      r.value ===
+                                      this.state.campaignInfo.targeting
+                                        .devices[0].os_type
+                                    )
+                                      return r;
+                                  }).label
+                                }
+                              </Text>
+                            </View>
+                          </View>
+
+                          {this.state.campaignInfo.targeting.devices[0]
+                            .os_type === "" ||
+                          this.state.campaignInfo.targeting.devices[0]
+                            .os_type ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                          ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                          )}
+                        </TouchableOpacity>
 
                         <TouchableOpacity
                           onPress={() => {
@@ -1138,7 +1110,7 @@ class AdDetails extends Component {
           </Sidemenu>
         </Container>
         <Modal isVisible={this.props.loading}>
-          <LoadingScreen />
+          <LoadingScreen top={0} />
         </Modal>
         <DateField
           getMinimumCash={this.getMinimumCash}

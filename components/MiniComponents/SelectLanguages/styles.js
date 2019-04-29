@@ -105,10 +105,7 @@ const styles = StyleSheet.create({
     height: 65,
     justifyContent: "center"
   },
-  icon: {
-    alignSelf: "center",
-    marginBottom: 10
-  },
+
   calender: {
     width: wp("85%"),
     alignSelf: "center"
@@ -154,7 +151,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   icon: {
-    fontSize: 35,
+    fontSize: 80,
     color: "#fff",
     paddingLeft: 5,
     alignSelf: "center",

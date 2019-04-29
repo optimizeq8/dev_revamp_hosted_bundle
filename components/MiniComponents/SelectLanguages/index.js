@@ -66,13 +66,7 @@ export default class SelectLanguages extends Component {
               alignItems: "center"
             }}
           >
-            <Icon
-              name="language"
-              type="MaterialIcons"
-              width={110}
-              height={110}
-              style={{ color: globalColors.orange }}
-            />
+            <Icon name="language" type="MaterialIcons" style={styles.icon} />
             <Text style={[styles.title]}>Select Languages</Text>
           </View>
           <View
