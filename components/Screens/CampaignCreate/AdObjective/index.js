@@ -144,6 +144,11 @@ class AdObjective extends Component {
       objectiveError
     });
     if (!nameError && !objectiveError) {
+      Segment.trackWithProperties("Select Ad Objective Button", {
+        business_name: this.props.mainBusiness.businessname,
+        campaign_objective: this.state.campaignInfo.objective
+      });
+
       this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
       // this.props.navigation.navigate("AdDesign");
     }
@@ -169,16 +174,11 @@ class AdObjective extends Component {
               style={styles.gradient}
             />
             <View>
-              {/* <Button
-                iconLeft
-                large
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-                style={styles.backbutton}
-              >
-                <BackButtonIcon style={styles.backbuttonicon} width={20} />
-              </Button> */}
-              <BackButton navigation={this.props.navigation.goBack} />
+              <BackButton
+                screenname="Ad Objective"
+                businessname={this.props.mainBusiness.businessname}
+                navigation={this.props.navigation.goBack}
+              />
               <Text style={styles.title}>Snap Ad</Text>
               <PhoneIcon style={styles.phoneicon} width={70} />
             </View>

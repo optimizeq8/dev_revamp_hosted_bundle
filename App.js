@@ -1,6 +1,14 @@
 import React from "react";
 import { StatusBar, StyleSheet, View, Animated, Image } from "react-native";
-import { AppLoading, Asset, Font, Icon, Linking, SplashScreen, Segment } from "expo";
+import {
+  AppLoading,
+  Asset,
+  Font,
+  Icon,
+  Linking,
+  SplashScreen,
+  Segment
+} from "expo";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
@@ -29,15 +37,6 @@ export default class App extends React.Component {
     SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
   }
 
-  componentDidMount() {
-    this._loadAsync()
-      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
-      .catch(error =>
-        console.error(`Unexpected error thrown when loading:
-${error.stack}`)
-      );
-  }
-
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
@@ -52,6 +51,12 @@ ${error.stack}`)
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
+    this._loadAsync()
+      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
+      .catch(error =>
+        console.error(`Unexpected error thrown when loading:
+${error.stack}`)
+      );
   }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

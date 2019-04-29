@@ -55,7 +55,10 @@ class Transactions extends Component {
           isOpen={this.state.sidemenustate}
         >
           <View style={styles.container}>
-            <BackButton navigation={this.props.navigation.goBack} />
+            <BackButton
+              screenname="Transactions"
+              navigation={this.props.navigation.goBack}
+            />
             <Text style={globalStyles.title}>Transactions</Text>
             <View
               style={{

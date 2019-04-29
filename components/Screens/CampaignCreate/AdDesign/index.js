@@ -283,6 +283,9 @@ class AdDesign extends Component {
       let t = await this.formatMedia();
       // console.log(this.state.formatted);
       // this.onToggleModal();
+      Segment.trackWithProperties("Select Ad Design Button", {
+        business_name: this.props.mainBusiness.businessname
+      });
       this.props.ad_design(
         this.state.formatted,
         this._getUploadState,
@@ -323,7 +326,11 @@ class AdDesign extends Component {
               >
                 <BackButton />
               </TouchableOpacity> */}
-              <BackButton navigation={this.props.navigation.goBack} />
+              <BackButton
+                screenname="Ad Design"
+                businessname={this.props.mainBusiness.businessname}
+                navigation={this.props.navigation.goBack}
+              />
 
               <Text style={styles.title}>Compose Ad</Text>
             </View>

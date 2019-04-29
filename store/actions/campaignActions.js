@@ -91,7 +91,7 @@ export const ad_objective = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.replace("AdDesign");
+        navigation.push("AdDesign");
       })
       .catch(err => {
         console.log(err.response.data);
@@ -112,9 +112,6 @@ export const ad_design = (info, laoding, navigation, onToggleModal) => {
           laoding((ProgressEvent.loaded / ProgressEvent.total) * 100)
       })
       .then(res => {
-        console.log(res.data);
-        console.log("SUCCESS!!");
-
         return res.data;
       })
       .then(data => {
@@ -123,10 +120,10 @@ export const ad_design = (info, laoding, navigation, onToggleModal) => {
           payload: data
         });
       })
-
-      .then(() =>
-        navigation.replace("AdDetails", { image: info._parts[0][1].uri })
-      )
+      .then(() => {
+        onToggleModal();
+        navigation.push("AdDetails", { image: info._parts[0][1].uri });
+      })
       .catch(err => {
         laoding(0);
 

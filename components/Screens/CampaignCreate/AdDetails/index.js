@@ -387,12 +387,20 @@ class AdDetails extends Component {
         this.props.navigation.state.params &&
         this.props.navigation.state.params.editCampaign
       ) {
+        Segment.trackWithProperties("Select Ad Details Button (Update)", {
+          business_name: this.props.mainBusiness.businessname,
+          campaign_budget: this.state.campaignInfo.lifetime_budget_micro
+        });
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation
         );
       } else {
+        Segment.trackWithProperties("Select Ad Details Button", {
+          business_name: this.props.mainBusiness.businessname,
+          campaign_budget: this.state.campaignInfo.lifetime_budget_micro
+        });
         this.props.ad_details(
           rep,
           this.state.interestNames,
@@ -401,35 +409,6 @@ class AdDetails extends Component {
       }
     }
   };
-
-  // getTotalReach = () => {
-  //   let totalReach = {
-  //     demographics: [
-  //       {
-  //         languages: ["en", "ar"],
-  //         min_age: 13,
-  //         max_age: "35+"
-  //       }
-  //     ],
-  //     geos: [
-  //       { country_code: this.state.campaignInfo.targeting.geos[0].country_code }
-  //     ]
-  //   };
-  //   const obj = {
-  //     targeting: JSON.stringify(totalReach),
-  //     ad_account_id: this.props.mainBusiness.snap_ad_account_id
-  //   };
-  //   // this.props.snap_ad_audience_size(obj);
-  //   Axios.post(
-  //     `https://optimizekwtestingserver.com/optimize/public/snapaudiencesize`,
-  //     obj
-  //   ).then(res => {
-  //     this.setState({
-  //       totalReach: (this.props.average_reach / res.data.average_reach) * 100
-  //     });
-  //   });
-  // };
-
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
   };
@@ -679,7 +658,11 @@ class AdDetails extends Component {
               >
                 <View style={{ flex: 1 }}>
                   <View style={{ height: hp(7) }}>
-                    <BackButton navigation={this.props.navigation.goBack} />
+                    <BackButton
+                      screenname="Ad Details"
+                      businessname={this.props.mainBusiness.businessname}
+                      navigation={this.props.navigation.goBack}
+                    />
 
                     <Text style={styles.headline}>
                       Input your Snapchat {"\n"} AD Details

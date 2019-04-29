@@ -43,7 +43,7 @@ class CampaignCard extends Component {
         <TouchableOpacity
           onPress={() => {
             this.props.getCampaign(this.props.campaign.campaign_id);
-            Segment.trackWithProperties("Campaign Card Pressed", {
+            Segment.trackWithProperties("Campaign Card Button", {
               campaign_id: this.props.campaign.campaign_id
             });
             this.props.navigation.push("CampaignDetails");
