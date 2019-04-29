@@ -31,7 +31,7 @@ class Transactions extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
   render() {
-    if (this.props.loading) return <LoadingScreen />;
+    if (this.props.loading) return <LoadingScreen top={0} />;
     else {
       let menu = (
         <FilterMenu

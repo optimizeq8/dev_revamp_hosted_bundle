@@ -28,7 +28,7 @@ class Loading extends React.Component {
           position: "absolute",
           top: this.props.dash
             ? heightPercentageToDP(40)
-            : heightPercentageToDP(20),
+            : heightPercentageToDP(this.props.top),
 
           alignSelf: "center"
         }}

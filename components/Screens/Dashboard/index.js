@@ -176,7 +176,7 @@ class Dashboard extends Component {
       />
     );
     if (!this.props.mainBusiness) {
-      return <LoadingScreen dash={true} />;
+      return <LoadingScreen dash={true} top={0} />;
     } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (

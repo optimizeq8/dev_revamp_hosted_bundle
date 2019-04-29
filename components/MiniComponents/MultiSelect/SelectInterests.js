@@ -19,6 +19,7 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //styles
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 import SectionStyle from "./SectionStyle";
+import LoadingScreen from "../LoadingScreen";
 
 class SelectInterests extends Component {
   state = { interests: [] };
@@ -76,7 +77,7 @@ class SelectInterests extends Component {
               alignItems: "center"
             }}
           >
-            <InterestsIcon width={110} height={110} fill="#fff" />
+            <InterestsIcon width={100} height={100} fill="#fff" />
             <Text style={[styles.title]}> Select Interests</Text>
           </View>
           <View
@@ -191,6 +192,9 @@ class SelectInterests extends Component {
                   }
                   selectedItems={this.props.selectedItems}
                 />
+                {this.state.interests.length === 0 && (
+                  <LoadingScreen top={-10} />
+                )}
               </ScrollView>
             </View>
           </View>

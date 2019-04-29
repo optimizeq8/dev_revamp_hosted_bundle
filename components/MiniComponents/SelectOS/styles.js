@@ -3,7 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../../Global Styles/";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     width: 150,
     paddingTop: 20,
@@ -36,12 +36,9 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   colorYellow: {
-    alignSelf: "center",
-    width: wp(50),
     color: "#FF9D00",
     fontSize: 27,
-    fontFamily: "montserrat-medium",
-    textAlign: "center"
+    fontFamily: "montserrat-medium"
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -65,10 +62,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     color: "#fff"
   },
-  itemCircles: {
-    fontSize: 30,
-    color: globalColors.orange
-  },
   content: {
     flexDirection: "row",
     alignItems: "center",
@@ -79,16 +72,6 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     margin: 15
-  },
-  mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "transparent",
-    flex: 1,
-    overflow: "hidden",
-    backgroundColor: "#000",
-    marginLeft: 0,
-    marginRight: 0
   },
 
   gradient: {
@@ -107,18 +90,25 @@ const styles = StyleSheet.create({
     marginTop: -hp("5"),
     borderRadius: 30
   },
-
+  button: {
+    alignSelf: "center",
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: hp("10%")
+  },
   dateInput: {
     marginBottom: 5,
-    backgroundColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     borderRadius: 15,
     alignSelf: "center",
     width: 270,
-    height: hp(7.7),
-    justifyContent: "center",
-    borderWidth: 0.5
+    height: 65,
+    justifyContent: "center"
   },
-
+  icon: {
+    alignSelf: "center",
+    marginBottom: 10
+  },
   calender: {
     width: wp("85%"),
     alignSelf: "center"
@@ -144,36 +134,27 @@ const styles = StyleSheet.create({
   },
   chartItems: {
     flex: 1,
+    alignItems: "center",
     flexDirection: "column",
-    top: hp(5),
-    left: wp(9)
+    top: 50,
+    left: 40
   },
   button: {
-    backgroundColor: "transparent",
+    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    borderRadius: 50,
+    width: 55,
+    height: 55,
+    borderRadius: 27.5,
     borderColor: "transparent",
     borderWidth: 1,
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginVertical: 5
-  },
-  interestButton: {
-    backgroundColor: globalColors.orange,
-    alignSelf: "center",
-    borderRadius: 50,
-    height: 50,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2
   },
   icon: {
-    fontSize: 70,
+    fontSize: 35,
     color: "#fff",
     paddingLeft: 5,
     alignSelf: "center",
@@ -181,27 +162,30 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   inactivebutton: {
+    backgroundColor: "#fff",
     alignSelf: "center",
     width: hp("15"),
     height: hp("15"),
+    borderRadius: 100,
     marginBottom: 10
   },
   activebutton: {
+    backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: hp("15"),
-    height: hp("15")
+    height: hp("15"),
+    borderRadius: 100,
+    marginBottom: 10
   },
   inactivetext: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: "#fff",
-    marginLeft: 20
+    color: "#fff"
   },
   activetext: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
-    color: globalColors.orange,
-    marginLeft: 20
+    color: globalColors.orange
   },
   categories: {
     textAlign: "center",
@@ -214,8 +198,8 @@ const styles = StyleSheet.create({
   subHeadings: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: hp(2),
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
     paddingVertical: 10
   },
   numbers: {
@@ -230,6 +214,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-semibold",
     fontSize: 14,
+    paddingBottom: 10,
     paddingHorizontal: 10,
     justifyContent: "center",
     alignSelf: "center"
