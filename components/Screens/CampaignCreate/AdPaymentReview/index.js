@@ -25,7 +25,7 @@ import {
   Thumbnail,
   Spinner
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import dateFormat from "dateformat";
 
@@ -83,6 +83,8 @@ class AdPaymentReview extends Component {
 
   componentDidMount() {
     // console.log("data", this.props.data);
+    Segment.screen("Ad Payment Review Screen");
+
     this.setState({ ...this.props.data });
   }
   render() {

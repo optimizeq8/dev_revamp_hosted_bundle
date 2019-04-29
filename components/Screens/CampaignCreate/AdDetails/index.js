@@ -12,7 +12,7 @@ import {
 import Modal from "react-native-modal";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import Sidemenu from "react-native-side-menu";
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import ReachBar from "./ReachBar";
@@ -143,6 +143,8 @@ class AdDetails extends Component {
   }
 
   async componentDidMount() {
+    Segment.screen("Select Ad Details Screen");
+
     if (
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign

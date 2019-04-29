@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
@@ -56,7 +56,9 @@ class ChangePassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
   }
-
+  componentDidMount() {
+    Segment.screen("Change Password Screen");
+  }
   _passwordVarification = () => {
     if (
       this.state.userInfo.password !== this.state.repassword ||

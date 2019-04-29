@@ -11,7 +11,7 @@ import {
   Container,
   Icon
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import CloseIcon from "../../../assets/SVGs/Close";
 
 //Validation
@@ -43,7 +43,9 @@ class ForgotPassword extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-
+  componentDidMount() {
+    Segment.screen("Forgot Password Screen");
+  }
   // componentDidUpdate(prevProps) {
   //   if (prevProps.message !== this.props.message) {
   //     this.setState({
