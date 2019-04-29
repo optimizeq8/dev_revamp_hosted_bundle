@@ -67,6 +67,7 @@ class AdDesign extends Component {
         attachment: "BLANK",
         media_type: ""
       },
+      appChoice: "",
       inputH: false,
       inputB: false,
       objective: "",
@@ -81,8 +82,6 @@ class AdDesign extends Component {
       isVisible: false,
       imageLoading: false
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
-    this._changeDestination = this._changeDestination.bind(this);
   }
   async componentDidMount() {
     Segment.screen("Design Ad Screen");
@@ -103,7 +102,7 @@ class AdDesign extends Component {
     }
   }
 
-  _changeDestination = (destination, call_to_action, attachment) => {
+  _changeDestination = (destination, call_to_action, attachment, appChoice) => {
     if (attachment.hasOwnProperty("longformvideo_media")) {
       this.setState({
         campaignInfo: {
@@ -111,6 +110,7 @@ class AdDesign extends Component {
           destination,
           call_to_action: call_to_action
         },
+
         [Object.keys(attachment)[0]]: attachment.longformvideo_media,
         [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
       });
@@ -121,7 +121,8 @@ class AdDesign extends Component {
           destination,
           call_to_action: call_to_action,
           attachment
-        }
+        },
+        appChoice
       });
     }
   };
@@ -287,7 +288,8 @@ class AdDesign extends Component {
         this.state.formatted,
         this._getUploadState,
         this.props.navigation,
-        this.onToggleModal
+        this.onToggleModal,
+        this.state.appChoice
       );
       // this.props.navigation.navigate("AdDetails");
     }
@@ -575,8 +577,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, loading, navigation, onToggleModal) =>
-    dispatch(actionCreators.ad_design(info, loading, navigation, onToggleModal))
+  ad_design: (info, loading, navigation, onToggleModal, appChoice) =>
+    dispatch(
+      actionCreators.ad_design(
+        info,
+        loading,
+        navigation,
+        onToggleModal,
+        appChoice
+      )
+    )
 });
 export default connect(
   mapStateToProps,

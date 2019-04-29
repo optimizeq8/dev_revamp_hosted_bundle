@@ -208,7 +208,7 @@ class PaymentForm extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
-  mainBusiness: state.campaignC.mainBusiness,
+  mainBusiness: state.auth.mainBusiness,
   campaign_id: state.campaignC.campaign_id,
   kdamount: state.campaignC.kdamount,
   payment_data: state.campaignC.payment_data

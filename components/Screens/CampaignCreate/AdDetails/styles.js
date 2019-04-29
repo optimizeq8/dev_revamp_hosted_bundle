@@ -45,9 +45,11 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 17,
+    color: "#fff",
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
+    paddingTop: 10
   },
   slidercontainer: { marginHorizontal: 40 },
   input: {
@@ -179,6 +181,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center"
+  },
+  editIcon: {
+    fontSize: 20,
+    color: globalColors.orange,
+
+    alignSelf: "center"
   },
   inactivebutton: {
     alignSelf: "center",

@@ -9,6 +9,8 @@ const initialState = {
   total_reach: 0,
   interests: null,
   deviceBrands: null,
+  isoVersions: null,
+  androidVersions: null,
   loading: false,
   payment_data: null
 };
@@ -71,6 +73,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         deviceBrands: action.payload
+      };
+    case actionTypes.SET_IOS_VERSIONS:
+      return {
+        ...state,
+        isoVersions: action.payload
+      };
+    case actionTypes.SET_ANDROID_VERSIONS:
+      return {
+        ...state,
+        androidVersions: action.payload
       };
     case actionTypes.SET_AD_LOADING:
       return {
