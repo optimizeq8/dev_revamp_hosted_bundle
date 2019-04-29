@@ -91,7 +91,7 @@ export const ad_objective = (info, navigation) => {
         });
       })
       .then(() => {
-        navigation.replace("AdDesign");
+        navigation.push("AdDesign");
       })
       .catch(err => {
         console.log(err.response.data);
@@ -118,9 +118,6 @@ export const ad_design = (
           laoding((ProgressEvent.loaded / ProgressEvent.total) * 100)
       })
       .then(res => {
-        console.log(res.data);
-        console.log("SUCCESS!!");
-
         return res.data;
       })
       .then(data => {
@@ -129,8 +126,8 @@ export const ad_design = (
           payload: data
         });
       })
-
       .then(() =>
+        onToggleModal();
         navigation.replace("AdDetails", {
           image: info._parts[0][1].uri,
           appChoice: appChoice

@@ -88,8 +88,6 @@ class AdPaymentReview extends Component {
     this.setState({ ...this.props.data });
   }
   render() {
-    console.log(this.props.navigation.state.params.interestNames);
-
     if (!this.state.ad_account_id) {
       return <Spinner color="red" />;
     } else {
@@ -123,7 +121,6 @@ class AdPaymentReview extends Component {
               marginLeft: 20
             }}
           />
-
           <Card padder style={styles.mainCard}>
             <View
               style={{
@@ -238,13 +235,20 @@ class AdPaymentReview extends Component {
           <View style={{ backgroundColor: "#000" }}>
             <Card padder style={styles.bottomCard}>
               <TouchableWithoutFeedback
-                onPress={() =>
+                onPress={() => {
+                  Segment.trackWithProperties(
+                    "Select Ad Payment Review Button",
+                    {
+                      business_name: this.props.mainBusiness.businessname,
+                      campaign_budget: this.state.lifetime_budget_micro
+                    }
+                  );
                   this.props.navigation.navigate("PaymentForm", {
                     interestNames: this.props.navigation.state.params
                       .interestNames,
                     kdamount: this.props.kdamount
-                  })
-                }
+                  });
+                }}
                 style={{
                   flex: 1,
                   justifyContent: "center",
@@ -274,7 +278,8 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
   kdamount: state.campaignC.kdamount,
-  interestsNames: state.campaignC.interestsNames
+  interestsNames: state.campaignC.interestsNames,
+  mainBusiness: state.auth.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))

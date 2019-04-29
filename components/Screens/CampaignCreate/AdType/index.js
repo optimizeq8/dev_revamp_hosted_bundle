@@ -1,7 +1,7 @@
 // Components
 import React, { Component } from "react";
 
-import { View, Image } from "react-native";
+import { View, Image, TouchableWithoutFeedback } from "react-native";
 import {
   Button,
   Content,
@@ -33,46 +33,72 @@ class AdType extends Component {
   static navigationOptions = {
     header: null
   };
-  state = { route: "AdObjective" };
+  state = { campaign_type: "SnapAd", route: "AdObjective" };
   navigationRouteHandler = id => {
     let route = "";
+    let campaign_type = "";
     switch (id) {
       case 0:
         route = "AdObjective";
+        campaign_type = "SnapAd";
+        break;
+      case 1:
+        campaign_type = "TwitterAd";
+        break;
+      case 2:
+        campaign_type = "InstagramAd";
+        break;
+      case 3:
+        campaign_type = "SnapStoryAd";
         break;
     }
-    this.setState({ route });
+    this.setState({ route, campaign_type });
   };
 
   navigationHandler = () => {
-    this.props.navigation.navigate(this.state.route);
+    Segment.trackWithProperties("Select Ad Type Button", {
+      business_name: this.props.mainBusiness.businessname,
+      campaign_type: this.state.campaign_type
+    });
+    this.props.navigation.push(this.state.route);
   };
   componentDidMount() {
     Segment.screen("Select Ad Type Screen");
   }
   render() {
     const Slide = ({ title, id, icon, rout, text }) => (
-      <View>
-        <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
-        <Text style={styles.slidtitle}>{title} </Text>
-        <View
-          style={[
-            styles.placeholder,
-            { backgroundColor: title.includes("Snap") ? "transparent" : "#000" }
-          ]}
-        >
-          {title.includes("Snap") && (
-            <Image
-              style={{ width: "100%", height: "100%", position: "absolute" }}
-              resizeMode="stretch"
-              source={require("../../../../assets/images/SnapAd.gif")}
-            />
-          )}
-          {text.includes("Soon") && (
-            <Text style={styles.slidetext}> {text} </Text>
-          )}
+      <TouchableWithoutFeedback
+        onPress={() =>
+          Segment.trackWithProperties(`${title} AdType Card Button`, {
+            business_name: this.props.mainBusiness.businessname,
+            campaign_type: this.state.campaign_type
+          })
+        }
+      >
+        <View>
+          <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
+          <Text style={styles.slidtitle}>{title} </Text>
+          <View
+            style={[
+              styles.placeholder,
+              {
+                backgroundColor: title.includes("Snap") ? "transparent" : "#000"
+              }
+            ]}
+          >
+            {title.includes("Snap") && (
+              <Image
+                style={{ width: "100%", height: "100%", position: "absolute" }}
+                resizeMode="stretch"
+                source={require("../../../../assets/images/SnapAd.gif")}
+              />
+            )}
+            {text.includes("Soon") && (
+              <Text style={styles.slidetext}> {text} </Text>
+            )}
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
     return (
       <Container style={styles.container}>
@@ -81,17 +107,16 @@ class AdType extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        {/* <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Home")}
-          style={globalStyles.backButton}
-        >
-          <CloseIcon />
-        </TouchableOpacity> */}
+
         <CloseButton
-          navigation={() => this.props.navigation.navigate("Dashboard")}
+          navigation={() => {
+            Segment.trackWithProperties("Close Ad Type Button", {
+              business_name: this.props.mainBusiness.businessname
+            });
+            this.props.navigation.navigate("Dashboard");
+          }}
         />
         <Text style={styles.title}>Choose your Ad Type</Text>
-
         <Swiper
           backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
           dots
@@ -131,7 +156,7 @@ class AdType extends Component {
             text="Coming Soon!"
             rout="Home"
             icon="snapchat-ghost"
-            title="Story Ad "
+            title="Story Ad"
           />
         </Swiper>
         <LowerButton function={this.navigationHandler} bottom={2} />
@@ -140,7 +165,9 @@ class AdType extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  mainBusiness: state.auth.mainBusiness
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

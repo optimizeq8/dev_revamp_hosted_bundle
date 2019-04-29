@@ -137,6 +137,8 @@ class SelectDevices extends Component {
                       style={{ height: 70, marginBottom: hp(5), top: hp(3) }}
                     >
                       <BackButton
+                        screenname="Select Devices"
+                        businessname={this.props.mainBusiness.businessname}
                         navigation={() => this.DeviceSection._cancelSelection()}
                       />
                     </View>
