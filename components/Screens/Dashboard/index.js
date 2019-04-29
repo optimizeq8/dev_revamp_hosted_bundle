@@ -176,7 +176,7 @@ class Dashboard extends Component {
       />
     );
     if (!this.props.mainBusiness) {
-      return <LoadingScreen />;
+      return <LoadingScreen dash={true} />;
     } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
@@ -198,27 +198,40 @@ class Dashboard extends Component {
               openMenuOffset={wp("85%")}
               isOpen={this.state.sidemenustate}
             >
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  if (this.state.open === false) {
-                    this.startAnimation();
-                  } else {
-                    this.closeAnimation();
-                  }
-                }}
-              >
-                <LottieView
+              <Transition shared="close">
+                <View
                   style={{
-                    width: wp(5),
-                    height: hp(5),
-                    top: hp(1.2),
-                    left: wp(1.67)
+                    justifyContent: "center",
+                    top: hp(3),
+                    left: wp(5),
+                    zIndex: 10,
+                    paddingBottom: 30,
+                    marginBottom: -hp(5)
                   }}
-                  resizeMode="contain"
-                  source={require("../../../assets/animation/menu-btn.json")}
-                  progress={this.state.menu}
-                />
-              </TouchableWithoutFeedback>
+                >
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      if (this.state.open === false) {
+                        this.startAnimation();
+                      } else {
+                        this.closeAnimation();
+                      }
+                    }}
+                  >
+                    <LottieView
+                      style={{
+                        width: wp(5),
+                        height: hp(5)
+                        // top: hp(1.2),
+                        // left: wp(1.67)
+                      }}
+                      resizeMode="contain"
+                      source={require("../../../assets/animation/menu-btn.json")}
+                      progress={this.state.menu}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </Transition>
               <Image
                 resizeMode="contain"
                 style={styles.image}
@@ -228,7 +241,8 @@ class Dashboard extends Component {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  bottom: hp(6.5)
+                  bottom: hp(6.5),
+                  height: 60
                 }}
               >
                 <Transition shared="menu">
@@ -236,55 +250,62 @@ class Dashboard extends Component {
                     {this.props.mainBusiness.businessname}
                   </Text>
                 </Transition>
-                <View
-                  style={{
-                    bottom: hp(2),
-                    right: wp(3)
-                  }}
-                >
-                  <Icon
-                    name="info"
-                    type="MaterialIcons"
+                {this.props.wallet > 0 && (
+                  <View
                     style={{
-                      color: "#fff",
-                      fontSize: 19,
-                      position: "relative",
-                      top: "40%"
+                      bottom: hp(2),
+                      right: wp(3)
                     }}
-                  />
-                  <Text
-                    style={[
-                      globalStyles.numbers,
-                      {
-                        paddingLeft: 20,
-                        fontSize: wp(6),
-                        fontFamily: "montserrat-semibold"
-                      }
-                    ]}
                   >
+                    <Icon
+                      name="info"
+                      type="MaterialIcons"
+                      style={{
+                        color: "#fff",
+                        fontSize: 19,
+                        position: "relative",
+                        top: "40%"
+                      }}
+                    />
                     <Text
+                      numberOfLines={1}
                       style={[
                         globalStyles.numbers,
                         {
-                          padding: 0,
-                          fontSize: 15,
-                          fontFamily: "montserrat-semibold"
+                          paddingLeft: 20,
+                          fontSize: wp(6),
+                          fontFamily: "montserrat-semibold",
+                          width:
+                            this.props.wallet.toString().length > 7
+                              ? wp(50)
+                              : "100%"
                         }
                       ]}
                     >
-                      $
+                      <Text
+                        style={[
+                          globalStyles.numbers,
+                          {
+                            paddingHorizontal: 0,
+                            fontSize: 15,
+                            fontFamily: "montserrat-semibold"
+                          }
+                        ]}
+                      >
+                        $
+                      </Text>
+                      {this.props.wallet}
                     </Text>
-                    {this.props.wallet}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      { fontSize: 10, top: 0, alignSelf: "center" }
-                    ]}
-                  >
-                    Wallet Balance
-                  </Text>
-                </View>
+                    <Text
+                      style={[
+                        styles.text,
+                        { fontSize: 10, top: 0, alignSelf: "center" }
+                      ]}
+                    >
+                      Wallet Balance
+                    </Text>
+                  </View>
+                )}
               </View>
               <View
                 padder

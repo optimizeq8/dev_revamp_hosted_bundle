@@ -33,9 +33,8 @@ const styles = StyleSheet.create({
     color: "#717171",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    paddingTop: 40,
-    paddingBottom: 10,
-    paddingVertical: 10,
+
+    paddingVertical: 20,
     textDecorationLine: "underline"
   },
   errorText: {
@@ -43,11 +42,19 @@ const styles = StyleSheet.create({
     color: "red",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    marginBottom: 30,
+    // bottom: 20
     paddingVertical: 10
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  input: {
+    top: 30,
+    marginBottom: 40,
+    alignSelf: "center",
+    width: 300,
+    height: 45,
+    borderColor: "#7039FF"
   }
 });
 

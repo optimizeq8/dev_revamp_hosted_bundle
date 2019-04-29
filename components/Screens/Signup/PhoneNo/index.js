@@ -51,7 +51,7 @@ class PhoneNo extends Component {
     ) {
       this.setState({
         numExists:
-          this.props.message.includes("registered") && this.props.message
+          this.props.message && this.props.message.includes("registered")
             ? this.props.message
             : ""
       });

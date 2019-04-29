@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, BackHandler } from "react-native";
 import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import ErrorIcon from "../../../assets/SVGs/Error.svg";
@@ -20,8 +20,18 @@ class ErrorRedirect extends Component {
 
     this.state = {};
   }
+
   componentDidMount() {
     Segment.screen("Payment Error Screen");
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    this.setState(this.props.navigation.state.params);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton() {
+    return true;
   }
   render() {
     return (
@@ -44,6 +54,13 @@ class ErrorRedirect extends Component {
             There seems to be a problem with {"\n"}
             your payment method
           </Text>
+          <View style={styles.details}>
+            <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
+            <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
+            <Text style={styles.text}>Amount: {this.state.amount}</Text>
+            <Text style={styles.text}>Date: {this.state.date}</Text>
+            <Text style={styles.text}>Status: {this.state.status}</Text>
+          </View>
           <Button
             style={styles.button}
             onPress={() => this.props.navigation.navigate("PaymentForm")}

@@ -1,6 +1,6 @@
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading, Asset, Font, Icon, Linking, Segment } from "expo";
+import { StatusBar, StyleSheet, View, Animated, Image } from "react-native";
+import { AppLoading, Asset, Font, Icon, Linking, SplashScreen, Segment } from "expo";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
@@ -20,7 +20,32 @@ Sentry.config(
 // Sentry.captureException(new Error("Oops!"));
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false
+    isLoadingComplete: false,
+    splashAnimation: new Animated.Value(0),
+    splashAnimationComplete: false
+  };
+  constructor(props) {
+    super(props);
+    SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
+  }
+
+  componentDidMount() {
+    this._loadAsync()
+      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
+      .catch(error =>
+        console.error(`Unexpected error thrown when loading:
+${error.stack}`)
+      );
+  }
+
+  _loadAsync = async () => {
+    try {
+      await this._loadResourcesAsync();
+    } catch (e) {
+      this._handleLoadingError(e);
+    } finally {
+      this._handleFinishLoading();
+    }
   };
   componentDidMount() {
     Segment.initialize({
@@ -30,14 +55,7 @@ export default class App extends React.Component {
   }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          // console.log(kmav)
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
+      return null;
     } else {
       const prefix = Linking.makeUrl("/");
 
@@ -47,6 +65,7 @@ export default class App extends React.Component {
             <StatusBar barStyle="light-content" />
             <Root>
               <AppNavigator uriPrefix={prefix} />
+              {this._maybeRenderLoadingImage()}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
@@ -54,10 +73,68 @@ export default class App extends React.Component {
       );
     }
   }
+  _maybeRenderLoadingImage = () => {
+    if (this.state.splashAnimationComplete) {
+      return null;
+    }
 
+    return (
+      <Animated.View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#fff",
+          opacity: this.state.splashAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0]
+          })
+        }}
+      >
+        <Animated.Image
+          source={require("./assets/images/splash.png")}
+          style={{
+            width: undefined,
+            height: undefined,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            resizeMode: "contain",
+            transform: [
+              {
+                scale: this.state.splashAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1, 4]
+                })
+              }
+            ]
+          }}
+          onLoadEnd={this._animateOut}
+        />
+      </Animated.View>
+    );
+  };
+
+  _animateOut = () => {
+    SplashScreen.hide();
+    Animated.timing(this.state.splashAnimation, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true
+    }).start(() => {
+      this.setState({ splashAnimationComplete: true });
+    });
+  };
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([require("./assets/images/logo01.png")]),
+      Asset.loadAsync([require("./assets/images/logo02.png")]),
       Font.loadAsync({
         "montserrat-regular": require("./assets/fonts/BentonSans-Regular.otf"),
         "montserrat-light": require("./assets/fonts/BentonSans-Light.otf"),

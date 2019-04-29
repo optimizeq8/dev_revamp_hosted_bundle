@@ -82,8 +82,8 @@ class Menu extends Component {
             <View
               style={{
                 justifyContent: "center",
-                marginTop: heightPercentageToDP("5%"),
-                marginLeft: 20,
+                top: heightPercentageToDP(11),
+                left: widthPercentageToDP(5),
                 zIndex: 10,
                 paddingBottom: 30,
                 marginBottom: -heightPercentageToDP(5)
@@ -98,8 +98,8 @@ class Menu extends Component {
                   style={{
                     width: widthPercentageToDP(5),
                     height: heightPercentageToDP(5),
-                    top: heightPercentageToDP(0.7),
-                    right: widthPercentageToDP(0.8),
+                    // top: heightPercentageToDP(0.85),
+                    // left: widthPercentageToDP(1.5),
                     zIndex: 10
                   }}
                   resizeMode="contain"
