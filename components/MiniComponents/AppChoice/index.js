@@ -29,7 +29,7 @@ class AppChoice extends Component {
         icon_media_id: "",
         icon_media_url: ""
       },
-      choice: "",
+      choice: null,
       showList: false,
       data: [],
       androidData: [],
@@ -103,7 +103,7 @@ class AppChoice extends Component {
 
   _getAppIds = iosApp => {
     let androidUrl = "";
-    if (this.state.choice === "Apps" || this.state.choice === "android apps") {
+    if (this.state.choice === "" || this.state.choice === "ANDROID") {
       //--------------This is for dummy data--------------
       androidUrl = androidDataTest.find(app => app.title === iosApp.title); //this for dummy data
 
@@ -116,7 +116,7 @@ class AppChoice extends Component {
       attachment: {
         ...this.state.attachment,
         app_name: iosApp.title,
-        ios_app_id: this.state.choice !== "android apps" ? iosApp.id : "",
+        ios_app_id: this.state.choice !== "ANDROID" ? iosApp.id : "",
         icon_media_url: iosApp.icon,
         android_app_url: androidUrl ? androidUrl.id : ""
       }
@@ -136,7 +136,10 @@ class AppChoice extends Component {
       "mandatory",
       this.state.callaction.value
     );
-    let choiceError = validateWrapper("mandatory", this.state.choice);
+    let choiceError = validateWrapper(
+      "mandatory",
+      this.state.choice === "" ? "x" : this.state.choice
+    );
     this.setState({ nameError, callActionError, choiceError, AppError });
 
     if (!AppError && !nameError && !callActionError && !choiceError) {
@@ -144,7 +147,8 @@ class AppChoice extends Component {
         this.state.nameError,
         this.state.callActionError,
         this.state.attachment,
-        this.state.callaction
+        this.state.callaction,
+        this.state.choice
       );
     }
   };
@@ -238,16 +242,16 @@ class AppChoice extends Component {
                 styles.OS,
                 {
                   backgroundColor:
-                    this.state.choice === "ios apps" ? "#FF9D00" : "#fff"
+                    this.state.choice === "iOS" ? "#FF9D00" : "#fff"
                 }
               ]}
-              onPress={() => this.handleChoice("ios apps")}
+              onPress={() => this.handleChoice("iOS")}
             >
               <Text
                 style={[
                   styles.OSText,
                   {
-                    color: this.state.choice === "ios apps" ? "#fff" : "#751AFF"
+                    color: this.state.choice === "iOS" ? "#fff" : "#751AFF"
                   }
                 ]}
               >
@@ -261,17 +265,16 @@ class AppChoice extends Component {
                 {
                   paddingHorizontal: 0,
                   backgroundColor:
-                    this.state.choice === "android apps" ? "#FF9D00" : "#fff"
+                    this.state.choice === "ANDROID" ? "#FF9D00" : "#fff"
                 }
               ]}
-              onPress={() => this.handleChoice("android apps")}
+              onPress={() => this.handleChoice("ANDROID")}
             >
               <Text
                 style={[
                   styles.OSText,
                   {
-                    color:
-                      this.state.choice === "android apps" ? "#fff" : "#751AFF"
+                    color: this.state.choice === "ANDROID" ? "#fff" : "#751AFF"
                   }
                 ]}
               >
@@ -284,17 +287,16 @@ class AppChoice extends Component {
                 styles.OS,
                 {
                   paddingHorizontal: 0,
-                  backgroundColor:
-                    this.state.choice === "Apps" ? "#FF9D00" : "#fff"
+                  backgroundColor: this.state.choice === "" ? "#FF9D00" : "#fff"
                 }
               ]}
-              onPress={() => this.handleChoice("Apps")}
+              onPress={() => this.handleChoice("")}
             >
               <Text
                 style={[
                   styles.OSText,
                   {
-                    color: this.state.choice === "Apps" ? "#fff" : "#751AFF"
+                    color: this.state.choice === "" ? "#fff" : "#751AFF"
                   }
                 ]}
               >
@@ -304,7 +306,7 @@ class AppChoice extends Component {
           </Animatable.View>
         </Animatable.View>
 
-        {this.state.choice ? (
+        {this.state.choice || this.state.choice === "" ? (
           <Item
             rounded
             style={[
@@ -335,13 +337,13 @@ class AppChoice extends Component {
               onBlur={value => {
                 if (this.state.attachment.app_name !== "") {
                   switch (this.state.choice) {
-                    case "ios apps":
+                    case "iOS":
                       // this._searchIosApps();
                       break;
-                    case "android apps":
+                    case "ANDROID":
                       //this._searchAndroidApps();
                       break;
-                    case "Apps":
+                    case "":
                       //this._searchAndroidApps();
                       // this._searchIosApps();
                       break;
@@ -368,7 +370,7 @@ class AppChoice extends Component {
               //-----------This is for actual app data searches-----------
               // data={
               //   this.state.showList
-              //     ? this.state.choice !== "android apps"
+              //     ? this.state.choice !== "ANDROID"
               //       ? this.state.data
               //       : this.state.androidData
               //     : []
@@ -376,7 +378,7 @@ class AppChoice extends Component {
               //-----------This is for dummy app data searches-----------
               data={
                 this.state.showList
-                  ? this.state.choice !== "android apps"
+                  ? this.state.choice !== "ANDROID"
                     ? data
                     : androidDataTest
                   : []

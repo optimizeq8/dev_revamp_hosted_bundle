@@ -13,6 +13,7 @@
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "axios": "^0.18.0",
     "clone-deep": "^4.0.1",
+    "compare-versions": "^3.4.0",
     "dateformat": "^3.0.3",
     "deepmerge": "^3.2.0",
     "expo": "^31.0.2",

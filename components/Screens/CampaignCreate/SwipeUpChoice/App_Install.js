@@ -40,6 +40,7 @@ export default class App_Install extends Component {
         icon_media_url: ""
       },
       firstStepDone: false,
+      choice: "",
       data: [],
       nameError: "",
       callActionError: "",
@@ -58,11 +59,18 @@ export default class App_Install extends Component {
     });
   };
 
-  renderNextStep = (nameError, callActionError, attachment, callaction) => {
+  renderNextStep = (
+    nameError,
+    callActionError,
+    attachment,
+    callaction,
+    choice
+  ) => {
     if (!nameError && !callActionError) {
       this.setState({
         attachment,
         callaction,
+        choice,
         firstStepDone: true
       });
     }
@@ -86,7 +94,8 @@ export default class App_Install extends Component {
       this.props._changeDestination(
         "APP_INSTALL",
         this.state.callaction,
-        this.state.attachment
+        this.state.attachment,
+        this.state.choice
       );
       this.props.navigation.navigate("AdDesign");
     }

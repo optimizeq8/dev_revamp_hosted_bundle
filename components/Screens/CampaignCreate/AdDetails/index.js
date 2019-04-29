@@ -57,6 +57,8 @@ import { connect } from "react-redux";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
+import { validate } from "validate.js";
+import { showMessage } from "react-native-flash-message";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -82,9 +84,9 @@ class AdDetails extends Component {
           devices: [
             {
               marketing_name: [],
-              os_type: ""
-              // os_version_min: "",
-              // os_version_max: ""
+              os_type: "",
+              os_version_min: "",
+              os_version_max: ""
             }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
@@ -156,6 +158,17 @@ class AdDetails extends Component {
           campaign_id: this.props.campaign_id
         }
       });
+      if (
+        this.props.navigation.state.params &&
+        this.props.navigation.state.params.appChoice
+      ) {
+        let navAppChoice = this.props.navigation.state.params.appChoice;
+        let rep = this.state.campaignInfo;
+        rep.targeting.devices[0].os_type = navAppChoice;
+        await this.setState({
+          campaignInfo: rep
+        });
+      }
       this._calcReach();
     }
   }
@@ -258,6 +271,12 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: { ...replace } });
   };
 
+  onSelectedVersionsChange = selectedItem => {
+    let replace = this.state.campaignInfo;
+    replace.targeting.devices[0].os_version_min = selectedItem[0];
+    replace.targeting.devices[0].os_version_max = selectedItem[1];
+    this.setState({ campaignInfo: { ...replace } });
+  };
   onSelectedBudgetChange = budget => {
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
@@ -278,15 +297,34 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: replace });
   };
 
+  _handleBudget = value => {
+    if (
+      !validateWrapper("Budget", value) &&
+      value > this.state.minValueBudget
+    ) {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          lifetime_budget_micro: value !== "" ? parseFloat(value) : 0
+        }
+      });
+      return true;
+    } else {
+      showMessage({
+        message: validateWrapper("Budget", value)
+          ? validateWrapper("Budget", value)
+          : "Budget can't be less than the minimum",
+        type: "warning",
+        position: "top"
+      });
+      this.setState({
+        value
+      });
+      return false;
+    }
+  };
+
   _handleSubmission = () => {
-    const min_ageError = validateWrapper(
-      "age",
-      this.state.campaignInfo.targeting.demographics[0].min_age
-    );
-    const max_ageError = validateWrapper(
-      "age",
-      this.state.campaignInfo.targeting.demographics[0].max_age
-    );
     const languagesError =
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
@@ -294,15 +332,12 @@ class AdDetails extends Component {
     let dateErrors = this.dateField.getErrors();
 
     this.setState({
-      min_ageError,
-      max_ageError,
       languagesError,
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
     if (
-      !min_ageError &&
-      !max_ageError &&
+      this._handleBudget(this.state.value) &&
       !languagesError &&
       !dateErrors.end_timeError &&
       !dateErrors.start_timeError
@@ -503,6 +538,14 @@ class AdDetails extends Component {
               this.state.campaignInfo.targeting.devices[0].marketing_name
             }
             onSelectedDevicesChange={this.onSelectedDevicesChange}
+            selectedMinVersions={
+              this.state.campaignInfo.targeting.devices[0].os_version_min
+            }
+            selectedMaxVersions={
+              this.state.campaignInfo.targeting.devices[0].os_version_max
+            }
+            onSelectedVersionsChange={this.onSelectedVersionsChange}
+            OSType={this.state.campaignInfo.targeting.devices[0].os_type}
             option={this.state.selectionOption}
           />
         );
@@ -541,15 +584,6 @@ class AdDetails extends Component {
     });
     interests_names = interests_names.join(", ");
 
-    // let device_makes = [];
-    // this.state.campaignInfo.targeting.devices[0].marketing_name.forEach(r => {
-    //   if (
-    //     this.state.campaignInfo.targeting.devices[0].find(i => i === r.value)
-    //   ) {
-    //     languages_names.push(r.label);
-    //   }
-    // });
-    // languages_names = languages_names.join(", ");
     let end_time = "";
     let start_time = "";
     let end_year = "";
@@ -592,6 +626,7 @@ class AdDetails extends Component {
                 styles.mainCard,
                 {
                   margin: 0,
+                  marginTop: 10,
                   flex: 1
                 }
               ]}
@@ -616,21 +651,18 @@ class AdDetails extends Component {
                   <Text style={[styles.subHeadings, { top: hp(1) }]}>
                     Budget
                   </Text>
+                  <Icon
+                    type="MaterialIcons"
+                    name="edit"
+                    style={[styles.editIcon]}
+                  />
                   <View style={{ height: hp(6) }}>
                     <Input
                       keyboardType="numeric"
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
-                      onChangeText={value =>
-                        this.setState({
-                          campaignInfo: {
-                            ...this.state.campaignInfo,
-                            lifetime_budget_micro:
-                              value !== "" ? parseInt(value) : 0
-                          }
-                        })
-                      }
+                      onChangeText={value => this._handleBudget(value)}
                       style={styles.colorYellow}
                     />
                   </View>
@@ -686,7 +718,12 @@ class AdDetails extends Component {
                       step={10}
                       minimumValue={this.state.minValueBudget}
                       maximumValue={this.state.maxValueBudget}
-                      value={this.state.campaignInfo.lifetime_budget_micro}
+                      value={
+                        this.state.campaignInfo.lifetime_budget_micro <
+                        90000000000000000000
+                          ? this.state.campaignInfo.lifetime_budget_micro
+                          : 1500
+                      }
                       onValueChange={val => this.onSelectedBudgetChange(val)}
                       thumbTintColor="rgb(252, 228, 149)"
                       maximumTrackTintColor="#fff"
@@ -1048,7 +1085,54 @@ class AdDetails extends Component {
                             <PlusCircleIcon width={25} height={25} />
                           )}
                         </TouchableOpacity>
+                        {this.state.campaignInfo.targeting.devices[0]
+                          .os_type !== "" && (
+                          <TouchableOpacity
+                            onPress={() => {
+                              this._renderSideMenu(
+                                "selectors",
+                                "deviceVersions"
+                              );
+                            }}
+                            style={{
+                              flexDirection: "row",
+                              marginVertical: 5,
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <View
+                              style={{ flexDirection: "row", width: "80%" }}
+                            >
+                              <Icon
+                                name="versions"
+                                type="Octicons"
+                                width={25}
+                                height={25}
+                                style={{
+                                  color: globalColors.orange,
+                                  right: 2
+                                }}
+                              />
+                              <View style={{ flexDirection: "column" }}>
+                                <Text style={styles.menutext}>OS Versions</Text>
+                                <Text style={styles.menudetails}>
+                                  {this.state.campaignInfo.targeting.devices[0]
+                                    .os_version_min +
+                                    ", " +
+                                    this.state.campaignInfo.targeting.devices[0]
+                                      .os_version_max}
+                                </Text>
+                              </View>
+                            </View>
 
+                            {this.state.campaignInfo.targeting.devices[0]
+                              .marketing_name.length !== 0 ? (
+                              <GreenCheckmarkIcon width={25} height={25} />
+                            ) : (
+                              <PlusCircleIcon width={25} height={25} />
+                            )}
+                          </TouchableOpacity>
+                        )}
                         <TouchableOpacity
                           onPress={() => {
                             this._renderSideMenu("selectors", "deviceBrands");
@@ -1099,14 +1183,6 @@ class AdDetails extends Component {
                     />
                   </View>
                 </View>
-
-                {
-                  //   <View style={{ top: -35 }}>
-                  //   <Button onPress={this._handleSubmission} style={styles.button}>
-                  //     <Icon style={styles.icon} name="arrow-forward" />
-                  //   </Button>
-                  // </View>
-                }
               </ImageBackground>
             </View>
           </Sidemenu>
@@ -1129,6 +1205,7 @@ class AdDetails extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loading,
   mainBusiness: state.auth.mainBusiness
