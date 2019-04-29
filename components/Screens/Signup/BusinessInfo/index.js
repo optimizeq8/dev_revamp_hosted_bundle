@@ -18,7 +18,7 @@ import {
 } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import RadioGroup from "react-native-radio-buttons-group";
-
+import { Segment } from "expo";
 //icons
 import HomeBussinesIcon from "../../../../assets/SVGs/Person";
 import CompanyIcon from "../../../../assets/SVGs/Group";
@@ -174,6 +174,7 @@ class BusinessInfo extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
+    Segment.screen("Signup Enter BusinessInfo Screen");
     this.props.resetMessages();
   }
 

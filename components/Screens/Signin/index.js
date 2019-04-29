@@ -10,7 +10,7 @@ import {
   Input,
   Container
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 //Validation
 import validateWrapper from "./ValidateWrapper";
 
@@ -37,7 +37,9 @@ class MainForm extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-
+  componentDidMount() {
+    Segment.screen("Sign in Screen");
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
       this.setState({

@@ -1,9 +1,10 @@
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading, Asset, Font, Icon, Linking } from "expo";
+import { AppLoading, Asset, Font, Icon, Linking, Segment } from "expo";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
+
 // console.disableYellowBox = true;
 import Sentry from "sentry-expo";
 
@@ -21,6 +22,12 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false
   };
+  componentDidMount() {
+    Segment.initialize({
+      androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
+      iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
+    });
+  }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

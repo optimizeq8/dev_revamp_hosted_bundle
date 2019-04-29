@@ -17,7 +17,7 @@ import {
   Icon,
   Spinner
 } from "native-base";
-import { LinearGradient, WebBrowser, Linking } from "expo";
+import { LinearGradient, WebBrowser, Linking, Segment } from "expo";
 import KnetIcon from "../../../assets/SVGs/Knet.svg";
 
 // Style
@@ -32,6 +32,13 @@ class PaymentForm extends Component {
   static navigationOptions = {
     header: null
   };
+  componentDidMount() {
+    Segment.screenWithProperties("Payment Form Screen", {
+      businessname: this.props.mainBusiness.businessname,
+      campaign_id: this.props.campaign_id,
+      price: this.props.data.lifetime_budget_micro
+    });
+  }
   _openWebBrowserAsync = async () => {
     try {
       this._addLinkingListener();
@@ -144,7 +151,7 @@ class PaymentForm extends Component {
             }}
           >
             <View>
-              {/* 
+              {/*
               <Text style={styles.text}>Agency Fee</Text>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
               <Text style={styles.text}>
@@ -201,6 +208,7 @@ class PaymentForm extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
+  mainBusiness: state.campaignC.mainBusiness,
   campaign_id: state.campaignC.campaign_id,
   kdamount: state.campaignC.kdamount,
   payment_data: state.campaignC.payment_data

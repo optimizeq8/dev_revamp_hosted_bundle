@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image } from "react-native";
-import { Linking, LinearGradient } from "expo";
+import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import ErrorIcon from "../../../assets/SVGs/Error.svg";
 
@@ -20,7 +20,9 @@ class ErrorRedirect extends Component {
 
     this.state = {};
   }
-
+  componentDidMount() {
+    Segment.screen("Payment Error Screen");
+  }
   render() {
     return (
       <Container style={styles.container}>

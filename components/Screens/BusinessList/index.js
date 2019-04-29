@@ -22,7 +22,7 @@ import {
   Thumbnail,
   Spinner
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 import * as actionCreators from "../../../store/actions";
 // Style
@@ -38,7 +38,9 @@ class BusinessList extends Component {
     super(props);
     this.state = {};
   }
-
+  componentDidMount() {
+    Segment.screen("Business List Screen");
+  }
   render() {
     const list = this.props.businessAccounts.map(business => (
       <BusinessCard business={business} key={business.businessid} />

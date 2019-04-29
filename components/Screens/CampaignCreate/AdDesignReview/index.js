@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, ImageBackground } from "react-native";
-import { Video } from "expo";
+import { Video, Segment } from "expo";
 import { Text } from "native-base";
 
 //icons
@@ -19,7 +19,9 @@ class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
   };
-
+  componentDidMount() {
+    Segment.screen("Ad Preview Screen");
+  }
   render() {
     console.log(this.props.navigation.state.params.call_to_action);
 

@@ -3,7 +3,7 @@ import React, { Component, createRef } from "react";
 import { View, Image } from "react-native";
 import { Text, Container, Icon } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
-
+import { Segment } from "expo";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -19,6 +19,8 @@ class Verification extends Component {
   };
   state = { codeError: "" };
   componentDidMount() {
+    Segment.screen("Signup Enter OTP Verification Screen");
+
     alert(this.props.verificationCode);
   }
   componentDidUpdate(prevProps) {

@@ -5,7 +5,8 @@ import {
   ImagePicker,
   Permissions,
   Video,
-  FileSystem
+  FileSystem,
+  Segment
 } from "expo";
 import {
   View,
@@ -84,6 +85,8 @@ class AdDesign extends Component {
     this._changeDestination = this._changeDestination.bind(this);
   }
   async componentDidMount() {
+    Segment.screen("Design Ad Screen");
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
