@@ -351,7 +351,7 @@ class Dashboard extends Component {
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
                         } else {
                           Segment.track("Create Campaign Button Pressed");
-                          this.props.navigation.navigate("AdDetails");
+                          this.props.navigation.navigate("AdType");
                         }
                       }}
                     >
