@@ -126,13 +126,13 @@ export const ad_design = (
           payload: data
         });
       })
-      .then(() =>
+      .then(() =>{
         onToggleModal();
         navigation.replace("AdDetails", {
           image: info._parts[0][1].uri,
           appChoice: appChoice
         })
-      )
+    })
       .catch(err => {
         laoding(0);
 
