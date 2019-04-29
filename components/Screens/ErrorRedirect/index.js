@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import { Linking, LinearGradient } from "expo";
+import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import ErrorIcon from "../../../assets/SVGs/Error.svg";
 
@@ -22,6 +22,7 @@ class ErrorRedirect extends Component {
   }
 
   componentDidMount() {
+    Segment.screen("Payment Error Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
   }

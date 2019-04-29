@@ -11,7 +11,7 @@ import {
   Container,
   Icon
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import Swiper from "../../../MiniComponents/Swiper";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CloseButton from "../../../MiniComponents/CloseButton";
@@ -47,7 +47,9 @@ class AdType extends Component {
   navigationHandler = () => {
     this.props.navigation.navigate(this.state.route);
   };
-
+  componentDidMount() {
+    Segment.screen("Select Ad Type Screen");
+  }
   render() {
     const Slide = ({ title, id, icon, rout, text }) => (
       <View>

@@ -16,7 +16,7 @@ import {
   H1,
   Thumbnail
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import * as actionCreators from "../../../store/actions";
 
 // Style
@@ -35,6 +35,7 @@ class MainForm extends Component {
   }
 
   componentDidMount() {
+    Segment.screen("Create Snap Ad Account Screen");
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (this.props.mainBusiness.snap_ad_account_id !== "")
       this.props.navigation.navigate("Dashboard");

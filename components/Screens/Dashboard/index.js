@@ -28,7 +28,7 @@ import {
 } from "native-base";
 import LottieView from "lottie-react-native";
 
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import FilterStatus from "../../MiniComponents/FilterStatus";
@@ -82,6 +82,10 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
+      Segment.screenWithProperties("Home", {
+        business_name: this.props.mainBusiness.businessname,
+        business_id: this.props.mainBusiness.businessid
+      });
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
@@ -95,6 +99,10 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
+      Segment.screenWithProperties("Home", {
+        business_name: this.props.mainBusiness.businessname,
+        business_id: this.props.mainBusiness.businessid
+      });
     }
   }
 
@@ -337,9 +345,14 @@ class Dashboard extends Component {
                     <Button
                       style={styles.button}
                       onPress={() => {
-                        if (this.props.mainBusiness.snap_ad_account_id === "")
+                        if (this.props.mainBusiness.snap_ad_account_id === "") {
+                          Segment.track("Create SnapAd Acount Button Pressed ");
+
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
-                        else this.props.navigation.navigate("AdDetails");
+                        } else {
+                          Segment.track("Create Campaign Button Pressed");
+                          this.props.navigation.navigate("AdType");
+                        }
                       }}
                     >
                       <Text

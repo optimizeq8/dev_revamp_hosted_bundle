@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button, Icon } from "native-base";
 import CountryModal from "./CountryModal";
+import { Segment } from "expo";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -36,6 +37,8 @@ class PhoneNo extends Component {
   }
 
   componentDidMount() {
+    Segment.screen("Signup Enter Phone No. Screen");
+
     this.phone.focus();
     this.setState({
       pickerData: this.phone.getPickerData()

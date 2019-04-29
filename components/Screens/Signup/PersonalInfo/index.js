@@ -11,7 +11,7 @@ import {
 import { Button, Text, Item, Input, Icon, Label } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
+import { Segment } from "expo";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -48,6 +48,9 @@ class PersonalInfo extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
     this._passwordVarification = this._passwordVarification.bind(this);
+  }
+  componentDidMount() {
+    Segment.screen("Signup Enter PersonalInfo Screen");
   }
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {

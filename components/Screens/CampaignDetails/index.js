@@ -32,7 +32,7 @@ import dateFormat from "dateformat";
 import Loading from "../../MiniComponents/LoadingScreen";
 
 import * as actionCreators from "../../../store/actions";
-import { Video, LinearGradient, BlurView } from "expo";
+import { Video, LinearGradient, BlurView, Segment } from "expo";
 import { interestNames } from "./interesetNames";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import InterestIcon from "../../../assets/SVGs/Interests.svg";
@@ -82,6 +82,12 @@ class CampaignDetails extends Component {
       LineAnimation: new Animated.Value(0),
       visible: true
     };
+  }
+
+  componentDidMount() {
+    Segment.screenWithProperties("Campaign Details Screen", {
+      campaign_id: this.props.campaign.campaign_id
+    });
   }
 
   componentDidUpdate(prevProps) {

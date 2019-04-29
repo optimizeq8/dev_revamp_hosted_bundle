@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import { Linking, LinearGradient } from "expo";
+import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
 
@@ -23,6 +23,7 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
+    Segment.screen("Payment Success Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
   }

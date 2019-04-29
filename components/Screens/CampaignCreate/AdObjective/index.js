@@ -18,7 +18,7 @@ import {
   Icon,
   Label
 } from "native-base";
-import { LinearGradient, BlurView } from "expo";
+import { LinearGradient, BlurView, Segment } from "expo";
 
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
@@ -115,6 +115,8 @@ class AdObjective extends Component {
   }
 
   componentDidMount() {
+    Segment.screen("Select Ad Objective Screen");
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,

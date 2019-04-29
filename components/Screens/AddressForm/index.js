@@ -7,7 +7,7 @@ import {
   Keyboard,
   Image
 } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
@@ -73,7 +73,9 @@ class AddressForm extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-
+  componentDidMount() {
+    Segment.screen("Address Form Screen");
+  }
   _renderSideMenu = (component, option = "") => {
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)

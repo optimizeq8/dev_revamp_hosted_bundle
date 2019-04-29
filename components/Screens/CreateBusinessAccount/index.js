@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import RNPickerSelect from "react-native-picker-select";
 import CloseButton from "../../MiniComponents/CloseButton";
 //icons
@@ -168,6 +168,9 @@ class CreateBusinessAccount extends Component {
         }
       ]
     };
+  }
+  componentDidMount() {
+    Segment.screen("Create New Business");
   }
 
   componentDidUpdate(prevProps) {

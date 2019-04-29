@@ -14,7 +14,7 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import {
   widthPercentageToDP,
   heightPercentageToDP
@@ -43,6 +43,9 @@ class CampaignCard extends Component {
         <TouchableOpacity
           onPress={() => {
             this.props.getCampaign(this.props.campaign.campaign_id);
+            Segment.trackWithProperties("Campaign Card Pressed", {
+              campaign_id: this.props.campaign.campaign_id
+            });
             this.props.navigation.push("CampaignDetails");
           }}
           style={styles.campaignButton}

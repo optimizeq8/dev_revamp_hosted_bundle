@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-
+import { Segment } from "expo";
 const initialState = {
   address: {},
   mobileNo: "",
@@ -22,7 +22,6 @@ const initialState = {
   filterStatus: "A",
   campaignStartSearch: "",
   campaignEndSearch: "",
-
   isListEnd: false,
   fetching_from_server: false,
   passwordChanged: false
@@ -34,7 +33,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         successNo: action.payload.success,
-
         mobileNo: action.payload.mobile,
         countryCode: action.payload.country_code,
         verified: action.payload.verified,
@@ -90,8 +88,14 @@ const reducer = (state = initialState, action) => {
         loading: !action.payload.data.success
       };
     case actionTypes.SET_CURRENT_USER:
+      console.log("user reducer", action.payload.user);
+      Segment.identifyWithTraits(
+        action.payload.user.userid,
+        action.payload.user
+      );
       return {
         ...state,
+        userid: action.payload.user.userid,
         userInfo: action.payload.user,
         loading: false,
         message: action.payload.message
