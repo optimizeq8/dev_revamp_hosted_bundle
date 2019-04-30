@@ -26,8 +26,9 @@ import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import globalStyles from "../../../Global Styles";
 
 //Data
-import country_regions from "./regions";
+// import Areas from "./regions";
 import countries from "./Countries";
+import Areas from "./Areas";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../Validation Functions/ValidateWrapper";
@@ -54,10 +55,10 @@ class AddressForm extends Component {
       },
       country_code: "",
       region_id: [],
-      regions: country_regions[0].regions,
+      areas: Areas[0].regions,
       sidemenustate: false,
       sidemenu: "",
-      filteredRegions: country_regions[0].regions,
+      filteredRegions: Areas[0].regions,
       inputC: false,
       inputA: false,
       inputBL: false,
@@ -86,14 +87,15 @@ class AddressForm extends Component {
     if (selectedItem) {
       replace.country = selectedItem.label;
       replace.area = "";
-      let reg = country_regions.find(
-        c => c.country_code === selectedItem.value
+      console.log(Areas[0].country_code);
+      let area = Areas.find(
+        c => c.country_code.toLowerCase() === selectedItem.value
       );
       await this.setState({
         address: replace,
         country_code: selectedItem.value,
-        regions: reg.regions,
-        filteredRegions: reg.regions,
+        areas: area.cities,
+        filteredRegions: area.cities,
         countryError: ""
       });
       // this.getTotalReach();
@@ -175,7 +177,7 @@ class AddressForm extends Component {
             filteredRegions={this.state.filteredRegions}
             onSelectedRegionChange={this.onSelectedRegionChange}
             _handleSideMenuState={this._handleSideMenuState}
-            regions={this.state.regions}
+            regions={this.state.areas}
             region_id={this.state.region_id}
             filterRegions={this.filterRegions}
             addressForm={true}
@@ -362,9 +364,9 @@ class AddressForm extends Component {
                         style={[
                           styles.input,
                           {
-                            borderColor: this.state.inputS
+                            borderColor: this.state.inputB
                               ? "#7039FF"
-                              : this.state.streetError
+                              : this.state.buildingError
                               ? "red"
                               : "#D9D9D9"
                           }
@@ -375,49 +377,61 @@ class AddressForm extends Component {
                             styles.inputtext,
                             {
                               bottom: 5,
-
-                              color: this.state.inputS ? "#FF9D00" : "#717171"
+                              fontSize: wp(2.9),
+                              color: this.state.inputB ? "#FF9D00" : "#717171"
                             }
                           ]}
                         >
-                          {"  "}
-                          Street*
+                          Building/House #*
                         </Label>
                         <Input
                           multiline={true}
                           maxLength={100}
+                          onContentSizeChange={({
+                            nativeEvent: {
+                              contentSize: {
+                                width: txtWidth,
+                                height: txtHeight
+                              }
+                            }
+                          }) => {
+                            if (txtHeight > 40) {
+                              this.setState({
+                                height: txtHeight
+                              });
+                            }
+                          }}
                           style={styles.inputtext}
                           autoCorrect={false}
                           autoCapitalize="none"
-                          onChangeText={street =>
+                          onChangeText={building =>
                             this.setState({
-                              address: { ...this.state.address, street }
+                              address: { ...this.state.address, building }
                             })
                           }
                           onFocus={() => {
-                            this.setState({ inputS: true });
+                            this.setState({ inputB: true });
                           }}
                           onBlur={() => {
                             this.setState({
-                              inputS: false,
-                              streetError: validateWrapper(
+                              inputB: false,
+                              buildingError: validateWrapper(
                                 "mandatory",
-                                this.state.address.street
+                                this.state.address.building
                               )
                             });
                           }}
                         />
                       </Item>
                     </View>
-
                     <Item
                       floatingLabel
                       style={[
                         styles.input,
                         {
-                          borderColor: this.state.inputB
+                          borderColor: this.state.inputS
                             ? "#7039FF"
-                            : this.state.buildingError
+                            : this.state.streetError
                             ? "red"
                             : "#D9D9D9",
                           width: 250,
@@ -431,44 +445,33 @@ class AddressForm extends Component {
                           {
                             bottom: 5,
 
-                            color: this.state.inputB ? "#FF9D00" : "#717171"
+                            color: this.state.inputS ? "#FF9D00" : "#717171"
                           }
                         ]}
                       >
                         {"  "}
-                        Building*
+                        Street*
                       </Label>
                       <Input
                         multiline={true}
                         maxLength={100}
-                        onContentSizeChange={({
-                          nativeEvent: {
-                            contentSize: { width: txtWidth, height: txtHeight }
-                          }
-                        }) => {
-                          if (txtHeight > 40) {
-                            this.setState({
-                              height: txtHeight
-                            });
-                          }
-                        }}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
-                        onChangeText={building =>
+                        onChangeText={street =>
                           this.setState({
-                            address: { ...this.state.address, building }
+                            address: { ...this.state.address, street }
                           })
                         }
                         onFocus={() => {
-                          this.setState({ inputB: true });
+                          this.setState({ inputS: true });
                         }}
                         onBlur={() => {
                           this.setState({
-                            inputB: false,
-                            buildingError: validateWrapper(
+                            inputS: false,
+                            streetError: validateWrapper(
                               "mandatory",
-                              this.state.address.building
+                              this.state.address.street
                             )
                           });
                         }}
