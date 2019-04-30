@@ -23,8 +23,6 @@ class AdDesignReview extends Component {
     Segment.screen("Ad Preview Screen");
   }
   render() {
-    console.log(this.props.navigation.state.params.call_to_action);
-
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -86,6 +84,7 @@ class AdDesignReview extends Component {
               {this.props.navigation.state.params.call_to_action !== "BLANK" &&
                 this.props.navigation.state.params.call_to_action}
             </Text>
+            <Text style={[styles.AD]}>AD</Text>
           </View>
         </Transition>
       </View>

@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 12,
+    fontSize: 15,
     paddingHorizontal: 10,
     lineHeight: 15
   },
   header: {
     fontFamily: "montserrat-medium",
     paddingHorizontal: 50,
-    paddingVertical: 30,
+    paddingVertical: 20,
     textAlign: "center",
     fontSize: 16,
     color: "#fff",
@@ -93,14 +93,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   bottomCard: {
-    paddingBottom: 15,
     top: 15,
     borderColor: "#FF9D00",
     justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 130,
+    height: 100,
     marginLeft: 0,
     marginRight: 0,
     shadowRadius: 5,
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 15,
     backgroundColor: "#FF9D00",
-    borderRadius: 0,
+    borderRadius: 10,
     alignSelf: "center",
     justifyContent: "center"
   },
