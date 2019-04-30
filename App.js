@@ -18,6 +18,10 @@ import Sentry from "sentry-expo";
 
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 // Sentry.enableInExpoDevelopment = true;
 
@@ -85,7 +89,7 @@ ${error.stack}`)
     }
 
     return (
-      <Animated.View
+      <View
         style={{
           position: "absolute",
           top: 0,
@@ -94,36 +98,25 @@ ${error.stack}`)
           right: 0,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#fff",
-          opacity: this.state.splashAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0]
-          })
+          width: widthPercentageToDP("100%"),
+          height: heightPercentageToDP("100%")
         }}
       >
-        <Animated.Image
+        <Image
           source={require("./assets/images/splash.png")}
           style={{
-            width: undefined,
-            height: undefined,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            resizeMode: "contain",
-            transform: [
-              {
-                scale: this.state.splashAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 4]
-                })
-              }
-            ]
+            width: widthPercentageToDP("100%"),
+            height: heightPercentageToDP("110%")
+            // position: "absolute",
+            // top: 0,
+            // left: 0,
+            // bottom: 0,
+            // right: 0,
+            // resizeMode: "cover"
           }}
           onLoadEnd={this._animateOut}
         />
-      </Animated.View>
+      </View>
     );
   };
 
