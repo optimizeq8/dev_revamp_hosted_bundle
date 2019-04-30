@@ -73,8 +73,18 @@ class SuccessRedirect extends Component {
               });
               Segment.trackWithProperties("Order Completed", {
                 business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_id,
-                revenue: this.props.data.lifetime_budget_micro
+                order_id: this.props.campaign_id,
+                currency: "USD",
+                revenue: this.props.data.lifetime_budget_micro,
+                products: [
+                  {
+                    products_id: 1,
+                    name: "Snapchat Snap Ad",
+                    price: this.props.data.lifetime_budget_micro,
+                    quantity: 1,
+                    category: "Advertisment"
+                  }
+                ]
               });
               this.props.navigation.navigate("Dashboard");
             }}
