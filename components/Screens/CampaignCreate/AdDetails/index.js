@@ -103,6 +103,7 @@ class AdDetails extends Component {
       sidemenu: "gender",
       regions: country_regions[0].regions,
       budget: 50,
+      value: 50,
       minValueBudget: 25,
       maxValueBudget: 1500,
       interestNames: [],
@@ -284,7 +285,8 @@ class AdDetails extends Component {
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
     this.setState({
-      campaignInfo: replace
+      campaignInfo: replace,
+      value: budget
     });
   };
 
@@ -301,15 +303,18 @@ class AdDetails extends Component {
   };
 
   _handleBudget = value => {
+    console.log("jmfd", value);
+
     if (
       !validateWrapper("Budget", value) &&
-      value > this.state.minValueBudget
+      value >= this.state.minValueBudget
     ) {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: value !== "" ? parseFloat(value) : 0
-        }
+        },
+        value: parseFloat(value)
       });
       return true;
     } else {

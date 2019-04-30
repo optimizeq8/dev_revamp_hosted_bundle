@@ -37,7 +37,7 @@ class Loading extends React.Component {
           <>
             <LinearGradient
               colors={[colors.background1, colors.background2]}
-              locations={[0.4, 1]}
+              locations={[0.7, 1]}
               style={styles.gradient}
             />
             <View>
@@ -45,7 +45,8 @@ class Loading extends React.Component {
                 source={require("../../assets/images/logo01.png")}
                 style={{
                   width: 200,
-                  height: 200
+                  height: 200,
+                  bottom: heightPercentageToDP(4)
                 }}
                 resizeMode="contain"
               />

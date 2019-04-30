@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   buttonN: {
     // paddingTop: 0,
     // bottom: 20,
-    height: hp("71")
+    height: hp("75")
   },
   content: {
     flexDirection: "row",
