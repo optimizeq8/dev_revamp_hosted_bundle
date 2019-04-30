@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
   },
   colorYellow: {
     alignSelf: "center",
-    width: wp(50),
+    // width: wp(50),
+    flex: 1,
     color: "#FF9D00",
     fontSize: 27,
     fontFamily: "montserrat-medium",

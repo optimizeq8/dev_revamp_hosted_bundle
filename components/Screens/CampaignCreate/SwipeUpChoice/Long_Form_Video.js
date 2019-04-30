@@ -25,11 +25,18 @@ import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
-import { ImagePicker, Permissions, LinearGradient, FileSystem } from "expo";
+import { ImagePicker, Permissions, Video, FileSystem } from "expo";
+
+//icons
+import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
+import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
 
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../../Global Styles";
 
 export default class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -41,6 +48,8 @@ export default class Long_Form_Video extends Component {
       callaction: list[2].call_to_action_list[0],
       longformvideo_media: null,
       duration: 0,
+      width: 0,
+      height: 0,
       longformvideo_media_type: "",
       callactions: list[2].call_to_action_list,
       videoError: "",
@@ -76,6 +85,8 @@ export default class Long_Form_Video extends Component {
             this.setState({
               longformvideo_media: result.uri,
               longformvideo_media_type: result.type.toUpperCase(),
+              width: result.width,
+              height: result.height,
               durationError: null,
               videoError: null
             });
@@ -99,6 +110,7 @@ export default class Long_Form_Video extends Component {
         longformvideo_media: this.state.longformvideo_media,
         longformvideo_media_type: this.state.longformvideo_media_type
       });
+      this.props.navigation.navigate("AdDesign");
     }
   };
   render() {
@@ -110,33 +122,69 @@ export default class Long_Form_Video extends Component {
             paddingTop: 30
           }}
         >
-          <Icon
-            type="MaterialCommunityIcons"
-            name="video"
-            style={styles.icon}
-          />
+          <VideoIcon style={[styles.icon]} />
           <View style={styles.textcontainer}>
             <Text style={[styles.titletext]}>LongForm Video</Text>
             <Text style={[styles.subtext]}>
               The user will be shown a longform video you upload
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              this._pickImage();
-            }}
-            style={styles.video}
-          >
-            <Icon
-              type="MaterialCommunityIcons"
-              name="video-plus"
-              style={[styles.icon, { fontSize: 70 }]}
-            />
-            <Text style={[styles.subtext, { color: "#FF9D00", marginTop: 5 }]}>
-              Add Video
-            </Text>
-          </TouchableOpacity>
+          {this.state.longformvideo_media && (
+            <>
+              <Text style={styles.subtext}>Preview Only</Text>
+              <Video
+                source={{
+                  uri: this.state.longformvideo_media
+                }}
+                shouldPlay
+                isLooping
+                isMuted
+                resizeMode="cover"
+                style={[styles.placeholder]}
+              />
+              <Button
+                onPress={() => {
+                  this._pickImage();
+                }}
+                style={{
+                  backgroundColor: globalColors.orange,
+                  alignSelf: "center",
+                  marginTop: 10,
+                  borderRadius: 30
+                }}
+              >
+                <Text> Change Video</Text>
+              </Button>
+            </>
+          )}
 
+          {!this.state.longformvideo_media && (
+            <TouchableOpacity
+              onPress={() => {
+                this._pickImage();
+              }}
+              style={styles.video}
+            >
+              <AddVidIcon
+                type="MaterialCommunityIcons"
+                name="video-plus"
+                style={[styles.icon, { fontSize: 70 }]}
+              />
+              <Text
+                style={[
+                  styles.subtext,
+                  {
+                    color: "#FF9D00",
+                    position: "absolute",
+                    top: "70%",
+                    fontFamily: "montserrat-bold"
+                  }
+                ]}
+              >
+                Add Video
+              </Text>
+            </TouchableOpacity>
+          )}
           {this.state.durationError ? (
             <Text style={[styles.subtext, { color: "white", marginTop: 5 }]}>
               {this.state.durationError}
@@ -188,13 +236,17 @@ export default class Long_Form_Video extends Component {
             </Item>
           </RNPickerSelect>
         </View>
-        <TouchableOpacity onPress={this._handleSubmission}>
+        <LowerButton
+          function={this._handleSubmission}
+          bottom={-heightPercentageToDP(1)}
+        />
+        {/* <TouchableOpacity onPress={this._handleSubmission}>
           <Image
             style={styles.image}
             source={require("../../../../assets/images/button.png")}
             resizeMode="contain"
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

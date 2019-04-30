@@ -266,7 +266,8 @@ class AdDesign extends Component {
     if (
       this.state.objective !== "REACH" &&
       this.state.objective !== "BRAND_AWARENESS" &&
-      this.state.campaignInfo.attachment === "BLANK"
+      this.state.campaignInfo.attachment === "BLANK" &&
+      this.state.campaignInfo.call_to_action.label === "BLANK"
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -314,6 +315,8 @@ class AdDesign extends Component {
     this.setState({ isVisible: !isVisible });
   };
   render() {
+    console.log(this.state.campaignInfo);
+
     let { image } = this.state;
     return (
       <Container style={styles.container}>

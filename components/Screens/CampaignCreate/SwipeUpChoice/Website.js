@@ -25,9 +25,14 @@ import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
+import LowerButton from "../../../MiniComponents/LowerButton";
+//icons
+import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default class Website extends Component {
   static navigationOptions = {
@@ -69,7 +74,7 @@ export default class Website extends Component {
     return (
       <View>
         <View style={{ flexDirection: "column", paddingTop: 30 }}>
-          <Icon type="MaterialCommunityIcons" name="web" style={styles.icon} />
+          <WebsiteIcon style={styles.icon} />
           <View style={styles.textcontainer}>
             <Text style={[styles.titletext]}>Website</Text>
             <Text style={[styles.subtext]}>
@@ -127,7 +132,8 @@ export default class Website extends Component {
           >
             <Input
               style={styles.inputtext}
-              placeholder="Ad Name"
+              placeholder="Enter your website's URL"
+              placeholderTextColor="#fff"
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={value =>
@@ -149,13 +155,17 @@ export default class Website extends Component {
             />
           </Item>
         </View>
-        <TouchableOpacity onPress={this._handleSubmission}>
+        <LowerButton
+          bottom={-heightPercentageToDP(5)}
+          function={this._handleSubmission}
+        />
+        {/* <TouchableOpacity onPress={this._handleSubmission}>
           <Image
             style={styles.image}
             source={require("../../../../assets/images/button.png")}
             resizeMode="contain"
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

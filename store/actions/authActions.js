@@ -52,6 +52,8 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         cancelToken
       })
       .then(res => {
+        console.log(res.data);
+
         return res.data;
       })
       .then(data => {
@@ -63,9 +65,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
       })
       .catch(err => {
         // console.log(err.response);
-        if (axios.isCancel(err)) {
-          console.log("Error: ", err.message); // => prints: Api is being canceled
-        }
+        console.log("Error: ", err); // => prints: Api is being canceled
       });
   };
 };

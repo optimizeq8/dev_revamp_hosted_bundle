@@ -216,6 +216,10 @@ class AdDetails extends Component {
     this.setState({
       minValueBudget
     });
+    showMessage({
+      message: "Minimum budget recalculated based on duration",
+      type: "warning"
+    });
   };
   handleStartDatePicked = date => {
     this.setState({
@@ -494,7 +498,7 @@ class AdDetails extends Component {
       case "age": {
         menu = (
           <AgeOption
-            state={this.state}
+            state={this.state.campaignInfo.targeting.demographics[0]}
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
             _handleSideMenuState={this._handleSideMenuState}
@@ -737,6 +741,7 @@ class AdDetails extends Component {
                     </View>
 
                     <Slider
+                      thumbTintColor={globalColors.orange}
                       disabled={
                         this.props.navigation.state.params &&
                         this.props.navigation.state.params.editCampaign
@@ -752,7 +757,7 @@ class AdDetails extends Component {
                           : 1500
                       }
                       onValueChange={val => this.onSelectedBudgetChange(val)}
-                      thumbTintColor="rgb(252, 228, 149)"
+                      thumbTintColor="red"
                       maximumTrackTintColor="#fff"
                       minimumTrackTintColor="#751AFF"
                     />
@@ -766,7 +771,7 @@ class AdDetails extends Component {
                       {
                         borderColor: this.state.start_timeError
                           ? "red"
-                          : "#D9D9D9"
+                          : "transparent"
                       }
                     ]}
                     onPress={() => {

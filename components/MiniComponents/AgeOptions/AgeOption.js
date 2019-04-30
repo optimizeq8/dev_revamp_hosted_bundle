@@ -19,6 +19,11 @@ export default class AgeOption extends Component {
     values: [13, 35]
   };
 
+  componentDidMount() {
+    this.setState({
+      values: [this.props.state.min_age, this.props.state.max_age]
+    });
+  }
   multiSliderValuesChange = values => {
     this.props._handleMinAge(values[0]);
     this.props._handleMaxAge(values[1]);
@@ -64,7 +69,9 @@ export default class AgeOption extends Component {
               values={[this.state.values[0], this.state.values[1]]}
               sliderLength={wp(60)}
               isMarkersSeparated
-              customMarkerLeft={e => <RangeMarkers value={e.currentValue} />}
+              customMarkerLeft={e => (
+                <RangeMarkers value={e.currentValue} down={true} />
+              )}
               customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
               onValuesChange={this.multiSliderValuesChange}
               min={13}
