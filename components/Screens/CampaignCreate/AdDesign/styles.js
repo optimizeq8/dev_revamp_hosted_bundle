@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   buttonN: {
     // paddingTop: 0,
     // bottom: 20,
-    height: hp("75")
+    height: hp("78")
   },
   content: {
     flexDirection: "row",
@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: "center",
-    width: 55,
-    height: 55,
+    width: wp(10),
+    height: hp(7.5),
 
     alignItems: "center",
     justifyContent: "flex-end",

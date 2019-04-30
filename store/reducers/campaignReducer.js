@@ -62,7 +62,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.PAYMENT_REQUEST_URL:
       return {
         ...state,
-        payment_data: action.payload
+        payment_data: action.payload,
+        loading: !action.payload.success
       };
     case actionTypes.SET_INTERESTS:
       return {

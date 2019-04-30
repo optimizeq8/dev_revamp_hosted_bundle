@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Dimensions
-} from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import {
   Card,
   Button,
@@ -17,6 +9,8 @@ import {
   Icon,
   Spinner
 } from "native-base";
+import { Modal } from "react-native-paper";
+
 import { LinearGradient, WebBrowser, Linking, Segment } from "expo";
 import KnetIcon from "../../../assets/SVGs/Knet.svg";
 
@@ -27,6 +21,7 @@ import { colors } from "../../GradiantColors/colors";
 //Reddux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -97,13 +92,45 @@ class PaymentForm extends Component {
 
         <View style={styles.headerview}>
           <Text style={styles.header}>Payment</Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "column" }}>
             {/* <Button disabled style={styles.whitebutton}>
               <Text style={styles.whitebuttontext}> WALLET </Text>
             </Button>
             */}
-            <Button style={styles.button}>
-              <Text style={styles.buttontext}> K-NET </Text>
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                fontSize: 13,
+                fontFamily: "montserrat-medium"
+              }}
+            >
+              TOTAL
+            </Text>
+            <Text
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                fontSize: 16,
+                fontFamily: "montserrat-bold",
+                paddingTop: 3
+              }}
+            >
+              {this.props.data.lifetime_budget_micro}${"\n"}
+              {this.props.navigation.state.params.kdamount} kwd
+            </Text>
+
+            <Button
+              onPress={() =>
+                !this.props.loading &&
+                this.props.navigation.navigate("AdPaymentReview", {
+                  interestNames: this.props.navigation.state.params
+                    .interestNames
+                })
+              }
+              style={styles.button}
+            >
+              <Text style={styles.boldtext}>Review Purchase</Text>
             </Button>
             {/* <Button disabled style={styles.whitebutton2}>
               <Text style={styles.whitebuttontext}> CREDIT{"\n"}CARD </Text>
@@ -126,25 +153,15 @@ class PaymentForm extends Component {
             payment process
           </Text>
         </View>
+
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "flex-end"
+          }}
         >
-          <View style={[styles.mainCard]}>
-            <Text
-              style={styles.boldtext}
-              onPress={() =>
-                this.props.navigation.navigate("AdPaymentReview", {
-                  interestNames: this.props.navigation.state.params
-                    .interestNames
-                })
-              }
-            >
-              Review Purchase
-            </Text>
-          </View>
-        </View>
-        <Card padder style={[styles.bottomCard]}>
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               Segment.trackWithProperties("Completed Checkout Step", {
                 step: 6,
@@ -152,20 +169,22 @@ class PaymentForm extends Component {
                 checkout_id: this.props.campaign_id,
                 paymentMethod: "KNET"
               });
+
               this.props.payment_request_knet(
                 this.props.campaign_id,
                 this._openWebBrowserAsync
               );
             }}
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignSelf: "center",
-              alignItems: "center"
-            }}
+            style={[
+              styles.mainCard,
+              {
+                backgroundColor: !this.props.loading ? "#FF9D00" : "#aa6900"
+              }
+            ]}
           >
             <View>
               {/*
+              ----------For future maybe----------
               <Text style={styles.text}>Agency Fee</Text>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
               <Text style={styles.text}>
@@ -179,41 +198,25 @@ class PaymentForm extends Component {
                   color: "#fff",
                   textAlign: "center",
                   fontSize: 13,
-                  fontFamily: "montserrat-medium"
-                }}
-              >
-                TOTAL
-              </Text>
-              <Text
-                style={{
-                  color: "#fff",
-                  textAlign: "center",
-                  fontSize: 18,
-                  fontFamily: "montserrat-bold",
-                  paddingTop: 3
-                }}
-              >
-                {this.props.data.lifetime_budget_micro}${"\n"}(
-                {this.props.navigation.state.params.kdamount} kwd)
-              </Text>
-              <Text
-                style={{
-                  color: "#fff",
-                  textAlign: "center",
-                  fontSize: 13,
                   fontFamily: "montserrat-medium",
                   paddingBottom: 3
                 }}
               >
                 Pay now
               </Text>
-              <Text style={styles.link}>
-                By tapping this button you {"\n"}
-                Agree to the Terms & Conditions
-              </Text>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        </View>
+
+        <Card padder style={[styles.bottomCard]}>
+          <Text style={styles.link}>
+            By tapping this button you {"\n"}
+            Agree to the Terms & Conditions
+          </Text>
         </Card>
+        <Modal visible={this.props.loading}>
+          <LoadingScreen top={0} />
+        </Modal>
       </Container>
     );
   }
@@ -225,7 +228,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.auth.mainBusiness,
   campaign_id: state.campaignC.campaign_id,
   kdamount: state.campaignC.kdamount,
-  payment_data: state.campaignC.payment_data
+  payment_data: state.campaignC.payment_data,
+  loading: state.campaignC.loading
 });
 const mapDispatchToProps = dispatch => ({
   payment_request_knet: (campaign_id, openBrowser) =>

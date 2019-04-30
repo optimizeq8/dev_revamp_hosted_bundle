@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    paddingTop: 20,
+    paddingTop: heightPercentageToDP(1),
     backgroundColor: "black",
     height: heightPercentageToDP(110)
   },
@@ -91,11 +91,23 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 16,
-    bottom: "7%",
+    bottom: "10%",
     paddingVertical: 17,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 1
+    textShadowColor: "rgba(0, 0, 0, 0.8)",
+    textShadowOffset: { width: 0, height: 0.5 },
+    textShadowRadius: 20
+  },
+  AD: {
+    position: "absolute",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    bottom: "2%",
+    left: "90%",
+    paddingVertical: 17,
+    textShadowColor: "rgba(0, 0, 0, 1)",
+    textShadowOffset: { width: 0, height: 0.5 },
+    textShadowRadius: 30
   },
   activeBadege: {
     backgroundColor: "#5F5F5F",

@@ -46,7 +46,10 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Validator
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
 import Modal from "react-native-modal";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
@@ -328,7 +331,7 @@ class AdDesign extends Component {
             <View
               style={{
                 flexDirection: "row",
-                marginBottom: heightPercentageToDP("2")
+                marginBottom: heightPercentageToDP("0.5")
               }}
             >
               {/* <TouchableOpacity
@@ -530,9 +533,8 @@ class AdDesign extends Component {
                 style={{
                   textAlign: "center",
                   color: "#fff",
-                  paddingTop: 7,
                   fontFamily: "montserrat-medium",
-                  fontSize: 14,
+                  fontSize: heightPercentageToDP(1.7),
                   marginBottom: -heightPercentageToDP("2")
                 }}
               >
@@ -548,8 +550,8 @@ class AdDesign extends Component {
                   color: "#fff",
                   paddingTop: 10,
                   fontFamily: "montserrat-medium",
-                  fontSize: 14,
-                  marginBottom: -heightPercentageToDP("3")
+                  fontSize: heightPercentageToDP(1.7),
+                  marginBottom: -20
                 }}
               >
                 {this.state.swipeUpError}
@@ -567,13 +569,19 @@ class AdDesign extends Component {
                 style={[styles.button]}
                 onPress={() => this.perviewHandler()}
               >
-                <EyeIcon />
+                <EyeIcon
+                  width={widthPercentageToDP(25)}
+                  height={heightPercentageToDP(10)}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={this._handleSubmission}
                 style={styles.button}
               >
-                <ForwardButton />
+                <ForwardButton
+                  width={widthPercentageToDP(25)}
+                  height={heightPercentageToDP(10)}
+                />
               </TouchableOpacity>
             </View>
             <Modal isVisible={this.state.isVisible || this.state.imageLoading}>

@@ -29,8 +29,6 @@ class Verification extends Component {
   };
   componentDidMount() {
     Segment.screen("Signup Enter OTP Verification Screen");
-
-    alert(this.props.verificationCode);
   }
   componentDidUpdate(prevProps) {
     if (prevProps.verificationCode !== this.props.verificationCode)

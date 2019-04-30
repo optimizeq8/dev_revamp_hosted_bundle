@@ -6,10 +6,13 @@ const instance = axios.create({
 
 export const payment_request_knet = (campaign_id, openBrowser) => {
   return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
     instance
       .get(`makeknetpayment/${campaign_id}`)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -28,8 +31,6 @@ export const payment_request_knet = (campaign_id, openBrowser) => {
 
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
-    console.log("sanp ad", info);
-
     instance
       .post(`snapaudiencesize`, info)
       .then(res => {
@@ -55,7 +56,6 @@ export const get_total_reach = info => {
     instance
       .post("snapaudiencesize", info)
       .then(res => {
-        console.log("get total", res.data);
         return res.data;
       })
       .then(data => {
