@@ -75,7 +75,7 @@ const data = [
     price: "$0.00",
     rating: 5,
     slug: "pinterest",
-    title: "goCollect! by Tap"
+    title: "goCollect! by "
   }
 ];
 

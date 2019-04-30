@@ -105,12 +105,46 @@ class AppChoice extends Component {
     let androidUrl = "";
     if (this.state.choice === "" || this.state.choice === "ANDROID") {
       //--------------This is for dummy data--------------
-      androidUrl = androidDataTest.find(app => app.title === iosApp.title); //this for dummy data
+      // androidUrl = androidDataTest.find(app => {
+      //   if (app.title.length > iosApp.title.length) {
+      //     if (
+      //       app.title
+      //         .toLowerCase()
+      //         .trim()
+      //         .includes(iosApp.title.toLowerCase().trim())
+      //     )
+      //       return app;
+      //   } else {
+      //     if (
+      //       iosApp.title
+      //         .toLowerCase()
+      //         .trim()
+      //         .includes(app.title.toLowerCase().trim())
+      //     )
+      //       return app;
+      //   }
+      // }); //this for dummy data
 
       //--------------This for the actual api data--------------
-      // androidUrl = this.state.androidData.find(
-      //   app => app.title === iosApp.title
-      // );
+      androidUrl = this.state.androidData.find(app => {
+        if (app.title.length > iosApp.title.length) {
+          if (
+            app.title
+              .toLowerCase()
+              .trim()
+              .includes(iosApp.title.toLowerCase().trim())
+          )
+            return app;
+        } else {
+          if (
+            iosApp.title
+              .toLowerCase()
+              .trim()
+              .includes(app.title.toLowerCase().trim())
+          )
+            return app;
+        }
+      });
     }
     this.setState({
       attachment: {
@@ -167,8 +201,6 @@ class AppChoice extends Component {
     });
   };
   render() {
-    console.log(this.state.callaction);
-
     return (
       <View>
         <RNPickerSelect
@@ -193,6 +225,7 @@ class AppChoice extends Component {
             style={[
               styles.input,
               {
+                marginBottom: 20,
                 borderColor: this.state.callActionError ? "red" : "transparent"
               }
             ]}
@@ -314,7 +347,8 @@ class AppChoice extends Component {
               {
                 borderColor: this.state.nameError ? "red" : "transparent",
                 borderRadius: 30,
-                marginBottom: 10
+                marginBottom: 10,
+                marginTop: 0
               }
             ]}
           >
@@ -338,14 +372,14 @@ class AppChoice extends Component {
                 if (this.state.attachment.app_name !== "") {
                   switch (this.state.choice) {
                     case "iOS":
-                      // this._searchIosApps();
+                      this._searchIosApps();
                       break;
                     case "ANDROID":
-                      //this._searchAndroidApps();
+                      this._searchAndroidApps();
                       break;
                     case "":
-                      //this._searchAndroidApps();
-                      // this._searchIosApps();
+                      this._searchAndroidApps();
+                      this._searchIosApps();
                       break;
                   }
                 }
@@ -362,27 +396,27 @@ class AppChoice extends Component {
         ) : null}
 
         {this.state.loading ? (
-          <ActivityIndicator />
+          <ActivityIndicator color="#fff" size="large" />
         ) : (
           <View style={{ height: heightPercentageToDP(35) }}>
             <FlatList
               style={{ flex: 1 }}
               //-----------This is for actual app data searches-----------
-              // data={
-              //   this.state.showList
-              //     ? this.state.choice !== "ANDROID"
-              //       ? this.state.data
-              //       : this.state.androidData
-              //     : []
-              // }
-              //-----------This is for dummy app data searches-----------
               data={
                 this.state.showList
                   ? this.state.choice !== "ANDROID"
-                    ? data
-                    : androidDataTest
+                    ? this.state.data
+                    : this.state.androidData
                   : []
               }
+              //-----------This is for dummy app data searches-----------
+              // data={
+              //   this.state.showList
+              //     ? this.state.choice !== "ANDROID"
+              //       ? data
+              //       : androidDataTest
+              //     : []
+              // }
               // contentContainerStyle={{ height: heightPercentageToDP(35) }}
               // contentInset={{ bottom: heightPercentageToDP(15) }}
               renderItem={({ item }) => (

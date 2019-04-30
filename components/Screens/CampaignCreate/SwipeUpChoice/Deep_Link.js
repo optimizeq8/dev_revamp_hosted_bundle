@@ -123,11 +123,11 @@ export default class Deep_Link extends Component {
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
           >
-            <View style={{ flexDirection: "column", paddingTop: 30 }}>
+            <View style={{ flexDirection: "column", paddingTop: 10 }}>
               <AppInstallIcon style={styles.icon} />
               <View style={styles.textcontainer}>
                 <Text style={[styles.titletext]}>Deep Link</Text>
-                <Text style={[styles.subtext]}>
+                <Text style={[styles.subtext, { marginBottom: 0 }]}>
                   The user will be taken to a specific page in your app or
                   website
                 </Text>
