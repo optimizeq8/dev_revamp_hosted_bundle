@@ -19,7 +19,6 @@ import {
   Label
 } from "native-base";
 import { LinearGradient, BlurView, Segment } from "expo";
-
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -116,7 +115,11 @@ class AdObjective extends Component {
 
   componentDidMount() {
     Segment.screen("Select Ad Objective Screen");
-
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 2,
+      business_name: this.props.mainBusiness.businessname,
+      campaign_objective: this.state.campaignInfo.objective
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -148,7 +151,11 @@ class AdObjective extends Component {
         business_name: this.props.mainBusiness.businessname,
         campaign_objective: this.state.campaignInfo.objective
       });
-
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 2,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_objective: this.state.campaignInfo.objective
+      });
       this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
       // this.props.navigation.navigate("AdDesign");
     }

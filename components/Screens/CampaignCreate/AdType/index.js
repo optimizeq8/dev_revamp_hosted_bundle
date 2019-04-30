@@ -60,10 +60,20 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
+    Segment.trackWithProperties("Completed Checkout Step", {
+      step: 1,
+      business_name: this.props.mainBusiness.businessname,
+      campaign_type: this.state.campaign_type
+    });
     this.props.navigation.push(this.state.route);
   };
   componentDidMount() {
     Segment.screen("Select Ad Type Screen");
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 1,
+      business_name: this.props.mainBusiness.businessname,
+      campaign_type: this.state.campaign_type
+    });
   }
   render() {
     const Slide = ({ title, id, icon, rout, text }) => (

@@ -114,7 +114,10 @@ class AdDetails extends Component {
 
   async componentDidMount() {
     Segment.screen("Select Ad Details Screen");
-
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign_id,
+      step: 4
+    });
     if (
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign
@@ -369,8 +372,9 @@ class AdDetails extends Component {
       ) {
         Segment.trackWithProperties("Select Ad Details Button (Update)", {
           business_name: this.props.mainBusiness.businessname,
-          campaign_budget: this.state.campaignInfo.lifetime_budget_micro
+          campaign_id: this.props.campaign_id
         });
+
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
@@ -379,7 +383,13 @@ class AdDetails extends Component {
       } else {
         Segment.trackWithProperties("Select Ad Details Button", {
           business_name: this.props.mainBusiness.businessname,
-          campaign_budget: this.state.campaignInfo.lifetime_budget_micro
+          campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
+          campaign_id: this.props.campaign_id
+        });
+        Segment.trackWithProperties("Completed Checkout Step", {
+          checkout_id: this.props.campaign_id,
+          step: 4,
+          business_name: this.props.mainBusiness.businessname
         });
         this.props.ad_details(
           rep,
