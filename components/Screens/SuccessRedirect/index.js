@@ -24,6 +24,11 @@ class SuccessRedirect extends Component {
 
   componentDidMount() {
     Segment.screen("Payment Success Screen");
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 7,
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_id
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
   }
@@ -59,7 +64,20 @@ class SuccessRedirect extends Component {
           </View>
           <Button
             style={styles.button}
-            onPress={() => this.props.navigation.navigate("Dashboard")}
+            onPress={() => {
+              Segment.trackWithProperties("Completed Checkout Step", {
+                step: 7,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_id,
+                paymentMethod: ""
+              });
+              Segment.trackWithProperties("Order Completed", {
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_id,
+                revenue: this.props.data.lifetime_budget_micro
+              });
+              this.props.navigation.navigate("Dashboard");
+            }}
           >
             <Text style={styles.buttontext}> Home </Text>
           </Button>
@@ -71,6 +89,8 @@ class SuccessRedirect extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
+  mainBusiness: state.auth.mainBusiness,
+  campaign_id: state.campaignC.campaign_id,
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({

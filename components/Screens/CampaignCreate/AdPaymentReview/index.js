@@ -84,7 +84,11 @@ class AdPaymentReview extends Component {
   componentDidMount() {
     // console.log("data", this.props.data);
     Segment.screen("Ad Payment Review Screen");
-
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 5,
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_id
+    });
     this.setState({ ...this.props.data });
   }
   render() {
@@ -243,6 +247,11 @@ class AdPaymentReview extends Component {
                       campaign_budget: this.state.lifetime_budget_micro
                     }
                   );
+                  Segment.trackWithProperties("Completed Checkout Step", {
+                    step: 5,
+                    business_name: this.props.mainBusiness.businessname,
+                    checkout_id: this.props.campaign_id
+                  });
                   this.props.navigation.navigate("PaymentForm", {
                     interestNames: this.props.navigation.state.params
                       .interestNames,
@@ -275,6 +284,7 @@ class AdPaymentReview extends Component {
 }
 
 const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
   kdamount: state.campaignC.kdamount,

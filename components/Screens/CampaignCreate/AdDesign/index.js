@@ -85,7 +85,11 @@ class AdDesign extends Component {
   }
   async componentDidMount() {
     Segment.screen("Design Ad Screen");
-
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      checkout_id: this.props.campaign_id,
+      step: 3,
+      business_name: this.props.mainBusiness.businessname
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -285,6 +289,11 @@ class AdDesign extends Component {
       // console.log(this.state.formatted);
       // this.onToggleModal();
       Segment.trackWithProperties("Select Ad Design Button", {
+        business_name: this.props.mainBusiness.businessname
+      });
+      Segment.trackWithProperties("Completed Checkout Step", {
+        checkout_id: this.props.campaign_id,
+        step: 3,
         business_name: this.props.mainBusiness.businessname
       });
       this.props.ad_design(

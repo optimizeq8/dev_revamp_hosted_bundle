@@ -35,8 +35,12 @@ class PaymentForm extends Component {
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
       businessname: this.props.mainBusiness.businessname,
-      campaign_id: this.props.campaign_id,
-      price: this.props.data.lifetime_budget_micro
+      campaign_id: this.props.campaign_id
+    });
+    Segment.trackWithProperties("Viewed Checkout Step", {
+      step: 6,
+      business_name: this.props.mainBusiness.businessname,
+      checkout_id: this.props.campaign_id
     });
   }
   _openWebBrowserAsync = async () => {
@@ -45,6 +49,10 @@ class PaymentForm extends Component {
       let result = await WebBrowser.openBrowserAsync(
         this.props.payment_data.knet_payment_url
       );
+      Segment.screenWithProperties("Payment Knet Screen", {
+        businessname: this.props.mainBusiness.businessname,
+        campaign_id: this.props.campaign_id
+      });
       this._removeLinkingListener();
       console.log("result", result);
     } catch (error) {
@@ -137,12 +145,18 @@ class PaymentForm extends Component {
         </View>
         <Card padder style={[styles.bottomCard]}>
           <TouchableWithoutFeedback
-            onPress={() =>
+            onPress={() => {
+              Segment.trackWithProperties("Completed Checkout Step", {
+                step: 6,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_id,
+                paymentMethod: "KNET"
+              });
               this.props.payment_request_knet(
                 this.props.campaign_id,
                 this._openWebBrowserAsync
-              )
-            }
+              );
+            }}
             style={{
               flex: 1,
               justifyContent: "center",
