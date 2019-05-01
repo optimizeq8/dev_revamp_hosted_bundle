@@ -77,7 +77,8 @@ class AddCredits extends Component {
           height={85}
         />
         <Text style={[globalStyles.numbers, { fontSize: 40 }]}>
-          1000<Text style={styles.dollar}>$</Text>
+          {this.props.wallet}
+          <Text style={styles.dollar}>$</Text>
         </Text>
 
         <Text style={styles.text}>Avalible Balance</Text>
@@ -184,6 +185,7 @@ class AddCredits extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
+  wallet: state.transA.wallet,
   message: state.auth.message
 });
 

@@ -39,6 +39,8 @@ export const getWalletAmount = () => {
     instance
       .get(`mywallet`)
       .then(res => {
+        console.log("wallettttt", res.data);
+
         return res.data;
       })
       .then(data => {

@@ -74,8 +74,9 @@ class Dashboard extends Component {
   componentDidMount() {
     //
     if (this.props.mainBusiness) {
-      if (this.props.mainBusiness.snap_ad_account_id === "")
+      if (this.props.mainBusiness.snap_ad_account_id === "") {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
+      }
       this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -94,6 +95,7 @@ class Dashboard extends Component {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
       if (this.props.mainBusiness.snap_ad_account_id === "")
         this.props.navigation.navigate("SnapchatCreateAdAcc");
+      this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
