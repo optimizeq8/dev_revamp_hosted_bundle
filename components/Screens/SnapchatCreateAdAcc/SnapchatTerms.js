@@ -181,12 +181,12 @@ export const secondTerms = `
 
 <p>Ads for gambling and lotteries must be age targeted to at least 18+, or the applicable minimum age in the country to which you are advertising.</p>
     <div class='table'><span>Online gambling  <span>Target market(s)   <span>Permissible?
-            license              <span>U.K. </span>                      <span><img src="https://www.snap.com/images/policies/approved-icon-.75x.png"></span></span></span>                        
+            license              <span>U.K. </span>                      <span>Yes</span></span></span>                        
             <span>U.K.</span>                  </br>              
             <span>U.K.                   <span>U.K. and/
-        and France</span>           or France</span>              <img src="https://www.snap.com/images/policies/approved-icon-.75x.png">
+        and France</span>           or France</span>              Yes
             </span> 
-            <span>U.K.</span>                   <span>France</span>                  <img src="https://www.snap.com/images/policies/rejected-icon-.75x.png">
+            <span>U.K.</span>                   <span>France</span>                   No
     </div>
 <h4 id="online-dating">Mainstream Dating Services</h4>
 <p>Ads for online dating services must be age targeted to 18+ and must not be provocative, overtly sexual in nature, or reference prostitution.</p>
