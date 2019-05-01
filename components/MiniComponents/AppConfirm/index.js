@@ -177,7 +177,8 @@ export default class index extends Component {
               marginBottom: 0,
               top: heightPercentageToDP(17),
               textDecorationLine: "underline",
-              fontSize: heightPercentageToDP(1.5)
+              fontFamily: "montserrat-bold",
+              fontSize: heightPercentageToDP(2)
             }
           ]}
           onPress={() => this.props.renderPreviousStep()}

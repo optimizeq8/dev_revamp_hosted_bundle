@@ -9,13 +9,15 @@ export default class RangeMarkers extends Component {
         style={{
           flexDirection: "column",
           alignItems: "center",
-          bottom: 10,
+          bottom: this.props.down ? -10 : 10,
           width: 50
         }}
       >
-        <Text style={[GlobalStyles.numbers, { color: "#fff" }]}>
-          {this.props.value === 35 ? "35+" : this.props.value}
-        </Text>
+        {!this.props.down && (
+          <Text style={[GlobalStyles.numbers, { color: "#fff" }]}>
+            {this.props.value === 35 ? "35+" : this.props.value}
+          </Text>
+        )}
         <View
           style={{
             width: 5,
@@ -24,6 +26,11 @@ export default class RangeMarkers extends Component {
             borderRadius: 14
           }}
         />
+        {this.props.down && (
+          <Text style={[GlobalStyles.numbers, { color: "#fff" }]}>
+            {this.props.value === 35 ? "35+" : this.props.value}
+          </Text>
+        )}
       </View>
     );
   }

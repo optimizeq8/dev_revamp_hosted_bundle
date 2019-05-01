@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: "center",
-    paddingVertical: heightPercentageToDP(7),
+    paddingVertical: heightPercentageToDP(8),
     paddingHorizontal: 7
   },
   content: {
@@ -60,12 +60,23 @@ const styles = StyleSheet.create({
   },
 
   video: {
-    height: 95,
-    width: 95,
+    // height: 95,
+    // width: 95,
     borderRadius: 50,
-    backgroundColor: "#FF9D00",
     alignSelf: "center",
-    marginBottom: 35
+    marginBottom: 30
+  },
+  placeholder: {
+    borderRadius: 13,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "90%",
+    height: "35%",
+    zIndex: 0,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: "#fff",
+    justifyContent: "center"
   },
   mainCard: {
     top: 15,
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(105)
   },
   input: {
-    marginBottom: 15,
+    marginTop: 20,
     backgroundColor: "#5D1CD8",
     paddingHorizontal: 50,
     borderRadius: 10,

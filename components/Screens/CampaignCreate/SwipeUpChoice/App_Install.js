@@ -127,7 +127,7 @@ export default class App_Install extends Component {
               <AppInstallIcon style={styles.icon} />
               <View style={styles.textcontainer}>
                 <Text style={[styles.titletext]}>App Install</Text>
-                <Text style={[styles.subtext]}>
+                <Text style={[styles.subtext, { marginBottom: 0 }]}>
                   The user will be taken to download your app
                 </Text>
               </View>

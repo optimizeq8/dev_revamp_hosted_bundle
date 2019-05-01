@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   swipeUp: {
     ...StyleSheet.absoluteFillObject,
     height: 50,
-    top: hp("65"),
+    top: hp("70"),
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
