@@ -1,18 +1,10 @@
 import React, { Component } from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  Container,
-  Icon,
-  Spinner
-} from "native-base";
+import { Card, Button, Text, Container } from "native-base";
 import { Modal } from "react-native-paper";
-
 import { LinearGradient, WebBrowser, Linking, Segment } from "expo";
-import KnetIcon from "../../../assets/SVGs/Knet.svg";
+import UseWallet from "./UseWallet";
+import BackDrop from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
@@ -22,13 +14,15 @@ import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import { globalColors } from "../../../Global Styles";
 
 class PaymentForm extends Component {
   static navigationOptions = {
     header: null
   };
   state = {
-    payment_type: 1
+    payment_type: 1,
+    choice: 2
   };
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
@@ -78,6 +72,10 @@ class PaymentForm extends Component {
     this.setState({ redirectData: data });
   };
 
+  _changeToKnet = () => {
+    this.setState({ choice: 2 });
+  };
+
   _handleSubmission = () => {
     if (
       this.props.navigation.state.params &&
@@ -102,6 +100,12 @@ class PaymentForm extends Component {
         this._openWebBrowserAsync
       );
     }
+  };
+
+  _handleChoice = choice => {
+    this.setState({
+      choice
+    });
   };
   _handleAgencyFee = () => {
     if (this.props.data.lifetime_budget_micro < 3000) {
@@ -129,11 +133,8 @@ class PaymentForm extends Component {
 
         <View style={styles.headerview}>
           <Text style={styles.header}>Payment</Text>
+          <BackDrop style={styles.backDrop} />
           <View style={{ flexDirection: "column" }}>
-            {/* <Button disabled style={styles.whitebutton}>
-              <Text style={styles.whitebuttontext}> WALLET </Text>
-            </Button>
-            */}
             <Text
               style={{
                 color: "#fff",
@@ -155,58 +156,110 @@ class PaymentForm extends Component {
             >
               {addingCredits
                 ? amount + "$"
-                : this.props.data.lifetime_budget_micro +
+                : this.props.walletUsed
+                ? this.props.campaign_balance_amount +
                   "$" +
                   "\n" +
+                  this.props.campaign_balance_amount_kwd
+                : this.props.data.lifetime_budget_micro +
+                  "\n" +
                   this.props.navigation.state.params.kdamount +
-                  "kwd"}
+                  " KWD"}
             </Text>
-            {!addingCredits ? (
-              <Button
-                onPress={() =>
-                  !this.props.loading &&
-                  this.props.navigation.navigate("AdPaymentReview", {
-                    interestNames: this.props.navigation.state.params
-                      .interestNames
-                  })
-                }
-                style={styles.button}
-              >
-                <Text style={styles.boldtext}>Review Purchase</Text>
-              </Button>
-            ) : (
-              <Button
-                onPress={() =>
-                  !this.props.loading &&
-                  this.props.navigation.push("AddCredits")
-                }
-                style={styles.button}
-              >
-                <Text style={styles.boldtext}>Review Wallet</Text>
-              </Button>
-            )}
-            {/* <Button disabled style={styles.whitebutton2}>
-              <Text style={styles.whitebuttontext}> CREDIT{"\n"}CARD </Text>
-            </Button>
-           */}
           </View>
+          {!addingCredits && (
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                style={[
+                  styles.whitebutton,
+                  {
+                    backgroundColor:
+                      this.state.choice === 1 ? globalColors.orange : "#fff"
+                  }
+                ]}
+                onPress={() => this._handleChoice(1)}
+              >
+                <Text
+                  style={[
+                    styles.whitebuttontext,
+                    {
+                      color:
+                        this.state.choice === 1 ? "#fff" : globalColors.purple
+                    }
+                  ]}
+                >
+                  WALLET
+                </Text>
+              </Button>
+              <Button
+                style={[
+                  styles.whitebutton2,
+                  {
+                    backgroundColor:
+                      this.state.choice === 2 ? globalColors.orange : "#fff"
+                  }
+                ]}
+                onPress={() => this._handleChoice(2)}
+              >
+                <Text
+                  style={[
+                    styles.whitebuttontext,
+                    {
+                      color:
+                        this.state.choice === 2 ? "#fff" : globalColors.purple
+                    }
+                  ]}
+                >
+                  KENT
+                </Text>
+              </Button>
+            </View>
+          )}
         </View>
 
-        <View
-          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
-        >
-          <Image
-            style={styles.image}
-            source={require("../../../assets/images/knet.png")}
-            resizeMode="contain"
-          />
-          <Text style={styles.errortext}>
-            You will be redirected to KNET’s {"\n"}
-            Payment gateway for the {"\n"}
-            payment process
-          </Text>
+        {this.state.choice === 1 ? (
+          <UseWallet _changeToKnet={this._changeToKnet} />
+        ) : (
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <Image
+              style={styles.image}
+              source={require("../../../assets/images/knet.png")}
+              resizeMode="contain"
+            />
+            <Text style={styles.errortext}>
+              You will be redirected to KNET’s {"\n"}
+              Payment gateway for the {"\n"}
+              payment process
+            </Text>
+          </View>
+        )}
+        <View style={{ top: "10%", zIndex: 10 }}>
+          {!addingCredits ? (
+            <Button
+              onPress={() =>
+                !this.props.loading &&
+                this.props.navigation.navigate("AdPaymentReview", {
+                  interestNames: this.props.navigation.state.params
+                    .interestNames
+                })
+              }
+              style={styles.button}
+            >
+              <Text style={styles.boldtext}>Review Purchase</Text>
+            </Button>
+          ) : (
+            <Button
+              onPress={() =>
+                !this.props.loading && this.props.navigation.push("AddCredits")
+              }
+              style={styles.button}
+            >
+              <Text style={styles.boldtext}>Review Wallet</Text>
+            </Button>
+          )}
         </View>
-
         <View
           style={{
             flex: 1,
@@ -249,12 +302,15 @@ class PaymentForm extends Component {
           </TouchableOpacity>
         </View>
 
-        <Card padder style={[styles.bottomCard]}>
+        <TouchableOpacity
+          onPress={() => this._handleSubmission()}
+          style={[styles.bottomCard]}
+        >
           <Text style={styles.link}>
             By tapping this button you {"\n"}
             Agree to the Terms & Conditions
           </Text>
-        </Card>
+        </TouchableOpacity>
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -271,6 +327,11 @@ const mapStateToProps = state => ({
   kdamount: state.campaignC.kdamount,
   payment_data: state.campaignC.payment_data,
   payment_data_wallet: state.transA.payment_data,
+  wallet_amount_applied: state.transA.wallet_amount_applied,
+  wallet_balance_amount: state.transA.wallet_balance_amount,
+  campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
+  campaign_balance_amount: state.transA.campaign_balance_amount,
+  walletUsed: state.transA.walletUsed,
   loading: state.campaignC.loading
 });
 const mapDispatchToProps = dispatch => ({

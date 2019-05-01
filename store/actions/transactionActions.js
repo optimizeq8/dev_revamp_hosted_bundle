@@ -84,6 +84,80 @@ export const addWalletAmount = (info, openBrowser) => {
   };
 };
 
+export const useWallet = campaign_id => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_TRAN_LOADING,
+      payload: true
+    });
+    instance
+      .post(`useWallet`, { campaign_id })
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.USE_WALLET_AMOUNT,
+          payload: data
+        });
+      })
+
+      .catch(err => {
+        console.log("Error: ", err);
+      });
+  };
+};
+
+export const removeWalletAmount = campaign_id => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_TRAN_LOADING,
+      payload: true
+    });
+    instance
+      .post(`removeWallet`, { campaign_id })
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.REMOVE_WALLET_AMOUNT,
+          payload: data
+        });
+      })
+
+      .catch(err => {
+        console.log("Error: ", err);
+      });
+  };
+};
+
+export const checkoutwithWallet = campaign_id => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_TRAN_LOADING,
+      payload: true
+    });
+    instance
+      .post(`checkoutwithWallet`, { campaign_id })
+      .then(res => {
+        console.log("checkoutwithWallet ", res.data);
+        return res.data;
+      })
+      // .then(data => {
+      //   return dispatch({
+      //     type: actionTypes.REMOVE_WALLET_AMOUNT,
+      //     payload: data
+      //   });
+      // })
+
+      .catch(err => {
+        console.log("Error: ", err);
+      });
+  };
+};
 export const filterTransactions = query => {
   return dispatch =>
     dispatch({

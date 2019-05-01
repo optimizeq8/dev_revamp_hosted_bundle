@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -39,6 +41,11 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     justifyContent: "center"
   },
+  backDrop: {
+    position: "absolute",
+    top: -heightPercentageToDP("30%"),
+    alignSelf: "center"
+  },
   text: {
     textAlign: "center",
     color: "#fff",
@@ -75,6 +82,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     lineHeight: 15
   },
+  walletInfo: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5
+  },
   header: {
     fontFamily: "montserrat-medium",
     paddingHorizontal: 50,
@@ -85,12 +100,10 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   headerview: {
-    justifyContent: "center",
     marginTop: 10,
     flex: 1,
     alignItems: "center",
-    paddingVertical: 20,
-    justifyContent: "flex-start"
+    paddingVertical: 20
   },
   bottomCard: {
     top: 15,
@@ -106,9 +119,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   button: {
+    zIndex: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
     marginTop: 15,
-    backgroundColor: "#FF9D00",
+    backgroundColor: "transparent",
     borderRadius: 10,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  walletButton: {
+    backgroundColor: globalColors.orange,
+    marginTop: 15,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+
     alignSelf: "center",
     justifyContent: "center"
   },
@@ -133,7 +158,8 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 15,
     borderBottomEndRadius: 15,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingHorizontal: 10
   },
   whitebuttontext: {
     color: "#751AFF",
