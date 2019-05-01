@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -97,4 +98,28 @@ const styles = StyleSheet.create({
   }
 });
 
+export const htmlStyles = {
+  h1: {
+    fontSize: 30
+  },
+  a: {
+    fontWeight: "300",
+    color: globalColors.purple // make links coloured pink
+  },
+  ul: {
+    marginBottom: -50
+  },
+  div: {
+    marginTop: 10,
+    paddingBottom: 10
+  },
+  p: {
+    marginBottom: -70
+  },
+  h4: {
+    marginBottom: -60,
+    fontSize: 20
+  },
+  h2: { marginBottom: -60, fontSize: 25 }
+};
 export default styles;
