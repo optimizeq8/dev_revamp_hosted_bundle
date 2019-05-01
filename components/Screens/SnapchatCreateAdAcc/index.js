@@ -33,23 +33,21 @@ class MainForm extends Component {
   componentDidMount() {
     Segment.screen("Create Snap Ad Account Screen");
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    if (this.props.mainBusiness.snap_ad_account_id)
-
+    if (this.props.mainBusiness.snap_ad_account_id) {
       console.log("snap ad acc", this.props.mainBusiness.snap_ad_account_id);
 
       this.props.navigation.navigate("Dashboard");
     }
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.mainBusiness.snap_ad_account_id)
-
       console.log(
         "snap ad acc update",
         this.props.mainBusiness.snap_ad_account_id
       );
 
-      this.props.navigation.navigate("Dashboard");
-    }
+    this.props.navigation.navigate("Dashboard");
   }
 
   componentWillUnmount() {
