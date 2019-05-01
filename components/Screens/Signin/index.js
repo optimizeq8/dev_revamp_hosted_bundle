@@ -28,7 +28,6 @@ class MainForm extends Component {
   };
   constructor(props) {
     super(props);
-
     this.state = {
       email: "",
       password: "",
@@ -157,7 +156,10 @@ class MainForm extends Component {
             <Text style={styles.error}>{this.state.passwordError}</Text>
           ) : null}
           <Text
-            onPress={() => this.props.navigation.push("ForgotPassword")}
+            onPress={() => {
+              Segment.track("Forgot Password Button");
+              this.props.navigation.push("ForgotPassword");
+            }}
             style={[styles.link, { paddingVertical: 25, fontSize: 12 }]}
           >
             Forgot Password?
@@ -180,6 +182,7 @@ class MainForm extends Component {
             <Button
               rounded
               onPress={() => {
+                Segment.track("Signup Button");
                 this.props.resetRegister();
                 this.props.navigation.navigate("MainForm");
               }}
