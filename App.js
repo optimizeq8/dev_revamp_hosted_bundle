@@ -7,8 +7,11 @@ import {
   Icon,
   Linking,
   SplashScreen,
-  Segment
+  Segment,
+  Permissions,
+  Notifications
 } from "expo";
+
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
@@ -57,12 +60,27 @@ export default class App extends React.Component {
     });
 
     this._loadAsync()
-      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
+      .then(() =>
+        this.setState({ isLoadingComplete: true }, () => {
+          this._registerForPushNotificationsAsync();
+        })
+      ) // mark reasources as loaded
       .catch(error =>
         console.error(`Unexpected error thrown when loading:
 ${error.stack}`)
       );
   }
+
+  _registerForPushNotificationsAsync = async () => {
+    const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+    if (permission.status !== "granted") {
+      const newPermission = await Permissions.askAsync(
+        Permissions.NOTIFICATIONS
+      );
+    }
+  };
+
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return null;
