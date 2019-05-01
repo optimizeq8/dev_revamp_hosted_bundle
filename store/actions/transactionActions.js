@@ -56,6 +56,32 @@ export const getWalletAmount = () => {
   };
 };
 
+export const addWalletAmount = (info, openBrowser) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_TRAN_LOADING,
+      payload: true
+    });
+    instance
+      .post(`purchaseWalletAmount`, info)
+      .then(res => {
+        console.log(res.data);
+
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.ADD_WALLET_AMOUNT,
+          payload: data
+        });
+      })
+      .then(() => openBrowser())
+      .catch(err => {
+        console.log("Error: ", err);
+      });
+  };
+};
+
 export const filterTransactions = query => {
   return dispatch =>
     dispatch({
