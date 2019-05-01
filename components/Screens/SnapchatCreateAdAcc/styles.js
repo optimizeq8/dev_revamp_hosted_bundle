@@ -114,12 +114,16 @@ export const htmlStyles = {
     paddingBottom: 10
   },
   p: {
-    marginBottom: -70
+    marginBottom: -50
   },
   h4: {
-    marginBottom: -60,
+    marginBottom: -30,
     fontSize: 20
   },
-  h2: { marginBottom: -60, fontSize: 25 }
+  img: {
+    width: 75,
+    height: 75
+  },
+  h2: { marginBottom: -40, fontSize: 25 }
 };
 export default styles;
