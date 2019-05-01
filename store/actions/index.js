@@ -42,5 +42,8 @@ export {
   getTransactions,
   filterTransactions,
   getWalletAmount,
-  addWalletAmount
+  addWalletAmount,
+  useWallet,
+  removeWalletAmount,
+  checkoutwithWallet
 } from "./transactionActions";

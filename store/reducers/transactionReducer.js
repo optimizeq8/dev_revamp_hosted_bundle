@@ -7,6 +7,11 @@ const initialState = {
   transactionValue: "",
   tranStartSearch: "",
   tranEndSearch: "",
+  wallet_amount_applied: null,
+  wallet_balance_amount: null,
+  campaign_balance_amount: 0,
+  campaign_balance_amount_kwd: 0,
+  walletUsed: false,
   message: "",
   payment_data: null,
   loading: false
@@ -34,6 +39,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         payment_data: action.payload,
+        loading: !action.payload.success
+      };
+    case actionTypes.USE_WALLET_AMOUNT:
+      return {
+        ...state,
+        wallet_amount_applied: action.payload.wallet_amount_applied,
+        wallet_balance_amount: action.payload.wallet_balance_amount,
+        campaign_balance_amount: action.payload.campaign_balance_amount,
+        campaign_balance_amount_kwd: action.payload.campaign_balance_amount_kwd,
+        walletUsed: action.payload.success,
+        loading: !action.payload.success
+      };
+    case actionTypes.REMOVE_WALLET_AMOUNT:
+      return {
+        ...state,
+        message: action.payload.message,
+        walletUsed: !action.payload.success,
         loading: !action.payload.success
       };
     case actionTypes.SET_TRAN_LOADING:
