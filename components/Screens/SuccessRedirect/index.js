@@ -29,8 +29,31 @@ class SuccessRedirect extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_id
     });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    this.setState(this.props.navigation.state.params);
+    this.setState(this.props.navigation.state.params, () => {
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 7,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: ""
+      });
+      Segment.trackWithProperties("Order Completed", {
+        business_name: this.props.mainBusiness.businessname,
+        order_id: this.props.campaign_id,
+        currency: "USD",
+        revenue: this.props.data.lifetime_budget_micro,
+        products: [
+          {
+            products_id: 1,
+            name: "Snapchat Snap Ad",
+            price: this.props.data.lifetime_budget_micro,
+            quantity: 1,
+            category: "Advertisment"
+          }
+        ]
+      });
+    });
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -65,27 +88,6 @@ class SuccessRedirect extends Component {
           <Button
             style={styles.button}
             onPress={() => {
-              Segment.trackWithProperties("Completed Checkout Step", {
-                step: 7,
-                business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_id,
-                paymentMethod: ""
-              });
-              Segment.trackWithProperties("Order Completed", {
-                business_name: this.props.mainBusiness.businessname,
-                order_id: this.props.campaign_id,
-                currency: "USD",
-                revenue: this.props.data.lifetime_budget_micro,
-                products: [
-                  {
-                    products_id: 1,
-                    name: "Snapchat Snap Ad",
-                    price: this.props.data.lifetime_budget_micro,
-                    quantity: 1,
-                    category: "Advertisment"
-                  }
-                ]
-              });
               this.props.navigation.navigate("Dashboard");
             }}
           >

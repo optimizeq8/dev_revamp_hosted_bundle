@@ -347,7 +347,6 @@ class Dashboard extends Component {
                       onPress={() => {
                         if (!this.props.mainBusiness.snap_ad_account_id) {
                           Segment.track("Create SnapAd Acount Button Pressed ");
-
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
                         } else {
                           Segment.track("Create Campaign Button Pressed");
