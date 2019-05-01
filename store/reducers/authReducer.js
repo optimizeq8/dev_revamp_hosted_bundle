@@ -128,8 +128,6 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.UPDATE_CAMPAIGN_LIST:
-      console.log("payload", action.payload);
-
       return {
         ...state,
         campaignList: [...state.campaignList, ...action.payload.data],
@@ -148,8 +146,6 @@ const reducer = (state = initialState, action) => {
         message: action.payload.message
       };
     case actionTypes.GOT_ALL_CAMPAIGNS:
-      console.log("payload", action.payload);
-
       return {
         ...state,
         fetching_from_server: action.payload.fetching_from_server,
