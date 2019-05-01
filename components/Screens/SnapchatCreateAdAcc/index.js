@@ -2,27 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { View, Image, ScrollView, BackHandler } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail
-} from "native-base";
+import { Card, Button, Text, Container } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import * as actionCreators from "../../../store/actions";
+import HTMLView from "react-native-htmlview";
+import { terms, secondTerms } from "./SnapchatTerms";
 
 // Style
-import styles from "./styles";
+import styles, { htmlStyles } from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import { ActivityIndicator } from "react-native-paper";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -31,18 +25,29 @@ class MainForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      accept: false
+    };
   }
 
   componentDidMount() {
     Segment.screen("Create Snap Ad Account Screen");
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    if (this.props.mainBusiness.snap_ad_account_id !== "")
+    if (this.props.mainBusiness.snap_ad_account_id) {
+      console.log("snap ad acc", this.props.mainBusiness.snap_ad_account_id);
+
       this.props.navigation.navigate("Dashboard");
+    }
   }
   componentDidUpdate(prevProps) {
-    if (this.props.mainBusiness.snap_ad_account_id !== "")
+    if (this.props.mainBusiness.snap_ad_account_id) {
+      console.log(
+        "snap ad acc update",
+        this.props.mainBusiness.snap_ad_account_id
+      );
+
       this.props.navigation.navigate("Dashboard");
+    }
   }
 
   componentWillUnmount() {
@@ -51,7 +56,17 @@ class MainForm extends Component {
   handleBackButton() {
     return true;
   }
+
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
   render() {
+    const htmlContent = `<p><a href="http://jsdf.co">&hearts; nice job!</a></p>`;
+
     const Slide = ({ title }) => (
       <View style={styles.slide}>
         <Image
@@ -79,6 +94,32 @@ class MainForm extends Component {
         />
         <Card padder style={styles.mainCard}>
           <Text style={styles.text}>Terms And Conditions</Text>
+          <ScrollView
+            onScroll={({ nativeEvent }) => {
+              if (this.isCloseToBottom(nativeEvent)) {
+                this.setState({ accept: true });
+              }
+            }}
+            scrollEventThrottle={400}
+            contentContainerStyle={{
+              // height: heightPercentageToDP("100%")
+              // flex: 1
+              paddingBottom: 50
+            }}
+            style={{
+              height: heightPercentageToDP(40)
+            }}
+          >
+            <View
+              style={{
+                width: widthPercentageToDP(85),
+                alignSelf: "center"
+              }}
+            >
+              <HTMLView value={terms} stylesheet={htmlStyles} />
+              <HTMLView value={secondTerms} stylesheet={htmlStyles} />
+            </View>
+          </ScrollView>
           <View
             style={{
               flex: 1,
@@ -92,14 +133,21 @@ class MainForm extends Component {
               <Button
                 block
                 dark
-                style={styles.button}
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: this.state.accept
+                      ? "#5F5F5F"
+                      : "rgba(95, 95, 95,0.6)"
+                  }
+                ]}
                 onPress={() => {
                   console.log(this.props.mainBusiness);
-
-                  this.props.create_ad_account(
-                    this.props.mainBusiness.businessid,
-                    this.props.navigation
-                  );
+                  this.state.accept &&
+                    this.props.create_ad_account(
+                      this.props.mainBusiness.businessid,
+                      this.props.navigation
+                    );
                 }}
               >
                 <Text style={styles.buttontext}>Accept</Text>
