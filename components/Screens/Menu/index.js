@@ -1,29 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  Image,
-  ScrollView,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  StyleSheet
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
+import { View, Animated, Easing, TouchableWithoutFeedback } from "react-native";
+import { Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
@@ -205,17 +183,21 @@ class Menu extends Component {
                   <Text style={styles.text}>Addresses</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <View
-                style={{
-                  alignItems: "center",
-                  left: widthPercentageToDP(4),
-                  marginBottom: 20,
-                  flexDirection: "row"
-                }}
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate("AddCredits")}
               >
-                <Icons.Wallet />
-                <Text style={styles.text}>{"    "}Wallet</Text>
-              </View>
+                <View
+                  style={{
+                    alignItems: "center",
+                    left: widthPercentageToDP(4),
+                    marginBottom: 20,
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.Wallet />
+                  <Text style={styles.text}>{"    "}Wallet</Text>
+                </View>
+              </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
                 onPress={() => {
                   this.props.logout(this.props.navigation);

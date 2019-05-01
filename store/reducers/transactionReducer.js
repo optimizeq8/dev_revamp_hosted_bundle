@@ -8,6 +8,7 @@ const initialState = {
   tranStartSearch: "",
   tranEndSearch: "",
   message: "",
+  payment_data: null,
   loading: false
 };
 
@@ -27,6 +28,13 @@ const reducer = (state = initialState, action) => {
         wallet: action.payload.walletamount,
         loading: false,
         message: action.payload.message
+      };
+
+    case actionTypes.ADD_WALLET_AMOUNT:
+      return {
+        ...state,
+        payment_data: action.payload,
+        loading: !action.payload.success
       };
     case actionTypes.SET_TRAN_LOADING:
       return {

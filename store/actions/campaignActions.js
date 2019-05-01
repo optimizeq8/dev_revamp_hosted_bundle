@@ -16,13 +16,12 @@ export const payment_request_knet = (campaign_id, openBrowser) => {
         return res.data;
       })
       .then(data => {
-        console.log(data);
         return dispatch({
           type: actionTypes.PAYMENT_REQUEST_URL,
           payload: data
         });
       })
-      .then(() => dispatch(openBrowser()))
+      .then(() => openBrowser())
       .catch(err => {
         console.log(err);
       });

@@ -41,5 +41,6 @@ export {
 export {
   getTransactions,
   filterTransactions,
-  getWalletAmount
+  getWalletAmount,
+  addWalletAmount
 } from "./transactionActions";

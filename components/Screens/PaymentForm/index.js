@@ -27,6 +27,9 @@ class PaymentForm extends Component {
   static navigationOptions = {
     header: null
   };
+  state = {
+    payment_type: 1
+  };
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
       businessname: this.props.mainBusiness.businessname,
@@ -42,7 +45,10 @@ class PaymentForm extends Component {
     try {
       this._addLinkingListener();
       let result = await WebBrowser.openBrowserAsync(
-        this.props.payment_data.knet_payment_url
+        this.props.navigation.state.params &&
+          this.props.navigation.state.params.addingCredits
+          ? this.props.payment_data_wallet.knet_payment_url
+          : this.props.payment_data.knet_payment_url
       );
       Segment.screenWithProperties("Payment Knet Screen", {
         businessname: this.props.mainBusiness.businessname,
@@ -72,6 +78,31 @@ class PaymentForm extends Component {
     this.setState({ redirectData: data });
   };
 
+  _handleSubmission = () => {
+    if (
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.addingCredits
+    ) {
+      this.props.addWalletAmount(
+        {
+          amount: this.props.navigation.state.params.amount,
+          payment_type: this.state.payment_type
+        },
+        this._openWebBrowserAsync
+      );
+    } else {
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: "KNET"
+      });
+      this.props.payment_request_knet(
+        this.props.campaign_id,
+        this._openWebBrowserAsync
+      );
+    }
+  };
   _handleAgencyFee = () => {
     if (this.props.data.lifetime_budget_micro < 3000) {
       return this.props.data.lifetime_budget_micro * 0.15;
@@ -82,6 +113,12 @@ class PaymentForm extends Component {
     }
   };
   render() {
+    let addingCredits =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.addingCredits;
+    let amount =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.amount;
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -116,22 +153,38 @@ class PaymentForm extends Component {
                 paddingTop: 3
               }}
             >
-              {this.props.data.lifetime_budget_micro}${"\n"}
-              {this.props.navigation.state.params.kdamount} kwd
+              {addingCredits
+                ? amount + "$"
+                : this.props.data.lifetime_budget_micro +
+                  "$" +
+                  "\n" +
+                  this.props.navigation.state.params.kdamount +
+                  "kwd"}
             </Text>
-
-            <Button
-              onPress={() =>
-                !this.props.loading &&
-                this.props.navigation.navigate("AdPaymentReview", {
-                  interestNames: this.props.navigation.state.params
-                    .interestNames
-                })
-              }
-              style={styles.button}
-            >
-              <Text style={styles.boldtext}>Review Purchase</Text>
-            </Button>
+            {!addingCredits ? (
+              <Button
+                onPress={() =>
+                  !this.props.loading &&
+                  this.props.navigation.navigate("AdPaymentReview", {
+                    interestNames: this.props.navigation.state.params
+                      .interestNames
+                  })
+                }
+                style={styles.button}
+              >
+                <Text style={styles.boldtext}>Review Purchase</Text>
+              </Button>
+            ) : (
+              <Button
+                onPress={() =>
+                  !this.props.loading &&
+                  this.props.navigation.push("AddCredits")
+                }
+                style={styles.button}
+              >
+                <Text style={styles.boldtext}>Review Wallet</Text>
+              </Button>
+            )}
             {/* <Button disabled style={styles.whitebutton2}>
               <Text style={styles.whitebuttontext}> CREDIT{"\n"}CARD </Text>
             </Button>
@@ -162,19 +215,7 @@ class PaymentForm extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => {
-              Segment.trackWithProperties("Completed Checkout Step", {
-                step: 6,
-                business_name: this.props.mainBusiness.businessname,
-                checkout_id: this.props.campaign_id,
-                paymentMethod: "KNET"
-              });
-
-              this.props.payment_request_knet(
-                this.props.campaign_id,
-                this._openWebBrowserAsync
-              );
-            }}
+            onPress={() => this._handleSubmission()}
             style={[
               styles.mainCard,
               {
@@ -229,11 +270,14 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   kdamount: state.campaignC.kdamount,
   payment_data: state.campaignC.payment_data,
+  payment_data_wallet: state.transA.payment_data,
   loading: state.campaignC.loading
 });
 const mapDispatchToProps = dispatch => ({
   payment_request_knet: (campaign_id, openBrowser) =>
-    dispatch(actionCreators.payment_request_knet(campaign_id, openBrowser))
+    dispatch(actionCreators.payment_request_knet(campaign_id, openBrowser)),
+  addWalletAmount: (info, openBrowser) =>
+    dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });
 export default connect(
   mapStateToProps,
