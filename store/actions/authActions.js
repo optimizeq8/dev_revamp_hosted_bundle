@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import { Segment } from "expo";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
@@ -188,6 +189,7 @@ export const sendMobileNo = mobileNo => {
       })
       .then(data => {
         console.log("phone ", data);
+        if (data.success === true) Segment.track("Phone No. Register Button");
 
         return dispatch({
           type: actionTypes.SEND_MOBILE_NUMBER,
@@ -212,9 +214,13 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
+        console.log("verify", res.data);
+
         return res.data;
       })
       .then(data => {
+        if (data.success === true) Segment.track("Phone No. Verified Button");
+
         return dispatch({
           type: actionTypes.VERIFY_MOBILE_NUMBER,
           payload: data
@@ -235,6 +241,9 @@ export const resendVerifyMobileCode = mobileAuth => {
         return res.data;
       })
       .then(data => {
+        if (data.success === true)
+          Segment.track("Phone No. Resend Verification Button");
+
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
           payload: data
@@ -256,6 +265,9 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
         return res.data;
       })
       .then(data => {
+        if (data.success === true)
+          Segment.track("Phone No. Email Resend Verification Button");
+
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning"
@@ -277,8 +289,14 @@ export const verifyEmail = (email, userInfo) => {
   return dispatch => {
     instance
       .post(`verifyEmail`, { email: email })
-      .then(res => res.data)
+      .then(res => {
+        console.log("verify email", res.data);
+        return res.data;
+      })
       .then(data => {
+        if (data.success === true)
+          Segment.track("Personal Info Register Button");
+
         return dispatch({
           type: actionTypes.VERIFY_EMAIL,
           payload: { success: data.success, userInfo, message: data.message }
@@ -298,7 +316,9 @@ export const verifyBusinessName = businessName => {
       .post(`verifyBusinessName`, { businessname: businessName })
       .then(res => res.data)
       .then(data => {
-        console.log("data", data);
+        console.log("businessName", data);
+        if (data.success === true)
+          Segment.track("Business Info Register Button");
 
         return dispatch({
           type: actionTypes.VERIFY_BUSINESSNAME,
@@ -320,6 +340,9 @@ export const registerUser = (userInfo, navigation) => {
       })
       .then(async user => {
         console.log("userInfo", user);
+        if (data.success === true)
+          Segment.track("User Registered Successfully");
+
         const decodedUser = jwt_decode(user.token);
         let peomise = await setAuthToken(user.token);
         return { user: decodedUser, message: user.message };
@@ -511,6 +534,8 @@ export const create_ad_account = (id, navigation) => {
       })
       .then(data => {
         if (data.success) {
+          Segment.track("Snapchat Ad Account Created Successfully");
+
           return dispatch({
             type: actionTypes.CREATE_AD_ACCOUNT,
             payload: { data: data, navigation: navigation.navigate }
