@@ -14,12 +14,9 @@ import {
   Notifications
 } from "expo";
 import NavigationService from "./NavigationService";
-<<<<<<< HEAD
+
 import * as actionCreators from "./store/actions";
-=======
 
-
->>>>>>> 6ab7f5485f1ac08264d0b6729903308793575802
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
