@@ -309,6 +309,10 @@ class CampaignDetails extends Component {
                       >
                         Tap to pause AD
                       </Text>
+                      <Text style={styles.subtext}>
+                        Review:
+                        {this.props.navigation.state.params.review_status}
+                      </Text>
                     </View>
                   </View>
                 </View>

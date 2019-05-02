@@ -46,13 +46,22 @@ class CampaignCard extends Component {
             Segment.trackWithProperties("Campaign Card Button", {
               campaign_id: this.props.campaign.campaign_id
             });
-            this.props.navigation.push("CampaignDetails");
+            this.props.navigation.push("CampaignDetails", {
+              review_status: this.props.campaign.review_status
+            });
           }}
           style={styles.campaignButton}
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <Text style={[styles.titletext]}>{this.props.campaign.name}</Text>
+              <Text style={[styles.titletext]}>
+                {this.props.campaign.name}
+                {"             "}
+
+                <Text style={styles.reviewtext}>
+                  Review:{this.props.campaign.review_status}
+                </Text>
+              </Text>
             </View>
             <Icon
               type="MaterialCommunityIcons"

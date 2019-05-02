@@ -48,10 +48,13 @@ class AddCredits extends Component {
   }
 
   _handleSubmission = () => {
-    this.props.navigation.navigate("PaymentForm", {
-      amount: this.state.amount,
-      addingCredits: true
-    });
+    const amountError = validateWrapper("Budget", this.state.amount);
+    this.setState({ amountError });
+    if (!amountError)
+      this.props.navigation.navigate("PaymentForm", {
+        amount: this.state.amount,
+        addingCredits: true
+      });
   };
 
   render() {
@@ -84,100 +87,128 @@ class AddCredits extends Component {
         <Text style={styles.text}>Avalible Balance</Text>
 
         <View style={styles.mainCard}>
-          <Text style={[styles.mainText]}>
-            Your wallet can be used to purchase ads or to resume paused ads
-            immedeatly.
-          </Text>
+          <KeyboardAwareScrollView contentContainerStyle={{ height: "100%" }}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <KeyboardShift>
+                {() => (
+                  <>
+                    <Text style={[styles.mainText]}>
+                      Your wallet can be used to purchase ads or to resume
+                      paused ads immedeatly.
+                    </Text>
 
-          <Button
-            full
-            style={styles.button}
-            onPress={() => {
-              this.setState({ topUp: true });
-            }}
-          >
-            <Text style={styles.buttontext}>Top up wallet </Text>
-          </Button>
-          <Button
-            full
-            style={styles.button}
-            onPress={() => {
-              // this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttontext}>Request Refund </Text>
-          </Button>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <KeyboardShift>
-              {() => (
-                <View style={styles.contentContainer}>
-                  {this.state.topUp && (
-                    <Animatable.View animation={"slideInUp"}>
-                      <Item
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          {
-                            borderColor: this.state.inputA
-                              ? "#7039FF"
-                              : this.state.amountError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
-                        ]}
-                      >
-                        <Label
-                          style={[
-                            styles.inputtext,
-                            {
-                              bottom: 5,
-
-                              color: this.state.inputA ? "#FF9D00" : "#717171"
-                            }
-                          ]}
+                    <Button
+                      full
+                      style={styles.button}
+                      onPress={() => {
+                        this.setState({ topUp: true });
+                      }}
+                    >
+                      <Text style={styles.buttontext}>Top up wallet </Text>
+                    </Button>
+                    <Button
+                      full
+                      style={styles.button}
+                      onPress={() => {
+                        // this._handleSubmission();
+                      }}
+                    >
+                      <Text style={styles.buttontext}>Request Refund</Text>
+                    </Button>
+                    <View style={styles.contentContainer}>
+                      {this.state.topUp && (
+                        <Animatable.View
+                          style={{
+                            height: "20%"
+                          }}
+                          animation={"slideInUp"}
                         >
-                          <Icon
+                          <Animatable.View
                             style={{
-                              fontSize: 20,
-                              color: this.state.inputA ? "#FF9D00" : "#717171"
+                              height: "100%"
                             }}
-                            name="cash"
-                          />
-                          {"  "}
-                          Amount
-                        </Label>
-                        <Input
-                          style={styles.inputtext}
-                          value={`${this.state.amount}`}
-                          onChangeText={amount =>
-                            this.setState({ amount: parseFloat(amount) })
-                          }
-                          onFocus={() => this.setState({ inputA: true })}
-                          onBlur={() =>
-                            this.setState({
-                              inputA: false,
-                              amountError: validateWrapper(
-                                "mandatory",
-                                this.state.amount
-                              )
-                            })
-                          }
-                        />
-                      </Item>
-                    </Animatable.View>
-                  )}
-                  {this.state.topUp && (
-                    <Animatable.View animation={"slideInLeft"}>
-                      <LowerButton function={this._handleSubmission} />
-                    </Animatable.View>
-                  )}
-                </View>
-              )}
-            </KeyboardShift>
-          </TouchableWithoutFeedback>
+                            animation={!this.state.amountError ? "" : "shake"}
+                            onAnimationEnd={() =>
+                              this.setState({ amountError: null })
+                            }
+                          >
+                            <Item
+                              floatingLabel
+                              style={[
+                                styles.input,
+                                {
+                                  borderColor: this.state.inputA
+                                    ? "#7039FF"
+                                    : this.state.amountError
+                                    ? "red"
+                                    : "#D9D9D9"
+                                }
+                              ]}
+                            >
+                              <Label
+                                style={[
+                                  styles.inputtext,
+                                  {
+                                    bottom: 5,
+
+                                    color: this.state.inputA
+                                      ? "#FF9D00"
+                                      : "#717171"
+                                  }
+                                ]}
+                              >
+                                <Icon
+                                  style={{
+                                    fontSize: 20,
+                                    color: this.state.inputA
+                                      ? "#FF9D00"
+                                      : "#717171"
+                                  }}
+                                  name="cash"
+                                />
+                                {"  "}
+                                Amount
+                              </Label>
+                              <Input
+                                keyboardType="number-pad"
+                                style={styles.inputtext}
+                                value={`${
+                                  isNaN(this.state.amount)
+                                    ? ""
+                                    : this.state.amount
+                                }`}
+                                onChangeText={amount =>
+                                  this.setState({ amount: parseFloat(amount) })
+                                }
+                                onFocus={() => this.setState({ inputA: true })}
+                                onBlur={() =>
+                                  this.setState({
+                                    inputA: false,
+                                    amountError: validateWrapper(
+                                      "Budget",
+                                      this.state.amount
+                                    )
+                                  })
+                                }
+                              />
+                            </Item>
+                          </Animatable.View>
+                        </Animatable.View>
+                      )}
+                      {this.state.topUp && (
+                        <Animatable.View animation={"slideInLeft"}>
+                          <LowerButton function={this._handleSubmission} />
+                        </Animatable.View>
+                      )}
+                    </View>
+                  </>
+                )}
+              </KeyboardShift>
+            </TouchableWithoutFeedback>
+          </KeyboardAwareScrollView>
         </View>
       </Container>
     );

@@ -300,13 +300,14 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
-      this.props.ad_design(
-        this.state.formatted,
-        this._getUploadState,
-        this.props.navigation,
-        this.onToggleModal,
-        this.state.appChoice
-      );
+      !this.props.loading &&
+        this.props.ad_design(
+          this.state.formatted,
+          this._getUploadState,
+          this.props.navigation,
+          this.onToggleModal,
+          this.state.appChoice
+        );
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -587,7 +588,7 @@ class AdDesign extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <Modal isVisible={this.state.isVisible || this.state.imageLoading}>
+            <Modal isVisible={this.props.loading || this.state.isVisible}>
               <LoadingScreen top={0} />
             </Modal>
           </View>
@@ -600,7 +601,8 @@ class AdDesign extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.auth.mainBusiness,
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  loading: state.campaignC.loading
 });
 
 const mapDispatchToProps = dispatch => ({
