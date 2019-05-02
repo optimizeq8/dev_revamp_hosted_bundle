@@ -11,7 +11,6 @@ export {
   changePassword,
   addressForm,
   forgotPassword,
-  logout,
   create_ad_account,
   checkForExpiredToken,
   getBusinessAccounts,
@@ -20,7 +19,8 @@ export {
   getCampaign,
   changeBusiness,
   resetRegister,
-  getCampaignList
+  getCampaignList,
+  clearPushToken
 } from "./authActions";
 export {
   ad_objective,

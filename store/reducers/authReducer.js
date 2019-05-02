@@ -29,6 +29,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN:
+      return {
+        ...state,
+        ExponentPushToken: null
+      };
     case actionTypes.SET_PUSH_NOTIFICATION_TOKEN:
       return {
         ...state,

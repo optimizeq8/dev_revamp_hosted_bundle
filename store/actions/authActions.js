@@ -20,6 +20,7 @@ export const send_push_notification = () => {
               userid: getState().auth.userInfo.userid
             })
             .then(res => {
+              console.log("token", token);
               return res.data;
             })
             .then(data => {
@@ -197,10 +198,15 @@ export const checkForExpiredToken = navigation => {
                 })
               )
             )
-            .then(() => dispatch(getBusinessAccounts()))
+            .then(() => {
+              dispatch(send_push_notification());
+              dispatch(getBusinessAccounts());
+            })
             .then(() => {
               navigation.navigate("Dashboard");
             });
+        } else {
+          dispatch(clearPushToken(navigation));
         }
       } else {
         dispatch(logout(navigation));
@@ -380,9 +386,8 @@ export const registerUser = (userInfo, navigation) => {
       .then(() => {
         if (getState().auth.userInfo) {
           console.log("state user", getState().auth.userInfo);
-
           navigation.navigate("Dashboard");
-
+          dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
         }
       })
@@ -539,10 +544,33 @@ const setCurrentUser = user => {
     }
   };
 };
-
+export const clearPushToken = navigation => {
+  return (dispatch, getState) => {
+    instance
+      .post(`updatepushToken`, {
+        token: null,
+        userid: getState().auth.userInfo.userid
+      })
+      .then(res => {
+        console.log("cleared token", res.data);
+        return res.data;
+      })
+      .then(data => {
+        dispatch({
+          type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN,
+          payload: data
+        });
+      })
+      .then(() => {
+        dispatch(logout(navigation));
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
 export const logout = navigation => {
-  navigation.navigate("Signin");
-
+  navigation.navigate("Signin", { loggedout: true });
   setAuthToken();
   return setCurrentUser(null);
 };
