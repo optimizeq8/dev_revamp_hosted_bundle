@@ -136,9 +136,7 @@ class Dashboard extends Component {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   };
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {
-      console.log(this.state.sidemenustate);
-    });
+    this.setState({ sidemenustate: status }, () => {});
   };
 
   increasePage = () => {

@@ -32,7 +32,7 @@ import dateFormat from "dateformat";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
-
+import BackButton from "../../../MiniComponents/BackButton";
 import * as actionCreators from "../../../../store/actions";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
@@ -93,7 +93,6 @@ class AdPaymentReview extends Component {
   }
 
   render() {
-    console.log("dataaaaaaaa", this.props.data);
     if (this.props.loading) {
       return <LoadingScreen />;
     } else {
@@ -140,26 +139,7 @@ class AdPaymentReview extends Component {
                 flexDirection: "row"
               }}
             >
-              <Button
-                onLayout={event => {
-                  var { x, y, width, height } = event.nativeEvent.layout;
-                  console.log("width", width);
-                }}
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-                style={{
-                  paddingLeft: 10
-                }}
-              >
-                <Icon
-                  style={{
-                    top: 20,
-                    fontSize: 35,
-                    color: "#fff"
-                  }}
-                  name="arrow-back"
-                />
-              </Button>
+              <BackButton navigation={this.props.navigation.goBack} />
               <Text
                 style={[
                   styles.header,

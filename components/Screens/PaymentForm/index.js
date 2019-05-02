@@ -50,9 +50,7 @@ class PaymentForm extends Component {
         campaign_id: this.props.campaign_id
       });
       this._removeLinkingListener();
-      console.log("result", result);
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   };

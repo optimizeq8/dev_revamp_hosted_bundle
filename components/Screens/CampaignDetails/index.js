@@ -42,6 +42,8 @@ import PauseIcon from "../../../assets/SVGs/Pause.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Toggle from "react-native-switch-toggle";
+import CloseButton from "../../MiniComponents/CloseButton";
+
 // import { Modal } from "react-native-paper";
 import LineChartGraphs from "./LineChartGraphs";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -113,7 +115,6 @@ class CampaignDetails extends Component {
   };
 
   handleToggle = status => {
-    console.log("status", status);
     this.setState({
       toggle: status !== "PAUSED",
       modalVisible: false,
@@ -180,8 +181,6 @@ class CampaignDetails extends Component {
                     ).name
                   } \n`;
                 } else {
-                  console.log(interest);
-
                   return (
                     interest !== "scls" &&
                     ` ${
@@ -233,11 +232,11 @@ class CampaignDetails extends Component {
             }}
           >
             <Container style={styles.container}>
-              <CloseIcon
-                onPress={() => {
+              <CloseButton
+                navigation={() => {
                   this.props.navigation.goBack();
                 }}
-                style={globalStyles.backButton}
+                // style={globalStyles.backButton}
               />
 
               <Text

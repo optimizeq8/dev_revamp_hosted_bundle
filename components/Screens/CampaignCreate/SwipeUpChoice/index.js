@@ -53,8 +53,6 @@ class SwipeUpChoice extends Component {
   // }
 
   render() {
-    console.log(this.props.navigation.state.params.objective);
-
     return (
       <Container style={styles.container}>
         <LinearGradient

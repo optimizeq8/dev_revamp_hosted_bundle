@@ -79,7 +79,6 @@ class MultiSelectList extends Component {
     this.setState({ selectedItemObjects: selectedItems });
   };
   onSelectedItemsChange = (selectedItems, option) => {
-    // console.log(selectedItems);
     if (option === "devices") {
       if (selectedItems[0] === "Devices") {
         selectedItems.shift();

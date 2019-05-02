@@ -153,7 +153,6 @@ class AdDesign extends Component {
     if (Math.floor(result.width / 9) === Math.floor(result.height / 16)) {
       if (!result.cancelled) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
-          console.log(file);
           if (result.type === "video" && file.size > 32000000) {
             this.setState({
               imageError: "Video must be less than 32 MBs",
@@ -290,8 +289,6 @@ class AdDesign extends Component {
       !this.state.imageError
     ) {
       let t = await this.formatMedia();
-      // console.log(this.state.formatted);
-      // this.onToggleModal();
       Segment.trackWithProperties("Select Ad Design Button", {
         business_name: this.props.mainBusiness.businessname
       });
@@ -316,8 +313,6 @@ class AdDesign extends Component {
     this.setState({ isVisible: !isVisible });
   };
   render() {
-    console.log(this.state.campaignInfo);
-
     let { image } = this.state;
     return (
       <Container style={styles.container}>

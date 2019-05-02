@@ -88,7 +88,6 @@ const reducer = (state = initialState, action) => {
         loading: !action.payload.data.success
       };
     case actionTypes.SET_CURRENT_USER:
-      console.log("user reducer", action.payload.user);
       Segment.identifyWithTraits(
         action.payload.user.userid,
         action.payload.user
@@ -125,7 +124,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         businessAccounts: arr,
-        message: action.payload.message
+        message: action.payload.message,
+        loading: !action.payload.success
       };
     case actionTypes.UPDATE_CAMPAIGN_LIST:
       return {
@@ -171,7 +171,6 @@ const reducer = (state = initialState, action) => {
         mainBusiness: action.payload.business
       };
     case actionTypes.FILTER_CAMPAIGNS:
-      console.log(action.payload);
       let filtered = state.campaignList.filter(campaign =>
         campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
       );
@@ -208,8 +207,6 @@ const reducer = (state = initialState, action) => {
         loading: action.payload
       };
     case actionTypes.LOGOUT_USER:
-      console.log("reset");
-
       return {
         ...state,
         mobileNo: "",

@@ -77,8 +77,6 @@ export default class Deep_Link extends Component {
   };
 
   renderNextStep = (nameError, callActionError, attachment, callaction) => {
-    console.log(attachment);
-
     if (!nameError && !callActionError) {
       this.setState({
         attachment,
@@ -103,12 +101,6 @@ export default class Deep_Link extends Component {
       this.state.attachment
     );
     this.props.navigation.navigate("AdDesign");
-
-    console.log(
-      "APP_INSTALL",
-      this.state.callaction.label,
-      this.state.attachment
-    );
   };
   render() {
     return (

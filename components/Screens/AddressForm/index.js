@@ -87,7 +87,6 @@ class AddressForm extends Component {
     if (selectedItem) {
       replace.country = selectedItem.label;
       replace.area = "";
-      console.log(Areas[0].country_code);
       let area = Areas.find(
         c => c.country_code.toLowerCase() === selectedItem.value
       );
@@ -143,8 +142,6 @@ class AddressForm extends Component {
       !streetError &&
       !buildingError
     ) {
-      console.log("here");
-
       this.props.addressForm(
         this.state.address,
 

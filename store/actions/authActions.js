@@ -9,8 +9,6 @@ const instance = axios.create({
 });
 export const changeBusiness = business => {
   return dispatch => {
-    console.log("chosen business", business);
-
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { business: business }
@@ -27,7 +25,6 @@ export const getCampaign = id => {
     instance
       .get(`campaigndetail/${id}`)
       .then(res => {
-        console.log("data", res.data);
         return res.data;
       })
       .then(data => {
@@ -53,8 +50,6 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         cancelToken
       })
       .then(res => {
-        console.log(res.data);
-
         return res.data;
       })
       .then(data => {
@@ -65,15 +60,12 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         });
       })
       .catch(err => {
-        // console.log(err.response);
         console.log("Error: ", err); // => prints: Api is being canceled
       });
   };
 };
 
 export const updateCampaignList = (id, page, increasePage) => {
-  console.log("svwevwvwev");
-
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
@@ -82,7 +74,6 @@ export const updateCampaignList = (id, page, increasePage) => {
     instance
       .get(`campaignlist/${id}/${page}`)
       .then(res => {
-        // console.log("dataaaa", res.data);
         return res.data;
       })
       .then(JSONobj => {
@@ -113,8 +104,6 @@ export const getBusinessAccounts = () => {
         return res.data;
       })
       .then(data => {
-        // console.log("businessacc", data);
-
         return dispatch({
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
           payload: data
@@ -129,6 +118,7 @@ export const getBusinessAccounts = () => {
 
 export const createBusinessAccount = (account, navigation) => {
   return dispatch => {
+    dispatch({ type: actionTypes.SET_LOADING, payload: true });
     instance
       .post(`businessaccount`, account)
       .then(res => {
@@ -188,7 +178,6 @@ export const sendMobileNo = mobileNo => {
         return res.data;
       })
       .then(data => {
-        console.log("phone ", data);
         if (data.success === true) Segment.track("Phone No. Register Button");
 
         return dispatch({
@@ -214,8 +203,6 @@ export const verifyMobileCode = mobileAuth => {
     instance
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
-        console.log("verify", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -236,8 +223,6 @@ export const resendVerifyMobileCode = mobileAuth => {
     instance
       .post(`resendVerificationCode`, mobileAuth)
       .then(res => {
-        console.log("resendVerifyMobileCode", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -260,8 +245,6 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
     instance
       .post(`resendVerificationCodebyEmail`, mobileAuth)
       .then(res => {
-        console.log("resendVerificationCodebyEmail--", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -284,13 +267,10 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 };
 
 export const verifyEmail = (email, userInfo) => {
-  console.log("email", email);
-
   return dispatch => {
     instance
       .post(`verifyEmail`, { email: email })
       .then(res => {
-        console.log("verify email", res.data);
         return res.data;
       })
       .then(data => {
@@ -309,14 +289,11 @@ export const verifyEmail = (email, userInfo) => {
 };
 
 export const verifyBusinessName = businessName => {
-  console.log("businessName", businessName);
-
   return dispatch => {
     instance
       .post(`verifyBusinessName`, { businessname: businessName })
       .then(res => res.data)
       .then(data => {
-        console.log("businessName", data);
         if (data.success === true)
           Segment.track("Business Info Register Button");
 
@@ -339,7 +316,6 @@ export const registerUser = (userInfo, navigation) => {
         return res.data;
       })
       .then(async user => {
-        console.log("userInfo", user);
         if (data.success === true)
           Segment.track("User Registered Successfully");
 
@@ -350,8 +326,6 @@ export const registerUser = (userInfo, navigation) => {
       .then(decodedUser => dispatch(setCurrentUser(decodedUser)))
       .then(() => {
         if (getState().auth.userInfo) {
-          console.log("state user", getState().auth.userInfo);
-
           navigation.navigate("Dashboard");
 
           dispatch(getBusinessAccounts());
@@ -376,22 +350,17 @@ export const login = (userData, navigation) => {
           decodedUser = jwt_decode(user.token);
           let promise = await setAuthToken(user.token);
         } else {
-          console.log("decodedUser", decodedUser);
         }
         const obj = { user: decodedUser, message: user.message };
         return obj;
       })
       .then(decodedUser => {
-        console.log(decodedUser);
         dispatch(setCurrentUser(decodedUser));
       })
       .then(() => {
         if (getState().auth.userInfo) {
           navigation.navigate("Dashboard");
-          console.log(
-            "auth token",
-            axios.defaults.headers.common.Authorization
-          );
+
           dispatch(getBusinessAccounts());
         }
       })
@@ -416,8 +385,6 @@ export const changePassword = (currentPass, newPass, navigation) => {
         password: newPass
       })
       .then(response => {
-        console.log(response.data);
-
         showMessage({
           message: response.data.message,
           type: response.data.success ? "success" : "warning"
@@ -439,8 +406,6 @@ export const addressForm = (address, navigation) => {
         ...address
       })
       .then(response => {
-        console.log(response.data);
-
         showMessage({
           message: response.data.message,
           type: response.data.success ? "success" : "warning"
@@ -490,9 +455,7 @@ const setAuthToken = token => {
       .catch(err => alert(err));
   } else {
     return AsyncStorage.removeItem("token")
-      .then(() => {
-        delete axios.defaults.headers.common.Authorization;
-      })
+      .then(() => delete axios.defaults.headers.common.Authorization)
       .catch(err => alert(err));
   }
 };
@@ -511,15 +474,16 @@ const setCurrentUser = user => {
 };
 
 export const logout = navigation => {
-  navigation.navigate("Signin");
-
-  setAuthToken();
-  return setCurrentUser(null);
+  return dispatch => {
+    setAuthToken()
+      .then(() => dispatch(setCurrentUser(null)))
+      .then(() => navigation.navigate("Signin"));
+  };
 };
 
 export const resetRegister = () => {
   setAuthToken();
-  return setCurrentUser(null);
+  setCurrentUser(null);
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = (id, navigation) => {
@@ -528,8 +492,6 @@ export const create_ad_account = (id, navigation) => {
     instance
       .post("snapadaccounts", { businessid: id })
       .then(res => {
-        console.log("create_ad_account", res.data);
-
         return res.data;
       })
       .then(data => {

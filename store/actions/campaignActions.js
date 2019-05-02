@@ -33,11 +33,9 @@ export const snap_ad_audience_size = (info, totalReach) => {
     instance
       .post(`snapaudiencesize`, info)
       .then(res => {
-        console.log("snap_ad_audience_size", res.data);
         return res.data;
       })
       .then(data => {
-        console.log(data);
         return dispatch({
           type: actionTypes.SET_SNAP_AUDIENCE_SIZE,
           payload: data
@@ -75,15 +73,12 @@ export const ad_objective = (info, navigation) => {
       type: actionTypes.SET_AD_LOADING,
       payload: true
     });
-    console.log(info);
     instance
       .post(`savecampaign`, info)
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
-        console.log(data);
         return dispatch({
           type: actionTypes.SET_AD_OBJECTIVE,
           payload: data
@@ -93,7 +88,7 @@ export const ad_objective = (info, navigation) => {
         navigation.push("AdDesign");
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err.response);
       });
   };
 };
@@ -158,7 +153,7 @@ export const get_interests = countryCode => {
         });
       })
       .catch(err => {
-        dispatch(console.log(err));
+        console.log(err);
       });
   };
 };
