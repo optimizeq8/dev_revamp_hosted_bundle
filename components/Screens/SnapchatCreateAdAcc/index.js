@@ -34,20 +34,14 @@ class MainForm extends Component {
     Segment.screen("Create Snap Ad Account Screen");
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (this.props.mainBusiness.snap_ad_account_id) {
-      console.log("snap ad acc", this.props.mainBusiness.snap_ad_account_id);
-
       this.props.navigation.navigate("Dashboard");
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.mainBusiness.snap_ad_account_id)
-      console.log(
-        "snap ad acc update",
-        this.props.mainBusiness.snap_ad_account_id
-      );
-
-    this.props.navigation.navigate("Dashboard");
+    if (this.props.mainBusiness.snap_ad_account_id) {
+      this.props.navigation.navigate("Dashboard");
+    }
   }
 
   componentWillUnmount() {
@@ -133,6 +127,7 @@ class MainForm extends Component {
               <Button
                 block
                 dark
+                disabled={!this.state.accept}
                 style={[
                   styles.button,
                   {
@@ -142,7 +137,6 @@ class MainForm extends Component {
                   }
                 ]}
                 onPress={() => {
-                  console.log(this.props.mainBusiness);
                   this.state.accept &&
                     this.props.create_ad_account(
                       this.props.mainBusiness.businessid,

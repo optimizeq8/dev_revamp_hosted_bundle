@@ -62,7 +62,6 @@ class AppChoice extends Component {
     instance
       .get(`/searches.json?term=${this.state.attachment.app_name}&num=10`)
       .then(res => {
-        console.log("ios", res.data.content);
         return res.data.content;
       })
       .then(data =>
@@ -87,8 +86,6 @@ class AppChoice extends Component {
     instance
       .get(`/searches.json?term=${this.state.attachment.app_name}&num=10`)
       .then(res => {
-        console.log("android", res.data.content);
-
         return res.data.content;
       })
       .then(data =>

@@ -39,7 +39,6 @@ class Menu extends Component {
     }).start();
   }
   slidePanelShow() {
-    console.log(this.state.slidePanel);
     if (this.state.slidePanel) {
       this._panel.hide();
       this.setState({ slidePanel: false });
@@ -106,7 +105,9 @@ class Menu extends Component {
           <View>
             <Transition shared="menu">
               <Text style={styles.businessTitle}>
-                {this.props.mainBusiness.businessname}
+                {!this.props.mainBusiness
+                  ? ""
+                  : this.props.mainBusiness.businessname}
               </Text>
             </Transition>
             <View

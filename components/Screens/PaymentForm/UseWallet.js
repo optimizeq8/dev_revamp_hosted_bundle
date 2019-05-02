@@ -12,9 +12,9 @@ import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 class UseWallet extends Component {
   state = { showModal: false };
+
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
-      console.log("avlnuiy");
       this.props.checkoutwithWallet(this.props.campaign_id);
     } else {
       this.props._changeToKnet();
@@ -26,14 +26,13 @@ class UseWallet extends Component {
       showModal: false
     });
   };
-  _handleWallet = () => {
-    this.props.useWallet(this.props.campaign_id);
+  _handleWallet = async () => {
+    await this.props.useWallet(this.props.campaign_id);
     this.setState({
       showModal: true
     });
   };
   render() {
-    console.log("cam id", this.props.campaign_id);
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <WalletIcon width={80} height={80} />

@@ -18,7 +18,6 @@ class BusinessCard extends Component {
   };
   render() {
     let va = this.props.choice.value;
-    console.log(Icons[va].default);
     let IconName = Icons[va].default;
     let changeState = { backgroundColor: "transparent", color: "#fff" };
     if (this.props.selected === this.props.choice.value) {

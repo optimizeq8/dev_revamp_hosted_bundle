@@ -48,7 +48,6 @@ export default class index extends Component {
     instance
       .get(`/searches.json?term=${this.state.attachment.app_name}&num=4`)
       .then(res => {
-        console.log("ios", res.data.content);
         return res.data.content;
       })
       .then(data =>
@@ -71,8 +70,6 @@ export default class index extends Component {
     instance
       .get(`/searches.json?term=${this.state.attachment.app_name}&num=10`)
       .then(res => {
-        console.log("android", res.data.content);
-
         return res.data.content;
       })
       .then(data =>
@@ -89,7 +86,6 @@ export default class index extends Component {
     //   app => app.title === iosApp.title
     // ); This for the actual api data
     let androidUrl = androidDataTest.find(app => app.title === iosApp.title); //this for dummy data
-    console.log("found", iosApp.id);
 
     this.setState({
       attachment: {
@@ -128,8 +124,6 @@ export default class index extends Component {
     }
   };
   render() {
-    console.log(this.state.callaction);
-
     return (
       <>
         <RNPickerSelect

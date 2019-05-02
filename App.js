@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import { StatusBar, StyleSheet, View, Animated, Image } from "react-native";
 import {
   AppLoading,
@@ -12,15 +14,18 @@ import {
   Notifications
 } from "expo";
 import NavigationService from "./NavigationService";
+<<<<<<< HEAD
+import * as actionCreators from "./store/actions";
+=======
 
 
+>>>>>>> 6ab7f5485f1ac08264d0b6729903308793575802
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
 
 // console.disableYellowBox = true;
 import Sentry from "sentry-expo";
-
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
@@ -29,13 +34,43 @@ import {
 } from "react-native-responsive-screen";
 
 // Sentry.enableInExpoDevelopment = true;
-
 Sentry.config(
   "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
 ).install();
 
 // Sentry.captureException(new Error("Oops!"));
-export default class App extends React.Component {
+// crash;
+
+const defaultErrorHandler = ErrorUtils.getGlobalHandler();
+
+const myErrorHandler = (e, isFatal) => {
+  // e: the error thrown
+  console.log("errorrr", e);
+  if (isFatal) {
+    console.log("died", e);
+    if (store.getState().transA.walletUsed) {
+      if (store.getState().campaignC.campaign_id !== "") {
+        console.log("11111111111111111");
+
+        store.dispatch(
+          actionCreators.removeWalletAmount(
+            store.getState().campaignC.campaign_id
+          )
+        );
+      }
+    }
+
+    // store.dispatch(actionCreators.logout(NavigationService));
+  }
+  // isFatal: if the error is fatal and will kill the app
+  // define your code here...
+  // after all, if you want to forward to default error handler
+  // just call the variable we stored in the previous step
+  defaultErrorHandler(e, isFatal);
+};
+
+ErrorUtils.setGlobalHandler(myErrorHandler);
+class App extends React.Component {
   state = {
     isLoadingComplete: false,
     splashAnimation: new Animated.Value(0),
@@ -182,6 +217,11 @@ ${error.stack}`)
     this.setState({ isLoadingComplete: true });
   };
 }
+
+const mapDispatch = dispatch => ({
+  logout: navigation => dispatch(actionCreators(navigation))
+});
+export default App;
 
 const styles = StyleSheet.create({
   container: {

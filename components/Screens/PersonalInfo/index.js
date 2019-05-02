@@ -56,8 +56,6 @@ class ChangePassword extends Component {
   }
 
   render() {
-    console.log(this.props.userInfo);
-
     return (
       <Container style={styles.container}>
         <LinearGradient

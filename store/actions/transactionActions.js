@@ -23,10 +23,7 @@ export const getTransactions = () => {
         });
       })
       .catch(err => {
-        // console.log(err.response);
-        if (axios.isCancel(err)) {
-          console.log("Error: ", err.message); // => prints: Api is being canceled
-        }
+        console.log("Error: ", err.response); // => prints: Api is being canceled
       });
   };
 };
@@ -40,8 +37,6 @@ export const getWalletAmount = () => {
     instance
       .get(`mywallet`)
       .then(res => {
-        console.log("wallettttt", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -51,10 +46,7 @@ export const getWalletAmount = () => {
         });
       })
       .catch(err => {
-        // console.log(err.response);
-        if (axios.isCancel(err)) {
-          console.log("Error: ", err.message); // => prints: Api is being canceled
-        }
+        console.log("Error: ", err.response); // => prints: Api is being canceled
       });
   };
 };
@@ -68,8 +60,6 @@ export const addWalletAmount = (info, openBrowser) => {
     instance
       .post(`purchaseWalletAmount`, info)
       .then(res => {
-        console.log(res.data);
-
         return res.data;
       })
       .then(data => {
@@ -94,7 +84,6 @@ export const useWallet = campaign_id => {
     instance
       .post(`useWallet`, { campaign_id })
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -119,7 +108,6 @@ export const removeWalletAmount = campaign_id => {
     instance
       .post(`removeWallet`, { campaign_id })
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(data => {
@@ -144,7 +132,6 @@ export const checkoutwithWallet = campaign_id => {
     instance
       .post(`checkoutwithWallet`, { campaign_id })
       .then(res => {
-        console.log("checkoutwithWallet ", res.data);
         return res.data;
       })
       .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))

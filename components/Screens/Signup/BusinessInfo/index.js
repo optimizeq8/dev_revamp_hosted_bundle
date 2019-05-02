@@ -181,8 +181,6 @@ class BusinessInfo extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.message !== this.props.message) {
       if (this.props.message === "Business name already exist") {
-        console.log(this.props.message);
-
         this.setState({
           nameError: this.props.message ? this.props.message : null
         });

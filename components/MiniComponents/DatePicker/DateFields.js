@@ -177,7 +177,6 @@ export default class DateFields extends Component {
                           86400000
                       )
                     );
-                    console.log("timeDiff", timeDiff + 1);
                     this.props.getMinimumCash(timeDiff + 1);
                     await this.props.handleStartDatePicked(
                       this.state.start_date

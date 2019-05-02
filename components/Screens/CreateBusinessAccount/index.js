@@ -256,7 +256,6 @@ class CreateBusinessAccount extends Component {
           ...business,
           country_code: this.props.countryCode
         };
-        console.log(userInfo);
 
         this.props.registerUser(userInfo, this.props.navigation);
       } else {
