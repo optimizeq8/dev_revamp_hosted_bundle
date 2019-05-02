@@ -213,6 +213,7 @@ class Menu extends Component {
                   <Text style={styles.text}>{"   "}Logout</Text>
                 </View>
               </TouchableWithoutFeedback>
+              <Text style={styles.text}>{this.props.exponentPushToken}</Text>
             </View>
           </View>
           <SlidingUpPanel
@@ -239,7 +240,8 @@ class Menu extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.auth.mainBusiness,
-  campaignList: state.auth.campaignList
+  campaignList: state.auth.campaignList,
+  exponentPushToken: state.auth.exponentPushToken
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: navigation =>

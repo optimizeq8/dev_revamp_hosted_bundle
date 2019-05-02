@@ -72,7 +72,6 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
-    //
     if (this.props.mainBusiness) {
       if (this.props.mainBusiness.snap_ad_account_id === "") {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
@@ -247,8 +246,6 @@ class Dashboard extends Component {
               >
                 <Transition shared="menu">
                   <Text style={[styles.text]}>
-                    {this.props.exponentPushToken}
-                    {"\n"}
                     {this.props.mainBusiness.businessname}
                   </Text>
                 </Transition>
