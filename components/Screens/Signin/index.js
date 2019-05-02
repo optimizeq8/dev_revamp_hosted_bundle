@@ -68,7 +68,10 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
-    this.props.checkForExpiredToken(this.props.navigation);
+    if (this.props.navigation.getParam("loggedout", false)) {
+    } else {
+      this.props.checkForExpiredToken(this.props.navigation);
+    }
   }
   render() {
     return (
