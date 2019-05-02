@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    paddingTop: 15
+    shadowOffset: { width: 0, height: -3 }
   },
   content: {
     flexDirection: "row",
@@ -60,7 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   contentContainer: {
-    // paddingVertical: 40,
     flex: 1,
     justifyContent: "space-around"
   },
@@ -108,8 +106,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 45,
     borderColor: "#7039FF",
-    position: "relative",
-    top: "40%"
+    position: "absolute"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

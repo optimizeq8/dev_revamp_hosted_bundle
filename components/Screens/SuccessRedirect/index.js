@@ -62,6 +62,8 @@ class SuccessRedirect extends Component {
     return true;
   }
   render() {
+    console.log("success data", this.state);
+
     return (
       <Container style={styles.container}>
         <LinearGradient

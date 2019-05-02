@@ -34,6 +34,7 @@ import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
 
 import * as actionCreators from "../../../../store/actions";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -82,35 +83,43 @@ class AdPaymentReview extends Component {
   }
 
   componentDidMount() {
-    // console.log("data", this.props.data);
     Segment.screen("Ad Payment Review Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 5,
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_id
     });
-    this.setState({ ...this.props.data });
+    // this.setState({ ...this.props.data });
   }
+
   render() {
-    if (!this.state.ad_account_id) {
-      return <Spinner color="red" />;
+    console.log("dataaaaaaaa", this.props.data);
+    if (this.props.loading) {
+      return <LoadingScreen />;
     } else {
+      let targeting = this.props.data.targeting;
       let interestNames = [];
       if (this.props.navigation.state.params.interestNames.length > 0) {
         interestNames = this.props.navigation.state.params.interestNames.map(
           interest => interest.name
         );
       }
-      let end_time = new Date(this.state.end_time);
-      let start_time = new Date(this.state.start_time);
+      let end_time = new Date(this.props.data.end_time);
+      let start_time = new Date(this.props.data.start_time);
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
-      let gender = this.state.targeting.demographics[0].gender
-        ? this.state.targeting.demographics[0].gender
+      let gender = targeting.demographics[0].gender
+        ? targeting.demographics[0].gender
         : "All";
-      let regions = this.state.targeting.geos[0].hasOwnProperty("region_id")
-        ? ":" + this.state.targeting.geos[0].region_id.join(", ")
+      let regions = targeting.geos[0].hasOwnProperty("region_id")
+        ? ":" + targeting.geos[0].region_id.join(", ")
         : null;
+      let devices = [];
+      devices = targeting.hasOwnProperty("devices")
+        ? targeting.devices[0].hasOwnProperty("marketing_name")
+          ? targeting.devices[0].marketing_name.join(", ")
+          : []
+        : [];
       return (
         <Container style={styles.container}>
           <LinearGradient
@@ -170,14 +179,17 @@ class AdPaymentReview extends Component {
                 subtitles={[
                   { title: "start", content: end_time },
                   { title: "end", content: start_time },
-                  { title: "objective", content: this.state.objective }
+                  { title: "objective", content: this.props.data.objective }
                 ]}
               />
               <ReviewItemCard
                 title="Media"
                 subtitles={[
-                  { title: "Business Name", content: this.state.brand_name },
-                  { title: "Headline", content: this.state.headline }
+                  {
+                    title: "Business Name",
+                    content: this.props.data.brand_name
+                  },
+                  { title: "Headline", content: this.props.data.headline }
                 ]}
               />
 
@@ -191,25 +203,44 @@ class AdPaymentReview extends Component {
                   {
                     title: "Location",
                     content: regions
-                      ? this.state.targeting.geos[0].country_code + regions
-                      : this.state.targeting.geos[0].country_code
+                      ? targeting.geos[0].country_code + regions
+                      : targeting.geos[0].country_code
                   },
                   {
                     title: "language",
-                    content: this.state.targeting.demographics[0].languages.join(
-                      ", "
-                    )
+                    content: targeting.demographics[0].languages.join(", ")
                   },
                   {
                     title: "Age group",
                     content:
-                      this.state.targeting.demographics[0].min_age +
+                      targeting.demographics[0].min_age +
                       "-" +
-                      this.state.targeting.demographics[0].max_age
+                      targeting.demographics[0].max_age
                   },
                   interestNames.length > 0 && {
                     title: "Interests",
                     content: interestNames + ""
+                  },
+
+                  devices.length > 0 && {
+                    title: "Devices",
+                    content: devices + ""
+                  },
+                  targeting.hasOwnProperty("devices") && {
+                    title: "OS Type",
+                    content:
+                      targeting.devices[0].hasOwnProperty("os_type") &&
+                      targeting.devices[0].os_type !== ""
+                        ? targeting.devices[0].os_type
+                        : "All"
+                  },
+                  targeting.hasOwnProperty("devices") && {
+                    title: "OS Version",
+                    content:
+                      targeting.devices[0].hasOwnProperty("os_version_max") &&
+                      targeting.devices[0].os_version_min +
+                        ", " +
+                        targeting.devices[0].os_version_max
                   }
                 ]}
               />
@@ -230,7 +261,7 @@ class AdPaymentReview extends Component {
               </View>
               <View style={{ flexDirection: "column", alignSelf: "center" }}>
                 <Text style={styles.text}>
-                  {this.state.lifetime_budget_micro} $
+                  {this.props.data.lifetime_budget_micro} $
                 </Text>
                 {/* <Text style={styles.text}>20 $</Text> */}
               </View>
@@ -244,7 +275,7 @@ class AdPaymentReview extends Component {
                     "Select Ad Payment Review Button",
                     {
                       business_name: this.props.mainBusiness.businessname,
-                      campaign_budget: this.state.lifetime_budget_micro
+                      campaign_budget: this.props.data.lifetime_budget_micro
                     }
                   );
                   Segment.trackWithProperties("Completed Checkout Step", {
@@ -271,7 +302,7 @@ class AdPaymentReview extends Component {
                     textAlign: "center"
                   }}
                 >
-                  Total {"\n"} {this.state.lifetime_budget_micro}$ {"\n"}(
+                  Total {"\n"} {this.props.data.lifetime_budget_micro}$ {"\n"}(
                   {this.props.kdamount} KWD){"\n"} proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>
@@ -287,6 +318,7 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
+  loading: state.campaignC.loading,
   kdamount: state.campaignC.kdamount,
   interestsNames: state.campaignC.interestsNames,
   mainBusiness: state.auth.mainBusiness

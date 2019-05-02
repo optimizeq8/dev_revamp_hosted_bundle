@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   boldtext: {
-    color: "#fff",
+    color: "rgba(255,255,255,0.7)",
     fontSize: 12,
     fontFamily: "montserrat-bold",
     alignSelf: "center"
@@ -120,10 +120,9 @@ const styles = StyleSheet.create({
   },
   button: {
     zIndex: 10,
-    borderWidth: 1,
+    borderWidth: 0.3,
     borderColor: "#fff",
     marginTop: 15,
-    backgroundColor: "transparent",
     borderRadius: 10,
     alignSelf: "center",
     justifyContent: "center"

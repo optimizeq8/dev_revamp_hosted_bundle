@@ -11,6 +11,8 @@ import {
   Permissions,
   Notifications
 } from "expo";
+import NavigationService from "./NavigationService";
+
 
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
@@ -92,7 +94,12 @@ ${error.stack}`)
           <View style={styles.container}>
             <StatusBar barStyle="light-content" />
             <Root>
-              <AppNavigator uriPrefix={prefix} />
+              <AppNavigator
+                uriPrefix={prefix}
+                ref={navigatorRef => {
+                  NavigationService.setTopLevelNavigator(navigatorRef);
+                }}
+              />
               {this._maybeRenderLoadingImage()}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />

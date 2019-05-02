@@ -82,7 +82,11 @@ class Menu extends Component {
                   }}
                   resizeMode="contain"
                   source={require("../../../assets/animation/menu-btn.json")}
-                  progress={this.props.navigation.state.params.menu}
+                  progress={
+                    (this.props.navigation.state.params &&
+                      this.props.navigation.state.params.menu) ||
+                    1
+                  }
                 />
               </TouchableWithoutFeedback>
             </View>

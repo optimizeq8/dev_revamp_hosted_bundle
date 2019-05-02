@@ -307,8 +307,6 @@ class AdDetails extends Component {
   };
 
   _handleBudget = value => {
-    console.log("jmfd", value);
-
     if (
       !validateWrapper("Budget", value) &&
       value >= this.state.minValueBudget
@@ -369,6 +367,22 @@ class AdDetails extends Component {
         rep.targeting.interests[0].category_id.length === 0
       ) {
         delete rep.targeting.interests;
+      }
+      if (rep.targeting.devices[0].marketing_name.length === 0) {
+        delete rep.targeting.devices[0].marketing_name;
+      }
+      if (rep.targeting.devices[0].os_type === "") {
+        delete rep.targeting.devices[0].os_type;
+      }
+      if (rep.targeting.devices[0].os_version_max === "") {
+        delete rep.targeting.devices[0].os_version_max;
+        delete rep.targeting.devices[0].os_version_min;
+      }
+      if (
+        Object.entries(rep.targeting.devices[0]).length === 0 &&
+        rep.targeting.devices[0].constructor === Object
+      ) {
+        delete rep.targeting.devices;
       }
       if (rep.targeting.demographics[0].max_age >= 35) {
         rep.targeting.demographics[0].max_age = "35+";
@@ -1158,7 +1172,7 @@ class AdDetails extends Component {
                             </View>
 
                             {this.state.campaignInfo.targeting.devices[0]
-                              .marketing_name.length !== 0 ? (
+                              .os_version_min !== "" ? (
                               <GreenCheckmarkIcon width={25} height={25} />
                             ) : (
                               <PlusCircleIcon width={25} height={25} />

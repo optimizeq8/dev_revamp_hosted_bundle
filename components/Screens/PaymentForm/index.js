@@ -5,6 +5,7 @@ import { Modal } from "react-native-paper";
 import { LinearGradient, WebBrowser, Linking, Segment } from "expo";
 import UseWallet from "./UseWallet";
 import BackDrop from "../../../assets/SVGs/BackDropIcon";
+import NavigationService from "../../../NavigationService.js";
 
 // Style
 import styles from "./styles";
@@ -238,6 +239,7 @@ class PaymentForm extends Component {
         <View style={{ top: "10%", zIndex: 10 }}>
           {!addingCredits ? (
             <Button
+              transparent
               onPress={() =>
                 !this.props.loading &&
                 this.props.navigation.navigate("AdPaymentReview", {
@@ -251,12 +253,14 @@ class PaymentForm extends Component {
             </Button>
           ) : (
             <Button
+              transparent
               onPress={() =>
-                !this.props.loading && this.props.navigation.push("AddCredits")
+                !this.props.loading &&
+                this.props.navigation.navigate("AddCredits")
               }
               style={styles.button}
             >
-              <Text style={styles.boldtext}>Review Wallet</Text>
+              <Text style={styles.boldtext}>Cancel Payment</Text>
             </Button>
           )}
         </View>

@@ -107,6 +107,10 @@ export const ad_design = (
 ) => {
   onToggleModal();
   return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
@@ -225,7 +229,6 @@ export const ad_details = (info, interestNames, navigation) => {
     instance
       .post(`savetargeting`, info)
       .then(res => {
-        console.log("back end", res.data);
         return res.data;
       })
       .then(data => {
@@ -250,7 +253,6 @@ export const updateCampaign = (info, businessid, navigation) => {
     instance
       .put(`savetargeting`, { ...info, businessid })
       .then(res => {
-        console.log("back end", res.data);
         return res.data;
       })
       .then(data => {
@@ -273,7 +275,6 @@ export const updateStatus = (info, handleToggle) => {
     instance
       .put(`updateCampaignStatus`, info)
       .then(res => {
-        console.log("back end", res.data);
         return res.data;
       })
       .then(data => {

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 
 export const colors = {
   black: "#1a1917",
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 16,
     paddingVertical: 0,
-    width: "50%"
+    width: "70%"
   },
 
   subtext: {
@@ -152,6 +153,11 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30
+  },
+  reviewtext: {
+    fontFamily: "montserrat-extralight",
+    fontSize: 15,
+    color: "#fff"
   }
 });
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import NavigationService from "../../NavigationService";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
@@ -146,12 +147,14 @@ export const checkoutwithWallet = campaign_id => {
         console.log("checkoutwithWallet ", res.data);
         return res.data;
       })
-      // .then(data => {
-      //   return dispatch({
-      //     type: actionTypes.REMOVE_WALLET_AMOUNT,
-      //     payload: data
-      //   });
-      // })
+      .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))
+
+      .then(data => {
+        return dispatch({
+          type: actionTypes.CHECKOUT_WITH_WALLET,
+          payload: data
+        });
+      })
 
       .catch(err => {
         console.log("Error: ", err);

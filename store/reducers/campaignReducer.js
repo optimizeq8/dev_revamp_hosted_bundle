@@ -29,11 +29,10 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
-        message: action.payload.message
+        message: action.payload.message,
+        loading: !action.payload.success
       };
     case actionTypes.SET_AD_DETAILS:
-      console.log("ad detail", { ...state.data, ...action.payload.data });
-
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
@@ -42,8 +41,6 @@ const reducer = (state = initialState, action) => {
         loading: false
       };
     case actionTypes.UPDATE_CAMPAIGN_DETAILS:
-      console.log("ad detail", { ...state.data, ...action.payload.data });
-
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
