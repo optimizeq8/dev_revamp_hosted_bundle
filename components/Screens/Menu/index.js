@@ -97,7 +97,7 @@ class Menu extends Component {
           />
           <TouchableWithoutFeedback
             onPress={() => {
-              this.props.logout(this.props.navigation);
+              this.props.clearPushToken(this.props.navigation);
             }}
           >
             <Icons.LogoutIcon style={styles.logoutIcon} />
@@ -205,7 +205,7 @@ class Menu extends Component {
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
                 onPress={() => {
-                  this.props.logout(this.props.navigation);
+                  this.props.clearPushToken(this.props.navigation);
                 }}
               >
                 <View style={styles.options}>
@@ -242,7 +242,8 @@ const mapStateToProps = state => ({
   campaignList: state.auth.campaignList
 });
 const mapDispatchToProps = dispatch => ({
-  logout: navigation => dispatch(actionCreators.logout(navigation)),
+  clearPushToken: navigation =>
+    dispatch(actionCreators.clearPushToken(navigation)),
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
