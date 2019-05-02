@@ -24,7 +24,8 @@ const initialState = {
   campaignEndSearch: "",
   isListEnd: false,
   fetching_from_server: false,
-  passwordChanged: false
+  passwordChanged: false,
+  exponentPushToken: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -32,12 +33,12 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN:
       return {
         ...state,
-        ExponentPushToken: null
+        exponentPushToken: null
       };
     case actionTypes.SET_PUSH_NOTIFICATION_TOKEN:
       return {
         ...state,
-        ExponentPushToken: action.payload.token
+        exponentPushToken: action.payload.token
       };
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
@@ -237,7 +238,8 @@ const reducer = (state = initialState, action) => {
         campaignList: [],
         selectedCampaign: null,
         successName: false,
-        filteredCampaigns: []
+        filteredCampaigns: [],
+        exponentPushToken: null
       };
 
     default:

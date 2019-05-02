@@ -249,6 +249,8 @@ class Dashboard extends Component {
               >
                 <Transition shared="menu">
                   <Text style={[styles.text]}>
+                    {this.props.exponentPushToken}
+                    {"\n"}
                     {this.props.mainBusiness.businessname}
                   </Text>
                 </Transition>
@@ -421,7 +423,8 @@ const mapStateToProps = state => ({
   campaignList: state.auth.campaignList,
   fetching_from_server: state.auth.fetching_from_server,
   isListEnd: state.auth.isListEnd,
-  filteredCampaigns: state.auth.filteredCampaigns
+  filteredCampaigns: state.auth.filteredCampaigns,
+  exponentPushToken: state.auth.exponentPushToken
 });
 
 const mapDispatchToProps = dispatch => ({
