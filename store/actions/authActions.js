@@ -534,14 +534,11 @@ export const clearPushToken = navigation => {
   };
 };
 export const logout = navigation => {
-
   return dispatch => {
-    setAuthToken()
-      .then(() => dispatch(setCurrentUser(null)))
-      .then(() =>  navigation.navigate("Signin", { loggedout: true }));
+    navigation.navigate("Signin", { loggedout: true });
+    setAuthToken().then(() => dispatch(setCurrentUser(null)));
   };
 };
-
 export const resetRegister = () => {
   setAuthToken();
   setCurrentUser(null);
