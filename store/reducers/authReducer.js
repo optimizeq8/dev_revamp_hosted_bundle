@@ -29,6 +29,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_PUSH_NOTIFICATION_TOKEN:
+      return {
+        ...state,
+        ExponentPushToken: action.payload.token
+      };
     case actionTypes.SEND_MOBILE_NUMBER:
       return {
         ...state,
