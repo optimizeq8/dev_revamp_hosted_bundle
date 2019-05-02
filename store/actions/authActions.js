@@ -3,10 +3,39 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import { Segment } from "expo";
+import { Segment, Permissions, Notifications } from "expo";
+
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+
+export const send_push_notification = () => {
+  return (dispatch, getState) => {
+    Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
+      if (permission.status === "granted") {
+        Notifications.getExpoPushTokenAsync().then(token => {
+          instance
+            .post(`updatepushToken`, {
+              token: token,
+              userid: getState().auth.userInfo.userid
+            })
+            .then(res => {
+              return res.data;
+            })
+            .then(data => {
+              dispatch({
+                type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
+                payload: data
+              });
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
+        });
+      }
+    });
+  };
+};
 export const changeBusiness = business => {
   return dispatch => {
     return dispatch({
@@ -362,6 +391,7 @@ export const login = (userData, navigation) => {
           navigation.navigate("Dashboard");
 
           dispatch(getBusinessAccounts());
+          dispatch(send_push_notification());
         }
       })
       .catch(err => {

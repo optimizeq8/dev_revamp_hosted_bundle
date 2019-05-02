@@ -19,6 +19,7 @@ export const SET_CAMPAIGN_LIST = "SET_CAMPAIGN_LIST";
 export const SET_CAMPAIGN = "SET_CAMPAIGN";
 export const RESET_REGISTER = "RESET_REGISTER";
 export const SET_LOADING = "SET_LOADING";
+export const SET_PUSH_NOTIFICATION_TOKEN = "SET_PUSH_NOTIFICATION_TOKEN";
 
 //Campaign Action Types
 export const SET_AD_TYPE = "SET_AD_TYPE";
