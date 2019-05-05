@@ -288,7 +288,8 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 
         showMessage({
           message: data.message,
-          type: data.success ? "success" : "warning"
+          type: data.success ? "success" : "warning",
+          position: "top"
         });
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION_EMAIL,
@@ -348,10 +349,11 @@ export const registerUser = (userInfo, navigation) => {
     instance
       .post(`registerUser`, userInfo)
       .then(res => {
+        console.log("register user", res.data);
         return res.data;
       })
       .then(async user => {
-        if (data.success === true)
+        if (user.success === true)
           Segment.track("User Registered Successfully");
 
         const decodedUser = jwt_decode(user.token);
@@ -377,17 +379,25 @@ export const login = (userData, navigation) => {
     instance
       .post("userLogin", userData)
       .then(res => {
+        console.log("oiunweg", res.data);
+
         return res.data;
       })
       .then(async user => {
         let decodedUser = null;
-        if (typeof user.token !== "undefined") {
+        if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
           let promise = await setAuthToken(user.token);
         } else {
+          console.log("oiusoeiunvosnevosunvnweg");
+          showMessage({
+            message: user.message,
+            type: "warning",
+            position: "top"
+          });
+          const obj = { user: decodedUser, message: user.message };
+          return obj;
         }
-        const obj = { user: decodedUser, message: user.message };
-        return obj;
       })
       .then(decodedUser => {
         dispatch(setCurrentUser(decodedUser));
@@ -401,7 +411,7 @@ export const login = (userData, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err.response);
+        console.log(err);
       });
   };
 };
@@ -540,8 +550,9 @@ export const logout = navigation => {
   };
 };
 export const resetRegister = () => {
-  setAuthToken();
-  setCurrentUser(null);
+  return dispatch => {
+    setAuthToken().then(() => dispatch(setCurrentUser(null)));
+  };
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_ad_account = (id, navigation) => {
