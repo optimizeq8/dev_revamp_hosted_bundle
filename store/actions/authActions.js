@@ -388,6 +388,7 @@ export const login = (userData, navigation) => {
         if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
           let promise = await setAuthToken(user.token);
+          return { user: decodedUser, message: user.message };
         } else {
           console.log("oiusoeiunvosnevosunvnweg");
           showMessage({
