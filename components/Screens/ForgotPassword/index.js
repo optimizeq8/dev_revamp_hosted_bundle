@@ -29,6 +29,7 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
+import CloseButton from "../../MiniComponents/CloseButton";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -80,7 +81,8 @@ class ForgotPassword extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Button
+        <CloseButton navigation={() => this.props.navigation.goBack()} />
+        {/* <Button
           iconLeft
           large
           transparent
@@ -96,7 +98,7 @@ class ForgotPassword extends Component {
               color: "#fff"
             }}
           />
-        </Button>
+        </Button> */}
 
         <View style={{ marginTop: 25 }}>
           <Image

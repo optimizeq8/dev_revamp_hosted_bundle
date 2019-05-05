@@ -212,12 +212,14 @@ class AdDetails extends Component {
   };
   getMinimumCash = days => {
     let minValueBudget = days !== 0 ? 25 * days : 25;
+    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     this.onSelectedBudgetChange(minValueBudget);
     this.setState({
-      minValueBudget
+      minValueBudget,
+      maxValueBudget
     });
     showMessage({
-      message: "Minimum budget recalculated based on duration",
+      message: "Budget recalculated based on duration",
       type: "warning"
     });
   };

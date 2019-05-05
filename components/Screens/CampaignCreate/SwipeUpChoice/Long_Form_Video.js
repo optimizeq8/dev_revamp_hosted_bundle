@@ -105,7 +105,8 @@ export default class Long_Form_Video extends Component {
       }
     } else {
       this.setState({
-        durationError: validateWrapper("duration", this.state.duration)
+        durationError: validateWrapper("duration", this.state.duration),
+        longformvideo_media: null
       });
     }
   };
@@ -142,8 +143,8 @@ export default class Long_Form_Video extends Component {
           {this.state.longformvideo_media && (
             <View
               style={{
-                bottom: 100,
-                marginBottom: -270
+                bottom: heightPercentageToDP(0),
+                marginBottom: -heightPercentageToDP(17)
               }}
             >
               <Text style={styles.subtext}>Preview Only</Text>
@@ -154,7 +155,7 @@ export default class Long_Form_Video extends Component {
                 shouldPlay
                 isLooping
                 isMuted
-                resizeMode="contain"
+                resizeMode="cover"
                 style={[styles.placeholder]}
               />
               <Button
@@ -254,7 +255,7 @@ export default class Long_Form_Video extends Component {
             <LoadingScreen top={30} />
           </Modal>
         </View>
-        <LowerButton function={this._handleSubmission} bottom={-5} />
+        <LowerButton function={this._handleSubmission} />
       </View>
     );
   }

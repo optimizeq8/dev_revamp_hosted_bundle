@@ -4,10 +4,38 @@ import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment, Permissions, Notifications } from "expo";
+import NavigationService from "../../NavigationService";
 
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+
+export const verifyInviteCode = verificationCode => {
+  return dispatch => {
+    instance
+      .post(`verifyInvitationCode`, { verificationCode })
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        !data.success &&
+          showMessage({
+            message: data.message,
+            type: "danger",
+            position: "top"
+          });
+        data.success &&
+          NavigationService.navigate("MainForm", {
+            invite: true
+          });
+        return dispatch({
+          type: actionTypes.SET_INVITE_CODE,
+          payload: { data, verificationCode }
+        });
+      })
+
+      .catch(err => console.log(err.response));
+  };
+};
 
 export const send_push_notification = () => {
   return (dispatch, getState) => {
