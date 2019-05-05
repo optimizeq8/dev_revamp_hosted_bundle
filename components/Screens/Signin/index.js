@@ -74,6 +74,9 @@ class MainForm extends Component {
     }
   }
   render() {
+    let invite =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.invite;
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -182,24 +185,43 @@ class MainForm extends Component {
             <Text style={[styles.link, { paddingBottom: 7 }]}>
               Don’t Have an Account?
             </Text>
-            <Button
-              rounded
-              onPress={() => {
-                Segment.track("Signup Button");
-                this.props.resetRegister();
-                this.props.navigation.navigate("MainForm");
-              }}
-              style={styles.bottomView}
-            >
-              <Text
-                style={[
-                  styles.buttontext,
-                  { color: "#fff", fontFamily: "montserrat-semibold" }
-                ]}
+            {!invite ? (
+              <Button
+                rounded
+                onPress={() => {
+                  Segment.track("Signup Button");
+                  this.props.resetRegister();
+                  this.props.navigation.navigate("MainForm");
+                }}
+                style={styles.bottomView}
               >
-                Sign Up Now!
-              </Text>
-            </Button>
+                <Text
+                  style={[
+                    styles.buttontext,
+                    { color: "#fff", fontFamily: "montserrat-semibold" }
+                  ]}
+                >
+                  Sign Up Now!
+                </Text>
+              </Button>
+            ) : (
+              <Button
+                rounded
+                onPress={() => {
+                  this.props.navigation.navigate("Invitation");
+                }}
+                style={styles.bottomView}
+              >
+                <Text
+                  style={[
+                    styles.buttontext,
+                    { color: "#fff", fontFamily: "montserrat-semibold" }
+                  ]}
+                >
+                  Enter Invite Code!
+                </Text>
+              </Button>
+            )}
           </View>
         </View>
       </Container>

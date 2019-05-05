@@ -24,6 +24,9 @@ class MainForm extends Component {
   };
   state = { verified: false };
   render() {
+    let invite =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.invite;
     let title = "Phone Number";
     let content = <PhoneNo navigation={this.props.navigation} />;
 
@@ -53,25 +56,11 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <CloseButton
-          navigation={() => this.props.navigation.navigate("Signin")}
-        />
-        {/* <Button
-          transparent
-          onPress={() => this.props.navigation.navigate("Signin")}
-          style={{
-            marginLeft: 10
-          }}
-        >
-          <Icon
-            style={{
-              fontSize: 40,
-              color: "#fff"
-            }}
-            name="close"
+        {!invite && (
+          <CloseButton
+            navigation={() => this.props.navigation.navigate("Signin")}
           />
-        </Button>
-         */}
+        )}
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
           <Badge

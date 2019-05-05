@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   textcontainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    paddingHorizontal: 7,
-    marginBottom: "20%"
+    paddingHorizontal: 7
+    // marginBottom: "20%"
   },
   titletext: {
     textAlign: "left",
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(105)
   },
   input: {
-    marginTop: 20,
     backgroundColor: "#5D1CD8",
     paddingHorizontal: 50,
     borderRadius: 10,

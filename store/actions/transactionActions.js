@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
+import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
@@ -87,6 +88,11 @@ export const useWallet = campaign_id => {
         return res.data;
       })
       .then(data => {
+        showMessage({
+          message: data.message,
+          type: "info",
+          position: "top"
+        });
         return dispatch({
           type: actionTypes.USE_WALLET_AMOUNT,
           payload: data

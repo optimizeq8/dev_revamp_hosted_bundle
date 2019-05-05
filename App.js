@@ -116,7 +116,7 @@ ${error.stack}`)
   };
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if (!this.state.isLoadingComplete) {
       return null;
     } else {
       const prefix = Linking.makeUrl("/");

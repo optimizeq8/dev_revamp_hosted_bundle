@@ -15,7 +15,10 @@ import data, { androidDataTest } from "./data";
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import validateWrapper from "../../../Validation Functions/ValidateWrapper";
 import { ToggleButton, ActivityIndicator } from "react-native-paper";
 class AppChoice extends Component {
@@ -455,7 +458,8 @@ class AppChoice extends Component {
                         styles.titletext,
                         {
                           color: "#fff",
-                          fontSize: heightPercentageToDP(1.7)
+                          fontSize: heightPercentageToDP(1.7),
+                          width: widthPercentageToDP(65)
                         }
                       ]}
                     >
