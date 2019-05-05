@@ -71,7 +71,8 @@ class App extends React.Component {
   state = {
     isLoadingComplete: false,
     splashAnimation: new Animated.Value(0),
-    splashAnimationComplete: false
+    splashAnimationComplete: false,
+    isAppReady: false
   };
   constructor(props) {
     super(props);
@@ -84,6 +85,7 @@ class App extends React.Component {
 
       this.setState({ isLoadingComplete: true }, () => {
         this._registerForPushNotificationsAsync();
+        // this._animateOut();
       });
       // mark reasources as loaded
     } catch (e) {
@@ -113,11 +115,12 @@ class App extends React.Component {
     if (!this.state.isLoadingComplete) {
       return (
         <AppLoading
-          startAsync={this._loadAsync()}
+          startAsync={this._loadAsync}
           onFinish={() => {
             this.setState({ isLoadingComplete: true });
           }}
-          onError={console.warn}
+          autoHideSplash={true}
+          // onError={console.warn}
         />
       );
     } else {
@@ -134,7 +137,7 @@ class App extends React.Component {
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
-              {this._maybeRenderLoadingImage()}
+              {/* {this._maybeRenderLoadingImage()} */}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
