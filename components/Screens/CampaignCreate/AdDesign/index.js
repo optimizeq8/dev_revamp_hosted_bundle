@@ -158,11 +158,13 @@ class AdDesign extends Component {
               imageError: "Video must be less than 32 MBs",
               image: null
             });
+            this.onToggleModal();
           } else if (result.type === "image" && file.size > 5000000) {
             this.setState({
               imageError: "Image must be less than 5 MBs",
               image: null
             });
+            this.onToggleModal();
           } else {
             this.setState({
               image: result.uri,
@@ -584,7 +586,17 @@ class AdDesign extends Component {
               </TouchableOpacity>
             </View>
             <Modal isVisible={this.props.loading || this.state.isVisible}>
-              <LoadingScreen top={0} />
+              <>
+                <LoadingScreen top={20} />
+                <Text
+                  style={[
+                    styles.title,
+                    { top: heightPercentageToDP(50), left: "5%" }
+                  ]}
+                >
+                  {Math.round(this.state.loaded, 2)}%
+                </Text>
+              </>
             </Modal>
           </View>
         </KeyboardAwareScrollView>

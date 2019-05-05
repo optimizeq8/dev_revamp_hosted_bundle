@@ -105,12 +105,7 @@ export default class Deep_Link extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <ScrollView
-          style={{
-            borderTopStartRadius: 30,
-            borderTopEndRadius: 30
-          }}
-        >
+        <ScrollView>
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}

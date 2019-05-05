@@ -35,14 +35,13 @@ const styles = StyleSheet.create({
   colorGrey: {
     color: "#fff"
   },
-  colorYellow: {
+  budget: {
     alignSelf: "center",
-    // width: wp(50),
-    flex: 1,
+    flex: 0,
+
     color: "#FF9D00",
     fontSize: 27,
-    fontFamily: "montserrat-medium",
-    textAlign: "center"
+    fontFamily: "montserrat-medium"
   },
   inputtext: {
     fontFamily: "montserrat-light",

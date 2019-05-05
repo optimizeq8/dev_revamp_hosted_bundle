@@ -393,7 +393,11 @@ class AppChoice extends Component {
         ) : null}
 
         {this.state.loading ? (
-          <ActivityIndicator color="#fff" size="large" />
+          <ActivityIndicator
+            color="#fff"
+            size="large"
+            style={{ height: heightPercentageToDP(35) }}
+          />
         ) : (
           <View style={{ height: heightPercentageToDP(35) }}>
             <FlatList
@@ -465,10 +469,7 @@ class AppChoice extends Component {
             />
           </View>
         )}
-        <LowerButton
-          function={() => this.validate()}
-          bottom={heightPercentageToDP(0.1)}
-        />
+        <LowerButton function={() => this.validate()} bottom={0} />
       </View>
     );
   }

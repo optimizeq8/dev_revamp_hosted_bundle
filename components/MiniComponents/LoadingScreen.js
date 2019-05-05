@@ -53,7 +53,11 @@ class Loading extends React.Component {
           </>
         )}
         {Platform.OS === "android" ? (
-          <ActivityIndicator color="#FF9D00" size="large" />
+          <ActivityIndicator
+            color="#FF9D00"
+            size="large"
+            style={{ top: heightPercentageToDP(this.props.top) }}
+          />
         ) : (
           <LottieView
             ref={animation => {
