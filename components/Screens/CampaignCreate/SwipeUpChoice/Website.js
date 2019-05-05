@@ -72,7 +72,7 @@ export default class Website extends Component {
   };
   render() {
     return (
-      <View>
+      <View style={{ height: heightPercentageToDP(100) }}>
         <View style={{ flexDirection: "column", paddingTop: 30 }}>
           <WebsiteIcon style={styles.icon} />
           <View style={styles.textcontainer}>
@@ -155,17 +155,7 @@ export default class Website extends Component {
             />
           </Item>
         </View>
-        <LowerButton
-          bottom={-heightPercentageToDP(5)}
-          function={this._handleSubmission}
-        />
-        {/* <TouchableOpacity onPress={this._handleSubmission}>
-          <Image
-            style={styles.image}
-            source={require("../../../../assets/images/button.png")}
-            resizeMode="contain"
-          />
-        </TouchableOpacity> */}
+        <LowerButton bottom={-35} function={this._handleSubmission} />
       </View>
     );
   }

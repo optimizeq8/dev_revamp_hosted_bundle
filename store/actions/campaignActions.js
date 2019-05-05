@@ -134,7 +134,7 @@ export const ad_design = (
       .catch(err => {
         laoding(0);
 
-        console.log(err);
+        console.log(err.response);
       });
   };
 };

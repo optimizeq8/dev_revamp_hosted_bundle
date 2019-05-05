@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, Platform } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import { Modal } from "react-native-paper";
-import { LinearGradient, WebBrowser, Linking, Segment } from "expo";
+import { LinearGradient, WebBrowser, Linking, Segment, BlurView } from "expo";
 import UseWallet from "./UseWallet";
 import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import NavigationService from "../../../NavigationService.js";
+
+//icons
+import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 
 // Style
 import styles from "./styles";
@@ -23,7 +26,8 @@ class PaymentForm extends Component {
   };
   state = {
     payment_type: 1,
-    choice: 2
+    choice: 2,
+    showModal: false
   };
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
@@ -99,6 +103,22 @@ class PaymentForm extends Component {
         this._openWebBrowserAsync
       );
     }
+  };
+
+  showModal = () => {
+    this.setState({
+      showModal: !this.state.showModal
+    });
+  };
+
+  reviewPurchase = () => {
+    if (this.props.walletUsed)
+      this.props.removeWalletAmount(this.props.campaign_id);
+
+    !this.props.loading &&
+      this.props.navigation.navigate("AdPaymentReview", {
+        interestNames: this.props.navigation.state.params.interestNames
+      });
   };
 
   _handleChoice = choice => {
@@ -220,7 +240,12 @@ class PaymentForm extends Component {
           <UseWallet _changeToKnet={this._changeToKnet} />
         ) : (
           <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              bottom: "10%"
+            }}
           >
             <Image
               style={styles.image}
@@ -234,16 +259,12 @@ class PaymentForm extends Component {
             </Text>
           </View>
         )}
-        <View style={{ top: "10%", zIndex: 10 }}>
+        <View style={{ bottom: "5%" }}>
           {!addingCredits ? (
             <Button
               transparent
               onPress={() =>
-                !this.props.loading &&
-                this.props.navigation.navigate("AdPaymentReview", {
-                  interestNames: this.props.navigation.state.params
-                    .interestNames
-                })
+                this.props.walletUsed ? this.showModal() : this.reviewPurchase()
               }
               style={styles.button}
             >
@@ -264,9 +285,7 @@ class PaymentForm extends Component {
         </View>
         <View
           style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "flex-end"
+            alignItems: "center"
           }}
         >
           <TouchableOpacity
@@ -313,6 +332,55 @@ class PaymentForm extends Component {
             Agree to the Terms & Conditions
           </Text>
         </TouchableOpacity>
+        <Modal
+          animationType={"fade"}
+          transparent={Platform.OS === "ios"}
+          visible={!this.props.loading && this.state.showModal}
+        >
+          <BlurView tint="dark" intensity={100} style={styles.BlurView}>
+            <View
+              style={{
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              {this.props.loading ? (
+                <LoadingScreen top={0} />
+              ) : (
+                <>
+                  <WalletIcon width={80} height={80} />
+                  <Text
+                    style={[
+                      styles.walletInfo,
+                      { fontSize: 20, fontFamily: "montserrat-bold" }
+                    ]}
+                  >
+                    Review Purchase
+                  </Text>
+
+                  <Text style={styles.walletInfo}>
+                    Are you sure you want to go back? This will reset your
+                    wallet.
+                  </Text>
+                  <Button
+                    onPress={() => this.reviewPurchase()}
+                    style={styles.walletButton}
+                  >
+                    <Text style={{ color: "#fff" }}>Confrim</Text>
+                  </Button>
+                  <Button
+                    onPress={() => this.showModal()}
+                    style={styles.walletButton}
+                  >
+                    <Text style={{ color: "#fff" }}>Cancel</Text>
+                  </Button>
+                </>
+              )}
+            </View>
+          </BlurView>
+        </Modal>
+
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -339,6 +407,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   payment_request_knet: (campaign_id, openBrowser) =>
     dispatch(actionCreators.payment_request_knet(campaign_id, openBrowser)),
+  removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

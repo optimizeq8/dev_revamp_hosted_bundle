@@ -26,7 +26,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
 import { ImagePicker, Permissions, Video, FileSystem } from "expo";
-
+import Modal from "react-native-modal";
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
@@ -37,6 +37,7 @@ import { colors } from "../../../GradiantColors/colors";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../Global Styles";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 export default class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -53,7 +54,8 @@ export default class Long_Form_Video extends Component {
       longformvideo_media_type: "",
       callactions: list[2].call_to_action_list,
       videoError: "",
-      durationError: ""
+      durationError: "",
+      videoLoading: false
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
@@ -64,14 +66,21 @@ export default class Long_Form_Video extends Component {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
   }
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  pick = () => {
+    let result = ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
       base64: false,
       exif: false,
       quality: 1,
       aspect: [9, 16]
     });
+
+    this.setState({ videoLoading: true });
+
+    return result;
+  };
+  _pickImage = async () => {
+    let result = await this.pick();
     //if (result.width >= 1080 && result.height >= 1920)
     if (result.duration >= 15000) {
       if (!result.cancelled) {
@@ -88,7 +97,8 @@ export default class Long_Form_Video extends Component {
               width: result.width,
               height: result.height,
               durationError: null,
-              videoError: null
+              videoError: null,
+              videoLoading: false
             });
           }
         });
@@ -115,7 +125,7 @@ export default class Long_Form_Video extends Component {
   };
   render() {
     return (
-      <View>
+      <View style={{ height: heightPercentageToDP("110%") }}>
         <View
           style={{
             flexDirection: "column",
@@ -130,7 +140,12 @@ export default class Long_Form_Video extends Component {
             </Text>
           </View>
           {this.state.longformvideo_media && (
-            <>
+            <View
+              style={{
+                bottom: 100,
+                marginBottom: -270
+              }}
+            >
               <Text style={styles.subtext}>Preview Only</Text>
               <Video
                 source={{
@@ -139,7 +154,7 @@ export default class Long_Form_Video extends Component {
                 shouldPlay
                 isLooping
                 isMuted
-                resizeMode="cover"
+                resizeMode="contain"
                 style={[styles.placeholder]}
               />
               <Button
@@ -155,7 +170,7 @@ export default class Long_Form_Video extends Component {
               >
                 <Text> Change Video</Text>
               </Button>
-            </>
+            </View>
           )}
 
           {!this.state.longformvideo_media && (
@@ -235,18 +250,11 @@ export default class Long_Form_Video extends Component {
               />
             </Item>
           </RNPickerSelect>
+          <Modal isVisible={this.state.videoLoading}>
+            <LoadingScreen top={30} />
+          </Modal>
         </View>
-        <LowerButton
-          function={this._handleSubmission}
-          bottom={-heightPercentageToDP(1)}
-        />
-        {/* <TouchableOpacity onPress={this._handleSubmission}>
-          <Image
-            style={styles.image}
-            source={require("../../../../assets/images/button.png")}
-            resizeMode="contain"
-          />
-        </TouchableOpacity> */}
+        <LowerButton function={this._handleSubmission} bottom={-5} />
       </View>
     );
   }

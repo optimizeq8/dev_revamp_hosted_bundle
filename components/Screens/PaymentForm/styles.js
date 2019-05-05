@@ -26,7 +26,10 @@ const styles = StyleSheet.create({
     height: 170,
     width: 170
   },
-
+  BlurView: {
+    zIndex: 10,
+    height: "100%"
+  },
   mainCard: {
     top: 20,
     borderColor: "#FF9D00",
@@ -119,7 +122,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   button: {
-    zIndex: 10,
     borderWidth: 0.3,
     borderColor: "#fff",
     marginTop: 15,
