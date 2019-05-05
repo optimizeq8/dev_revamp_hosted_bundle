@@ -92,7 +92,10 @@ class BusinessCard extends Component {
   }
   render() {
     let changeState = { color: "#5F5F5F" };
-    if (this.props.mainBusiness.businessid === this.props.business.businessid) {
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.businessid === this.props.business.businessid
+    ) {
       changeState.color = "#FF9D00";
     }
     return (
