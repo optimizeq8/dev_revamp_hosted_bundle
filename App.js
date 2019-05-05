@@ -81,6 +81,11 @@ class App extends React.Component {
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
+
+      this.setState({ isLoadingComplete: true }, () => {
+        this._registerForPushNotificationsAsync();
+      });
+      // mark reasources as loaded
     } catch (e) {
       this._handleLoadingError(e);
     } finally {
@@ -92,17 +97,6 @@ class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
-
-    this._loadAsync()
-      .then(() =>
-        this.setState({ isLoadingComplete: true }, () => {
-          this._registerForPushNotificationsAsync();
-        })
-      ) // mark reasources as loaded
-      .catch(error =>
-        console.error(`Unexpected error thrown when loading:
-${error.stack}`)
-      );
   }
 
   _registerForPushNotificationsAsync = async () => {
@@ -116,8 +110,16 @@ ${error.stack}`)
   };
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return null;
+    if (!this.state.isLoadingComplete) {
+      return (
+        <AppLoading
+          startAsync={this._loadAsync()}
+          onFinish={() => {
+            this.setState({ isLoadingComplete: true });
+          }}
+          onError={console.warn}
+        />
+      );
     } else {
       const prefix = Linking.makeUrl("/");
 
