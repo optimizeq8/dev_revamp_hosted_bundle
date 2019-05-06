@@ -226,6 +226,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: action.payload
       };
+    case actionTypes.GET_BILLING_ADDRESS:
+      return {
+        ...state,
+        address: action.payload
+      }
     case actionTypes.LOGOUT_USER:
       return {
         ...state,

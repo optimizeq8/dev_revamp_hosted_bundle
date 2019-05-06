@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import sortBy from "lodash/sortBy";
 import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
@@ -495,6 +496,28 @@ export const addressForm = (address, navigation) => {
       .catch(err => console.log(err));
   };
 };
+
+
+export const getAddressForm = () => {
+  return (dispatch, getState) => {
+    instance
+      .get(`businessaddresses/${getState().auth.mainBusiness.businessid}`)
+      .then(response => {
+        if(response.data && response.data.success)
+          console.log('bsnddress', response.data.business_accounts);
+          const dataSortById = sortBy(response.data.business_accounts, data => data.id);
+          console.log('bsnddress sorted', dataSortById);
+
+          return dispatch({
+            type: actionTypes.GET_BILLING_ADDRESS,
+            payload: dataSortById[dataSortById.length - 1 ]
+          });
+      })
+      .catch(err => console.log("Get Billing Address Error: ",err));
+  };
+};
+
+
 export const forgotPassword = (email, navigation) => {
   return dispatch => {
     // dispatch({
