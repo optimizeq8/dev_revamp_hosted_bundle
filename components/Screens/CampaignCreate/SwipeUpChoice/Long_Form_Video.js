@@ -88,7 +88,8 @@ export default class Long_Form_Video extends Component {
           if (file.size > 1073741824) {
             this.setState({
               videoError: "Video must be less than 1 GB",
-              longformvideo_media: null
+              longformvideo_media: null,
+              videoLoading: false
             });
           } else {
             this.setState({
@@ -106,7 +107,8 @@ export default class Long_Form_Video extends Component {
     } else {
       this.setState({
         durationError: validateWrapper("duration", this.state.duration),
-        longformvideo_media: null
+        longformvideo_media: null,
+        videoLoading: false
       });
     }
   };
