@@ -305,7 +305,7 @@ class AdObjective extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.auth.mainBusiness,
-  loading: state.campaignC.loading
+  loading: state.campaignC.loadingObj
 });
 
 const mapDispatchToProps = dispatch => ({

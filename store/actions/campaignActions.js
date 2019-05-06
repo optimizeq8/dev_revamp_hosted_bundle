@@ -70,7 +70,7 @@ export const get_total_reach = info => {
 export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_AD_LOADING,
+      type: actionTypes.SET_AD_LOADING_OBJ,
       payload: true
     });
     instance
@@ -103,7 +103,7 @@ export const ad_design = (
   onToggleModal();
   return dispatch => {
     dispatch({
-      type: actionTypes.SET_AD_LOADING,
+      type: actionTypes.SET_AD_LOADING_DESIGN,
       payload: true
     });
     axios.defaults.headers.common = {
@@ -134,7 +134,7 @@ export const ad_design = (
       .catch(err => {
         laoding(0);
 
-        console.log(err.response);
+        console.log("errorLoadingDesign", err.response);
       });
   };
 };
@@ -218,7 +218,7 @@ export const get_android_versions = () => {
 export const ad_details = (info, interestNames, navigation) => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_AD_LOADING,
+      type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true
     });
     instance

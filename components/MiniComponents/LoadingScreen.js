@@ -17,7 +17,7 @@ class Loading extends React.Component {
     this.animation.play();
   }
 
-  onLottieLoad = () => {
+      onLottieLoad = () => {
     this.animation.play();
   };
 
