@@ -4,8 +4,8 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
-export const payment_request_knet = (campaign_id, openBrowser) => {
-  return dispatch => {
+export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
       payload: true
@@ -16,12 +16,20 @@ export const payment_request_knet = (campaign_id, openBrowser) => {
         return res.data;
       })
       .then(data => {
-        return dispatch({
-          type: actionTypes.PAYMENT_REQUEST_URL,
-          payload: data
-        });
+        if (data.knet_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+        }
       })
-      .then(() => openBrowser())
+      .then(() => {
+        if (getState().campaignC.payment_data) {
+          openBrowser();
+        }
+      })
       .catch(err => {
         console.log(err);
       });

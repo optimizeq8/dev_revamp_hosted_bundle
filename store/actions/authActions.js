@@ -86,6 +86,7 @@ export const getCampaign = id => {
         return res.data;
       })
       .then(data => {
+        console.log("campaign details", data);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN,
           payload: data
