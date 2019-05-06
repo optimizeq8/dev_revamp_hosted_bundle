@@ -1245,7 +1245,7 @@ class AdDetails extends Component {
           </Sidemenu>
         </Container>
         <Modal isVisible={this.props.loading}>
-          <LoadingScreen top={0} />
+          <LoadingScreen top={50} />
         </Modal>
         <DateField
           getMinimumCash={this.getMinimumCash}

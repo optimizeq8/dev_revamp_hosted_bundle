@@ -8,13 +8,11 @@ import {
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
 import { ActivityIndicator } from "react-native-paper";
-import { colors } from "../GradiantColors/colors";
 
-class Loading extends React.Component {
+class MainLoadingScreen extends React.Component {
   state = { visible: true };
   componentDidMount() {
-    // Platform.OS !== "android" && 
-    this.animation.play();
+    Platform.OS !== "android" && this.animation.play();
   }
 
   onLottieLoad = () => {
@@ -27,33 +25,53 @@ class Loading extends React.Component {
         style={{
           position: "absolute",
           top: this.props.dash
-            ? heightPercentageToDP(50)
+            ? heightPercentageToDP(40)
             : heightPercentageToDP(this.props.top),
 
-          alignSelf: "center",
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center"
+          alignSelf: "center"
         }}
       >
-
+        {this.props.dash && (
+          <>
+            <LinearGradient
+              colors={["#fff"]}
+              locations={[1]}
+              style={styles.gradient}
+            />
+            <View>
+              <Image
+                source={require("../../assets/images/logoP.png")}
+                style={{
+                  width: 200,
+                  height: 200,
+                  bottom: heightPercentageToDP(4)
+                }}
+                resizeMode="contain"
+              />
+            </View>
+          </>
+        )}
+        {Platform.OS === "android" ? (
+          <ActivityIndicator color="#FF9D00" size="large" />
+        ) : (
           <LottieView
             ref={animation => {
               this.animation = animation;
             }}
-            style={{
-              // zIndex: 10,
+
+            style={{  
+              zIndex: 10,
               alignSelf: "center",
-              width: widthPercentageToDP(100),
+              width: widthPercentageToDP(150),
               height: widthPercentageToDP(150),
-              position: "absolute",
-              alignContent:"center",
-              alignItems:"center"
+              // position: "absolute"
             }}
-            resizeMode="cover"
+            resizeMode="contain"
             source={require("../../assets/animation/loading.json")}
-            
+            loop
+            autoPlay
           />
+        )}
       </View>
     );
   }
@@ -62,7 +80,7 @@ class Loading extends React.Component {
 const mapStateToProps = state => ({
   loading: state.auth.loading
 });
-export default connect(mapStateToProps)(Loading);
+export default connect(mapStateToProps)(MainLoadingScreen);
 
 const styles = {
   gradient: {

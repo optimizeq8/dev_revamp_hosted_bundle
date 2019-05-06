@@ -71,7 +71,8 @@ class App extends React.Component {
   state = {
     isLoadingComplete: false,
     splashAnimation: new Animated.Value(0),
-    splashAnimationComplete: false
+    splashAnimationComplete: false,
+    isAppReady: false
   };
   constructor(props) {
     super(props);
@@ -81,6 +82,12 @@ class App extends React.Component {
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
+
+      this.setState({ isLoadingComplete: true }, () => {
+        this._registerForPushNotificationsAsync();
+        // this._animateOut();
+      });
+      // mark reasources as loaded
     } catch (e) {
       this._handleLoadingError(e);
     } finally {
@@ -92,17 +99,6 @@ class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
-
-    this._loadAsync()
-      .then(() =>
-        this.setState({ isLoadingComplete: true }, () => {
-          this._registerForPushNotificationsAsync();
-        })
-      ) // mark reasources as loaded
-      .catch(error =>
-        console.error(`Unexpected error thrown when loading:
-${error.stack}`)
-      );
   }
 
   _registerForPushNotificationsAsync = async () => {
@@ -117,7 +113,17 @@ ${error.stack}`)
 
   render() {
     if (!this.state.isLoadingComplete) {
-      return null;
+      return (
+        <AppLoading
+          startAsync={this._loadAsync}
+          onFinish={() => {
+            this.setState({ isLoadingComplete: true });
+          }}
+          autoHideSplash={true}
+          // onError={console.warn}
+        />
+      );
+
     } else {
       const prefix = Linking.makeUrl("/");
 
@@ -132,7 +138,7 @@ ${error.stack}`)
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
-              {this._maybeRenderLoadingImage()}
+              {/* {this._maybeRenderLoadingImage()} */}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>

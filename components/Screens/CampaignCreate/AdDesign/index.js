@@ -586,8 +586,9 @@ class AdDesign extends Component {
               </TouchableOpacity>
             </View>
             <Modal isVisible={this.props.loading || this.state.isVisible}>
+
               <>
-                <LoadingScreen top={20} />
+                <LoadingScreen top={50} />
                 <Text
                   style={[
                     styles.title,
