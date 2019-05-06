@@ -11,7 +11,10 @@ const initialState = {
   deviceBrands: null,
   isoVersions: null,
   androidVersions: null,
-  loading: false,
+  loadingObj: false,
+  loadingDesign: false,
+  loadingDetail: false,
+  loading:false,
   payment_data: null
 };
 
@@ -23,14 +26,14 @@ const reducer = (state = initialState, action) => {
         campaign_id: action.payload.campaign_id,
         data: action.payload.data,
         message: action.payload.message,
-        loading: false
+        loadingObj: false
       };
     case actionTypes.SET_AD_DESIGN:
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
-        loading: !action.payload.success
+        loadingDesign: false
       };
     case actionTypes.SET_AD_DETAILS:
       return {
@@ -38,7 +41,7 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
         kdamount: action.payload.kdamount,
-        loading: false
+        loadingDetail: false
       };
     case actionTypes.UPDATE_CAMPAIGN_DETAILS:
       return {
@@ -86,6 +89,21 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: action.payload
+      };
+    case actionTypes.SET_AD_LOADING_OBJ:
+      return {
+        ...state,
+        loadingObj: action.payload
+      };
+    case actionTypes.SET_AD_LOADING_DESIGN:
+      return {
+        ...state,
+        loadingDesign: action.payload
+      };
+    case actionTypes.SET_AD_LOADING_DETAIL:
+      return {
+        ...state,
+        loadingDetail: action.payload
       };
     default:
       return state;

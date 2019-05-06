@@ -1264,7 +1264,7 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
-  loading: state.campaignC.loading,
+  loading: state.campaignC.loadingDetail,
   mainBusiness: state.auth.mainBusiness
 });
 

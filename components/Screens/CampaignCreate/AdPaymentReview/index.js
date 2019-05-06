@@ -94,7 +94,7 @@ class AdPaymentReview extends Component {
 
   render() {
     if (this.props.loading) {
-      return <LoadingScreen />;
+      return <LoadingScreen top={50}/>;
     } else {
       let targeting = this.props.data.targeting;
       let interestNames = [];
@@ -298,7 +298,7 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
-  loading: state.campaignC.loading,
+  loading: state.campaignC.loadingDetail,
   kdamount: state.campaignC.kdamount,
   interestsNames: state.campaignC.interestsNames,
   mainBusiness: state.auth.mainBusiness

@@ -610,7 +610,7 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.auth.mainBusiness,
   data: state.campaignC.data,
-  loading: state.campaignC.loading
+  loading: state.campaignC.loadingDesign
 });
 
 const mapDispatchToProps = dispatch => ({
