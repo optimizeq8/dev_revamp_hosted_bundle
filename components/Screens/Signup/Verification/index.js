@@ -12,8 +12,8 @@ import { colors } from "../../../GradiantColors/colors";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-import PurpleLogo from "../../../../assets/SVGs/PurpleLogo";
 import { globalColors } from "../../../../Global Styles";
+import { showMessage } from "react-native-flash-message";
 
 class Verification extends Component {
   inputRef = createRef();
@@ -21,6 +21,7 @@ class Verification extends Component {
     header: null
   };
   state = {
+    code: "",
     codeError: "",
     showEmail: false,
     email: "",
@@ -67,8 +68,8 @@ class Verification extends Component {
     });
   };
 
-  _handleInviteCode = code => {
-    this.props.verifyInviteCode(code);
+  _handleInviteCode = () => {
+    this.props.verifyInviteCode(this.state.code);
   };
   handlerOnIvalidCode() {
     const { current } = this.inputRef;
@@ -88,10 +89,8 @@ class Verification extends Component {
           </Text>
         ) : (
           <>
-            <PurpleLogo />
-            <Text style={[styles.text, { paddingTop: 20 }]}>
-              Welcome to Optimize! {"\n"}
-              Please enter the invitation code you recieved.
+            <Text style={[styles.inviteText, { paddingTop: 20 }]}>
+              Invite Code
             </Text>
           </>
         )}
@@ -187,23 +186,56 @@ class Verification extends Component {
             </Button>
           </>
         )}
-        {this.state.codeError !== "" && (
+        {this.state.codeError !== "" && !this.props.invite && (
           <Text style={[styles.errorText]}>{this.state.codeError}</Text>
         )}
-        <CodeInput
-          inactiveColor="black"
-          activeColor="purple"
-          variant="border-b"
-          autoFocus
-          keyboardType="numeric"
-          space={20}
-          onFulfill={code =>
-            this.props.invite
-              ? this._handleInviteCode(code)
-              : this._handleSentCode(code)
-          }
-          ref={this.inputRef}
-        />
+        {this.props.invite ? (
+          <>
+            <Item rounded style={[styles.input]}>
+              <Input
+                placeholderTextColor="#fff"
+                autoCorrect={false}
+                maxLength={5}
+                autoCapitalize="none"
+                style={styles.inputtext}
+                onChangeText={value => {
+                  this.setState({
+                    code: value
+                  });
+                }}
+                onBlur={() => {
+                  if (validateWrapper("mandatory", this.state.code)) {
+                    showMessage({
+                      message: "Please enter an invite code!",
+                      type: "warning",
+                      position: "top"
+                    });
+                  }
+                }}
+                placeholder="Enter your invite code"
+              />
+            </Item>
+            <Button
+              style={[styles.button]}
+              onPress={() => {
+                this._handleInviteCode();
+              }}
+            >
+              <Text style={styles.buttontext}>Get Started!</Text>
+            </Button>
+          </>
+        ) : (
+          <CodeInput
+            inactiveColor="black"
+            activeColor="purple"
+            variant="border-b"
+            autoFocus
+            keyboardType="numeric"
+            space={20}
+            onFulfill={code => this._handleSentCode(code)}
+            ref={this.inputRef}
+          />
+        )}
       </View>
     );
   }

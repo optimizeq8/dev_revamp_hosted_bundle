@@ -22,9 +22,10 @@ const styles = StyleSheet.create({
     lineHeight: 18
   },
   image: {
+    top: "10%",
     alignSelf: "center",
-    height: 170,
-    width: 170
+    height: heightPercentageToDP(20),
+    width: heightPercentageToDP(20)
   },
   BlurView: {
     zIndex: 10,

@@ -68,13 +68,17 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
-    if (this.props.navigation.getParam("loggedout", false)) {
+    if (
+      this.props.navigation &&
+      this.props.navigation.getParam("loggedout", false)
+    ) {
     } else {
       this.props.checkForExpiredToken(this.props.navigation);
     }
   }
   render() {
     let invite =
+      this.props.navigation &&
       this.props.navigation.state.params &&
       this.props.navigation.state.params.invite;
     return (
@@ -121,9 +125,9 @@ class MainForm extends Component {
               placeholder="Email"
             />
           </Item>
-          {this.state.emailError ? (
+          {/* {this.state.emailError ? (
             <Text style={styles.error}>{this.state.emailError}</Text>
-          ) : null}
+          ) : null} */}
 
           <Item
             rounded
@@ -158,9 +162,9 @@ class MainForm extends Component {
               placeholder="Password"
             />
           </Item>
-          {this.state.passwordError ? (
+          {/* {this.state.passwordError ? (
             <Text style={styles.error}>{this.state.passwordError}</Text>
-          ) : null}
+          ) : null} */}
           <Text
             onPress={() => {
               Segment.track("Forgot Password Button");
@@ -182,45 +186,44 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            <Text style={[styles.link, { paddingBottom: 7 }]}>
-              Don’t Have an Account?
-            </Text>
-            {!invite ? (
-              <Button
-                rounded
-                onPress={() => {
-                  Segment.track("Signup Button");
-                  this.props.resetRegister();
-                  this.props.navigation.navigate("MainForm");
-                }}
-                style={styles.bottomView}
-              >
-                <Text
-                  style={[
-                    styles.buttontext,
-                    { color: "#fff", fontFamily: "montserrat-semibold" }
-                  ]}
-                >
-                  Sign Up Now!
+            {!invite ? //   onPress={() => { //   rounded // <Button
+            //     Segment.track("Signup Button");
+            //     this.props.resetRegister();
+            //     this.props.navigation.navigate("MainForm");
+            //   }}
+            //   style={styles.bottomView}
+            // >
+            //   <Text
+            //     style={[
+            //       styles.buttontext,
+            //       { color: "#fff", fontFamily: "montserrat-semibold" }
+            //     ]}
+            //   >
+            //     Sign Up Now!
+            //   </Text>
+            // </Button>
+            null : (
+              <>
+                <Text style={[styles.link, { paddingBottom: 7 }]}>
+                  Don’t Have an Account?
                 </Text>
-              </Button>
-            ) : (
-              <Button
-                rounded
-                onPress={() => {
-                  this.props.navigation.navigate("Invitation");
-                }}
-                style={styles.bottomView}
-              >
-                <Text
-                  style={[
-                    styles.buttontext,
-                    { color: "#fff", fontFamily: "montserrat-semibold" }
-                  ]}
+                <Button
+                  rounded
+                  onPress={() => {
+                    this.props.navigation.navigate("Invitation");
+                  }}
+                  style={styles.bottomView}
                 >
-                  Enter Invite Code!
-                </Text>
-              </Button>
+                  <Text
+                    style={[
+                      styles.buttontext,
+                      { color: "#fff", fontFamily: "montserrat-semibold" }
+                    ]}
+                  >
+                    Enter Invite Code!
+                  </Text>
+                </Button>
+              </>
             )}
           </View>
         </View>

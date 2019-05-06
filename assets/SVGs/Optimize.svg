@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="68.787" height="87.499" viewBox="0 0 68.787 87.499">
-  <text id="optimize" transform="translate(6.5 84.499)" fill="#fff" font-size="13" font-family="Montserrat-Regular, Montserrat"><tspan x="0" y="0">optimize</tspan></text>
-  <g id="Group_11" data-name="Group 11" transform="translate(2.5 2.5)">
-    <circle id="Ellipse_13" data-name="Ellipse 13" cx="31.894" cy="31.894" r="31.894" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="5"/>
-    <path id="Path_7" data-name="Path 7" d="M976.127,456.968l14.065-15.692,8.591,8.353,7.921-9.168-3.584-3.958,12.4-2.045-2.008,13.159-3.741-3.944-10.8,12.522-9.341-8.869Z" transform="translate(-966.196 -413.442)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="321.58" height="416.188" viewBox="0 0 321.58 416.188">
+  <text id="Optimize" transform="translate(10.58 399.188)" fill="#fff" font-size="67" font-family="Montserrat-Regular, Montserrat"><tspan x="0" y="0">Optimize</tspan></text>
+  <g id="Group_11" data-name="Group 11" transform="translate(7.5 7.5)">
+    <ellipse id="Ellipse_13" data-name="Ellipse 13" cx="151.006" cy="151.005" rx="151.006" ry="151.005" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="15"/>
+    <path id="Path_7" data-name="Path 7" d="M976.127,541.035l66.592-74.3,40.674,39.547,37.5-43.409-16.971-18.738,58.715-9.683-9.505,62.3-17.713-18.675-51.139,59.286-44.227-41.991Z" transform="translate(-929.108 -334.956)" fill="#fff"/>
   </g>
 </svg>

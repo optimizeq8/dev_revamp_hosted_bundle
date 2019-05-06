@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -24,9 +26,23 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     fontSize: 14
   },
+  inviteText: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 20
+  },
   button: {
-    marginTop: 20,
-    padding: 10
+    shadowColor: "#6C6C6C",
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+    backgroundColor: globalColors.orange,
+    // paddingHorizontal: 50,
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 250,
+    height: 50,
+    justifyContent: "center"
   },
   link: {
     textAlign: "center",
@@ -49,12 +65,27 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   input: {
-    top: 30,
-    marginBottom: 40,
+    top: 10,
+    marginBottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 15,
+    borderColor: "transparent",
     alignSelf: "center",
-    width: 300,
-    height: 45,
-    borderColor: "#7039FF"
+    width: 250,
+    height: 50
+  },
+  inputtext: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center",
+    paddingHorizontal: widthPercentageToDP(20)
+  },
+  buttontext: {
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 14
   }
 });
 

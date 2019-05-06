@@ -19,7 +19,7 @@ export default createStackNavigator(
     Invitation: Invitation
   },
   {
-    initialRouteName: "Signin",
+    initialRouteName: "Invitation",
     navigationOptions: {
       header: null,
 
