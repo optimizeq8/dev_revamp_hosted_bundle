@@ -100,7 +100,8 @@ class PaymentForm extends Component {
       });
       this.props.payment_request_knet(
         this.props.campaign_id,
-        this._openWebBrowserAsync
+        this._openWebBrowserAsync,
+        this.props.navigation
       );
     }
   };
@@ -405,8 +406,10 @@ const mapStateToProps = state => ({
   loading: state.campaignC.loading
 });
 const mapDispatchToProps = dispatch => ({
-  payment_request_knet: (campaign_id, openBrowser) =>
-    dispatch(actionCreators.payment_request_knet(campaign_id, openBrowser)),
+  payment_request_knet: (campaign_id, openBrowser, navigation) =>
+    dispatch(
+      actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
+    ),
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
