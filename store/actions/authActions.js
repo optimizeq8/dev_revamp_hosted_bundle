@@ -37,6 +37,33 @@ export const verifyInviteCode = verificationCode => {
   };
 };
 
+export const requestInvitationCode = info => {
+  console.log(info);
+
+  return dispatch => {
+    instance
+      .post(`requestinvitationCode`, info)
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        data.success &&
+          showMessage({
+            message: "Request successful!",
+            description: "We will contact you as soon as possible.",
+            type: "success",
+            position: "top"
+          });
+
+        // return dispatch({
+        //   type: actionTypes.SET_INVITE_CODE,
+        //   payload: { data, verificationCode }
+        // });
+      })
+
+      .catch(err => console.log(err.response));
+  };
+};
+
 export const send_push_notification = () => {
   return (dispatch, getState) => {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {

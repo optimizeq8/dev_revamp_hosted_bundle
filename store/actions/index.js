@@ -1,5 +1,6 @@
 export {
   verifyInviteCode,
+  requestInvitationCode,
   sendMobileNo,
   resetMessages,
   verifyMobileCode,

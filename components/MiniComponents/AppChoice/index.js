@@ -131,16 +131,16 @@ class AppChoice extends Component {
           if (
             app.title
               .toLowerCase()
-              .trim()
-              .includes(iosApp.title.toLowerCase().trim())
+              .replace(/[\W_]+/g, " ")
+              .includes(iosApp.title.toLowerCase().replace(/[\W_]+/g, " "))
           )
             return app;
         } else {
           if (
             iosApp.title
               .toLowerCase()
-              .trim()
-              .includes(app.title.toLowerCase().trim())
+              .replace(/[\W_]+/g, " ")
+              .includes(app.title.toLowerCase().replace(/[\W_]+/g, " "))
           )
             return app;
         }
