@@ -39,10 +39,13 @@ class UseWallet extends Component {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          bottom: "10%"
+          bottom: "5%"
         }}
       >
-        <WalletIcon width={80} height={80} />
+        <WalletIcon
+          width={heightPercentageToDP(10)}
+          height={heightPercentageToDP(10)}
+        />
         <Text style={styles.text}>Wallet Balance</Text>
         <Text style={[GlobalStyles.numbers, { fontSize: 25 }]}>
           {this.props.walletUsed

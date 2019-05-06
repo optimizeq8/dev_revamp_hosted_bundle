@@ -394,6 +394,7 @@ export const registerUser = (userInfo, navigation) => {
           navigation.navigate("Dashboard");
           dispatch(send_push_notification());
           dispatch(getBusinessAccounts());
+          AsyncStorage.setItem("registeredWithInvite", "true");
         }
       })
       .catch(err => {
