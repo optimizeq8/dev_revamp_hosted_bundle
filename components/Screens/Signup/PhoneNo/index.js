@@ -118,12 +118,7 @@ class PhoneNo extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View
-          style={[
-            styles.container,
-            { backgroundColor: this.props.invite ? "transparent" : "#fff" }
-          ]}
-        >
+        <View style={[styles.container]}>
           {!this.props.invite && (
             <Text style={styles.text}>
               Please Provide your {"\n"}
@@ -145,7 +140,7 @@ class PhoneNo extends Component {
               style={{ width: widthPercentageToDP(70) }}
               textStyle={{
                 ...styles.input,
-                color: "#fff",
+                color: this.props.invite ? "#fff" : "#000",
                 borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
               }}
               flagStyle={{
@@ -153,6 +148,7 @@ class PhoneNo extends Component {
                 zIndex: 5
               }}
               textProps={{
+                autoFocus: false,
                 onBlur: () => {
                   console.log(this.phone.isValidNumber);
 
@@ -163,7 +159,7 @@ class PhoneNo extends Component {
                       position: "top"
                     });
                   }
-                  {
+                  if (this.props.invite) {
                     this.props._getMobile({
                       country_code: this.phone.getCountryCode(),
                       mobile: this.phone

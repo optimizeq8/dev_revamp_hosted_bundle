@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   container: {
+    backgroundColor: "transparent",
     flex: 1,
     alignItems: "center",
     padding: 20,
