@@ -12,7 +12,7 @@ import { colors } from "../../../GradiantColors/colors";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
-import LowerButton from "../../../MiniComponents/LowerButton";
+import PurpleLogo from "../../../../assets/SVGs/PurpleLogo";
 import { globalColors } from "../../../../Global Styles";
 
 class Verification extends Component {
@@ -32,20 +32,19 @@ class Verification extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.verificationCode !== this.props.verificationCode)
-      alert(this.props.verificationCode);
-    if (prevProps.message !== this.props.message) {
-      if (this.props.message.includes("Invalid")) {
-        this.handlerOnIvalidCode();
+      if (prevProps.message !== this.props.message) {
+        if (this.props.message.includes("Invalid")) {
+          this.handlerOnIvalidCode();
 
-        this.setState({
-          codeError: this.props.message
-        });
-      } else {
-        this.setState({
-          codeError: this.props.message
-        });
+          this.setState({
+            codeError: this.props.message
+          });
+        } else {
+          this.setState({
+            codeError: this.props.message
+          });
+        }
       }
-    }
   }
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
@@ -58,6 +57,19 @@ class Verification extends Component {
       });
     }
   };
+
+  _handleSentCode = code => {
+    this.props.resetMessages();
+    this.props.verifyMobileCode({
+      mobile: this.props.mobileNo,
+      country_code: this.props.countryCode,
+      verificationCode: code
+    });
+  };
+
+  _handleInviteCode = code => {
+    this.props.verifyInviteCode(code);
+  };
   handlerOnIvalidCode() {
     const { current } = this.inputRef;
 
@@ -69,35 +81,50 @@ class Verification extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>
-          Please Enter the {"\n"}
-          Verification code sent to{"\n"} {this.props.mobileNo}
-        </Text>
-        <Text
-          onPress={() => {
-            this.props.resetMessages();
-            this.props.resendVerifyMobileCode({
-              mobile: this.props.mobileNo,
-              country_code: this.props.countryCode
-            });
-          }}
-          style={[styles.link]}
-        >
-          Resend Code
-        </Text>
-        <Text
-          onPress={() => {
-            this.setState({ showEmail: true });
-            this.props.resetMessages();
-            // this.props.resendVerifyMobileCode({
-            //   mobile: this.props.mobileNo,
-            //   country_code: this.props.countryCode
-            // });
-          }}
-          style={[styles.link, { paddingVertical: 0 }]}
-        >
-          Not receiving an SMS? Try by email!
-        </Text>
+        {!this.props.invite ? (
+          <Text style={styles.text}>
+            Please Enter the {"\n"}
+            Verification code sent to{"\n"} {this.props.mobileNo}
+          </Text>
+        ) : (
+          <>
+            <PurpleLogo />
+            <Text style={[styles.text, { paddingTop: 20 }]}>
+              Welcome to Optimize! {"\n"}
+              Please enter the invitation code you recieved.
+            </Text>
+          </>
+        )}
+        {!this.props.invite && (
+          <Text
+            onPress={() => {
+              this.props.resetMessages();
+              this.props.resendVerifyMobileCode({
+                mobile: this.props.mobileNo,
+                country_code: this.props.countryCode
+              });
+            }}
+            style={[styles.link]}
+          >
+            Resend Code
+          </Text>
+        )}
+
+        {!this.props.invite && (
+          <Text
+            onPress={() => {
+              this.setState({ showEmail: true });
+              this.props.resetMessages();
+              // this.props.resendVerifyMobileCode({
+              //   mobile: this.props.mobileNo,
+              //   country_code: this.props.countryCode
+              // });
+            }}
+            style={[styles.link, { paddingVertical: 0 }]}
+          >
+            Not receiving an SMS? Try by email!
+          </Text>
+        )}
         {this.state.showEmail && (
           <>
             <Item
@@ -170,14 +197,11 @@ class Verification extends Component {
           autoFocus
           keyboardType="numeric"
           space={20}
-          onFulfill={code => {
-            this.props.resetMessages();
-            this.props.verifyMobileCode({
-              mobile: this.props.mobileNo,
-              country_code: this.props.countryCode,
-              verificationCode: code
-            });
-          }}
+          onFulfill={code =>
+            this.props.invite
+              ? this._handleInviteCode(code)
+              : this._handleSentCode(code)
+          }
           ref={this.inputRef}
         />
       </View>
@@ -193,6 +217,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   verifyMobileCode: mobileAuth =>
     dispatch(actionCreators.verifyMobileCode(mobileAuth)),
+  verifyInviteCode: inviteCode =>
+    dispatch(actionCreators.verifyInviteCode(inviteCode)),
   resendVerifyMobileCode: mobileAuth =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
   resendVerifyMobileCodeByEmail: mobileAuth =>

@@ -61,7 +61,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CHECKOUT_WITH_WALLET:
       return {
         ...state,
-        walletUsed: !action.payload.success,
+        walletUsed: false,
         loading: !action.payload.success
       };
     case actionTypes.SET_TRAN_LOADING:

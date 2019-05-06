@@ -212,12 +212,14 @@ class AdDetails extends Component {
   };
   getMinimumCash = days => {
     let minValueBudget = days !== 0 ? 25 * days : 25;
+    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     this.onSelectedBudgetChange(minValueBudget);
     this.setState({
-      minValueBudget
+      minValueBudget,
+      maxValueBudget
     });
     showMessage({
-      message: "Minimum budget recalculated based on duration",
+      message: "Budget recalculated based on duration",
       type: "warning"
     });
   };
@@ -696,19 +698,29 @@ class AdDetails extends Component {
                   <Text style={[styles.subHeadings, { top: hp(1) }]}>
                     Budget
                   </Text>
-                  <Icon
-                    type="MaterialIcons"
-                    name="edit"
-                    style={[styles.editIcon]}
-                  />
-                  <View style={{ height: hp(6) }}>
+
+                  <View
+                    style={{
+                      height: hp(6),
+                      width: "70%",
+                      flexDirection: "row",
+
+                      alignSelf: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon
+                      type="MaterialIcons"
+                      name="edit"
+                      style={[styles.editIcon]}
+                    />
                     <Input
                       keyboardType="numeric"
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
                       onChangeText={value => this._handleBudget(value)}
-                      style={styles.colorYellow}
+                      style={styles.budget}
                     />
                   </View>
                   <View
@@ -719,7 +731,7 @@ class AdDetails extends Component {
                   >
                     <View style={styles.textCon}>
                       <Text style={styles.colorGrey}>
-                        {this.state.minValueBudget}
+                        {this.state.minValueBudget}$
                       </Text>
                       <View
                         style={{
@@ -750,7 +762,7 @@ class AdDetails extends Component {
                         </Text>
                       </View>
                       <Text style={styles.colorGrey}>
-                        {this.state.maxValueBudget} $
+                        {this.state.maxValueBudget}$
                       </Text>
                     </View>
 
@@ -771,7 +783,6 @@ class AdDetails extends Component {
                           : 1500
                       }
                       onValueChange={val => this.onSelectedBudgetChange(val)}
-                      thumbTintColor="red"
                       maximumTrackTintColor="#fff"
                       minimumTrackTintColor="#751AFF"
                     />

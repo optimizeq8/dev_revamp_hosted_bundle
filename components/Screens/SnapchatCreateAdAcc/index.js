@@ -127,21 +127,18 @@ class MainForm extends Component {
               <Button
                 block
                 dark
-                disabled={!this.state.accept}
+                // disabled={!this.state.accept}
                 style={[
                   styles.button,
                   {
-                    backgroundColor: this.state.accept
-                      ? "#5F5F5F"
-                      : "rgba(95, 95, 95,0.6)"
+                    backgroundColor: "#5F5F5F"
                   }
                 ]}
                 onPress={() => {
-                  this.state.accept &&
-                    this.props.create_ad_account(
-                      this.props.mainBusiness.businessid,
-                      this.props.navigation
-                    );
+                  this.props.create_ad_account(
+                    this.props.mainBusiness.businessid,
+                    this.props.navigation
+                  );
                 }}
               >
                 <Text style={styles.buttontext}>Accept</Text>

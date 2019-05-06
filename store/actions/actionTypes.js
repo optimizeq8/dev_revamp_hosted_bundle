@@ -1,4 +1,6 @@
 //Auth Types
+
+export const SET_INVITE_CODE = "SET_INVITE_CODE";
 export const SEND_MOBILE_NUMBER = "SEND_MOBILE_NUMBER";
 export const RESET_MESSAGE = "RESET_MESSAGE";
 export const VERIFY_MOBILE_NUMBER = "VERIFY_MOBILE_NUMBER";

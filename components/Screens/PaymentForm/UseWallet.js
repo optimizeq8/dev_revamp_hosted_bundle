@@ -34,7 +34,14 @@ class UseWallet extends Component {
   };
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          bottom: "10%"
+        }}
+      >
         <WalletIcon width={80} height={80} />
         <Text style={styles.text}>Wallet Balance</Text>
         <Text style={[GlobalStyles.numbers, { fontSize: 25 }]}>

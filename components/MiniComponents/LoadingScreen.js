@@ -36,29 +36,7 @@ class Loading extends React.Component {
           justifyContent:"center"
         }}
       >
-        {/* {this.props.dash && (
-          <>
-            <LinearGradient
-              colors={[colors.background1, colors.background2]}
-              locations={[0.7, 1]}
-              style={styles.gradient}
-            />
-            <View>
-              <Image
-                source={require("../../assets/images/logo01.png")}
-                style={{
-                  width: 200,
-                  height: 200,
-                  bottom: heightPercentageToDP(4)
-                }}
-                resizeMode="contain"
-              />
-            </View>
-          </>
-        )} */}
-        {/* {Platform.OS === "android" ? (
-          <ActivityIndicator color="#FF9D00" size="large" />
-        ) : ( */}
+
           <LottieView
             ref={animation => {
               this.animation = animation;
@@ -76,7 +54,6 @@ class Loading extends React.Component {
             source={require("../../assets/animation/loading.json")}
             
           />
-        {/* )} */}
       </View>
     );
   }

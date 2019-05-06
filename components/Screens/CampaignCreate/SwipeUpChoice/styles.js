@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: "transparent",
-    height: heightPercentageToDP(100)
+    height: "100%"
   },
   textcontainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    paddingHorizontal: 7,
-    marginBottom: 30
+    paddingHorizontal: 7
+    // marginBottom: "20%"
   },
   titletext: {
     textAlign: "left",
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "90%",
-    height: "35%",
+    height: "50%",
     zIndex: 0,
     borderWidth: 2,
     borderStyle: "dashed",
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(105)
   },
   input: {
-    marginTop: 20,
     backgroundColor: "#5D1CD8",
     paddingHorizontal: 50,
     borderRadius: 10,

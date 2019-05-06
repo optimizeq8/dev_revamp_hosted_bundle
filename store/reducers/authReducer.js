@@ -1,6 +1,8 @@
 import * as actionTypes from "../actions/actionTypes";
 import { Segment } from "expo";
 const initialState = {
+  inviteCode: "",
+  inviteRegistered: false,
   address: {},
   mobileNo: "",
   countryCode: "",
@@ -39,6 +41,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         exponentPushToken: action.payload.token
+      };
+    case actionTypes.SET_INVITE_CODE:
+      return {
+        ...state,
+        inviteCode: action.payload.verificationCode,
+        inviteRegistered: action.payload.data.registered,
+        loading: !action.payload.data.success
       };
     case actionTypes.SEND_MOBILE_NUMBER:
       return {

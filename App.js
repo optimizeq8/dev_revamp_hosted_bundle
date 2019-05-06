@@ -123,6 +123,7 @@ class App extends React.Component {
           // onError={console.warn}
         />
       );
+
     } else {
       const prefix = Linking.makeUrl("/");
 

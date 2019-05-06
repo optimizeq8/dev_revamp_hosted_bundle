@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
-    marginTop: 50,
+    marginTop: heightPercentageToDP(10),
     backgroundColor: "#751AFF",
     flex: 1
   },
@@ -71,20 +73,22 @@ const styles = StyleSheet.create({
     borderBottomColor: "#fff",
     borderBottomWidth: 2
   },
-  badgeText: {
-    color: "#fff",
+  registered: { position: "absolute", bottom: 60, alignSelf: "center" },
+  registeredText: {
     fontSize: 12,
-    fontFamily: "montserrat-light"
+    fontFamily: "montserrat-regular",
+    textAlign: "center"
   },
-  keyboard: {
-    marginTop: 15,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -5 },
+  bottomView: {
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+    shadowColor: "#6C6C6C",
     shadowRadius: 5,
-    shadowOpacity: 0.9
+    shadowOpacity: 0.2,
+    borderRadius: 13,
+    width: 200,
+    height: 40,
+    justifyContent: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
