@@ -584,7 +584,7 @@ class AdDesign extends Component {
               </TouchableOpacity>
             </View>
             <Modal isVisible={this.props.loading || this.state.isVisible}>
-              <LoadingScreen top={0} />
+              <LoadingScreen top={50} />
             </Modal>
           </View>
         </KeyboardAwareScrollView>

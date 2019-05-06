@@ -13,7 +13,8 @@ import { colors } from "../GradiantColors/colors";
 class Loading extends React.Component {
   state = { visible: true };
   componentDidMount() {
-    Platform.OS !== "android" && this.animation.play();
+    // Platform.OS !== "android" && 
+    this.animation.play();
   }
 
   onLottieLoad = () => {
@@ -26,13 +27,16 @@ class Loading extends React.Component {
         style={{
           position: "absolute",
           top: this.props.dash
-            ? heightPercentageToDP(40)
+            ? heightPercentageToDP(50)
             : heightPercentageToDP(this.props.top),
 
-          alignSelf: "center"
+          alignSelf: "center",
+          display:"flex",
+          alignItems:"center",
+          justifyContent:"center"
         }}
       >
-        {this.props.dash && (
+        {/* {this.props.dash && (
           <>
             <LinearGradient
               colors={[colors.background1, colors.background2]}
@@ -40,7 +44,7 @@ class Loading extends React.Component {
               style={styles.gradient}
             />
             <View>
-              {/* <Image
+              <Image
                 source={require("../../assets/images/logo01.png")}
                 style={{
                   width: 200,
@@ -48,10 +52,10 @@ class Loading extends React.Component {
                   bottom: heightPercentageToDP(4)
                 }}
                 resizeMode="contain"
-              /> */}
+              />
             </View>
           </>
-        )}
+        )} */}
         {/* {Platform.OS === "android" ? (
           <ActivityIndicator color="#FF9D00" size="large" />
         ) : ( */}
@@ -60,15 +64,15 @@ class Loading extends React.Component {
               this.animation = animation;
             }}
             style={{
-              zIndex: 10,
+              // zIndex: 10,
               alignSelf: "center",
-              borderWidth: 2,
-              width: widthPercentageToDP(5),
-              height: widthPercentageToDP(10),
-              // position: "absolute"
-
+              width: widthPercentageToDP(100),
+              height: widthPercentageToDP(150),
+              position: "absolute",
+              alignContent:"center",
+              alignItems:"center"
             }}
-            resizeMode="contain"
+            resizeMode="cover"
             source={require("../../assets/animation/loading.json")}
             
           />
