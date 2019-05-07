@@ -14,6 +14,10 @@ import { LinearGradient, Segment } from "expo";
 //Validation
 import validateWrapper from "./ValidateWrapper";
 
+//icons
+import Logo from "../../../assets/SVGs/Optimize";
+import Background from "../../../assets/SVGs/Background";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -21,6 +25,10 @@ import { colors } from "../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -88,11 +96,16 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <View style={{ marginTop: 25 }}>
-          <Image
-            style={styles.image}
-            source={require("../../../assets/images/logo01.png")}
-            resizeMode="contain"
+        <Background
+          style={styles.background}
+          width={widthPercentageToDP(90)}
+          height={heightPercentageToDP(65)}
+        />
+        <View style={{ marginTop: "10%" }}>
+          <Logo
+            style={styles.logo}
+            width={heightPercentageToDP(20)}
+            height={heightPercentageToDP(20)}
           />
         </View>
         <Text style={styles.text}>Sign In</Text>
@@ -186,19 +199,7 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            {!invite ? //   onPress={() => { //   rounded // <Button
-            //     Segment.track("Signup Button");
-            //     this.props.resetRegister();
-            //     this.props.navigation.navigate("MainForm");
-            //   }}
-            //   style={styles.bottomView}
-            // >
-            //   <Text
-            //     style={[
-            //       styles.buttontext,
-            //       { color: "#fff", fontFamily: "montserrat-semibold" }
-            //     ]}
-            //   >
+            {!invite ? //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
             //     Sign Up Now!
             //   </Text>
             // </Button>

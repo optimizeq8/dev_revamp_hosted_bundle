@@ -38,7 +38,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  registered: { position: "absolute", bottom: 60, alignSelf: "center" },
+  registered: {
+    position: "absolute",
+    bottom: 60,
+    alignSelf: "center"
+  },
   registeredText: {
     fontSize: 12,
     fontFamily: "montserrat-regular",
@@ -55,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     width: 200,
     height: 40,
+    alignItems: "center",
     justifyContent: "center"
   },
   logo: {
