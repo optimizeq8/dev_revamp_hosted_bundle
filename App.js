@@ -50,8 +50,6 @@ const myErrorHandler = (e, isFatal) => {
     console.log("died", e);
     if (store.getState().transA.walletUsed) {
       if (store.getState().campaignC.campaign_id !== "") {
-        console.log("11111111111111111");
-
         store.dispatch(
           actionCreators.removeWalletAmount(
             store.getState().campaignC.campaign_id
@@ -104,6 +102,7 @@ class App extends React.Component {
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
 
+
     this._loadAsync()
       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
       .catch(error =>
@@ -146,6 +145,7 @@ ${error.stack}`)
               <AppNavigator
                 uriPrefix={prefix}
                 ref={navigatorRef => {
+                  //console.log(navigatorRef);
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
@@ -281,9 +281,6 @@ ${error.stack}`)
   };
 }
 
-const mapDispatch = dispatch => ({
-  logout: navigation => dispatch(actionCreators(navigation))
-});
 export default App;
 
 const styles = StyleSheet.create({

@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Dimensions
-} from "react-native";
+import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
@@ -31,7 +24,7 @@ class TransactionCard extends Component {
 
     return (
       <View style={styles.cardStyle}>
-        <TouchableOpacity
+        <View
           // onPress={() => {
           //   this.props.getCampaign(this.props.campaign.campaign_id);
           //   this.props.navigation.push("CampaignDetails");
@@ -76,7 +69,7 @@ class TransactionCard extends Component {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
     );
   }
