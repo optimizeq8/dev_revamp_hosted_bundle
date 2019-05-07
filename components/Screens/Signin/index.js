@@ -14,6 +14,10 @@ import { LinearGradient, Segment } from "expo";
 //Validation
 import validateWrapper from "./ValidateWrapper";
 
+//icons
+import Logo from "../../../assets/SVGs/Optimize";
+import Background from "../../../assets/SVGs/Background";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -21,6 +25,10 @@ import { colors } from "../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -68,13 +76,17 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
-    if (this.props.navigation.getParam("loggedout", false)) {
+    if (
+      this.props.navigation &&
+      this.props.navigation.getParam("loggedout", false)
+    ) {
     } else {
       this.props.checkForExpiredToken(this.props.navigation);
     }
   }
   render() {
     let invite =
+      this.props.navigation &&
       this.props.navigation.state.params &&
       this.props.navigation.state.params.invite;
     return (
@@ -84,11 +96,16 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <View style={{ marginTop: 25 }}>
-          <Image
-            style={styles.image}
-            source={require("../../../assets/images/logo01.png")}
-            resizeMode="contain"
+        <Background
+          style={styles.background}
+          width={widthPercentageToDP(90)}
+          height={heightPercentageToDP(65)}
+        />
+        <View style={{ marginTop: "10%" }}>
+          <Logo
+            style={styles.logo}
+            width={heightPercentageToDP(20)}
+            height={heightPercentageToDP(20)}
           />
         </View>
         <Text style={styles.text}>Sign In</Text>
@@ -121,9 +138,9 @@ class MainForm extends Component {
               placeholder="Email"
             />
           </Item>
-          {this.state.emailError ? (
+          {/* {this.state.emailError ? (
             <Text style={styles.error}>{this.state.emailError}</Text>
-          ) : null}
+          ) : null} */}
 
           <Item
             rounded
@@ -158,9 +175,9 @@ class MainForm extends Component {
               placeholder="Password"
             />
           </Item>
-          {this.state.passwordError ? (
+          {/* {this.state.passwordError ? (
             <Text style={styles.error}>{this.state.passwordError}</Text>
-          ) : null}
+          ) : null} */}
           <Text
             onPress={() => {
               Segment.track("Forgot Password Button");
@@ -182,45 +199,32 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            <Text style={[styles.link, { paddingBottom: 7 }]}>
-              Don’t Have an Account?
-            </Text>
-            {!invite ? (
-              <Button
-                rounded
-                onPress={() => {
-                  Segment.track("Signup Button");
-                  this.props.resetRegister();
-                  this.props.navigation.navigate("MainForm");
-                }}
-                style={styles.bottomView}
-              >
-                <Text
-                  style={[
-                    styles.buttontext,
-                    { color: "#fff", fontFamily: "montserrat-semibold" }
-                  ]}
-                >
-                  Sign Up Now!
+            {!invite ? //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
+            //     Sign Up Now!
+            //   </Text>
+            // </Button>
+            null : (
+              <>
+                <Text style={[styles.link, { paddingBottom: 7 }]}>
+                  Don’t Have an Account?
                 </Text>
-              </Button>
-            ) : (
-              <Button
-                rounded
-                onPress={() => {
-                  this.props.navigation.navigate("Invitation");
-                }}
-                style={styles.bottomView}
-              >
-                <Text
-                  style={[
-                    styles.buttontext,
-                    { color: "#fff", fontFamily: "montserrat-semibold" }
-                  ]}
+                <Button
+                  rounded
+                  onPress={() => {
+                    this.props.navigation.navigate("Invitation");
+                  }}
+                  style={styles.bottomView}
                 >
-                  Enter Invite Code!
-                </Text>
-              </Button>
+                  <Text
+                    style={[
+                      styles.buttontext,
+                      { color: "#fff", fontFamily: "montserrat-semibold" }
+                    ]}
+                  >
+                    Enter Invite Code!
+                  </Text>
+                </Button>
+              </>
             )}
           </View>
         </View>

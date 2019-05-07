@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   Text
 } from "react-native";
-import { Button, Icon } from "native-base";
+import { Button, Icon, Item } from "native-base";
 import CountryModal from "./CountryModal";
 import { Segment } from "expo";
 // Style
@@ -19,7 +19,11 @@ import { colors } from "../../../GradiantColors/colors";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -39,7 +43,6 @@ class PhoneNo extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter Phone No. Screen");
 
-    this.phone.focus();
     this.setState({
       pickerData: this.phone.getPickerData()
     });
@@ -58,7 +61,7 @@ class PhoneNo extends Component {
     }
   }
 
-  updateInfo = () => {
+  _handleSubmission = () => {
     this.props.resetMessages();
     this.setState({
       valid: this.phone.isValidNumber(),
@@ -114,29 +117,68 @@ class PhoneNo extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <Text style={styles.text}>
-            Please Provide your {"\n"}
-            Mobile Number
-          </Text>
-          <PhoneInput
-            textStyle={{
-              ...styles.input,
-              borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
-            }}
-            flagStyle={{
-              left: 40,
-              top: 5
-            }}
-            ref={ref => {
-              this.phone = ref;
-            }}
-            onPressFlag={this.onPressFlag}
-            initialCountry="kw"
-            countriesList={require("./countries.json")}
-            value="965"
-            offset={15}
-          />
+        <View style={[styles.container]}>
+          {!this.props.invite && (
+            <Text style={styles.text}>
+              Please Provide your {"\n"}
+              Mobile Number
+            </Text>
+          )}
+          <Item
+            rounded
+            style={[
+              styles.phoneInput,
+              {
+                backgroundColor: this.props.invite
+                  ? "rgba(0, 0, 0, 0.5)"
+                  : "transparent"
+              }
+            ]}
+          >
+            <PhoneInput
+              style={{ width: widthPercentageToDP(70) }}
+              textStyle={{
+                ...styles.input,
+                color: this.props.invite ? "#fff" : "#000",
+                borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
+              }}
+              flagStyle={{
+                left: 20,
+                zIndex: 5
+              }}
+              textProps={{
+                autoFocus: false,
+                onBlur: () => {
+                  console.log(this.phone.isValidNumber);
+
+                  if (!this.phone.isValidNumber()) {
+                    showMessage({
+                      message: "Please enter a valid number!",
+                      type: "warning",
+                      position: "top"
+                    });
+                  }
+                  if (this.props.invite) {
+                    this.props._getMobile({
+                      country_code: this.phone.getCountryCode(),
+                      mobile: this.phone
+                        .getValue()
+                        .split(this.phone.getCountryCode())[1],
+                      valid: this.phone.isValidNumber()
+                    });
+                  }
+                }
+              }}
+              ref={ref => {
+                this.phone = ref;
+              }}
+              onPressFlag={this.onPressFlag}
+              initialCountry="kw"
+              countriesList={require("./countries.json")}
+              value="965"
+              offset={15}
+            />
+          </Item>
           <CountryModal
             ref={ref => {
               this.myCountryPicker = ref;
@@ -148,10 +190,12 @@ class PhoneNo extends Component {
             cancelText="Cancel"
           />
           {this.renderInfo()}
-          <LowerButton
-            function={() => this.updateInfo()}
-            bottom={heightPercentageToDP(0.1)}
-          />
+          {!this.props.invite && (
+            <LowerButton
+              function={() => this._handleSubmission()}
+              bottom={heightPercentageToDP(0.1)}
+            />
+          )}
           {/* <Button onPress={this.updateInfo} style={styles.button}>
             <Icon style={styles.icon} name="arrow-forward" />
           </Button> */}

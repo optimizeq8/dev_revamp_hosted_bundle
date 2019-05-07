@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   container: {
+    backgroundColor: "transparent",
     flex: 1,
     alignItems: "center",
     padding: 20,
@@ -75,6 +77,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: 200,
     height: 30
+  },
+  phoneInput: {
+    borderRadius: 15,
+    borderColor: "transparent",
+    alignSelf: "center",
+    width: widthPercentageToDP(70),
+    height: 50
   }
 });
 

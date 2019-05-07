@@ -27,7 +27,8 @@ const initialState = {
   isListEnd: false,
   fetching_from_server: false,
   passwordChanged: false,
-  exponentPushToken: null
+  exponentPushToken: null,
+  loadingBillingAddress: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -129,7 +130,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         address: action.payload.data,
-        message: action.payload.message
+        message: action.payload.message,
+        loadingBillingAddress: false
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
       return {
@@ -226,6 +228,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: action.payload
       };
+    case actionTypes.GET_BILLING_ADDRESS:
+      return {
+        ...state,
+        address: action.payload,
+        loadingBillingAddress: false
+      }
     case actionTypes.LOGOUT_USER:
       return {
         ...state,
@@ -247,7 +255,11 @@ const reducer = (state = initialState, action) => {
         filteredCampaigns: [],
         exponentPushToken: null
       };
-
+    case actionTypes.SET_BILLING_ADDRESS_LOADING:
+      return {
+        ...state,
+        loadingBillingAddress: action.payload
+      }
     default:
       return state;
   }

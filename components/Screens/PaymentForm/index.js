@@ -184,7 +184,7 @@ class PaymentForm extends Component {
                 : this.props.data.lifetime_budget_micro +
                   "\n" +
                   this.props.navigation.state.params.kdamount +
-                  " KWD"}
+                  "KWD"}
             </Text>
           </View>
           {!addingCredits && (
@@ -245,7 +245,7 @@ class PaymentForm extends Component {
               flex: 1,
               alignItems: "center",
               justifyContent: "center",
-              bottom: "10%"
+              bottom: "5%"
             }}
           >
             <Image

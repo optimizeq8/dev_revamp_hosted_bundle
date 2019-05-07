@@ -7,6 +7,8 @@ import {
   Keyboard,
   Image
 } from "react-native";
+import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import { LinearGradient, Segment } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -14,7 +16,7 @@ import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import Sidemenu from "react-native-side-menu";
 import MultiSelect from "../../MiniComponents/MultiSelect/MultiSelect";
 import SelectRegions from "../../MiniComponents/SelectRegions";
-
+import { Modal } from "react-native-paper";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -36,6 +38,8 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
+
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -53,6 +57,7 @@ class AddressForm extends Component {
         office: "",
         avenue: ""
       },
+      addressId: null,
       country_code: "",
       region_id: [],
       areas: Areas[0].regions,
@@ -76,7 +81,31 @@ class AddressForm extends Component {
   }
   componentDidMount() {
     Segment.screen("Address Form Screen");
+    this.props.getAddressDetail()
   }
+
+  componentDidUpdate(prevProps, prevState) {
+      if(prevProps.address && this.props.address && 
+        (!isEqual(prevProps.address, this.props.address)
+         || (prevState.address.country ===  "" && prevState.address.area === ""
+          &&prevState.address.block ===  "" &&prevState.address.street ===  "" 
+          && prevState.address.building ===  "" && prevState.address.avenue ===  "" && prevState.address.office ===  ""))) {
+        const bsn_address = {
+          country: this.props.address.country,
+          area: this.props.address.area,
+          block: this.props.address.block,
+          street: this.props.address.street,
+          building: this.props.address.building,
+          avenue: this.props.address.avenue,
+          office: this.props.address.office,
+        }
+        this.setState({
+          address: bsn_address, 
+          addressId: this.props.address.id
+        })
+      }
+
+  };
   _renderSideMenu = (component, option = "") => {
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)
@@ -144,14 +173,16 @@ class AddressForm extends Component {
     ) {
       this.props.addressForm(
         this.state.address,
-
-        this.props.navigation
+        this.props.navigation,
+        this.state.addressId
       );
     }
   };
   filterRegions = value => {
     this.setState({ filteredRegions: value });
   };
+
+  
   render() {
     let menu;
     switch (this.state.sidemenu) {
@@ -218,6 +249,7 @@ class AddressForm extends Component {
           openMenuOffset={wp("85%")}
           isOpen={this.state.sidemenustate}
         >
+      
           <View style={styles.mainCard}>
             <TouchableWithoutFeedback
               onPress={Keyboard.dismiss}
@@ -336,6 +368,7 @@ class AddressForm extends Component {
                           style={styles.inputtext}
                           autoCorrect={false}
                           autoCapitalize="none"
+                          value={this.state.address.block}
                           onChangeText={block =>
                             this.setState({
                               address: { ...this.state.address, block }
@@ -382,6 +415,7 @@ class AddressForm extends Component {
                           Building/House #*
                         </Label>
                         <Input
+                          value={this.state.address.building}
                           multiline={true}
                           maxLength={100}
                           onContentSizeChange={({
@@ -450,6 +484,7 @@ class AddressForm extends Component {
                         Street*
                       </Label>
                       <Input
+                        value={this.state.address.street}
                         multiline={true}
                         maxLength={100}
                         style={styles.inputtext}
@@ -509,6 +544,7 @@ class AddressForm extends Component {
                           Office No.
                         </Label>
                         <Input
+                          value={this.state.address.office}
                           multiline={true}
                           maxLength={100}
                           style={styles.inputtext}
@@ -555,6 +591,7 @@ class AddressForm extends Component {
                           Avenue
                         </Label>
                         <Input
+                          value={this.state.address.avenue}
                           multiline={true}
                           maxLength={100}
                           style={styles.inputtext}
@@ -576,7 +613,7 @@ class AddressForm extends Component {
                         />
                       </Item>
                     </View>
-
+                
                     <TouchableOpacity
                       onPress={() => this._handleSubmission()}
                       style={styles.button}
@@ -589,17 +626,24 @@ class AddressForm extends Component {
             </TouchableWithoutFeedback>
           </View>
         </Sidemenu>
+        <Modal visible={this.props.loading}>
+          <LoadingScreen top={0} />
+        </Modal>
       </Container>
     );
   }
 }
 const mapStateToProps = state => ({
-  message: state.auth.message
+  message: state.auth.message,
+  address: state.auth.address,
+  loading: state.auth.loadingBillingAddress
 });
 
 const mapDispatchToProps = dispatch => ({
-  addressForm: (address, navigation) =>
-    dispatch(actionCreators.addressForm(address, navigation))
+  addressForm: (address, navigation, addressId) =>
+    dispatch(actionCreators.addressForm(address, navigation, addressId)),
+  getAddressDetail: () =>
+    dispatch(actionCreators.getAddressForm())
 });
 export default connect(
   mapStateToProps,

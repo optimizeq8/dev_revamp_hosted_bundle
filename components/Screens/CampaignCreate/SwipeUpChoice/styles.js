@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: widthPercentageToDP(3.2),
     marginBottom: 6,
-
+    width: widthPercentageToDP(50),
     color: "#fff",
     textAlign: "left"
   },
