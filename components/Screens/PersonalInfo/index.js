@@ -227,6 +227,7 @@ class ChangePassword extends Component {
                     </Label>
 
                     <Input
+                      disabled
                       style={styles.inputtext}
                       value={`+${this.props.userInfo.mobile}`}
                     />

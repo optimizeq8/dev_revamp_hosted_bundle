@@ -99,6 +99,8 @@ class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
+    //console.log(NavigationService);
+    store.dispatch(actionCreators.checkForExpiredToken(NavigationService));
   }
 
   _registerForPushNotificationsAsync = async () => {
@@ -123,7 +125,6 @@ class App extends React.Component {
           // onError={console.warn}
         />
       );
-
     } else {
       const prefix = Linking.makeUrl("/");
 
@@ -135,6 +136,7 @@ class App extends React.Component {
               <AppNavigator
                 uriPrefix={prefix}
                 ref={navigatorRef => {
+                  //console.log(navigatorRef);
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
@@ -221,9 +223,6 @@ class App extends React.Component {
   };
 }
 
-const mapDispatch = dispatch => ({
-  logout: navigation => dispatch(actionCreators(navigation))
-});
 export default App;
 
 const styles = StyleSheet.create({

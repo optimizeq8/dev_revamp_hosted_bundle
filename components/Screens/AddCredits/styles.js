@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    paddingTop: 45
   },
   closeIcon: {
     top: heightPercentageToDP(2.3),
