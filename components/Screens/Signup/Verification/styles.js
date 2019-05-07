@@ -64,6 +64,13 @@ const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
+  emailInput: {
+    top: 15,
+    marginBottom: -20,
+    width: 300,
+    height: 45,
+    borderColor: "#7039FF"
+  },
   input: {
     top: 10,
     marginBottom: 20,

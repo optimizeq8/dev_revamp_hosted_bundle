@@ -21,6 +21,8 @@ class Verification extends Component {
     header: null
   };
   state = {
+    timer: 120,
+    timerStart: false,
     code: "",
     codeError: "",
     showEmail: false,
@@ -36,25 +38,59 @@ class Verification extends Component {
       if (prevProps.message !== this.props.message) {
         if (this.props.message.includes("Invalid")) {
           this.handlerOnIvalidCode();
-
+          showMessage({
+            message: this.props.message,
+            type: "warning",
+            position: "top"
+          });
           this.setState({
             codeError: this.props.message
           });
         } else {
+          showMessage({
+            message: this.props.message,
+            type: "warning",
+            position: "top"
+          });
           this.setState({
             codeError: this.props.message
           });
         }
       }
   }
+  componentWillUnmount() {
+    clearInterval(this.clockCall);
+  }
+  startTimer = () => {
+    this.clockCall = setInterval(() => {
+      this.decrementClock();
+    }, 1000);
+    this.setState({ timerStart: true });
+  };
+
+  decrementClock = () => {
+    if (this.state.timer === 0) {
+      clearInterval(this.clockCall);
+      this.setState({ timerStart: false, timer: 120 });
+    }
+    this.setState(prevstate => ({ timer: prevstate.timer - 1 }));
+  };
+
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
     this.setState({ emailError });
     if (!emailError) {
+      this.setState({ showEmail: false });
       this.props.resendVerifyMobileCodeByEmail({
         mobile: this.props.mobileNo,
         country_code: this.props.countryCode,
         email: this.state.email
+      });
+    } else {
+      showMessage({
+        message: "Please enter a valid email.",
+        type: "warning",
+        position: "top"
       });
     }
   };
@@ -94,30 +130,32 @@ class Verification extends Component {
             </Text>
           </>
         )}
-        {!this.props.invite && (
-          <Text
-            onPress={() => {
-              this.props.resetMessages();
-              this.props.resendVerifyMobileCode({
-                mobile: this.props.mobileNo,
-                country_code: this.props.countryCode
-              });
-            }}
-            style={[styles.link]}
-          >
-            Resend Code
-          </Text>
-        )}
+        {!this.props.invite &&
+          (this.state.timerStart ? (
+            <Text style={[styles.link]}>
+              {new Date(this.state.timer * 1000).toISOString().substr(14, 5)}
+            </Text>
+          ) : (
+            <Text
+              onPress={() => {
+                this.props.resetMessages();
+                this.startTimer();
+                this.props.resendVerifyMobileCode({
+                  mobile: this.props.mobileNo,
+                  country_code: this.props.countryCode
+                });
+              }}
+              style={[styles.link]}
+            >
+              Resend Code
+            </Text>
+          ))}
 
         {!this.props.invite && (
           <Text
             onPress={() => {
-              this.setState({ showEmail: true });
+              this.setState({ showEmail: !this.state.showEmail });
               this.props.resetMessages();
-              // this.props.resendVerifyMobileCode({
-              //   mobile: this.props.mobileNo,
-              //   country_code: this.props.countryCode
-              // });
             }}
             style={[styles.link, { paddingVertical: 0 }]}
           >
@@ -129,7 +167,7 @@ class Verification extends Component {
             <Item
               floatingLabel
               style={[
-                styles.input,
+                styles.emailInput,
                 {
                   borderColor: this.state.InputE
                     ? "#7039FF"
@@ -141,7 +179,6 @@ class Verification extends Component {
             >
               <Label
                 style={[
-                  styles.inputtext,
                   {
                     bottom: 5,
                     color: this.state.InputE ? "#FF9D00" : "#717171"
@@ -150,9 +187,7 @@ class Verification extends Component {
               >
                 Email
               </Label>
-
               <Input
-                style={styles.inputtext}
                 autoCorrect={false}
                 autoCapitalize="none"
                 onChangeText={value => this.setState({ email: value })}
@@ -173,8 +208,8 @@ class Verification extends Component {
               transparent
               style={{
                 position: "relative",
-                bottom: "15%",
-                left: "45%"
+                bottom: "2%",
+                left: "60%"
               }}
               onPress={() => this._handleSubmission()}
             >
@@ -186,9 +221,9 @@ class Verification extends Component {
             </Button>
           </>
         )}
-        {this.state.codeError !== "" && !this.props.invite && (
+        {/* {this.state.codeError !== "" && !this.props.invite && (
           <Text style={[styles.errorText]}>{this.state.codeError}</Text>
-        )}
+        )} */}
         {this.props.invite ? (
           <>
             <Item rounded style={[styles.input]}>
