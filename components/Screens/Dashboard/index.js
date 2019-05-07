@@ -175,13 +175,16 @@ class Dashboard extends Component {
       />
     );
     if (!this.props.mainBusiness) {
-      return (<><LinearGradient
-      colors={[colors.background1, colors.background2]}
-      locations={[0.7, 1]}
-      style={styles.gradient}
-    />
-    <LoadingScreen dash={true} top={0} />
-    </>);
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <LoadingScreen dash={true} top={0} />
+        </>
+      );
     } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (

@@ -10,6 +10,9 @@
     "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "notification": {
+      "icon": "./assets/icon.png"
+    },
     "splash": {
       "image": "./assets/images/MainSplashempty.png",
       "resizeMode": "cover",

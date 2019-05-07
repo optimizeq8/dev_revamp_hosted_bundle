@@ -73,7 +73,12 @@ export default class Website extends Component {
   render() {
     return (
       <View style={{ height: heightPercentageToDP(100) }}>
-        <View style={{ flexDirection: "column", paddingTop: 30 }}>
+        <View
+          style={{
+            flexDirection: "column",
+            paddingTop: heightPercentageToDP(10)
+          }}
+        >
           <WebsiteIcon style={styles.icon} />
           <View style={styles.textcontainer}>
             <Text style={[styles.titletext]}>Website</Text>
@@ -96,7 +101,7 @@ export default class Website extends Component {
               });
             }}
           >
-            <Item rounded style={styles.input}>
+            <Item rounded style={[styles.input, { marginBottom: 20 }]}>
               <Text
                 style={[
                   styles.inputtext,

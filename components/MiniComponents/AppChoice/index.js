@@ -33,6 +33,7 @@ class AppChoice extends Component {
         icon_media_url: ""
       },
       choice: null,
+      appSelection: "iOS",
       showList: false,
       data: [],
       androidData: [],
@@ -42,7 +43,8 @@ class AppChoice extends Component {
       callActionError: "",
       choiceError: "",
       AppError: "",
-      loading: false
+      loading: false,
+      appLoading: false
     };
   }
 
@@ -101,62 +103,50 @@ class AppChoice extends Component {
       .catch(err => console.log(err.response));
   };
 
-  _getAppIds = iosApp => {
-    let androidUrl = "";
-    if (this.state.choice === "" || this.state.choice === "ANDROID") {
-      //--------------This is for dummy data--------------
-      // androidUrl = androidDataTest.find(app => {
-      //   if (app.title.length > iosApp.title.length) {
-      //     if (
-      //       app.title
-      //         .toLowerCase()
-      //         .trim()
-      //         .includes(iosApp.title.toLowerCase().trim())
-      //     )
-      //       return app;
-      //   } else {
-      //     if (
-      //       iosApp.title
-      //         .toLowerCase()
-      //         .trim()
-      //         .includes(app.title.toLowerCase().trim())
-      //     )
-      //       return app;
-      //   }
-      // }); //this for dummy data
-
-      //--------------This for the actual api data--------------
-      androidUrl = this.state.androidData.find(app => {
-        if (app.title.length > iosApp.title.length) {
-          if (
-            app.title
-              .toLowerCase()
-              .replace(/[\W_]+/g, " ")
-              .includes(iosApp.title.toLowerCase().replace(/[\W_]+/g, " "))
-          )
-            return app;
-        } else {
-          if (
-            iosApp.title
-              .toLowerCase()
-              .replace(/[\W_]+/g, " ")
-              .includes(app.title.toLowerCase().replace(/[\W_]+/g, " "))
-          )
-            return app;
-        }
-      });
-    }
+  _getIosAppIds = app => {
     this.setState({
       attachment: {
         ...this.state.attachment,
-        app_name: iosApp.title,
-        ios_app_id: this.state.choice !== "ANDROID" ? iosApp.id : "",
-        icon_media_url: iosApp.icon,
-        android_app_url: androidUrl ? androidUrl.id : ""
+        app_name: app.title,
+        ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
+        icon_media_url: app.icon
       }
     });
   };
 
+  _getAndroidAppIds = app => {
+    this.setState({
+      attachment: {
+        ...this.state.attachment,
+        app_name: app.title,
+        ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
+        icon_media_url: app.icon,
+        android_app_url: app.id
+      }
+    });
+  };
+
+  _handleBothOS = app => {
+    if (this.state.appSelection === "iOS") {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          app_name: app.title,
+          ios_app_id: app.id,
+          icon_media_url: app.icon
+        },
+        appSelection: "ANDROID"
+      });
+    } else {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          android_app_url: app.id
+        },
+        appSelection: "iOS"
+      });
+    }
+  };
   validate = async () => {
     const AppError = validateWrapper(
       "mandatory",
@@ -403,12 +393,21 @@ class AppChoice extends Component {
           />
         ) : (
           <View style={{ height: heightPercentageToDP(35) }}>
+            {this.state.showList && this.state.choice === "" && (
+              <Text style={styles.text}>
+                Choose the {this.state.appSelection} app
+              </Text>
+            )}
             <FlatList
               style={{ flex: 1 }}
               //-----------This is for actual app data searches-----------
               data={
                 this.state.showList
-                  ? this.state.choice !== "ANDROID"
+                  ? this.state.choice !== ""
+                    ? this.state.choice !== "ANDROID"
+                      ? this.state.data
+                      : this.state.androidData
+                    : this.state.appSelection === "iOS"
                     ? this.state.data
                     : this.state.androidData
                   : []
@@ -425,7 +424,13 @@ class AppChoice extends Component {
               // contentInset={{ bottom: heightPercentageToDP(15) }}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  onPress={() => this._getAppIds(item)}
+                  onPress={() =>
+                    this.state.choice !== ""
+                      ? this.state.choice === "iOS"
+                        ? this._getIosAppIds(item)
+                        : this._getAndroidAppIds(item)
+                      : this._handleBothOS(item)
+                  }
                   style={[
                     styles.campaignButton,
                     {
@@ -448,11 +453,24 @@ class AppChoice extends Component {
                     ]}
                   >
                     <Image
+                      onLoadEnd={() => {
+                        this.setState({ appLoading: false });
+                      }}
+                      onLoadStart={() => {
+                        this.setState({ appLoading: true });
+                      }}
                       style={styles.image}
                       source={{
                         uri: item.icon
                       }}
                     />
+                    {this.state.appLoading && (
+                      <ActivityIndicator
+                        color="white"
+                        style={{ position: "absolute", left: "10%" }}
+                      />
+                    )}
+
                     <Text
                       style={[
                         styles.titletext,
