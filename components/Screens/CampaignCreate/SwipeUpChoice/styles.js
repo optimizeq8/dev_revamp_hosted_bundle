@@ -13,14 +13,15 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: "transparent",
-    height: "100%"
+    height: "100%",
+    marginTop: heightPercentageToDP(3)
   },
   textcontainer: {
     // flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    paddingHorizontal: 7
-    // marginBottom: "20%"
+    paddingHorizontal: 7,
+    marginBottom: 20
   },
   titletext: {
     textAlign: "left",
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: "center",
-    paddingVertical: heightPercentageToDP(8),
     paddingHorizontal: 7
   },
   content: {

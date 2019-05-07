@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingRight: 30
   },
   container: {
-    marginTop: 10,
+    marginTop: hp(1.5),
     backgroundColor: "#751AFF",
     flex: 1
   },
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    top: hp(1),
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     borderColor: "#fff",

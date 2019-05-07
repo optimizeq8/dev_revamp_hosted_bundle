@@ -331,8 +331,7 @@ class AdDesign extends Component {
           <View style={[styles.mainCard]}>
             <View
               style={{
-                flexDirection: "row",
-                marginBottom: heightPercentageToDP("0.5")
+                flexDirection: "row"
               }}
             >
               {/* <TouchableOpacity
@@ -586,7 +585,6 @@ class AdDesign extends Component {
               </TouchableOpacity>
             </View>
             <Modal isVisible={this.props.loading || this.state.isVisible}>
-
               <>
                 <LoadingScreen top={50} />
                 <Text

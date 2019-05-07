@@ -24,7 +24,10 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export default class App_Install extends Component {
   static navigationOptions = {
     header: null
@@ -124,7 +127,11 @@ export default class App_Install extends Component {
                 paddingTop: 30
               }}
             >
-              <AppInstallIcon style={styles.icon} />
+              <AppInstallIcon
+                width={widthPercentageToDP(18)}
+                height={heightPercentageToDP(10)}
+                style={styles.icon}
+              />
               <View style={styles.textcontainer}>
                 <Text style={[styles.titletext]}>App Install</Text>
                 <Text style={[styles.subtext, { marginBottom: 0 }]}>

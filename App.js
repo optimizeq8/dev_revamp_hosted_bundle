@@ -78,17 +78,17 @@ class App extends React.Component {
   };
   constructor(props) {
     super(props);
-    SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
+    // Instruct SplashScreen not to hide yet
   }
 
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
 
-      this.setState({ isLoadingComplete: true }, () => {
-        this._registerForPushNotificationsAsync();
-        // this._animateOut();
-      });
+      // this.setState({ isLoadingComplete: true }, () => {
+      this._registerForPushNotificationsAsync();
+      // this._animateOut();
+      // });
       // mark reasources as loaded
     } catch (e) {
       this._handleLoadingError(e);
@@ -97,18 +97,18 @@ class App extends React.Component {
     }
   };
   componentDidMount() {
+    SplashScreen.preventAutoHide();
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
 
-
-    this._loadAsync()
-      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
-      .catch(error =>
-        console.error(`Unexpected error thrown when loading:
-${error.stack}`)
-      );
+    this._loadAsync();
+    //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
+    //       .catch(error =>
+    //         console.error(`Unexpected error thrown when loading:
+    // ${error.stack}`)
+    //       );
   }
 
   _registerForPushNotificationsAsync = async () => {
@@ -132,7 +132,35 @@ ${error.stack}`)
         //   autoHideSplash={true}
         //   // onError={console.warn}
         // />
-        null
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Image
+            source={require("./assets/images/MainSplashempty.png")}
+            style={{
+              width: "100%",
+              height: "100%",
+              // position: "absolute",
+              // top: 0,
+              // left: 0,
+              // bottom: 0,
+              // right: 0,
+              resizeMode: "cover"
+              // opacity: this.state.splashAnimation.interpolate({
+              //   inputRange: [0, 1],
+              //   outputRange: [0, 1]
+              // })
+            }}
+          />
+        </View>
       );
     } else {
       const prefix = Linking.makeUrl("/");

@@ -5,7 +5,7 @@ import { LinearGradient } from "expo";
 import Verification from "../Signup/Verification";
 import Signin from "../Signin/";
 import * as Animatable from "react-native-animatable";
-
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
 import Background from "../../../assets/SVGs/Background";
@@ -47,7 +47,16 @@ export default class Invitation extends Component {
   };
   render() {
     if (this.state.registeredWithInvite == null) {
-      return <ActivityIndicator size="large" />;
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <LoadingScreen dash={true} top={0} />
+        </>
+      );
     } else if (this.state.registeredWithInvite) {
       return <Signin navigation={this.props.navigation} />;
     } else

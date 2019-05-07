@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
 
   mainCard: {
     borderRadius: 10,
-    marginTop: 5,
-    height: heightPercentageToDP(90)
+    height: heightPercentageToDP(93)
   },
   brand_name: {
     textAlign: "left",

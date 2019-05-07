@@ -72,7 +72,7 @@ class AdDesignReview extends Component {
               />
             ) : (
               <Image
-                resizeMode="contain"
+                resizeMode="cover"
                 style={styles.placeholder}
                 source={{
                   uri: this.props.navigation.state.params.image
