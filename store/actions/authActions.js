@@ -504,52 +504,48 @@ export const changePassword = (currentPass, newPass, navigation) => {
   };
 };
 export const addressForm = (address, navigation, addressId) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_BILLING_ADDRESS_LOADING,
-      payload: true
-    });
-    instance
-      .put("businessaddress", {
-        businessid: getState().auth.mainBusiness.businessid,
-        id: addressId,
-        ...address
-      })
-      .then(response => {
-        if(response.data && response.data.message === "Address ID missing") {
-          instance
-          .post("businessaddress",{
-            businessid: getState().auth.mainBusiness.businessid,
-            ...address
-          })
-          .then(res => {
-            showMessage({
-              message: response.data.message,
-              type: response.data.success ? "success" : "warning"
-            });
-            if (response.data.success) navigation.goBack();
-            return dispatch({
-              type: actionTypes.ADD_ADDRESS,
-              payload: response.data
-            });
-          })
-        } 
-        else {
-          showMessage({
-            message: response.data.message,
-            type: response.data.success ? "success" : "warning"
-          });
-          if (response.data.success) navigation.goBack();
-          return dispatch({
-            type: actionTypes.ADD_ADDRESS,
-            payload: response.data
-          });
-        }
-      })
-      .catch(err => {
-        console.log("Error while put/post address form",err.message)
+  return async (dispatch, getState) => {
+    try{
+      dispatch({
+        type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+        payload: true
       });
-  };
+      const response = await instance.put("businessaddress", {
+          businessid: getState().auth.mainBusiness.businessid,
+          id: addressId,
+          ...address
+        });
+  
+      if(response.data && response.data.message === "Address ID missing") {
+        const respData = await instance.post("businessaddress",{
+          businessid: getState().auth.mainBusiness.businessid,
+          ...address
+        })
+
+        showMessage({
+          message: respData.data.message,
+          type: respData.data.success ? "success" : "warning"
+        });
+        if (respData.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.ADD_ADDRESS,
+          payload: respData.data
+        });
+      } else {
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.ADD_ADDRESS,
+          payload: response.data
+        });
+      }
+    } catch (error) {
+      console.log("Error while put/post address form",err.message);
+    }
+  }
 };
 
 
@@ -562,7 +558,14 @@ export const getAddressForm = () => {
     instance
       .get(`businessaddresses/${getState().auth.mainBusiness.businessid}`)
       .then(response => {
+        console.log('response bsn account', JSON.stringify(response.data, null, 2))
         if(response.data && response.data.success)
+          if(!response.data.business_accounts){
+            return dispatch({
+              type: actionTypes.GET_BILLING_ADDRESS,
+              payload: {}
+            });
+          }
           return dispatch({
             type: actionTypes.GET_BILLING_ADDRESS,
             payload: response.data.business_accounts
