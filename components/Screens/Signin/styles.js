@@ -17,10 +17,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#751AFF"
   },
   logo: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 22,
-    fontFamily: "montserrat-regular"
+    alignSelf: "center",
+    position: "relative"
   },
   image: {
     alignSelf: "center",
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
   input: {
     top: 30,
     marginBottom: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.16)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
     borderRadius: 15,
     alignSelf: "center",
     width: 250,
@@ -100,6 +98,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 15,
     marginTop: 25
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.45,
+    alignSelf: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

@@ -43,7 +43,6 @@ class PhoneNo extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter Phone No. Screen");
 
-    this.phone.focus();
     this.setState({
       pickerData: this.phone.getPickerData()
     });

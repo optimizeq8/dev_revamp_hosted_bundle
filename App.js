@@ -30,6 +30,9 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 
+//icons
+import PurpleLogo from "./assets/SVGs/PurpleLogo";
+
 // Sentry.enableInExpoDevelopment = true;
 Sentry.config(
   "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
@@ -71,6 +74,7 @@ class App extends React.Component {
   state = {
     isLoadingComplete: false,
     splashAnimation: new Animated.Value(0),
+    splashFadeAnimation: new Animated.Value(0.01),
     splashAnimationComplete: false,
     isAppReady: false
   };
@@ -99,6 +103,13 @@ class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
+
+    this._loadAsync()
+      .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
+      .catch(error =>
+        console.error(`Unexpected error thrown when loading:
+${error.stack}`)
+      );
   }
 
   _registerForPushNotificationsAsync = async () => {
@@ -114,16 +125,16 @@ class App extends React.Component {
   render() {
     if (!this.state.isLoadingComplete) {
       return (
-        <AppLoading
-          startAsync={this._loadAsync}
-          onFinish={() => {
-            this.setState({ isLoadingComplete: true });
-          }}
-          autoHideSplash={true}
-          // onError={console.warn}
-        />
+        // <AppLoading
+        //   startAsync={this._loadAsync}
+        //   onFinish={() => {
+        //     this.setState({ isLoadingComplete: true });
+        //   }}
+        //   autoHideSplash={true}
+        //   // onError={console.warn}
+        // />
+        null
       );
-
     } else {
       const prefix = Linking.makeUrl("/");
 
@@ -138,7 +149,7 @@ class App extends React.Component {
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
-              {/* {this._maybeRenderLoadingImage()} */}
+              {this._maybeRenderLoadingImage()}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
@@ -152,7 +163,7 @@ class App extends React.Component {
     }
 
     return (
-      <View
+      <Animated.View
         style={{
           position: "absolute",
           top: 0,
@@ -161,36 +172,85 @@ class App extends React.Component {
           right: 0,
           alignItems: "center",
           justifyContent: "center",
-          width: widthPercentageToDP("100%"),
-          height: heightPercentageToDP("100%")
+          opacity: this.state.splashFadeAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0]
+          })
         }}
       >
-        <Image
-          source={require("./assets/images/splash.png")}
+        <Animated.Image
+          source={require("./assets/images/MainSplashempty.png")}
           style={{
-            width: widthPercentageToDP("100%"),
-            height: heightPercentageToDP("110%")
-            // position: "absolute",
-            // top: 0,
-            // left: 0,
-            // bottom: 0,
-            // right: 0,
-            // resizeMode: "cover"
+            width: undefined,
+            height: undefined,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            resizeMode: "cover"
+            // opacity: this.state.splashAnimation.interpolate({
+            //   inputRange: [0, 1],
+            //   outputRange: [0, 1]
+            // })
           }}
           onLoadEnd={this._animateOut}
         />
-      </View>
+        <Animated.View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: "61%",
+            right: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: this.state.splashAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1]
+            }),
+            transform: [
+              {
+                translateY: this.state.splashAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [100, 0]
+                })
+              }
+            ]
+          }}
+        >
+          <PurpleLogo
+            width={heightPercentageToDP(20)}
+            height={heightPercentageToDP(20)}
+          />
+        </Animated.View>
+      </Animated.View>
     );
   };
 
   _animateOut = () => {
     SplashScreen.hide();
-    Animated.timing(this.state.splashAnimation, {
-      toValue: 1,
-      duration: 700,
-      useNativeDriver: true
-    }).start(() => {
+    Animated.sequence([
+      Animated.timing(this.state.splashAnimation, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: true
+      }),
+      Animated.timing(this.state.splashFadeAnimation, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: true
+      })
+    ]).start(() => {
       this.setState({ splashAnimationComplete: true });
+    });
+  };
+
+  _fadeOut = () => {
+    Animated.timing(this.state.splashFadeAnimation, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
     });
   };
   _loadResourcesAsync = async () => {

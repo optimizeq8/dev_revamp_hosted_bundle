@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, AsyncStorage } from "react-native";
+import { View, AsyncStorage, TouchableOpacity } from "react-native";
 import { Button, Text, Container, Icon, Badge } from "native-base";
 import { LinearGradient } from "expo";
 import Verification from "../Signup/Verification";
