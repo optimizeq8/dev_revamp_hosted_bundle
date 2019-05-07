@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Animated, Easing, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Animated,
+  Easing,
+  TouchableWithoutFeedback,
+  TouchableOpacity
+} from "react-native";
 import { Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
@@ -95,13 +101,14 @@ class Menu extends Component {
               marginTop: heightPercentageToDP("8.7%")
             }}
           />
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               this.props.clearPushToken(this.props.navigation);
             }}
+            style={styles.logoutIcon}
           >
-            <Icons.LogoutIcon style={styles.logoutIcon} />
-          </TouchableWithoutFeedback>
+            <Icons.LogoutIcon />
+          </TouchableOpacity>
           <View>
             <Transition shared="menu">
               <Text style={styles.businessTitle}>
