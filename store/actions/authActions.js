@@ -475,42 +475,69 @@ export const changePassword = (currentPass, newPass, navigation) => {
       .catch(err => console.log(err));
   };
 };
-export const addressForm = (address, navigation) => {
+export const addressForm = (address, navigation, addressId) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+      payload: true
+    });
     instance
-      .post("businessaddress", {
+      .put("businessaddress", {
         businessid: getState().auth.mainBusiness.businessid,
+        id: addressId,
         ...address
       })
       .then(response => {
-        showMessage({
-          message: response.data.message,
-          type: response.data.success ? "success" : "warning"
-        });
-        if (response.data.success) navigation.goBack();
-        return dispatch({
-          type: actionTypes.ADD_ADDRESS,
-          payload: response.data
-        });
+        if(response.data && response.data.message === "Address ID missing") {
+          instance
+          .post("businessaddress",{
+            businessid: getState().auth.mainBusiness.businessid,
+            ...address
+          })
+          .then(res => {
+            showMessage({
+              message: response.data.message,
+              type: response.data.success ? "success" : "warning"
+            });
+            if (response.data.success) navigation.goBack();
+            return dispatch({
+              type: actionTypes.ADD_ADDRESS,
+              payload: response.data
+            });
+          })
+        } 
+        else {
+          showMessage({
+            message: response.data.message,
+            type: response.data.success ? "success" : "warning"
+          });
+          if (response.data.success) navigation.goBack();
+          return dispatch({
+            type: actionTypes.ADD_ADDRESS,
+            payload: response.data
+          });
+        }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log("Error while put/post address form",err.message)
+      });
   };
 };
 
 
 export const getAddressForm = () => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+      payload: true
+    });
     instance
       .get(`businessaddresses/${getState().auth.mainBusiness.businessid}`)
       .then(response => {
         if(response.data && response.data.success)
-          console.log('bsnddress', response.data.business_accounts);
-          const dataSortById = sortBy(response.data.business_accounts, data => data.id);
-          console.log('bsnddress sorted', dataSortById);
-
           return dispatch({
             type: actionTypes.GET_BILLING_ADDRESS,
-            payload: dataSortById[dataSortById.length - 1 ]
+            payload: response.data.business_accounts
           });
       })
       .catch(err => console.log("Get Billing Address Error: ",err));
