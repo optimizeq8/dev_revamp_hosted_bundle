@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  TouchableOpacity
-} from "react-native";
+import { View, Animated, Easing, TouchableOpacity } from "react-native";
 import { Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
@@ -72,7 +66,7 @@ class Menu extends Component {
                 marginBottom: -heightPercentageToDP(5)
               }}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.state.params.closeAnimation();
                 }}
@@ -93,7 +87,7 @@ class Menu extends Component {
                     1
                   }
                 />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
             </View>
           </Transition>
           <View
@@ -107,7 +101,7 @@ class Menu extends Component {
             }}
             style={styles.logoutIcon}
           >
-            <Icons.LogoutIcon />
+            <Icons.LogoutIcon style={styles.icons} />
           </TouchableOpacity>
           <View>
             <Transition shared="menu">
@@ -136,66 +130,66 @@ class Menu extends Component {
               </Button>
               <BackdropIcon style={styles.backDrop} />
 
-              {/* <Icons.DropDownIcon
+              {/* <Icons.DropDownIcon style={styles.icons}
                 style={styles.DropIcon}
               /> */}
             </View>
 
             <View
               style={{
-                paddingLeft: 20,
-                flexDirection: "column",
-                justifyContent: "space-evenly"
+                paddingLeft: 20
+                // flexDirection: "column"
+                // justifyContent: "space-evenly"
               }}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("PersonalInfo")}
               >
                 <View style={styles.options}>
-                  <Icons.PersonalInfo />
-                  <Text style={styles.text}>Personal{"\n    "}Info</Text>
+                  <Icons.PersonalInfo style={styles.icons} />
+                  <Text style={styles.text}>Personal Info</Text>
                 </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("TransactionList")
                 }
               >
-                <View style={[styles.options, { paddingLeft: 15 }]}>
-                  <Icons.TransactionIcon />
-                  <Text style={styles.text}> Transactions</Text>
+                <View style={[styles.options]}>
+                  <Icons.TransactionIcon style={styles.icons} />
+                  <Text style={styles.text}>Transactions</Text>
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               <View
                 style={{
                   flexDirection: "column"
                 }}
               >
                 <View style={styles.options}>
-                  <Icons.BusinessIcon />
-                  <Text style={styles.text}>Business{"\n    "}Info</Text>
+                  <Icons.BusinessIcon style={styles.icons} />
+                  <Text style={styles.text}>Business Info</Text>
                 </View>
-                <TouchableWithoutFeedback
+                <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("ChangePassword")
                   }
                 >
                   <View style={styles.options}>
-                    <Icons.ChangePassIcon />
-                    <Text style={[styles.text]}> Change{"\n"}Password</Text>
+                    <Icons.ChangePassIcon style={styles.icons} />
+                    <Text style={[styles.text]}>Change Password</Text>
                   </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
               </View>
 
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("AddressForm")}
               >
                 <View style={styles.options}>
-                  <Icons.AddressIcon />
+                  <Icons.AddressIcon style={styles.icons} />
                   <Text style={styles.text}>Addresses</Text>
                 </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("AddCredits")}
               >
                 <View
@@ -206,20 +200,29 @@ class Menu extends Component {
                     flexDirection: "row"
                   }}
                 >
-                  <Icons.Wallet />
-                  <Text style={styles.text}>{"    "}Wallet</Text>
+                  <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
+                  <Text style={styles.text}>Wallet</Text>
                 </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => {
                   this.props.clearPushToken(this.props.navigation);
                 }}
               >
-                <View style={styles.options}>
-                  <Icons.LogoutIcon />
-                  <Text style={styles.text}>{"   "}Logout</Text>
+                <View
+                  style={{
+                    alignItems: "center",
+                    left: widthPercentageToDP(4),
+                    marginBottom: 20,
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.LogoutIcon
+                    style={[styles.icons, { marginRight: 16 }]}
+                  />
+                  <Text style={styles.text}>Logout</Text>
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               <Text style={styles.text}>{this.props.exponentPushToken}</Text>
             </View>
           </View>
@@ -232,6 +235,7 @@ class Menu extends Component {
           >
             <>
               <Icons.CloseListIcon
+                style={styles.icons}
                 onPress={() => this.slidePanelShow()}
                 style={styles.CloseIcon}
               />
