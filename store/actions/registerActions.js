@@ -13,35 +13,6 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
-export const send_push_notification = () => {
-    return (dispatch, getState) => {
-      Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
-        if (permission.status === "granted") {
-          Notifications.getExpoPushTokenAsync().then(token => {
-            instance
-              .post(`updatepushToken`, {
-                token: token,
-                userid: getState().auth.userInfo.userid
-              })
-              .then(res => {
-                console.log("token", token);
-                return res.data;
-              })
-              .then(data => {
-                dispatch({
-                  type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
-                  payload: data
-                });
-              })
-              .catch(err => {
-                console.log(err.response);
-              });
-          });
-        }
-      });
-    };
-};
-  
 export const verifyBusinessName = businessName => {
     return dispatch => {
       instance
