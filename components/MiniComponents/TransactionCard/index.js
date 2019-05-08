@@ -3,6 +3,10 @@ import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 class TransactionCard extends Component {
   state = {

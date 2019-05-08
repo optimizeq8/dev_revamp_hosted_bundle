@@ -29,8 +29,7 @@ export {
   get_android_versions,
   get_ios_versions,
   get_total_reach,
-  payment_request_knet,
-  send_push_notification
+  payment_request_knet
 } from "./campaignActions";
 
 export {
