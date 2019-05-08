@@ -125,17 +125,17 @@ class App extends React.Component {
     if (!this.state.isLoadingComplete) {
       return (
         <>
-          <View
+          {/* <View
             style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
-          />
-          {/* <AppLoading
+          /> */}
+          <AppLoading
             startAsync={this._loadResourcesAsync}
             onFinish={() => {
               this.setState({ isLoadingComplete: true });
             }}
             autoHideSplash={true}
             // onError={console.warn}
-          /> */}
+          />
           {/* <View
             style={{
               flex: 1
@@ -187,7 +187,7 @@ class App extends React.Component {
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
-          {this._maybeRenderLoadingImage()}
+          {/* {this._maybeRenderLoadingImage()} */}
         </Provider>
       );
     }
