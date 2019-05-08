@@ -432,7 +432,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCampaign: id => dispatch(actionCreators.getCampaign(id)),
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),

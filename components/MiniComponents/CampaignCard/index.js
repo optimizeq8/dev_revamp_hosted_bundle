@@ -42,7 +42,7 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
-            this.props.getCampaign(this.props.campaign.campaign_id);
+            this.props.getCampaignDetails(this.props.campaign.campaign_id);
             Segment.trackWithProperties("Campaign Card Button", {
               campaign_id: this.props.campaign.campaign_id
             });
@@ -96,7 +96,7 @@ class CampaignCard extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getCampaign: id => dispatch(actionCreators.getCampaign(id))
+  getCampaignDetails: id => dispatch(actionCreators.getCampaignDetails(id))
 });
 export default connect(
   null,
