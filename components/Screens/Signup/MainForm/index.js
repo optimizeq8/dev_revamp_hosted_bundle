@@ -56,11 +56,10 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        {!invite && (
-          <CloseButton
-            navigation={() => this.props.navigation.navigate("Signin")}
-          />
-        )}
+        
+        <CloseButton
+          navigation={() => this.props.navigation.navigate("Invitation")}
+        />
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
           <Badge
