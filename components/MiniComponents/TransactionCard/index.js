@@ -3,14 +3,7 @@ import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
-import { LinearGradient } from "expo";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+
 class TransactionCard extends Component {
   state = {
     paused: false,
@@ -24,13 +17,7 @@ class TransactionCard extends Component {
 
     return (
       <View style={styles.cardStyle}>
-        <View
-          // onPress={() => {
-          //   this.props.getCampaign(this.props.campaign.campaign_id);
-          //   this.props.navigation.push("CampaignDetails");
-          // }}
-          style={styles.transactionButton}
-        >
+        <View style={styles.transactionButton}>
           <View style={styles.textcontainer}>
             <View style={styles.header}>
               <Text style={[styles.titletext]}>
@@ -75,10 +62,4 @@ class TransactionCard extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getCampaign: id => dispatch(actionCreators.getCampaign(id))
-});
-export default connect(
-  null,
-  mapDispatchToProps
-)(TransactionCard);
+export default TransactionCard;

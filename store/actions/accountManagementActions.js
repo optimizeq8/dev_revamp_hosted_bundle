@@ -1,0 +1,196 @@
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import * as actionTypes from "./actionTypes";
+import { showMessage } from "react-native-flash-message";
+import { Segment } from "expo";
+
+const instance = axios.create({
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+});
+
+export const changeBusiness = business => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+      payload: { business: business }
+    });
+  };
+};
+
+export const getBusinessAccounts = () => {
+  return dispatch => {
+    instance
+      .get(`businessaccounts`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_BUSINESS_ACCOUNTS,
+          payload: data
+        });
+      })
+
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
+
+export const createBusinessAccount = (account, navigation) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_LOADING, payload: true });
+    instance
+      .post(`businessaccount`, account)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        dispatch({
+          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+          payload: { business: data.data }
+        });
+        return dispatch({
+          type: actionTypes.ADD_BUSINESS_ACCOUNT,
+          payload: data.data
+        });
+      })
+      .then(navigation.navigate("Dashboard"))
+
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+};
+
+export const changePassword = (currentPass, newPass, navigation) => {
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    "Content-Type": "application/x-www-form-urlencoded"
+  };
+  return dispatch => {
+    dispatch({
+      type: actionTypes.CHANGE_PASSWORD,
+      payload: { success: false }
+    });
+    instance
+      .put("changePassword", {
+        current_password: currentPass,
+        password: newPass
+      })
+      .then(response => {
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.CHANGE_PASSWORD,
+          payload: response.data
+        });
+      })
+      .catch(err => console.log(err));
+  };
+};
+
+export const addressForm = (address, navigation, addressId) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+        payload: true
+      });
+      const response = await instance.put("businessaddress", {
+        businessid: getState().auth.mainBusiness.businessid,
+        id: addressId,
+        ...address
+      });
+
+      if (response.data && response.data.message === "Address ID missing") {
+        const respData = await instance.post("businessaddress", {
+          businessid: getState().auth.mainBusiness.businessid,
+          ...address
+        });
+
+        showMessage({
+          message: respData.data.message,
+          type: respData.data.success ? "success" : "warning"
+        });
+        if (respData.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.ADD_ADDRESS,
+          payload: respData.data
+        });
+      } else {
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        if (response.data.success) navigation.goBack();
+        return dispatch({
+          type: actionTypes.ADD_ADDRESS,
+          payload: response.data
+        });
+      }
+    } catch (error) {
+      console.log("Error while put/post address form", err.message);
+    }
+  };
+};
+
+export const getAddressForm = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+      payload: true
+    });
+    instance
+      .get(`businessaddresses/${getState().auth.mainBusiness.businessid}`)
+      .then(response => {
+        if (response.data && response.data.success)
+          if (!response.data.business_accounts) {
+            return dispatch({
+              type: actionTypes.GET_BILLING_ADDRESS,
+              payload: {}
+            });
+          }
+        return dispatch({
+          type: actionTypes.GET_BILLING_ADDRESS,
+          payload: response.data.business_accounts
+        });
+      })
+      .catch(err => console.log("Get Billing Address Error: ", err));
+  };
+};
+// IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
+export const create_snapchat_ad_account = (id, navigation) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_LOADING, payload: true });
+    instance
+      .post("snapadaccounts", { businessid: id })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.success) {
+          Segment.track("Snapchat Ad Account Created Successfully");
+
+          return dispatch({
+            type: actionTypes.CREATE_AD_ACCOUNT,
+            payload: { data: data, navigation: navigation.navigate }
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "info"
+          });
+          dispatch({ type: actionTypes.SET_LOADING, payload: false });
+        }
+      })
+      // .then(() => {
+      //   navigation.navigate("Dashboard");
+      // })
+
+      .catch(err => console.log(err.response));
+  };
+};

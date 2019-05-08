@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
 import Chart from "./Charts";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+
 class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
@@ -27,10 +22,4 @@ class CampaignCard extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  getCampaign: id => dispatch(actionCreators.getCampaign(id))
-});
-export default connect(
-  null,
-  mapDispatchToProps
-)(CampaignCard);
+export default CampaignCard;

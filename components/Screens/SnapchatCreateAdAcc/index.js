@@ -135,7 +135,7 @@ class MainForm extends Component {
                   }
                 ]}
                 onPress={() => {
-                  this.props.create_ad_account(
+                  this.props.create_snapchat_ad_account(
                     this.props.mainBusiness.businessid,
                     this.props.navigation
                   );
@@ -157,8 +157,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_ad_account: (id, navigation) =>
-    dispatch(actionCreators.create_ad_account(id, navigation))
+  create_snapchat_ad_account: (id, navigation) =>
+    dispatch(actionCreators.create_snapchat_ad_account(id, navigation))
 });
 export default connect(
   mapStateToProps,
