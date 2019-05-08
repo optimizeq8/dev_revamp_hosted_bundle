@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 13
+    fontSize: 13,
+    textAlign: "center"
   },
   buttontext: {
     fontFamily: "montserrat-regular",
@@ -115,8 +116,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 5,
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: 120
+    justifyContent: "flex-start",
+    width: 150
+  },
+  icons: {
+    justifyContent: "flex-start"
+    // marginRight: 20
   }
 });
 

@@ -79,6 +79,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     // Instruct SplashScreen not to hide yet
+    SplashScreen.preventAutoHide();
   }
 
   _loadAsync = async () => {
@@ -97,7 +98,6 @@ class App extends React.Component {
     }
   };
   componentDidMount() {
-    SplashScreen.preventAutoHide();
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
@@ -124,45 +124,52 @@ class App extends React.Component {
   render() {
     if (!this.state.isLoadingComplete) {
       return (
-        // <AppLoading
-        //   startAsync={this._loadAsync}
-        //   onFinish={() => {
-        //     this.setState({ isLoadingComplete: true });
-        //   }}
-        //   autoHideSplash={true}
-        //   // onError={console.warn}
-        // />
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <Image
-            source={require("./assets/images/MainSplashempty.png")}
-            style={{
-              width: "100%",
-              height: "100%",
-              // position: "absolute",
-              // top: 0,
-              // left: 0,
-              // bottom: 0,
-              // right: 0,
-              resizeMode: "cover"
-              // opacity: this.state.splashAnimation.interpolate({
-              //   inputRange: [0, 1],
-              //   outputRange: [0, 1]
-              // })
-            }}
+        <>
+          <View
+            style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}
           />
-        </View>
+          {/* <AppLoading
+            startAsync={this._loadResourcesAsync}
+            onFinish={() => {
+              this.setState({ isLoadingComplete: true });
+            }}
+            autoHideSplash={true}
+            // onError={console.warn}
+          /> */}
+          {/* <View
+            style={{
+              flex: 1
+            }}
+          >
+            <Image
+              source={require("./assets/images/splash.png")}
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                resizeMode: "cover"
+                // opacity: this.state.splashAnimation.interpolate({
+                //   inputRange: [0, 1],
+                //   outputRange: [0, 1]
+                // })
+              }}
+              onLoadEnd={() => {
+                // wait for image's content to fully load [`Image#onLoadEnd`] (https://facebook.github.io/react-native/docs/image#onloadend)
+                console.log("Image#onLoadEnd: hiding SplashScreen");
+                SplashScreen.hide(); // Image is fully presented, instruct SplashScreen to hide
+              }}
+              fadeDuration={0}
+            />
+          </View>
+         */}
+        </>
       );
-    } else {
+    }
+    {
       const prefix = Linking.makeUrl("/");
 
       return (
@@ -177,10 +184,10 @@ class App extends React.Component {
                   NavigationService.setTopLevelNavigator(navigatorRef);
                 }}
               />
-              {this._maybeRenderLoadingImage()}
             </Root>
             <FlashMessage icon="auto" duration={4000} position="bottom" />
           </View>
+          {this._maybeRenderLoadingImage()}
         </Provider>
       );
     }
@@ -266,7 +273,7 @@ class App extends React.Component {
       }),
       Animated.timing(this.state.splashFadeAnimation, {
         toValue: 1,
-        duration: 2000,
+        duration: 1000,
         useNativeDriver: true
       })
     ]).start(() => {
@@ -274,15 +281,14 @@ class App extends React.Component {
     });
   };
 
-  _fadeOut = () => {
-    Animated.timing(this.state.splashFadeAnimation, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true
-    });
-  };
   _loadResourcesAsync = async () => {
+    const images = [require("./assets/images/splash.png")];
+    const cacheImages = images.map(image =>
+      Asset.fromModule(image).downloadAsync()
+    );
+
     return Promise.all([
+      cacheImages,
       Asset.loadAsync([require("./assets/images/logo01.png")]),
       Asset.loadAsync([require("./assets/images/logo02.png")]),
       Font.loadAsync({

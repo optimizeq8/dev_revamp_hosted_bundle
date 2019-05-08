@@ -12,7 +12,7 @@ import {
 import Modal from "react-native-modal";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
-import { LinearGradient, Segment } from "expo";
+import { LinearGradient, Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import ReachBar from "./ReachBar";
@@ -642,7 +642,9 @@ class AdDetails extends Component {
       end_time = dateFormat(end_time, "d mmm");
       start_time = dateFormat(start_time, "d mmm");
     }
-
+    let editCampaign =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.editCampaign;
     return (
       <>
         <Container style={styles.container}>
@@ -674,6 +676,28 @@ class AdDetails extends Component {
                 }
               ]}
             >
+              {editCampaign &&
+                !this.props.navigation.state.params.campaign.media.includes(
+                  ".jpg" ||
+                    !this.props.navigation.state.params.image.includes(".jpg")
+                ) && (
+                  <View style={[styles.backgroundViewWrapper]}>
+                    <Video
+                      source={{
+                        uri: editCampaign
+                          ? "http://" +
+                            this.props.navigation.state.params.campaign.media
+                          : "http://" + this.props.navigation.state.params.image
+                      }}
+                      isMuted
+                      resizeMode="cover"
+                      style={{
+                        width: "100%",
+                        height: "100%"
+                      }}
+                    />
+                  </View>
+                )}
               <ImageBackground
                 imageStyle={{ opacity: 0.4 }}
                 style={{ width: "100%", height: "100%" }}
@@ -688,7 +712,12 @@ class AdDetails extends Component {
                     <BackButton
                       screenname="Ad Details"
                       businessname={this.props.mainBusiness.businessname}
-                      navigation={this.props.navigation.goBack}
+                      navigation={
+                        editCampaign
+                          ? () =>
+                              this.props.navigation.navigate("CampaignDetails")
+                          : this.props.navigation.goBack
+                      }
                     />
 
                     <Text style={styles.headline}>
@@ -719,6 +748,7 @@ class AdDetails extends Component {
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
+                      disabled={editCampaign}
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                     />
@@ -768,10 +798,7 @@ class AdDetails extends Component {
 
                     <Slider
                       thumbTintColor={globalColors.orange}
-                      disabled={
-                        this.props.navigation.state.params &&
-                        this.props.navigation.state.params.editCampaign
-                      }
+                      disabled={editCampaign}
                       style={{ width: 300, height: hp(2) }}
                       step={10}
                       minimumValue={this.state.minValueBudget}
