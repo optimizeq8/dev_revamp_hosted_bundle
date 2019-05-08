@@ -4,6 +4,10 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 
+const instance = axios.create({
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+});
+
 export const getCampaignDetails = id => {
   return dispatch => {
     dispatch({
