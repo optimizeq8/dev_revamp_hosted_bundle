@@ -263,6 +263,7 @@ class AdPaymentReview extends Component {
                     business_name: this.props.mainBusiness.businessname,
                     checkout_id: this.props.campaign_id
                   });
+
                   this.props.navigation.navigate("PaymentForm", {
                     interestNames: this.props.navigation.state.params
                       .interestNames,
