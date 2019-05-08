@@ -39,6 +39,9 @@ import {
 } from "react-native-responsive-screen";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
+import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
+import isUndefined from "lodash/isUndefined";
+import isNull from "lodash/isNull";
 
 
 
@@ -83,7 +86,12 @@ class AddressForm extends Component {
   }
   componentDidMount() {
     Segment.screen("Address Form Screen");
-    this.props.getAddressDetail()
+    this.props.getAddressDetail();
+    this.setState({
+      from: this.props.navigation.getParam('from', null),
+      kdamount: this.props.navigation.getParam('kdamount', null),
+      interestNames: this.props.navigation.getParam('interestNames', null)
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -137,7 +145,6 @@ class AddressForm extends Component {
 
   
   render() {
-  
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -163,14 +170,23 @@ class AddressForm extends Component {
             />
           </>
         )}
+      {/* TODO: When user selects CC display this */}
+        {this.state.from === 'creditCard' && !isUndefined(this.state.addressId) && !isNull(this.state.addressId) ? 
+          <SelectBillingAddressCard 
+              address={this.state.address}
+              addressId={this.state.addressId}
+              navigation={this.props.navigation}
+              kdamount={this.state.kdamount}
 
+          />
+        :
         <BillingAddressCard
             address={this.state.address}
             _handleSubmission={this._handleSubmission}
             _handleAddressChange={this._handleAddressChange}
             _handleSideMenuState={this._handleSideMenuState}
             sidemenustate={this.state.sidemenustate}
-        />
+        />}
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>

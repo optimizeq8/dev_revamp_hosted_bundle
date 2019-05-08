@@ -21,18 +21,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
-  mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    borderColor: "transparent",
-    flex: 1,
-    top: heightPercentageToDP(23),
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 }
-  },
+  // mainCard: {
+  //   borderTopStartRadius: 30,
+  //   borderTopEndRadius: 30,
+  //   backgroundColor: "#fff",
+  //   borderColor: "transparent",
+  //   flex: 1,
+  //   top: heightPercentageToDP(23),
+  //   shadowColor: "#6C6C6C",
+  //   shadowRadius: 5,
+  //   shadowOpacity: 0.1,
+  //   shadowOffset: { width: 0, height: -3 }
+  // },
   content: {
     flexDirection: "row",
     alignItems: "center",
