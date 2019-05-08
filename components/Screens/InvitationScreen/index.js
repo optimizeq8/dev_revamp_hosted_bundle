@@ -30,8 +30,7 @@ export default class Invitation extends Component {
   state = {
     registeredWithInvite: null,
     renderInviteCode: true,
-    animationActive: false,
-    playAnimation: false
+    animationActive: false
   };
   componentDidMount() {
     AsyncStorage.getItem("registeredWithInvite")
@@ -47,7 +46,7 @@ export default class Invitation extends Component {
   toggleComps = () => {
     this.setState({
       renderInviteCode: !this.state.renderInviteCode,
-      playAnimation: true
+      animationActive: true
     });
   };
   render() {
@@ -73,8 +72,8 @@ export default class Invitation extends Component {
             style={styles.gradient}
           />
           <Animatable.View
-            onAnimationEnd={() => this.setState({ animationActive: true })}
-            delay={750}
+            // onAnimationEnd={() => this.setState({ animationActive: true })}
+            delay={500}
             animation="fadeInUpBig"
           >
             <Background
@@ -93,11 +92,9 @@ export default class Invitation extends Component {
             <Animatable.View
               animation={
                 this.state.animationActive
-                  ? this.state.playAnimation
-                    ? this.state.renderInviteCode
-                      ? "fadeInLeftBig"
-                      : "fadeOutLeftBig"
-                    : ""
+                  ? this.state.renderInviteCode
+                    ? "fadeInLeftBig"
+                    : "fadeOutLeftBig"
                   : ""
               }
               style={{
@@ -110,15 +107,13 @@ export default class Invitation extends Component {
               <Verification invite={true} />
             </Animatable.View>
 
-            {this.state.animationActive && this.state.playAnimation && (
+            {this.state.animationActive && (
               <Animatable.View
                 animation={
                   this.state.animationActive
-                    ? this.state.playAnimation
-                      ? this.state.renderInviteCode
-                        ? "fadeOutRightBig"
-                        : "fadeInRightBig"
-                      : ""
+                    ? this.state.renderInviteCode
+                      ? "fadeOutRightBig"
+                      : "fadeInRightBig"
                     : ""
                 }
                 style={{ height: "45%" }}
