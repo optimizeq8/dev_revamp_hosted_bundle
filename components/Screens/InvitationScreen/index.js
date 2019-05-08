@@ -29,7 +29,9 @@ export default class Invitation extends Component {
   };
   state = {
     registeredWithInvite: null,
-    renderInviteCode: true
+    renderInviteCode: true,
+    animationActive: false,
+    playAnimation: false
   };
   componentDidMount() {
     AsyncStorage.getItem("registeredWithInvite")
@@ -43,7 +45,10 @@ export default class Invitation extends Component {
       .catch(err => console.log(err));
   }
   toggleComps = () => {
-    this.setState({ renderInviteCode: !this.state.renderInviteCode });
+    this.setState({
+      renderInviteCode: !this.state.renderInviteCode,
+      playAnimation: true
+    });
   };
   render() {
     if (this.state.registeredWithInvite == null) {
@@ -67,7 +72,11 @@ export default class Invitation extends Component {
             locations={[0.7, 1]}
             style={styles.gradient}
           />
-          <Animatable.View delay={2000} animation="fadeInUpBig">
+          <Animatable.View
+            onAnimationEnd={() => this.setState({ animationActive: true })}
+            delay={750}
+            animation="fadeInUpBig"
+          >
             <Background
               style={styles.background}
               width={widthPercentageToDP(90)}
@@ -81,10 +90,15 @@ export default class Invitation extends Component {
               height={heightPercentageToDP(20)}
             />
 
-            {/* {this.state.renderInviteCode ? ( */}
             <Animatable.View
               animation={
-                this.state.renderInviteCode ? "fadeInLeftBig" : "fadeOutLeftBig"
+                this.state.animationActive
+                  ? this.state.playAnimation
+                    ? this.state.renderInviteCode
+                      ? "fadeInLeftBig"
+                      : "fadeOutLeftBig"
+                    : ""
+                  : ""
               }
               style={{
                 position: "absolute",
@@ -95,18 +109,23 @@ export default class Invitation extends Component {
             >
               <Verification invite={true} />
             </Animatable.View>
-            {/* ) : ( */}
-            <Animatable.View
-              animation={
-                this.state.renderInviteCode
-                  ? "fadeOutRightBig"
-                  : "fadeInRightBig"
-              }
-              style={{ height: "45%" }}
-            >
-              <GetInviteCode toggleComps={this.toggleComps} />
-            </Animatable.View>
-            {/* )} */}
+
+            {this.state.animationActive && this.state.playAnimation && (
+              <Animatable.View
+                animation={
+                  this.state.animationActive
+                    ? this.state.playAnimation
+                      ? this.state.renderInviteCode
+                        ? "fadeOutRightBig"
+                        : "fadeInRightBig"
+                      : ""
+                    : ""
+                }
+                style={{ height: "45%" }}
+              >
+                <GetInviteCode toggleComps={this.toggleComps} />
+              </Animatable.View>
+            )}
             {this.state.renderInviteCode && (
               <Text style={[styles.link]} onPress={() => this.toggleComps()}>
                 Get an invitation code now!
