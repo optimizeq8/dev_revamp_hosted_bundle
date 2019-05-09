@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Animated, Easing, TouchableOpacity } from "react-native";
+import {
+  View,
+  Animated,
+  Easing,
+  TouchableOpacity,
+  BackHandler
+} from "react-native";
 import { Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import LottieView from "lottie-react-native";
 
-// Style
-import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
-
-import * as actionCreators from "../../../store/actions";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -19,6 +20,12 @@ import {
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
 import { Transition } from "react-navigation-fluid-transitions";
+// Style
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
+
+import * as actionCreators from "../../../store/actions";
+
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
@@ -31,6 +38,17 @@ class Menu extends Component {
     super(props);
     this.state = { slidePanel: false };
   }
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.state.params.closeAnimation();
+  };
   showPanel() {
     Animated.timing(this._draggedValue, {
       toValue: this.props.draggableRange.top / 1.35,
@@ -47,6 +65,7 @@ class Menu extends Component {
       this.setState({ slidePanel: true });
     }
   }
+
   render() {
     return (
       <Container style={[styles.menuModal]}>
