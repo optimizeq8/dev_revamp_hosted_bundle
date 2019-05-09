@@ -81,7 +81,7 @@ class CampaignCard extends Component {
               <View>
                 <View style={{ top: 10, left: 10, flexDirection: "row" }}>
                   <ImpressionsIcons />
-                  <View style={{ flexDirection: "col" }}>
+                  <View style={{ flexDirection: "column " }}>
                     <Text style={GlobalStyles.numbers}>
                       {campaign.impressions}
                     </Text>
@@ -99,7 +99,7 @@ class CampaignCard extends Component {
                   <SwipeUpsIcon />
                   <View
                     style={{
-                      flexDirection: "col",
+                      flexDirection: "column",
                       justifyContent: "center",
                       flex: 1
                     }}
