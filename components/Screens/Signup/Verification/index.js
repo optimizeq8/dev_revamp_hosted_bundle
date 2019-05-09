@@ -33,31 +33,7 @@ class Verification extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter OTP Verification Screen");
   }
-  componentDidUpdate(prevProps) {
-    if (prevProps.verificationCode !== this.props.verificationCode)
-      if (prevProps.message !== this.props.message) {
-        if (this.props.message.includes("Invalid")) {
-          this.handlerOnIvalidCode();
-          showMessage({
-            message: this.props.message,
-            type: "warning",
-            position: "top"
-          });
-          this.setState({
-            codeError: this.props.message
-          });
-        } else {
-          showMessage({
-            message: this.props.message,
-            type: "warning",
-            position: "top"
-          });
-          this.setState({
-            codeError: this.props.message
-          });
-        }
-      }
-  }
+  
   componentWillUnmount() {
     clearInterval(this.clockCall);
   }
@@ -96,7 +72,6 @@ class Verification extends Component {
   };
 
   _handleSentCode = code => {
-    this.props.resetMessages();
     this.props.verifyMobileCode({
       mobile: this.props.mobileNo,
       country_code: this.props.countryCode,
@@ -107,14 +82,14 @@ class Verification extends Component {
   _handleInviteCode = () => {
     this.props.verifyInviteCode(this.state.code);
   };
-  handlerOnIvalidCode() {
-    const { current } = this.inputRef;
+  // handlerOnInvalidCode() {
+  //   const { current } = this.inputRef;
 
-    if (current) {
-      current.clear();
-      current.focus();
-    }
-  }
+  //   if (current) {
+  //     current.clear();
+  //     current.focus();
+  //   }
+  // }
   render() {
     return (
       <View style={styles.container}>
@@ -138,7 +113,6 @@ class Verification extends Component {
           ) : (
             <Text
               onPress={() => {
-                this.props.resetMessages();
                 this.startTimer();
                 this.props.resendVerifyMobileCode({
                   mobile: this.props.mobileNo,
@@ -276,10 +250,9 @@ class Verification extends Component {
   }
 }
 const mapStateToProps = state => ({
-  mobileNo: state.auth.mobileNo,
-  countryCode: state.auth.countryCode,
-  verificationCode: state.auth.verificationCode,
-  message: state.auth.message
+  mobileNo: state.register.mobileNo,
+  countryCode: state.register.countryCode,
+  verificationCode: state.register.verificationCode,
 });
 const mapDispatchToProps = dispatch => ({
   verifyMobileCode: mobileAuth =>

@@ -52,17 +52,7 @@ class PersonalInfo extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter PersonalInfo Screen");
   }
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      this.setState({
-        emailError:
-          this.props.message && this.props.message.includes("exist")
-            ? this.props.message
-            : ""
-      });
-    }
-  }
-
+  
   _passwordVarification = () => {
     if (
       this.state.userInfo.password !== this.state.repassword ||
@@ -443,8 +433,7 @@ class PersonalInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  message: state.auth.message,
-  mobileNo: state.auth.mobileNo
+  mobileNo: state.register.mobileNo
 });
 
 const mapDispatchToProps = dispatch => ({

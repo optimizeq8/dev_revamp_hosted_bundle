@@ -21,7 +21,11 @@ export const verifyBusinessName = businessName => {
         .then(data => {
           if (data.success === true)
             Segment.track("Business Info Register Button");
-  
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "warning",
+              position: "top"
+            })
           return dispatch({
             type: actionTypes.VERIFY_BUSINESSNAME,
             payload: data
@@ -79,7 +83,11 @@ export const sendMobileNo = mobileNo => {
         })
         .then(data => {
           if (data.success === true) Segment.track("Phone No. Register Button");
-  
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top"
+          })
           return dispatch({
             type: actionTypes.SEND_MOBILE_NUMBER,
             payload: data
@@ -101,7 +109,11 @@ export const verifyMobileCode = mobileAuth => {
         })
         .then(data => {
           if (data.success === true) Segment.track("Phone No. Verified Button");
-  
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top"
+          })
           return dispatch({
             type: actionTypes.VERIFY_MOBILE_NUMBER,
             payload: data
@@ -123,7 +135,11 @@ return dispatch => {
     .then(data => {
         if (data.success === true)
         Segment.track("Phone No. Resend Verification Button");
-
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top"
+        })
         return dispatch({
         type: actionTypes.RESEND_VERIFICATION,
         payload: data
@@ -172,10 +188,14 @@ export const verifyEmail = (email, userInfo) => {
         .then(data => {
             if (data.success === true)
             Segment.track("Personal Info Register Button");
-
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "warning",
+              position: "top"
+              });
             return dispatch({
             type: actionTypes.VERIFY_EMAIL,
-            payload: { success: data.success, userInfo, message: data.message }
+            payload: { success: data.success, userInfo, }
             });
         })
         .catch(err => {

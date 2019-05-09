@@ -60,7 +60,6 @@ class Loading extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.auth.loading
 });
 export default connect(mapStateToProps)(Loading);
 

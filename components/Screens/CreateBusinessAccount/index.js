@@ -186,7 +186,7 @@ class CreateBusinessAccount extends Component {
       }
     }
   }
-
+  
   _handleBusinessCategories = async type => {
     await this.setState({
       businessAccount: {
@@ -198,7 +198,6 @@ class CreateBusinessAccount extends Component {
   };
   async _verifyBusinessName(name) {
     if (name !== "") {
-      this.props.resetMessages();
       await this.props.verifyBusinessName(name);
 
       this.setState({
@@ -785,10 +784,9 @@ class CreateBusinessAccount extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message,
   userInfo: state.auth.userInfo,
-  countryCode: state.auth.countryCode,
-  inviteCode: state.auth.inviteCode
+  countryCode: state.register.countryCode,
+  inviteCode: state.register.inviteCode
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -799,7 +797,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
   verifyBusinessName: businessName =>
     dispatch(actionCreators.verifyBusinessName(businessName)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,

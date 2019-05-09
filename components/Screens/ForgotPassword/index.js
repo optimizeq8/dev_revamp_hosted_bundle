@@ -63,7 +63,6 @@ class ForgotPassword extends Component {
   // }
 
   _handleSubmission = () => {
-    this.props.resetMessages();
     const emailError = validateWrapper("email", this.state.email);
     this.setState({
       emailError: emailError
@@ -159,13 +158,11 @@ class ForgotPassword extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message
 });
 
 const mapDispatchToProps = dispatch => ({
   forgotPassword: (email, navigation) =>
     dispatch(actionCreators.forgotPassword(email, navigation)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,
