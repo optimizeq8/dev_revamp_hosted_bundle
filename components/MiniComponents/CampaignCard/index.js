@@ -110,7 +110,7 @@ class CampaignCard extends Component {
                       {campaign.impressions}
                     </Text>
                     <Text style={[styles.subtext, { textAlign: "center" }]}>
-                      Clicks
+                      Swipe Ups
                     </Text>
                   </View>
                 </View>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import styles from "./styles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default class Charts extends Component {
   render() {
@@ -10,7 +11,7 @@ export default class Charts extends Component {
     return (
       <View>
         <AnimatedCircularProgress
-          size={65}
+          size={this.props.detail ? heightPercentageToDP("11") : 65}
           width={6}
           fill={x}
           rotation={0}
