@@ -18,7 +18,7 @@ import {
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../Global Styles";
 
-class MainForm extends Component {
+class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
     header: null
   };
@@ -152,8 +152,8 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  mainBusiness: state.auth.mainBusiness,
-  loading: state.auth.loading
+  mainBusiness: state.account.mainBusiness,
+  loading: state.account.loading
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -163,4 +163,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MainForm);
+)(SnapchatCreateAdAcc);

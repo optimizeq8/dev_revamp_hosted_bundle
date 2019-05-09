@@ -173,20 +173,6 @@ class CreateBusinessAccount extends Component {
     Segment.screen("Create New Business");
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      if (this.props.message === "Business name already exist") {
-        this.setState({
-          businessnameError: this.props.message ? this.props.message : null
-        });
-      } else {
-        this.setState({
-          nameError: null
-        });
-      }
-    }
-  }
-
   _handleBusinessCategories = async type => {
     await this.setState({
       businessAccount: {
@@ -198,7 +184,6 @@ class CreateBusinessAccount extends Component {
   };
   async _verifyBusinessName(name) {
     if (name !== "") {
-      this.props.resetMessages();
       await this.props.verifyBusinessName(name);
 
       this.setState({
@@ -785,7 +770,6 @@ class CreateBusinessAccount extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message,
   userInfo: state.auth.userInfo,
   countryCode: state.auth.countryCode,
   inviteCode: state.auth.inviteCode
@@ -798,8 +782,7 @@ const mapDispatchToProps = dispatch => ({
   createBusinessAccount: (account, navigation) =>
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
   verifyBusinessName: businessName =>
-    dispatch(actionCreators.verifyBusinessName(businessName)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
+    dispatch(actionCreators.verifyBusinessName(businessName))
 });
 export default connect(
   mapStateToProps,

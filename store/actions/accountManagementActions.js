@@ -10,6 +10,10 @@ const instance = axios.create({
 
 export const changeBusiness = business => {
   return dispatch => {
+    showMessage({
+      message: "Changed business account",
+      type: "success"
+    });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { business: business }
@@ -25,6 +29,10 @@ export const getBusinessAccounts = () => {
         return res.data;
       })
       .then(data => {
+        // showMessage({
+        //   message: data.message,
+        //   type: response.data.success ? "success" : "warning"
+        // })
         return dispatch({
           type: actionTypes.SET_BUSINESS_ACCOUNTS,
           payload: data
@@ -39,13 +47,21 @@ export const getBusinessAccounts = () => {
 
 export const createBusinessAccount = (account, navigation) => {
   return dispatch => {
-    dispatch({ type: actionTypes.SET_LOADING, payload: true });
+    dispatch({
+      type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
+      payload: true
+    });
     instance
       .post(`businessaccount`, account)
       .then(res => {
         return res.data;
       })
       .then(data => {
+        showMessage({
+          message: data.message,
+          type: response.data.success ? "success" : "warning"
+        });
+        //incase of an error?? need handling
         dispatch({
           type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
           payload: { business: data.data }
@@ -101,14 +117,14 @@ export const addressForm = (address, navigation, addressId) => {
         payload: true
       });
       const response = await instance.put("businessaddress", {
-        businessid: getState().auth.mainBusiness.businessid,
+        businessid: getState().account.mainBusiness.businessid,
         id: addressId,
         ...address
       });
 
       if (response.data && response.data.message === "Address ID missing") {
         const respData = await instance.post("businessaddress", {
-          businessid: getState().auth.mainBusiness.businessid,
+          businessid: getState().account.mainBusiness.businessid,
           ...address
         });
 
@@ -145,7 +161,7 @@ export const getAddressForm = () => {
       payload: true
     });
     instance
-      .get(`businessaddresses/${getState().auth.mainBusiness.businessid}`)
+      .get(`businessaddresses/${getState().account.mainBusiness.businessid}`)
       .then(response => {
         if (response.data && response.data.success)
           if (!response.data.business_accounts) {
@@ -165,7 +181,10 @@ export const getAddressForm = () => {
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
 export const create_snapchat_ad_account = (id, navigation) => {
   return dispatch => {
-    dispatch({ type: actionTypes.SET_LOADING, payload: true });
+    dispatch({
+      type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
+      payload: true
+    });
     instance
       .post("snapadaccounts", { businessid: id })
       .then(res => {
@@ -176,7 +195,7 @@ export const create_snapchat_ad_account = (id, navigation) => {
           Segment.track("Snapchat Ad Account Created Successfully");
 
           return dispatch({
-            type: actionTypes.CREATE_AD_ACCOUNT,
+            type: actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT,
             payload: { data: data, navigation: navigation.navigate }
           });
         } else {
@@ -184,7 +203,10 @@ export const create_snapchat_ad_account = (id, navigation) => {
             message: data.message,
             type: "info"
           });
-          dispatch({ type: actionTypes.SET_LOADING, payload: false });
+          dispatch({
+            type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
+            payload: false
+          });
         }
       })
       // .then(() => {

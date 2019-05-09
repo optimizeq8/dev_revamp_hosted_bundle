@@ -422,12 +422,12 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   wallet: state.transA.wallet,
-  loading: state.auth.loading,
-  mainBusiness: state.auth.mainBusiness,
-  campaignList: state.auth.campaignList,
-  fetching_from_server: state.auth.fetching_from_server,
-  isListEnd: state.auth.isListEnd,
-  filteredCampaigns: state.auth.filteredCampaigns,
+  loading: state.dashboard.loading,
+  mainBusiness: state.account.mainBusiness,
+  campaignList: state.dashboard.campaignList,
+  fetching_from_server: state.dashboard.fetching_from_server,
+  isListEnd: state.dashboard.isListEnd,
+  filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.auth.exponentPushToken
 });
 

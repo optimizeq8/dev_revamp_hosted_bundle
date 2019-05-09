@@ -176,7 +176,7 @@ class AdType extends Component {
 }
 
 const mapStateToProps = state => ({
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({});

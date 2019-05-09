@@ -95,7 +95,7 @@ class Transactions extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   loading: state.transA.loading,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   transactionList: state.transA.transactionList,
   filteredTransactions: state.transA.filteredTransactions
 });

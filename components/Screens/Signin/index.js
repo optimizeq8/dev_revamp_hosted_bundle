@@ -199,8 +199,7 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            {!invite ? //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
-            //     Sign Up Now!
+            {!invite ? //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
             //   </Text>
             // </Button>
             null : (
@@ -240,7 +239,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
-  resetMessages: () => dispatch(actionCreators.resetMessages()),
+  resetMessages: () => dispatch(actionCreators.resetMessagesLogin()),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))

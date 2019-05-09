@@ -203,8 +203,8 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  mainBusiness: state.auth.mainBusiness,
-  campaignList: state.auth.campaignList
+  mainBusiness: state.account.mainBusiness,
+  campaignList: state.dashboard.campaignList
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: navigation =>

@@ -612,8 +612,7 @@ class CampaignDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaign: state.auth.selectedCampaign,
-  loading: state.auth.loading
+  loading: state.dashboard.loading
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>

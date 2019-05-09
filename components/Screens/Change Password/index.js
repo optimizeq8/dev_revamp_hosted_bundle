@@ -342,9 +342,6 @@ class ChangePassword extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  message: state.auth.message
-});
 
 const mapDispatchToProps = dispatch => ({
   changePassword: (currentPass, newPass, navigation) =>
