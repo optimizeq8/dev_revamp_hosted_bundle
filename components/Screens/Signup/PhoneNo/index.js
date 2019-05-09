@@ -35,7 +35,7 @@ class PhoneNo extends Component {
       valid: true,
       type: "",
 
-      value: "+965",
+      value: "",
       numExists: "",
       pickerData: null
     };
@@ -48,19 +48,21 @@ class PhoneNo extends Component {
       pickerData: this.phone.getPickerData()
     });
   }
-  
+
   _handleSubmission = () => {
     this.setState({
       valid: this.phone.isValidNumber(),
       type: this.phone.getNumberType(),
-    //   value: this.phone.getValue(),
+      //   value: this.phone.getValue(),
       numExists: !this.phone.isValidNumber() && ""
     });
 
     if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
+      console.log(this.phone.getCountryCode(), this.state.value.trim());
+
       this.props.sendMobileNo({
         country_code: this.phone.getCountryCode(),
-        mobile: this.state.value
+        mobile: this.state.value.trim()
       });
     }
   };
@@ -104,7 +106,6 @@ class PhoneNo extends Component {
             </Text>
           </View>
         ) : null}
-      
       </View>
     );
   };
@@ -183,18 +184,18 @@ class PhoneNo extends Component {
               ref={ref => {
                 this.phone = ref;
               }}
-
-              onChangePhoneNumber={(number) => {
+              onChangePhoneNumber={number => {
                 //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
-                if(number.toString().length > 3) {
-                  this.setState({ value: number.split(this.phone.getCountryCode())[1]})
+                if (number.toString().length > 3) {
+                  this.setState({
+                    value: number.split(this.phone.getCountryCode())[1]
+                  });
                 }
               }}
-
               onPressFlag={this.onPressFlag}
               initialCountry="kw"
               countriesList={require("./countries.json")}
-              value={this.state.value}
+              value="+965"
               offset={10}
             />
           </Item>
@@ -228,7 +229,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo)),
+  sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo))
 });
 export default connect(
   mapStateToProps,

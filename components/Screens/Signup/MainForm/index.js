@@ -9,6 +9,7 @@ import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
 import BusinessInfo from "../BusinessInfo";
 import CreateBusinessAccount from "../../CreateBusinessAccount";
+import * as actionCreators from "../../../../store/actions";
 
 // Style
 import styles from "./styles";
@@ -56,9 +57,12 @@ class MainForm extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        
+
         <CloseButton
-          navigation={() => this.props.navigation.navigate("Invitation")}
+          navigation={() => {
+            this.props.navigation.navigate("Invitation");
+            this.props.resetRegister();
+          }}
         />
         <Text style={styles.title}>Registration</Text>
         <View style={styles.content}>
@@ -151,7 +155,9 @@ const mapStateToProps = state => ({
   registered: state.register.registered
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  resetRegister: () => dispatch(actionCreators.resetRegister())
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps
