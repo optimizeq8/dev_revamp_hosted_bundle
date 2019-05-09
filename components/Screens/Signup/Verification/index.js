@@ -34,6 +34,7 @@ class Verification extends Component {
     Segment.screen("Signup Enter OTP Verification Screen");
   }
 
+
   componentWillUnmount() {
     clearInterval(this.clockCall);
   }

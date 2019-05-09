@@ -43,6 +43,7 @@ export const send_push_notification = () => {
 };
 
 export const verifyBusinessName = businessName => {
+
     return dispatch => {
       instance
         .post(`verifyBusinessName`, { businessname: businessName })
@@ -66,6 +67,7 @@ export const verifyBusinessName = businessName => {
     };
 };
         
+
 
 
 export const registerUser = (userInfo, navigation) => {
@@ -106,6 +108,7 @@ export const resetRegister = () => {
 };
 
 export const sendMobileNo = mobileNo => {
+
     return (dispatch, getState) => {
       instance
         .post(`addMobile`, mobileNo)
@@ -127,10 +130,12 @@ export const sendMobileNo = mobileNo => {
         .catch(err => {
           console.log(err.response);
         });
+
   };
 };
 
 export const verifyMobileCode = mobileAuth => {
+
     return dispatch => {
       instance
         .post(`verifyMobileCode`, mobileAuth)
@@ -152,6 +157,7 @@ export const verifyMobileCode = mobileAuth => {
         .catch(err => {
           console.log(err.response);
         });     
+
   };
 };
 
@@ -164,12 +170,14 @@ export const resendVerifyMobileCode = mobileAuth => {
       })
       .then(data => {
         if (data.success === true)
+
         Segment.track("Phone No. Resend Verification Button");
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
           position: "top"
         })
+
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
           payload: data
@@ -210,6 +218,7 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 
 export const verifyEmail = (email, userInfo) => {
 
+
     return dispatch => {
         instance
         .post(`verifyEmail`, { email: email })
@@ -231,6 +240,7 @@ export const verifyEmail = (email, userInfo) => {
         })
         .catch(err => {
             console.log(err.response);
+
       });
   };
 };
@@ -287,4 +297,6 @@ export const requestInvitationCode = info => {
 
       .catch(err => console.log(err.response));
   };
+
 };
+

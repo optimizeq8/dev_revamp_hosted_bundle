@@ -60,9 +60,9 @@ class AdObjective extends Component {
       inputN: false,
       objectives: [
         {
-          label: "Brand Awereness",
+          label: "Awereness",
           value: "BRAND_AWARENESS",
-          info: "The user will be taken to your website",
+          info: "Increase awareness of your brand or product.",
           icon: ""
         },
         {
@@ -74,25 +74,25 @@ class AdObjective extends Component {
         {
           label: "Traffic",
           value: "TRAFFIC",
-          info: "The user will be sent to Download your app",
+          info: "Send Snapchatters directly to your website or to your app",
           icon: ""
         },
         {
           label: "App Installs",
           value: "APP_INSTALLS",
-          info: "The user will be sent to a specific page inyour app",
+          info: "Send Snapchatters to the app store to download your app",
           icon: ""
         },
         {
           label: "Video Views",
           value: "VIDEO_VIEWS",
-          info: "The user will be sent to a specific page inyour app",
+          info: "Promote your brand or product to Snapchatters through video.",
           icon: ""
         },
         {
           label: "Lead Generation",
           value: "LEAD_GENERATION",
-          info: "The user will be sent to a specific page inyour app",
+          info: "Generate leads for your business.",
           icon: ""
         }
       ],
