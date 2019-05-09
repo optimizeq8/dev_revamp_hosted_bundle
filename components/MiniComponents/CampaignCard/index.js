@@ -81,11 +81,22 @@ class CampaignCard extends Component {
               <View>
                 <View style={{ top: 10, left: 10, flexDirection: "row" }}>
                   <ImpressionsIcons />
-                  <View style={{ flexDirection: "column" }}>
-                    <Text style={GlobalStyles.numbers}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      width: widthPercentageToDP(40)
+                    }}
+                  >
+                    <Text
+                      style={GlobalStyles.numbers}
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                    >
                       {campaign.impressions}
                     </Text>
-                    <Text style={styles.subtext}>Impressions</Text>
+                    <Text style={[styles.subtext, { textAlign: "center" }]}>
+                      Impressions
+                    </Text>
                   </View>
                 </View>
                 <View
@@ -101,13 +112,15 @@ class CampaignCard extends Component {
                     style={{
                       flexDirection: "column",
                       justifyContent: "center",
-                      flex: 1
+                      width: widthPercentageToDP(40)
                     }}
                   >
                     <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
                       style={[GlobalStyles.numbers, { alignSelf: "center" }]}
                     >
-                      {campaign.impressions}
+                      {campaign.swipes}
                     </Text>
                     <Text style={[styles.subtext, { textAlign: "center" }]}>
                       Swipe Ups
