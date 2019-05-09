@@ -178,19 +178,7 @@ class BusinessInfo extends Component {
     this.props.resetMessages();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      if (this.props.message === "Business name already exist") {
-        this.setState({
-          nameError: this.props.message ? this.props.message : null
-        });
-      } else {
-        this.setState({
-          nameError: null
-        });
-      }
-    }
-  }
+ 
   async _verifyBusinessName(businesstype, name) {
     if (businesstype === "2" && name !== "") {
       this.props.resetMessages();
@@ -569,10 +557,9 @@ class BusinessInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo,
-  message: state.auth.message,
-  successName: state.auth.successName,
-  countryCode: state.auth.countryCode
+  userInfo: state.register.userInfo,
+  successName: state.register.successName,
+  countryCode: state.register.countryCode
 });
 
 const mapDispatchToProps = dispatch => ({

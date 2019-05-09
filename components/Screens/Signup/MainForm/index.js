@@ -144,11 +144,11 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  verificationCode: state.auth.verificationCode,
-  successNo: state.auth.successNo,
-  successEmail: state.auth.successEmail,
-  verified: state.auth.verified,
-  registered: state.auth.registered
+  verificationCode: state.register.verificationCode,
+  successNo: state.register.successNo,
+  successEmail: state.register.successEmail,
+  verified: state.register.verified,
+  registered: state.register.registered
 });
 
 const mapDispatchToProps = dispatch => ({});

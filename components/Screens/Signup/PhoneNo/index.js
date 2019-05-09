@@ -34,6 +34,7 @@ class PhoneNo extends Component {
     this.state = {
       valid: true,
       type: "",
+
       value: "+965",
       numExists: "",
       pickerData: null
@@ -47,22 +48,8 @@ class PhoneNo extends Component {
       pickerData: this.phone.getPickerData()
     });
   }
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.message !== this.props.message &&
-      prevProps.mobileNo !== this.state.value
-    ) {
-      this.setState({
-        numExists:
-          this.props.message && this.props.message.includes("registered")
-            ? this.props.message
-            : ""
-      });
-    }
-  }
-
+  
   _handleSubmission = () => {
-    this.props.resetMessages();
     this.setState({
       valid: this.phone.isValidNumber(),
       type: this.phone.getNumberType(),
@@ -117,11 +104,7 @@ class PhoneNo extends Component {
             </Text>
           </View>
         ) : null}
-        {this.state.numExists !== "" ? (
-          <View style={styles.info}>
-            <Text style={styles.errorText}>{this.state.numExists}</Text>
-          </View>
-        ) : null}
+      
       </View>
     );
   };
@@ -236,13 +219,11 @@ class PhoneNo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  message: state.auth.message,
-  verified: state.auth.verified
+  verified: state.register.verified
 });
 
 const mapDispatchToProps = dispatch => ({
   sendMobileNo: mobileNo => dispatch(actionCreators.sendMobileNo(mobileNo)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,

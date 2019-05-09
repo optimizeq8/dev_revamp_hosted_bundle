@@ -47,20 +47,6 @@ class MainForm extends Component {
   componentDidMount() {
     Segment.screen("Sign in Screen");
   }
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      this.setState({
-        emailError:
-          this.props.message.includes("Email") && this.props.message
-            ? "Invalid Email"
-            : "",
-        passwordError:
-          this.props.message.includes("Password") && this.props.message
-            ? "Invalid Password "
-            : ""
-      });
-    }
-  }
 
   _handleSubmission = () => {
     this.props.resetMessages();
@@ -199,8 +185,7 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            {!invite ? //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
-            //     Sign Up Now!
+            {!invite ? //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
             //   </Text>
             // </Button>
             null : (
@@ -234,13 +219,13 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message
+
 });
 
 const mapDispatchToProps = dispatch => ({
   login: (userInfo, navigation) =>
     dispatch(actionCreators.login(userInfo, navigation)),
-  resetMessages: () => dispatch(actionCreators.resetMessages()),
+  resetMessages: () => dispatch(actionCreators.resetMessagesLogin()),
   resetRegister: () => dispatch(actionCreators.resetRegister()),
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))

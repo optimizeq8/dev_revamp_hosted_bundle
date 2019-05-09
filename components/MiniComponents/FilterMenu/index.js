@@ -217,9 +217,9 @@ class FilterMenu extends Component {
   }
 }
 const mapStateToProps = state => ({
-  campaignList: state.auth.campaignList,
-  filterStatus: state.auth.filterStatus,
-  filterValue: state.auth.filterValue,
+  campaignList: state.dashboard.campaignList,
+  filterStatus: state.dashboard.filterStatus,
+  filterValue: state.dashboard.filterValue,
   transactionValue: state.transA.transactionValue,
   startSearch: state.transA.startSearch,
   endSearch: state.transA.endSearch

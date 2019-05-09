@@ -635,7 +635,7 @@ class AdDesign extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign
 });

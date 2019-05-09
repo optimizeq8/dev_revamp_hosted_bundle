@@ -302,7 +302,7 @@ const mapStateToProps = state => ({
   loading: state.campaignC.loadingDetail,
   kdamount: state.campaignC.kdamount,
   interestsNames: state.campaignC.interestsNames,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.account.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))

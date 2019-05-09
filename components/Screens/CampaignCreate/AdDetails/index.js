@@ -1292,7 +1292,7 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({

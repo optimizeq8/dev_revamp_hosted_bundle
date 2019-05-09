@@ -85,8 +85,8 @@ class BusinessList extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  mainBusiness: state.auth.mainBusiness,
-  businessAccounts: state.auth.businessAccounts
+  mainBusiness: state.account.mainBusiness,
+  businessAccounts: state.account.businessAccounts
 });
 
 const mapDispatchToProps = dispatch => ({

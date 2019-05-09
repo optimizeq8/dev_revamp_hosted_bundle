@@ -90,10 +90,10 @@ class FilterStatus extends Component {
 }
 
 const mapStateToProps = state => ({
-  campaignList: state.auth.campaignList,
-  campaignStartSearch: state.auth.campaignStartSearch,
-  campaignEndSearch: state.auth.campaignEndSearch,
-  filterValue: state.auth.filterValue
+  campaignList: state.dashboard.campaignList,
+  campaignStartSearch: state.dashboard.campaignStartSearch,
+  campaignEndSearch: state.dashboard.campaignEndSearch,
+  filterValue: state.dashboard.filterValue
 });
 
 const mapDispatchToProps = dispatch => ({

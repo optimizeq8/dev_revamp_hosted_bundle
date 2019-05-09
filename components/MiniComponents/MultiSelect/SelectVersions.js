@@ -262,7 +262,7 @@ class SelectVersions extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   isoVersions: state.campaignC.isoVersions,
   androidVersions: state.campaignC.androidVersions
 });

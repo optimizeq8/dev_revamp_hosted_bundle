@@ -43,8 +43,6 @@ import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressC
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 
-
-
 class AddressForm extends Component {
   static navigationOptions = {
     header: null
@@ -88,62 +86,64 @@ class AddressForm extends Component {
     Segment.screen("Address Form Screen");
     this.props.getAddressDetail();
     this.setState({
-      from: this.props.navigation.getParam('from', null),
-      kdamount: this.props.navigation.getParam('kdamount', null),
-      interestNames: this.props.navigation.getParam('interestNames', null)
+      from: this.props.navigation.getParam("from", null),
+      kdamount: this.props.navigation.getParam("kdamount", null),
+      interestNames: this.props.navigation.getParam("interestNames", null)
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-      if(prevProps.address && this.props.address && 
-        (!isEqual(prevProps.address, this.props.address)
-          || (prevState.address.country ===  "" && prevState.address.area === ""
-          && prevState.address.block ===  "" && prevState.address.street ===  "" 
-          && prevState.address.building ===  "" && prevState.address.avenue ===  "" 
-          && prevState.address.office ===  ""))) {
-        const bsn_address = {
-          country: this.props.address.country,
-          area: this.props.address.area,
-          block: this.props.address.block,
-          street: this.props.address.street,
-          building: this.props.address.building,
-          avenue: this.props.address.avenue,
-          office: this.props.address.office,
-        }
-        this.setState({
-          address: bsn_address, 
-          addressId: this.props.address.id
-        })
-      }
+    if (
+      prevProps.address &&
+      this.props.address &&
+      (!isEqual(prevProps.address, this.props.address) ||
+        (prevState.address.country === "" &&
+          prevState.address.area === "" &&
+          prevState.address.block === "" &&
+          prevState.address.street === "" &&
+          prevState.address.building === "" &&
+          prevState.address.avenue === "" &&
+          prevState.address.office === ""))
+    ) {
+      const bsn_address = {
+        country: this.props.address.country,
+        area: this.props.address.area,
+        block: this.props.address.block,
+        street: this.props.address.street,
+        building: this.props.address.building,
+        avenue: this.props.address.avenue,
+        office: this.props.address.office
+      };
+      this.setState({
+        address: bsn_address,
+        addressId: this.props.address.id
+      });
+    }
+  }
 
-  };
-
-
-  _handleAddressChange =(key, value) => {
-    if(key === 'address'){
+  _handleAddressChange = (key, value) => {
+    if (key === "address") {
       this.setState({
         address: value
-      })
+      });
     } else {
       this.setState({
         address: { ...this.state.address, [key]: value }
-      })
+      });
     }
   };
-
 
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});
   };
   _handleSubmission = () => {
-      this.props.addressForm(
-        this.state.address,
-        this.props.navigation,
-        this.state.addressId
-      );
+    this.props.addressForm(
+      this.state.address,
+      this.props.navigation,
+      this.state.addressId
+    );
   };
 
-  
   render() {
     return (
       <Container style={styles.container}>
@@ -170,23 +170,25 @@ class AddressForm extends Component {
             />
           </>
         )}
-      {/* TODO: When user selects CC display this */}
-        {this.state.from === 'creditCard' && !isUndefined(this.state.addressId) && !isNull(this.state.addressId) ? 
-          <SelectBillingAddressCard 
-              address={this.state.address}
-              addressId={this.state.addressId}
-              navigation={this.props.navigation}
-              kdamount={this.state.kdamount}
-
+        {/* TODO: When user selects CC display this */}
+        {this.state.from === "creditCard" &&
+        !isUndefined(this.state.addressId) &&
+        !isNull(this.state.addressId) ? (
+          <SelectBillingAddressCard
+            address={this.state.address}
+            addressId={this.state.addressId}
+            navigation={this.props.navigation}
+            kdamount={this.state.kdamount}
           />
-        :
-        <BillingAddressCard
+        ) : (
+          <BillingAddressCard
             address={this.state.address}
             _handleSubmission={this._handleSubmission}
             _handleAddressChange={this._handleAddressChange}
             _handleSideMenuState={this._handleSideMenuState}
             sidemenustate={this.state.sidemenustate}
-        />}
+          />
+        )}
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -195,16 +197,14 @@ class AddressForm extends Component {
   }
 }
 const mapStateToProps = state => ({
-  message: state.auth.message,
-  address: state.auth.address,
-  loading: state.auth.loadingBillingAddress
+  address: state.account.address,
+  loading: state.account.loadingBillingAddress
 });
 
 const mapDispatchToProps = dispatch => ({
   addressForm: (address, navigation, addressId) =>
     dispatch(actionCreators.addressForm(address, navigation, addressId)),
-  getAddressDetail: () =>
-    dispatch(actionCreators.getAddressForm())
+  getAddressDetail: () => dispatch(actionCreators.getAddressForm())
 });
 export default connect(
   mapStateToProps,

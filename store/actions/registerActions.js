@@ -13,25 +13,62 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
-export const verifyBusinessName = businessName => {
-  return dispatch => {
-    instance
-      .post(`verifyBusinessName`, { businessname: businessName })
-      .then(res => res.data)
-      .then(data => {
-        if (data.success === true)
-          Segment.track("Business Info Register Button");
-
-        return dispatch({
-          type: actionTypes.VERIFY_BUSINESSNAME,
-          payload: data
+export const send_push_notification = () => {
+  return (dispatch, getState) => {
+    Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
+      if (permission.status === "granted") {
+        Notifications.getExpoPushTokenAsync().then(token => {
+          instance
+            .post(`updatepushToken`, {
+              token: token,
+              userid: getState().auth.userInfo.userid
+            })
+            .then(res => {
+              console.log("token", token);
+              return res.data;
+            })
+            .then(data => {
+              dispatch({
+                type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
+                payload: data
+              });
+            })
+            .catch(err => {
+              console.log(err.response);
+            });
         });
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+      }
+    });
   };
 };
+
+export const verifyBusinessName = businessName => {
+
+    return dispatch => {
+      instance
+        .post(`verifyBusinessName`, { businessname: businessName })
+        .then(res => res.data)
+        .then(data => {
+          if (data.success === true)
+            Segment.track("Business Info Register Button");
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "warning",
+              position: "top"
+            })
+          return dispatch({
+            type: actionTypes.VERIFY_BUSINESSNAME,
+            payload: data
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
+      });
+    };
+};
+        
+
+
 
 export const registerUser = (userInfo, navigation) => {
   return (dispatch, getState) => {
@@ -71,44 +108,56 @@ export const resetRegister = () => {
 };
 
 export const sendMobileNo = mobileNo => {
-  return (dispatch, getState) => {
-    instance
-      .post(`addMobile`, mobileNo)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.success === true) Segment.track("Phone No. Register Button");
 
-        return dispatch({
-          type: actionTypes.SEND_MOBILE_NUMBER,
-          payload: data
+    return (dispatch, getState) => {
+      instance
+        .post(`addMobile`, mobileNo)
+        .then(res => {
+          return res.data;
+        })
+        .then(data => {
+          if (data.success === true) Segment.track("Phone No. Register Button");
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top"
+          })
+          return dispatch({
+            type: actionTypes.SEND_MOBILE_NUMBER,
+            payload: data
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
         });
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+
   };
 };
 
 export const verifyMobileCode = mobileAuth => {
-  return dispatch => {
-    instance
-      .post(`verifyMobileCode`, mobileAuth)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.success === true) Segment.track("Phone No. Verified Button");
-        showMessage({ message: data.message, type: "info", position: "top" });
-        return dispatch({
-          type: actionTypes.VERIFY_MOBILE_NUMBER,
-          payload: data
-        });
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+
+    return dispatch => {
+      instance
+        .post(`verifyMobileCode`, mobileAuth)
+        .then(res => {
+          return res.data;
+        })
+        .then(data => {
+          if (data.success === true) Segment.track("Phone No. Verified Button");
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "warning",
+            position: "top"
+          })
+          return dispatch({
+            type: actionTypes.VERIFY_MOBILE_NUMBER,
+            payload: data
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
+        });     
+
   };
 };
 
@@ -121,7 +170,13 @@ export const resendVerifyMobileCode = mobileAuth => {
       })
       .then(data => {
         if (data.success === true)
-          Segment.track("Phone No. Resend Verification Button");
+
+        Segment.track("Phone No. Resend Verification Button");
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top"
+        })
 
         return dispatch({
           type: actionTypes.RESEND_VERIFICATION,
@@ -162,23 +217,30 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 };
 
 export const verifyEmail = (email, userInfo) => {
-  return dispatch => {
-    instance
-      .post(`verifyEmail`, { email: email })
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.success === true)
-          Segment.track("Personal Info Register Button");
 
-        return dispatch({
-          type: actionTypes.VERIFY_EMAIL,
-          payload: { success: data.success, userInfo, message: data.message }
-        });
-      })
-      .catch(err => {
-        console.log(err.response);
+
+    return dispatch => {
+        instance
+        .post(`verifyEmail`, { email: email })
+        .then(res => {
+            return res.data;
+        })
+        .then(data => {
+            if (data.success === true)
+            Segment.track("Personal Info Register Button");
+            showMessage({
+              message: data.message,
+              type: data.success ? "success" : "warning",
+              position: "top"
+              });
+            return dispatch({
+            type: actionTypes.VERIFY_EMAIL,
+            payload: { success: data.success, userInfo, }
+            });
+        })
+        .catch(err => {
+            console.log(err.response);
+
       });
   };
 };
@@ -235,4 +297,6 @@ export const requestInvitationCode = info => {
 
       .catch(err => console.log(err.response));
   };
+
 };
+

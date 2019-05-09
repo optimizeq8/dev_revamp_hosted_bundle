@@ -292,10 +292,3 @@ export const updateStatus = (info, handleToggle) => {
       });
   };
 };
-
-export const filterCampaigns = query => {
-  return {
-    type: actionTypes.FILTER_CAMPAIGNS,
-    payload: query
-  };
-};

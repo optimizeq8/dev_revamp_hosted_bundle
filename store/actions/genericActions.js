@@ -9,13 +9,6 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
-export const resetMessages = () => {
-  return dispatch =>
-    dispatch({
-      type: actionTypes.RESET_MESSAGE
-    });
-};
-
 export const setAuthToken = token => {
   if (token) {
     return AsyncStorage.setItem("token", token)

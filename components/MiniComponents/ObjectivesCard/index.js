@@ -46,7 +46,7 @@ class BusinessCard extends Component {
   }
 }
 const mapStateToProps = state => ({
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.account.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
   changeBusiness: business => dispatch(actionCreators.changeBusiness(business))

@@ -102,8 +102,7 @@ class GetInviteCode extends Component {
 }
 const mapDispatchToProps = dispatch => ({
   requestInvitationCode: info =>
-    dispatch(actionCreators.requestInvitationCode(info)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
+    dispatch(actionCreators.requestInvitationCode(info))
 });
 export default connect(
   null,
