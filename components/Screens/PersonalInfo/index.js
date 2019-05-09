@@ -250,7 +250,6 @@ class ChangePassword extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  message: state.auth.message
 });
 
 const mapDispatchToProps = dispatch => ({

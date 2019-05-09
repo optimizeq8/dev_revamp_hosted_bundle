@@ -428,7 +428,7 @@ const mapStateToProps = state => ({
   fetching_from_server: state.auth.fetching_from_server,
   isListEnd: state.auth.isListEnd,
   filteredCampaigns: state.auth.filteredCampaigns,
-  exponentPushToken: state.auth.exponentPushToken
+  exponentPushToken: state.login.exponentPushToken
 });
 
 const mapDispatchToProps = dispatch => ({

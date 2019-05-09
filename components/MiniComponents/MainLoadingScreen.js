@@ -78,7 +78,6 @@ class MainLoadingScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.auth.loading
 });
 export default connect(mapStateToProps)(MainLoadingScreen);
 

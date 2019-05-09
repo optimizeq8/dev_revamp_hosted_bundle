@@ -252,7 +252,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.auth.mainBusiness,
   campaignList: state.auth.campaignList,
-  exponentPushToken: state.auth.exponentPushToken
+  exponentPushToken: state.login.exponentPushToken
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: navigation =>
