@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     backgroundColor: "transparent",
-    flex: 1,
+    // flex: 1,
     alignItems: "center"
   },
   image: {
