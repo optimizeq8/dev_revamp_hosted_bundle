@@ -5,12 +5,46 @@ import transactionReducer from "./transactionReducer";
 import dashboardReducer from "./dashboardReducer";
 import accountManagementReducer from "./accountManagementReducer";
 import genericReducer from "./genericReducer";
+import loginReducer from "./loginReducer";
+import registerReducer from "./registerReducer";
 
-export default combineReducers({
-  auth: authReducer,
-  campaignC: campaignReducer,
-  transA: transactionReducer,
-  dashboard: dashboardReducer,
-  account: account,
-  generic: generic
+const appReducer = combineReducers({
+  auth      : authReducer,
+  campaignC : campaignReducer,
+  transA    : transactionReducer,
+  login     : loginReducer,
+  register  : registerReducer,
+  dashboard : dashboardReducer,
+  account   : account,
+  generic   : generic
 });
+
+
+
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT_USER') {
+    state = {
+      ...state,
+      mobileNo: "",
+      countryCode: "",
+      verificationCode: false,
+      successNo: false,
+      verified: false,
+      message: "",
+      userInfo: null,
+      successEmail: false,
+      loading: true,
+      registered: false,
+      businessAccounts: [],
+      mainBusiness: null,
+      campaignList: [],
+      selectedCampaign: null,
+      successName: false,
+      filteredCampaigns: [],
+      exponentPushToken: null
+    }
+  }
+
+  return appReducer(state, action)
+}
+export default rootReducer;

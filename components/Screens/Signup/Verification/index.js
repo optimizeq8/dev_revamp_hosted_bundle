@@ -82,14 +82,14 @@ class Verification extends Component {
   _handleInviteCode = () => {
     this.props.verifyInviteCode(this.state.code);
   };
-  handlerOnIvalidCode() {
-    const { current } = this.inputRef;
+  // handlerOnInvalidCode() {
+  //   const { current } = this.inputRef;
 
-    if (current) {
-      current.clear();
-      current.focus();
-    }
-  }
+  //   if (current) {
+  //     current.clear();
+  //     current.focus();
+  //   }
+  // }
   render() {
     return (
       <View style={styles.container}>
@@ -249,9 +249,9 @@ class Verification extends Component {
   }
 }
 const mapStateToProps = state => ({
-  mobileNo: state.auth.mobileNo,
-  countryCode: state.auth.countryCode,
-  verificationCode: state.auth.verificationCode
+  mobileNo: state.register.mobileNo,
+  countryCode: state.register.countryCode,
+  verificationCode: state.register.verificationCode,
 });
 const mapDispatchToProps = dispatch => ({
   verifyMobileCode: mobileAuth =>

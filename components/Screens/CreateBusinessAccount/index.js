@@ -771,14 +771,13 @@ class CreateBusinessAccount extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  countryCode: state.auth.countryCode,
-  inviteCode: state.auth.inviteCode
+  countryCode: state.register.countryCode,
+  inviteCode: state.register.inviteCode
 });
 
 const mapDispatchToProps = dispatch => ({
   registerUser: (userInfo, navigation) =>
     dispatch(actionCreators.registerUser(userInfo, navigation)),
-
   createBusinessAccount: (account, navigation) =>
     dispatch(actionCreators.createBusinessAccount(account, navigation)),
   verifyBusinessName: businessName =>

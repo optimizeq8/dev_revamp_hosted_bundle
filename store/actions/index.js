@@ -48,11 +48,11 @@ export {
   logout,
   forgotPassword,
   clearPushToken,
-  setCurrentUser
+  setCurrentUser,
+  send_push_notification,
 } from "./loginActions";
 
 export {
-  send_push_notification,
   verifyBusinessName,
   verifyEmail,
   verifyInviteCode,

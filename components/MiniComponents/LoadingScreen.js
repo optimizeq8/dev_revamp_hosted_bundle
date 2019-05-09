@@ -58,6 +58,7 @@ class Loading extends React.Component {
 
 export default Loading;
 
+
 const styles = {
   gradient: {
     position: "absolute",

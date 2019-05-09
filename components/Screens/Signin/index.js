@@ -47,20 +47,6 @@ class MainForm extends Component {
   componentDidMount() {
     Segment.screen("Sign in Screen");
   }
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      this.setState({
-        emailError:
-          this.props.message.includes("Email") && this.props.message
-            ? "Invalid Email"
-            : "",
-        passwordError:
-          this.props.message.includes("Password") && this.props.message
-            ? "Invalid Password "
-            : ""
-      });
-    }
-  }
 
   _handleSubmission = () => {
     this.props.resetMessages();
@@ -233,7 +219,7 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message
+
 });
 
 const mapDispatchToProps = dispatch => ({

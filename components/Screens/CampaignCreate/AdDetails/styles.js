@@ -38,10 +38,12 @@ const styles = StyleSheet.create({
   budget: {
     alignSelf: "center",
     flex: 0,
-
     color: "#FF9D00",
     fontSize: 27,
     fontFamily: "montserrat-medium"
+  },
+  backgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject
   },
   inputtext: {
     fontFamily: "montserrat-light",

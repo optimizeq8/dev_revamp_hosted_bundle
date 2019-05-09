@@ -207,7 +207,7 @@ class CampaignDetails extends Component {
       }
       return (
         <>
-          {this.props.campaign.media.includes(".mov") && (
+          {!this.props.campaign.media.includes(".jpg") && (
             <View style={[styles.backgroundViewWrapper]}>
               <Video
                 source={{
@@ -243,7 +243,8 @@ class CampaignDetails extends Component {
                 onPress={() =>
                   this.props.navigation.push("AdDetails", {
                     editCampaign: true,
-                    campaign: this.props.campaign
+                    campaign: this.props.campaign,
+                    image: "http://" + this.props.campaign.media
                   })
                 }
                 style={[
@@ -308,10 +309,10 @@ class CampaignDetails extends Component {
                       >
                         Tap to pause AD
                       </Text>
-                      <Text style={styles.subtext}>
+                      {/* <Text style={styles.subtext}>
                         Review:
                         {this.props.navigation.state.params.review_status}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>

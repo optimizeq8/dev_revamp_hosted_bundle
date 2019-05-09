@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as actionCreators from "../../../store/actions";
 import { Text, View, ScrollView } from "react-native";
+import { LinearGradient } from "expo";
 import { connect } from "react-redux";
 import { Button } from "native-base";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
@@ -18,6 +19,7 @@ import {
 } from "react-native-responsive-screen";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Sidemenu from "react-native-side-menu";
+import { colors } from "../../GradiantColors/colors";
 
 class Transactions extends Component {
   state = {
@@ -31,7 +33,17 @@ class Transactions extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
   render() {
-    if (this.props.loading) return <LoadingScreen top={0} />;
+    if (this.props.loading)
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <LoadingScreen dash={true} top={0} />
+        </>
+      );
     else {
       let menu = (
         <FilterMenu
