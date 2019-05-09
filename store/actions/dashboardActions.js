@@ -7,6 +7,12 @@ import { Segment } from "expo";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+export const filterCampaigns = query => {
+  return {
+    type: actionTypes.FILTER_CAMPAIGNS,
+    payload: query
+  };
+};
 
 export const getCampaignDetails = id => {
   return dispatch => {

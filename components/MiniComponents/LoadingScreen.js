@@ -6,18 +6,17 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { connect } from "react-redux";
 import { ActivityIndicator } from "react-native-paper";
 import { colors } from "../GradiantColors/colors";
 
 class Loading extends React.Component {
   state = { visible: true };
   componentDidMount() {
-    // Platform.OS !== "android" && 
+    // Platform.OS !== "android" &&
     this.animation.play();
   }
 
-      onLottieLoad = () => {
+  onLottieLoad = () => {
     this.animation.play();
   };
 
@@ -31,37 +30,34 @@ class Loading extends React.Component {
             : heightPercentageToDP(this.props.top),
 
           alignSelf: "center",
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center"
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
-
-          <LottieView
-            ref={animation => {
-              this.animation = animation;
-            }}
-            style={{
-              // zIndex: 10,
-              alignSelf: "center",
-              width: widthPercentageToDP(100),
-              height: widthPercentageToDP(150),
-              position: "absolute",
-              alignContent:"center",
-              alignItems:"center"
-            }}
-            resizeMode="cover"
-            source={require("../../assets/animation/loading.json")}
-            
-          />
+        <LottieView
+          ref={animation => {
+            this.animation = animation;
+          }}
+          style={{
+            // zIndex: 10,
+            alignSelf: "center",
+            width: widthPercentageToDP(100),
+            height: widthPercentageToDP(150),
+            position: "absolute",
+            alignContent: "center",
+            alignItems: "center"
+          }}
+          resizeMode="cover"
+          source={require("../../assets/animation/loading.json")}
+        />
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
-});
-export default connect(mapStateToProps)(Loading);
+export default Loading;
+
 
 const styles = {
   gradient: {

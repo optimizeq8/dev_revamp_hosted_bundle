@@ -101,7 +101,7 @@ class SuccessRedirect extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   campaign_id: state.campaignC.campaign_id,
   interestsNames: state.campaignC.interestsNames
 });

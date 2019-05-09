@@ -56,7 +56,7 @@ class ReachBar extends Component {
 const mapStateToProps = state => ({
   average_reach: state.campaignC.average_reach,
   total_reach: state.campaignC.total_reach,
-  mainBusiness: state.auth.mainBusiness
+  mainBusiness: state.account.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
   snap_ad_audience_size: (info, totalReach) =>

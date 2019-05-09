@@ -213,7 +213,7 @@ class SelectInterests extends Component {
 }
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   interests: state.campaignC.interests
 });
 

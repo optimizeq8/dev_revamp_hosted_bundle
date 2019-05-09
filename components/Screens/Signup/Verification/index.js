@@ -33,7 +33,7 @@ class Verification extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter OTP Verification Screen");
   }
-  
+
   componentWillUnmount() {
     clearInterval(this.clockCall);
   }
@@ -129,7 +129,6 @@ class Verification extends Component {
           <Text
             onPress={() => {
               this.setState({ showEmail: !this.state.showEmail });
-              this.props.resetMessages();
             }}
             style={[styles.link, { paddingVertical: 0 }]}
           >
@@ -262,8 +261,7 @@ const mapDispatchToProps = dispatch => ({
   resendVerifyMobileCode: mobileAuth =>
     dispatch(actionCreators.resendVerifyMobileCode(mobileAuth)),
   resendVerifyMobileCodeByEmail: mobileAuth =>
-    dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
+    dispatch(actionCreators.resendVerifyMobileCodeByEmail(mobileAuth))
 });
 export default connect(
   mapStateToProps,

@@ -250,8 +250,8 @@ class Menu extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  mainBusiness: state.auth.mainBusiness,
-  campaignList: state.auth.campaignList,
+  mainBusiness: state.account.mainBusiness,
+  campaignList: state.dashboard.campaignList,
   exponentPushToken: state.login.exponentPushToken
 });
 const mapDispatchToProps = dispatch => ({

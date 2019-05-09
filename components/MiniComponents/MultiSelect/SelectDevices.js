@@ -202,7 +202,7 @@ class SelectDevices extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  mainBusiness: state.auth.mainBusiness,
+  mainBusiness: state.account.mainBusiness,
   deviceBrands: state.campaignC.deviceBrands
 });
 

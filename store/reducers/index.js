@@ -2,6 +2,9 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import campaignReducer from "./campaignReducer";
 import transactionReducer from "./transactionReducer";
+import dashboardReducer from "./dashboardReducer";
+import accountManagementReducer from "./accountManagementReducer";
+import genericReducer from "./genericReducer";
 import loginReducer from "./loginReducer";
 import registerReducer from "./registerReducer";
 
@@ -10,7 +13,10 @@ const appReducer = combineReducers({
   campaignC : campaignReducer,
   transA    : transactionReducer,
   login     : loginReducer,
-  register  : registerReducer
+  register  : registerReducer,
+  dashboard : dashboardReducer,
+  account   : account,
+  generic   : generic
 });
 
 
@@ -27,7 +33,7 @@ const rootReducer = (state, action) => {
       message: "",
       userInfo: null,
       successEmail: false,
-      loadingCurrentUser: true,
+      loading: true,
       registered: false,
       businessAccounts: [],
       mainBusiness: null,
@@ -36,7 +42,6 @@ const rootReducer = (state, action) => {
       successName: false,
       filteredCampaigns: [],
       exponentPushToken: null
-    
     }
   }
 

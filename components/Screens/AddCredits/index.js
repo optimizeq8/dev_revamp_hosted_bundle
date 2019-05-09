@@ -216,8 +216,7 @@ class AddCredits extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  wallet: state.transA.wallet,
-  message: state.auth.message
+  wallet: state.transA.wallet
 });
 
 const mapDispatchToProps = dispatch => ({

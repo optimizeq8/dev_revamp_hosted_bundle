@@ -6,7 +6,6 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { connect } from "react-redux";
 import { ActivityIndicator } from "react-native-paper";
 
 class MainLoadingScreen extends React.Component {
@@ -58,12 +57,11 @@ class MainLoadingScreen extends React.Component {
             ref={animation => {
               this.animation = animation;
             }}
-
-            style={{  
+            style={{
               zIndex: 10,
               alignSelf: "center",
               width: widthPercentageToDP(150),
-              height: widthPercentageToDP(150),
+              height: widthPercentageToDP(150)
               // position: "absolute"
             }}
             resizeMode="contain"
@@ -77,9 +75,7 @@ class MainLoadingScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-});
-export default connect(mapStateToProps)(MainLoadingScreen);
+export default MainLoadingScreen;
 
 const styles = {
   gradient: {
