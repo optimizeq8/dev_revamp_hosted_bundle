@@ -135,7 +135,7 @@ export default class App_Install extends Component {
               <View style={styles.textcontainer}>
                 <Text style={[styles.titletext]}>App Install</Text>
                 <Text style={[styles.subtext, { marginBottom: 0 }]}>
-                  The user will be taken to download your app
+                  Send Snapchatters to the app store to download your app
                 </Text>
               </View>
               {!this.state.firstStepDone ? (

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     position: "absolute",
-    left: "75%",
+    left: "67%",
     top: "80%",
     backgroundColor: "transparent",
     borderRadius: 20

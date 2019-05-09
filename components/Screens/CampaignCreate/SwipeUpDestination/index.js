@@ -88,7 +88,7 @@ class SwipeUpDestination extends Component {
                 <View style={styles.textcontainer}>
                   <Text style={[styles.titletext]}>Website</Text>
                   <Text style={[styles.subtext]}>
-                    The user will be taken to your website
+                    Send Snapchatters directly to your website
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -106,7 +106,7 @@ class SwipeUpDestination extends Component {
                 <View style={styles.textcontainer}>
                   <Text style={[styles.titletext]}>Deep Link</Text>
                   <Text style={[styles.subtext]}>
-                    The user will be sent to a specific {"\n"} page in your app
+                    Send Snapchatters to your app or a third-party app
                   </Text>
                 </View>
               </TouchableOpacity>

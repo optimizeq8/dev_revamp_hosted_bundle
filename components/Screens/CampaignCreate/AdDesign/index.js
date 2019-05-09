@@ -70,6 +70,7 @@ class AdDesign extends Component {
         attachment: "BLANK",
         media_type: ""
       },
+      result: "",
       appChoice: "",
       inputH: false,
       inputB: false,
@@ -80,6 +81,7 @@ class AdDesign extends Component {
       formatted: null,
       brand_nameError: "",
       headlineError: "",
+      orientationError: "",
       imageError: "",
       swipeUpError: "",
       isVisible: false,
@@ -138,7 +140,7 @@ class AdDesign extends Component {
       mediaTypes: "All",
       base64: false,
       exif: false,
-      quality: 1,
+      quality: 0.9,
       aspect: [9, 16],
       allowsEditing: Platform.OS === "android"
     });
@@ -150,7 +152,10 @@ class AdDesign extends Component {
   _pickImage = async () => {
     let result = await this.pick();
 
-    if (Math.floor(result.width / 9) === Math.floor(result.height / 16)) {
+    if (
+      Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
+      Math.floor(result.width / 16) === Math.floor(result.height / 9)
+    ) {
       if (!result.cancelled) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (result.type === "video" && file.size > 32000000) {
@@ -169,7 +174,8 @@ class AdDesign extends Component {
             this.setState({
               image: result.uri,
               type: result.type.toUpperCase(),
-              imageError: null
+              imageError: null,
+              result: result.uri
             });
             this.formatMedia();
             this.onToggleModal();
@@ -231,6 +237,19 @@ class AdDesign extends Component {
     });
   }
 
+  _handleLandscapeVideos = info => {
+    if (info.naturalSize.orientation === "landscape") {
+      this.setState({
+        image: "null",
+        imageError: "Landscape videos are not supported"
+      });
+    } else {
+      this.setState({
+        image: this.state.result,
+        imageError: null
+      });
+    }
+  };
   _getUploadState = loading => {
     this.setState({
       loaded: loading
@@ -351,16 +370,26 @@ class AdDesign extends Component {
             <Transition style={{ height: "100%" }} shared="image">
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
-                  <Video
-                    source={{
-                      uri: image
-                    }}
-                    shouldPlay
-                    isLooping
-                    isMuted
-                    resizeMode="cover"
-                    style={styles.placeholder}
-                  />
+                  <View style={[styles.placeholder]}>
+                    <Video
+                      source={{
+                        uri: image
+                      }}
+                      onReadyForDisplay={info =>
+                        this._handleLandscapeVideos(info)
+                      }
+                      shouldPlay
+                      isLooping
+                      isMuted
+                      resizeMode="cover"
+                      style={[
+                        {
+                          width: "100%",
+                          height: "100%"
+                        }
+                      ]}
+                    />
+                  </View>
                 ) : !image ? (
                   <View style={styles.placeholder} />
                 ) : (
@@ -540,7 +569,7 @@ class AdDesign extends Component {
               >
                 {!this.state.imageError.includes("blank")
                   ? this.state.imageError
-                  : "Please choose an image"}
+                  : "Please choose an image or video"}
               </Text>
             )}
             {!this.state.swipeUpError ? null : (

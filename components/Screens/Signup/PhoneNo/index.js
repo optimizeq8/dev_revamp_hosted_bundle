@@ -34,7 +34,7 @@ class PhoneNo extends Component {
     this.state = {
       valid: true,
       type: "",
-      value: "",
+      value: "+965",
       numExists: "",
       pickerData: null
     };
@@ -86,6 +86,18 @@ class PhoneNo extends Component {
     this.phone.selectCountry(country.iso2);
   };
 
+  // onChangePhoneNumber = newNumber => {
+  //   console.log(newNumber);
+
+  //   // let value =
+  //   //   this.phone.getCountryCode() +
+  //   //   " " +
+  //   //   newNumber.split(this.phone.getCountryCode())[1];
+  //   this.setState({
+  //     value
+  //   });
+  // };
+
   renderInfo = () => {
     return (
       <View>
@@ -135,6 +147,26 @@ class PhoneNo extends Component {
               }
             ]}
           >
+            <View
+              style={{
+                width: 60,
+                height: 30,
+                position: "absolute",
+                borderWidth: 0.3,
+                borderColor: this.props.invite ? "#000" : "#fff",
+                borderRadius: 5,
+                left: 4
+              }}
+            />
+            <Icon
+              name="arrow-drop-down"
+              type="MaterialIcons"
+              style={{
+                color: this.props.invite ? "#000" : "#fff",
+                marginRight: -30,
+                left: -5
+              }}
+            />
             <PhoneInput
               style={{ width: widthPercentageToDP(70) }}
               textStyle={{
@@ -143,14 +175,12 @@ class PhoneNo extends Component {
                 borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
               }}
               flagStyle={{
-                left: 20,
+                left: 15,
                 zIndex: 5
               }}
               textProps={{
                 autoFocus: false,
                 onBlur: () => {
-                  console.log(this.phone.isValidNumber);
-
                   if (!this.phone.isValidNumber()) {
                     showMessage({
                       message: "Please enter a valid number!",
@@ -172,11 +202,12 @@ class PhoneNo extends Component {
               ref={ref => {
                 this.phone = ref;
               }}
+              // onChangePhoneNumber={this.onChangePhoneNumber}
               onPressFlag={this.onPressFlag}
               initialCountry="kw"
               countriesList={require("./countries.json")}
-              value="965"
-              offset={15}
+              value={this.state.value}
+              offset={10}
             />
           </Item>
           <CountryModal

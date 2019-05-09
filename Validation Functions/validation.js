@@ -45,7 +45,7 @@ const validation = {
   Budget: {
     numericality: {
       onlyInteger: true,
-      lessThanOrEqualTo: 10000000000000000000
+      lessThanOrEqualTo: 9999999
     },
     presence: {
       allowEmpty: false

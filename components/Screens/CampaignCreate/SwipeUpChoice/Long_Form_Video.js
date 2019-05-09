@@ -139,7 +139,7 @@ export default class Long_Form_Video extends Component {
           <View style={styles.textcontainer}>
             <Text style={[styles.titletext]}>LongForm Video</Text>
             <Text style={[styles.subtext]}>
-              The user will be shown a longform video you upload
+              Promote your brand or product to Snapchatters through video.
             </Text>
           </View>
           {this.state.longformvideo_media && (

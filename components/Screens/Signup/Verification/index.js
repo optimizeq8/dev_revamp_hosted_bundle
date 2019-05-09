@@ -34,29 +34,30 @@ class Verification extends Component {
     Segment.screen("Signup Enter OTP Verification Screen");
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.verificationCode !== this.props.verificationCode)
-      if (prevProps.message !== this.props.message) {
-        if (this.props.message.includes("Invalid")) {
-          this.handlerOnIvalidCode();
-          showMessage({
-            message: this.props.message,
-            type: "warning",
-            position: "top"
-          });
-          this.setState({
-            codeError: this.props.message
-          });
-        } else {
-          showMessage({
-            message: this.props.message,
-            type: "warning",
-            position: "top"
-          });
-          this.setState({
-            codeError: this.props.message
-          });
-        }
-      }
+    if (prevProps.verificationCode !== this.props.verificationCode) {
+      alert(this.props);
+      //   if (prevProps.message !== this.props.message) {
+      //     if (this.props.message.includes("Invalid")) {
+      //       this.handlerOnIvalidCode();
+      //       showMessage({
+      //         message: this.props.message,
+      //         type: "warning",
+      //         position: "top"
+      //       });
+      //       this.setState({
+      //         codeError: this.props.message
+      //       });
+      //     } else {
+      //       showMessage({
+      //         message: this.props.message,
+      //         type: "warning",
+      //         position: "top"
+      //       });
+      //       this.setState({
+      //         codeError: this.props.message
+      //       });
+      //     }
+    }
   }
   componentWillUnmount() {
     clearInterval(this.clockCall);

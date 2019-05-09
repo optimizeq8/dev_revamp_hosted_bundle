@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderBottomColor: "#f0f0f0",
     borderBottomWidth: 1,
-    width: 200,
+    width: 180,
     height: 30
   },
   phoneInput: {
