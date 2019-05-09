@@ -87,16 +87,26 @@ class CampaignDetails extends Component {
   }
 
   componentDidMount() {
-    Segment.screenWithProperties("Campaign Details Screen", {
-      campaign_id: this.props.campaign.campaign_id
-    });
+    if (this.props.selectedCampaign)
+      Segment.screenWithProperties("Campaign Details Screen", {
+        campaign_id: this.props.selectedCampaign.campaign_id
+      });
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     prevProps.campaign.campaign_id !== this.props.selectedCampaign.campaign_id
+  //   )
+  //     Segment.screenWithProperties("Campaign Details Screen", {
+  //       campaign_id: this.props.selectedCampaign.campaign_id
+  //     });
+  // }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.campaign !== this.props.campaign) {
+    if (prevProps.selectedCampaign !== this.props.selectedCampaign) {
       this.setState({
-        toggleText: this.props.campaign.status,
-        toggle: this.props.campaign.status !== "PAUSED"
+        toggleText: this.props.selectedCampaign.status,
+        toggle: this.props.selectedCampaign.status !== "PAUSED"
       });
     }
   }
@@ -125,8 +135,8 @@ class CampaignDetails extends Component {
   updateStatus = () => {
     this.props.updateStatus(
       {
-        campaign_id: this.props.campaign.campaign_id,
-        spends: this.props.campaign.spends,
+        campaign_id: this.props.selectedCampaign.campaign_id,
+        spends: this.props.selectedCampaign.spends,
         status: this.state.toggleText === "PAUSED" ? "LIVE" : "PAUSED"
       },
       this.handleToggle
@@ -165,13 +175,15 @@ class CampaignDetails extends Component {
     if (this.props.loading) {
       return <Loading dash={true} />;
     } else {
+      console.log("0000000000000", this.props.selectedCampaign);
+
       let interesetNames =
-        this.props.campaign.targeting &&
-        this.props.campaign.targeting.hasOwnProperty("interests")
-          ? this.props.campaign.targeting.interests[0].category_id.map(
+        this.props.selectedCampaign.targeting &&
+        this.props.selectedCampaign.targeting.hasOwnProperty("interests")
+          ? this.props.selectedCampaign.targeting.interests[0].category_id.map(
               interest => {
                 if (
-                  this.props.campaign.targeting.interests[0].category_id.hasOwnProperty(
+                  this.props.selectedCampaign.targeting.interests[0].category_id.hasOwnProperty(
                     "scls"
                   )
                 ) {
@@ -197,9 +209,14 @@ class CampaignDetails extends Component {
       let end_year = "";
       let start_year = "";
       let end_time = "";
-      if (this.props.campaign.start_time && this.props.campaign.end_time) {
-        end_time = new Date(this.props.campaign.end_time.split("T")[0]);
-        start_time = new Date(this.props.campaign.start_time.split("T")[0]);
+      if (
+        this.props.selectedCampaign.start_time &&
+        this.props.selectedCampaign.end_time
+      ) {
+        end_time = new Date(this.props.selectedCampaign.end_time.split("T")[0]);
+        start_time = new Date(
+          this.props.selectedCampaign.start_time.split("T")[0]
+        );
         end_year = end_time.getFullYear();
         start_year = start_time.getFullYear();
         end_time = dateFormat(end_time, "d mmm");
@@ -207,11 +224,11 @@ class CampaignDetails extends Component {
       }
       return (
         <>
-          {!this.props.campaign.media.includes(".jpg") && (
+          {!this.props.selectedCampaign.media.includes(".jpg") && (
             <View style={[styles.backgroundViewWrapper]}>
               <Video
                 source={{
-                  uri: "http://" + this.props.campaign.media
+                  uri: "http://" + this.props.selectedCampaign.media
                 }}
                 isMuted
                 resizeMode="cover"
@@ -224,7 +241,7 @@ class CampaignDetails extends Component {
           )}
           <ImageBackground
             source={{
-              uri: "http://" + this.props.campaign.media
+              uri: "http://" + this.props.selectedCampaign.media
             }}
             style={{
               width: "100%",
@@ -243,8 +260,8 @@ class CampaignDetails extends Component {
                 onPress={() =>
                   this.props.navigation.push("AdDetails", {
                     editCampaign: true,
-                    campaign: this.props.campaign,
-                    image: "http://" + this.props.campaign.media
+                    campaign: this.props.selectedCampaign,
+                    image: "http://" + this.props.selectedCampaign.media
                   })
                 }
                 style={[
@@ -265,11 +282,13 @@ class CampaignDetails extends Component {
                   source={require("../../../assets/images/snap-ghost.png")}
                   resizeMode="contain"
                 />
-                <Text style={styles.title}>{this.props.campaign.name}</Text>
+                <Text style={styles.title}>
+                  {this.props.selectedCampaign.name}
+                </Text>
                 <View>
                   <View padder style={styles.toggleSpace}>
                     <View style={{ alignSelf: "center" }}>
-                      {this.props.campaign && (
+                      {this.props.selectedCampaign && (
                         <Toggle
                           buttonTextStyle={{
                             fontFamily: "montserrat-medium",
@@ -324,7 +343,7 @@ class CampaignDetails extends Component {
                       { fontSize: hp("3.4"), fontFamily: "montserrat-semibold" }
                     ]}
                   >
-                    {this.props.campaign.lifetime_budget_micro}
+                    {this.props.selectedCampaign.lifetime_budget_micro}
                   </Text>
                   <Text style={{ color: "white" }}>$</Text>
                 </Text>
@@ -375,15 +394,16 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Gender{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.campaign.targeting &&
-                          (this.props.campaign.targeting.gender === "" ||
-                            !this.props.campaign.targeting.hasOwnProperty(
+                          {this.props.selectedCampaign.targeting &&
+                          (this.props.selectedCampaign.targeting.gender ===
+                            "" ||
+                            !this.props.selectedCampaign.targeting.hasOwnProperty(
                               "gender"
                             ))
                             ? "All"
-                            : this.props.campaign.targeting &&
-                              this.props.campaign.targeting.demographics[0]
-                                .gender}
+                            : this.props.selectedCampaign.targeting &&
+                              this.props.selectedCampaign.targeting
+                                .demographics[0].gender}
                         </Text>
                       </Text>
                     </View>
@@ -396,8 +416,8 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Languages{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.campaign.targeting &&
-                            this.props.campaign.targeting.demographics[0].languages.join(
+                          {this.props.selectedCampaign.targeting &&
+                            this.props.selectedCampaign.targeting.demographics[0].languages.join(
                               ", "
                             )}
                         </Text>
@@ -418,13 +438,13 @@ class CampaignDetails extends Component {
                       <Text style={[styles.categories]}>
                         Age range{"\n"}
                         <Text style={styles.subtext}>
-                          {this.props.campaign.targeting &&
-                            this.props.campaign.targeting.demographics[0]
-                              .min_age}{" "}
+                          {this.props.selectedCampaign.targeting &&
+                            this.props.selectedCampaign.targeting
+                              .demographics[0].min_age}{" "}
                           -{" "}
-                          {this.props.campaign.targeting &&
-                            this.props.campaign.targeting.demographics[0]
-                              .max_age}
+                          {this.props.selectedCampaign.targeting &&
+                            this.props.selectedCampaign.targeting
+                              .demographics[0].max_age}
                         </Text>
                       </Text>
                     </View>
@@ -432,8 +452,9 @@ class CampaignDetails extends Component {
                       <LocationIcon width={hp("2")} height={hp("2")} />
                       <Text style={styles.categories}>
                         Location(s) {"\n"}
-                        {this.props.campaign.targeting &&
-                          this.props.campaign.targeting.geos[0].country_code}
+                        {this.props.selectedCampaign.targeting &&
+                          this.props.selectedCampaign.targeting.geos[0]
+                            .country_code}
                       </Text>
                     </View>
                   </View>
@@ -517,13 +538,15 @@ class CampaignDetails extends Component {
                         style={[styles.chartPosition, animatedStyles]}
                       >
                         <TouchableOpacity onPress={() => this._panel.show()}>
-                          <Chart campaign={this.props.campaign} />
+                          <Chart campaign={this.props.selectedCampaign} />
                         </TouchableOpacity>
                       </Animated.View>
 
                       <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView contentInset={{ top: 0 }}>
-                          <LineChartGraphs campaign={this.props.campaign} />
+                          <LineChartGraphs
+                            campaign={this.props.selectedCampaign}
+                          />
                         </ScrollView>
                       </Animated.View>
                     </LinearGradient>
@@ -613,7 +636,8 @@ class CampaignDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.dashboard.loading
+  loading: state.dashboard.loading,
+  selectedCampaign: state.dashboard.selectedCampaign
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>

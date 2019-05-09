@@ -8,29 +8,22 @@ import genericReducer from "./genericReducer";
 import loginReducer from "./loginReducer";
 import registerReducer from "./registerReducer";
 
-
-
-
-
 const appReducer = combineReducers({
-  auth      : authReducer,
-  campaignC : campaignReducer,
-  transA    : transactionReducer,
-  login     : loginReducer,
-  register  : registerReducer,
-  dashboard : dashboardReducer,
-  account   : accountManagementReducer,
-  generic   : genericReducer
+  auth: authReducer,
+  campaignC: campaignReducer,
+  transA: transactionReducer,
+  login: loginReducer,
+  register: registerReducer,
+  dashboard: dashboardReducer,
+  account: accountManagementReducer,
+  generic: genericReducer
 });
 
-
-
 const rootReducer = (state, action) => {
-  if (action.type === 'LOGOUT_USER') {
-
-    state = undefined
+  if (action.type === "LOGOUT_USER") {
+    state = undefined;
   }
 
-  return appReducer(state, action)
-}
+  return appReducer(state, action);
+};
 export default rootReducer;
