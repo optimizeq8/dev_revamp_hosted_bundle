@@ -28,7 +28,7 @@ export const getCampaignDetails = id => {
         console.log("campaign details", data);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN,
-          payload: data
+          payload: { loading: false, data: data.data, message: "" }
         });
       })
       .catch(err => {
