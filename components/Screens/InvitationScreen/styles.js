@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     textDecorationLine: "underline",
     alignSelf: "center",
-    top: "55%"
+    top: "65%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

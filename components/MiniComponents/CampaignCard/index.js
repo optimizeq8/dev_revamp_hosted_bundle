@@ -19,6 +19,10 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+
+import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
+import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
+import GlobalStyles from "../../../Global Styles";
 class CampaignCard extends Component {
   state = {
     paused: false,
@@ -30,10 +34,12 @@ class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
     let charts = [
-      { spend: campaign.spends },
-      { impressions: campaign.impressions },
-      { swipes: campaign.swipes }
-    ].map((category, i) => <Chart chartCategory={category} key={i} />);
+      { spend: campaign.spends }
+      // { impressions: campaign.impressions },
+      // { swipes: campaign.swipes }
+    ].map((category, i) => (
+      <Chart campaign={campaign} chartCategory={category} key={i} />
+    ));
     return (
       <LinearGradient
         colors={[colors.background1, colors.background2]}
@@ -70,7 +76,47 @@ class CampaignCard extends Component {
             />
             <Text style={[styles.subtext]}>Tap to view more</Text>
 
-            <View style={{ flexDirection: "row" }}>{charts}</View>
+            <View style={{ flexDirection: "row" }}>
+              {charts}
+              <View>
+                <View style={{ top: 10, left: 10, flexDirection: "row" }}>
+                  <ImpressionsIcons />
+                  <View style={{ flexDirection: "column " }}>
+                    <Text style={GlobalStyles.numbers}>
+                      {campaign.impressions}
+                    </Text>
+                    <Text style={styles.subtext}>Impressions</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    top: 10,
+                    left: 10,
+                    flexDirection: "row",
+                    alignItems: "center"
+                  }}
+                >
+                  <SwipeUpsIcon />
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      flex: 1
+                    }}
+                  >
+                    <Text
+                      style={[GlobalStyles.numbers, { alignSelf: "center" }]}
+                    >
+                      {campaign.impressions}
+                    </Text>
+                    <Text style={[styles.subtext, { textAlign: "center" }]}>
+                      Clicks
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
             <View pointerEvents="none" style={styles.containerStyle}>
               <Toggle
                 containerStyle={styles.toggleStyle}

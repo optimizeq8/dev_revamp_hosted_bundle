@@ -732,7 +732,7 @@ class AdDetails extends Component {
                   <View
                     style={{
                       height: hp(6),
-                      width: "70%",
+                      width: wp(50),
                       flexDirection: "row",
 
                       alignSelf: "center",

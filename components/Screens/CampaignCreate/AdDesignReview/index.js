@@ -79,12 +79,17 @@ class AdDesignReview extends Component {
                 }}
               />
             )}
-
-            <Text style={[styles.call_to_action]}>
-              {this.props.navigation.state.params.call_to_action !== "BLANK" &&
-                this.props.navigation.state.params.call_to_action}
-            </Text>
-            <Text style={[styles.AD]}>AD</Text>
+            <View
+              style={{
+                bottom: "13%"
+              }}
+            >
+              <Text style={[styles.call_to_action]}>
+                {this.props.navigation.state.params.call_to_action !==
+                  "BLANK" && this.props.navigation.state.params.call_to_action}
+              </Text>
+              <Text style={[styles.AD]}>AD</Text>
+            </View>
           </View>
         </Transition>
       </View>

@@ -52,7 +52,7 @@ class TransactionCard extends Component {
                 {transaction.total_amount}$
               </Text>
             </View>
-            <View pointerEvents="none" style={styles.containerStyle}>
+            <View pointerEvents="none" style={[styles.containerStyle]}>
               <Text style={[styles.text]}>
                 {transaction.payment_date.split(" ")[0] +
                   "\n   " +

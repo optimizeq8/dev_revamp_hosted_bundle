@@ -5,12 +5,14 @@ import styles from "./styles";
 
 export default class Charts extends Component {
   render() {
+    let spends = this.props.chartCategory.spend;
+    let x = (spends / this.props.campaign.lifetime_budget_micro) * 100;
     return (
       <View>
         <AnimatedCircularProgress
           size={65}
           width={6}
-          fill={30}
+          fill={x}
           rotation={0}
           lineCap="round"
           style={styles.chart}

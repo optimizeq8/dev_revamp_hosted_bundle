@@ -115,8 +115,7 @@ export default class Deep_Link extends Component {
               <View style={styles.textcontainer}>
                 <Text style={[styles.titletext]}>Deep Link</Text>
                 <Text style={[styles.subtext, { marginBottom: 0 }]}>
-                  The user will be taken to a specific page in your app or
-                  website
+                  Send Snapchatters to a specific page in your app
                 </Text>
               </View>
             </View>
