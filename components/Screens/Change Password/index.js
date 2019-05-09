@@ -348,6 +348,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.changePassword(currentPass, newPass, navigation))
 });
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(ChangePassword);

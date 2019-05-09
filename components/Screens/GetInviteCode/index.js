@@ -43,13 +43,13 @@ class GetInviteCode extends Component {
     const emailError = validateWrapper("email", this.state.email);
     const mobileError = validateWrapper("mandatory", this.state.mobile);
     console.log("info.valid", mobileError);
-    if (emailError && mobileError) {
+    if (emailError || mobileError) {
       showMessage({
         message: "Please enter your valid info!",
         type: "warning",
         position: "top"
       });
-    } else {
+    } else{
       this.props.requestInvitationCode({
         country_code: this.state.country_code,
         mobile: this.state.mobile,

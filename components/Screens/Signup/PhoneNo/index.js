@@ -51,14 +51,14 @@ class PhoneNo extends Component {
     this.setState({
       valid: this.phone.isValidNumber(),
       type: this.phone.getNumberType(),
-      value: this.phone.getValue(),
+    //   value: this.phone.getValue(),
       numExists: !this.phone.isValidNumber() && ""
     });
 
     if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
       this.props.sendMobileNo({
         country_code: this.phone.getCountryCode(),
-        mobile: this.phone.getValue().split(this.phone.getCountryCode())[1]
+        mobile: this.state.value
       });
     }
   };
@@ -142,9 +142,7 @@ class PhoneNo extends Component {
                   if (this.props.invite) {
                     this.props._getMobile({
                       country_code: this.phone.getCountryCode(),
-                      mobile: this.phone
-                        .getValue()
-                        .split(this.phone.getCountryCode())[1],
+                      mobile: this.state.value,
                       valid: this.phone.isValidNumber()
                     });
                   }
@@ -152,6 +150,12 @@ class PhoneNo extends Component {
               }}
               ref={ref => {
                 this.phone = ref;
+              }}
+              onChangePhoneNumber={(number) => {
+                //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
+                if(number.toString().length > 3) {
+                  this.setState({ value: number.split(this.phone.getCountryCode())[1]})
+                }
               }}
               onPressFlag={this.onPressFlag}
               initialCountry="kw"

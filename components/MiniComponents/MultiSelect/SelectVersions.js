@@ -84,7 +84,8 @@ class SelectVersions extends Component {
     else
       showMessage({
         message: "Please choose at least two versions",
-        type: "warning"
+        type: "warning",
+        position: "top"
       });
   };
   render() {

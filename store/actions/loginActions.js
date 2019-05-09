@@ -146,7 +146,8 @@ export const forgotPassword = (email, navigation) => {
             message: response.data.success
                 ? "An email with a random generated password has been sent to your email account."
                 : "No account exists with the provided email.",
-            type: response.data.success ? "success" : "warning"
+            type: response.data.success ? "success" : "warning",
+            position: "top"
             });
             if (response.data.success) navigation.goBack();
             // return dispatch({

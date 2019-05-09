@@ -12,7 +12,8 @@ export const changeBusiness = business => {
   return dispatch => {
     showMessage({
       message: "Changed business account",
-      type: "success"
+      type: "success",
+      position: "top"
     });
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
@@ -59,7 +60,8 @@ export const createBusinessAccount = (account, navigation) => {
       .then(data => {
         showMessage({
           message: data.message,
-          type: response.data.success ? "success" : "warning"
+          type: response.data.success ? "success" : "warning",
+          position: "top"
         });
         //incase of an error?? need handling
         dispatch({
@@ -97,7 +99,8 @@ export const changePassword = (currentPass, newPass, navigation) => {
       .then(response => {
         showMessage({
           message: response.data.message,
-          type: response.data.success ? "success" : "warning"
+          type: response.data.success ? "success" : "warning",
+          position: "top"
         });
         if (response.data.success) navigation.goBack();
         return dispatch({
@@ -130,7 +133,8 @@ export const addressForm = (address, navigation, addressId) => {
 
         showMessage({
           message: respData.data.message,
-          type: respData.data.success ? "success" : "warning"
+          type: respData.data.success ? "success" : "warning",
+          position: "top"
         });
         if (respData.data.success) navigation.goBack();
         return dispatch({
@@ -140,7 +144,8 @@ export const addressForm = (address, navigation, addressId) => {
       } else {
         showMessage({
           message: response.data.message,
-          type: response.data.success ? "success" : "warning"
+          type: response.data.success ? "success" : "warning",
+          position: "top"
         });
         if (response.data.success) navigation.goBack();
         return dispatch({
@@ -201,7 +206,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
         } else {
           showMessage({
             message: data.message,
-            type: "info"
+            type: "info",
+            position: "top"
           });
           dispatch({
             type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
