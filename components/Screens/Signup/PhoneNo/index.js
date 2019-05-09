@@ -153,7 +153,7 @@ class PhoneNo extends Component {
                 height: 30,
                 position: "absolute",
                 borderWidth: 0.3,
-                borderColor: this.props.invite ? "#000" : "#fff",
+                borderColor: this.props.invite ? "#fff" : "#000",
                 borderRadius: 5,
                 left: 4
               }}
@@ -162,7 +162,7 @@ class PhoneNo extends Component {
               name="arrow-drop-down"
               type="MaterialIcons"
               style={{
-                color: this.props.invite ? "#000" : "#fff",
+                color: this.props.invite ? "#fff" : "#000",
                 marginRight: -30,
                 left: -5
               }}
