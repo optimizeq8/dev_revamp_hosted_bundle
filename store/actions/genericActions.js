@@ -1,7 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 import { AsyncStorage } from "react-native";
 

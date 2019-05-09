@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { Segment } from "expo";
 
 const initialState = {
-  loading: true,
+  loading: false,
   businessAccounts: [],
   mainBusiness: null,
   passwordChanged: false,
@@ -59,7 +59,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainBusiness: newMainBusiness,
         businessAccounts: [...state.businessAccounts],
-        loading: !action.payload.data.success
+        loading: false
       };
     case actionTypes.SET_BILLING_ADDRESS_LOADING:
       return {

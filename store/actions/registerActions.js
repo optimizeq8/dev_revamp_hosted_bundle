@@ -217,8 +217,6 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 };
 
 export const verifyEmail = (email, userInfo) => {
-
-
     return dispatch => {
         instance
         .post(`verifyEmail`, { email: email })
@@ -228,14 +226,16 @@ export const verifyEmail = (email, userInfo) => {
         .then(data => {
             if (data.success === true)
             Segment.track("Personal Info Register Button");
-            showMessage({
-              message: data.message,
-              type: data.success ? "success" : "warning",
-              position: "top"
-              });
+            if (!data.success) {
+                showMessage({
+                    message: data.message,
+                    type: data.success ? "success" : "warning",
+                    position: "top"
+                });
+            }
             return dispatch({
             type: actionTypes.VERIFY_EMAIL,
-            payload: { success: data.success, userInfo, }
+            payload: { success: data.success, userInfo }
             });
         })
         .catch(err => {
@@ -276,18 +276,23 @@ export const requestInvitationCode = info => {
   console.log(info);
 
   return dispatch => {
+      console.log('info', info)
     instance
       .post(`requestinvitationCode`, info)
-      .then(res => res.data)
+      .then(res => {
+        console.log('res', res)
+        return res.data
+      })
       .then(data => {
         console.log(data);
-        data.success &&
+       
           showMessage({
             message: "Request successful!",
             description: "We will contact you as soon as possible.",
             type: "success",
             position: "top"
           });
+
 
         // return dispatch({
         //   type: actionTypes.SET_INVITE_CODE,

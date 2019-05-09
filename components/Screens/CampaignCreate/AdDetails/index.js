@@ -220,7 +220,8 @@ class AdDetails extends Component {
     });
     showMessage({
       message: "Budget recalculated based on duration",
-      type: "warning"
+      type: "warning",
+      position: "top"
     });
   };
   handleStartDatePicked = date => {

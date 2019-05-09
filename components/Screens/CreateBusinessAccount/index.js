@@ -237,7 +237,7 @@ class CreateBusinessAccount extends Component {
       if (this.props.registering) {
         let { businessemail, ...business } = this.state.businessAccount;
         let userInfo = {
-          ...this.props.userInfo,
+          ...this.props.userInfoR,
           ...business,
           country_code: this.props.countryCode,
           inviteCode: this.props.inviteCode
@@ -771,6 +771,7 @@ class CreateBusinessAccount extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
+  userInfoR: state.register.userInfo,
   countryCode: state.register.countryCode,
   inviteCode: state.register.inviteCode
 });

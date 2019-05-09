@@ -43,7 +43,7 @@ class BusinessInfo extends Component {
 
     this.state = {
       userInfo: {
-        ...this.props.userInfo,
+        ...props.userInfo,
         businessname: "",
         businesscategory: "",
         country: "",
@@ -175,13 +175,11 @@ class BusinessInfo extends Component {
   }
   componentDidMount() {
     Segment.screen("Signup Enter BusinessInfo Screen");
-    this.props.resetMessages();
   }
 
  
   async _verifyBusinessName(businesstype, name) {
     if (businesstype === "2" && name !== "") {
-      this.props.resetMessages();
       await this.props.verifyBusinessName(name);
 
       this.setState({
@@ -191,7 +189,6 @@ class BusinessInfo extends Component {
         )
       });
     } else {
-      this.props.resetMessages();
       this.setState({
         nameError: validateWrapper(
           "mandatory",
@@ -232,6 +229,9 @@ class BusinessInfo extends Component {
     }
   };
   render() {
+      console.log('state bsnInfo', this.state.userInfo)
+      console.log('prop bsnInfo', this.props.userInfo)
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
@@ -567,7 +567,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   verifyBusinessName: businessName =>
     dispatch(actionCreators.verifyBusinessName(businessName)),
-  resetMessages: () => dispatch(actionCreators.resetMessages())
 });
 export default connect(
   mapStateToProps,
