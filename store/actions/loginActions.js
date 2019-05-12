@@ -22,7 +22,6 @@ export const send_push_notification = () => {
               userid: getState().auth.userInfo.userid
             })
             .then(res => {
-              console.log("token", token);
               return res.data;
             })
             .then(data => {
@@ -64,10 +63,8 @@ export const checkForExpiredToken = navigation => {
               navigation.navigate("Dashboard");
             });
         } else {
-          dispatch(clearPushToken(navigation));
+          dispatch(clearPushToken(navigation, user.userid));
         }
-      } else {
-        dispatch(logout(navigation));
       }
     });
   };
@@ -81,7 +78,6 @@ export const login = (userData, navigation) => {
     instance
       .post("userLogin", userData)
       .then(res => {
-        console.log("oiunweg", res.data);
 
         return res.data;
       })
@@ -92,7 +88,6 @@ export const login = (userData, navigation) => {
           let promise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
         } else {
-          console.log("oiusoeiunvosnevosunvnweg");
           showMessage({
             message: user.message,
             type: "warning",
@@ -154,15 +149,15 @@ export const forgotPassword = (email, navigation) => {
   };
 };
 
-export const clearPushToken = navigation => {
+
+export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {
     instance
       .post(`updatepushToken`, {
         token: null,
-        userid: getState().auth.userInfo.userid
+        userid: userid
       })
       .then(res => {
-        console.log("cleared token", res.data);
         return res.data;
       })
       .then(data => {

@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_BUSINESS_ACCOUNT:
       let arr = state.businessAccounts;
-      arr.push(action.payload);
+      arr.push(action.payload.data);
       return {
         ...state,
         businessAccounts: arr,

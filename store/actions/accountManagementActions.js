@@ -60,23 +60,25 @@ export const createBusinessAccount = (account, navigation) => {
       .then(data => {
         showMessage({
           message: data.message,
-          type: response.data.success ? "success" : "warning",
+          type: data.success ? "success" : "warning",
           position: "top"
         });
         //incase of an error?? need handling
+
         dispatch({
           type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
           payload: { business: data.data }
         });
+
         return dispatch({
           type: actionTypes.ADD_BUSINESS_ACCOUNT,
-          payload: data.data
+          payload: { data: data.data, success: true}
         });
       })
       .then(navigation.navigate("Dashboard"))
 
       .catch(err => {
-        console.log(err.response);
+        console.log('error creating new bsn',err);
       });
   };
 };
@@ -154,7 +156,7 @@ export const addressForm = (address, navigation, addressId) => {
         });
       }
     } catch (error) {
-      console.log("Error while put/post address form", err.message);
+      console.log("Error while put/post address form", error.message);
     }
   };
 };
