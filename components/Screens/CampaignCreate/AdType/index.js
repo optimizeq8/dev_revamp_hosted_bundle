@@ -1,7 +1,12 @@
 // Components
 import React, { Component } from "react";
 
-import { View, Image, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  ScrollView
+} from "react-native";
 import {
   Button,
   Content,
@@ -12,10 +17,14 @@ import {
   Icon
 } from "native-base";
 import { LinearGradient, Segment } from "expo";
-import Swiper from "../../../MiniComponents/Swiper";
+import * as Animatable from "react-native-animatable";
+import Carousel from "react-native-snap-carousel";
+
+// import Swiper from "../../../MiniComponents/Swiper";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CloseButton from "../../../MiniComponents/CloseButton";
-
+import Swiper from "react-native-swiper";
+import AdTypeCard from "./AdTypeCard";
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
 import Placeholder from "../../../../assets/SVGs/AdType/Placeholder";
@@ -27,29 +36,31 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+
+//data
+import { SnapAds } from "./AdTypesData";
+import { SocialPlatforms } from "./SocialMedias";
+
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class AdType extends Component {
   static navigationOptions = {
     header: null
   };
   state = { campaign_type: "SnapAd", route: "AdObjective" };
-  navigationRouteHandler = id => {
+  navigationRouteHandler = index => {
     let route = "";
     let campaign_type = "";
-    switch (id) {
+    switch (index) {
       case 0:
         route = "AdObjective";
         campaign_type = "SnapAd";
         break;
       case 1:
-        campaign_type = "TwitterAd";
+        campaign_type = "StoryAd";
         break;
       case 2:
-        campaign_type = "InstagramAd";
-        break;
-      case 3:
-        campaign_type = "SnapStoryAd";
+        campaign_type = "CollectionAd";
         break;
     }
     this.setState({ route, campaign_type });
@@ -75,41 +86,25 @@ class AdType extends Component {
       campaign_type: this.state.campaign_type
     });
   }
-  render() {
-    const Slide = ({ title, id, icon, rout, text }) => (
-      <TouchableWithoutFeedback
-        onPress={() =>
-          Segment.trackWithProperties(`${title} AdType Card Button`, {
-            business_name: this.props.mainBusiness.businessname,
-            campaign_type: this.state.campaign_type
-          })
-        }
-      >
-        <View>
-          <Icon style={styles.slideicon} type="FontAwesome" name={icon} />
-          <Text style={styles.slidtitle}>{title} </Text>
-          <View
-            style={[
-              styles.placeholder,
-              {
-                backgroundColor: title.includes("Snap") ? "transparent" : "#000"
-              }
-            ]}
-          >
-            {title.includes("Snap") && (
-              <Image
-                style={{ width: "100%", height: "100%", position: "absolute" }}
-                resizeMode="stretch"
-                source={require("../../../../assets/images/SnapAd.gif")}
-              />
-            )}
-            {text.includes("Soon") && (
-              <Text style={styles.slidetext}> {text} </Text>
-            )}
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
+  _renderItem({ item, index }) {
+    return (
+      <View style={styles.slide}>
+        <Icon style={styles.slideicon} type="FontAwesome" name={item.icon} />
+        <Text style={styles.title}>{item.title}</Text>
+      </View>
     );
+  }
+  render() {
+    console.log(this.state);
+
+    const Slide = SnapAds.map(adType => (
+      <AdTypeCard
+        key={adType.id}
+        mainBusiness={this.props.mainBusiness}
+        campaign_type={this.state.campaign_type}
+        adType={adType}
+      />
+    ));
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -126,50 +121,53 @@ class AdType extends Component {
             this.props.navigation.navigate("Dashboard");
           }}
         />
-        <Text style={styles.title}>Choose your Ad Type</Text>
+        <Text style={styles.title}>Create a new campaign!</Text>
+        <View style={{ height: 100 }}>
+          <Carousel
+            ref={c => {
+              this._carousel = c;
+            }}
+            data={SocialPlatforms}
+            renderItem={this._renderItem}
+            sliderWidth={widthPercentageToDP(100)}
+            itemWidth={110}
+          />
+        </View>
+
         <Swiper
-          backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
-          dots
-          dotsStyle={{
-            padding: 7,
-            borderRadius: 50,
-            marginHorizontal: 5,
-            top: heightPercentageToDP(3)
+          loop={false}
+          activeDotColor="#fff"
+          dotStyle={{
+            backgroundColor: "rgba(255,255,255,0.25)",
+            width: 13,
+            top: 5,
+            height: 13,
+            marginLeft: 10,
+            borderRadius: 50
           }}
-          dotsColor="rgba(255, 255, 255, 0.25)"
-          dotsColorActive=" rgba(255, 255, 255, 1)"
-          onSwipe={(event, i) => this.navigationRouteHandler(i)}
+          activeDotStyle={{
+            width: 13,
+            top: 5,
+            marginLeft: 10,
+            height: 13,
+            borderRadius: 50
+          }}
+          onIndexChanged={index => this.navigationRouteHandler(index)}
         >
-          <Slide
-            id={1}
-            text="Create Your Ad Now!"
-            rout="AdObjective"
-            icon="snapchat-ghost"
-            title="Snap Ad"
-          />
-          <Slide
-            id={2}
-            text="Coming Soon!"
-            rout="Home"
-            icon="twitter"
-            title="Twitter Ad"
-          />
-          <Slide
-            id={3}
-            text="Coming Soon!"
-            rout="Home"
-            icon="instagram"
-            title="Instagram Ad"
-          />
-          <Slide
-            id={4}
-            text="Coming Soon!"
-            rout="Home"
-            icon="snapchat-ghost"
-            title="Story Ad"
-          />
+          {Slide}
         </Swiper>
-        <LowerButton function={this.navigationHandler} bottom={2} />
+
+        <View style={{ height: 70 }}>
+          {this.state.route !== "" ? (
+            <Animatable.View animation={"fadeIn"}>
+              <LowerButton function={this.navigationHandler} bottom={2} />
+            </Animatable.View>
+          ) : (
+            <Animatable.Text animation={"fadeIn"} style={styles.text}>
+              COMING SOON
+            </Animatable.Text>
+          )}
+        </View>
       </Container>
     );
   }

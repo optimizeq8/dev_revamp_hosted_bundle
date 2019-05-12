@@ -14,19 +14,17 @@ const styles = StyleSheet.create({
 
   text: {
     textAlign: "center",
-    color: "#717171",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 10
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    fontSize: 17,
+    paddingVertical: 10,
+    bottom: 20
   },
   title: {
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    paddingTop: hp(2),
+    marginVertical: hp(2),
     textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
@@ -41,7 +39,6 @@ const styles = StyleSheet.create({
   slideicon: {
     fontSize: hp(6),
     color: "#fff",
-    paddingTop: 15,
     textAlign: "center",
     fontFamily: "montserrat-bold",
     shadowColor: "black",
@@ -64,8 +61,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
-    width: wp(75),
-    height: hp(61),
+    width: wp(60),
+    height: hp(52),
+
     zIndex: 0,
     marginTop: 10,
     backgroundColor: "black",
