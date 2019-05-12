@@ -24,8 +24,17 @@ export const getTransactions = () => {
         });
       })
       .catch(err => {
-        console.log("Error: ", err.response); // => prints: Api is being canceled
-      });
+        console.log("getTransactions Error: ", err.response); // => prints: Api is being canceled
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+        });
+        return dispatch({
+            type: actionTypes.ERROR_SET_TRANSACTION_LIST
+        })
+    
+    });
   };
 };
 
@@ -47,7 +56,15 @@ export const getWalletAmount = () => {
         });
       })
       .catch(err => {
-        console.log("Error: ", err.response); // => prints: Api is being canceled
+            console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
+            showMessage({
+                message: "Something went wrong, please try again.",
+                type: "danger",
+                position: "top"
+            });
+            return dispatch({
+                type: actionTypes.ERROR_SET_WALLET_AMOUNT
+            });    
       });
   };
 };
@@ -71,7 +88,17 @@ export const addWalletAmount = (info, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("Error: ", err);
+        console.log("addWalletAmount Error: ", err);
+
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+        });
+        return dispatch({
+            type: actionTypes.ERROR_ADD_WALLET_AMOUNT
+        });
+
       });
   };
 };
@@ -100,7 +127,16 @@ export const useWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("Error: ", err);
+        console.log("useWallet Error: ", err.message);
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+        });
+        return dispatch({
+            type: actionTypes.ERROR_USE_WALLET_AMOUNT
+        });
+
       });
   };
 };
@@ -124,7 +160,16 @@ export const removeWalletAmount = campaign_id => {
       })
 
       .catch(err => {
-        console.log("Error: ", err);
+        console.log("removeWalletAmount Error: ", err.message);
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+        });
+        return dispatch({
+            type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT
+        });
+
       });
   };
 };
@@ -150,7 +195,15 @@ export const checkoutwithWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("Error: ", err);
+        console.log("checkoutwithWallet Error: ", err.message);
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+        });
+        return dispatch({
+            type: actionTypes.ERROR_CHECKOUT_WITH_WALLET
+        });
       });
   };
 };

@@ -34,7 +34,10 @@ export const send_push_notification = () => {
               });
             })
             .catch(err => {
-              console.log(err.response);
+              console.log("send_push_notification", err.message);
+              return dispatch({
+                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
+              })
             });
         });
       }
@@ -62,7 +65,19 @@ export const verifyBusinessName = businessName => {
           });
         })
         .catch(err => {
-          console.log(err.response);
+          console.log("verifyBusinessName", err.message);
+          showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          })
+          return dispatch({
+              type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
+              payload: {
+                success: false
+              }
+          })
+
       });
     };
 };
@@ -96,7 +111,12 @@ export const registerUser = (userInfo, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err.response);
+        console.log(err.message);
+        showMessage({
+            message: "Something went wrong while registering, please try again.",
+            type: "danger",
+            position: "top"
+        });
       });
   };
 };
@@ -128,7 +148,13 @@ export const sendMobileNo = mobileNo => {
           });
         })
         .catch(err => {
-          console.log(err.response);
+          console.log("sendMobileNo", err.message);
+          return dispatch({
+              type: actionTypes.ERROR_SEND_MOBILE_NO,
+              payload: {
+                  success: false,
+              }
+          })
         });
 
   };
@@ -155,7 +181,18 @@ export const verifyMobileCode = mobileAuth => {
           });
         })
         .catch(err => {
-          console.log(err.response);
+          console.log("verifyMobileCode", err.message);
+          showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          })
+          return dispatch({
+            type: actionTypes.ERROR_VERIFY_MOBILE_NUMBER,
+            payload: {
+                success: false
+            }
+          });
         });     
 
   };
@@ -184,7 +221,19 @@ export const resendVerifyMobileCode = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("resendVerifyMobileCode", err.message);
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          })
+  
+          return dispatch({
+            type: actionTypes.RESEND_VERIFICATION,
+            payload: {
+                success: false
+            }
+          });
       });
   };
 };
@@ -211,8 +260,19 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log(err);
-      });
+        showMessage({
+            message: "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          });
+          return dispatch({
+            type: actionTypes.ERROR_RESEND_VERIFICATION_EMAIL,
+            payload: {
+                success: false
+            }
+          });   
+        
+        });
   };
 };
 
@@ -239,10 +299,18 @@ export const verifyEmail = (email, userInfo) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
-
-      });
-  };
+            console.log("verifyEmail ERROR", err.message);
+            showMessage({
+                message: "Something went wrong, please try again.",
+                type: "danger",
+                position: "top"
+            });
+            return dispatch({
+                type: actionTypes.ERROR_VERIFY_EMAIL,
+                payload: { success: false, userInfo }
+            });
+        });
+    };
 };
 
 export const verifyInviteCode = verificationCode => {
@@ -268,7 +336,18 @@ export const verifyInviteCode = verificationCode => {
         });
       })
 
-      .catch(err => console.log(err.response));
+      .catch(err => {
+          console.log('verifyInviteCodeError',err.message);
+          showMessage({
+            message: err.message,
+            type: "danger",
+            position: "top"
+          });
+          return dispatch({
+            type: actionTypes.ERROR_SET_INVITE_CODE,
+            payload: null
+          });
+      });
   };
 };
 
@@ -280,7 +359,7 @@ export const requestInvitationCode = info => {
     instance
       .post(`requestinvitationCode`, info)
       .then(res => {
-        console.log('res', res)
+        console.log('requestInvitationCode res', res)
         return res.data
       })
       .then(data => {
@@ -300,7 +379,14 @@ export const requestInvitationCode = info => {
         // });
       })
 
-      .catch(err => console.log(err.response));
+      .catch(err => {
+          console.log("requestInvitationCodeError", err.message)
+          showMessage({
+            message: "Something went wrong, please try again",
+            type: "danger",
+            position: "top"
+          });
+        });
   };
 
 };

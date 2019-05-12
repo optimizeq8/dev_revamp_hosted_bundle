@@ -16,6 +16,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         exponentPushToken: action.payload.token
       };
+    case actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN:
+    return {
+    ...state,
+    exponentPushToken: null
+    };
     default:
       return state;
   }

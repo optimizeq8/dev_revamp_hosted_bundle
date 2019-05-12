@@ -31,7 +31,15 @@ export const send_push_notification = () => {
               });
             })
             .catch(err => {
-              console.log(err.response);
+              console.log("send_push_notification", err.message);
+              showMessage({
+                  message: "Something went wrong, please try again.",
+                  type: "danger",
+                  position: "top"
+              })
+              dispatch({
+                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN,
+              })
             });
         });
       }
@@ -105,7 +113,12 @@ export const login = (userData, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log("login error", err.message);
+        showMessage({
+            type: "danger",
+            message: "Something went wrong, please try again.",
+            position:"top"
+        })
       });
   };
 };
@@ -165,7 +178,11 @@ export const clearPushToken = (navigation, userid) => {
         dispatch(logout(navigation));
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("clear push notification", err.message);
+        dispatch({
+            type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN,
+            payload: data
+          });
       });
   };
 };

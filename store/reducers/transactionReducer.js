@@ -27,6 +27,11 @@ const reducer = (state = initialState, action) => {
         loading: false,
         message: action.payload.message
       };
+    case actionTypes.ERROR_SET_TRANSACTION_LIST:
+      return {
+          ...state,
+          loading: false
+      };
     case actionTypes.SET_WALLET_AMOUNT:
       return {
         ...state,
@@ -34,12 +39,21 @@ const reducer = (state = initialState, action) => {
         loading: false,
         message: action.payload.message
       };
-
+    case actionTypes.ERROR_SET_WALLET_AMOUNT:
+      return {
+        ...state,
+        loading: false,
+      };
     case actionTypes.ADD_WALLET_AMOUNT:
       return {
         ...state,
         payment_data: action.payload,
         loading: !action.payload.success
+      };
+    case actionTypes.ERROR_ADD_WALLET_AMOUNT:
+      return {
+        ...state,
+        loading: false
       };
     case actionTypes.USE_WALLET_AMOUNT:
       return {
@@ -51,6 +65,11 @@ const reducer = (state = initialState, action) => {
         walletUsed: action.payload.success,
         loading: !action.payload.success
       };
+    case actionTypes.ERROR_USE_WALLET_AMOUNT:
+      return {
+        ...state,
+        loading: false
+      };
     case actionTypes.REMOVE_WALLET_AMOUNT:
       return {
         ...state,
@@ -58,11 +77,21 @@ const reducer = (state = initialState, action) => {
         walletUsed: !action.payload.success,
         loading: !action.payload.success
       };
+    case actionTypes.ERROR_REMOVE_WALLET_AMOUNT:
+      return {
+        ...state,
+        loading: false
+      };
     case actionTypes.CHECKOUT_WITH_WALLET:
       return {
         ...state,
         walletUsed: false,
         loading: !action.payload.success
+      };
+    case actionTypes.ERROR_CHECKOUT_WITH_WALLET:
+      return {
+        ...state,
+        loading: !false
       };
     case actionTypes.SET_TRAN_LOADING:
       return {
@@ -106,6 +135,10 @@ const reducer = (state = initialState, action) => {
         tranStartSearch: action.payload.dateRange[0],
         tranEndSearch: action.payload.dateRange[1]
       };
+    case actionTypes.ERROR_FILTER_TRANSACTION:
+      return {
+          ...state
+      }
     default:
       return state;
   }
