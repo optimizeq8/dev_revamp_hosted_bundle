@@ -1,6 +1,7 @@
 //Login Types
 export const SET_PUSH_NOTIFICATION_TOKEN = "SET_PUSH_NOTIFICATION_TOKEN";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_LOADING_USER = "SET_LOADING_USER";
 
 //Registeration Types
 export const SET_INVITE_CODE = "SET_INVITE_CODE";

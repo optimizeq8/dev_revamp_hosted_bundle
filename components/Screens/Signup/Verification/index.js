@@ -1,6 +1,6 @@
 //Components
 import React, { Component, createRef } from "react";
-import { View, Image } from "react-native";
+import { View, Image, ScrollView } from "react-native";
 import { Text, Container, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { Segment } from "expo";
@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
 import { globalColors } from "../../../../Global Styles";
 import { showMessage } from "react-native-flash-message";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 class Verification extends Component {
   inputRef = createRef();
@@ -21,7 +22,7 @@ class Verification extends Component {
     header: null
   };
   state = {
-    timer: 120,
+    timer: 60,
     timerStart: false,
     code: "",
     codeError: "",
@@ -33,7 +34,6 @@ class Verification extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter OTP Verification Screen");
   }
-
 
   componentWillUnmount() {
     clearInterval(this.clockCall);
@@ -94,157 +94,177 @@ class Verification extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {!this.props.invite ? (
-          <Text style={styles.text}>
-            Please Enter the {"\n"}
-            Verification code sent to{"\n"} {this.props.mobileNo}
-          </Text>
-        ) : (
-          <>
-            <Text style={[styles.inviteText, { paddingTop: 20 }]}>
-              Invite Code
-            </Text>
-          </>
-        )}
-        {!this.props.invite &&
-          (this.state.timerStart ? (
-            <Text style={[styles.link]}>
-              {new Date(this.state.timer * 1000).toISOString().substr(14, 5)}
-            </Text>
-          ) : (
-            <Text
-              onPress={() => {
-                this.startTimer();
-                this.props.resendVerifyMobileCode({
-                  mobile: this.props.mobileNo,
-                  country_code: this.props.countryCode
-                });
-              }}
-              style={[styles.link]}
-            >
-              Resend Code
-            </Text>
-          ))}
+        <KeyboardShift>
+          {() => (
+            <ScrollView contentContainerStyle={{ height: "100%" }}>
+              {!this.props.invite ? (
+                <Text style={[styles.text, { lineHeight: 20 }]}>
+                  Please enter the {"\n"}
+                  verification code sent to {"\n"} {this.props.mobileNo}
+                </Text>
+              ) : (
+                <>
+                  <Text style={[styles.inviteText, { paddingTop: 20 }]}>
+                    Invite Code
+                  </Text>
+                </>
+              )}
+              {!this.props.invite &&
+                (this.state.timerStart ? (
+                  <Text style={[styles.link]}>
+                    {new Date(this.state.timer * 1000)
+                      .toISOString()
+                      .substr(14, 5)}
+                  </Text>
+                ) : (
+                  <Text
+                    onPress={() => {
+                      this.startTimer();
+                      this.props.resendVerifyMobileCode({
+                        mobile: this.props.mobileNo,
+                        country_code: this.props.countryCode
+                      });
+                    }}
+                    style={[styles.link]}
+                  >
+                    Resend Code
+                  </Text>
+                ))}
 
-        {!this.props.invite && (
-          <Text
-            onPress={() => {
-              this.setState({ showEmail: !this.state.showEmail });
-            }}
-            style={[styles.link, { paddingVertical: 0 }]}
-          >
-            Not receiving an SMS? Try by email!
-          </Text>
-        )}
-        {this.state.showEmail && (
-          <>
-            <Item
-              floatingLabel
-              style={[
-                styles.emailInput,
-                {
-                  borderColor: this.state.InputE
-                    ? "#7039FF"
-                    : this.state.emailError
-                    ? "red"
-                    : "#D9D9D9"
-                }
-              ]}
-            >
-              <Label
-                style={[
-                  {
-                    bottom: 5,
-                    color: this.state.InputE ? "#FF9D00" : "#717171"
-                  }
-                ]}
-              >
-                Email
-              </Label>
-              <Input
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value => this.setState({ email: value })}
-                onFocus={() => {
-                  this.setState({ InputE: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    InputE: false
-                  });
-                  this.setState({
-                    emailError: validateWrapper("email", this.state.email)
-                  });
-                }}
-              />
-            </Item>
-            <Button
-              transparent
-              style={{
-                position: "relative",
-                bottom: "2%",
-                left: "60%"
-              }}
-              onPress={() => this._handleSubmission()}
-            >
-              <Icon
-                type="MaterialIcons"
-                name="send"
-                style={{ color: this.state.InputE ? "#FF9D00" : "#717171" }}
-              />
-            </Button>
-          </>
-        )}
-        {/* {this.state.codeError !== "" && !this.props.invite && (
+              {/* {this.state.codeError !== "" && !this.props.invite && (
           <Text style={[styles.errorText]}>{this.state.codeError}</Text>
         )} */}
-        {this.props.invite ? (
-          <>
-            <Item rounded style={[styles.input]}>
-              <Input
-                placeholderTextColor="#fff"
-                autoCorrect={false}
-                maxLength={5}
-                autoCapitalize="none"
-                style={styles.inputtext}
-                onChangeText={value => {
-                  this.setState({
-                    code: value
-                  });
-                }}
-                onBlur={() => {
-                  if (validateWrapper("mandatory", this.state.code)) {
-                    showMessage({
-                      message: "Please enter an invite code!",
-                      type: "warning",
-                      position: "top"
-                    });
-                  }
-                }}
-                placeholder="Enter your invite code"
-              />
-            </Item>
-            <Button
-              style={[styles.button]}
-              onPress={() => {
-                this._handleInviteCode();
-              }}
-            >
-              <Text style={styles.buttontext}>Get Started!</Text>
-            </Button>
-          </>
-        ) : (
-          <CodeInput
-            inactiveColor="black"
-            activeColor="purple"
-            variant="border-b"
-            autoFocus
-            keyboardType="numeric"
-            space={20}
-            onFulfill={code => this._handleSentCode(code)}
-            ref={this.inputRef}
-          />
-        )}
+              {this.props.invite ? (
+                <>
+                  <Item rounded style={[styles.input]}>
+                    <Input
+                      placeholderTextColor="#fff"
+                      autoCorrect={false}
+                      maxLength={5}
+                      autoCapitalize="none"
+                      style={styles.inputtext}
+                      onChangeText={value => {
+                        this.setState({
+                          code: value
+                        });
+                      }}
+                      onBlur={() => {
+                        if (validateWrapper("mandatory", this.state.code)) {
+                          showMessage({
+                            message: "Please enter an invite code!",
+                            type: "warning",
+                            position: "top"
+                          });
+                        }
+                      }}
+                      placeholder="Enter your invite code"
+                    />
+                  </Item>
+                  <Button
+                    style={[styles.button]}
+                    onPress={() => {
+                      this._handleInviteCode();
+                    }}
+                  >
+                    <Text style={styles.buttontext}>Get Started!</Text>
+                  </Button>
+                </>
+              ) : (
+                <View style={{ height: "10%" }}>
+                  <CodeInput
+                    inactiveColor="black"
+                    activeColor="purple"
+                    variant="border-b"
+                    autoFocus
+                    keyboardType="numeric"
+                    space={20}
+                    onFulfill={code => this._handleSentCode(code)}
+                    ref={this.inputRef}
+                  />
+                </View>
+              )}
+              {!this.props.invite && (
+                <View style={{ top: "10%" }}>
+                  <Text
+                    onPress={() => {
+                      this.setState({ showEmail: !this.state.showEmail });
+                    }}
+                    style={[styles.link, { paddingVertical: 0 }]}
+                  >
+                    Not receiving the SMS? Try verifying your account by email.
+                  </Text>
+
+                  {this.state.showEmail && (
+                    <>
+                      <Item
+                        floatingLabel
+                        style={[
+                          styles.emailInput,
+                          {
+                            borderColor: this.state.InputE
+                              ? "#7039FF"
+                              : this.state.emailError
+                              ? "red"
+                              : "#D9D9D9"
+                          }
+                        ]}
+                      >
+                        <Label
+                          style={[
+                            {
+                              bottom: 5,
+                              color: this.state.InputE ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          Email
+                        </Label>
+                        <Input
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
+                            this.setState({ email: value })
+                          }
+                          onFocus={() => {
+                            this.setState({ InputE: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              InputE: false
+                            });
+                            this.setState({
+                              emailError: validateWrapper(
+                                "email",
+                                this.state.email
+                              )
+                            });
+                          }}
+                        />
+                      </Item>
+                      <Button
+                        transparent
+                        style={{
+                          position: "relative",
+                          bottom: "2%",
+                          alignSelf: "flex-end"
+                        }}
+                        onPress={() => this._handleSubmission()}
+                      >
+                        <Icon
+                          type="MaterialIcons"
+                          name="send"
+                          style={{
+                            color: this.state.InputE ? "#FF9D00" : "#717171"
+                          }}
+                        />
+                      </Button>
+                    </>
+                  )}
+                </View>
+              )}
+            </ScrollView>
+          )}
+        </KeyboardShift>
       </View>
     );
   }
@@ -252,7 +272,7 @@ class Verification extends Component {
 const mapStateToProps = state => ({
   mobileNo: state.register.mobileNo,
   countryCode: state.register.countryCode,
-  verificationCode: state.register.verificationCode,
+  verificationCode: state.register.verificationCode
 });
 const mapDispatchToProps = dispatch => ({
   verifyMobileCode: mobileAuth =>

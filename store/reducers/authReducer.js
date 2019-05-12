@@ -3,7 +3,7 @@ import { Segment } from "expo";
 const initialState = {
   userid: null,
   userInfo: null,
-  loading: false,
+  loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,7 +17,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         userid: action.payload.user.userid,
         userInfo: action.payload.user,
-        loading: false,
+        loading: false
+      };
+    case actionTypes.SET_LOADING_USER:
+      return {
+        ...state,
+        loading: true
       };
     default:
       return state;

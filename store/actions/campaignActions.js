@@ -252,10 +252,14 @@ export const ad_details = (info, interestNames, navigation) => {
 };
 
 export const updateCampaign = (info, businessid, navigation) => {
+  console.log("info--------------", info);
+
   return (dispatch, getState) => {
     instance
       .put(`savetargeting`, { ...info, businessid })
       .then(res => {
+        console.log("back end info", res.data);
+
         return res.data;
       })
       .then(data => {
