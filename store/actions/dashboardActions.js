@@ -34,9 +34,9 @@ export const getCampaignDetails = id => {
         });
       })
       .catch(err => {
-        console.log("getCampaignDetails", err.message);
+        console.log("getCampaignDetails", err.message || err.response );
         showMessage({
-          message: "Something went wrong, please try again.",
+          message: err.message || err.response || "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -69,9 +69,9 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         });
       })
       .catch(err => {
-        console.log("getCampaignListError: ", err); // => prints: Api is being canceled????
+        console.log("getCampaignListError: ", err.message || err.response ); // => prints: Api is being canceled????
         showMessage({
-          message: "Something went wrong, please try again.",
+          message: err.message || err.response || "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -113,9 +113,9 @@ export const updateCampaignList = (id, page, increasePage) => {
         }
       })
       .catch(err => {
-        console.log("updateCampaignList", err.message);
+        console.log("updateCampaignList", err.message || err.response );
         showMessage({
-          message: "Something went wrong, please try again.",
+          message: err.message || err.response || "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });

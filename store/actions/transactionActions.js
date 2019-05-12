@@ -24,9 +24,9 @@ export const getTransactions = () => {
         });
       })
       .catch(err => {
-        console.log("getTransactions Error: ", err.response); // => prints: Api is being canceled
+        console.log("getTransactions Error: ", err.message || err.response ); // => prints: Api is being canceled
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
         });
@@ -58,7 +58,7 @@ export const getWalletAmount = () => {
       .catch(err => {
             console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
             showMessage({
-                message: "Something went wrong, please try again.",
+                message: err.message || err.response || "Something went wrong, please try again.",
                 type: "danger",
                 position: "top"
             });
@@ -88,10 +88,10 @@ export const addWalletAmount = (info, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("addWalletAmount Error: ", err);
+        console.log("addWalletAmount Error: ", err.message || err.response );
 
         showMessage({
-            message: "Something went wrong, please try again.",
+            message:err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
         });
@@ -127,9 +127,9 @@ export const useWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("useWallet Error: ", err.message);
+        console.log("useWallet Error: ", err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
         });
@@ -160,9 +160,9 @@ export const removeWalletAmount = campaign_id => {
       })
 
       .catch(err => {
-        console.log("removeWalletAmount Error: ", err.message);
+        console.log("removeWalletAmount Error: ", err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
         });
@@ -195,9 +195,9 @@ export const checkoutwithWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("checkoutwithWallet Error: ", err.message);
+        console.log("checkoutwithWallet Error: ", err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
         });

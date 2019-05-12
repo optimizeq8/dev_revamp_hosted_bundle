@@ -8,7 +8,7 @@ import { setAuthToken } from "./genericActions";
 import { Permissions, Notifications } from "expo";
 
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+    baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
 export const send_push_notification = () => {
@@ -31,9 +31,9 @@ export const send_push_notification = () => {
               });
             })
             .catch(err => {
-              console.log("send_push_notification", err.message);
+              console.log("send_push_notification", err.message || err.response );
               showMessage({
-                  message: "Something went wrong, please try again.",
+                  message: err.message || err.response || "Something went wrong, please try again.",
                   type: "danger",
                   position: "top"
               })
@@ -121,10 +121,10 @@ export const login = (userData, navigation) => {
         }
       })
       .catch(err => {
-        console.log("login error", err.message);
+        console.log("login error", err.message || err.response );
         showMessage({
             type: "danger",
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             position:"top"
         })
       });
@@ -162,7 +162,9 @@ export const forgotPassword = (email, navigation) => {
         //   payload: response.data
         // });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+          console.log("forgotPassword error", err.message || err.response )
+        });
   };
 };
 
@@ -186,10 +188,9 @@ export const clearPushToken = (navigation, userid) => {
         dispatch(logout(navigation));
       })
       .catch(err => {
-        console.log("clear push notification", err.message);
+        console.log("clear push notification", err.message || err.response );
         dispatch({
             type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN,
-            payload: data
           });
       });
   };
