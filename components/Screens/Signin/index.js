@@ -11,6 +11,7 @@ import {
   Container
 } from "native-base";
 import { LinearGradient, Segment } from "expo";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 //Validation
 import validateWrapper from "./ValidateWrapper";
 
@@ -29,6 +30,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { Modal } from "react-native-paper";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -74,6 +76,18 @@ class MainForm extends Component {
       this.props.navigation &&
       this.props.navigation.state.params &&
       this.props.navigation.state.params.invite;
+    // if (this.props.loading) {
+    //   return (
+    //     <>
+    //       <LinearGradient
+    //         colors={[colors.background1, colors.background2]}
+    //         locations={[0.7, 1]}
+    //         style={styles.gradient}
+    //       />
+    //       <LoadingScreen dash={true} top={0} />
+    //     </>
+    //   );
+    // } else
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -184,10 +198,7 @@ class MainForm extends Component {
         </View>
         <View>
           <View style={{ marginBottom: 30 }}>
-            {!invite ? //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
-            //   </Text>
-            // </Button>
-            null : (
+            {!invite ? null : ( // </Button> //   </Text> //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
               <>
                 <Text style={[styles.link, { paddingBottom: 7 }]}>
                   Don’t Have an Account?
@@ -212,13 +223,16 @@ class MainForm extends Component {
             )}
           </View>
         </View>
+        <Modal visible={this.props.loading}>
+          <LoadingScreen top={0} />
+        </Modal>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-
+  loading: state.auth.loading
 });
 
 const mapDispatchToProps = dispatch => ({

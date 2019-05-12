@@ -128,7 +128,7 @@ export default class Invitation extends Component {
             )}
 
             <View style={styles.registered}>
-              <Text style={[styles.registeredText]}>Admin?</Text>
+              <Text style={[styles.registeredText]}>Already registered?</Text>
               <Button
                 rounded
                 onPress={() => {

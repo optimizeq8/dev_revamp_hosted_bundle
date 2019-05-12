@@ -80,6 +80,10 @@ export const checkForExpiredToken = navigation => {
 
 export const login = (userData, navigation) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_LOADING_USER,
+      payload: true
+    });
     instance
       .post("userLogin", userData)
       .then(res => {
@@ -96,6 +100,10 @@ export const login = (userData, navigation) => {
             message: user.message,
             type: "warning",
             position: "top"
+          });
+          dispatch({
+            type: actionTypes.SET_LOADING_USER,
+            payload: false
           });
           const obj = { user: decodedUser, message: user.message };
           return obj;

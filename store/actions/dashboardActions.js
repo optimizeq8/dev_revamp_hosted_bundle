@@ -2,10 +2,12 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
 import { Segment } from "expo";
+import { showMessage } from "react-native-flash-message";
 
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
+
 export const filterCampaigns = query => {
   return {
     type: actionTypes.FILTER_CAMPAIGNS,
@@ -32,7 +34,16 @@ export const getCampaignDetails = id => {
         });
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("getCampaignDetails", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_CAMPAIGN,
+          payload: { loading: false }
+        });
       });
   };
 };
@@ -58,7 +69,20 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         });
       })
       .catch(err => {
-        console.log("Error: ", err); // => prints: Api is being canceled
+        console.log("getCampaignListError: ", err); // => prints: Api is being canceled????
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_CAMPAIGN_LIST,
+          payload: {
+            isListEnd: false,
+            fetching_from_server: false,
+            loading: false
+          }
+        });
       });
   };
 };
@@ -89,7 +113,19 @@ export const updateCampaignList = (id, page, increasePage) => {
         }
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("updateCampaignList", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_UPDATE_CAMPAIGN_LIST,
+          payload: {
+            isListEnd: false,
+            fetching_from_server: false
+          }
+        });
       });
   };
 };

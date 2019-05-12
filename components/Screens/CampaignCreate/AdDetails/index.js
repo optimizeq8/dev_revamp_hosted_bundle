@@ -102,7 +102,6 @@ class AdDetails extends Component {
       sidemenustate: false,
       sidemenu: "gender",
       regions: country_regions[0].regions,
-      budget: 50,
       value: 50,
       minValueBudget: 25,
       maxValueBudget: 1500,
@@ -331,7 +330,7 @@ class AdDetails extends Component {
         position: "top"
       });
       this.setState({
-        value
+        value: parseFloat(value)
       });
       return false;
     }

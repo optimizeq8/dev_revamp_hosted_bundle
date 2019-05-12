@@ -116,7 +116,7 @@ class PhoneNo extends Component {
         <View style={[styles.container]}>
           {!this.props.invite && (
             <Text style={styles.text}>
-              Please Provide your {"\n"}
+              Please enter your {"\n"}
               Mobile Number
             </Text>
           )}
@@ -131,7 +131,7 @@ class PhoneNo extends Component {
               }
             ]}
           >
-            <View
+            <TouchableOpacity
               style={{
                 width: 60,
                 height: 30,
@@ -139,8 +139,10 @@ class PhoneNo extends Component {
                 borderWidth: 0.3,
                 borderColor: this.props.invite ? "#fff" : "#000",
                 borderRadius: 5,
-                left: 4
+                left: 4,
+                zIndex: 5
               }}
+              onPress={this.onPressFlag}
             />
             <Icon
               name="arrow-drop-down"
@@ -156,10 +158,11 @@ class PhoneNo extends Component {
               textStyle={{
                 ...styles.input,
                 color: this.props.invite ? "#fff" : "#000",
-                borderBottomColor: this.state.valid ? "#5F5F5F" : "red"
+                borderBottomColor: this.state.valid ? "#5F5F5F" : "red",
+                left: "3%"
               }}
               flagStyle={{
-                left: 15,
+                left: 14,
                 zIndex: 5
               }}
               textProps={{
@@ -186,13 +189,16 @@ class PhoneNo extends Component {
               }}
               onChangePhoneNumber={number => {
                 //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
-                if (number.toString().length > 3) {
+                if (
+                  number.toString().length > 3 &&
+                  this.phone.isValidNumber()
+                ) {
                   this.setState({
                     value: number.split(this.phone.getCountryCode())[1]
                   });
                 }
               }}
-              onPressFlag={this.onPressFlag}
+              // onPressFlag={this.onPressFlag}
               initialCountry="kw"
               countriesList={require("./countries.json")}
               value="+965"
@@ -203,6 +209,7 @@ class PhoneNo extends Component {
             ref={ref => {
               this.myCountryPicker = ref;
             }}
+            optionTextStyle={{ alignSelf: "flex-start" }}
             data={this.state.pickerData}
             onChange={country => {
               this.selectCountry(country);

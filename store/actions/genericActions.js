@@ -14,10 +14,10 @@ export const setAuthToken = token => {
       .then(
         () => (axios.defaults.headers.common.Authorization = `jwt ${token}`)
       )
-      .catch(err => alert(err));
+      .catch(err => console.log("setAuthToken setItem token", err.message));
   } else {
     return AsyncStorage.removeItem("token")
       .then(() => delete axios.defaults.headers.common.Authorization)
-      .catch(err => alert(err));
+      .catch(err => console.log("setAuthToken removeItem token", err.message));
   }
 };
