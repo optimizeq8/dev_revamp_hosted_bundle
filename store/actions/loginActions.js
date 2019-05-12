@@ -73,12 +73,12 @@ export const checkForExpiredToken = navigation => {
 export const login = (userData, navigation) => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_LOADING_USER
+      type: actionTypes.SET_LOADING_USER,
+      payload: true
     });
     instance
       .post("userLogin", userData)
       .then(res => {
-
         return res.data;
       })
       .then(async user => {
@@ -92,6 +92,10 @@ export const login = (userData, navigation) => {
             message: user.message,
             type: "warning",
             position: "top"
+          });
+          dispatch({
+            type: actionTypes.SET_LOADING_USER,
+            payload: false
           });
           const obj = { user: decodedUser, message: user.message };
           return obj;
@@ -148,7 +152,6 @@ export const forgotPassword = (email, navigation) => {
       .catch(err => console.log(err));
   };
 };
-
 
 export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {

@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LOADING_USER:
       return {
         ...state,
-        loading: true
+        loading: action.payload
       };
     default:
       return state;
