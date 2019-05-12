@@ -41,9 +41,9 @@ export const getBusinessAccounts = () => {
       })
 
       .catch(err => {
-        console.log("getBusinessAccountsError", err.message);
+        console.log("getBusinessAccountsError", err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
          });
@@ -87,9 +87,9 @@ export const createBusinessAccount = (account, navigation) => {
       .then(navigation.navigate("Dashboard"))
 
       .catch(err => {
-        console.log('error creating new bsn',err.message);
+        console.log('error creating new bsn',err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
          });
@@ -131,10 +131,10 @@ export const changePassword = (currentPass, newPass, navigation) => {
         });
       })
       .catch(err => {
-          console.log("changePasswordError", err.message);
+          console.log("changePasswordError", err.message || err.response );
 
           showMessage({
-              message: "Oops! Something went wrong. Please try again.",
+              message: err.message || err.response ||"Oops! Something went wrong. Please try again.",
               type: "danger",
               position: "position"
           })
@@ -229,9 +229,9 @@ export const getAddressForm = () => {
         });
       })
       .catch(err => {
-          console.log("Get Billing Address Error: ", err.message);
+          console.log("Get Billing Address Error: ", err.message || err.response );
           showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           });
@@ -279,9 +279,9 @@ export const create_snapchat_ad_account = (id, navigation) => {
       // })
 
       .catch(err => {
-          console.log("create_snapchat_ad_account_ERROR", err.message);
+          console.log("create_snapchat_ad_account_ERROR", err.message || err.response );
           showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           });

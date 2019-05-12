@@ -34,7 +34,7 @@ export const send_push_notification = () => {
               });
             })
             .catch(err => {
-              console.log("send_push_notification", err.message);
+              console.log("send_push_notification", err.message || err.response );
               return dispatch({
                   type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
               })
@@ -65,9 +65,9 @@ export const verifyBusinessName = businessName => {
           });
         })
         .catch(err => {
-          console.log("verifyBusinessName", err.message);
+          console.log("verifyBusinessName", err.message || err.response );
           showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response  || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           })
@@ -111,9 +111,9 @@ export const registerUser = (userInfo, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.message || err.response );
         showMessage({
-            message: "Something went wrong while registering, please try again.",
+            message: err.message || err.response  || "Something went wrong while registering, please try again.",
             type: "danger",
             position: "top"
         });
@@ -148,7 +148,7 @@ export const sendMobileNo = mobileNo => {
           });
         })
         .catch(err => {
-          console.log("sendMobileNo", err.message);
+          console.log("sendMobileNo error", err.message || err.response );
           return dispatch({
               type: actionTypes.ERROR_SEND_MOBILE_NO,
               payload: {
@@ -181,9 +181,9 @@ export const verifyMobileCode = mobileAuth => {
           });
         })
         .catch(err => {
-          console.log("verifyMobileCode", err.message);
+          console.log("verifyMobileCode error", err.message || err.response );
           showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response  || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           })
@@ -221,9 +221,9 @@ export const resendVerifyMobileCode = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log("resendVerifyMobileCode", err.message);
+        console.log("resendVerifyMobileCode", err.message || err.response );
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response ||  "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           })
@@ -260,8 +260,9 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
         });
       })
       .catch(err => {
+          console.log('resendVerifyMobileCodeByEmail error', err.message || err.response )
         showMessage({
-            message: "Something went wrong, please try again.",
+            message: err.message || err.response  || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
           });
@@ -299,9 +300,9 @@ export const verifyEmail = (email, userInfo) => {
             });
         })
         .catch(err => {
-            console.log("verifyEmail ERROR", err.message);
+            console.log("verifyEmail ERROR", err.message || err.response );
             showMessage({
-                message: "Something went wrong, please try again.",
+                message: err.message || err.response || "Something went wrong, please try again.",
                 type: "danger",
                 position: "top"
             });
@@ -337,9 +338,9 @@ export const verifyInviteCode = verificationCode => {
       })
 
       .catch(err => {
-          console.log('verifyInviteCodeError',err.message);
+          console.log('verifyInviteCodeError',err.message || err.response );
           showMessage({
-            message: err.message,
+            message: err.message || err.response || "Something went wrong, please try again" ,
             type: "danger",
             position: "top"
           });
@@ -380,9 +381,9 @@ export const requestInvitationCode = info => {
       })
 
       .catch(err => {
-          console.log("requestInvitationCodeError", err.message)
+          console.log("requestInvitationCodeError", err.message || err.response )
           showMessage({
-            message: "Something went wrong, please try again",
+            message: err.message || err.response || "Something went wrong, please try again",
             type: "danger",
             position: "top"
           });
