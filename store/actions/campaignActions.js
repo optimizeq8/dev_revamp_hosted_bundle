@@ -1,5 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import { showMessage } from "react-native-flash-message";
+
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
@@ -31,7 +33,18 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log("payment_request_knet", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
       });
   };
 };
@@ -51,7 +64,15 @@ export const snap_ad_audience_size = (info, totalReach) => {
       })
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch(err => {
-        console.log(err);
+        console.log("snap_ad_audience_size", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE
+        });
       });
   };
 };
@@ -70,7 +91,15 @@ export const get_total_reach = info => {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("get_total_reach", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE
+        });
       });
   };
 };
@@ -96,7 +125,15 @@ export const ad_objective = (info, navigation) => {
         navigation.push("AdDesign");
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("ad_objective", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_OBJECTIVE
+        });
       });
   };
 };
@@ -141,8 +178,15 @@ export const ad_design = (
       })
       .catch(err => {
         laoding(0);
-
-        console.log("errorLoadingDesign", err.response);
+        console.log("ad_design", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_DESIGN
+        });
       });
   };
 };
@@ -161,7 +205,15 @@ export const get_interests = countryCode => {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("get_interests", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_INTERESTS
+        });
       });
   };
 };
@@ -180,7 +232,15 @@ export const get_device_brands = () => {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("get_device_brands", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_DEVICE_MAKES
+        });
       });
   };
 };
@@ -199,7 +259,15 @@ export const get_ios_versions = () => {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("get_ios_versions", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_IOS_VERSIONS
+        });
       });
   };
 };
@@ -218,7 +286,15 @@ export const get_android_versions = () => {
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log("get_android_versions", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_ANDROID_VERSIONS
+        });
       });
   };
 };
@@ -246,7 +322,15 @@ export const ad_details = (info, interestNames, navigation) => {
         });
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("ad_details", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_DETAILS
+        });
       });
   };
 };
@@ -268,11 +352,20 @@ export const updateCampaign = (info, businessid, navigation) => {
         navigation.navigate("Dashboard");
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log("updateCampaign", err.message);
+        showMessage({
+          message: "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS
+        });
       });
   };
 };
 
+// Does not have a reducer case (nothing is done with it yet)
 export const updateStatus = (info, handleToggle) => {
   return (dispatch, getState) => {
     instance
@@ -288,7 +381,7 @@ export const updateStatus = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err.message);
       });
   };
 };

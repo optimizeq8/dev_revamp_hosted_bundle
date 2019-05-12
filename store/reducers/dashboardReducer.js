@@ -24,6 +24,14 @@ const reducer = (state = initialState, action) => {
         isListEnd: false,
         loading: false
       };
+    case actionTypes.ERROR_SET_CAMPAIGN_LIST:
+      return {
+        ...state,
+        fetching_from_server: action.payload.fetching_from_server,
+        isListEnd: action.payload.isListEnd,
+        loading: action.payload.loading
+      };
+
     case actionTypes.GOT_ALL_CAMPAIGNS:
       return {
         ...state,
@@ -31,6 +39,7 @@ const reducer = (state = initialState, action) => {
         isListEnd: action.payload.isListEnd,
         loading: action.payload.loading
       };
+
     case actionTypes.UPDATE_CAMPAIGN_LIST:
       return {
         ...state,
@@ -38,12 +47,25 @@ const reducer = (state = initialState, action) => {
         filteredCampaigns: [...state.filteredCampaigns, ...action.payload.data],
         fetching_from_server: action.payload.fetching_from_server
       };
+    case actionTypes.ERROR_UPDATE_CAMPAIGN_LIST:
+      return {
+        ...state,
+        fetching_from_server: action.payload.fetching_from_server,
+        isListEnd: action.payload.isListEnd
+      };
+
     case actionTypes.SET_CAMPAIGN:
       return {
         ...state,
         selectedCampaign: action.payload.data,
         loading: action.payload.loading
       };
+    case actionTypes.ERROR_SET_CAMPAIGN:
+      return {
+        ...state,
+        loading: action.payload.loading
+      };
+
     case actionTypes.FILTER_CAMPAIGNS:
       let filtered = state.campaignList.filter(campaign =>
         campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())
