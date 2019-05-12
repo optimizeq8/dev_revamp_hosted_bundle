@@ -155,7 +155,10 @@ class Home extends Component {
               <Button
                 style={[styles.button, { backgroundColor: "red" }]}
                 onPress={() => {
-                  this.props.clearPushToken(this.props.navigation);
+                  this.props.clearPushToken(
+                    this.props.navigation,
+                    this.props.userInfo.userid
+                  );
                 }}
               >
                 <Text> Log out </Text>
@@ -207,8 +210,8 @@ const mapStateToProps = state => ({
   campaignList: state.dashboard.campaignList
 });
 const mapDispatchToProps = dispatch => ({
-  clearPushToken: navigation =>
-    dispatch(actionCreators.clearPushToken(navigation)),
+  clearPushToken: (navigation, userid) =>
+    dispatch(actionCreators.clearPushToken(navigation, userid)),
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
