@@ -116,7 +116,10 @@ class Menu extends Component {
           />
           <TouchableOpacity
             onPress={() => {
-              this.props.clearPushToken(this.props.navigation);
+              this.props.clearPushToken(
+                this.props.navigation,
+                this.props.userInfo.userid
+              );
             }}
             style={styles.logoutIcon}
           >
@@ -225,7 +228,10 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.clearPushToken(this.props.navigation);
+                  this.props.clearPushToken(
+                    this.props.navigation,
+                    this.props.userInfo.userid
+                  );
                 }}
               >
                 <View
@@ -274,8 +280,8 @@ const mapStateToProps = state => ({
   exponentPushToken: state.login.exponentPushToken
 });
 const mapDispatchToProps = dispatch => ({
-  clearPushToken: navigation =>
-    dispatch(actionCreators.clearPushToken(navigation)),
+  clearPushToken: (navigation, userid) =>
+    dispatch(actionCreators.clearPushToken(navigation, userid)),
   getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
