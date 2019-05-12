@@ -282,7 +282,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),
-  getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   createBusinessAccount: account =>
     dispatch(actionCreators.createBusinessAccount(account)),
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))

@@ -24,6 +24,9 @@ export const changeBusiness = business => {
 
 export const getBusinessAccounts = () => {
   return dispatch => {
+    dispatch({
+        type: actionTypes.SET_LOADING_BUSINESS_LIST
+    })
     instance
       .get(`businessaccounts`)
       .then(res => {
@@ -48,8 +51,7 @@ export const getBusinessAccounts = () => {
             position: "top"
          });
         return dispatch({
-            type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS,
-            payload: data
+            type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
         });
       });
   };

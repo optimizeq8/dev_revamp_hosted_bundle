@@ -28,11 +28,13 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             mainBusiness: action.payload.business_accounts[0],
-            businessAccounts: action.payload.business_accounts
+            businessAccounts: action.payload.business_accounts,
+            loading:false
         };
     case actionTypes.ERROR_SET_BUSINESS_ACCOUNTS:
         return {
             ...state,
+            loading: false,
         };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
         return {
@@ -106,7 +108,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: action.payload
       };
-
+    case actionTypes.SET_LOADING_BUSINESS_LIST:
+        return {
+            ...state,
+            loading: true
+        }
     default:
       return state;
   }
