@@ -113,7 +113,7 @@ export default class CountryModal extends BaseComponent {
               style={[
                 styles.optionTextStyle,
                 this.props.optionTextStyle,
-                { color: "#434343", fontSize: 14 }
+                { color: "#434343", fontSize: 12 }
               ]}
             >
               {option.label}
@@ -124,7 +124,7 @@ export default class CountryModal extends BaseComponent {
               style={[
                 styles.optionTextStyle,
                 this.props.optionTextStyle,
-                { color: "grey", fontSize: 12 }
+                { color: "#434343", fontSize: 12 }
               ]}
             >
               {option.dialCode}

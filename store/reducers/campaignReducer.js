@@ -14,7 +14,7 @@ const initialState = {
   loadingObj: false,
   loadingDesign: false,
   loadingDetail: false,
-  loading:false,
+  loading: false,
   payment_data: null
 };
 
@@ -47,7 +47,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...action.payload.data },
-        message: action.payload.message
+        message: action.payload.message,
+        kdamount: action.payload.kdamount
       };
     case actionTypes.SET_SNAP_AUDIENCE_SIZE:
       return {

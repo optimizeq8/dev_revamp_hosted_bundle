@@ -3,6 +3,7 @@ import { View, Image, BackHandler } from "react-native";
 import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import ErrorIcon from "../../../assets/SVGs/Error.svg";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //styles
 import styles, { colors } from "./styles";
@@ -25,6 +26,7 @@ class ErrorRedirect extends Component {
     Segment.screen("Payment Error Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
+    console.log(this.props.navigation.state.params);
   }
 
   componentWillUnmount() {
@@ -34,6 +36,18 @@ class ErrorRedirect extends Component {
     return true;
   }
   render() {
+    if (!this.props.navigation.state.params) {
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <LoadingScreen dash={true} top={0} />
+        </>
+      );
+    }
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -52,14 +66,24 @@ class ErrorRedirect extends Component {
           <Text style={styles.title}> Sorry </Text>
           <Text style={styles.errortext}>
             There seems to be a problem with {"\n"}
-            your payment method
+            your payment method.
           </Text>
           <View style={styles.details}>
-            <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
-            <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
-            <Text style={styles.text}>Amount: {this.state.amount}</Text>
-            <Text style={styles.text}>Date: {this.state.date}</Text>
-            <Text style={styles.text}>Status: {this.state.status}</Text>
+            <Text style={styles.text}>
+              Payment ID: {this.props.navigation.state.params.paymentId}
+            </Text>
+            <Text style={styles.text}>
+              Track ID: {this.props.navigation.state.params.trackID}
+            </Text>
+            <Text style={styles.text}>
+              Amount: {this.props.navigation.state.params.amount}
+            </Text>
+            <Text style={styles.text}>
+              Date: {this.props.navigation.state.params.date}
+            </Text>
+            <Text style={styles.text}>
+              Status: {this.props.navigation.state.params.status}
+            </Text>
           </View>
           <Button
             style={styles.button}

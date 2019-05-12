@@ -50,8 +50,6 @@ class AdObjective extends Component {
     this.state = {
       campaignInfo: {
         ad_account_id: "",
-        start_time: "",
-        end_time: "",
         name: "",
         objective: ""
       },
@@ -60,7 +58,7 @@ class AdObjective extends Component {
       inputN: false,
       objectives: [
         {
-          label: "Awereness",
+          label: "Awareness",
           value: "BRAND_AWARENESS",
           info: "Increase awareness of your brand or product.",
           icon: ""
