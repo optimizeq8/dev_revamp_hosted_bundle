@@ -219,11 +219,7 @@ const mapStateToProps = state => ({
   wallet: state.transA.wallet
 });
 
-const mapDispatchToProps = dispatch => ({
-  changePassword: (currentPass, newPass, navigation) =>
-    dispatch(actionCreators.changePassword(currentPass, newPass, navigation))
-});
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(AddCredits);

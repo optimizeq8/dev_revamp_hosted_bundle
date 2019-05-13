@@ -27,6 +27,7 @@ import {
   Spinner
 } from "native-base";
 import LottieView from "lottie-react-native";
+import isNull from "lodash/isNull";
 
 import { LinearGradient, Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
@@ -174,7 +175,7 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     );
-    if (!this.props.mainBusiness) {
+    if (isNull(this.props.mainBusiness)&&this.props.loadingAccountMgmt) {
       return (
         <>
           <LinearGradient
@@ -185,7 +186,12 @@ class Dashboard extends Component {
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else {
+    } else if(isNull(this.props.mainBusiness)&& !this.props.loadingAccountMgmt) {
+        return  <View>
+            <Text>ERROR</Text>
+        </View>
+    }
+    else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
@@ -423,6 +429,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   wallet: state.transA.wallet,
   loading: state.dashboard.loading,
+  loadingAccountMgmt: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   campaignList: state.dashboard.campaignList,
   fetching_from_server: state.dashboard.fetching_from_server,

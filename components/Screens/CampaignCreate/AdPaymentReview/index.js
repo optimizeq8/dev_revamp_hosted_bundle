@@ -304,10 +304,8 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames,
   mainBusiness: state.account.mainBusiness
 });
-const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
-});
+
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(AdPaymentReview);

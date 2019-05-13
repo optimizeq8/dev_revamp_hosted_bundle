@@ -187,6 +187,7 @@ class AddressForm extends Component {
             _handleAddressChange={this._handleAddressChange}
             _handleSideMenuState={this._handleSideMenuState}
             sidemenustate={this.state.sidemenustate}
+            errorLoading={this.props.errorLoading}
           />
         )}
         <Modal visible={this.props.loading}>
@@ -198,7 +199,8 @@ class AddressForm extends Component {
 }
 const mapStateToProps = state => ({
   address: state.account.address,
-  loading: state.account.loadingBillingAddress
+  loading: state.account.loadingBillingAddress,
+  errorLoading: state.account.errorLoadingBillingAddress
 });
 
 const mapDispatchToProps = dispatch => ({

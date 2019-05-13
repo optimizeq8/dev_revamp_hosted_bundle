@@ -10,7 +10,8 @@ const initialState = {
   filterValue: "",
   filterStatus: "A",
   campaignStartSearch: "",
-  campaignEndSearch: ""
+  campaignEndSearch: "",
+  loadingCampaignDetails: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -58,11 +59,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCampaign: action.payload.data,
-        loading: action.payload.loading
+        loadingCampaignDetails: action.payload.loading,
       };
     case actionTypes.ERROR_SET_CAMPAIGN:
       return {
         ...state,
+        loadingCampaignDetails: action.payload.loading,
         loading: action.payload.loading
       };
 

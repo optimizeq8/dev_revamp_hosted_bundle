@@ -528,7 +528,8 @@ class BillingAddressCard extends React.Component {
           
               <TouchableOpacity
                 onPress={() => this._handleSubmission()}
-                style={styles.button}
+                style={[styles.button , {opacity: (this.props.errorLoading ? 0.5 : 1 )}]}
+                disabled={this.props.errorLoading}
               >
                 <CheckmarkIcon />
               </TouchableOpacity>

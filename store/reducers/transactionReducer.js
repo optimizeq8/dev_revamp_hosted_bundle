@@ -14,7 +14,8 @@ const initialState = {
   walletUsed: false,
   message: "",
   payment_data: null,
-  loading: false
+  loading: false,
+  errorTransactionList: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,7 +31,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_SET_TRANSACTION_LIST:
       return {
           ...state,
-          loading: false
+          loading: false,
+          errorTransactionList: true
       };
     case actionTypes.SET_WALLET_AMOUNT:
       return {
@@ -96,7 +98,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_TRAN_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
+        errorTransactionList: false
       };
     case actionTypes.FILTER_TRANSACTION:
       let filtered = state.transactionList.filter(
