@@ -53,7 +53,7 @@ class BusinessList extends Component {
           style={styles.gradient}
         />
         <View padder style={[styles.mainCard]}>
-          <Text style={styles.title}>Switch Business</Text>
+          <Text style={styles.title}>Switch Account</Text>
           <View
             style={{
               flexDirection: "row",
@@ -62,7 +62,7 @@ class BusinessList extends Component {
               paddingBottom: 10
             }}
           >
-            <Text style={[styles.text, { alignSelf: "center" }]}>
+            <Text style={[styles.text, { alignSelf: "center", marginTop: 5 }]}>
               You can switch between businesses here.
             </Text>
           </View>

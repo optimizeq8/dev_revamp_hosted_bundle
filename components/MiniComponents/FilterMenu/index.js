@@ -108,7 +108,7 @@ class FilterMenu extends Component {
         <View
           style={{
             flex: 1,
-            top: hp("25"),
+            top: hp("20"),
             alignItems: "center",
             flexDirection: "column",
             opacity: 1,
@@ -129,7 +129,7 @@ class FilterMenu extends Component {
           <Text style={[styles.subtext]}>
             {this.props.transactionFilter
               ? "Filter transactions by date"
-              : "Select which Ads you'd like to see"}
+              : "Select which campaigns you’d like to see"}
           </Text>
 
           <View
@@ -140,13 +140,13 @@ class FilterMenu extends Component {
           >
             {!this.props.transactionFilter && (
               <>
-                <Text style={[styles.title, { paddingBottom: 10 }]}>
-                  Ad Activity
+                <Text style={[styles.title, { paddingBottom: 20 }]}>
+                  Campaign Status
                 </Text>
                 <FilterStatus />
               </>
             )}
-            <Text style={[styles.title]}> Date </Text>
+            <Text style={[styles.title, { paddingBottom: 10 }]}> Date </Text>
             <TouchableHighlight
               underlayColor="rgba(0,0,0,0.2)"
               style={[
@@ -166,9 +166,11 @@ class FilterMenu extends Component {
                     textAlign: "center"
                   }}
                 >
-                  <Text style={[styles.categories, { fontSize: 16 }]}>
-                    Start
-                  </Text>
+                  {this.state.start_time === "" && (
+                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                      Start
+                    </Text>
+                  )}
                   {this.state.start_time !== "" && (
                     <Text style={styles.numbers}>
                       {start_time}
@@ -179,15 +181,24 @@ class FilterMenu extends Component {
                     </Text>
                   )}
                 </View>
-
-                <Text style={[styles.categories, { fontSize: 16 }]}>To</Text>
-
+                <View
+                  style={{
+                    flexDirection: "column",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Text style={[styles.categories, { fontSize: 16 }]}>To</Text>
+                </View>
                 <View
                   style={{
                     flexDirection: "column"
                   }}
                 >
-                  <Text style={[styles.categories, { fontSize: 16 }]}>End</Text>
+                  {this.state.end_time === "" && (
+                    <Text style={[styles.categories, { fontSize: 16 }]}>
+                      End
+                    </Text>
+                  )}
 
                   {this.state.end_time !== "" && (
                     <Text style={styles.numbers}>
@@ -203,8 +214,18 @@ class FilterMenu extends Component {
             </TouchableHighlight>
           </View>
         </View>
-        <Text onPress={() => this._resetFilter()} style={styles.subtext}>
-          Reset
+        <Text
+          onPress={() => this._resetFilter()}
+          style={[
+            styles.subtext,
+            {
+              textDecorationLine: "underline",
+              marginBottom: 20,
+              textDecorationColor: "#fff"
+            }
+          ]}
+        >
+          Clear Filters
         </Text>
         <Button
           style={[styles.checkbutton, { marginBottom: 35, elevation: 0 }]}

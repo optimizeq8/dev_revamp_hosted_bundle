@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   inputtext: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center"

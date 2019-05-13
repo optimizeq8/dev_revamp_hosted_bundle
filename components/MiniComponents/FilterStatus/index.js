@@ -40,7 +40,7 @@ class FilterStatus extends Component {
       <View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <View style={{ flexDirection: "column" }}>
-            <Text style={styles.text}> Live </Text>
+            <Text style={styles.text}> Active </Text>
 
             <Button
               onPress={() =>
@@ -56,7 +56,7 @@ class FilterStatus extends Component {
             />
           </View>
           <View style={{ flexDirection: "column", paddingHorizontal: 40 }}>
-            <Text style={styles.text}> Paused </Text>
+            <Text style={styles.text}> Inactive </Text>
             <Button
               onPress={() =>
                 this.setState({ selected: "PAUSED" }, () =>
