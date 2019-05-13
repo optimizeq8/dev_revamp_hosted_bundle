@@ -35,6 +35,11 @@ export default (styles = {
     zIndex: 10,
     elevation: 4
   },
+  backDrop: {
+    position: "absolute",
+    top: -hp(45),
+    alignSelf: "center"
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   }

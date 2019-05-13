@@ -31,13 +31,13 @@ export default class AdTypeCard extends Component {
               {
                 backgroundColor: this.props.adType.title.includes("Snap")
                   ? "transparent"
-                  : "#000"
+                  : "#fff"
               }
             ]}
           >
             <Image
               style={{ width: "100%", height: "100%", position: "absolute" }}
-              resizeMode="stretch"
+              resizeMode="contain"
               source={this.props.adType.image}
             />
 
