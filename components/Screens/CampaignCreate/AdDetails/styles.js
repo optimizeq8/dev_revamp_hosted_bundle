@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
-    width: 300,
-    height: 50
+    width: 300
   },
 
   indicator: {
@@ -137,7 +136,17 @@ const styles = StyleSheet.create({
   },
   chart: {
     alignItems: "center",
-    height: hp("20%")
+    top: hp(10),
+    position: "absolute",
+    alignSelf: "center",
+    justifyContent: "flex-end"
+    // bottom: hp(42)
+  },
+  bottom: {
+    alignSelf: "center",
+    position: "absolute",
+    bottom: hp(16),
+    alignSelf: "center"
   },
   chartText: {
     color: "#fff",
@@ -149,8 +158,8 @@ const styles = StyleSheet.create({
   chartItems: {
     flex: 1,
     flexDirection: "column",
-    top: hp(5),
-    left: wp(9)
+    top: hp(5)
+    // left: wp(9)
   },
   button: {
     backgroundColor: "transparent",
