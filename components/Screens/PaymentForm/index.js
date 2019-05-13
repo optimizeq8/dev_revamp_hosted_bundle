@@ -114,7 +114,7 @@ class PaymentForm extends Component {
 
   reviewPurchase = () => {
     if (this.props.walletUsed)
-      this.props.removeWalletAmount(this.props.campaign_id);
+      this.props.removeWalletAmount(this.props.campaign_id, this.props.navigation, this.props.navigation.state.params.interestNames);
 
     !this.props.loading &&
       this.props.navigation.navigate("AdPaymentReview", {
@@ -410,7 +410,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
     ),
-  removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
+  removeWalletAmount: (info, naviagtion, interestNames) => dispatch(actionCreators.removeWalletAmount(info, naviagtion, interestNames)),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

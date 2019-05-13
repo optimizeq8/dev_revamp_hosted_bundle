@@ -110,7 +110,9 @@ export const login = (userData, navigation) => {
         }
       })
       .then(decodedUser => {
-        dispatch(setCurrentUser(decodedUser));
+        if(decodedUser.user) {
+            dispatch(setCurrentUser(decodedUser));
+        }
       })
       .then(() => {
         if (getState().auth.userInfo) {
