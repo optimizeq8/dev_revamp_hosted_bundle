@@ -198,7 +198,7 @@ class PhoneNo extends Component {
                   });
                 }
               }}
-              // onPressFlag={this.onPressFlag}
+              onPressFlag={this.onPressFlag}
               initialCountry="kw"
               countriesList={require("./countries.json")}
               value="+965"

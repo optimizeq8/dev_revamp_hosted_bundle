@@ -175,7 +175,7 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     );
-    if (isNull(this.props.mainBusiness)&&this.props.loadingAccountMgmt) {
+    if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
       return (
         <>
           <LinearGradient
@@ -186,12 +186,16 @@ class Dashboard extends Component {
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else if(isNull(this.props.mainBusiness)&& !this.props.loadingAccountMgmt) {
-        return  <View>
-            <Text>ERROR</Text>
+    } else if (
+      isNull(this.props.mainBusiness) &&
+      !this.props.loadingAccountMgmt
+    ) {
+      return (
+        <View>
+          <Text>ERROR</Text>
         </View>
-    }
-    else {
+      );
+    } else {
       console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
@@ -364,7 +368,7 @@ class Dashboard extends Component {
                           this.props.navigation.navigate("SnapchatCreateAdAcc");
                         } else {
                           Segment.track("Create Campaign Button Pressed");
-                          this.props.navigation.navigate("AdType");
+                          this.props.navigation.navigate("AdDetails");
                         }
                       }}
                     >

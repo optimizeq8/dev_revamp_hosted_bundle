@@ -14,7 +14,7 @@ import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
 import { LinearGradient, Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
-import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import { TextInputMask } from "react-native-masked-text";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -97,6 +97,7 @@ class AdDetails extends Component {
         { value: "ar", label: "Arabic" },
         { value: "en", label: "English" }
       ],
+      advance: false,
       sidemenustate: false,
       sidemenu: "gender",
       regions: country_regions[0].regions,
@@ -282,8 +283,6 @@ class AdDetails extends Component {
   };
 
   _handleBudget = value => {
-    console.log(value);
-
     if (
       !validateWrapper("Budget", value) &&
       value >= this.state.minValueBudget
@@ -597,6 +596,8 @@ class AdDetails extends Component {
     let editCampaign =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign;
+    // console.log(this.state.value);
+
     return (
       <>
         <Container style={styles.container}>
@@ -682,21 +683,19 @@ class AdDetails extends Component {
 
                   <View
                     style={{
-                      height: hp(6),
-                      width: wp(50),
-                      flexDirection: "row",
-
+                      height: hp(8),
+                      width: wp(40),
+                      flexDirection: "column",
+                      backgroundColor: "rgba(255,255,255,0.2)",
+                      borderRadius: 15,
                       alignSelf: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      marginVertical: 10
                     }}
                   >
-                    <Icon
-                      type="MaterialIcons"
-                      name="edit"
-                      style={[styles.editIcon]}
-                    />
                     <Input
                       keyboardType="numeric"
+                      maxLength={7}
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
@@ -704,7 +703,45 @@ class AdDetails extends Component {
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                     />
+                    {/* <TextInputMask
+                      type={"money"}
+                      options={{
+                        precision: 2,
+                        separator: ",",
+                        delimiter: ".",
+                        unit: "$",
+                        suffixUnit: ""
+                      }}
+                      maxLength={9}
+                      defaultValue={
+                        this.state.campaignInfo.lifetime_budget_micro + ""
+                      }
+                      onChangeText={value => this._handleBudget(value)}
+                      style={styles.budget}
+                      ref={ref => (this.moneyField = ref)}
+                    /> */}
+                    <Text
+                      style={[
+                        styles.colorGrey,
+                        {
+                          fontSize: 11,
+                          bottom: 1,
+                          alignSelf: "center"
+                        }
+                      ]}
+                    >
+                      Tap to enter manually
+                    </Text>
                   </View>
+                  {/* <Text
+                    style={{
+                      fontFamily: "montserrat-light",
+                      color: "#fff",
+                      alignSelf: "flex-start"
+                    }}
+                  >
+                    $
+                  </Text> */}
                   <View
                     style={[
                       styles.slidercontainer,
@@ -726,21 +763,11 @@ class AdDetails extends Component {
                             styles.colorGrey,
                             {
                               fontSize: 11,
-                              bottom: hp(1.2)
+                              alignSelf: "center"
                             }
                           ]}
                         >
-                          Tap to enter manually
-                        </Text>
-                        <Text
-                          style={[
-                            styles.colorGrey,
-                            {
-                              fontSize: 11
-                            }
-                          ]}
-                        >
-                          {"         "}25$/day
+                          25$/day
                         </Text>
                       </View>
                       <Text style={styles.colorGrey}>
@@ -766,7 +793,6 @@ class AdDetails extends Component {
                       minimumTrackTintColor="#751AFF"
                     />
                   </View>
-                  <Text style={[styles.subHeadings]}>Duration</Text>
 
                   <Text style={styles.subHeadings}>
                     Who would you like to reach?
@@ -779,13 +805,14 @@ class AdDetails extends Component {
                     }}
                   >
                     <ScrollView
+                      indicatorStyle="white"
                       style={{
                         backgroundColor: "rgba(255,255,255,0.1)",
                         marginHorizontal: 20,
                         borderRadius: 15,
                         paddingHorizontal: 25,
                         marginBottom: 5,
-                        height: hp("25%")
+                        height: hp("35%")
                       }}
                     >
                       <View
@@ -1139,14 +1166,21 @@ class AdDetails extends Component {
                         </TouchableOpacity>
                       </View>
                     </ScrollView>
-                    <ReachBar
-                      _handleSubmission={this._handleSubmission}
-                      country_code={
-                        this.state.campaignInfo.targeting.geos[0].country_code
+                    <Text
+                      onPress={() =>
+                        this.setState({ advance: !this.state.advance })
                       }
-                      targeting={this.state.campaignInfo.targeting}
-                    />
+                      style={[styles.budget, { fontSize: 14 }]}
+                    >
+                      Scroll for more options+
+                    </Text>
                   </View>
+                </View>
+                <View style={styles.bottom}>
+                  <ReachBar
+                    advance={this.state.advance}
+                    _handleSubmission={this._handleSubmission}
+                  />
                 </View>
               </ImageBackground>
             </View>
