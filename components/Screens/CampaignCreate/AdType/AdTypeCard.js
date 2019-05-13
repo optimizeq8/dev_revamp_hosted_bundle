@@ -36,8 +36,14 @@ export default class AdTypeCard extends Component {
             ]}
           >
             <Image
-              style={{ width: "100%", height: "100%", position: "absolute" }}
-              resizeMode="contain"
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "absolute"
+              }}
+              resizeMode={
+                this.props.adType.media !== "snapchat" ? "contain" : "stretch"
+              }
               source={this.props.adType.image}
             />
 
