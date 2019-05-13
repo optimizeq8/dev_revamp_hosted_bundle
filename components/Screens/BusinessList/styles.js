@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 20
+    marginTop: 30
   },
   container: {
     marginTop: 30,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     height: hp("14"),
     // position: "absolute",
-    bottom: hp("22"),
+    bottom: hp("20"),
     width: "100%"
   },
   gradient: {

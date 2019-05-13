@@ -253,7 +253,7 @@ class Dashboard extends Component {
                   height: 60
                 }}
               >
-                <Transition shared="menu">
+                <Transition appear="scale" disappear="scale" shared="menu">
                   <Text style={[styles.text]}>
                     {this.props.mainBusiness.businessname}
                   </Text>
