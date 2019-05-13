@@ -17,7 +17,10 @@ export default class LowerButton extends Component {
         }}
         onPress={() => this.props.function(false)}
       >
-        <ForwardButton />
+        <ForwardButton
+          width={heightPercentageToDP(9)}
+          height={heightPercentageToDP(9)}
+        />
       </TouchableOpacity>
     );
   }
