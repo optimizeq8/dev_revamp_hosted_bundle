@@ -25,6 +25,8 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import BackButton from "../../../MiniComponents/BackButton";
 //icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
+
 import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton.svg";
 
@@ -61,12 +63,6 @@ class AdObjective extends Component {
           label: "Awareness",
           value: "BRAND_AWARENESS",
           info: "Increase awareness of your brand or product.",
-          icon: ""
-        },
-        {
-          label: "Reach",
-          value: "REACH",
-          info: "The user will be shown A video of 10 Mins.",
           icon: ""
         },
         {
@@ -178,14 +174,23 @@ class AdObjective extends Component {
               locations={[0.7, 1]}
               style={styles.gradient}
             />
-            <View>
-              <BackButton
-                screenname="Ad Objective"
-                businessname={this.props.mainBusiness.businessname}
-                navigation={this.props.navigation.goBack}
-              />
-              <Text style={styles.title}>Snap Ad</Text>
-              <PhoneIcon style={styles.phoneicon} width={70} />
+          <BackdropIcon 
+            style={styles.backDrop}
+            height={heightPercentageToDP("100%")}
+            />
+            <View style={styles.block1}>
+                <View style={styles.innerBlock1}>
+                    <BackButton
+                        screenname="Ad Objective"
+                        businessname={this.props.mainBusiness.businessname}
+                        navigation={this.props.navigation.goBack}
+                        style={styles.backButton}
+                    />
+                    <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
+                </View>
+                {/* <View> */}
+                    <PhoneIcon style={styles.phoneicon} width={70} />
+                {/* </View> */}
             </View>
             <View style={styles.maincontent}>
               <Item
@@ -209,7 +214,7 @@ class AdObjective extends Component {
                     }
                   ]}
                 >
-                  Your Ad Name
+                    Enter Your Ad Name
                 </Label>
 
                 <Input
@@ -236,9 +241,8 @@ class AdObjective extends Component {
                   }}
                 />
               </Item>
-              <Text style={styles.subtext}>This will not show on your ad</Text>
 
-              <Text style={styles.text}>Objective</Text>
+              <Text style={styles.title}>Objective</Text>
 
               <Item
                 rounded
@@ -266,6 +270,7 @@ class AdObjective extends Component {
             </View>
 
             <LowerButton bottom={10} function={this._handleSubmission} />
+
           </Container>
         </TouchableWithoutFeedback>
         <Modal visible={this.props.loading}>
@@ -280,7 +285,7 @@ class AdObjective extends Component {
           <BlurView intensity={95} tint="dark">
             <View style={styles.popupOverlay}>
               <View style={styles.popupContent}>
-                <Text style={styles.modaltitle}>Objectives</Text>
+                <Text style={styles.modaltitle}>Campaign Objective</Text>
               </View>
               <ScrollView
                 indicatorStyle="white"

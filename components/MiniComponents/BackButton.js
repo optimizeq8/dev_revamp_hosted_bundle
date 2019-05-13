@@ -17,7 +17,7 @@ export default class CloseButton extends Component {
           );
           this.props.navigation();
         }}
-        style={[globalStyles.backButton]}
+        style={[globalStyles.backButton, this.props.style]}
       >
         <BackIcon />
       </TouchableOpacity>

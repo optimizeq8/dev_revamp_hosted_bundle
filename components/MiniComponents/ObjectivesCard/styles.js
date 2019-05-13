@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     color: "#fff",
     textAlign: "left",
-    width: "80%"
+    width: "80%",
+    lineHeight: 18
   },
   campaignButton: {
     justifyContent: "space-between",
