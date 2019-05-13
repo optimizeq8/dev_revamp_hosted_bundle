@@ -15,12 +15,14 @@ export const filterCampaigns = query => {
   };
 };
 
-export const getCampaignDetails = id => {
-  return dispatch => {
+export const getCampaignDetails = (id, navigation) => {
+  return (dispatch) => {
     dispatch({
       type: actionTypes.SET_CAMPAIGN,
-      payload: { loading: true, data: {}, message: "" }
+      payload: { loading: true, data: {} }
     });
+    navigation.push("CampaignDetails");
+
     instance
       .get(`campaigndetail/${id}`)
       .then(res => {
@@ -30,11 +32,12 @@ export const getCampaignDetails = id => {
         console.log("campaign details", data);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN,
-          payload: { loading: false, data: data.data, message: "" }
-        });
+          payload: { loading: false, data: data.data}
+        })
       })
       .catch(err => {
-        console.log("getCampaignDetails", err.message || err.response );
+
+        console.log("getCampaignDetails error", err.message || err.response );
         showMessage({
           message: err.message || err.response || "Something went wrong, please try again.",
           type: "danger",

@@ -48,13 +48,13 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
-            this.props.getCampaignDetails(this.props.campaign.campaign_id);
+            this.props.getCampaignDetails(this.props.campaign.campaign_id, this.props.navigation);
             Segment.trackWithProperties("Campaign Card Button", {
               campaign_id: this.props.campaign.campaign_id
             });
-            this.props.navigation.push("CampaignDetails", {
-              review_status: this.props.campaign.review_status
-            });
+            // this.props.navigation.push("CampaignDetails", {
+            //   review_status: this.props.campaign.review_status
+            // });
           }}
           style={styles.campaignButton}
         >
@@ -155,7 +155,7 @@ class CampaignCard extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getCampaignDetails: id => dispatch(actionCreators.getCampaignDetails(id))
+  getCampaignDetails: (id, naviagtion) => dispatch(actionCreators.getCampaignDetails(id, naviagtion))
 });
 export default connect(
   null,

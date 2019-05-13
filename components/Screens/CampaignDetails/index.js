@@ -52,11 +52,16 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import BarIcon from "../../../assets/SVGs/Bar.svg";
+import ErrorComponent from "../../MiniComponents/ErrorComponent";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
 import { ActivityIndicator } from "react-native-paper";
+import isNull from "lodash/isNull";
+import isEmpty from "lodash/isEmpty";
+import isUndefined from "lodash/isUndefined";
+
 
 const { height } = Dimensions.get("window");
 
@@ -173,8 +178,17 @@ class CampaignDetails extends Component {
     };
 
     if (this.props.loading) {
-      return <Loading dash={true} />;
-    } else {
+        return <Loading dash={true} />
+    } else
+     if(!this.props.loading && 
+        (isNull(this.props.selectedCampaign) || isUndefined(this.props.selectedCampaign) || isEmpty(this.props.selectedCampaign))) {
+            return (
+            <ErrorComponent
+                loading={this.props.loading}
+                navigation={this.props.navigation}
+            />)
+         }
+    else {
       console.log("0000000000000", this.props.selectedCampaign);
 
       let interesetNames =
@@ -330,7 +344,7 @@ class CampaignDetails extends Component {
                       </Text>
                       {/* <Text style={styles.subtext}>
                         Review:
-                        {this.props.navigation.state.params.review_status}
+                        {this.props.selectedCampaign.review_status}
                       </Text> */}
                     </View>
                   </View>
@@ -636,7 +650,7 @@ class CampaignDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.dashboard.loading,
+  loading: state.dashboard.loadingCampaignDetails,
   selectedCampaign: state.dashboard.selectedCampaign
 });
 const mapDispatchToProps = dispatch => ({

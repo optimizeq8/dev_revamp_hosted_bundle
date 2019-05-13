@@ -252,11 +252,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
-  changePassword: (currentPass, newPass, navigation) =>
-    dispatch(actionCreators.changePassword(currentPass, newPass, navigation))
-});
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(ChangePassword);

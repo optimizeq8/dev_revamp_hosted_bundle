@@ -20,6 +20,7 @@ import {
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Sidemenu from "react-native-side-menu";
 import { colors } from "../../GradiantColors/colors";
+import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 class Transactions extends Component {
   state = {
@@ -33,6 +34,11 @@ class Transactions extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
   render() {
+    if(this.props.errorTransactionList) {
+        return <ErrorComponent
+            navigation={this.props.navigation}
+        />
+    } else 
     if (this.props.loading)
       return (
         <>
@@ -44,7 +50,11 @@ class Transactions extends Component {
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    else {
+    // else if() {
+
+    // } 
+    else 
+    {
       let menu = (
         <FilterMenu
           transactionFilter={true}
@@ -109,7 +119,8 @@ const mapStateToProps = state => ({
   loading: state.transA.loading,
   mainBusiness: state.account.mainBusiness,
   transactionList: state.transA.transactionList,
-  filteredTransactions: state.transA.filteredTransactions
+  filteredTransactions: state.transA.filteredTransactions,
+  errorTransactionList: state.transA.errorTransactionList
 });
 
 const mapDispatchToProps = dispatch => ({

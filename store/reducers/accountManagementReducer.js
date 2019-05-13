@@ -6,7 +6,8 @@ const initialState = {
   mainBusiness: null,
   passwordChanged: false,
   loadingBillingAddress: false,
-  address: {}
+  address: {},
+  errorLoadingBillingAddress: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -64,7 +65,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_ADD_ADDRESS:
         return {
             ...state,
-            address: action.payload.data,
             loadingBillingAddress: false
         };
     
@@ -78,7 +78,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             address: action.payload,
-            loadingBillingAddress: false
+            loadingBillingAddress: false,
+            errorLoadingBillingAddress: true
         };
     case actionTypes.CREATE_SNAPCHAT_AD_ACCOUNT:
       let newMainBusiness = find(state.businessAccounts, bus => bus.businessid === state.mainBusiness.businessid);
@@ -101,7 +102,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_BILLING_ADDRESS_LOADING:
         return {
             ...state,
-            loadingBillingAddress: action.payload
+            loadingBillingAddress: action.payload,
+            errorLoadingBillingAddress: false
         };
     case actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT:
       return {

@@ -46,7 +46,8 @@ export const getBusinessAccounts = () => {
       .catch(err => {
         console.log("getBusinessAccountsError", err.message || err.response );
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
+            message: "Oops! Something went wrong. Please try again.",
+            description: err.message || err.response ,
             type: "danger",
             position: "top"
          });
@@ -91,7 +92,8 @@ export const createBusinessAccount = (account, navigation) => {
       .catch(err => {
         console.log('error creating new bsn',err.message || err.response );
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
+            message: "Oops! Something went wrong. Please try again.",
+            description: err.message || err.response ,
             type: "danger",
             position: "top"
          });
@@ -136,9 +138,10 @@ export const changePassword = (currentPass, newPass, navigation) => {
           console.log("changePasswordError", err.message || err.response );
 
           showMessage({
-              message: err.message || err.response ||"Oops! Something went wrong. Please try again.",
+              message: "Oops! Something went wrong. Please try again.",
+              description: err.message || err.response ,
               type: "danger",
-              position: "position"
+              position: "top"
           })
 
           return dispatch({
@@ -158,7 +161,7 @@ export const addressForm = (address, navigation, addressId) => {
         type: actionTypes.SET_BILLING_ADDRESS_LOADING,
         payload: true
       });
-      const response = await instance.put("businessaddress", {
+      const response = await instance.put("businessaddressee    ", {
         businessid: getState().account.mainBusiness.businessid,
         id: addressId,
         ...address
@@ -195,15 +198,13 @@ export const addressForm = (address, navigation, addressId) => {
     } catch (error) {
         console.log("Error while put/post address form", error.message);
         showMessage({
-                message: "Something went wrong, please try again.",
-                type: "danger",
-                position: "top"
+            message: "Oops! Something went wrong. Please try again.",
+            description: err.message || err.response ,
+            type: "danger",
+            position: "top"
         });
         return dispatch({
             type: actionTypes.ERROR_ADD_ADDRESS,
-            payload: {
-                success: false
-            }
         });
     }
   };
@@ -233,7 +234,8 @@ export const getAddressForm = () => {
       .catch(err => {
           console.log("Get Billing Address Error: ", err.message || err.response );
           showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
+            message: "Oops! Something went wrong. Please try again.",
+            description: err.message || err.response ,
             type: "danger",
             position: "top"
           });
@@ -283,7 +285,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
       .catch(err => {
           console.log("create_snapchat_ad_account_ERROR", err.message || err.response );
           showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
+            message: "Oops! Something went wrong. Please try again.",
+            description: err.message || err.response ,
             type: "danger",
             position: "top"
           });
