@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   },
   background: {
     position: "absolute",
-    opacity: 0.35,
-    top: 135,
+    opacity: 0.2,
+    top: 230,
     alignSelf: "center"
   },
   text: {
@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: heightPercentageToDP("10"),
+    top: heightPercentageToDP("3"),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.5,
-    marginBottom: heightPercentageToDP(2),
+    marginBottom: heightPercentageToDP(3),
     backgroundColor: "#FF9D00",
     borderRadius: 30,
     alignSelf: "center",
@@ -95,6 +95,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#fff"
   },
+  businessname: {
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    paddingTop: 5,
+    alignSelf: "center",
+    color: "#fff"
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
     height: heightPercentageToDP("110")
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
   },
   backDrop: {
     position: "absolute",
-    top: -heightPercentageToDP("49.5%"),
+    top: -heightPercentageToDP("50%"),
     alignSelf: "center"
   },
   DropIcon: {

@@ -255,7 +255,7 @@ class Dashboard extends Component {
               >
                 <Transition appear="scale" disappear="scale" shared="menu">
                   <Text style={[styles.text]}>
-                    {this.props.mainBusiness.businessname}
+                    {this.props.mainBusiness.brandname}
                   </Text>
                 </Transition>
                 {this.props.wallet > 0 && (

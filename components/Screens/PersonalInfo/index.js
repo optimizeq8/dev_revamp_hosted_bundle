@@ -97,18 +97,18 @@ class ChangePassword extends Component {
                         styles.inputtext,
                         {
                           bottom: 5,
-
+                          flexDirection: "column",
                           color: this.state.inputF ? "#FF9D00" : "#717171"
                         }
                       ]}
                     >
-                      {/* <Icon
+                      <Icon
                         style={{
                           fontSize: 20,
                           color: this.state.inputF ? "#FF9D00" : "#717171"
                         }}
-                        name="key"
-                      /> */}
+                        name="person"
+                      />
                       {"  "}
                       First Name
                     </Label>
@@ -249,7 +249,7 @@ class ChangePassword extends Component {
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo,
+  userInfo: state.auth.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
