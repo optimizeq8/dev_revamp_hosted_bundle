@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableHighlight,
   Keyboard
 } from "react-native";
 import {
@@ -23,6 +24,8 @@ import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import BackButton from "../../../MiniComponents/BackButton";
+import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import Duration from "./Duration";
 //icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
@@ -31,6 +34,9 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton.svg";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+
+//data
+import ObjectiveData from "./ObjectiveData";
 
 //Redux
 import { connect } from "react-redux";
@@ -51,64 +57,21 @@ class AdObjective extends Component {
       campaignInfo: {
         ad_account_id: "",
         name: "",
-        objective: ""
+        objective: "",
+        start_time: "",
+        end_time: ""
       },
+      minValueBudget: 0,
+      maxValueBudget: 0,
       modalVisible: false,
       objectiveLabel: "Select Objective",
       inputN: false,
-      objectives: [
-        {
-          label: "Awareness",
-          value: "BRAND_AWARENESS",
-          info: "Increase awareness of your brand or product.",
-          icon: ""
-        },
-        {
-          label: "Reach",
-          value: "REACH",
-          info: "The user will be shown A video of 10 Mins.",
-          icon: ""
-        },
-        {
-          label: "Traffic",
-          value: "TRAFFIC",
-          info: "Send Snapchatters directly to your website or to your app",
-          icon: ""
-        },
-        {
-          label: "App Installs",
-          value: "APP_INSTALLS",
-          info: "Send Snapchatters to the app store to download your app",
-          icon: ""
-        },
-        {
-          label: "Video Views",
-          value: "VIDEO_VIEWS",
-          info: "Promote your brand or product to Snapchatters through video.",
-          icon: ""
-        },
-        {
-          label: "Lead Generation",
-          value: "LEAD_GENERATION",
-          info: "Generate leads for your business.",
-          icon: ""
-        }
-      ],
+      objectives: ObjectiveData,
       nameError: "",
-      objectiveError: ""
+      objectiveError: "",
+      start_timeError: "",
+      end_timeError: ""
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
-    this.setModalVisible = this.setModalVisible.bind(this);
-    this.setObjective = this.setObjective.bind(this);
-  }
-
-  setObjective(value) {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        objective: value
-      }
-    });
   }
 
   componentDidMount() {
@@ -126,10 +89,44 @@ class AdObjective extends Component {
       }
     });
   }
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
 
+  setObjective = value => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        objective: value
+      }
+    });
+  };
+
+  handleStartDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        start_time: date
+      }
+    });
+  };
+  handleEndDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: date
+      }
+    });
+  };
+  setModalVisible = visible => {
+    this.setState({ modalVisible: visible });
+  };
+
+  getMinimumCash = days => {
+    let minValueBudget = days !== 0 ? 25 * days : 25;
+    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+    this.setState({
+      minValueBudget,
+      maxValueBudget
+    });
+  };
   _handleSubmission = () => {
     const nameError = validateWrapper(
       "mandatory",
@@ -140,11 +137,20 @@ class AdObjective extends Component {
       this.state.campaignInfo.objective
     );
 
+    let dateErrors = this.dateField.getErrors();
+
     this.setState({
       nameError,
-      objectiveError
+      objectiveError,
+      start_timeError: dateErrors.start_timeError,
+      end_timeError: dateErrors.end_timeError
     });
-    if (!nameError && !objectiveError) {
+    if (
+      !nameError &&
+      !objectiveError &&
+      !dateErrors.start_timeError &&
+      !dateErrors.end_timeError
+    ) {
       Segment.trackWithProperties("Select Ad Objective Button", {
         business_name: this.props.mainBusiness.businessname,
         campaign_objective: this.state.campaignInfo.objective
@@ -154,8 +160,12 @@ class AdObjective extends Component {
         business_name: this.props.mainBusiness.businessname,
         campaign_objective: this.state.campaignInfo.objective
       });
+
+      this.props.getMinimumCash({
+        minValueBudget: this.state.minValueBudget,
+        maxValueBudget: this.state.maxValueBudget
+      });
       this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
-      // this.props.navigation.navigate("AdDesign");
     }
   };
 
@@ -236,7 +246,17 @@ class AdObjective extends Component {
                   }}
                 />
               </Item>
-              <Text style={styles.subtext}>This will not show on your ad</Text>
+              <Text style={[styles.subtext, { marginBottom: 20, top: 5 }]}>
+                This will not show on your ad
+              </Text>
+
+              <Duration
+                start_time={this.state.campaignInfo.start_time}
+                end_time={this.state.campaignInfo.end_time}
+                start_timeError={this.state.start_timeError}
+                end_timeError={this.state.end_timeError}
+                dateField={this.dateField}
+              />
 
               <Text style={styles.text}>Objective</Text>
 
@@ -268,6 +288,14 @@ class AdObjective extends Component {
             <LowerButton bottom={10} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
+        <DateField
+          getMinimumCash={this.getMinimumCash}
+          onRef={ref => (this.dateField = ref)}
+          handleStartDatePicked={this.handleStartDatePicked}
+          handleEndDatePicked={this.handleEndDatePicked}
+          start_time={this.state.campaignInfo.start_time}
+          end_time={this.state.campaignInfo.end_time}
+        />
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -308,7 +336,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ad_objective: (info, navigation) =>
-    dispatch(actionCreators.ad_objective(info, navigation))
+    dispatch(actionCreators.ad_objective(info, navigation)),
+  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values))
 });
 export default connect(
   mapStateToProps,

@@ -90,9 +90,7 @@ class AdDetails extends Component {
             }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
-        },
-        start_time: "",
-        end_time: ""
+        }
       },
       filteredRegions: country_regions[0].regions,
       filteredLanguages: [
@@ -158,8 +156,12 @@ class AdDetails extends Component {
       await this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id
-        }
+          campaign_id: this.props.campaign_id,
+          lifetime_budget_micro: this.props.minValueBudget
+        },
+        minValueBudget: this.props.minValueBudget,
+        maxValueBudget: this.props.maxValueBudget,
+        value: this.props.minValueBudget
       });
       if (
         this.props.navigation.state.params &&
@@ -209,36 +211,7 @@ class AdDetails extends Component {
       // this.getTotalReach();
     }
   };
-  getMinimumCash = days => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
-    this.onSelectedBudgetChange(minValueBudget);
-    this.setState({
-      minValueBudget,
-      maxValueBudget
-    });
-    showMessage({
-      message: "Budget recalculated based on duration",
-      type: "warning",
-      position: "top"
-    });
-  };
-  handleStartDatePicked = date => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        start_time: date
-      }
-    });
-  };
-  handleEndDatePicked = date => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        end_time: date
-      }
-    });
-  };
+
   onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
@@ -309,6 +282,8 @@ class AdDetails extends Component {
   };
 
   _handleBudget = value => {
+    console.log(value);
+
     if (
       !validateWrapper("Budget", value) &&
       value >= this.state.minValueBudget
@@ -341,19 +316,11 @@ class AdDetails extends Component {
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
         : null;
-    let dateErrors = this.dateField.getErrors();
 
     this.setState({
-      languagesError,
-      start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      languagesError
     });
-    if (
-      this._handleBudget(this.state.value) &&
-      !languagesError &&
-      !dateErrors.end_timeError &&
-      !dateErrors.start_timeError
-    ) {
+    if (this._handleBudget(this.state.value) && !languagesError) {
       let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
@@ -627,21 +594,6 @@ class AdDetails extends Component {
     });
     interests_names = interests_names.join(", ");
 
-    let end_time = "";
-    let start_time = "";
-    let end_year = "";
-    let start_year = "";
-    if (
-      this.state.campaignInfo.start_time !== "" &&
-      this.state.campaignInfo.end_time !== ""
-    ) {
-      end_time = new Date(this.state.campaignInfo.end_time.split("T")[0]);
-      start_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
-      end_year = end_time.getFullYear();
-      start_year = start_time.getFullYear();
-      end_time = dateFormat(end_time, "d mmm");
-      start_time = dateFormat(start_time, "d mmm");
-    }
     let editCampaign =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign;
@@ -816,77 +768,6 @@ class AdDetails extends Component {
                   </View>
                   <Text style={[styles.subHeadings]}>Duration</Text>
 
-                  <TouchableHighlight
-                    underlayColor="rgba(0,0,0,0.2)"
-                    style={[
-                      styles.dateInput,
-                      {
-                        borderColor: this.state.start_timeError
-                          ? "red"
-                          : "transparent"
-                      }
-                    ]}
-                    onPress={() => {
-                      if (
-                        this.props.navigation.state.params &&
-                        !this.props.navigation.state.params.hasOwnProperty(
-                          "editCampaign"
-                        )
-                      )
-                        this.dateField.showModal();
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          textAlign: "center"
-                        }}
-                      >
-                        <Text style={[styles.categories, { fontSize: 16 }]}>
-                          Start
-                        </Text>
-                        {this.state.campaignInfo.start_time !== "" && (
-                          <Text style={styles.numbers}>
-                            {start_time}
-                            {"\n"}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {start_year}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-
-                      <Text style={[styles.categories, { fontSize: 16 }]}>
-                        To
-                      </Text>
-
-                      <View
-                        style={{
-                          flexDirection: "column"
-                        }}
-                      >
-                        <Text style={[styles.categories, { fontSize: 16 }]}>
-                          End
-                        </Text>
-
-                        {this.state.campaignInfo.end_time !== "" && (
-                          <Text style={styles.numbers}>
-                            {end_time}
-                            {"\n"}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {end_year}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-                  </TouchableHighlight>
                   <Text style={styles.subHeadings}>
                     Who would you like to reach?
                   </Text>
@@ -1274,14 +1155,6 @@ class AdDetails extends Component {
         <Modal isVisible={this.props.loading}>
           <LoadingScreen top={50} />
         </Modal>
-        <DateField
-          getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
-          handleStartDatePicked={this.handleStartDatePicked}
-          handleEndDatePicked={this.handleEndDatePicked}
-          start_time={this.state.campaignInfo.start_time}
-          end_time={this.state.campaignInfo.end_time}
-        />
       </>
     );
   }
@@ -1289,6 +1162,8 @@ class AdDetails extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
+  minValueBudget: state.campaignC.minValueBudget,
+  maxValueBudget: state.campaignC.maxValueBudget,
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,
