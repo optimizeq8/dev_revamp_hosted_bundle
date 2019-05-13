@@ -19,6 +19,7 @@ export { setAuthToken } from "./genericActions";
 
 export {
   ad_objective,
+  getMinimumCash,
   ad_design,
   ad_details,
   updateCampaign,
@@ -49,7 +50,7 @@ export {
   forgotPassword,
   clearPushToken,
   setCurrentUser,
-  send_push_notification,
+  send_push_notification
 } from "./loginActions";
 
 export {

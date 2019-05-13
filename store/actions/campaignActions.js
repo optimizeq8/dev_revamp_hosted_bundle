@@ -33,9 +33,12 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
         }
       })
       .catch(err => {
-        console.log("payment_request_knet", err.message || err.response );
+        console.log("payment_request_knet", err.message || err.response);
         showMessage({
-          message: err.message || err.response  || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -64,9 +67,12 @@ export const snap_ad_audience_size = (info, totalReach) => {
       })
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch(err => {
-        console.log("snap_ad_audience_size", err.message || err.response );
+        console.log("snap_ad_audience_size", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -91,9 +97,12 @@ export const get_total_reach = info => {
         });
       })
       .catch(err => {
-        console.log("get_total_reach",err.message || err.response );
+        console.log("get_total_reach", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -125,9 +134,12 @@ export const ad_objective = (info, navigation) => {
         navigation.push("AdDesign");
       })
       .catch(err => {
-        console.log("ad_objective", err.message || err.response );
+        console.log("ad_objective", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -136,6 +148,14 @@ export const ad_objective = (info, navigation) => {
         });
       });
   };
+};
+
+export const getMinimumCash = values => {
+  return dispatch =>
+    dispatch({
+      type: actionTypes.SET_MINIMUN_CASH,
+      payload: values
+    });
 };
 
 export const ad_design = (
@@ -180,7 +200,10 @@ export const ad_design = (
         laoding(0);
         console.log("ad_design", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -205,9 +228,12 @@ export const get_interests = countryCode => {
         });
       })
       .catch(err => {
-        console.log("get_interests", err.message || err.response );
+        console.log("get_interests", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -232,9 +258,12 @@ export const get_device_brands = () => {
         });
       })
       .catch(err => {
-        console.log("get_device_brands", err.message || err.response );
+        console.log("get_device_brands", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -259,9 +288,12 @@ export const get_ios_versions = () => {
         });
       })
       .catch(err => {
-        console.log("get_ios_versions", err.message || err.response );
+        console.log("get_ios_versions", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -286,9 +318,12 @@ export const get_android_versions = () => {
         });
       })
       .catch(err => {
-        console.log("get_android_versions", err.message || err.response );
+        console.log("get_android_versions", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -322,9 +357,12 @@ export const ad_details = (info, interestNames, navigation) => {
         });
       })
       .catch(err => {
-        console.log("ad_details", err.message || err.response );
+        console.log("ad_details", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -356,9 +394,12 @@ export const updateCampaign = (info, businessid, navigation) => {
         navigation.navigate("Dashboard");
       })
       .catch(err => {
-        console.log("updateCampaign", err.message || err.response );
+        console.log("updateCampaign", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -385,7 +426,7 @@ export const updateStatus = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        console.log(err.message || err.response );
+        console.log(err.message || err.response);
       });
   };
 };
