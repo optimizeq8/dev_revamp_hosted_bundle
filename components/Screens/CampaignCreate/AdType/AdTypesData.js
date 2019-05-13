@@ -1,6 +1,7 @@
 export const snapAds = [
   {
     id: 1,
+    media: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     icon: "snapchat-ghost",
@@ -9,6 +10,7 @@ export const snapAds = [
   },
   {
     id: 2,
+    media: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     icon: "snapchat-ghost",
@@ -17,6 +19,7 @@ export const snapAds = [
   },
   {
     id: 3,
+    media: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     icon: "snapchat-ghost",
@@ -28,6 +31,7 @@ export const snapAds = [
 export const twittwerAds = [
   {
     id: 1,
+    media: "twitter",
     text: "Create Your Ad Now!",
     rout: "",
     title: "Promoted Tweet",
@@ -38,6 +42,7 @@ export const twittwerAds = [
 export const instagramAds = [
   {
     id: 1,
+    media: "instagram",
     text: "Create Your Ad Now!",
     rout: "",
     title: "Instagram Ad",
