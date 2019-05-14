@@ -10,7 +10,7 @@ import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
 import CreateBusinessAccount from "../Screens/CreateBusinessAccount";
 import CampaignDetails from "../Screens/CampaignDetails";
 import BusinessList from "../Screens/BusinessList";
-import ChangePassword from "../Screens/Change Password/";
+import ChangePassword from "../Screens/ChangePassword/";
 import AddressForm from "../Screens/AddressForm";
 import TransactionList from "../Screens/Transactions";
 import PersonalInfo from "../Screens/PersonalInfo";
