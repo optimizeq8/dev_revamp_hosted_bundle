@@ -49,6 +49,7 @@ class CreateBusinessAccount extends Component {
       inputE: false,
       inputBN: false,
       businessnameError: "",
+      businessnameExistsError: "",
       brandNameError: "",
       businessemailError: "",
       businesscategoryError: "",
@@ -187,7 +188,7 @@ class CreateBusinessAccount extends Component {
       await this.props.verifyBusinessName(name);
 
       this.setState({
-        businessnameError: validateWrapper(
+        businessnameExistsError: validateWrapper(
           "mandatory",
           this.state.businessAccount.businessname
         )
@@ -195,15 +196,12 @@ class CreateBusinessAccount extends Component {
     }
   }
 
-  _handleSubmission = () => {
+  _handleSubmission = async () => {
     const businessnameError = validateWrapper(
       "mandatory",
       this.state.businessAccount.businessname
     );
-    const brandNameError = validateWrapper(
-      "mandatory",
-      this.state.businessAccount.brandname
-    );
+
     const businessemailError = validateWrapper(
       "mandatory",
       this.props.registering
@@ -220,7 +218,6 @@ class CreateBusinessAccount extends Component {
     );
     this.setState({
       businessnameError,
-      brandNameError,
       businessemailError,
       businesscategoryError,
       countryError
@@ -228,12 +225,20 @@ class CreateBusinessAccount extends Component {
     this._verifyBusinessName(this.state.businessAccount.businessname);
     if (
       !businessnameError &&
-      !brandNameError &&
-      !this.state.businessnameError &&
+      this.state.businessnameExistsError &&
       !businessemailError &&
       !businesscategoryError &&
       !countryError
     ) {
+      if (this.state.businessAccount.brandname === "") {
+        await this.setState({
+          businessAccount: {
+            ...this.state.businessAccount,
+            brandname: this.state.businessAccount.businessname
+          }
+        });
+      }
+
       if (this.props.registering) {
         let { businessemail, ...business } = this.state.businessAccount;
         let userInfo = {
@@ -245,6 +250,8 @@ class CreateBusinessAccount extends Component {
 
         this.props.registerUser(userInfo, this.props.navigation);
       } else {
+        console.log(this.state.businessAccount);
+
         this.props.createBusinessAccount(
           this.state.businessAccount,
           this.props.navigation
@@ -277,10 +284,8 @@ class CreateBusinessAccount extends Component {
         <View
           style={{
             paddingVertical: 10,
-            alignSelf: "center",
             flexDirection: "row",
-            alignSelf: "center",
-            justifyContent: "center"
+            alignSelf: "center"
           }}
         >
           <Button
@@ -305,8 +310,7 @@ class CreateBusinessAccount extends Component {
               style={[
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activetext
-                  : styles.inactivetext,
-                { textAlign: "center" }
+                  : styles.inactivetext
               ]}
             >
               <Icon
@@ -322,7 +326,8 @@ class CreateBusinessAccount extends Component {
                   }
                 ]}
               />
-              {"\n"}Home{"\n"} Business
+              {"\n"}
+              SME{"\n"} or Startup
             </Text>
           </Button>
 
@@ -348,8 +353,7 @@ class CreateBusinessAccount extends Component {
               style={[
                 this.state.businessAccount.businesstype === "2"
                   ? styles.activetext
-                  : styles.inactivetext,
-                { textAlign: "center" }
+                  : styles.inactivetext
               ]}
             >
               <Icon
@@ -365,7 +369,7 @@ class CreateBusinessAccount extends Component {
                   }
                 ]}
               />
-              {"\n"}Agencies
+              {"\n"}Agency
             </Text>
           </Button>
 
@@ -386,28 +390,27 @@ class CreateBusinessAccount extends Component {
               this._handleBusinessCategories("3");
             }}
           >
-            <Text
+            <Icon
+              type="FontAwesome"
+              name="building"
               style={[
                 this.state.businessAccount.businesstype === "3"
                   ? styles.activetext
                   : styles.inactivetext,
-                { textAlign: "center" }
+                {
+                  fontSize: 25,
+                  bottom: 5
+                }
+              ]}
+            />
+            <Text
+              style={[
+                this.state.businessAccount.businesstype === "3"
+                  ? styles.activetext
+                  : styles.inactivetext
               ]}
             >
-              <Icon
-                type="FontAwesome"
-                name="building"
-                style={[
-                  this.state.businessAccount.businesstype === "3"
-                    ? styles.activetext
-                    : styles.inactivetext,
-                  {
-                    left: 25,
-                    fontSize: 25
-                  }
-                ]}
-              />
-              {"\n"}Company
+              Corporate
             </Text>
           </Button>
         </View>
@@ -424,7 +427,8 @@ class CreateBusinessAccount extends Component {
                   {
                     borderColor: this.state.inputN
                       ? "#7039FF"
-                      : this.state.businessnameError
+                      : this.state.businessnameError ||
+                        this.state.businessnameExistsError
                       ? "red"
                       : "#D9D9D9"
                   }
@@ -495,11 +499,7 @@ class CreateBusinessAccount extends Component {
                 style={[
                   styles.input,
                   {
-                    borderColor: this.state.inputBN
-                      ? "#7039FF"
-                      : this.state.brandNameError
-                      ? "red"
-                      : "#D9D9D9"
+                    borderColor: this.state.inputBN ? "#7039FF" : "#D9D9D9"
                   }
                 ]}
               >
@@ -522,7 +522,7 @@ class CreateBusinessAccount extends Component {
                     name="label"
                   />
                   {"  "}
-                  Brand Name
+                  Brand Name (optional)
                 </Label>
 
                 <Input
@@ -541,12 +541,6 @@ class CreateBusinessAccount extends Component {
                   }}
                   onBlur={() => {
                     this.setState({ inputBN: false });
-                    this.setState({
-                      brandNameError: validateWrapper(
-                        "mandatory",
-                        this.state.businessAccount.brandname
-                      )
-                    });
                   }}
                 />
               </Item>

@@ -93,8 +93,13 @@ class Dashboard extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
-      if (!this.props.mainBusiness.snap_ad_account_id)
-        this.props.navigation.navigate("SnapchatCreateAdAcc");
+      if (
+        this.props.mainBusiness &&
+        !this.props.mainBusiness.snap_ad_account_id
+      )
+        this.props.navigation.navigate("SnapchatCreateAdAcc", {
+          closeAnimation: this.closeAnimation
+        });
       this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -129,7 +134,9 @@ class Dashboard extends Component {
       toValue: 0,
       duration: 350
     }).start(() => {
-      this.setState({ open: false }, () => this.props.navigation.pop());
+      this.setState({ open: false }, () =>
+        this.props.navigation.replace("Dashboard")
+      );
     });
   };
   renderSearchBar = () => {
@@ -196,7 +203,7 @@ class Dashboard extends Component {
         </View>
       );
     } else {
-      console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
+      // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
           <>

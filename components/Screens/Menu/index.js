@@ -152,7 +152,7 @@ class Menu extends Component {
               style={[
                 styles.button,
                 {
-                  //elevation: this.state.slidePanel ? -1 : 1
+                  elevation: this.state.slidePanel ? -1 : 1
                   //zIndex: this.state.slidePanel ? -1 : 1
                 }
               ]}
