@@ -104,14 +104,15 @@ const styles = StyleSheet.create({
   },
 
   subtext: {
-    paddingTop: 10,
+    paddingTop: 5,
     fontFamily: "montserrat-semibold",
     fontSize: 10,
     color: "#fff"
   },
   campaignButton: {
     flex: 1,
-    padding: 20
+    padding: 20,
+    paddingVertical: 15
   },
   chart: {
     paddingHorizontal: 5,
@@ -128,7 +129,8 @@ const styles = StyleSheet.create({
     paddingTop: 17,
     fontFamily: "montserrat-regular",
     fontSize: 12,
-    color: "#fff"
+    color: "#fff",
+    fontFamily: "montserrat-semibold"
   },
   containerStyle: {
     position: "absolute",
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   toggleStyle: {
-    width: widthPercentageToDP(15),
+    width: widthPercentageToDP(16),
     height: heightPercentageToDP(2.3),
     borderRadius: 20,
     padding: 0
@@ -146,9 +148,9 @@ const styles = StyleSheet.create({
   icon: {
     position: "absolute",
     color: "#fff",
-    left: widthPercentageToDP(65),
-    fontSize: widthPercentageToDP(12),
-    top: widthPercentageToDP("-3%")
+    left: "88%",
+    fontSize: 40,
+    top: "-3%"
   },
   contentContainer: {
     paddingTop: 30
@@ -171,12 +173,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end"
   },
-  campaignNumbers: { top: 6, fontFamily: "montserrat-medium" },
+  campaignNumbers: {
+    top: 6,
+    fontFamily: "montserrat-medium",
+    right: 10
+  },
   toggleTextLeft: {
     fontSize: 11,
     position: "absolute",
     top: -7,
     left: 12,
+    fontFamily: "montserrat-light",
+    color: "#fff"
+  },
+  toggleTextRight: {
+    fontSize: 9.5,
+    position: "absolute",
+    top: -7,
+    // left: 12,
     fontFamily: "montserrat-light",
     color: "#fff"
   }

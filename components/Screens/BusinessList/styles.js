@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     height: hp("14"),
     // position: "absolute",
-    bottom: hp("20"),
+    bottom: hp("17"),
     width: "100%"
   },
   gradient: {

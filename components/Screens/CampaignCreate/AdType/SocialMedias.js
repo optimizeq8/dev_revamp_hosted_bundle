@@ -17,7 +17,7 @@ export const SocialPlatforms = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     icon: <Twitter />,
-    title: "Twitter",
+    title: "",
     image: require("../../../../assets/images/AdTypes/StoryAd.gif")
   },
   {
@@ -25,7 +25,7 @@ export const SocialPlatforms = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     icon: <Instagram />,
-    title: "Instagram",
+    title: "",
     image: require("../../../../assets/images/AdTypes/CollectionAd.gif")
   }
 ];
