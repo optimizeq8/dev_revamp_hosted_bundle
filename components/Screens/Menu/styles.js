@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
   },
   businessTitle: {
     alignSelf: "center",
+    top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: heightPercentageToDP(4),
-    marginLeft: 0
+    fontSize: heightPercentageToDP(4)
   },
   menutext: {
     fontFamily: "montserrat-semibold",

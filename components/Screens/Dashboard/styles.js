@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   container: {
-    marginTop: heightPercentageToDP("4"),
-    backgroundColor: "#751AFF"
+    top: heightPercentageToDP(6)
   },
   image: {
     alignSelf: "center",
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    bottom: heightPercentageToDP(8),
+    bottom: heightPercentageToDP(2),
     backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -44,10 +43,9 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   text: {
+    alignSelf: "center",
     top: heightPercentageToDP(2.5),
-    alignSelf: "flex-start",
     color: "#fff",
-    marginLeft: widthPercentageToDP(4),
     fontFamily: "montserrat-semibold",
     fontSize: heightPercentageToDP(2)
   },
@@ -202,8 +200,16 @@ const styles = StyleSheet.create({
   dateModal: {
     ...StyleSheet.absoluteFillObject,
     height: heightPercentageToDP("100%"),
-
     marginTop: 0
+  },
+  wallet: {
+    top: "0.5%",
+    right: "7%",
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "10%",
+    height: "4%"
   }
 });
 

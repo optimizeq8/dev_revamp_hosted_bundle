@@ -114,7 +114,11 @@ class PaymentForm extends Component {
 
   reviewPurchase = () => {
     if (this.props.walletUsed)
-      this.props.removeWalletAmount(this.props.campaign_id, this.props.navigation, this.props.navigation.state.params.interestNames);
+      this.props.removeWalletAmount(
+        this.props.campaign_id,
+        this.props.navigation,
+        this.props.navigation.state.params.interestNames
+      );
 
     !this.props.loading &&
       this.props.navigation.navigate("AdPaymentReview", {
@@ -230,7 +234,7 @@ class PaymentForm extends Component {
                     }
                   ]}
                 >
-                  KENT
+                  KNET
                 </Text>
               </Button>
             </View>
@@ -275,8 +279,7 @@ class PaymentForm extends Component {
             <Button
               transparent
               onPress={() =>
-                !this.props.loading &&
-                this.props.navigation.navigate("AddCredits")
+                !this.props.loading && this.props.navigation.navigate("Wallet")
               }
               style={styles.button}
             >
@@ -410,7 +413,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
     ),
-  removeWalletAmount: (info, naviagtion, interestNames) => dispatch(actionCreators.removeWalletAmount(info, naviagtion, interestNames)),
+  removeWalletAmount: (info, naviagtion, interestNames) =>
+    dispatch(
+      actionCreators.removeWalletAmount(info, naviagtion, interestNames)
+    ),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

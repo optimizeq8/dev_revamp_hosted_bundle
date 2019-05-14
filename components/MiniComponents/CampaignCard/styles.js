@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../Global Styles";
 
 export const colors = {
@@ -27,12 +30,9 @@ const styles = StyleSheet.create({
     width: 50
   },
   cardStyle: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-    borderRadius: 20,
-    marginVertical: 10,
+    marginHorizontal: 20,
+    borderRadius: 30,
+    marginVertical: 8,
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
@@ -96,18 +96,17 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   titletext: {
-    textAlign: "left",
     color: "#fff",
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
-    paddingVertical: 0,
-    width: "70%"
+    width: "70%",
+    left: 5
   },
 
   subtext: {
     paddingTop: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontFamily: "montserrat-semibold",
+    fontSize: 10,
     color: "#fff"
   },
   campaignButton: {
@@ -119,9 +118,9 @@ const styles = StyleSheet.create({
     top: 15
   },
   chartText: {
-    color: "#fff",
+    color: globalColors.orange,
     fontFamily: "montserrat-medium",
-    fontSize: 16,
+    fontSize: 12,
     marginLeft: 10
   },
   chartSubtext: {
@@ -133,30 +132,52 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     position: "absolute",
-    left: "87%",
+    left: "80%",
     top: "87%",
     backgroundColor: "transparent",
     borderRadius: 20
   },
   toggleStyle: {
-    width: widthPercentageToDP(10),
-    height: 20,
+    width: widthPercentageToDP(15),
+    height: heightPercentageToDP(2.3),
     borderRadius: 20,
     padding: 0
   },
   icon: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     color: "#fff",
-    left: widthPercentageToDP("63%"),
-    fontSize: widthPercentageToDP("15%"),
+    left: widthPercentageToDP(65),
+    fontSize: widthPercentageToDP(12),
     top: widthPercentageToDP("-3%")
   },
   contentContainer: {
     paddingTop: 30
   },
   reviewtext: {
-    fontFamily: "montserrat-extralight",
-    fontSize: 15,
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    padding: 3,
+    color: "#fff"
+  },
+  campaignInfo: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    width: widthPercentageToDP(40),
+    left: 10
+  },
+  campaignIcons: {
+    top: 10,
+    left: 10,
+    flexDirection: "row",
+    alignItems: "flex-end"
+  },
+  campaignNumbers: { top: 6, fontFamily: "montserrat-medium" },
+  toggleTextLeft: {
+    fontSize: 11,
+    position: "absolute",
+    top: -7,
+    left: 12,
+    fontFamily: "montserrat-light",
     color: "#fff"
   }
 });
