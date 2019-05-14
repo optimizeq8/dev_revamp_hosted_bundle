@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
 import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-  } from "react-native-responsive-screen";
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -12,7 +12,7 @@ export const colors = {
 const styles = StyleSheet.create({
   container: {
     marginTop: 30,
-    display:"flex",
+    display: "flex",
     justifyContent: "space-between"
   },
   block1: {
@@ -25,13 +25,18 @@ const styles = StyleSheet.create({
   },
   block1Title: {
     top: hp(5),
+    width: "100%",
+    paddingRight: 25
+    // marginLeft: "auto",
+    // marginRight: "auto"
+    // flex: 5
   },
-  innerBlock1:{
-    display:"flex",
+  innerBlock1: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:"center",
-    width: wp(100),
+    justifyContent: "space-around",
+    width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -43,7 +48,12 @@ const styles = StyleSheet.create({
   },
   backButton: {
     // top: 0,
-    left: -wp(30),
+    left: wp(0),
+    // marginRight: "auto",
+    // borderWidth: 1,
+    width: 80,
+    height: 40,
+    paddingLeft: 40
   },
   backbuttonicon: {
     justifyContent: "center",
@@ -57,9 +67,9 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold"
   },
   phoneicon: {
-    justifyContent: "center",
-    alignSelf: "center",
-    marginTop: 70
+    // justifyContent: "center",
+    // alignSelf: "center",
+    marginTop: 60
   },
   maincontent: {
     flex: 1,
@@ -108,8 +118,8 @@ const styles = StyleSheet.create({
   },
   downicon: {
     color: "#fff",
-    fontSize: 20,
-    left: 25
+    fontSize: 20
+    // left: 5
   },
   button: {
     alignSelf: "center",

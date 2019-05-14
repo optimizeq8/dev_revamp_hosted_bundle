@@ -174,23 +174,21 @@ class AdObjective extends Component {
               locations={[0.7, 1]}
               style={styles.gradient}
             />
-          <BackdropIcon 
-            style={styles.backDrop}
-            height={heightPercentageToDP("100%")}
+            <BackdropIcon
+              style={styles.backDrop}
+              height={heightPercentageToDP("100%")}
             />
             <View style={styles.block1}>
-                <View style={styles.innerBlock1}>
-                    <BackButton
-                        screenname="Ad Objective"
-                        businessname={this.props.mainBusiness.businessname}
-                        navigation={this.props.navigation.goBack}
-                        style={styles.backButton}
-                    />
-                    <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
-                </View>
-                {/* <View> */}
-                    <PhoneIcon style={styles.phoneicon} width={70} />
-                {/* </View> */}
+              <View style={styles.innerBlock1}>
+                <BackButton
+                  screenname="Ad Objective"
+                  businessname={this.props.mainBusiness.businessname}
+                  navigation={this.props.navigation.goBack}
+                  style={styles.backButton}
+                />
+                <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
+              </View>
+              <PhoneIcon style={styles.phoneicon} width={70} />
             </View>
             <View style={styles.maincontent}>
               <Item
@@ -211,10 +209,13 @@ class AdObjective extends Component {
                     styles.inputtext,
                     {
                       color: this.state.inputN ? "#FF9D00" : "#fff"
+                    },
+                    {
+                      fontFamily: "montserrat-bold"
                     }
                   ]}
                 >
-                    Enter Your Ad Name
+                  Enter Your Ad Name
                 </Label>
 
                 <Input
@@ -258,7 +259,7 @@ class AdObjective extends Component {
                   this.setModalVisible(true);
                 }}
               >
-                <Text style={[styles.inputtext, { flex: 1 }]}>
+                <Text style={[styles.inputtext, { width: "100%" }]}>
                   {this.state.campaignInfo.objective === ""
                     ? this.state.objectiveLabel
                     : this.state.objectives.find(
@@ -270,7 +271,6 @@ class AdObjective extends Component {
             </View>
 
             <LowerButton bottom={10} function={this._handleSubmission} />
-
           </Container>
         </TouchableWithoutFeedback>
         <Modal visible={this.props.loading}>
