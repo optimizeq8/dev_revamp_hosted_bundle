@@ -1,7 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="317.012" height="416.188" viewBox="0 0 317.012 416.188">
-  <text id="Optimize" transform="translate(25 399.188)" fill="#fff" font-size="67" font-family="Montserrat-Regular, Montserrat"><tspan x="0" y="0">Optimize</tspan></text>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" width="317.012" height="416.188" viewBox="0 0 317.012 416.188" >
+  <defs>
+
+    <style type="text/css">
+      @font-face {
+        font-family: Montserrat-Regular;
+        src: {
+        url('../fonts/Montserrat-Regular.ttf')format('truetype'),
+        url('Montserrat-Regular.ttf')format('truetype')};
+      }
+
+    </style>
+  </defs>
+  <text id="Optimize" transform="translate(25 399.188)" fill="#fff" font-size="67" font-family="montserrat-regular">Optimize</text>
   <g id="Group_11" data-name="Group 11" transform="translate(7.5 7.5)">
     <ellipse id="Ellipse_13" data-name="Ellipse 13" cx="151.006" cy="151.005" rx="151.006" ry="151.005" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="15"/>
     <path id="Path_7" data-name="Path 7" d="M976.127,541.035l66.592-74.3,40.674,39.547,37.5-43.409-16.971-18.738,58.715-9.683-9.505,62.3-17.713-18.675-51.139,59.286-44.227-41.991Z" transform="translate(-929.108 -334.956)" fill="#fff"/>
   </g>
+
 </svg>
