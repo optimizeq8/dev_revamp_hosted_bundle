@@ -14,7 +14,7 @@ import ChangePassword from "../Screens/Change Password/";
 import AddressForm from "../Screens/AddressForm";
 import TransactionList from "../Screens/Transactions";
 import PersonalInfo from "../Screens/PersonalInfo";
-import AddCredits from "../Screens/AddCredits";
+import Wallet from "../Screens/Wallet";
 import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
 
 export default FluidNavigator(
@@ -31,7 +31,7 @@ export default FluidNavigator(
     PersonalInfo: PersonalInfo,
     MultiSelect: MultiSelect,
     TransactionList: TransactionList,
-    AddCredits: AddCredits
+    Wallet: Wallet
   },
   {
     initialRouteName: "Dashboard",

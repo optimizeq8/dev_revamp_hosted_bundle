@@ -33,7 +33,7 @@ import {
 } from "react-native-responsive-screen";
 import * as Animatable from "react-native-animatable";
 
-class AddCredits extends Component {
+class Wallet extends Component {
   static navigationOptions = {
     header: null
   };
@@ -222,4 +222,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(AddCredits);
+)(Wallet);

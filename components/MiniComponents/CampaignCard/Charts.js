@@ -12,7 +12,7 @@ export default class Charts extends Component {
       <View>
         <AnimatedCircularProgress
           size={this.props.detail ? heightPercentageToDP("11") : 65}
-          width={6}
+          width={5}
           fill={x}
           rotation={0}
           lineCap="round"
@@ -20,7 +20,15 @@ export default class Charts extends Component {
           tintColor="#FEFB00"
           backgroundColor="rgba(255,255,255,0.3)"
         >
-          {fill => <Text style={styles.chartText}>{parseInt(fill)}</Text>}
+          {fill => (
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={styles.chartText}
+            >
+              {parseInt(fill)}
+            </Text>
+          )}
         </AnimatedCircularProgress>
         <Text style={[styles.chartSubtext]}>
           {Object.keys(this.props.chartCategory)[0]}

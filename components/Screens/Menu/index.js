@@ -92,9 +92,9 @@ class Menu extends Component {
                 justifyContent: "center",
                 top: heightPercentageToDP(11),
                 left: widthPercentageToDP(5),
-                zIndex: 10,
-                paddingBottom: 30,
-                marginBottom: -heightPercentageToDP(5)
+                zIndex: 10
+                // paddingBottom: 30,
+                // marginBottom: -heightPercentageToDP(5)
               }}
             >
               <TouchableOpacity
@@ -186,7 +186,7 @@ class Menu extends Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddCredits")}
+                onPress={() => this.props.navigation.navigate("Wallet")}
               >
                 <View
                   style={{

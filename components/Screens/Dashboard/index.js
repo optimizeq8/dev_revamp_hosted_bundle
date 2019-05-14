@@ -44,7 +44,7 @@ import FilterMenu from "../../MiniComponents/FilterMenu";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
-import OptimizeLogo from "../../../assets/SVGs/Optimize.svg";
+import WalletIcon from "../../../assets/SVGs/Wallet.svg";
 
 // Style
 import styles from "./styles";
@@ -206,230 +206,175 @@ class Dashboard extends Component {
       // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
-          <>
-            <LinearGradient
-              colors={[colors.background1, colors.background2]}
-              locations={[0.7, 1]}
-              style={styles.gradient}
-            />
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
 
-            <Sidemenu
-              onChange={isOpen => {
-                if (isOpen === false) this._handleSideMenuState(isOpen);
-              }}
-              disableGestures={true}
-              menu={menu}
-              menuPosition="right"
-              openMenuOffset={wp("85%")}
-              isOpen={this.state.sidemenustate}
-            >
-              <Transition shared="close">
-                <View
-                  style={{
-                    justifyContent: "center",
-                    top: hp(3),
-                    left: wp(5),
-                    zIndex: 10,
-                    paddingBottom: 30,
-                    marginBottom: -hp(5)
+          <Sidemenu
+            onChange={isOpen => {
+              if (isOpen === false) this._handleSideMenuState(isOpen);
+            }}
+            disableGestures={true}
+            menu={menu}
+            menuPosition="right"
+            openMenuOffset={wp("85%")}
+            isOpen={this.state.sidemenustate}
+          >
+            <Transition shared="close">
+              <View
+                style={{
+                  justifyContent: "center",
+                  left: wp(5),
+                  zIndex: 10,
+                  width: "35%"
+                }}
+              >
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    if (this.state.open === false) {
+                      this.startAnimation();
+                    } else {
+                      this.closeAnimation();
+                    }
                   }}
                 >
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      if (this.state.open === false) {
-                        this.startAnimation();
-                      } else {
-                        this.closeAnimation();
-                      }
+                  <LottieView
+                    style={{
+                      width: wp(5),
+                      height: hp(5)
                     }}
-                  >
-                    <LottieView
-                      style={{
-                        width: wp(5),
-                        height: hp(5)
-                        // top: hp(1.2),
-                        // left: wp(1.67)
-                      }}
-                      resizeMode="contain"
-                      source={require("../../../assets/animation/menu-btn.json")}
-                      progress={this.state.menu}
-                    />
-                  </TouchableWithoutFeedback>
-                </View>
-              </Transition>
-              <Image
+                    resizeMode="contain"
+                    source={require("../../../assets/animation/menu-btn.json")}
+                    progress={this.state.menu}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            </Transition>
+            {/* <Image
                 resizeMode="contain"
                 style={styles.image}
                 source={require("../../../assets/images/logo02.png")}
-              />
+              /> */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                bottom: hp(6.5)
+              }}
+            >
+              <Transition appear="scale" disappear="scale" shared="menu">
+                <Text style={[styles.text]}>
+                  {this.props.mainBusiness.brandname}
+                </Text>
+              </Transition>
+            </View>
+            {this.props.wallet > 0 && (
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Wallet")}
+                style={styles.wallet}
+              >
+                <WalletIcon width={hp(3)} height={hp(3)} />
+              </TouchableOpacity>
+            )}
+            <View
+              padder
+              style={[
+                styles.mainCard,
+                {
+                  margin: 0
+                }
+              ]}
+            >
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
-                  bottom: hp(6.5),
-                  height: 60
+                  alignSelf: "center",
+                  marginBottom: 20,
+                  paddingBottom: 10
                 }}
               >
-                <Transition appear="scale" disappear="scale" shared="menu">
-                  <Text style={[styles.text]}>
-                    {this.props.mainBusiness.brandname}
-                  </Text>
-                </Transition>
-                {this.props.wallet > 0 && (
-                  <View
-                    style={{
-                      bottom: hp(2),
-                      right: wp(3)
+                <View style={{ flexDirection: "row" }}>
+                  <Button
+                    style={[
+                      styles.activebutton,
+                      {
+                        backgroundColor: this.state.showSearchBar
+                          ? "#FF9D00"
+                          : "#fff"
+                      }
+                    ]}
+                    onPress={this.renderSearchBar}
+                  >
+                    <SearchIcon
+                      width={23}
+                      height={23}
+                      stroke={this.state.showSearchBar ? "#fff" : "#575757"}
+                    />
+                  </Button>
+                  <Button
+                    style={styles.button}
+                    onPress={() => {
+                      if (!this.props.mainBusiness.snap_ad_account_id) {
+                        Segment.track("Create SnapAd Acount Button Pressed ");
+                        this.props.navigation.navigate("SnapchatCreateAdAcc");
+                      } else {
+                        Segment.track("Create Campaign Button Pressed");
+                        this.props.navigation.navigate("AdType");
+                      }
                     }}
                   >
-                    <Icon
-                      name="info"
-                      type="MaterialIcons"
-                      style={{
-                        color: "#fff",
-                        fontSize: 19,
-                        position: "relative",
-                        top: "40%"
-                      }}
-                    />
                     <Text
-                      numberOfLines={1}
-                      style={[
-                        globalStyles.numbers,
-                        {
-                          paddingLeft: 20,
-                          fontSize: wp(6),
-                          fontFamily: "montserrat-semibold",
-                          width:
-                            this.props.wallet.toString().length > 7
-                              ? wp(50)
-                              : "100%"
-                        }
-                      ]}
+                      style={[styles.title, { paddingTop: 0, fontSize: 12 }]}
                     >
-                      <Text
-                        style={[
-                          globalStyles.numbers,
-                          {
-                            paddingHorizontal: 0,
-                            fontSize: 15,
-                            fontFamily: "montserrat-semibold"
-                          }
-                        ]}
-                      >
-                        $
-                      </Text>
-                      {this.props.wallet}
+                      New {"\n"}
+                      Campaign
                     </Text>
-                    <Text
-                      style={[
-                        styles.text,
-                        { fontSize: 10, top: 0, alignSelf: "center" }
-                      ]}
-                    >
-                      Wallet Balance
-                    </Text>
-                  </View>
-                )}
-              </View>
-              <View
-                padder
-                style={[
-                  styles.mainCard,
-                  {
-                    margin: 0
-                  }
-                ]}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignSelf: "center",
-                    marginBottom: 20,
-                    paddingBottom: 10
-                  }}
-                >
-                  <View style={{ flexDirection: "row" }}>
-                    <Button
-                      style={[
-                        styles.activebutton,
-                        {
-                          backgroundColor: this.state.showSearchBar
-                            ? "#FF9D00"
-                            : "#fff"
-                        }
-                      ]}
-                      onPress={this.renderSearchBar}
-                    >
-                      <SearchIcon
-                        width={23}
-                        height={23}
-                        stroke={this.state.showSearchBar ? "#fff" : "#575757"}
-                      />
-                    </Button>
-                    <Button
-                      style={styles.button}
-                      onPress={() => {
-                        if (!this.props.mainBusiness.snap_ad_account_id) {
-                          Segment.track("Create SnapAd Acount Button Pressed ");
-                          this.props.navigation.navigate("SnapchatCreateAdAcc");
-                        } else {
-                          Segment.track("Create Campaign Button Pressed");
-                          this.props.navigation.navigate("AdType");
-                        }
-                      }}
-                    >
-                      <Text
-                        style={[styles.title, { paddingTop: 0, fontSize: 12 }]}
-                      >
-                        New {"\n"}
-                        Campaign
-                      </Text>
-                    </Button>
+                  </Button>
 
-                    <Button
-                      style={styles.activebutton}
-                      onPress={() => {
-                        this._handleSideMenuState(true);
-                      }}
-                    >
-                      <FilterIcon width={23} height={23} fill="#575757" />
-                    </Button>
-                  </View>
+                  <Button
+                    style={styles.activebutton}
+                    onPress={() => {
+                      this._handleSideMenuState(true);
+                    }}
+                  >
+                    <FilterIcon width={23} height={23} fill="#575757" />
+                  </Button>
                 </View>
-                {this.state.showSearchBar && (
-                  <SearchBar renderSearchBar={this.renderSearchBar} />
-                )}
+              </View>
+              {this.state.showSearchBar && (
+                <SearchBar renderSearchBar={this.renderSearchBar} />
+              )}
 
-                {/* <ScrollView contentContainerStyle={styles.contentContainer}>
+              {/* <ScrollView contentContainerStyle={styles.contentContainer}>
               {list}
             </ScrollView> */}
-                {this.props.loading ? (
-                  <ActivityIndicator size="large" />
-                ) : (
-                  <Content contentContainerStyle={{ flex: 1 }}>
-                    <FlatList
-                      contentContainerStyle={{ paddingBottom: hp(35) }}
-                      keyExtractor={item => item.campaign_id}
-                      data={this.props.filteredCampaigns}
-                      onEndReached={() => this.loadMoreData()}
-                      onEndReachedThreshold={1}
-                      renderItem={({ item, index }) => (
-                        <CampaignCard
-                          campaign={item}
-                          navigation={this.props.navigation}
-                          key={item.campaign_id}
-                        />
-                      )}
-                      onRefresh={() => this.reloadData()}
-                      refreshing={this.state.fetching_from_server}
-                      ListFooterComponent={() => this.renderFooter()}
-                    />
-                  </Content>
-                )}
-              </View>
-            </Sidemenu>
-          </>
+              {this.props.loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <Content contentContainerStyle={{ flex: 1 }}>
+                  <FlatList
+                    contentContainerStyle={{ paddingBottom: hp(35) }}
+                    keyExtractor={item => item.campaign_id}
+                    data={this.props.filteredCampaigns}
+                    onEndReached={() => this.loadMoreData()}
+                    onEndReachedThreshold={1}
+                    renderItem={({ item, index }) => (
+                      <CampaignCard
+                        campaign={item}
+                        navigation={this.props.navigation}
+                        key={item.campaign_id}
+                      />
+                    )}
+                    onRefresh={() => this.reloadData()}
+                    refreshing={this.state.fetching_from_server}
+                    ListFooterComponent={() => this.renderFooter()}
+                  />
+                </Content>
+              )}
+            </View>
+          </Sidemenu>
         </Container>
       );
     }

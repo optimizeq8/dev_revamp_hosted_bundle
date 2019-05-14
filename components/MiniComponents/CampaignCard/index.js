@@ -22,7 +22,7 @@ import {
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
-import GlobalStyles from "../../../Global Styles";
+import GlobalStyles, { globalColors } from "../../../Global Styles";
 class CampaignCard extends Component {
   state = {
     paused: false,
@@ -31,9 +31,15 @@ class CampaignCard extends Component {
   toggleStatus = () => {
     this.setState({ paused: !this.state.paused });
   };
+  getLeftText = () => {
+    return this.state.status === "PAUSED" ? "" : "Live";
+  };
+  formatNumber = num => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
   render() {
     let campaign = this.props.campaign;
-    let charts = [
+    let chart = [
       { spend: campaign.spends }
       // { impressions: campaign.impressions },
       // { swipes: campaign.swipes }
@@ -48,7 +54,10 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
-            this.props.getCampaignDetails(this.props.campaign.campaign_id, this.props.navigation);
+            this.props.getCampaignDetails(
+              this.props.campaign.campaign_id,
+              this.props.navigation
+            );
             Segment.trackWithProperties("Campaign Card Button", {
               campaign_id: this.props.campaign.campaign_id
             });
@@ -60,71 +69,62 @@ class CampaignCard extends Component {
         >
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <Text style={[styles.titletext]}>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={[styles.titletext]}
+              >
                 {this.props.campaign.name}
-                {"             "}
-
-                <Text style={styles.reviewtext}>
-                  Review:{this.props.campaign.review_status}
-                </Text>
               </Text>
             </View>
+            {this.props.campaign.review_status.includes("PENDING") && (
+              <View
+                style={{
+                  borderRadius: 16,
+                  backgroundColor: globalColors.orange,
+                  paddingHorizontal: 10,
+                  top: 5
+                }}
+              >
+                <Text style={styles.reviewtext}>In Review</Text>
+              </View>
+            )}
             <Icon
               type="MaterialCommunityIcons"
               name="snapchat"
               style={styles.icon}
             />
-            <Text style={[styles.subtext]}>Tap to view more</Text>
+            {!this.props.campaign.review_status.includes("PENDING") && (
+              <Text style={[styles.subtext]}>Tap to view more</Text>
+            )}
 
             <View style={{ flexDirection: "row" }}>
-              {charts}
+              {chart}
               <View>
-                <View style={{ top: 10, left: 10, flexDirection: "row" }}>
-                  <ImpressionsIcons />
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      width: widthPercentageToDP(40)
-                    }}
-                  >
+                <View style={styles.campaignIcons}>
+                  <ImpressionsIcons style={{ bottom: 3 }} />
+                  <View style={styles.campaignInfo}>
                     <Text
-                      style={GlobalStyles.numbers}
+                      style={[GlobalStyles.numbers, styles.campaignNumbers]}
                       ellipsizeMode="tail"
                       numberOfLines={1}
                     >
-                      {campaign.impressions}
+                      {this.formatNumber(campaign.impressions)}
                     </Text>
-                    <Text style={[styles.subtext, { textAlign: "center" }]}>
-                      Impressions
-                    </Text>
+                    <Text style={[styles.subtext]}>Impressions</Text>
                   </View>
                 </View>
-                <View
-                  style={{
-                    top: 10,
-                    left: 10,
-                    flexDirection: "row",
-                    alignItems: "center"
-                  }}
-                >
+                <View style={styles.campaignIcons}>
                   <SwipeUpsIcon />
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      width: widthPercentageToDP(40)
-                    }}
-                  >
+                  <View style={styles.campaignInfo}>
                     <Text
                       ellipsizeMode="tail"
                       numberOfLines={1}
-                      style={[GlobalStyles.numbers, { alignSelf: "center" }]}
+                      style={[GlobalStyles.numbers, styles.campaignNumbers]}
                     >
-                      {campaign.swipes}
+                      {this.formatNumber(campaign.swipes)}
                     </Text>
-                    <Text style={[styles.subtext, { textAlign: "center" }]}>
-                      Swipe Ups
-                    </Text>
+                    <Text style={[styles.subtext]}>Swipe Ups</Text>
                   </View>
                 </View>
               </View>
@@ -132,8 +132,10 @@ class CampaignCard extends Component {
 
             <View pointerEvents="none" style={styles.containerStyle}>
               <Toggle
+                backTextLeft={this.getLeftText()}
                 containerStyle={styles.toggleStyle}
                 switchOn={campaign.status !== "PAUSED"}
+                textLeftStyle={styles.toggleTextLeft}
                 onPress={this.toggleStatus}
                 backgroundColorOff="rgba(255,255,255,0.1)"
                 backgroundColorOn="rgba(255,255,255,0.1)"
@@ -141,8 +143,8 @@ class CampaignCard extends Component {
                 circleColorOn="#66D072"
                 duration={200}
                 circleStyle={{
-                  width: widthPercentageToDP(4.3),
-                  height: heightPercentageToDP(2.1),
+                  width: widthPercentageToDP(4),
+                  height: heightPercentageToDP(2),
                   borderRadius: 25
                 }}
               />
@@ -155,7 +157,8 @@ class CampaignCard extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getCampaignDetails: (id, naviagtion) => dispatch(actionCreators.getCampaignDetails(id, naviagtion))
+  getCampaignDetails: (id, naviagtion) =>
+    dispatch(actionCreators.getCampaignDetails(id, naviagtion))
 });
 export default connect(
   null,
