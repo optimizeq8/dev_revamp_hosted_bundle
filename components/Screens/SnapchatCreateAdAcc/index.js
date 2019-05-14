@@ -40,7 +40,8 @@ class SnapchatCreateAdAcc extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.mainBusiness.snap_ad_account_id) {
-      this.props.navigation.navigate("Dashboard");
+      this.props.navigation.state.params.closeAnimation();
+      // this.props.navigation.navigate("Dashboard");
     }
   }
 
