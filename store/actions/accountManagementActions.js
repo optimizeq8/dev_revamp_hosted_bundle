@@ -78,16 +78,17 @@ export const createBusinessAccount = (account, navigation) => {
           position: "top"
         });
         //incase of an error?? need handling
-
-        dispatch({
-          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-          payload: { business: data.data }
-        });
-        // data.success && navigation.navigate("Dashboard");
-        return dispatch({
-          type: actionTypes.ADD_BUSINESS_ACCOUNT,
-          payload: { data: data.data, success: true }
-        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+            payload: { business: data.data }
+          });
+          // data.success && navigation.navigate("Dashboard");
+          return dispatch({
+            type: actionTypes.ADD_BUSINESS_ACCOUNT,
+            payload: { data: data.data, success: true }
+          });
+        }
       })
       .catch(err => {
         console.log("error creating new bsn", err.message || err.response);

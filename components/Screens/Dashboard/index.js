@@ -135,7 +135,7 @@ class Dashboard extends Component {
       duration: 350
     }).start(() => {
       this.setState({ open: false }, () =>
-        this.props.navigation.replace("Dashboard")
+        this.props.navigation.navigate("Dashboard")
       );
     });
   };
