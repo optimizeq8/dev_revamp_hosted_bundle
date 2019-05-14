@@ -20,6 +20,9 @@ import {
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
 import { Transition } from "react-navigation-fluid-transitions";
+import Background from "../../../assets/SVGs/Background";
+import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -30,7 +33,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP("100"),
+      top: heightPercentageToDP("107"),
       bottom: -heightPercentageToDP("115")
     }
   };
@@ -74,6 +77,15 @@ class Menu extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         >
+          <BackdropIcon
+            style={styles.backDrop}
+            height={heightPercentageToDP("100%")}
+          />
+          <Background
+            style={[styles.background, { zIndex: 0 }]}
+            width={widthPercentageToDP(85)}
+            height={heightPercentageToDP(61)}
+          />
           <Transition shared="close">
             <View
               style={{
@@ -109,11 +121,7 @@ class Menu extends Component {
               </TouchableOpacity>
             </View>
           </Transition>
-          <View
-            style={{
-              marginTop: heightPercentageToDP("8.7%")
-            }}
-          />
+
           <TouchableOpacity
             onPress={() => {
               this.props.clearPushToken(
@@ -125,33 +133,38 @@ class Menu extends Component {
           >
             <Icons.LogoutIcon style={styles.icons} />
           </TouchableOpacity>
-          <View>
-            <Transition shared="menu">
+
+          <View
+            style={{ marginTop: heightPercentageToDP("8.7%"), marginBottom: 0 }}
+          >
+            <Text style={styles.menutext}> Menu </Text>
+            <Transition appear="scale" disappear="scale" shared="menu">
               <Text style={styles.businessTitle}>
                 {!this.props.mainBusiness
                   ? ""
-                  : this.props.mainBusiness.businessname}
+                  : this.props.mainBusiness.brandname}
               </Text>
             </Transition>
-            <View
-              style={{
-                marginBottom: heightPercentageToDP("10")
-              }}
+            <Text style={styles.businessname}>
+              {this.props.mainBusiness.businessname}
+            </Text>
+            <Button
+              style={[
+                styles.button,
+                {
+                  elevation: this.state.slidePanel ? -1 : 1
+                  //zIndex: this.state.slidePanel ? -1 : 1
+                }
+              ]}
+              onPress={() => this.slidePanelShow()}
             >
-              <Button
-                style={[
-                  styles.button,
-                  {
-                    elevation: this.state.slidePanel ? -1 : 1
-                    // zIndex: this.state.slidePanel ? -1 : 1
-                  }
-                ]}
-                onPress={() => this.slidePanelShow()}
-              >
-                <Text>Switch Account</Text>
-              </Button>
-              <BackdropIcon style={styles.backDrop} />
-
+              <Text style={styles.buttontext}>Switch Account </Text>
+              <DownArrowIcon
+                style={{ marginLeft: 5, right: 20, top: 1 }}
+                stroke="#fff"
+              />
+            </Button>
+            <View>
               {/* <Icons.DropDownIcon style={styles.icons}
                 style={styles.DropIcon}
               /> */}
@@ -173,6 +186,22 @@ class Menu extends Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("AddCredits")}
+              >
+                <View
+                  style={{
+                    alignItems: "center",
+                    left: widthPercentageToDP(4),
+                    marginBottom: 20,
+                    marginTop: 10,
+                    flexDirection: "row"
+                  }}
+                >
+                  <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
+                  <Text style={styles.text}>Wallet</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("TransactionList")
                 }
@@ -187,10 +216,10 @@ class Menu extends Component {
                   flexDirection: "column"
                 }}
               >
-                <View style={styles.options}>
+                {/*<View style={styles.options}>
                   <Icons.BusinessIcon style={styles.icons} />
                   <Text style={styles.text}>Business Info</Text>
-                </View>
+                </View>*/}
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("ChangePassword")
@@ -211,21 +240,7 @@ class Menu extends Component {
                   <Text style={styles.text}>Addresses</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddCredits")}
-              >
-                <View
-                  style={{
-                    alignItems: "center",
-                    left: widthPercentageToDP(4),
-                    marginBottom: 20,
-                    flexDirection: "row"
-                  }}
-                >
-                  <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
-                  <Text style={styles.text}>Wallet</Text>
-                </View>
-              </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={() => {
                   this.props.clearPushToken(
@@ -239,6 +254,7 @@ class Menu extends Component {
                     alignItems: "center",
                     left: widthPercentageToDP(4),
                     marginBottom: 20,
+                    marginTop: 10,
                     flexDirection: "row"
                   }}
                 >
@@ -251,6 +267,7 @@ class Menu extends Component {
               <Text style={styles.text}>{this.props.exponentPushToken}</Text>
             </View>
           </View>
+
           <SlidingUpPanel
             showBackdrop={false}
             ref={c => (this._panel = c)}

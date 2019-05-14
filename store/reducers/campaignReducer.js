@@ -6,6 +6,8 @@ const initialState = {
   campaign_id: "",
   average_reach: 0,
   kdamount: 0,
+  minValueBudget: 0,
+  maxValueBudget: 0,
   total_reach: 0,
   interests: null,
   deviceBrands: null,
@@ -27,6 +29,12 @@ const reducer = (state = initialState, action) => {
         data: action.payload.data,
         message: action.payload.message,
         loadingObj: false
+      };
+    case actionTypes.SET_MINIMUN_CASH:
+      return {
+        ...state,
+        minValueBudget: action.payload.minValueBudget,
+        maxValueBudget: action.payload.maxValueBudget
       };
     case actionTypes.ERROR_SET_AD_OBJECTIVE:
       return {

@@ -93,8 +93,13 @@ class Dashboard extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
-      if (!this.props.mainBusiness.snap_ad_account_id)
-        this.props.navigation.navigate("SnapchatCreateAdAcc");
+      if (
+        this.props.mainBusiness &&
+        !this.props.mainBusiness.snap_ad_account_id
+      )
+        this.props.navigation.navigate("SnapchatCreateAdAcc", {
+          closeAnimation: this.closeAnimation
+        });
       this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -129,7 +134,9 @@ class Dashboard extends Component {
       toValue: 0,
       duration: 350
     }).start(() => {
-      this.setState({ open: false }, () => this.props.navigation.pop());
+      this.setState({ open: false }, () =>
+        this.props.navigation.navigate("Dashboard")
+      );
     });
   };
   renderSearchBar = () => {
@@ -175,7 +182,7 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     );
-    if (isNull(this.props.mainBusiness)&&this.props.loadingAccountMgmt) {
+    if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
       return (
         <>
           <LinearGradient
@@ -186,13 +193,17 @@ class Dashboard extends Component {
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else if(isNull(this.props.mainBusiness)&& !this.props.loadingAccountMgmt) {
-        return  <View>
-            <Text>ERROR</Text>
+    } else if (
+      isNull(this.props.mainBusiness) &&
+      !this.props.loadingAccountMgmt
+    ) {
+      return (
+        <View>
+          <Text>ERROR</Text>
         </View>
-    }
-    else {
-      console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
+      );
+    } else {
+      // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <Container style={styles.container}>
           <>
@@ -259,9 +270,9 @@ class Dashboard extends Component {
                   height: 60
                 }}
               >
-                <Transition shared="menu">
+                <Transition appear="scale" disappear="scale" shared="menu">
                   <Text style={[styles.text]}>
-                    {this.props.mainBusiness.businessname}
+                    {this.props.mainBusiness.brandname}
                   </Text>
                 </Transition>
                 {this.props.wallet > 0 && (

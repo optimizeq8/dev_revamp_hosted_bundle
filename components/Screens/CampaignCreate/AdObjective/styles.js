@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
   subtext: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-extralight",
     fontSize: 12
   },
   text: {
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 30,
     paddingBottom: 10,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 14,
     paddingHorizontal: 10
   },
@@ -159,6 +160,25 @@ const styles = StyleSheet.create({
   closeicon: {
     justifyContent: "center",
     top: 25
+  },
+  categories: {
+    textAlign: "center",
+    color: globalColors.orange,
+    flexDirection: "column",
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    paddingHorizontal: 10
+  },
+  date: { fontFamily: "montserrat-medium", color: "#fff" },
+  dateInput: {
+    marginBottom: 5,
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 15,
+    alignSelf: "center",
+    width: 270,
+    height: hp(7),
+    justifyContent: "center",
+    borderWidth: 0.5
   }
 });
 

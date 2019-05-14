@@ -10,46 +10,49 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { TouchableRipple } from "react-native-paper";
-
+import LowerButton from "../../../MiniComponents/LowerButton";
 class ReachBar extends Component {
   render() {
     return (
-      <AnimatedCircularProgress
-        size={wp(83)}
-        width={20}
-        fill={this.props.total_reach}
-        arcSweepAngle={200}
-        rotation={260}
-        lineCap="round"
-        style={styles.chart}
-        tintColor="#FF9D00"
-        backgroundColor="rgba(255,255,255,0.3)"
-      >
-        {fill => {
-          return (
-            <View style={[styles.chartItems]}>
-              <Text style={styles.chartText}>
-                {this.props.average_reach}
-                {"\n"}
-                <Text
-                  style={[
-                    styles.chartText,
-                    { fontFamily: "montserrat-regular", fontSize: 12 }
-                  ]}
-                >
-                  Potential Reach
+      <View style={styles.bottom}>
+        <AnimatedCircularProgress
+          size={wp(80)}
+          width={15}
+          fill={this.props.total_reach}
+          arcSweepAngle={200}
+          rotation={260}
+          lineCap="round"
+          style={[styles.chart]}
+          tintColor="#FF9D00"
+          backgroundColor="rgba(255,255,255,0.3)"
+        >
+          {fill => {
+            return (
+              <View style={[styles.chartItems]}>
+                <Text style={styles.chartText}>
+                  {this.props.average_reach}
+                  {"\n"}
+                  <Text
+                    style={[
+                      styles.chartText,
+                      { fontFamily: "montserrat-regular", fontSize: 12 }
+                    ]}
+                  >
+                    Potential Reach
+                  </Text>
                 </Text>
-              </Text>
-              <TouchableOpacity
+                <LowerButton function={() => this.props._handleSubmission()} />
+                {/* <TouchableOpacity
                 onPress={() => this.props._handleSubmission()}
                 style={styles.button}
               >
                 <ForwardButton />
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      </AnimatedCircularProgress>
+              </TouchableOpacity> */}
+              </View>
+            );
+          }}
+        </AnimatedCircularProgress>
+      </View>
     );
   }
 }

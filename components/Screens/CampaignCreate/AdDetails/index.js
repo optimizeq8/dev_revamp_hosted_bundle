@@ -14,7 +14,7 @@ import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import cloneDeep from "clone-deep";
 import { LinearGradient, Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
-import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import { TextInputMask } from "react-native-masked-text";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -90,15 +90,14 @@ class AdDetails extends Component {
             }
           ],
           geos: [{ country_code: "kw", region_id: [] }]
-        },
-        start_time: "",
-        end_time: ""
+        }
       },
       filteredRegions: country_regions[0].regions,
       filteredLanguages: [
         { value: "ar", label: "Arabic" },
         { value: "en", label: "English" }
       ],
+      advance: false,
       sidemenustate: false,
       sidemenu: "gender",
       regions: country_regions[0].regions,
@@ -158,8 +157,12 @@ class AdDetails extends Component {
       await this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          campaign_id: this.props.campaign_id
-        }
+          campaign_id: this.props.campaign_id,
+          lifetime_budget_micro: this.props.minValueBudget
+        },
+        minValueBudget: this.props.minValueBudget,
+        maxValueBudget: this.props.maxValueBudget,
+        value: this.props.minValueBudget
       });
       if (
         this.props.navigation.state.params &&
@@ -209,36 +212,7 @@ class AdDetails extends Component {
       // this.getTotalReach();
     }
   };
-  getMinimumCash = days => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
-    this.onSelectedBudgetChange(minValueBudget);
-    this.setState({
-      minValueBudget,
-      maxValueBudget
-    });
-    showMessage({
-      message: "Budget recalculated based on duration",
-      type: "warning",
-      position: "top"
-    });
-  };
-  handleStartDatePicked = date => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        start_time: date
-      }
-    });
-  };
-  handleEndDatePicked = date => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        end_time: date
-      }
-    });
-  };
+
   onSelectedInterestsChange = selectedItems => {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
@@ -341,19 +315,11 @@ class AdDetails extends Component {
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
         : null;
-    let dateErrors = this.dateField.getErrors();
 
     this.setState({
-      languagesError,
-      start_timeError: dateErrors.start_timeError,
-      end_timeError: dateErrors.end_timeError
+      languagesError
     });
-    if (
-      this._handleBudget(this.state.value) &&
-      !languagesError &&
-      !dateErrors.end_timeError &&
-      !dateErrors.start_timeError
-    ) {
+    if (this._handleBudget(this.state.value) && !languagesError) {
       let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
@@ -627,24 +593,11 @@ class AdDetails extends Component {
     });
     interests_names = interests_names.join(", ");
 
-    let end_time = "";
-    let start_time = "";
-    let end_year = "";
-    let start_year = "";
-    if (
-      this.state.campaignInfo.start_time !== "" &&
-      this.state.campaignInfo.end_time !== ""
-    ) {
-      end_time = new Date(this.state.campaignInfo.end_time.split("T")[0]);
-      start_time = new Date(this.state.campaignInfo.start_time.split("T")[0]);
-      end_year = end_time.getFullYear();
-      start_year = start_time.getFullYear();
-      end_time = dateFormat(end_time, "d mmm");
-      start_time = dateFormat(start_time, "d mmm");
-    }
     let editCampaign =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign;
+    // console.log(this.state.value);
+
     return (
       <>
         <Container style={styles.container}>
@@ -730,21 +683,19 @@ class AdDetails extends Component {
 
                   <View
                     style={{
-                      height: hp(6),
-                      width: wp(50),
-                      flexDirection: "row",
-
+                      height: hp(8),
+                      width: wp(40),
+                      flexDirection: "column",
+                      backgroundColor: "rgba(255,255,255,0.2)",
+                      borderRadius: 15,
                       alignSelf: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      marginVertical: 10
                     }}
                   >
-                    <Icon
-                      type="MaterialIcons"
-                      name="edit"
-                      style={[styles.editIcon]}
-                    />
                     <Input
                       keyboardType="numeric"
+                      maxLength={7}
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
@@ -752,7 +703,45 @@ class AdDetails extends Component {
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                     />
+                    {/* <TextInputMask
+                      type={"money"}
+                      options={{
+                        precision: 2,
+                        separator: ",",
+                        delimiter: ".",
+                        unit: "$",
+                        suffixUnit: ""
+                      }}
+                      maxLength={9}
+                      defaultValue={
+                        this.state.campaignInfo.lifetime_budget_micro + ""
+                      }
+                      onChangeText={value => this._handleBudget(value)}
+                      style={styles.budget}
+                      ref={ref => (this.moneyField = ref)}
+                    /> */}
+                    <Text
+                      style={[
+                        styles.colorGrey,
+                        {
+                          fontSize: 11,
+                          bottom: 1,
+                          alignSelf: "center"
+                        }
+                      ]}
+                    >
+                      Tap to enter manually
+                    </Text>
                   </View>
+                  {/* <Text
+                    style={{
+                      fontFamily: "montserrat-light",
+                      color: "#fff",
+                      alignSelf: "flex-start"
+                    }}
+                  >
+                    $
+                  </Text> */}
                   <View
                     style={[
                       styles.slidercontainer,
@@ -774,21 +763,11 @@ class AdDetails extends Component {
                             styles.colorGrey,
                             {
                               fontSize: 11,
-                              bottom: hp(1.2)
+                              alignSelf: "center"
                             }
                           ]}
                         >
-                          Tap to enter manually
-                        </Text>
-                        <Text
-                          style={[
-                            styles.colorGrey,
-                            {
-                              fontSize: 11
-                            }
-                          ]}
-                        >
-                          {"         "}25$/day
+                          25$/day
                         </Text>
                       </View>
                       <Text style={styles.colorGrey}>
@@ -814,79 +793,7 @@ class AdDetails extends Component {
                       minimumTrackTintColor="#751AFF"
                     />
                   </View>
-                  <Text style={[styles.subHeadings]}>Duration</Text>
 
-                  <TouchableHighlight
-                    underlayColor="rgba(0,0,0,0.2)"
-                    style={[
-                      styles.dateInput,
-                      {
-                        borderColor: this.state.start_timeError
-                          ? "red"
-                          : "transparent"
-                      }
-                    ]}
-                    onPress={() => {
-                      if (
-                        this.props.navigation.state.params &&
-                        !this.props.navigation.state.params.hasOwnProperty(
-                          "editCampaign"
-                        )
-                      )
-                        this.dateField.showModal();
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          textAlign: "center"
-                        }}
-                      >
-                        <Text style={[styles.categories, { fontSize: 16 }]}>
-                          Start
-                        </Text>
-                        {this.state.campaignInfo.start_time !== "" && (
-                          <Text style={styles.numbers}>
-                            {start_time}
-                            {"\n"}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {start_year}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-
-                      <Text style={[styles.categories, { fontSize: 16 }]}>
-                        To
-                      </Text>
-
-                      <View
-                        style={{
-                          flexDirection: "column"
-                        }}
-                      >
-                        <Text style={[styles.categories, { fontSize: 16 }]}>
-                          End
-                        </Text>
-
-                        {this.state.campaignInfo.end_time !== "" && (
-                          <Text style={styles.numbers}>
-                            {end_time}
-                            {"\n"}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {end_year}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-                    </View>
-                  </TouchableHighlight>
                   <Text style={styles.subHeadings}>
                     Who would you like to reach?
                   </Text>
@@ -898,13 +805,14 @@ class AdDetails extends Component {
                     }}
                   >
                     <ScrollView
+                      indicatorStyle="white"
                       style={{
                         backgroundColor: "rgba(255,255,255,0.1)",
                         marginHorizontal: 20,
                         borderRadius: 15,
                         paddingHorizontal: 25,
                         marginBottom: 5,
-                        height: hp("25%")
+                        height: hp("35%")
                       }}
                     >
                       <View
@@ -1258,14 +1166,21 @@ class AdDetails extends Component {
                         </TouchableOpacity>
                       </View>
                     </ScrollView>
-                    <ReachBar
-                      _handleSubmission={this._handleSubmission}
-                      country_code={
-                        this.state.campaignInfo.targeting.geos[0].country_code
+                    <Text
+                      onPress={() =>
+                        this.setState({ advance: !this.state.advance })
                       }
-                      targeting={this.state.campaignInfo.targeting}
-                    />
+                      style={[styles.budget, { fontSize: 14 }]}
+                    >
+                      Scroll for more options+
+                    </Text>
                   </View>
+                </View>
+                <View style={styles.bottom}>
+                  <ReachBar
+                    advance={this.state.advance}
+                    _handleSubmission={this._handleSubmission}
+                  />
                 </View>
               </ImageBackground>
             </View>
@@ -1274,14 +1189,6 @@ class AdDetails extends Component {
         <Modal isVisible={this.props.loading}>
           <LoadingScreen top={50} />
         </Modal>
-        <DateField
-          getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
-          handleStartDatePicked={this.handleStartDatePicked}
-          handleEndDatePicked={this.handleEndDatePicked}
-          start_time={this.state.campaignInfo.start_time}
-          end_time={this.state.campaignInfo.end_time}
-        />
       </>
     );
   }
@@ -1289,6 +1196,8 @@ class AdDetails extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
+  minValueBudget: state.campaignC.minValueBudget,
+  maxValueBudget: state.campaignC.maxValueBudget,
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,

@@ -34,6 +34,12 @@ const styles = StyleSheet.create({
     // elevation: 10,
     // zIndex: -1
   },
+  background: {
+    position: "absolute",
+    opacity: 0.2,
+    top: 230,
+    alignSelf: "center"
+  },
   text: {
     color: "#fff",
     fontFamily: "montserrat-medium",
@@ -61,25 +67,41 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: heightPercentageToDP("10"),
+    top: heightPercentageToDP("3"),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.5,
-    marginBottom: heightPercentageToDP(2),
+    marginBottom: heightPercentageToDP(3),
     backgroundColor: "#FF9D00",
     borderRadius: 30,
     alignSelf: "center",
     zIndex: 2
   },
-
+  buttontext: {
+    fontFamily: "montserrat-bold",
+    color: "#fff",
+    fontSize: 12
+  },
   businessTitle: {
     alignSelf: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
-    fontSize: heightPercentageToDP(2),
+    fontFamily: "montserrat-medium",
+    fontSize: heightPercentageToDP(4),
     marginLeft: 0
   },
-
+  menutext: {
+    fontFamily: "montserrat-semibold",
+    fontSize: 16,
+    alignSelf: "center",
+    color: "#fff"
+  },
+  businessname: {
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    paddingTop: 5,
+    alignSelf: "center",
+    color: "#fff"
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject,
     height: heightPercentageToDP("110")

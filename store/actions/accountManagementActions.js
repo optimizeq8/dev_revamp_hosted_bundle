@@ -25,8 +25,8 @@ export const changeBusiness = business => {
 export const getBusinessAccounts = () => {
   return dispatch => {
     dispatch({
-        type: actionTypes.SET_LOADING_BUSINESS_LIST
-    })
+      type: actionTypes.SET_LOADING_BUSINESS_LIST
+    });
     instance
       .get(`businessaccounts`)
       .then(res => {
@@ -44,15 +44,15 @@ export const getBusinessAccounts = () => {
       })
 
       .catch(err => {
-        console.log("getBusinessAccountsError", err.message || err.response );
+        console.log("getBusinessAccountsError", err.message || err.response);
         showMessage({
-            message: "Oops! Something went wrong. Please try again.",
-            description: err.message || err.response ,
-            type: "danger",
-            position: "top"
-         });
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
         return dispatch({
-            type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
+          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
         });
       });
   };
@@ -67,6 +67,8 @@ export const createBusinessAccount = (account, navigation) => {
     instance
       .post(`businessaccount`, account)
       .then(res => {
+        console.log("businessaccount", res.data);
+
         return res.data;
       })
       .then(data => {
@@ -76,33 +78,32 @@ export const createBusinessAccount = (account, navigation) => {
           position: "top"
         });
         //incase of an error?? need handling
-
-        dispatch({
-          type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-          payload: { business: data.data }
-        });
-
-        return dispatch({
-          type: actionTypes.ADD_BUSINESS_ACCOUNT,
-          payload: { data: data.data, success: true}
-        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
+            payload: { business: data.data }
+          });
+          // data.success && navigation.navigate("Dashboard");
+          return dispatch({
+            type: actionTypes.ADD_BUSINESS_ACCOUNT,
+            payload: { data: data.data, success: true }
+          });
+        }
       })
-      .then(navigation.navigate("Dashboard"))
-
       .catch(err => {
-        console.log('error creating new bsn',err.message || err.response );
+        console.log("error creating new bsn", err.message || err.response);
         showMessage({
-            message: "Oops! Something went wrong. Please try again.",
-            description: err.message || err.response ,
-            type: "danger",
-            position: "top"
-         });
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
         dispatch({
-            type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
-            payload: {
-                loading: false
-            }
-        })
+          type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
+          payload: {
+            loading: false
+          }
+        });
       });
   };
 };
@@ -135,22 +136,22 @@ export const changePassword = (currentPass, newPass, navigation) => {
         });
       })
       .catch(err => {
-          console.log("changePasswordError", err.message || err.response );
+        console.log("changePasswordError", err.message || err.response);
 
-          showMessage({
-              message: "Oops! Something went wrong. Please try again.",
-              description: err.message || err.response ,
-              type: "danger",
-              position: "top"
-          })
-
-          return dispatch({
-              type: actionTypes.ERROR_CHANGE_PASSWORD,
-              payload: {
-                  success: false
-              }
-          })
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
         });
+
+        return dispatch({
+          type: actionTypes.ERROR_CHANGE_PASSWORD,
+          payload: {
+            success: false
+          }
+        });
+      });
   };
 };
 
@@ -196,16 +197,16 @@ export const addressForm = (address, navigation, addressId) => {
         });
       }
     } catch (error) {
-        console.log("Error while put/post address form", error.message);
-        showMessage({
-            message: "Oops! Something went wrong. Please try again.",
-            description: err.message || err.response ,
-            type: "danger",
-            position: "top"
-        });
-        return dispatch({
-            type: actionTypes.ERROR_ADD_ADDRESS,
-        });
+      console.log("Error while put/post address form", error.message);
+      showMessage({
+        message: "Oops! Something went wrong. Please try again.",
+        description: err.message || err.response,
+        type: "danger",
+        position: "top"
+      });
+      return dispatch({
+        type: actionTypes.ERROR_ADD_ADDRESS
+      });
     }
   };
 };
@@ -232,18 +233,18 @@ export const getAddressForm = () => {
         });
       })
       .catch(err => {
-          console.log("Get Billing Address Error: ", err.message || err.response );
-          showMessage({
-            message: "Oops! Something went wrong. Please try again.",
-            description: err.message || err.response ,
-            type: "danger",
-            position: "top"
-          });
-         return dispatch({
-             type: actionTypes.ERROR_GET_BILLING_ADDRESS,
-             payload: {}
-         })
-    });
+        console.log("Get Billing Address Error: ", err.message || err.response);
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_GET_BILLING_ADDRESS,
+          payload: {}
+        });
+      });
   };
 };
 // IS NOT IN THE AUTH TOKEN SO MIGHT NEED ANOTHER API TO FETCH ALL IDS
@@ -259,6 +260,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
         return res.data;
       })
       .then(data => {
+        console.log("snapadaccounts", data);
+
         if (data.success) {
           Segment.track("Snapchat Ad Account Created Successfully");
 
@@ -283,20 +286,22 @@ export const create_snapchat_ad_account = (id, navigation) => {
       // })
 
       .catch(err => {
-          console.log("create_snapchat_ad_account_ERROR", err.message || err.response );
-          showMessage({
-            message: "Oops! Something went wrong. Please try again.",
-            description: err.message || err.response ,
-            type: "danger",
-            position: "top"
-          });
-          return dispatch({
-              type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
-              payload: {
-                  loading: false
-              }
-
-          })
+        console.log(
+          "create_snapchat_ad_account_ERROR",
+          err.message || err.response
+        );
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
         });
+        return dispatch({
+          type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
+          payload: {
+            loading: false
+          }
+        });
+      });
   };
 };
