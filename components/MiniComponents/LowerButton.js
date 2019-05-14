@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import ForwardButton from "../../assets/SVGs/ForwardButton";
+import CheckmarkIcon from "../../assets/SVGs/Checkmark.svg";
+
 export default class LowerButton extends Component {
   render() {
     let bottom = this.props.bottom;
@@ -17,10 +19,14 @@ export default class LowerButton extends Component {
         }}
         onPress={() => this.props.function(false)}
       >
-        <ForwardButton
-          width={heightPercentageToDP(9)}
-          height={heightPercentageToDP(9)}
-        />
+        {this.props.checkmark ? (
+          <CheckmarkIcon width={53} height={53} />
+        ) : (
+          <ForwardButton
+            width={heightPercentageToDP(9)}
+            height={heightPercentageToDP(9)}
+          />
+        )}
       </TouchableOpacity>
     );
   }

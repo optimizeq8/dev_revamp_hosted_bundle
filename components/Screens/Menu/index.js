@@ -34,7 +34,7 @@ class Menu extends Component {
   static defaultProps = {
     draggableRange: {
       top: heightPercentageToDP("107"),
-      bottom: -heightPercentageToDP("115")
+      bottom: -heightPercentageToDP("120")
     }
   };
   constructor(props) {

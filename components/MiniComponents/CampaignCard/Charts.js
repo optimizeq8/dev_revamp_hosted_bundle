@@ -30,9 +30,7 @@ export default class Charts extends Component {
             </Text>
           )}
         </AnimatedCircularProgress>
-        <Text style={[styles.chartSubtext]}>
-          {Object.keys(this.props.chartCategory)[0]}
-        </Text>
+        <Text style={[styles.chartSubtext]}>Spend</Text>
       </View>
     );
   }

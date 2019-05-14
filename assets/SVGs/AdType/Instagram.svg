@@ -1,15 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80.452" height="80.452" viewBox="0 0 80.452 80.452">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="98.724" height="98.724" viewBox="0 0 98.724 98.724">
   <defs>
-    <filter id="Ellipse_193" x="0" y="0" width="80.452" height="80.452" filterUnits="userSpaceOnUse">
+    <filter id="Ellipse_193" x="0" y="0" width="98.724" height="98.724" filterUnits="userSpaceOnUse">
       <feOffset dy="3" input="SourceAlpha"/>
       <feGaussianBlur stdDeviation="3" result="blur"/>
       <feFlood flood-opacity="0.161"/>
       <feComposite operator="in" in2="blur"/>
       <feComposite in="SourceGraphic"/>
     </filter>
+    
   </defs>
-  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_194)">
-    <circle id="Ellipse_194-2" data-name="Ellipse 194" cx="31.226" cy="31.226" r="31.226" transform="translate(9 6)" fill="#fff"/>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_193)">
+    <circle id="Ellipse_193-2" data-name="Ellipse 193" cx="40.362" cy="40.362" r="40.362" transform="translate(9 6)" fill="rgba(255,255,255,0.2)"/>
+    <text cx="40.362" cy="40.362" r="40.362" transform="translate(33 30)" font-size="14" fill="#fff">More</text>
+    <text cx="40.362" cy="40.362" r="40.362" transform="translate(26 50)" font-size="14" fill="#fff">coming</text>
+    <text cx="40.362" cy="40.362" r="40.362" transform="translate(33 70)" font-family="montserrat-light" font-size="14" fill="#fff">soon</text>
   </g>
-  
 </svg>

@@ -34,8 +34,8 @@ export const twittwerAds = [
     media: "twitter",
     text: "Create Your Ad Now!",
     rout: "",
-    title: "Promoted Tweet",
-    image: require("../../../../assets/images/AdTypes/twitter_logo.png")
+    title: "",
+    image: require("../../../../assets/images/logoP.png")
   }
 ];
 
@@ -45,7 +45,7 @@ export const instagramAds = [
     media: "instagram",
     text: "Create Your Ad Now!",
     rout: "",
-    title: "Instagram Ad",
-    image: require("../../../../assets/images/AdTypes/instagram_logo.png")
+    title: "",
+    image: require("../../../../assets/images/logoP.png")
   }
 ];

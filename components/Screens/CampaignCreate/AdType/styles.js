@@ -5,7 +5,10 @@ import {
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
+  slide: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
   container: {
     paddingTop: hp(5),
     flex: 1,
@@ -18,7 +21,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold",
     fontSize: 17,
     paddingVertical: 10,
-    bottom: 20
+    bottom: 5
   },
   title: {
     fontSize: 16,
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    bottom: 5,
+    bottom: 1.5,
     textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
@@ -62,12 +65,12 @@ const styles = StyleSheet.create({
   },
 
   placeholder: {
-    opacity: 1,
+    backgroundColor: "#fff",
     borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
-    width: wp(59),
-    height: hp(51),
+    width: "100%",
+    height: "90%",
 
     zIndex: 0,
     marginTop: 10,

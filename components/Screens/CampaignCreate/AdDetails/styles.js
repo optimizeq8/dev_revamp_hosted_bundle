@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     top: hp("1%")
   },
   BlurView: {
-    height: hp("110%"),
+    height: hp("115%"),
     paddingTop: hp("10%")
   },
   dateModal: {

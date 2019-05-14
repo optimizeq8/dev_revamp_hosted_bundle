@@ -32,7 +32,14 @@ class CampaignCard extends Component {
     this.setState({ paused: !this.state.paused });
   };
   getLeftText = () => {
-    return this.state.status === "PAUSED" ? "" : "Live";
+    return this.props.campaign.status === "PAUSED"
+      ? ""
+      : this.props.campaign.review_status === "COMPLETED"
+      ? "Complete"
+      : "Live";
+  };
+  getRightText = () => {
+    return this.props.campaign.status === "PAUSED" ? "Paused" : "";
   };
   formatNumber = num => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -86,7 +93,11 @@ class CampaignCard extends Component {
                   top: 5
                 }}
               >
-                <Text style={styles.reviewtext}>In Review</Text>
+                <Text style={styles.reviewtext}>
+                  {this.props.campaign.review_status.includes("PENDING")
+                    ? "In Review"
+                    : "Campaign Paused"}
+                </Text>
               </View>
             )}
             <Icon
@@ -133,9 +144,21 @@ class CampaignCard extends Component {
             <View pointerEvents="none" style={styles.containerStyle}>
               <Toggle
                 backTextLeft={this.getLeftText()}
+                backTextRight={this.getRightText()}
                 containerStyle={styles.toggleStyle}
                 switchOn={campaign.status !== "PAUSED"}
-                textLeftStyle={styles.toggleTextLeft}
+                textLeftStyle={[
+                  styles.toggleTextLeft,
+                  {
+                    fontSize:
+                      this.props.campaign.review_status === "COMPLETED"
+                        ? 8
+                        : 11,
+                    left:
+                      this.props.campaign.review_status === "COMPLETED" ? 4 : 12
+                  }
+                ]}
+                textRightStyle={styles.toggleTextRight}
                 onPress={this.toggleStatus}
                 backgroundColorOff="rgba(255,255,255,0.1)"
                 backgroundColorOn="rgba(255,255,255,0.1)"

@@ -49,7 +49,7 @@ class GetInviteCode extends Component {
         type: "warning",
         position: "top"
       });
-    } else{
+    } else {
       this.props.requestInvitationCode({
         country_code: this.state.country_code,
         mobile: this.state.mobile,

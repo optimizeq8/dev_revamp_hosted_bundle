@@ -43,6 +43,7 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
+import LowerButton from "../LowerButton";
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
@@ -108,7 +109,7 @@ class FilterMenu extends Component {
         <View
           style={{
             flex: 1,
-            top: hp("20"),
+            top: hp("10"),
             alignItems: "center",
             flexDirection: "column",
             opacity: 1,
@@ -214,25 +215,25 @@ class FilterMenu extends Component {
             </TouchableHighlight>
           </View>
         </View>
-        <Text
-          onPress={() => this._resetFilter()}
-          style={[
-            styles.subtext,
-            {
-              textDecorationLine: "underline",
-              marginBottom: 20,
-              textDecorationColor: "#fff"
-            }
-          ]}
-        >
-          Clear Filters
-        </Text>
-        <Button
-          style={[styles.checkbutton, { marginBottom: 35, elevation: 0 }]}
-          onPress={() => this._handleSubmission()}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
+        <View style={{ bottom: "10%" }}>
+          <Text
+            onPress={() => this._resetFilter()}
+            style={[
+              styles.subtext,
+              {
+                textDecorationLine: "underline",
+                marginBottom: 20,
+                textDecorationColor: "#fff"
+              }
+            ]}
+          >
+            Clear Filters
+          </Text>
+          <LowerButton
+            checkmark={true}
+            function={() => this._handleSubmission()}
+          />
+        </View>
       </>
     );
   }
