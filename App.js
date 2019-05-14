@@ -292,8 +292,8 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/logo01.png")]),
       Asset.loadAsync([require("./assets/images/logo02.png")]),
       Font.loadAsync({
-        "montserrat-regular": require("./assets/fonts/BentonSans-Regular.otf"),
-        "montserrat-light": require("./assets/fonts/BentonSans-Light.otf"),
+        "montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
+        "montserrat-light": require("./assets/fonts/Montserrat-Light.ttf"),
         "montserrat-medium": require("./assets/fonts/Montserrat-Medium.ttf"),
         "montserrat-semibold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
         "montserrat-extralight": require("./assets/fonts/Montserrat-ExtraLight.ttf"),

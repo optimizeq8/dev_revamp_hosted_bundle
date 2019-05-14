@@ -1,5 +1,5 @@
 export default (Icons = {
-  BRAND_AWARENESS: require("../Layers"),
+  BRAND_AWARENESS: require("./Awareness"),
   REACH: require("../Person"),
   TRAFFIC: require("./BRAND_AWARENESS"),
   APP_INSTALLS: require("../Download"),

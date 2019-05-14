@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "left",
     color: "#fff",
-    paddingTop: 10,
+    // paddingTop: 6,
     fontFamily: "montserrat-bold",
     fontSize: 14,
     paddingVertical: 0
@@ -21,12 +21,14 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     color: "#fff",
     textAlign: "left",
-    width: "80%"
+    width: "80%",
+    lineHeight: 18
   },
   campaignButton: {
     justifyContent: "space-between",
     flexDirection: "row",
-    flex: 1,
+    display: "flex",
+    alignItems: "center",
     marginHorizontal: 25,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
