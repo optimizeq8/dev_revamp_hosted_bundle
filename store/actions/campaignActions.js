@@ -197,9 +197,9 @@ export const ad_design = (
           payload: data
         });
       })
-      // .then(() => {
-      //   onToggleModal();
-      // })
+      .then(() => {
+        onToggleModal();
+      })
       .then(() =>
         !rejected
           ? navigation.push("AdDetails", {

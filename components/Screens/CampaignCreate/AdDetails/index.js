@@ -283,6 +283,9 @@ class AdDetails extends Component {
   };
 
   _handleBudget = value => {
+    // let x = this.moneyField.getRawValue();
+    // console.log("raw", x);
+
     if (
       !validateWrapper("Budget", value) &&
       value >= this.state.minValueBudget
@@ -304,7 +307,7 @@ class AdDetails extends Component {
         position: "top"
       });
       this.setState({
-        value: parseFloat(value)
+        value: this.moneyField.getRawValue()
       });
       return false;
     }
@@ -674,7 +677,7 @@ class AdDetails extends Component {
                     />
 
                     <Text style={styles.headline}>
-                      Input your Snapchat {"\n"} AD Details
+                      Input your campaign details
                     </Text>
                   </View>
                   <Text style={[styles.subHeadings, { top: hp(1) }]}>
@@ -695,7 +698,7 @@ class AdDetails extends Component {
                   >
                     <Input
                       keyboardType="numeric"
-                      maxLength={7}
+                      maxLength={6}
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }
@@ -706,13 +709,12 @@ class AdDetails extends Component {
                     {/* <TextInputMask
                       type={"money"}
                       options={{
-                        precision: 2,
+                        precision: 3,
                         separator: ",",
                         delimiter: ".",
-                        unit: "$",
-                        suffixUnit: ""
+                        unit: "$"
                       }}
-                      maxLength={9}
+                      maxLength={8}
                       defaultValue={
                         this.state.campaignInfo.lifetime_budget_micro + ""
                       }

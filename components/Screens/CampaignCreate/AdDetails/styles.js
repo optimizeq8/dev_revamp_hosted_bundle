@@ -38,9 +38,10 @@ const styles = StyleSheet.create({
   budget: {
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 27,
+    fontSize: 25,
     fontFamily: "montserrat-medium",
-    textAlign: "center"
+    textAlign: "center",
+    width: "85%"
   },
   backgroundViewWrapper: {
     ...StyleSheet.absoluteFillObject
