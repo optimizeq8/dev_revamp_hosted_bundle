@@ -185,7 +185,6 @@ export const ad_design = (
         return res.data;
       })
       .then(data => {
-        console.log("reupload", data);
         rejected &&
           showMessage({
             message: data.message,
@@ -386,8 +385,6 @@ export const ad_details = (info, interestNames, navigation) => {
 };
 
 export const updateCampaign = (info, businessid, navigation) => {
-  console.log("info--------------", info);
-
   return (dispatch, getState) => {
     instance
       .put(`savetargeting`, { ...info, businessid })

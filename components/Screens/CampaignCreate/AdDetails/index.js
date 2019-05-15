@@ -24,6 +24,7 @@ import dateFormat from "dateformat";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import deepmerge from "deepmerge";
 import BackButton from "../../../MiniComponents/BackButton";
+import isNan from "lodash/isNaN";
 //Data
 import country_regions from "./regions";
 import countries from "./countries";
@@ -162,7 +163,7 @@ class AdDetails extends Component {
         },
         minValueBudget: this.props.minValueBudget,
         maxValueBudget: this.props.maxValueBudget,
-        value: this.props.minValueBudget
+        value: this.formatNumber(this.props.minValueBudget)
       });
       if (
         this.props.navigation.state.params &&
@@ -266,7 +267,7 @@ class AdDetails extends Component {
     replace.lifetime_budget_micro = budget;
     this.setState({
       campaignInfo: replace,
-      value: budget
+      value: this.formatNumber(budget)
     });
   };
 
@@ -282,32 +283,37 @@ class AdDetails extends Component {
     this.setState({ campaignInfo: replace });
   };
 
-  _handleBudget = value => {
-    // let x = this.moneyField.getRawValue();
-    // console.log("raw", x);
-
+  formatNumber = num => {
+    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+  _handleBudget = (value, rawValue) => {
     if (
-      !validateWrapper("Budget", value) &&
-      value >= this.state.minValueBudget
+      !validateWrapper("Budget", rawValue) &&
+      rawValue >= this.state.minValueBudget &&
+      !isNan(rawValue)
     ) {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: value !== "" ? parseFloat(value) : 0
+          lifetime_budget_micro: rawValue
         },
-        value: parseFloat(value)
+        value: value
       });
       return true;
     } else {
       showMessage({
-        message: validateWrapper("Budget", value)
-          ? validateWrapper("Budget", value)
+        message: validateWrapper("Budget", rawValue)
+          ? validateWrapper("Budget", rawValue)
           : "Budget can't be less than the minimum",
         type: "warning",
         position: "top"
       });
       this.setState({
-        value: this.moneyField.getRawValue()
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          lifetime_budget_micro: this.state.minValueBudget
+        },
+        value: value
       });
       return false;
     }
@@ -322,7 +328,13 @@ class AdDetails extends Component {
     this.setState({
       languagesError
     });
-    if (this._handleBudget(this.state.value) && !languagesError) {
+    if (
+      this._handleBudget(
+        this.state.value,
+        this.state.campaignInfo.lifetime_budget_micro
+      ) &&
+      !languagesError
+    ) {
       let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
         delete rep.targeting.demographics[0].gender;
@@ -696,7 +708,7 @@ class AdDetails extends Component {
                       marginVertical: 10
                     }}
                   >
-                    <Input
+                    {/* <Input
                       keyboardType="numeric"
                       maxLength={6}
                       defaultValue={
@@ -705,23 +717,23 @@ class AdDetails extends Component {
                       disabled={editCampaign}
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
-                    />
-                    {/* <TextInputMask
+                    /> */}
+                    <TextInputMask
+                      includeRawValueInChangeText
                       type={"money"}
                       options={{
-                        precision: 3,
-                        separator: ",",
-                        delimiter: ".",
+                        precision: 0,
+                        delimiter: ",",
                         unit: "$"
                       }}
                       maxLength={8}
-                      defaultValue={
-                        this.state.campaignInfo.lifetime_budget_micro + ""
+                      defaultValue={this.state.value + ""}
+                      onChangeText={(value, rawText) =>
+                        this._handleBudget(value, rawText)
                       }
-                      onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                       ref={ref => (this.moneyField = ref)}
-                    /> */}
+                    />
                     <Text
                       style={[
                         styles.colorGrey,
@@ -752,7 +764,7 @@ class AdDetails extends Component {
                   >
                     <View style={styles.textCon}>
                       <Text style={styles.colorGrey}>
-                        {this.state.minValueBudget}$
+                        ${this.state.minValueBudget}
                       </Text>
                       <View
                         style={{
@@ -769,11 +781,11 @@ class AdDetails extends Component {
                             }
                           ]}
                         >
-                          25$/day
+                          $25/day
                         </Text>
                       </View>
                       <Text style={styles.colorGrey}>
-                        {this.state.maxValueBudget}$
+                        ${this.state.maxValueBudget}
                       </Text>
                     </View>
 

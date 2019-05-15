@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   toggleStyle: {
-    width: widthPercentageToDP(16),
-    height: heightPercentageToDP(2.3),
+    width: 65,
+    height: 20,
     borderRadius: 20,
     padding: 0
   },

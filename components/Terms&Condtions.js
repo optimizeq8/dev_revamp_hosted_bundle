@@ -1,8 +1,8 @@
 import { WebBrowser } from "expo";
-export const openTerms = async () => {
+export const openTerms = async closeBrowserLoading => {
   try {
-    let result = await WebBrowser.openBrowserAsync(
-      `https://www.optimizeapp.com/terms`
+    await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/terms`).then(
+      action => action.type === "cancel" && closeBrowserLoading()
     );
     // Segment.screenWithProperties("Payment Knet Screen", {
     //   businessname: this.props.mainBusiness.businessname,
@@ -15,9 +15,7 @@ export const openTerms = async () => {
 
 export const openPrivacy = async () => {
   try {
-    let result = await WebBrowser.openBrowserAsync(
-      `https://www.optimizeapp.com/privacy`
-    );
+    await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/privacy`);
     // Segment.screenWithProperties("Payment Knet Screen", {
     //   businessname: this.props.mainBusiness.businessname,
     //   campaign_id: this.props.campaign_id

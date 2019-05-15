@@ -67,8 +67,6 @@ export const createBusinessAccount = (account, navigation) => {
     instance
       .post(`businessaccount`, account)
       .then(res => {
-        console.log("businessaccount", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -260,8 +258,6 @@ export const create_snapchat_ad_account = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        console.log("snapadaccounts", data);
-
         if (data.success) {
           Segment.track("Snapchat Ad Account Created Successfully");
 

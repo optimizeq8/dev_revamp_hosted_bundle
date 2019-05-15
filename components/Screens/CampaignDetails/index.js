@@ -53,6 +53,7 @@ import {
 } from "react-native-responsive-screen";
 import BarIcon from "../../../assets/SVGs/Bar.svg";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
+import formatNumber from "../../formatNumber";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
@@ -375,7 +376,10 @@ class CampaignDetails extends Component {
                       { fontSize: hp("3.4"), fontFamily: "montserrat-semibold" }
                     ]}
                   >
-                    {this.props.selectedCampaign.lifetime_budget_micro}
+                    {formatNumber(
+                      this.props.selectedCampaign.lifetime_budget_micro,
+                      true
+                    )}
                   </Text>
                   <Text style={{ color: "white" }}>$</Text>
                 </Text>
