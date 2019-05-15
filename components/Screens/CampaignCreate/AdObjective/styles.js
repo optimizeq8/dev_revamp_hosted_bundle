@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     // marginRight: "auto"
     // flex: 5
   },
+  selectObjectiveTitle: {
+    paddingTop: 30
+  },
   innerBlock1: {
     display: "flex",
     flexDirection: "row",

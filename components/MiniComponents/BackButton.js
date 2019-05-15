@@ -15,7 +15,6 @@ export default class CloseButton extends Component {
               business_name: this.props.businessname
             }
           );
-          console.log("back btn pressed");
           this.props.navigation();
         }}
         style={[globalStyles.backButton, this.props.style]}
