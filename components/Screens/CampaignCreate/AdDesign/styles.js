@@ -16,18 +16,18 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   title: {
-    flex: 1,
-    fontSize: 14,
+    // flex: 1,
+    fontSize: 16,
     color: "#fff",
     fontFamily: "montserrat-semibold",
     textAlign: "center",
-    paddingTop: 40,
-    paddingVertical: 10,
-    paddingRight: 30
+    alignSelf: "center"
+    // paddingTop: 40,
+    // paddingVertical: 10,
+    // paddingRight: 30
   },
   container: {
-    marginTop: hp(1.5),
-    backgroundColor: "#751AFF",
+    backgroundColor: "transparent",
     flex: 1
   },
 
@@ -35,7 +35,10 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 16,
     textAlign: "left",
-    color: "#fff"
+    color: "#fff",
+    marginLeft: 8,
+    // zIndex: 30,
+    elevation: 500
   },
   brand_name: {
     textAlign: "left",
@@ -53,16 +56,33 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: 30,
-    left: 50
+    top: "5%",
+    left: "8%",
+    transform: [
+      {
+        translateX: -5
+      },
+      {
+        translateY: -5
+      }
+    ]
   },
   inputHeadline: {
     ...StyleSheet.absoluteFillObject,
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: 80,
-    left: 50
+    marginTop: 35,
+    top: "7%",
+    left: "8%",
+    transform: [
+      {
+        translateX: -5
+      },
+      {
+        translateY: -5
+      }
+    ]
   },
   inputMiddleButton: {
     ...StyleSheet.absoluteFillObject,
@@ -72,17 +92,27 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     borderColor: "transparent",
-    top: hp("35"),
-    left: wp("38")
+    top: "50%",
+    left: "50%",
+    transform: [
+      {
+        translateX: -50
+      },
+      {
+        translateY: -50
+      }
+    ]
   },
   swipeUp: {
     ...StyleSheet.absoluteFillObject,
     height: 50,
-    top: hp("70"),
     alignItems: "center",
-    flex: 1,
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: "90%"
   },
 
   swipeUpText: {
@@ -91,9 +121,8 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   buttonN: {
-    // paddingTop: 0,
-    // bottom: 20,
-    height: hp("78")
+    height: "100%",
+    flex: 1
   },
   content: {
     flexDirection: "row",
@@ -107,18 +136,27 @@ const styles = StyleSheet.create({
     margin: 15
   },
   placeholder: {
-    opacity: 0.5,
+    // opacity: 0.5,
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
     width: "94%",
-    height: "100%",
-    zIndex: 0,
-    // top: 17,
-    backgroundColor: "black",
+    // height: "90%",
+    height: 500,
+    // zIndex: 0,
+    // backgroundColor: "black",
     justifyContent: "center"
   },
-
+  placeholder1: {
+    opacity: 0.5,
+    borderRadius: 30,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    justifyContent: "center"
+  },
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -148,12 +186,12 @@ const styles = StyleSheet.create({
     height: hp(7.5),
 
     alignItems: "center",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 35,
+    // marginVertical: 35,
     marginHorizontal: wp(10)
   },
   icon: {
