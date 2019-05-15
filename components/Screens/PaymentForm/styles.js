@@ -80,11 +80,13 @@ const styles = StyleSheet.create({
   },
   link: {
     textAlign: "center",
+    alignSelf: "center",
+    bottom: 10,
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: 15,
     paddingHorizontal: 10,
-    lineHeight: 15
+    lineHeight: 20
   },
   walletInfo: {
     textAlign: "center",
@@ -117,8 +119,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     height: 100,
-    marginLeft: 0,
-    marginRight: 0,
+    alignItems: "center",
     shadowRadius: 5,
     shadowOpacity: 0.2
   },
@@ -168,6 +169,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "montserrat-medium",
     textAlign: "center"
+  },
+  money: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 18,
+    fontFamily: "montserrat-bold",
+    paddingTop: 3
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

@@ -16,6 +16,9 @@ import CloseIcon from "../../../assets/SVGs/Close";
 import HomeBussinesIcon from "../../../assets/SVGs/Person";
 import CompanyIcon from "../../../assets/SVGs/Group";
 
+//privay
+import { openPrivacy } from "../../Terms&Condtions";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -175,10 +178,7 @@ class CreateBusinessAccount extends Component {
   }
 
   _openWebBrowserAsync = async () => {
-    console.log("open");
-
     try {
-      // this._addLinkingListener();
       let result = await WebBrowser.openBrowserAsync(
         `https://www.optimizeapp.com/privacy`
       );
@@ -186,7 +186,6 @@ class CreateBusinessAccount extends Component {
       //   businessname: this.props.mainBusiness.businessname,
       //   campaign_id: this.props.campaign_id
       // });
-      // this._removeLinkingListener();
     } catch (error) {
       console.log(error);
     }
@@ -758,7 +757,7 @@ class CreateBusinessAccount extends Component {
               <Text style={[styles.link, { lineHeight: 20 }]}>
                 {` By tapping the button below you agree to all the`}
                 <Text
-                  onPress={() => this._openWebBrowserAsync()}
+                  onPress={() => openPrivacy()}
                   style={[
                     styles.link,
                     {
@@ -771,7 +770,7 @@ class CreateBusinessAccount extends Component {
                 </Text>{" "}
                 {`mentioned in this `}
                 <Text
-                  onPress={() => this._openWebBrowserAsync()}
+                  onPress={() => openPrivacy()}
                   style={[
                     styles.link,
                     {

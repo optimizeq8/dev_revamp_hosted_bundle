@@ -50,11 +50,13 @@ class Wallet extends Component {
   _handleSubmission = () => {
     const amountError = validateWrapper("Budget", this.state.amount);
     this.setState({ amountError });
-    if (!amountError)
+    if (!amountError) {
+      this.props.getWalletAmountInKwd(this.state.amount);
       this.props.navigation.navigate("PaymentForm", {
         amount: this.state.amount,
         addingCredits: true
       });
+    }
   };
 
   render() {
@@ -219,7 +221,12 @@ const mapStateToProps = state => ({
   wallet: state.transA.wallet
 });
 
+const mapDispatchToProps = dispatch => ({
+  getWalletAmountInKwd: amount =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount))
+});
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Wallet);

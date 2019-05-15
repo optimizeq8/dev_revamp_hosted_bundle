@@ -89,7 +89,7 @@ class AdDesign extends Component {
     };
     this.params = this.props.navigation.state.params;
     this.rejected =
-      this.props.navigation.state &&
+      this.props.navigation.state.params &&
       this.props.navigation.state.params.rejected;
   }
   async componentDidMount() {

@@ -12,6 +12,7 @@ const initialState = {
   campaign_balance_amount: 0,
   campaign_balance_amount_kwd: 0,
   walletUsed: false,
+  walletAmountInKwd: 0,
   message: "",
   payment_data: null,
   loading: false,
@@ -30,9 +31,9 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.ERROR_SET_TRANSACTION_LIST:
       return {
-          ...state,
-          loading: false,
-          errorTransactionList: true
+        ...state,
+        loading: false,
+        errorTransactionList: true
       };
     case actionTypes.SET_WALLET_AMOUNT:
       return {
@@ -44,13 +45,25 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_SET_WALLET_AMOUNT:
       return {
         ...state,
-        loading: false,
+        loading: false
       };
     case actionTypes.ADD_WALLET_AMOUNT:
       return {
         ...state,
         payment_data: action.payload,
         loading: !action.payload.success
+      };
+    case actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD:
+      return {
+        ...state,
+
+        loading: false
+      };
+    case actionTypes.GET_WALLET_AMOUNT_IN_KWD:
+      return {
+        ...state,
+        walletAmountInKwd: action.payload.kdamount,
+        loading: false
       };
     case actionTypes.ERROR_ADD_WALLET_AMOUNT:
       return {
@@ -140,8 +153,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.ERROR_FILTER_TRANSACTION:
       return {
-          ...state
-      }
+        ...state
+      };
     default:
       return state;
   }
