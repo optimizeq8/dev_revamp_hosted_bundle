@@ -14,6 +14,7 @@ import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
+import formatNumber from "../../formatNumber";
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
@@ -82,7 +83,7 @@ class Wallet extends Component {
           height={85}
         />
         <Text style={[globalStyles.numbers, { fontSize: 40 }]}>
-          {this.props.wallet}
+          {formatNumber(this.props.wallet, true)}
           <Text style={styles.dollar}>$</Text>
         </Text>
 
@@ -175,6 +176,7 @@ class Wallet extends Component {
                                 Amount
                               </Label>
                               <Input
+                                maxLength={6}
                                 keyboardType="number-pad"
                                 style={styles.inputtext}
                                 value={`${

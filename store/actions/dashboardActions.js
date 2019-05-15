@@ -16,7 +16,7 @@ export const filterCampaigns = query => {
 };
 
 export const getCampaignDetails = (id, navigation) => {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: actionTypes.SET_CAMPAIGN,
       payload: { loading: true, data: {} }
@@ -29,17 +29,18 @@ export const getCampaignDetails = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        console.log("campaign details", data);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN,
-          payload: { loading: false, data: data.data}
-        })
+          payload: { loading: false, data: data.data }
+        });
       })
       .catch(err => {
-
-        console.log("getCampaignDetails error", err.message || err.response );
+        console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -72,9 +73,12 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         });
       })
       .catch(err => {
-        console.log("getCampaignListError: ", err.message || err.response ); // => prints: Api is being canceled????
+        console.log("getCampaignListError: ", err.message || err.response); // => prints: Api is being canceled????
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
@@ -116,9 +120,12 @@ export const updateCampaignList = (id, page, increasePage) => {
         }
       })
       .catch(err => {
-        console.log("updateCampaignList", err.message || err.response );
+        console.log("updateCampaignList", err.message || err.response);
         showMessage({
-          message: err.message || err.response || "Something went wrong, please try again.",
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });

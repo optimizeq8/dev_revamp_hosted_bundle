@@ -45,9 +45,7 @@ const defaultErrorHandler = ErrorUtils.getGlobalHandler();
 
 const myErrorHandler = (e, isFatal) => {
   // e: the error thrown
-  console.log("errorrr", e);
   if (isFatal) {
-    console.log("died", e);
     if (store.getState().transA.walletUsed) {
       if (store.getState().campaignC.campaign_id !== "") {
         store.dispatch(

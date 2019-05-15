@@ -126,15 +126,13 @@ class CampaignCard extends Component {
               name="snapchat"
               style={styles.icon}
             />
-            {!this.props.campaign.review_status.includes("PENDING") ||
-              (true && (
-                <Text style={[styles.subtext]}>
-                  {this.props.campaign.review_status.includes("REJECTED") ||
-                  true
-                    ? "Tap here to submit your Ad again"
-                    : "Tap to view more"}
-                </Text>
-              ))}
+            {!this.props.campaign.review_status.includes("PENDING") && (
+              <Text style={[styles.subtext]}>
+                {this.props.campaign.review_status.includes("REJECTED")
+                  ? "Tap here to submit your Ad again"
+                  : "Tap to view more"}
+              </Text>
+            )}
 
             <View style={{ flexDirection: "row" }}>
               {chart}
@@ -160,9 +158,19 @@ class CampaignCard extends Component {
                       numberOfLines={1}
                       style={[GlobalStyles.numbers, styles.campaignNumbers]}
                     >
-                      {this.formatNumber(campaign.swipes)}
+                      {campaign.objective !== "BRAND_AWARENESS"
+                        ? this.formatNumber(campaign.swipes)
+                        : campaign.impressions > 0
+                        ? (parseFloat(campaign.spends) /
+                            parseFloat(campaign.impressions)) *
+                          1000
+                        : 0}
                     </Text>
-                    <Text style={[styles.subtext]}>Swipe Ups</Text>
+                    <Text style={[styles.subtext]}>
+                      {campaign.objective !== "BRAND_AWARENESS"
+                        ? "Swipe Ups"
+                        : "CPM"}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -193,9 +201,9 @@ class CampaignCard extends Component {
                 circleColorOn="#66D072"
                 duration={200}
                 circleStyle={{
-                  width: widthPercentageToDP(4),
-                  height: heightPercentageToDP(2),
-                  borderRadius: 25
+                  width: 17,
+                  height: 17,
+                  borderRadius: 50
                 }}
               />
             </View>

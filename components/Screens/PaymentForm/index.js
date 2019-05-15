@@ -12,6 +12,7 @@ import { LinearGradient, WebBrowser, Linking, Segment, BlurView } from "expo";
 import UseWallet from "./UseWallet";
 import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import NavigationService from "../../../NavigationService.js";
+import formatNumber from "../../formatNumber";
 
 //terms&conditions
 import { openTerms } from "../../Terms&Condtions";
@@ -85,7 +86,6 @@ class PaymentForm extends Component {
           ? this.props.payment_data_wallet.knet_payment_url
           : this.props.payment_data.knet_payment_url
       ).then(action => {
-        console.log("opened", action);
         this.setState({
           browserLoading: action.type !== "cancel"
         });
@@ -111,8 +111,7 @@ class PaymentForm extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-    console.log(event.url);
-    console.log("data", data);
+
     this.setState({ redirectData: data });
   };
 
@@ -183,6 +182,9 @@ class PaymentForm extends Component {
       return this.props.data.lifetime_budget_micro * 0.05;
     }
   };
+  closeBrowserLoading = () => {
+    this.setState({ browserLoading: false });
+  };
   render() {
     return (
       <Container style={styles.container}>
@@ -212,13 +214,12 @@ class PaymentForm extends Component {
               TOTAL
             </Text>
             <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-              <Text style={[styles.money]}>$ </Text>
               <Text style={styles.money}>
                 {this.addingCredits
-                  ? " " + this.amount
+                  ? " " + formatNumber(this.amount)
                   : this.props.walletUsed
-                  ? this.props.campaign_balance_amount
-                  : this.props.data.lifetime_budget_micro}
+                  ? formatNumber(this.props.campaign_balance_amount)
+                  : formatNumber(this.props.data.lifetime_budget_micro)}
               </Text>
 
               <Text style={[styles.money, { fontSize: 16 }]}> USD</Text>
@@ -394,7 +395,7 @@ class PaymentForm extends Component {
             <Text
               onPress={() => {
                 this.setState({ browserLoading: true });
-                openTerms();
+                openTerms(this.closeBrowserLoading);
               }}
               style={[
                 styles.link,

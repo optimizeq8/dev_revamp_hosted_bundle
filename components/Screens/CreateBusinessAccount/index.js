@@ -268,8 +268,6 @@ class CreateBusinessAccount extends Component {
 
         this.props.registerUser(userInfo, this.props.navigation);
       } else {
-        console.log(this.state.businessAccount);
-
         this.props.createBusinessAccount(
           this.state.businessAccount,
           this.props.navigation

@@ -26,7 +26,6 @@ class ErrorRedirect extends Component {
     Segment.screen("Payment Error Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.setState(this.props.navigation.state.params);
-    console.log(this.props.navigation.state.params);
   }
 
   componentWillUnmount() {
