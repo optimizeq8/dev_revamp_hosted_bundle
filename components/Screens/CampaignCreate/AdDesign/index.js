@@ -87,6 +87,10 @@ class AdDesign extends Component {
       isVisible: false,
       imageLoading: false
     };
+    this.params = this.props.navigation.state.params;
+    this.rejected =
+      this.props.navigation.state &&
+      this.props.navigation.state.params.rejected;
   }
   async componentDidMount() {
     Segment.screen("Design Ad Screen");
@@ -98,11 +102,21 @@ class AdDesign extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        campaign_id: this.props.campaign_id,
+        campaign_id: this.rejected
+          ? this.params.campaign_id
+          : this.props.campaign_id,
         brand_name: this.props.mainBusiness.businessname,
-        headline: !this.props.data ? "Headline" : this.props.data.name
+        headline: !this.props.data
+          ? this.rejected
+            ? this.params.headline
+            : "Headline"
+          : this.props.data.name
       },
-      objective: this.props.data ? this.props.data.objective : "REACH"
+      objective: this.props.data
+        ? this.props.data.objective
+        : this.rejected
+        ? this.params.objective
+        : ""
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -227,8 +241,10 @@ class AdDesign extends Component {
     body.append("media_type", this.state.type);
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("campaign_id", this.state.campaignInfo.campaign_id);
-    body.append("brand_name", this.state.campaignInfo.brand_name);
-    body.append("headline", this.state.campaignInfo.headline);
+    if (!this.rejected) {
+      body.append("brand_name", this.state.campaignInfo.brand_name);
+      body.append("headline", this.state.campaignInfo.headline);
+    }
     body.append("destination", this.state.campaignInfo.destination);
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
 
@@ -284,7 +300,6 @@ class AdDesign extends Component {
 
     let swipeUpError = "";
     if (
-      this.state.objective !== "REACH" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
@@ -324,7 +339,8 @@ class AdDesign extends Component {
           this._getUploadState,
           this.props.navigation,
           this.onToggleModal,
-          this.state.appChoice
+          this.state.appChoice,
+          this.rejected
         );
       // this.props.navigation.navigate("AdDetails");
     }
@@ -353,16 +369,14 @@ class AdDesign extends Component {
                 flexDirection: "row"
               }}
             >
-              {/* <TouchableOpacity
-                onPress={() => this.props.navigation.pop()}
-                style={globalStyles.backButton}
-              >
-                <BackButton />
-              </TouchableOpacity> */}
               <BackButton
                 screenname="Ad Design"
                 businessname={this.props.mainBusiness.businessname}
-                navigation={this.props.navigation.goBack}
+                navigation={
+                  !this.rejected
+                    ? this.props.navigation.goBack
+                    : () => this.props.navigation.navigate("Dashboard")
+                }
               />
 
               <Text style={styles.title}>Compose Ad</Text>
@@ -415,9 +429,14 @@ class AdDesign extends Component {
                         ? "red"
                         : "#fff"
                     }
+                    style={{ opacity: this.rejected ? 0.7 : 1 }}
                   />
                   <Input
-                    style={styles.inputtext}
+                    disabled={this.rejected}
+                    style={[
+                      styles.inputtext,
+                      { opacity: this.rejected ? 0.7 : 1 }
+                    ]}
                     defaultValue={
                       this.props.mainBusiness.businessname
                         ? this.props.mainBusiness.businessname
@@ -465,12 +484,15 @@ class AdDesign extends Component {
                         ? "red"
                         : "#fff"
                     }
+                    style={{ opacity: this.rejected ? 0.7 : 1 }}
                   />
                   <Input
-                    style={styles.inputtext}
-                    defaultValue={
-                      !this.props.data ? "Headline" : this.props.data.name
-                    }
+                    disabled={this.rejected}
+                    style={[
+                      styles.inputtext,
+                      { opacity: this.rejected ? 0.7 : 1 }
+                    ]}
+                    defaultValue={this.state.campaignInfo.headline}
                     placeholderTextColor="white"
                     autoCorrect={false}
                     autoCapitalize="none"
@@ -641,14 +663,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, loading, navigation, onToggleModal, appChoice) =>
+  ad_design: (info, loading, navigation, onToggleModal, appChoice, rejected) =>
     dispatch(
       actionCreators.ad_design(
         info,
         loading,
         navigation,
         onToggleModal,
-        appChoice
+        appChoice,
+        rejected
       )
     )
 });

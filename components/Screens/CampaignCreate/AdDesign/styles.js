@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1
   },
   inputBrand: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     alignSelf: "center",
     width: 250,
     height: 50,
@@ -57,15 +57,15 @@ const styles = StyleSheet.create({
     left: 50
   },
   inputHeadline: {
-    ...StyleSheet.absoluteFillObject,
     alignSelf: "center",
+    position: "absolute",
     width: 250,
     height: 50,
     top: 80,
     left: 50
   },
   inputMiddleButton: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 90,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     left: wp("38")
   },
   swipeUp: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     height: 50,
     top: hp("70"),
     alignItems: "center",

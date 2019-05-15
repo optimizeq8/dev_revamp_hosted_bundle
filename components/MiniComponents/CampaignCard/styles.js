@@ -193,6 +193,12 @@ const styles = StyleSheet.create({
     // left: 12,
     fontFamily: "montserrat-light",
     color: "#fff"
+  },
+  adStatus: {
+    borderRadius: 16,
+    marginBottom: 5,
+    paddingHorizontal: 10,
+    top: 5
   }
 });
 

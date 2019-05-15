@@ -62,7 +62,6 @@ import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import isUndefined from "lodash/isUndefined";
 
-
 const { height } = Dimensions.get("window");
 
 class CampaignDetails extends Component {
@@ -87,7 +86,8 @@ class CampaignDetails extends Component {
       toggleText: "",
       chartAnimation: new Animated.Value(1),
       LineAnimation: new Animated.Value(0),
-      visible: true
+      visible: true,
+      imageIsLoading: true
     };
   }
 
@@ -178,19 +178,29 @@ class CampaignDetails extends Component {
     };
 
     if (this.props.loading) {
-        return <Loading dash={true} />
-    } else
-     if(!this.props.loading && 
-        (isNull(this.props.selectedCampaign) || isUndefined(this.props.selectedCampaign) || isEmpty(this.props.selectedCampaign))) {
-            return (
-            <ErrorComponent
-                loading={this.props.loading}
-                navigation={this.props.navigation}
-            />)
-         }
-    else {
-      console.log("0000000000000", this.props.selectedCampaign);
-
+      return (
+        <>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
+          <Loading dash={true} />
+        </>
+      );
+    } else if (
+      !this.props.loading &&
+      (isNull(this.props.selectedCampaign) ||
+        isUndefined(this.props.selectedCampaign) ||
+        isEmpty(this.props.selectedCampaign))
+    ) {
+      return (
+        <ErrorComponent
+          loading={this.props.loading}
+          navigation={this.props.navigation}
+        />
+      );
+    } else {
       let interesetNames =
         this.props.selectedCampaign.targeting &&
         this.props.selectedCampaign.targeting.hasOwnProperty("interests")
@@ -238,9 +248,15 @@ class CampaignDetails extends Component {
       }
       return (
         <>
+          {this.state.imageIsLoading && (
+            <View>
+              <Loading dash={true} />
+            </View>
+          )}
           {!this.props.selectedCampaign.media.includes(".jpg") && (
             <View style={[styles.backgroundViewWrapper]}>
               <Video
+                onLoadEnd={() => this.setState({ imageIsLoading: false })}
                 source={{
                   uri: "http://" + this.props.selectedCampaign.media
                 }}
@@ -253,10 +269,12 @@ class CampaignDetails extends Component {
               />
             </View>
           )}
+
           <ImageBackground
             source={{
               uri: "http://" + this.props.selectedCampaign.media
             }}
+            onLoadEnd={() => this.setState({ imageIsLoading: false })}
             style={{
               width: "100%",
               height: "100%"
