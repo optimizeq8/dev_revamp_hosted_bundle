@@ -49,7 +49,8 @@ class FilterMenu extends Component {
     super(props);
     this.state = {
       start_time: "",
-      end_time: ""
+      end_time: "",
+      selected: "A"
     };
   }
 
@@ -64,13 +65,14 @@ class FilterMenu extends Component {
     });
   };
   _resetFilter = () => {
-    this.setState({ start_time: "", end_time: "" });
+    this.setState({ start_time: "", end_time: "", selected: "A" });
   };
-  _handleSubmission = () => {
+  _handleSubmission = (selected, statusSelected) => {
+    this.setState({ selected });
     if (!this.props.transactionFilter) {
       this.props.onSearch({
         value: this.props.filterValue,
-        selected: this.props.filterStatus,
+        selected: selected,
         dateRange: [this.state.start_time, this.state.end_time]
       });
     } else {
@@ -79,7 +81,7 @@ class FilterMenu extends Component {
         dateRange: [this.state.start_time, this.state.end_time]
       });
     }
-    this.props._handleSideMenuState(false);
+    !statusSelected && this.props._handleSideMenuState(false);
   };
   render() {
     let end_time = "";
@@ -144,7 +146,10 @@ class FilterMenu extends Component {
                 <Text style={[styles.title, { paddingBottom: 20 }]}>
                   Campaign Status
                 </Text>
-                <FilterStatus />
+                <FilterStatus
+                  selected={this.state.selected}
+                  _handleSubmission={this._handleSubmission}
+                />
               </>
             )}
             <Text style={[styles.title, { paddingBottom: 10 }]}> Date </Text>
@@ -227,11 +232,11 @@ class FilterMenu extends Component {
               }
             ]}
           >
-            Clear Filters
+            Clear filters
           </Text>
           <LowerButton
             checkmark={true}
-            function={() => this._handleSubmission()}
+            function={() => this._handleSubmission(this.state.selected)}
           />
         </View>
       </>
