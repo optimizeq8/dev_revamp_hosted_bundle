@@ -267,7 +267,9 @@ class AdObjective extends Component {
                 dateField={this.dateField}
               />
 
-              <Text style={styles.title}>Objective</Text>
+              <Text style={[styles.title, styles.selectObjectiveTitle]}>
+                Objective
+              </Text>
 
               <Item
                 rounded
@@ -290,11 +292,11 @@ class AdObjective extends Component {
                         c => this.state.campaignInfo.objective === c.value
                       ).label}
                 </Text>
-                <Icon type="AntDesign" name="down" style={styles.downicon} />
+                {/* <Icon type="AntDesign" name="down" style={styles.downicon} /> */}
               </Item>
             </View>
 
-            <LowerButton bottom={10} function={this._handleSubmission} />
+            <LowerButton bottom={4} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
         <DateField
