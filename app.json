@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Optimize",
-    "scheme": "optimize",
+    "name": "OptimizeApp",
+    "scheme": "OptimizeApp",
     "description": "Digital Marketing made easy.",
     "slug": "optimize_app",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.0.2",
+    "version": "0.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "notification": {
@@ -31,14 +31,14 @@
     },
 
     "android": {
-      "package": "com.optimizekw.optimize"
+      "package": "com.optimize_advertising_and_marketing_company_wll.optimizeapp"
     },
     "hooks": {
       "postPublish": [
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "optimize",
+            "organization": "Optimize Advertising & Marketing Company WLL.",
             "project": "react-native-optimize",
             "authToken": "cea83a7cc6f54a4b8a67f3db6a1ad43951b1145659c444f8b0f3931ec6e914c1"
           }

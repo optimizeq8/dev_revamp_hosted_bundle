@@ -544,7 +544,7 @@ class AdDesign extends Component {
                     {image ? "Edit Media" : "Add Media"}
                   </Text>
                 </Button>
-                {!["BRAND_AWARENESS", "reach"].find(
+                {!["BRAND_AWARENESS"].find(
                   obj =>
                     this.state.objective.toLowerCase() === obj.toLowerCase()
                 ) && (
