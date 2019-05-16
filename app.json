@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.1.0`",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "notification": {
@@ -24,22 +24,22 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.optimizekw.optimize"
+      "bundleIdentifier": "com.optimizeapp.optimizeapp"
     },
     "packagerOpts": {
       "config": "metro.config.js"
     },
 
     "android": {
-      "package": "com.optimize_advertising_and_marketing_company_wll.optimizeapp"
+      "package": "com.optimizeapp.optimizeapp"
     },
     "hooks": {
       "postPublish": [
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "Optimize Advertising & Marketing Company WLL.",
-            "project": "react-native-optimize",
+            "organization": "optimize",
+            "project": "optimizeapp",
             "authToken": "cea83a7cc6f54a4b8a67f3db6a1ad43951b1145659c444f8b0f3931ec6e914c1"
           }
         }
