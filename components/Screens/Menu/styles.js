@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   },
   businessTitle: {
     alignSelf: "center",
+    textAlign: "center",
     top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",

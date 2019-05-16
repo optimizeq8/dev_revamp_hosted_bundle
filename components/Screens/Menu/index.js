@@ -264,9 +264,7 @@ class Menu extends Component {
                   <Text style={styles.text}>Logout</Text>
                 </View>
               </TouchableOpacity>
-              {
-                //<Text style={styles.text}>{this.props.exponentPushToken}</Text>
-              }
+              {/* <Text style={styles.text}>{this.props.exponentPushToken}</Text> */}
             </View>
           </View>
 

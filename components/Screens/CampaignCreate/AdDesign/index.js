@@ -180,9 +180,13 @@ class AdDesign extends Component {
     ) {
       if (!result.cancelled) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
-          if (result.type === "video" && file.size > 32000000) {
+          if (
+            (result.type === "video" && file.size > 32000000) ||
+            result.duration > 10599
+          ) {
             this.setState({
-              imageError: "Video must be less than 32 MBs",
+              imageError:
+                "Video must be less than 32 MBs and less than 10 seconds.",
               image: null
             });
             this.onToggleModal();
@@ -206,7 +210,7 @@ class AdDesign extends Component {
       }
     } else {
       this.setState({
-        imageError: "Media size must be in 9:16 aspect ratio",
+        imageError: "Media size must be in 9:16 aspect ratio.",
         image: null
       });
       this.onToggleModal();
@@ -578,7 +582,7 @@ class AdDesign extends Component {
                   <View style={[styles.placeholder1]}>
                     <Video
                       source={{
-                        uri: image
+                        uri: image ? image : ""
                       }}
                       onReadyForDisplay={info =>
                         this._handleLandscapeVideos(info)

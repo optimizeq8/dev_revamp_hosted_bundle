@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   wallet: {
     top: "0.5%",
-    right: "7%",
+    right: "6%",
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
