@@ -259,7 +259,10 @@ class AdDesign extends Component {
     }
     body.append("destination", this.state.campaignInfo.destination);
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
-
+    body.append(
+      "attachment",
+      JSON.stringify(this.state.campaignInfo.attachment)
+    );
     this.setState({
       formatted: body
     });
@@ -359,6 +362,8 @@ class AdDesign extends Component {
           this.state.appChoice,
           this.rejected
         );
+      console.log(this.state.formatted);
+
       // this.props.navigation.navigate("AdDetails");
     }
   };
@@ -624,7 +629,6 @@ class AdDesign extends Component {
                       style={styles.placeholder1}
                       source={{ uri: image }}
                       resizeMode="cover"
-
                     />
                     {penIconBrand}
                     {penIconHeadLine}
