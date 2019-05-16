@@ -270,14 +270,12 @@ class Dashboard extends Component {
                 </Text>
               </Transition>
             </View>
-            {this.props.wallet > 0 && (
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Wallet")}
-                style={styles.wallet}
-              >
-                <WalletIcon width={hp(3)} height={hp(3)} />
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Wallet")}
+              style={styles.wallet}
+            >
+              <WalletIcon width={hp(3)} height={hp(3)} />
+            </TouchableOpacity>
             <View
               padder
               style={[
