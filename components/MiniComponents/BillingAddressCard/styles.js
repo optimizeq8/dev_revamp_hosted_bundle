@@ -13,33 +13,25 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 20
   },
-  title: {
-    fontSize: widthPercentageToDP(5),
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 10,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
-  },
+
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     backgroundColor: "#fff",
     borderColor: "transparent",
-    flex: 1,
-    top: heightPercentageToDP(23),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 }
+    shadowOffset: { width: 0, height: -3 },
+    marginTop: 15,
+    flex: 1,
+    paddingTop: 20
+    // maxHeight: "100%"
+    // flexDirection: "column",
+    //justifyContent:""
   },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
+
   button: {
-    bottom: heightPercentageToDP(20),
     backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 65,
@@ -52,19 +44,22 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
+    marginBottom: 30
   },
   contentContainer: {
-    paddingVertical: 40,
-    flex: 1,
-    justifyContent: "space-around"
+    paddingVertical: 7,
+    alignSelf: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   closeIcon: {
-    top: heightPercentageToDP(4),
-    left: widthPercentageToDP(7),
     zIndex: 10,
     elevation: 5
   },
+  required: { fontSize: 10, color: "#717171" },
   text: {
     textAlign: "center",
     color: "#717171",
@@ -85,17 +80,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     width: 100,
-
     borderColor: "#7039FF",
-    flexDirection: "row"
+    flexDirection: "row",
+    borderBottomWidth: 1.5
   },
   selector: {
-    bottom: 25,
     alignSelf: "center",
     justifyContent: "center",
     width: 250,
+    height: 40,
     borderColor: "#7039FF",
-    flexDirection: "row"
+    flexDirection: "row",
+    borderBottomWidth: 1.5,
+    marginBottom: 20
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

@@ -5,7 +5,8 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
-  Image
+  Image,
+  SafeAreaView
 } from "react-native";
 import isEqual from "lodash/isEqual";
 import { LinearGradient, Segment } from "expo";
@@ -16,30 +17,33 @@ import Sidemenu from "react-native-side-menu";
 import MultiSelect from "../../MiniComponents/MultiSelect/MultiSelect";
 import SelectRegions from "../../MiniComponents/SelectRegions";
 import { Modal } from "react-native-paper";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
+import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+
 //Icons
-import Address from "../../../assets/SVGs/MenuIcons/AddressIcon";
+import Address from "../../../assets/SVGs/Location";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import globalStyles from "../../../Global Styles";
 
 //Data
-// import Areas from "./regions";
-import countries from "./Countries";
 import Areas from "./Areas";
+
 //Redux
 import * as actionCreators from "../../../store/actions/";
+
+//Functions
 import validateWrapper from "../../../Validation Functions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
-import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 
@@ -153,7 +157,7 @@ class AddressForm extends Component {
           style={styles.gradient}
         />
         {!this.state.sidemenustate && (
-          <>
+          <View style={{ marginBottom: 10 }}>
             <TouchableOpacity
               onPress={() => this.props.navigation.goBack()}
               style={globalStyles.backButton}
@@ -162,34 +166,38 @@ class AddressForm extends Component {
             </TouchableOpacity>
             <Text style={styles.title}>Billing Address</Text>
             <Address
+              fill="#fff"
               style={{
-                alignSelf: "center"
+                alignSelf: "center",
+                marginTop: 20
               }}
-              width={85}
-              height={85}
+              width={55}
+              height={55}
             />
-          </>
+          </View>
         )}
-        {/* TODO: When user selects CC display this */}
-        {this.state.from === "creditCard" &&
-        !isUndefined(this.state.addressId) &&
-        !isNull(this.state.addressId) ? (
-          <SelectBillingAddressCard
-            address={this.state.address}
-            addressId={this.state.addressId}
-            navigation={this.props.navigation}
-            kdamount={this.state.kdamount}
-          />
-        ) : (
-          <BillingAddressCard
-            address={this.state.address}
-            _handleSubmission={this._handleSubmission}
-            _handleAddressChange={this._handleAddressChange}
-            _handleSideMenuState={this._handleSideMenuState}
-            sidemenustate={this.state.sidemenustate}
-            errorLoading={this.props.errorLoading}
-          />
-        )}
+        <View style={{ display: "flex", flex: 3 }}>
+          {/* TODO: When user selects CC display this */}
+          {this.state.from === "creditCard" &&
+          !isUndefined(this.state.addressId) &&
+          !isNull(this.state.addressId) ? (
+            <SelectBillingAddressCard
+              address={this.state.address}
+              addressId={this.state.addressId}
+              navigation={this.props.navigation}
+              kdamount={this.state.kdamount}
+            />
+          ) : (
+            <BillingAddressCard
+              address={this.state.address}
+              _handleSubmission={this._handleSubmission}
+              _handleAddressChange={this._handleAddressChange}
+              _handleSideMenuState={this._handleSideMenuState}
+              sidemenustate={this.state.sidemenustate}
+              errorLoading={this.props.errorLoading}
+            />
+          )}
+        </View>
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>

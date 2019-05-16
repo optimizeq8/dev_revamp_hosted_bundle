@@ -11,13 +11,13 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20
+    paddingTop: 30
   },
   title: {
     fontSize: widthPercentageToDP(5),
     color: "#fff",
     textAlign: "center",
-    paddingTop: 10,
+    paddingTop: 20,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
