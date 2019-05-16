@@ -18,7 +18,7 @@ import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PersonalInfo from "../../../assets/SVGs/MenuIcons/PersonalInfo";
+import PersonalInfo from "../../../assets/SVGs/Person";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
@@ -70,7 +70,14 @@ class ChangePassword extends Component {
           <BackIcon />
         </TouchableOpacity>
         <Text style={styles.title}>Personal Info</Text>
-
+        <PersonalInfo
+          style={{
+            alignSelf: "center",
+            marginTop: 20
+          }}
+          width={55}
+          height={55}
+        />
         <View style={styles.mainCard}>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
@@ -79,159 +86,93 @@ class ChangePassword extends Component {
             <KeyboardShift>
               {() => (
                 <View style={styles.contentContainer}>
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.inputP
-                          ? "#7039FF"
-                          : this.state.currentPasswordError
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
+                  <View
+                    style={{
+                      paddingHorizontal: 35,
+                      textAlign: "left"
+                    }}
                   >
-                    <Label
+                    <Text style={styles.label}>Full Name</Text>
+                    <Text
+                      style={{
+                        color: "#5F5F5F",
+                        fontFamily: "montserrat-medium",
+                        fontSize: 23,
+                        textAlign: "left",
+                        paddingBottom: 60
+                      }}
+                    >
+                      {this.props.userInfo.firstname}{" "}
+                      {this.props.userInfo.lastname}
+                    </Text>
+                    <Item
+                      floatingLabel
                       style={[
-                        styles.inputtext,
+                        styles.input,
                         {
-                          bottom: 5,
-                          flexDirection: "column",
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
+                          marginBottom: 30,
+                          borderColor: this.state.inputPR
+                            ? "#7039FF"
+                            : this.state.repasswordError !== ""
+                            ? "red"
+                            : "#D9D9D9"
                         }
                       ]}
                     >
-                      <Icon
-                        style={{
-                          fontSize: 20,
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
-                        }}
-                        name="person"
+                      <Label
+                        style={[
+                          styles.label,
+                          {
+                            bottom: 5
+                          }
+                        ]}
+                      >
+                        Mobile No.
+                      </Label>
+
+                      <Input
+                        disabled
+                        style={styles.inputtext}
+                        value={`${this.props.userInfo.mobile}`}
                       />
-                      {"  "}
-                      First Name
-                    </Label>
-                    <Input
-                      style={styles.inputtext}
-                      value={`${this.props.userInfo.firstname}`}
-                      disabled
-                    />
-                  </Item>
-
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.inputP
-                          ? "#7039FF"
-                          : this.state.currentPasswordError
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
-                  >
-                    <Label
+                    </Item>
+                    <Item
+                      floatingLabel
                       style={[
-                        styles.inputtext,
+                        styles.input,
                         {
-                          bottom: 5,
-
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
+                          borderColor: this.state.inputP
+                            ? "#7039FF"
+                            : this.state.passwordError
+                            ? "red"
+                            : "#D9D9D9"
                         }
                       ]}
                     >
-                      {/* <Icon
-                        style={{
-                          fontSize: 20,
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
-                        }}
-                        name="key"
-                      /> */}
-                      {"  "}
-                      Last Name
-                    </Label>
-                    <Input
-                      style={styles.inputtext}
-                      value={`${this.props.userInfo.lastname}`}
-                      disabled
-                    />
-                  </Item>
-
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.inputP
-                          ? "#7039FF"
-                          : this.state.passwordError
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        {
-                          bottom: 5,
-
-                          color: this.state.inputP ? "#FF9D00" : "#717171"
-                        }
-                      ]}
-                    >
-                      {/* <Icon
+                      <Label
+                        style={[
+                          styles.label,
+                          {
+                            bottom: 5
+                          }
+                        ]}
+                      >
+                        {/* <Icon
                         style={{
                           fontSize: 20,
                           color: this.state.inputP ? "#FF9D00" : "#717171"
                         }}
                         name="key"
                       /> */}
-                      {"  "}
-                      email
-                    </Label>
-                    <Input
-                      disabled
-                      style={styles.inputtext}
-                      value={this.props.userInfo.email}
-                    />
-                  </Item>
-
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      {
-                        marginBottom: 0,
-                        paddingBottom: 0,
-                        borderColor: this.state.inputPR
-                          ? "#7039FF"
-                          : this.state.repasswordError !== ""
-                          ? "red"
-                          : "#D9D9D9"
-                      }
-                    ]}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        {
-                          bottom: 5,
-                          color: this.state.inputPR ? "#FF9D00" : "#717171"
-                        }
-                      ]}
-                    >
-                      Mobile No.
-                    </Label>
-
-                    <Input
-                      disabled
-                      style={styles.inputtext}
-                      value={`+${this.props.userInfo.mobile}`}
-                    />
-                  </Item>
+                        E-Mail
+                      </Label>
+                      <Input
+                        disabled
+                        style={[styles.inputtext]}
+                        value={this.props.userInfo.email}
+                      />
+                    </Item>
+                  </View>
 
                   {/* <TouchableOpacity
                     onPress={() => this._handleSubmission()}
