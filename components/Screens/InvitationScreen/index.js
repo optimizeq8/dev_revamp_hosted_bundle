@@ -88,6 +88,7 @@ export default class Invitation extends Component {
               width={heightPercentageToDP(20)}
               height={heightPercentageToDP(20)}
             />
+            <Text style={styles.logotext}>Optimize</Text>
 
             <Animatable.View
               animation={

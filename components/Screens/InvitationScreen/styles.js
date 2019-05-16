@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP(10),
     flex: 1
   },
+  logotext: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 22,
+    fontFamily: "montserrat-medium",
+    top: heightPercentageToDP(-4)
+  },
   content: {
     flexDirection: "row",
     alignItems: "center",

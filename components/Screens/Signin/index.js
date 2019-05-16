@@ -106,6 +106,7 @@ class MainForm extends Component {
             width={heightPercentageToDP(20)}
             height={heightPercentageToDP(20)}
           />
+          <Text style={styles.logotext}>Optimize</Text>
         </View>
         <Text style={styles.text}>Sign In</Text>
 

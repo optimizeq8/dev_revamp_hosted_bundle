@@ -20,6 +20,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "relative"
   },
+  logotext: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 22,
+    fontFamily: "montserrat-medium",
+    top: heightPercentageToDP(-4)
+  },
   image: {
     alignSelf: "center",
     height: heightPercentageToDP(17),
