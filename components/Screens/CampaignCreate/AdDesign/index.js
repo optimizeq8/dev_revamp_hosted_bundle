@@ -92,7 +92,8 @@ class AdDesign extends Component {
       imageError: "",
       swipeUpError: "",
       isVisible: false,
-      imageLoading: false
+      imageLoading: false,
+      heightComponent: 0
     };
   }
   async componentDidMount() {
@@ -278,6 +279,11 @@ class AdDesign extends Component {
       });
   };
 
+  _onLayoutEvent = event => {
+    const h = event.nativeEvent.layout.height;
+    console.log("height of content", h);
+    this.setState({ heightComponent: h - 40 });
+  };
   validator = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -531,8 +537,11 @@ class AdDesign extends Component {
             </Left>
             <Body
               style={[
-                { alignItems: "center", alignSelf: "center" }
-                // { paddingBottom: 0 }
+                {
+                  alignItems: "center",
+                  alignSelf: "center",
+                  width: "100%"
+                }
               ]}
             >
               <Title style={[styles.title, { width: "100%" }]}>
@@ -542,9 +551,13 @@ class AdDesign extends Component {
             <Right />
           </Header>
 
-          <Content padder keyboardShouldPersistTaps="always">
+          <Content
+            contentContainerStyle={{ flexGrow: 1 }}
+            scrollEnabled={false}
+            padder
+          >
             <Transition style={{ height: "100%" }} shared="image">
-              <View style={styles.buttonN}>
+              <View style={[styles.buttonN]}>
                 {this.state.type === "VIDEO" ? (
                   <View style={[styles.placeholder1]}>
                     <Video
@@ -619,48 +632,58 @@ class AdDesign extends Component {
               </Text>
             )}
             {!this.state.swipeUpError ? null : (
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#fff",
-                  paddingTop: 10,
-                  fontFamily: "montserrat-medium",
-                  fontSize: heightPercentageToDP(1.7)
-                }}
-              >
+              <Text style={styles.swipeUpErrorText}>
                 {this.state.swipeUpError}
               </Text>
             )}
           </Content>
 
-          <Footer
-            style={[
-              {
-                backgroundColor: "transparent",
-                borderColor: "trasparent",
-                borderTopWidth: 0
-              }
-            ]}
-          >
-            <TouchableOpacity
-              style={[styles.button]}
-              onPress={() => this.perviewHandler()}
-            >
-              <EyeIcon
-                width={widthPercentageToDP(24)}
-                height={heightPercentageToDP(8)}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this._handleSubmission}
-              style={styles.button}
-            >
-              <ForwardButton
-                width={widthPercentageToDP(24)}
-                height={heightPercentageToDP(8)}
-              />
-            </TouchableOpacity>
+          <Footer style={[styles.footerStyle]}>
+            {image ? (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
+              >
+                <TouchableOpacity
+                  style={[styles.button]}
+                  onPress={() => this.perviewHandler()}
+                >
+                  <EyeIcon
+                    width={widthPercentageToDP(24)}
+                    height={heightPercentageToDP(8)}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this._handleSubmission}
+                  style={styles.button}
+                >
+                  <ForwardButton
+                    width={widthPercentageToDP(24)}
+                    height={heightPercentageToDP(8)}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Text style={styles.footerTextStyle}>
+                Please add media to proceed
+              </Text>
+            )}
           </Footer>
+          <Modal isVisible={this.props.loading || this.state.isVisible}>
+            <>
+              <LoadingScreen top={50} />
+              <Text
+                style={[
+                  styles.title,
+                  { top: heightPercentageToDP(50), left: "5%" }
+                ]}
+              >
+                {Math.round(this.state.loaded, 2)}%
+              </Text>
+            </>
+          </Modal>
         </Container>
       </SafeAreaView>
     );

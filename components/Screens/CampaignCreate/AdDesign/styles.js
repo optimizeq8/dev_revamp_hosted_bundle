@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold",
     textAlign: "center",
     alignSelf: "center"
-    // paddingTop: 40,
-    // paddingVertical: 10,
-    // paddingRight: 30
   },
   container: {
     backgroundColor: "transparent",
@@ -56,14 +53,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: "5%",
+    top: "3%",
     left: "8%",
     transform: [
       {
         translateX: -5
       },
       {
-        translateY: -5
+        translateY: -3
       }
     ]
   },
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     marginTop: 35,
-    top: "7%",
+    top: "5%",
     left: "8%",
     transform: [
       {
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: "90%"
+    top: "88%"
   },
 
   swipeUpText: {
@@ -121,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   buttonN: {
-    height: "100%",
+    minHeight: 300,
     flex: 1
   },
   content: {
@@ -141,8 +138,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "94%",
-    // height: "90%",
-    height: 500,
+    height: "100%",
+    // minHeight: 300,
     // zIndex: 0,
     // backgroundColor: "black",
     justifyContent: "center"
@@ -184,14 +181,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: wp(10),
     height: hp(7.5),
-
     alignItems: "center",
-    // justifyContent: "flex-end",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    // marginVertical: 35,
     marginHorizontal: wp(10)
   },
   icon: {
@@ -204,6 +198,24 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  swipeUpErrorText: {
+    textAlign: "center",
+    color: "#fff",
+    paddingTop: 10,
+    fontFamily: "montserrat-medium",
+    fontSize: hp(1.7)
+  },
+  footerTextStyle: {
+    fontSize: 12,
+    color: "white",
+    fontFamily: "montserrat-medium",
+    alignSelf: "center"
+  },
+  footerStyle: {
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    elevation: 0
   }
 });
 
