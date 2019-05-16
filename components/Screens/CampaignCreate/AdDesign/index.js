@@ -551,7 +551,7 @@ class AdDesign extends Component {
         />
 
         <Container style={styles.container}>
-          <Header transparent noShadow>
+          <Header transparent noShadow iosBarStyle={"light-content"}>
             <Left style={{ alignItems: "center", alignSelf: "center" }}>
               <BackButton
                 screenname="Ad Design"
@@ -702,7 +702,10 @@ class AdDesign extends Component {
               <Text
                 style={[
                   styles.title,
-                  { top: heightPercentageToDP(50), left: "5%" }
+                  {
+                    top: heightPercentageToDP(5),
+                    left: "5%"
+                  }
                 ]}
               >
                 {Math.round(this.state.loaded, 2)}%

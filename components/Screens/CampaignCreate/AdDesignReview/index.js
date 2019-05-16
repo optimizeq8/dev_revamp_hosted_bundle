@@ -1,7 +1,24 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, ImageBackground } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  Platform
+} from "react-native";
 import { Video, Segment } from "expo";
-import { Text } from "native-base";
+import {
+  Text,
+  Container,
+  Header,
+  Left,
+  Body,
+  Right,
+  Content,
+  Title,
+  Subtitle
+} from "native-base";
 
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
@@ -14,6 +31,8 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
+import startCase from "lodash/startCase";
+import toLower from "lodash/toLower";
 
 class AdDesignReview extends Component {
   static navigationOptions = {
@@ -24,75 +43,99 @@ class AdDesignReview extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
+      <SafeAreaView style={styles.container}>
+        <Container
           style={[
-            globalStyles.backButton,
-            { left: widthPercentageToDP(85), top: heightPercentageToDP(6) }
+            {
+              flex: 1,
+              width: "100%"
+            },
+            styles.container,
+            { paddingTop: Platform.OS === "android" ? 30 : 0 }
           ]}
         >
-          <CloseIcon />
-        </TouchableOpacity>
-
-        <Transition anchor="image">
-          <View>
-            <Text style={styles.brand_name}>
-              {this.props.navigation.state.params.brand_name}
-            </Text>
-            <Text style={styles.headline}>
-              {this.props.navigation.state.params.headline}
-            </Text>
-          </View>
-        </Transition>
-        {/* {this.props.navigation.state.params.type === "VIDEO" && (
-          <View style={[styles.backgroundViewWrapper]}>
-            <Video
-              source={{
-                uri: this.props.navigation.state.params.image
-              }}
-              isLooping
-              shouldPlay
-              resizeMode="cover"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </View>
-        )} */}
-        <Transition shared="image">
-          <View style={styles.mainCard}>
-            {this.props.navigation.state.params.type === "VIDEO" ? (
-              <Video
-                source={{
-                  uri: this.props.navigation.state.params.image
-                }}
-                isLooping
-                shouldPlay
-                resizeMode="cover"
-                style={{ width: "100%", height: "100%" }}
-              />
-            ) : (
-              <Image
-                resizeMode="cover"
-                style={styles.placeholder}
-                source={{
-                  uri: this.props.navigation.state.params.image
-                }}
-              />
-            )}
-            <View
-              style={{
-                bottom: "13%"
-              }}
-            >
-              <Text style={[styles.call_to_action]}>
-                {this.props.navigation.state.params.call_to_action !==
-                  "BLANK" && this.props.navigation.state.params.call_to_action}
-              </Text>
-              <Text style={[styles.AD]}>AD</Text>
-            </View>
-          </View>
-        </Transition>
-      </View>
+          <Header
+            iosBarStyle={"light-content"}
+            style={{ backgroundColor: "transparent", borderBottomWidth: 0 }}
+          >
+            <Body style={{ alignItems: "flex-start" }}>
+              <Title style={styles.brand_name}>
+                {this.props.navigation.state.params.brand_name}
+              </Title>
+              <Subtitle style={styles.headline}>
+                {this.props.navigation.state.params.headline}
+              </Subtitle>
+            </Body>
+            <Right>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.goBack()}
+                style={[
+                  globalStyles.backButton,
+                  {
+                    left: widthPercentageToDP(0),
+                    top: heightPercentageToDP(0)
+                  }
+                ]}
+              >
+                <CloseIcon />
+              </TouchableOpacity>
+            </Right>
+          </Header>
+          <Content
+            padder
+            scrollEnabled={false}
+            contentContainerStyle={{ flexGrow: 1, margin: 0, padding: 0 }}
+          >
+            <Transition shared="image">
+              <View style={styles.mainCard}>
+                {this.props.navigation.state.params.type === "VIDEO" ? (
+                  <Video
+                    source={{
+                      uri: this.props.navigation.state.params.image
+                    }}
+                    isLooping
+                    shouldPlay
+                    resizeMode="cover"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  <Image
+                    resizeMode="cover"
+                    style={styles.placeholder}
+                    source={{
+                      uri: this.props.navigation.state.params.image
+                    }}
+                  />
+                )}
+                <View
+                  style={{
+                    // position: "absolute",
+                    bottom: "10%",
+                    width: "100%",
+                    alignItems: "center",
+                    display: "flex",
+                    flexDirection: "row"
+                    // justifyContent: "space-around"
+                    // flex: 1
+                  }}
+                >
+                  <Text style={[styles.call_to_action]}>
+                    {this.props.navigation.state.params.call_to_action !==
+                    "BLANK"
+                      ? startCase(
+                          toLower(
+                            this.props.navigation.state.params.call_to_action
+                          )
+                        )
+                      : ""}
+                  </Text>
+                  <Text style={[styles.AD]}>AD</Text>
+                </View>
+              </View>
+            </Transition>
+          </Content>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

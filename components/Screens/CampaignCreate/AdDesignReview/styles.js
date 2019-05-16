@@ -13,34 +13,10 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    paddingTop: heightPercentageToDP(1),
+    // paddingTop: heightPercentageToDP(1),
     backgroundColor: "black",
-    height: heightPercentageToDP(110)
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    marginBottom: 15,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 300,
-    height: 50
-  },
-  buttonN: {
-    paddingTop: 0,
-    bottom: 15,
-    height: heightPercentageToDP("73")
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
+    height: "100%"
+    // height: heightPercentageToDP(110)
   },
   image: {
     alignSelf: "center",
@@ -50,9 +26,11 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     borderRadius: 10,
-    alignSelf: "center",
+    // alignSelf: "center",
     width: "100%",
-    height: "100%",
+    minHeight: 300,
+    flex: 1,
+    // height: "100%",
     zIndex: 0,
     backgroundColor: "black",
     justifyContent: "center"
@@ -60,53 +38,60 @@ const styles = StyleSheet.create({
 
   mainCard: {
     borderRadius: 10,
-    height: heightPercentageToDP(93)
+    flex: 1,
+    margin: 0,
+    padding: 0
+    //width: "110%"
+    // position: "relative"
+    // height: heightPercentageToDP(93)
   },
   brand_name: {
     textAlign: "left",
     color: "#fff",
-    paddingTop: 30,
     fontFamily: "montserrat-medium",
     fontSize: 14,
-    paddingLeft: 20,
     shadowColor: "#000",
     shadowRadius: 5,
-    shadowOpacity: 1
+    shadowOpacity: 1,
+    paddingLeft: 10
   },
   headline: {
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    paddingLeft: 20,
-    // paddingTop: 10,
-    paddingBottom: -10,
     shadowColor: "#000",
     shadowRadius: 5,
-    shadowOpacity: 1
+    shadowOpacity: 1,
+    paddingLeft: 10
   },
   call_to_action: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
-    bottom: "10%",
-    paddingVertical: 17,
+    fontSize: 20,
+    // bottom: "10%",
+    // paddingVertical: 17,
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 0, height: 0.5 },
-    textShadowRadius: 20
+    textShadowRadius: 20,
+    flex: 1,
+    width: "100%",
+    paddingLeft: 50
   },
   AD: {
-    position: "absolute",
+    // position: "absolute",
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 16,
-    bottom: "2%",
-    left: "90%",
-    paddingVertical: 17,
+    fontSize: 14,
+    // bottom: "2%",
+    // left: "90%",
+    // paddingVertical: 17,
     textShadowColor: "rgba(0, 0, 0, 1)",
     textShadowOffset: { width: 0, height: 0.5 },
-    textShadowRadius: 30
+    textShadowRadius: 30,
+    textAlign: "right",
+    paddingRight: 20
   },
   activeBadege: {
     backgroundColor: "#5F5F5F",
@@ -135,13 +120,6 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.4)"
-  },
-  title: {
-    color: "#fff",
-    fontSize: 20,
-    marginTop: 90,
-    paddingHorizontal: 20,
-    textAlign: "center"
   }
 });
 
