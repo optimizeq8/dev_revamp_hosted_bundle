@@ -11,13 +11,13 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20
+    paddingTop: 30
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 10,
+    paddingTop: 20,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   contentContainer: {
-    paddingVertical: 40,
-    flex: 1,
+    paddingVertical: 20,
     justifyContent: "space-around"
   },
   closeIcon: {
@@ -60,29 +59,31 @@ const styles = StyleSheet.create({
     zIndex: 10,
     elevation: 5
   },
+  label: {
+    color: "#FF9D00",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "left"
+  },
   text: {
     textAlign: "center",
     color: "#717171",
     paddingTop: 40,
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    paddingHorizontal: 10,
     paddingVertical: 10,
     marginBottom: 40
   },
   inputtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
+    fontSize: 21,
+    color: "#4B4B4B"
   },
   input: {
     bottom: 25,
     marginBottom: 20,
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 300,
+
+    width: 250,
     height: 45,
     borderColor: "#7039FF"
   },
