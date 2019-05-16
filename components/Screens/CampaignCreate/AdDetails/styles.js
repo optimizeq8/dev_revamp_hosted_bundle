@@ -38,9 +38,10 @@ const styles = StyleSheet.create({
   budget: {
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 27,
+    fontSize: 25,
     fontFamily: "montserrat-medium",
-    textAlign: "center"
+    textAlign: "center",
+    width: "85%"
   },
   backgroundViewWrapper: {
     ...StyleSheet.absoluteFillObject
@@ -60,8 +61,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
-    width: 300,
-    height: 50
+    width: 300
   },
 
   indicator: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     top: hp("1%")
   },
   BlurView: {
-    height: hp("110%"),
+    height: hp("115%"),
     paddingTop: hp("10%")
   },
   dateModal: {
@@ -137,7 +137,17 @@ const styles = StyleSheet.create({
   },
   chart: {
     alignItems: "center",
-    height: hp("20%")
+    top: hp(10),
+    position: "absolute",
+    alignSelf: "center",
+    justifyContent: "flex-end"
+    // bottom: hp(42)
+  },
+  bottom: {
+    alignSelf: "center",
+    position: "absolute",
+    bottom: hp(16),
+    alignSelf: "center"
   },
   chartText: {
     color: "#fff",
@@ -149,8 +159,8 @@ const styles = StyleSheet.create({
   chartItems: {
     flex: 1,
     flexDirection: "column",
-    top: hp(5),
-    left: wp(9)
+    top: hp(5)
+    // left: wp(9)
   },
   button: {
     backgroundColor: "transparent",

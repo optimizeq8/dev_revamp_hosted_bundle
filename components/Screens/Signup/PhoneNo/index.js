@@ -137,7 +137,7 @@ class PhoneNo extends Component {
                 height: 30,
                 position: "absolute",
                 borderWidth: 0.3,
-                borderColor: this.props.invite ? "#fff" : "#000",
+                borderColor: "transparent",
                 borderRadius: 5,
                 left: 4,
                 zIndex: 5
@@ -198,7 +198,7 @@ class PhoneNo extends Component {
                   });
                 }
               }}
-              // onPressFlag={this.onPressFlag}
+              onPressFlag={this.onPressFlag}
               initialCountry="kw"
               countriesList={require("./countries.json")}
               value="+965"

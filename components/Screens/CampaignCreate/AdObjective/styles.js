@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../../Global Styles";
 export const colors = {
   black: "#1a1917",
@@ -10,40 +13,75 @@ export const colors = {
 const styles = StyleSheet.create({
   container: {
     marginTop: 30,
-    flex: 1,
+    display: "flex",
     justifyContent: "space-between"
+  },
+  block1: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: wp(100),
+    paddingTop: 10
+  },
+  block1Title: {
+    top: hp(5),
+    width: "100%",
+    paddingRight: 25
+    // marginLeft: "auto",
+    // marginRight: "auto"
+    // flex: 5
+  },
+  selectObjectiveTitle: {
+    paddingTop: 30
+  },
+  innerBlock1: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
-  backbutton: {
-    marginLeft: 10
+  backDrop: {
+    position: "absolute",
+    top: -hp("50%"),
+    alignSelf: "center"
+  },
+  backButton: {
+    // top: 0,
+    left: wp(0),
+    // marginRight: "auto",
+    // borderWidth: 1,
+    width: 80,
+    height: 40,
+    paddingLeft: 40
   },
   backbuttonicon: {
     justifyContent: "center",
-    top: 25,
+    // top: 25,
     marginLeft: 20
   },
   title: {
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
   phoneicon: {
-    flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
-    marginTop: 30
+    // justifyContent: "center",
+    // alignSelf: "center",
+    marginTop: 60
   },
   maincontent: {
     flex: 1,
     justifyContent: "flex-start",
-    paddingTop: 30
+    paddingTop: 40
   },
   input1: {
-    marginBottom: 10,
+    marginBottom: 30,
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
@@ -84,8 +122,8 @@ const styles = StyleSheet.create({
   },
   downicon: {
     color: "#fff",
-    fontSize: 20,
-    left: 25
+    fontSize: 20
+    // left: 5
   },
   button: {
     alignSelf: "center",
@@ -94,7 +132,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: heightPercentageToDP(20)
+    marginVertical: hp(20)
   },
   icon: {
     fontSize: 35,
@@ -108,7 +146,7 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   popupContent: {
-    marginTop: heightPercentageToDP(5),
+    marginTop: hp(5),
     flexDirection: "column"
   },
   modaltitle: {
@@ -141,7 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignSelf: "center",
     width: 270,
-    height: heightPercentageToDP(7),
+    height: hp(7),
     justifyContent: "center",
     borderWidth: 0.5
   }

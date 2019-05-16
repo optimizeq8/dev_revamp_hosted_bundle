@@ -14,6 +14,7 @@ import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
+import formatNumber from "../../formatNumber";
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
@@ -33,7 +34,7 @@ import {
 } from "react-native-responsive-screen";
 import * as Animatable from "react-native-animatable";
 
-class AddCredits extends Component {
+class Wallet extends Component {
   static navigationOptions = {
     header: null
   };
@@ -50,11 +51,13 @@ class AddCredits extends Component {
   _handleSubmission = () => {
     const amountError = validateWrapper("Budget", this.state.amount);
     this.setState({ amountError });
-    if (!amountError)
+    if (!amountError) {
+      this.props.getWalletAmountInKwd(this.state.amount);
       this.props.navigation.navigate("PaymentForm", {
         amount: this.state.amount,
         addingCredits: true
       });
+    }
   };
 
   render() {
@@ -80,7 +83,7 @@ class AddCredits extends Component {
           height={85}
         />
         <Text style={[globalStyles.numbers, { fontSize: 40 }]}>
-          {this.props.wallet}
+          {formatNumber(this.props.wallet, true)}
           <Text style={styles.dollar}>$</Text>
         </Text>
 
@@ -173,6 +176,7 @@ class AddCredits extends Component {
                                 Amount
                               </Label>
                               <Input
+                                maxLength={6}
                                 keyboardType="number-pad"
                                 style={styles.inputtext}
                                 value={`${
@@ -219,7 +223,12 @@ const mapStateToProps = state => ({
   wallet: state.transA.wallet
 });
 
+const mapDispatchToProps = dispatch => ({
+  getWalletAmountInKwd: amount =>
+    dispatch(actionCreators.getWalletAmountInKwd(amount))
+});
+
 export default connect(
   mapStateToProps,
-  null
-)(AddCredits);
+  mapDispatchToProps
+)(Wallet);

@@ -4,6 +4,10 @@ import { Icon } from "native-base";
 import { Segment } from "expo";
 //styles
 import styles from "./styles";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 export default class AdTypeCard extends Component {
   render() {
     return (
@@ -18,31 +22,25 @@ export default class AdTypeCard extends Component {
           )
         }
       >
-        <View style={{ width: "100%" }}>
-          {/* <Icon
-            style={styles.slideicon}
-            type="FontAwesome"
-            name={this.props.adType.icon}
-          /> */}
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            bottom: "5%",
+            paddingTop: 10,
+            alignSelf: "center"
+          }}
+        >
           <Text style={styles.slidtitle}>{this.props.adType.title} </Text>
-          <View
-            style={[
-              styles.placeholder,
-              {
-                backgroundColor: this.props.adType.title.includes("Snap")
-                  ? "transparent"
-                  : "#fff"
-              }
-            ]}
-          >
+          <View style={[styles.placeholder]}>
             <Image
               style={{
                 width: "100%",
                 height: "100%",
-                position: "absolute"
+                backgroundColor: "#fff"
               }}
               resizeMode={
-                this.props.adType.media !== "snapchat" ? "contain" : "stretch"
+                this.props.adType.media !== "snapchat" ? "center" : "stretch"
               }
               source={this.props.adType.image}
             />

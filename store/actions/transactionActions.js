@@ -24,17 +24,19 @@ export const getTransactions = () => {
         });
       })
       .catch(err => {
-        console.log("getTransactions Error: ", err.message || err.response ); // => prints: Api is being canceled
+        console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
         return dispatch({
-            type: actionTypes.ERROR_SET_TRANSACTION_LIST
-        })
-    
-    });
+          type: actionTypes.ERROR_SET_TRANSACTION_LIST
+        });
+      });
   };
 };
 
@@ -56,15 +58,18 @@ export const getWalletAmount = () => {
         });
       })
       .catch(err => {
-            console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
-            showMessage({
-                message: err.message || err.response || "Something went wrong, please try again.",
-                type: "danger",
-                position: "top"
-            });
-            return dispatch({
-                type: actionTypes.ERROR_SET_WALLET_AMOUNT
-            });    
+        console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_WALLET_AMOUNT
+        });
       });
   };
 };
@@ -88,21 +93,58 @@ export const addWalletAmount = (info, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("addWalletAmount Error: ", err.message || err.response );
+        console.log("addWalletAmount Error: ", err.message || err.response);
 
         showMessage({
-            message:err.message || err.response || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
         return dispatch({
-            type: actionTypes.ERROR_ADD_WALLET_AMOUNT
+          type: actionTypes.ERROR_ADD_WALLET_AMOUNT
         });
-
       });
   };
 };
-
+export const getWalletAmountInKwd = amount => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_TRAN_LOADING,
+      payload: true
+    });
+    instance
+      .get(`kdamount/${amount}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.GET_WALLET_AMOUNT_IN_KWD,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log(
+          "getWalletAmountInKwd Error: ",
+          err.message || err.response
+        );
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_GET_WALLET_AMOUNT_IN_KWD
+        });
+      });
+  };
+};
 export const useWallet = campaign_id => {
   return dispatch => {
     dispatch({
@@ -127,16 +169,18 @@ export const useWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("useWallet Error: ", err.message || err.response );
+        console.log("useWallet Error: ", err.message || err.response);
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
         return dispatch({
-            type: actionTypes.ERROR_USE_WALLET_AMOUNT
+          type: actionTypes.ERROR_USE_WALLET_AMOUNT
         });
-
       });
   };
 };
@@ -157,22 +201,25 @@ export const removeWalletAmount = (campaign_id, navigation, interestNames) => {
           type: actionTypes.REMOVE_WALLET_AMOUNT,
           payload: data
         });
-      }).then(() =>{
+      })
+      .then(() => {
         navigation.navigate("AdPaymentReview", {
-            interestNames: interestNames
+          interestNames: interestNames
         });
       })
       .catch(err => {
-        console.log("removeWalletAmount Error: ", err.message || err.response );
+        console.log("removeWalletAmount Error: ", err.message || err.response);
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
         return dispatch({
-            type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT
+          type: actionTypes.ERROR_REMOVE_WALLET_AMOUNT
         });
-
       });
   };
 };
@@ -198,14 +245,17 @@ export const checkoutwithWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("checkoutwithWallet Error: ", err.message || err.response );
+        console.log("checkoutwithWallet Error: ", err.message || err.response);
         showMessage({
-            message: err.message || err.response || "Something went wrong, please try again.",
-            type: "danger",
-            position: "top"
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
         return dispatch({
-            type: actionTypes.ERROR_CHECKOUT_WITH_WALLET
+          type: actionTypes.ERROR_CHECKOUT_WITH_WALLET
         });
       });
   };

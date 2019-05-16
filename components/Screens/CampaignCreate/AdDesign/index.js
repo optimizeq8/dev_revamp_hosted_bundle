@@ -9,6 +9,7 @@ import {
   Segment
 } from "expo";
 import {
+  SafeAreaView,
   View,
   TouchableOpacity,
   Image,
@@ -25,6 +26,12 @@ import {
   Item,
   Input,
   Container,
+  Header,
+  Body,
+  Left,
+  Title,
+  Right,
+  Footer,
   Icon
 } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -85,8 +92,13 @@ class AdDesign extends Component {
       imageError: "",
       swipeUpError: "",
       isVisible: false,
-      imageLoading: false
+      imageLoading: false,
+      heightComponent: 0
     };
+    this.params = this.props.navigation.state.params;
+    this.rejected =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.rejected;
   }
   async componentDidMount() {
     Segment.screen("Design Ad Screen");
@@ -98,11 +110,21 @@ class AdDesign extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        campaign_id: this.props.campaign_id,
+        campaign_id: this.rejected
+          ? this.params.campaign_id
+          : this.props.campaign_id,
         brand_name: this.props.mainBusiness.businessname,
-        headline: !this.props.data ? "Headline" : this.props.data.name
+        headline: !this.props.data
+          ? this.rejected
+            ? this.params.headline
+            : "Headline"
+          : this.props.data.name
       },
-      objective: this.props.data ? this.props.data.objective : "REACH"
+      objective: this.props.data
+        ? this.props.data.objective
+        : this.rejected
+        ? this.params.objective
+        : ""
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -227,8 +249,10 @@ class AdDesign extends Component {
     body.append("media_type", this.state.type);
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("campaign_id", this.state.campaignInfo.campaign_id);
-    body.append("brand_name", this.state.campaignInfo.brand_name);
-    body.append("headline", this.state.campaignInfo.headline);
+    if (!this.rejected) {
+      body.append("brand_name", this.state.campaignInfo.brand_name);
+      body.append("headline", this.state.campaignInfo.headline);
+    }
     body.append("destination", this.state.campaignInfo.destination);
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
 
@@ -271,6 +295,11 @@ class AdDesign extends Component {
       });
   };
 
+  _onLayoutEvent = event => {
+    const h = event.nativeEvent.layout.height;
+    console.log("height of content", h);
+    this.setState({ heightComponent: h - 40 });
+  };
   validator = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -284,7 +313,6 @@ class AdDesign extends Component {
 
     let swipeUpError = "";
     if (
-      this.state.objective !== "REACH" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
@@ -324,7 +352,8 @@ class AdDesign extends Component {
           this._getUploadState,
           this.props.navigation,
           this.onToggleModal,
-          this.state.appChoice
+          this.state.appChoice,
+          this.rejected
         );
       // this.props.navigation.navigate("AdDetails");
     }
@@ -335,42 +364,218 @@ class AdDesign extends Component {
   };
   render() {
     let { image } = this.state;
+    const penIconBrand = (
+      <Item
+        style={[
+          styles.inputBrand,
+          {
+            borderColor: "transparent"
+          }
+        ]}
+      >
+        <PenIcon
+          fill={
+            this.state.inputB
+              ? "#FF9D00"
+              : this.state.brand_nameError
+              ? "red"
+              : "#fff"
+          }
+        />
+        <Input
+          style={styles.inputtext}
+          defaultValue={
+            this.props.mainBusiness.businessname
+              ? this.props.mainBusiness.businessname
+              : "Brand Name"
+          }
+          placeholderLabel={styles.inputtext}
+          placeholderTextColor="white"
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={value =>
+            this.setState({
+              campaignInfo: {
+                ...this.state.campaignInfo,
+                brand_name: value
+              }
+            })
+          }
+          onFocus={() => {
+            this.setState({ inputB: true });
+          }}
+          onBlur={() => {
+            this.setState({ inputB: false });
+            this.setState({
+              brand_nameError: validateWrapper(
+                "mandatory",
+                this.state.campaignInfo.brand_name
+              )
+            });
+          }}
+        />
+      </Item>
+    );
+
+    const penIconHeadLine = (
+      <Item
+        style={[
+          styles.inputHeadline,
+          {
+            borderColor: "transparent"
+          }
+        ]}
+      >
+        <PenIcon
+          fill={
+            this.state.inputH
+              ? "#FF9D00"
+              : this.state.headlineError
+              ? "red"
+              : "#fff"
+          }
+        />
+        <Input
+          style={styles.inputtext}
+          defaultValue={!this.props.data ? "Headline" : this.props.data.name}
+          placeholderTextColor="white"
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={value =>
+            this.setState({
+              campaignInfo: {
+                ...this.state.campaignInfo,
+                headline: value
+              }
+            })
+          }
+          onFocus={() => {
+            this.setState({ inputH: true });
+          }}
+          onBlur={() => {
+            this.setState({ inputH: false });
+            this.setState({
+              headlineError: validateWrapper(
+                "mandatory",
+                this.state.campaignInfo.headline
+              )
+            });
+          }}
+        />
+      </Item>
+    );
+    const mediaButton = (
+      <Button
+        style={[
+          styles.inputMiddleButton,
+          { flexDirection: "column", opacity: 1 }
+        ]}
+        onPress={() => {
+          this._pickImage();
+        }}
+      >
+        <Icon
+          style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
+          name="camera"
+        />
+        <Text
+          style={{
+            textAlign: "center",
+            paddingTop: 23,
+            fontFamily: "montserrat-medium",
+            fontSize: 14,
+            width: 150,
+            color: "#FF9D00"
+          }}
+        >
+          {image ? "Edit Media" : "Add Media"}
+        </Text>
+      </Button>
+    );
+
+    let swipeDestination = (
+      <TouchableOpacity
+        style={styles.swipeUp}
+        onPress={() => {
+          this.state.objective.toLowerCase() === "traffic"
+            ? this.props.navigation.navigate("SwipeUpDestination", {
+                _changeDestination: this._changeDestination
+              })
+            : this.props.navigation.navigate("SwipeUpChoice", {
+                _changeDestination: this._changeDestination,
+                objective: this.state.objective
+              });
+        }}
+      >
+        <Text style={styles.swipeUpText}>
+          {this.state.campaignInfo.destination !== "BLANK" &&
+          this.state.campaignInfo.destination !== "REMOTE_WEBPAGE"
+            ? this.state.campaignInfo.destination
+            : this.state.campaignInfo.destination === "REMOTE_WEBPAGE"
+            ? "Website"
+            : "Swipe Up destination"}
+        </Text>
+        <Icon
+          type="MaterialIcons"
+          name="arrow-drop-down"
+          style={{ color: "orange" }}
+        />
+      </TouchableOpacity>
+    );
+
+    let blankView = (
+      <View
+        style={{
+          backgroundColor: "black",
+          opacity: 0.4,
+          height: "100%",
+          width: "100%"
+        }}
+      />
+    );
     return (
-      <Container style={styles.container}>
+      <SafeAreaView style={{ height: "100%" }}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
 
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={false}
-        >
-          <View style={[styles.mainCard]}>
-            <View
-              style={{
-                flexDirection: "row"
-              }}
-            >
-              {/* <TouchableOpacity
-                onPress={() => this.props.navigation.pop()}
-                style={globalStyles.backButton}
-              >
-                <BackButton />
-              </TouchableOpacity> */}
+        <Container style={styles.container}>
+          <Header transparent noShadow>
+            <Left style={{ alignItems: "center", alignSelf: "center" }}>
               <BackButton
                 screenname="Ad Design"
                 businessname={this.props.mainBusiness.businessname}
                 navigation={this.props.navigation.goBack}
+                style={{ top: 0, left: 0 }}
               />
+            </Left>
+            <Body
+              style={[
+                {
+                  alignItems: "center",
+                  alignSelf: "center",
+                  width: "100%"
+                }
+              ]}
+            >
+              <Title style={[styles.title, { width: "100%" }]}>
+                Compose Ad
+              </Title>
+            </Body>
+            <Right />
+          </Header>
 
-              <Text style={styles.title}>Compose Ad</Text>
-            </View>
+          <Content
+            contentContainerStyle={{ flexGrow: 1 }}
+            scrollEnabled={false}
+            padder
+          >
             <Transition style={{ height: "100%" }} shared="image">
-              <View style={styles.buttonN}>
+              <View style={[styles.buttonN]}>
                 {this.state.type === "VIDEO" ? (
-                  <View style={[styles.placeholder]}>
+                  <View style={[styles.placeholder1]}>
                     <Video
                       source={{
                         uri: image
@@ -389,182 +594,53 @@ class AdDesign extends Component {
                         }
                       ]}
                     />
+
+                    {penIconBrand}
+                    {penIconHeadLine}
+                    {mediaButton}
+                    {!["BRAND_AWARENESS", "reach"].find(
+                      obj =>
+                        this.state.objective.toLowerCase() === obj.toLowerCase()
+                    ) && swipeDestination}
                   </View>
                 ) : !image ? (
-                  <View style={styles.placeholder} />
+                  <View style={styles.placeholder}>
+                    {blankView}
+                    {penIconBrand}
+                    {penIconHeadLine}
+                    {mediaButton}
+                    {!["BRAND_AWARENESS", "reach"].find(
+                      obj =>
+                        this.state.objective.toLowerCase() === obj.toLowerCase()
+                    ) && swipeDestination}
+                  </View>
                 ) : (
-                  <Image
-                    style={styles.placeholder}
-                    source={{ uri: image }}
-                    resizeMode="cover"
-                  />
-                )}
-                <Item
-                  style={[
-                    styles.inputBrand,
-                    {
-                      borderColor: "transparent"
-                    }
-                  ]}
-                >
-                  <PenIcon
-                    fill={
-                      this.state.inputB
-                        ? "#FF9D00"
-                        : this.state.brand_nameError
-                        ? "red"
-                        : "#fff"
-                    }
-                  />
-                  <Input
-                    style={styles.inputtext}
-                    defaultValue={
-                      this.props.mainBusiness.businessname
-                        ? this.props.mainBusiness.businessname
-                        : "Brand Name"
-                    }
-                    placeholderLabel={styles.inputtext}
-                    placeholderTextColor="white"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          brand_name: value
-                        }
-                      })
-                    }
-                    onFocus={() => {
-                      this.setState({ inputB: true });
-                    }}
-                    onBlur={() => {
-                      this.setState({ inputB: false });
-                      this.setState({
-                        brand_nameError: validateWrapper(
-                          "mandatory",
-                          this.state.campaignInfo.brand_name
-                        )
-                      });
-                    }}
-                  />
-                </Item>
-                <Item
-                  style={[
-                    styles.inputHeadline,
-                    {
-                      borderColor: "transparent"
-                    }
-                  ]}
-                >
-                  <PenIcon
-                    fill={
-                      this.state.inputH
-                        ? "#FF9D00"
-                        : this.state.headlineError
-                        ? "red"
-                        : "#fff"
-                    }
-                  />
-                  <Input
-                    style={styles.inputtext}
-                    defaultValue={
-                      !this.props.data ? "Headline" : this.props.data.name
-                    }
-                    placeholderTextColor="white"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          headline: value
-                        }
-                      })
-                    }
-                    onFocus={() => {
-                      this.setState({ inputH: true });
-                    }}
-                    onBlur={() => {
-                      this.setState({ inputH: false });
-                      this.setState({
-                        headlineError: validateWrapper(
-                          "mandatory",
-                          this.state.campaignInfo.headline
-                        )
-                      });
-                    }}
-                  />
-                </Item>
-                <Button
-                  style={[
-                    styles.inputMiddleButton,
-                    { flexDirection: "column" }
-                  ]}
-                  onPress={() => {
-                    this._pickImage();
-                  }}
-                >
-                  <Icon
-                    style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
-                    name="camera"
-                  />
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      paddingTop: 23,
-                      fontFamily: "montserrat-medium",
-                      fontSize: 14,
-                      width: 150,
-                      color: "#FF9D00"
-                    }}
-                  >
-                    {image ? "Edit Media" : "Add Media"}
-                  </Text>
-                </Button>
-                {!["BRAND_AWARENESS", "reach"].find(
-                  obj =>
-                    this.state.objective.toLowerCase() === obj.toLowerCase()
-                ) && (
-                  <TouchableOpacity
-                    style={styles.swipeUp}
-                    onPress={() => {
-                      this.state.objective.toLowerCase() === "traffic"
-                        ? this.props.navigation.navigate("SwipeUpDestination", {
-                            _changeDestination: this._changeDestination
-                          })
-                        : this.props.navigation.navigate("SwipeUpChoice", {
-                            _changeDestination: this._changeDestination,
-                            objective: this.state.objective
-                          });
-                    }}
-                  >
-                    <Text style={styles.swipeUpText}>
-                      {this.state.campaignInfo.destination !== "BLANK" &&
-                      this.state.campaignInfo.destination !== "REMOTE_WEBPAGE"
-                        ? this.state.campaignInfo.destination
-                        : this.state.campaignInfo.destination ===
-                          "REMOTE_WEBPAGE"
-                        ? "Website"
-                        : "Swipe Up destination"}
-                    </Text>
-                    <Icon
-                      type="MaterialIcons"
-                      name="arrow-drop-down"
-                      style={{ color: "orange" }}
+                  <View style={styles.placeholder}>
+                    <Image
+                      style={styles.placeholder1}
+                      source={{ uri: image }}
+                      resizeMode="cover"
+
                     />
-                  </TouchableOpacity>
+                    {penIconBrand}
+                    {penIconHeadLine}
+                    {mediaButton}
+                    {!["BRAND_AWARENESS", "reach"].find(
+                      obj =>
+                        this.state.objective.toLowerCase() === obj.toLowerCase()
+                    ) && swipeDestination}
+                  </View>
                 )}
               </View>
             </Transition>
+
             {!this.state.imageError ? null : (
               <Text
                 style={{
                   textAlign: "center",
                   color: "#fff",
                   fontFamily: "montserrat-medium",
-                  fontSize: heightPercentageToDP(1.7),
-                  marginBottom: -heightPercentageToDP("2")
+                  fontSize: heightPercentageToDP(1.7)
                 }}
               >
                 {!this.state.imageError.includes("blank")
@@ -573,62 +649,60 @@ class AdDesign extends Component {
               </Text>
             )}
             {!this.state.swipeUpError ? null : (
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#fff",
-                  paddingTop: 10,
-                  fontFamily: "montserrat-medium",
-                  fontSize: heightPercentageToDP(1.7),
-                  marginBottom: -20
-                }}
-              >
+              <Text style={styles.swipeUpErrorText}>
                 {this.state.swipeUpError}
               </Text>
             )}
-            {/* {<Text> {Math.round(this.state.loaded, 2)} %</Text>} */}
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                alignSelf: "center"
-              }}
-            >
-              <TouchableOpacity
-                style={[styles.button]}
-                onPress={() => this.perviewHandler()}
+          </Content>
+
+          <Footer style={[styles.footerStyle]}>
+            {image ? (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row"
+                }}
               >
-                <EyeIcon
-                  width={widthPercentageToDP(25)}
-                  height={heightPercentageToDP(10)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this._handleSubmission}
-                style={styles.button}
-              >
-                <ForwardButton
-                  width={widthPercentageToDP(25)}
-                  height={heightPercentageToDP(10)}
-                />
-              </TouchableOpacity>
-            </View>
-            <Modal isVisible={this.props.loading || this.state.isVisible}>
-              <>
-                <LoadingScreen top={50} />
-                <Text
-                  style={[
-                    styles.title,
-                    { top: heightPercentageToDP(50), left: "5%" }
-                  ]}
+                <TouchableOpacity
+                  style={[styles.button]}
+                  onPress={() => this.perviewHandler()}
                 >
-                  {Math.round(this.state.loaded, 2)}%
-                </Text>
-              </>
-            </Modal>
-          </View>
-        </KeyboardAwareScrollView>
-      </Container>
+                  <EyeIcon
+                    width={widthPercentageToDP(24)}
+                    height={heightPercentageToDP(8)}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this._handleSubmission}
+                  style={styles.button}
+                >
+                  <ForwardButton
+                    width={widthPercentageToDP(24)}
+                    height={heightPercentageToDP(8)}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Text style={styles.footerTextStyle}>
+                Please add media to proceed
+              </Text>
+            )}
+          </Footer>
+          <Modal isVisible={this.props.loading || this.state.isVisible}>
+            <>
+              <LoadingScreen top={50} />
+              <Text
+                style={[
+                  styles.title,
+                  { top: heightPercentageToDP(50), left: "5%" }
+                ]}
+              >
+                {Math.round(this.state.loaded, 2)}%
+              </Text>
+            </>
+          </Modal>
+        </Container>
+      </SafeAreaView>
     );
   }
 }
@@ -641,14 +715,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, loading, navigation, onToggleModal, appChoice) =>
+  ad_design: (info, loading, navigation, onToggleModal, appChoice, rejected) =>
     dispatch(
       actionCreators.ad_design(
         info,
         loading,
         navigation,
         onToggleModal,
-        appChoice
+        appChoice,
+        rejected
       )
     )
 });

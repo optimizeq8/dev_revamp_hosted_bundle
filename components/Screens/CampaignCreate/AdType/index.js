@@ -134,7 +134,7 @@ class AdType extends Component {
     let MediaIcon = item.icon.type;
     return (
       <View style={styles.slide}>
-        <MediaIcon width="80%" style={styles.slideicon} />
+        <MediaIcon width={"100%"} height={"75%"} style={styles.slideicon} />
         <Text style={styles.iconTitle}>{item.title}</Text>
       </View>
     );
@@ -151,16 +151,6 @@ class AdType extends Component {
     );
   };
   render() {
-    console.log(this.state);
-    // let mediaSlides = this.state.media_type === "Snapchat" ;
-    // const Slide = snapAds.map(adType => (
-    //   <AdTypeCard
-    //     key={adType.id}
-    //     mainBusiness={this.props.mainBusiness}
-    //     campaign_type={this.state.campaign_type}
-    //     adType={adType}
-    //   />
-    // ));
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -179,9 +169,9 @@ class AdType extends Component {
         />
         <BackDrop />
         <Text style={styles.title}>Create a new campaign!</Text>
-        <View style={{ height: 110 }}>
+        <View style={{ height: 90 }}>
           <Carousel
-            enableMomentum
+            // enableMomentum
             ref={c => {
               this._carousel = c;
             }}
@@ -191,6 +181,7 @@ class AdType extends Component {
             renderItem={this._renderItem}
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={110}
+            scrollEndDragDebounceValue={0}
           />
         </View>
 
@@ -225,26 +216,29 @@ class AdType extends Component {
           renderItem={this._renderSlides}
           sliderWidth={widthPercentageToDP(100)}
           itemWidth={250}
+          inactiveSlideScale={0.8}
         />
-        <View style={{ height: heightPercentageToDP(9) }}>
-          <Pagination
-            dotsLength={this.state.media_type.length}
-            activeDotIndex={this.state.activeSlide}
-            dotStyle={{
-              width: heightPercentageToDP(2),
-              height: heightPercentageToDP(2),
-              borderRadius: 50,
-              marginHorizontal: 8,
-              backgroundColor: "rgba(255, 255, 255, 0.92)"
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
-        </View>
+        <Pagination
+          containerStyle={{
+            paddingVertical: 0,
+            bottom: 10
+          }}
+          dotsLength={this.state.media_type.length}
+          activeDotIndex={this.state.activeSlide}
+          dotStyle={{
+            width: 15,
+            height: 15,
+            borderRadius: 50,
+            marginHorizontal: 8,
+            backgroundColor: "rgba(255, 255, 255, 0.92)"
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
         <View style={{ height: 70 }}>
           {this.state.route !== "" ? (
             <Animatable.View animation={"fadeIn"}>
-              <LowerButton function={this.navigationHandler} bottom={2} />
+              <LowerButton function={this.navigationHandler} bottom={1} />
             </Animatable.View>
           ) : (
             <Animatable.Text animation={"fadeIn"} style={styles.text}>

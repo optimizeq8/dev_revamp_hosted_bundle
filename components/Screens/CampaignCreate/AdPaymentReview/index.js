@@ -92,9 +92,12 @@ class AdPaymentReview extends Component {
     // this.setState({ ...this.props.data });
   }
 
+  formatNumber = num => {
+    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
   render() {
     if (this.props.loading) {
-      return <LoadingScreen top={50}/>;
+      return <LoadingScreen top={50} />;
     } else {
       let targeting = this.props.data.targeting;
       let interestNames = [];
@@ -283,8 +286,9 @@ class AdPaymentReview extends Component {
                     textAlign: "center"
                   }}
                 >
-                  Total {"\n"} {this.props.data.lifetime_budget_micro}$ {"\n"}(
-                  {this.props.kdamount} KWD){"\n"} proceed to payment{" "}
+                  Total {"\n"}{" "}
+                  {this.formatNumber(this.props.data.lifetime_budget_micro)} USD{" "}
+                  {"\n"}({this.props.kdamount} KWD){"\n"} proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>
             </Card>

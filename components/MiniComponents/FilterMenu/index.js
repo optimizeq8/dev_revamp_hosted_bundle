@@ -43,12 +43,14 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
+import LowerButton from "../LowerButton";
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
       start_time: "",
-      end_time: ""
+      end_time: "",
+      selected: "A"
     };
   }
 
@@ -63,13 +65,14 @@ class FilterMenu extends Component {
     });
   };
   _resetFilter = () => {
-    this.setState({ start_time: "", end_time: "" });
+    this.setState({ start_time: "", end_time: "", selected: "A" });
   };
-  _handleSubmission = () => {
+  _handleSubmission = (selected, statusSelected) => {
+    this.setState({ selected });
     if (!this.props.transactionFilter) {
       this.props.onSearch({
         value: this.props.filterValue,
-        selected: this.props.filterStatus,
+        selected: selected,
         dateRange: [this.state.start_time, this.state.end_time]
       });
     } else {
@@ -78,7 +81,7 @@ class FilterMenu extends Component {
         dateRange: [this.state.start_time, this.state.end_time]
       });
     }
-    this.props._handleSideMenuState(false);
+    !statusSelected && this.props._handleSideMenuState(false);
   };
   render() {
     let end_time = "";
@@ -108,7 +111,7 @@ class FilterMenu extends Component {
         <View
           style={{
             flex: 1,
-            top: hp("20"),
+            top: hp("10"),
             alignItems: "center",
             flexDirection: "column",
             opacity: 1,
@@ -143,7 +146,10 @@ class FilterMenu extends Component {
                 <Text style={[styles.title, { paddingBottom: 20 }]}>
                   Campaign Status
                 </Text>
-                <FilterStatus />
+                <FilterStatus
+                  selected={this.state.selected}
+                  _handleSubmission={this._handleSubmission}
+                />
               </>
             )}
             <Text style={[styles.title, { paddingBottom: 10 }]}> Date </Text>
@@ -214,25 +220,25 @@ class FilterMenu extends Component {
             </TouchableHighlight>
           </View>
         </View>
-        <Text
-          onPress={() => this._resetFilter()}
-          style={[
-            styles.subtext,
-            {
-              textDecorationLine: "underline",
-              marginBottom: 20,
-              textDecorationColor: "#fff"
-            }
-          ]}
-        >
-          Clear Filters
-        </Text>
-        <Button
-          style={[styles.checkbutton, { marginBottom: 35, elevation: 0 }]}
-          onPress={() => this._handleSubmission()}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
+        <View style={{ bottom: "10%" }}>
+          <Text
+            onPress={() => this._resetFilter()}
+            style={[
+              styles.subtext,
+              {
+                textDecorationLine: "underline",
+                marginBottom: 20,
+                textDecorationColor: "#fff"
+              }
+            ]}
+          >
+            Clear filters
+          </Text>
+          <LowerButton
+            checkmark={true}
+            function={() => this._handleSubmission(this.state.selected)}
+          />
+        </View>
       </>
     );
   }

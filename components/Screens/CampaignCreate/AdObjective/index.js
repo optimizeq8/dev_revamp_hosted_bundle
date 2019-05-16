@@ -28,6 +28,8 @@ import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 //icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
+
 import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton.svg";
 
@@ -188,13 +190,20 @@ class AdObjective extends Component {
               locations={[0.7, 1]}
               style={styles.gradient}
             />
-            <View>
-              <BackButton
-                screenname="Ad Objective"
-                businessname={this.props.mainBusiness.businessname}
-                navigation={this.props.navigation.goBack}
-              />
-              <Text style={styles.title}>Snap Ad</Text>
+            <BackdropIcon
+              style={styles.backDrop}
+              height={heightPercentageToDP("100%")}
+            />
+            <View style={styles.block1}>
+              <View style={styles.innerBlock1}>
+                <BackButton
+                  screenname="Ad Objective"
+                  businessname={this.props.mainBusiness.businessname}
+                  navigation={this.props.navigation.goBack}
+                  style={styles.backButton}
+                />
+                <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
+              </View>
               <PhoneIcon style={styles.phoneicon} width={70} />
             </View>
             <View style={styles.maincontent}>
@@ -216,10 +225,13 @@ class AdObjective extends Component {
                     styles.inputtext,
                     {
                       color: this.state.inputN ? "#FF9D00" : "#fff"
+                    },
+                    {
+                      fontFamily: "montserrat-bold"
                     }
                   ]}
                 >
-                  Your Ad Name
+                  Enter Your Ad Name
                 </Label>
 
                 <Input
@@ -246,9 +258,6 @@ class AdObjective extends Component {
                   }}
                 />
               </Item>
-              <Text style={[styles.subtext, { marginBottom: 20, top: 5 }]}>
-                This will not show on your ad
-              </Text>
 
               <Duration
                 start_time={this.state.campaignInfo.start_time}
@@ -258,7 +267,9 @@ class AdObjective extends Component {
                 dateField={this.dateField}
               />
 
-              <Text style={styles.text}>Objective</Text>
+              <Text style={[styles.title, styles.selectObjectiveTitle]}>
+                Objective
+              </Text>
 
               <Item
                 rounded
@@ -274,18 +285,18 @@ class AdObjective extends Component {
                   this.setModalVisible(true);
                 }}
               >
-                <Text style={[styles.inputtext, { flex: 1 }]}>
+                <Text style={[styles.inputtext, { width: "100%" }]}>
                   {this.state.campaignInfo.objective === ""
                     ? this.state.objectiveLabel
                     : this.state.objectives.find(
                         c => this.state.campaignInfo.objective === c.value
                       ).label}
                 </Text>
-                <Icon type="AntDesign" name="down" style={styles.downicon} />
+                {/* <Icon type="AntDesign" name="down" style={styles.downicon} /> */}
               </Item>
             </View>
 
-            <LowerButton bottom={10} function={this._handleSubmission} />
+            <LowerButton bottom={4} function={this._handleSubmission} />
           </Container>
         </TouchableWithoutFeedback>
         <DateField
@@ -308,7 +319,7 @@ class AdObjective extends Component {
           <BlurView intensity={95} tint="dark">
             <View style={styles.popupOverlay}>
               <View style={styles.popupContent}>
-                <Text style={styles.modaltitle}>Objectives</Text>
+                <Text style={styles.modaltitle}>Campaign Objective</Text>
               </View>
               <ScrollView
                 indicatorStyle="white"

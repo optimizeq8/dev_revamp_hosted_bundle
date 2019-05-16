@@ -38,6 +38,7 @@ export {
   filterTransactions,
   getWalletAmount,
   addWalletAmount,
+  getWalletAmountInKwd,
   useWallet,
   removeWalletAmount,
   checkoutwithWallet

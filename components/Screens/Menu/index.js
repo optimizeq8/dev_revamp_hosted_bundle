@@ -34,7 +34,7 @@ class Menu extends Component {
   static defaultProps = {
     draggableRange: {
       top: heightPercentageToDP("107"),
-      bottom: -heightPercentageToDP("115")
+      bottom: -heightPercentageToDP("120")
     }
   };
   constructor(props) {
@@ -92,9 +92,9 @@ class Menu extends Component {
                 justifyContent: "center",
                 top: heightPercentageToDP(11),
                 left: widthPercentageToDP(5),
-                zIndex: 10,
-                paddingBottom: 30,
-                marginBottom: -heightPercentageToDP(5)
+                zIndex: 10
+                // paddingBottom: 30,
+                // marginBottom: -heightPercentageToDP(5)
               }}
             >
               <TouchableOpacity
@@ -152,7 +152,7 @@ class Menu extends Component {
               style={[
                 styles.button,
                 {
-                  //elevation: this.state.slidePanel ? -1 : 1
+                  elevation: this.state.slidePanel ? -1 : 1
                   //zIndex: this.state.slidePanel ? -1 : 1
                 }
               ]}
@@ -186,7 +186,7 @@ class Menu extends Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddCredits")}
+                onPress={() => this.props.navigation.navigate("Wallet")}
               >
                 <View
                   style={{

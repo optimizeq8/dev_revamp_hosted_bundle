@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { globalColors } from "../../../Global Styles";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -15,19 +16,19 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: "center",
-    height: 100,
-    width: 100,
+    height: heightPercentageToDP(13),
+    width: heightPercentageToDP(13),
     margin: 15
   },
   mainCard: {
-    top: 15,
+    bottom: 15,
     shadowColor: "#595959",
     shadowRadius: 1,
     shadowOpacity: 0.7,
     shadowOffset: { width: 8, height: 8 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    flex: 1,
+    height: heightPercentageToDP(90),
     marginLeft: 0,
     marginRight: 0
   },
@@ -62,8 +63,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: 30,
-    marginBottom: 10,
+    top: "3%",
     backgroundColor: "#5F5F5F",
     paddingHorizontal: 50,
     borderRadius: 15,

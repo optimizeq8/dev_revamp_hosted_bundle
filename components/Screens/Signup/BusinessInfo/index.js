@@ -177,7 +177,6 @@ class BusinessInfo extends Component {
     Segment.screen("Signup Enter BusinessInfo Screen");
   }
 
- 
   async _verifyBusinessName(businesstype, name) {
     if (businesstype === "2" && name !== "") {
       await this.props.verifyBusinessName(name);
@@ -229,9 +228,6 @@ class BusinessInfo extends Component {
     }
   };
   render() {
-      console.log('state bsnInfo', this.state.userInfo)
-      console.log('prop bsnInfo', this.props.userInfo)
-
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
@@ -566,7 +562,7 @@ const mapDispatchToProps = dispatch => ({
   registerUser: (userInfo, navigation) =>
     dispatch(actionCreators.registerUser(userInfo, navigation)),
   verifyBusinessName: businessName =>
-    dispatch(actionCreators.verifyBusinessName(businessName)),
+    dispatch(actionCreators.verifyBusinessName(businessName))
 });
 export default connect(
   mapStateToProps,

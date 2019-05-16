@@ -48,23 +48,27 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#fff",
-    alignSelf: "center",
-    height: 70
+    height: 70,
+    justifyContent: "center",
+    flexDirection: "column"
   },
   activebutton: {
     backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    height: 70
+    height: 70,
+    justifyContent: "center",
+    flexDirection: "column"
   },
   inactivetext: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    color: "#7039FF"
+    color: "#7039FF",
+    textAlign: "center"
   },
   activetext: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "center"
   },
   container: {
     justifyContent: "center",
