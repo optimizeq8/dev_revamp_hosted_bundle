@@ -42,7 +42,6 @@ class GetInviteCode extends Component {
   _handleGetInviteCode = () => {
     const emailError = validateWrapper("email", this.state.email);
     const mobileError = validateWrapper("mandatory", this.state.mobile);
-    console.log("info.valid", mobileError);
     if (emailError || mobileError) {
       showMessage({
         message: "Please enter your valid info!",

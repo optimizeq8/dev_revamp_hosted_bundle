@@ -21,20 +21,19 @@ class FilterStatus extends Component {
         },
         {
           label: "Active",
-          value: "ACTIVE"
+          value: "LIVE"
         }
       ]
     };
-    this._handleSubmit = this._handleSubmit.bind(this);
   }
 
-  _handleSubmit() {
-    this.props.onSearch({
-      value: this.props.filterValue,
-      selected: this.state.selected,
-      dateRange: [this.props.campaignStartSearch, this.props.campaignEndSearch]
-    });
-  }
+  // _handleSubmission = () => {
+  //   this.props.onSearch({
+  //     value: this.props.filterValue,
+  //     selected: this.state.selected,
+  //     dateRange: [this.props.campaignStartSearch, this.props.campaignEndSearch]
+  //   });
+  // };
   render() {
     return (
       <View>
@@ -44,12 +43,12 @@ class FilterStatus extends Component {
 
             <Button
               onPress={() =>
-                this.setState({ selected: "ACTIVE" }, () =>
-                  this._handleSubmit()
+                this.setState({ selected: "LIVE" }, () =>
+                  this.props._handleSubmission(this.state.selected, true)
                 )
               }
               style={
-                this.state.selected === "ACTIVE"
+                this.props.selected === "LIVE"
                   ? styles.activebutton
                   : styles.inactivebutton
               }
@@ -60,11 +59,11 @@ class FilterStatus extends Component {
             <Button
               onPress={() =>
                 this.setState({ selected: "PAUSED" }, () =>
-                  this._handleSubmit()
+                  this.props._handleSubmission(this.state.selected, true)
                 )
               }
               style={
-                this.state.selected === "PAUSED"
+                this.props.selected === "PAUSED"
                   ? styles.activebutton
                   : styles.inactivebutton
               }
@@ -74,10 +73,12 @@ class FilterStatus extends Component {
             <Text style={styles.text}> All </Text>
             <Button
               onPress={() =>
-                this.setState({ selected: "A" }, () => this._handleSubmit())
+                this.setState({ selected: "A" }, () =>
+                  this.props._handleSubmission(this.state.selected, true)
+                )
               }
               style={
-                this.state.selected === "A"
+                this.props.selected === "A"
                   ? styles.activebutton
                   : styles.inactivebutton
               }

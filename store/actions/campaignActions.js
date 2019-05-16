@@ -163,7 +163,8 @@ export const ad_design = (
   laoding,
   navigation,
   onToggleModal,
-  appChoice
+  appChoice,
+  rejected
 ) => {
   onToggleModal();
   return dispatch => {
@@ -176,7 +177,7 @@ export const ad_design = (
       "Content-Type": "multipart/form-data"
     };
     instance
-      .post(`savebrandmedia`, info, {
+      .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
         onUploadProgress: ProgressEvent =>
           laoding((ProgressEvent.loaded / ProgressEvent.total) * 100)
       })
@@ -184,6 +185,12 @@ export const ad_design = (
         return res.data;
       })
       .then(data => {
+        rejected &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top"
+          });
         return dispatch({
           type: actionTypes.SET_AD_DESIGN,
           payload: data
@@ -191,11 +198,15 @@ export const ad_design = (
       })
       .then(() => {
         onToggleModal();
-        navigation.push("AdDetails", {
-          image: info._parts[0][1].uri,
-          appChoice: appChoice
-        });
       })
+      .then(() =>
+        !rejected
+          ? navigation.push("AdDetails", {
+              image: info._parts[0][1].uri,
+              appChoice: appChoice
+            })
+          : navigation.navigate("Dashboard")
+      )
       .catch(err => {
         laoding(0);
         console.log("ad_design", err.message || err.response);
@@ -374,8 +385,6 @@ export const ad_details = (info, interestNames, navigation) => {
 };
 
 export const updateCampaign = (info, businessid, navigation) => {
-  console.log("info--------------", info);
-
   return (dispatch, getState) => {
     instance
       .put(`savetargeting`, { ...info, businessid })

@@ -1,11 +1,21 @@
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity, Platform } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+  BackHandler
+} from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { LinearGradient, WebBrowser, Linking, Segment, BlurView } from "expo";
 import UseWallet from "./UseWallet";
 import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import NavigationService from "../../../NavigationService.js";
+import formatNumber from "../../formatNumber";
+
+//terms&conditions
+import { openTerms } from "../../Terms&Condtions";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
@@ -27,8 +37,18 @@ class PaymentForm extends Component {
   state = {
     payment_type: 1,
     choice: 2,
-    showModal: false
+    showModal: false,
+    browserLoading: false
   };
+  constructor(props) {
+    super(props);
+    this.addingCredits =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.addingCredits;
+    this.amount =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.amount;
+  }
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
       businessname: this.props.mainBusiness.businessname,
@@ -39,16 +59,37 @@ class PaymentForm extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_id
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = async () => {
+    if (this.state.browserLoading) return true;
+    else if (
+      !this.props.loading &&
+      !this.state.browserLoading &&
+      this.addingCredits
+    ) {
+      this.props.navigation.navigate("Wallet");
+    } else {
+      this.props.walletUsed ? this.showModal() : this.reviewPurchase();
+    }
+  };
   _openWebBrowserAsync = async () => {
     try {
       this._addLinkingListener();
-      let result = await WebBrowser.openBrowserAsync(
+      await WebBrowser.openBrowserAsync(
         this.props.navigation.state.params &&
           this.props.navigation.state.params.addingCredits
           ? this.props.payment_data_wallet.knet_payment_url
           : this.props.payment_data.knet_payment_url
-      );
+      ).then(action => {
+        this.setState({
+          browserLoading: action.type !== "cancel"
+        });
+      });
       Segment.screenWithProperties("Payment Knet Screen", {
         businessname: this.props.mainBusiness.businessname,
         campaign_id: this.props.campaign_id
@@ -70,8 +111,7 @@ class PaymentForm extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-    console.log(event.url);
-    console.log("data", data);
+
     this.setState({ redirectData: data });
   };
 
@@ -80,6 +120,8 @@ class PaymentForm extends Component {
   };
 
   _handleSubmission = () => {
+    this.setState({ browserLoading: true });
+    if (this.state.browserLoading) return;
     if (
       this.props.navigation.state.params &&
       this.props.navigation.state.params.addingCredits
@@ -140,13 +182,10 @@ class PaymentForm extends Component {
       return this.props.data.lifetime_budget_micro * 0.05;
     }
   };
+  closeBrowserLoading = () => {
+    this.setState({ browserLoading: false });
+  };
   render() {
-    let addingCredits =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.addingCredits;
-    let amount =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.amount;
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -158,7 +197,12 @@ class PaymentForm extends Component {
         <View style={styles.headerview}>
           <Text style={styles.header}>Payment</Text>
           <BackDrop style={styles.backDrop} />
-          <View style={{ flexDirection: "column" }}>
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
             <Text
               style={{
                 color: "#fff",
@@ -169,29 +213,42 @@ class PaymentForm extends Component {
             >
               TOTAL
             </Text>
-            <Text
-              style={{
-                color: "#fff",
-                textAlign: "center",
-                fontSize: 16,
-                fontFamily: "montserrat-bold",
-                paddingTop: 3
-              }}
-            >
-              {addingCredits
-                ? amount + "$"
-                : this.props.walletUsed
-                ? this.props.campaign_balance_amount +
-                  "$" +
-                  "\n" +
-                  this.props.campaign_balance_amount_kwd
-                : this.props.data.lifetime_budget_micro +
-                  "\n" +
-                  this.props.navigation.state.params.kdamount +
-                  "KWD"}
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+              <Text style={styles.money}>
+                {this.addingCredits
+                  ? " " + formatNumber(this.amount)
+                  : this.props.walletUsed
+                  ? formatNumber(this.props.campaign_balance_amount)
+                  : formatNumber(this.props.data.lifetime_budget_micro)}
+              </Text>
+
+              <Text style={[styles.money, { fontSize: 16 }]}> USD</Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={[
+                  styles.money,
+                  { fontSize: 10, fontFamily: "montserrat-regular" }
+                ]}
+              >
+                {this.addingCredits
+                  ? this.props.walletAmountInKwd
+                  : this.props.walletUsed
+                  ? this.props.campaign_balance_amount_kwd
+                  : this.props.navigation.state.params.kdamount}
+              </Text>
+              <Text
+                style={[
+                  styles.money,
+                  { fontSize: 10, fontFamily: "montserrat-regular" }
+                ]}
+              >
+                {" "}
+                KWD
+              </Text>
+            </View>
           </View>
-          {!addingCredits && (
+          {!this.addingCredits && (
             <View style={{ flexDirection: "row" }}>
               <Button
                 style={[
@@ -259,13 +316,13 @@ class PaymentForm extends Component {
             />
             <Text style={styles.errortext}>
               You will be redirected to KNET’s {"\n"}
-              Payment gateway for the {"\n"}
+              payment gateway for the {"\n"}
               payment process
             </Text>
           </View>
         )}
         <View style={{ bottom: "5%" }}>
-          {!addingCredits ? (
+          {!this.addingCredits ? (
             <Button
               transparent
               onPress={() =>
@@ -278,9 +335,11 @@ class PaymentForm extends Component {
           ) : (
             <Button
               transparent
-              onPress={() =>
-                !this.props.loading && this.props.navigation.navigate("Wallet")
-              }
+              onPress={() => {
+                !this.props.loading &&
+                  !this.state.browserLoading &&
+                  this.props.navigation.navigate("Wallet");
+              }}
               style={styles.button}
             >
               <Text style={styles.boldtext}>Cancel Payment</Text>
@@ -331,9 +390,23 @@ class PaymentForm extends Component {
           onPress={() => this._handleSubmission()}
           style={[styles.bottomCard]}
         >
-          <Text style={styles.link}>
-            By tapping this button you {"\n"}
-            Agree to the Terms & Conditions
+          <Text style={[styles.link]}>
+            {`By tapping this button you agree to the\n`}
+            <Text
+              onPress={() => {
+                this.setState({ browserLoading: true });
+                openTerms(this.closeBrowserLoading);
+              }}
+              style={[
+                styles.link,
+                {
+                  textDecorationLine: "underline",
+                  color: globalColors.purple
+                }
+              ]}
+            >
+              {`Terms & Conditions`}
+            </Text>
           </Text>
         </TouchableOpacity>
         <Modal
@@ -385,7 +458,7 @@ class PaymentForm extends Component {
           </BlurView>
         </Modal>
 
-        <Modal visible={this.props.loading}>
+        <Modal dismissable={false} visible={this.state.browserLoading}>
           <LoadingScreen top={0} />
         </Modal>
       </Container>
@@ -406,6 +479,7 @@ const mapStateToProps = state => ({
   campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
   campaign_balance_amount: state.transA.campaign_balance_amount,
   walletUsed: state.transA.walletUsed,
+  walletAmountInKwd: state.transA.walletAmountInKwd,
   loading: state.campaignC.loading
 });
 const mapDispatchToProps = dispatch => ({

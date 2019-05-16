@@ -24,7 +24,6 @@ export const send_push_notification = () => {
               userid: getState().auth.userInfo.userid
             })
             .then(res => {
-              console.log("token", token);
               return res.data;
             })
             .then(data => {
@@ -92,7 +91,6 @@ export const registerUser = (userInfo, navigation) => {
     instance
       .post(`registerUser`, userInfo)
       .then(res => {
-        console.log("register user", res.data);
         return res.data;
       })
       .then(async user => {
@@ -334,7 +332,6 @@ export const verifyInviteCode = verificationCode => {
       .post(`verifyInvitationCode`, { verificationCode })
       .then(res => res.data)
       .then(data => {
-        console.log(data);
         !data.success &&
           showMessage({
             message: data.message,
@@ -370,19 +367,13 @@ export const verifyInviteCode = verificationCode => {
 };
 
 export const requestInvitationCode = info => {
-  console.log(info);
-
   return dispatch => {
-    console.log("info", info);
     instance
       .post(`requestinvitationCode`, info)
       .then(res => {
-        console.log("requestInvitationCode res", res);
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         showMessage({
           message: "Request successful!",
           description: "We will contact you as soon as possible.",
