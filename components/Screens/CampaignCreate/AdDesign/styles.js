@@ -53,14 +53,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: "3%",
+    top: "2%",
     left: "8%",
     transform: [
       {
         translateX: -5
       },
       {
-        translateY: -3
+        translateY: -2
       }
     ]
   },
@@ -69,15 +69,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 250,
     height: 50,
-    marginTop: 35,
-    top: "5%",
+    marginTop: 30,
+    top: "3%",
     left: "8%",
     transform: [
       {
         translateX: -5
       },
       {
-        translateY: -5
+        translateY: -3
       }
     ]
   },
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 10,
     fontFamily: "montserrat-medium",
-    fontSize: hp(1.7)
+    fontSize: 14
   },
   footerTextStyle: {
     fontSize: 12,
