@@ -20,7 +20,7 @@ import {
   Content
 } from "native-base";
 import Sidemenu from "react-native-side-menu";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp

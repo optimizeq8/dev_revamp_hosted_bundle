@@ -26,7 +26,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
 // import list from "./callactions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import Website from "./Website";
 import App_Install from "./App_Install";
 import Deep_Link from "./Deep_Link";

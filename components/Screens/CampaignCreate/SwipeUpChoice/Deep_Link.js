@@ -26,7 +26,7 @@ import {
   Badge
 } from "native-base";
 import list from "./callactions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";

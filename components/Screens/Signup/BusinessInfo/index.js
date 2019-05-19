@@ -32,7 +32,7 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //Validator
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
 class BusinessInfo extends Component {
   static navigationOptions = {

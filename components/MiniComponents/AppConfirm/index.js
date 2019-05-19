@@ -11,7 +11,7 @@ import Toggle from "react-native-switch-toggle";
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
 import LowerButton from "../LowerButton";
 import { Item, Input } from "native-base";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 export default class index extends Component {
   state = { deep_link_url: "", deep_link_urlError: "" };
 

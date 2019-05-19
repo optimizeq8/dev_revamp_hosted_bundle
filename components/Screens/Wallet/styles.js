@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 10,
+    paddingTop: 20,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
@@ -42,9 +42,8 @@ const styles = StyleSheet.create({
   button: {
     zIndex: 4,
     shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
-    shadowOffset: { width: 0.5, height: 1 },
+    shadowRadius: 0,
+    shadowOpacity: 0,
     backgroundColor: globalColors.orange,
     borderRadius: 15,
     alignSelf: "center",
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 16
+    fontSize: 14
   },
   contentContainer: {
     flex: 1,
@@ -76,28 +75,37 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
-    paddingTop: 10
+    marginTop: 5,
+    marginBottom: 10
   },
   mainText: {
     textAlign: "center",
     alignSelf: "center",
     color: "#5F5F5F",
-    width: 250,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
-    paddingTop: 10
+    marginTop: 30
   },
   dollar: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 25
   },
+
   inputtext: {
+    fontFamily: "montserrat-semibold",
+    fontSize: 31,
+    color: "#FF9D00",
+    textAlign: "center"
+  },
+  labeltext: {
+    flex: 0,
     fontFamily: "montserrat-light",
     fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
+    textAlign: "right",
+    color: "#fff",
+    top: 5
   },
   input: {
     bottom: 25,
@@ -106,11 +114,25 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 300,
     height: 45,
+    color: "#fff",
     borderColor: "#7039FF",
     position: "absolute"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  BlurView: {
+    height: "100%",
+    padding: 30,
+    paddingTop: 40,
+    alignItems: "center"
+  },
+  subHeading: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: "montserrat-light",
+    marginVertical: 20
   }
 });
 
