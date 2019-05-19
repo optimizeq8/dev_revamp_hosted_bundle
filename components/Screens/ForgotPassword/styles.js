@@ -11,11 +11,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
-  logo: {
+  logotext: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-medium",
+    bottom: "24%"
   },
   image: {
     alignSelf: "center",

@@ -24,7 +24,8 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.optimizeapp.optimizeapp"
+      "bundleIdentifier": "com.optimizeapp.optimizeapp",
+      "buildNumber": 2
     },
     "packagerOpts": {
       "config": "metro.config.js"

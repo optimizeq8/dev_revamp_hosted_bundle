@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 22,
     fontFamily: "montserrat-medium",
-    top: heightPercentageToDP(-4)
+    bottom: "24%"
   },
   image: {
     alignSelf: "center",
