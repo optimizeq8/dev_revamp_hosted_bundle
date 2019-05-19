@@ -28,7 +28,7 @@ import {
 import { LinearGradient, Segment } from "expo";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import dateFormat from "dateformat";
-
+import formatNumber from "../../../formatNumber";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -43,6 +43,7 @@ class AdPaymentReview extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.navState = this.props.navigation.state.params;
     // this.state = {
     //   ad_account_id: "undefined",
     //   attachment: "BLANK",
@@ -89,20 +90,16 @@ class AdPaymentReview extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_id
     });
-    // this.setState({ ...this.props.data });
   }
 
-  formatNumber = num => {
-    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
   render() {
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
     } else {
       let targeting = this.props.data.targeting;
       let interestNames = [];
-      if (this.props.navigation.state.params.interestNames.length > 0) {
-        interestNames = this.props.navigation.state.params.interestNames.map(
+      if (this.navState.names.interestNames.length > 0) {
+        interestNames = this.navState.names.interestNames.map(
           interest => interest.name
         );
       }
@@ -113,9 +110,15 @@ class AdPaymentReview extends Component {
       let gender = targeting.demographics[0].gender
         ? targeting.demographics[0].gender
         : "All";
-      let regions = targeting.geos[0].hasOwnProperty("region_id")
-        ? ":" + targeting.geos[0].region_id.join(", ")
-        : null;
+      let countryName = this.navState.names.countryName;
+      let regionNames = [];
+      if (
+        targeting.geos[0].hasOwnProperty("region_id") &&
+        this.navState.names.regionNames.length > 0
+      ) {
+        regionNames = this.navState.names.regionNames.map(region => region);
+      }
+
       let devices = [];
       devices = targeting.hasOwnProperty("devices")
         ? targeting.devices[0].hasOwnProperty("marketing_name")
@@ -185,9 +188,10 @@ class AdPaymentReview extends Component {
                   },
                   {
                     title: "Location",
-                    content: regions
-                      ? targeting.geos[0].country_code + regions
-                      : targeting.geos[0].country_code
+                    content:
+                      regionNames.length > 0
+                        ? countryName + ": " + regionNames
+                        : countryName
                   },
                   {
                     title: "language",
@@ -268,8 +272,7 @@ class AdPaymentReview extends Component {
                   });
 
                   this.props.navigation.navigate("PaymentForm", {
-                    interestNames: this.props.navigation.state.params
-                      .interestNames,
+                    interestNames: this.navState.interestNames,
                     kdamount: this.props.kdamount
                   });
                 }}
@@ -287,7 +290,7 @@ class AdPaymentReview extends Component {
                   }}
                 >
                   Total {"\n"}{" "}
-                  {this.formatNumber(this.props.data.lifetime_budget_micro)} USD{" "}
+                  {formatNumber(this.props.data.lifetime_budget_micro)} USD{" "}
                   {"\n"}({this.props.kdamount} KWD){"\n"} proceed to payment{" "}
                 </Text>
               </TouchableWithoutFeedback>
