@@ -12,7 +12,7 @@ export const snapAds = [
     id: 2,
     media: "snapchat",
     text: "Create Your Ad Now!",
-    rout: "AdObjective",
+    rout: "",
     icon: "snapchat-ghost",
     title: "Story Ad",
     image: require("../../../../assets/images/AdTypes/StoryAd.gif")
@@ -21,7 +21,7 @@ export const snapAds = [
     id: 3,
     media: "snapchat",
     text: "Create Your Ad Now!",
-    rout: "AdObjective",
+    rout: "",
     icon: "snapchat-ghost",
     title: "Collection Ad",
     image: require("../../../../assets/images/AdTypes/CollectionAd.gif")
