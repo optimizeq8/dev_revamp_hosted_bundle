@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "notification": {
@@ -31,7 +31,9 @@
     },
 
     "android": {
-      "package": "com.optimizeapp.optimizeapp"
+      "package": "com.optimizeapp.optimizeapp",
+      "permissions": ["CAMERA", "NOTIFICATIONS"],
+      "versionCode": 2
     },
     "hooks": {
       "postPublish": [
