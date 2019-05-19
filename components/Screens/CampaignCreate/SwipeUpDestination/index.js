@@ -5,15 +5,20 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Image
+  Image,
+  SafeAreaView
 } from "react-native";
 import {
+  Header,
+  Left,
+  Right,
+  Title,
+  Body,
   Card,
   Button,
   Content,
   Text,
   CardItem,
-  Body,
   Item,
   Input,
   Container,
@@ -21,10 +26,18 @@ import {
   H1,
   Badge
 } from "native-base";
-import { LinearGradient } from "expo";
+import Sidemenu from "react-native-side-menu";
+import { LinearGradient, ImageBackground } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
+import BackButton from "../../../MiniComponents/BackButton";
+import WebsiteIcon from "../../../../assets/SVGs/Objectives/BRAND_AWARENESS";
+import LayersIcon from "../../../../assets/SVGs/Layers";
+import Website from "../SwipeUpChoice/Website";
+import Deep_Link from "../SwipeUpChoice/Deep_Link";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import isNull from "lodash/isNull";
 
 // Style
 import styles from "./styles";
@@ -36,53 +49,150 @@ class SwipeUpDestination extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      image: "",
+      sidemenustate: false,
+      selected: ""
+    };
+    this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
 
+  componentDidMount() {
+    const image = this.props.navigation.state.params.image;
+    console.log("image", image);
+
+    this.setState({
+      image
+    });
+  }
+  toggleSideMenu() {
+    this.setState({
+      sidemenustate: false
+    });
+  }
   render() {
+    let menu;
+    switch (this.state.selected) {
+      case "website": {
+        menu = (
+          <Website
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            objective={"website"}
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+          />
+        );
+        break;
+      }
+      case "deep link": {
+        menu = <Deep_Link />;
+        break;
+      }
+    }
     return (
-      <Container style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={false}
-          style={{
-            backgroundColor: "#fff",
-            borderTopStartRadius: 30,
-            borderTopEndRadius: 30
+        <Sidemenu
+          onChange={isOpen => {
+            if (isOpen === false) this.setState({ sidemenustate: isOpen });
           }}
+          menuPosition="right"
+          disableGestures={true}
+          isOpen={this.state.sidemenustate}
+          menu={this.state.sidemenustate && menu}
+          openMenuOffset={wp(85)}
         >
-          <Card
+          <Container
             style={[
-              styles.mainCard,
+              styles.container,
               {
-                margin: 0,
-                shadowColor: "#fff",
-                shadowRadius: 1,
-                shadowOpacity: 0.7,
-                shadowOffset: { width: 8, height: 8 }
+                top: 50,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                overflow: "hidden"
               }
             ]}
           >
-            <Text style={styles.text}>Swipe Up Destination</Text>
-            <View style={{ flexDirection: "column", paddingTop: 30 }}>
+            {!isNull(this.state.image) && this.state.image.length > 0 && (
+              <Image
+                style={styles.placeholder1}
+                source={{ uri: this.state.image }}
+                resizeMode="cover"
+              />
+            )}
+            <Header
+              style={{ paddingTop: 0 }}
+              transparent
+              noShadow
+              iosBarStyle={"light-content"}
+            >
+              <Left
+                style={{
+                  alignItems: "flex-start",
+                  alignSelf: "center",
+                  flex: 0,
+                  marginLeft: 10
+                }}
+              >
+                <BackButton
+                  screenname="Ad Design"
+                  // businessname={this.state.businessname}
+                  navigation={this.props.navigation.goBack}
+                  style={{ top: 0, left: 0 }}
+                />
+              </Left>
+              <Body
+                style={[
+                  {
+                    flex: 2,
+                    alignItems: "center",
+                    alignSelf: "center",
+                    width: "100%",
+                    color: "#fff"
+                  }
+                ]}
+              >
+                <Title style={[styles.headerTitle, { width: "100%" }]}>
+                  Swipe up Destination
+                </Title>
+              </Body>
+              {/* <Right /> */}
+            </Header>
+
+            <Content contentContainerStyle={{ flexGrow: 1 }}>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.push("SwipeUpChoice", {
-                    _changeDestination: this.props.navigation.state.params
-                      ._changeDestination,
-                    objective: "website"
+                  // this.props.navigation.push("SwipeUpChoice", {
+                  //   _changeDestination: this.props.navigation.state.params
+                  //     ._changeDestination,
+                  //   objective: "website"
+                  // });
+                  this.setState({
+                    selected: "website",
+                    sidemenustate: true
                   });
                 }}
-                style={styles.buttonN}
+                style={[
+                  styles.buttonN,
+                  {
+                    backgroundColor:
+                      this.state.selected === "website"
+                        ? "#FF9D00"
+                        : "transparent"
+                  }
+                ]}
               >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="web"
+                <WebsiteIcon
+                  // type="MaterialCommunityIcons"
+                  // name="web"
                   style={styles.icon}
                 />
                 <View style={styles.textcontainer}>
@@ -94,15 +204,27 @@ class SwipeUpDestination extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.push("SwipeUpChoice", {
-                    _changeDestination: this.props.navigation.state.params
-                      ._changeDestination,
-                    objective: "deep link"
+                  // this.props.navigation.push("SwipeUpChoice", {
+                  //   _changeDestination: this.props.navigation.state.params
+                  //     ._changeDestination,
+                  //   objective: "deep link"
+                  // });
+                  this.setState({
+                    selected: "deep link",
+                    sidemenustate: true
                   });
                 }}
-                style={styles.buttonN}
+                style={[
+                  styles.buttonN,
+                  {
+                    backgroundColor:
+                      this.state.selected === "deep link"
+                        ? "#FF9D00"
+                        : "transparent"
+                  }
+                ]}
               >
-                <Icon type="Entypo" name="layers" style={styles.icon} />
+                <LayersIcon style={styles.icon} />
                 <View style={styles.textcontainer}>
                   <Text style={[styles.titletext]}>Deep Link</Text>
                   <Text style={[styles.subtext]}>
@@ -110,10 +232,10 @@ class SwipeUpDestination extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
-          </Card>
-        </KeyboardAwareScrollView>
-      </Container>
+            </Content>
+          </Container>
+        </Sidemenu>
+      </SafeAreaView>
     );
   }
 }

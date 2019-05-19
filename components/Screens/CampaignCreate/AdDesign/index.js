@@ -508,7 +508,8 @@ class AdDesign extends Component {
         onPress={() => {
           this.state.objective.toLowerCase() === "traffic"
             ? this.props.navigation.navigate("SwipeUpDestination", {
-                _changeDestination: this._changeDestination
+                _changeDestination: this._changeDestination,
+                image: this.state.image
               })
             : this.props.navigation.navigate("SwipeUpChoice", {
                 _changeDestination: this._changeDestination,
@@ -703,8 +704,8 @@ class AdDesign extends Component {
                 style={[
                   styles.title,
                   {
-                    top: heightPercentageToDP(5),
-                    left: "5%"
+                    top: heightPercentageToDP(10),
+                    left: "0%"
                   }
                 ]}
               >
