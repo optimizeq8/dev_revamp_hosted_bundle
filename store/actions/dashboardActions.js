@@ -74,14 +74,15 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
       })
       .catch(err => {
         console.log("getCampaignListError: ", err.message || err.response); // => prints: Api is being canceled????
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        {
+          !err.message.includes("Api") &&
+            showMessage({
+              message:
+                err.response || "Something went wrong, please try again.",
+              type: "danger",
+              position: "top"
+            });
+        }
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN_LIST,
           payload: {

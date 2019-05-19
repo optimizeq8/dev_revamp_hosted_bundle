@@ -29,6 +29,7 @@ export default class Duration extends Component {
           }
         ]}
         onPress={() => {
+          this.props.dismissKeyboard();
           this.props.dateField.showModal();
         }}
       >

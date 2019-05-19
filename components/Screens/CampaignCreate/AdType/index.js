@@ -117,7 +117,7 @@ class AdType extends Component {
     this.setState({ route, media_type, activeSlide: 0 });
   };
 
-  navigationHandler = () => {
+  navigationHandler = route => {
     Segment.trackWithProperties("Select Ad Type Button", {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
@@ -144,6 +144,7 @@ class AdType extends Component {
     return (
       <AdTypeCard
         key={item.id}
+        navigationHandler={this.navigationHandler}
         mainBusiness={this.props.mainBusiness}
         campaign_type={this.state.campaign_type}
         adType={item}

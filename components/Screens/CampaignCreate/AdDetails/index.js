@@ -611,7 +611,7 @@ class AdDetails extends Component {
     let editCampaign =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign;
-    // console.log(this.state.value);
+    console.log(editCampaign);
 
     return (
       <>
@@ -718,6 +718,7 @@ class AdDetails extends Component {
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                     /> */}
+
                     <TextInputMask
                       includeRawValueInChangeText
                       type={"money"}
@@ -726,11 +727,13 @@ class AdDetails extends Component {
                         delimiter: ",",
                         unit: "$"
                       }}
+                      disabled={editCampaign}
                       maxLength={8}
                       defaultValue={this.state.value + ""}
-                      onChangeText={(value, rawText) =>
-                        this._handleBudget(value, rawText)
-                      }
+                      value={this.state.value + ""}
+                      onChangeText={(value, rawText) => {
+                        if (!editCampaign) this._handleBudget(value, rawText);
+                      }}
                       style={styles.budget}
                       ref={ref => (this.moneyField = ref)}
                     />
@@ -747,15 +750,7 @@ class AdDetails extends Component {
                       Tap to enter manually
                     </Text>
                   </View>
-                  {/* <Text
-                    style={{
-                      fontFamily: "montserrat-light",
-                      color: "#fff",
-                      alignSelf: "flex-start"
-                    }}
-                  >
-                    $
-                  </Text> */}
+
                   <View
                     style={[
                       styles.slidercontainer,

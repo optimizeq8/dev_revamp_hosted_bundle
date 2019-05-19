@@ -21,6 +21,9 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
+//icons
+import Logo from "../../../assets/SVGs/Optimize";
+
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -99,13 +102,13 @@ class ForgotPassword extends Component {
           />
         </Button> */}
 
-        <View style={{ marginTop: 25 }}>
-          <Image
-            style={styles.image}
-            source={require("../../../assets/images/logo.png")}
-            resizeMode="contain"
+        <View style={{ marginTop: "10%" }}>
+          <Logo
+            style={{ alignSelf: "center" }}
+            width={heightPercentageToDP(20)}
+            height={heightPercentageToDP(20)}
           />
-          <Text style={styles.logo}>optimize</Text>
+          <Text style={styles.logotext}>Optimize</Text>
         </View>
         <Text style={styles.text}>Password Reset</Text>
 
