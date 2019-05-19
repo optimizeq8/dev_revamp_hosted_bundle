@@ -4,6 +4,7 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  SafeAreaView,
   Image
 } from "react-native";
 import {
@@ -20,6 +21,7 @@ import {
   H1,
   Badge
 } from "native-base";
+import { LinearGradient, ImageBackground } from "expo";
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -72,96 +74,129 @@ export default class Website extends Component {
   };
   render() {
     return (
-      <View style={{ height: heightPercentageToDP(100) }}>
+      <SafeAreaView
+        style={{
+          height: "100%"
+        }}
+      >
         <View
           style={{
+            height: "100%",
+            flex: 1,
+            display: "flex",
             flexDirection: "column",
-            paddingTop: heightPercentageToDP(10)
+            justifyContent: "space-around",
+            alignItems: "center",
+            padding: 10
           }}
         >
-          <WebsiteIcon style={styles.icon} />
-          <View style={styles.textcontainer}>
-            <Text style={[styles.titletext]}>Website</Text>
-            <Text style={[styles.subtext]}>
-              The user will be taken to your website
-            </Text>
-          </View>
-          <RNPickerSelect
-            items={this.state.callactions}
-            placeholder={{}}
-            onValueChange={(value, index) => {
-              this.setState({
-                campaignInfo: {
-                  ...this.state.campaignInfo,
-                  callaction: {
-                    label: list[0].call_to_action_list[index].label,
-                    value
-                  }
-                }
-              });
-            }}
-          >
-            <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "#fff"
-                  }
-                ]}
-              >
-                {this.state.campaignInfo.callaction === ""
-                  ? this.state.callactions[0].label
-                  : this.state.callactions.find(
-                      c => this.state.campaignInfo.callaction.value === c.value
-                    ).label}
-              </Text>
-              <Icon
-                type="AntDesign"
-                name="down"
-                style={{ color: "#fff", fontSize: 20, left: 25 }}
-              />
-            </Item>
-          </RNPickerSelect>
-          <Item
-            rounded
-            style={[
-              styles.input,
+          <View
+            style={
               {
-                borderColor: this.state.urlError ? "red" : "transparent"
+                //   flexDirection: "column"
+                // paddingTop: heightPercentageToDP(10)
               }
-            ]}
+            }
           >
-            <Input
-              style={styles.inputtext}
-              placeholder="Enter your website's URL"
-              placeholderTextColor="#fff"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value =>
+            <WebsiteIcon style={styles.icon} />
+            <View style={styles.textcontainer}>
+              <Text style={[styles.titletext]}>Website</Text>
+              <Text style={[styles.subtext]}>
+                The user will be taken to your website
+              </Text>
+            </View>
+            <RNPickerSelect
+              items={this.state.callactions}
+              placeholder={{}}
+              onValueChange={(value, index) => {
                 this.setState({
                   campaignInfo: {
                     ...this.state.campaignInfo,
-                    attachment: value
+                    callaction: {
+                      label: list[0].call_to_action_list[index].label,
+                      value
+                    }
                   }
-                })
-              }
-              onBlur={() => {
-                this.setState({
-                  urlError: validateWrapper(
-                    "website",
-                    this.state.campaignInfo.attachment
-                  )
                 });
               }}
+            >
+              <Item rounded style={[styles.input, { marginBottom: 20 }]}>
+                <Text
+                  style={[
+                    styles.inputtext,
+                    {
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      color: "#fff"
+                    }
+                  ]}
+                >
+                  {this.state.campaignInfo.callaction === ""
+                    ? this.state.callactions[0].label
+                    : this.state.callactions.find(
+                        c =>
+                          this.state.campaignInfo.callaction.value === c.value
+                      ).label}
+                </Text>
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={{ color: "#fff", fontSize: 20, left: 25 }}
+                />
+              </Item>
+            </RNPickerSelect>
+            <Item
+              rounded
+              style={[
+                styles.input,
+                {
+                  borderColor: this.state.urlError ? "red" : "transparent"
+                }
+              ]}
+            >
+              <Input
+                style={styles.inputtext}
+                placeholder="Enter your website's URL"
+                placeholderTextColor="#fff"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value =>
+                  this.setState({
+                    campaignInfo: {
+                      ...this.state.campaignInfo,
+                      attachment: value
+                    }
+                  })
+                }
+                onBlur={() => {
+                  this.setState({
+                    urlError: validateWrapper(
+                      "website",
+                      this.state.campaignInfo.attachment
+                    )
+                  });
+                }}
+              />
+            </Item>
+          </View>
+          <View />
+          <View>
+            <Text
+              style={styles.footerText}
+              onPress={() => this.props.toggleSideMenu()}
+            >
+              Change Swipe-up Destination
+            </Text>
+
+            <LowerButton
+              checkmark={true}
+              bottom={0}
+              function={this._handleSubmission}
             />
-          </Item>
+          </View>
         </View>
-        <LowerButton bottom={-35} function={this._handleSubmission} />
-      </View>
+      </SafeAreaView>
     );
   }
 }
