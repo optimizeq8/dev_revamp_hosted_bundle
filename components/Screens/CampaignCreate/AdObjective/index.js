@@ -260,6 +260,7 @@ class AdObjective extends Component {
               </Item>
 
               <Duration
+                dismissKeyboard={Keyboard.dismiss}
                 start_time={this.state.campaignInfo.start_time}
                 end_time={this.state.campaignInfo.end_time}
                 start_timeError={this.state.start_timeError}
@@ -282,6 +283,7 @@ class AdObjective extends Component {
                   }
                 ]}
                 onPress={() => {
+                  Keyboard.dismiss();
                   this.setModalVisible(true);
                 }}
               >
@@ -292,7 +294,7 @@ class AdObjective extends Component {
                         c => this.state.campaignInfo.objective === c.value
                       ).label}
                 </Text>
-                {/* <Icon type="AntDesign" name="down" style={styles.downicon} /> */}
+                <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
             </View>
 
