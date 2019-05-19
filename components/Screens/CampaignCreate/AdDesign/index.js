@@ -745,9 +745,9 @@ class AdDesign extends Component {
                 style={[
                   styles.title,
                   {
-                    top: heightPercentageToDP(10),
-                    left: "10%"
-                    alignSelf: "center",
+                    top: heightPercentageToDP(12),
+                    left: "0%",
+                    alignSelf: "center"
                   }
                 ]}
               >
