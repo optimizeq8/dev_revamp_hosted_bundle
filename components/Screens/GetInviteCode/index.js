@@ -18,7 +18,7 @@ import { colors } from "../../GradiantColors/colors";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 
 class GetInviteCode extends Component {

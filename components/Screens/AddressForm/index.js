@@ -39,7 +39,7 @@ import Areas from "./Areas";
 import * as actionCreators from "../../../store/actions/";
 
 //Functions
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp

@@ -15,7 +15,7 @@ import { LinearGradient, Segment } from "expo";
 import CloseIcon from "../../../assets/SVGs/Close";
 
 //Validation
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 // Style
 import styles from "./styles";
@@ -157,12 +157,11 @@ class ForgotPassword extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
   forgotPassword: (email, navigation) =>
-    dispatch(actionCreators.forgotPassword(email, navigation)),
+    dispatch(actionCreators.forgotPassword(email, navigation))
 });
 export default connect(
   mapStateToProps,

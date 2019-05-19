@@ -45,7 +45,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Validators
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 

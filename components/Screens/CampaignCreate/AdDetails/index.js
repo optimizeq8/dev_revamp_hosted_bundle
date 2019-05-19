@@ -55,7 +55,7 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //Validators
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { validate } from "validate.js";

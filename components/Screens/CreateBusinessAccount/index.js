@@ -28,7 +28,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 //Validator
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {

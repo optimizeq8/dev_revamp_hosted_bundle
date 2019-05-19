@@ -52,7 +52,7 @@ import globalStyles from "../../../../Global Styles/";
 import { colors } from "../../../GradiantColors/colors";
 
 //Validator
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP,
   widthPercentageToDP

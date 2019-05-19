@@ -13,7 +13,7 @@ import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Item, Input, Container, Icon } from "native-base";
 
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AppSearch from "../../../MiniComponents/AppSearch(old)";
 import AppConfirm from "../../../MiniComponents/AppConfirm";

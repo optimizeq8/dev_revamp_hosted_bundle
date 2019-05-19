@@ -19,7 +19,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ToggleButton, ActivityIndicator } from "react-native-paper";
 class AppChoice extends Component {
   constructor(props) {
