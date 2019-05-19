@@ -41,13 +41,13 @@ export const getTransactions = () => {
 };
 
 export const getWalletAmount = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     instance
-      .get(`mywallet`)
+      .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`)
       .then(res => {
         return res.data;
       })
@@ -75,13 +75,22 @@ export const getWalletAmount = () => {
 };
 
 export const addWalletAmount = (info, openBrowser) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    console.log(
+      "getState().account.mainBusiness.businessid",
+      getState().account.mainBusiness.businessid,
+      info
+    );
+
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     instance
-      .post(`purchaseWalletAmount`, info)
+      .post(`purchaseBusinessWalletAmount`, {
+        ...info,
+        businessid: getState().account.mainBusiness.businessid
+      })
       .then(res => {
         return res.data;
       })
