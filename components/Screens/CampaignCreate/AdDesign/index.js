@@ -6,18 +6,15 @@ import {
   Permissions,
   Video,
   FileSystem,
-  Segment
+  Segment,
+  ImageManipulator
 } from "expo";
 import {
   SafeAreaView,
   View,
   TouchableOpacity,
   Image,
-  Dimensions,
-  Platform,
-  ScrollView,
-  ImageBackground,
-  TouchableWithoutFeedback
+  Platform
 } from "react-native";
 import {
   Button,
@@ -34,7 +31,6 @@ import {
   Footer,
   Icon
 } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import BackButton from "../../../MiniComponents/BackButton";
 //Redux
 import * as actionCreators from "../../../../store/actions";
@@ -48,11 +44,10 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../Global Styles/";
 import { colors } from "../../../GradiantColors/colors";
 
 //Validator
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -77,6 +72,7 @@ class AdDesign extends Component {
         attachment: "BLANK",
         media_type: ""
       },
+      directory: "/ImagePicker/",
       result: "",
       appChoice: "",
       inputH: false,
@@ -171,8 +167,53 @@ class AdDesign extends Component {
 
     return result;
   };
+
   _pickImage = async () => {
     let result = await this.pick();
+    this.setState({ directory: "/ImagePicker/" });
+
+    let newWidth = result.width;
+    let newHeight = result.height;
+    // let largeVal = "h";
+
+    // console.log("Orig width:", result.width);
+    // if (result.width > 1080) newWidth = 1080;
+    // console.log("Orig height:", result.height);
+    // if (result.height > 1920) newHeight = 1920;
+
+    //  (result.width / 9) * 16  (result.height / 16) * 9
+
+    if (
+      result.type === "image" &&
+      Math.floor(result.width / 9) !== Math.floor(result.height / 16)
+    ) {
+      if (
+        result.width <= result.height &&
+        result.width > 1080 &&
+        result.height > 1920
+      ) {
+        //newHeight = (result.width / 9) * 16;
+        newWidth = Math.floor((result.height / 16) * 9);
+
+        const manipResult = await ImageManipulator.manipulateAsync(result.uri, [
+          {
+            crop: {
+              originX: 0,
+              originY: 0,
+              width: newWidth,
+              height: newHeight
+            }
+          }
+        ]);
+        this.setState({ directory: "/ImageManipulator/" });
+        console.log("manipulated image", manipResult);
+        result.uri = manipResult.uri;
+        result.height = manipResult.height;
+        result.width = manipResult.width;
+      }
+    }
+
+    console.log("original image", result);
 
     if (
       Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
@@ -220,7 +261,7 @@ class AdDesign extends Component {
   formatMedia() {
     var body = new FormData();
 
-    let res = this.state.image.split("/ImagePicker/");
+    let res = this.state.image.split(this.state.directory);
     let format = res[1].split(".");
     let mime = "application/octet-stream";
     var photo = {
@@ -705,7 +746,8 @@ class AdDesign extends Component {
                   styles.title,
                   {
                     top: heightPercentageToDP(10),
-                    left: "0%"
+                    left: "10%"
+                    alignSelf: "center",
                   }
                 ]}
               >

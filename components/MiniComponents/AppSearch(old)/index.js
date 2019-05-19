@@ -14,7 +14,7 @@ import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 export default class index extends Component {
   constructor(props) {
     super(props);

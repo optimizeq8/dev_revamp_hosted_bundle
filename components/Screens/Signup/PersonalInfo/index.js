@@ -18,7 +18,7 @@ import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 

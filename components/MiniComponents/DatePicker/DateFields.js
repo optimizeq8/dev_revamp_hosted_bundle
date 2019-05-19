@@ -22,7 +22,7 @@ import {
   Badge
 } from "native-base";
 import { BlurView } from "expo";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";

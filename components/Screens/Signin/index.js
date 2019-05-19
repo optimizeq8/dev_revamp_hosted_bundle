@@ -89,6 +89,7 @@ class MainForm extends Component {
     //   );
     // } else
     return (
+      <>
       <Container style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
@@ -224,10 +225,12 @@ class MainForm extends Component {
             )}
           </View>
         </View>
+      
+      </Container>
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
-      </Container>
+        </>
     );
   }
 }

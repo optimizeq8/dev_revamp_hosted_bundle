@@ -16,7 +16,8 @@ export default class SelectRegions extends Component {
           }}
           onPress={() => {
             this.props.onSelectedRegionChange(
-              this.props.addressForm ? c : c.id
+              this.props.addressForm ? c : c.id,
+              c.name
             );
           }}
         >

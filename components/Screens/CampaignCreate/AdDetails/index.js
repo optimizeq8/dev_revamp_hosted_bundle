@@ -55,7 +55,7 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //Validators
-import validateWrapper from "../../../../Validation Functions/ValidateWrapper";
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { validate } from "validate.js";
@@ -98,6 +98,8 @@ class AdDetails extends Component {
         { value: "ar", label: "Arabic" },
         { value: "en", label: "English" }
       ],
+      regionNames: [],
+      countryName: "Kuwait",
       advance: false,
       sidemenustate: false,
       sidemenu: "gender",
@@ -195,9 +197,11 @@ class AdDetails extends Component {
       campaignInfo: rep
     });
   };
-  onSelectedItemsChange = async selectedItems => {
+  onSelectedCountryChange = async (selectedItem, countryName) => {
+    console.log(selectedItem);
+
     let replace = this.state.campaignInfo;
-    let newCountry = selectedItems;
+    let newCountry = selectedItem;
 
     if (typeof newCountry !== "undefined") {
       replace.targeting.geos[0].country_code = newCountry;
@@ -208,9 +212,10 @@ class AdDetails extends Component {
       await this.setState({
         campaignInfo: replace,
         regions: reg.regions,
-        filteredRegions: reg.regions
+        filteredRegions: reg.regions,
+        regionNames: [],
+        countryName
       });
-      // this.getTotalReach();
     }
   };
 
@@ -271,8 +276,9 @@ class AdDetails extends Component {
     });
   };
 
-  onSelectedRegionChange = selectedItem => {
+  onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
+    let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
       replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
         r => r !== selectedItem
@@ -280,7 +286,12 @@ class AdDetails extends Component {
     } else {
       replace.targeting.geos[0].region_id.push(selectedItem);
     }
-    this.setState({ campaignInfo: replace });
+    if (names.find(r => r === regionName)) {
+      names = names.filter(r => r !== regionName);
+    } else {
+      names.push(regionName);
+    }
+    this.setState({ campaignInfo: replace, regionNames: names });
   };
 
   formatNumber = num => {
@@ -399,7 +410,11 @@ class AdDetails extends Component {
         });
         this.props.ad_details(
           rep,
-          this.state.interestNames,
+          {
+            interestNames: this.state.interestNames,
+            regionNames: this.state.regionNames,
+            countryName: this.state.countryName
+          },
           this.props.navigation
         );
       }
@@ -548,7 +563,7 @@ class AdDetails extends Component {
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
-            onSelectedItemsChange={this.onSelectedItemsChange}
+            onSelectedCountryChange={this.onSelectedCountryChange}
             country_codes={
               this.state.campaignInfo.targeting.geos[0].country_code
             }
@@ -611,7 +626,6 @@ class AdDetails extends Component {
     let editCampaign =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign;
-    // console.log(this.state.value);
 
     return (
       <>
@@ -718,6 +732,7 @@ class AdDetails extends Component {
                       onChangeText={value => this._handleBudget(value)}
                       style={styles.budget}
                     /> */}
+
                     <TextInputMask
                       includeRawValueInChangeText
                       type={"money"}
@@ -726,11 +741,13 @@ class AdDetails extends Component {
                         delimiter: ",",
                         unit: "$"
                       }}
+                      disabled={editCampaign}
                       maxLength={8}
                       defaultValue={this.state.value + ""}
-                      onChangeText={(value, rawText) =>
-                        this._handleBudget(value, rawText)
-                      }
+                      value={this.state.value + ""}
+                      onChangeText={(value, rawText) => {
+                        if (!editCampaign) this._handleBudget(value, rawText);
+                      }}
                       style={styles.budget}
                       ref={ref => (this.moneyField = ref)}
                     />
@@ -747,15 +764,7 @@ class AdDetails extends Component {
                       Tap to enter manually
                     </Text>
                   </View>
-                  {/* <Text
-                    style={{
-                      fontFamily: "montserrat-light",
-                      color: "#fff",
-                      alignSelf: "flex-start"
-                    }}
-                  >
-                    $
-                  </Text> */}
+
                   <View
                     style={[
                       styles.slidercontainer,
@@ -935,16 +944,7 @@ class AdDetails extends Component {
                             <View style={{ flexDirection: "column" }}>
                               <Text style={styles.menutext}>Country</Text>
                               <Text style={styles.menudetails}>
-                                {
-                                  countries.find(c => {
-                                    if (
-                                      c.value ===
-                                      this.state.campaignInfo.targeting.geos[0]
-                                        .country_code
-                                    )
-                                      return c;
-                                  }).label
-                                }
+                                {this.state.countryName}
                               </Text>
                             </View>
                           </View>
@@ -971,7 +971,7 @@ class AdDetails extends Component {
                             <View style={{ flexDirection: "column" }}>
                               <Text style={styles.menutext}>Regions</Text>
                               <Text style={styles.menudetails}>
-                                {regions_names}
+                                {this.state.regionNames.join(", ")}
                               </Text>
                             </View>
                           </View>
@@ -1219,8 +1219,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, interestNames, navigation) =>
-    dispatch(actionCreators.ad_details(info, interestNames, navigation)),
+  ad_details: (info, names, navigation) =>
+    dispatch(actionCreators.ad_details(info, names, navigation)),
   updateCampaign: (info, businessid, navigation) =>
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
 

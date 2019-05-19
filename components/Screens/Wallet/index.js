@@ -1,25 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
-  ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
+  Platform
 } from "react-native";
-import { LinearGradient } from "expo";
-import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
+import { LinearGradient, BlurView } from "expo";
+import { Button, Text, Item, Input, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
 import formatNumber from "../../formatNumber";
 //icons
-import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
+import CloseIcon from "../../../assets/SVGs/Close.svg";
+
 // Style
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
@@ -27,11 +26,9 @@ import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
-import validateWrapper from "../../../Validation Functions/ValidateWrapper";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+
 import * as Animatable from "react-native-animatable";
 
 class Wallet extends Component {
@@ -44,7 +41,8 @@ class Wallet extends Component {
       amount: "",
       topUp: false,
       inputA: false,
-      amountError: ""
+      amountError: "",
+      modalVisible: false
     };
   }
 
@@ -77,7 +75,8 @@ class Wallet extends Component {
         <Text style={styles.title}>Wallet</Text>
         <WalletIcon
           style={{
-            alignSelf: "center"
+            alignSelf: "center",
+            marginTop: 15
           }}
           width={85}
           height={85}
@@ -90,130 +89,120 @@ class Wallet extends Component {
         <Text style={styles.text}>Avalible Balance</Text>
 
         <View style={styles.mainCard}>
-          <KeyboardAwareScrollView contentContainerStyle={{ height: "100%" }}>
-            <TouchableWithoutFeedback
-              onPress={Keyboard.dismiss}
-              accessible={false}
-            >
-              <KeyboardShift>
-                {() => (
-                  <>
-                    <Text style={[styles.mainText]}>
-                      Your wallet can be used to purchase ads or to resume
-                      paused ads immedeatly.
-                    </Text>
+          <Text style={[styles.mainText]}>
+            Your wallet can be used to {"\n"}purchase ads or to resume paused{" "}
+            {"\n"}ads immedeatly.
+          </Text>
 
-                    <Button
-                      full
-                      style={styles.button}
-                      onPress={() => {
-                        this.setState({ topUp: true });
-                      }}
-                    >
-                      <Text style={styles.buttontext}>Top up wallet </Text>
-                    </Button>
-                    <Button
-                      full
-                      style={styles.button}
-                      onPress={() => {
-                        // this._handleSubmission();
-                      }}
-                    >
-                      <Text style={styles.buttontext}>Request Refund</Text>
-                    </Button>
-                    <View style={styles.contentContainer}>
-                      {this.state.topUp && (
-                        <Animatable.View
-                          style={{
-                            height: "20%"
-                          }}
-                          animation={"slideInUp"}
-                        >
-                          <Animatable.View
-                            style={{
-                              height: "100%"
-                            }}
-                            animation={!this.state.amountError ? "" : "shake"}
-                            onAnimationEnd={() =>
-                              this.setState({ amountError: null })
-                            }
-                          >
-                            <Item
-                              floatingLabel
-                              style={[
-                                styles.input,
-                                {
-                                  borderColor: this.state.inputA
-                                    ? "#7039FF"
-                                    : this.state.amountError
-                                    ? "red"
-                                    : "#D9D9D9"
-                                }
-                              ]}
-                            >
-                              <Label
-                                style={[
-                                  styles.inputtext,
-                                  {
-                                    bottom: 5,
-
-                                    color: this.state.inputA
-                                      ? "#FF9D00"
-                                      : "#717171"
-                                  }
-                                ]}
-                              >
-                                <Icon
-                                  style={{
-                                    fontSize: 20,
-                                    color: this.state.inputA
-                                      ? "#FF9D00"
-                                      : "#717171"
-                                  }}
-                                  name="cash"
-                                />
-                                {"  "}
-                                Amount
-                              </Label>
-                              <Input
-                                maxLength={6}
-                                keyboardType="number-pad"
-                                style={styles.inputtext}
-                                value={`${
-                                  isNaN(this.state.amount)
-                                    ? ""
-                                    : this.state.amount
-                                }`}
-                                onChangeText={amount =>
-                                  this.setState({ amount: parseFloat(amount) })
-                                }
-                                onFocus={() => this.setState({ inputA: true })}
-                                onBlur={() =>
-                                  this.setState({
-                                    inputA: false,
-                                    amountError: validateWrapper(
-                                      "Budget",
-                                      this.state.amount
-                                    )
-                                  })
-                                }
-                              />
-                            </Item>
-                          </Animatable.View>
-                        </Animatable.View>
-                      )}
-                      {this.state.topUp && (
-                        <Animatable.View animation={"slideInLeft"}>
-                          <LowerButton function={this._handleSubmission} />
-                        </Animatable.View>
-                      )}
-                    </View>
-                  </>
-                )}
-              </KeyboardShift>
-            </TouchableWithoutFeedback>
-          </KeyboardAwareScrollView>
+          <Button
+            full
+            style={styles.button}
+            onPress={() => {
+              this.setState({ modalVisible: true });
+            }}
+          >
+            <Text style={styles.buttontext}>Top up wallet </Text>
+          </Button>
+          <Button
+            full
+            style={styles.button}
+            onPress={() => {
+              // this._handleSubmission();
+            }}
+          >
+            <Text style={styles.buttontext}>Request Refund</Text>
+          </Button>
         </View>
+
+        <Modal
+          animationType={"fade"}
+          transparent={Platform.OS === "ios"}
+          onDismiss={() => this.setState({ modalVisible: false })}
+          onRequestClose={() => this.setState({ modalVisible: false })}
+          visible={this.state.modalVisible}
+        >
+          <BlurView tint="dark" intensity={100} style={styles.BlurView}>
+            <Button
+              transparent
+              onPress={() => {
+                this.setState({ modalVisible: false });
+              }}
+              style={styles.btnClose}
+            >
+              <CloseIcon width={20} height={20} />
+            </Button>
+            <KeyboardAwareScrollView contentContainerStyle={{ height: "100%" }}>
+              <TouchableWithoutFeedback
+                onPress={Keyboard.dismiss}
+                accessible={false}
+              >
+                <View style={{ flex: 2, justifyContent: "center" }}>
+                  <WalletIcon
+                    style={{
+                      alignSelf: "center",
+                      marginBottom: 15
+                    }}
+                    width={85}
+                    height={85}
+                  />
+                  <Text style={styles.title}>Wallet {"\n"}Top Up</Text>
+                  <Text style={[styles.subHeading]}>
+                    Please input the amount{"\n"} You’d like to add to your
+                    wallet
+                  </Text>
+
+                  <Animatable.View
+                    animation={!this.state.amountError ? "" : "shake"}
+                    style={{ paddingVertical: 30 }}
+                    onAnimationEnd={() => this.setState({ amountError: null })}
+                  >
+                    <Item
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.inputA
+                            ? "#7039FF"
+                            : this.state.amountError
+                            ? "red"
+                            : "#D9D9D9",
+                          width: 250
+                        }
+                      ]}
+                    >
+                      <Input
+                        placeholder="0.000"
+                        placeholderTextColor="#fff"
+                        maxLength={6}
+                        keyboardType="number-pad"
+                        style={styles.inputtext}
+                        value={`${
+                          isNaN(this.state.amount) ? "" : this.state.amount
+                        }`}
+                        onChangeText={amount =>
+                          this.setState({
+                            amount: parseFloat(amount)
+                          })
+                        }
+                        onFocus={() => this.setState({ inputA: true })}
+                        onBlur={() =>
+                          this.setState({
+                            inputA: false,
+                            amountError: validateWrapper(
+                              "Budget",
+                              this.state.amount
+                            )
+                          })
+                        }
+                      />
+                      <Label style={[styles.labeltext]}>$</Label>
+                    </Item>
+                  </Animatable.View>
+                </View>
+              </TouchableWithoutFeedback>
+            </KeyboardAwareScrollView>
+            <LowerButton function={this._handleSubmission} />
+          </BlurView>
+        </Modal>
       </Container>
     );
   }

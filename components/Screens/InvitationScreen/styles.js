@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 22,
     fontFamily: "montserrat-medium",
-    top: heightPercentageToDP(-4)
+    bottom: "5%"
   },
   content: {
     flexDirection: "row",
