@@ -106,8 +106,9 @@ class MultiSelectList extends Component {
           paddingVertical: 20
         }}
         onPress={() => {
-          this.props.onSelectedItemsChange(
-            !this.props.addressForm ? c.value : c
+          this.props.onSelectedCountryChange(
+            !this.props.addressForm ? c.value : c,
+            c.label
           );
         }}
       >
