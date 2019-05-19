@@ -25,7 +25,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": 2
+      "buildNumber": "2"
     },
     "packagerOpts": {
       "config": "metro.config.js"
