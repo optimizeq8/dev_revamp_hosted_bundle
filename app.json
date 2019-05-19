@@ -32,7 +32,7 @@
 
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "permissions": [],
+      "permissions": ["CAMERA", "NOTIFICATIONS"],
       "versionCode": 2
     },
     "hooks": {
