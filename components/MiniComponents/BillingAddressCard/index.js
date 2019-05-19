@@ -94,7 +94,6 @@ class BillingAddressCard extends React.Component {
         filteredRegions: area.cities,
         countryError: ""
       });
-      // this.getTotalReach();
     }
   };
 
@@ -108,7 +107,6 @@ class BillingAddressCard extends React.Component {
         region_id: [selectedItem.id],
         areaError: ""
       });
-      // this.getTotalReach();
     }
   };
 
@@ -297,7 +295,7 @@ class BillingAddressCard extends React.Component {
                         Block
                       </Label>
                       <Input
-                        multiline={true}
+                        numberOfLines={2}
                         maxLength={100}
                         style={styles.inputtext}
                         autoCorrect={false}
@@ -339,7 +337,7 @@ class BillingAddressCard extends React.Component {
                           styles.inputtext,
                           {
                             bottom: 5,
-                            fontSize: wp(2.9),
+                            fontSize: 11,
                             color: this.state.inputB ? "#FF9D00" : "#717171"
                           }
                         ]}
@@ -348,20 +346,9 @@ class BillingAddressCard extends React.Component {
                         Building/House
                       </Label>
                       <Input
+                        numberOfLines={2}
                         value={this.props.address.building}
-                        multiline={true}
-                        maxLength={100}
-                        onContentSizeChange={({
-                          nativeEvent: {
-                            contentSize: { width: txtWidth, height: txtHeight }
-                          }
-                        }) => {
-                          if (txtHeight > 40) {
-                            this.setState({
-                              height: txtHeight
-                            });
-                          }
-                        }}
+                        maxLength={30}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -411,7 +398,7 @@ class BillingAddressCard extends React.Component {
                     <Input
                       value={this.props.address.street}
                       multiline={true}
-                      maxLength={100}
+                      maxLength={30}
                       style={styles.inputtext}
                       autoCorrect={false}
                       autoCapitalize="none"
@@ -465,7 +452,7 @@ class BillingAddressCard extends React.Component {
                       <Input
                         value={this.props.address.office}
                         multiline={true}
-                        maxLength={100}
+                        maxLength={30}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
