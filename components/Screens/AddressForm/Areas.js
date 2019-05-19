@@ -98,22 +98,22 @@ export default (cities = [
       { country_code: "KW", name: "Az Zawr", id: "29.442548.27472" },
       {
         country_code: "KW",
-        name: "As Salimiyah",
+        name: "Salimiya",
         id: "29.3338948.07611"
       },
       {
         country_code: "KW",
-        name: "Ash Shamiyah",
+        name: "Al Shamiyah",
         id: "29.3472247.96167"
       },
       {
         country_code: "KW",
-        name: "Ar Rumaythiyah",
+        name: "Al Rumaythiya",
         id: "29.3116748.07417"
       },
       {
         country_code: "KW",
-        name: "Ar Riqqah",
+        name: "Al Riqqah",
         id: "29.1458348.09472"
       },
       {
@@ -128,7 +128,7 @@ export default (cities = [
       },
       {
         country_code: "KW",
-        name: "Al Mahbulah",
+        name: "Mahbulah",
         id: "29.14548.13028"
       },
       {

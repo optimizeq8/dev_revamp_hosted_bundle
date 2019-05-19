@@ -78,7 +78,7 @@ class BillingAddressCard extends React.Component {
       this.props._handleSideMenuState(true)
     );
   };
-  onSelectedItemsChange = async selectedItem => {
+  onSelectedCountryChange = async selectedItem => {
     let replace = this.props.address;
     if (selectedItem) {
       replace.country = selectedItem.label;
@@ -149,7 +149,7 @@ class BillingAddressCard extends React.Component {
           <MultiSelect
             countries={Countries}
             country_code={this.state.country_code}
-            onSelectedItemsChange={this.onSelectedItemsChange}
+            onSelectedCountryChange={this.onSelectedCountryChange}
             _handleSideMenuState={this.props._handleSideMenuState}
             option={"countries"}
             addressForm={true}
