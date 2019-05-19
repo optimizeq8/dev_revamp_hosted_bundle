@@ -33,7 +33,7 @@
     "android": {
       "package": "com.optimizeapp.optimizeapp",
       "permissions": ["CAMERA", "NOTIFICATIONS"],
-      "versionCode": 2
+      "versionCode": 3
     },
     "hooks": {
       "postPublish": [
