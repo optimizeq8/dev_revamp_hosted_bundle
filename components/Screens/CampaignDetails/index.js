@@ -96,7 +96,6 @@ class CampaignDetails extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedCampaign !== this.props.selectedCampaign) {
-      console.log(this.props.selectedCampaign);
       Segment.screenWithProperties("Campaign Details Screen", {
         campaign_id: this.props.selectedCampaign.campaign_id
       });
@@ -635,10 +634,10 @@ class CampaignDetails extends Component {
                           colors={
                             Platform.OS === "ios"
                               ? ["#751AFF", "#751AFF"]
-                              : ["#6C52FF", "#751AFF"]
+                              : ["#751AFF", "#6C52FF"]
                           }
                           locations={
-                            Platform.OS === "ios" ? [0.2, 0.8] : [0.1, 0.9]
+                            Platform.OS === "ios" ? [0.2, 0.8] : [0.3, 0.8]
                           }
                           start={[0, 0.2]}
                           end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
@@ -657,7 +656,7 @@ class CampaignDetails extends Component {
                         borderRadius: 30,
                         borderBottomEndRadius: 0,
                         borderBottomStartRadius: 0,
-                        height: "35%",
+                        paddingBottom: 35,
                         overflow: "hidden",
                         width: "100%"
                       }}

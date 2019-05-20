@@ -176,7 +176,9 @@ const styles = StyleSheet.create({
     // flex: 1,
     // width: wp("100"),
     // height: hp("100"),
-    elevation: 10,
+    height: 130,
+    top: "16%",
+    elevation: 5,
     alignItems: "center",
     justifyContent: "center"
   },
