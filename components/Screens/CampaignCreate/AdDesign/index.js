@@ -141,7 +141,6 @@ class AdDesign extends Component {
 
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    console.log(status);
 
     if (status !== "granted") {
       this.onToggleModal();
@@ -249,7 +248,7 @@ class AdDesign extends Component {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (
             (result.type === "video" && file.size > 32000000) ||
-            result.duration > 10599
+            result.duration > 10999
           ) {
             this.setState({
               imageError:
