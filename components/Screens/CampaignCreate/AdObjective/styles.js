@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   block1Title: {
     top: hp(5),
     width: "100%",
-    paddingRight: 25
+    paddingRight: 35
     // marginLeft: "auto",
     // marginRight: "auto"
     // flex: 5

@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Image,
-  SafeAreaView
+  SafeAreaView,
+  BackHandler
 } from "react-native";
 import {
   Header,
@@ -57,6 +58,16 @@ class SwipeUpDestination extends Component {
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
 
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
   componentDidMount() {
     const image = this.props.navigation.state.params.image;
     console.log("image", image);
@@ -82,12 +93,23 @@ class SwipeUpDestination extends Component {
             objective={"website"}
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
           />
         );
         break;
       }
       case "deep link": {
-        menu = <Deep_Link />;
+        menu = (
+          <Deep_Link
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            objective={"deep link"}
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
         break;
       }
     }

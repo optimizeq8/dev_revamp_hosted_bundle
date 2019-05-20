@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  BackHandler
+} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Item, Icon, Input } from "native-base";
 import * as Animatable from "react-native-animatable";
@@ -47,6 +54,19 @@ class AppChoice extends Component {
       appLoading: false
     };
   }
+
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
 
   componentDidMount() {
     this.setState({
@@ -192,7 +212,11 @@ class AppChoice extends Component {
   };
   render() {
     return (
-      <View>
+      <View
+        style={{
+          width: "100%"
+        }}
+      >
         <RNPickerSelect
           items={this.state.callactions}
           placeholder={{ label: "Call to Action", value: "" }}
@@ -215,7 +239,7 @@ class AppChoice extends Component {
             style={[
               styles.input,
               {
-                marginBottom: 20,
+                marginTop: 20,
                 borderColor: this.state.callActionError ? "red" : "transparent"
               }
             ]}
@@ -244,8 +268,8 @@ class AppChoice extends Component {
               name="down"
               style={{
                 color: "#fff",
-                fontSize: 20,
-                left: 25
+                fontSize: 20
+                // left: 25
               }}
             />
           </Item>
@@ -256,7 +280,7 @@ class AppChoice extends Component {
             style={{
               flexDirection: "row",
               alignSelf: "center",
-              marginBottom: heightPercentageToDP(2)
+              marginVertical: 10
             }}
             animation={!this.state.choiceError ? "" : "shake"}
           >
@@ -337,7 +361,7 @@ class AppChoice extends Component {
               {
                 borderColor: this.state.nameError ? "red" : "transparent",
                 borderRadius: 30,
-                marginBottom: 10,
+                // marginBottom: 10,
                 marginTop: 0
               }
             ]}
@@ -389,17 +413,17 @@ class AppChoice extends Component {
           <ActivityIndicator
             color="#fff"
             size="large"
-            style={{ height: heightPercentageToDP(35) }}
+            style={{ height: heightPercentageToDP(30) }}
           />
         ) : (
-          <View style={{ height: heightPercentageToDP(35) }}>
+          <View style={{ height: heightPercentageToDP(30), width: "100%" }}>
             {this.state.showList && this.state.choice === "" && (
               <Text style={styles.text}>
                 Choose the {this.state.appSelection} app
               </Text>
             )}
             <FlatList
-              style={{ flex: 1 }}
+              style={{ flex: 1, width: "100%" }}
               //-----------This is for actual app data searches-----------
               data={
                 this.state.showList
@@ -447,8 +471,12 @@ class AppChoice extends Component {
                     onAnimationEnd={() => this.setState({ AppError: null })}
                     style={[
                       {
+                        display: "flex",
                         flexDirection: "row",
-                        alignItems: "center"
+                        alignItems: "center",
+                        // justifyContent: "space-around",
+                        flex: 1
+                        // width: "100%"
                       }
                     ]}
                   >
@@ -467,22 +495,11 @@ class AppChoice extends Component {
                     {this.state.appLoading && (
                       <ActivityIndicator
                         color="white"
-                        style={{ position: "absolute", left: "10%" }}
+                        style={{ position: "absolute", left: "7%" }}
                       />
                     )}
 
-                    <Text
-                      style={[
-                        styles.titletext,
-                        {
-                          color: "#fff",
-                          fontSize: heightPercentageToDP(1.7),
-                          width: widthPercentageToDP(65)
-                        }
-                      ]}
-                    >
-                      {item.title}
-                    </Text>
+                    <Text style={[styles.listText]}>{item.title}</Text>
                   </Animatable.View>
                 </TouchableOpacity>
               )}
@@ -491,7 +508,18 @@ class AppChoice extends Component {
             />
           </View>
         )}
-        <LowerButton function={() => this.validate()} bottom={0} />
+        <View>
+          {this.props.swipeUpDestination && (
+            <Text
+              style={styles.footerText}
+              onPress={() => this.props.toggleSideMenu()}
+            >
+              Change Swipe-up Destination
+            </Text>
+          )}
+
+          <LowerButton function={() => this.validate()} bottom={0} />
+        </View>
       </View>
     );
   }

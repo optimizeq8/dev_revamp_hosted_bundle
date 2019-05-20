@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TouchableHighlight,
-  Keyboard
+  Keyboard,
+  BackHandler
 } from "react-native";
 import {
   Button,
@@ -75,7 +76,22 @@ class AdObjective extends Component {
       end_timeError: ""
     };
   }
-
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    if (this.state.modalVisible) {
+      this.setState({
+        modalVisible: false
+      });
+    } else {
+      this.props.navigation.goBack();
+    }
+    // return true;
+  };
   componentDidMount() {
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
@@ -227,7 +243,7 @@ class AdObjective extends Component {
                       color: this.state.inputN ? "#FF9D00" : "#fff"
                     },
                     {
-                      fontFamily: "montserrat-bold"
+                      fontFamily: "montserrat-semibold"
                     }
                   ]}
                 >
