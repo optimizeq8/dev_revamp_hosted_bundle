@@ -10,11 +10,18 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  footerText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    paddingBottom: 16,
+    textDecorationLine: "underline"
+  },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: "transparent",
-    height: "100%",
-    marginTop: heightPercentageToDP(3)
+    height: "100%"
+    // marginTop: heightPercentageToDP(3)
   },
   textcontainer: {
     // flex: 1,
@@ -27,18 +34,18 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     paddingTop: 10,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     paddingVertical: 0
   },
   subtext: {
     alignSelf: "center",
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: 14,
     paddingTop: 5,
-    marginBottom: 10,
+    // marginBottom: 10,
     color: "#fff",
-    textAlign: "left"
+    textAlign: "center"
   },
   appTexts: {
     alignSelf: "center",
@@ -128,8 +135,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#5D1CD8",
     alignSelf: "center",
-    width: 300,
+    width: "100%",
     height: 50
+    // marginHorizontal: 50
   },
   inputtext: {
     fontFamily: "montserrat-light",

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    borderRadius: 10,
+    borderRadius: 30,
     flex: 1,
     margin: 0,
     padding: 0
