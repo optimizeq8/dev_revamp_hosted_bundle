@@ -105,26 +105,25 @@ export default class App_Install extends Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
+      <Container style={[styles.container, { paddingHorizontal: 40 }]}>
         <View
           style={{
             borderTopStartRadius: 30,
-            borderTopEndRadius: 30
+            borderTopEndRadius: 30,
+            flex: 1
           }}
         >
           <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
+            contentContainerStyle={{ flex: 1 }}
           >
             <View
               style={{
                 flexDirection: "column",
-                paddingTop: 30
+                flex: 1,
+                justifyContent: "space-around"
+                // paddingTop: 30
               }}
             >
               <AppInstallIcon
@@ -140,7 +139,11 @@ export default class App_Install extends Component {
               </View>
               {!this.state.firstStepDone ? (
                 // <AppSearch renderNextStep={this.renderNextStep} />
-                <AppChoice listNum={1} renderNextStep={this.renderNextStep} />
+                <AppChoice
+                  listNum={1}
+                  renderNextStep={this.renderNextStep}
+                  navigation={this.props.navigation}
+                />
               ) : (
                 <AppConfirm
                   icon_media_url={this.state.attachment.icon_media_url}
@@ -149,6 +152,7 @@ export default class App_Install extends Component {
                   android_app_url={this.state.attachment.android_app_url}
                   _handleSubmission={this._handleSubmission}
                   renderPreviousStep={this.renderPreviousStep}
+                  deepLink={false}
                 />
               )}
             </View>

@@ -10,12 +10,20 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  listText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff",
+    // flex: 1,
+    width: 170
+  },
   footerText: {
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-regular",
     paddingBottom: 16,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+    textAlign: "center"
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
@@ -26,9 +34,9 @@ const styles = StyleSheet.create({
   textcontainer: {
     // flex: 1,
     flexDirection: "column",
-    alignItems: "center",
-    paddingHorizontal: 7,
-    marginBottom: 20
+    alignItems: "center"
+    // paddingHorizontal: 7
+    // marginBottom: 20
   },
   titletext: {
     textAlign: "left",
@@ -52,9 +60,9 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: widthPercentageToDP(3.2),
     marginBottom: 6,
-    width: widthPercentageToDP(50),
+    // width: widthPercentageToDP(50),
     color: "#fff",
-    textAlign: "left"
+    textAlign: "center"
   },
   icon: {
     alignSelf: "center",
@@ -71,14 +79,17 @@ const styles = StyleSheet.create({
     // width: 95,
     borderRadius: 50,
     alignSelf: "center",
-    marginBottom: 30
+    marginBottom: 30,
+    // justifyContent: "space-around",
+    alignItems: "center"
+    // height: "100%"
   },
   placeholder: {
     borderRadius: 13,
     overflow: "hidden",
     alignSelf: "center",
-    width: "90%",
-    height: "50%",
+    width: "100%",
+    height: 150,
     zIndex: 0,
     borderWidth: 2,
     borderStyle: "dashed",
@@ -95,10 +106,10 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   text: {
-    color: "white",
+    color: "#fff",
     paddingBottom: 10,
     fontFamily: "montserrat-semibold",
-    fontSize: widthPercentageToDP(4),
+    fontSize: 14,
     alignSelf: "center"
   },
 
@@ -106,10 +117,10 @@ const styles = StyleSheet.create({
     color: "white",
     // paddingBottom: 10,
     fontFamily: "montserrat-semibold",
-    fontSize: widthPercentageToDP(3),
-    alignSelf: "center",
-    width: widthPercentageToDP(75),
-    top: heightPercentageToDP(5)
+    fontSize: 12,
+    alignSelf: "center"
+    // width: widthPercentageToDP(75),
+    // top: heightPercentageToDP(5)
   },
   activeBadege: {
     backgroundColor: "#5F5F5F",
@@ -166,9 +177,9 @@ const styles = StyleSheet.create({
     color: "white",
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
-    fontSize: widthPercentageToDP(5),
+    fontSize: 16
     // paddingHorizontal: 20,
-    width: widthPercentageToDP(55)
+    // width: widthPercentageToDP(55)
   },
   // container: {
   //   paddingVertical: 12,
@@ -191,8 +202,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCCCCC"
   },
   image: {
-    width: widthPercentageToDP(11.5),
-    height: widthPercentageToDP(11.5),
+    width: 30,
+    height: 30,
     borderRadius: 13,
     marginHorizontal: 20
   },
@@ -206,7 +217,8 @@ const styles = StyleSheet.create({
   },
   campaignButton: {
     flexDirection: "row",
-    marginHorizontal: 25,
+    marginHorizontal: 15,
+    // paddingHorizontal: 10,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     borderBottomStartRadius: 20,

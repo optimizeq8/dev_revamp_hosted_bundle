@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity, BackHandler } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -14,26 +14,15 @@ import { Item, Input } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 export default class index extends Component {
   state = { deep_link_url: "", deep_link_urlError: "" };
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  handleBackButton = () => {
-    // this.props.navigation.goBack();
-    this.props.renderPreviousStep();
-    return true;
-  };
+
   validate = () => {
     const deep_link_urlError = validateWrapper(
       "deepLink",
       this.state.deep_link_url
     );
     this.setState({ deep_link_urlError });
-    if (!this.props.deepLink) {
-      this.props._handleSubmission();
-    } else if (!deep_link_urlError) {
+
+    if (!deep_link_urlError) {
       this.props._handleSubmission(this.state.deep_link_url);
     }
   };
@@ -42,17 +31,14 @@ export default class index extends Component {
       <View
         style={{
           alignSelf: "center",
-          width: "100%",
-          flex: 1,
-          justifyContent: "space-around"
-          //   height: heightPercentageToDP(80),
-          //   overflow: "hidden"
+          height: heightPercentageToDP(80),
+          overflow: "hidden"
         }}
       >
-        <KeyboardShift style={{ flex: 1, justifyContent: "space-around" }}>
+        <KeyboardShift>
           {() => (
-            <>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: "row" }}>
                 <Image
                   style={{
                     height: heightPercentageToDP(8.3),
@@ -64,7 +50,7 @@ export default class index extends Component {
                     uri: this.props.icon_media_url
                   }}
                 />
-                <View style={{ flexDirection: "column", paddingTop: 10 }}>
+                <View style={{ flexDirection: "column" }}>
                   <Text style={[styles.title]}>{this.props.app_name}</Text>
                   {this.props.ios_app_id !== "" && (
                     <Text
@@ -91,7 +77,7 @@ export default class index extends Component {
               </View>
               <View
                 style={{
-                  // marginTop: heightPercentageToDP(4),
+                  marginTop: heightPercentageToDP(4),
                   alignSelf: "center"
                 }}
               >
@@ -168,8 +154,8 @@ export default class index extends Component {
                         borderColor: this.state.deep_link_urlError
                           ? "red"
                           : "transparent",
-                        marginBottom: 0
-                        //   top: heightPercentageToDP(4)
+                        marginBottom: 0,
+                        top: heightPercentageToDP(4)
                       }
                     ]}
                   >
@@ -201,40 +187,30 @@ export default class index extends Component {
                   ) : null}
                 </>
               )}
-              {this.props.swipeUpDestination && (
-                <Text
-                  style={[
-                    styles.subtext,
-                    {
-                      marginBottom: 0,
-                      // top: heightPercentageToDP(17),
-                      textDecorationLine: "underline",
-                      fontFamily: "montserrat-bold",
-                      fontSize: heightPercentageToDP(2)
-                    }
-                  ]}
-                  onPress={() => this.props.renderPreviousStep()}
-                >
-                  Change app
-                </Text>
-              )}
-              <View>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
-                  </Text>
-                )}
-
-                <LowerButton
-                  checkmark={true}
-                  function={() => this.validate()}
-                  bottom={0}
-                />
-              </View>
-            </>
+              <Text
+                style={[
+                  styles.subtext,
+                  {
+                    marginBottom: 0,
+                    top: heightPercentageToDP(17),
+                    textDecorationLine: "underline",
+                    fontFamily: "montserrat-bold",
+                    fontSize: heightPercentageToDP(2)
+                  }
+                ]}
+                onPress={() => this.props.renderPreviousStep()}
+              >
+                Change app
+              </Text>
+              <LowerButton
+                function={
+                  this.props.deepLink
+                    ? this.validate
+                    : this.props._handleSubmission
+                }
+                bottom={-heightPercentageToDP(2.5)}
+              />
+            </View>
           )}
         </KeyboardShift>
       </View>

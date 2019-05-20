@@ -4,7 +4,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Image
+  Image,
+  BackHandler
 } from "react-native";
 import {
   Card,
@@ -59,12 +60,26 @@ export default class Long_Form_Video extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
   async componentDidMount() {
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
+  }
+
+  componentWillUnmount() {
+    this._didFocusSubscription && this._didFocusSubscription.remove();
+    this._willBlurSubscription && this._willBlurSubscription.remove();
   }
   pick = () => {
     let result = ImagePicker.launchImageLibraryAsync({
@@ -128,28 +143,35 @@ export default class Long_Form_Video extends Component {
   };
   render() {
     return (
-      <View style={{ height: heightPercentageToDP("110%") }}>
+      <View
+        style={{
+          //   height: "100%",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-around",
+          paddingHorizontal: 30
+        }}
+      >
         <View
           style={{
-            flexDirection: "column",
-            paddingTop: 30
+            flexDirection: "column"
+            // flex: 1,
+            // justifyContent: "space-around"
+            // paddingTop: 30
           }}
         >
           <VideoIcon style={[styles.icon]} />
-          <View style={styles.textcontainer}>
+          <View style={[styles.textcontainer, { paddingBottom: 25 }]}>
             <Text style={[styles.titletext]}>LongForm Video</Text>
             <Text style={[styles.subtext]}>
-              Promote your brand or product to Snapchatters through video.
+              Promote your brand or product to{"\n"}Snapchatters through video.
             </Text>
           </View>
           {this.state.longformvideo_media && (
-            <View
-              style={{
-                bottom: heightPercentageToDP(0),
-                marginBottom: -heightPercentageToDP(17)
-              }}
-            >
-              <Text style={styles.subtext}>Preview Only</Text>
+            <View style={{}}>
+              <Text style={[styles.subtext, { paddingBottom: 5 }]}>
+                Preview Only
+              </Text>
               <Video
                 source={{
                   uri: this.state.longformvideo_media
@@ -167,7 +189,7 @@ export default class Long_Form_Video extends Component {
                 style={{
                   backgroundColor: globalColors.orange,
                   alignSelf: "center",
-                  marginTop: 10,
+                  marginVertical: 10,
                   borderRadius: 30
                 }}
               >
@@ -181,7 +203,7 @@ export default class Long_Form_Video extends Component {
               onPress={() => {
                 this._pickImage();
               }}
-              style={styles.video}
+              style={[styles.video]}
             >
               <AddVidIcon
                 type="MaterialCommunityIcons"
@@ -204,11 +226,21 @@ export default class Long_Form_Video extends Component {
             </TouchableOpacity>
           )}
           {this.state.durationError ? (
-            <Text style={[styles.subtext, { color: "white", marginTop: 5 }]}>
+            <Text
+              style={[
+                styles.subtext,
+                { color: "white", marginBottom: 5, paddingTop: 0 }
+              ]}
+            >
               {this.state.durationError}
             </Text>
           ) : this.state.videoError ? (
-            <Text style={[styles.subtext, { color: "white", marginTop: 5 }]}>
+            <Text
+              style={[
+                styles.subtext,
+                { color: "white", marginBottom: 5, paddingTop: 0 }
+              ]}
+            >
               {this.state.videoError}
             </Text>
           ) : null}

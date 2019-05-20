@@ -15,7 +15,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import {
   Button,
@@ -97,6 +98,17 @@ class AdDesign extends Component {
     this.rejected =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.rejected;
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
     Segment.screen("Design Ad Screen");
@@ -575,7 +587,7 @@ class AdDesign extends Component {
         style={styles.swipeUp}
         onPress={() => {
           this.state.objective.toLowerCase() === "traffic"
-            ? this.props.navigation.navigate("SwipeUpDestination", {
+            ? this.props.navigation.push("SwipeUpDestination", {
                 _changeDestination: this._changeDestination,
                 image: this.state.image
               })

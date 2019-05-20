@@ -8,6 +8,7 @@ import {
   Easing,
   TouchableWithoutFeedback,
   StyleSheet,
+  BackHandler,
   Dimensions
 } from "react-native";
 import {
@@ -82,7 +83,18 @@ class AdPaymentReview extends Component {
     //   userid: "8"
     // };
   }
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   componentDidMount() {
     Segment.screen("Ad Payment Review Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {

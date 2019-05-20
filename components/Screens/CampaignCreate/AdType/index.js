@@ -74,7 +74,7 @@ class AdType extends Component {
     Segment.trackWithProperties("Close Ad Type Button", {
       business_name: this.props.mainBusiness.businessname
     });
-    this.props.navigation.navigate("Dashboard");
+    this.props.navigation.goBack();
     return true;
   };
 

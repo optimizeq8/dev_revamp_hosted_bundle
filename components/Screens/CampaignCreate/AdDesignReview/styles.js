@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
     // bottom: "2%",
     // left: "90%",
     // paddingVertical: 17,
-    textShadowColor: "rgba(0, 0, 0, 1)",
-    textShadowOffset: { width: 0, height: 0.5 },
-    textShadowRadius: 30,
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1.5 },
+    textShadowRadius: 10,
     textAlign: "right",
     paddingRight: 20
   },

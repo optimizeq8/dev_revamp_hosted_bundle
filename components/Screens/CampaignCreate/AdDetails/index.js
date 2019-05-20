@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  BackHandler
 } from "react-native";
 import Modal from "react-native-modal";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
@@ -113,7 +114,18 @@ class AdDetails extends Component {
       selectionOption: ""
     };
   }
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   async componentDidMount() {
     Segment.screen("Select Ad Details Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {

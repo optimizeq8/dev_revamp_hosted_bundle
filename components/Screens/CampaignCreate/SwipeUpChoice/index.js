@@ -5,15 +5,20 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Image
+  Image,
+  BackHandler,
+  SafeAreaView
 } from "react-native";
 import {
   Card,
   Button,
   Content,
+  Header,
+  Left,
+  Body,
+  Right,
   Text,
   CardItem,
-  Body,
   Item,
   Input,
   Container,
@@ -21,6 +26,8 @@ import {
   H1,
   Badge
 } from "native-base";
+import BackButton from "../../../MiniComponents/BackButton";
+
 import { LinearGradient } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -39,6 +46,7 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null
   };
+
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -54,55 +62,77 @@ class SwipeUpChoice extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <KeyboardAwareScrollView
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={false}
-        >
-          {(this.props.navigation.state.params.objective === "website" ||
-            this.props.navigation.state.params.objective ===
-              "LEAD_GENERATION") && (
-            <Website
-              objective={this.props.navigation.state.params.objective}
-              _changeDestination={
-                this.props.navigation.state.params._changeDestination
-              }
-              navigation={this.props.navigation}
-            />
-          )}
-          {this.props.navigation.state.params.objective === "deep link" && (
-            <Deep_Link
-              _changeDestination={
-                this.props.navigation.state.params._changeDestination
-              }
-              navigation={this.props.navigation}
-            />
-          )}
-          {this.props.navigation.state.params.objective === "VIDEO_VIEWS" && (
-            <Long_Form_Video
-              _changeDestination={
-                this.props.navigation.state.params._changeDestination
-              }
-              navigation={this.props.navigation}
-            />
-          )}
-          {this.props.navigation.state.params.objective
-            .toLowerCase()
-            .includes("app") && (
-            <App_Install
-              _changeDestination={
-                this.props.navigation.state.params._changeDestination
-              }
-              navigation={this.props.navigation}
-            />
-          )}
-        </KeyboardAwareScrollView>
-      </Container>
+        <Container style={[styles.container]}>
+          <Header transparent noShadow iosBarStyle={"light-content"}>
+            <Left
+              style={{
+                alignItems: "center",
+                alignSelf: "center",
+                flex: 0,
+                paddingLeft: 10
+              }}
+            >
+              <BackButton
+                navigation={this.props.navigation.goBack}
+                style={{ top: 0, left: 0 }}
+              />
+            </Left>
+            <Body />
+            <Right />
+          </Header>
+          <Content
+            // padder
+            contentContainerStyle={{
+              flex: 1
+            }}
+          >
+            <KeyboardAwareScrollView
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              scrollEnabled={false}
+              contentContainerStyle={{
+                flex: 1
+              }}
+            >
+              {(this.props.navigation.state.params.objective === "website" ||
+                this.props.navigation.state.params.objective ===
+                  "LEAD_GENERATION") && (
+                <Website
+                  objective={this.props.navigation.state.params.objective}
+                  _changeDestination={
+                    this.props.navigation.state.params._changeDestination
+                  }
+                  navigation={this.props.navigation}
+                />
+              )}
+              {this.props.navigation.state.params.objective ===
+                "VIDEO_VIEWS" && (
+                <Long_Form_Video
+                  _changeDestination={
+                    this.props.navigation.state.params._changeDestination
+                  }
+                  navigation={this.props.navigation}
+                />
+              )}
+              {this.props.navigation.state.params.objective
+                .toLowerCase()
+                .includes("app") && (
+                <App_Install
+                  _changeDestination={
+                    this.props.navigation.state.params._changeDestination
+                  }
+                  navigation={this.props.navigation}
+                />
+              )}
+            </KeyboardAwareScrollView>
+          </Content>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

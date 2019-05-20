@@ -129,7 +129,7 @@ class AdDesignReview extends Component {
                         )
                       : ""}
                   </Text>
-                  <Text style={[styles.AD]}>AD</Text>
+                  <Text style={[styles.AD]}>Ad</Text>
                 </View>
               </View>
             </Transition>

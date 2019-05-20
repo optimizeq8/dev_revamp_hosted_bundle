@@ -5,7 +5,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   SafeAreaView,
-  Image
+  Image,
+  BackHandler
 } from "react-native";
 import {
   Card,
@@ -53,6 +54,17 @@ export default class Website extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
+
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
   _handleSubmission = () => {
     const urlError = validateWrapper(
       "website",
@@ -87,19 +99,12 @@ export default class Website extends Component {
             flexDirection: "column",
             justifyContent: "space-around",
             alignItems: "center",
-            padding: 10
+            padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
           }}
         >
-          <View
-            style={
-              {
-                //   flexDirection: "column"
-                // paddingTop: heightPercentageToDP(10)
-              }
-            }
-          >
+          <View style={{}}>
             <WebsiteIcon style={styles.icon} />
-            <View style={styles.textcontainer}>
+            <View style={[styles.textcontainer, { marginBottom: 20 }]}>
               <Text style={[styles.titletext]}>Website</Text>
               <Text style={[styles.subtext]}>
                 The user will be taken to your website
@@ -182,13 +187,14 @@ export default class Website extends Component {
           </View>
           <View />
           <View>
-            <Text
-              style={styles.footerText}
-              onPress={() => this.props.toggleSideMenu()}
-            >
-              Change Swipe-up Destination
-            </Text>
-
+            {this.props.swipeUpDestination && (
+              <Text
+                style={styles.footerText}
+                onPress={() => this.props.toggleSideMenu()}
+              >
+                Change Swipe-up Destination
+              </Text>
+            )}
             <LowerButton
               checkmark={true}
               bottom={0}
