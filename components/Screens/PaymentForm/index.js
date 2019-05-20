@@ -42,12 +42,9 @@ class PaymentForm extends Component {
   };
   constructor(props) {
     super(props);
-    this.addingCredits =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.addingCredits;
-    this.amount =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.amount;
+    this.navState = this.props.navigation.state.params;
+    this.addingCredits = this.navState && this.navState.addingCredits;
+    this.amount = this.navState && this.navState.amount;
   }
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
@@ -81,8 +78,7 @@ class PaymentForm extends Component {
     try {
       this._addLinkingListener();
       await WebBrowser.openBrowserAsync(
-        this.props.navigation.state.params &&
-          this.props.navigation.state.params.addingCredits
+        this.addingCredits
           ? this.props.payment_data_wallet.knet_payment_url
           : this.props.payment_data.knet_payment_url
       ).then(action => {
@@ -122,13 +118,10 @@ class PaymentForm extends Component {
   _handleSubmission = () => {
     this.setState({ browserLoading: true });
     if (this.state.browserLoading) return;
-    if (
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.addingCredits
-    ) {
+    if (this.addingCredits) {
       this.props.addWalletAmount(
         {
-          amount: this.props.navigation.state.params.amount,
+          amount: this.navState.amount,
           payment_type: this.state.payment_type
         },
         this._openWebBrowserAsync
@@ -159,12 +152,12 @@ class PaymentForm extends Component {
       this.props.removeWalletAmount(
         this.props.campaign_id,
         this.props.navigation,
-        this.props.navigation.state.params.interestNames
+        this.navState.names
       );
 
     !this.props.loading &&
       this.props.navigation.navigate("AdPaymentReview", {
-        interestNames: this.props.navigation.state.params.interestNames
+        names: this.navState.names
       });
   };
 
@@ -235,7 +228,7 @@ class PaymentForm extends Component {
                   ? this.props.walletAmountInKwd
                   : this.props.walletUsed
                   ? this.props.campaign_balance_amount_kwd
-                  : this.props.navigation.state.params.kdamount}
+                  : this.navState.kdamount}
               </Text>
               <Text
                 style={[
@@ -487,10 +480,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
     ),
-  removeWalletAmount: (info, naviagtion, interestNames) =>
-    dispatch(
-      actionCreators.removeWalletAmount(info, naviagtion, interestNames)
-    ),
+  removeWalletAmount: (info, naviagtion, names) =>
+    dispatch(actionCreators.removeWalletAmount(info, naviagtion, names)),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

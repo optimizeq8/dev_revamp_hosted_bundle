@@ -23,6 +23,7 @@ import {
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import GlobalStyles, { globalColors } from "../../../Global Styles";
+import formatNumber from "../../formatNumber";
 class CampaignCard extends Component {
   state = {
     paused: false,
@@ -46,9 +47,7 @@ class CampaignCard extends Component {
       ? " Paused"
       : "";
   };
-  formatNumber = num => {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
+
   render() {
     let campaign = this.props.campaign;
 
@@ -145,7 +144,7 @@ class CampaignCard extends Component {
                       ellipsizeMode="tail"
                       numberOfLines={1}
                     >
-                      {this.formatNumber(campaign.impressions)}
+                      {formatNumber(campaign.impressions, true)}
                     </Text>
                     <Text style={[styles.subtext]}>Impressions</Text>
                   </View>
@@ -159,7 +158,7 @@ class CampaignCard extends Component {
                       style={[GlobalStyles.numbers, styles.campaignNumbers]}
                     >
                       {campaign.objective !== "BRAND_AWARENESS"
-                        ? this.formatNumber(campaign.swipes)
+                        ? formatNumber(campaign.swipes, true)
                         : campaign.impressions > 0
                         ? (parseFloat(campaign.spends) /
                             parseFloat(campaign.impressions)) *

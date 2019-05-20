@@ -8,26 +8,11 @@ import {
   ImageBackground,
   Dimensions,
   Animated,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Platform,
   Modal
 } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
+import { Card, Button, Text, Container, Icon } from "native-base";
 import dateFormat from "dateformat";
 import Loading from "../../MiniComponents/LoadingScreen";
 
@@ -36,6 +21,8 @@ import { Video, LinearGradient, BlurView, Segment } from "expo";
 import { interestNames } from "./interesetNames";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import InterestIcon from "../../../assets/SVGs/Interests.svg";
+import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
+import OperatingSystem from "../../../assets/SVGs/AdDetails/OperatingSystem";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import PauseIcon from "../../../assets/SVGs/Pause.svg";
@@ -56,25 +43,19 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import formatNumber from "../../formatNumber";
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
+import globalStyles, { globalColors } from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
-import { ActivityIndicator } from "react-native-paper";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import isUndefined from "lodash/isUndefined";
-
-const { height } = Dimensions.get("window");
+import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
 
 class CampaignDetails extends Component {
-  static defaultProps = {
-    draggableRange: {
-      top: hp("78"),
-      bottom: hp("23")
-    }
-  };
-
   _draggedValue = new Animated.Value(0);
-
+  draggableRange = {
+    top: hp("78"),
+    bottom: hp(35)
+  };
   static navigationOptions = {
     header: null
   };
@@ -93,23 +74,32 @@ class CampaignDetails extends Component {
   }
 
   componentDidMount() {
-    if (this.props.selectedCampaign)
+    if (this.props.selectedCampaign) {
       Segment.screenWithProperties("Campaign Details Screen", {
         campaign_id: this.props.selectedCampaign.campaign_id
       });
+    }
   }
 
   // componentDidUpdate(prevProps) {
   //   if (
-  //     prevProps.campaign.campaign_id !== this.props.selectedCampaign.campaign_id
-  //   )
+  //     prevProps.selectedCampaign.campaign_id !==
+  //     this.props.selectedCampaign.campaign_id
+  //   ) {
+  //     console.log(this.props.selectedCampaign);
+
   //     Segment.screenWithProperties("Campaign Details Screen", {
   //       campaign_id: this.props.selectedCampaign.campaign_id
   //     });
+  //   }
   // }
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedCampaign !== this.props.selectedCampaign) {
+      console.log(this.props.selectedCampaign);
+      Segment.screenWithProperties("Campaign Details Screen", {
+        campaign_id: this.props.selectedCampaign.campaign_id
+      });
       this.setState({
         toggleText: this.props.selectedCampaign.status,
         toggle: this.props.selectedCampaign.status !== "PAUSED"
@@ -148,6 +138,19 @@ class CampaignDetails extends Component {
       this.handleToggle
     );
   };
+
+  checkOptionalTargerts = (interesetNames, deviceMakes, targeting) => {
+    return (
+      interesetNames.length > 0 ||
+      deviceMakes.length > 0 ||
+      (targeting.hasOwnProperty("devices") &&
+        (targeting.devices[0].hasOwnProperty("os_type") ||
+          targeting.devices[0].hasOwnProperty("os_version_max"))) ||
+      (targeting.geos[0].hasOwnProperty("region_id") &&
+        targeting.geos[0].region_id.length > 0)
+    );
+  };
+
   render() {
     this._draggedValue.addListener(({ value }) => {
       this.hideCharts(value);
@@ -202,46 +205,57 @@ class CampaignDetails extends Component {
         />
       );
     } else {
+      let selectedCampaign = this.props.selectedCampaign;
+      let targeting = this.props.selectedCampaign.targeting;
+      let deviceMakes =
+        targeting &&
+        targeting.hasOwnProperty("devices") &&
+        targeting.devices[0].hasOwnProperty("marketing_name")
+          ? targeting.devices[0].marketing_name.join(", \n")
+          : [];
+
+      let region_names =
+        targeting.geos[0].hasOwnProperty("region_id") &&
+        targeting.geos[0].region_id
+          .map(
+            id =>
+              regionsCountries
+                .find(
+                  country =>
+                    country.country_code === targeting.geos[0].country_code
+                )
+                .regions.find(reg => reg.id === id).name
+          )
+          .join(",\n");
+
       let interesetNames =
-        this.props.selectedCampaign.targeting &&
-        this.props.selectedCampaign.targeting.hasOwnProperty("interests")
-          ? this.props.selectedCampaign.targeting.interests[0].category_id.map(
-              interest => {
-                if (
-                  this.props.selectedCampaign.targeting.interests[0].category_id.hasOwnProperty(
-                    "scls"
-                  )
-                ) {
-                  return ` ${
+        targeting && targeting.hasOwnProperty("interests")
+          ? targeting.interests[0].category_id.map(interest => {
+              if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
+                return ` ${
+                  interestNames.interests.scls.find(
+                    interestObj => interestObj.id === interest
+                  ).name
+                }`;
+              } else {
+                return (
+                  interest !== "scls" &&
+                  ` ${
                     interestNames.interests.scls.find(
                       interestObj => interestObj.id === interest
                     ).name
-                  } \n`;
-                } else {
-                  return (
-                    interest !== "scls" &&
-                    ` ${
-                      interestNames.interests.scls.find(
-                        interestObj => interestObj.id === interest
-                      ).name
-                    } \n`
-                  );
-                }
+                  }`
+                );
               }
-            )
+            })
           : [];
       let start_time = "";
       let end_year = "";
       let start_year = "";
       let end_time = "";
-      if (
-        this.props.selectedCampaign.start_time &&
-        this.props.selectedCampaign.end_time
-      ) {
-        end_time = new Date(this.props.selectedCampaign.end_time.split("T")[0]);
-        start_time = new Date(
-          this.props.selectedCampaign.start_time.split("T")[0]
-        );
+      if (selectedCampaign.start_time && selectedCampaign.end_time) {
+        end_time = new Date(selectedCampaign.end_time.split("T")[0]);
+        start_time = new Date(selectedCampaign.start_time.split("T")[0]);
         end_year = end_time.getFullYear();
         start_year = start_time.getFullYear();
         end_time = dateFormat(end_time, "d mmm");
@@ -254,12 +268,12 @@ class CampaignDetails extends Component {
               <Loading dash={true} />
             </View>
           )}
-          {!this.props.selectedCampaign.media.includes(".jpg") && (
+          {!selectedCampaign.media.includes(".jpg") && (
             <View style={[styles.backgroundViewWrapper]}>
               <Video
                 onLoadEnd={() => this.setState({ imageIsLoading: false })}
                 source={{
-                  uri: "http://" + this.props.selectedCampaign.media
+                  uri: "http://" + selectedCampaign.media
                 }}
                 isMuted
                 resizeMode="cover"
@@ -273,7 +287,7 @@ class CampaignDetails extends Component {
 
           <ImageBackground
             source={{
-              uri: "http://" + this.props.selectedCampaign.media
+              uri: "http://" + selectedCampaign.media
             }}
             onLoadEnd={() => this.setState({ imageIsLoading: false })}
             style={{
@@ -293,8 +307,8 @@ class CampaignDetails extends Component {
                 onPress={() =>
                   this.props.navigation.push("AdDetails", {
                     editCampaign: true,
-                    campaign: this.props.selectedCampaign,
-                    image: "http://" + this.props.selectedCampaign.media
+                    campaign: selectedCampaign,
+                    image: "http://" + selectedCampaign.media
                   })
                 }
                 style={[
@@ -315,13 +329,11 @@ class CampaignDetails extends Component {
                   source={require("../../../assets/images/snap-ghost.png")}
                   resizeMode="contain"
                 />
-                <Text style={styles.title}>
-                  {this.props.selectedCampaign.name}
-                </Text>
+                <Text style={styles.title}>{selectedCampaign.name}</Text>
                 <View>
                   <View padder style={styles.toggleSpace}>
                     <View style={{ alignSelf: "center" }}>
-                      {this.props.selectedCampaign && (
+                      {selectedCampaign && (
                         <Toggle
                           buttonTextStyle={{
                             fontFamily: "montserrat-medium",
@@ -363,7 +375,7 @@ class CampaignDetails extends Component {
                       </Text>
                       {/* <Text style={styles.subtext}>
                         Review:
-                        {this.props.selectedCampaign.review_status}
+                        {selectedCampaign.review_status}
                       </Text> */}
                     </View>
                   </View>
@@ -376,10 +388,7 @@ class CampaignDetails extends Component {
                       { fontSize: hp("3.4"), fontFamily: "montserrat-semibold" }
                     ]}
                   >
-                    {formatNumber(
-                      this.props.selectedCampaign.lifetime_budget_micro,
-                      true
-                    )}
+                    {formatNumber(selectedCampaign.lifetime_budget_micro, true)}
                   </Text>
                   <Text style={{ color: "white" }}>$</Text>
                 </Text>
@@ -419,7 +428,13 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 <Text style={styles.subHeadings}>Audience</Text>
-                <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginHorizontal: 40
+                  }}
+                >
                   <View style={{ flexDirection: "column" }}>
                     <View
                       style={{
@@ -430,16 +445,11 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Gender{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.selectedCampaign.targeting &&
-                          (this.props.selectedCampaign.targeting.gender ===
-                            "" ||
-                            !this.props.selectedCampaign.targeting.hasOwnProperty(
-                              "gender"
-                            ))
+                          {targeting &&
+                          (targeting.gender === "" ||
+                            !targeting.hasOwnProperty("gender"))
                             ? "All"
-                            : this.props.selectedCampaign.targeting &&
-                              this.props.selectedCampaign.targeting
-                                .demographics[0].gender}
+                            : targeting && targeting.demographics[0].gender}
                         </Text>
                       </Text>
                     </View>
@@ -452,10 +462,8 @@ class CampaignDetails extends Component {
                       <Text style={styles.categories}>
                         Languages{"\n "}
                         <Text style={styles.subtext}>
-                          {this.props.selectedCampaign.targeting &&
-                            this.props.selectedCampaign.targeting.demographics[0].languages.join(
-                              ", "
-                            )}
+                          {targeting &&
+                            targeting.demographics[0].languages.join(", ")}
                         </Text>
                       </Text>
                     </View>
@@ -474,13 +482,8 @@ class CampaignDetails extends Component {
                       <Text style={[styles.categories]}>
                         Age range{"\n"}
                         <Text style={styles.subtext}>
-                          {this.props.selectedCampaign.targeting &&
-                            this.props.selectedCampaign.targeting
-                              .demographics[0].min_age}{" "}
-                          -{" "}
-                          {this.props.selectedCampaign.targeting &&
-                            this.props.selectedCampaign.targeting
-                              .demographics[0].max_age}
+                          {targeting && targeting.demographics[0].min_age} -{" "}
+                          {targeting && targeting.demographics[0].max_age}
                         </Text>
                       </Text>
                     </View>
@@ -488,39 +491,122 @@ class CampaignDetails extends Component {
                       <LocationIcon width={hp("2")} height={hp("2")} />
                       <Text style={styles.categories}>
                         Location(s) {"\n"}
-                        {this.props.selectedCampaign.targeting &&
-                          this.props.selectedCampaign.targeting.geos[0]
-                            .country_code}
+                        {targeting && targeting.geos[0].country_code}
                       </Text>
                     </View>
                   </View>
 
-                  {interesetNames.length > 0 && (
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        alignItems: "flex-start"
+                  {this.checkOptionalTargerts(
+                    interesetNames,
+                    deviceMakes,
+                    targeting
+                  ) && (
+                    <ScrollView
+                      contentContainerStyle={{
+                        paddingBottom: hp(80),
+                        width: "100%"
                       }}
                     >
-                      <View style={{ flexDirection: "row" }}>
-                        <InterestIcon width={hp("2")} height={hp("2")} />
-                        <Text style={styles.categories}>Interests</Text>
-                      </View>
-                      <ScrollView
-                        contentContainerStyle={{ paddingBottom: hp(80) }}
-                      >
-                        <Text style={[styles.subtext, { textAlign: "left" }]}>
-                          {interesetNames}{" "}
-                        </Text>
-                      </ScrollView>
-                    </View>
+                      {region_names.length > 0 && (
+                        <View style={styles.optionalTargets}>
+                          <View style={{ flexDirection: "row" }}>
+                            <LocationIcon width={hp("2")} height={hp("2")} />
+                            <Text style={styles.categories}>Regions</Text>
+                          </View>
+
+                          <Text style={[styles.subtext, { textAlign: "left" }]}>
+                            {region_names}
+                          </Text>
+                        </View>
+                      )}
+                      {interesetNames.length > 0 && (
+                        <View style={styles.optionalTargets}>
+                          <View style={{ flexDirection: "row" }}>
+                            <InterestIcon width={hp("2")} height={hp("2")} />
+                            <Text style={styles.categories}>Interests</Text>
+                          </View>
+
+                          <Text style={[styles.subtext, { textAlign: "left" }]}>
+                            {interesetNames.join(",\n")}
+                          </Text>
+                        </View>
+                      )}
+                      {deviceMakes.length > 0 && (
+                        <View style={styles.optionalTargets}>
+                          <View style={{ flexDirection: "row" }}>
+                            <Icon
+                              name="cellphone-settings"
+                              type="MaterialCommunityIcons"
+                              style={{
+                                color: globalColors.orange,
+                                right: 2,
+                                fontSize: 23
+                              }}
+                            />
+                            <Text style={styles.categories}>Device Makes</Text>
+                          </View>
+
+                          <Text style={[styles.subtext, { textAlign: "left" }]}>
+                            {deviceMakes}
+                          </Text>
+                        </View>
+                      )}
+                      {targeting.hasOwnProperty("devices") &&
+                        targeting.devices[0].hasOwnProperty("os_type") && (
+                          <View style={styles.optionalTargets}>
+                            <View style={{ flexDirection: "row" }}>
+                              <OperatingSystem
+                                fill={globalColors.orange}
+                                width={hp("2.5")}
+                                height={hp("2.5")}
+                              />
+                              <Text style={styles.categories}>
+                                Operating System
+                              </Text>
+                            </View>
+
+                            <Text
+                              style={[styles.subtext, { textAlign: "left" }]}
+                            >
+                              {targeting.devices[0].os_type}
+                            </Text>
+                          </View>
+                        )}
+                      {targeting.hasOwnProperty("devices") &&
+                        targeting.devices[0].hasOwnProperty(
+                          "os_version_max"
+                        ) && (
+                          <View style={styles.optionalTargets}>
+                            <View style={{ flexDirection: "row" }}>
+                              <Icon
+                                name="versions"
+                                type="Octicons"
+                                style={{
+                                  color: globalColors.orange,
+                                  right: 2,
+                                  fontSize: 23,
+                                  paddingLeft: 10
+                                }}
+                              />
+                              <Text style={styles.categories}>OS Versions</Text>
+                            </View>
+
+                            <Text
+                              style={[styles.subtext, { textAlign: "left" }]}
+                            >
+                              {targeting.devices[0].os_version_min + ", "}
+                              {targeting.devices[0].os_version_max}
+                            </Text>
+                          </View>
+                        )}
+                    </ScrollView>
                   )}
                 </View>
               </Card>
               <SlidingUpPanel
                 showBackdrop={false}
                 ref={c => (this._panel = c)}
-                draggableRange={this.props.draggableRange}
+                draggableRange={this.draggableRange}
                 animatedValue={this._draggedValue}
                 friction={0.4}
                 onDragEnd={value => {
@@ -533,17 +619,17 @@ class CampaignDetails extends Component {
               >
                 {dragHandler => (
                   <View style={styles.bottomContainer}>
-                    <View style={styles.dragHandler} {...dragHandler}>
+                    <View style={styles.dragHandler}>
                       <TouchableWithoutFeedback
-                        onPress={() => {
-                          if (this.state.visible) {
-                            this._panel.hide();
-                            this.setState({ visible: false });
-                          } else {
-                            this._panel.show();
-                            this.setState({ visible: true });
-                          }
-                        }}
+                      // onPress={() => {
+                      //   if (this.state.visible) {
+                      //     this._panel.hide();
+                      //     this.setState({ visible: false });
+                      //   } else {
+                      //     this._panel.show();
+                      //     this.setState({ visible: true });
+                      //   }
+                      // }}
                       >
                         <LinearGradient
                           colors={
@@ -558,7 +644,6 @@ class CampaignDetails extends Component {
                           end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
                           style={styles.tab}
                         >
-                          <BarIcon style={styles.handlerIcon} />
                           <Text style={styles.handlerText}>Dashboard</Text>
                         </LinearGradient>
                       </TouchableWithoutFeedback>
@@ -568,23 +653,34 @@ class CampaignDetails extends Component {
                       locations={[0.2, 0.6, 1]}
                       start={[0.2, 0.4]}
                       end={[1, 1]}
-                      style={{ borderRadius: 30, overflow: "hidden" }}
+                      style={{
+                        borderRadius: 30,
+                        borderBottomEndRadius: 0,
+                        borderBottomStartRadius: 0,
+                        height: "35%",
+                        overflow: "hidden",
+                        width: "100%"
+                      }}
                     >
                       <Animated.View
                         style={[styles.chartPosition, animatedStyles]}
                       >
-                        <TouchableOpacity onPress={() => this._panel.show()}>
-                          <Chart campaign={this.props.selectedCampaign} />
-                        </TouchableOpacity>
+                        <View
+                          onPress={() => {
+                            /*this._panel.show()*/
+                          }}
+                        >
+                          <Chart campaign={selectedCampaign} />
+                        </View>
                       </Animated.View>
 
-                      <Animated.View style={[lineAnimatedStyles]}>
+                      {/* <Animated.View style={[lineAnimatedStyles]}>
                         <ScrollView contentInset={{ top: 0 }}>
                           <LineChartGraphs
-                            campaign={this.props.selectedCampaign}
+                            campaign={selectedCampaign}
                           />
                         </ScrollView>
-                      </Animated.View>
+                      </Animated.View> */}
                     </LinearGradient>
                   </View>
                 )}
@@ -636,16 +732,7 @@ class CampaignDetails extends Component {
                     { fontSize: 37, fontFamily: "montserrat-semibold" }
                   ]}
                 >
-                  200
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: 25,
-                      fontFamily: "montserrat-semibold"
-                    }}
-                  >
-                    $
-                  </Text>
+                  {formatNumber(selectedCampaign.lifetime_budget_micro)}
                 </Text>
                 <Text
                   style={[

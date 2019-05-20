@@ -152,6 +152,22 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30
   },
+  campaignIcons: {
+    left: 10,
+    flexDirection: "row",
+    alignItems: "flex-end"
+  },
+  campaignNumbers: {
+    top: 6,
+    fontFamily: "montserrat-medium",
+    right: 10
+  },
+  campaignInfo: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    width: wp(40),
+    left: 10
+  },
   tab: {
     position: "absolute",
     // backgroundColor: "red",

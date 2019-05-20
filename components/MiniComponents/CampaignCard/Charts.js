@@ -11,7 +11,7 @@ export default class Charts extends Component {
     return (
       <View>
         <AnimatedCircularProgress
-          size={this.props.detail ? heightPercentageToDP("11") : 65}
+          size={this.props.detail ? heightPercentageToDP("9") : 65}
           width={5}
           fill={x}
           rotation={0}

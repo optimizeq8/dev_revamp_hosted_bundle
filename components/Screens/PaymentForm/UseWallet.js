@@ -56,13 +56,15 @@ class UseWallet extends Component {
         <Text style={styles.errortext}>
           Use your wallet to activate your Ad
         </Text>
-        <Button
-          full
-          style={styles.walletButton}
-          onPress={() => this._handleWallet()}
-        >
-          <Text style={styles.buttontext}>Use Wallet</Text>
-        </Button>
+        {this.props.wallet > 0 && (
+          <Button
+            full
+            style={styles.walletButton}
+            onPress={() => this._handleWallet()}
+          >
+            <Text style={styles.buttontext}>Use Wallet</Text>
+          </Button>
+        )}
         {this.props.walletUsed && (
           <Button
             full
