@@ -272,7 +272,7 @@ class AdPaymentReview extends Component {
                   });
 
                   this.props.navigation.navigate("PaymentForm", {
-                    interestNames: this.navState.interestNames,
+                    names: this.navState.names,
                     kdamount: this.props.kdamount
                   });
                 }}

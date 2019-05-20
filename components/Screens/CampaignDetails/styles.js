@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
 
     transform: [{ rotate: "-45deg" }]
   },
+  optionalTargets: { flexDirection: "column", marginBottom: 10 },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     // flex: 1,
-    width: wp("100"),
+    // width: wp("100"),
     // height: hp("100"),
     elevation: 10,
     alignItems: "center",
@@ -199,10 +200,11 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     paddingBottom: 20,
     fontFamily: "montserrat-medium",
-    fontSize: 18
+    fontSize: 18,
+    bottom: 10
   },
   chartPosition: {
-    ...StyleSheet.absoluteFillObject
+    bottom: 50
   }
 });
 

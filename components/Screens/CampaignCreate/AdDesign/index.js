@@ -7,7 +7,8 @@ import {
   Video,
   FileSystem,
   Segment,
-  ImageManipulator
+  ImageManipulator,
+  Linking
 } from "expo";
 import {
   SafeAreaView,
@@ -55,6 +56,7 @@ import {
 import { Transition } from "react-navigation-fluid-transitions";
 import Modal from "react-native-modal";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import { showMessage } from "react-native-flash-message";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -125,9 +127,32 @@ class AdDesign extends Component {
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
-      const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        // this.onToggleModal();
+        showMessage({
+          message: "Please allow access to the gallary to upload media.",
+          position: "top",
+          type: "warning"
+        });
+      }
     }
   }
+
+  askForPermssion = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    console.log(status);
+
+    if (status !== "granted") {
+      this.onToggleModal();
+      showMessage({
+        message: "Please allow access to the gallary to upload media.",
+        position: "top",
+        type: "warning"
+      });
+      Platform.OS === "ios" && Linking.openURL("app-settings:");
+    }
+  };
 
   _changeDestination = (destination, call_to_action, attachment, appChoice) => {
     if (attachment.hasOwnProperty("longformvideo_media")) {
@@ -153,7 +178,8 @@ class AdDesign extends Component {
       });
     }
   };
-  pick = () => {
+  pick = async () => {
+    await this.askForPermssion();
     let result = ImagePicker.launchImageLibraryAsync({
       mediaTypes: "All",
       base64: false,

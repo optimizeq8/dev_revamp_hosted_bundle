@@ -88,13 +88,15 @@ class SelectDevices extends Component {
                   loading={!this.props.deviceBrands ? true : false}
                   items={this.state.deviceBrands}
                   uniqueKey="id"
-                  filterItems={(searchText, items) =>
-                    items[0].children.filter(device =>
-                      device.name
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
-                  }
+                  filterItems={(searchText, items) => {
+                    if (this.state.deviceBrands.length !== 0) {
+                      return items[0].children.filter(device =>
+                        device.name
+                          .toLowerCase()
+                          .includes(searchText.toLowerCase())
+                      );
+                    }
+                  }}
                   selectToggleIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

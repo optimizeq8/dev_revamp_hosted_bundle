@@ -194,7 +194,7 @@ export const useWallet = campaign_id => {
   };
 };
 
-export const removeWalletAmount = (campaign_id, navigation, interestNames) => {
+export const removeWalletAmount = (campaign_id, navigation, names) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -213,7 +213,7 @@ export const removeWalletAmount = (campaign_id, navigation, interestNames) => {
       })
       .then(() => {
         navigation.navigate("AdPaymentReview", {
-          interestNames: interestNames
+          names: names
         });
       })
       .catch(err => {

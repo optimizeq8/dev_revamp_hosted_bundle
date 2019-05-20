@@ -5,7 +5,8 @@ import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import GlobalStyles from "../../../Global Styles";
 import styles from "./styles";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import formatNumber from "../../formatNumber";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
@@ -24,59 +25,51 @@ class CampaignCard extends Component {
     return (
       <View
         style={{
-          top: 20,
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center"
         }}
       >
         {charts}
-        <View style={{}}>
-          <View style={{ top: 10, left: 10, flexDirection: "row" }}>
-            <ImpressionsIcons />
-            <View
-              style={{
-                flexDirection: "column",
-                width: widthPercentageToDP(40)
-              }}
-            >
+        <View>
+          <View style={styles.campaignIcons}>
+            <ImpressionsIcons
+              height={heightPercentageToDP(3)}
+              width={heightPercentageToDP(3)}
+              style={{ bottom: 3 }}
+            />
+            <View style={styles.campaignInfo}>
               <Text
-                style={[GlobalStyles.numbers, { flex: 0 }]}
+                style={[GlobalStyles.numbers, styles.campaignNumbers]}
                 ellipsizeMode="tail"
-                numberOfLines={2}
+                numberOfLines={1}
               >
-                {campaign.impressions}
+                {formatNumber(campaign.impressions, true)}
               </Text>
-              <Text style={[styles.subtext, { textAlign: "center" }]}>
-                Impressions
-              </Text>
+              <Text style={[styles.subtext]}>Impressions</Text>
             </View>
           </View>
-          <View
-            style={{
-              top: 10,
-              left: 10,
-              flexDirection: "row",
-              alignItems: "center"
-            }}
-          >
-            <SwipeUpsIcon />
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                flex: 1
-              }}
-            >
+          <View style={styles.campaignIcons}>
+            <SwipeUpsIcon
+              height={heightPercentageToDP(3)}
+              width={heightPercentageToDP(3)}
+            />
+            <View style={styles.campaignInfo}>
               <Text
                 ellipsizeMode="tail"
-                numberOfLines={2}
-                style={[GlobalStyles.numbers, { alignSelf: "center" }]}
+                numberOfLines={1}
+                style={[GlobalStyles.numbers, styles.campaignNumbers]}
               >
-                {campaign.swipes}
+                {campaign.objective !== "BRAND_AWARENESS"
+                  ? formatNumber(campaign.swipes, true)
+                  : campaign.impressions > 0
+                  ? (parseFloat(campaign.spends) /
+                      parseFloat(campaign.impressions)) *
+                    1000
+                  : 0}
               </Text>
-              <Text style={[styles.subtext, { textAlign: "center" }]}>
-                Swipe Ups
+              <Text style={[styles.subtext]}>
+                {campaign.objective !== "BRAND_AWARENESS" ? "Swipe Ups" : "CPM"}
               </Text>
             </View>
           </View>
