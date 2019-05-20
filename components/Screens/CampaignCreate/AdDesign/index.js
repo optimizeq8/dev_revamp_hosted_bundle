@@ -336,6 +336,8 @@ class AdDesign extends Component {
   }
 
   _handleLandscapeVideos = info => {
+    console.log("orientation", info.naturalSize.orientation);
+
     if (info.naturalSize.orientation === "landscape") {
       this.setState({
         image: "null",
@@ -657,9 +659,6 @@ class AdDesign extends Component {
                       source={{
                         uri: image ? image : ""
                       }}
-                      onReadyForDisplay={info =>
-                        this._handleLandscapeVideos(info)
-                      }
                       shouldPlay
                       isLooping
                       isMuted
