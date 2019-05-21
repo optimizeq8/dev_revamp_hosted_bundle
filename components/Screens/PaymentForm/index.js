@@ -152,7 +152,8 @@ class PaymentForm extends Component {
       this.props.removeWalletAmount(
         this.props.campaign_id,
         this.props.navigation,
-        this.navState.names
+        this.navState.names,
+        true
       );
 
     !this.props.loading &&
@@ -437,7 +438,7 @@ class PaymentForm extends Component {
                     onPress={() => this.reviewPurchase()}
                     style={styles.walletButton}
                   >
-                    <Text style={{ color: "#fff" }}>Confrim</Text>
+                    <Text style={{ color: "#fff" }}>Confirm</Text>
                   </Button>
                   <Button
                     onPress={() => this.showModal()}
@@ -480,8 +481,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
     ),
-  removeWalletAmount: (info, naviagtion, names) =>
-    dispatch(actionCreators.removeWalletAmount(info, naviagtion, names)),
+  removeWalletAmount: (info, naviagtion, names, goBack) =>
+    dispatch(
+      actionCreators.removeWalletAmount(info, naviagtion, names, goBack)
+    ),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

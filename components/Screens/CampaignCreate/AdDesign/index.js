@@ -243,14 +243,11 @@ class AdDesign extends Component {
           }
         ]);
         this.setState({ directory: "/ImageManipulator/" });
-        console.log("manipulated image", manipResult);
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
       }
     }
-
-    console.log("original image", result);
 
     if (
       Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
