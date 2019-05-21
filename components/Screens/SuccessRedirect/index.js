@@ -77,7 +77,11 @@ class SuccessRedirect extends Component {
         <View style={styles.view}>
           <SuccessIcon width={93} height={93} />
           <Text style={styles.title}> Success! </Text>
-          <Text style={styles.errortext}>Your Ad is now being processed</Text>
+          <Text style={styles.errortext}>
+            {this.state.iswallet !== "1"
+              ? "Your Ad is now being processed"
+              : "Your wallet has been topped up!"}
+          </Text>
           <View style={styles.details}>
             <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
             <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
