@@ -150,14 +150,14 @@ const styles = StyleSheet.create({
 
   btnClose: {
     position: "absolute",
-    top: hp("10%"),
+    top: hp("5%"),
     left: wp("10%"),
     height: 100,
     width: 100
   },
   BlurView: {
     height: "100%",
-    paddingTop: hp("20%")
+    paddingTop: hp("15%")
   },
   pauseDes: {
     fontFamily: "montserrat-light",
