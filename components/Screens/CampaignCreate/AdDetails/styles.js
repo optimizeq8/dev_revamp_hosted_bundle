@@ -16,20 +16,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: 16,
-    width: 150,
+    fontSize: 14,
+    // width: 150,
     paddingTop: 20,
     alignSelf: "center"
   },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    // backgroundColor: "#751AFF",
+    height: "100%",
+    backgroundColor: "#751AFF",
+    flex: 1,
+    width: "100%"
   },
   textCon: {
-    width: 320,
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    textAlign: "center"
+    textAlign: "center",
+    paddingBottom: 10
+    // height: 50
   },
 
   colorGrey: {
@@ -41,7 +46,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: "montserrat-medium",
     textAlign: "center",
-    width: "85%"
+    width: "100%",
+    paddingBottom: 20
   },
   backgroundViewWrapper: {
     ...StyleSheet.absoluteFillObject
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 10
   },
-  slidercontainer: { marginHorizontal: 40 },
+  slidercontainer: { marginHorizontal: 40, width: "100%" },
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
@@ -137,29 +143,36 @@ const styles = StyleSheet.create({
   },
   chart: {
     alignItems: "center",
-    top: hp(10),
-    position: "absolute",
-    alignSelf: "center",
-    justifyContent: "flex-end"
+    // top: hp(10),
+    // position: "absolute",
+    alignSelf: "center"
+    // justifyContent: "flex-end"
     // bottom: hp(42)
   },
   bottom: {
-    alignSelf: "center",
-    position: "absolute",
-    bottom: hp(16),
-    alignSelf: "center"
+    // flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row"
+    // alignSelf: "center",
+    // position: "absolute",
+    // bottom: 0
+    // bottom: hp(16),
   },
   chartText: {
     color: "#fff",
     fontFamily: "montserrat-semibold",
     fontSize: 16,
-    textAlign: "center",
-    justifyContent: "center"
+    textAlign: "center"
   },
   chartItems: {
-    flex: 1,
-    flexDirection: "column",
-    top: hp(5)
+    // flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column"
+    // top: hp(5)
     // left: wp(9)
   },
   button: {
@@ -212,8 +225,8 @@ const styles = StyleSheet.create({
     height: hp("15")
   },
   inactivetext: {
-    fontFamily: "montserrat-semibold",
-    fontSize: 16,
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
     color: "#fff",
     marginLeft: 20
   },
@@ -235,8 +248,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: hp(2),
-    paddingVertical: 10
+    fontSize: 14,
+    paddingVertical: 20
   },
   numbers: {
     textAlign: "center",

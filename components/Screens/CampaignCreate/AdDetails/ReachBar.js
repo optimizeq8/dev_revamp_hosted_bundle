@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Platform } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import styles from "./styles";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
@@ -14,7 +14,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 class ReachBar extends Component {
   render() {
     return (
-      <View style={styles.bottom}>
+      <View style={[styles.bottom, {}]}>
         <AnimatedCircularProgress
           size={wp(80)}
           width={15}
@@ -22,36 +22,45 @@ class ReachBar extends Component {
           arcSweepAngle={200}
           rotation={260}
           lineCap="round"
-          style={[styles.chart]}
+          style={[
+            styles.chart,
+            {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              top: -20,
+              right: 0
+            }
+          ]}
           tintColor="#FF9D00"
           backgroundColor="rgba(255,255,255,0.3)"
+        />
+        <View
+          style={[
+            styles.chartItems,
+            { paddingVertical: Platform.OS === "android" ? 0 : 10 }
+          ]}
         >
-          {fill => {
-            return (
-              <View style={[styles.chartItems]}>
-                <Text style={styles.chartText}>
-                  {this.props.average_reach}
-                  {"\n"}
-                  <Text
-                    style={[
-                      styles.chartText,
-                      { fontFamily: "montserrat-regular", fontSize: 12 }
-                    ]}
-                  >
-                    Potential Reach
-                  </Text>
-                </Text>
-                <LowerButton function={() => this.props._handleSubmission()} />
-                {/* <TouchableOpacity
+          <Text style={styles.chartText}>
+            {this.props.average_reach}
+            {"\n"}
+            <Text
+              style={[
+                styles.chartText,
+                { fontFamily: "montserrat-regular", fontSize: 12 }
+              ]}
+            >
+              Potential Reach
+            </Text>
+          </Text>
+          <LowerButton function={() => this.props._handleSubmission()} />
+          {/* <TouchableOpacity
                 onPress={() => this.props._handleSubmission()}
                 style={styles.button}
               >
                 <ForwardButton />
               </TouchableOpacity> */}
-              </View>
-            );
-          }}
-        </AnimatedCircularProgress>
+        </View>
       </View>
     );
   }
