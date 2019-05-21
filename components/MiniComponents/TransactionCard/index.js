@@ -3,11 +3,8 @@ import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
 class TransactionCard extends Component {
   state = {
     paused: false,
@@ -24,15 +21,19 @@ class TransactionCard extends Component {
         <View style={styles.transactionButton}>
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <Text style={[styles.titletext]}>
+              <Text numberOfLines={2} style={[styles.titletext]}>
                 {transaction.campaign_name}
               </Text>
             </View>
-            <Icon
-              type="MaterialCommunityIcons"
-              name="snapchat"
-              style={styles.icon}
-            />
+            {transaction.iswallet === "1" ? (
+              <WalletIcon style={[styles.icon, { top: "1%", left: "90%" }]} />
+            ) : (
+              <Icon
+                type="MaterialCommunityIcons"
+                name="snapchat"
+                style={styles.icon}
+              />
+            )}
 
             <Text style={[styles.text]}>Credit Card</Text>
             <Text style={[styles.subtext]}>{transaction.payment_type}</Text>
