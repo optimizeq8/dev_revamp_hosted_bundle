@@ -38,21 +38,23 @@ class SuccessRedirect extends Component {
         checkout_id: this.props.campaign_id,
         paymentMethod: ""
       });
-      Segment.trackWithProperties("Order Completed", {
-        business_name: this.props.mainBusiness.businessname,
-        order_id: this.props.campaign_id,
-        currency: "USD",
-        revenue: this.props.data.lifetime_budget_micro,
-        products: [
-          {
-            products_id: 1,
-            name: "Snapchat Snap Ad",
-            price: this.props.data.lifetime_budget_micro,
-            quantity: 1,
-            category: "Advertisment"
-          }
-        ]
-      });
+      if (this.props.data) {
+        Segment.trackWithProperties("Order Completed", {
+          business_name: this.props.mainBusiness.businessname,
+          order_id: this.props.campaign_id,
+          currency: "USD",
+          revenue: this.props.data.lifetime_budget_micro,
+          products: [
+            {
+              products_id: 1,
+              name: "Snapchat Snap Ad",
+              price: this.props.data.lifetime_budget_micro,
+              quantity: 1,
+              category: "Advertisment"
+            }
+          ]
+        });
+      }
     });
   }
   componentWillUnmount() {
@@ -78,7 +80,7 @@ class SuccessRedirect extends Component {
           <SuccessIcon width={93} height={93} />
           <Text style={styles.title}> Success! </Text>
           <Text style={styles.errortext}>
-            {this.state.iswallet !== "1"
+            {this.state.isWallet !== "1"
               ? "Your Ad is now being processed"
               : "Your wallet has been topped up!"}
           </Text>

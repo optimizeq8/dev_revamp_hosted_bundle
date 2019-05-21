@@ -76,12 +76,6 @@ export const getWalletAmount = () => {
 
 export const addWalletAmount = (info, openBrowser) => {
   return (dispatch, getState) => {
-    console.log(
-      "getState().account.mainBusiness.businessid",
-      getState().account.mainBusiness.businessid,
-      info
-    );
-
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
@@ -194,7 +188,7 @@ export const useWallet = campaign_id => {
   };
 };
 
-export const removeWalletAmount = (campaign_id, navigation, names) => {
+export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -212,9 +206,10 @@ export const removeWalletAmount = (campaign_id, navigation, names) => {
         });
       })
       .then(() => {
-        navigation.navigate("AdPaymentReview", {
-          names: names
-        });
+        if (goBack)
+          navigation.navigate("AdPaymentReview", {
+            names: names
+          });
       })
       .catch(err => {
         console.log("removeWalletAmount Error: ", err.message || err.response);
