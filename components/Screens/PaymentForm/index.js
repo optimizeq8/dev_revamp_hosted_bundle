@@ -155,10 +155,16 @@ class PaymentForm extends Component {
         this.navState.names
       );
 
-    !this.props.loading &&
-      this.props.navigation.navigate("AdPaymentReview", {
+    if (!this.props.loading) {
+      //   this.props.navigation.navigate("AdPaymentReview", {
+      //     names: this.navState.names
+      //   });
+      this.props.navigation.state.params.returnData({
+        kdamount: this.navState.kdamount,
         names: this.navState.names
       });
+      this.props.navigation.goBack();
+    }
   };
 
   _handleChoice = choice => {

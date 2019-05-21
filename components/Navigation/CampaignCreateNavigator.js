@@ -12,6 +12,8 @@ import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
 import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
 import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
 import AddressForm from "../Screens/AddressForm";
+import PaymentForm from "../Screens/PaymentForm";
+
 export default FluidNavigator(
   {
     AdType: AdType,
@@ -23,7 +25,7 @@ export default FluidNavigator(
     SwipeUpChoice: SwipeUpChoice,
     AdPaymentReview: AdPaymentReview,
     AddressForm: AddressForm,
-
+    PaymentForm: PaymentForm
   },
   // {
   //   duration: 6000,
