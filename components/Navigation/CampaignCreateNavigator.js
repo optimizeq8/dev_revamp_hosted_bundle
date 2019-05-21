@@ -13,9 +13,11 @@ import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
 import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
 import AddressForm from "../Screens/AddressForm";
 import PaymentForm from "../Screens/PaymentForm";
+import Dashboard from "../Screens/Dashboard";
 
 export default FluidNavigator(
   {
+    Dashboard: Dashboard,
     AdType: AdType,
     AdObjective: AdObjective,
     AdDesign: AdDesign,

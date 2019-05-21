@@ -36,6 +36,7 @@ import { colors } from "../../../GradiantColors/colors";
 import BackButton from "../../../MiniComponents/BackButton";
 import * as actionCreators from "../../../../store/actions";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import isUndefined from "lodash/isUndefined";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
