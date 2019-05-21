@@ -107,8 +107,9 @@ class PaymentForm extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
+    console.log(data);
 
-    this.setState({ redirectData: data });
+    // this.setState({ redirectData: data });
   };
 
   _changeToKnet = () => {
@@ -219,7 +220,8 @@ class PaymentForm extends Component {
                   ? " " + formatNumber(this.amount)
                   : this.props.walletUsed
                   ? formatNumber(this.props.campaign_balance_amount)
-                  : formatNumber(this.props.data.lifetime_budget_micro)}
+                  : this.props.data &&
+                    formatNumber(this.props.data.lifetime_budget_micro)}
               </Text>
 
               <Text style={[styles.money, { fontSize: 16 }]}> USD</Text>
@@ -235,7 +237,7 @@ class PaymentForm extends Component {
                   ? this.props.walletAmountInKwd
                   : this.props.walletUsed
                   ? this.props.campaign_balance_amount_kwd
-                  : this.navState.kdamount}
+                  : this.navState && this.navState.kdamount}
               </Text>
               <Text
                 style={[
