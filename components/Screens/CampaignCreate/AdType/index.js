@@ -64,8 +64,11 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
+  }
+  componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -74,7 +77,9 @@ class AdType extends Component {
     Segment.trackWithProperties("Close Ad Type Button", {
       business_name: this.props.mainBusiness.businessname
     });
-    this.props.navigation.goBack();
+    // this.props.navigation.goBack();
+    this.props.navigation.navigate("Dashboard");
+
     return true;
   };
 
@@ -127,7 +132,7 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
-    this.props.navigation.push(this.state.route);
+    this.props.navigation.navigate(this.state.route);
   };
 
   _renderItem({ item, index }) {
