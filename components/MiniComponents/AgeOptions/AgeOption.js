@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Platform, Slider } from "react-native";
+import { View, Platform, Slider, SafeAreaView } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
@@ -34,34 +34,42 @@ export default class AgeOption extends Component {
 
   render() {
     return (
-      <>
-        <View
-          style={{
+      <Container
+        style={[
+          {
             flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-around"
+          },
+          styles.container
+        ]}
+      >
+        <View
+          style={
+            {
+              //   felx: 1,
+              // justifyContent: "flex-start",
+              //   marginTop: 10
+            }
+          }
         >
-          <View
-            style={{ felx: 1, justifyContent: "flex-start", marginTop: 10 }}
+          <AgeIcon fill="#fff" style={{ alignSelf: "center" }} />
+          <Text
+            style={[
+              styles.title,
+              { fontSize: 20, fontFamily: "montserrat-semibold" }
+            ]}
           >
-            <AgeIcon fill="#fff" style={{ alignSelf: "center" }} />
-            <Text
-              style={[
-                styles.title,
-                { fontSize: 20, fontFamily: "montserrat-semibold" }
-              ]}
-            >
-              Age
-            </Text>
-            <Text style={[styles.title, { width: 250 }]}>
-              Select your audience's Age Range
-            </Text>
-          </View>
-
+            Age
+          </Text>
+          <Text style={[styles.title, { width: 250 }]}>
+            Select your audience's Age Range
+          </Text>
           <View
             style={{
-              top: 20,
+              //   top: 20,
+              marginTop: 20,
               alignSelf: "center"
             }}
           >
@@ -97,7 +105,7 @@ export default class AgeOption extends Component {
         >
           <CheckmarkIcon width={53} height={53} />
         </Button>
-      </>
+      </Container>
     );
   }
 }
