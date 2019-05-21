@@ -34,12 +34,9 @@ class Transactions extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
   render() {
-    if(this.props.errorTransactionList) {
-        return <ErrorComponent
-            navigation={this.props.navigation}
-        />
-    } else 
-    if (this.props.loading)
+    if (this.props.errorTransactionList) {
+      return <ErrorComponent navigation={this.props.navigation} />;
+    } else if (this.props.loading)
       return (
         <>
           <LinearGradient
@@ -50,11 +47,7 @@ class Transactions extends Component {
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    // else if() {
-
-    // } 
-    else 
-    {
+    else {
       let menu = (
         <FilterMenu
           transactionFilter={true}
