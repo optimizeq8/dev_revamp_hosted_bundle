@@ -64,10 +64,9 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
-  }
-  componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+  componentWillMount() {}
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);

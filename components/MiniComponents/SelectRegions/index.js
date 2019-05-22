@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView
+} from "react-native";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
@@ -32,53 +38,28 @@ export default class SelectRegions extends Component {
               this.props.region_id.find(r => r === c.id)
                 ? styles.activetext
                 : styles.inactivetext,
-              {
-                fontSize: 25
-              }
+              styles.optionsIconSize
             ]}
           />
-          <Text
-            style={{
-              fontFamily: "montserrat-bold",
-              color: "#fff",
-              fontSize: 14,
-              paddingLeft: 20
-            }}
-          >
-            {c.name}
-          </Text>
+          <Text style={styles.optionsTextContainer}>{c.name}</Text>
         </TouchableOpacity>
       );
     });
     return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
-            <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <View style={[styles.dataContainer, { marginTop: 20 }]}>
+            <LocationIcon
+              width={110}
+              height={110}
+              fill="#fff"
+              style={{ alignSelf: "center" }}
+            />
+            <Text style={[styles.title, { paddingBottom: 20 }]}>
               {" "}
               {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
             </Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
+
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
@@ -97,20 +78,20 @@ export default class SelectRegions extends Component {
                   }}
                 />
               </Item>
-
-              <View style={{ height: "75%" }}>
-                <ScrollView>{regionlist}</ScrollView>
-              </View>
+              <ScrollView style={[styles.regionListContainer]}>
+                {regionlist}
+              </ScrollView>
             </View>
           </View>
+
+          <Button
+            style={[styles.button]}
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
-        <Button
-          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this.props._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      </SafeAreaView>
     );
   }
 }

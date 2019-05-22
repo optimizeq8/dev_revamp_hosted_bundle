@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import MultiSelect from "react-native-multiple-select";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import {
@@ -17,7 +17,7 @@ import InterestsIcon from "../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //styles
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles from "./styles";
 import SectionStyle from "./SectionStyle";
 import LoadingScreen from "../LoadingScreen";
 
@@ -63,34 +63,15 @@ class SelectInterests extends Component {
   }
   render() {
     return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <View style={[styles.dataContainer, { marginTop: 30 }]}>
             <InterestsIcon width={100} height={100} fill="#fff" />
             <Text style={[styles.title]}> Select Interests</Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <Text style={[styles.subHeadings, { fontSize: wp(4) }]}>
+            <Text style={[styles.subHeadings]}>
               Choose Interests that best describe your audience
             </Text>
+
             <View style={styles.slidercontainer}>
               <Button
                 style={[styles.interestButton, { elevation: -1 }]}
@@ -98,7 +79,7 @@ class SelectInterests extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </Button>
-              <ScrollView style={{ height: hp(45) }}>
+              <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.Section = ref)}
                   loading={!this.props.interests ? true : false}
@@ -178,7 +159,7 @@ class SelectInterests extends Component {
                   showRemoveAll={true}
                   // readOnlyHeadings={true}
                   noItemsComponent={
-                    <Text style={styles.text}>
+                    <Text style={{}}>
                       Sorry, no interests for selected country
                     </Text>
                   }
@@ -200,14 +181,15 @@ class SelectInterests extends Component {
               </ScrollView>
             </View>
           </View>
+
+          <Button
+            style={[styles.button]}
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
-        <Button
-          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this.props._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      </SafeAreaView>
     );
   }
 }

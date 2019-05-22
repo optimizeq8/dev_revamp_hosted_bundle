@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, SafeAreaView } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles from "./styles";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -12,39 +12,16 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 export default class GenderOptions extends Component {
   render() {
     return (
-      <SafeAreaView style={{ height: "100%" }}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "space-around"
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center"
-            }}
-          >
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <View style={styles.dataContainer}>
             <GenderIcon width={110} height={110} fill="#fff" />
-            <Text
-              style={[
-                styles.title,
-                { fontSize: 16, fontFamily: "montserrat-bold" }
-              ]}
-            >
-              Gender
-            </Text>
-            <Text style={[styles.title]}>Select your audience's Gender</Text>
+            <Text style={styles.title}>Gender</Text>
+            <Text style={[styles.subTitle]}>Select your audience's Gender</Text>
 
-            <View style={{ marginTop: 50 }}>
+            <View style={styles.optionsContainer}>
               <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingBottom: 20
-                }}
+                style={styles.optionsRowContainer}
                 onPress={() => this.props.onSelectedGenderChange("MALE")}
               >
                 <Icon
@@ -60,22 +37,18 @@ export default class GenderOptions extends Component {
                     "MALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    {
-                      fontSize: 25
-                    }
+                    styles.optionsIconSize
                   ]}
                 />
-                <Text style={[styles.inactivetext, { textAlign: "center" }]}>
+                <Text
+                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                >
                   Male
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingBottom: 20
-                }}
+                style={styles.optionsRowContainer}
                 onPress={() => this.props.onSelectedGenderChange("FEMALE")}
               >
                 <Icon
@@ -91,22 +64,18 @@ export default class GenderOptions extends Component {
                     "FEMALE"
                       ? styles.activetext
                       : styles.inactivetext,
-                    {
-                      fontSize: 25
-                    }
+                    styles.optionsIconSize
                   ]}
                 />
-                <Text style={[styles.inactivetext, { textAlign: "center" }]}>
+                <Text
+                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                >
                   Female
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingBottom: 20
-                }}
+                style={styles.optionsRowContainer}
                 onPress={() => this.props.onSelectedGenderChange("")}
               >
                 <Icon
@@ -122,12 +91,12 @@ export default class GenderOptions extends Component {
                     ""
                       ? styles.activetext
                       : styles.inactivetext,
-                    {
-                      fontSize: 25
-                    }
+                    styles.optionsIconSize
                   ]}
                 />
-                <Text style={[styles.inactivetext, { textAlign: "center" }]}>
+                <Text
+                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                >
                   All
                 </Text>
               </TouchableOpacity>
@@ -135,7 +104,7 @@ export default class GenderOptions extends Component {
           </View>
 
           <Button
-            style={[styles.button, {}]}
+            style={[styles.button]}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />

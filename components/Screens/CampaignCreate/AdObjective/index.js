@@ -76,9 +76,7 @@ class AdObjective extends Component {
       end_timeError: ""
     };
   }
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
+  componentWillMount() {}
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -88,9 +86,10 @@ class AdObjective extends Component {
         modalVisible: false
       });
     } else {
+      console.log("navigation adobjective", this.props.navigation);
       this.props.navigation.goBack();
     }
-    // return true;
+    return true;
   };
   componentDidMount() {
     Segment.screen("Select Ad Objective Screen");
@@ -106,6 +105,7 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   setObjective = value => {
