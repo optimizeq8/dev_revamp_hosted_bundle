@@ -66,6 +66,7 @@ class AdType extends Component {
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
+  componentWillMount() {}
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);

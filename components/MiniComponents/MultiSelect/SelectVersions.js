@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import * as actionCreators from "../../../store/actions";
@@ -19,6 +19,7 @@ import BackButton from "../../MiniComponents/BackButton";
 import SectionStyle from "./SectionStyle";
 import CustomChips2 from "./CustomChips2";
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles1 from "./styles";
 import { globalColors } from "../../../Global Styles";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
@@ -90,44 +91,20 @@ class SelectVersions extends Component {
   };
   render() {
     return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
+      <SafeAreaView style={styles1.safeAreaContainer}>
+        <View style={styles1.container}>
+          <View style={[styles1.dataContainer, { marginTop: 30 }]}>
             <Icon
               name="versions"
               type="Octicons"
               style={{ fontSize: 60, color: "#fff" }}
             />
-            <Text style={[styles.title]}> Select OS Versions</Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <Text
-              style={[
-                styles.subHeadings,
-                { fontSize: wp(4), width: wp(70), alignSelf: "center" }
-              ]}
-            >
+            <Text style={[styles1.title]}> Select OS Versions</Text>
+            <Text style={[styles1.subHeadings]}>
               Choose which {this.props.OSType} versions you want to taregt
             </Text>
-            <View style={styles.slidercontainer}>
+
+            <View style={styles1.slidercontainer}>
               <View
                 style={{
                   flexDirection: "column",
@@ -135,16 +112,16 @@ class SelectVersions extends Component {
                 }}
               >
                 <Button
-                  style={[styles.interestButton, { elevation: -1 }]}
+                  style={[styles1.interestButton, { elevation: -1 }]}
                   onPress={() => this.VersionSection._toggleSelector()}
                 >
                   <PlusCircle width={53} height={53} />
                 </Button>
-                <Text style={styles.inputtext}>
+                <Text style={styles1.inputtext}>
                   Choose Minimum and Maximum versions
                 </Text>
               </View>
-              <ScrollView style={{ height: hp(45) }}>
+              <ScrollView style={styles1.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.VersionSection = ref)}
                   loading={this.state.versions.length === 0 ? true : false}
@@ -161,21 +138,21 @@ class SelectVersions extends Component {
                     <Icon
                       type="MaterialCommunityIcons"
                       name="menu-down"
-                      style={styles.indicator}
+                      style={styles1.indicator}
                     />
                   }
                   selectedIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
                       name="circle"
-                      style={[styles.itemCircles]}
+                      style={[styles1.itemCircles]}
                     />
                   }
                   unselectedIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
                       name="circle-outline"
-                      style={[styles.itemCircles]}
+                      style={[styles1.itemCircles]}
                     />
                   }
                   hideSelect
@@ -185,7 +162,7 @@ class SelectVersions extends Component {
                   stickyFooterComponent={
                     <Button
                       style={[
-                        styles.button,
+                        styles1.button,
                         { marginBottom: 30, elevation: -1 }
                       ]}
                       onPress={() => this.VersionSection._submitSelection()}
@@ -209,7 +186,7 @@ class SelectVersions extends Component {
                     <Icon
                       type="MaterialCommunityIcons"
                       name="magnify"
-                      style={[styles.indicator]}
+                      style={[styles1.indicator]}
                     />
                   }
                   // customChipsRenderer={info => {
@@ -229,7 +206,7 @@ class SelectVersions extends Component {
                   selectText="Select Interests"
                   showDropDowns={false}
                   noItemsComponent={
-                    <Text style={styles.text}>
+                    <Text style={{}}>
                       Sorry, no interests for selected country
                     </Text>
                   }
@@ -249,14 +226,15 @@ class SelectVersions extends Component {
               </ScrollView>
             </View>
           </View>
+
+          <Button
+            style={[styles1.button]}
+            onPress={() => this._handleSubmission()}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
-        <Button
-          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this._handleSubmission()}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      </SafeAreaView>
     );
   }
 }

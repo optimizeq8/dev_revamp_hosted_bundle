@@ -227,14 +227,12 @@ const styles = StyleSheet.create({
   inactivetext: {
     fontFamily: "montserrat-bold",
     fontSize: 14,
-    color: "#fff",
-    marginLeft: 20
+    color: "#fff"
   },
   activetext: {
     fontFamily: "montserrat-semibold",
     fontSize: 16,
-    color: globalColors.orange,
-    marginLeft: 20
+    color: globalColors.orange
   },
   categories: {
     textAlign: "center",

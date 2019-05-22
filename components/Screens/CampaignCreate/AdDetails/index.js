@@ -785,7 +785,7 @@ class AdDetails extends Component {
                       alignSelf: "center",
                       justifyContent: "space-around",
                       //   marginVertical: 10,
-                      paddingHorizontal: 30,
+                      paddingHorizontal: 20,
                       paddingVertical: 10
                     }}
                   >
@@ -815,7 +815,7 @@ class AdDetails extends Component {
                       onChangeText={(value, rawText) => {
                         if (!editCampaign) this._handleBudget(value, rawText);
                       }}
-                      style={[styles.budget, { paddingBottom: 0 }]}
+                      style={[styles.budget, { paddingBottom: 0, width: 70 }]}
                       ref={ref => (this.moneyField = ref)}
                     />
                     <Text

@@ -86,6 +86,7 @@ class AdObjective extends Component {
         modalVisible: false
       });
     } else {
+      console.log("navigation adobjective", this.props.navigation);
       this.props.navigation.goBack();
     }
     return true;
@@ -106,6 +107,7 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   setObjective = value => {

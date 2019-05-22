@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import * as actionCreators from "../../../store/actions";
@@ -17,7 +17,10 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 
 //Styles
 import SectionStyle from "./SectionStyle";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import CustomChips2 from "./CustomChips2";
+import styles from "./styles";
+import { globalColors } from "../../../Global Styles";
+
 import LoadingScreen from "../LoadingScreen";
 class SelectDevices extends Component {
   state = { deviceBrands: [] };
@@ -42,38 +45,19 @@ class SelectDevices extends Component {
     console.log(this.state.deviceBrands);
 
     return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <View style={[styles.dataContainer, { marginTop: 30 }]}>
             <Icon
               name="cellphone-settings"
               type="MaterialCommunityIcons"
               style={[styles.icon]}
             />
             <Text style={[styles.title]}> Select Devices Make</Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <Text style={[styles.subHeadings, { fontSize: wp(4) }]}>
-              Choose which phones you want to taregt
+            <Text style={[styles.subHeadings]}>
+              Choose which phones you want to target
             </Text>
+
             <View style={styles.slidercontainer}>
               <Button
                 style={[styles.interestButton, { elevation: -1 }]}
@@ -81,7 +65,7 @@ class SelectDevices extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </Button>
-              <ScrollView style={{ height: hp(45) }}>
+              <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.DeviceSection = ref)}
                   loading={!this.props.deviceBrands ? true : false}
@@ -157,7 +141,7 @@ class SelectDevices extends Component {
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
-                    <Text style={styles.text}>
+                    <Text style={{}}>
                       Sorry, no interests for selected country
                     </Text>
                   }
@@ -177,14 +161,15 @@ class SelectDevices extends Component {
               </ScrollView>
             </View>
           </View>
+
+          <Button
+            style={[styles.button]}
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
-        <Button
-          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this.props._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      </SafeAreaView>
     );
   }
 }

@@ -1,8 +1,9 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import MultiSelect from "react-native-multiple-select";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
 
-import { View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import {
@@ -22,6 +23,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //styles
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles1 from "./styles";
 import SectionStyle from "./SectionStyle";
 
 class MultiSelectList extends Component {
@@ -125,32 +127,13 @@ class MultiSelectList extends Component {
       </TouchableOpacity>
     ));
     return (
-      <>
-        <View
-          style={{
-            flex: 1,
-            top: 40,
-            flexDirection: "column"
-          }}
-        >
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center"
-            }}
-          >
+      <SafeAreaView style={styles1.safeAreaContainer}>
+        <View style={styles1.container}>
+          <View style={[styles1.dataContainer, { marginTop: 30 }]}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Country </Text>
-          </View>
-          <View
-            style={{
-              felx: 1,
-              justifyContent: "space-between",
-              paddingTop: 20,
-              elevation: -1
-            }}
-          >
-            <View style={styles.slidercontainer}>
+            <Text style={[styles1.title]}> Select Country </Text>
+
+            <View style={styles1.slidercontainer}>
               <Item>
                 <Input
                   placeholder="Search Country..."
@@ -169,19 +152,20 @@ class MultiSelectList extends Component {
                 />
               </Item>
 
-              <View style={{ height: "75%" }}>
-                <ScrollView>{countrylist}</ScrollView>
-              </View>
+              <ScrollView style={styles1.countryScrollContainer}>
+                {countrylist}
+              </ScrollView>
             </View>
           </View>
+
+          <Button
+            style={[styles1.button]}
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
         </View>
-        <Button
-          style={[styles.button, { marginBottom: 30, elevation: -1 }]}
-          onPress={() => this.props._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </>
+      </SafeAreaView>
     );
   };
 
