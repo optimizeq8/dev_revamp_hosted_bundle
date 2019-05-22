@@ -35,16 +35,20 @@ const styles = StyleSheet.create({
     width: 50
   },
   mainCard: {
-    bottom: heightPercentageToDP(2),
     backgroundColor: "#F4F4F4",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     width: "100%",
     height: "100%"
   },
+  backDrop: {
+    position: "absolute",
+    top: -heightPercentageToDP("45%"),
+    alignSelf: "center"
+  },
   text: {
     alignSelf: "center",
-    top: heightPercentageToDP(2.5),
+    // bottom: "50%",
     color: "#fff",
     fontFamily: "montserrat-semibold",
     fontSize: heightPercentageToDP(2)
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
     marginTop: 0
   },
   wallet: {
-    top: "0.5%",
+    top: "50%",
     right: "6%",
     position: "absolute",
     alignItems: "center",

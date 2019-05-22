@@ -730,14 +730,6 @@
   dependencies:
     cross-spawn "^6.0.5"
 
-"@expo/vector-icons@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-8.1.0.tgz#2a70d8d4a8b74f275063bcb2087e8b276a579955"
-  integrity sha512-/aKa+bgp3LIcTKJWPLRYTYCL0wf/Fr4dwl4XYmNGFG092pK3McuBoDk3b8tWyZnXBnEiqnMLd6Qwr+LEX6Jc0Q==
-  dependencies:
-    lodash "^4.17.4"
-    react-native-vector-icons "6.0.0"
-
 "@expo/vector-icons@~9.0.0":
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-9.0.0.tgz#7f18e21d3edc8b99b76d7d1b8e26b212393e08b3"
@@ -5711,7 +5703,7 @@ react-native-keyboard-aware-scroll-view@0.8.0, react-native-keyboard-aware-scrol
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-"react-native-maps@github:expo/react-native-maps#v0.22.1-exp.0":
+react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
 

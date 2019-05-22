@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   logoutIcon: {
     position: "absolute",
-    top: heightPercentageToDP("12"),
+    top: 20,
     left: widthPercentageToDP("85%"),
     zIndex: 10
   },

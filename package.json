@@ -9,7 +9,6 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo/vector-icons": "^8.1.0",
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "axios": "^0.18.0",
     "clone-deep": "^4.0.1",
