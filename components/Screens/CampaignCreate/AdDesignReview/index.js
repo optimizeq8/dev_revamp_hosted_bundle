@@ -5,7 +5,8 @@ import {
   Image,
   ImageBackground,
   SafeAreaView,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import { Video, Segment } from "expo";
 import {
@@ -39,7 +40,16 @@ class AdDesignReview extends Component {
     header: null
   };
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+
     Segment.screen("Ad Preview Screen");
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
     return (

@@ -17,7 +17,7 @@ import Dashboard from "../Screens/Dashboard";
 
 export default FluidNavigator(
   {
-    Dashboard: Dashboard,
+    // Dashboard: Dashboard,
     AdType: AdType,
     AdObjective: AdObjective,
     AdDesign: AdDesign,
