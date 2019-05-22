@@ -76,9 +76,7 @@ class AdObjective extends Component {
       end_timeError: ""
     };
   }
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -90,9 +88,11 @@ class AdObjective extends Component {
     } else {
       this.props.navigation.goBack();
     }
-    // return true;
+    return true;
   };
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,

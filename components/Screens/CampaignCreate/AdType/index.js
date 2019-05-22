@@ -64,8 +64,6 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
-  }
-  componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -77,7 +75,7 @@ class AdType extends Component {
     Segment.trackWithProperties("Close Ad Type Button", {
       business_name: this.props.mainBusiness.businessname
     });
-    // this.props.navigation.goBack();
+
     this.props.navigation.navigate("Dashboard");
 
     return true;

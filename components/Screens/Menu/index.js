@@ -50,7 +50,8 @@ class Menu extends Component {
   }
 
   handleBackButton = () => {
-    this.props.navigation.state.params.closeAnimation();
+    this.props.closeAnimation();
+    return true;
   };
   showPanel() {
     Animated.timing(this._draggedValue, {
@@ -86,7 +87,7 @@ class Menu extends Component {
             width={widthPercentageToDP(85)}
             height={heightPercentageToDP(61)}
           />
-          <Transition shared="close">
+          {/* <Transition shared="close">
             <View
               style={{
                 justifyContent: "center",
@@ -120,7 +121,7 @@ class Menu extends Component {
                 />
               </TouchableOpacity>
             </View>
-          </Transition>
+          </Transition> */}
 
           <TouchableOpacity
             onPress={() => {
