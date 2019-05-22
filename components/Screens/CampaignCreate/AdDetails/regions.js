@@ -5,13 +5,13 @@ var list = [
       {
         id: "25678",
         code: "ah",
-        name: "Al Ahmadi"
+        name: "Ahmadi"
       },
 
       {
         id: "25680",
         code: "ku",
-        name: "Al Kuwayt"
+        name: "Kuwait City (Capital)"
       }
     ]
   },

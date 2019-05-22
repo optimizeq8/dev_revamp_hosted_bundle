@@ -100,9 +100,6 @@ class AdDesign extends Component {
       this.props.navigation.state.params.rejected;
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
@@ -111,6 +108,8 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+
     Segment.screen("Design Ad Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       checkout_id: this.props.campaign_id,

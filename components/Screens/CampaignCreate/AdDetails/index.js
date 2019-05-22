@@ -224,7 +224,7 @@ class AdDetails extends Component {
       campaignInfo: rep
     });
   };
-  onSelectedCountryChange = async (selectedItem, countryName) => {
+  onSelectedCountryChange = async (selectedItem, mounting, countryName) => {
     console.log(selectedItem);
 
     let replace = this.state.campaignInfo;

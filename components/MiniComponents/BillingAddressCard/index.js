@@ -1,58 +1,39 @@
 import React from "react";
-import {
-  View,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Keyboard,
-  Image,
-  ScrollView
-} from "react-native";
-import isEqual from "lodash/isEqual";
-import { LinearGradient, Segment } from "expo";
-import {
-  Button,
-  Text,
-  Item,
-  Input,
-  Icon,
-  Label,
-  Container,
-  Content
-} from "native-base";
+import { View, TouchableOpacity } from "react-native";
+import { Button, Text, Item, Input, Label, Content } from "native-base";
 import Sidemenu from "react-native-side-menu";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
-import { Modal } from "react-native-paper";
 import isUndefined from "lodash/isUndefined";
+import RegionsAndAreas from "./RegionAndAreas";
+import MultiSelect from "../MultiSelect/MultiSelect";
+import KeyboardShift from "../KeyboardShift";
 
+//Data
+import Countries from "./Countries";
+
+import { all, kuwaitAreas } from "../../Screens/AddressForm/NewAreas";
 // Style
 import styles from "./styles";
-// import { colors } from "../../GradiantColors/colors";
 
 //Icons
-import Address from "../../../assets/SVGs/MenuIcons/AddressIcon";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import Areas from "./Areas";
-import Regions from "./Regions";
-import Countries from "./Countries";
-import MultiSelect from "../MultiSelect/MultiSelect";
-import SelectRegions from "../SelectRegions";
-import KeyboardShift from "../KeyboardShift";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      country_code: "",
+      country_code: this.props.country_code,
       region_id: [],
-      areas: Areas[0].regions,
+      areas: kuwaitAreas[0].areas,
       sidemenustate: false,
       sidemenu: "",
-      filteredRegions: Areas[0].regions,
+      selectedItems: [],
+      selectedObjectets: [],
       inputC: false,
       inputA: false,
       inputBL: false,
@@ -66,53 +47,109 @@ class BillingAddressCard extends React.Component {
       streetError: "",
       buildingError: ""
     };
-    this.filterRegions = this.filterRegions.bind(this);
   }
 
-  filterRegions = value => {
-    this.setState({ filteredRegions: value });
-  };
+  // componentDidMount() {
+  //   this.setState({ country_code: this.props.country_code });
+  // }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.country_code !== this.props.country_code &&
+      this.props.address.area !== ""
+    ) {
+      console.log(
+        "prevProps",
+        prevProps.country_code,
+        "props",
+        this.props.country_code
+      );
+      this.setState({
+        country_code: this.props.country_code,
+        selectedItems: [],
+        selectedObjectets: []
+      });
+      this.onSelectedCountryChange(
+        {
+          label: this.props.address.country,
+          value: this.props.country_code
+        },
+        true
+      );
+    }
+  }
 
   _renderSideMenu = (component, option = "") => {
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this.props._handleSideMenuState(true)
     );
   };
-  onSelectedCountryChange = async selectedItem => {
+  onSelectedCountryChange = async (selectedItem, mounting) => {
     let replace = this.props.address;
     if (selectedItem) {
       replace.country = selectedItem.label;
-      replace.area = "";
-      let area = Regions.find(
+      if (!mounting) replace.area = "";
+      let area = all.find(
         c => c.country_code.toLowerCase() === selectedItem.value
       );
-      this.props._handleAddressChange("address", replace);
+      this.props._handleAddressChange("address", replace, selectedItem.value);
+
       await this.setState({
         // address: replace,
         country_code: selectedItem.value,
-        areas: area.cities,
-        filteredRegions: area.cities,
+        areas: area ? area.list : [],
         countryError: ""
       });
     }
   };
 
   onSelectedRegionChange = async selectedItem => {
-    let replace = this.props.address;
+    // console.log(selectedItem);
+
+    // let replace = this.props.address;
     if (selectedItem) {
-      replace.area = selectedItem.name;
-      this.props._handleAddressChange("area", replace.area);
+      // replace.area = selectedItem.name;
+      // this.props._handleAddressChange("area", replace.area);
       await this.setState({
         // address: replace,
         region_id: [selectedItem.id],
+        selectedItems: selectedItem,
+        areaError: ""
+      });
+    }
+  };
+  onSelectedRegionNameChange = async selectedItem => {
+    let replace = this.props.address;
+    if (selectedItem) {
+      replace.area = selectedItem[0].name;
+
+      this.props._handleAddressChange(
+        "area",
+        replace.area,
+        this.state.country_code
+      );
+      await this.setState({
+        // address: replace,
+        // region_id: [selectedItem.id],
+        selectedObjectets: selectedItem,
+        areaError: ""
+      });
+    }
+  };
+
+  onSelectedRegionSelected = async selectedItem => {
+    // let replace = this.props.address;
+    if (selectedItem) {
+      // replace.area = selectedItem.name;
+      // this.props._handleAddressChange("area", replace.area);
+      await this.setState({
+        // address: replace,
+        areas: selectedItem,
         areaError: ""
       });
     }
   };
 
   _handleSubmission = () => {
-    console.log("area??", this.props.address.area);
-
     const countryError = validateWrapper(
       "mandatory",
       this.props.address.country
@@ -142,6 +179,8 @@ class BillingAddressCard extends React.Component {
     }
   };
   render() {
+    console.log("this.props.address.area", this.props.address);
+
     let menu;
     switch (this.state.sidemenu) {
       case "countries": {
@@ -159,14 +198,12 @@ class BillingAddressCard extends React.Component {
       }
       case "regions": {
         menu = (
-          <SelectRegions
-            filteredRegions={this.state.filteredRegions}
+          <RegionsAndAreas
+            areas={this.state.areas}
+            selectedObjectets={this.state.selectedObjectets}
             onSelectedRegionChange={this.onSelectedRegionChange}
-            _handleSideMenuState={this.props._handleSideMenuState}
-            regions={this.state.areas}
-            region_id={this.state.region_id}
-            filterRegions={this.filterRegions}
-            addressForm={true}
+            onSelectedRegionNameChange={this.onSelectedRegionNameChange}
+            selectedItems={this.state.selectedItems}
           />
         );
         break;

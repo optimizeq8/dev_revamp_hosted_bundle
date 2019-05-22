@@ -40,11 +40,13 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
-
+import Menu from "../Menu";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet.svg";
+import Background from "../../../assets/SVGs/Background";
+import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
@@ -53,8 +55,9 @@ import { colors } from "../../GradiantColors/colors";
 
 import * as actionCreators from "../../../store/actions";
 import Axios from "axios";
-import { Transition } from "react-navigation-fluid-transitions";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import * as Animatable from "react-native-animatable";
+
 class Dashboard extends Component {
   static navigationOptions = {
     header: null
@@ -68,7 +71,8 @@ class Dashboard extends Component {
       fetching_from_server: false,
       showSearchBar: false,
       menu: new Animated.Value(0),
-      open: false
+      open: false,
+      anim: false
     };
     this.page = 1;
   }
@@ -117,26 +121,27 @@ class Dashboard extends Component {
     this.signal.cancel("Api is being canceled");
   }
   startAnimation = () => {
+    this.setState({ anim: true });
     Animated.timing(this.state.menu, {
       toValue: 1,
       duration: 350
     }).start(() => {
-      this.props.navigation.navigate("Menu", {
-        open: true,
-        closeAnimation: this.closeAnimation,
-        menu: this.state.menu
-      });
+      // this.props.navigation.navigate("Menu", {
+      //   open: true,
+      //   closeAnimation: this.closeAnimation,
+      //   menu: this.state.menu
+      // });
       this.setState({ open: true });
     });
   };
   closeAnimation = () => {
+    this.setState({ anim: false });
+
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350
     }).start(() => {
-      this.setState({ open: false }, () =>
-        this.props.navigation.navigate("Dashboard")
-      );
+      this.setState({ open: false });
     });
   };
   renderSearchBar = () => {
@@ -176,6 +181,23 @@ class Dashboard extends Component {
     );
   };
   render() {
+    const mySlideInUp = {
+      from: {
+        top: hp(100)
+      },
+      to: {
+        top: 0
+      }
+    };
+    const mySlideOutDown = {
+      from: {
+        top: 0
+      },
+      to: {
+        top: hp(100)
+      }
+    };
+
     let menu = (
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
@@ -205,175 +227,190 @@ class Dashboard extends Component {
     } else {
       // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
-        <Container style={styles.container}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
-            style={styles.gradient}
-          />
+        <>
+          <BackdropIcon style={styles.backDrop} height={hp("100%")} />
 
-          <Sidemenu
-            onChange={isOpen => {
-              if (isOpen === false) this._handleSideMenuState(isOpen);
+          <View
+            style={{
+              justifyContent: "center",
+              zIndex: 10,
+              // width: "35%",
+              top: 50,
+              zIndex: 10,
+              height: 40
             }}
-            disableGestures={true}
-            menu={menu}
-            menuPosition="right"
-            openMenuOffset={wp("85%")}
-            isOpen={this.state.sidemenustate}
           >
-            <Transition shared="close">
-              <View
-                style={{
-                  justifyContent: "center",
-                  left: wp(5),
-                  zIndex: 10,
-                  width: "35%"
-                }}
-              >
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    if (this.state.open === false) {
-                      this.startAnimation();
-                    } else {
-                      this.closeAnimation();
-                    }
-                  }}
-                >
-                  <LottieView
-                    style={{
-                      width: wp(5),
-                      height: hp(5)
-                    }}
-                    resizeMode="contain"
-                    source={require("../../../assets/animation/menu-btn.json")}
-                    progress={this.state.menu}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
-            </Transition>
-            {/* <Image
-                resizeMode="contain"
-                style={styles.image}
-                source={require("../../../assets/images/logo02.png")}
-              /> */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                bottom: hp(6.5)
+            <TouchableWithoutFeedback
+              onPress={() => {
+                if (this.state.open === false) {
+                  this.startAnimation();
+                } else {
+                  this.closeAnimation();
+                }
               }}
             >
-              <Transition appear="scale" disappear="scale" shared="menu">
+              <LottieView
+                style={{
+                  left: 5,
+                  // width: wp(5),
+                  height: hp(5),
+                  position: "absolute"
+                }}
+                resizeMode="contain"
+                source={require("../../../assets/animation/menu-btn.json")}
+                progress={this.state.menu}
+              />
+            </TouchableWithoutFeedback>
+            {!this.state.open && (
+              <>
                 <Text style={[styles.text]}>
                   {this.props.mainBusiness.brandname}
                 </Text>
-              </Transition>
-            </View>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Wallet")}
-              style={styles.wallet}
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("Wallet")}
+                  style={styles.wallet}
+                >
+                  <WalletIcon width={hp(3)} height={hp(3)} />
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+
+          {!this.state.open && (
+            <Animatable.View
+              duration={500}
+              onAnimationEnd={() =>
+                this.state.open && this.setState({ anim: true })
+              }
+              animation={this.state.anim ? mySlideOutDown : mySlideInUp}
+              style={{ zIndex: 5, height: hp(100) }}
             >
-              <WalletIcon width={hp(3)} height={hp(3)} />
-            </TouchableOpacity>
-            <View
-              padder
-              style={[
-                styles.mainCard,
-                {
-                  margin: 0
-                }
-              ]}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignSelf: "center",
-                  marginBottom: 20,
-                  paddingBottom: 10
-                }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <Button
-                    style={[
-                      styles.activebutton,
-                      {
-                        backgroundColor: this.state.showSearchBar
-                          ? "#FF9D00"
-                          : "#fff"
-                      }
-                    ]}
-                    onPress={this.renderSearchBar}
-                  >
-                    <SearchIcon
-                      width={23}
-                      height={23}
-                      stroke={this.state.showSearchBar ? "#fff" : "#575757"}
-                    />
-                  </Button>
-                  <Button
-                    style={styles.button}
-                    onPress={() => {
-                      if (!this.props.mainBusiness.snap_ad_account_id) {
-                        Segment.track("Create SnapAd Acount Button Pressed ");
-                        this.props.navigation.navigate("SnapchatCreateAdAcc");
-                      } else {
-                        Segment.track("Create Campaign Button Pressed");
-                        this.props.navigation.navigate("AdType");
-                      }
-                    }}
-                  >
-                    <Text
-                      style={[styles.title, { paddingTop: 0, fontSize: 12 }]}
+              <Container style={styles.container}>
+                <LinearGradient
+                  colors={[colors.background1, colors.background2]}
+                  locations={[0.7, 1]}
+                  style={styles.gradient}
+                />
+
+                <Sidemenu
+                  onChange={isOpen => {
+                    if (isOpen === false) this._handleSideMenuState(isOpen);
+                  }}
+                  disableGestures={true}
+                  menu={menu}
+                  menuPosition="right"
+                  openMenuOffset={wp("85%")}
+                  isOpen={this.state.sidemenustate}
+                >
+                  <View padder style={[styles.mainCard]}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignSelf: "center",
+                        marginBottom: 20,
+                        paddingBottom: 10
+                      }}
                     >
-                      New {"\n"}
-                      Campaign
-                    </Text>
-                  </Button>
+                      <View style={{ flexDirection: "row" }}>
+                        <Button
+                          style={[
+                            styles.activebutton,
+                            {
+                              backgroundColor: this.state.showSearchBar
+                                ? "#FF9D00"
+                                : "#fff"
+                            }
+                          ]}
+                          onPress={this.renderSearchBar}
+                        >
+                          <SearchIcon
+                            width={23}
+                            height={23}
+                            stroke={
+                              this.state.showSearchBar ? "#fff" : "#575757"
+                            }
+                          />
+                        </Button>
+                        <Button
+                          style={styles.button}
+                          onPress={() => {
+                            if (!this.props.mainBusiness.snap_ad_account_id) {
+                              Segment.track(
+                                "Create SnapAd Acount Button Pressed "
+                              );
+                              this.props.navigation.navigate(
+                                "SnapchatCreateAdAcc"
+                              );
+                            } else {
+                              Segment.track("Create Campaign Button Pressed");
+                              this.props.navigation.navigate("AdType");
+                            }
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.title,
+                              { paddingTop: 0, fontSize: 12 }
+                            ]}
+                          >
+                            New {"\n"}
+                            Campaign
+                          </Text>
+                        </Button>
 
-                  <Button
-                    style={styles.activebutton}
-                    onPress={() => {
-                      this._handleSideMenuState(true);
-                    }}
-                  >
-                    <FilterIcon width={23} height={23} fill="#575757" />
-                  </Button>
-                </View>
-              </View>
-              {this.state.showSearchBar && (
-                <SearchBar renderSearchBar={this.renderSearchBar} />
-              )}
-
-              {/* <ScrollView contentContainerStyle={styles.contentContainer}>
-              {list}
-            </ScrollView> */}
-              {this.props.loading ? (
-                <ActivityIndicator size="large" />
-              ) : (
-                <Content contentContainerStyle={{ flex: 1 }}>
-                  <FlatList
-                    contentContainerStyle={{ paddingBottom: hp(35) }}
-                    keyExtractor={item => item.campaign_id}
-                    data={this.props.filteredCampaigns}
-                    onEndReached={() => this.loadMoreData()}
-                    onEndReachedThreshold={1}
-                    renderItem={({ item, index }) => (
-                      <CampaignCard
-                        campaign={item}
-                        navigation={this.props.navigation}
-                        key={item.campaign_id}
-                      />
+                        <Button
+                          style={styles.activebutton}
+                          onPress={() => {
+                            this._handleSideMenuState(true);
+                          }}
+                        >
+                          <FilterIcon width={23} height={23} fill="#575757" />
+                        </Button>
+                      </View>
+                    </View>
+                    {this.state.showSearchBar && (
+                      <SearchBar renderSearchBar={this.renderSearchBar} />
                     )}
-                    onRefresh={() => this.reloadData()}
-                    refreshing={this.state.fetching_from_server}
-                    ListFooterComponent={() => this.renderFooter()}
-                  />
-                </Content>
-              )}
-            </View>
-          </Sidemenu>
-        </Container>
+                    {this.props.loading ? (
+                      <ActivityIndicator size="large" />
+                    ) : (
+                      <Content contentContainerStyle={{ flex: 1 }}>
+                        <FlatList
+                          contentContainerStyle={{ paddingBottom: hp(35) }}
+                          keyExtractor={item => item.campaign_id}
+                          data={this.props.filteredCampaigns}
+                          onEndReached={() => this.loadMoreData()}
+                          onEndReachedThreshold={1}
+                          renderItem={({ item, index }) => (
+                            <CampaignCard
+                              campaign={item}
+                              navigation={this.props.navigation}
+                              key={item.campaign_id}
+                            />
+                          )}
+                          onRefresh={() => this.reloadData()}
+                          refreshing={this.state.fetching_from_server}
+                          ListFooterComponent={() => this.renderFooter()}
+                        />
+                      </Content>
+                    )}
+                  </View>
+                </Sidemenu>
+              </Container>
+            </Animatable.View>
+          )}
+
+          <Animatable.View
+            duration={800}
+            animation={this.state.anim ? "fadeIn" : "fadeOut"}
+            style={{ zIndex: 5, height: hp(100) }}
+          >
+            <Menu
+              closeAnimation={this.closeAnimation}
+              navigation={this.props.navigation}
+            />
+          </Animatable.View>
+        </>
       );
     }
   }

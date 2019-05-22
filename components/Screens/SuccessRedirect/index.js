@@ -38,6 +38,7 @@ class SuccessRedirect extends Component {
         checkout_id: this.props.campaign_id,
         paymentMethod: ""
       });
+
       if (this.props.data) {
         Segment.trackWithProperties("Order Completed", {
           business_name: this.props.mainBusiness.businessname,
@@ -54,6 +55,7 @@ class SuccessRedirect extends Component {
             }
           ]
         });
+
       }
     });
   }

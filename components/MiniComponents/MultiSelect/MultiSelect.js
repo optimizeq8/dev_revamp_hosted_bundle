@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import MultiSelect from "react-native-multiple-select";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import {
@@ -109,6 +110,7 @@ class MultiSelectList extends Component {
         onPress={() => {
           this.props.onSelectedCountryChange(
             !this.props.addressForm ? c.value : c,
+            false,
             c.label
           );
         }}

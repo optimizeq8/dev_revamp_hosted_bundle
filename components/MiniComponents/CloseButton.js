@@ -10,7 +10,8 @@ export default class CloseButton extends Component {
         onPress={() => this.props.navigation()}
         style={[
           globalStyles.backButton,
-          { top: heightPercentageToDP(4), left: heightPercentageToDP(3) }
+          { top: heightPercentageToDP(4), left: heightPercentageToDP(3) },
+          this.props.style
         ]}
       >
         <CloseIcon />
