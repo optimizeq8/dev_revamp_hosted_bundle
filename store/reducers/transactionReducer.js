@@ -115,6 +115,9 @@ const reducer = (state = initialState, action) => {
         errorTransactionList: false
       };
     case actionTypes.FILTER_TRANSACTION:
+      // state.transactionList.forEach(t => console.log(t.campaign_name));
+      console.log(state.transactionList);
+
       let filtered = state.transactionList.filter(
         transaction =>
           transaction.campaign_name

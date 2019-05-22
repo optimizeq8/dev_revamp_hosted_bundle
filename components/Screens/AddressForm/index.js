@@ -1,21 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Keyboard,
-  Image,
-  SafeAreaView
-} from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import isEqual from "lodash/isEqual";
 import { LinearGradient, Segment } from "expo";
-import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import Sidemenu from "react-native-side-menu";
-import MultiSelect from "../../MiniComponents/MultiSelect/MultiSelect";
-import SelectRegions from "../../MiniComponents/SelectRegions";
+import { Text, Container } from "native-base";
 import { Modal } from "react-native-paper";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
@@ -27,26 +15,17 @@ import { colors } from "../../GradiantColors/colors";
 
 //Icons
 import Address from "../../../assets/SVGs/Location";
-import DownButton from "../../../assets/SVGs/DownButton";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import globalStyles from "../../../Global Styles";
 
 //Data
-import Areas from "./Areas";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
 
-//Functions
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
-
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
+import Countries from "../../MiniComponents/BillingAddressCard/Countries";
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -67,10 +46,10 @@ class AddressForm extends Component {
       addressId: null,
       country_code: "",
       region_id: [],
-      areas: Areas[0].regions,
+
       sidemenustate: false,
       sidemenu: "",
-      filteredRegions: Areas[0].regions,
+
       inputC: false,
       inputA: false,
       inputBL: false,
@@ -84,8 +63,6 @@ class AddressForm extends Component {
       streetError: "",
       buildingError: ""
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
-    this._handleAddressChange = this._handleAddressChange.bind(this);
   }
   componentDidMount() {
     Segment.screen("Address Form Screen");
@@ -119,21 +96,27 @@ class AddressForm extends Component {
         avenue: this.props.address.avenue,
         office: this.props.address.office
       };
+      let country_code = Countries.find(
+        co => co.label === this.props.address.country
+      );
       this.setState({
         address: bsn_address,
-        addressId: this.props.address.id
+        addressId: this.props.address.id,
+        country_code: country_code ? country_code.value : ""
       });
     }
   }
 
-  _handleAddressChange = (key, value) => {
+  _handleAddressChange = (key, value, country_code) => {
     if (key === "address") {
       this.setState({
-        address: value
+        address: value,
+        country_code
       });
     } else {
       this.setState({
-        address: { ...this.state.address, [key]: value }
+        address: { ...this.state.address, [key]: value },
+        country_code
       });
     }
   };
@@ -193,6 +176,7 @@ class AddressForm extends Component {
               address={this.state.address}
               _handleSubmission={this._handleSubmission}
               _handleAddressChange={this._handleAddressChange}
+              country_code={this.state.country_code}
               _handleSideMenuState={this._handleSideMenuState}
               sidemenustate={this.state.sidemenustate}
               errorLoading={this.props.errorLoading}

@@ -9,18 +9,15 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import BackButton from "../../MiniComponents/BackButton";
 
 //icons
-import InterestsIcon from "../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
-import BackButton from "../../MiniComponents/BackButton";
 
 //Styles
 import SectionStyle from "./SectionStyle";
-import CustomChips2 from "./CustomChips2";
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import { globalColors } from "../../../Global Styles";
 import LoadingScreen from "../LoadingScreen";
 class SelectDevices extends Component {
   state = { deviceBrands: [] };
@@ -42,6 +39,8 @@ class SelectDevices extends Component {
     }
   }
   render() {
+    console.log(this.state.deviceBrands);
+
     return (
       <>
         <View
@@ -153,18 +152,6 @@ class SelectDevices extends Component {
                       style={[styles.indicator]}
                     />
                   }
-                  // customChipsRenderer={info => {
-                  //   return (
-                  //     <CustomChips2
-                  //       DeviceSection={this.DeviceSection}
-                  //       uniqueKey={info.uniqueKey}
-                  //       subKey={info.subKey}
-                  //       displayKey={info.displayKey}
-                  //       items={info.items}
-                  //       selectedItems={info.selectedItems}
-                  //     />
-                  //   );
-                  // }}
                   iconKey="icon"
                   selectText="Select Interests"
                   showDropDowns={false}

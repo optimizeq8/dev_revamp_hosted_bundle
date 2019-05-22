@@ -107,8 +107,9 @@ class PaymentForm extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
+    console.log(data);
 
-    this.setState({ redirectData: data });
+    // this.setState({ redirectData: data });
   };
 
   _changeToKnet = () => {
@@ -152,13 +153,20 @@ class PaymentForm extends Component {
       this.props.removeWalletAmount(
         this.props.campaign_id,
         this.props.navigation,
-        this.navState.names
+        this.navState.names,
+        true
       );
 
-    !this.props.loading &&
-      this.props.navigation.navigate("AdPaymentReview", {
+    if (!this.props.loading) {
+      //   this.props.navigation.navigate("AdPaymentReview", {
+      //     names: this.navState.names
+      //   });
+      this.props.navigation.state.params.returnData({
+        kdamount: this.navState.kdamount,
         names: this.navState.names
       });
+      this.props.navigation.goBack();
+    }
   };
 
   _handleChoice = choice => {
@@ -212,7 +220,8 @@ class PaymentForm extends Component {
                   ? " " + formatNumber(this.amount)
                   : this.props.walletUsed
                   ? formatNumber(this.props.campaign_balance_amount)
-                  : formatNumber(this.props.data.lifetime_budget_micro)}
+                  : this.props.data &&
+                    formatNumber(this.props.data.lifetime_budget_micro)}
               </Text>
 
               <Text style={[styles.money, { fontSize: 16 }]}> USD</Text>
@@ -228,7 +237,7 @@ class PaymentForm extends Component {
                   ? this.props.walletAmountInKwd
                   : this.props.walletUsed
                   ? this.props.campaign_balance_amount_kwd
-                  : this.navState.kdamount}
+                  : this.navState && this.navState.kdamount}
               </Text>
               <Text
                 style={[
@@ -437,7 +446,7 @@ class PaymentForm extends Component {
                     onPress={() => this.reviewPurchase()}
                     style={styles.walletButton}
                   >
-                    <Text style={{ color: "#fff" }}>Confrim</Text>
+                    <Text style={{ color: "#fff" }}>Confirm</Text>
                   </Button>
                   <Button
                     onPress={() => this.showModal()}
@@ -480,8 +489,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
     ),
-  removeWalletAmount: (info, naviagtion, names) =>
-    dispatch(actionCreators.removeWalletAmount(info, naviagtion, names)),
+  removeWalletAmount: (info, naviagtion, names, goBack) =>
+    dispatch(
+      actionCreators.removeWalletAmount(info, naviagtion, names, goBack)
+    ),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser))
 });

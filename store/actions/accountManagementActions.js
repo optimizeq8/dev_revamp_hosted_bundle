@@ -160,7 +160,7 @@ export const addressForm = (address, navigation, addressId) => {
         type: actionTypes.SET_BILLING_ADDRESS_LOADING,
         payload: true
       });
-      const response = await instance.put("businessaddressee    ", {
+      const response = await instance.put("businessaddress", {
         businessid: getState().account.mainBusiness.businessid,
         id: addressId,
         ...address
@@ -198,7 +198,7 @@ export const addressForm = (address, navigation, addressId) => {
       console.log("Error while put/post address form", error.message);
       showMessage({
         message: "Oops! Something went wrong. Please try again.",
-        description: err.message || err.response,
+        description: error.message || error.response,
         type: "danger",
         position: "top"
       });

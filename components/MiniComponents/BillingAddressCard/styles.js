@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -13,7 +14,27 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 20
   },
-
+  title: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 16,
+    width: 150,
+    paddingTop: 20,
+    alignSelf: "center"
+  },
+  interestButton: {
+    backgroundColor: globalColors.orange,
+    alignSelf: "center",
+    borderRadius: 50,
+    top: "30%",
+    height: 50,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2
+  },
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -37,15 +58,9 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 32.5,
-    borderColor: "transparent",
-    borderWidth: 1,
+    bottom: 30,
     alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginBottom: 30
+    justifyContent: "center"
   },
   contentContainer: {
     paddingVertical: 7,
@@ -93,6 +108,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1.5,
     marginBottom: 20
+  },
+  indicator: {
+    fontSize: 30,
+    marginRight: 20,
+    color: "#fff"
+  },
+  itemCircles: {
+    fontSize: 30,
+    color: globalColors.orange
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

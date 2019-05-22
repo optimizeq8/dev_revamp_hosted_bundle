@@ -36,6 +36,7 @@ import { colors } from "../../../GradiantColors/colors";
 import BackButton from "../../../MiniComponents/BackButton";
 import * as actionCreators from "../../../../store/actions";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import isUndefined from "lodash/isUndefined";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
@@ -100,10 +101,12 @@ class AdPaymentReview extends Component {
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 5,
       business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
+      checkout_id: this.props.campaign_ids
     });
   }
-
+  returnData = data => {
+    this.navState = data;
+  };
   render() {
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
@@ -285,7 +288,8 @@ class AdPaymentReview extends Component {
 
                   this.props.navigation.navigate("PaymentForm", {
                     names: this.navState.names,
-                    kdamount: this.props.kdamount
+                    kdamount: this.props.kdamount,
+                    returnData: this.returnData.bind(this)
                   });
                 }}
                 style={{

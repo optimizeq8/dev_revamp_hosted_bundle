@@ -243,14 +243,11 @@ class AdDesign extends Component {
           }
         ]);
         this.setState({ directory: "/ImageManipulator/" });
-        console.log("manipulated image", manipResult);
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
       }
     }
-
-    console.log("original image", result);
 
     if (
       Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
@@ -665,7 +662,7 @@ class AdDesign extends Component {
             <Transition style={{ height: "100%" }} shared="image">
               <View style={[styles.buttonN]}>
                 {this.state.type === "VIDEO" ? (
-                  <View style={[styles.placeholder1]}>
+                  <View style={[styles.placeholder]}>
                     <Video
                       source={{
                         uri: image ? image : ""
@@ -677,7 +674,8 @@ class AdDesign extends Component {
                       style={[
                         {
                           width: "100%",
-                          height: "100%"
+                          height: "100%",
+                          opacity: 0.5
                         }
                       ]}
                     />

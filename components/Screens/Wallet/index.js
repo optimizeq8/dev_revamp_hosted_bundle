@@ -169,6 +169,7 @@ class Wallet extends Component {
                         }
                       ]}
                     >
+                      <Label style={[styles.labeltext]}>$</Label>
                       <Input
                         placeholder="0.000"
                         placeholderTextColor="#fff"
@@ -194,7 +195,6 @@ class Wallet extends Component {
                           })
                         }
                       />
-                      <Label style={[styles.labeltext]}>$</Label>
                     </Item>
                   </Animatable.View>
                 </View>

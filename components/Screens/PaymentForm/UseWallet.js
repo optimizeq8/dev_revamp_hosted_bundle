@@ -118,7 +118,7 @@ class UseWallet extends Component {
                     onPress={() => this._handleConfirm()}
                     style={styles.walletButton}
                   >
-                    <Text style={{ color: "#fff" }}>Confrim</Text>
+                    <Text style={{ color: "#fff" }}>Confirm</Text>
                   </Button>
                   <Button
                     onPress={() => this._handleRemoveAmount()}

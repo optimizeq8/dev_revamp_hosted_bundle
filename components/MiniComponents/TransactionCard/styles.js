@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold",
     fontSize: heightPercentageToDP(2.7),
     paddingVertical: 0,
-    width: "50%"
+    width: 200
   },
 
   subtext: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     padding: 0
   },
   icon: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     color: "#fff",
     left: widthPercentageToDP("63%"),
     fontSize: widthPercentageToDP("15%"),
