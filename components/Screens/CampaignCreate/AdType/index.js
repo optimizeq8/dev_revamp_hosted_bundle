@@ -134,7 +134,7 @@ class AdType extends Component {
     let MediaIcon = item.icon.type;
     return (
       <View style={styles.slide}>
-        <MediaIcon width={"100%"} height={"75%"} style={styles.slideicon} />
+        <MediaIcon width={"75%"} height={"75%"} style={styles.slideicon} />
         <Text style={styles.iconTitle}>{item.title}</Text>
       </View>
     );
@@ -221,8 +221,8 @@ class AdType extends Component {
         />
         <Pagination
           containerStyle={{
-            paddingVertical: 0,
-            bottom: 10
+            paddingVertical: 5,
+            bottom: 17
           }}
           dotsLength={this.state.media_type.length}
           activeDotIndex={this.state.activeSlide}
@@ -236,7 +236,7 @@ class AdType extends Component {
           inactiveDotOpacity={0.4}
           inactiveDotScale={0.6}
         />
-        <View style={{ height: 70 }}>
+        <View style={{ height: 70, marginBottom: 10 }}>
           {this.state.route !== "" ? (
             <Animatable.View animation={"fadeIn"}>
               <LowerButton function={this.navigationHandler} bottom={1} />

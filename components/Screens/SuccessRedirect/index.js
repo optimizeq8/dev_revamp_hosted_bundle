@@ -38,21 +38,22 @@ class SuccessRedirect extends Component {
         checkout_id: this.props.campaign_id,
         paymentMethod: ""
       });
-      Segment.trackWithProperties("Order Completed", {
-        business_name: this.props.mainBusiness.businessname,
-        order_id: this.props.campaign_id,
-        currency: "USD",
-        revenue: this.props.data.lifetime_budget_micro,
-        products: [
-          {
-            products_id: 1,
-            name: "Snapchat Snap Ad",
-            price: this.props.data.lifetime_budget_micro,
-            quantity: 1,
-            category: "Advertisment"
-          }
-        ]
-      });
+      if (this.props.data)
+        Segment.trackWithProperties("Order Completed", {
+          business_name: this.props.mainBusiness.businessname,
+          order_id: this.props.campaign_id,
+          currency: "USD",
+          revenue: this.props.data.lifetime_budget_micro,
+          products: [
+            {
+              products_id: 1,
+              name: "Snapchat Snap Ad",
+              price: this.props.data.lifetime_budget_micro,
+              quantity: 1,
+              category: "Advertisment"
+            }
+          ]
+        });
     });
   }
   componentWillUnmount() {
