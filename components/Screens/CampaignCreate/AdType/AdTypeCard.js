@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, TouchableWithoutFeedback, Image } from "react-native";
+import {
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Image
+} from "react-native";
 import { Icon } from "native-base";
 import { Segment } from "expo";
 //styles
@@ -13,7 +19,7 @@ export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => {
           Segment.trackWithProperties(`${adType.title} AdType Card Button`, {
             business_name: this.props.mainBusiness.businessname,
@@ -24,8 +30,9 @@ export default class AdTypeCard extends Component {
       >
         <View
           style={{
+            top: "0%",
             width: "100%",
-            height: "100%",
+            height: "95%",
             bottom: "5%",
             paddingTop: 10,
             alignSelf: "center"
@@ -49,7 +56,7 @@ export default class AdTypeCard extends Component {
             )}
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   }
 }

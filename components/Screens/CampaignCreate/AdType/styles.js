@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   container: {
-    paddingTop: hp(5),
+    // paddingTop: hp(5),
+    paddingTop: 20,
     flex: 1,
     backgroundColor: "#751AFF"
   },
@@ -51,8 +52,13 @@ const styles = StyleSheet.create({
     top: 5,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
+    // backgroundColor: "#fff",
     shadowRadius: 5
+    // width: 150,
+    // height: 150,
+    // borderRadius: 40,
+    // elevation: 3
   },
   slidetext: {
     fontSize: 18,
