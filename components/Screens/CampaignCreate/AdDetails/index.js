@@ -129,9 +129,6 @@ class AdDetails extends Component {
       selectionOption: ""
     };
   }
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -142,6 +139,8 @@ class AdDetails extends Component {
     return true;
   };
   async componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+
     Segment.screen("Select Ad Details Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       checkout_id: this.props.campaign_id,
@@ -442,7 +441,8 @@ class AdDetails extends Component {
             regionNames: this.state.regionNames,
             countryName: this.state.countryName
           },
-          this.props.navigation
+          this.props.navigation,
+          this.props.navigation.getParam("image", "")
         );
       }
     }
@@ -684,7 +684,7 @@ class AdDetails extends Component {
                 // height: "100%",
                 // backgroundColor: "transparent",
                 // top: 50,
-                marginTop: 50,
+                marginTop: 40,
                 borderTopRightRadius: 30,
                 borderTopLeftRadius: 30,
                 overflow: "hidden",
@@ -693,40 +693,42 @@ class AdDetails extends Component {
               }
             ]}
           >
-            {(!image.includes(".jpg") ||
-              (campaign.media && !campaign.media.includes(".jpg"))) && (
-              <View
-                style={[
-                  styles.backgroundViewWrapper,
-                  {
-                    // borderTopRightRadius: 20,
-                    // borderTopLeftRadius: 20,
-                    borderTopRightRadius: 30,
-                    borderTopLeftRadius: 30,
-                    // backgroundColor: "black",
-                    opacity: 0.4
-                  }
-                ]}
-              >
-                <Video
-                  source={{
-                    uri: editCampaign ? "http://" + campaign.media : image
-                  }}
-                  shouldPlay
-                  isLooping
-                  isMuted
-                  resizeMode="cover"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    opacity: 0.4
-                    //   backgroundColor: "black"
-                  }}
-                />
-              </View>
-            )}
+            {!image.includes(".jpg") ||
+              !image.includes(".png") ||
+              (campaign.media && !campaign.media.includes(".jpg")) ||
+              (campaign.media && !campaign.media.includes(".png") && (
+                <View
+                  style={[
+                    styles.backgroundViewWrapper,
+                    {
+                      // borderTopRightRadius: 20,
+                      // borderTopLeftRadius: 20,
+                      borderTopRightRadius: 30,
+                      borderTopLeftRadius: 30,
+                      // backgroundColor: "black",
+                      opacity: 0.2
+                    }
+                  ]}
+                >
+                  <Video
+                    source={{
+                      uri: editCampaign ? "http://" + campaign.media : image
+                    }}
+                    shouldPlay
+                    isLooping
+                    isMuted
+                    resizeMode="cover"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      opacity: 0.4
+                      //   backgroundColor: "black"
+                    }}
+                  />
+                </View>
+              ))}
             <ImageBackground
-              imageStyle={{ opacity: 0.4 }}
+              imageStyle={{ opacity: 0.2 }}
               style={{
                 width: "100%",
                 height: "100%",
@@ -1282,8 +1284,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, names, navigation) =>
-    dispatch(actionCreators.ad_details(info, names, navigation)),
+  ad_details: (info, names, navigation, image) =>
+    dispatch(actionCreators.ad_details(info, names, navigation, image)),
   updateCampaign: (info, businessid, navigation) =>
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
 

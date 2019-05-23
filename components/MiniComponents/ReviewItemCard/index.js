@@ -7,11 +7,13 @@ import { colors } from "../../GradiantColors/colors";
 class ReviewItemCard extends Component {
   render() {
     const list = this.props.subtitles.map((e, i) => (
-      <View key={i}>
+      <View style={{ paddingLeft: 15 }} key={i}>
         <Text style={[styles.subtext, { fontFamily: "montserrat-medium" }]}>
           {e.title}
         </Text>
-        <Text style={[styles.subtext, { color: "#FF9D00" }]}>{e.content}</Text>
+        <Text style={[styles.subtext, { color: "#FF9D00", fontSize: 12 }]}>
+          {e.content}
+        </Text>
       </View>
     ));
     return (

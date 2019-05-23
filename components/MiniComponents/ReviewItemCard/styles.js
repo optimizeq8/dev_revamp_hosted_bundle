@@ -78,14 +78,14 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "left",
     color: "#fff",
-    paddingTop: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
+    // paddingTop: 10,
+    fontFamily: "montserrat-semibold",
+    fontSize: 18,
     paddingVertical: 0
   },
   subtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 12,
+    fontSize: 14,
     paddingTop: 5,
     color: "#fff",
     textAlign: "left"
@@ -93,17 +93,17 @@ const styles = StyleSheet.create({
   campaignButton: {
     justifyContent: "space-between",
     flexDirection: "row",
-    flex: 1,
+    // flex: 1,
     marginHorizontal: 10,
 
     padding: 10
   },
   icon: {
-    alignSelf: "center",
+    alignSelf: "flex-start",
     color: "#FF9D00",
-    fontSize: 40,
-    paddingVertical: 10,
-    paddingHorizontal: 7
+    fontSize: 24
+    // paddingVertical: 10,
+    // paddingHorizontal: 7
   },
   contentContainer: {
     paddingTop: 30

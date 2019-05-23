@@ -208,7 +208,7 @@ class Menu extends Component {
               >
                 <View style={styles.options}>
                   <Icons.AddressIcon style={styles.icons} />
-                  <Text style={styles.text}>Addresses</Text>
+                  <Text style={styles.text}>Address</Text>
                 </View>
               </TouchableOpacity>
 
