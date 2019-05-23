@@ -28,7 +28,6 @@ import {
   Header,
   Body,
   Left,
-  Title,
   Right,
   Footer,
   Icon
@@ -656,9 +655,7 @@ class AdDesign extends Component {
                 }
               ]}
             >
-              <Title style={[styles.title, { width: "100%" }]}>
-                Compose Ad
-              </Title>
+              <Text style={[styles.title, { width: "100%" }]}>Compose Ad</Text>
             </Body>
             <Right />
           </Header>

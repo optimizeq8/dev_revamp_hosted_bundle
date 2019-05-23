@@ -88,7 +88,7 @@ class Menu extends Component {
             height={heightPercentageToDP("100%")}
           />
           <Background
-            style={[styles.background, { zIndex: 0 }]}
+            style={[styles.background]}
             width={widthPercentageToDP(85)}
             height={heightPercentageToDP(61)}
           />

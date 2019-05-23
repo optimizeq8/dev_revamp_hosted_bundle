@@ -336,7 +336,7 @@ class CampaignDetails extends Component {
                         <Toggle
                           buttonTextStyle={{
                             fontFamily: "montserrat-medium",
-                            fontSize: wp("2.7"),
+                            fontSize: 10,
                             color: "#fff",
                             top: 7,
                             textAlign: "center"
@@ -384,7 +384,7 @@ class CampaignDetails extends Component {
                   <Text
                     style={[
                       styles.numbers,
-                      { fontSize: hp("3.4"), fontFamily: "montserrat-semibold" }
+                      { fontSize: 25, fontFamily: "montserrat-semibold" }
                     ]}
                   >
                     {formatNumber(selectedCampaign.lifetime_budget_micro, true)}
@@ -399,12 +399,17 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={[styles.categories, { fontSize: hp("2.5") }]}>
+                    <Text
+                      style={[
+                        styles.categories,
+                        { fontSize: 16, fontFamily: "montserrat-medium" }
+                      ]}
+                    >
                       Start
                     </Text>
                     <Text style={styles.numbers}>
                       {start_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: hp("2") }]}>
+                      <Text style={[styles.numbers, { fontSize: 12 }]}>
                         {start_year}
                       </Text>
                     </Text>
@@ -415,12 +420,17 @@ class CampaignDetails extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Text style={[styles.categories, { fontSize: hp("2.5") }]}>
+                    <Text
+                      style={[
+                        styles.categories,
+                        { fontSize: 16, fontFamily: "montserrat-medium" }
+                      ]}
+                    >
                       End
                     </Text>
                     <Text style={styles.numbers}>
                       {end_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: hp("2") }]}>
+                      <Text style={[styles.numbers, { fontSize: 12 }]}>
                         {end_year}
                       </Text>
                     </Text>

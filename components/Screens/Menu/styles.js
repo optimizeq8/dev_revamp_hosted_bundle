@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     opacity: 0.2,
     top: 230,
-    alignSelf: "center"
+    alignSelf: "center",
+    zIndex: 0
   },
   text: {
     color: "#fff",
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: heightPercentageToDP(4)
+    fontSize: 31
   },
   menutext: {
     fontFamily: "montserrat-semibold",
