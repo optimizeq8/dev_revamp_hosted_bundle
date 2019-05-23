@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
+  ImageBackground,
   View,
   Image,
   ScrollView,
@@ -9,7 +10,9 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   BackHandler,
-  Dimensions
+  Dimensions,
+  SafeAreaView,
+  Platform
 } from "react-native";
 import {
   Card,
@@ -21,12 +24,15 @@ import {
   Item,
   Input,
   Container,
+  Header,
+  Left,
+  Footer,
   Icon,
   H1,
   Thumbnail,
   Spinner
 } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import { LinearGradient, Segment, Video } from "expo";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import dateFormat from "dateformat";
 import formatNumber from "../../../formatNumber";
@@ -84,6 +90,18 @@ class AdPaymentReview extends Component {
     //   userid: "8"
     // };
   }
+
+  isIphoneXorAbove = () => {
+    const dimen = Dimensions.get("window");
+    return (
+      Platform.OS === "ios" &&
+      !Platform.isPad &&
+      !Platform.isTVOS &&
+      (dimen.height === 812 ||
+        dimen.width === 812 ||
+        (dimen.height === 896 || dimen.width === 896))
+    );
+  };
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -140,179 +158,324 @@ class AdPaymentReview extends Component {
           ? targeting.devices[0].marketing_name.join(", ")
           : []
         : [];
+
+      const image = this.props.navigation.getParam("image", "");
       return (
-        <Container style={styles.container}>
+        <SafeAreaView style={styles.safeAreaContainer}>
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[0.7, 1]}
             style={styles.gradient}
           />
-          <View
-            style={{
-              justifyContent: "center",
-              marginTop: 10,
-              marginLeft: 20
-            }}
-          />
-          <Card padder style={styles.mainCard}>
-            <View
+          <Container
+            style={[
+              styles.container,
+              {
+                marginTop:
+                  Platform.OS === "ios" && !this.isIphoneXorAbove()
+                    ? 20
+                    : Platform.OS === "android"
+                    ? 40
+                    : -45,
+
+                // bottom: this.isIphoneXorAbove() ? -100 : 0,
+                top: Platform.OS === "ios" && this.isIphoneXorAbove() ? 40 : 0
+              }
+            ]}
+          >
+            {!image.includes(".jpg") && (
+              <View
+                style={[
+                  styles.backgroundViewWrapper,
+                  {
+                    height: "100%",
+                    // borderTopRightRadius: 20,
+                    // borderTopLeftRadius: 20,
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30,
+                    // backgroundColor: "black",
+                    opacity: 0.2
+                  }
+                ]}
+              >
+                <Video
+                  source={{
+                    uri: image
+                  }}
+                  shouldPlay
+                  isLooping
+                  isMuted
+                  resizeMode="cover"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0.4
+                    //   backgroundColor: "black"
+                  }}
+                />
+              </View>
+            )}
+            <ImageBackground
+              imageStyle={{ opacity: 0.2 }}
               style={{
-                flexDirection: "row"
+                width: "100%",
+                height: "100%",
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                overflow: "hidden",
+                flex: 1
+              }}
+              source={{
+                uri: image.includes(".jpg") ? image : "www.go.com"
               }}
             >
-              <BackButton navigation={this.props.navigation.goBack} />
-              <Text
-                style={[
-                  styles.header,
-                  {
-                    paddingHorizontal: 50,
-                    paddingVertical: 30,
-                    textAlign: "center"
-                  }
-                ]}
+              <Content
+                scrollEnabled={false}
+                contentContainerStyle={{ flex: 1 }}
               >
-                Review your selection
-              </Text>
-            </View>
-            <ScrollView>
-              <ReviewItemCard
-                title="Duration"
-                subtitles={[
-                  { title: "start", content: end_time },
-                  { title: "end", content: start_time },
-                  { title: "objective", content: this.props.data.objective }
-                ]}
-              />
-              <ReviewItemCard
-                title="Media"
-                subtitles={[
-                  {
-                    title: "Business Name",
-                    content: this.props.data.brand_name
-                  },
-                  { title: "Headline", content: this.props.data.headline }
-                ]}
-              />
+                <Header transparent noShadow iosBarStyle={"light-content"}>
+                  <Left style={{ flex: 0 }}>
+                    <BackButton
+                      navigation={this.props.navigation.goBack}
+                      style={{ left: 0, top: 0 }}
+                    />
+                  </Left>
 
-              <ReviewItemCard
-                title="Audience"
-                subtitles={[
-                  {
-                    title: "Gender",
-                    content: gender
-                  },
-                  {
-                    title: "Location",
-                    content:
-                      regionNames.length > 0
-                        ? countryName + ": " + regionNames
-                        : countryName
-                  },
-                  {
-                    title: "language",
-                    content: targeting.demographics[0].languages.join(", ")
-                  },
-                  {
-                    title: "Age group",
-                    content:
-                      targeting.demographics[0].min_age +
-                      "-" +
-                      targeting.demographics[0].max_age
-                  },
-                  interestNames.length > 0 && {
-                    title: "Interests",
-                    content: interestNames + ""
-                  },
+                  <Body>
+                    <Text style={[styles.headline]}>Review your selection</Text>
+                  </Body>
+                </Header>
+                <Content
+                  scrollEnabled={false}
+                  contentContainerStyle={{ flex: 1 }}
+                >
+                  <Content
+                    contentContainerStyle={{
+                      paddingHorizontal: 20
+                      //   //   flex: 0,
+                      //   borderBottomColor: "#FFF",
+                      //   borderBottomWidth: 1
+                    }}
+                  >
+                    <ReviewItemCard
+                      title="Duration"
+                      subtitles={[
+                        { title: "Start", content: start_time },
+                        { title: "End", content: end_time },
+                        {
+                          title: "Objective",
+                          content: this.props.data.objective
+                        }
+                      ]}
+                    />
+                    <ReviewItemCard
+                      title="Media"
+                      subtitles={[
+                        {
+                          title: "Business Name",
+                          content: this.props.data.brand_name
+                        },
+                        { title: "Headline", content: this.props.data.headline }
+                      ]}
+                    />
 
-                  devices.length > 0 && {
-                    title: "Devices",
-                    content: devices + ""
-                  },
-                  targeting.hasOwnProperty("devices") && {
-                    title: "OS Type",
-                    content:
-                      targeting.devices[0].hasOwnProperty("os_type") &&
-                      targeting.devices[0].os_type !== ""
-                        ? targeting.devices[0].os_type
-                        : "All"
-                  },
-                  targeting.hasOwnProperty("devices") && {
-                    title: "OS Version",
-                    content:
-                      targeting.devices[0].hasOwnProperty("os_version_max") &&
-                      targeting.devices[0].os_version_min +
-                        ", " +
-                        targeting.devices[0].os_version_max
-                  }
-                ]}
-              />
-            </ScrollView>
+                    <ReviewItemCard
+                      title="Audience"
+                      subtitles={[
+                        {
+                          title: "Gender",
+                          content: gender
+                        },
+                        {
+                          title: "Location",
+                          content:
+                            regionNames.length > 0
+                              ? countryName + ": " + regionNames
+                              : countryName
+                        },
+                        {
+                          title: "Language",
+                          content: targeting.demographics[0].languages.join(
+                            ", "
+                          )
+                        },
+                        {
+                          title: "Age group",
+                          content:
+                            targeting.demographics[0].min_age +
+                            "-" +
+                            targeting.demographics[0].max_age
+                        },
+                        interestNames.length > 0 && {
+                          title: "Interests",
+                          content: interestNames + ""
+                        },
 
-            <View
-              style={{
-                borderBottomColor: "#fff",
-                borderBottomWidth: 1,
-                marginHorizontal: 40
-              }}
-            />
+                        devices.length > 0 && {
+                          title: "Devices",
+                          content: devices + ""
+                        },
+                        targeting.hasOwnProperty("devices") && {
+                          title: "OS Type",
+                          content:
+                            targeting.devices[0].hasOwnProperty("os_type") &&
+                            targeting.devices[0].os_type !== ""
+                              ? targeting.devices[0].os_type
+                              : "All"
+                        },
+                        targeting.hasOwnProperty("devices") && {
+                          title: "OS Version",
+                          content:
+                            targeting.devices[0].hasOwnProperty(
+                              "os_version_max"
+                            ) &&
+                            targeting.devices[0].os_version_min +
+                              ", " +
+                              targeting.devices[0].os_version_max
+                        }
+                      ]}
+                    />
+                  </Content>
 
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <View style={{ flexDirection: "column", alignSelf: "center" }}>
-                <Text style={styles.text}>Budget</Text>
-                {/* <Text style={styles.text}>Agency Fee</Text> */}
-              </View>
-              <View style={{ flexDirection: "column", alignSelf: "center" }}>
-                <Text style={styles.text}>
-                  {this.props.data.lifetime_budget_micro} $
-                </Text>
-                {/* <Text style={styles.text}>20 $</Text> */}
-              </View>
-            </View>
-          </Card>
-          <View style={{ backgroundColor: "#000" }}>
-            <Card padder style={styles.bottomCard}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  Segment.trackWithProperties(
-                    "Select Ad Payment Review Button",
-                    {
-                      business_name: this.props.mainBusiness.businessname,
-                      campaign_budget: this.props.data.lifetime_budget_micro
-                    }
-                  );
-                  Segment.trackWithProperties("Completed Checkout Step", {
-                    step: 5,
-                    business_name: this.props.mainBusiness.businessname,
-                    checkout_id: this.props.campaign_id
-                  });
+                  <View
+                    style={{
+                      borderTopColor: "#fff",
+                      borderTopWidth: 1,
+                      marginHorizontal: 40,
+                      paddingBottom: 20
+                    }}
+                  >
+                    <View
+                      style={{
+                        //   paddingHorizontal: 40,
+                        width: "100%",
+                        flexDirection: "row",
+                        alignSelf: "center",
 
-                  this.props.navigation.navigate("PaymentForm", {
-                    names: this.navState.names,
-                    kdamount: this.props.kdamount,
-                    returnData: this.returnData.bind(this)
-                  });
-                }}
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Text
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <Text style={styles.text}>Budget</Text>
+                      {/* <Text style={styles.text}>Agency Fee</Text> */}
+                      <Text style={[styles.text, { color: "#FF9D00" }]}>
+                        {this.props.data.lifetime_budget_micro} $
+                      </Text>
+                      {/* <Text style={styles.text}>20 $</Text> */}
+                    </View>
+                    {/* <View
                   style={{
-                    color: "#fff",
-                    textAlign: "center"
+                    //   paddingHorizontal: 40,
+                    width: "100%",
+                    flexDirection: "row",
+                    alignSelf: "center",
+                    alignItems: "center",
+                    justifyContent: "space-between"
                   }}
                 >
-                  Total {"\n"}{" "}
-                  {formatNumber(this.props.data.lifetime_budget_micro)} USD{" "}
-                  {"\n"}({this.props.kdamount} KWD){"\n"} proceed to payment{" "}
-                </Text>
-              </TouchableWithoutFeedback>
-            </Card>
-          </View>
-        </Container>
+                  <Text style={styles.text}>Agency Fee</Text>
+                  
+                  <Text style={[styles.text, { color: "#ff9d00" }]}>20 $</Text>
+                </View> */}
+                  </View>
+                </Content>
+
+                <Footer
+                  style={{
+                    paddingBottom: 20,
+                    margin: 0,
+                    borderTopWidth: 0,
+                    height: 100,
+                    backgroundColor: "#FF9D00",
+                    borderTopStartRadius: 30,
+                    borderTopEndRadius: 30,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    width: "100%"
+                    // flex: 1
+                  }}
+                >
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      Segment.trackWithProperties(
+                        "Select Ad Payment Review Button",
+                        {
+                          business_name: this.props.mainBusiness.businessname,
+                          campaign_budget: this.props.data.lifetime_budget_micro
+                        }
+                      );
+                      Segment.trackWithProperties("Completed Checkout Step", {
+                        step: 5,
+                        business_name: this.props.mainBusiness.businessname,
+                        checkout_id: this.props.campaign_id
+                      });
+
+                      this.props.navigation.navigate("PaymentForm", {
+                        names: this.navState.names,
+                        kdamount: this.props.kdamount,
+                        returnData: this.returnData.bind(this)
+                      });
+                    }}
+                    style={
+                      {
+                        //   zIndex: this.isIphoneXorAbove() ? 12 : 0,
+                        //   elevation: this.isIphoneXorAbove() ? 3 : 0
+                        //   //   flex: 1,
+                        //   justifyContent: "center",
+                        //   alignSelf: "center",
+                        //   alignItems: "center"
+                      }
+                    }
+                  >
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignSelf: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-medium",
+                          color: "#fff",
+                          fontSize: 13,
+                          textAlign: "center"
+                        }}
+                      >
+                        TOTAL
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-bold",
+                          fontSize: 16,
+                          color: "#fff",
+                          textAlign: "center"
+                        }}
+                      >
+                        {formatNumber(this.props.data.lifetime_budget_micro)}{" "}
+                        USD {"\n"}
+                        {this.props.kdamount} KWD
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-medium",
+                          color: "#FFF",
+                          fontSize: 13,
+                          textAlign: "center"
+                        }}
+                      >
+                        Proceed to Payment
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </Footer>
+              </Content>
+            </ImageBackground>
+          </Container>
+        </SafeAreaView>
       );
     }
   }

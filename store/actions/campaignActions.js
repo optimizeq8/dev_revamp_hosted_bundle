@@ -345,7 +345,7 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation) => {
+export const ad_details = (info, names, navigation, image) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
@@ -364,7 +364,8 @@ export const ad_details = (info, names, navigation) => {
       })
       .then(() => {
         navigation.navigate("AdPaymentReview", {
-          names
+          names,
+          image
         });
       })
       .catch(err => {

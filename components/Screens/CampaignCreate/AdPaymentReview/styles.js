@@ -6,11 +6,22 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    height: "100%",
+    width: "100%"
+  },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    height: "100%",
+    flex: 1,
+    width: "100%",
+    display: "flex",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    overflow: "hidden",
+    justifyContent: "space-between",
+    backgroundColor: "black"
   },
   image: {
     alignSelf: "center",
@@ -39,8 +50,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     paddingBottom: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 13,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
     paddingHorizontal: 10,
     paddingVertical: 10
   },
@@ -85,20 +96,33 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     color: "#fff",
+    textAlign: "center"
+  },
+  headline: {
     textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    fontSize: 14,
     paddingHorizontal: 10,
-    paddingVertical: 10
+    justifyContent: "center",
+    alignSelf: "center"
   },
   bottomCard: {
-    top: 15,
+    // top: 15,
     backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 127,
+    // height: 127,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    width: "100%"
+    // paddingBottom: 34
   },
   gradient: {
+    ...StyleSheet.absoluteFillObject
+  },
+
+  backgroundViewWrapper: {
     ...StyleSheet.absoluteFillObject
   }
 });
