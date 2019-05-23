@@ -178,9 +178,9 @@ class AdPaymentReview extends Component {
               <ReviewItemCard
                 title="Duration"
                 subtitles={[
-                  { title: "start", content: end_time },
-                  { title: "end", content: start_time },
-                  { title: "objective", content: this.props.data.objective }
+                  { title: "Start", content: start_time },
+                  { title: "End", content: end_time },
+                  { title: "Objective", content: this.props.data.objective }
                 ]}
               />
               <ReviewItemCard
@@ -209,7 +209,7 @@ class AdPaymentReview extends Component {
                         : countryName
                   },
                   {
-                    title: "language",
+                    title: "Language",
                     content: targeting.demographics[0].languages.join(", ")
                   },
                   {
