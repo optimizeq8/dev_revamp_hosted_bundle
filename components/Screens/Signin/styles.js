@@ -27,12 +27,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     bottom: "24%"
   },
-  image: {
-    alignSelf: "center",
-    height: heightPercentageToDP(17),
-    width: heightPercentageToDP(17),
-    margin: 10
-  },
+
   mainView: {
     flex: 1,
     justifyContent: "flex-start",
@@ -43,7 +38,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 24,
     paddingHorizontal: 10,
     paddingVertical: 10
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
-    fontSize: heightPercentageToDP(1.7)
+    fontSize: 12
   },
   bottomView: {
     backgroundColor: globalColors.orange,
@@ -109,7 +104,8 @@ const styles = StyleSheet.create({
   background: {
     position: "absolute",
     opacity: 0.45,
-    alignSelf: "center"
+    alignSelf: "center",
+    zIndex: 0
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

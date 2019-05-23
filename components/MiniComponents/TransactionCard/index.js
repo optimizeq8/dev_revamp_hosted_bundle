@@ -39,26 +39,39 @@ class TransactionCard extends Component {
             <Text style={[styles.subtext]}>{transaction.payment_type}</Text>
             <Text style={[styles.text]}>Transaction ID</Text>
             <Text style={[styles.subtext]}>{transaction.reference_id}</Text>
-            <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-              <Text style={[styles.text]}>Amount</Text>
-              <Text
-                style={[
-                  globalStyles.numbers,
-                  {
-                    fontSize: heightPercentageToDP(3.4),
-                    paddingHorizontal: 0
-                  }
-                ]}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                flex: 1,
+                width: "100%"
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "column"
+                }}
               >
-                {transaction.total_amount}$
-              </Text>
-            </View>
-            <View pointerEvents="none" style={[styles.containerStyle]}>
-              <Text style={[styles.text]}>
-                {transaction.payment_date.split(" ")[0] +
-                  "\n   " +
-                  transaction.payment_date.split(" ")[1]}
-              </Text>
+                <Text style={[styles.text]}>Amount</Text>
+                <Text
+                  style={[
+                    globalStyles.numbers,
+                    {
+                      fontSize: heightPercentageToDP(3.4),
+                      paddingHorizontal: 0
+                    }
+                  ]}
+                >
+                  {transaction.total_amount}$
+                </Text>
+              </View>
+              <View pointerEvents="none" style={[styles.containerStyle]}>
+                <Text style={[styles.datetext]}>
+                  {transaction.payment_date.split(" ")[0] +
+                    "\n   " +
+                    transaction.payment_date.split(" ")[1]}
+                </Text>
+              </View>
             </View>
           </View>
         </View>

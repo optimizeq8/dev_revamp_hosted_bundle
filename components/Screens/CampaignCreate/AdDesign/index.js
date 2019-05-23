@@ -28,7 +28,6 @@ import {
   Header,
   Body,
   Left,
-  Title,
   Right,
   Footer,
   Icon

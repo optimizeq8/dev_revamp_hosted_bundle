@@ -45,10 +45,16 @@ const styles = StyleSheet.create({
   text: {
     color: "#5F5F5F",
     fontFamily: "montserrat-medium",
-    fontSize: heightPercentageToDP(2),
-    paddingVertical: heightPercentageToDP(0.5)
+    fontSize: 13,
+    textAlign: "left",
+    paddingTop: heightPercentageToDP(0.5)
   },
-
+  datetext: {
+    color: "#5F5F5F",
+    fontFamily: "montserrat-medium",
+    fontSize: 13,
+    paddingTop: heightPercentageToDP(0.5)
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
@@ -63,17 +69,17 @@ const styles = StyleSheet.create({
   titletext: {
     textAlign: "left",
     color: "#5F5F5F",
-    fontFamily: "montserrat-semibold",
-    fontSize: heightPercentageToDP(2.7),
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
     paddingVertical: 0,
     width: 200
   },
 
   subtext: {
-    paddingVertical: heightPercentageToDP(0.5),
-
+    paddingTop: heightPercentageToDP(0.25),
+    paddingBottom: heightPercentageToDP(0.5),
     fontFamily: "montserrat-regular",
-    fontSize: heightPercentageToDP(2.1),
+    fontSize: 14,
     color: "#C6C6C6"
   },
   transactionButton: {
@@ -98,9 +104,9 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   containerStyle: {
-    position: "absolute",
-    left: "67%",
-    top: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+
     backgroundColor: "transparent",
     borderRadius: 20
   },
