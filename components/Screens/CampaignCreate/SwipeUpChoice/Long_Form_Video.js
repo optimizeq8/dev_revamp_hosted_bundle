@@ -39,6 +39,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../Global Styles";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import { showMessage } from "react-native-flash-message";
 
 export default class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -96,11 +97,18 @@ export default class Long_Form_Video extends Component {
   };
   _pickImage = async () => {
     let result = await this.pick();
+    console.log(result);
+
     //if (result.width >= 1080 && result.height >= 1920)
-    if (result.duration >= 15000) {
-      if (!result.cancelled) {
+    if (!result.cancelled) {
+      if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (file.size > 1073741824) {
+            showMessage({
+              message: "Video must be less than 1 GB",
+              type: "warning",
+              position: "top"
+            });
             this.setState({
               videoError: "Video must be less than 1 GB",
               longformvideo_media: null,
@@ -118,10 +126,27 @@ export default class Long_Form_Video extends Component {
             });
           }
         });
+      } else {
+        validateWrapper("duration", this.state.duration) &&
+          showMessage({
+            message: validateWrapper("duration", this.state.duration),
+            type: "warning",
+            position: "top"
+          });
+        this.setState({
+          durationError: validateWrapper("duration", this.state.duration),
+          longformvideo_media: null,
+          videoLoading: false
+        });
       }
     } else {
+      showMessage({
+        message: "Please choose a video",
+        type: "warning",
+        position: "top"
+      });
       this.setState({
-        durationError: validateWrapper("duration", this.state.duration),
+        videoError: "Please choose a video",
         longformvideo_media: null,
         videoLoading: false
       });
@@ -225,7 +250,7 @@ export default class Long_Form_Video extends Component {
               </Text>
             </TouchableOpacity>
           )}
-          {this.state.durationError ? (
+          {/* {this.state.durationError ? (
             <Text
               style={[
                 styles.subtext,
@@ -243,7 +268,7 @@ export default class Long_Form_Video extends Component {
             >
               {this.state.videoError}
             </Text>
-          ) : null}
+          ) : null} */}
           <RNPickerSelect
             items={this.state.callactions}
             placeholder={{}}

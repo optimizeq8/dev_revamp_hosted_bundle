@@ -108,8 +108,6 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
     Segment.screen("Design Ad Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       checkout_id: this.props.campaign_id,
@@ -148,6 +146,7 @@ class AdDesign extends Component {
         });
       }
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   askForPermssion = async () => {
@@ -248,11 +247,11 @@ class AdDesign extends Component {
       }
     }
 
-    if (
-      Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-      Math.floor(result.width / 16) === Math.floor(result.height / 9)
-    ) {
-      if (!result.cancelled) {
+    if (!result.cancelled) {
+      if (
+        Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
+        Math.floor(result.width / 16) === Math.floor(result.height / 9)
+      ) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (
             (result.type === "video" && file.size > 32000000) ||
@@ -281,8 +280,19 @@ class AdDesign extends Component {
             this.onToggleModal();
           }
         });
+      } else {
+        this.setState({
+          imageError: "Media size must be in 9:16 aspect ratio.",
+          image: null
+        });
+        this.onToggleModal();
       }
     } else {
+      showMessage({
+        message: "Please choose a media file!",
+        position: "top",
+        type: "warning"
+      });
       this.setState({
         imageError: "Media size must be in 9:16 aspect ratio.",
         image: null
