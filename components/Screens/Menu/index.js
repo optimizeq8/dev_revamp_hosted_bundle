@@ -19,9 +19,11 @@ import {
 } from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList/index";
-import { Transition } from "react-navigation-fluid-transitions";
 import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
+
+//browser
+import { openPrivacy, openTerms } from "../../Terms&Condtions";
 
 // Style
 import styles from "./styles";
@@ -33,7 +35,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP("107"),
+      top: heightPercentageToDP("113"),
       bottom: -heightPercentageToDP("120")
     }
   };
@@ -51,6 +53,7 @@ class Menu extends Component {
 
   handleBackButton = () => {
     this.props.closeAnimation();
+    this.closePanel();
     return true;
   };
   showPanel() {
@@ -60,6 +63,10 @@ class Menu extends Component {
       duration: 250
     }).start();
   }
+  closePanel = () => {
+    this._panel.hide();
+    this.setState({ slidePanel: false });
+  };
   slidePanelShow() {
     if (this.state.slidePanel) {
       this._panel.hide();
@@ -87,41 +94,6 @@ class Menu extends Component {
             width={widthPercentageToDP(85)}
             height={heightPercentageToDP(61)}
           />
-          {/* <Transition shared="close">
-            <View
-              style={{
-                justifyContent: "center",
-                top: heightPercentageToDP(11),
-                left: widthPercentageToDP(5),
-                zIndex: 10
-                // paddingBottom: 30,
-                // marginBottom: -heightPercentageToDP(5)
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.state.params.closeAnimation();
-                }}
-              >
-                <LottieView
-                  style={{
-                    width: widthPercentageToDP(5),
-                    height: heightPercentageToDP(5),
-                    // top: heightPercentageToDP(0.85),
-                    // left: widthPercentageToDP(1.5),
-                    zIndex: 10
-                  }}
-                  resizeMode="contain"
-                  source={require("../../../assets/animation/menu-btn.json")}
-                  progress={
-                    (this.props.navigation.state.params &&
-                      this.props.navigation.state.params.menu) ||
-                    1
-                  }
-                />
-              </TouchableOpacity>
-            </View>
-          </Transition> */}
 
           <TouchableOpacity
             onPress={() => {
@@ -139,13 +111,11 @@ class Menu extends Component {
             style={{ marginTop: heightPercentageToDP("8.7%"), marginBottom: 0 }}
           >
             <Text style={styles.menutext}> Menu </Text>
-            <Transition appear="scale" disappear="scale" shared="menu">
-              <Text style={styles.businessTitle}>
-                {!this.props.mainBusiness
-                  ? ""
-                  : this.props.mainBusiness.brandname}
-              </Text>
-            </Transition>
+            <Text style={styles.businessTitle}>
+              {!this.props.mainBusiness
+                ? ""
+                : this.props.mainBusiness.brandname}
+            </Text>
             <Text style={styles.businessname}>
               {this.props.mainBusiness.businessname}
             </Text>
@@ -159,7 +129,7 @@ class Menu extends Component {
               ]}
               onPress={() => this.slidePanelShow()}
             >
-              <Text style={styles.buttontext}>Switch Account </Text>
+              <Text style={styles.buttontext}>Switch Account</Text>
               <DownArrowIcon
                 style={{ marginLeft: 5, right: 20, top: 1 }}
                 stroke="#fff"
@@ -265,10 +235,24 @@ class Menu extends Component {
                   <Text style={styles.text}>Logout</Text>
                 </View>
               </TouchableOpacity>
-              {/* <Text style={styles.text}>{this.props.exponentPushToken}</Text> */}
+              <Text style={styles.version}>Version:0.1.1/7/6</Text>
             </View>
           </View>
 
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              top: "15%"
+            }}
+          >
+            <Text onPress={() => openPrivacy()} style={[styles.privacy]}>
+              Privacy Policy
+            </Text>
+            <Text onPress={() => openTerms()} style={[styles.privacy]}>
+              Terms & Condtion
+            </Text>
+          </View>
           <SlidingUpPanel
             showBackdrop={false}
             ref={c => (this._panel = c)}
@@ -278,7 +262,6 @@ class Menu extends Component {
           >
             <>
               <Icons.CloseListIcon
-                style={styles.icons}
                 onPress={() => this.slidePanelShow()}
                 style={styles.CloseIcon}
               />

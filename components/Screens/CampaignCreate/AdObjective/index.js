@@ -92,8 +92,6 @@ class AdObjective extends Component {
     return true;
   };
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
@@ -242,9 +240,7 @@ class AdObjective extends Component {
                   style={[
                     styles.inputtext,
                     {
-                      color: this.state.inputN ? "#FF9D00" : "#fff"
-                    },
-                    {
+                      color: this.state.inputN ? "#FF9D00" : "#fff",
                       fontFamily: "montserrat-semibold"
                     }
                   ]}
@@ -253,8 +249,9 @@ class AdObjective extends Component {
                 </Label>
 
                 <Input
-                  style={styles.inputtext}
+                  style={[styles.inputtext]}
                   autoCorrect={false}
+                  maxLength={35}
                   autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({

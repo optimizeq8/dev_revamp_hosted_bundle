@@ -19,15 +19,14 @@ const styles = StyleSheet.create({
   block1: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     width: wp(100),
     paddingTop: 10
   },
   block1Title: {
     top: hp(5),
-    width: "100%",
-    paddingRight: 35
+    zIndex: 1
+    // paddingRight: 35
     // marginLeft: "auto",
     // marginRight: "auto"
     // flex: 5
@@ -36,11 +35,10 @@ const styles = StyleSheet.create({
     paddingTop: 30
   },
   innerBlock1: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    width: "100%"
+    justifyContent: "center"
+    // width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -51,13 +49,13 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   backButton: {
-    // top: 0,
+    position: "absolute",
+    top: hp(5),
     left: wp(0),
-    // marginRight: "auto",
-    // borderWidth: 1,
+    zIndex: 10,
     width: 80,
     height: 40,
-    paddingLeft: 40
+    alignItems: "center"
   },
   backbuttonicon: {
     justifyContent: "center",
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   },
   phoneicon: {
     // justifyContent: "center",
-    // alignSelf: "center",
+    alignSelf: "center",
     marginTop: 60
   },
   maincontent: {
@@ -82,10 +80,9 @@ const styles = StyleSheet.create({
   },
   input1: {
     marginBottom: 30,
-    paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
-    width: 250,
+    width: 300,
     height: 50
   },
   inputtext: {
