@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -143,9 +144,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: 150
   },
-  icons: {
-    justifyContent: "flex-start"
-    // marginRight: 20
+
+  privacy: {
+    justifyContent: "flex-start",
+    color: globalColors.orange,
+    fontFamily: "montserrat-light",
+    textDecorationLine: "underline"
+  },
+  version: {
+    color: "#fff",
+    fontFamily: "montserrat-extralight",
+    fontSize: 12
   }
 });
 
