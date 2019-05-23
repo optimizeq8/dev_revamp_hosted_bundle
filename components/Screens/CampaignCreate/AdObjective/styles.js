@@ -80,10 +80,9 @@ const styles = StyleSheet.create({
   },
   input1: {
     marginBottom: 30,
-    paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
-    width: 250,
+    width: 300,
     height: 50
   },
   inputtext: {

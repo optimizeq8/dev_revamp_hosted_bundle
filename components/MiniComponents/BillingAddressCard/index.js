@@ -33,6 +33,7 @@ class BillingAddressCard extends React.Component {
       sidemenustate: false,
       sidemenu: "",
       selectedItems: [],
+
       selectedObjectets: [],
       inputC: false,
       inputA: false,
@@ -57,12 +58,6 @@ class BillingAddressCard extends React.Component {
       prevProps.country_code !== this.props.country_code &&
       this.props.address.area !== ""
     ) {
-      console.log(
-        "prevProps",
-        prevProps.country_code,
-        "props",
-        this.props.country_code
-      );
       this.setState({
         country_code: this.props.country_code,
         selectedItems: [],
@@ -92,9 +87,9 @@ class BillingAddressCard extends React.Component {
         c => c.country_code.toLowerCase() === selectedItem.value
       );
       this.props._handleAddressChange("address", replace, selectedItem.value);
+      console.log(area.list);
 
       await this.setState({
-        // address: replace,
         country_code: selectedItem.value,
         areas: area ? area.list : [],
         countryError: ""
@@ -103,14 +98,8 @@ class BillingAddressCard extends React.Component {
   };
 
   onSelectedRegionChange = async selectedItem => {
-    // console.log(selectedItem);
-
-    // let replace = this.props.address;
     if (selectedItem) {
-      // replace.area = selectedItem.name;
-      // this.props._handleAddressChange("area", replace.area);
       await this.setState({
-        // address: replace,
         region_id: [selectedItem.id],
         selectedItems: selectedItem,
         areaError: ""
@@ -128,8 +117,6 @@ class BillingAddressCard extends React.Component {
         this.state.country_code
       );
       await this.setState({
-        // address: replace,
-        // region_id: [selectedItem.id],
         selectedObjectets: selectedItem,
         areaError: ""
       });
@@ -137,12 +124,8 @@ class BillingAddressCard extends React.Component {
   };
 
   onSelectedRegionSelected = async selectedItem => {
-    // let replace = this.props.address;
     if (selectedItem) {
-      // replace.area = selectedItem.name;
-      // this.props._handleAddressChange("area", replace.area);
       await this.setState({
-        // address: replace,
         areas: selectedItem,
         areaError: ""
       });
@@ -199,6 +182,8 @@ class BillingAddressCard extends React.Component {
       case "regions": {
         menu = (
           <RegionsAndAreas
+            area={this.props.address.area}
+            _handleSideMenuState={this.props._handleSideMenuState}
             areas={this.state.areas}
             selectedObjectets={this.state.selectedObjectets}
             onSelectedRegionChange={this.onSelectedRegionChange}
