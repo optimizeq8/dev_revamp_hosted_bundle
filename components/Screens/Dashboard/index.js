@@ -233,10 +233,9 @@ class Dashboard extends Component {
           <View
             style={{
               justifyContent: "center",
-              zIndex: 10,
-              // width: "35%",
+              zIndex: 13,
+              display: this.state.sidemenustate ? "none" : "flex",
               top: 50,
-              zIndex: 10,
               height: 40
             }}
           >
@@ -268,7 +267,7 @@ class Dashboard extends Component {
                 </Text>
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate("Wallet")}
-                  style={styles.wallet}
+                  style={[styles.wallet]}
                 >
                   <WalletIcon width={hp(3)} height={hp(3)} />
                 </TouchableOpacity>
@@ -276,134 +275,134 @@ class Dashboard extends Component {
             )}
           </View>
 
-          {!this.state.open && (
-            <Animatable.View
-              duration={500}
-              onAnimationEnd={() =>
-                this.state.open && this.setState({ anim: true })
-              }
-              animation={this.state.anim ? mySlideOutDown : mySlideInUp}
-              style={{ zIndex: 5, height: hp(100) }}
-            >
-              <Container style={styles.container}>
-                <LinearGradient
-                  colors={[colors.background1, colors.background2]}
-                  locations={[0.7, 1]}
-                  style={styles.gradient}
-                />
+          <Animatable.View
+            duration={500}
+            onAnimationStart={() =>
+              this.state.open && this.setState({ anim: true })
+            }
+            animation={this.state.anim ? mySlideOutDown : mySlideInUp}
+            style={{
+              zIndex: 1,
+              display: this.state.open ? "none" : "flex",
+              height: hp(100)
+            }}
+          >
+            <Container style={styles.container}>
+              <LinearGradient
+                colors={[colors.background1, colors.background2]}
+                locations={[0.7, 1]}
+                style={styles.gradient}
+              />
 
-                <Sidemenu
-                  onChange={isOpen => {
-                    if (isOpen === false) this._handleSideMenuState(isOpen);
-                  }}
-                  disableGestures={true}
-                  menu={menu}
-                  menuPosition="right"
-                  openMenuOffset={wp("85%")}
-                  isOpen={this.state.sidemenustate}
-                >
-                  <View padder style={[styles.mainCard]}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignSelf: "center",
-                        marginBottom: 20,
-                        paddingBottom: 10
-                      }}
-                    >
-                      <View style={{ flexDirection: "row" }}>
-                        <Button
-                          style={[
-                            styles.activebutton,
-                            {
-                              backgroundColor: this.state.showSearchBar
-                                ? "#FF9D00"
-                                : "#fff"
-                            }
-                          ]}
-                          onPress={this.renderSearchBar}
-                        >
-                          <SearchIcon
-                            width={23}
-                            height={23}
-                            stroke={
-                              this.state.showSearchBar ? "#fff" : "#575757"
-                            }
-                          />
-                        </Button>
-                        <Button
-                          style={styles.button}
-                          onPress={() => {
-                            if (!this.props.mainBusiness.snap_ad_account_id) {
-                              Segment.track(
-                                "Create SnapAd Acount Button Pressed "
-                              );
-                              this.props.navigation.navigate(
-                                "SnapchatCreateAdAcc"
-                              );
-                            } else {
-                              Segment.track("Create Campaign Button Pressed");
-                              this.props.navigation.navigate("AdType");
-                            }
-                          }}
-                        >
-                          <Text
-                            style={[
-                              styles.title,
-                              { paddingTop: 0, fontSize: 12 }
-                            ]}
-                          >
-                            New {"\n"}
-                            Campaign
-                          </Text>
-                        </Button>
-
-                        <Button
-                          style={styles.activebutton}
-                          onPress={() => {
-                            this._handleSideMenuState(true);
-                          }}
-                        >
-                          <FilterIcon width={23} height={23} fill="#575757" />
-                        </Button>
-                      </View>
-                    </View>
-                    {this.state.showSearchBar && (
-                      <SearchBar renderSearchBar={this.renderSearchBar} />
-                    )}
-                    {this.props.loading ? (
-                      <ActivityIndicator size="large" />
-                    ) : (
-                      <Content contentContainerStyle={{ flex: 1 }}>
-                        <FlatList
-                          contentContainerStyle={{ paddingBottom: hp(35) }}
-                          keyExtractor={item => item.campaign_id}
-                          data={this.props.filteredCampaigns}
-                          onEndReached={() => this.loadMoreData()}
-                          onEndReachedThreshold={1}
-                          renderItem={({ item, index }) => (
-                            <CampaignCard
-                              campaign={item}
-                              navigation={this.props.navigation}
-                              key={item.campaign_id}
-                            />
-                          )}
-                          onRefresh={() => this.reloadData()}
-                          refreshing={this.state.fetching_from_server}
-                          ListFooterComponent={() => this.renderFooter()}
+              <Sidemenu
+                onChange={isOpen => {
+                  if (isOpen === false) this._handleSideMenuState(isOpen);
+                }}
+                disableGestures={true}
+                menu={this.state.sidemenustate ? menu : null}
+                menuPosition="right"
+                openMenuOffset={wp("85%")}
+                isOpen={this.state.sidemenustate}
+              >
+                <View padder style={[styles.mainCard]}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignSelf: "center",
+                      marginBottom: 20,
+                      paddingBottom: 10
+                    }}
+                  >
+                    <View style={{ flexDirection: "row" }}>
+                      <Button
+                        style={[
+                          styles.activebutton,
+                          {
+                            backgroundColor: this.state.showSearchBar
+                              ? "#FF9D00"
+                              : "#fff"
+                          }
+                        ]}
+                        onPress={this.renderSearchBar}
+                      >
+                        <SearchIcon
+                          width={23}
+                          height={23}
+                          stroke={this.state.showSearchBar ? "#fff" : "#575757"}
                         />
-                      </Content>
-                    )}
+                      </Button>
+                      <Button
+                        style={styles.button}
+                        onPress={() => {
+                          if (!this.props.mainBusiness.snap_ad_account_id) {
+                            Segment.track(
+                              "Create SnapAd Acount Button Pressed "
+                            );
+                            this.props.navigation.navigate(
+                              "SnapchatCreateAdAcc"
+                            );
+                          } else {
+                            Segment.track("Create Campaign Button Pressed");
+                            this.props.navigation.navigate("AdType");
+                          }
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.title,
+                            { paddingTop: 0, fontSize: 12 }
+                          ]}
+                        >
+                          New {"\n"}
+                          Campaign
+                        </Text>
+                      </Button>
+
+                      <Button
+                        style={styles.activebutton}
+                        onPress={() => {
+                          this._handleSideMenuState(true);
+                        }}
+                      >
+                        <FilterIcon width={23} height={23} fill="#575757" />
+                      </Button>
+                    </View>
                   </View>
-                </Sidemenu>
-              </Container>
-            </Animatable.View>
-          )}
+                  {this.state.showSearchBar && (
+                    <SearchBar renderSearchBar={this.renderSearchBar} />
+                  )}
+                  {this.props.loading ? (
+                    <ActivityIndicator size="large" />
+                  ) : (
+                    <Content contentContainerStyle={{ flex: 1 }}>
+                      <FlatList
+                        contentContainerStyle={{ paddingBottom: hp(35) }}
+                        keyExtractor={item => item.campaign_id}
+                        data={this.props.filteredCampaigns}
+                        onEndReached={() => this.loadMoreData()}
+                        onEndReachedThreshold={1}
+                        renderItem={({ item, index }) => (
+                          <CampaignCard
+                            campaign={item}
+                            navigation={this.props.navigation}
+                            key={item.campaign_id}
+                          />
+                        )}
+                        onRefresh={() => this.reloadData()}
+                        refreshing={this.state.fetching_from_server}
+                        ListFooterComponent={() => this.renderFooter()}
+                      />
+                    </Content>
+                  )}
+                </View>
+              </Sidemenu>
+            </Container>
+          </Animatable.View>
 
           <Animatable.View
             duration={800}
             animation={this.state.anim ? "fadeIn" : "fadeOut"}
-            style={{ zIndex: 5, height: hp(100) }}
+            style={{ zIndex: 10, height: hp(100), left: 0, top: 0 }}
           >
             <Menu
               closeAnimation={this.closeAnimation}

@@ -1,47 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  TouchableHighlight
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
+import { View, TouchableHighlight } from "react-native";
+import { Text } from "native-base";
 import { LinearGradient } from "expo";
-import CampaignCard from "../../MiniComponents/CampaignCard";
-import SearchBar from "../../MiniComponents/SearchBar";
 import FilterStatus from "../../MiniComponents/FilterStatus";
-import Sidemenu from "react-native-side-menu";
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import dateFormat from "dateformat";
 import * as actionCreators from "../../../store/actions";
+//icons
+
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { ActivityIndicator } from "react-native-paper";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import LowerButton from "../LowerButton";
 class FilterMenu extends Component {
@@ -108,6 +82,7 @@ class FilterMenu extends Component {
           start_time={this.state.start_time}
           end_time={this.state.end_time}
         />
+
         <View
           style={{
             flex: 1,
