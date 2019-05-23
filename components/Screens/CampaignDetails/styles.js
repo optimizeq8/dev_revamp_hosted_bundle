@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: hp("2"),
+    fontSize: 13,
     paddingHorizontal: 10
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-semibold",
-    fontSize: hp("2.3"),
+    fontSize: 15,
     paddingVertical: hp("1")
   },
 
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: hp("2.45"),
+    fontSize: 19,
     width: 150,
     alignSelf: "center"
   },
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-medium",
-    fontSize: hp("2.5"),
+    fontSize: 16,
     paddingHorizontal: 10
   },
   toggleSpace: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   pauseDes: {
     fontFamily: "montserrat-light",
-    fontSize: wp("4%"),
+    fontSize: 14,
 
     marginVertical: 20,
     padding: 20

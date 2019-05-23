@@ -1,7 +1,33 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { StatusBar, StyleSheet, View, Animated, Image } from "react-native";
+import {
+  StatusBar,
+  StyleSheet,
+  View,
+  Animated,
+  Image,
+  Text as TextReactNative
+} from "react-native";
+
+TextReactNative.defaultProps = TextReactNative.defaultProps || {};
+TextReactNative.defaultProps.allowFontScaling = false;
+
+import { Label, Text, Input } from "native-base";
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+
+Label.defaultProps = Label.defaultProps || {};
+Label.defaultProps.allowFontScaling = false;
+
+Input.defaultProps = Input.defaultProps || {};
+Input.defaultProps.allowFontScaling = false;
+
+import { TextInputMask } from "react-native-masked-text";
+
+TextInputMask.defaultProps = TextInputMask.defaultProps || {};
+TextInputMask.defaultProps.allowFontScaling = false;
+
 import {
   AppLoading,
   Asset,
@@ -183,7 +209,7 @@ class App extends React.Component {
                 }}
               />
             </Root>
-            <FlashMessage icon="auto" duration={4000} position="bottom" />
+            <FlashMessage icon="auto" duration={4000} position="top" />
           </View>
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>

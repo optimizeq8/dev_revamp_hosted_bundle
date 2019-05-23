@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold"
   },
   slidtitle: {
-    fontSize: hp(2.4),
+    fontSize: 19,
     color: "#fff",
     textAlign: "center",
     paddingTop: 15,

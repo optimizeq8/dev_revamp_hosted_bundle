@@ -5,7 +5,7 @@ export const colors = {
   black: "#1a1917",
   gray: "#888888",
   background1: "#751AFF",
-  background2: "#751AFF"
+  background2: "#6268FF"
 };
 const styles = StyleSheet.create({
   title: {
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
   background: {
     position: "absolute",
     opacity: 0.45,
-    alignSelf: "center"
+    alignSelf: "center",
+    zIndex: 0
   },
   link: {
     textAlign: "center",

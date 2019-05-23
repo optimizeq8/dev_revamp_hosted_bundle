@@ -28,7 +28,6 @@ import {
   Header,
   Body,
   Left,
-  Title,
   Right,
   Footer,
   Icon
@@ -639,7 +638,9 @@ class AdDesign extends Component {
 
         <Container style={styles.container}>
           <Header transparent noShadow iosBarStyle={"light-content"}>
-            <Left style={{ alignItems: "center", alignSelf: "center" }}>
+            <Left
+              style={{ alignItems: "center", alignSelf: "center", flex: 0 }}
+            >
               <BackButton
                 screenname="Ad Design"
                 businessname={this.props.mainBusiness.businessname}
@@ -656,11 +657,9 @@ class AdDesign extends Component {
                 }
               ]}
             >
-              <Title style={[styles.title, { width: "100%" }]}>
-                Compose Ad
-              </Title>
+              <Text style={[styles.title, { width: "100%" }]}>Compose Ad</Text>
             </Body>
-            <Right />
+            {/* <Right /> */}
           </Header>
 
           <Content
@@ -684,7 +683,7 @@ class AdDesign extends Component {
                         {
                           width: "100%",
                           height: "100%",
-                          opacity: 0.5
+                          opacity: 0.2
                         }
                       ]}
                     />

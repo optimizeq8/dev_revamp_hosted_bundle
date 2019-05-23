@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -117,6 +118,7 @@ export default class App_Install extends Component {
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
             contentContainerStyle={{ flex: 1 }}
+            style={{ flex: 1 }}
           >
             <View
               style={{

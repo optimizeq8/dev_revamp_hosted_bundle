@@ -93,12 +93,7 @@ class Transactions extends Component {
                 <FilterIcon width={23} height={23} fill="#575757" />
               </Button>
             </View>
-            <ScrollView
-              contentContainerStyle={{
-                paddingBottom: heightPercentageToDP(30),
-                marginBottom: heightPercentageToDP(50)
-              }}
-            >
+            <ScrollView contentContainerStyle={styles.contentContainer}>
               {transList}
             </ScrollView>
           </View>

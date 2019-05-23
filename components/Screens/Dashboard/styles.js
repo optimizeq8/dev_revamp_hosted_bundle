@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     // bottom: "50%",
     color: "#fff",
     fontFamily: "montserrat-semibold",
-    fontSize: heightPercentageToDP(2)
+    fontSize: 22
   },
   buttontext: {
     fontFamily: "montserrat-regular",
