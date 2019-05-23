@@ -209,6 +209,7 @@ export const ad_design = (
       )
       .catch(err => {
         laoding(0);
+        onToggleModal();
         console.log("ad_design", err.message || err.response);
         showMessage({
           message:
