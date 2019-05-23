@@ -10,6 +10,11 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  backDrop: {
+    position: "absolute",
+    bottom: "50%",
+    alignSelf: "center"
+  },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: {
     textAlign: "center",

@@ -33,6 +33,7 @@ export default (styles = {
     width: 20,
     height: 20,
     zIndex: 10,
+
     elevation: 4
   },
   backDrop: {
