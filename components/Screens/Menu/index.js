@@ -23,6 +23,9 @@ import { Transition } from "react-navigation-fluid-transitions";
 import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
+//browser
+import { openPrivacy, openTerms } from "../../Terms&Condtions";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -270,10 +273,23 @@ class Menu extends Component {
                   <Text style={styles.text}>Logout</Text>
                 </View>
               </TouchableOpacity>
-              {/* <Text style={styles.text}>{this.props.exponentPushToken}</Text> */}
+              <Text style={styles.version}>Version:0.1.1/6/4</Text>
             </View>
           </View>
-
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              top: "25%"
+            }}
+          >
+            <Text onPress={() => openPrivacy()} style={[styles.privacy]}>
+              Privacy Policy
+            </Text>
+            <Text onPress={() => openTerms()} style={[styles.privacy]}>
+              Terms & Condtion
+            </Text>
+          </View>
           <SlidingUpPanel
             showBackdrop={false}
             ref={c => (this._panel = c)}
