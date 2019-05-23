@@ -97,7 +97,6 @@ export default class Long_Form_Video extends Component {
   };
   _pickImage = async () => {
     let result = await this.pick();
-    console.log(result);
 
     //if (result.width >= 1080 && result.height >= 1920)
     if (!result.cancelled) {
