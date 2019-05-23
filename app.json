@@ -25,7 +25,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "5"
+      "buildNumber": "6"
     },
     "packagerOpts": {
       "config": "metro.config.js"
@@ -33,7 +33,7 @@
 
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 6
+      "versionCode": 7
     },
     "hooks": {
       "postPublish": [
