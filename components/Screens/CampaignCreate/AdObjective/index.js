@@ -92,8 +92,6 @@ class AdObjective extends Component {
     return true;
   };
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
