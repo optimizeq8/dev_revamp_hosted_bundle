@@ -164,8 +164,11 @@ export const ad_design = (
   navigation,
   onToggleModal,
   appChoice,
-  rejected
+  rejected,
+  longVideo
 ) => {
+  console.log(info._parts);
+
   onToggleModal();
   return dispatch => {
     dispatch({
@@ -202,7 +205,7 @@ export const ad_design = (
       .then(() =>
         !rejected
           ? navigation.push("AdDetails", {
-              image: info._parts[0][1].uri,
+              image: longVideo ? info._parts[3][1].uri : info._parts[0][1].uri,
               appChoice: appChoice
             })
           : navigation.navigate("Dashboard")

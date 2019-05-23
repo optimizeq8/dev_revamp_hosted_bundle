@@ -352,8 +352,6 @@ class AdDesign extends Component {
   }
 
   _handleLandscapeVideos = info => {
-    console.log("orientation", info.naturalSize.orientation);
-
     if (info.naturalSize.orientation === "landscape") {
       this.setState({
         image: "null",
@@ -389,7 +387,7 @@ class AdDesign extends Component {
 
   _onLayoutEvent = event => {
     const h = event.nativeEvent.layout.height;
-    console.log("height of content", h);
+
     this.setState({ heightComponent: h - 40 });
   };
   validator = () => {
@@ -445,9 +443,10 @@ class AdDesign extends Component {
           this.props.navigation,
           this.onToggleModal,
           this.state.appChoice,
-          this.rejected
+          this.rejected,
+          this.state.longformvideo_media &&
+            this.state.longformvideo_media_type === "VIDEO"
         );
-      console.log(this.state.formatted);
 
       // this.props.navigation.navigate("AdDetails");
     }
@@ -621,7 +620,7 @@ class AdDesign extends Component {
     let blankView = (
       <View
         style={{
-          backgroundColor: "black",
+          backgroundColor: "rgba(0,0,0,0.5)",
           opacity: 0.4,
           height: "100%",
           width: "100%"
@@ -811,7 +810,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (info, loading, navigation, onToggleModal, appChoice, rejected) =>
+  ad_design: (
+    info,
+    loading,
+    navigation,
+    onToggleModal,
+    appChoice,
+    rejected,
+    longVideo
+  ) =>
     dispatch(
       actionCreators.ad_design(
         info,
@@ -819,7 +826,8 @@ const mapDispatchToProps = dispatch => ({
         navigation,
         onToggleModal,
         appChoice,
-        rejected
+        rejected,
+        longVideo
       )
     )
 });
