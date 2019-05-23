@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     margin: 15
   },
   placeholder: {
-    // opacity: 0.5,
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     height: "100%",
     // minHeight: 300,
     // zIndex: 0,
-    backgroundColor: "black",
+    backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center"
   },
   placeholder1: {
