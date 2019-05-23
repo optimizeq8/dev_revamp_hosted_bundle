@@ -33,7 +33,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
   static defaultProps = {
     draggableRange: {
-      top: heightPercentageToDP("107"),
+      top: heightPercentageToDP("113"),
       bottom: -heightPercentageToDP("120")
     }
   };
@@ -51,6 +51,7 @@ class Menu extends Component {
 
   handleBackButton = () => {
     this.props.closeAnimation();
+    this.closePanel();
     return true;
   };
   showPanel() {
@@ -60,6 +61,10 @@ class Menu extends Component {
       duration: 250
     }).start();
   }
+  closePanel = () => {
+    this._panel.hide();
+    this.setState({ slidePanel: false });
+  };
   slidePanelShow() {
     if (this.state.slidePanel) {
       this._panel.hide();
@@ -159,7 +164,7 @@ class Menu extends Component {
               ]}
               onPress={() => this.slidePanelShow()}
             >
-              <Text style={styles.buttontext}>Switch Account </Text>
+              <Text style={styles.buttontext}>Switch Account</Text>
               <DownArrowIcon
                 style={{ marginLeft: 5, right: 20, top: 1 }}
                 stroke="#fff"
@@ -278,7 +283,6 @@ class Menu extends Component {
           >
             <>
               <Icons.CloseListIcon
-                style={styles.icons}
                 onPress={() => this.slidePanelShow()}
                 style={styles.CloseIcon}
               />

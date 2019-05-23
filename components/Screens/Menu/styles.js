@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     top: heightPercentageToDP("6.5"),
     left: widthPercentageToDP("7.5%"),
     zIndex: 15,
+    padding: 15,
     color: "grey"
   },
   logoutIcon: {
