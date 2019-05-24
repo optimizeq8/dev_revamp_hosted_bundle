@@ -18,7 +18,11 @@ import {
   Input,
   Container,
   Icon,
-  Label
+  Label,
+  Header,
+  Left,
+  Body,
+  Footer
 } from "native-base";
 import { LinearGradient, BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
@@ -81,15 +85,14 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
+    console.log("modalVisible", this.state.modalVisible);
     if (this.state.modalVisible) {
-      this.setState({
-        modalVisible: false
-      });
+      this.setModalVisible(false);
     } else {
       console.log("navigation adobjective", this.props.navigation);
       this.props.navigation.goBack();
+      return true;
     }
-    return true;
   };
   componentDidMount() {
     Segment.screen("Select Ad Objective Screen");
@@ -330,23 +333,39 @@ class AdObjective extends Component {
         <Modal
           animationType={"slide"}
           transparent={true}
-          onRequestClose={() => this.setModalVisible(false)}
+          onDismiss={() => this.setModalVisible(false)}
           visible={this.state.modalVisible}
         >
           <BlurView intensity={95} tint="dark">
             <View style={styles.popupOverlay}>
-              <View style={styles.popupContent}>
-                <Text style={styles.modaltitle}>Campaign Objective</Text>
-              </View>
-              <ScrollView
+              <Header
+                transparent
+                style={styles.popupContent}
+                iosBarStyle={"light-content"}
+              >
+                <Left style={{ flex: 0 }}>
+                  <Button
+                    onPress={() => this.setModalVisible(false)}
+                    transparent
+                  >
+                    <BackButtonIcon width={24} height={24} />
+                  </Button>
+                </Left>
+                <Body style={{ alignItems: "center" }}>
+                  <Text style={styles.modaltitle}>Campaign Objective</Text>
+                </Body>
+              </Header>
+              <Content
+                padder
                 indicatorStyle="white"
                 contentContainerStyle={{
-                  paddingTop: heightPercentageToDP(7),
-                  marginBottom: 20
+                  marginTop: 15,
+                  marginBottom: 15
                 }}
               >
                 {list}
-              </ScrollView>
+              </Content>
+
               <LowerButton bottom={3} function={this.setModalVisible} />
             </View>
           </BlurView>
