@@ -141,17 +141,17 @@ const styles = StyleSheet.create({
   },
   popupOverlay: {
     height: "100%"
+    // flex: 1
   },
   popupContent: {
-    marginTop: hp(5),
-    flexDirection: "column"
+    // marginTop: 10
   },
   modaltitle: {
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-medium",
-    marginVertical: 15
+    paddingVertical: 15
   },
   modalclosebtn: {
     marginRight: 30,
