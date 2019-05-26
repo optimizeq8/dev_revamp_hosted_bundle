@@ -102,13 +102,12 @@ export default class RegionAndAreas extends Component {
             selectedItems={this.props.selectedItems}
           />
         </View>
-        {this.props.selectedItems.length > 0 ||
-          (this.props.area && (
-            <LowerButton
-              function={this.props._handleSideMenuState}
-              bottom={-50}
-            />
-          ))}
+        {this.props.selectedItems.length > 0 || this.props.area ? (
+          <LowerButton
+            function={this.props._handleSideMenuState}
+            bottom={-50}
+          />
+        ) : null}
       </>
     );
   }

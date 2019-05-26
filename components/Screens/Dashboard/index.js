@@ -3,36 +3,18 @@ import { connect } from "react-redux";
 
 import {
   View,
-  Image,
-  ScrollView,
   TouchableOpacity,
   FlatList,
-  TouchableHighlight,
   Animated,
   TouchableWithoutFeedback
 } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
+import { Button, Content, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
 import isNull from "lodash/isNull";
 
 import { LinearGradient, Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
-import FilterStatus from "../../MiniComponents/FilterStatus";
 import Sidemenu from "react-native-side-menu";
 import {
   widthPercentageToDP as wp,
@@ -50,7 +32,6 @@ import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
 
 import * as actionCreators from "../../../store/actions";

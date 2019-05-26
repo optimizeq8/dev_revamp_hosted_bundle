@@ -165,11 +165,10 @@ export const ad_design = (
   onToggleModal,
   appChoice,
   rejected,
+  cancelUplaod,
   longVideo
 ) => {
-  console.log(info._parts);
-
-  onToggleModal();
+  onToggleModal(true);
   return dispatch => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,
@@ -182,7 +181,8 @@ export const ad_design = (
     instance
       .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
         onUploadProgress: ProgressEvent =>
-          laoding((ProgressEvent.loaded / ProgressEvent.total) * 100)
+          laoding((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
       })
       .then(res => {
         return res.data;
@@ -200,7 +200,7 @@ export const ad_design = (
         });
       })
       .then(() => {
-        onToggleModal();
+        onToggleModal(false);
       })
       .then(() =>
         !rejected
@@ -212,7 +212,7 @@ export const ad_design = (
       )
       .catch(err => {
         laoding(0);
-        onToggleModal();
+        onToggleModal(false);
         console.log("ad_design", err.message || err.response);
         showMessage({
           message:
