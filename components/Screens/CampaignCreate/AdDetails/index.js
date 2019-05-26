@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import {
   View,
   Slider,
-  Platform,
-  TouchableHighlight,
   TouchableOpacity,
   ScrollView,
   ImageBackground,
@@ -13,10 +11,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import {
-  Button,
   Text,
-  Item,
-  Input,
   Container,
   Icon,
   Content,
@@ -33,7 +28,6 @@ import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
-import dateFormat from "dateformat";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import deepmerge from "deepmerge";
 import BackButton from "../../../MiniComponents/BackButton";
@@ -63,7 +57,6 @@ import {
 } from "react-native-responsive-screen";
 
 //Redux Axios
-import Axios from "axios";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
@@ -71,9 +64,7 @@ import { connect } from "react-redux";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
-import { validate } from "validate.js";
 import { showMessage } from "react-native-flash-message";
-import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
 
 class AdDetails extends Component {
@@ -108,13 +99,13 @@ class AdDetails extends Component {
               os_version_max: ""
             }
           ],
-          geos: [{ country_code: "kw", region_id: [] }]
+          geos: [{ country_code: "", region_id: [] }]
         }
       },
       filteredRegions: country_regions[0].regions,
       filteredLanguages: [],
       regionNames: [],
-      countryName: "Kuwait",
+      countryName: "",
       advance: false,
       sidemenustate: false,
       sidemenu: "gender",
@@ -168,8 +159,7 @@ class AdDetails extends Component {
         deepmerge(emptyTarget(value), value, options);
       function combineMerge(target, source, options) {
         const destination = target.slice();
-
-        source.forEach(function(e, i) {
+        source.forEach((e, i) => {
           if (typeof destination[i] === "undefined") {
             const cloneRequested = options.clone !== false;
             const shouldClone = cloneRequested && options.isMergeableObject(e);
@@ -195,6 +185,15 @@ class AdDetails extends Component {
       await this.setState({
         campaignInfo: editedCampaign
       });
+      let countryName = countries.find(
+        country =>
+          country.value === editedCampaign.targeting.geos[0].country_code
+      );
+      this.onSelectedCountryChange(
+        editedCampaign.targeting.geos[0].country_code,
+        false,
+        countryName
+      );
     } else {
       await this.setState({
         campaignInfo: {
@@ -217,7 +216,6 @@ class AdDetails extends Component {
           campaignInfo: rep
         });
       }
-      this._calcReach();
     }
   }
 
@@ -237,8 +235,6 @@ class AdDetails extends Component {
     });
   };
   onSelectedCountryChange = async (selectedItem, mounting, countryName) => {
-    console.log(selectedItem);
-
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
 
@@ -486,52 +482,54 @@ class AdDetails extends Component {
   };
 
   _calcReach = async () => {
-    let r = cloneDeep(this.state.campaignInfo.targeting);
-    if (r.demographics[0].gender === "") {
-      delete r.demographics[0].gender;
-    }
-    if (r.devices[0].os_type === "") {
-      delete r.devices[0].os_type;
-    }
-    if (
-      r.geos[0].hasOwnProperty("region_id") &&
-      r.geos[0].region_id.length === 0
-    ) {
-      delete r.geos[0].region_id;
-    }
-    if (r.demographics[0].max_age >= 35) {
-      r.demographics[0].max_age = "35+";
-    }
-    if (
-      r.hasOwnProperty("interests") &&
-      r.interests[0].category_id.length === 0
-    ) {
-      delete r.interests;
-    }
-    const obj = {
-      targeting: JSON.stringify(r),
-      ad_account_id: this.props.mainBusiness.snap_ad_account_id
-    };
+    if (this.state.campaignInfo.targeting.geos[0].country_code !== "") {
+      let r = cloneDeep(this.state.campaignInfo.targeting);
+      if (r.demographics[0].gender === "") {
+        delete r.demographics[0].gender;
+      }
+      if (r.devices[0].os_type === "") {
+        delete r.devices[0].os_type;
+      }
+      if (
+        r.geos[0].hasOwnProperty("region_id") &&
+        r.geos[0].region_id.length === 0
+      ) {
+        delete r.geos[0].region_id;
+      }
+      if (r.demographics[0].max_age >= 35) {
+        r.demographics[0].max_age = "35+";
+      }
+      if (
+        r.hasOwnProperty("interests") &&
+        r.interests[0].category_id.length === 0
+      ) {
+        delete r.interests;
+      }
+      const obj = {
+        targeting: JSON.stringify(r),
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id
+      };
 
-    let totalReach = {
-      demographics: [
-        {
-          languages: this.props.languages.map(lang => lang.id),
-          min_age: 13,
-          max_age: "35+"
-        }
-      ],
-      geos: [
-        {
-          country_code: this.state.campaignInfo.targeting.geos[0].country_code
-        }
-      ]
-    };
-    const obj2 = {
-      targeting: JSON.stringify(totalReach),
-      ad_account_id: this.props.mainBusiness.snap_ad_account_id
-    };
-    await this.props.snap_ad_audience_size(obj, obj2);
+      let totalReach = {
+        demographics: [
+          {
+            languages: this.props.languages.map(lang => lang.id),
+            min_age: 13,
+            max_age: "35+"
+          }
+        ],
+        geos: [
+          {
+            country_code: this.state.campaignInfo.targeting.geos[0].country_code
+          }
+        ]
+      };
+      const obj2 = {
+        targeting: JSON.stringify(totalReach),
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id
+      };
+      await this.props.snap_ad_audience_size(obj, obj2);
+    }
   };
 
   render() {
@@ -810,17 +808,6 @@ class AdDetails extends Component {
                           paddingVertical: 10
                         }}
                       >
-                        {/* <Input
-                      keyboardType="numeric"
-                      maxLength={6}
-                      defaultValue={
-                        this.state.campaignInfo.lifetime_budget_micro + ""
-                      }
-                      disabled={editCampaign}
-                      onChangeText={value => this._handleBudget(value)}
-                      style={styles.budget}
-                    /> */}
-
                         <TextInputMask
                           includeRawValueInChangeText
                           type={"money"}
