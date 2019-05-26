@@ -238,6 +238,12 @@ class AdDesign extends Component {
         result.width = manipResult.width;
       }
     }
+    console.log(
+      "result.width",
+      Math.floor(result.width / 16),
+      "result.height",
+      Math.floor(result.height / 9)
+    );
 
     if (!result.cancelled) {
       if (
@@ -781,7 +787,7 @@ class AdDesign extends Component {
           </Footer>
           <Modal isVisible={this.props.loading || this.state.isVisible}>
             <>
-              {this.state.longformvideo_media && (
+              {this.props.loading && (
                 <Text
                   style={[
                     styles.footerTextStyle,
