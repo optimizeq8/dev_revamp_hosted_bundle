@@ -456,8 +456,7 @@ class AdPaymentReview extends Component {
                         }}
                       >
                         {formatNumber(this.props.data.lifetime_budget_micro)}{" "}
-                        USD {"\n"}
-                        {this.props.kdamount} KWD
+                        USD {"\n"}({this.props.kdamount} KWD)
                       </Text>
                       <Text
                         style={{

@@ -24,7 +24,7 @@ import {
   Left,
   Body
 } from "native-base";
-import cloneDeep from "clone-deep";
+import cloneDeep from "lodash/cloneDeep";
 import { LinearGradient, Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
@@ -74,6 +74,8 @@ import SelectOS from "../../../MiniComponents/SelectOS";
 import { validate } from "validate.js";
 import { showMessage } from "react-native-flash-message";
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
+
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -92,7 +94,7 @@ class AdDetails extends Component {
           demographics: [
             {
               gender: "",
-              languages: ["en", "ar"],
+              languages: ["ar", "en"],
               min_age: 13,
               max_age: 35
             }
@@ -110,10 +112,7 @@ class AdDetails extends Component {
         }
       },
       filteredRegions: country_regions[0].regions,
-      filteredLanguages: [
-        { value: "ar", label: "Arabic" },
-        { value: "en", label: "English" }
-      ],
+      filteredLanguages: [],
       regionNames: [],
       countryName: "Kuwait",
       advance: false,
@@ -133,7 +132,19 @@ class AdDetails extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    // if(this.prevProps)
+    if (!isEqual(prevProps.languages, this.props.languages)) {
+      //   const campaign = { ...this.state.campaignInfo };
+      //   campaign.targeting.demographics[0].languages = this.props.languages.map(
+      //     lang => lang.id
+      //   );
+      this.setState({
+        // campaignInfo: campaign,
+        filteredLanguages: this.props.languages
+      });
+    }
+  }
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
@@ -146,6 +157,8 @@ class AdDetails extends Component {
       checkout_id: this.props.campaign_id,
       step: 4
     });
+
+    this.props.get_languages();
     if (
       this.props.navigation.state.params &&
       this.props.navigation.state.params.editCampaign
@@ -503,7 +516,7 @@ class AdDetails extends Component {
     let totalReach = {
       demographics: [
         {
-          languages: ["en", "ar"],
+          languages: this.props.languages.map(lang => lang.id),
           min_age: 13,
           max_age: "35+"
         }
@@ -565,7 +578,7 @@ class AdDetails extends Component {
             filteredLanguages={this.state.filteredLanguages}
             onSelectedLangsChange={this.onSelectedLangsChange}
             _handleSideMenuState={this._handleSideMenuState}
-            languages={languages}
+            languages={this.props.languages}
             demographics={this.state.campaignInfo.targeting.demographics}
             filterLanguages={this.filterLanguages}
           />
@@ -633,13 +646,13 @@ class AdDetails extends Component {
     regions_names = regions_names.join(", ");
 
     let languages_names = [];
-    languages.forEach(r => {
+    this.props.languages.forEach(r => {
       if (
         this.state.campaignInfo.targeting.demographics[0].languages.find(
-          i => i === r.value
+          i => i === r.id
         )
       ) {
-        languages_names.push(r.label);
+        languages_names.push(r.name);
       }
     });
     languages_names = languages_names.join(", ");
@@ -1280,7 +1293,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
+  languages: state.campaignC.languagesList
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1290,7 +1304,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
 
   snap_ad_audience_size: (info, totalReach) =>
-    dispatch(actionCreators.snap_ad_audience_size(info, totalReach))
+    dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
+  get_languages: () => dispatch(actionCreators.get_languages())
 });
 export default connect(
   mapStateToProps,

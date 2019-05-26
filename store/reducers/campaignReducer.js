@@ -17,7 +17,8 @@ const initialState = {
   loadingDesign: false,
   loadingDetail: false,
   loading: false,
-  payment_data: null
+  payment_data: null,
+  languagesList: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -175,6 +176,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingDetail: action.payload
+      };
+    case actionTypes.SET_LANGUAGE_LIST:
+      return {
+        ...state,
+        languagesList: action.payload
+      };
+    case actionTypes.ERROR_SET_LANGUAGE_LIST:
+      return {
+        ...state,
+        languagesList: []
       };
     default:
       return state;
