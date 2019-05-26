@@ -122,7 +122,11 @@ class FilterMenu extends Component {
                   Campaign Status
                 </Text>
                 <FilterStatus
-                  selected={this.state.selected}
+                  selected={
+                    this.props.filterStatus
+                      ? this.props.filterStatus
+                      : this.state.selected
+                  }
                   _handleSubmission={this._handleSubmission}
                 />
               </>
