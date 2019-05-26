@@ -17,13 +17,13 @@ class ReviewItemCard extends Component {
       </View>
     ));
     return (
-      <TouchableOpacity style={styles.campaignButton}>
-        <Icon type="MaterialIcons" name="edit" style={[styles.icon]} />
+      <View style={styles.campaignButton}>
+        <Icon type="MaterialIcons" name="check" style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext]}>{this.props.title}</Text>
           {list}
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }

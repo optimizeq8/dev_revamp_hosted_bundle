@@ -3,34 +3,20 @@ import { connect } from "react-redux";
 import {
   ImageBackground,
   View,
-  Image,
-  ScrollView,
-  Animated,
-  Easing,
   TouchableWithoutFeedback,
-  StyleSheet,
   BackHandler,
   Dimensions,
   SafeAreaView,
   Platform
 } from "react-native";
 import {
-  Card,
-  Button,
   Content,
   Text,
-  CardItem,
   Body,
-  Item,
-  Input,
   Container,
   Header,
   Left,
-  Footer,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
+  Footer
 } from "native-base";
 import { LinearGradient, Segment, Video } from "expo";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
@@ -40,9 +26,7 @@ import formatNumber from "../../../formatNumber";
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
 import BackButton from "../../../MiniComponents/BackButton";
-import * as actionCreators from "../../../../store/actions";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import isUndefined from "lodash/isUndefined";
 
 class AdPaymentReview extends Component {
   static navigationOptions = {
