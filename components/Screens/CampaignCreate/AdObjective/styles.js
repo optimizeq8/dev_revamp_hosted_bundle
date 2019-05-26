@@ -24,12 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   block1Title: {
-    top: hp(5),
-    zIndex: 1
-    // paddingRight: 35
-    // marginLeft: "auto",
-    // marginRight: "auto"
-    // flex: 5
+    top: hp(5)
   },
   selectObjectiveTitle: {
     paddingTop: 30
@@ -38,7 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
-    // width: "100%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -52,10 +46,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: hp(5),
     left: wp(0),
-    zIndex: 10,
     width: 80,
-    height: 40,
-    alignItems: "center"
+    height: 40
+    // alignItems: "center",
   },
   backbuttonicon: {
     justifyContent: "center",

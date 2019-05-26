@@ -19,7 +19,7 @@ export default class CloseButton extends Component {
         }}
         style={[globalStyles.backButton, this.props.style]}
       >
-        <BackIcon height={24} width={24} />
+        <BackIcon height={24} width={24} style={{ zIndex: 2 }} />
       </TouchableOpacity>
     );
   }
