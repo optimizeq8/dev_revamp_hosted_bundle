@@ -57,6 +57,8 @@ import { Transition } from "react-navigation-fluid-transitions";
 import Modal from "react-native-modal";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
+import Axios from "axios";
+import CloseButton from "../../../MiniComponents/CloseButton";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -76,6 +78,7 @@ class AdDesign extends Component {
       },
       directory: "/ImagePicker/",
       result: "",
+      signal: null,
       appChoice: "",
       inputH: false,
       inputB: false,
@@ -152,7 +155,7 @@ class AdDesign extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
     if (status !== "granted") {
-      this.onToggleModal();
+      this.onToggleModal(false);
       showMessage({
         message: "Please allow access to the gallary to upload media.",
         position: "top",
@@ -197,7 +200,7 @@ class AdDesign extends Component {
       allowsEditing: Platform.OS === "android"
     });
 
-    this.onToggleModal();
+    this.onToggleModal(true);
 
     return result;
   };
@@ -205,18 +208,8 @@ class AdDesign extends Component {
   _pickImage = async () => {
     let result = await this.pick();
     this.setState({ directory: "/ImagePicker/" });
-
     let newWidth = result.width;
     let newHeight = result.height;
-    // let largeVal = "h";
-
-    // console.log("Orig width:", result.width);
-    // if (result.width > 1080) newWidth = 1080;
-    // console.log("Orig height:", result.height);
-    // if (result.height > 1920) newHeight = 1920;
-
-    //  (result.width / 9) * 16  (result.height / 16) * 9
-
     if (
       result.type === "image" &&
       Math.floor(result.width / 9) !== Math.floor(result.height / 16)
@@ -261,13 +254,13 @@ class AdDesign extends Component {
                 "Video must be less than 32 MBs and less than 10 seconds.",
               image: null
             });
-            this.onToggleModal();
+            this.onToggleModal(false);
           } else if (result.type === "image" && file.size > 5000000) {
             this.setState({
               imageError: "Image must be less than 5 MBs",
               image: null
             });
-            this.onToggleModal();
+            this.onToggleModal(false);
           } else {
             this.setState({
               image: result.uri,
@@ -276,7 +269,7 @@ class AdDesign extends Component {
               result: result.uri
             });
             this.formatMedia();
-            this.onToggleModal();
+            this.onToggleModal(false);
           }
         });
       } else {
@@ -284,7 +277,7 @@ class AdDesign extends Component {
           imageError: "Media size must be in 9:16 aspect ratio.",
           image: null
         });
-        this.onToggleModal();
+        this.onToggleModal(false);
       }
     } else {
       showMessage({
@@ -296,7 +289,7 @@ class AdDesign extends Component {
         imageError: "Media size must be in 9:16 aspect ratio.",
         image: null
       });
-      this.onToggleModal();
+      this.onToggleModal(false);
     }
   };
 
@@ -436,6 +429,7 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
+      this.handleUpload();
       !this.props.loading &&
         this.props.ad_design(
           this.state.formatted,
@@ -444,6 +438,7 @@ class AdDesign extends Component {
           this.onToggleModal,
           this.state.appChoice,
           this.rejected,
+          this.state.signal,
           this.state.longformvideo_media &&
             this.state.longformvideo_media_type === "VIDEO"
         );
@@ -451,9 +446,14 @@ class AdDesign extends Component {
       // this.props.navigation.navigate("AdDetails");
     }
   };
-  onToggleModal = () => {
-    const { isVisible } = this.state;
-    this.setState({ isVisible: !isVisible });
+  onToggleModal = visibile => {
+    this.setState({ isVisible: visibile });
+  };
+  handleUpload = () => {
+    this.setState({ signal: Axios.CancelToken.source() });
+  };
+  cancelUpload = () => {
+    if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
     let { image } = this.state;
@@ -781,6 +781,23 @@ class AdDesign extends Component {
           </Footer>
           <Modal isVisible={this.props.loading || this.state.isVisible}>
             <>
+              {this.state.longformvideo_media && (
+                <Text
+                  style={[
+                    styles.footerTextStyle,
+                    { bottom: "20%", textAlign: "center", width: 250 }
+                  ]}
+                >
+                  Please make sure not to close the app or lock the phone while
+                  uploading.
+                </Text>
+              )}
+              {this.props.loading && (
+                <CloseButton
+                  style={{ position: "absolute", left: 0, top: "9.5%" }}
+                  navigation={() => this.cancelUpload()}
+                />
+              )}
               <LoadingScreen top={50} />
               <Text
                 style={[
@@ -817,6 +834,7 @@ const mapDispatchToProps = dispatch => ({
     onToggleModal,
     appChoice,
     rejected,
+    cancelUpload,
     longVideo
   ) =>
     dispatch(
@@ -827,6 +845,7 @@ const mapDispatchToProps = dispatch => ({
         onToggleModal,
         appChoice,
         rejected,
+        cancelUpload,
         longVideo
       )
     )
