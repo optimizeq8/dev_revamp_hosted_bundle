@@ -775,7 +775,9 @@ class AdDetails extends Component {
                   </Left>
                   <Body>
                     <Text style={styles.headline}>
-                      Input your campaign details
+                      {!editCampaign
+                        ? "Input your campaign details"
+                        : "Update campaign targeting"}
                     </Text>
                   </Body>
                 </Header>
@@ -787,24 +789,28 @@ class AdDetails extends Component {
                     // justifyContent: "space-around"
                   }}
                 >
-                  <Text style={[styles.subHeadings, { paddingVertical: 10 }]}>
-                    Budget
-                  </Text>
-                  <View
-                    style={{
-                      //   height: 100,
-                      //   width: 200,
-                      flexDirection: "column",
-                      backgroundColor: "rgba(255,255,255,0.2)",
-                      borderRadius: 15,
-                      alignSelf: "center",
-                      justifyContent: "space-around",
-                      //   marginVertical: 10,
-                      paddingHorizontal: 20,
-                      paddingVertical: 10
-                    }}
-                  >
-                    {/* <Input
+                  {!editCampaign ? (
+                    <>
+                      <Text
+                        style={[styles.subHeadings, { paddingVertical: 10 }]}
+                      >
+                        Budget
+                      </Text>
+                      <View
+                        style={{
+                          //   height: 100,
+                          //   width: 200,
+                          flexDirection: "column",
+                          backgroundColor: "rgba(255,255,255,0.2)",
+                          borderRadius: 15,
+                          alignSelf: "center",
+                          justifyContent: "space-around",
+                          //   marginVertical: 10,
+                          paddingHorizontal: 20,
+                          paddingVertical: 10
+                        }}
+                      >
+                        {/* <Input
                       keyboardType="numeric"
                       maxLength={6}
                       defaultValue={
@@ -815,103 +821,110 @@ class AdDetails extends Component {
                       style={styles.budget}
                     /> */}
 
-                    <TextInputMask
-                      includeRawValueInChangeText
-                      type={"money"}
-                      options={{
-                        precision: 0,
-                        delimiter: ",",
-                        unit: "$"
-                      }}
-                      disabled={editCampaign}
-                      maxLength={8}
-                      defaultValue={this.state.value + ""}
-                      value={this.state.value + ""}
-                      onChangeText={(value, rawText) => {
-                        if (!editCampaign) this._handleBudget(value, rawText);
-                      }}
-                      style={[styles.budget, { paddingBottom: 0, width: 70 }]}
-                      ref={ref => (this.moneyField = ref)}
-                    />
-                    <Text
-                      style={[
-                        styles.colorGrey,
-                        {
-                          fontSize: 11,
-                          alignSelf: "center"
-                        }
-                      ]}
-                    >
-                      Tap to enter manually
-                    </Text>
-                  </View>
-
-                  <View
-                    style={[
-                      styles.slidercontainer,
-                      {
-                        alignSelf: "center",
-                        paddingVertical: 10,
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "space-around",
-                        paddingHorizontal: 40
-                      }
-                    ]}
-                  >
-                    <View style={styles.textCon}>
-                      <Text style={styles.colorGrey}>
-                        ${this.state.minValueBudget}
-                      </Text>
-                      {/* <View
+                        <TextInputMask
+                          includeRawValueInChangeText
+                          type={"money"}
+                          options={{
+                            precision: 0,
+                            delimiter: ",",
+                            unit: "$"
+                          }}
+                          disabled={editCampaign}
+                          maxLength={8}
+                          defaultValue={this.state.value + ""}
+                          value={this.state.value + ""}
+                          onChangeText={(value, rawText) => {
+                            if (!editCampaign)
+                              this._handleBudget(value, rawText);
+                          }}
+                          style={[
+                            styles.budget,
+                            { paddingBottom: 0, width: 70 }
+                          ]}
+                          ref={ref => (this.moneyField = ref)}
+                        />
+                        <Text
+                          style={[
+                            styles.colorGrey,
+                            {
+                              fontSize: 11,
+                              alignSelf: "center"
+                            }
+                          ]}
+                        >
+                          Tap to enter manually
+                        </Text>
+                      </View>
+                      <View
+                        style={[
+                          styles.slidercontainer,
+                          {
+                            alignSelf: "center",
+                            paddingVertical: 10,
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "space-around",
+                            paddingHorizontal: 40
+                          }
+                        ]}
+                      >
+                        <View style={styles.textCon}>
+                          <Text style={styles.colorGrey}>
+                            ${this.state.minValueBudget}
+                          </Text>
+                          {/* <View
                         style={{
                           //   left: wp(4),
                           justifyContent: "center"
                         }}
                       > */}
-                      <Text
-                        style={[
-                          styles.colorGrey,
-                          {
-                            fontSize: 11
-                            // alignSelf: "center"
+                          <Text
+                            style={[
+                              styles.colorGrey,
+                              {
+                                fontSize: 11
+                                // alignSelf: "center"
+                              }
+                            ]}
+                          >
+                            $25/day
+                          </Text>
+                          {/* </View> */}
+                          <Text style={styles.colorGrey}>
+                            ${this.state.maxValueBudget}
+                          </Text>
+                        </View>
+
+                        <Slider
+                          thumbTintColor={globalColors.orange}
+                          disabled={editCampaign}
+                          style={{
+                            width: "100%",
+                            height: 20
+                          }}
+                          step={10}
+                          minimumValue={this.state.minValueBudget}
+                          maximumValue={this.state.maxValueBudget}
+                          value={
+                            this.state.campaignInfo.lifetime_budget_micro <
+                            90000000000000000000
+                              ? this.state.campaignInfo.lifetime_budget_micro
+                              : 1500
                           }
-                        ]}
-                      >
-                        $25/day
-                      </Text>
-                      {/* </View> */}
-                      <Text style={styles.colorGrey}>
-                        ${this.state.maxValueBudget}
-                      </Text>
-                    </View>
-
-                    <Slider
-                      thumbTintColor={globalColors.orange}
-                      disabled={editCampaign}
-                      style={{
-                        width: "100%",
-                        height: 20
-                      }}
-                      step={10}
-                      minimumValue={this.state.minValueBudget}
-                      maximumValue={this.state.maxValueBudget}
-                      value={
-                        this.state.campaignInfo.lifetime_budget_micro <
-                        90000000000000000000
-                          ? this.state.campaignInfo.lifetime_budget_micro
-                          : 1500
-                      }
-                      onValueChange={val => this.onSelectedBudgetChange(val)}
-                      maximumTrackTintColor="#fff"
-                      minimumTrackTintColor="#751AFF"
-                    />
-                  </View>
-
+                          onValueChange={val =>
+                            this.onSelectedBudgetChange(val)
+                          }
+                          maximumTrackTintColor="#fff"
+                          minimumTrackTintColor="#751AFF"
+                        />
+                      </View>
+                    </>
+                  ) : (
+                    <View style={{ height: 50 }} />
+                  )}
                   <Text style={[styles.subHeadings, { paddingVertical: 10 }]}>
                     Who would you like to reach?
                   </Text>
-
                   <ScrollView
                     indicatorStyle="white"
                     style={{
