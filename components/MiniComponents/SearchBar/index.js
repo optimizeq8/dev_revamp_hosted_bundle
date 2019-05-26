@@ -30,14 +30,13 @@ class SearchBar extends Component {
         }
       ]
     };
-    this._handleSubmit = this._handleSubmit.bind(this);
   }
 
-  _handleSubmit() {
+  _handleSubmit = () => {
     if (!this.props.transactionSearch) {
       this.props.onSearch({
         value: this.state.value,
-        selected: this.props.filterStatus,
+        selected: this.props.filterStatus ? this.props.filterStatus : "A",
         dateRange: [
           this.props.campaignStartSearch,
           this.props.campaignEndSearch
@@ -49,7 +48,7 @@ class SearchBar extends Component {
         dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
       });
     }
-  }
+  };
   render() {
     return (
       <View>
