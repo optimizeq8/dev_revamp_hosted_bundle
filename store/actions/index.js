@@ -30,7 +30,8 @@ export {
   get_android_versions,
   get_ios_versions,
   get_total_reach,
-  payment_request_knet
+  payment_request_knet,
+  get_languages
 } from "./campaignActions";
 
 export {

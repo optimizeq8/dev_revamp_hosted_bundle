@@ -444,3 +444,33 @@ export const updateStatus = (info, handleToggle) => {
       });
   };
 };
+
+export const get_languages = () => {
+  return (dispatch, getState) => {
+    instance
+      .get(`language`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_LANGUAGE_LIST,
+          payload: data
+        });
+      })
+      .catch(err => {
+        console.log("get_language", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_LANGUAGE_LIST
+        });
+      });
+  };
+};

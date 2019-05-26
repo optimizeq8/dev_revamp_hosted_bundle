@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40
   },
   languageListContainer: {
-    minHeight: 150
+    height: 200
   },
   languageRowConatiner: {
     paddingVertical: 10,

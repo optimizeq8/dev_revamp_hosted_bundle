@@ -15,27 +15,27 @@ export default class SelectLanguages extends Component {
   render() {
     let languagelist = this.props.filteredLanguages.map(c => (
       <TouchableOpacity
-        key={c.value}
+        key={c.id}
         style={styles.languageRowConatiner}
         onPress={() => {
-          this.props.onSelectedLangsChange(c.value);
+          this.props.onSelectedLangsChange(c.id);
         }}
       >
         <Icon
           type="MaterialCommunityIcons"
           name={
-            this.props.demographics[0].languages.find(l => l === c.value)
+            this.props.demographics[0].languages.find(l => l === c.id)
               ? "circle"
               : "circle-outline"
           }
           style={[
-            this.props.demographics[0].languages.find(l => l === c.value)
+            this.props.demographics[0].languages.find(l => l === c.id)
               ? styles.activetext
               : styles.inactivetext,
             styles.optionsIconSize
           ]}
         />
-        <Text style={styles.optionsTextContainer}>{c.label}</Text>
+        <Text style={styles.optionsTextContainer}>{c.name}</Text>
       </TouchableOpacity>
     ));
     return (
@@ -52,7 +52,7 @@ export default class SelectLanguages extends Component {
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.languages.filter(c =>
-                      c.label.toLowerCase().includes(value.toLowerCase())
+                      c.name.toLowerCase().includes(value.toLowerCase())
                     );
                     this.props.filterLanguages(filteredC);
                   }}
