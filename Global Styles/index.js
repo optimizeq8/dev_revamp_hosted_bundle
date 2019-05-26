@@ -30,11 +30,12 @@ export default (styles = {
   backButton: {
     top: hp(5),
     left: wp(8),
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     zIndex: 10,
-
-    elevation: 4
+    elevation: 2,
+    alignItems: "center",
+    justifyContent: "center"
   },
   backDrop: {
     position: "absolute",

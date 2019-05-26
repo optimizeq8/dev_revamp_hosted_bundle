@@ -12,7 +12,7 @@ import { LinearGradient, BlurView } from "expo";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import LowerButton from "../../MiniComponents/LowerButton";
+import BackButton from "../../MiniComponents/BackButton";
 import formatNumber from "../../formatNumber";
 //icons
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
@@ -66,12 +66,8 @@ class Wallet extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-          style={globalStyles.backButton}
-        >
-          <BackIcon />
-        </TouchableOpacity>
+        <BackButton navigation={this.props.navigation.goBack} />
+
         <Text style={styles.title}>Wallet</Text>
         <WalletIcon
           style={{
