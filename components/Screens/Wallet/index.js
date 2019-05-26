@@ -9,7 +9,7 @@ import {
   Platform
 } from "react-native";
 import { LinearGradient, BlurView } from "expo";
-import { Button, Text, Item, Input, Label, Container } from "native-base";
+import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -21,7 +21,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
+import globalStyles, { globalColors } from "../../../Global Styles";
 import { colors } from "../../GradiantColors/colors";
 
 //Redux
@@ -164,14 +164,14 @@ class Wallet extends Component {
                             ? "#7039FF"
                             : this.state.amountError
                             ? "red"
-                            : "#D9D9D9",
-                          width: 250
+                            : "#D9D9D9"
+                          // width: 250
                         }
                       ]}
                     >
                       <Label style={[styles.labeltext]}>$</Label>
                       <Input
-                        placeholder="0.000"
+                        placeholder="0.00"
                         placeholderTextColor="#fff"
                         maxLength={6}
                         keyboardType="number-pad"
@@ -195,12 +195,28 @@ class Wallet extends Component {
                           })
                         }
                       />
+                      <Button
+                        transparent
+                        style={{
+                          position: "relative",
+                          left: "20%"
+                        }}
+                        onPress={() => this._handleSubmission()}
+                      >
+                        <Icon
+                          type="MaterialIcons"
+                          name="send"
+                          style={{
+                            color: globalColors.orange
+                          }}
+                        />
+                      </Button>
                     </Item>
                   </Animatable.View>
                 </View>
               </TouchableWithoutFeedback>
             </KeyboardAwareScrollView>
-            <LowerButton function={this._handleSubmission} />
+            {/* <LowerButton function={this._handleSubmission} /> */}
           </BlurView>
         </Modal>
       </Container>
