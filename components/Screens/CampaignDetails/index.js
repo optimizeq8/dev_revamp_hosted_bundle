@@ -205,6 +205,7 @@ class CampaignDetails extends Component {
       );
     } else {
       let selectedCampaign = this.props.selectedCampaign;
+      console.log(selectedCampaign);
       let targeting = this.props.selectedCampaign.targeting;
       let deviceMakes =
         targeting &&
@@ -330,54 +331,69 @@ class CampaignDetails extends Component {
                 />
                 <Text style={styles.title}>{selectedCampaign.name}</Text>
                 <View>
-                  <View padder style={styles.toggleSpace}>
-                    <View style={{ alignSelf: "center" }}>
-                      {selectedCampaign && (
-                        <Toggle
-                          buttonTextStyle={{
+                  {selectedCampaign.review_status === "APPROVED" ? (
+                    <View padder style={styles.toggleSpace}>
+                      <View style={{ alignSelf: "center" }}>
+                        {selectedCampaign && (
+                          <Toggle
+                            buttonTextStyle={{
+                              fontFamily: "montserrat-medium",
+                              fontSize: 10,
+                              color: "#fff",
+                              top: 7,
+                              textAlign: "center"
+                            }}
+                            buttonText={
+                              this.state.toggleText !== "PAUSED"
+                                ? "LIVE"
+                                : "PAUSED"
+                            }
+                            containerStyle={styles.toggleStyle}
+                            switchOn={this.state.toggle}
+                            onPress={() =>
+                              this.state.toggle
+                                ? this.setState({ modalVisible: true })
+                                : this.updateStatus()
+                            }
+                            backgroundColorOff="rgba(255,255,255,0.1)"
+                            backgroundColorOn="rgba(255,255,255,0.1)"
+                            circleColorOff="#FF9D00"
+                            circleColorOn="#66D072"
+                            duration={500}
+                            circleStyle={{
+                              width: wp("13"),
+                              height: hp("3.8"),
+                              borderRadius: 25
+                            }}
+                          />
+                        )}
+                        <Text
+                          style={{
                             fontFamily: "montserrat-medium",
                             fontSize: 10,
+                            paddingTop: 5,
                             color: "#fff",
-                            top: 7,
                             textAlign: "center"
                           }}
-                          buttonText={
-                            this.state.toggleText !== "PAUSED"
-                              ? "LIVE"
-                              : "PAUSED"
-                          }
-                          containerStyle={styles.toggleStyle}
-                          switchOn={this.state.toggle}
-                          onPress={() => this.setState({ modalVisible: true })}
-                          backgroundColorOff="rgba(255,255,255,0.1)"
-                          backgroundColorOn="rgba(255,255,255,0.1)"
-                          circleColorOff="#FF9D00"
-                          circleColorOn="#66D072"
-                          duration={500}
-                          circleStyle={{
-                            width: wp("13"),
-                            height: hp("3.8"),
-                            borderRadius: 25
-                          }}
-                        />
-                      )}
-                      <Text
-                        style={{
-                          fontFamily: "montserrat-medium",
-                          fontSize: 10,
-                          paddingTop: 5,
-                          color: "#fff",
-                          textAlign: "center"
-                        }}
-                      >
-                        Tap to pause AD
-                      </Text>
-                      {/* <Text style={styles.subtext}>
+                        >
+                          {this.state.toggle
+                            ? "Tap to pause AD"
+                            : "Tap to activate AD"}
+                        </Text>
+                        {/* <Text style={styles.subtext}>
                         Review:
                         {selectedCampaign.review_status}
                       </Text> */}
+                      </View>
                     </View>
-                  </View>
+                  ) : (
+                    <View style={styles.adStatus}>
+                      <Text style={styles.reviewtext}>
+                        {selectedCampaign.review_status.includes("PENDING") &&
+                          "In Review"}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 <Text style={styles.subHeadings}>
                   Budget{"\n"}

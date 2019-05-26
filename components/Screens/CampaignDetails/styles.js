@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../Global Styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +16,21 @@ const styles = StyleSheet.create({
     height: hp("5"),
     width: hp("5")
   },
-
+  reviewtext: {
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    padding: 3,
+    color: "#fff"
+  },
+  adStatus: {
+    backgroundColor: globalColors.orange,
+    borderRadius: 16,
+    marginBottom: 5,
+    paddingHorizontal: 10,
+    top: 5,
+    width: wp(23),
+    alignSelf: "center"
+  },
   mainCard: {
     top: hp("2"),
     borderColor: "transparent",
