@@ -160,7 +160,7 @@ class CreateBusinessAccount extends Component {
     );
 
     const businesscategoryOtherError =
-      this.state.businessAccount.businesscategory === "19" &&
+      this.state.businessAccount.businesscategory === "43" &&
       validateWrapper(
         "mandatory",
         this.state.businessAccount.otherBusinessCategory
@@ -685,7 +685,7 @@ class CreateBusinessAccount extends Component {
                   />
                 </Item>
               </RNPickerSelect>
-              {this.state.businessAccount.businesscategory === "19" && (
+              {this.state.businessAccount.businesscategory === "43" && (
                 <Item
                   ref={r => {
                     this._textInputRef = r;

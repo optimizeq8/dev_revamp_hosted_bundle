@@ -6,6 +6,7 @@ import { colors } from ".././../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import businessList from "../../Screens/CreateBusinessAccount/BusinessCategoriesList";
+import find from "lodash/find";
 
 class BusinessCard extends Component {
   constructor(props) {
@@ -22,6 +23,13 @@ class BusinessCard extends Component {
     ) {
       changeState.color = "#FF9D00";
     }
+
+    const businessCategory = find(
+      this.state.type,
+      cat => cat.value === this.props.business.businesscategory
+    );
+    console.log("businessCategory", businessCategory);
+
     return (
       <TouchableOpacity
         onPress={() => {
@@ -42,11 +50,7 @@ class BusinessCard extends Component {
             {this.props.business.businessname}
           </Text>
           <Text style={[styles.subtext, { color: changeState.color }]}>
-            {
-              this.state.type.find(
-                b => b.value === this.props.business.businesscategory
-              ).label
-            }
+            {businessCategory && businessCategory.label}
           </Text>
         </View>
       </TouchableOpacity>
