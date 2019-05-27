@@ -55,7 +55,6 @@ class SuccessRedirect extends Component {
             }
           ]
         });
-
       }
     });
   }
@@ -89,7 +88,7 @@ class SuccessRedirect extends Component {
           <View style={styles.details}>
             <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
             <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
-            <Text style={styles.text}>Amount: {this.state.amount}</Text>
+            <Text style={styles.text}>Amount: {this.state.kdamount} KWD</Text>
             <Text style={styles.text}>Date: {this.state.date}</Text>
             <Text style={styles.text}>Status: {this.state.status}</Text>
           </View>
