@@ -185,15 +185,6 @@ class AdDetails extends Component {
       await this.setState({
         campaignInfo: editedCampaign
       });
-      let countryName = countries.find(
-        country =>
-          country.value === editedCampaign.targeting.geos[0].country_code
-      );
-      this.onSelectedCountryChange(
-        editedCampaign.targeting.geos[0].country_code,
-        false,
-        countryName
-      );
     } else {
       await this.setState({
         campaignInfo: {
