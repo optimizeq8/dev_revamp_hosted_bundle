@@ -89,9 +89,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
+    height: 40
   },
   input: {
+    height: 60,
     alignSelf: "center",
     justifyContent: "center",
     width: 100,
