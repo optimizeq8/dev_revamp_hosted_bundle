@@ -18,7 +18,11 @@ const initialState = {
   loadingDetail: false,
   loading: false,
   payment_data: null,
-  languagesList: []
+  languagesList: [],
+  image: "",
+  countryName: "",
+  interestNames: [],
+  regionNames: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,11 +61,17 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.SET_AD_DETAILS:
+      console.log("SET_AD_DETAILS", action.payload.data);
+
       return {
         ...state,
-        data: { ...state.data, ...action.payload.data },
-        message: action.payload.message,
-        kdamount: action.payload.kdamount,
+        data: { ...state.data, ...action.payload.data.data },
+        image: action.payload.image,
+        countryName: action.payload.names.countryName,
+        interestNames: action.payload.names.interestNames,
+        regionNames: action.payload.names.regionNames,
+        message: action.payload.data.message,
+        kdamount: action.payload.data.kdamount,
         loadingDetail: false
       };
     case actionTypes.ERROR_SET_AD_DETAILS:

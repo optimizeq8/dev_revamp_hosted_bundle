@@ -51,7 +51,6 @@ class AdPaymentReview extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.navState = this.props.navigation.state.params;
     // this.state = {
     //   ad_account_id: "undefined",
     //   attachment: "BLANK",
@@ -105,11 +104,9 @@ class AdPaymentReview extends Component {
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
@@ -121,20 +118,18 @@ class AdPaymentReview extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_ids
     });
+    console.log("campaign data", this.props.data);
   }
-  returnData = data => {
-    this.navState = data;
-  };
   render() {
+    console.log("campaign data", this.props.data);
+
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
     } else {
       let targeting = this.props.data.targeting;
       let interestNames = [];
-      if (this.navState.names.interestNames.length > 0) {
-        interestNames = this.navState.names.interestNames.map(
-          interest => interest.name
-        );
+      if (this.props.interestNames.length > 0) {
+        interestNames = this.props.interestNames.map(interest => interest.name);
       }
       let end_time = new Date(this.props.data.end_time);
       let start_time = new Date(this.props.data.start_time);
@@ -143,13 +138,13 @@ class AdPaymentReview extends Component {
       let gender = targeting.demographics[0].gender
         ? targeting.demographics[0].gender
         : "All";
-      let countryName = this.navState.names.countryName;
+      let countryName = this.props.countryName;
       let regionNames = [];
       if (
         targeting.geos[0].hasOwnProperty("region_id") &&
-        this.navState.names.regionNames.length > 0
+        this.props.regionNames.length > 0
       ) {
-        regionNames = this.navState.names.regionNames.map(region => region);
+        regionNames = this.props.regionNames.map(region => region);
       }
 
       let devices = [];
@@ -159,7 +154,7 @@ class AdPaymentReview extends Component {
           : []
         : [];
 
-      const image = this.props.navigation.getParam("image", "");
+      const image = this.props.image;
       return (
         <SafeAreaView style={styles.safeAreaContainer}>
           <LinearGradient
@@ -412,11 +407,7 @@ class AdPaymentReview extends Component {
                         checkout_id: this.props.campaign_id
                       });
 
-                      this.props.navigation.navigate("PaymentForm", {
-                        names: this.navState.names,
-                        kdamount: this.props.kdamount,
-                        returnData: this.returnData.bind(this)
-                      });
+                      this.props.navigation.navigate("PaymentForm");
                     }}
                     style={
                       {
@@ -484,9 +475,12 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   userInfo: state.auth.userInfo,
   data: state.campaignC.data,
+  image: state.campaignC.image,
+  countryName: state.campaignC.countryName,
+  interestNames: state.campaignC.interestNames,
+  regionNames: state.campaignC.regionNames,
   loading: state.campaignC.loadingDetail,
   kdamount: state.campaignC.kdamount,
-  interestsNames: state.campaignC.interestsNames,
   mainBusiness: state.account.mainBusiness
 });
 

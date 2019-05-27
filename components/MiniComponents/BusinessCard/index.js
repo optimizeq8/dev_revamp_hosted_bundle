@@ -86,6 +86,10 @@ class BusinessCard extends Component {
         {
           label: "Wholesale",
           value: "18"
+        },
+        {
+          label: "Other",
+          value: "19"
         }
       ]
     };

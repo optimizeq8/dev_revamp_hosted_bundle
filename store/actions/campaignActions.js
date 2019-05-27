@@ -25,10 +25,14 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
           });
         } else {
           navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
         }
       })
       .then(() => {
-        if (getState().campaignC.payment_data) {
+        if (getState().campaignC.payment_data.knet_payment_url) {
           openBrowser();
         }
       })
@@ -363,14 +367,11 @@ export const ad_details = (info, names, navigation, image) => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_AD_DETAILS,
-          payload: data
+          payload: { data, names, image }
         });
       })
       .then(() => {
-        navigation.navigate("AdPaymentReview", {
-          names,
-          image
-        });
+        navigation.navigate("AdPaymentReview");
       })
       .catch(err => {
         console.log("ad_details", err.message || err.response);

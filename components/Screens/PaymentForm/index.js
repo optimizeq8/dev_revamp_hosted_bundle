@@ -34,17 +34,17 @@ class PaymentForm extends Component {
   static navigationOptions = {
     header: null
   };
-  state = {
-    payment_type: 1,
-    choice: 2,
-    showModal: false,
-    browserLoading: false
-  };
+
   constructor(props) {
     super(props);
-    this.navState = this.props.navigation.state.params;
-    this.addingCredits = this.navState && this.navState.addingCredits;
-    this.amount = this.navState && this.navState.amount;
+    this.state = {
+      addingCredits: this.props.navigation.getParam("addingCredits", false),
+      amount: this.props.navigation.getParam("amount", 0),
+      payment_type: 1,
+      choice: 2,
+      showModal: false,
+      browserLoading: false
+    };
   }
   componentDidMount() {
     Segment.screenWithProperties("Payment Form Screen", {
@@ -58,7 +58,18 @@ class PaymentForm extends Component {
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.addingCredits !== true &&
+      this.props.navigation.getParam("addingCredits") === true
+    ) {
+      this.setState({
+        addingCredits: this.props.navigation.getParam("addingCredits", true),
+        amount: this.props.navigation.getParam("amount", 0),
+        browserLoading: false
+      });
+    }
+  }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -67,7 +78,7 @@ class PaymentForm extends Component {
     else if (
       !this.props.loading &&
       !this.state.browserLoading &&
-      this.addingCredits
+      this.state.addingCredits
     ) {
       this.props.navigation.navigate("Wallet");
     } else {
@@ -78,13 +89,14 @@ class PaymentForm extends Component {
     try {
       this._addLinkingListener();
       await WebBrowser.openBrowserAsync(
-        this.addingCredits
+        this.state.addingCredits
           ? this.props.payment_data_wallet.knet_payment_url
           : this.props.payment_data.knet_payment_url
       ).then(action => {
-        this.setState({
-          browserLoading: action.type !== "cancel"
-        });
+        if (action.type === "cancle")
+          this.setState({
+            browserLoading: false
+          });
       });
       Segment.screenWithProperties("Payment Knet Screen", {
         businessname: this.props.mainBusiness.businessname,
@@ -92,7 +104,7 @@ class PaymentForm extends Component {
       });
       this._removeLinkingListener();
     } catch (error) {
-      console.log(error);
+      console.log("broweser error", error);
     }
   };
   _addLinkingListener = () => {
@@ -107,7 +119,6 @@ class PaymentForm extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-    console.log(data);
 
     // this.setState({ redirectData: data });
   };
@@ -119,10 +130,10 @@ class PaymentForm extends Component {
   _handleSubmission = () => {
     this.setState({ browserLoading: true });
     if (this.state.browserLoading) return;
-    if (this.addingCredits) {
+    if (this.state.addingCredits) {
       this.props.addWalletAmount(
         {
-          amount: this.navState.amount,
+          amount: this.state.amount,
           payment_type: this.state.payment_type
         },
         this._openWebBrowserAsync
@@ -161,10 +172,10 @@ class PaymentForm extends Component {
       //   this.props.navigation.navigate("AdPaymentReview", {
       //     names: this.navState.names
       //   });
-      this.props.navigation.state.params.returnData({
-        kdamount: this.navState.kdamount,
-        names: this.navState.names
+      this.props.navigation.setParams({
+        names: this.props.navigation.getParam("names", [])
       });
+
       this.props.navigation.goBack();
     }
   };
@@ -216,8 +227,8 @@ class PaymentForm extends Component {
             </Text>
             <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
               <Text style={styles.money}>
-                {this.addingCredits
-                  ? " " + formatNumber(this.amount)
+                {this.state.addingCredits
+                  ? " " + formatNumber(this.state.amount)
                   : this.props.walletUsed
                   ? formatNumber(this.props.campaign_balance_amount)
                   : this.props.data &&
@@ -233,11 +244,14 @@ class PaymentForm extends Component {
                   { fontSize: 10, fontFamily: "montserrat-regular" }
                 ]}
               >
-                {this.addingCredits
+                {this.state.addingCredits
                   ? this.props.walletAmountInKwd
                   : this.props.walletUsed
                   ? this.props.campaign_balance_amount_kwd
-                  : this.navState && this.navState.kdamount}
+                  : this.props.navigation.getParam(
+                      "kdamount",
+                      this.props.kdamount
+                    )}
               </Text>
               <Text
                 style={[
@@ -250,7 +264,7 @@ class PaymentForm extends Component {
               </Text>
             </View>
           </View>
-          {!this.addingCredits && (
+          {!this.state.addingCredits && (
             <View style={{ flexDirection: "row" }}>
               <Button
                 style={[
@@ -324,7 +338,7 @@ class PaymentForm extends Component {
           </View>
         )}
         <View style={{ bottom: "5%" }}>
-          {!this.addingCredits ? (
+          {!this.state.addingCredits ? (
             <Button
               transparent
               onPress={() =>
