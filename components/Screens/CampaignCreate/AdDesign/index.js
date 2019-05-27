@@ -195,7 +195,7 @@ class AdDesign extends Component {
       mediaTypes: "All",
       base64: false,
       exif: false,
-      quality: 0.9,
+      quality: 1,
       aspect: [9, 16],
       allowsEditing: Platform.OS === "android"
     });
@@ -238,12 +238,6 @@ class AdDesign extends Component {
         result.width = manipResult.width;
       }
     }
-    console.log(
-      "result.width",
-      Math.floor(result.width / 16),
-      "result.height",
-      Math.floor(result.height / 9)
-    );
 
     if (!result.cancelled) {
       if (
@@ -683,7 +677,7 @@ class AdDesign extends Component {
                       shouldPlay
                       isLooping
                       isMuted
-                      resizeMode="cover"
+                      resizeMode={"stretch"}
                       style={[
                         {
                           width: "100%",

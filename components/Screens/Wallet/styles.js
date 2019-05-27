@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold",
     fontSize: 31,
     color: "#FF9D00",
-    textAlign: "center"
+    alignSelf: "center"
   },
   labeltext: {
     flex: 0,
