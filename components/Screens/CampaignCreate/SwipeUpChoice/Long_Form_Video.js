@@ -102,14 +102,14 @@ export default class Long_Form_Video extends Component {
     if (!result.cancelled) {
       if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
-          if (file.size > 1073741824) {
+          if (file.size > 524288000) {
             showMessage({
-              message: "Video must be less than 1 GB",
+              message: "Video must be less than 500 Megabytes",
               type: "warning",
               position: "top"
             });
             this.setState({
-              videoError: "Video must be less than 1 GB",
+              videoError: "Video must be less than 500 Megabytes",
               longformvideo_media: null,
               videoLoading: false
             });
