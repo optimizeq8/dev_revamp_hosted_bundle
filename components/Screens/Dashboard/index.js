@@ -216,7 +216,7 @@ class Dashboard extends Component {
               justifyContent: "center",
               zIndex: 13,
               display: this.state.sidemenustate ? "none" : "flex",
-              top: 50,
+              top: 40,
               height: 40
             }}
           >
@@ -250,7 +250,7 @@ class Dashboard extends Component {
                   onPress={() => this.props.navigation.navigate("Wallet")}
                   style={[styles.wallet]}
                 >
-                  <WalletIcon width={hp(3)} height={hp(3)} />
+                  <WalletIcon width={24} height={24} />
                 </TouchableOpacity>
               </>
             )}

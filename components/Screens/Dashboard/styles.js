@@ -207,13 +207,13 @@ const styles = StyleSheet.create({
     marginTop: 0
   },
   wallet: {
-    top: "50%",
-    right: "6%",
+    // top: "50%",
+    right: 5,
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    width: "10%",
-    height: "4%"
+    width: 50,
+    height: 50
   }
 });
 
