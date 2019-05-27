@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     margin: 15
   },
   placeholder: {
-    borderRadius: 10,
+    borderRadius: 15,
     // alignSelf: "center",
     width: "100%",
     minHeight: 300,
@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
   },
 
   mainCard: {
-    borderRadius: 30,
+    // borderTopStartRadius: 30,
+    // borderTopEndRadius: 30,
+    borderRadius: 15,
     flex: 1,
     margin: 0,
     padding: 0

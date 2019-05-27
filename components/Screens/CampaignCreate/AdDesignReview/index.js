@@ -105,12 +105,12 @@ class AdDesignReview extends Component {
                     }}
                     isLooping
                     shouldPlay
-                    resizeMode="cover"
+                    resizeMode="stretch"
                     style={{ width: "100%", height: "100%" }}
                   />
                 ) : (
                   <Image
-                    resizeMode="cover"
+                    resizeMode="stretch"
                     style={styles.placeholder}
                     source={{
                       uri: this.props.navigation.state.params.image

@@ -7,7 +7,8 @@ import {
   Keyboard,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  BackHandler
 } from "react-native";
 import { LinearGradient, Segment } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
@@ -58,7 +59,17 @@ class ChangePassword extends Component {
   }
   componentDidMount() {
     Segment.screen("Change Password Screen");
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   _passwordVarification = () => {
     if (
       this.state.userInfo.password !== this.state.repassword ||

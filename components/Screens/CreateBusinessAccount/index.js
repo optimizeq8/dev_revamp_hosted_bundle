@@ -29,6 +29,7 @@ import * as actionCreators from "../../../store/actions";
 
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import businessCategoryList from "./BusinessCategoriesList";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
@@ -51,11 +52,13 @@ class CreateBusinessAccount extends Component {
       inputC: false,
       inputE: false,
       inputBN: false,
+      inputBusinessCategoryOther: false,
       businessnameError: "",
       businessnameAvalible: false,
       brandNameError: "",
       businessemailError: "",
       businesscategoryError: "",
+      businesscategoryOtherError: "",
       countryError: "",
       data: [
         {
@@ -67,84 +70,7 @@ class CreateBusinessAccount extends Component {
           value: "2"
         }
       ],
-      items: [
-        {
-          label: "Agriculure",
-          value: "0"
-        },
-        {
-          label: "Automotive",
-          value: "3"
-        },
-        {
-          label: "Construstion",
-          value: "4"
-        },
-        {
-          label: "Defense",
-          value: "5"
-        },
-        {
-          label: "Education",
-          value: "6"
-        },
-        {
-          label: "Finance",
-          value: "7"
-        },
-        {
-          label: "Food & Bevrage",
-          value: "8"
-        },
-        {
-          label: "Government",
-          value: "9"
-        },
-        {
-          label: "Health Care",
-          value: "10"
-        },
-        {
-          label: "Home Business",
-          value: "1"
-        },
-        {
-          label: "Insurance",
-          value: "11"
-        },
-        {
-          label: "Mass Media",
-          value: "12"
-        },
-        {
-          label: "Oil & Gas",
-          value: "13"
-        },
-        {
-          label: "Real Estate",
-          value: "14"
-        },
-        {
-          label: "Retail",
-          value: "15"
-        },
-        {
-          label: "Tech Business",
-          value: "2"
-        },
-        {
-          label: "Telecommunications",
-          value: "16"
-        },
-        {
-          label: "Transport",
-          value: "17"
-        },
-        {
-          label: "Wholesale",
-          value: "18"
-        }
-      ],
+      items: businessCategoryList,
       countries: [
         {
           label: "Kuwait",
@@ -232,11 +158,21 @@ class CreateBusinessAccount extends Component {
       "mandatory",
       this.state.businessAccount.country
     );
+
+    const businesscategoryOtherError =
+      this.state.businessAccount.businesscategory === "19" &&
+      validateWrapper(
+        "mandatory",
+        this.state.businessAccount.otherBusinessCategory
+      );
+
+    console.log("businesscategoryOtherError", businesscategoryOtherError);
     this.setState({
       businessnameError,
       businessemailError,
       businesscategoryError,
-      countryError
+      countryError,
+      businesscategoryOtherError
     });
     await this._verifyBusinessName(this.state.businessAccount.businessname);
     if (
@@ -246,7 +182,8 @@ class CreateBusinessAccount extends Component {
       // )) &&
       !businessemailError &&
       !businesscategoryError &&
-      !countryError
+      !countryError &&
+      !businesscategoryOtherError
     ) {
       if (this.state.businessAccount.brandname === "") {
         await this.setState({
@@ -430,7 +367,7 @@ class CreateBusinessAccount extends Component {
             </Text>
           </Button>
         </View>
-        <View style={[styles.mainCard]}>
+        <ScrollView style={[styles.mainCard]}>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
@@ -748,6 +685,60 @@ class CreateBusinessAccount extends Component {
                   />
                 </Item>
               </RNPickerSelect>
+              {this.state.businessAccount.businesscategory === "19" && (
+                <Item
+                  ref={r => {
+                    this._textInputRef = r;
+                  }}
+                  floatingLabel
+                  style={[
+                    styles.input,
+                    {
+                      borderColor: this.state.inputBusinessCategoryOther
+                        ? "#7039FF"
+                        : this.state.businesscategoryOtherError
+                        ? "red"
+                        : "#D9D9D9"
+                    }
+                  ]}
+                >
+                  <Label
+                    style={[
+                      styles.inputtext,
+                      {
+                        bottom: 5,
+                        flexDirection: "row",
+                        color: this.state.inputBusinessCategoryOther
+                          ? "#FF9D00"
+                          : this.state.businesscategoryOtherError
+                          ? "red"
+                          : "#717171"
+                      }
+                    ]}
+                  >
+                    {"Other Business Catergory"}
+                  </Label>
+
+                  <Input
+                    style={styles.inputtext}
+                    autoCorrect={false}
+                    onChangeText={value =>
+                      this.setState({
+                        businessAccount: {
+                          ...this.state.businessAccount,
+                          otherBusinessCategory: value
+                        }
+                      })
+                    }
+                    onFocus={() => {
+                      this.setState({ inputBusinessCategoryOther: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputBusinessCategoryOther: false });
+                    }}
+                  />
+                </Item>
+              )}
             </View>
           </TouchableWithoutFeedback>
           {this.props.registering && (
@@ -783,19 +774,19 @@ class CreateBusinessAccount extends Component {
               </Text>
             </Text>
           )}
+        </ScrollView>
 
-          <View style={{ backgroundColor: "#fff" }}>
-            <Button
-              block
-              dark
-              style={[styles.bottomCard, { justifyContent: "center" }]}
-              onPress={() => {
-                this._handleSubmission();
-              }}
-            >
-              <Text style={styles.buttontext}>CREATE NEW BUSINESS</Text>
-            </Button>
-          </View>
+        <View style={{ backgroundColor: "#fff" }}>
+          <Button
+            block
+            dark
+            style={[styles.bottomCard, { justifyContent: "center" }]}
+            onPress={() => {
+              this._handleSubmission();
+            }}
+          >
+            <Text style={styles.buttontext}>CREATE NEW BUSINESS</Text>
+          </Button>
         </View>
       </Container>
     );
