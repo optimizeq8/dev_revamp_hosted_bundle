@@ -6,7 +6,8 @@ import {
   Keyboard,
   TouchableOpacity,
   Modal,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import { LinearGradient, BlurView } from "expo";
 import { Button, Text, Item, Input, Label, Container } from "native-base";
@@ -45,7 +46,17 @@ class Wallet extends Component {
       modalVisible: false
     };
   }
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
 
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   _handleSubmission = () => {
     const amountError = validateWrapper("Budget", this.state.amount);
     this.setState({ amountError });
@@ -60,12 +71,21 @@ class Wallet extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <Container
+        style={[
+          styles.container,
+          {
+            opacity:
+              this.state.modalVisible && Platform.OS === "android" ? 0.05 : 1
+          }
+        ]}
+      >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
+
         <TouchableOpacity
           onPress={() => this.props.navigation.goBack()}
           style={globalStyles.backButton}
@@ -87,36 +107,36 @@ class Wallet extends Component {
         </Text>
 
         <Text style={styles.text}>Avalible Balance</Text>
+        {!this.state.modalVisible && (
+          <View style={[styles.mainCard]}>
+            <Text style={[styles.mainText]}>
+              Your wallet can be used to {"\n"}purchase ads or to resume paused{" "}
+              {"\n"}ads immedeatly.
+            </Text>
 
-        <View style={styles.mainCard}>
-          <Text style={[styles.mainText]}>
-            Your wallet can be used to {"\n"}purchase ads or to resume paused{" "}
-            {"\n"}ads immedeatly.
-          </Text>
-
-          <Button
-            full
-            style={styles.button}
-            onPress={() => {
-              this.setState({ modalVisible: true });
-            }}
-          >
-            <Text style={styles.buttontext}>Top up wallet </Text>
-          </Button>
-          <Button
-            full
-            style={styles.button}
-            onPress={() => {
-              // this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttontext}>Request Refund</Text>
-          </Button>
-        </View>
-
+            <Button
+              full
+              style={styles.button}
+              onPress={() => {
+                this.setState({ modalVisible: true });
+              }}
+            >
+              <Text style={styles.buttontext}>Top up wallet </Text>
+            </Button>
+            <Button
+              full
+              style={styles.button}
+              onPress={() => {
+                // this._handleSubmission();
+              }}
+            >
+              <Text style={styles.buttontext}>Request Refund</Text>
+            </Button>
+          </View>
+        )}
         <Modal
           animationType={"fade"}
-          transparent={Platform.OS === "ios"}
+          transparent
           onDismiss={() => this.setState({ modalVisible: false })}
           onRequestClose={() => this.setState({ modalVisible: false })}
           visible={this.state.modalVisible}
@@ -171,7 +191,7 @@ class Wallet extends Component {
                     >
                       <Label style={[styles.labeltext]}>$</Label>
                       <Input
-                        placeholder="0.000"
+                        placeholder="0"
                         placeholderTextColor="#fff"
                         maxLength={6}
                         keyboardType="number-pad"
@@ -200,6 +220,7 @@ class Wallet extends Component {
                 </View>
               </TouchableWithoutFeedback>
             </KeyboardAwareScrollView>
+
             <LowerButton function={this._handleSubmission} />
           </BlurView>
         </Modal>

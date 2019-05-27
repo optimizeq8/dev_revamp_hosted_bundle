@@ -677,7 +677,7 @@ class AdDesign extends Component {
                       shouldPlay
                       isLooping
                       isMuted
-                      resizeMode="cover"
+                      resizeMode={"stretch"}
                       style={[
                         {
                           width: "100%",
