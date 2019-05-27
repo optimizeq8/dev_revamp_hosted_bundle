@@ -777,7 +777,7 @@ class AdDetails extends Component {
                   // justifyContent: "space-around"
                 }}
               >
-                {!editCampaign && (
+                {!editCampaign ? (
                   <>
                     <Text style={[styles.subHeadings, { paddingVertical: 10 }]}>
                       Budget
@@ -888,6 +888,8 @@ class AdDetails extends Component {
                       />
                     </View>
                   </>
+                ) : (
+                  <View style={{ height: 50 }} />
                 )}
                 <Text style={[styles.subHeadings, { paddingVertical: 10 }]}>
                   Who would you like to reach?
