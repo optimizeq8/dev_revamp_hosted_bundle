@@ -1,9 +1,12 @@
 import React from "react";
 
 import { Animated, Dimensions, View } from "react-native";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
-const { width } = Dimensions.get("window");
-
+const { width, height } = Dimensions.get("window");
 const Swiper = React.forwardRef((props, ref) => {
   const {
     children,
@@ -32,30 +35,13 @@ const Swiper = React.forwardRef((props, ref) => {
     }
   };
 
-  const dotsContainerStyle = [styles.dotsContainer, { bottom: dotsBottom }];
+  const dotsContainerStyle = [styles.dotsContainer];
 
   const dotStyle = [dotsStyle, { backgroundColor: dotsColor }];
   const dotActiveStyle = [dotsStyle, { backgroundColor: dotsColorActive }];
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView
-        onMomentumScrollEnd={onMomentumScrollEnd}
-        onScroll={onScroll}
-        pagingEnabled
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={false}
-        {...rest}
-        horizontal
-        ref={ref}
-      >
-        {slides.map((slide, index) => (
-          <View key={`slide-${index}`} style={styles.slide}>
-            {slide}
-          </View>
-        ))}
-      </Animated.ScrollView>
-
       {dots && (
         <View style={dotsContainerStyle}>
           {slides.map((slide, index) => (
@@ -83,6 +69,22 @@ const Swiper = React.forwardRef((props, ref) => {
           ))}
         </View>
       )}
+      <Animated.ScrollView
+        onMomentumScrollEnd={onMomentumScrollEnd}
+        onScroll={onScroll}
+        pagingEnabled
+        scrollEventThrottle={16}
+        showsHorizontalScrollIndicator={false}
+        {...rest}
+        horizontal
+        ref={ref}
+      >
+        {slides.map((slide, index) => (
+          <View key={`slide-${index}`} style={styles.slide}>
+            {slide}
+          </View>
+        ))}
+      </Animated.ScrollView>
     </View>
   );
 });
@@ -94,7 +96,7 @@ Swiper.defaultProps = {
   dotsStyle: {
     borderRadius: 7,
     height: 14,
-    marginHorizontal: 4,
+    marginHorizontal: 10,
     width: 14
   },
   driver: new Animated.Value(0)
@@ -102,11 +104,17 @@ Swiper.defaultProps = {
 
 const styles = {
   container: { flex: 1 },
-  slide: { width, marginBottom: 35 },
+  slide: {
+    width,
+    // marginBottom: 35,
+    height
+  },
   dotsContainer: {
     alignItems: "center",
     alignSelf: "center",
     flexDirection: "row",
+    top: heightPercentageToDP("2%"),
+    zIndex: 80,
     position: "absolute"
   }
 };

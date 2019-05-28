@@ -315,6 +315,18 @@ class App extends React.Component {
       cacheImages,
       Asset.loadAsync([require("./assets/images/logo01.png")]),
       Asset.loadAsync([require("./assets/images/logo02.png")]),
+
+      Asset.loadAsync([require("./assets/images/tutorial/tutorial-1.png")]),
+      Asset.loadAsync([require("./assets/images/tutorial/tutorial-2.png")]),
+      Asset.loadAsync([require("./assets/images/tutorial/tutorial-3.png")]),
+      Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
+
+      Asset.loadAsync([require("./assets/images/knet.png")]),
+      Asset.loadAsync([require("./assets/splash.png")]),
+      Asset.loadAsync([require("./assets/images/AdTypes/SnapAd.gif")]),
+      Asset.loadAsync([require("./assets/images/AdTypes/StoryAd.gif")]),
+      Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
+
       Font.loadAsync({
         "montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
         "montserrat-light": require("./assets/fonts/Montserrat-Light.ttf"),
