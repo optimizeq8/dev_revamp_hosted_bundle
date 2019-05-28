@@ -29,9 +29,10 @@ const styles = StyleSheet.create({
   },
 
   mainView: {
-    flex: 1,
-    justifyContent: "flex-start",
+    // flex: 1,
+    // justifyContent: "flex-start",
     alignItems: "center"
+    // borderWidth: 1
   },
   text: {
     textAlign: "center",
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 24,
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 0
   },
   buttontext: {
     color: "#fff",
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: widthPercentageToDP(20)
   },
   input: {
-    top: 30,
+    marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.45)",
     borderRadius: 15,

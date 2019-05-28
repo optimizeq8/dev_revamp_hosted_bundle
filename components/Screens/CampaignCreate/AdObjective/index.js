@@ -85,11 +85,9 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
-    console.log("modalVisible", this.state.modalVisible);
     if (this.state.modalVisible) {
       this.setModalVisible(false);
     } else {
-      console.log("navigation adobjective", this.props.navigation);
       this.props.navigation.goBack();
       return true;
     }
