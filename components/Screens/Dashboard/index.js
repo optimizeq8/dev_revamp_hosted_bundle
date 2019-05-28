@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  BackHandler
 } from "react-native";
 import { Button, Content, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
@@ -75,7 +76,15 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
       if (

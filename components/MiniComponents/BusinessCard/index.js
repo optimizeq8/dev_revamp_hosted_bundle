@@ -28,7 +28,6 @@ class BusinessCard extends Component {
       this.state.type,
       cat => cat.value === this.props.business.businesscategory
     );
-    console.log("businessCategory", businessCategory);
 
     return (
       <TouchableOpacity

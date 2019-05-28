@@ -1,6 +1,6 @@
 //// components
 import React, { Component } from "react";
-import { View, Image, TouchableWithoutFeedback } from "react-native";
+import { View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
 import {
   Card,
   Button,
@@ -31,6 +31,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import { Modal } from "react-native-paper";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -89,118 +90,125 @@ class MainForm extends Component {
     //   );
     // } else
     return (
-      <>
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <Background
-          style={styles.background}
-          width={widthPercentageToDP(90)}
-          height={heightPercentageToDP(65)}
-        />
-        <View style={{ marginTop: "10%" }}>
-          <Logo
-            style={styles.logo}
-            width={heightPercentageToDP(20)}
-            height={heightPercentageToDP(20)}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Container style={styles.container}>
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
           />
-          <Text style={styles.logotext}>Optimize</Text>
-        </View>
-        <Text style={styles.text}>Sign In</Text>
-
-        <View style={styles.mainView}>
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                borderColor: this.state.emailError ? "red" : "rgba(0, 0, 0, 0)"
-              }
-            ]}
-          >
-            <Input
-              placeholderTextColor="#fff"
-              autoCorrect={false}
-              autoCapitalize="none"
-              style={styles.inputtext}
-              onChangeText={value => {
-                this.setState({
-                  email: value
-                });
-              }}
-              onBlur={() => {
-                this.setState({
-                  emailError: validateWrapper("email", this.state.email)
-                });
-              }}
-              placeholder="Email"
+          <Background
+            style={styles.background}
+            width={widthPercentageToDP(90)}
+            height={heightPercentageToDP(65)}
+          />
+          <View style={{ marginTop: "10%" }}>
+            <Logo
+              style={styles.logo}
+              width={heightPercentageToDP(20)}
+              height={heightPercentageToDP(20)}
             />
-          </Item>
-          {/* {this.state.emailError ? (
+            <Text style={styles.logotext}>Optimize</Text>
+          </View>
+          <KeyboardShift>
+            {() => (
+              <>
+                <Text style={styles.text}>Sign In</Text>
+
+                <View style={styles.mainView}>
+                  <Item
+                    rounded
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: this.state.emailError
+                          ? "red"
+                          : "rgba(0, 0, 0, 0)"
+                      }
+                    ]}
+                  >
+                    <Input
+                      placeholderTextColor="#fff"
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      style={styles.inputtext}
+                      onChangeText={value => {
+                        this.setState({
+                          email: value
+                        });
+                      }}
+                      onBlur={() => {
+                        this.setState({
+                          emailError: validateWrapper("email", this.state.email)
+                        });
+                      }}
+                      placeholder="Email"
+                    />
+                  </Item>
+                  {/* {this.state.emailError ? (
             <Text style={styles.error}>{this.state.emailError}</Text>
           ) : null} */}
 
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                borderColor: this.state.passwordError
-                  ? "red"
-                  : "rgba(0, 0, 0, 0)"
-              }
-            ]}
-          >
-            <Input
-              placeholderTextColor="#fff"
-              secureTextEntry={true}
-              autoCorrect={false}
-              autoCapitalize="none"
-              style={styles.inputtext}
-              onChangeText={value => {
-                this.setState({
-                  password: value
-                });
-              }}
-              onBlur={() => {
-                this.setState({
-                  passwordError: validateWrapper(
-                    "password",
-                    this.state.password
-                  )
-                });
-              }}
-              placeholder="Password"
-            />
-          </Item>
-          {/* {this.state.passwordError ? (
+                  <Item
+                    rounded
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: this.state.passwordError
+                          ? "red"
+                          : "rgba(0, 0, 0, 0)"
+                      }
+                    ]}
+                  >
+                    <Input
+                      placeholderTextColor="#fff"
+                      secureTextEntry={true}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      style={styles.inputtext}
+                      onChangeText={value => {
+                        this.setState({
+                          password: value
+                        });
+                      }}
+                      onBlur={() => {
+                        this.setState({
+                          passwordError: validateWrapper(
+                            "password",
+                            this.state.password
+                          )
+                        });
+                      }}
+                      placeholder="Password"
+                    />
+                  </Item>
+                  {/* {this.state.passwordError ? (
             <Text style={styles.error}>{this.state.passwordError}</Text>
           ) : null} */}
-          <Text
-            onPress={() => {
-              Segment.track("Forgot Password Button");
-              this.props.navigation.push("ForgotPassword");
-            }}
-            style={[styles.link, { paddingVertical: 25, fontSize: 12 }]}
-          >
-            Forgot Password?
-          </Text>
-          <Button
-            block
-            style={styles.button}
-            onPress={() => {
-              this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttontext}>Sign in</Text>
-          </Button>
-        </View>
-        <View>
+                  <Text
+                    onPress={() => {
+                      Segment.track("Forgot Password Button");
+                      this.props.navigation.push("ForgotPassword");
+                    }}
+                    style={[styles.link, { paddingVertical: 25, fontSize: 12 }]}
+                  >
+                    Forgot Password?
+                  </Text>
+                  <Button
+                    block
+                    style={styles.button}
+                    onPress={() => {
+                      this._handleSubmission();
+                    }}
+                  >
+                    <Text style={styles.buttontext}>Sign in</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+          </KeyboardShift>
           <View style={{ marginBottom: 30 }}>
-            {!invite ? null : ( // </Button> //   </Text> //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
+            {!invite && ( // </Button> //   </Text> //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
               <>
                 <Text style={[styles.link, { paddingBottom: 7 }]}>
                   Don’t Have an Account?
@@ -224,13 +232,11 @@ class MainForm extends Component {
               </>
             )}
           </View>
-        </View>
-      
-      </Container>
-        <Modal visible={this.props.loading}>
-          <LoadingScreen top={0} />
-        </Modal>
-        </>
+          <Modal visible={this.props.loading}>
+            <LoadingScreen top={0} />
+          </Modal>
+        </Container>
+      </TouchableWithoutFeedback>
     );
   }
 }
