@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as actionCreators from "../../../store/actions";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, BackHandler } from "react-native";
 import { LinearGradient } from "expo";
 import { connect } from "react-redux";
 import { Button } from "native-base";
@@ -27,8 +27,17 @@ class Transactions extends Component {
     sidemenustate: false,
     open: false
   };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   componentDidMount() {
     this.props.getTransactions();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   _handleSideMenuState = status => {
     this.setState({ sidemenustate: status }, () => {});

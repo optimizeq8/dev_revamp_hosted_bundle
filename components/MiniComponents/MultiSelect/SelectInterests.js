@@ -20,6 +20,7 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 import styles from "./styles";
 import SectionStyle from "./SectionStyle";
 import LoadingScreen from "../LoadingScreen";
+import capitalize from "lodash/capitalize";
 
 class SelectInterests extends Component {
   state = { interests: [] };
@@ -39,16 +40,20 @@ class SelectInterests extends Component {
     ) {
       let interests = [];
       let lenOfLists = 0;
+      console.log("props interest", this.props.interests);
 
       Object.keys(this.props.interests).forEach((key, i) => {
         if (this.props.interests[key].length > 0) {
           interests.push({
             id: key,
-            children: this.props.interests[key]
+            children: this.props.interests[key],
+            name: "SELECT ALL" // should actual be the key name
           });
         }
         lenOfLists += this.props.interests[key].length;
       });
+
+      console.log("interest list", interests);
 
       if (lenOfLists === 0) {
         this.setState({ interests: [] });
@@ -154,7 +159,8 @@ class SelectInterests extends Component {
                   //   );
                   // }}
                   iconKey="icon"
-                  selectText="Select Interests"
+                  selectText={"Select All"}
+                  selectedText={"Select All"}
                   showDropDowns={false}
                   showRemoveAll={true}
                   // readOnlyHeadings={true}

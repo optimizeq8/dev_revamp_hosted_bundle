@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, BackHandler } from "react-native";
 import isEqual from "lodash/isEqual";
 import { LinearGradient, Segment } from "expo";
 import { Text, Container } from "native-base";
@@ -64,6 +64,15 @@ class AddressForm extends Component {
       buildingError: ""
     };
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   componentDidMount() {
     Segment.screen("Address Form Screen");
     this.props.getAddressDetail();
@@ -72,6 +81,7 @@ class AddressForm extends Component {
       kdamount: this.props.navigation.getParam("kdamount", null),
       interestNames: this.props.navigation.getParam("interestNames", null)
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentDidUpdate(prevProps, prevState) {

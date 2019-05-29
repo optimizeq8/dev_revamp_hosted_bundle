@@ -25,15 +25,15 @@ class ErrorRedirect extends Component {
   componentDidMount() {
     Segment.screen("Payment Error Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    this.setState(this.props.navigation.state.params);
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  handleBackButton() {
+  handleBackButton = () => {
+    this.props.navigation.goBack();
     return true;
-  }
+  };
   render() {
     if (!this.props.navigation.state.params) {
       return (
@@ -69,24 +69,36 @@ class ErrorRedirect extends Component {
           </Text>
           <View style={styles.details}>
             <Text style={styles.text}>
-              Payment ID: {this.props.navigation.state.params.paymentId}
+              Payment ID: {this.props.navigation.getParam("paymentId", "")}
             </Text>
             <Text style={styles.text}>
-              Track ID: {this.props.navigation.state.params.trackID}
+              Track ID: {this.props.navigation.getParam("trackID", "")}
             </Text>
             <Text style={styles.text}>
-              Amount: {this.props.navigation.state.params.amount}
+              Amount: {this.props.navigation.getParam("kdamount", 0)} KWD
             </Text>
             <Text style={styles.text}>
-              Date: {this.props.navigation.state.params.date}
+              Date: {this.props.navigation.getParam("date", "")}
             </Text>
             <Text style={styles.text}>
-              Status: {this.props.navigation.state.params.status}
+              Status: {this.props.navigation.getParam("status", "")}
             </Text>
           </View>
           <Button
             style={styles.button}
-            onPress={() => this.props.navigation.navigate("PaymentForm")}
+            onPress={() => {
+              if (this.props.navigation.getParam("isWallet") === "1") {
+                this.props.navigation.navigate("PaymentForm", {
+                  addingCredits: true,
+                  amount: this.props.navigation.getParam("amount", 0)
+                });
+              } else {
+                this.props.navigation.navigate("PaymentForm", {
+                  addingCredits: false,
+                  amount: this.props.navigation.getParam("amount", 0)
+                });
+              }
+            }}
           >
             <Text style={styles.buttontext}> Retry </Text>
           </Button>
