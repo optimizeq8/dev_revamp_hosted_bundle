@@ -164,6 +164,7 @@ class MainForm extends Component {
                       placeholderTextColor="#fff"
                       secureTextEntry={true}
                       autoCorrect={false}
+                      textContentType="password"
                       autoCapitalize="none"
                       style={styles.inputtext}
                       onChangeText={value => {

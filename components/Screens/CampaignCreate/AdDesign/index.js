@@ -87,6 +87,7 @@ class AdDesign extends Component {
       image: null,
       loaded: 0,
       type: "",
+      iosVideoUploaded: false,
       formatted: null,
       brand_nameError: "",
       headlineError: "",
@@ -296,15 +297,18 @@ class AdDesign extends Component {
 
   formatMedia() {
     var body = new FormData();
+    if (!this.state.iosVideoUploaded) {
+      let res = this.state.image.split(this.state.directory);
+      let format = res[1].split(".");
 
-    let res = this.state.image.split(this.state.directory);
-    let format = res[1].split(".");
-    let mime = "application/octet-stream";
-    var photo = {
-      uri: this.state.image,
-      type: this.state.type + "/" + format[1],
-      name: res[1]
-    };
+      var photo = {
+        uri: this.state.image,
+        type: this.state.type + "/" + format[1],
+        name: res[1]
+      };
+      body.append("media", photo);
+      body.append("media_type", this.state.type);
+    }
     if (this.state.longformvideo_media) {
       let resVideo = this.state.longformvideo_media;
       this.state.longformvideo_media.split("/ImagePicker/");
@@ -326,8 +330,6 @@ class AdDesign extends Component {
       );
     }
 
-    body.append("media", photo);
-    body.append("media_type", this.state.type);
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("campaign_id", this.state.campaignInfo.campaign_id);
     if (!this.rejected) {
@@ -338,8 +340,16 @@ class AdDesign extends Component {
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
     body.append(
       "attachment",
-      JSON.stringify(this.state.campaignInfo.attachment)
+      this.state.campaignInfo.attachment === "BLANK"
+        ? this.state.campaignInfo.attachment
+        : JSON.stringify(this.state.campaignInfo.attachment)
     );
+    body.append(
+      "ios_upload",
+      Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
+    );
+    console.log(body);
+
     this.setState({
       formatted: body
     });
@@ -368,9 +378,12 @@ class AdDesign extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-    console.log(data);
 
-    // this.setState({ redirectData: data });
+    this.setState({
+      image: data.queryParams.media,
+      iosVideoUploaded: true,
+      type: "VIDEO"
+    });
   };
   _handleLandscapeVideos = info => {
     if (info.naturalSize.orientation === "landscape") {
@@ -468,10 +481,9 @@ class AdDesign extends Component {
           this.rejected,
           this.state.signal,
           this.state.longformvideo_media &&
-            this.state.longformvideo_media_type === "VIDEO"
+            this.state.longformvideo_media_type === "VIDEO",
+          { iosUploaded: this.state.iosVideoUploaded, image: this.state.image }
         );
-
-      // this.props.navigation.navigate("AdDetails");
     }
   };
   onToggleModal = visibile => {
@@ -899,7 +911,8 @@ const mapDispatchToProps = dispatch => ({
     appChoice,
     rejected,
     cancelUpload,
-    longVideo
+    longVideo,
+    iosUplaod
   ) =>
     dispatch(
       actionCreators.ad_design(
@@ -910,7 +923,8 @@ const mapDispatchToProps = dispatch => ({
         appChoice,
         rejected,
         cancelUpload,
-        longVideo
+        longVideo,
+        iosUplaod
       )
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>

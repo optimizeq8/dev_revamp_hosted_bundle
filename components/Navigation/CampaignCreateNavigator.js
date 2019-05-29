@@ -20,7 +20,7 @@ export default FluidNavigator(
     // Dashboard: Dashboard,
     AdType: AdType,
     AdObjective: AdObjective,
-    AdDesign: AdDesign,
+    AdDesign: { screen: AdDesign, path: "ad_design/" },
     AdDetails: AdDetails,
     AdDesignReview: AdDesignReview,
     SwipeUpDestination: SwipeUpDestination,
