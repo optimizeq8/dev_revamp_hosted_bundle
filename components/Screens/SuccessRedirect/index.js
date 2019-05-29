@@ -23,6 +23,7 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
+    this.props.resetCampaignId();
     Segment.screen("Payment Success Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 7,
@@ -113,7 +114,8 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
+  resetCampaignId: () => dispatch(actionCreators.resetCampaignId())
 });
 export default connect(
   mapStateToProps,

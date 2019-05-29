@@ -104,7 +104,10 @@ class ErrorRedirect extends Component {
           </Button>
           <Button
             style={styles.whitebutton}
-            onPress={() => this.props.navigation.navigate("Dashboard")}
+            onPress={() => {
+              this.props.resetCampaignId();
+              this.props.navigation.navigate("Dashboard");
+            }}
           >
             <Text style={styles.whitebuttontext}> Home </Text>
           </Button>
@@ -119,7 +122,8 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
+  resetCampaignId: () => dispatch(actionCreators.resetCampaignId())
 });
 export default connect(
   mapStateToProps,
