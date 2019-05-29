@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, AsyncStorage } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
@@ -17,7 +17,7 @@ export default createStackNavigator(
     Invitation: Invitation
   },
   {
-    initialRouteName: "Invitation",
+    initialRouteName: "Tutorial",
     navigationOptions: {
       header: null,
 

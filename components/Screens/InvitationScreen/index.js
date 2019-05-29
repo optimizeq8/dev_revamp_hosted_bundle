@@ -42,6 +42,16 @@ export default class Invitation extends Component {
         }
       })
       .catch(err => console.log(err));
+
+    AsyncStorage.getItem("tutorialOpened")
+      .then(value => {
+        if (value == null) {
+          AsyncStorage.setItem("tutorialOpened", "false");
+        } else {
+          AsyncStorage.setItem("tutorialOpened", "true");
+        }
+      })
+      .catch(err => console.log(err));
   }
   toggleComps = () => {
     this.setState({

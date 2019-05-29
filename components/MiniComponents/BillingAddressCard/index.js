@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Button, Text, Item, Input, Label, Content } from "native-base";
 import Sidemenu from "react-native-side-menu";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -87,9 +87,8 @@ class BillingAddressCard extends React.Component {
         c => c.country_code.toLowerCase() === selectedItem.value
       );
       this.props._handleAddressChange("address", replace, selectedItem.value);
-      console.log(area.list);
 
-      await this.setState({
+      this.setState({
         country_code: selectedItem.value,
         areas: area ? area.list : [],
         countryError: ""
@@ -211,14 +210,7 @@ class BillingAddressCard extends React.Component {
             { top: this.props.sidemenustate ? hp(20) : 0 }
           ]}
         >
-          <Content
-            contentContainerStyle={
-              {
-                // justifyContent: "space-around",
-                //display: "flex"
-              }
-            }
-          >
+          <ScrollView>
             <KeyboardShift>
               {() => (
                 <View>
@@ -317,8 +309,8 @@ class BillingAddressCard extends React.Component {
                         Block
                       </Label>
                       <Input
-                        numberOfLines={2}
-                        maxLength={100}
+                        multiline={false}
+                        maxLength={10}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -368,9 +360,10 @@ class BillingAddressCard extends React.Component {
                         Building/House
                       </Label>
                       <Input
-                        numberOfLines={2}
+                        multiline={false}
+                        numberOfLines={1}
                         value={this.props.address.building}
-                        maxLength={30}
+                        maxLength={15}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -419,8 +412,8 @@ class BillingAddressCard extends React.Component {
                     </Label>
                     <Input
                       value={this.props.address.street}
-                      multiline={true}
-                      maxLength={30}
+                      numberOfLines={1}
+                      maxLength={70}
                       style={styles.inputtext}
                       autoCorrect={false}
                       autoCapitalize="none"
@@ -473,8 +466,8 @@ class BillingAddressCard extends React.Component {
                       </Label>
                       <Input
                         value={this.props.address.office}
-                        multiline={true}
-                        maxLength={30}
+                        multiline={false}
+                        maxLength={10}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -516,8 +509,8 @@ class BillingAddressCard extends React.Component {
                       </Label>
                       <Input
                         value={this.props.address.avenue}
-                        multiline={true}
-                        maxLength={100}
+                        multiline={false}
+                        maxLength={10}
                         style={styles.inputtext}
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -538,19 +531,20 @@ class BillingAddressCard extends React.Component {
                 </View>
               )}
             </KeyboardShift>
-          </Content>
-          <TouchableOpacity
-            onPress={() => this._handleSubmission()}
-            style={[
-              styles.button,
-              {
-                opacity: this.props.errorLoading ? 0.5 : 1
-              }
-            ]}
-            disabled={this.props.errorLoading}
-          >
-            <CheckmarkIcon />
-          </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this._handleSubmission()}
+              style={[
+                styles.button,
+                {
+                  opacity: this.props.errorLoading ? 0.5 : 1
+                }
+              ]}
+              disabled={this.props.errorLoading}
+            >
+              <CheckmarkIcon />
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </Sidemenu>
     );

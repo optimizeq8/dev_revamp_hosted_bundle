@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  BackHandler
 } from "react-native";
 import { Button, Content, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
@@ -75,7 +76,15 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack(null);
+    return true;
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
       if (
@@ -216,7 +225,7 @@ class Dashboard extends Component {
               justifyContent: "center",
               zIndex: 13,
               display: this.state.sidemenustate ? "none" : "flex",
-              top: 50,
+              top: 40,
               height: 40
             }}
           >
@@ -250,7 +259,7 @@ class Dashboard extends Component {
                   onPress={() => this.props.navigation.navigate("Wallet")}
                   style={[styles.wallet]}
                 >
-                  <WalletIcon width={hp(3)} height={hp(3)} />
+                  <WalletIcon width={24} height={24} />
                 </TouchableOpacity>
               </>
             )}
