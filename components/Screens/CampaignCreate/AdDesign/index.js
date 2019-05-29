@@ -8,7 +8,8 @@ import {
   FileSystem,
   Segment,
   ImageManipulator,
-  Linking
+  Linking,
+  WebBrowser
 } from "expo";
 import {
   SafeAreaView,
@@ -192,7 +193,7 @@ class AdDesign extends Component {
   pick = async () => {
     await this.askForPermssion();
     let result = ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "All",
+      mediaTypes: Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
       quality: 1,
@@ -344,6 +345,33 @@ class AdDesign extends Component {
     });
   }
 
+  openUploadVideo = async () => {
+    try {
+      this._addLinkingListener();
+      if (this.props.videoUrl)
+        await WebBrowser.openBrowserAsync(this.props.videoUrl);
+      this._removeLinkingListener();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  _addLinkingListener = () => {
+    Linking.addEventListener("url", this._handleRedirect);
+  };
+
+  _removeLinkingListener = () => {
+    Linking.removeEventListener("url", this._handleRedirect);
+  };
+
+  _handleRedirect = event => {
+    WebBrowser.dismissBrowser();
+
+    let data = Linking.parse(event.url);
+    console.log(data);
+
+    // this.setState({ redirectData: data });
+  };
   _handleLandscapeVideos = info => {
     if (info.naturalSize.orientation === "landscape") {
       this.setState({
@@ -558,32 +586,60 @@ class AdDesign extends Component {
       </Item>
     );
     const mediaButton = (
-      <Button
-        style={[
-          styles.inputMiddleButton,
-          { flexDirection: "column", opacity: 1 }
-        ]}
-        onPress={() => {
-          this._pickImage();
-        }}
-      >
-        <Icon
-          style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
-          name="camera"
-        />
-        <Text
-          style={{
-            textAlign: "center",
-            paddingTop: 23,
-            fontFamily: "montserrat-medium",
-            fontSize: 14,
-            width: 150,
-            color: "#FF9D00"
+      <>
+        <Button
+          style={[
+            styles.inputMiddleButton,
+            { flexDirection: "column", opacity: 1 }
+          ]}
+          onPress={() => {
+            this._pickImage();
           }}
         >
-          {image ? "Edit Media" : "Add Media"}
-        </Text>
-      </Button>
+          <Icon
+            style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
+            name="camera"
+          />
+          <Text
+            style={{
+              textAlign: "center",
+              paddingTop: 23,
+              fontFamily: "montserrat-medium",
+              fontSize: 14,
+              width: 150,
+              color: "#FF9D00"
+            }}
+          >
+            {image
+              ? Platform.OS === "ios"
+                ? "Edit Photo"
+                : "Edit Photo"
+              : Platform.OS === "ios"
+              ? "Add Photo"
+              : "Add Media"}
+          </Text>
+        </Button>
+        {Platform.OS === "ios" && (
+          <Text
+            style={[
+              styles.title,
+              {
+                position: "absolute",
+                top: "70%",
+                textDecorationLine: "underline"
+              }
+            ]}
+            onPress={() =>
+              this.props.getVideoUploadUrl(
+                this.props.campaign_id,
+                this.openUploadVideo
+              )
+            }
+          >
+            Upload Video
+          </Text>
+        )}
+      </>
     );
 
     let swipeDestination = (
@@ -779,7 +835,13 @@ class AdDesign extends Component {
               </Text>
             )}
           </Footer>
-          <Modal isVisible={this.props.loading || this.state.isVisible}>
+          <Modal
+            isVisible={
+              this.props.videoUrlLoading ||
+              this.props.loading ||
+              this.state.isVisible
+            }
+          >
             <>
               {this.props.loading && (
                 <Text
@@ -823,7 +885,9 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
-  loading: state.campaignC.loadingDesign
+  loading: state.campaignC.loadingDesign,
+  videoUrlLoading: state.campaignC.videoUrlLoading,
+  videoUrl: state.campaignC.videoUrl
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -848,7 +912,9 @@ const mapDispatchToProps = dispatch => ({
         cancelUpload,
         longVideo
       )
-    )
+    ),
+  getVideoUploadUrl: (campaign_id, openBrowser) =>
+    dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser))
 });
 export default connect(
   mapStateToProps,
