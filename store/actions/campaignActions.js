@@ -176,7 +176,8 @@ export const ad_design = (
   appChoice,
   rejected,
   cancelUplaod,
-  longVideo
+  longVideo,
+  iosUploadVideo
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -215,7 +216,11 @@ export const ad_design = (
       .then(() =>
         !rejected
           ? navigation.push("AdDetails", {
-              image: longVideo ? info._parts[3][1].uri : info._parts[0][1].uri,
+              image: longVideo
+                ? info._parts[3][1].uri
+                : iosUploadVideo.iosUploaded
+                ? iosUploadVideo.image
+                : info._parts[0][1].uri,
               appChoice: appChoice
             })
           : navigation.navigate("Dashboard")
