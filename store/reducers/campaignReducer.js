@@ -18,7 +18,9 @@ const initialState = {
   loadingDetail: false,
   loading: false,
   payment_data: null,
-  languagesList: []
+  languagesList: [],
+  videoUrl: "",
+  videoUrlLoading: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -56,6 +58,17 @@ const reducer = (state = initialState, action) => {
         loadingDesign: false
       };
 
+    case actionTypes.SET_VIDEO_URL:
+      return {
+        ...state,
+        videoUrl: action.payload.media_upload_url,
+        videoUrlLoading: !action.payload.success
+      };
+    case actionTypes.GET_VIDEO_URL_LOADING:
+      return {
+        ...state,
+        videoUrlLoading: action.payload
+      };
     case actionTypes.SET_AD_DETAILS:
       return {
         ...state,
@@ -186,6 +199,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         languagesList: []
+      };
+    case actionTypes.RESET_CAMPAING_ID:
+      return {
+        ...state,
+        campaign_id: ""
       };
     default:
       return state;

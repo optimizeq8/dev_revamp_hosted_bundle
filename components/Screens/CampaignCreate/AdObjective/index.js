@@ -186,7 +186,16 @@ class AdObjective extends Component {
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
-      this.props.ad_objective(this.state.campaignInfo, this.props.navigation);
+      if (this.props.campaign_id !== "")
+        this.props.ad_objective(
+          { campaign_id: this.props.campaign_id, ...this.state.campaignInfo },
+          this.props.navigation
+        );
+      else
+        this.props.ad_objective(
+          { campaign_id: 0, ...this.state.campaignInfo },
+          this.props.navigation
+        );
     }
   };
 
@@ -378,7 +387,8 @@ class AdObjective extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  loading: state.campaignC.loadingObj
+  loading: state.campaignC.loadingObj,
+  campaign_id: state.campaignC.campaign_id
 });
 
 const mapDispatchToProps = dispatch => ({
