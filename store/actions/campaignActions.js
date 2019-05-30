@@ -6,6 +6,65 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const payment_request_credit_card = (
+  campaign_id,
+  openBrowser,
+  navigation
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+    instance
+      .post(`makeccpayment/${campaign_id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.cc_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().campaignC.payment_data.cc_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
+  };
+};
+export const resetCampaignId = () => {
+  return dispatch => {
+    dispatch({ type: actionTypes.RESET_CAMPAING_ID });
+  };
+};
+
 export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
   return (dispatch, getState) => {
     dispatch({
@@ -170,7 +229,8 @@ export const ad_design = (
   appChoice,
   rejected,
   cancelUplaod,
-  longVideo
+  longVideo,
+  iosUploadVideo
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -209,7 +269,11 @@ export const ad_design = (
       .then(() =>
         !rejected
           ? navigation.push("AdDetails", {
-              image: longVideo ? info._parts[3][1].uri : info._parts[0][1].uri,
+              image: longVideo
+                ? info._parts[3][1].uri
+                : iosUploadVideo.iosUploaded
+                ? iosUploadVideo.image
+                : info._parts[0][1].uri,
               appChoice: appChoice
             })
           : navigation.navigate("Dashboard")
@@ -228,6 +292,35 @@ export const ad_design = (
         });
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
+        });
+      });
+  };
+};
+
+export const getVideoUploadUrl = (campaign_id, openBrowser) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.GET_VIDEO_URL_LOADING, payload: true });
+    instance
+      .get(`uploadMedia/${campaign_id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        return dispatch({
+          type: actionTypes.SET_VIDEO_URL,
+          payload: data
+        });
+      })
+      .then(() => openBrowser())
+      .catch(err => {
+        console.log("getVideoUploadUrl", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
       });
   };

@@ -11,9 +11,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    width: "100%",
+    height: "100%"
   },
   text: {
     marginTop: 3,
@@ -30,9 +32,10 @@ const styles = StyleSheet.create({
     width: 250
   },
   view: {
-    flex: 2,
+    // flex: 2,
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
+    paddingVertical: 10
   },
   image: {
     flex: 1,

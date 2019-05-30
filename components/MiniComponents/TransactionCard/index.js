@@ -35,8 +35,10 @@ class TransactionCard extends Component {
               />
             )}
 
-            <Text style={[styles.text]}>Credit Card</Text>
-            <Text style={[styles.subtext]}>{transaction.payment_type}</Text>
+            <Text style={[styles.text]}>Card Type</Text>
+            <Text style={[styles.subtext]}>
+              {transaction.payment_type}: {transaction.card_ending_with}
+            </Text>
             <Text style={[styles.text]}>Transaction ID</Text>
             <Text style={[styles.subtext]}>{transaction.reference_id}</Text>
             <View

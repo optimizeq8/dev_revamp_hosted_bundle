@@ -147,6 +147,11 @@ const styles = StyleSheet.create({
     width: 150
   },
 
+  icons: {
+    color: "#fff",
+    paddingHorizontal: 17,
+    paddingBottom: 10
+  },
   privacy: {
     justifyContent: "flex-start",
     color: globalColors.orange,

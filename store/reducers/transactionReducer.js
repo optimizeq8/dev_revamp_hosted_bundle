@@ -101,7 +101,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         walletUsed: false,
-        loading: !action.payload.success
+        loading: false
       };
     case actionTypes.ERROR_CHECKOUT_WITH_WALLET:
       return {

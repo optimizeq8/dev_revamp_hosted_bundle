@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   BackHandler
 } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { Button, Text, Container, Icon } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
@@ -182,24 +182,24 @@ class Menu extends Component {
                 <Text style={styles.text}>Transactions</Text>
               </View>
             </TouchableOpacity>
-            <View
+            {/*<View
               style={{
                 flexDirection: "column"
               }}
             >
-              {/*<View style={styles.options}>
+            <View style={styles.options}>
                   <Icons.BusinessIcon style={styles.icons} />
                   <Text style={styles.text}>Business Info</Text>
                 </View>*/}
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("ChangePassword")}
-              >
-                <View style={styles.options}>
-                  <Icons.ChangePassIcon style={styles.icons} />
-                  <Text style={[styles.text]}>Change Password</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("ChangePassword")}
+            >
+              <View style={styles.options}>
+                <Icons.ChangePassIcon style={styles.icons} />
+                <Text style={[styles.text]}>Change Password</Text>
+              </View>
+            </TouchableOpacity>
+            {/* </View> */}
 
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("AddressForm")}
@@ -207,6 +207,28 @@ class Menu extends Component {
               <View style={styles.options}>
                 <Icons.AddressIcon style={styles.icons} />
                 <Text style={styles.text}>Address</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => openPrivacy()}>
+              <View style={styles.options}>
+                <Icon
+                  name="security"
+                  type="MaterialIcons"
+                  style={styles.icons}
+                />
+                <Text style={styles.text}>Privacy policy</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => openTerms()}>
+              <View style={styles.options}>
+                <Icon
+                  name="file-document-box"
+                  type="MaterialCommunityIcons"
+                  style={styles.icons}
+                />
+                <Text style={styles.text}>Terms & Condtions</Text>
               </View>
             </TouchableOpacity>
 
@@ -235,20 +257,6 @@ class Menu extends Component {
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            top: "15%"
-          }}
-        >
-          <Text onPress={() => openPrivacy()} style={[styles.privacy]}>
-            Privacy Policy
-          </Text>
-          <Text onPress={() => openTerms()} style={[styles.privacy]}>
-            Terms & Condtion
-          </Text>
-        </View>
         <SlidingUpPanel
           showBackdrop={false}
           ref={c => (this._panel = c)}
@@ -264,7 +272,6 @@ class Menu extends Component {
             <BusinessList navigation={this.props.navigation} />
           </>
         </SlidingUpPanel>
-        {/* </LinearGradient> */}
       </Container>
     );
   }
