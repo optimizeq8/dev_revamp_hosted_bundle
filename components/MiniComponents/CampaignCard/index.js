@@ -107,16 +107,15 @@ class CampaignCard extends Component {
               name="snapchat"
               style={styles.icon}
             />
-            {!this.review_status.includes("PENDING") ||
-              (true && (
-                <Text style={[styles.subtext]}>
-                  {this.review_status.includes("REJECTED") || true
-                    ? `${
-                        campaign.review_status_reason
-                      }\n Tap to submit your Ad again`
-                    : "Tap to view more"}
-                </Text>
-              ))}
+            {!this.review_status.includes("PENDING") && (
+              <Text style={[styles.subtext]}>
+                {this.review_status.includes("REJECTED")
+                  ? `${
+                      campaign.review_status_reason
+                    }\n Tap to submit your Ad again`
+                  : "Tap to view more"}
+              </Text>
+            )}
 
             <View style={{ flexDirection: "row" }}>
               {chart}
