@@ -66,7 +66,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 import isEqual from "lodash/isEqual";
-
+import combineMerge from "./combineMerge";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -142,37 +142,13 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-
     Segment.screen("Select Ad Details Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       checkout_id: this.props.campaign_id,
       step: 4
     });
-
     this.props.get_languages();
-    if (
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.editCampaign
-    ) {
-      const emptyTarget = value => (Array.isArray(value) ? [] : {});
-      const clone = (value, options) =>
-        deepmerge(emptyTarget(value), value, options);
-      function combineMerge(target, source, options) {
-        const destination = target.slice();
-        source.forEach((e, i) => {
-          if (typeof destination[i] === "undefined") {
-            const cloneRequested = options.clone !== false;
-            const shouldClone = cloneRequested && options.isMergeableObject(e);
-            destination[i] = shouldClone ? clone(e, options) : e;
-          } else if (options.isMergeableObject(e)) {
-            destination[i] = deepmerge(target[i], e, options);
-          } else if (target.indexOf(e) === -1) {
-            destination.push(e);
-          }
-        });
-        return destination;
-      }
-
+    if (this.props.navigation.getParam("editCampaign", false)) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
         this.props.navigation.state.params.campaign,
@@ -181,7 +157,25 @@ class AdDetails extends Component {
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
       );
-
+      getCountryName = countries.find(
+        country =>
+          country.value === editedCampaign.targeting.geos[0].country_code
+      ).label;
+      this.onSelectedCountryChange(
+        editedCampaign.targeting.geos[0].country_code,
+        null,
+        getCountryName
+      );
+      let editedRegionNames = country_regions.find(
+        country_region =>
+          country_region.country_code ===
+          editedCampaign.targeting.geos[0].country_code
+      );
+      editedCampaign.targeting.geos[0].region_id.forEach(id => {
+        let name = editedRegionNames.regions.find(region => region.id === id)
+          .name;
+        this.onSelectedRegionChange(id, name);
+      });
       await this.setState({
         campaignInfo: editedCampaign
       });
@@ -271,7 +265,13 @@ class AdDetails extends Component {
     } else {
       replace.targeting.demographics[0].languages.push(selectedItem);
     }
-
+    if (replace.targeting.demographics[0].languages.length === 0) {
+      showMessage({
+        message: "Please choose a language.",
+        type: "warning",
+        position: "top"
+      });
+    }
     this.setState({
       campaignInfo: replace,
       languagesError:
@@ -303,6 +303,8 @@ class AdDetails extends Component {
   };
 
   onSelectedRegionChange = (selectedItem, regionName) => {
+    console.log(selectedItem, regionName);
+
     let replace = this.state.campaignInfo;
     let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
@@ -362,15 +364,31 @@ class AdDetails extends Component {
         ? "Please choose a language."
         : null;
 
-    this.setState({
-      languagesError
-    });
+    const countryError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.targeting.geos[0].country_code
+    );
+    if (countryError) {
+      showMessage({
+        message: "Please choose a country.",
+        type: "warning",
+        position: "top"
+      });
+    } else if (languagesError) {
+      showMessage({
+        message: "Please choose a language.",
+        type: "warning",
+        position: "top"
+      });
+    }
+
     if (
       this._handleBudget(
         this.state.value,
         this.state.campaignInfo.lifetime_budget_micro
       ) &&
-      !languagesError
+      !languagesError &&
+      !countryError
     ) {
       let rep = cloneDeep(this.state.campaignInfo);
       if (rep.targeting.demographics[0].gender === "") {
@@ -409,10 +427,7 @@ class AdDetails extends Component {
       }
       rep.targeting = JSON.stringify(rep.targeting);
 
-      if (
-        this.props.navigation.state.params &&
-        this.props.navigation.state.params.editCampaign
-      ) {
+      if (this.props.navigation.getParam("editCampaign", false)) {
         Segment.trackWithProperties("Select Ad Details Button (Update)", {
           business_name: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
@@ -898,10 +913,8 @@ class AdDetails extends Component {
                   indicatorStyle="white"
                   style={{
                     flexDirection: "column",
-                    // paddingVertical: 20,
                     marginHorizontal: 40,
-                    paddingVertical: 20
-                    // minHeight: 200
+                    paddingBottom: 50
                   }}
                 >
                   <TouchableOpacity

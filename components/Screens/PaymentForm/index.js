@@ -513,14 +513,7 @@ class PaymentForm extends Component {
               </View>
               <TouchableOpacity
                 onPress={() => this._handleSubmission()}
-                style={[
-                  styles.mainCard
-                  // {
-                  //   backgroundColor: !this.props.loading
-                  //     ? "#FF9D00"
-                  //     : "#aa6900"
-                  // }
-                ]}
+                style={[styles.mainCard]}
               >
                 {/*
               ----------For future maybe----------
