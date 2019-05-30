@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Dimensions
-} from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -15,16 +8,14 @@ import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
 import { LinearGradient, Segment } from "expo";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import GlobalStyles, { globalColors } from "../../../Global Styles";
 import formatNumber from "../../formatNumber";
 class CampaignCard extends Component {
+  review_status = this.props.campaign.review_status;
+  campaign_status = this.props.campaign.status;
   state = {
     paused: false,
     status: "PAUSED"
@@ -33,31 +24,25 @@ class CampaignCard extends Component {
     this.setState({ paused: !this.state.paused });
   };
   getLeftText = () => {
-    return this.props.campaign.status === "PAUSED"
+    return this.campaign_status === "PAUSED"
       ? ""
-      : this.props.campaign.review_status === "COMPLETED"
+      : this.review_status === "COMPLETED"
       ? "Complete"
-      : this.props.campaign.review_status.includes("PENDING")
+      : this.review_status.includes("PENDING")
       ? ""
       : "Live";
   };
   getRightText = () => {
-    return this.props.campaign.review_status === "REJECTED" &&
-      this.props.campaign.status !== "LIVE"
+    return this.review_status === "REJECTED" && this.campaign_status !== "LIVE"
       ? "Rejected"
-      : this.props.campaign.status === "PAUSED"
+      : this.campaign_status === "PAUSED"
       ? " Paused"
       : "";
   };
 
   render() {
     let campaign = this.props.campaign;
-
-    let chart = [
-      { spend: campaign.spends }
-      // { impressions: campaign.impressions },
-      // { swipes: campaign.swipes }
-    ].map((category, i) => (
+    let chart = [{ spend: campaign.spends }].map((category, i) => (
       <Chart campaign={campaign} chartCategory={category} key={i} />
     ));
     return (
@@ -68,7 +53,7 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
-            if (this.props.campaign.review_status !== "REJECTED") {
+            if (this.review_status !== "REJECTED") {
               this.props.getCampaignDetails(
                 this.props.campaign.campaign_id,
                 this.props.navigation
@@ -84,9 +69,6 @@ class CampaignCard extends Component {
                 campaign_id: campaign.campaign_id
               });
             }
-            // this.props.navigation.push("CampaignDetails", {
-            //   review_status: this.props.campaign.review_status
-            // });
           }}
           style={styles.campaignButton}
         >
@@ -100,23 +82,21 @@ class CampaignCard extends Component {
                 {this.props.campaign.name}
               </Text>
             </View>
-            {this.props.campaign.review_status.includes("PENDING") && (
+            {this.review_status.includes("PENDING") && (
               <View
                 style={[
                   styles.adStatus,
                   {
-                    backgroundColor: this.props.campaign.review_status.includes(
-                      "REJECTED"
-                    )
+                    backgroundColor: this.review_status.includes("REJECTED")
                       ? "#FF5700"
                       : globalColors.orange
                   }
                 ]}
               >
                 <Text style={styles.reviewtext}>
-                  {this.props.campaign.review_status.includes("PENDING")
+                  {this.review_status.includes("PENDING")
                     ? "In Review"
-                    : this.props.campaign.review_status.includes("REJECTED")
+                    : this.review_status.includes("REJECTED")
                     ? "Ad Rejected"
                     : "Campaign Paused"}
                 </Text>
@@ -127,13 +107,16 @@ class CampaignCard extends Component {
               name="snapchat"
               style={styles.icon}
             />
-            {!this.props.campaign.review_status.includes("PENDING") && (
-              <Text style={[styles.subtext]}>
-                {this.props.campaign.review_status.includes("REJECTED")
-                  ? "Tap here to submit your Ad again"
-                  : "Tap to view more"}
-              </Text>
-            )}
+            {!this.review_status.includes("PENDING") ||
+              (true && (
+                <Text style={[styles.subtext]}>
+                  {this.review_status.includes("REJECTED") || true
+                    ? `${
+                        campaign.review_status_reason
+                      }\n Tap to submit your Ad again`
+                    : "Tap to view more"}
+                </Text>
+              ))}
 
             <View style={{ flexDirection: "row" }}>
               {chart}
@@ -186,12 +169,8 @@ class CampaignCard extends Component {
                 textLeftStyle={[
                   styles.toggleTextLeft,
                   {
-                    fontSize:
-                      this.props.campaign.review_status === "COMPLETED"
-                        ? 8
-                        : 11,
-                    left:
-                      this.props.campaign.review_status === "COMPLETED" ? 4 : 12
+                    fontSize: this.review_status === "COMPLETED" ? 8 : 11,
+                    left: this.review_status === "COMPLETED" ? 4 : 12
                   }
                 ]}
                 textRightStyle={styles.toggleTextRight}
