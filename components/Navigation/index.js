@@ -9,12 +9,12 @@ import PaymentNavigator from "./PaymentNavigator";
 export default createAppContainer(
   createSwitchNavigator({
     AuthRoot: AuthNavigator,
-    MainRoot: { screen: MainNavigator, path: "campaign_create"},
+    MainRoot: { screen: MainNavigator, path: "main_navigator" }
 
-//     CampaignRoot: { screen: CampaignCreateNavigator, path: "campaign_create" },
-    PaymentNavigator: {
-      screen: PaymentNavigator,
-      path: "payment"
-    }
+    //     CampaignRoot: { screen: CampaignCreateNavigator, path: "campaign_create" },
+    // PaymentNavigator: {
+    //   screen: PaymentNavigator,
+    //   path: "payment"
+    // }
   })
 );

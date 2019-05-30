@@ -25,8 +25,8 @@ export default FluidNavigator(
     SwipeUpDestination: SwipeUpDestination,
     SwipeUpChoice: SwipeUpChoice,
     AdPaymentReview: AdPaymentReview,
-    AddressForm: AddressForm,
-    PaymentForm: PaymentForm
+    AddressForm: AddressForm
+    // PaymentForm: PaymentForm
   },
   // {
   //   duration: 6000,
