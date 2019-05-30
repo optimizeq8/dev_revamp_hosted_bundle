@@ -14,6 +14,7 @@ import { LinearGradient } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
+import { SafeAreaView } from "react-navigation";
 
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
@@ -28,7 +29,10 @@ import { colors } from "../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 class ChangePassword extends Component {
   static navigationOptions = {
@@ -69,19 +73,40 @@ class ChangePassword extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-          style={globalStyles.backButton}
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
+        <View
+          style={{
+            justifyContent: "space-between",
+            zIndex: 13,
+            // top: 40,
+            //padding: 2,
+            flexDirection: "row",
+            backgroundColor: "#0000"
+          }}
         >
-          <BackIcon />
-        </TouchableOpacity>
-        <Text style={styles.title}>Personal Info</Text>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.goBack()}
+            style={{
+              left: 5,
+              flex: 0,
+              top: hp(1),
+              left: wp(6)
+              // width: wp(5),
+              //height: hp(5),
+              //position: "absolute"
+            }}
+          >
+            <BackIcon width={24} height={24} />
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={[styles.title, { alignSelf: "center", textAlign: "center" }]}
+        >
+          Personal Info
+        </Text>
         <PersonalInfo
           style={{
             alignSelf: "center",
@@ -197,7 +222,7 @@ class ChangePassword extends Component {
             </KeyboardShift>
           </TouchableWithoutFeedback>
         </View>
-      </Container>
+      </SafeAreaView>
     );
   }
 }

@@ -11,13 +11,12 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30
+    backgroundColor: "#0000"
   },
   title: {
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 20,
     textAlign: "center",
     fontFamily: "montserrat-medium"
   },
