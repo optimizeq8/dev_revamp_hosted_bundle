@@ -31,7 +31,8 @@ export {
   get_ios_versions,
   get_total_reach,
   payment_request_knet,
-  get_languages
+  get_languages,
+  payment_request_credit_card
 } from "./campaignActions";
 
 export {

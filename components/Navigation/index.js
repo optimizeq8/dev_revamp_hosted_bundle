@@ -10,7 +10,7 @@ export default createAppContainer(
   createSwitchNavigator({
     AuthRoot: AuthNavigator,
     MainRoot: MainNavigator,
-    CampaignRoot: CampaignCreateNavigator,
+    // CampaignRoot: CampaignCreateNavigator,
     PaymentNavigator: {
       screen: PaymentNavigator,
       path: "payment"

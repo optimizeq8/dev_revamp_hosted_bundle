@@ -11,10 +11,12 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    flex: 1
+    flex: 1,
+    height: "100%",
+    width: "100%"
   },
   errortext: {
-    marginTop: 5,
+    // marginTop: 5,
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-light",
@@ -22,32 +24,33 @@ const styles = StyleSheet.create({
     lineHeight: 18
   },
   image: {
-    top: "10%",
+    // top: "10%",
     alignSelf: "center",
-    height: heightPercentageToDP(20),
-    width: heightPercentageToDP(20)
+    // height: heightPercentageToDP(20),
+    // width: heightPercentageToDP(20)
+    width: 200,
+    height: 200
   },
   BlurView: {
     zIndex: 10,
     height: "100%"
   },
   mainCard: {
-    top: 20,
-    borderColor: "#FF9D00",
-    backgroundColor: "#FF9D00",
+    // top: 20,
+    // borderColor: "#FF9D00",
+    backgroundColor: "#FFF",
     shadowRadius: 5,
     shadowOpacity: 0.2,
     height: 45,
     width: 200,
     marginLeft: 0,
     marginRight: 0,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
+    borderRadius: 30,
     justifyContent: "center"
   },
   backDrop: {
     position: "absolute",
-    top: -heightPercentageToDP("30%"),
+    top: -275,
     alignSelf: "center"
   },
   text: {
@@ -79,13 +82,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   link: {
-    textAlign: "center",
-    alignSelf: "center",
-    bottom: 10,
+    textAlign: "left",
+    // alignSelf: "flex-start",
+    // bottom: 10,
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 15,
-    paddingHorizontal: 10,
+    fontSize: 12,
+    // paddingHorizontal: 10,
     lineHeight: 20
   },
   walletInfo: {
@@ -98,12 +101,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: "montserrat-medium",
-    paddingHorizontal: 50,
-    paddingVertical: 20,
+    // paddingHorizontal: 50,
+    // paddingVertical: 20,
     textAlign: "center",
     fontSize: 16,
     color: "#fff",
-    textAlign: "center"
+    alignSelf: "center",
+    paddingRight: 10
   },
   headerview: {
     marginTop: 10,
@@ -112,13 +116,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   bottomCard: {
-    top: 15,
+    // top: 15,
+    display: "flex",
+    flexDirection: "column",
     borderColor: "#FF9D00",
-    justifyContent: "center",
+    // justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100,
+    minHeight: 150,
     alignItems: "center",
     shadowRadius: 5,
     shadowOpacity: 0.2
@@ -146,23 +152,44 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   whitebutton: {
-    marginTop: 15,
+    // marginTop: 15,
     backgroundColor: "#fff",
     borderRadius: 0,
     borderTopStartRadius: 15,
     borderBottomStartRadius: 15,
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    // paddingVertical: 20,
+    height: 50,
+    width: 100
   },
   whitebutton2: {
-    marginTop: 15,
+    // marginTop: 15,
+    backgroundColor: "#fff",
+    borderRadius: 0,
+    // borderTopEndRadius: 15,
+    // borderBottomEndRadius: 15,
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    height: 50,
+    width: 100
+
+    // paddingVertical: 20
+  },
+  whitebutton3: {
+    // marginTop: 15,
     backgroundColor: "#fff",
     borderRadius: 0,
     borderTopEndRadius: 15,
     borderBottomEndRadius: 15,
     alignSelf: "center",
     justifyContent: "center",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    height: 50,
+    width: 100
+
+    // paddingVertical: 20
   },
   whitebuttontext: {
     color: "#751AFF",
@@ -173,9 +200,9 @@ const styles = StyleSheet.create({
   money: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 18,
-    fontFamily: "montserrat-bold",
-    paddingTop: 3
+    fontSize: 24,
+    fontFamily: "montserrat-bold"
+    // paddingTop: 3
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

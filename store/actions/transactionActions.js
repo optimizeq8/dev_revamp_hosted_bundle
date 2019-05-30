@@ -242,6 +242,7 @@ export const checkoutwithWallet = campaign_id => {
       .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))
 
       .then(data => {
+        console.log("CHECKOUT_WITH_WALLET data", data);
         return dispatch({
           type: actionTypes.CHECKOUT_WITH_WALLET,
           payload: data
