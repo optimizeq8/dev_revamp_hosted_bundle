@@ -11,7 +11,7 @@ import { Button } from "native-base";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 class UseWallet extends Component {
-  state = { showModal: false };
+  //   state = { showModal: false };
 
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
@@ -19,27 +19,36 @@ class UseWallet extends Component {
     } else {
       this.props._changeToKnet();
     }
+    this.props.setShowWalletModal(false);
   };
   _handleRemoveAmount = () => {
     this.props.removeWalletAmount(this.props.campaign_id);
-    this.setState({
-      showModal: false
-    });
+    // this.props.setShowWalletModal(false);
+
+    // this.setState({
+    //   showModal: false
+    // });
   };
   _handleWallet = async () => {
     await this.props.useWallet(this.props.campaign_id);
-    this.setState({
-      showModal: true
-    });
+    // this.props.setShowWalletModal(true);
+    // this.setState({
+    //   showModal: true
+    // });
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.showWalletModal && this.props.showWalletModal) {
+      this._handleWallet();
+    }
+  }
   render() {
     return (
       <View
         style={{
           flex: 1,
           alignItems: "center",
-          justifyContent: "center",
-          bottom: "5%"
+          justifyContent: "center"
+          //   bottom: "5%"
         }}
       >
         <WalletIcon
@@ -56,7 +65,7 @@ class UseWallet extends Component {
         <Text style={styles.errortext}>
           Use your wallet to activate your Ad
         </Text>
-        {this.props.wallet > 0 && (
+        {/* {this.props.wallet > 0 && (
           <Button
             full
             style={styles.walletButton}
@@ -64,7 +73,7 @@ class UseWallet extends Component {
           >
             <Text style={styles.buttontext}>Use Wallet</Text>
           </Button>
-        )}
+        )} */}
         {this.props.walletUsed && (
           <Button
             full
@@ -81,8 +90,8 @@ class UseWallet extends Component {
           animationType={"fade"}
           transparent={Platform.OS === "ios"}
           //   onDismiss={() => this.setState({ showModal: false })}
-          //   onRequestClose={() => this.setState({ showModal: false })}
-          visible={!this.props.loading && this.state.showModal}
+          onRequestClose={() => this.props.setShowWalletModal(false)}
+          visible={this.props.showWalletModal}
         >
           <BlurView tint="dark" intensity={100} style={styles.BlurView}>
             <View
@@ -93,7 +102,7 @@ class UseWallet extends Component {
               }}
             >
               {this.props.loading ? (
-                <LoadingScreen top={0} />
+                <LoadingScreen top={50} />
               ) : (
                 <>
                   <WalletIcon width={80} height={80} />
@@ -121,7 +130,10 @@ class UseWallet extends Component {
                     <Text style={{ color: "#fff" }}>Confirm</Text>
                   </Button>
                   <Button
-                    onPress={() => this._handleRemoveAmount()}
+                    onPress={() => {
+                      this._handleRemoveAmount();
+                      this.props.setShowWalletModal(false);
+                    }}
                     style={styles.walletButton}
                   >
                     <Text style={{ color: "#fff" }}>Cancel</Text>
