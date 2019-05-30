@@ -112,6 +112,7 @@ class ErrorRedirect extends Component {
           </View>
         </Container>
       </SafeAreaView>
+
     );
   }
 }
@@ -121,7 +122,8 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
+  resetCampaignId: () => dispatch(actionCreators.resetCampaignId())
 });
 export default connect(
   mapStateToProps,

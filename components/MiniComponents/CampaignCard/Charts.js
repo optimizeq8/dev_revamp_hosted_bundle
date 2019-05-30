@@ -26,7 +26,7 @@ export default class Charts extends Component {
               numberOfLines={1}
               style={styles.chartText}
             >
-              {parseInt(fill)}
+               ${spends > 100 ? parseInt(spends) : parseFloat(spends).toFixed(2)}
             </Text>
           )}
         </AnimatedCircularProgress>

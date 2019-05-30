@@ -37,6 +37,8 @@ class CampaignCard extends Component {
       ? ""
       : this.props.campaign.review_status === "COMPLETED"
       ? "Complete"
+      : this.props.campaign.review_status.includes("PENDING")
+      ? ""
       : "Live";
   };
   getRightText = () => {
