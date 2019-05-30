@@ -21,7 +21,6 @@ class ErrorComponent extends Component {
   componentDidMount() {
     Segment.screen(" Error Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    
   }
 
   componentWillUnmount() {
@@ -65,15 +64,27 @@ class ErrorComponent extends Component {
           </Text>
           <Button
             style={styles.button}
-            onPress={() => this.props.navigation.goBack()}
+            onPress={() => {
+              this.props.dashboard
+                ? this.props.navigation.navigate("Invitation")
+                : this.props.navigation.goBack();
+            }}
           >
-            <Text style={styles.buttontext}> Go Back </Text>
+            <Text style={styles.buttontext}>
+              {this.props.dashboard ? "Signin" : "Go Back"}
+            </Text>
           </Button>
           <Button
             style={styles.whitebutton}
-            onPress={() => this.props.navigation.navigate("Dashboard")}
+            onPress={() => {
+              this.props.dashboard
+                ? this.props.navigation.navigate("Signin")
+                : this.props.navigation.navigate("Dashboard");
+            }}
           >
-            <Text style={styles.whitebuttontext}> Home </Text>
+            <Text style={styles.whitebuttontext}>
+              {this.props.dashboard ? "Relaod" : "Home"}
+            </Text>
           </Button>
         </View>
       </Container>

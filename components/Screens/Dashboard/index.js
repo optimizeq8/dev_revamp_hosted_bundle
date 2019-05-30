@@ -12,6 +12,8 @@ import {
 import { Button, Content, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
 import isNull from "lodash/isNull";
+import { SafeAreaView } from "react-navigation";
+import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 import { LinearGradient, Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
@@ -197,11 +199,6 @@ class Dashboard extends Component {
     if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
       return (
         <>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
-            style={styles.gradient}
-          />
           <LoadingScreen dash={true} top={0} />
         </>
       );
@@ -210,61 +207,70 @@ class Dashboard extends Component {
       !this.props.loadingAccountMgmt
     ) {
       return (
-        <View>
-          <Text>ERROR</Text>
-        </View>
+        <ErrorComponent
+          dashboard={true}
+          loading={this.props.loading}
+          navigation={this.props.navigation}
+        />
       );
     } else {
       // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
-        <>
-          <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: "#0000" }}
+          forceInset={{ bottom: "never" }}
+        >
+          {this.state.anim && (
+            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+          )}
 
-          <View
-            style={{
-              justifyContent: "center",
-              zIndex: 13,
-              display: this.state.sidemenustate ? "none" : "flex",
-              top: 40,
-              height: 40
-            }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                if (this.state.open === false) {
-                  this.startAnimation();
-                } else {
-                  this.closeAnimation();
-                }
+          {!this.state.sidemenustate && (
+            <View
+              style={{
+                justifyContent: "center",
+                zIndex: 13,
+                display: this.state.sidemenustate ? "none" : "flex",
+                // top: 40,
+                height: 40,
+                backgroundColor: "#0000"
               }}
             >
-              <LottieView
-                style={{
-                  left: 5,
-                  // width: wp(5),
-                  height: hp(5),
-                  position: "absolute"
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  if (this.state.open === false) {
+                    this.startAnimation();
+                  } else {
+                    this.closeAnimation();
+                  }
                 }}
-                resizeMode="contain"
-                source={require("../../../assets/animation/menu-btn.json")}
-                progress={this.state.menu}
-              />
-            </TouchableWithoutFeedback>
-            {!this.state.open && (
-              <>
-                <Text style={[styles.text]}>
-                  {this.props.mainBusiness.brandname}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Wallet")}
-                  style={[styles.wallet]}
-                >
-                  <WalletIcon width={24} height={24} />
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-
+              >
+                <LottieView
+                  style={{
+                    left: 5,
+                    // width: wp(5),
+                    height: hp(5),
+                    position: "absolute"
+                  }}
+                  resizeMode="contain"
+                  source={require("../../../assets/animation/menu-btn.json")}
+                  progress={this.state.menu}
+                />
+              </TouchableWithoutFeedback>
+              {!this.state.open && (
+                <>
+                  <Text style={[styles.text]}>
+                    {this.props.mainBusiness.brandname}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate("Wallet")}
+                    style={[styles.wallet]}
+                  >
+                    <WalletIcon width={24} height={24} />
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+          )}
           <Animatable.View
             duration={500}
             onAnimationStart={() =>
@@ -278,12 +284,6 @@ class Dashboard extends Component {
             }}
           >
             <Container style={styles.container}>
-              <LinearGradient
-                colors={[colors.background1, colors.background2]}
-                locations={[0.7, 1]}
-                style={styles.gradient}
-              />
-
               <Sidemenu
                 onChange={isOpen => {
                   if (isOpen === false) this._handleSideMenuState(isOpen);
@@ -294,7 +294,13 @@ class Dashboard extends Component {
                 openMenuOffset={wp("85%")}
                 isOpen={this.state.sidemenustate}
               >
-                <View padder style={[styles.mainCard]}>
+                <View
+                  padder
+                  style={[
+                    styles.mainCard,
+                    { top: this.state.sidemenustate ? 40 : 0 }
+                  ]}
+                >
                   <View
                     style={{
                       flexDirection: "row",
@@ -388,7 +394,6 @@ class Dashboard extends Component {
               </Sidemenu>
             </Container>
           </Animatable.View>
-
           <Animatable.View
             duration={800}
             animation={this.state.anim ? "fadeIn" : "fadeOut"}
@@ -399,7 +404,7 @@ class Dashboard extends Component {
               navigation={this.props.navigation}
             />
           </Animatable.View>
-        </>
+        </SafeAreaView>
       );
     }
   }

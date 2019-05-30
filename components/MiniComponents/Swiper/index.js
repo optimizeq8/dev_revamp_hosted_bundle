@@ -103,7 +103,13 @@ Swiper.defaultProps = {
 };
 
 const styles = {
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    height: "100%",
+    margin: 0,
+    padding: 0,
+    backgroundColor: "#0000"
+  },
   slide: {
     width,
     // marginBottom: 35,

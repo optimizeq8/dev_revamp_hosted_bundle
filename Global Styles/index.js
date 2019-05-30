@@ -10,7 +10,7 @@ export const globalColors = {
 export default (styles = {
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF"
+    backgroundColor: "transparent"
   },
   title: {
     fontSize: 24,

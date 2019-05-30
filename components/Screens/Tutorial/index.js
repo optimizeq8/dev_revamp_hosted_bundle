@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { View, Image, ScrollView, AsyncStorage } from "react-native";
+import { SafeAreaView } from "react-navigation";
+
 import {
   Card,
   Button,
@@ -26,6 +28,7 @@ import Invitation from "../InvitationScreen";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import isNull from "lodash/isNull";
+import Background from "../../../assets/SVGs/Background";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -72,7 +75,9 @@ class Tutorial extends Component {
         <>
           <Image
             style={{
-              height: heightPercentageToDP(97),
+              height: heightPercentageToDP(100),
+
+              flex: 1,
               alignContent: "center",
               alignSelf: "center",
               bottom: i === 4 ? heightPercentageToDP("-2%") : 0
@@ -123,36 +128,41 @@ class Tutorial extends Component {
       return <Invitation navigation={this.props.navigation} />;
     } else {
       return (
-        <Container style={styles.container}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.3, 1]}
-            style={styles.gradient}
-          />
-          <Swiper
-            backgroundColor={["#4285f4", "#0f9d58", "#f4b400", "#db4437"]}
-            dots
-            dotsColor="rgba(255, 255, 255, 0.25)"
-            dotsColorActive="rgba(255, 255, 255, 1)"
-          >
-            <Slide
-              url={require("../../../assets/images/tutorial/tutorial-1.png")}
-              i={1}
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: "#0000" }}
+          forceInset={{ bottom: "never" }}
+        >
+          <Container style={styles.container}>
+            <Background
+              style={[styles.background]}
+              width={widthPercentageToDP(85)}
+              height={heightPercentageToDP(61)}
             />
-            <Slide
-              url={require("../../../assets/images/tutorial/tutorial-2.png")}
-              i={2}
-            />
-            <Slide
-              url={require("../../../assets/images/tutorial/tutorial-3.png")}
-              i={3}
-            />
-            <Slide
-              url={require("../../../assets/images/tutorial/tutorial-4.png")}
-              i={4}
-            />
-          </Swiper>
-        </Container>
+            <Swiper
+              backgroundColor={["#0000", "#0000", "#0000", "#0000"]}
+              dots
+              dotsColor="rgba(255, 255, 255, 0.25)"
+              dotsColorActive="rgba(255, 255, 255, 1)"
+            >
+              <Slide
+                url={require("../../../assets/images/tutorial/tutorial-1.png")}
+                i={1}
+              />
+              <Slide
+                url={require("../../../assets/images/tutorial/tutorial-2.png")}
+                i={2}
+              />
+              <Slide
+                url={require("../../../assets/images/tutorial/tutorial-3.png")}
+                i={3}
+              />
+              <Slide
+                url={require("../../../assets/images/tutorial/tutorial-4.png")}
+                i={4}
+              />
+            </Swiper>
+          </Container>
+        </SafeAreaView>
       );
     }
   }

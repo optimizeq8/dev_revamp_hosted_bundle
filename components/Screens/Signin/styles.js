@@ -13,19 +13,20 @@ export const colors = {
 const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    marginTop: heightPercentageToDP(10),
+    flex: 1
   },
   logo: {
     alignSelf: "center",
     position: "relative"
+    // top: heightPercentageToDP(1)
   },
   logotext: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
     fontFamily: "montserrat-medium",
-    bottom: "24%"
+    bottom: "21%"
   },
 
   mainView: {
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
   },
   background: {
     position: "absolute",
+    top: heightPercentageToDP(5),
     opacity: 0.45,
     alignSelf: "center",
     zIndex: 0

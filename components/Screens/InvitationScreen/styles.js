@@ -71,11 +71,13 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: "relative",
-    alignSelf: "center"
+    alignSelf: "center",
+    top: heightPercentageToDP(0.25)
     // marginBottom: "40%"
   },
   background: {
     position: "absolute",
+    top: heightPercentageToDP(5),
     opacity: 0.45,
     alignSelf: "center",
     zIndex: 0

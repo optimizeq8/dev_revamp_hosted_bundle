@@ -5,12 +5,26 @@ export const colors = {
   background1: "#751AFF",
   background2: "#751AFF"
 };
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
+
 const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+    // marginTop: heightPercentageToDP(5.2),
+    backgroundColor: "transparent"
+    // flex: 1,
+    // height: "100%"
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.2,
+    top: 80,
+    alignSelf: "center",
+    zIndex: 0
   },
   image: {
     alignSelf: "center",
@@ -18,16 +32,7 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 15
   },
-  mainCard: {
-    top: 15,
-    shadowColor: "#595959",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    flex: 1
-  },
+
   text: {
     textAlign: "center",
     color: "#717171",
