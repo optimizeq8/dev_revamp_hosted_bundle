@@ -364,25 +364,23 @@ class Dashboard extends Component {
                   {this.props.loading ? (
                     <ActivityIndicator size="large" />
                   ) : (
-                    <Content contentContainerStyle={{ flex: 1 }}>
-                      <FlatList
-                        contentContainerStyle={{ paddingBottom: hp(35) }}
-                        keyExtractor={item => item.campaign_id}
-                        data={this.props.filteredCampaigns}
-                        onEndReached={() => this.loadMoreData()}
-                        onEndReachedThreshold={1}
-                        renderItem={({ item, index }) => (
-                          <CampaignCard
-                            campaign={item}
-                            navigation={this.props.navigation}
-                            key={item.campaign_id}
-                          />
-                        )}
-                        onRefresh={() => this.reloadData()}
-                        refreshing={this.state.fetching_from_server}
-                        ListFooterComponent={() => this.renderFooter()}
-                      />
-                    </Content>
+                    <FlatList
+                      contentContainerStyle={{ paddingBottom: hp(35) }}
+                      keyExtractor={item => item.campaign_id}
+                      data={this.props.filteredCampaigns}
+                      onEndReached={() => this.loadMoreData()}
+                      onEndReachedThreshold={0.3}
+                      renderItem={({ item, index }) => (
+                        <CampaignCard
+                          campaign={item}
+                          navigation={this.props.navigation}
+                          key={item.campaign_id}
+                        />
+                      )}
+                      onRefresh={() => this.reloadData()}
+                      refreshing={this.state.fetching_from_server}
+                      ListFooterComponent={() => this.renderFooter()}
+                    />
                   )}
                 </View>
               </Sidemenu>
