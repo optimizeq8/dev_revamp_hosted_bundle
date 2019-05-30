@@ -11,7 +11,6 @@ export const payment_request_credit_card = (
   openBrowser,
   navigation
 ) => {
-  console.log("payment_request_credit_card");
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING,
@@ -58,6 +57,8 @@ export const payment_request_credit_card = (
           }
         });
       });
+  };
+};
 export const resetCampaignId = () => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_ID });
