@@ -39,7 +39,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 0,
+      amount: "",
       topUp: false,
       inputA: false,
       amountError: "",
@@ -61,11 +61,18 @@ class Wallet extends Component {
     const amountError = validateWrapper("Budget", this.state.amount);
     this.setState({ amountError });
     if (!amountError) {
-      this.props.getWalletAmountInKwd(this.state.amount);
-      this.props.navigation.navigate("PaymentForm", {
-        amount: this.state.amount,
-        addingCredits: true
-      });
+      this.setState(
+        {
+          modalVisible: false
+        },
+        () => {
+          this.props.getWalletAmountInKwd(this.state.amount);
+          this.props.navigation.navigate("PaymentForm", {
+            amount: this.state.amount,
+            addingCredits: true
+          });
+        }
+      );
     }
   };
 
@@ -133,7 +140,6 @@ class Wallet extends Component {
         <Modal
           animationType={"fade"}
           transparent
-          onDismiss={() => this.setState({ modalVisible: false })}
           onRequestClose={() => this.setState({ modalVisible: false })}
           visible={this.state.modalVisible}
         >

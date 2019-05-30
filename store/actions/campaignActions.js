@@ -6,6 +6,58 @@ const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
+export const payment_request_credit_card = (
+  campaign_id,
+  openBrowser,
+  navigation
+) => {
+  console.log("payment_request_credit_card");
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+    instance
+      .post(`makeccpayment/${campaign_id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.cc_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().campaignC.payment_data.cc_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
 export const resetCampaignId = () => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_ID });

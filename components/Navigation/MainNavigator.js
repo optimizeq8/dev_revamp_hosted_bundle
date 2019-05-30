@@ -17,6 +17,16 @@ import PersonalInfo from "../Screens/PersonalInfo";
 import Wallet from "../Screens/Wallet";
 import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
 
+import AdType from "../Screens/CampaignCreate/AdType";
+import AdObjective from "../Screens/CampaignCreate/AdObjective";
+import AdDesign from "../Screens/CampaignCreate/AdDesign";
+import AdDetails from "../Screens/CampaignCreate/AdDetails";
+import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
+import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
+import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
+import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
+import PaymentForm from "../Screens/PaymentForm";
+
 export default FluidNavigator(
   {
     Home: Home,
@@ -31,7 +41,17 @@ export default FluidNavigator(
     PersonalInfo: PersonalInfo,
     MultiSelect: MultiSelect,
     TransactionList: TransactionList,
-    Wallet: Wallet
+    Wallet: Wallet,
+    AdType: AdType,
+    AdObjective: AdObjective,
+    AdDesign: AdDesign,
+    AdDetails: AdDetails,
+    AdDesignReview: AdDesignReview,
+    SwipeUpDestination: SwipeUpDestination,
+    SwipeUpChoice: SwipeUpChoice,
+    AdPaymentReview: AdPaymentReview,
+    AddressForm: AddressForm,
+    PaymentForm: PaymentForm
   },
   {
     initialRouteName: "Dashboard",
