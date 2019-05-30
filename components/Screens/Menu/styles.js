@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   },
   menuModal: {
     // ...StyleSheet.absoluteFillObject
+    backgroundColor: "#0000",
     zIndex: 10,
     elevation: 1
   },
@@ -133,8 +134,8 @@ const styles = StyleSheet.create({
     color: "grey"
   },
   logoutIcon: {
-    position: "absolute",
-    top: 20,
+    // position: "absolute",
+    // top: 20,
     left: widthPercentageToDP("85%"),
     zIndex: 10
   },

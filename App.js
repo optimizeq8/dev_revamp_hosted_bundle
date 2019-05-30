@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import {
   StatusBar,
+  Platform,
   StyleSheet,
   View,
   Animated,
@@ -37,7 +38,8 @@ import {
   SplashScreen,
   Segment,
   Permissions,
-  Notifications
+  Notifications,
+  LinearGradient
 } from "expo";
 import NavigationService from "./NavigationService";
 
@@ -58,6 +60,7 @@ import {
 
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
+import { colors } from "./components/GradiantColors/colors";
 
 // Sentry.enableInExpoDevelopment = true;
 Sentry.config(
@@ -198,8 +201,19 @@ class App extends React.Component {
 
       return (
         <Provider store={store}>
+          <StatusBar barStyle="light-content" />
+          <LinearGradient
+            colors={["#751AFF", "#6268FF"]}
+            locations={[0.3, 1]}
+            style={styles.gradient}
+          />
+          <View
+            style={{
+              height: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+              backgroundColor: "transparent"
+            }}
+          />
           <View style={styles.container}>
-            <StatusBar barStyle="light-content" />
             <Root>
               <AppNavigator
                 uriPrefix={prefix}
@@ -359,9 +373,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "stretch",
-    backgroundColor: "#751AFF",
+    backgroundColor: "#0000",
     justifyContent: "center"
   },
 
-  text: { color: "#fff" }
+  text: { color: "#fff" },
+
+  gradient: {
+    ...StyleSheet.absoluteFillObject
+  }
 });

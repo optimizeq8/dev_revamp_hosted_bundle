@@ -82,7 +82,7 @@ export default FluidNavigator(
       }
     },
     cardStyle: {
-      backgroundColor: "#751AFF"
+      backgroundColor: "transparent"
     }
   }
 );

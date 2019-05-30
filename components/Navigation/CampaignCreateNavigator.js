@@ -50,7 +50,7 @@ export default FluidNavigator(
       }
     },
     cardStyle: {
-      backgroundColor: "#751AFF"
+      backgroundColor: "#0000"
     }
   }
 );

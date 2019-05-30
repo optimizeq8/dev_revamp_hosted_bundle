@@ -11,21 +11,21 @@ export const SocialPlatforms = [
     icon: <Snapchat />,
     title: "Snapchat",
     image: require("../../../../assets/images/AdTypes/SnapAd.gif")
-  },
-  {
-    id: 2,
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    icon: <Twitter />,
-    title: "",
-    image: require("../../../../assets/images/AdTypes/StoryAd.gif")
-  },
-  {
-    id: 3,
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    icon: <Instagram />,
-    title: "",
-    image: require("../../../../assets/images/AdTypes/CollectionAd.gif")
   }
+  // {
+  //   id: 2,
+  //   text: "Create Your Ad Now!",
+  //   rout: "AdObjective",
+  //   icon: <Twitter />,
+  //   title: "",
+  //   image: require("../../../../assets/images/AdTypes/StoryAd.gif")
+  // },
+  // {
+  //   id: 3,
+  //   text: "Create Your Ad Now!",
+  //   rout: "AdObjective",
+  //   icon: <Instagram />,
+  //   title: "",
+  //   image: require("../../../../assets/images/AdTypes/CollectionAd.gif")
+  // }
 ];

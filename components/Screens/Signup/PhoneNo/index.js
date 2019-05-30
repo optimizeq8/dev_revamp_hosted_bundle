@@ -158,7 +158,11 @@ class PhoneNo extends Component {
               textStyle={{
                 ...styles.input,
                 color: this.props.invite ? "#fff" : "#000",
-                borderBottomColor: this.state.valid ? "#5F5F5F" : "red",
+                borderBottomColor: this.props.invite
+                  ? "#0000"
+                  : this.state.valid
+                  ? "#5F5F5F"
+                  : "red",
                 left: "3%"
               }}
               flagStyle={{
@@ -167,6 +171,7 @@ class PhoneNo extends Component {
               }}
               textProps={{
                 autoFocus: false,
+                maxLength: 14,
                 onBlur: () => {
                   if (!this.phone.isValidNumber()) {
                     showMessage({

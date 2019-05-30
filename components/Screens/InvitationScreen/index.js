@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, AsyncStorage, TouchableOpacity } from "react-native";
+import {
+  View,
+  AsyncStorage,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import { Button, Text, Container, Icon, Badge } from "native-base";
 import { LinearGradient } from "expo";
 import Verification from "../Signup/Verification";
@@ -81,6 +87,7 @@ export default class Invitation extends Component {
             locations={[0.7, 1]}
             style={styles.gradient}
           />
+
           <Animatable.View
             // onAnimationEnd={() => this.setState({ animationActive: true })}
             delay={500}
@@ -92,74 +99,81 @@ export default class Invitation extends Component {
               height={heightPercentageToDP(65)}
             />
           </Animatable.View>
-          <View style={[styles.mainCard]}>
-            <Logo
-              style={styles.logo}
-              width={heightPercentageToDP(20)}
-              height={heightPercentageToDP(20)}
-            />
-            <Text style={styles.logotext}>Optimize</Text>
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <View style={[styles.mainCard]}>
+              <Logo
+                style={styles.logo}
+                width={heightPercentageToDP(20)}
+                height={heightPercentageToDP(20)}
+              />
+              <Text style={styles.logotext}>Optimize</Text>
 
-            <Animatable.View
-              animation={
-                this.state.animationActive
-                  ? this.state.renderInviteCode
-                    ? "fadeInLeftBig"
-                    : "fadeOutLeftBig"
-                  : ""
-              }
-              style={{
-                position: "absolute",
-                height: "45%",
-                alignSelf: "center",
-                top: "20%"
-              }}
-            >
-              <Verification invite={true} />
-            </Animatable.View>
-
-            {this.state.animationActive && (
               <Animatable.View
                 animation={
                   this.state.animationActive
                     ? this.state.renderInviteCode
-                      ? "fadeOutRightBig"
-                      : "fadeInRightBig"
+                      ? "fadeInLeftBig"
+                      : "fadeOutLeftBig"
                     : ""
                 }
-                style={{ height: "45%" }}
-              >
-                <GetInviteCode toggleComps={this.toggleComps} />
-              </Animatable.View>
-            )}
-            {this.state.renderInviteCode && (
-              <Text style={[styles.link]} onPress={() => this.toggleComps()}>
-                Get an invitation code now!
-              </Text>
-            )}
-
-            <View style={styles.registered}>
-              <Text style={[styles.registeredText, { bottom: 5 }]}>
-                Already registered?
-              </Text>
-              <Button
-                rounded
-                onPress={() => {
-                  this.props.navigation.navigate("Signin", { invite: true });
+                style={{
+                  position: "absolute",
+                  height: "45%",
+                  alignSelf: "center",
+                  top: "20%"
                 }}
-                style={styles.bottomView}
               >
-                <Text
-                  style={[
-                    styles.buttontext,
-                    { color: "#fff", fontFamily: "montserrat-semibold" }
-                  ]}
+                <Verification invite={true} />
+              </Animatable.View>
+
+              {this.state.animationActive && (
+                <Animatable.View
+                  animation={
+                    this.state.animationActive
+                      ? this.state.renderInviteCode
+                        ? "fadeOutRightBig"
+                        : "fadeInRightBig"
+                      : ""
+                  }
+                  style={{ height: "45%" }}
                 >
-                  Log In!
+                  <GetInviteCode toggleComps={this.toggleComps} />
+                </Animatable.View>
+              )}
+              {this.state.renderInviteCode && (
+                <Text style={[styles.link]} onPress={() => this.toggleComps()}>
+                  Get an invitation code now!
                 </Text>
-              </Button>
+              )}
+
+              <View style={styles.registered}>
+                <Text style={[styles.registeredText, { bottom: 5 }]}>
+                  Already registered?
+                </Text>
+                <Button
+                  rounded
+                  onPress={() => {
+                    this.props.navigation.navigate("Signin", {
+                      invite: true
+                    });
+                  }}
+                  style={styles.bottomView}
+                >
+                  <Text
+                    style={[
+                      styles.buttontext,
+                      { color: "#fff", fontFamily: "montserrat-semibold" }
+                    ]}
+                  >
+                    Log In!
+                  </Text>
+                </Button>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Container>
       );
   }

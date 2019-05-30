@@ -80,202 +80,198 @@ class Menu extends Component {
   render() {
     return (
       <Container style={[styles.menuModal]}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
+        > */}
+        {/* <BackdropIcon
+          style={styles.backDrop}
+          height={heightPercentageToDP("100%")}
+        /> */}
+        <Background
+          style={[styles.background]}
+          width={widthPercentageToDP(85)}
+          height={heightPercentageToDP(61)}
+        />
+
+        <TouchableOpacity
+          onPress={() => {
+            this.props.clearPushToken(
+              this.props.navigation,
+              this.props.userInfo.userid
+            );
+          }}
+          style={styles.logoutIcon}
         >
-          <BackdropIcon
-            style={styles.backDrop}
-            height={heightPercentageToDP("100%")}
-          />
-          <Background
-            style={[styles.background]}
-            width={widthPercentageToDP(85)}
-            height={heightPercentageToDP(61)}
-          />
+          <Icons.LogoutIcon style={styles.icons} />
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              this.props.clearPushToken(
-                this.props.navigation,
-                this.props.userInfo.userid
-              );
-            }}
-            style={styles.logoutIcon}
+        <View
+          style={{
+            // marginTop: heightPercentageToDP("8.7%"),
+            marginBottom: 0,
+            backgroundColor: "#0000"
+          }}
+        >
+          <Text style={styles.menutext}> Menu </Text>
+          <Text style={styles.businessTitle}>
+            {!this.props.mainBusiness ? "" : this.props.mainBusiness.brandname}
+          </Text>
+          <Text style={styles.businessname}>
+            {this.props.mainBusiness.businessname}
+          </Text>
+          <Button
+            style={[
+              styles.button,
+              {
+                elevation: this.state.slidePanel ? -1 : 1
+                //zIndex: this.state.slidePanel ? -1 : 1
+              }
+            ]}
+            onPress={() => this.slidePanelShow()}
           >
-            <Icons.LogoutIcon />
-          </TouchableOpacity>
-
-          <View
-            style={{ marginTop: heightPercentageToDP("8.7%"), marginBottom: 0 }}
-          >
-            <Text style={styles.menutext}> Menu </Text>
-            <Text style={styles.businessTitle}>
-              {!this.props.mainBusiness
-                ? ""
-                : this.props.mainBusiness.brandname}
-            </Text>
-            <Text style={styles.businessname}>
-              {this.props.mainBusiness.businessname}
-            </Text>
-            <Button
-              style={[
-                styles.button,
-                {
-                  elevation: this.state.slidePanel ? -1 : 1
-                  //zIndex: this.state.slidePanel ? -1 : 1
-                }
-              ]}
-              onPress={() => this.slidePanelShow()}
-            >
-              <Text style={styles.buttontext}>Switch Account</Text>
-              <DownArrowIcon
-                style={{ marginLeft: 5, right: 20, top: 1 }}
-                stroke="#fff"
-              />
-            </Button>
-            <View>
-              {/* <Icons.DropDownIcon 
+            <Text style={styles.buttontext}>Switch Account</Text>
+            <DownArrowIcon
+              style={{ marginLeft: 5, right: 20, top: 1 }}
+              stroke="#fff"
+            />
+          </Button>
+          <View>
+            {/* <Icons.DropDownIcon style={styles.icons}
                 style={styles.DropIcon}
               /> */}
-            </View>
-
-            <View
-              style={{
-                paddingLeft: 20
-                // flexDirection: "column"
-                // justifyContent: "space-evenly"
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("PersonalInfo")}
-              >
-                <View style={styles.options}>
-                  <Icons.PersonalInfo />
-                  <Text style={styles.text}>Personal Info</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Wallet")}
-              >
-                <View
-                  style={{
-                    alignItems: "center",
-                    left: widthPercentageToDP(4),
-                    marginBottom: 20,
-                    marginTop: 10,
-                    flexDirection: "row"
-                  }}
-                >
-                  <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
-                  <Text style={styles.text}>Wallet</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("TransactionList")
-                }
-              >
-                <View style={[styles.options]}>
-                  <Icons.TransactionIcon />
-                  <Text style={styles.text}>Transactions</Text>
-                </View>
-              </TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: "column"
-                }}
-              >
-                {/*<View style={styles.options}>
-                  <Icons.BusinessIcon  />
-                  <Text style={styles.text}>Business Info</Text>
-                </View>*/}
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("ChangePassword")
-                  }
-                >
-                  <View style={styles.options}>
-                    <Icons.ChangePassIcon />
-                    <Text style={[styles.text]}>Change Password</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddressForm")}
-              >
-                <View style={styles.options}>
-                  <Icons.AddressIcon />
-                  <Text style={styles.text}>Address</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => openPrivacy()}>
-                <View style={styles.options}>
-                  <Icon
-                    name="security"
-                    type="MaterialIcons"
-                    style={styles.icons}
-                  />
-                  <Text style={styles.text}>Privacy policy</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => openTerms()}>
-                <View style={styles.options}>
-                  <Icon
-                    name="file-document-box"
-                    type="MaterialCommunityIcons"
-                    style={styles.icons}
-                  />
-                  <Text style={styles.text}>Terms & Condtions</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.clearPushToken(
-                    this.props.navigation,
-                    this.props.userInfo.userid
-                  );
-                }}
-              >
-                <View
-                  style={{
-                    alignItems: "center",
-                    left: widthPercentageToDP(4),
-                    marginBottom: 20,
-                    marginTop: 10,
-                    flexDirection: "row"
-                  }}
-                >
-                  <Icons.LogoutIcon
-                    style={[styles.icons, { marginRight: 16 }]}
-                  />
-                  <Text style={styles.text}>Logout</Text>
-                </View>
-              </TouchableOpacity>
-              <Text style={styles.version}>Version:0.1.1/7/6</Text>
-            </View>
           </View>
 
-          <SlidingUpPanel
-            showBackdrop={false}
-            ref={c => (this._panel = c)}
-            draggableRange={this.props.draggableRange}
-            allowDragging={false}
-            animatedValue={this._draggedValue}
+          <View
+            style={{
+              paddingLeft: 20
+              // flexDirection: "column"
+              // justifyContent: "space-evenly"
+            }}
           >
-            <>
-              <Icons.CloseListIcon
-                onPress={() => this.slidePanelShow()}
-                style={styles.CloseIcon}
-              />
-              <BusinessList navigation={this.props.navigation} />
-            </>
-          </SlidingUpPanel>
-        </LinearGradient>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("PersonalInfo")}
+            >
+              <View style={styles.options}>
+                <Icons.PersonalInfo style={styles.icons} />
+                <Text style={styles.text}>Personal Info</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Wallet")}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  left: widthPercentageToDP(4),
+                  marginBottom: 20,
+                  marginTop: 10,
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
+                <Text style={styles.text}>Wallet</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("TransactionList")}
+            >
+              <View style={[styles.options]}>
+                <Icons.TransactionIcon style={styles.icons} />
+                <Text style={styles.text}>Transactions</Text>
+              </View>
+            </TouchableOpacity>
+            {/*<View
+              style={{
+                flexDirection: "column"
+              }}
+            >
+            <View style={styles.options}>
+                  <Icons.BusinessIcon style={styles.icons} />
+                  <Text style={styles.text}>Business Info</Text>
+                </View>*/}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("ChangePassword")}
+            >
+              <View style={styles.options}>
+                <Icons.ChangePassIcon style={styles.icons} />
+                <Text style={[styles.text]}>Change Password</Text>
+              </View>
+            </TouchableOpacity>
+            {/* </View> */}
+
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("AddressForm")}
+            >
+              <View style={styles.options}>
+                <Icons.AddressIcon style={styles.icons} />
+                <Text style={styles.text}>Address</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => openPrivacy()}>
+              <View style={styles.options}>
+                <Icon
+                  name="security"
+                  type="MaterialIcons"
+                  style={styles.icons}
+                />
+                <Text style={styles.text}>Privacy policy</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => openTerms()}>
+              <View style={styles.options}>
+                <Icon
+                  name="file-document-box"
+                  type="MaterialCommunityIcons"
+                  style={styles.icons}
+                />
+                <Text style={styles.text}>Terms & Condtions</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this.props.clearPushToken(
+                  this.props.navigation,
+                  this.props.userInfo.userid
+                );
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  left: widthPercentageToDP(4),
+                  marginBottom: 20,
+                  marginTop: 10,
+                  flexDirection: "row"
+                }}
+              >
+                <Icons.LogoutIcon style={[styles.icons, { marginRight: 16 }]} />
+                <Text style={styles.text}>Logout</Text>
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.version}>Version:0.1.1/7/6</Text>
+          </View>
+        </View>
+
+        <SlidingUpPanel
+          showBackdrop={false}
+          ref={c => (this._panel = c)}
+          draggableRange={this.props.draggableRange}
+          allowDragging={false}
+          animatedValue={this._draggedValue}
+        >
+          <>
+            <Icons.CloseListIcon
+              onPress={() => this.slidePanelShow()}
+              style={styles.CloseIcon}
+            />
+            <BusinessList navigation={this.props.navigation} />
+          </>
+        </SlidingUpPanel>
       </Container>
     );
   }

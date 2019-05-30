@@ -10,7 +10,6 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: {
     textAlign: "center",
     color: "#fff",
@@ -20,9 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignSelf: "center"
   },
-  container: {
-    top: heightPercentageToDP(6)
-  },
+  container: { backgroundColor: "#0000" },
   image: {
     alignSelf: "center",
     height: heightPercentageToDP(10),

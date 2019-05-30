@@ -18,6 +18,20 @@ export default createStackNavigator(
     }
   },
   {
-    initialRouteName: "PaymentForm"
+    initialRouteName: "PaymentForm",
+    navigationOptions: {
+      header: null,
+
+      headerStyle: {
+        backgroundColor: "transparent"
+      },
+      headerTintColor: "#fff",
+      headerTextStyle: {
+        fontWeight: "bold"
+      }
+    },
+    cardStyle: {
+      backgroundColor: "#0000"
+    }
   }
 );
