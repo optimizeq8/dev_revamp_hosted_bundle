@@ -32,9 +32,10 @@ const styles = StyleSheet.create({
     width: 250
   },
   view: {
-    flex: 2,
+    // flex: 2,
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
+    paddingVertical: 10
   },
   image: {
     flex: 1,

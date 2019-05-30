@@ -26,6 +26,8 @@ import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
 import SwipeUpChoice from "../Screens/CampaignCreate/SwipeUpChoice";
 import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
 import PaymentForm from "../Screens/PaymentForm";
+import ErrorRedirect from "../Screens/ErrorRedirect";
+import SuccessRedirect from "../Screens/SuccessRedirect";
 
 export default FluidNavigator(
   {
@@ -44,15 +46,28 @@ export default FluidNavigator(
     Wallet: Wallet,
     AdType: AdType,
     AdObjective: AdObjective,
-    AdDesign: AdDesign,
+    AdDesign: { screen: AdDesign, path: "ad_design/" },
     AdDetails: AdDetails,
     AdDesignReview: AdDesignReview,
     SwipeUpDestination: SwipeUpDestination,
     SwipeUpChoice: SwipeUpChoice,
     AdPaymentReview: AdPaymentReview,
     AddressForm: AddressForm,
-    PaymentForm: PaymentForm
+    PaymentForm: PaymentForm,
+
+    ErrorRedirect: {
+      screen: ErrorRedirect,
+      path: "error/"
+    },
+    SuccessRedirect: {
+      screen: SuccessRedirect,
+      path: "success/"
+    }
+    //     PaymentForm: {
+    //       screen: PaymentForm
+    //     }
   },
+
   {
     initialRouteName: "Dashboard",
     mode: "card",

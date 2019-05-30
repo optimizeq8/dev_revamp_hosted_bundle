@@ -70,6 +70,9 @@ class PaymentForm extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_id
     });
+    this.setState({
+      browserLoading: false
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -87,21 +90,17 @@ class PaymentForm extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  handleBackButton = async () => {
-    console.log("back handle payment form");
+  handleBackButton = () => {
     if (this.state.browserLoading) return true;
     else if (
       !this.props.loading &&
       !this.state.browserLoading &&
       this.state.addingCredits
     ) {
-      console.log("back handle payment form wallet");
-
       //   this.props.navigation.navigate("Wallet");
       this.props.navigation.goBack();
+      return true;
     } else {
-      console.log("back handle payment form ????");
-
       this.props.walletUsed ? this.showModal() : this.reviewPurchase();
     }
   };
@@ -140,7 +139,7 @@ class PaymentForm extends Component {
           campaign_id: this.props.campaign_id
         });
       }
-
+      this.closeBrowserLoading();
       this._removeLinkingListener();
     } catch (error) {
       console.log("broweser error", error);
@@ -280,6 +279,7 @@ class PaymentForm extends Component {
             <Left style={{ flex: 0 }}>
               <BackButton
                 navigation={this.props.navigation.goBack}
+                nav={this.props.navigation}
                 style={{ left: 0, top: 0 }}
               />
             </Left>

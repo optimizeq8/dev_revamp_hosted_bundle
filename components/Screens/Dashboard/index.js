@@ -76,15 +76,17 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.addEventListener("hardwareBackPress", () => {
+      console.log("dashboard back handle");
+      BackHandler.exitApp();
+    });
   }
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.removeEventListener("hardwareBackPress", () => {
+      BackHandler.exitApp();
+    });
   }
-  handleBackPress = () => {
-    this.props.navigation.goBack(null);
-    return true;
-  };
+
   componentDidUpdate(prevProps) {
     if (prevProps.mainBusiness !== this.props.mainBusiness) {
       if (

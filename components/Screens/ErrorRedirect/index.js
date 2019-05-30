@@ -112,7 +112,6 @@ class ErrorRedirect extends Component {
           </View>
         </Container>
       </SafeAreaView>
-
     );
   }
 }
