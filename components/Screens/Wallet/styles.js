@@ -12,7 +12,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20
+    backgroundColor: "#0000"
   },
   title: {
     fontSize: 18,

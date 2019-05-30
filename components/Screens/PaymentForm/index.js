@@ -456,7 +456,7 @@ class PaymentForm extends Component {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center",
+                // alignItems: "center",
                 justifyContent: "space-between",
                 width: "100%"
               }}
@@ -510,6 +510,22 @@ class PaymentForm extends Component {
                         )}
                   </Text>
                 </View>
+                {this.props.addingCredits && (
+                  <View style={{ flexDirection: "row", paddingTop: 3 }}>
+                    <Text
+                      style={[
+                        styles.money,
+                        {
+                          fontSize: 12,
+                          fontFamily: "montserrat-regular",
+                          textAlign: "left"
+                        }
+                      ]}
+                    >
+                      Optimize App fees{"\n"}10% included
+                    </Text>
+                  </View>
+                )}
               </View>
               <TouchableOpacity
                 onPress={() => this._handleSubmission()}

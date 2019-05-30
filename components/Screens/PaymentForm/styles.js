@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF9D00",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    minHeight: 150,
+    minHeight: 170,
     alignItems: "center",
     shadowRadius: 5,
     shadowOpacity: 0.2
