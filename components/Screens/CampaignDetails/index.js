@@ -342,9 +342,10 @@ class CampaignDetails extends Component {
                 />
                 <Text style={styles.title}>{selectedCampaign.name}</Text>
                 <View>
-                  {selectedCampaign.review_status === "APPROVED" || true ? (
+                  {selectedCampaign.review_status === "APPROVED" ? (
                     selectedCampaign.campaign_end === "0" &&
-                    !this.props.campaignEnded ? (
+                    !this.props.campaignEnded &&
+                    selectedCampaign.end_time > new Date() ? (
                       <View padder style={styles.toggleSpace}>
                         <View style={{ alignSelf: "center" }}>
                           {selectedCampaign && (
