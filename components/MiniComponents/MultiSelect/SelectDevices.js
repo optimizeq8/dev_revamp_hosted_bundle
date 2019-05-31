@@ -42,8 +42,6 @@ class SelectDevices extends Component {
     }
   }
   render() {
-    console.log(this.state.deviceBrands);
-
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>

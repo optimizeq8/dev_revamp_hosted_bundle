@@ -5,7 +5,7 @@ import { Segment } from "expo";
 import { showMessage } from "react-native-flash-message";
 
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const filterCampaigns = query => {
@@ -35,7 +35,7 @@ export const getCampaignDetails = (id, navigation) => {
         });
       })
       .catch(err => {
-        console.log("getCampaignDetails error", err.message || err.response);
+        // console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -73,7 +73,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         });
       })
       .catch(err => {
-        console.log("getCampaignListError: ", err.message || err.response); // => prints: Api is being canceled????
+        // console.log("getCampaignListError: ", err.message || err.response); // => prints: Api is being canceled????
         {
           !err.message.includes("Api") &&
             showMessage({
@@ -121,7 +121,7 @@ export const updateCampaignList = (id, page, increasePage) => {
         }
       })
       .catch(err => {
-        console.log("updateCampaignList", err.message || err.response);
+        // console.log("updateCampaignList", err.message || err.response);
         showMessage({
           message:
             err.message ||

@@ -58,8 +58,6 @@ class PhoneNo extends Component {
     });
 
     if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
-      console.log(this.phone.getCountryCode(), this.state.value.trim());
-
       this.props.sendMobileNo({
         country_code: this.phone.getCountryCode(),
         mobile: this.state.value.trim()

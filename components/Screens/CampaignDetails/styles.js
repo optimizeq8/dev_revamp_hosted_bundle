@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 13,
     padding: 3,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "center"
   },
   adStatus: {
     backgroundColor: globalColors.orange,
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingHorizontal: 10,
     top: 5,
-    width: wp(23),
+    width: "30%",
+    alignItems: "center",
     alignSelf: "center"
   },
   mainCard: {
@@ -218,10 +220,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     fontFamily: "montserrat-medium",
     fontSize: 18,
-    bottom: 10
+    bottom: 5
   },
   chartPosition: {
-    bottom: 50
+    bottom: 10
   }
 });
 

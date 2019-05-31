@@ -102,11 +102,8 @@ class AdPaymentReview extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_ids
     });
-    console.log("campaign data", this.props.data);
   }
   render() {
-    console.log("campaign data", this.props.data);
-
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
     } else {

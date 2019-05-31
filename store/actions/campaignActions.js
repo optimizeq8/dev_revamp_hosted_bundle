@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const payment_request_credit_card = (
@@ -41,7 +41,7 @@ export const payment_request_credit_card = (
         }
       })
       .catch(err => {
-        console.log("payment_request_cc", err.message || err.response);
+        // console.log("payment_request_cc", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -96,7 +96,7 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
         }
       })
       .catch(err => {
-        console.log("payment_request_knet", err.message || err.response);
+        // console.log("payment_request_knet", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -130,7 +130,7 @@ export const snap_ad_audience_size = (info, totalReach) => {
       })
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch(err => {
-        console.log("snap_ad_audience_size", err.message || err.response);
+        // console.log("snap_ad_audience_size", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -160,7 +160,7 @@ export const get_total_reach = info => {
         });
       })
       .catch(err => {
-        console.log("get_total_reach", err.message || err.response);
+        // console.log("get_total_reach", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -197,7 +197,7 @@ export const ad_objective = (info, navigation) => {
         navigation.push("AdDesign");
       })
       .catch(err => {
-        console.log("ad_objective", err.message || err.response);
+        // console.log("ad_objective", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -281,7 +281,7 @@ export const ad_design = (
       .catch(err => {
         laoding(0);
         onToggleModal(false);
-        console.log("ad_design", err.message || err.response);
+        // console.log("ad_design", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -313,7 +313,7 @@ export const getVideoUploadUrl = (campaign_id, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("getVideoUploadUrl", err.message || err.response);
+        // console.log("getVideoUploadUrl", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -340,7 +340,7 @@ export const get_interests = countryCode => {
         });
       })
       .catch(err => {
-        console.log("get_interests", err.message || err.response);
+        // console.log("get_interests", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -370,7 +370,7 @@ export const get_device_brands = () => {
         });
       })
       .catch(err => {
-        console.log("get_device_brands", err.message || err.response);
+        // console.log("get_device_brands", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -400,7 +400,7 @@ export const get_ios_versions = () => {
         });
       })
       .catch(err => {
-        console.log("get_ios_versions", err.message || err.response);
+        // console.log("get_ios_versions", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -430,7 +430,7 @@ export const get_android_versions = () => {
         });
       })
       .catch(err => {
-        console.log("get_android_versions", err.message || err.response);
+        // console.log("get_android_versions", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -467,7 +467,7 @@ export const ad_details = (info, names, navigation, image) => {
         navigation.navigate("AdPaymentReview");
       })
       .catch(err => {
-        console.log("ad_details", err.message || err.response);
+        // console.log("ad_details", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -488,7 +488,7 @@ export const updateCampaign = (info, businessid, navigation) => {
     instance
       .put(`savetargeting`, { ...info, businessid })
       .then(res => {
-        console.log("back end info", res.data);
+        // console.log("back end info", res.data);
 
         return res.data;
       })
@@ -502,7 +502,7 @@ export const updateCampaign = (info, businessid, navigation) => {
         navigation.navigate("Dashboard");
       })
       .catch(err => {
-        console.log("updateCampaign", err.message || err.response);
+        // console.log("updateCampaign", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -528,13 +528,55 @@ export const updateStatus = (info, handleToggle) => {
       })
       .then(data => {
         handleToggle(data.status);
+        if (data.message) {
+          showMessage({ message: data.message, type: "info", position: "top" });
+        }
         return dispatch({
           type: actionTypes.UPDATE_CAMPAIGN_STATUS,
           payload: data
         });
       })
       .catch(err => {
-        console.log(err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        // console.log(err.message || err.response);
+      });
+  };
+};
+
+export const endCampaign = (info, handleToggle) => {
+  return dispatch => {
+    instance
+      .put(`endCampaign`, info)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        handleToggle(data.status);
+        if (data.message) {
+          showMessage({ message: data.message, type: "info", position: "top" });
+        }
+        return dispatch({
+          type: actionTypes.END_CAMPAIGN,
+          payload: data.success
+        });
+      })
+      .catch(err => {
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        // console.log(err.message || err.response);
       });
   };
 };
@@ -553,7 +595,7 @@ export const get_languages = () => {
         });
       })
       .catch(err => {
-        console.log("get_language", err.message || err.response);
+        // console.log("get_language", err.message || err.response);
         showMessage({
           message:
             err.message ||

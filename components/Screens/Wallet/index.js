@@ -47,6 +47,7 @@ class Wallet extends Component {
     };
   }
   componentDidMount() {
+    this.props.getWalletAmount();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   componentWillUnmount() {
@@ -253,7 +254,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getWalletAmountInKwd: amount =>
-    dispatch(actionCreators.getWalletAmountInKwd(amount))
+    dispatch(actionCreators.getWalletAmountInKwd(amount)),
+  getWalletAmount: () => dispatch(actionCreators.getWalletAmount())
 });
 
 export default connect(

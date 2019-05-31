@@ -32,10 +32,10 @@ class SearchBar extends Component {
     };
   }
 
-  _handleSubmit = () => {
+  _handleSubmit = (reset = false) => {
     if (!this.props.transactionSearch) {
       this.props.onSearch({
-        value: this.state.value,
+        value: reset ? "" : this.state.value,
         selected: this.props.filterStatus ? this.props.filterStatus : "A",
         dateRange: [
           this.props.campaignStartSearch,
@@ -44,7 +44,7 @@ class SearchBar extends Component {
       });
     } else {
       this.props.filterTransactions({
-        value: this.state.value,
+        value: reset ? "" : this.state.value,
         dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
       });
     }

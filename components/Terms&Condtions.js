@@ -9,7 +9,13 @@ export const openTerms = async closeBrowserLoading => {
     //   campaign_id: this.props.campaign_id
     // });
   } catch (error) {
-    console.log(error);
+    showMessage({
+      message: "Something went wrong!",
+      type: "warning",
+      position: "top",
+      description: "Please try again later."
+    });
+    // console.log(error);
   }
 };
 
@@ -21,6 +27,12 @@ export const openPrivacy = async () => {
     //   campaign_id: this.props.campaign_id
     // });
   } catch (error) {
-    console.log(error);
+    showMessage({
+      message: "Something went wrong!",
+      type: "warning",
+      position: "top",
+      description: "Please try again later."
+    });
+    // console.log(error);
   }
 };

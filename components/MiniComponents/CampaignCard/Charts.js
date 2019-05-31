@@ -11,7 +11,7 @@ export default class Charts extends Component {
     return (
       <View>
         <AnimatedCircularProgress
-          size={this.props.detail ? heightPercentageToDP("9") : 65}
+          size={this.props.detail ? 65 : 65}
           width={5}
           fill={x}
           rotation={0}
@@ -26,7 +26,7 @@ export default class Charts extends Component {
               numberOfLines={1}
               style={styles.chartText}
             >
-               ${spends > 100 ? parseInt(spends) : parseFloat(spends).toFixed(2)}
+              ${spends > 100 ? parseInt(spends) : parseFloat(spends).toFixed(2)}
             </Text>
           )}
         </AnimatedCircularProgress>
