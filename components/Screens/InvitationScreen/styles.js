@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
   registered: {
     position: "absolute",
-    bottom: 60,
+    bottom: "5%",
     alignSelf: "center"
   },
   registeredText: {

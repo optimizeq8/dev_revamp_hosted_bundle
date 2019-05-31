@@ -73,15 +73,11 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
-  }
-  componentWillMount() {
-
-    // this.setState({ menu: new Animated.Value(0) });
-    // this.closeAnimation();
     BackHandler.addEventListener("hardwareBackPress", () => {
       BackHandler.exitApp();
     });
   }
+
   componentWillUnmount() {
     this.signal.cancel("Api is being canceled");
     BackHandler.removeEventListener("hardwareBackPress", () => {
@@ -226,9 +222,8 @@ class Dashboard extends Component {
             <View
               style={{
                 justifyContent: "center",
-                zIndex: 13,
+                zIndex: 10,
                 display: this.state.sidemenustate ? "none" : "flex",
-                // top: 40,
                 height: 40,
                 backgroundColor: "#0000"
               }}

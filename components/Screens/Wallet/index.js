@@ -88,31 +88,8 @@ class Wallet extends Component {
         style={{ flex: 1, backgroundColor: "#0000" }}
         forceInset={{ bottom: "never" }}
       >
-        <View
-          style={{
-            justifyContent: "space-between",
-            zIndex: 13,
-            // top: 40,
-            //padding: 2,
-            flexDirection: "row",
-            backgroundColor: "#0000"
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={{
-              left: 5,
-              flex: 0,
-              top: hp(1),
-              left: wp(6)
-              // width: wp(5),
-              //height: hp(5),
-              //position: "absolute"
-            }}
-          >
-            <BackButton navigation={this.props.navigation.goBack} />
-          </TouchableOpacity>
-        </View>
+        <BackButton navigation={this.props.navigation.goBack} />
+
         <Container
           style={[
             styles.container,
@@ -153,7 +130,7 @@ class Wallet extends Component {
               >
                 <Text style={styles.buttontext}>Top up wallet </Text>
               </Button>
-              <Button
+              {/* <Button
                 full
                 style={styles.button}
                 onPress={() => {
@@ -161,7 +138,7 @@ class Wallet extends Component {
                 }}
               >
                 <Text style={styles.buttontext}>Request Refund</Text>
-              </Button>
+              </Button> */}
             </View>
           )}
           <Modal

@@ -52,7 +52,7 @@ class PersonalInfo extends Component {
   componentDidMount() {
     Segment.screen("Signup Enter PersonalInfo Screen");
   }
-  
+
   _passwordVarification = () => {
     if (
       this.state.userInfo.password !== this.state.repassword ||
@@ -134,6 +134,7 @@ class PersonalInfo extends Component {
                         color: this.state.inputF ? "#FF9D00" : "#717171"
                       }}
                       name="person"
+                      type="MaterialIcons"
                     />
                     {"  "}
                     First Name
@@ -243,6 +244,7 @@ class PersonalInfo extends Component {
                         color: this.state.inputE ? "#FF9D00" : "#717171"
                       }}
                       name="mail"
+                      type="MaterialIcons"
                     />
                     {"  "}
                     Email
@@ -312,6 +314,7 @@ class PersonalInfo extends Component {
                         color: this.state.inputP ? "#FF9D00" : "#717171"
                       }}
                       name="key"
+                      type="Entypo"
                     />
                     {"  "}
                     Password

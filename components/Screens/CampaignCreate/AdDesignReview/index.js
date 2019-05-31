@@ -20,6 +20,7 @@ import {
   Title,
   Subtitle
 } from "native-base";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
@@ -39,6 +40,7 @@ class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
   };
+  state = { videoIsLoading: false };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
@@ -99,15 +101,24 @@ class AdDesignReview extends Component {
             <Transition shared="image">
               <View style={styles.mainCard}>
                 {this.props.navigation.state.params.type === "VIDEO" ? (
-                  <Video
-                    source={{
-                      uri: this.props.navigation.state.params.image
-                    }}
-                    isLooping
-                    shouldPlay
-                    resizeMode="stretch"
-                    style={{ width: "100%", height: "100%" }}
-                  />
+                  <>
+                    {this.state.videoIsLoading ? (
+                      <LoadingScreen dash={true} />
+                    ) : null}
+                    <Video
+                      onLoadStart={() =>
+                        this.setState({ videoIsLoading: true })
+                      }
+                      onLoad={() => this.setState({ videoIsLoading: false })}
+                      source={{
+                        uri: this.props.navigation.state.params.image
+                      }}
+                      isLooping
+                      shouldPlay
+                      resizeMode="stretch"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </>
                 ) : (
                   <Image
                     resizeMode="stretch"

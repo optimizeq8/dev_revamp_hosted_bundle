@@ -1,5 +1,6 @@
 import { WebBrowser } from "expo";
-export const openTerms = async closeBrowserLoading => {
+import { showMessage } from "react-native-flash-message";
+export const openTerms = async (closeBrowserLoading = () => {}) => {
   try {
     await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/terms`).then(
       action => action.type === "cancel" && closeBrowserLoading()
@@ -9,12 +10,15 @@ export const openTerms = async closeBrowserLoading => {
     //   campaign_id: this.props.campaign_id
     // });
   } catch (error) {
-    showMessage({
-      message: "Something went wrong!",
-      type: "warning",
-      position: "top",
-      description: "Please try again later."
-    });
+    console.log(error);
+
+    if (error)
+      showMessage({
+        message: "Something went wrong!",
+        type: "warning",
+        position: "top",
+        description: "Please try again later."
+      });
     // console.log(error);
   }
 };
@@ -27,12 +31,13 @@ export const openPrivacy = async () => {
     //   campaign_id: this.props.campaign_id
     // });
   } catch (error) {
-    showMessage({
-      message: "Something went wrong!",
-      type: "warning",
-      position: "top",
-      description: "Please try again later."
-    });
+    if (error)
+      showMessage({
+        message: "Something went wrong!",
+        type: "warning",
+        position: "top",
+        description: error + "Please try again later."
+      });
     // console.log(error);
   }
 };
