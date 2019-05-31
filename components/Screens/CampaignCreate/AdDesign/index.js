@@ -96,6 +96,7 @@ class AdDesign extends Component {
       swipeUpError: "",
       isVisible: false,
       imageLoading: false,
+      videoIsLoading: false,
       heightComponent: 0
     };
     this.params = this.props.navigation.state.params;
@@ -657,6 +658,7 @@ class AdDesign extends Component {
         )}
       </>
     );
+    console.log(this.state.videoIsLoading);
 
     let swipeDestination = (
       <TouchableOpacity
@@ -742,7 +744,14 @@ class AdDesign extends Component {
               <View style={[styles.buttonN]}>
                 {this.state.type === "VIDEO" ? (
                   <View style={[styles.placeholder]}>
+                    {this.state.videoIsLoading ? (
+                      <LoadingScreen dash={true} />
+                    ) : null}
                     <Video
+                      onLoadStart={() =>
+                        this.setState({ videoIsLoading: true })
+                      }
+                      onLoad={() => this.setState({ videoIsLoading: false })}
                       source={{
                         uri: image ? image : ""
                       }}
