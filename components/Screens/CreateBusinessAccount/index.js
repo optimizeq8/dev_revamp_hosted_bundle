@@ -103,19 +103,6 @@ class CreateBusinessAccount extends Component {
     Segment.screen("Create New Business");
   }
 
-  _openWebBrowserAsync = async () => {
-    try {
-      let result = await WebBrowser.openBrowserAsync(
-        `https://www.optimizeapp.com/privacy`
-      );
-      // Segment.screenWithProperties("Payment Knet Screen", {
-      //   businessname: this.props.mainBusiness.businessname,
-      //   campaign_id: this.props.campaign_id
-      // });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   _handleBusinessCategories = async type => {
     await this.setState({
       businessAccount: {
@@ -166,7 +153,6 @@ class CreateBusinessAccount extends Component {
         this.state.businessAccount.otherBusinessCategory
       );
 
-    console.log("businesscategoryOtherError", businesscategoryOtherError);
     this.setState({
       businessnameError,
       businessemailError,

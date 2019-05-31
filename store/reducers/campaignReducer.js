@@ -24,8 +24,8 @@ const initialState = {
   image: "",
   countryName: "",
   interestNames: [],
-  regionNames: []
-
+  regionNames: [],
+  campaignEnded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -75,8 +75,6 @@ const reducer = (state = initialState, action) => {
         videoUrlLoading: action.payload
       };
     case actionTypes.SET_AD_DETAILS:
-      console.log("SET_AD_DETAILS", action.payload.data);
-
       return {
         ...state,
         data: { ...state.data, ...action.payload.data.data },
@@ -105,7 +103,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
+    case actionTypes.END_CAMPAIGN:
+      return {
+        ...state,
+        campaignEnded: action.payload
+      };
     case actionTypes.SET_SNAP_AUDIENCE_SIZE:
       return {
         ...state,

@@ -1,22 +1,11 @@
 import React, { Component } from "react";
-import RNPickerSelect from "react-native-picker-select";
-import { ImagePicker, Permissions, LinearGradient } from "expo";
 
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  ScrollView,
-  Platform
-} from "react-native";
-import axios from "axios";
+import { View } from "react-native";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Item, Input, Container, Icon } from "native-base";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import LowerButton from "../../../MiniComponents/LowerButton";
-import AppSearch from "../../../MiniComponents/AppSearch(old)";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
@@ -24,7 +13,6 @@ import AppChoice from "../../../MiniComponents/AppChoice";
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 import {
   heightPercentageToDP,
   widthPercentageToDP

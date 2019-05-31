@@ -40,7 +40,6 @@ class SelectInterests extends Component {
     ) {
       let interests = [];
       let lenOfLists = 0;
-      console.log("props interest", this.props.interests);
 
       Object.keys(this.props.interests).forEach((key, i) => {
         if (this.props.interests[key].length > 0) {
@@ -52,8 +51,6 @@ class SelectInterests extends Component {
         }
         lenOfLists += this.props.interests[key].length;
       });
-
-      console.log("interest list", interests);
 
       if (lenOfLists === 0) {
         this.setState({ interests: [] });

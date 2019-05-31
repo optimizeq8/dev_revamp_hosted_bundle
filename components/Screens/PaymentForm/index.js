@@ -142,7 +142,13 @@ class PaymentForm extends Component {
       this.closeBrowserLoading();
       this._removeLinkingListener();
     } catch (error) {
-      console.log("broweser error", error);
+      showMessage({
+        message: "Something went wrong!",
+        type: "warning",
+        position: "top",
+        description: "Please try again later."
+      });
+      // console.log("broweser error", error);
     }
   };
   _addLinkingListener = () => {

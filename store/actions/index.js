@@ -26,6 +26,7 @@ export {
   ad_details,
   updateCampaign,
   updateStatus,
+  endCampaign,
   snap_ad_audience_size,
   get_interests,
   get_device_brands,

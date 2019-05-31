@@ -28,6 +28,7 @@ import {
 } from "react-native-responsive-screen";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ToggleButton, ActivityIndicator } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
 class AppChoice extends Component {
   constructor(props) {
     super(props);
@@ -96,7 +97,15 @@ class AppChoice extends Component {
           loading: false
         })
       )
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        showMessage({
+          message: "Something went wrong!",
+          type: "warning",
+          position: "top",
+          description: "Please try again later."
+        });
+        // console.log(err.response)
+      });
   };
   _searchAndroidApps = () => {
     this.setState({ loading: true });
@@ -120,7 +129,15 @@ class AppChoice extends Component {
           loading: false
         })
       )
-      .catch(err => console.log(err.response));
+      .catch(err => {
+        showMessage({
+          message: "Something went wrong!",
+          type: "warning",
+          position: "top",
+          description: "Please try again later."
+        });
+        // console.log(err.response)
+      });
   };
 
   _getIosAppIds = app => {

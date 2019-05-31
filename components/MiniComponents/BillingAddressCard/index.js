@@ -161,8 +161,6 @@ class BillingAddressCard extends React.Component {
     }
   };
   render() {
-    console.log("this.props.address.area", this.props.address);
-
     let menu;
     switch (this.state.sidemenu) {
       case "countries": {

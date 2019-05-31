@@ -70,7 +70,6 @@ class SwipeUpDestination extends Component {
   }
   componentDidMount() {
     const image = this.props.navigation.state.params.image;
-    console.log("image", image);
 
     this.setState({
       image

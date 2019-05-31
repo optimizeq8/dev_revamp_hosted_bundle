@@ -303,8 +303,6 @@ class AdDetails extends Component {
   };
 
   onSelectedRegionChange = (selectedItem, regionName) => {
-    console.log(selectedItem, regionName);
-
     let replace = this.state.campaignInfo;
     let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {

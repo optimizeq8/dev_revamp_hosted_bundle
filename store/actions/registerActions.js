@@ -10,7 +10,7 @@ import { setCurrentUser } from "./loginActions";
 import { getBusinessAccounts } from "./accountManagementActions";
 
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const send_push_notification = () => {
@@ -33,10 +33,10 @@ export const send_push_notification = () => {
               });
             })
             .catch(err => {
-              console.log(
-                "send_push_notification",
-                err.message || err.response
-              );
+              // console.log(
+              //   "send_push_notification",
+              //   err.message || err.response
+              // );
               return dispatch({
                 type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
               });
@@ -67,7 +67,7 @@ export const verifyBusinessName = (businessname, _handleBusinessName) => {
         });
       })
       .catch(err => {
-        console.log("verifyBusinessName", err.message || err.response);
+        // console.log("verifyBusinessName", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -111,7 +111,7 @@ export const registerUser = (userInfo, navigation) => {
         }
       })
       .catch(err => {
-        console.log(err.message || err.response);
+        // console.log(err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -150,7 +150,7 @@ export const sendMobileNo = mobileNo => {
         });
       })
       .catch(err => {
-        console.log("sendMobileNo error", err.message || err.response);
+        // console.log("sendMobileNo error", err.message || err.response);
         return dispatch({
           type: actionTypes.ERROR_SEND_MOBILE_NO,
           payload: {
@@ -181,7 +181,7 @@ export const verifyMobileCode = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log("verifyMobileCode error", err.message || err.response);
+        // console.log("verifyMobileCode error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -222,7 +222,7 @@ export const resendVerifyMobileCode = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log("resendVerifyMobileCode", err.message || err.response);
+        // console.log("resendVerifyMobileCode", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -264,10 +264,10 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
         });
       })
       .catch(err => {
-        console.log(
-          "resendVerifyMobileCodeByEmail error",
-          err.message || err.response
-        );
+        // console.log(
+        //   "resendVerifyMobileCodeByEmail error",
+        //   err.message || err.response
+        // );
         showMessage({
           message:
             err.message ||
@@ -309,7 +309,7 @@ export const verifyEmail = (email, userInfo) => {
         });
       })
       .catch(err => {
-        console.log("verifyEmail ERROR", err.message || err.response);
+        // console.log("verifyEmail ERROR", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -349,7 +349,7 @@ export const verifyInviteCode = verificationCode => {
       })
 
       .catch(err => {
-        console.log("verifyInviteCodeError", err.message || err.response);
+        // console.log("verifyInviteCodeError", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -388,7 +388,7 @@ export const requestInvitationCode = info => {
       })
 
       .catch(err => {
-        console.log("requestInvitationCodeError", err.message || err.response);
+        // console.log("requestInvitationCodeError", err.message || err.response);
         showMessage({
           message:
             err.message ||

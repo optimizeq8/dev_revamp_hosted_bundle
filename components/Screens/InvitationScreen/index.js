@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import {
   View,
   AsyncStorage,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard
 } from "react-native";
-import { Button, Text, Container, Icon, Badge } from "native-base";
+import { Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import Verification from "../Signup/Verification";
 import Signin from "../Signin/";
@@ -21,8 +20,6 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 //Redux
-import { connect } from "react-redux";
-import { ActivityIndicator } from "react-native-paper";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -47,7 +44,15 @@ export default class Invitation extends Component {
           this.setState({ registeredWithInvite: true });
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        showMessage({
+          message: "Something went wrong!",
+          type: "warning",
+          position: "top",
+          description: "Please try again later."
+        });
+        //  console.log(err)
+      });
 
     AsyncStorage.getItem("tutorialOpened")
       .then(value => {
@@ -57,7 +62,15 @@ export default class Invitation extends Component {
           AsyncStorage.setItem("tutorialOpened", "true");
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        showMessage({
+          message: "Something went wrong!",
+          type: "warning",
+          position: "top",
+          description: "Please try again later."
+        });
+        // console.log(err)
+      });
   }
   toggleComps = () => {
     this.setState({

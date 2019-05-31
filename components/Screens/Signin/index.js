@@ -47,9 +47,6 @@ class MainForm extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-  componentDidMount() {
-    Segment.screen("Sign in Screen");
-  }
 
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
@@ -64,6 +61,8 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
+    Segment.screen("Sign in Screen");
+
     if (
       this.props.navigation &&
       this.props.navigation.getParam("loggedout", false)
@@ -73,22 +72,8 @@ class MainForm extends Component {
     }
   }
   render() {
-    let invite =
-      this.props.navigation &&
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.invite;
-    // if (this.props.loading) {
-    //   return (
-    //     <>
-    //       <LinearGradient
-    //         colors={[colors.background1, colors.background2]}
-    //         locations={[0.7, 1]}
-    //         style={styles.gradient}
-    //       />
-    //       <LoadingScreen dash={true} top={0} />
-    //     </>
-    //   );
-    // } else
+    let invite = this.props.navigation.getParam("invite", {});
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <>
@@ -151,48 +136,40 @@ class MainForm extends Component {
                         placeholder="Email"
                       />
                     </Item>
-                    {/* {this.state.emailError ? (
-            <Text style={styles.error}>{this.state.emailError}</Text>
-          ) : null} */}
-
-
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.passwordError
-                          ? "red"
-                          : "rgba(0, 0, 0, 0)"
-                      }
-                    ]}
-                  >
-                    <Input
-                      placeholderTextColor="#fff"
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      textContentType="password"
-                      autoCapitalize="none"
-                      style={styles.inputtext}
-                      onChangeText={value => {
-                        this.setState({
-                          password: value
-                        });
-                      }}
-                      onBlur={() => {
-                        this.setState({
-                          passwordError: validateWrapper(
-                            "password",
-                            this.state.password
-                          )
-                        });
-                      }}
-                      placeholder="Password"
-                    />
-                  </Item>
-                  {/* {this.state.passwordError ? (  <Text style={styles.error}>{this.state.passwordError}</Text>
-          ) : null} */}
-          
+                    <Item
+                      rounded
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.passwordError
+                            ? "red"
+                            : "rgba(0, 0, 0, 0)"
+                        }
+                      ]}
+                    >
+                      <Input
+                        placeholderTextColor="#fff"
+                        secureTextEntry={true}
+                        autoCorrect={false}
+                        textContentType="password"
+                        autoCapitalize="none"
+                        style={styles.inputtext}
+                        onChangeText={value => {
+                          this.setState({
+                            password: value
+                          });
+                        }}
+                        onBlur={() => {
+                          this.setState({
+                            passwordError: validateWrapper(
+                              "password",
+                              this.state.password
+                            )
+                          });
+                        }}
+                        placeholder="Password"
+                      />
+                    </Item>
                     <Text
                       onPress={() => {
                         Segment.track("Forgot Password Button");
@@ -215,34 +192,37 @@ class MainForm extends Component {
                       <Text style={styles.buttontext}>Sign in</Text>
                     </Button>
                   </View>
+                  <View style={{ top: "15%" }}>
+                    {invite && (
+                      <>
+                        <Text style={[styles.link, { paddingBottom: 7 }]}>
+                          Don’t Have an Account?
+                        </Text>
+                        <Button
+                          rounded
+                          onPress={() => {
+                            this.props.navigation.navigate("Invitation");
+                          }}
+                          style={styles.bottomView}
+                        >
+                          <Text
+                            style={[
+                              styles.buttontext,
+                              {
+                                color: "#fff",
+                                fontFamily: "montserrat-semibold"
+                              }
+                            ]}
+                          >
+                            Enter Invite Code!
+                          </Text>
+                        </Button>
+                      </>
+                    )}
+                  </View>
                 </>
               )}
             </KeyboardShift>
-            <View style={{ marginBottom: 30 }}>
-              {!invite && ( // </Button> //   </Text> //     Sign Up Now! //   > //     ]} //       { color: "#fff", fontFamily: "montserrat-semibold" } //       styles.buttontext, //     style={[ //   <Text // > //   style={styles.bottomView} //   }} //     this.props.navigation.navigate("MainForm"); //     this.props.resetRegister(); //     Segment.track("Signup Button"); //   onPress={() => { //   rounded // <Button
-                <>
-                  <Text style={[styles.link, { paddingBottom: 7 }]}>
-                    Don’t Have an Account?
-                  </Text>
-                  <Button
-                    rounded
-                    onPress={() => {
-                      this.props.navigation.navigate("Invitation");
-                    }}
-                    style={styles.bottomView}
-                  >
-                    <Text
-                      style={[
-                        styles.buttontext,
-                        { color: "#fff", fontFamily: "montserrat-semibold" }
-                      ]}
-                    >
-                      Enter Invite Code!
-                    </Text>
-                  </Button>
-                </>
-              )}
-            </View>
           </Container>
           <Modal visible={this.props.loading}>
             <LoadingScreen top={0} />
