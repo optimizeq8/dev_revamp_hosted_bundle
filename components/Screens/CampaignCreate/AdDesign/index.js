@@ -658,7 +658,7 @@ class AdDesign extends Component {
         )}
       </>
     );
-    console.log(this.state.videoIsLoading);
+
 
     let swipeDestination = (
       <TouchableOpacity
