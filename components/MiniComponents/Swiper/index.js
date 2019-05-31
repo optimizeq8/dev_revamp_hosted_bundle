@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Animated, Dimensions, View } from "react-native";
+import { Animated, Dimensions, View, StyleSheet, Platform } from "react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP
@@ -102,7 +102,7 @@ Swiper.defaultProps = {
   driver: new Animated.Value(0)
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: "100%",
@@ -112,17 +112,17 @@ const styles = {
   },
   slide: {
     width,
-    // marginBottom: 35,
-    height
+    height,
+    bottom: Platform.OS === "ios" ? heightPercentageToDP(3) : 0
   },
   dotsContainer: {
     alignItems: "center",
     alignSelf: "center",
     flexDirection: "row",
-    top: heightPercentageToDP("2%"),
+    top: heightPercentageToDP("3%"),
     zIndex: 80,
     position: "absolute"
   }
-};
+});
 
 export default Swiper;

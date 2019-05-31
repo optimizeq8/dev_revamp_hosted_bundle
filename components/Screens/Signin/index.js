@@ -47,9 +47,6 @@ class MainForm extends Component {
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }
-  componentDidMount() {
-    Segment.screen("Sign in Screen");
-  }
 
   _handleSubmission = () => {
     const emailError = validateWrapper("email", this.state.email);
@@ -64,6 +61,7 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
+    Segment.screen("Sign in Screen");
     if (
       this.props.navigation &&
       this.props.navigation.getParam("loggedout", false)
@@ -155,44 +153,43 @@ class MainForm extends Component {
             <Text style={styles.error}>{this.state.emailError}</Text>
           ) : null} */}
 
-
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      {
-                        borderColor: this.state.passwordError
-                          ? "red"
-                          : "rgba(0, 0, 0, 0)"
-                      }
-                    ]}
-                  >
-                    <Input
-                      placeholderTextColor="#fff"
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      textContentType="password"
-                      autoCapitalize="none"
-                      style={styles.inputtext}
-                      onChangeText={value => {
-                        this.setState({
-                          password: value
-                        });
-                      }}
-                      onBlur={() => {
-                        this.setState({
-                          passwordError: validateWrapper(
-                            "password",
-                            this.state.password
-                          )
-                        });
-                      }}
-                      placeholder="Password"
-                    />
-                  </Item>
-                  {/* {this.state.passwordError ? (  <Text style={styles.error}>{this.state.passwordError}</Text>
+                    <Item
+                      rounded
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.passwordError
+                            ? "red"
+                            : "rgba(0, 0, 0, 0)"
+                        }
+                      ]}
+                    >
+                      <Input
+                        placeholderTextColor="#fff"
+                        secureTextEntry={true}
+                        autoCorrect={false}
+                        textContentType="password"
+                        autoCapitalize="none"
+                        style={styles.inputtext}
+                        onChangeText={value => {
+                          this.setState({
+                            password: value
+                          });
+                        }}
+                        onBlur={() => {
+                          this.setState({
+                            passwordError: validateWrapper(
+                              "password",
+                              this.state.password
+                            )
+                          });
+                        }}
+                        placeholder="Password"
+                      />
+                    </Item>
+                    {/* {this.state.passwordError ? (  <Text style={styles.error}>{this.state.passwordError}</Text>
           ) : null} */}
-          
+
                     <Text
                       onPress={() => {
                         Segment.track("Forgot Password Button");
