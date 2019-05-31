@@ -348,8 +348,6 @@ class AdDesign extends Component {
       "ios_upload",
       Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
     );
-    console.log(body);
-
     this.setState({
       formatted: body
     });
@@ -362,7 +360,13 @@ class AdDesign extends Component {
         await WebBrowser.openBrowserAsync(this.props.videoUrl);
       this._removeLinkingListener();
     } catch (error) {
-      console.log(error);
+      showMessage({
+        message: "Something went wrong!",
+        type: "warning",
+        position: "top",
+        description: "Please try again later."
+      });
+      // console.log(error);
     }
   };
 

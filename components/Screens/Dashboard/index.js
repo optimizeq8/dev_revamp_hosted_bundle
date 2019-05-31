@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import {
   View,
   TouchableOpacity,
@@ -14,8 +13,7 @@ import LottieView from "lottie-react-native";
 import isNull from "lodash/isNull";
 import { SafeAreaView } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
-
-import { LinearGradient, Segment } from "expo";
+import { Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "react-native-side-menu";
@@ -25,22 +23,19 @@ import {
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
+import Axios from "axios";
 import Menu from "../Menu";
+import * as actionCreators from "../../../store/actions";
+import * as Animatable from "react-native-animatable";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet.svg";
-import Background from "../../../assets/SVGs/Background";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
-
-import * as actionCreators from "../../../store/actions";
-import Axios from "axios";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import * as Animatable from "react-native-animatable";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -65,7 +60,7 @@ class Dashboard extends Component {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
       }
-      this.props.getWalletAmount();
+      // this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -80,8 +75,10 @@ class Dashboard extends Component {
     this.closeAnimation();
   }
   componentWillMount() {
+
+    // this.setState({ menu: new Animated.Value(0) });
+    // this.closeAnimation();
     BackHandler.addEventListener("hardwareBackPress", () => {
-      console.log("dashboard back handle");
       BackHandler.exitApp();
     });
   }
@@ -101,7 +98,7 @@ class Dashboard extends Component {
         this.props.navigation.navigate("SnapchatCreateAdAcc", {
           closeAnimation: this.closeAnimation
         });
-      this.props.getWalletAmount();
+      // this.props.getWalletAmount();
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -216,7 +213,6 @@ class Dashboard extends Component {
         />
       );
     } else {
-      // console.log("-0--------", this.props.mainBusiness.snap_ad_account_id);
       return (
         <SafeAreaView
           style={{ flex: 1, backgroundColor: "#0000" }}

@@ -5,7 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const changeBusiness = business => {
@@ -44,7 +44,7 @@ export const getBusinessAccounts = () => {
       })
 
       .catch(err => {
-        console.log("getBusinessAccountsError", err.message || err.response);
+        // console.log("getBusinessAccountsError", err.message || err.response);
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -89,7 +89,7 @@ export const createBusinessAccount = (account, navigation) => {
         }
       })
       .catch(err => {
-        console.log("error creating new bsn", err.message || err.response);
+        // console.log("error creating new bsn", err.message || err.response);
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -134,7 +134,7 @@ export const changePassword = (currentPass, newPass, navigation) => {
         });
       })
       .catch(err => {
-        console.log("changePasswordError", err.message || err.response);
+        // console.log("changePasswordError", err.message || err.response);
 
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
@@ -195,7 +195,7 @@ export const addressForm = (address, navigation, addressId) => {
         });
       }
     } catch (error) {
-      console.log("Error while put/post address form", error.message);
+      // console.log("Error while put/post address form", error.message);
       showMessage({
         message: "Oops! Something went wrong. Please try again.",
         description: error.message || error.response,
@@ -231,7 +231,7 @@ export const getAddressForm = () => {
         });
       })
       .catch(err => {
-        console.log("Get Billing Address Error: ", err.message || err.response);
+        // console.log("Get Billing Address Error: ", err.message || err.response);
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -282,10 +282,10 @@ export const create_snapchat_ad_account = (id, navigation) => {
       // })
 
       .catch(err => {
-        console.log(
-          "create_snapchat_ad_account_ERROR",
-          err.message || err.response
-        );
+        // console.log(
+        //   "create_snapchat_ad_account_ERROR",
+        //   err.message || err.response
+        // );
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,

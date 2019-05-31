@@ -4,20 +4,8 @@ import { connect } from "react-redux";
 import { View, Image, ScrollView, AsyncStorage } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1
-} from "native-base";
-import { LinearGradient, Asset } from "expo";
+import { Button, Text, Container } from "native-base";
+
 import Swiper from "../../MiniComponents/Swiper";
 import {
   widthPercentageToDP,
@@ -26,7 +14,6 @@ import {
 import Invitation from "../InvitationScreen";
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 import isNull from "lodash/isNull";
 import Background from "../../../assets/SVGs/Background";
 
@@ -40,33 +27,31 @@ class Tutorial extends Component {
   componentDidMount() {
     AsyncStorage.getItem("tutorialOpened")
       .then(value => {
-        console.log("storahe val", value);
-
         if (isNull(value)) {
-          console.log("storage", value);
-
           AsyncStorage.setItem("tutorialOpened", "false").then(() => {
-            console.log("val");
-
             this.setState({
               tutorialOpened: false
             });
           });
         } else if (value === "true") {
-          console.log("storage", value);
-
           this.setState({
             tutorialOpened: true
           });
         } else {
-          console.log("storage", value);
-
           this.setState({
             tutorialOpened: false
           });
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        showMessage({
+          message: "Something went wrong!",
+          type: "warning",
+          position: "top",
+          description: "Please try again later."
+        });
+        //  console.log(err)
+      });
   }
 
   render() {

@@ -53,8 +53,8 @@ import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
 class CampaignDetails extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
-    top: hp("78"),
-    bottom: hp(35)
+    top: hp(10) < 60 ? 350 : 320,
+    bottom: hp(10) < 60 ? 100 : 80
   };
   static navigationOptions = {
     header: null
@@ -132,12 +132,22 @@ class CampaignDetails extends Component {
       {
         campaign_id: this.props.selectedCampaign.campaign_id,
         spends: this.props.selectedCampaign.spends,
-        status: this.state.toggleText === "PAUSED" ? "LIVE" : "PAUSED"
+        status: this.state.toggleText === "PAUSED" ? "ACTIVE" : "PAUSED"
       },
       this.handleToggle
     );
   };
 
+  endCampaign = () => {
+    this.props.endCampaign(
+      {
+        campaign_id: this.props.selectedCampaign.campaign_id,
+        spends: this.props.selectedCampaign.spends,
+        status: "PAUSED"
+      },
+      this.handleToggle
+    );
+  };
   checkOptionalTargerts = (interesetNames, deviceMakes, targeting) => {
     return (
       interesetNames.length > 0 ||
@@ -151,9 +161,9 @@ class CampaignDetails extends Component {
   };
 
   render() {
-    this._draggedValue.addListener(({ value }) => {
-      this.hideCharts(value);
-    });
+    // this._draggedValue.addListener(({ value }) => {
+    //   this.hideCharts(value);
+    // });
     const translateYInterpolate = this.state.chartAnimation.interpolate({
       inputRange: [0, 30],
       outputRange: [100, 0]
@@ -205,7 +215,7 @@ class CampaignDetails extends Component {
       );
     } else {
       let selectedCampaign = this.props.selectedCampaign;
-      console.log(selectedCampaign);
+
       let targeting = this.props.selectedCampaign.targeting;
       let deviceMakes =
         targeting &&
@@ -261,6 +271,7 @@ class CampaignDetails extends Component {
         end_time = dateFormat(end_time, "d mmm");
         start_time = dateFormat(start_time, "d mmm");
       }
+
       return (
         <>
           {this.state.imageIsLoading && (
@@ -332,60 +343,64 @@ class CampaignDetails extends Component {
                 <Text style={styles.title}>{selectedCampaign.name}</Text>
                 <View>
                   {selectedCampaign.review_status === "APPROVED" ? (
-                    <View padder style={styles.toggleSpace}>
-                      <View style={{ alignSelf: "center" }}>
-                        {selectedCampaign && (
-                          <Toggle
-                            buttonTextStyle={{
+                    selectedCampaign.campaign_end === "0" &&
+                    !this.props.campaignEnded &&
+                    selectedCampaign.end_time > new Date() ? (
+                      <View padder style={styles.toggleSpace}>
+                        <View style={{ alignSelf: "center" }}>
+                          {selectedCampaign && (
+                            <Toggle
+                              buttonTextStyle={{
+                                fontFamily: "montserrat-medium",
+                                fontSize: 10,
+                                color: "#fff",
+                                top: 7,
+                                textAlign: "center"
+                              }}
+                              buttonText={
+                                this.state.toggleText !== "PAUSED"
+                                  ? "LIVE"
+                                  : "PAUSED"
+                              }
+                              containerStyle={styles.toggleStyle}
+                              switchOn={this.state.toggle}
+                              onPress={() => {
+                                this.state.toggle
+                                  ? this.setState({ modalVisible: true })
+                                  : this.updateStatus();
+                              }}
+                              backgroundColorOff="rgba(255,255,255,0.1)"
+                              backgroundColorOn="rgba(255,255,255,0.1)"
+                              circleColorOff="#FF9D00"
+                              circleColorOn="#66D072"
+                              duration={500}
+                              circleStyle={{
+                                width: wp("13"),
+                                height: hp("3.8"),
+                                borderRadius: 25
+                              }}
+                            />
+                          )}
+                          <Text
+                            style={{
                               fontFamily: "montserrat-medium",
                               fontSize: 10,
+                              paddingTop: 5,
                               color: "#fff",
-                              top: 7,
                               textAlign: "center"
                             }}
-                            buttonText={
-                              this.state.toggleText !== "PAUSED"
-                                ? "LIVE"
-                                : "PAUSED"
-                            }
-                            containerStyle={styles.toggleStyle}
-                            switchOn={this.state.toggle}
-                            onPress={() =>
-                              this.state.toggle
-                                ? this.setState({ modalVisible: true })
-                                : this.updateStatus()
-                            }
-                            backgroundColorOff="rgba(255,255,255,0.1)"
-                            backgroundColorOn="rgba(255,255,255,0.1)"
-                            circleColorOff="#FF9D00"
-                            circleColorOn="#66D072"
-                            duration={500}
-                            circleStyle={{
-                              width: wp("13"),
-                              height: hp("3.8"),
-                              borderRadius: 25
-                            }}
-                          />
-                        )}
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-medium",
-                            fontSize: 10,
-                            paddingTop: 5,
-                            color: "#fff",
-                            textAlign: "center"
-                          }}
-                        >
-                          {this.state.toggle
-                            ? "Tap to pause AD"
-                            : "Tap to activate AD"}
-                        </Text>
-                        {/* <Text style={styles.subtext}>
-                        Review:
-                        {selectedCampaign.review_status}
-                      </Text> */}
+                          >
+                            {this.state.toggle
+                              ? "Tap to pause AD"
+                              : "Tap to activate AD"}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
+                    ) : (
+                      <View style={styles.adStatus}>
+                        <Text style={styles.reviewtext}>Campagin Ended</Text>
+                      </View>
+                    )
                   ) : (
                     <View style={styles.adStatus}>
                       <Text style={styles.reviewtext}>
@@ -634,17 +649,17 @@ class CampaignDetails extends Component {
                 draggableRange={this.draggableRange}
                 animatedValue={this._draggedValue}
                 friction={0.4}
-                onDragEnd={value => {
-                  if (value > hp("50%")) {
-                    this._panel.show();
-                  } else {
-                    this._panel.hide();
-                  }
-                }}
+                // onDragEnd={value => {
+                //   if (value > hp("50%")) {
+                //     this._panel.show();
+                //   } else {
+                //     this._panel.hide();
+                //   }
+                // }}
               >
                 {dragHandler => (
                   <View style={styles.bottomContainer}>
-                    <View style={styles.dragHandler}>
+                    <View style={styles.dragHandler} {...dragHandler}>
                       <TouchableWithoutFeedback
                       // onPress={() => {
                       //   if (this.state.visible) {
@@ -657,11 +672,7 @@ class CampaignDetails extends Component {
                       // }}
                       >
                         <LinearGradient
-                          colors={
-                            Platform.OS === "ios"
-                              ? ["#751AFF", "#751AFF"]
-                              : ["#751AFF", "#6C52FF"]
-                          }
+                          colors={["#751AFF", "#6C52FF"]}
                           locations={
                             Platform.OS === "ios" ? [0.2, 0.8] : [0.3, 0.8]
                           }
@@ -669,6 +680,7 @@ class CampaignDetails extends Component {
                           end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
                           style={styles.tab}
                         >
+                          <BarIcon style={styles.handlerIcon} />
                           <Text style={styles.handlerText}>Dashboard</Text>
                         </LinearGradient>
                       </TouchableWithoutFeedback>
@@ -682,30 +694,83 @@ class CampaignDetails extends Component {
                         borderRadius: 30,
                         borderBottomEndRadius: 0,
                         borderBottomStartRadius: 0,
-                        paddingBottom: 35,
+                        // paddingBottom: 35,,
                         overflow: "hidden",
-                        width: "100%"
+                        width: "100%",
+                        height: hp(70)
                       }}
                     >
-                      <Animated.View
-                        style={[styles.chartPosition, animatedStyles]}
+                      {/* <Animated.View
+                        style={[styles.chartPosition]}
+                        // style={[styles.chartPosition, animatedStyles]}
+                      > */}
+                      <View
+                        onPress={() => {
+                          // /*this._panel.show()*/
+                        }}
                       >
-                        <View
-                          onPress={() => {
-                            /*this._panel.show()*/
-                          }}
-                        >
-                          <Chart campaign={selectedCampaign} />
-                        </View>
-                      </Animated.View>
+                        <Chart campaign={selectedCampaign} />
+                      </View>
+                      <View style={{ top: hp(5) > 44 ? 33 : 15 }}>
+                        {selectedCampaign.video_views ||
+                        selectedCampaign.video_views >= 0 ? (
+                          <Text
+                            style={[
+                              styles.title,
+                              {
+                                paddingVertical: 10
+                              }
+                            ]}
+                          >
+                            Video Views{"\n "}
+                            <Text style={globalStyles.numbers}>
+                              {selectedCampaign.video_views}
+                            </Text>
+                          </Text>
+                        ) : null}
+                        {selectedCampaign.reach ||
+                        selectedCampaign.reach >= 0 ? (
+                          <Text
+                            style={[
+                              styles.title,
+                              {
+                                paddingVertical: 10
+                              }
+                            ]}
+                          >
+                            Reach{" \n"}
+                            <Text style={globalStyles.numbers}>
+                              {selectedCampaign.reach}
+                            </Text>
+                          </Text>
+                        ) : null}
+                        {selectedCampaign.paid_frequency ||
+                        selectedCampaign.paid_frequency >= 0 ? (
+                          <Text
+                            style={[
+                              styles.title,
+                              {
+                                paddingVertical: 10
+                              }
+                            ]}
+                          >
+                            Paid Frequency{" \n"}
+                            <Text style={globalStyles.numbers}>
+                              {selectedCampaign.paid_frequency}
+                            </Text>
+                          </Text>
+                        ) : null}
+                      </View>
+                      {/* <ScrollView contentInset={{ top: 0 }}>
+                        <LineChartGraphs campaign={selectedCampaign} />
+                      </ScrollView> */}
+                      {/* </Animated.View> */}
 
-                      {/* <Animated.View style={[lineAnimatedStyles]}>
-                        <ScrollView contentInset={{ top: 0 }}>
-                          <LineChartGraphs
-                            campaign={selectedCampaign}
-                          />
-                        </ScrollView>
-                      </Animated.View> */}
+                      {/* <Animated.View style={[lineAnimatedStyles]}> */}
+                      {/* <ScrollView contentInset={{ top: 0 }}>
+                        <LineChartGraphs campaign={selectedCampaign} />
+                      </ScrollView> */}
+                      {/* </Animated.View> */}
                     </LinearGradient>
                   </View>
                 )}
@@ -757,23 +822,54 @@ class CampaignDetails extends Component {
                     { fontSize: 37, fontFamily: "montserrat-semibold" }
                   ]}
                 >
-                  {formatNumber(selectedCampaign.lifetime_budget_micro)}
+                  {formatNumber(
+                    (
+                      selectedCampaign.lifetime_budget_micro -
+                      selectedCampaign.spends
+                    ).toFixed(2)
+                  )}
                 </Text>
-                <Text
-                  style={[
-                    styles.subHeadings,
-                    { fontFamily: "montserrat-regular", fontSize: 14 }
-                  ]}
-                >
-                  Will be added to your wallet If the Ad has been paused for 3
-                  Days
-                </Text>
-                <Button
+                <View style={{ top: 20 }}>
+                  <Button
+                    onPress={() => this.updateStatus()}
+                    style={{
+                      backgroundColor: "transparent",
+                      borderColor: globalColors.orange,
+                      borderWidth: 0.5,
+                      alignSelf: "center",
+                      marginVertical: 5
+                    }}
+                  >
+                    <Text>Pause Campaign</Text>
+                  </Button>
+
+                  <Button
+                    onPress={() => this.endCampaign()}
+                    style={{
+                      backgroundColor: "transparent",
+                      borderColor: globalColors.orange,
+                      borderWidth: 0.5,
+                      alignSelf: "center",
+                      marginVertical: 5
+                    }}
+                  >
+                    <Text>End campaign</Text>
+                  </Button>
+                  <Text
+                    style={[
+                      styles.subHeadings,
+                      { fontFamily: "montserrat-regular", fontSize: 11 }
+                    ]}
+                  >
+                    The remaining budget will be added to your wallet.
+                  </Text>
+                </View>
+                {/* <Button
                   onPress={() => this.updateStatus()}
                   style={styles.button}
                 >
                   <CheckmarkIcon width={53} height={53} />
-                </Button>
+                </Button> */}
               </BlurView>
             </Modal>
           </ImageBackground>
@@ -785,11 +881,14 @@ class CampaignDetails extends Component {
 
 const mapStateToProps = state => ({
   loading: state.dashboard.loadingCampaignDetails,
-  selectedCampaign: state.dashboard.selectedCampaign
+  selectedCampaign: state.dashboard.selectedCampaign,
+  campaignEnded: state.campaignC.campaignEnded
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
-    dispatch(actionCreators.updateStatus(info, handleToggle))
+    dispatch(actionCreators.updateStatus(info, handleToggle)),
+  endCampaign: (info, handleToggle) =>
+    dispatch(actionCreators.endCampaign(info, handleToggle))
 });
 export default connect(
   mapStateToProps,

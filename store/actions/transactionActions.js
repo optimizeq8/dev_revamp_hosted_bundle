@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const getTransactions = () => {
@@ -24,7 +24,7 @@ export const getTransactions = () => {
         });
       })
       .catch(err => {
-        console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
+        // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
         showMessage({
           message:
             err.message ||
@@ -58,7 +58,7 @@ export const getWalletAmount = () => {
         });
       })
       .catch(err => {
-        console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
+        // console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
         showMessage({
           message:
             err.message ||
@@ -96,7 +96,7 @@ export const addWalletAmount = (info, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("addWalletAmount Error: ", err.message || err.response);
+        // console.log("addWalletAmount Error: ", err.message || err.response);
 
         showMessage({
           message:
@@ -130,10 +130,10 @@ export const getWalletAmountInKwd = amount => {
         });
       })
       .catch(err => {
-        console.log(
-          "getWalletAmountInKwd Error: ",
-          err.message || err.response
-        );
+        // console.log(
+        //   "getWalletAmountInKwd Error: ",
+        //   err.message || err.response
+        // );
         showMessage({
           message:
             err.message ||
@@ -172,7 +172,7 @@ export const useWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("useWallet Error: ", err.message || err.response);
+        // console.log("useWallet Error: ", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -212,7 +212,7 @@ export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
           });
       })
       .catch(err => {
-        console.log("removeWalletAmount Error: ", err.message || err.response);
+        // console.log("removeWalletAmount Error: ", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -242,7 +242,7 @@ export const checkoutwithWallet = campaign_id => {
       .then(data => NavigationService.navigate("SuccessRedirect", { ...data }))
 
       .then(data => {
-        console.log("CHECKOUT_WITH_WALLET data", data);
+        // console.log("CHECKOUT_WITH_WALLET data", data);
         return dispatch({
           type: actionTypes.CHECKOUT_WITH_WALLET,
           payload: data
@@ -250,7 +250,7 @@ export const checkoutwithWallet = campaign_id => {
       })
 
       .catch(err => {
-        console.log("checkoutwithWallet Error: ", err.message || err.response);
+        // console.log("checkoutwithWallet Error: ", err.message || err.response);
         showMessage({
           message:
             err.message ||
