@@ -1,44 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  Image,
-  ScrollView,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Dimensions
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
-import { Modal } from "react-native-paper";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import { View, Image, Animated, TouchableWithoutFeedback } from "react-native";
+import { Card, Button, Text, Container } from "native-base";
 import { LinearGradient } from "expo";
 import LottieView from "lottie-react-native";
-import Menu from "../Menu";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 import * as actionCreators from "../../../store/actions";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
 
 class Home extends Component {
@@ -96,36 +68,35 @@ class Home extends Component {
     } else {
       return (
         <>
-          <Transition shared="close">
-            <View
-              style={{
-                justifyContent: "center",
-                marginTop: heightPercentageToDP("5%"),
-                marginLeft: 20,
-                zIndex: 1000
+          <View
+            style={{
+              justifyContent: "center",
+              marginTop: heightPercentageToDP("5%"),
+              marginLeft: 20,
+              zIndex: 1000
+            }}
+          >
+            <TouchableWithoutFeedback
+              onPress={() => {
+                if (this.state.open === false) {
+                  this.startAnimation();
+                } else {
+                  this.closeAnimation();
+                }
               }}
             >
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  if (this.state.open === false) {
-                    this.startAnimation();
-                  } else {
-                    this.closeAnimation();
-                  }
+              <LottieView
+                style={{
+                  width: 50,
+                  height: 47
                 }}
-              >
-                <LottieView
-                  style={{
-                    width: 50,
-                    height: 47
-                  }}
-                  resizeMode="contain"
-                  source={require("../../../assets/animation/menu-btn.json")}
-                  progress={this.state.menu}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          </Transition>
+                resizeMode="contain"
+                source={require("../../../assets/animation/menu-btn.json")}
+                progress={this.state.menu}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+
           <Container style={styles.container}>
             <LinearGradient
               colors={[colors.background1, colors.background2]}

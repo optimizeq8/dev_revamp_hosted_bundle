@@ -208,7 +208,7 @@ class BillingAddressCard extends React.Component {
             { top: this.props.sidemenustate ? hp(20) : 0 }
           ]}
         >
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
             <KeyboardShift>
               {() => (
                 <View>

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: heightPercentageToDP("3"),
+    top: heightPercentageToDP("2"),
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.5,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   buttontext: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    fontSize: 12
+    fontSize: heightPercentageToDP(5) < 40 ? 9 : 12
   },
   businessTitle: {
     alignSelf: "center",
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 31
+    fontSize: heightPercentageToDP(5) < 40 ? 20 : 31
   },
   menutext: {
     fontFamily: "montserrat-semibold",
@@ -135,13 +135,15 @@ const styles = StyleSheet.create({
   },
   logoutIcon: {
     // position: "absolute",
-    // top: 20,
+    zIndex: 20,
+    bottom: 30,
     left: widthPercentageToDP("85%"),
     zIndex: 10
   },
   options: {
     alignItems: "center",
-    paddingBottom: 5,
+    paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 5,
+    marginBottom: heightPercentageToDP(5) < 30 ? -5 : 0,
     flexDirection: "row",
     justifyContent: "flex-start",
     width: 150
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   icons: {
     color: "#fff",
     paddingHorizontal: 17,
-    paddingBottom: 10
+    paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
   },
   privacy: {
     justifyContent: "flex-start",
@@ -161,7 +163,8 @@ const styles = StyleSheet.create({
   version: {
     color: "#fff",
     fontFamily: "montserrat-extralight",
-    fontSize: 12
+    fontSize: 12,
+    bottom: 10
   }
 });
 

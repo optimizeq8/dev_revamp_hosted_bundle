@@ -71,7 +71,7 @@ class MainForm extends Component {
     }
   }
   render() {
-    let invite = this.props.navigation.getParam("invite", {});
+    let invite = this.props.navigation.getParam("invite", false);
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -89,17 +89,17 @@ class MainForm extends Component {
                 height={heightPercentageToDP(65)}
               />
             </View>
-            <View style={{ marginTop: "1%" }}>
+            <View>
               <Logo
                 style={styles.logo}
-                width={heightPercentageToDP(20)}
-                height={heightPercentageToDP(20)}
+                width={heightPercentageToDP(15)}
+                height={heightPercentageToDP(15)}
               />
               <Text style={styles.logotext}>Optimize</Text>
             </View>
             <KeyboardShift>
               {() => (
-                <>
+                <View style={{ bottom: 40 }}>
                   <Text style={styles.text}>Sign In</Text>
 
                   <View style={styles.mainView}>
@@ -135,9 +135,6 @@ class MainForm extends Component {
                         placeholder="Email"
                       />
                     </Item>
-                    {/* {this.state.emailError ? (
-            <Text style={styles.error}>{this.state.emailError}</Text>
-          ) : null} */}
 
                     <Item
                       rounded
@@ -173,8 +170,7 @@ class MainForm extends Component {
                         placeholder="Password"
                       />
                     </Item>
-                    {/* {this.state.passwordError ? (  <Text style={styles.error}>{this.state.passwordError}</Text>
-          ) : null} */}
+
                     <Text
                       onPress={() => {
                         Segment.track("Forgot Password Button");
@@ -197,7 +193,9 @@ class MainForm extends Component {
                       <Text style={styles.buttontext}>Sign in</Text>
                     </Button>
                   </View>
-                  <View style={{ top: "15%" }}>
+                  <View
+                    style={{ top: heightPercentageToDP(5) < 40 ? 10 : "30%" }}
+                  >
                     {invite && (
                       <>
                         <Text style={[styles.link, { paddingBottom: 7 }]}>
@@ -225,7 +223,7 @@ class MainForm extends Component {
                       </>
                     )}
                   </View>
-                </>
+                </View>
               )}
             </KeyboardShift>
           </Container>

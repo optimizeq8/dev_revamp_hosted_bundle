@@ -43,7 +43,8 @@ export default class Invitation extends Component {
         } else {
           this.setState({ registeredWithInvite: true });
         }
-      })      .catch(err => {
+      })
+      .catch(err => {
         showMessage({
           message: "Something went wrong!",
           type: "warning",
@@ -52,8 +53,6 @@ export default class Invitation extends Component {
         });
         //  console.log(err)
       });
-
-
   }
   toggleComps = () => {
     this.setState({
@@ -134,7 +133,7 @@ export default class Invitation extends Component {
                         : "fadeInRightBig"
                       : ""
                   }
-                  style={{ height: "45%" }}
+                  style={{ height: "45%", bottom: "5%" }}
                 >
                   <GetInviteCode toggleComps={this.toggleComps} />
                 </Animatable.View>

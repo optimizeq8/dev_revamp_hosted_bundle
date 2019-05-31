@@ -80,15 +80,6 @@ class Menu extends Component {
   render() {
     return (
       <Container style={[styles.menuModal]}>
-        {/* <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        > */}
-        {/* <BackdropIcon
-          style={styles.backDrop}
-          height={heightPercentageToDP("100%")}
-        /> */}
         <Background
           style={[styles.background]}
           width={widthPercentageToDP(85)}
@@ -109,7 +100,7 @@ class Menu extends Component {
 
         <View
           style={{
-            // marginTop: heightPercentageToDP("8.7%"),
+            bottom: heightPercentageToDP(5) < 40 ? 40 : 0,
             marginBottom: 0,
             backgroundColor: "#0000"
           }}
@@ -137,17 +128,11 @@ class Menu extends Component {
               stroke="#fff"
             />
           </Button>
-          <View>
-            {/* <Icons.DropDownIcon style={styles.icons}
-                style={styles.DropIcon}
-              /> */}
-          </View>
 
           <View
             style={{
-              paddingLeft: 20
-              // flexDirection: "column"
-              // justifyContent: "space-evenly"
+              paddingLeft: 20,
+              bottom: heightPercentageToDP(5) < 40 ? 10 : 0
             }}
           >
             <TouchableOpacity
@@ -165,7 +150,7 @@ class Menu extends Component {
                 style={{
                   alignItems: "center",
                   left: widthPercentageToDP(4),
-                  marginBottom: 20,
+                  marginBottom: heightPercentageToDP(5) < 40 ? 5 : 10,
                   marginTop: 10,
                   flexDirection: "row"
                 }}
@@ -211,7 +196,12 @@ class Menu extends Component {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => openPrivacy()}>
-              <View style={styles.options}>
+              <View
+                style={[
+                  styles.options,
+                  { marginBottom: heightPercentageToDP(5) < 50 ? 9 : 0 }
+                ]}
+              >
                 <Icon
                   name="security"
                   type="MaterialIcons"
