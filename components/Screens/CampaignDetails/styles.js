@@ -190,12 +190,12 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   bottomContainer: {
-    // flex: 1,
-    // width: wp("100"),
+    width: wp("100"),
     // height: hp("100"),
     height: 130,
     top: "16%",
-    elevation: 5,
+    elevation: 10,
+    zIndex: 10,
     alignItems: "center",
     justifyContent: "center"
   },

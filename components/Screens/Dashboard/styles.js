@@ -41,7 +41,19 @@ const styles = StyleSheet.create({
   backDrop: {
     position: "absolute",
     top: -heightPercentageToDP("45%"),
-    alignSelf: "center"
+    alignSelf: "center",
+    zIndex: -1,
+    elevation: 0
+  },
+  logoutIcon: {
+    zIndex: 20,
+
+    left: widthPercentageToDP("85%")
+  },
+  icons: {
+    color: "#fff",
+    paddingHorizontal: 17,
+    paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
   },
   text: {
     alignSelf: "center",

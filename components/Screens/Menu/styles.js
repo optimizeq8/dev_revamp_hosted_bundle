@@ -134,11 +134,9 @@ const styles = StyleSheet.create({
     color: "grey"
   },
   logoutIcon: {
-    // position: "absolute",
     zIndex: 20,
     bottom: 30,
-    left: widthPercentageToDP("85%"),
-    zIndex: 10
+    left: widthPercentageToDP("85%")
   },
   options: {
     alignItems: "center",
