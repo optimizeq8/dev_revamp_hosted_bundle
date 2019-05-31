@@ -62,7 +62,6 @@ class MainForm extends Component {
 
   componentDidMount() {
     Segment.screen("Sign in Screen");
-
     if (
       this.props.navigation &&
       this.props.navigation.getParam("loggedout", false)
@@ -136,6 +135,10 @@ class MainForm extends Component {
                         placeholder="Email"
                       />
                     </Item>
+                    {/* {this.state.emailError ? (
+            <Text style={styles.error}>{this.state.emailError}</Text>
+          ) : null} */}
+
                     <Item
                       rounded
                       style={[
@@ -170,6 +173,8 @@ class MainForm extends Component {
                         placeholder="Password"
                       />
                     </Item>
+                    {/* {this.state.passwordError ? (  <Text style={styles.error}>{this.state.passwordError}</Text>
+          ) : null} */}
                     <Text
                       onPress={() => {
                         Segment.track("Forgot Password Button");

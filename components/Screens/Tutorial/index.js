@@ -65,31 +65,46 @@ class Tutorial extends Component {
               flex: 1,
               alignContent: "center",
               alignSelf: "center",
-              bottom: i === 4 ? heightPercentageToDP("-2%") : 0
+              bottom: i === 3 ? heightPercentageToDP("-2%") : 0
             }}
             source={url}
             resizeMode="contain"
           />
-          {i === 4 && (
+          {i === 3 && (
             <Button
               style={{
                 alignSelf: "flex-end",
-                marginRight: widthPercentageToDP("7%"),
-                bottom: heightPercentageToDP("19.5%"),
+                // marginRight: widthPercentageToDP("7%"),
+                bottom: heightPercentageToDP("7.5%"),
+                alignSelf: "center",
                 zIndex: 80,
                 elevation: 3,
                 backgroundColor: "#FF9D00",
-                borderRadius: 15
+                width: widthPercentageToDP(60),
+                height: heightPercentageToDP(7),
+                borderRadius: 15,
+                justifyContent: "center"
               }}
               onPress={() => {
-                this.props.navigation.replace("Invitation");
+                AsyncStorage.getItem("tutorialOpened")
+                  .then(value => {
+                    if (value == null) {
+                      AsyncStorage.setItem("tutorialOpened", "false");
+                    } else {
+                      AsyncStorage.setItem("tutorialOpened", "true").then(
+                        this.props.navigation.replace("Invitation")
+                      );
+                    }
+                  })
+                  .catch(err => console.log(err));
               }}
             >
               <Text
                 style={{
                   color: "#fff",
                   fontFamily: "montserrat-bold",
-                  fontSize: 11
+                  fontSize: 20,
+                  textAlign: "center"
                 }}
               >
                 Get Started!
@@ -141,10 +156,10 @@ class Tutorial extends Component {
                 url={require("../../../assets/images/tutorial/tutorial-3.png")}
                 i={3}
               />
-              <Slide
+              {/* <Slide
                 url={require("../../../assets/images/tutorial/tutorial-4.png")}
                 i={4}
-              />
+              /> */}
             </Swiper>
           </Container>
         </SafeAreaView>

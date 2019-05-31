@@ -71,6 +71,11 @@ class Dashboard extends Component {
         business_id: this.props.mainBusiness.businessid
       });
     }
+    this.setState({ menu: new Animated.Value(0) });
+    this.closeAnimation();
+  }
+  componentWillMount() {
+
     // this.setState({ menu: new Animated.Value(0) });
     // this.closeAnimation();
     BackHandler.addEventListener("hardwareBackPress", () => {
@@ -78,6 +83,7 @@ class Dashboard extends Component {
     });
   }
   componentWillUnmount() {
+    this.signal.cancel("Api is being canceled");
     BackHandler.removeEventListener("hardwareBackPress", () => {
       BackHandler.exitApp();
     });
@@ -105,9 +111,6 @@ class Dashboard extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.signal.cancel("Api is being canceled");
-  }
   startAnimation = () => {
     this.setState({ anim: true });
     Animated.timing(this.state.menu, {

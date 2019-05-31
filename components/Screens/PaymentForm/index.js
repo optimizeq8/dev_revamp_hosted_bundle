@@ -516,7 +516,7 @@ class PaymentForm extends Component {
                         )}
                   </Text>
                 </View>
-                {this.props.addingCredits && (
+                {!this.state.addingCredits && (
                   <View style={{ flexDirection: "row", paddingTop: 3 }}>
                     <Text
                       style={[

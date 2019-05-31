@@ -43,8 +43,7 @@ export default class Invitation extends Component {
         } else {
           this.setState({ registeredWithInvite: true });
         }
-      })
-      .catch(err => {
+      })      .catch(err => {
         showMessage({
           message: "Something went wrong!",
           type: "warning",
@@ -54,23 +53,7 @@ export default class Invitation extends Component {
         //  console.log(err)
       });
 
-    AsyncStorage.getItem("tutorialOpened")
-      .then(value => {
-        if (value == null) {
-          AsyncStorage.setItem("tutorialOpened", "false");
-        } else {
-          AsyncStorage.setItem("tutorialOpened", "true");
-        }
-      })
-      .catch(err => {
-        showMessage({
-          message: "Something went wrong!",
-          type: "warning",
-          position: "top",
-          description: "Please try again later."
-        });
-        // console.log(err)
-      });
+
   }
   toggleComps = () => {
     this.setState({
