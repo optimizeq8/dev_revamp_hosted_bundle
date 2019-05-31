@@ -33,6 +33,7 @@ import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
+import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
 // Style
 import styles from "./styles";
@@ -225,7 +226,8 @@ class Dashboard extends Component {
                 zIndex: 10,
                 display: this.state.sidemenustate ? "none" : "flex",
                 height: 40,
-                backgroundColor: "#0000"
+                backgroundColor: "#0000",
+                width: "100%"
               }}
             >
               <TouchableWithoutFeedback
@@ -249,7 +251,7 @@ class Dashboard extends Component {
                   progress={this.state.menu}
                 />
               </TouchableWithoutFeedback>
-              {!this.state.open && (
+              {!this.state.open ? (
                 <>
                   <Text style={[styles.text]}>
                     {this.props.mainBusiness.brandname}
@@ -261,6 +263,18 @@ class Dashboard extends Component {
                     <WalletIcon width={24} height={24} />
                   </TouchableOpacity>
                 </>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.clearPushToken(
+                      this.props.navigation,
+                      this.props.userInfo.userid
+                    );
+                  }}
+                  style={styles.logoutIcon}
+                >
+                  <Icons.LogoutIcon style={styles.icons} />
+                </TouchableOpacity>
               )}
             </View>
           )}

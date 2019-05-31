@@ -86,7 +86,7 @@ class Menu extends Component {
           height={heightPercentageToDP(61)}
         />
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             this.props.clearPushToken(
               this.props.navigation,
@@ -96,7 +96,7 @@ class Menu extends Component {
           style={styles.logoutIcon}
         >
           <Icons.LogoutIcon style={styles.icons} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View
           style={{

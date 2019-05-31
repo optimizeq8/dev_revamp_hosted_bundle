@@ -279,22 +279,23 @@ class CampaignDetails extends Component {
               <Loading dash={true} />
             </View>
           )}
-          {!selectedCampaign.media.includes(".jpg") && (
-            <View style={[styles.backgroundViewWrapper]}>
-              <Video
-                onLoadEnd={() => this.setState({ imageIsLoading: false })}
-                source={{
-                  uri: "http://" + selectedCampaign.media
-                }}
-                isMuted
-                resizeMode="cover"
-                style={{
-                  width: "100%",
-                  height: "100%"
-                }}
-              />
-            </View>
-          )}
+          {!selectedCampaign.media.includes(".jpg") ||
+            (!selectedCampaign.media.includes(".png") && (
+              <View style={[styles.backgroundViewWrapper]}>
+                <Video
+                  onLoadEnd={() => this.setState({ imageIsLoading: false })}
+                  source={{
+                    uri: "http://" + selectedCampaign.media
+                  }}
+                  isMuted
+                  resizeMode="cover"
+                  style={{
+                    width: "100%",
+                    height: "100%"
+                  }}
+                />
+              </View>
+            ))}
 
           <ImageBackground
             source={{
@@ -334,7 +335,7 @@ class CampaignDetails extends Component {
               >
                 Edit
               </Text>
-              <Card padder style={styles.mainCard}>
+              <Card style={styles.mainCard}>
                 <Image
                   style={styles.image}
                   source={require("../../../assets/images/snap-ghost.png")}
@@ -643,138 +644,6 @@ class CampaignDetails extends Component {
                   )}
                 </View>
               </Card>
-              <SlidingUpPanel
-                showBackdrop={false}
-                ref={c => (this._panel = c)}
-                draggableRange={this.draggableRange}
-                animatedValue={this._draggedValue}
-                friction={0.4}
-                // onDragEnd={value => {
-                //   if (value > hp("50%")) {
-                //     this._panel.show();
-                //   } else {
-                //     this._panel.hide();
-                //   }
-                // }}
-              >
-                {dragHandler => (
-                  <View style={styles.bottomContainer}>
-                    <View style={styles.dragHandler} {...dragHandler}>
-                      <TouchableWithoutFeedback
-                      // onPress={() => {
-                      //   if (this.state.visible) {
-                      //     this._panel.hide();
-                      //     this.setState({ visible: false });
-                      //   } else {
-                      //     this._panel.show();
-                      //     this.setState({ visible: true });
-                      //   }
-                      // }}
-                      >
-                        <LinearGradient
-                          colors={["#751AFF", "#6C52FF"]}
-                          locations={
-                            Platform.OS === "ios" ? [0.2, 0.8] : [0.3, 0.8]
-                          }
-                          start={[0, 0.2]}
-                          end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
-                          style={styles.tab}
-                        >
-                          <BarIcon style={styles.handlerIcon} />
-                          <Text style={styles.handlerText}>Dashboard</Text>
-                        </LinearGradient>
-                      </TouchableWithoutFeedback>
-                    </View>
-                    <LinearGradient
-                      colors={["#751AFF", "#6C52FF", colors.background2]}
-                      locations={[0.2, 0.6, 1]}
-                      start={[0.2, 0.4]}
-                      end={[1, 1]}
-                      style={{
-                        borderRadius: 30,
-                        borderBottomEndRadius: 0,
-                        borderBottomStartRadius: 0,
-                        // paddingBottom: 35,,
-                        overflow: "hidden",
-                        width: "100%",
-                        height: hp(70)
-                      }}
-                    >
-                      {/* <Animated.View
-                        style={[styles.chartPosition]}
-                        // style={[styles.chartPosition, animatedStyles]}
-                      > */}
-                      <View
-                        onPress={() => {
-                          // /*this._panel.show()*/
-                        }}
-                      >
-                        <Chart campaign={selectedCampaign} />
-                      </View>
-                      <View style={{ top: hp(5) > 44 ? 33 : 15 }}>
-                        {selectedCampaign.video_views ||
-                        selectedCampaign.video_views >= 0 ? (
-                          <Text
-                            style={[
-                              styles.title,
-                              {
-                                paddingVertical: 10
-                              }
-                            ]}
-                          >
-                            Video Views{"\n "}
-                            <Text style={globalStyles.numbers}>
-                              {selectedCampaign.video_views}
-                            </Text>
-                          </Text>
-                        ) : null}
-                        {selectedCampaign.reach ||
-                        selectedCampaign.reach >= 0 ? (
-                          <Text
-                            style={[
-                              styles.title,
-                              {
-                                paddingVertical: 10
-                              }
-                            ]}
-                          >
-                            Reach{" \n"}
-                            <Text style={globalStyles.numbers}>
-                              {selectedCampaign.reach}
-                            </Text>
-                          </Text>
-                        ) : null}
-                        {selectedCampaign.paid_frequency ||
-                        selectedCampaign.paid_frequency >= 0 ? (
-                          <Text
-                            style={[
-                              styles.title,
-                              {
-                                paddingVertical: 10
-                              }
-                            ]}
-                          >
-                            Paid Frequency{" \n"}
-                            <Text style={globalStyles.numbers}>
-                              {selectedCampaign.paid_frequency}
-                            </Text>
-                          </Text>
-                        ) : null}
-                      </View>
-                      {/* <ScrollView contentInset={{ top: 0 }}>
-                        <LineChartGraphs campaign={selectedCampaign} />
-                      </ScrollView> */}
-                      {/* </Animated.View> */}
-
-                      {/* <Animated.View style={[lineAnimatedStyles]}> */}
-                      {/* <ScrollView contentInset={{ top: 0 }}>
-                        <LineChartGraphs campaign={selectedCampaign} />
-                      </ScrollView> */}
-                      {/* </Animated.View> */}
-                    </LinearGradient>
-                  </View>
-                )}
-              </SlidingUpPanel>
             </Container>
             <Modal
               animationType={"fade"}
@@ -873,6 +742,137 @@ class CampaignDetails extends Component {
               </BlurView>
             </Modal>
           </ImageBackground>
+          <SlidingUpPanel
+            showBackdrop={false}
+            ref={c => (this._panel = c)}
+            draggableRange={this.draggableRange}
+            animatedValue={this._draggedValue}
+            friction={0.4}
+            // onDragEnd={value => {
+            //   if (value > hp("50%")) {
+            //     this._panel.show();
+            //   } else {
+            //     this._panel.hide();
+            //   }
+            // }}
+          >
+            {dragHandler => (
+              <View style={styles.bottomContainer}>
+                <View style={styles.dragHandler} {...dragHandler}>
+                  <TouchableWithoutFeedback
+                  // onPress={() => {
+                  //   if (this.state.visible) {
+                  //     this._panel.hide();
+                  //     this.setState({ visible: false });
+                  //   } else {
+                  //     this._panel.show();
+                  //     this.setState({ visible: true });
+                  //   }
+                  // }}
+                  >
+                    <LinearGradient
+                      colors={["#751AFF", "#6C52FF"]}
+                      locations={
+                        Platform.OS === "ios" ? [0.2, 0.8] : [0.3, 0.8]
+                      }
+                      start={[0, 0.2]}
+                      end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
+                      style={styles.tab}
+                    >
+                      <BarIcon style={styles.handlerIcon} />
+                      <Text style={styles.handlerText}>Dashboard</Text>
+                    </LinearGradient>
+                  </TouchableWithoutFeedback>
+                </View>
+                <LinearGradient
+                  colors={["#751AFF", "#6C52FF", colors.background2]}
+                  locations={[0.2, 0.6, 1]}
+                  start={[0.2, 0.4]}
+                  end={[1, 1]}
+                  style={{
+                    borderRadius: 30,
+                    borderBottomEndRadius: 0,
+                    borderBottomStartRadius: 0,
+                    // paddingBottom: 35,,
+                    overflow: "hidden",
+                    width: "100%",
+                    height: hp(70)
+                  }}
+                >
+                  {/* <Animated.View
+                        style={[styles.chartPosition]}
+                        // style={[styles.chartPosition, animatedStyles]}
+                      > */}
+                  <View
+                    onPress={() => {
+                      // /*this._panel.show()*/
+                    }}
+                  >
+                    <Chart campaign={selectedCampaign} />
+                  </View>
+                  <View style={{ top: hp(5) > 44 ? 33 : 15 }}>
+                    {selectedCampaign.video_views ||
+                    selectedCampaign.video_views >= 0 ? (
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            paddingVertical: 10
+                          }
+                        ]}
+                      >
+                        Video Views{"\n "}
+                        <Text style={globalStyles.numbers}>
+                          {selectedCampaign.video_views}
+                        </Text>
+                      </Text>
+                    ) : null}
+                    {selectedCampaign.reach || selectedCampaign.reach >= 0 ? (
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            paddingVertical: 10
+                          }
+                        ]}
+                      >
+                        Reach{" \n"}
+                        <Text style={globalStyles.numbers}>
+                          {selectedCampaign.reach}
+                        </Text>
+                      </Text>
+                    ) : null}
+                    {selectedCampaign.paid_frequency ||
+                    selectedCampaign.paid_frequency >= 0 ? (
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            paddingVertical: 10
+                          }
+                        ]}
+                      >
+                        Paid Frequency{" \n"}
+                        <Text style={globalStyles.numbers}>
+                          {selectedCampaign.paid_frequency}
+                        </Text>
+                      </Text>
+                    ) : null}
+                  </View>
+                  {/* <ScrollView contentInset={{ top: 0 }}>
+                        <LineChartGraphs campaign={selectedCampaign} />
+                      </ScrollView> */}
+                  {/* </Animated.View> */}
+
+                  {/* <Animated.View style={[lineAnimatedStyles]}> */}
+                  {/* <ScrollView contentInset={{ top: 0 }}>
+                        <LineChartGraphs campaign={selectedCampaign} />
+                      </ScrollView> */}
+                  {/* </Animated.View> */}
+                </LinearGradient>
+              </View>
+            )}
+          </SlidingUpPanel>
         </>
       );
     }
