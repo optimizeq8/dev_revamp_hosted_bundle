@@ -430,6 +430,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
+  clearPushToken: (navigation, userid) =>
+    dispatch(actionCreators.clearPushToken(navigation, userid)),
   updateCampaignList: (id, page, increasePage) =>
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),

@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   menuModal: {
     // ...StyleSheet.absoluteFillObject
     backgroundColor: "#0000",
-    zIndex: 10,
+    zIndex: 1,
     elevation: 1
   },
   backDrop: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   icons: {
     color: "#fff",
     paddingHorizontal: 17,
-    paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
+    paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 12
   },
   privacy: {
     justifyContent: "flex-start",
