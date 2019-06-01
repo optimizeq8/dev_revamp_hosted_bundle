@@ -184,16 +184,11 @@ const styles = StyleSheet.create({
     padding: 20
   },
   dragHandler: {
-    // alignSelf: "stretch",
-    // height: 64,
     alignItems: "center",
     justifyContent: "center"
   },
   bottomContainer: {
     width: wp("100"),
-    // height: hp("100"),
-    height: 130,
-    top: "16%",
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
