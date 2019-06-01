@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "notification": {
@@ -23,9 +23,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "6"
+      "buildNumber": "7",
+      "supportsTablet": false
     },
     "packagerOpts": {
       "config": "metro.config.js"
@@ -33,7 +33,7 @@
 
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 7
+      "versionCode": 8
     },
     "hooks": {
       "postPublish": [

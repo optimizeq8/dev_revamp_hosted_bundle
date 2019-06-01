@@ -243,7 +243,7 @@ class Menu extends Component {
                 <Text style={styles.text}>Logout</Text>
               </View>
             </TouchableOpacity>
-            <Text style={styles.version}>Version:0.1.1/7/6</Text>
+            <Text style={styles.version}>Version:0.1.2/8/7</Text>
           </View>
         </View>
 
