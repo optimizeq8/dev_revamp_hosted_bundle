@@ -53,8 +53,8 @@ import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
 class CampaignDetails extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
-    top: hp(10) < 60 ? 350 : 320,
-    bottom: hp(10) < 60 ? 100 : 80
+    top: 450,
+    bottom: 200
   };
   static navigationOptions = {
     header: null
@@ -771,12 +771,7 @@ class CampaignDetails extends Component {
                   // }}
                   >
                     <LinearGradient
-                      colors={["#751AFF", "#6C52FF"]}
-                      locations={
-                        Platform.OS === "ios" ? [0.2, 0.8] : [0.3, 0.8]
-                      }
-                      start={[0, 0.2]}
-                      end={Platform.OS === "ios" ? [1, 1] : [0.1, 1]}
+                      colors={["#751AFF", "#751AFF"]}
                       style={styles.tab}
                     >
                       <BarIcon style={styles.handlerIcon} />
