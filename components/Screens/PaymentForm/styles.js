@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     // height: heightPercentageToDP(20),
     // width: heightPercentageToDP(20)
-    width: 200,
-    height: 200
+    width: heightPercentageToDP(5) < 30 ? 100 : 200,
+    height: heightPercentageToDP(5) < 30 ? 100 : 200
   },
   BlurView: {
     zIndex: 10,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.2,
     height: 45,
-    width: 200,
+    width: heightPercentageToDP(5) < 30 ? 150 : 200,
     marginLeft: 0,
     marginRight: 0,
     borderRadius: 30,

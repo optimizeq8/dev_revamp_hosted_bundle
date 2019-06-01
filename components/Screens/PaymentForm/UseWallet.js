@@ -13,6 +13,14 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 class UseWallet extends Component {
   //   state = { showModal: false };
 
+  componentDidMount() {
+    this.props.getWalletAmount();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.showWalletModal && this.props.showWalletModal) {
+      this._handleWallet();
+    }
+  }
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
       this.props.checkoutwithWallet(this.props.campaign_id);
@@ -36,11 +44,7 @@ class UseWallet extends Component {
     //   showModal: true
     // });
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.showWalletModal && this.props.showWalletModal) {
-      this._handleWallet();
-    }
-  }
+
   render() {
     return (
       <View
@@ -160,6 +164,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   useWallet: info => dispatch(actionCreators.useWallet(info)),
+  getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
 });

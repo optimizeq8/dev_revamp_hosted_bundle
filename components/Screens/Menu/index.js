@@ -259,10 +259,12 @@ class Menu extends Component {
           animatedValue={this._draggedValue}
         >
           <>
-            <Icons.CloseListIcon
-              onPress={() => this.slidePanelShow()}
+            <TouchableOpacity
               style={styles.CloseIcon}
-            />
+              onPress={() => this.slidePanelShow()}
+            >
+              <Icons.CloseListIcon />
+            </TouchableOpacity>
             <BusinessList navigation={this.props.navigation} />
           </>
         </SlidingUpPanel>

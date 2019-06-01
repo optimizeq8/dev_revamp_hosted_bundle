@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
+  heightPercentageToDP
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../Global Styles/";
 export const colors = {
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 5
+    top: heightPercentageToDP(5) < 30 ? -5 : 30
   },
   interestButton: {
     backgroundColor: globalColors.orange,

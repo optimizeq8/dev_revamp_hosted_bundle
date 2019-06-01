@@ -30,7 +30,10 @@ import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
 import DateRangePicker from "./DateRangePicker";
 // Style
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 export default class DateFields extends Component {
   constructor(props) {
@@ -146,7 +149,11 @@ export default class DateFields extends Component {
                 ? "Select a date range to filter from"
                 : "Please select your ad launch and end dates"}
             </Text>
-            <CalenderkIcon width={60} height={60} style={styles.icon} />
+            <CalenderkIcon
+              width={heightPercentageToDP(5) < 30 ? 30 : 60}
+              height={heightPercentageToDP(5) < 30 ? 30 : 60}
+              style={styles.icon}
+            />
             <Text style={[styles.textModal, { color: "#FF9D00" }]}>
               Select the {!this.state.start_choice ? "Start Date" : "End Date"}
             </Text>
@@ -195,7 +202,10 @@ export default class DateFields extends Component {
                   });
                 }}
               >
-                <CheckmarkIcon width={53} height={53} />
+                <CheckmarkIcon
+                  width={heightPercentageToDP(5) < 30 ? 40 : 53}
+                  height={heightPercentageToDP(5) < 30 ? 40 : 53}
+                />
               </Button>
             ) : null}
           </BlurView>
