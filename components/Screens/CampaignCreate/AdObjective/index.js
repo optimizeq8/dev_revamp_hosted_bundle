@@ -230,7 +230,11 @@ class AdObjective extends Component {
                 />
                 <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
               </View>
-              <PhoneIcon style={styles.phoneicon} width={70} />
+              <PhoneIcon
+                style={styles.phoneicon}
+                width={heightPercentageToDP(5) < 30 ? 50 : 70}
+                height={heightPercentageToDP(5) < 30 ? 50 : 70}
+              />
             </View>
             <View style={styles.maincontent}>
               <Item

@@ -127,11 +127,10 @@ const styles = StyleSheet.create({
   },
   CloseIcon: {
     position: "absolute",
-    top: heightPercentageToDP("6.5"),
-    left: widthPercentageToDP("7.5%"),
+    top: heightPercentageToDP("5"),
+    left: widthPercentageToDP("6%"),
     zIndex: 15,
-    padding: 15,
-    color: "grey"
+    padding: 10
   },
   logoutIcon: {
     zIndex: 20,
