@@ -33,11 +33,10 @@ import * as actionCreators from "../../../store/actions";
 
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
-  static defaultProps = {
-    draggableRange: {
-      top: heightPercentageToDP("113"),
-      bottom: -heightPercentageToDP("120")
-    }
+
+  draggableRange = {
+    top: heightPercentageToDP("90"),
+    bottom: -heightPercentageToDP("120")
   };
   constructor(props) {
     super(props);
@@ -58,7 +57,7 @@ class Menu extends Component {
   };
   showPanel() {
     Animated.timing(this._draggedValue, {
-      toValue: this.props.draggableRange.top / 1.35,
+      toValue: this.draggableRange.top,
       easing: Easing.elastic(1), // Springy
       duration: 250
     }).start();
@@ -100,7 +99,7 @@ class Menu extends Component {
 
         <View
           style={{
-            bottom: heightPercentageToDP(5) < 40 ? 40 : 0,
+            bottom: heightPercentageToDP(5) < 30 ? 10 : 0,
             marginBottom: 0,
             backgroundColor: "#0000"
           }}
@@ -132,7 +131,7 @@ class Menu extends Component {
           <View
             style={{
               paddingLeft: 20,
-              bottom: heightPercentageToDP(5) < 40 ? 10 : 0
+              bottom: heightPercentageToDP(5) < 30 ? 10 : 0
             }}
           >
             <TouchableOpacity
@@ -150,7 +149,7 @@ class Menu extends Component {
                 style={{
                   alignItems: "center",
                   left: widthPercentageToDP(4),
-                  marginBottom: heightPercentageToDP(5) < 40 ? 5 : 10,
+                  marginBottom: heightPercentageToDP(5) < 30 ? 5 : 10,
                   marginTop: 10,
                   flexDirection: "row"
                 }}
@@ -199,13 +198,13 @@ class Menu extends Component {
               <View
                 style={[
                   styles.options,
-                  { marginBottom: heightPercentageToDP(5) < 50 ? 9 : 0 }
+                  { marginBottom: heightPercentageToDP(5) < 30 ? 9 : 5 }
                 ]}
               >
                 <Icon
                   name="security"
                   type="MaterialIcons"
-                  style={styles.icons}
+                  style={[styles.icons]}
                 />
                 <Text style={styles.text}>Privacy policy</Text>
               </View>
@@ -216,7 +215,10 @@ class Menu extends Component {
                 <Icon
                   name="file-document-box"
                   type="MaterialCommunityIcons"
-                  style={styles.icons}
+                  style={[
+                    styles.icons,
+                    { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
+                  ]}
                 />
                 <Text style={styles.text}>Terms & Condtions</Text>
               </View>
@@ -239,7 +241,9 @@ class Menu extends Component {
                   flexDirection: "row"
                 }}
               >
-                <Icons.LogoutIcon style={[styles.icons, { marginRight: 16 }]} />
+                <Icons.LogoutIcon
+                  style={[styles.icons, { marginRight: 16, right: 3 }]}
+                />
                 <Text style={styles.text}>Logout</Text>
               </View>
             </TouchableOpacity>
@@ -250,7 +254,7 @@ class Menu extends Component {
         <SlidingUpPanel
           showBackdrop={false}
           ref={c => (this._panel = c)}
-          draggableRange={this.props.draggableRange}
+          draggableRange={this.draggableRange}
           allowDragging={false}
           animatedValue={this._draggedValue}
         >
