@@ -10,6 +10,7 @@ import { Permissions, Notifications } from "expo";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
   // baseURL: "https://www.optimizeapp.com/optimize/public/"
+
 });
 
 export const send_push_notification = () => {
