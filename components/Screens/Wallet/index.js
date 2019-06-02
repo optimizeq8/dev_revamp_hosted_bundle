@@ -19,7 +19,7 @@ import BackButton from "../../MiniComponents/BackButton";
 import formatNumber from "../../formatNumber";
 //icons
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
-import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../assets/SVGs/Wallet";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style

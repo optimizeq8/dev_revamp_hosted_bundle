@@ -223,7 +223,7 @@ class Dashboard extends Component {
             <View
               style={{
                 justifyContent: "center",
-                zIndex: 10,
+                // zIndex: 10,
                 display: this.state.sidemenustate ? "none" : "flex",
                 height: 40,
                 backgroundColor: "#0000",
@@ -399,10 +399,11 @@ class Dashboard extends Component {
               </Sidemenu>
             </Container>
           </Animatable.View>
+
           <Animatable.View
             duration={800}
             animation={this.state.anim ? "fadeIn" : "fadeOut"}
-            style={{ zIndex: 10, height: hp(100), left: 0, top: 0 }}
+            style={{ left: 0, top: 0, flexGrow: 1 }}
           >
             <Menu
               closeAnimation={this.closeAnimation}

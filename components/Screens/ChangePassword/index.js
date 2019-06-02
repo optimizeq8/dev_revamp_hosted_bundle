@@ -16,7 +16,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 
 //icons
-import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
+import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon.svg";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 

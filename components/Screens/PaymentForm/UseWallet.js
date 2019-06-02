@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
 import { BlurView } from "expo";
-import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
+import WalletIcon from "../../../assets/SVGs/Wallet";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
