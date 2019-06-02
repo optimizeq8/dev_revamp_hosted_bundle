@@ -5,7 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 
 const instance = axios.create({
-  baseURL: "https://www.optimizeapp.com/optimize/public/"
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
 export const changeBusiness = business => {

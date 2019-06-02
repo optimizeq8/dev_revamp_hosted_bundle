@@ -5,7 +5,7 @@ import { Segment } from "expo";
 import { AsyncStorage } from "react-native";
 
 const instance = axios.create({
-  baseURL: "https://www.optimizeapp.com/optimize/public/"
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
 export const setAuthToken = token => {
