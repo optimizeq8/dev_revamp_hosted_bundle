@@ -10,7 +10,7 @@ import { setCurrentUser } from "./loginActions";
 import { getBusinessAccounts } from "./accountManagementActions";
 
 const instance = axios.create({
-  baseURL: "https://www.optimizeapp.com/optimize/public/"
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
 });
 
 export const send_push_notification = () => {
