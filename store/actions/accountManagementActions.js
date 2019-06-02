@@ -3,9 +3,13 @@ import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
+import { AsyncStorage } from "react-native";
 
 const instance = axios.create({
+
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  // baseURL: "https://www.optimizeapp.com/optimize/public/"
+
 });
 
 export const changeBusiness = business => {
@@ -37,10 +41,13 @@ export const getBusinessAccounts = () => {
         //   message: data.message,
         //   type: response.data.success ? "success" : "warning"
         // })
-        return dispatch({
-          type: actionTypes.SET_BUSINESS_ACCOUNTS,
-          payload: data
+        AsyncStorage.getItem("indexOfMainBusiness").then(value => {
+          return dispatch({
+            type: actionTypes.SET_BUSINESS_ACCOUNTS,
+            payload: { data: data, index: value ? value : 0 }
+          });
         });
+        return;
       })
 
       .catch(err => {
