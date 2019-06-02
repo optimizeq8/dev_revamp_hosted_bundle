@@ -5,16 +5,16 @@ import {
   Animated,
   Easing,
   TouchableOpacity,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from "react-native";
-import { Button, Text, Container, Icon } from "native-base";
+import { Button, Text, Container, Icon, Content } from "native-base";
 import { LinearGradient } from "expo";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import LottieView from "lottie-react-native";
-
 import {
-  heightPercentageToDP,
+  heightPercentageToDP as hp,
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -35,8 +35,8 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
 
   draggableRange = {
-    top: heightPercentageToDP("90"),
-    bottom: -heightPercentageToDP("120")
+    top: hp("90"),
+    bottom: -hp("120")
   };
   constructor(props) {
     super(props);
@@ -51,8 +51,9 @@ class Menu extends Component {
   }
 
   handleBackButton = () => {
-    this.props.closeAnimation();
     this.closePanel();
+
+    this.props.closeAnimation();
     return true;
   };
   showPanel() {
@@ -65,6 +66,10 @@ class Menu extends Component {
   closePanel = () => {
     this._panel.hide();
     this.setState({ slidePanel: false });
+    // this.draggableRange = {
+    //   top: heightPercentageToDP("50"),
+    //   bottom: -heightPercentageToDP("100")
+    // };
   };
   slidePanelShow() {
     if (this.state.slidePanel) {
@@ -82,7 +87,7 @@ class Menu extends Component {
         <Background
           style={[styles.background]}
           width={widthPercentageToDP(85)}
-          height={heightPercentageToDP(61)}
+          height={hp(61)}
         />
 
         {/* <TouchableOpacity
@@ -99,9 +104,9 @@ class Menu extends Component {
 
         <View
           style={{
-            bottom: heightPercentageToDP(5) < 30 ? 10 : 0,
-            marginBottom: 0,
-            backgroundColor: "#0000"
+            // bottom: heightPercentageToDP(5) < 30 ? 10 : 0,
+            backgroundColor: "#0000",
+            flexGrow: 1
           }}
         >
           <Text style={styles.menutext}> Menu </Text>
@@ -115,7 +120,7 @@ class Menu extends Component {
             style={[
               styles.button,
               {
-                elevation: this.state.slidePanel ? -1 : 1
+                // elevation: this.state.slidePanel ? -1 : 1
                 //zIndex: this.state.slidePanel ? -1 : 1
               }
             ]}
@@ -128,100 +133,77 @@ class Menu extends Component {
             />
           </Button>
 
-          <View
-            style={{
+          <ScrollView
+            contentContainerStyle={{
               paddingLeft: 20,
-              bottom: heightPercentageToDP(5) < 30 ? 10 : 0
+              flexGrow: 1,
+              paddingBottom: hp(35)
+
+              //   bottom: heightPercentageToDP(5) < 30 ? 10 : 0
             }}
           >
             <TouchableOpacity
+              style={styles.options}
               onPress={() => this.props.navigation.navigate("PersonalInfo")}
             >
-              <View style={styles.options}>
-                <Icons.PersonalInfo style={styles.icons} />
-                <Text style={styles.text}>Personal Info</Text>
-              </View>
+              <Icons.PersonalInfo style={styles.icons} />
+              <Text style={styles.text}>Personal Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={styles.options}
               onPress={() => this.props.navigation.navigate("Wallet")}
             >
-              <View
-                style={{
-                  alignItems: "center",
-                  left: widthPercentageToDP(4),
-                  marginBottom: heightPercentageToDP(5) < 30 ? 5 : 10,
-                  marginTop: 10,
-                  flexDirection: "row"
-                }}
-              >
-                <Icons.Wallet style={[styles.icons, { marginRight: 15 }]} />
-                <Text style={styles.text}>Wallet</Text>
-              </View>
+              <Icons.Wallet style={styles.icons} />
+              <Text style={styles.text}>Wallet</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={styles.options}
               onPress={() => this.props.navigation.navigate("TransactionList")}
             >
-              <View style={[styles.options]}>
-                <Icons.TransactionIcon style={styles.icons} />
-                <Text style={styles.text}>Transactions</Text>
-              </View>
+              <Icons.TransactionIcon style={styles.icons} />
+              <Text style={styles.text}>Transactions</Text>
             </TouchableOpacity>
-            {/*<View
-              style={{
-                flexDirection: "column"
-              }}
-            >
-            <View style={styles.options}>
-                  <Icons.BusinessIcon style={styles.icons} />
-                  <Text style={styles.text}>Business Info</Text>
-                </View>*/}
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("ChangePassword")}
+              style={styles.options}
             >
-              <View style={styles.options}>
-                <Icons.ChangePassIcon style={styles.icons} />
-                <Text style={[styles.text]}>Change Password</Text>
-              </View>
+              <Icons.ChangePassIcon style={styles.icons} />
+              <Text style={[styles.text]}>Change Password</Text>
             </TouchableOpacity>
-            {/* </View> */}
 
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("AddressForm")}
+              style={styles.options}
             >
-              <View style={styles.options}>
-                <Icons.AddressIcon style={styles.icons} />
-                <Text style={styles.text}>Address</Text>
-              </View>
+              <Icons.AddressIcon style={styles.icons} />
+              <Text style={styles.text}>Address</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => openPrivacy()}>
-              <View
+            <TouchableOpacity
+              style={styles.options}
+              onPress={() => openPrivacy()}
+            >
+              <Icon
+                name="security"
+                type="MaterialIcons"
+                style={[styles.icons]}
+              />
+              <Text style={styles.text}>Privacy policy</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.options}
+              onPress={() => openTerms()}
+            >
+              <Icon
+                name="file-document-box"
+                type="MaterialCommunityIcons"
                 style={[
-                  styles.options,
-                  { marginBottom: heightPercentageToDP(5) < 30 ? 9 : 5 }
+                  styles.icons
+                  // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                 ]}
-              >
-                <Icon
-                  name="security"
-                  type="MaterialIcons"
-                  style={[styles.icons]}
-                />
-                <Text style={styles.text}>Privacy policy</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => openTerms()}>
-              <View style={styles.options}>
-                <Icon
-                  name="file-document-box"
-                  type="MaterialCommunityIcons"
-                  style={[
-                    styles.icons,
-                    { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
-                  ]}
-                />
-                <Text style={styles.text}>Terms & Condtions</Text>
-              </View>
+              />
+              <Text style={styles.text}>Terms & Condtions</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -231,24 +213,13 @@ class Menu extends Component {
                   this.props.userInfo.userid
                 );
               }}
+              style={styles.options}
             >
-              <View
-                style={{
-                  alignItems: "center",
-                  left: widthPercentageToDP(4),
-                  marginBottom: 20,
-                  marginTop: 10,
-                  flexDirection: "row"
-                }}
-              >
-                <Icons.LogoutIcon
-                  style={[styles.icons, { marginRight: 16, right: 3 }]}
-                />
-                <Text style={styles.text}>Logout</Text>
-              </View>
+              <Icons.LogoutIcon style={[styles.icons]} />
+              <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
             <Text style={styles.version}>Version:0.1.2/8/7</Text>
-          </View>
+          </ScrollView>
         </View>
 
         <SlidingUpPanel
@@ -261,7 +232,7 @@ class Menu extends Component {
           <>
             <TouchableOpacity
               style={styles.CloseIcon}
-              onPress={() => this.slidePanelShow()}
+              onPress={() => this.closePanel()}
             >
               <Icons.CloseListIcon />
             </TouchableOpacity>

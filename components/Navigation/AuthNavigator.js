@@ -9,7 +9,7 @@ import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import ForgotPassword from "../Screens/ForgotPassword";
 
-export default FluidNavigator(
+export default createStackNavigator(
   {
     Tutorial: Tutorial,
     MainForm: MainForm,
@@ -24,15 +24,15 @@ export default FluidNavigator(
       header: null,
 
       headerStyle: {
-        backgroundColor: "transparent"
+        backgroundColor: "#0000"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#0000",
       headerTextStyle: {
         fontWeight: "bold"
       }
     },
     cardStyle: {
-      backgroundColor: "#0000"
+      backgroundColor: "#751AFF"
     }
   }
 );

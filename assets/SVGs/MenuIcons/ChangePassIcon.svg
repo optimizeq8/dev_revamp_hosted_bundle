@@ -1,3 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="62.438" height="62.438" viewBox="0 0 62.438 62.438">
-  <path id="np_password_633254_C6C6C6" d="M16.234,0A16.234,16.234,0,1,0,27.713,4.755,16.234,16.234,0,0,0,16.234,0ZM19.98,24.351H12.487l2.26-9.048a3.746,3.746,0,1,1,2.967,0Z" transform="translate(14.84 15)" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect id="backgroundrect" width="100%" height="100%" x="0" y="0" fill="none" stroke="none"/>
+  
+    <g class="currentLayer" style="">
+        <title>Layer 1</title>
+        <path id="np_password_633254_C6C6C6" d="M16.23433760070801,9.5367431640625e-7 A16.234,16.234 0 1 0 27.71333760070801,4.755000953674315 A16.234,16.234 0 0 0 16.23433760070801,9.5367431640625e-7 zM19.980337600708012,24.351000953674315 H12.48733760070801 l2.26,-9.048 a3.746,3.746 0 1 1 2.967,0 z" fill="#fff" class=""/>
+    </g>
 </svg>

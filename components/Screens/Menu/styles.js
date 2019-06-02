@@ -39,14 +39,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     opacity: 0.2,
     top: 230,
-    alignSelf: "center",
-    zIndex: 0
+    alignSelf: "center"
   },
   text: {
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 13,
-    textAlign: "center"
+    textAlign: "left",
+    flex: 1,
+    paddingLeft: 20
   },
   buttontext: {
     fontFamily: "montserrat-regular",
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: heightPercentageToDP(5) < 40 ? 20 : 31
+    fontSize: 20
   },
   menutext: {
     fontFamily: "montserrat-semibold",
@@ -112,8 +113,9 @@ const styles = StyleSheet.create({
   menuModal: {
     // ...StyleSheet.absoluteFillObject
     backgroundColor: "#0000",
-    zIndex: 1,
-    elevation: 1
+    // zIndex: 1,
+    // elevation: 1,
+    flexGrow: 1
   },
   backDrop: {
     position: "absolute",
@@ -139,17 +141,22 @@ const styles = StyleSheet.create({
   },
   options: {
     alignItems: "center",
-    paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 5,
-    marginBottom: heightPercentageToDP(5) < 30 ? -5 : 0,
+    // paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 5,
+    // marginBottom: heightPercentageToDP(5) < 30 ? -5 : 0,
     flexDirection: "row",
-    justifyContent: "flex-start",
-    width: 150
+    paddingVertical: 5,
+    height: 60
+    // justifyContent: "flex-start"
+    // width: 150
   },
 
   icons: {
     color: "#fff",
-    paddingHorizontal: 17,
-    paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 12
+    // paddingHorizontal: 17,
+    flex: 0
+    // width: 55,
+    // height: 55
+    // paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 12
   },
   privacy: {
     justifyContent: "flex-start",
@@ -160,8 +167,8 @@ const styles = StyleSheet.create({
   version: {
     color: "#fff",
     fontFamily: "montserrat-extralight",
-    fontSize: 12,
-    bottom: 10
+    fontSize: 12
+    // bottom: 10
   }
 });
 

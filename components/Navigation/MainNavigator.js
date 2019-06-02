@@ -74,7 +74,7 @@ export default FluidNavigator(
     navigationOptions: {
       gesturesEnabled: true,
       headerStyle: {
-        backgroundColor: "transparent"
+        backgroundColor: "#0000"
       },
       headerTintColor: "#fff",
       headerTextStyle: {

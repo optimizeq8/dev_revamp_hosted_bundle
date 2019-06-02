@@ -5,7 +5,7 @@ import { View, Image, ScrollView, AsyncStorage } from "react-native";
 import { SafeAreaView } from "react-navigation";
 
 import { Button, Text, Container } from "native-base";
-
+import { LinearGradient } from "expo";
 import Swiper from "../../MiniComponents/Swiper";
 import {
   widthPercentageToDP,
@@ -16,6 +16,7 @@ import Invitation from "../InvitationScreen";
 import styles from "./styles";
 import isNull from "lodash/isNull";
 import Background from "../../../assets/SVGs/Background";
+import { colors } from "../../GradiantColors/colors";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -132,6 +133,11 @@ class Tutorial extends Component {
           style={{ flex: 1, backgroundColor: "#0000" }}
           forceInset={{ bottom: "never" }}
         >
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
           <Container style={styles.container}>
             <Background
               style={[styles.background]}

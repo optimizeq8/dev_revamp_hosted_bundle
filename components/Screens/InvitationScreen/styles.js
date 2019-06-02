@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
-    marginTop: heightPercentageToDP(10),
+    paddingTop: heightPercentageToDP(10),
     flex: 1
   },
   logotext: {
