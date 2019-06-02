@@ -5,7 +5,8 @@ import { Segment } from "expo";
 import { showMessage } from "react-native-flash-message";
 
 const instance = axios.create({
-  baseURL: "https://www.optimizeapp.com/optimize/public/"
+  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
+  // baseURL: "https://www.optimizeapp.com/optimize/public/"
 });
 
 export const filterCampaigns = query => {
