@@ -7,7 +7,6 @@ import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
   // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
 });
 
 export const filterCampaigns = query => {
@@ -49,6 +48,49 @@ export const getCampaignDetails = (id, navigation) => {
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
           payload: { loading: false }
+        });
+      });
+  };
+};
+
+export const getCampaignStats = (campaign, navigation) => {
+  console.log({
+    campaign_id: campaign.snap_campaign_id,
+    start_time: "2019-05-29",
+    end_time: "2019-05-30"
+  });
+
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_STATS_LOADING,
+      payload: true
+    });
+    instance
+      .post(`getcampaignStats`, {
+        campaign_id: campaign.snap_campaign_id,
+        start_time: "2019-05-29",
+        end_time: "2019-06-02"
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: data }
+        });
+      })
+      .catch(err => {
+        console.log("getCampaignDetails error", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
       });
   };

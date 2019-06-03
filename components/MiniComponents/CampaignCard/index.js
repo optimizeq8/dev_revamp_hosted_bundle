@@ -144,9 +144,11 @@ class CampaignCard extends Component {
                       {campaign.objective !== "BRAND_AWARENESS"
                         ? formatNumber(campaign.swipes, true)
                         : campaign.impressions > 0
-                        ? (parseFloat(campaign.spends) /
-                            parseFloat(campaign.impressions)) *
-                          1000
+                        ? (
+                            (parseFloat(campaign.spends) /
+                              parseFloat(campaign.impressions)) *
+                            1000
+                          ).toFixed(3)
                         : 0}
                     </Text>
                     <Text style={[styles.subtext]}>

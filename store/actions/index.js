@@ -11,6 +11,7 @@ export {
 export {
   getCampaignDetails,
   getCampaignList,
+  getCampaignStats,
   updateCampaignList,
   filterCampaigns
 } from "./dashboardActions";

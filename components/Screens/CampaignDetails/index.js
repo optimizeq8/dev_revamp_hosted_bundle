@@ -30,7 +30,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Toggle from "react-native-switch-toggle";
 import CloseButton from "../../MiniComponents/CloseButton";
-
+import CampaginStats from "./CampaignStats";
 // import { Modal } from "react-native-paper";
 import LineChartGraphs from "./LineChartGraphs";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -53,7 +53,7 @@ import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
 class CampaignDetails extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
-    top: 450,
+    top: hp(80),
     bottom: 200
   };
   static navigationOptions = {
@@ -69,6 +69,7 @@ class CampaignDetails extends Component {
       chartAnimation: new Animated.Value(1),
       LineAnimation: new Animated.Value(0),
       visible: true,
+      gotStats: false,
       imageIsLoading: true
     };
   }
@@ -161,12 +162,16 @@ class CampaignDetails extends Component {
   };
 
   render() {
-    // this._draggedValue.addListener(({ value }) => {
-    //   this.hideCharts(value);
-    // });
+    this._draggedValue.addListener(({ value }) => {
+      this.hideCharts(value);
+    });
     const translateYInterpolate = this.state.chartAnimation.interpolate({
       inputRange: [0, 30],
       outputRange: [100, 0]
+    });
+    const translateYInterpolateChart = this.state.chartAnimation.interpolate({
+      inputRange: [0, 80],
+      outputRange: [0, 100]
     });
     const ScaleInterpolate = this.state.LineAnimation.interpolate({
       inputRange: [0, 100],
@@ -183,6 +188,9 @@ class CampaignDetails extends Component {
     const lineAnimatedStyles = {
       opacity: this.state.LineAnimation,
       transform: [
+        {
+          translateY: translateYInterpolateChart
+        },
         {
           scaleX: ScaleInterpolate
         },
@@ -341,7 +349,9 @@ class CampaignDetails extends Component {
                   source={require("../../../assets/images/snap-ghost.png")}
                   resizeMode="contain"
                 />
-                <Text style={styles.title}>{selectedCampaign.name}</Text>
+                <Text style={[styles.title, { width: 150 }]}>
+                  {selectedCampaign.name}
+                </Text>
                 <View>
                   {selectedCampaign.review_status === "APPROVED" ? (
                     selectedCampaign.campaign_end === "0" &&
@@ -748,27 +758,32 @@ class CampaignDetails extends Component {
             draggableRange={this.draggableRange}
             animatedValue={this._draggedValue}
             friction={0.4}
-            // onDragEnd={value => {
-            //   if (value > hp("50%")) {
-            //     this._panel.show();
-            //   } else {
-            //     this._panel.hide();
-            //   }
-            // }}
+            onDragStart={() => {
+              if (!this.state.gotStats)
+                this.props.getCampaignStats(selectedCampaign);
+            }}
+            onDragEnd={value => {
+              if (!this.state.gotStats) this.setState({ gotStats: true });
+              if (value > hp("50%")) {
+                this._panel.show();
+              } else {
+                this._panel.hide();
+              }
+            }}
           >
             {dragHandler => (
               <View style={styles.bottomContainer}>
                 <View style={styles.dragHandler} {...dragHandler}>
                   <TouchableWithoutFeedback
-                  // onPress={() => {
-                  //   if (this.state.visible) {
-                  //     this._panel.hide();
-                  //     this.setState({ visible: false });
-                  //   } else {
-                  //     this._panel.show();
-                  //     this.setState({ visible: true });
-                  //   }
-                  // }}
+                    onPress={() => {
+                      if (this.state.visible) {
+                        this._panel.hide();
+                        this.setState({ visible: false });
+                      } else {
+                        this._panel.show();
+                        this.setState({ visible: true });
+                      }
+                    }}
                   >
                     <LinearGradient
                       colors={["#751AFF", "#751AFF"]}
@@ -794,76 +809,22 @@ class CampaignDetails extends Component {
                     height: hp(70)
                   }}
                 >
-                  {/* <Animated.View
-                        style={[styles.chartPosition]}
-                        // style={[styles.chartPosition, animatedStyles]}
-                      > */}
-                  <View
-                    onPress={() => {
-                      // /*this._panel.show()*/
-                    }}
+                  <Animated.View
+                    // style={[styles.chartPosition]}
+                    style={[styles.chartPosition, animatedStyles]}
                   >
-                    <Chart campaign={selectedCampaign} />
-                  </View>
-                  <View style={{ top: hp(5) > 44 ? 33 : 15 }}>
-                    {selectedCampaign.video_views ||
-                    selectedCampaign.video_views >= 0 ? (
-                      <Text
-                        style={[
-                          styles.title,
-                          {
-                            paddingVertical: 10
-                          }
-                        ]}
-                      >
-                        Video Views{"\n "}
-                        <Text style={globalStyles.numbers}>
-                          {selectedCampaign.video_views}
-                        </Text>
-                      </Text>
-                    ) : null}
-                    {selectedCampaign.reach || selectedCampaign.reach >= 0 ? (
-                      <Text
-                        style={[
-                          styles.title,
-                          {
-                            paddingVertical: 10
-                          }
-                        ]}
-                      >
-                        Reach{" \n"}
-                        <Text style={globalStyles.numbers}>
-                          {selectedCampaign.reach}
-                        </Text>
-                      </Text>
-                    ) : null}
-                    {selectedCampaign.paid_frequency ||
-                    selectedCampaign.paid_frequency >= 0 ? (
-                      <Text
-                        style={[
-                          styles.title,
-                          {
-                            paddingVertical: 10
-                          }
-                        ]}
-                      >
-                        Paid Frequency{" \n"}
-                        <Text style={globalStyles.numbers}>
-                          {selectedCampaign.paid_frequency}
-                        </Text>
-                      </Text>
-                    ) : null}
-                  </View>
-                  {/* <ScrollView contentInset={{ top: 0 }}>
-                        <LineChartGraphs campaign={selectedCampaign} />
-                      </ScrollView> */}
-                  {/* </Animated.View> */}
-
-                  {/* <Animated.View style={[lineAnimatedStyles]}> */}
-                  {/* <ScrollView contentInset={{ top: 0 }}>
-                        <LineChartGraphs campaign={selectedCampaign} />
-                      </ScrollView> */}
-                  {/* </Animated.View> */}
+                    <View
+                      onPress={() => {
+                        // /*this._panel.show()*/
+                      }}
+                    >
+                      <Chart campaign={selectedCampaign} />
+                    </View>
+                  </Animated.View>
+                  <Animated.View style={[lineAnimatedStyles]}>
+                    <LineChartGraphs campaign={selectedCampaign} />
+                    <CampaginStats selectedCampaign={selectedCampaign} />
+                  </Animated.View>
                 </LinearGradient>
               </View>
             )}
@@ -875,15 +836,17 @@ class CampaignDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.dashboard.loadingCampaignDetails,
   selectedCampaign: state.dashboard.selectedCampaign,
-  campaignEnded: state.campaignC.campaignEnded
+  campaignEnded: state.campaignC.campaignEnded,
+  loading: state.dashboard.loadingCampaignDetails,
+  loadingCampaignStats: state.dashboard.loadingCampaignStats
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
     dispatch(actionCreators.updateStatus(info, handleToggle)),
   endCampaign: (info, handleToggle) =>
-    dispatch(actionCreators.endCampaign(info, handleToggle))
+    dispatch(actionCreators.endCampaign(info, handleToggle)),
+  getCampaignStats: info => dispatch(actionCreators.getCampaignStats(info))
 });
 export default connect(
   mapStateToProps,

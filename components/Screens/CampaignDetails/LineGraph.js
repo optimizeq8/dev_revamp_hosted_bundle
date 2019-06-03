@@ -26,9 +26,6 @@ export default class LineGraph extends Component {
   render() {
     return (
       <View>
-        <Text style={styles.chartTitle}>
-          {Object.keys(this.props.chartCategory)[0]}
-        </Text>
         <VictoryChart
           containerComponent={
             <VictoryVoronoiContainer
@@ -43,11 +40,17 @@ export default class LineGraph extends Component {
                   }}
                 />
               }
+              height={200}
             />
           }
-          height={heightPercentageToDP("35")}
+          padding={{ top: 50, bottom: 90, left: 50, right: 50 }}
+          height={250}
         >
           <VictoryLine
+            animate={{
+              duration: 2000,
+              onLoad: { duration: 1000 }
+            }}
             interpolation="catmullRom"
             style={{
               data: {
@@ -57,18 +60,22 @@ export default class LineGraph extends Component {
               labels: { fill: "#FF9D00", fontSize: 23 }
             }}
             data={[
-              { x: "Jan", y: Math.random() * 100 },
-              { x: "Feb", y: Math.random() * 100 },
-              { x: "Mar", y: Math.random() * 100 },
-              { x: "Apr", y: Math.random() * 100 },
-              { x: "May", y: Math.random() * 100 },
-              { x: "Jun", y: Math.random() * 100 },
-              { x: "Jul", y: Math.random() * 100 },
-              { x: "Aug", y: Math.random() * 100 },
-              { x: "Sept", y: Math.random() * 100 }
+              { x: "Jan", y: Math.random() * 1000 },
+              { x: "Feb", y: Math.random() * 1000 },
+              { x: "Mar", y: Math.random() * 1000 },
+              { x: "Apr", y: Math.random() * 1000 },
+              { x: "May", y: Math.random() * 1000 },
+              { x: "Jun", y: Math.random() * 1000 },
+              { x: "Jul", y: Math.random() * 1000 },
+              { x: "Aug", y: Math.random() * 1000 },
+              { x: "Sept", y: Math.random() * 1000 }
             ]}
           />
           <VictoryAxis
+            animate={{
+              duration: 2000,
+              easing: "linear"
+            }}
             dependentAxis
             style={{
               axis: { stroke: "none" },
@@ -77,11 +84,15 @@ export default class LineGraph extends Component {
                 fill: "#fff",
                 fontFamily: "montserrat-bold",
                 ticks: { stroke: "#fff", size: 10 },
-                fontSize: widthPercentageToDP("3.5")
+                fontSize: 10
               }
             }}
           />
           <VictoryAxis
+            animate={{
+              duration: 2000,
+              easing: "linear"
+            }}
             crossAxis
             style={{
               axis: { stroke: "none" },

@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 19,
-    width: 150,
     alignSelf: "center"
   },
   chartTitle: {
@@ -217,8 +216,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     bottom: 5
   },
+  boxStats: {
+    top: 30,
+    width: 150,
+    padding: 15,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 15
+  },
+  stats: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    alignSelf: "center"
+  },
   chartPosition: {
-    bottom: 10
+    // bottom: 10
   }
 });
 
