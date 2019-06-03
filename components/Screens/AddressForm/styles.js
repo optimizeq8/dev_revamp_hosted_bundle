@@ -11,7 +11,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30
+    backgroundColor: "#0000"
   },
   title: {
     fontSize: widthPercentageToDP(5),

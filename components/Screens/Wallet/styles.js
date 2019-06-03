@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
-    paddingTop: 20,
-    textAlign: "center",
     fontFamily: "montserrat-medium"
   },
   mainCard: {

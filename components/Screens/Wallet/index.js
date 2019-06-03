@@ -10,7 +10,7 @@ import {
   BackHandler
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-
+import Header from "../../MiniComponents/Header";
 import { LinearGradient, BlurView } from "expo";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -88,8 +88,6 @@ class Wallet extends Component {
         style={{ flex: 1, backgroundColor: "#0000" }}
         forceInset={{ bottom: "never" }}
       >
-        <BackButton navigation={this.props.navigation.goBack} />
-
         <Container
           style={[
             styles.container,
@@ -99,7 +97,46 @@ class Wallet extends Component {
             }
           ]}
         >
-          <Text style={styles.title}>Wallet</Text>
+          <Header title={"Wallet"} navigation={this.props.navigation} />
+          {/* <View
+            style={{
+              justifyContent: "space-between",
+              zIndex: 13,
+              paddingHorizontal: wp(5),
+              paddingTop: hp(1),
+              flexDirection: "row",
+              backgroundColor: "#0000"
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+              style={{
+                flex: 0
+              }}
+            >
+              <BackIcon width={24} height={24} />
+            </TouchableOpacity>
+            <Text
+              style={[
+                styles.title,
+                {
+                  flex: 1,
+                  alignSelf: "center",
+                  alignItems: "center"
+                }
+              ]}
+            >
+              Wallet
+            </Text>
+
+            <View
+              style={{
+                flex: 0,
+                width: 24
+              }}
+            />
+          </View> */}
+
           <WalletIcon
             style={{
               alignSelf: "center",
@@ -112,7 +149,6 @@ class Wallet extends Component {
             {formatNumber(this.props.wallet, true)}
             <Text style={styles.dollar}>$</Text>
           </Text>
-
           <Text style={styles.text}>Avalible Balance</Text>
           {!this.state.modalVisible && (
             <View style={[styles.mainCard]}>

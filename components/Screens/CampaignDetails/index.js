@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import {
   View,
   Image,
@@ -15,6 +14,8 @@ import {
 import { Card, Button, Text, Container, Icon } from "native-base";
 import dateFormat from "dateformat";
 import Loading from "../../MiniComponents/LoadingScreen";
+import Header from "../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 
 import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView, Segment } from "expo";
@@ -307,344 +308,364 @@ class CampaignDetails extends Component {
               height: "100%"
             }}
           >
-            <Container style={styles.container}>
-              <CloseButton
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
+              forceInset={{ bottom: "never" }}
+            >
+              <Container style={styles.container}>
+                <Header
+                  closeButton={true}
+                  navigation={this.props.navigation}
+                  selectedCampaign={selectedCampaign}
+                />
+                {/* <CloseButton
                 navigation={() => {
                   this.props.navigation.goBack();
                 }}
                 // style={globalStyles.backButton}
               />
 
-              <Text
-                onPress={() =>
-                  this.props.navigation.push("AdDetails", {
-                    editCampaign: true,
-                    campaign: selectedCampaign,
-                    image: "http://" + selectedCampaign.media
-                  })
-                }
-                style={[
-                  styles.subtext,
-                  {
-                    position: "absolute",
-                    left: wp(85),
-                    top: hp(10),
-                    fontFamily: "montserrat-regular"
-                  }
-                ]}
-              >
-                Edit
-              </Text>
-              <Card style={styles.mainCard}>
-                <Image
-                  style={styles.image}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-                <Text style={styles.title}>{selectedCampaign.name}</Text>
-                <View>
-                  {selectedCampaign.review_status === "APPROVED" ? (
-                    selectedCampaign.campaign_end === "0" &&
-                    !this.props.campaignEnded &&
-                    selectedCampaign.end_time > new Date() ? (
-                      <View padder style={styles.toggleSpace}>
-                        <View style={{ alignSelf: "center" }}>
-                          {selectedCampaign && (
-                            <Toggle
-                              buttonTextStyle={{
+              */}
+                <Card style={styles.mainCard}>
+                  <Image
+                    style={styles.image}
+                    source={require("../../../assets/images/snap-ghost.png")}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.title}>{selectedCampaign.name}</Text>
+                  <View>
+                    {selectedCampaign.review_status === "APPROVED" ? (
+                      selectedCampaign.campaign_end === "0" &&
+                      !this.props.campaignEnded &&
+                      selectedCampaign.end_time > new Date() ? (
+                        <View padder style={styles.toggleSpace}>
+                          <View style={{ alignSelf: "center" }}>
+                            {selectedCampaign && (
+                              <Toggle
+                                buttonTextStyle={{
+                                  fontFamily: "montserrat-medium",
+                                  fontSize: 10,
+                                  color: "#fff",
+                                  top: 7,
+                                  textAlign: "center"
+                                }}
+                                buttonText={
+                                  this.state.toggleText !== "PAUSED"
+                                    ? "LIVE"
+                                    : "PAUSED"
+                                }
+                                containerStyle={styles.toggleStyle}
+                                switchOn={this.state.toggle}
+                                onPress={() => {
+                                  this.state.toggle
+                                    ? this.setState({
+                                        modalVisible: true
+                                      })
+                                    : this.updateStatus();
+                                }}
+                                backgroundColorOff="rgba(255,255,255,0.1)"
+                                backgroundColorOn="rgba(255,255,255,0.1)"
+                                circleColorOff="#FF9D00"
+                                circleColorOn="#66D072"
+                                duration={500}
+                                circleStyle={{
+                                  width: wp("13"),
+                                  height: hp("3.8"),
+                                  borderRadius: 25
+                                }}
+                              />
+                            )}
+                            <Text
+                              style={{
                                 fontFamily: "montserrat-medium",
                                 fontSize: 10,
+                                paddingTop: 5,
                                 color: "#fff",
-                                top: 7,
                                 textAlign: "center"
                               }}
-                              buttonText={
-                                this.state.toggleText !== "PAUSED"
-                                  ? "LIVE"
-                                  : "PAUSED"
-                              }
-                              containerStyle={styles.toggleStyle}
-                              switchOn={this.state.toggle}
-                              onPress={() => {
-                                this.state.toggle
-                                  ? this.setState({ modalVisible: true })
-                                  : this.updateStatus();
-                              }}
-                              backgroundColorOff="rgba(255,255,255,0.1)"
-                              backgroundColorOn="rgba(255,255,255,0.1)"
-                              circleColorOff="#FF9D00"
-                              circleColorOn="#66D072"
-                              duration={500}
-                              circleStyle={{
-                                width: wp("13"),
-                                height: hp("3.8"),
-                                borderRadius: 25
-                              }}
-                            />
-                          )}
-                          <Text
-                            style={{
-                              fontFamily: "montserrat-medium",
-                              fontSize: 10,
-                              paddingTop: 5,
-                              color: "#fff",
-                              textAlign: "center"
-                            }}
-                          >
-                            {this.state.toggle
-                              ? "Tap to pause AD"
-                              : "Tap to activate AD"}
-                          </Text>
+                            >
+                              {this.state.toggle
+                                ? "Tap to pause AD"
+                                : "Tap to activate AD"}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
+                      ) : (
+                        <View style={styles.adStatus}>
+                          <Text style={styles.reviewtext}>Campagin Ended</Text>
+                        </View>
+                      )
                     ) : (
                       <View style={styles.adStatus}>
-                        <Text style={styles.reviewtext}>Campagin Ended</Text>
+                        <Text style={styles.reviewtext}>
+                          {selectedCampaign.review_status.includes("PENDING") &&
+                            "In Review"}
+                        </Text>
                       </View>
-                    )
-                  ) : (
-                    <View style={styles.adStatus}>
-                      <Text style={styles.reviewtext}>
-                        {selectedCampaign.review_status.includes("PENDING") &&
-                          "In Review"}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={styles.subHeadings}>
-                  Budget{"\n"}
-                  <Text
-                    style={[
-                      styles.numbers,
-                      { fontSize: 25, fontFamily: "montserrat-semibold" }
-                    ]}
-                  >
-                    {formatNumber(selectedCampaign.lifetime_budget_micro, true)}
+                    )}
+                  </View>
+                  <Text style={styles.subHeadings}>
+                    Budget{"\n"}
+                    <Text
+                      style={[
+                        styles.numbers,
+                        {
+                          fontSize: 25,
+                          fontFamily: "montserrat-semibold"
+                        }
+                      ]}
+                    >
+                      {formatNumber(
+                        selectedCampaign.lifetime_budget_micro,
+                        true
+                      )}
+                    </Text>
+                    <Text style={{ color: "white" }}>$</Text>
                   </Text>
-                  <Text style={{ color: "white" }}>$</Text>
-                </Text>
-                <Text style={styles.subHeadings}>Duration</Text>
-                <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      alignSelf: "center"
-                    }}
-                  >
-                    <Text
-                      style={[
-                        styles.categories,
-                        { fontSize: 16, fontFamily: "montserrat-medium" }
-                      ]}
-                    >
-                      Start
-                    </Text>
-                    <Text style={styles.numbers}>
-                      {start_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
-                        {start_year}
-                      </Text>
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      alignSelf: "center"
-                    }}
-                  >
-                    <Text
-                      style={[
-                        styles.categories,
-                        { fontSize: 16, fontFamily: "montserrat-medium" }
-                      ]}
-                    >
-                      End
-                    </Text>
-                    <Text style={styles.numbers}>
-                      {end_time}{" "}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
-                        {end_year}
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <Text style={styles.subHeadings}>Audience</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginHorizontal: 40
-                  }}
-                >
-                  <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.subHeadings}>Duration</Text>
+                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
                     <View
                       style={{
-                        flexDirection: "row"
-                      }}
-                    >
-                      <GenderIcon width={hp("2")} height={hp("2")} />
-                      <Text style={styles.categories}>
-                        Gender{"\n "}
-                        <Text style={styles.subtext}>
-                          {targeting &&
-                          (targeting.gender === "" ||
-                            !targeting.hasOwnProperty("gender"))
-                            ? "All"
-                            : targeting && targeting.demographics[0].gender}
-                        </Text>
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                      <Icon
-                        style={styles.icon}
-                        type="FontAwesome"
-                        name="language"
-                      />
-                      <Text style={styles.categories}>
-                        Languages{"\n "}
-                        <Text style={styles.subtext}>
-                          {targeting &&
-                            targeting.demographics[0].languages.join(", ")}
-                        </Text>
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
+                        flexDirection: "column",
                         alignSelf: "center"
                       }}
                     >
-                      <Icon
-                        style={styles.icon}
-                        type="MaterialCommunityIcons"
-                        name="human-male-girl"
-                      />
-
-                      <Text style={[styles.categories]}>
-                        Age range{"\n"}
-                        <Text style={styles.subtext}>
-                          {targeting && targeting.demographics[0].min_age} -{" "}
-                          {targeting && targeting.demographics[0].max_age}
+                      <Text
+                        style={[
+                          styles.categories,
+                          {
+                            fontSize: 16,
+                            fontFamily: "montserrat-medium"
+                          }
+                        ]}
+                      >
+                        Start
+                      </Text>
+                      <Text style={styles.numbers}>
+                        {start_time}{" "}
+                        <Text style={[styles.numbers, { fontSize: 12 }]}>
+                          {start_year}
                         </Text>
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <LocationIcon width={hp("2")} height={hp("2")} />
-                      <Text style={styles.categories}>
-                        Location(s) {"\n"}
-                        {targeting && targeting.geos[0].country_code}
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        alignSelf: "center"
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.categories,
+                          {
+                            fontSize: 16,
+                            fontFamily: "montserrat-medium"
+                          }
+                        ]}
+                      >
+                        End
+                      </Text>
+                      <Text style={styles.numbers}>
+                        {end_time}{" "}
+                        <Text style={[styles.numbers, { fontSize: 12 }]}>
+                          {end_year}
+                        </Text>
                       </Text>
                     </View>
                   </View>
-
-                  {this.checkOptionalTargerts(
-                    interesetNames,
-                    deviceMakes,
-                    targeting
-                  ) && (
-                    <ScrollView
-                      contentContainerStyle={{
-                        paddingBottom: hp(80),
-                        width: "100%"
-                      }}
-                    >
-                      {region_names.length > 0 && (
-                        <View style={styles.optionalTargets}>
-                          <View style={{ flexDirection: "row" }}>
-                            <LocationIcon width={hp("2")} height={hp("2")} />
-                            <Text style={styles.categories}>Regions</Text>
-                          </View>
-
-                          <Text style={[styles.subtext, { textAlign: "left" }]}>
-                            {region_names}
+                  <Text style={styles.subHeadings}>Audience</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      marginHorizontal: 40
+                    }}
+                  >
+                    <View style={{ flexDirection: "column" }}>
+                      <View
+                        style={{
+                          flexDirection: "row"
+                        }}
+                      >
+                        <GenderIcon width={hp("2")} height={hp("2")} />
+                        <Text style={styles.categories}>
+                          Gender{"\n "}
+                          <Text style={styles.subtext}>
+                            {targeting &&
+                            (targeting.gender === "" ||
+                              !targeting.hasOwnProperty("gender"))
+                              ? "All"
+                              : targeting && targeting.demographics[0].gender}
                           </Text>
-                        </View>
-                      )}
-                      {interesetNames.length > 0 && (
-                        <View style={styles.optionalTargets}>
-                          <View style={{ flexDirection: "row" }}>
-                            <InterestIcon width={hp("2")} height={hp("2")} />
-                            <Text style={styles.categories}>Interests</Text>
-                          </View>
-
-                          <Text style={[styles.subtext, { textAlign: "left" }]}>
-                            {interesetNames.join(",\n")}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignSelf: "center"
+                        }}
+                      >
+                        <Icon
+                          style={styles.icon}
+                          type="FontAwesome"
+                          name="language"
+                        />
+                        <Text style={styles.categories}>
+                          Languages{"\n "}
+                          <Text style={styles.subtext}>
+                            {targeting &&
+                              targeting.demographics[0].languages.join(", ")}
                           </Text>
-                        </View>
-                      )}
-                      {deviceMakes.length > 0 && (
-                        <View style={styles.optionalTargets}>
-                          <View style={{ flexDirection: "row" }}>
-                            <Icon
-                              name="cellphone-settings"
-                              type="MaterialCommunityIcons"
-                              style={{
-                                color: globalColors.orange,
-                                right: 2,
-                                fontSize: 23
-                              }}
-                            />
-                            <Text style={styles.categories}>Device Makes</Text>
-                          </View>
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignSelf: "center"
+                        }}
+                      >
+                        <Icon
+                          style={styles.icon}
+                          type="MaterialCommunityIcons"
+                          name="human-male-girl"
+                        />
 
-                          <Text style={[styles.subtext, { textAlign: "left" }]}>
-                            {deviceMakes}
+                        <Text style={[styles.categories]}>
+                          Age range{"\n"}
+                          <Text style={styles.subtext}>
+                            {targeting && targeting.demographics[0].min_age} -{" "}
+                            {targeting && targeting.demographics[0].max_age}
                           </Text>
-                        </View>
-                      )}
-                      {targeting.hasOwnProperty("devices") &&
-                        targeting.devices[0].hasOwnProperty("os_type") && (
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <LocationIcon width={hp("2")} height={hp("2")} />
+                        <Text style={styles.categories}>
+                          Location(s) {"\n"}
+                          {targeting && targeting.geos[0].country_code}
+                        </Text>
+                      </View>
+                    </View>
+
+                    {this.checkOptionalTargerts(
+                      interesetNames,
+                      deviceMakes,
+                      targeting
+                    ) && (
+                      <ScrollView
+                        contentContainerStyle={{
+                          paddingBottom: hp(80),
+                          width: "100%"
+                        }}
+                      >
+                        {region_names.length > 0 && (
                           <View style={styles.optionalTargets}>
                             <View style={{ flexDirection: "row" }}>
-                              <OperatingSystem
-                                fill={globalColors.orange}
-                                width={hp("2.5")}
-                                height={hp("2.5")}
+                              <LocationIcon width={hp("2")} height={hp("2")} />
+                              <Text style={styles.categories}>Regions</Text>
+                            </View>
+
+                            <Text
+                              style={[styles.subtext, { textAlign: "left" }]}
+                            >
+                              {region_names}
+                            </Text>
+                          </View>
+                        )}
+                        {interesetNames.length > 0 && (
+                          <View style={styles.optionalTargets}>
+                            <View style={{ flexDirection: "row" }}>
+                              <InterestIcon width={hp("2")} height={hp("2")} />
+                              <Text style={styles.categories}>Interests</Text>
+                            </View>
+
+                            <Text
+                              style={[styles.subtext, { textAlign: "left" }]}
+                            >
+                              {interesetNames.join(",\n")}
+                            </Text>
+                          </View>
+                        )}
+                        {deviceMakes.length > 0 && (
+                          <View style={styles.optionalTargets}>
+                            <View style={{ flexDirection: "row" }}>
+                              <Icon
+                                name="cellphone-settings"
+                                type="MaterialCommunityIcons"
+                                style={{
+                                  color: globalColors.orange,
+                                  right: 2,
+                                  fontSize: 23
+                                }}
                               />
                               <Text style={styles.categories}>
-                                Operating System
+                                Device Makes
                               </Text>
                             </View>
 
                             <Text
                               style={[styles.subtext, { textAlign: "left" }]}
                             >
-                              {targeting.devices[0].os_type}
+                              {deviceMakes}
                             </Text>
                           </View>
                         )}
-                      {targeting.hasOwnProperty("devices") &&
-                        targeting.devices[0].hasOwnProperty(
-                          "os_version_max"
-                        ) && (
-                          <View style={styles.optionalTargets}>
-                            <View style={{ flexDirection: "row" }}>
-                              <Icon
-                                name="versions"
-                                type="Octicons"
-                                style={{
-                                  color: globalColors.orange,
-                                  right: 2,
-                                  fontSize: 23,
-                                  paddingLeft: 10
-                                }}
-                              />
-                              <Text style={styles.categories}>OS Versions</Text>
-                            </View>
+                        {targeting.hasOwnProperty("devices") &&
+                          targeting.devices[0].hasOwnProperty("os_type") && (
+                            <View style={styles.optionalTargets}>
+                              <View style={{ flexDirection: "row" }}>
+                                <OperatingSystem
+                                  fill={globalColors.orange}
+                                  width={hp("2.5")}
+                                  height={hp("2.5")}
+                                />
+                                <Text style={styles.categories}>
+                                  Operating System
+                                </Text>
+                              </View>
 
-                            <Text
-                              style={[styles.subtext, { textAlign: "left" }]}
-                            >
-                              {targeting.devices[0].os_version_min + ", "}
-                              {targeting.devices[0].os_version_max}
-                            </Text>
-                          </View>
-                        )}
-                    </ScrollView>
-                  )}
-                </View>
-              </Card>
-            </Container>
+                              <Text
+                                style={[styles.subtext, { textAlign: "left" }]}
+                              >
+                                {targeting.devices[0].os_type}
+                              </Text>
+                            </View>
+                          )}
+                        {targeting.hasOwnProperty("devices") &&
+                          targeting.devices[0].hasOwnProperty(
+                            "os_version_max"
+                          ) && (
+                            <View style={styles.optionalTargets}>
+                              <View style={{ flexDirection: "row" }}>
+                                <Icon
+                                  name="versions"
+                                  type="Octicons"
+                                  style={{
+                                    color: globalColors.orange,
+                                    right: 2,
+                                    fontSize: 23,
+                                    paddingLeft: 10
+                                  }}
+                                />
+                                <Text style={styles.categories}>
+                                  OS Versions
+                                </Text>
+                              </View>
+
+                              <Text
+                                style={[styles.subtext, { textAlign: "left" }]}
+                              >
+                                {targeting.devices[0].os_version_min + ", "}
+                                {targeting.devices[0].os_version_max}
+                              </Text>
+                            </View>
+                          )}
+                      </ScrollView>
+                    )}
+                  </View>
+                </Card>
+              </Container>
+            </SafeAreaView>
             <Modal
               animationType={"fade"}
               transparent={Platform.OS === "ios"}

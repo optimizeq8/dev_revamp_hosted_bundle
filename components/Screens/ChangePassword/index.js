@@ -14,6 +14,8 @@ import { LinearGradient, Segment } from "expo";
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
+import { SafeAreaView } from "react-navigation";
+import Header from "../../MiniComponents/Header";
 
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
@@ -109,233 +111,230 @@ class ChangePassword extends Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-          style={globalStyles.backButton}
-        >
-          <BackIcon />
-        </TouchableOpacity>
-        <Text style={styles.title}>Change Password</Text>
-        <ChangePassIcon
-          style={{
-            alignSelf: "center"
-          }}
-          fill="#fff"
-          fillOpacity={1}
-          width={100}
-          height={100}
-        />
-        <View style={styles.mainCard}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <KeyboardShift>
-              {() => (
-                <View style={styles.contentContainer}>
-                  <View>
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        {
-                          borderColor: this.state.inputP
-                            ? "#7039FF"
-                            : this.state.currentPasswordError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
-                      ]}
-                    >
-                      <Label
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
+        <Container style={styles.container}>
+          <Header
+            title={"Change Password"}
+            navigation={this.props.navigation}
+          />
+          <ChangePassIcon
+            style={{
+              alignSelf: "center"
+            }}
+            fill="#fff"
+            fillOpacity={1}
+            width={100}
+            height={100}
+          />
+          <View style={styles.mainCard}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <KeyboardShift>
+                {() => (
+                  <View style={styles.contentContainer}>
+                    <View>
+                      <Item
+                        floatingLabel
                         style={[
-                          styles.inputtext,
+                          styles.input,
                           {
-                            bottom: 5,
-
-                            color: this.state.inputF ? "#FF9D00" : "#717171"
+                            borderColor: this.state.inputP
+                              ? "#7039FF"
+                              : this.state.currentPasswordError
+                              ? "red"
+                              : "#D9D9D9"
                           }
                         ]}
                       >
-                        Old Password
-                      </Label>
-                      <Input
-                        style={styles.inputtext}
-                        secureTextEntry={true}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={value =>
-                          this.setState({
-                            userInfo: {
-                              ...this.state.userInfo,
-                              currentPassword: value
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputF ? "#FF9D00" : "#717171"
                             }
-                          })
-                        }
-                        onFocus={() => {
-                          this.setState({ inputF: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputF: false,
-                            currentPasswordError: validateWrapper(
-                              "mandatory",
-                              this.state.userInfo.currentPassword
-                            )
-                          });
-                        }}
-                      />
-                    </Item>
+                          ]}
+                        >
+                          Old Password
+                        </Label>
+                        <Input
+                          style={styles.inputtext}
+                          secureTextEntry={true}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
+                            this.setState({
+                              userInfo: {
+                                ...this.state.userInfo,
+                                currentPassword: value
+                              }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputF: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputF: false,
+                              currentPasswordError: validateWrapper(
+                                "mandatory",
+                                this.state.userInfo.currentPassword
+                              )
+                            });
+                          }}
+                        />
+                      </Item>
 
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        {
-                          borderColor: this.state.inputP
-                            ? "#7039FF"
-                            : this.state.passwordError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
-                      ]}
-                    >
-                      <Label
+                      <Item
+                        floatingLabel
                         style={[
-                          styles.inputtext,
+                          styles.input,
                           {
-                            bottom: 5,
-
-                            color: this.state.inputP ? "#FF9D00" : "#717171"
+                            borderColor: this.state.inputP
+                              ? "#7039FF"
+                              : this.state.passwordError
+                              ? "red"
+                              : "#D9D9D9"
                           }
                         ]}
                       >
-                        New Password
-                      </Label>
-                      <Input
-                        style={styles.inputtext}
-                        secureTextEntry={true}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={value =>
-                          this.setState({
-                            userInfo: {
-                              ...this.state.userInfo,
-                              password: value
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+
+                              color: this.state.inputP ? "#FF9D00" : "#717171"
                             }
-                          })
-                        }
-                        onFocus={() => {
-                          this.setState({ inputP: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputP: false,
-                            passwordError: validateWrapper(
-                              "password",
-                              this.state.userInfo.password
-                            )
-                          });
-                        }}
-                      />
-                    </Item>
-                    {this.state.passwordError &&
-                    this.state.passwordError.includes("8 characters") ? (
-                      <Text
+                          ]}
+                        >
+                          New Password
+                        </Label>
+                        <Input
+                          style={styles.inputtext}
+                          secureTextEntry={true}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
+                            this.setState({
+                              userInfo: {
+                                ...this.state.userInfo,
+                                password: value
+                              }
+                            })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputP: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              inputP: false,
+                              passwordError: validateWrapper(
+                                "password",
+                                this.state.userInfo.password
+                              )
+                            });
+                          }}
+                        />
+                      </Item>
+                      {this.state.passwordError &&
+                      this.state.passwordError.includes("8 characters") ? (
+                        <Text
+                          style={[
+                            styles.text,
+                            {
+                              bottom: 40,
+                              paddingVertical: 0,
+                              paddingTop: 0,
+                              marginBottom: 0,
+                              paddingVertical: 0
+                            }
+                          ]}
+                        >
+                          {this.state.passwordError}
+                        </Text>
+                      ) : null}
+
+                      <Item
+                        floatingLabel
                         style={[
-                          styles.text,
+                          styles.input,
                           {
-                            bottom: 40,
-                            paddingVertical: 0,
-                            paddingTop: 0,
                             marginBottom: 0,
-                            paddingVertical: 0
+                            paddingBottom: 0,
+                            borderColor: this.state.inputPR
+                              ? "#7039FF"
+                              : this.state.repasswordError !== ""
+                              ? "red"
+                              : "#D9D9D9"
                           }
                         ]}
                       >
-                        {this.state.passwordError}
-                      </Text>
-                    ) : null}
+                        <Label
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+                              color: this.state.inputPR ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          Re-enter Password
+                        </Label>
 
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        {
-                          marginBottom: 0,
-                          paddingBottom: 0,
-                          borderColor: this.state.inputPR
-                            ? "#7039FF"
-                            : this.state.repasswordError !== ""
-                            ? "red"
-                            : "#D9D9D9"
-                        }
-                      ]}
+                        <Input
+                          style={styles.inputtext}
+                          secureTextEntry={true}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
+                            this.setState({ repassword: value })
+                          }
+                          onFocus={() => {
+                            this.setState({ inputPR: true });
+                          }}
+                          onBlur={() => {
+                            this.setState({ inputPR: false });
+                            this._passwordVarification();
+                          }}
+                        />
+                      </Item>
+                      {this.state.repasswordError !== "" &&
+                      this.state.userInfo.password !== "" ? (
+                        <Text
+                          style={[
+                            styles.text,
+                            {
+                              bottom: 15,
+                              paddingTop: 0,
+                              marginBottom: 0,
+                              paddingVertical: 0
+                            }
+                          ]}
+                        >
+                          {this.state.repasswordError}
+                        </Text>
+                      ) : null}
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => this._handleSubmission()}
+                      style={styles.button}
                     >
-                      <Label
-                        style={[
-                          styles.inputtext,
-                          {
-                            bottom: 5,
-                            color: this.state.inputPR ? "#FF9D00" : "#717171"
-                          }
-                        ]}
-                      >
-                        Re-enter Password
-                      </Label>
-
-                      <Input
-                        style={styles.inputtext}
-                        secureTextEntry={true}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={value =>
-                          this.setState({ repassword: value })
-                        }
-                        onFocus={() => {
-                          this.setState({ inputPR: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({ inputPR: false });
-                          this._passwordVarification();
-                        }}
-                      />
-                    </Item>
-                    {this.state.repasswordError !== "" &&
-                    this.state.userInfo.password !== "" ? (
-                      <Text
-                        style={[
-                          styles.text,
-                          {
-                            bottom: 15,
-                            paddingTop: 0,
-                            marginBottom: 0,
-                            paddingVertical: 0
-                          }
-                        ]}
-                      >
-                        {this.state.repasswordError}
-                      </Text>
-                    ) : null}
+                      <CheckmarkIcon />
+                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => this._handleSubmission()}
-                    style={styles.button}
-                  >
-                    <CheckmarkIcon />
-                  </TouchableOpacity>
-                </View>
-              )}
-            </KeyboardShift>
-          </TouchableWithoutFeedback>
-        </View>
-      </Container>
+                )}
+              </KeyboardShift>
+            </TouchableWithoutFeedback>
+          </View>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

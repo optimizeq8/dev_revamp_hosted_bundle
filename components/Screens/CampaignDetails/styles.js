@@ -7,9 +7,8 @@ import { globalColors } from "../../../Global Styles";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     height: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)"
+    backgroundColor: "#0000"
   },
   image: {
     alignSelf: "center",
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   mainCard: {
-    top: hp("2"),
     borderColor: "transparent",
     backgroundColor: "transparent",
     flex: 1,
