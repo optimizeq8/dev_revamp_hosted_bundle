@@ -24,15 +24,20 @@ import {
 import { BlurView } from "expo";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
+import DateRangePicker from "./DateRangePicker";
+import CustomHeader from "../Header";
+import { SafeAreaView } from "react-navigation";
+// Style
+import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+
+//icons
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
-import DateRangePicker from "./DateRangePicker";
-// Style
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+
 import {
-  widthPercentageToDP,
-  heightPercentageToDP
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
 export default class DateFields extends Component {
@@ -90,7 +95,10 @@ export default class DateFields extends Component {
         style={[
           styles.dateModal,
           this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 },
-          this.props.filterMenu && { marginLeft: -80 }
+          this.props.filterMenu && {
+            marginLeft: -80,
+            marginTop: -hp(6)
+          }
         ]}
       >
         <Modal
@@ -108,18 +116,30 @@ export default class DateFields extends Component {
             style={[
               styles.BlurView,
               this.props.filterMenu && {
-                paddingLeft: widthPercentageToDP("20")
+                paddingLeft: wp("20"),
+                paddingTop: hp(6)
               }
             ]}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                // alignSelf: "center",
-                justifyContent: "space-around"
-              }}
+            <SafeAreaView
+              style={{ height: "100%", backgroundColor: "#0000" }}
+              forceInset={{ bottom: "never" }}
             >
-              <Button
+              <CustomHeader
+                closeButton={true}
+                actionButton={() => {
+                  this.setState({ modalVisible: false });
+                }}
+                title="Duration"
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  // alignSelf: "center",
+                  justifyContent: "space-around"
+                }}
+              >
+                {/* <Button
                 transparent
                 onPress={() => {
                   this.setState({ modalVisible: false });
@@ -128,86 +148,88 @@ export default class DateFields extends Component {
               >
                 <CloseIcon width={20} height={20} />
               </Button>
-              <Text style={styles.title}>Duration</Text>
-              <Text
-                style={[styles.textModal, { fontFamily: "montserrat-light" }]}
-                onPress={() =>
-                  this.setState({
-                    start_choice: false,
-                    end_choice: false,
+              <Text style={styles.title}>Duration</Text> */}
+                <Text
+                  style={[styles.textModal, { fontFamily: "montserrat-light" }]}
+                  onPress={() =>
+                    this.setState({
+                      start_choice: false,
+                      end_choice: false,
 
-                    start_timeError: "",
-                    endt_time: ""
-                  })
-                }
-              >
-                {" "}
-              </Text>
-            </View>
-            <Text style={styles.textModal}>
-              {this.props.filterMenu
-                ? "Select a date range to filter from"
-                : "Please select your ad launch and end dates"}
-            </Text>
-            <CalenderkIcon
-              width={heightPercentageToDP(5) < 30 ? 30 : 60}
-              height={heightPercentageToDP(5) < 30 ? 30 : 60}
-              style={styles.icon}
-            />
-            <Text style={[styles.textModal, { color: "#FF9D00" }]}>
-              Select the {!this.state.start_choice ? "Start Date" : "End Date"}
-            </Text>
-            <DateRangePicker
-              filterMenu={this.props.filterMenu}
-              startDatePicked={this.startDatePicked}
-              endDatePicked={this.endDatePicked}
-              // initialRange={[this.props.start_time, this.props.end_time]}
-              onSuccess={async (s, e) => {
-                this.endDatePicked();
-                this.setState({
-                  start_date: s,
-                  end_date: e
-                });
-              }}
-              theme={{ markColor: "#FF9D00", markTextColor: "white" }}
-            />
-
-            {this.state.end_choice ? (
-              <Button
-                style={styles.button}
-                onPress={async () => {
-                  if (!this.props.filterMenu) {
-                    let timeDiff = Math.round(
-                      Math.abs(
-                        (new Date(this.state.start_date).getTime() -
-                          new Date(this.state.end_date).getTime()) /
-                          86400000
-                      )
-                    );
-                    this.props.getMinimumCash(timeDiff + 1);
-                    await this.props.handleStartDatePicked(
-                      this.state.start_date
-                    );
-                    await this.props.handleEndDatePicked(this.state.end_date);
-                  } else {
-                    await this.props.handleStartDatePicked(
-                      this.state.start_date
-                    );
-                    await this.props.handleEndDatePicked(this.state.end_date);
+                      start_timeError: "",
+                      endt_time: ""
+                    })
                   }
+                >
+                  {" "}
+                </Text>
+              </View>
+              <Text style={styles.textModal}>
+                {this.props.filterMenu
+                  ? "Select a date range to filter from"
+                  : "Please select your ad launch and end dates"}
+              </Text>
+              <CalenderkIcon
+                width={hp(5) < 30 ? 30 : 60}
+                height={hp(5) < 30 ? 30 : 60}
+                style={styles.icon}
+              />
+              <Text style={[styles.textModal, { color: "#FF9D00" }]}>
+                Select the{" "}
+                {!this.state.start_choice ? "Start Date" : "End Date"}
+              </Text>
+              <DateRangePicker
+                filterMenu={this.props.filterMenu}
+                startDatePicked={this.startDatePicked}
+                endDatePicked={this.endDatePicked}
+                // initialRange={[this.props.start_time, this.props.end_time]}
+                onSuccess={async (s, e) => {
+                  this.endDatePicked();
                   this.setState({
-                    modalVisible: false,
-                    start_choice: false,
-                    end_choice: false
+                    start_date: s,
+                    end_date: e
                   });
                 }}
-              >
-                <CheckmarkIcon
-                  width={heightPercentageToDP(5) < 30 ? 40 : 53}
-                  height={heightPercentageToDP(5) < 30 ? 40 : 53}
-                />
-              </Button>
-            ) : null}
+                theme={{ markColor: "#FF9D00", markTextColor: "white" }}
+              />
+
+              {this.state.end_choice ? (
+                <Button
+                  style={styles.button}
+                  onPress={async () => {
+                    if (!this.props.filterMenu) {
+                      let timeDiff = Math.round(
+                        Math.abs(
+                          (new Date(this.state.start_date).getTime() -
+                            new Date(this.state.end_date).getTime()) /
+                            86400000
+                        )
+                      );
+                      this.props.getMinimumCash(timeDiff + 1);
+                      await this.props.handleStartDatePicked(
+                        this.state.start_date
+                      );
+                      await this.props.handleEndDatePicked(this.state.end_date);
+                    } else {
+                      await this.props.handleStartDatePicked(
+                        this.state.start_date
+                      );
+                      await this.props.handleEndDatePicked(this.state.end_date);
+                    }
+                    this.setState({
+                      modalVisible: false,
+                      start_choice: false,
+                      end_choice: false
+                    });
+                  }}
+                >
+                  <CheckmarkIcon
+                    width={hp(5) < 30 ? 40 : 53}
+                    height={hp(5) < 30 ? 40 : 53}
+                  />
+                </Button>
+              ) : null}
+            </SafeAreaView>
           </BlurView>
         </Modal>
       </View>

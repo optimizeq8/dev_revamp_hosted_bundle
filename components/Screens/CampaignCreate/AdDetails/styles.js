@@ -23,11 +23,14 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   container: {
-    // backgroundColor: "#751AFF",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    backgroundColor: "#000",
+    marginTop: hp(2),
+    overflow: "hidden",
+    width: "100%",
     height: "100%",
-    backgroundColor: "#751AFF",
-    flex: 1,
-    width: "100%"
+    flex: 1
   },
   textCon: {
     width: "100%",
@@ -109,13 +112,12 @@ const styles = StyleSheet.create({
     top: hp("1%")
   },
   BlurView: {
-    height: hp("115%"),
-    paddingTop: hp("10%")
+    // height: "100%"
+    // paddingTop: hp("10%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
-    height: hp("110%"),
-    marginTop: -hp("5"),
+    height: "110%",
     borderRadius: 30
   },
 
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
 
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    paddingVertical: 20
+    paddingVertical: 10
   },
   chart: {
     alignItems: "center",

@@ -40,9 +40,9 @@ export default class AgeOption extends Component {
             flex: 1,
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-around"
-          },
-          styles.container
+            justifyContent: "space-around",
+            backgroundColor: "#0000"
+          }
         ]}
       >
         <View

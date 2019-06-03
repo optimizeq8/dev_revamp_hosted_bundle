@@ -15,12 +15,13 @@ import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
+import Header from "../../MiniComponents/Header";
 
 //icons
 import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PersonalInfo from "../../../assets/SVGs/Person";
+import PersonalInfoIcon from "../../../assets/SVGs/Person";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../Global Styles";
@@ -34,7 +35,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 
-class ChangePassword extends Component {
+class PersonalInfo extends Component {
   static navigationOptions = {
     header: null
   };
@@ -77,37 +78,9 @@ class ChangePassword extends Component {
         style={{ flex: 1, backgroundColor: "#0000" }}
         forceInset={{ bottom: "never" }}
       >
-        <View
-          style={{
-            justifyContent: "space-between",
-            zIndex: 13,
-            // top: 40,
-            //padding: 2,
-            flexDirection: "row",
-            backgroundColor: "#0000"
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={{
-              left: 5,
-              flex: 0,
-              top: hp(1),
-              left: wp(6)
-              // width: wp(5),
-              //height: hp(5),
-              //position: "absolute"
-            }}
-          >
-            <BackIcon width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-        <Text
-          style={[styles.title, { alignSelf: "center", textAlign: "center" }]}
-        >
-          Personal Info
-        </Text>
-        <PersonalInfo
+        <Header title={"Personal Info"} navigation={this.props.navigation} />
+
+        <PersonalInfoIcon
           style={{
             alignSelf: "center",
             marginTop: 20
@@ -233,4 +206,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(ChangePassword);
+)(PersonalInfo);

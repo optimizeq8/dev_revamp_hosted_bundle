@@ -11,8 +11,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    marginTop: heightPercentageToDP("4"),
-    backgroundColor: "#751AFF"
+    backgroundColor: "#0000"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
