@@ -205,7 +205,7 @@ class MainForm extends Component {
                         <Button
                           rounded
                           onPress={() => {
-                            this.props.navigation.navigate("Invitation");
+                            this.props.navigation.goBack();
                           }}
                           style={styles.bottomView}
                         >

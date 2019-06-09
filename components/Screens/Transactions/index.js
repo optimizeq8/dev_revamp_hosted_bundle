@@ -46,17 +46,7 @@ class Transactions extends Component {
   render() {
     if (this.props.errorTransactionList) {
       return <ErrorComponent navigation={this.props.navigation} />;
-    } else if (this.props.loading)
-      return (
-        <>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
-            style={styles.gradient}
-          />
-          <LoadingScreen dash={true} top={0} />
-        </>
-      );
+    } else if (this.props.loading) return <LoadingScreen dash={true} top={0} />;
     else {
       let menu = (
         <FilterMenu
@@ -69,19 +59,19 @@ class Transactions extends Component {
         <TransactionCard key={transaction.id} transaction={transaction} />
       ));
       return (
-        <Sidemenu
-          onChange={isOpen => {
-            if (isOpen === false) this._handleSideMenuState(isOpen);
-          }}
-          disableGestures={true}
-          menu={this.state.sidemenustate ? menu : null}
-          menuPosition="right"
-          openMenuOffset={widthPercentageToDP("85%")}
-          isOpen={this.state.sidemenustate}
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: "#0000" }}
+          forceInset={{ bottom: "never" }}
         >
-          <SafeAreaView
-            style={{ flex: 1, backgroundColor: "#0000" }}
-            forceInset={{ bottom: "never" }}
+          <Sidemenu
+            onChange={isOpen => {
+              if (isOpen === false) this._handleSideMenuState(isOpen);
+            }}
+            disableGestures={true}
+            menu={this.state.sidemenustate ? menu : null}
+            menuPosition="right"
+            openMenuOffset={widthPercentageToDP("95%")}
+            isOpen={this.state.sidemenustate}
           >
             <Header title={"Transactions"} navigation={this.props.navigation} />
             <View style={styles.container}>
@@ -112,8 +102,8 @@ class Transactions extends Component {
                 {transList}
               </ScrollView>
             </View>
-          </SafeAreaView>
-        </Sidemenu>
+          </Sidemenu>
+        </SafeAreaView>
       );
     }
   }

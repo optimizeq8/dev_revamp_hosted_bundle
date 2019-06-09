@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    flex: 1,
-    height: "100%",
-    width: "100%"
+    // flex: 1,
+    // height: "100%",
+    // width: "100%"
   },
   errortext: {
     // marginTop: 5,
