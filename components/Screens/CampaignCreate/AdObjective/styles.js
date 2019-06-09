@@ -12,7 +12,8 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    // marginTop: 30,
+    backgroundColor: "#0000",
     display: "flex",
     justifyContent: "space-between"
   },

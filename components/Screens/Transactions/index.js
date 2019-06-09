@@ -8,6 +8,8 @@ import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BackButton from "../../MiniComponents/BackButton";
+import Header from "../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
@@ -30,7 +32,6 @@ class Transactions extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
-
   handleBackPress = () => {
     this.props.navigation.goBack();
     return true;
@@ -73,39 +74,45 @@ class Transactions extends Component {
             if (isOpen === false) this._handleSideMenuState(isOpen);
           }}
           disableGestures={true}
-          menu={menu}
+          menu={this.state.sidemenustate ? menu : null}
           menuPosition="right"
           openMenuOffset={widthPercentageToDP("85%")}
           isOpen={this.state.sidemenustate}
         >
-          <View style={styles.container}>
-            <BackButton
+          <SafeAreaView
+            style={{ flex: 1, backgroundColor: "#0000" }}
+            forceInset={{ bottom: "never" }}
+          >
+            <Header title={"Transactions"} navigation={this.props.navigation} />
+            <View style={styles.container}>
+              {/* <BackButton
               screenname="Transactions"
               navigation={this.props.navigation.goBack}
             />
-            <Text style={globalStyles.title}>Transactions</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: widthPercentageToDP(5)
-              }}
-            >
-              <View style={{ flex: 1, zIndex: 10 }}>
-                <SearchBar transactionSearch={true} />
-              </View>
-              <Button
-                style={styles.activebutton}
-                onPress={() => {
-                  this._handleSideMenuState(true);
+            <Text style={globalStyles.title}>Transactions</Text> */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  paddingVertical: widthPercentageToDP(5)
                 }}
               >
-                <FilterIcon width={23} height={23} fill="#575757" />
-              </Button>
+                <View style={{ flex: 1, zIndex: 10 }}>
+                  <SearchBar transactionSearch={true} />
+                </View>
+                <Button
+                  style={styles.activebutton}
+                  onPress={() => {
+                    this._handleSideMenuState(true);
+                  }}
+                >
+                  <FilterIcon width={23} height={23} fill="#575757" />
+                </Button>
+              </View>
+              <ScrollView contentContainerStyle={styles.contentContainer}>
+                {transList}
+              </ScrollView>
             </View>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
-              {transList}
-            </ScrollView>
-          </View>
+          </SafeAreaView>
         </Sidemenu>
       );
     }
