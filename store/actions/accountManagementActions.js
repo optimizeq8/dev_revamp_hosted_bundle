@@ -4,7 +4,6 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 import { AsyncStorage } from "react-native";
-// import { login } from "./loginActions";
 
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"

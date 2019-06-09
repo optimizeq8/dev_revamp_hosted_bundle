@@ -32,7 +32,7 @@ class SnapchatCreateAdAcc extends Component {
 
   componentDidMount() {
     Segment.screen("Create Snap Ad Account Screen");
-    // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (this.props.mainBusiness.snap_ad_account_id) {
       this.props.navigation.navigate("Dashboard");
     }
@@ -46,11 +46,12 @@ class SnapchatCreateAdAcc extends Component {
   }
 
   componentWillUnmount() {
-    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  handleBackButton() {
+  handleBackButton = () => {
+    this.props.navigation.goBack();
     return true;
-  }
+  };
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 20;
@@ -119,7 +120,8 @@ class SnapchatCreateAdAcc extends Component {
             style={{
               flex: 1,
               flexDirection: "column",
-              justifyContent: "space-between"
+              justifyContent: "center",
+              marginBottom: 10
             }}
           >
             {this.props.loading ? (
