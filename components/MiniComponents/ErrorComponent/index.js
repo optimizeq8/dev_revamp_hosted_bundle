@@ -83,7 +83,7 @@ class ErrorComponent extends Component {
             }}
           >
             <Text style={styles.whitebuttontext}>
-              {this.props.dashboard ? "Relaod" : "Home"}
+              {this.props.dashboard ? "Reload" : "Home"}
             </Text>
           </Button>
         </View>

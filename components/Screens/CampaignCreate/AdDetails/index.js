@@ -872,6 +872,7 @@ class AdDetails extends Component {
                           //   left: wp(4),
                           justifyContent: "center"
                         }}
+<
                       > */}
                           <Text
                             style={[
@@ -921,6 +922,7 @@ class AdDetails extends Component {
                     Who would you like to reach?
                   </Text>
                   <ScrollView
+                    ref={ref => (this.scrollView = ref)}
                     indicatorStyle="white"
                     style={{
                       flexDirection: "column",
@@ -1256,9 +1258,11 @@ class AdDetails extends Component {
                     </TouchableOpacity>
                   </ScrollView>
                   <Text
-                    onPress={() =>
-                      this.setState({ advance: !this.state.advance })
-                    }
+                    onPress={() => {
+                      this.scrollView.scrollToEnd({ animated: true });
+
+                      this.setState({ advance: !this.state.advance });
+                    }}
                     style={[styles.budget, { fontSize: 14, paddingBottom: 30 }]}
                   >
                     Scroll for more options+

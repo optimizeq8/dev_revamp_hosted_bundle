@@ -13,9 +13,7 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 class UseWallet extends Component {
   //   state = { showModal: false };
 
-  componentDidMount() {
-    this.props.getWalletAmount();
-  }
+  componentDidMount() {}
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.showWalletModal && this.props.showWalletModal) {
       this._handleWallet();
@@ -164,7 +162,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   useWallet: info => dispatch(actionCreators.useWallet(info)),
-  getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
 });
