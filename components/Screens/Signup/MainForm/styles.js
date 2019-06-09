@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -24,11 +25,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
-    marginTop: 50,
-    backgroundColor: "#751AFF",
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0000"
   },
   content: {
+    paddingTop: heightPercentageToDP("2%"),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"

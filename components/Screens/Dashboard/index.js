@@ -189,13 +189,14 @@ class Dashboard extends Component {
       }
     };
 
-    let menu = (
+    let menu = !this.state.open ? (
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
       />
-    );
-    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
+    ) : null;
+    if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
+
       return (
         <>
           <LoadingScreen dash={true} top={0} />
@@ -223,7 +224,7 @@ class Dashboard extends Component {
             <View
               style={{
                 justifyContent: "center",
-                // zIndex: 10,
+                zIndex: 10,
                 display: this.state.sidemenustate ? "none" : "flex",
                 height: 40,
                 backgroundColor: "#0000",
@@ -296,7 +297,7 @@ class Dashboard extends Component {
                   if (isOpen === false) this._handleSideMenuState(isOpen);
                 }}
                 disableGestures={true}
-                menu={this.state.sidemenustate ? menu : null}
+                menu={menu}
                 menuPosition="right"
                 openMenuOffset={wp("85%")}
                 isOpen={this.state.sidemenustate}

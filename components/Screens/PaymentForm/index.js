@@ -4,8 +4,7 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  BackHandler,
-  SafeAreaView
+  BackHandler
 } from "react-native";
 import {
   Card,
@@ -26,6 +25,8 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import NavigationService from "../../../NavigationService.js";
 import formatNumber from "../../formatNumber";
 import BackButton from "../../MiniComponents/BackButton";
+import { SafeAreaView } from "react-navigation";
+import CustomHeader from "../../MiniComponents/Header";
 
 //terms&conditions
 import { openTerms } from "../../Terms&Condtions";
@@ -274,17 +275,25 @@ class PaymentForm extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
         <Container
           style={[styles.container, { backgroundColor: "transparent" }]}
         >
-          <Header transparent noShadow iosBarStyle={"light-content"}>
-            <BackDrop style={styles.backDrop} />
+          <BackDrop style={styles.backDrop} />
+
+          <CustomHeader
+            closeButton={false}
+            segment={{
+              str: "Payment Method Screen Back Button",
+              obj: { businessname: this.props.mainBusiness.businessname }
+            }}
+            navigation={this.props.navigation}
+            title="Payment"
+          />
+          {/* <Header transparent noShadow iosBarStyle={"light-content"}>
 
             <Left style={{ flex: 0 }}>
               <BackButton
@@ -303,7 +312,7 @@ class PaymentForm extends Component {
             >
               <Text style={[styles.header]}>Payment</Text>
             </Body>
-          </Header>
+          </Header> */}
           <Content
             padder
             scrollEnabled={false}
@@ -457,8 +466,7 @@ class PaymentForm extends Component {
               {
                 borderTopWidth: 0,
                 width: "100%",
-                paddingHorizontal: 20,
-                top: isIphoneXorAbove() ? 35 : 0
+                paddingHorizontal: 20
               },
               styles.bottomCard
             ]}
@@ -643,7 +651,6 @@ class PaymentForm extends Component {
             </View>
           </BlurView>
         </Modal>
-
         <Modal dismissable={false} visible={this.state.browserLoading}>
           <LoadingScreen top={0} />
         </Modal>

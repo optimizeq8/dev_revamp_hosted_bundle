@@ -11,6 +11,9 @@ import BusinessInfo from "../BusinessInfo";
 import CreateBusinessAccount from "../../CreateBusinessAccount";
 import * as actionCreators from "../../../../store/actions";
 
+import { SafeAreaView } from "react-navigation";
+import CustomHeader from "../../../MiniComponents/Header";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -51,98 +54,108 @@ class MainForm extends Component {
     }
 
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-
-        <CloseButton
-          navigation={() => {
-            this.props.navigation.navigate("Invitation");
-            this.props.resetRegister();
-          }}
-        />
-        <Text style={styles.title}>Registration</Text>
-        <View style={styles.content}>
-          <Badge
-            style={
-              !this.props.successNo && !this.props.verificationCode
-                ? styles.activeBadege
-                : styles.badge
-            }
-          >
-            <Text
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
+        <Container style={styles.container}>
+          <CustomHeader
+            closeButton={true}
+            actionButton={() => {
+              this.props.navigation.navigate("Invitation");
+              this.props.resetRegister();
+            }}
+            navigation={this.props.navigation}
+            title="Registration"
+          />
+          {/* <CloseButton
+            navigation={() => {
+              this.props.navigation.navigate("Invitation");
+              this.props.resetRegister();
+            }}
+          />
+          <Text style={styles.title}>Registration</Text> */}
+          <View style={styles.content}>
+            <Badge
               style={
                 !this.props.successNo && !this.props.verificationCode
-                  ? styles.activeBadegeText
-                  : styles.badgeText
+                  ? styles.activeBadege
+                  : styles.badge
               }
             >
-              1
-            </Text>
-          </Badge>
-          <View style={styles.dash} />
+              <Text
+                style={
+                  !this.props.successNo && !this.props.verificationCode
+                    ? styles.activeBadegeText
+                    : styles.badgeText
+                }
+              >
+                1
+              </Text>
+            </Badge>
+            <View style={styles.dash} />
 
-          <Badge
-            style={
-              this.props.verificationCode && !this.props.verified
-                ? styles.activeBadege
-                : styles.badge
-            }
-          >
-            <Text
+            <Badge
               style={
                 this.props.verificationCode && !this.props.verified
-                  ? styles.activeBadegeText
-                  : styles.badgeText
+                  ? styles.activeBadege
+                  : styles.badge
               }
             >
-              2
-            </Text>
-          </Badge>
-          <View style={styles.dash} />
-          <Badge
-            style={
-              this.props.verified &&
-              !this.props.successEmail &&
-              !this.props.registered
-                ? styles.activeBadege
-                : styles.badge
-            }
-          >
-            <Text
+              <Text
+                style={
+                  this.props.verificationCode && !this.props.verified
+                    ? styles.activeBadegeText
+                    : styles.badgeText
+                }
+              >
+                2
+              </Text>
+            </Badge>
+            <View style={styles.dash} />
+            <Badge
               style={
                 this.props.verified &&
                 !this.props.successEmail &&
                 !this.props.registered
-                  ? styles.activeBadegeText
-                  : styles.badgeText
+                  ? styles.activeBadege
+                  : styles.badge
               }
             >
-              3
-            </Text>
-          </Badge>
-          <View style={styles.dash} />
-          <Badge
-            style={this.props.successEmail ? styles.activeBadege : styles.badge}
-          >
-            <Text
+              <Text
+                style={
+                  this.props.verified &&
+                  !this.props.successEmail &&
+                  !this.props.registered
+                    ? styles.activeBadegeText
+                    : styles.badgeText
+                }
+              >
+                3
+              </Text>
+            </Badge>
+            <View style={styles.dash} />
+            <Badge
               style={
-                this.props.successEmail
-                  ? styles.activeBadegeText
-                  : styles.badgeText
+                this.props.successEmail ? styles.activeBadege : styles.badge
               }
             >
-              4
-            </Text>
-          </Badge>
-        </View>
-        <Text style={styles.subtitle}>{title}</Text>
+              <Text
+                style={
+                  this.props.successEmail
+                    ? styles.activeBadegeText
+                    : styles.badgeText
+                }
+              >
+                4
+              </Text>
+            </Badge>
+          </View>
+          <Text style={styles.subtitle}>{title}</Text>
 
-        <View style={[styles.mainCard]}>{content}</View>
-      </Container>
+          <View style={[styles.mainCard]}>{content}</View>
+        </Container>
+      </SafeAreaView>
     );
   }
 }
