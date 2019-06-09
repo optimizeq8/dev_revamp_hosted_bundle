@@ -103,11 +103,13 @@ class ChangePassword extends Component {
       this.props.changePassword(
         this.state.userInfo.currentPassword,
         this.state.userInfo.password,
-        this.props.navigation
+        this.props.navigation,
+        this.props.user.email
       );
     }
   };
   render() {
+    const tempPassword = this.props.navigation.getParam("temp_pwd", false);
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -116,7 +118,13 @@ class ChangePassword extends Component {
           style={styles.gradient}
         />
         <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => {
+            if (tempPassword) {
+              this.props.logout(this.props.navigation);
+            } else {
+              this.props.navigation.goBack();
+            }
+          }}
           style={globalStyles.backButton}
         >
           <BackIcon />
@@ -163,7 +171,7 @@ class ChangePassword extends Component {
                           }
                         ]}
                       >
-                        Old Password
+                        {tempPassword ? "Current Password" : "Old Password"}
                       </Label>
                       <Input
                         style={styles.inputtext}
@@ -341,10 +349,18 @@ class ChangePassword extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  changePassword: (currentPass, newPass, navigation) =>
-    dispatch(actionCreators.changePassword(currentPass, newPass, navigation))
+  changePassword: (currentPass, newPass, navigation, userEmail) =>
+    dispatch(
+      actionCreators.changePassword(currentPass, newPass, navigation, userEmail)
+    ),
+  logout: navigation => dispatch(actionCreators.logout(navigation))
 });
+
+const mapStateToProps = state => ({
+  user: state.auth.userInfo
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ChangePassword);

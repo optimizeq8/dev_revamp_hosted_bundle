@@ -87,7 +87,10 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.mainBusiness !== this.props.mainBusiness) {
+    if (
+      !isNull(this.props.mainBusiness) &&
+      prevProps.mainBusiness !== this.props.mainBusiness
+    ) {
       if (
         this.props.mainBusiness &&
         !this.props.mainBusiness.snap_ad_account_id

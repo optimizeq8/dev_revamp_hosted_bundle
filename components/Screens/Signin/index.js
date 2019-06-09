@@ -62,13 +62,14 @@ class MainForm extends Component {
 
   componentDidMount() {
     Segment.screen("Sign in Screen");
-    if (
-      this.props.navigation &&
-      this.props.navigation.getParam("loggedout", false)
-    ) {
-    } else {
-      this.props.checkForExpiredToken(this.props.navigation);
-    }
+    console.log("sign in componentDidMount");
+    // if (
+    //   this.props.navigation &&
+    //   this.props.navigation.getParam("loggedout", false)
+    // ) {
+    // } else {
+    this.props.checkForExpiredToken(this.props.navigation);
+    // }
   }
   render() {
     let invite = this.props.navigation.getParam("invite", false);

@@ -73,6 +73,8 @@ class PaymentForm extends Component {
     this.setState({
       browserLoading: false
     });
+    this.props.getWalletAmount();
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps, prevState) {
@@ -102,6 +104,7 @@ class PaymentForm extends Component {
       return true;
     } else {
       this.props.walletUsed ? this.showModal() : this.reviewPurchase();
+      //   this.reviewPurchase();
     }
   };
   _openWebBrowserAsync = async () => {
@@ -224,6 +227,7 @@ class PaymentForm extends Component {
   };
 
   reviewPurchase = () => {
+    console.log("walletUsed", this.props.walletUsed);
     if (this.props.walletUsed)
       this.props.removeWalletAmount(
         this.props.campaign_id,
@@ -393,6 +397,7 @@ class PaymentForm extends Component {
                 showWalletModal={this.state.showWalletModal}
                 setShowWalletModal={this.setShowWalletModal}
                 _changeToKnet={this._changeToKnet}
+                wallet={this.props.wallet}
               />
             )}
             {this.state.choice === 2 && (
@@ -536,6 +541,7 @@ class PaymentForm extends Component {
               <TouchableOpacity
                 onPress={() => this._handleSubmission()}
                 style={[styles.mainCard]}
+                disabled={this.state.choice === 1 && this.props.wallet === "0"}
               >
                 {/*
               ----------For future maybe----------
@@ -563,6 +569,7 @@ class PaymentForm extends Component {
 
             <TouchableOpacity
               onPress={() => this._handleSubmission()}
+              disabled={this.state.choice === 1 && this.props.wallet === "0"}
               //   style={[styles.bottomCard]}
               style={{ width: "100%", paddingTop: 5 }}
             >
@@ -659,9 +666,12 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   walletUsed: state.transA.walletUsed,
   walletAmountInKwd: state.transA.walletAmountInKwd,
-  loading: state.campaignC.loading
+  loading: state.campaignC.loading,
+  wallet: state.transA.wallet
 });
 const mapDispatchToProps = dispatch => ({
+  getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
+
   payment_request_knet: (campaign_id, openBrowser, navigation) =>
     dispatch(
       actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
