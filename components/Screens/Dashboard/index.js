@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Button, Content, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
-import isNull from "lodash/isNull";
+
 import { SafeAreaView } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import { Segment } from "expo";
@@ -88,7 +88,7 @@ class Dashboard extends Component {
 
   componentDidUpdate(prevProps) {
     if (
-      !isNull(this.props.mainBusiness) &&
+      this.props.mainBusiness &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
       if (
@@ -195,16 +195,13 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     );
-    if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
+    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
       return (
         <>
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else if (
-      isNull(this.props.mainBusiness) &&
-      !this.props.loadingAccountMgmt
-    ) {
+    } else if (!this.props.mainBusiness && !this.props.loadingAccountMgmt) {
       return (
         <ErrorComponent
           dashboard={true}
