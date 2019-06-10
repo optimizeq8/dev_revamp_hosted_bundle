@@ -28,6 +28,7 @@ import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
 import PaymentForm from "../Screens/PaymentForm";
 import ErrorRedirect from "../Screens/ErrorRedirect";
 import SuccessRedirect from "../Screens/SuccessRedirect";
+import Animated, { Easing } from "react-native-reanimated";
 
 export default FluidNavigator(
   {
@@ -69,6 +70,8 @@ export default FluidNavigator(
   },
 
   {
+    transConfig,
+
     initialRouteName: "Dashboard",
     mode: "card",
     navigationOptions: {
@@ -76,13 +79,22 @@ export default FluidNavigator(
       headerStyle: {
         backgroundColor: "#0000"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#0000",
       headerTextStyle: {
         fontWeight: "bold"
       }
     },
     cardStyle: {
-      backgroundColor: "transparent"
+      backgroundColor: "#0000",
+      opacity: 1
     }
   }
 );
+
+const transConfig = () => ({
+  transitionSpec: {
+    duration: 0,
+    timing: Animated.timing,
+    easing: Easing.step0
+  }
+});

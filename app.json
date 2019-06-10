@@ -24,7 +24,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "7",
+      "buildNumber": "8",
       "supportsTablet": false
     },
     "packagerOpts": {

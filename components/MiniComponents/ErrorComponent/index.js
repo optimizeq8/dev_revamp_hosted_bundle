@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
 import { Linking, LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import ErrorIcon from "../../../assets/SVGs/Error.svg";
@@ -66,7 +69,10 @@ class ErrorComponent extends Component {
             style={styles.button}
             onPress={() => {
               this.props.dashboard
-                ? this.props.navigation.navigate("Invitation")
+                ? this.props.clearPushToken(
+                    this.props.navigation,
+                    this.props.userInfo.userid
+                  )
                 : this.props.navigation.goBack();
             }}
           >
@@ -78,7 +84,7 @@ class ErrorComponent extends Component {
             style={styles.whitebutton}
             onPress={() => {
               this.props.dashboard
-                ? this.props.navigation.navigate("Signin")
+                ? this.props.navigation.navigate("Invitation")
                 : this.props.navigation.navigate("Dashboard");
             }}
           >
@@ -91,5 +97,14 @@ class ErrorComponent extends Component {
     );
   }
 }
-
-export default ErrorComponent;
+const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo
+});
+const mapDispatchToProps = dispatch => ({
+  clearPushToken: (navigation, userid) =>
+    dispatch(actionCreators.clearPushToken(navigation, userid))
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ErrorComponent);
