@@ -13,11 +13,15 @@ export const colors = {
 const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: heightPercentageToDP(10),
-    flex: 1
+    marginTop: heightPercentageToDP(3),
+    flex: 1,
+    backgroundColor: "#0000",
+    alignItems: "center",
+    width: "100%"
   },
   logo: {
     alignSelf: "center",
+    // fontSize: 50
     position: "relative"
     // top: heightPercentageToDP(1)
   },
@@ -25,8 +29,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium",
-    bottom: "21%"
+    fontFamily: "montserrat-medium"
+    // bottom: "21%"
   },
 
   mainView: {

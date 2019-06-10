@@ -11,14 +11,15 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
+    // marginTop: 30,
     backgroundColor: "#751AFF"
   },
   container: {
-    flex: 1,
     alignItems: "center",
-    padding: 20,
-    paddingTop: 40,
+    flex: 1,
+    justifyContent: "center",
+    // padding: 20,
+    // paddingTop: 40,
     overflow: "hidden"
   },
   text: {

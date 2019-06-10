@@ -60,7 +60,6 @@ export const checkForExpiredToken = navigation => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
-        console.log("user token temp_pwd", user.tmp_pwd);
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           setAuthToken(token)
             .then(() =>
