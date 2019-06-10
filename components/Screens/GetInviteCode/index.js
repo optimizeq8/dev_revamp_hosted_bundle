@@ -25,6 +25,7 @@ import * as actionCreators from "../../../store/actions";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 class GetInviteCode extends Component {
   static navigationOptions = {
@@ -63,50 +64,73 @@ class GetInviteCode extends Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <>
-            <Text style={styles.title}>Get your invite code</Text>
-            <PhoneNo _getMobile={this._getMobile} invite={true} />
-            <Item rounded style={[styles.input]}>
-              <Input
-                placeholderTextColor="#fff"
-                autoCorrect={false}
-                autoCapitalize="none"
-                style={styles.inputtext}
-                onChangeText={email => {
-                  this.setState({
-                    email
-                  });
-                }}
-                onBlur={() => {
-                  if (validateWrapper("email", this.state.email)) {
-                    showMessage({
-                      message: "Please enter a valid email!",
-                      type: "warning",
-                      position: "top"
-                    });
-                  }
-                }}
-                placeholder="Enter your email"
-              />
-            </Item>
-            <Button
-              style={[styles.button]}
-              onPress={() => {
-                this._handleGetInviteCode();
+      <Container style={[styles.container]}>
+        <KeyboardShift
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            flex: 1
+          }}
+        >
+          {() => (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
-              <Text style={styles.buttontext}>Submit now!</Text>
-            </Button>
-            <Text
-              style={[styles.link]}
-              onPress={() => this.props.toggleComps()}
-            >
-              Already have an invite code?
-            </Text>
-          </>
-        </TouchableWithoutFeedback>
+              <Text style={styles.title}>Get your invite code</Text>
+              <PhoneNo _getMobile={this._getMobile} invite={true} />
+              <Item rounded style={[styles.input]}>
+                <Input
+                  placeholderTextColor="#fff"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  style={styles.inputtext}
+                  onChangeText={email => {
+                    this.setState({
+                      email
+                    });
+                  }}
+                  onBlur={() => {
+                    if (validateWrapper("email", this.state.email)) {
+                      showMessage({
+                        message: "Please enter a valid email!",
+                        type: "warning",
+                        position: "top"
+                      });
+                    }
+                  }}
+                  placeholder="Enter your email"
+                />
+              </Item>
+              {/* <View
+                    style={{
+                      padding: 12,
+                      borderWidth: 2
+                      // bottom: "-30%",
+                      // position: "absolute"
+                    }}
+                  > */}
+              <Button
+                style={[styles.button]}
+                onPress={() => {
+                  this._handleGetInviteCode();
+                }}
+              >
+                <Text style={styles.buttontext}>Submit now!</Text>
+              </Button>
+              <Text
+                style={[styles.link]}
+                onPress={() => this.props.toggleComps()}
+              >
+                Already have an invite code?
+              </Text>
+              {/* </View> */}
+            </View>
+          )}
+        </KeyboardShift>
       </Container>
     );
   }

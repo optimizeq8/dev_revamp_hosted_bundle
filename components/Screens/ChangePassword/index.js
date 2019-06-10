@@ -131,11 +131,11 @@ class ChangePassword extends Component {
             width={100}
             height={100}
           />
-          <View style={styles.mainCard}>
-            <TouchableWithoutFeedback
-              onPress={Keyboard.dismiss}
-              accessible={false}
-            >
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <View style={styles.mainCard}>
               <KeyboardShift>
                 {() => (
                   <View style={styles.contentContainer}>
@@ -333,8 +333,8 @@ class ChangePassword extends Component {
                   </View>
                 )}
               </KeyboardShift>
-            </TouchableWithoutFeedback>
-          </View>
+            </View>
+          </TouchableWithoutFeedback>
         </Container>
       </SafeAreaView>
     );

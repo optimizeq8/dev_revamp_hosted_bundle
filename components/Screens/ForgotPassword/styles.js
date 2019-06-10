@@ -8,15 +8,15 @@ export const colors = {
 const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
-    marginTop: 30,
+    // marginTop: 30,
     backgroundColor: "#751AFF"
   },
   logotext: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium",
-    bottom: "24%"
+    fontFamily: "montserrat-medium"
+    // bottom: "24%"
   },
   image: {
     alignSelf: "center",
@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
     margin: 10
   },
   mainView: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "flex-start",
     alignItems: "center"
   },
   text: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 40,
-    paddingBottom: 10,
+    paddingTop: 30,
+    // paddingBottom: 10,
     fontFamily: "montserrat-medium",
     fontSize: 24,
     paddingHorizontal: 10,
