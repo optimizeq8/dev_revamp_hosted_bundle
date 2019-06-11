@@ -195,7 +195,9 @@ class MainForm extends Component {
                     </Button>
                   </View>
                   <View
-                    style={{ top: heightPercentageToDP(5) < 40 ? 10 : "30%" }}
+                    style={{
+                      top: heightPercentageToDP(5) < 40 ? 10 : "30%"
+                    }}
                   >
                     {invite && (
                       <>

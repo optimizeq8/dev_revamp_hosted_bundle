@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-regular",
-    fontSize: 21,
+    fontSize: 21 / PixelRatio.getFontScale(),
     color: "#4B4B4B"
   },
   input: {

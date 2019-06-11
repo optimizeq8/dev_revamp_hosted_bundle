@@ -1,36 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
-  ScrollView,
   TouchableOpacity,
-  BackHandler
+  BackHandler,
+  TextInput
 } from "react-native";
-import { LinearGradient, Segment } from "expo";
-import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Segment } from "expo";
+import { Text, Item, Input, Icon, Label, Container } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
 import Header from "../../MiniComponents/Header";
 
 //icons
 import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon.svg";
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class ChangePassword extends Component {
   static navigationOptions = {
@@ -155,9 +148,9 @@ class ChangePassword extends Component {
                       >
                         <Label
                           style={[
-                            styles.inputtext,
+                            styles.label,
                             {
-                              bottom: 5,
+                              bottom: 10,
 
                               color: this.state.inputF ? "#FF9D00" : "#717171"
                             }
@@ -166,6 +159,7 @@ class ChangePassword extends Component {
                           {tempPassword ? "Current Password" : "Old Password"}
                         </Label>
                         <Input
+                          // allowFontScaling={true}
                           style={styles.inputtext}
                           secureTextEntry={true}
                           autoCorrect={false}
@@ -208,9 +202,9 @@ class ChangePassword extends Component {
                       >
                         <Label
                           style={[
-                            styles.inputtext,
+                            styles.label,
                             {
-                              bottom: 5,
+                              bottom: 10,
 
                               color: this.state.inputP ? "#FF9D00" : "#717171"
                             }
@@ -280,9 +274,9 @@ class ChangePassword extends Component {
                       >
                         <Label
                           style={[
-                            styles.inputtext,
+                            styles.label,
                             {
-                              bottom: 5,
+                              bottom: 10,
                               color: this.state.inputPR ? "#FF9D00" : "#717171"
                             }
                           ]}

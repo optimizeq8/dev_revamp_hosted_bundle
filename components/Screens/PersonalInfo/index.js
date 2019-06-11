@@ -1,39 +1,25 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  BackHandler
+  BackHandler,
+  Platform,
+  PixelRatio
 } from "react-native";
-import { LinearGradient } from "expo";
-import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text, Item, Input, Label } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
 import Header from "../../MiniComponents/Header";
 
 //icons
-import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PersonalInfoIcon from "../../../assets/SVGs/Person";
+
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
-import * as actionCreators from "../../../store/actions/";
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
+import { connect } from "react-redux";
 
 class PersonalInfo extends Component {
   static navigationOptions = {
@@ -120,6 +106,10 @@ class PersonalInfo extends Component {
                       style={[
                         styles.input,
                         {
+                          // fontSize:
+                          //   Platform.OS === "android"
+                          //     ? 14 / PixelRatio.getFontScale()
+                          //     : 14,
                           marginBottom: 30,
                           borderColor: this.state.inputPR
                             ? "#7039FF"
@@ -134,6 +124,10 @@ class PersonalInfo extends Component {
                           styles.label,
                           {
                             bottom: 5
+                            // fontSize:
+                            //   Platform.OS === "android"
+                            //     ? 14 / PixelRatio.getFontScale()
+                            //     : 14
                           }
                         ]}
                       >
@@ -163,7 +157,11 @@ class PersonalInfo extends Component {
                         style={[
                           styles.label,
                           {
-                            bottom: 5
+                            bottom: 5,
+                            fontSize:
+                              Platform.OS === "android"
+                                ? 14 / PixelRatio.getFontScale()
+                                : 14
                           }
                         ]}
                       >

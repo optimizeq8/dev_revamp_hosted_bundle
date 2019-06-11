@@ -2,7 +2,13 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import MultiSelect from "react-native-multiple-select";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  PixelRatio
+} from "react-native";
 
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
@@ -140,7 +146,7 @@ class MultiSelectList extends Component {
                   style={{
                     fontFamily: "montserrat-regular",
                     color: "#fff",
-                    fontSize: 14
+                    fontSize: 14 / PixelRatio.getFontScale()
                   }}
                   placeholderTextColor="#fff"
                   onChangeText={value => {

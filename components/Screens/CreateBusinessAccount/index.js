@@ -5,23 +5,18 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity
+  PixelRatio
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
-import { LinearGradient, Segment, WebBrowser } from "expo";
+import { Segment } from "expo";
 import RNPickerSelect from "react-native-picker-select";
-import CloseButton from "../../MiniComponents/CloseButton";
-//icons
-import CloseIcon from "../../../assets/SVGs/Close";
-import HomeBussinesIcon from "../../../assets/SVGs/Person";
-import CompanyIcon from "../../../assets/SVGs/Group";
-
+import CustomHeader from "../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 //privay
 import { openPrivacy } from "../../Terms&Condtions";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
@@ -200,581 +195,582 @@ class CreateBusinessAccount extends Component {
   };
   render() {
     return (
-      <Container
-        style={[
-          styles.maincontainer,
-          { marginTop: this.props.registering ? 0 : 30 }
-        ]}
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
       >
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        {!this.props.registering && (
-          <>
-            <CloseButton navigation={this.props.navigation.goBack} />
-            <Text style={styles.title}>New Business</Text>
-            <Text style={styles.subtitle}>
-              You can create a new Business under you!
-            </Text>
-          </>
-        )}
-        <View
-          style={{
-            paddingVertical: 10,
-            flexDirection: "row",
-            alignSelf: "center"
-          }}
+        <Container
+          style={[
+            styles.maincontainer,
+            { marginTop: this.props.registering ? 0 : 0 }
+          ]}
         >
-          <Button
-            block
-            dark
-            style={[
-              this.state.businessAccount.businesstype === "1"
-                ? styles.activebutton
-                : styles.button,
-              {
-                borderBottomEndRadius: 0,
-                borderTopEndRadius: 0,
-                borderBottomStartRadius: 15,
-                borderTopStartRadius: 15
-              }
-            ]}
-            onPress={() => {
-              this._handleBusinessCategories("1");
+          {!this.props.registering && (
+            <>
+              <CustomHeader
+                navigation={this.props.navigation}
+                title={"New Business"}
+                closeButton={true}
+              />
+              {/* <CloseButton navigation={this.props.navigation.goBack} />
+              <Text style={styles.title}>New Business</Text> */}
+              <Text style={styles.subtitle}>
+                You can create a new Business under you!
+              </Text>
+            </>
+          )}
+          <View
+            style={{
+              paddingVertical: 10,
+              flexDirection: "row",
+              alignSelf: "center"
             }}
           >
-            <Text
+            <Button
+              block
+              dark
               style={[
                 this.state.businessAccount.businesstype === "1"
-                  ? styles.activetext
-                  : styles.inactivetext
+                  ? styles.activebutton
+                  : styles.button,
+                {
+                  borderBottomEndRadius: 0,
+                  borderTopEndRadius: 0,
+                  borderBottomStartRadius: 15,
+                  borderTopStartRadius: 15
+                }
               ]}
+              onPress={() => {
+                this._handleBusinessCategories("1");
+              }}
             >
-              <Icon
-                type="MaterialCommunityIcons"
-                name="home-account"
+              <Text
                 style={[
                   this.state.businessAccount.businesstype === "1"
                     ? styles.activetext
-                    : styles.inactivetext,
-                  {
-                    left: 25,
-                    fontSize: 25
-                  }
+                    : styles.inactivetext
                 ]}
-              />
-              {"\n"}
-              SME{"\n"} or Startup
-            </Text>
-          </Button>
+              >
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="home-account"
+                  style={[
+                    this.state.businessAccount.businesstype === "1"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    {
+                      left: 25,
+                      fontSize: 25 / PixelRatio.getFontScale()
+                    }
+                  ]}
+                />
+                {"\n"}
+                SME{"\n"} or Startup
+              </Text>
+            </Button>
 
-          <Button
-            block
-            dark
-            style={[
-              this.state.businessAccount.businesstype === "2"
-                ? styles.activebutton
-                : styles.button,
-              {
-                borderBottomEndRadius: 0,
-                borderTopEndRadius: 0,
-                borderBottomStartRadius: 0,
-                borderTopStartRadius: 0
-              }
-            ]}
-            onPress={() => {
-              this._handleBusinessCategories("2");
-            }}
-          >
-            <Text
+            <Button
+              block
+              dark
               style={[
                 this.state.businessAccount.businesstype === "2"
-                  ? styles.activetext
-                  : styles.inactivetext
+                  ? styles.activebutton
+                  : styles.button,
+                {
+                  borderBottomEndRadius: 0,
+                  borderTopEndRadius: 0,
+                  borderBottomStartRadius: 0,
+                  borderTopStartRadius: 0
+                }
               ]}
+              onPress={() => {
+                this._handleBusinessCategories("2");
+              }}
             >
-              <Icon
-                type="Foundation"
-                name="torsos-all"
+              <Text
                 style={[
                   this.state.businessAccount.businesstype === "2"
                     ? styles.activetext
+                    : styles.inactivetext
+                ]}
+              >
+                <Icon
+                  type="Foundation"
+                  name="torsos-all"
+                  style={[
+                    this.state.businessAccount.businesstype === "2"
+                      ? styles.activetext
+                      : styles.inactivetext,
+                    {
+                      alignSelf: "center",
+                      fontSize: 25 / PixelRatio.getFontScale()
+                    }
+                  ]}
+                />
+                {"\n"}Agency
+              </Text>
+            </Button>
+
+            <Button
+              dark
+              style={[
+                this.state.businessAccount.businesstype === "3"
+                  ? styles.activebutton
+                  : styles.button,
+                {
+                  borderTopStartRadius: 0,
+                  borderBottomStartRadius: 0,
+                  borderBottomEndRadius: 15,
+                  borderTopEndRadius: 15
+                }
+              ]}
+              onPress={() => {
+                this._handleBusinessCategories("3");
+              }}
+            >
+              <Icon
+                type="FontAwesome"
+                name="building"
+                style={[
+                  this.state.businessAccount.businesstype === "3"
+                    ? styles.activetext
                     : styles.inactivetext,
                   {
-                    alignSelf: "center",
-                    fontSize: 25
+                    fontSize: 25 / PixelRatio.getFontScale(),
+                    bottom: 5
                   }
                 ]}
               />
-              {"\n"}Agency
-            </Text>
-          </Button>
-
-          <Button
-            dark
-            style={[
-              this.state.businessAccount.businesstype === "3"
-                ? styles.activebutton
-                : styles.button,
-              {
-                borderTopStartRadius: 0,
-                borderBottomStartRadius: 0,
-                borderBottomEndRadius: 15,
-                borderTopEndRadius: 15
-              }
-            ]}
-            onPress={() => {
-              this._handleBusinessCategories("3");
-            }}
-          >
-            <Icon
-              type="FontAwesome"
-              name="building"
-              style={[
-                this.state.businessAccount.businesstype === "3"
-                  ? styles.activetext
-                  : styles.inactivetext,
-                {
-                  fontSize: 25,
-                  bottom: 5
-                }
-              ]}
-            />
-            <Text
-              style={[
-                this.state.businessAccount.businesstype === "3"
-                  ? styles.activetext
-                  : styles.inactivetext
-              ]}
-            >
-              Corporate
-            </Text>
-          </Button>
-        </View>
-        <ScrollView style={[styles.mainCard]}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <View style={styles.container}>
-              <Item
-                floatingLabel
+              <Text
                 style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.inputN
-                      ? "#7039FF"
-                      : this.state.businessnameError || !this.props.successName
-                      ? "red"
-                      : "#D9D9D9"
-                  }
+                  this.state.businessAccount.businesstype === "3"
+                    ? styles.activetext
+                    : styles.inactivetext
                 ]}
               >
-                <Label
-                  style={[
-                    styles.inputtext,
-                    {
-                      flexDirection: "column",
-                      color: this.state.inputN ? "#FF9D00" : "#717171"
-                    }
-                  ]}
-                >
-                  <Icon
-                    style={{
-                      fontSize: 20,
-                      color: this.state.inputN ? "#FF9D00" : "#717171"
-                    }}
-                    name="person"
-                  />
-                  {"  "}
-                  {this.state.businessAccount.businesstype === "1"
-                    ? "Startup Name"
-                    : this.state.businessAccount.businesstype === "2"
-                    ? "Agency Name"
-                    : "Corporate Name"}
-                </Label>
-                <Input
-                  style={styles.inputtext}
-                  onChangeText={value => {
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        businessname: value
-                      }
-                    });
-                  }}
-                  onFocus={() => {
-                    this.setState({ inputN: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputN: false });
-                    this._verifyBusinessName(
-                      this.state.businessAccount.businessname
-                    );
-                  }}
-                />
-              </Item>
-
-              <Item
-                ref={r => {
-                  this._textInputRef = r;
-                }}
-                floatingLabel
-                style={[
-                  styles.input,
-                  {
-                    borderColor: this.state.inputBN ? "#7039FF" : "#D9D9D9"
-                  }
-                ]}
+                Corporate
+              </Text>
+            </Button>
+          </View>
+          <View style={[styles.mainCard]}>
+            <ScrollView>
+              <TouchableWithoutFeedback
+                onPress={Keyboard.dismiss}
+                accessible={false}
               >
-                <Label
-                  style={[
-                    styles.inputtext,
-                    {
-                      bottom: 5,
-                      flexDirection: "row",
-                      color: this.state.inputBN ? "#FF9D00" : "#717171"
-                    }
-                  ]}
-                >
-                  <Icon
-                    type="MaterialIcons"
-                    style={{
-                      fontSize: 20,
-                      color: this.state.inputBN ? "#FF9D00" : "#717171"
-                    }}
-                    name="label"
-                  />
-                  {"  "}
-                  {this.state.businessAccount.businesstype === "1"
-                    ? "Brand Name"
-                    : this.state.businessAccount.businesstype === "2"
-                    ? "Client Name"
-                    : "Brand Name"}{" "}
-                  (optional)
-                </Label>
-
-                <Input
-                  style={styles.inputtext}
-                  autoCorrect={false}
-                  onChangeText={value =>
-                    this.setState({
-                      businessAccount: {
-                        ...this.state.businessAccount,
-                        brandname: value
-                      }
-                    })
-                  }
-                  onFocus={() => {
-                    this.setState({ inputBN: true });
-                  }}
-                  onBlur={() => {
-                    this.setState({ inputBN: false });
-                  }}
-                />
-              </Item>
-
-              {!this.props.registering && (
-                <Item
-                  ref={r => {
-                    this._textInputRef = r;
-                  }}
-                  floatingLabel
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: this.state.inputE
-                        ? "#7039FF"
-                        : this.state.businessemailError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Label
+                <View style={styles.container}>
+                  <Item
+                    floatingLabel
                     style={[
-                      styles.inputtext,
+                      styles.input,
                       {
-                        bottom: 5,
-                        flexDirection: "row",
-                        color: this.state.inputE ? "#FF9D00" : "#717171"
+                        borderColor: this.state.inputN
+                          ? "#7039FF"
+                          : this.state.businessnameError ||
+                            !this.props.successName
+                          ? "red"
+                          : "#D9D9D9"
                       }
                     ]}
                   >
-                    <Icon
-                      style={{
-                        fontSize: 20,
-                        color: this.state.inputE ? "#FF9D00" : "#717171"
+                    <Label style={styles.label}>
+                      <Text
+                        style={[
+                          styles.inputtext,
+                          {
+                            flexDirection: "column",
+                            color: this.state.inputN ? "#FF9D00" : "#717171"
+                          }
+                        ]}
+                      >
+                        <Icon
+                          style={{
+                            fontSize: 14 / PixelRatio.getFontScale(),
+                            color: this.state.inputN ? "#FF9D00" : "#717171"
+                          }}
+                          name="person"
+                        />
+                        {"  "}
+                        {this.state.businessAccount.businesstype === "1"
+                          ? "Startup Name"
+                          : this.state.businessAccount.businesstype === "2"
+                          ? "Agency Name"
+                          : "Corporate Name"}
+                      </Text>
+                    </Label>
+                    <Input
+                      style={[styles.inputtext]}
+                      onChangeText={value => {
+                        this.setState({
+                          businessAccount: {
+                            ...this.state.businessAccount,
+                            businessname: value
+                          }
+                        });
                       }}
-                      name="mail"
+                      onFocus={() => {
+                        this.setState({ inputN: true });
+                      }}
+                      onBlur={() => {
+                        this.setState({ inputN: false });
+                        this._verifyBusinessName(
+                          this.state.businessAccount.businessname
+                        );
+                      }}
                     />
-                    {"  "}
-                    Email
-                  </Label>
+                  </Item>
 
-                  <Input
-                    style={styles.inputtext}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        businessAccount: {
-                          ...this.state.businessAccount,
-                          businessemail: value
-                        }
-                      })
-                    }
-                    onFocus={() => {
-                      this.setState({ inputE: true });
+                  <Item
+                    ref={r => {
+                      this._textInputRef = r;
                     }}
-                    onBlur={() => {
-                      this.setState({ inputE: false });
+                    floatingLabel
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: this.state.inputBN ? "#7039FF" : "#D9D9D9"
+                      }
+                    ]}
+                  >
+                    <Label style={styles.label}>
+                      <Text
+                        style={[
+                          styles.inputtext,
+                          {
+                            color: this.state.inputBN ? "#FF9D00" : "#717171"
+                          }
+                        ]}
+                      >
+                        <Icon
+                          type="MaterialIcons"
+                          style={{
+                            fontSize: 18 / PixelRatio.getFontScale(),
+                            alignSelf: "flex-end",
+                            color: this.state.inputBN ? "#FF9D00" : "#717171"
+                          }}
+                          name="label"
+                        />
+                        {"  "}
+                        {this.state.businessAccount.businesstype === "1"
+                          ? "Brand Name"
+                          : this.state.businessAccount.businesstype === "2"
+                          ? "Client Name"
+                          : "Brand Name"}{" "}
+                        (optional)
+                      </Text>
+                    </Label>
+
+                    <Input
+                      style={styles.inputtext}
+                      autoCorrect={false}
+                      onChangeText={value =>
+                        this.setState({
+                          businessAccount: {
+                            ...this.state.businessAccount,
+                            brandname: value
+                          }
+                        })
+                      }
+                      onFocus={() => {
+                        this.setState({ inputBN: true });
+                      }}
+                      onBlur={() => {
+                        this.setState({ inputBN: false });
+                      }}
+                    />
+                  </Item>
+
+                  {!this.props.registering && (
+                    <Item
+                      ref={r => {
+                        this._textInputRef = r;
+                      }}
+                      floatingLabel
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.inputE
+                            ? "#7039FF"
+                            : this.state.businessemailError
+                            ? "red"
+                            : "#D9D9D9"
+                        }
+                      ]}
+                    >
+                      <Label style={styles.label}>
+                        <Text
+                          style={[
+                            styles.inputtext,
+                            {
+                              bottom: 5,
+                              flexDirection: "row",
+                              color: this.state.inputE ? "#FF9D00" : "#717171"
+                            }
+                          ]}
+                        >
+                          <Icon
+                            style={{
+                              fontSize: 20 / PixelRatio.getFontScale(),
+                              color: this.state.inputE ? "#FF9D00" : "#717171"
+                            }}
+                            name="mail"
+                          />
+                          {"  "}
+                          Email
+                        </Text>
+                      </Label>
+
+                      <Input
+                        style={styles.inputtext}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={value =>
+                          this.setState({
+                            businessAccount: {
+                              ...this.state.businessAccount,
+                              businessemail: value
+                            }
+                          })
+                        }
+                        onFocus={() => {
+                          this.setState({ inputE: true });
+                        }}
+                        onBlur={() => {
+                          this.setState({ inputE: false });
+                          this.setState({
+                            businessemailError: validateWrapper(
+                              "email",
+                              this.state.businessAccount.businessemail
+                            )
+                          });
+                        }}
+                      />
+                    </Item>
+                  )}
+
+                  <RNPickerSelect
+                    items={this.state.countries}
+                    placeholder={{ label: "Select a country", value: "" }}
+                    onOpen={() => {
+                      this.setState({ inputC: true });
+                    }}
+                    onClose={() => {
+                      this.setState({ inputC: false });
                       this.setState({
-                        businessemailError: validateWrapper(
-                          "email",
-                          this.state.businessAccount.businessemail
+                        countryError: validateWrapper(
+                          "mandatory",
+                          this.state.businessAccount.country
                         )
                       });
                     }}
-                  />
-                </Item>
-              )}
-
-              <RNPickerSelect
-                items={this.state.countries}
-                placeholder={{ label: "Select a country", value: "" }}
-                onOpen={() => {
-                  this.setState({ inputC: true });
-                }}
-                onClose={() => {
-                  this.setState({ inputC: false });
-                  this.setState({
-                    countryError: validateWrapper(
-                      "mandatory",
-                      this.state.businessAccount.country
-                    )
-                  });
-                }}
-                onValueChange={value => {
-                  this.setState({
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      country: value
-                    }
-                  });
-                }}
-              >
-                <Item
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: this.state.inputC
-                        ? "#7039FF"
-                        : this.state.countryError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.inputtext,
-                      {
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        color: "rgb(113,113,113)"
-                      }
-                    ]}
-                  >
-                    {this.state.businessAccount.country === ""
-                      ? "Country"
-                      : this.state.businessAccount.country}
-                  </Text>
-                  <Icon
-                    type="AntDesign"
-                    name="down"
-                    style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                  />
-                </Item>
-              </RNPickerSelect>
-              <RNPickerSelect
-                items={this.state.items}
-                placeholder={{ label: "Select a business type", value: "" }}
-                onOpen={() => {
-                  this.setState({ inputT: true });
-                }}
-                onClose={() => {
-                  this.setState({ inputT: false });
-                  this.setState({
-                    businesscategoryError: validateWrapper(
-                      "mandatory",
-                      this.state.businessAccount.businesscategory
-                    )
-                  });
-                }}
-                onValueChange={value => {
-                  this.setState({
-                    businessAccount: {
-                      ...this.state.businessAccount,
-                      businesscategory: value
-                    }
-                  });
-                }}
-              >
-                <Item
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: this.state.inputT
-                        ? "#7039FF"
-                        : this.state.businesscategoryError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Text
-                    placeholder={
-                      this.state.businessAccount.businesscategory !== ""
-                        ? this.state.businessAccount.businesscategory
-                        : ""
-                    }
-                    style={[
-                      styles.inputtext,
-                      {
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        color: "rgb(113,113,113)"
-                      }
-                    ]}
-                  >
-                    {this.state.businessAccount.businesscategory === ""
-                      ? this.state.businessAccount.businesstype === "1"
-                        ? "Industry"
-                        : this.state.businessAccount.businesstype === "2"
-                        ? "Client Industry"
-                        : "Industry"
-                      : this.state.items.find(
-                          i =>
-                            i.value ===
-                            this.state.businessAccount.businesscategory
-                        ).label}
-                  </Text>
-                  <Icon
-                    type="AntDesign"
-                    name="down"
-                    style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
-                  />
-                </Item>
-              </RNPickerSelect>
-              {this.state.businessAccount.businesscategory === "43" && (
-                <Item
-                  ref={r => {
-                    this._textInputRef = r;
-                  }}
-                  floatingLabel
-                  style={[
-                    styles.input,
-                    {
-                      borderColor: this.state.inputBusinessCategoryOther
-                        ? "#7039FF"
-                        : this.state.businesscategoryOtherError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
-                  ]}
-                >
-                  <Label
-                    style={[
-                      styles.inputtext,
-                      {
-                        bottom: 5,
-                        flexDirection: "row",
-                        color: this.state.inputBusinessCategoryOther
-                          ? "#FF9D00"
-                          : this.state.businesscategoryOtherError
-                          ? "red"
-                          : "#717171"
-                      }
-                    ]}
-                  >
-                    {"Other Business Catergory"}
-                  </Label>
-
-                  <Input
-                    style={styles.inputtext}
-                    autoCorrect={false}
-                    onChangeText={value =>
+                    onValueChange={value => {
                       this.setState({
                         businessAccount: {
                           ...this.state.businessAccount,
-                          otherBusinessCategory: value
+                          country: value
                         }
-                      })
-                    }
-                    onFocus={() => {
-                      this.setState({ inputBusinessCategoryOther: true });
+                      });
                     }}
-                    onBlur={() => {
-                      this.setState({ inputBusinessCategoryOther: false });
+                  >
+                    <Item
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.inputC
+                            ? "#7039FF"
+                            : this.state.countryError
+                            ? "red"
+                            : "#D9D9D9"
+                        }
+                      ]}
+                    >
+                      <Text style={styles.pickertext}>
+                        {this.state.businessAccount.country === ""
+                          ? "Country"
+                          : this.state.businessAccount.country}
+                      </Text>
+                      <Icon
+                        type="AntDesign"
+                        name="down"
+                        style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                      />
+                    </Item>
+                  </RNPickerSelect>
+                  <RNPickerSelect
+                    items={this.state.items}
+                    placeholder={{
+                      label: "Select a business type",
+                      value: ""
                     }}
-                  />
-                </Item>
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-          {this.props.registering && (
-            <Text style={{ bottom: 10 }}>
-              <Text style={[styles.link, { lineHeight: 20 }]}>
-                {` By tapping the button below you agree to all the`}
-                <Text
-                  onPress={() => openPrivacy()}
-                  style={[
-                    styles.link,
-                    {
-                      textDecorationLine: "underline",
-                      color: "blue"
-                    }
-                  ]}
-                >
-                  {`  Terms & Conditions`}
-                </Text>{" "}
-                {`mentioned in this `}
-                <Text
-                  onPress={() => openPrivacy()}
-                  style={[
-                    styles.link,
-                    {
-                      textDecorationLine: "underline",
-                      color: "blue",
-                      zIndex: 10
-                    }
-                  ]}
-                >
-                  {`agreement`}
-                </Text>
-              </Text>
-            </Text>
-          )}
-        </ScrollView>
+                    onOpen={() => {
+                      this.setState({ inputT: true });
+                    }}
+                    onClose={() => {
+                      this.setState({ inputT: false });
+                      this.setState({
+                        businesscategoryError: validateWrapper(
+                          "mandatory",
+                          this.state.businessAccount.businesscategory
+                        )
+                      });
+                    }}
+                    onValueChange={value => {
+                      this.setState({
+                        businessAccount: {
+                          ...this.state.businessAccount,
+                          businesscategory: value
+                        }
+                      });
+                    }}
+                  >
+                    <Item
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.inputT
+                            ? "#7039FF"
+                            : this.state.businesscategoryError
+                            ? "red"
+                            : "#D9D9D9"
+                        }
+                      ]}
+                    >
+                      <Text
+                        placeholder={
+                          this.state.businessAccount.businesscategory !== ""
+                            ? this.state.businessAccount.businesscategory
+                            : ""
+                        }
+                        style={styles.pickertext}
+                      >
+                        {this.state.businessAccount.businesscategory === ""
+                          ? this.state.businessAccount.businesstype === "1"
+                            ? "Industry"
+                            : this.state.businessAccount.businesstype === "2"
+                            ? "Client Industry"
+                            : "Industry"
+                          : this.state.items.find(
+                              i =>
+                                i.value ===
+                                this.state.businessAccount.businesscategory
+                            ).label}
+                      </Text>
+                      <Icon
+                        type="AntDesign"
+                        name="down"
+                        style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                      />
+                    </Item>
+                  </RNPickerSelect>
+                  {this.state.businessAccount.businesscategory === "43" && (
+                    <Item
+                      ref={r => {
+                        this._textInputRef = r;
+                      }}
+                      floatingLabel
+                      style={[
+                        styles.input,
+                        {
+                          borderColor: this.state.inputBusinessCategoryOther
+                            ? "#7039FF"
+                            : this.state.businesscategoryOtherError
+                            ? "red"
+                            : "#D9D9D9"
+                        }
+                      ]}
+                    >
+                      <Label
+                        style={[
+                          styles.inputtext,
+                          {
+                            bottom: 5,
+                            flexDirection: "row",
+                            color: this.state.inputBusinessCategoryOther
+                              ? "#FF9D00"
+                              : this.state.businesscategoryOtherError
+                              ? "red"
+                              : "#717171"
+                          }
+                        ]}
+                      >
+                        {"Other Business Catergory"}
+                      </Label>
 
-        <View style={{ backgroundColor: "#fff" }}>
-          <Button
-            block
-            dark
-            style={[styles.bottomCard, { justifyContent: "center" }]}
-            onPress={() => {
-              this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttontext}>CREATE NEW BUSINESS</Text>
-          </Button>
-        </View>
-      </Container>
+                      <Input
+                        style={styles.inputtext}
+                        autoCorrect={false}
+                        onChangeText={value =>
+                          this.setState({
+                            businessAccount: {
+                              ...this.state.businessAccount,
+                              otherBusinessCategory: value
+                            }
+                          })
+                        }
+                        onFocus={() => {
+                          this.setState({
+                            inputBusinessCategoryOther: true
+                          });
+                        }}
+                        onBlur={() => {
+                          this.setState({
+                            inputBusinessCategoryOther: false
+                          });
+                        }}
+                      />
+                    </Item>
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
+              {this.props.registering && (
+                <Text style={{ bottom: 10 }}>
+                  <Text style={[styles.link, { lineHeight: 20 }]}>
+                    {` By tapping the button below you agree to all the`}
+                    <Text
+                      onPress={() => openPrivacy()}
+                      style={[
+                        styles.link,
+                        {
+                          textDecorationLine: "underline",
+                          color: "blue"
+                        }
+                      ]}
+                    >
+                      {`  Terms & Conditions`}
+                    </Text>{" "}
+                    {`mentioned in this `}
+                    <Text
+                      onPress={() => openPrivacy()}
+                      style={[
+                        styles.link,
+                        {
+                          textDecorationLine: "underline",
+                          color: "blue",
+                          zIndex: 10
+                        }
+                      ]}
+                    >
+                      {`agreement`}
+                    </Text>
+                  </Text>
+                </Text>
+              )}
+            </ScrollView>
+          </View>
+          <View style={{ backgroundColor: "#fff" }}>
+            <Button
+              block
+              dark
+              style={[styles.bottomCard, { justifyContent: "center" }]}
+              onPress={() => {
+                this._handleSubmission();
+              }}
+            >
+              <Text style={styles.buttontext}>CREATE NEW BUSINESS</Text>
+            </Button>
+          </View>
+        </Container>
+      </SafeAreaView>
     );
   }
 }
