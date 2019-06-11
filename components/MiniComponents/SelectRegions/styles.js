@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     //   marginTop: 10,
     //   alignItems: "center",
     display: "flex",
-    width: "100%"
+    width: "100%",
+    marginTop: 20
   },
   regionListContainer: {
     height: 250
@@ -47,50 +48,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: 150,
     paddingTop: 20,
-    alignSelf: "center"
-  },
-  textCon: {
-    width: 320,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    textAlign: "center"
-  },
-
-  colorGrey: {
-    color: "#fff"
-  },
-  colorYellow: {
-    color: "#FF9D00",
-    fontSize: 27,
-    fontFamily: "montserrat-medium"
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
     alignSelf: "center",
-    textAlign: "center"
+    paddingBottom: 20
   },
   slidercontainer: { marginHorizontal: 40 },
-  input: {
-    marginBottom: 15,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 300,
-    height: 50
-  },
-
-  indicator: {
-    fontSize: 30,
-    marginRight: 20,
-    color: "#fff"
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
   button: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
@@ -115,13 +76,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: globalColors.orange
   },
-  subHeadings: {
-    textAlign: "center",
+  searchRegionText: {
+    fontFamily: "montserrat-regular",
     color: "#fff",
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingVertical: 10
-  }
+    fontSize: 14
+  },
+  regionTextContainer: {
+    paddingVertical: 20,
+    flexDirection: "row"
+  },
+  locationIcon: { alignSelf: "center" }
 });
 
 export default styles;

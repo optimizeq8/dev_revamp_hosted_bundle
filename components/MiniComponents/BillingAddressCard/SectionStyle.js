@@ -1,10 +1,19 @@
+import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../Global Styles";
 
-export default (sectionStyle = {
+export const colors = {
+  subItemBackground: "transparent",
+  itemBackground: "transparent",
+  chipColor: "#fff",
+  primary: "#FF9D00",
+  searchPlaceholderTextColor: "#fff",
+  searchSelectionColor: "#fff"
+};
+export default (sectionStyle = StyleSheet.create({
   container: {
     paddingTop: "20%",
     marginVertical: -"100%",
@@ -45,13 +54,5 @@ export default (sectionStyle = {
     height: 50,
     alignSelf: "center"
   },
-  confirmText: { color: "#fff" },
-  colors: {
-    subItemBackground: "transparent",
-    itemBackground: "transparent",
-    chipColor: "#fff",
-    primary: "#FF9D00",
-    searchPlaceholderTextColor: "#fff",
-    searchSelectionColor: "#fff"
-  }
-});
+  confirmText: { color: "#fff" }
+}));
