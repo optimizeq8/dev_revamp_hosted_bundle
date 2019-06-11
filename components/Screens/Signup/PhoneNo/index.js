@@ -203,7 +203,7 @@ class PhoneNo extends Component {
         <View
           style={{
             flex: !this.props.invite ? 1 : 0,
-            justifyContent: "space-between"
+            justifyContent: "space-around"
           }}
         >
           <View

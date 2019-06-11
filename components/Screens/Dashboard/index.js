@@ -21,6 +21,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import isNull from "lodash/isNull";
+
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
@@ -196,7 +198,6 @@ class Dashboard extends Component {
       />
     ) : null;
     if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
-
       return (
         <>
           <LoadingScreen dash={true} top={0} />
