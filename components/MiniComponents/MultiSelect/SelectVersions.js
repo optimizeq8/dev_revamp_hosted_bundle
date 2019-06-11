@@ -16,7 +16,7 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 import BackButton from "../../MiniComponents/BackButton";
 
 //Styles
-import SectionStyle from "./SectionStyle";
+import SectionStyle, { colors } from "./SectionStyle";
 import CustomChips2 from "./CustomChips2";
 import styles from "../../Screens/CampaignCreate/AdDetails/styles";
 import styles1 from "./styles";
@@ -93,7 +93,7 @@ class SelectVersions extends Component {
     return (
       <SafeAreaView style={styles1.safeAreaContainer}>
         <View style={styles1.container}>
-          <View style={[styles1.dataContainer, { marginTop: 30 }]}>
+          <View style={[styles1.dataContainer]}>
             <Icon
               name="versions"
               type="Octicons"
@@ -181,7 +181,7 @@ class SelectVersions extends Component {
                       />
                     </View>
                   }
-                  colors={SectionStyle.colors}
+                  colors={colors}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

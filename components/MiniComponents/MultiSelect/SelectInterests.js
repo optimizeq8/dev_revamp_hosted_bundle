@@ -18,7 +18,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //styles
 import styles from "./styles";
-import SectionStyle from "./SectionStyle";
+import SectionStyle, { colors } from "./SectionStyle";
 import LoadingScreen from "../LoadingScreen";
 import capitalize from "lodash/capitalize";
 
@@ -67,7 +67,7 @@ class SelectInterests extends Component {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>
-          <View style={[styles.dataContainer, { marginTop: 30 }]}>
+          <View style={[styles.dataContainer]}>
             <InterestsIcon width={100} height={100} fill="#fff" />
             <Text style={[styles.title]}> Select Interests</Text>
             <Text style={[styles.subHeadings]}>
@@ -135,7 +135,7 @@ class SelectInterests extends Component {
                       />
                     </View>
                   }
-                  colors={SectionStyle.colors}
+                  colors={colors}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

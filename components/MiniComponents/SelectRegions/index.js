@@ -16,10 +16,7 @@ export default class SelectRegions extends Component {
       return (
         <TouchableOpacity
           key={c.id}
-          style={{
-            paddingVertical: 20,
-            flexDirection: "row"
-          }}
+          style={styles.regionTextContainer}
           onPress={() => {
             this.props.onSelectedRegionChange(
               this.props.addressForm ? c : c.id,
@@ -48,15 +45,14 @@ export default class SelectRegions extends Component {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>
-          <View style={[styles.dataContainer, { marginTop: 20 }]}>
+          <View style={[styles.dataContainer]}>
             <LocationIcon
               width={110}
               height={110}
               fill="#fff"
-              style={{ alignSelf: "center" }}
+              style={styles.locationIcon}
             />
-            <Text style={[styles.title, { paddingBottom: 20 }]}>
-              {" "}
+            <Text style={[styles.title]}>
               {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
             </Text>
 
@@ -64,11 +60,7 @@ export default class SelectRegions extends Component {
               <Item>
                 <Input
                   placeholder="Search Region..."
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
-                    fontSize: 14
-                  }}
+                  style={styles.searchRegionText}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredR = this.props.regions.filter(c =>

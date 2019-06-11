@@ -10,7 +10,7 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
-import SectionStyle from "./SectionStyle";
+import SectionStyle, { colors } from "./SectionStyle";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class RegionAndAreas extends Component {
@@ -82,7 +82,7 @@ export default class RegionAndAreas extends Component {
             subKey="areas"
             styles={SectionStyle}
             confirmText={"\u2714"}
-            colors={SectionStyle.colors}
+            colors={colors}
             searchIconComponent={
               <Icon
                 type="MaterialCommunityIcons"
