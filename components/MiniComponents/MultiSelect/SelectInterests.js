@@ -2,8 +2,8 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import MultiSelect from "react-native-multiple-select";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
+import { View, ScrollView, SafeAreaView } from "react-native";
+import { Button, Text, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
 import {
   widthPercentageToDP as wp,
@@ -63,6 +63,9 @@ class SelectInterests extends Component {
       this.props.get_interests(this.props.country_code);
     }
   }
+  handleSideMenu = () => {
+    this.props._handleSideMenuState(false);
+  };
   render() {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
@@ -185,10 +188,7 @@ class SelectInterests extends Component {
             </View>
           </View>
 
-          <Button
-            style={[styles.button]}
-            onPress={() => this.props._handleSideMenuState(false)}
-          >
+          <Button style={[styles.button]} onPress={this.handleSideMenu}>
             <CheckmarkIcon width={53} height={53} />
           </Button>
         </View>

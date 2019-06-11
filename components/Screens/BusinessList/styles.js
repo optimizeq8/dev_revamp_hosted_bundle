@@ -10,7 +10,11 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
+  switchAccountText: {
+    marginTop: 5,
+    marginBottom: 20,
+    paddingBottom: 10
+  },
   title: {
     fontFamily: "montserrat-medium",
     color: "#C6C6C6",
@@ -22,17 +26,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF",
     zIndex: 10
-  },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
   },
   mainCard: {
     borderTopStartRadius: 30,
@@ -56,39 +49,6 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14
   },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
-  },
-  link: {
-    marginTop: 20,
-    textAlign: "center",
-    color: "#5F5F5F",
-    fontFamily: "montserrat-regular",
-    fontSize: 20
-  },
   bottomCard: {
     backgroundColor: "#FF9D00",
     shadowColor: "#6C6C6C",
@@ -100,25 +60,11 @@ const styles = StyleSheet.create({
     height: hp("14"),
     // position: "absolute",
     bottom: hp("17"),
-    width: "100%"
+    width: "100%",
+    justifyContent: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
-  },
-
-  textcontainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    paddingHorizontal: 7
-  },
-  titletext: {
-    textAlign: "left",
-    color: "#fff",
-    paddingTop: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    paddingVertical: 0
   },
   subtext: {
     fontFamily: "montserrat-medium",
@@ -126,27 +72,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     alignSelf: "center",
     color: "#fff"
-  },
-  campaignButton: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    backgroundColor: "#FF9D00",
-    padding: 10,
-    marginBottom: 20,
-    bottom: 15
-  },
-  icon: {
-    alignSelf: "center",
-    color: "#fff",
-    fontSize: 40,
-    paddingVertical: 10,
-    paddingHorizontal: 7
   },
   contentContainer: {
     // paddingTop: 30,
