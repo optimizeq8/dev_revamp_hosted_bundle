@@ -145,12 +145,12 @@ class AddressForm extends Component {
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaContainer}
         forceInset={{ bottom: "never" }}
       >
         <Container style={styles.container}>
           {!this.state.sidemenustate && (
-            <View style={{ marginBottom: 10 }}>
+            <View style={styles.headerBlock}>
               <Header
                 title={"Billing Address"}
                 navigation={this.props.navigation}
@@ -164,16 +164,13 @@ class AddressForm extends Component {
               <Text style={styles.title}>Billing Address</Text> */}
               <Address
                 fill="#fff"
-                style={{
-                  alignSelf: "center",
-                  marginTop: 20
-                }}
+                style={styles.addressIcon}
                 width={55}
                 height={55}
               />
             </View>
           )}
-          <View style={{ display: "flex", flex: 3 }}>
+          <View style={styles.dataContainer}>
             {/* TODO: When user selects CC display this */}
             {this.state.from === "creditCard" &&
             !isUndefined(this.state.addressId) &&

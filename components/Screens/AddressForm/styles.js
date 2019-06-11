@@ -10,8 +10,23 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  headerBlock: {
+    marginBottom: 10
+  },
   container: {
     backgroundColor: "#0000"
+  },
+  dataContainer: {
+    display: "flex",
+    flex: 3
+  },
+  addressIcon: {
+    alignSelf: "center",
+    marginTop: 20
   },
   title: {
     fontSize: widthPercentageToDP(5),
