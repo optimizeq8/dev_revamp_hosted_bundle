@@ -24,6 +24,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -107,128 +108,148 @@ class PhoneNo extends Component {
       </View>
     );
   };
-
+  phoneInputRender = () => (
+    <Item
+      rounded
+      style={[
+        styles.phoneInput,
+        {
+          backgroundColor: this.props.invite
+            ? "rgba(0, 0, 0, 0.5)"
+            : "transparent"
+        }
+      ]}
+    >
+      <TouchableOpacity
+        style={{
+          width: 60,
+          height: 30,
+          position: "absolute",
+          borderWidth: 0.3,
+          borderColor: "transparent",
+          borderRadius: 5,
+          left: 4,
+          zIndex: 5
+        }}
+        onPress={this.onPressFlag}
+      />
+      <Icon
+        name="arrow-drop-down"
+        type="MaterialIcons"
+        style={{
+          color: this.props.invite ? "#fff" : "#000",
+          marginRight: -30,
+          left: -5
+        }}
+      />
+      <PhoneInput
+        style={{ width: widthPercentageToDP(70) }}
+        textStyle={{
+          ...styles.input,
+          color: this.props.invite ? "#fff" : "#000",
+          borderBottomColor: this.props.invite
+            ? "#0000"
+            : this.state.valid
+            ? "#5F5F5F"
+            : "red",
+          left: "3%"
+        }}
+        flagStyle={{
+          left: 14,
+          zIndex: 5
+        }}
+        textProps={{
+          autoFocus: false,
+          maxLength: 14,
+          onBlur: () => {
+            if (!this.phone.isValidNumber()) {
+              showMessage({
+                message: "Please enter a valid number!",
+                type: "warning",
+                position: "top"
+              });
+            }
+            if (this.props.invite) {
+              this.props._getMobile({
+                country_code: this.phone.getCountryCode(),
+                mobile: this.state.value,
+                valid: this.phone.isValidNumber()
+              });
+            }
+          }
+        }}
+        ref={ref => {
+          this.phone = ref;
+        }}
+        onChangePhoneNumber={number => {
+          //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
+          if (number.toString().length > 3 && this.phone.isValidNumber()) {
+            this.setState({
+              value: number.split(this.phone.getCountryCode())[1]
+            });
+          }
+        }}
+        onPressFlag={this.onPressFlag}
+        initialCountry="kw"
+        countriesList={require("./countries.json")}
+        value="+965"
+        offset={10}
+      />
+    </Item>
+  );
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={[styles.container]}>
-          {!this.props.invite && (
-            <Text style={styles.text}>
-              Please enter your {"\n"}
-              Mobile Number
-            </Text>
-          )}
-          <Item
-            rounded
-            style={[
-              styles.phoneInput,
-              {
-                backgroundColor: this.props.invite
-                  ? "rgba(0, 0, 0, 0.5)"
-                  : "transparent"
-              }
-            ]}
+        <View
+          style={{
+            flex: !this.props.invite ? 1 : 0,
+            justifyContent: "space-around"
+          }}
+        >
+          <View
+            style={[styles.container, { flex: !this.props.invite ? 1 : 0 }]}
           >
-            <TouchableOpacity
-              style={{
-                width: 60,
-                height: 30,
-                position: "absolute",
-                borderWidth: 0.3,
-                borderColor: "transparent",
-                borderRadius: 5,
-                left: 4,
-                zIndex: 5
-              }}
-              onPress={this.onPressFlag}
-            />
-            <Icon
-              name="arrow-drop-down"
-              type="MaterialIcons"
-              style={{
-                color: this.props.invite ? "#fff" : "#000",
-                marginRight: -30,
-                left: -5
-              }}
-            />
-            <PhoneInput
-              style={{ width: widthPercentageToDP(70) }}
-              textStyle={{
-                ...styles.input,
-                color: this.props.invite ? "#fff" : "#000",
-                borderBottomColor: this.props.invite
-                  ? "#0000"
-                  : this.state.valid
-                  ? "#5F5F5F"
-                  : "red",
-                left: "3%"
-              }}
-              flagStyle={{
-                left: 14,
-                zIndex: 5
-              }}
-              textProps={{
-                autoFocus: false,
-                maxLength: 14,
-                onBlur: () => {
-                  if (!this.phone.isValidNumber()) {
-                    showMessage({
-                      message: "Please enter a valid number!",
-                      type: "warning",
-                      position: "top"
-                    });
-                  }
-                  if (this.props.invite) {
-                    this.props._getMobile({
-                      country_code: this.phone.getCountryCode(),
-                      mobile: this.state.value,
-                      valid: this.phone.isValidNumber()
-                    });
-                  }
-                }
-              }}
+            {!this.props.invite && (
+              <Text style={styles.text}>
+                Please enter your {"\n"}
+                Mobile Number
+              </Text>
+            )}
+            {!this.props.invite && (
+              <KeyboardShift
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                {() => this.phoneInputRender()}
+              </KeyboardShift>
+            )}
+            {this.props.invite && this.phoneInputRender()}
+            <CountryModal
               ref={ref => {
-                this.phone = ref;
+                this.myCountryPicker = ref;
               }}
-              onChangePhoneNumber={number => {
-                //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
-                if (
-                  number.toString().length > 3 &&
-                  this.phone.isValidNumber()
-                ) {
-                  this.setState({
-                    value: number.split(this.phone.getCountryCode())[1]
-                  });
-                }
+              optionTextStyle={{ alignSelf: "flex-start" }}
+              data={this.state.pickerData}
+              onChange={country => {
+                this.selectCountry(country);
               }}
-              onPressFlag={this.onPressFlag}
-              initialCountry="kw"
-              countriesList={require("./countries.json")}
-              value="+965"
-              offset={10}
+              cancelText="Cancel"
             />
-          </Item>
-          <CountryModal
-            ref={ref => {
-              this.myCountryPicker = ref;
-            }}
-            optionTextStyle={{ alignSelf: "flex-start" }}
-            data={this.state.pickerData}
-            onChange={country => {
-              this.selectCountry(country);
-            }}
-            cancelText="Cancel"
-          />
-          {this.renderInfo()}
+            {this.renderInfo()}
+
+            {/* <Button onPress={this.updateInfo} style={styles.button}>
+            <Icon style={styles.icon} name="arrow-forward" />
+          </Button> */}
+          </View>
           {!this.props.invite && (
             <LowerButton
               function={() => this._handleSubmission()}
-              bottom={heightPercentageToDP(0.1)}
+              bottom={heightPercentageToDP(0.2)}
             />
           )}
-          {/* <Button onPress={this.updateInfo} style={styles.button}>
-            <Icon style={styles.icon} name="arrow-forward" />
-          </Button> */}
         </View>
       </TouchableWithoutFeedback>
     );

@@ -1,9 +1,10 @@
+import { StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
-export default (sectionStyle = {
+export default StyleSheet.create({
   selectToggle: {
     marginBottom: 30,
     borderBottomWidth: 0.5,

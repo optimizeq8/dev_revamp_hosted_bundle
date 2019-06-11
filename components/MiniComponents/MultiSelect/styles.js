@@ -16,7 +16,8 @@ export default (sectionStyle = {
   },
   dataContainer: {
     alignItems: "center",
-    width: "100%"
+    width: "100%",
+    marginTop: 30
   },
   title: {
     textAlign: "center",
@@ -93,6 +94,15 @@ export default (sectionStyle = {
     paddingTop: 10
   },
   countryScrollContainer: {
-    height: 300
+    height: 250
+  },
+  searchInputText: {
+    fontFamily: "montserrat-regular",
+    color: "#fff",
+    fontSize: 14
+  },
+  selectTextContainer: {
+    paddingVertical: 20,
+    flexDirection: "row"
   }
 });

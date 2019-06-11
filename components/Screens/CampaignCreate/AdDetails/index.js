@@ -19,6 +19,7 @@ import {
   Body
 } from "native-base";
 import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
 import { LinearGradient, Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
@@ -907,9 +908,10 @@ class AdDetails extends Component {
                               ? this.state.campaignInfo.lifetime_budget_micro
                               : 1500
                           }
-                          onValueChange={val =>
-                            this.onSelectedBudgetChange(val)
-                          }
+                          onValueChange={debounce(
+                            this.onSelectedBudgetChange,
+                            60
+                          )}
                           maximumTrackTintColor="#fff"
                           minimumTrackTintColor="#751AFF"
                         />

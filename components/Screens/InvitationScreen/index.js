@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { Button, Text, Container, Footer, Content } from "native-base";
 import { LinearGradient } from "expo";
 import Verification from "../Signup/Verification";
 import Signin from "../Signin/";
@@ -25,6 +25,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import GetInviteCode from "../GetInviteCode";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 export default class Invitation extends Component {
   static navigationOptions = {
@@ -57,7 +58,7 @@ export default class Invitation extends Component {
   toggleComps = () => {
     this.setState({
       renderInviteCode: !this.state.renderInviteCode,
-      animationActive: true
+      animationActive: !this.state.animationActive
     });
   };
   render() {
@@ -103,56 +104,84 @@ export default class Invitation extends Component {
               accessible={false}
             >
               <View style={[styles.mainCard]}>
-                <Logo
-                  style={styles.logo}
-                  width={heightPercentageToDP(20)}
-                  height={heightPercentageToDP(20)}
-                />
-                <Text style={styles.logotext}>Optimize</Text>
-
-                <Animatable.View
-                  animation={
-                    this.state.animationActive
-                      ? this.state.renderInviteCode
-                        ? "fadeInLeftBig"
-                        : "fadeOutLeftBig"
-                      : ""
-                  }
-                  style={{
-                    position: "absolute",
-                    height: "45%",
-                    alignSelf: "center",
-                    top: "20%"
+                <View>
+                  <Logo
+                    style={styles.logo}
+                    width={heightPercentageToDP(15)}
+                    height={heightPercentageToDP(15)}
+                  />
+                  <Text style={styles.logotext}>Optimize</Text>
+                </View>
+                <Content
+                  scrollEnabled={false}
+                  contentContainerStyle={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%"
                   }}
                 >
-                  <Verification invite={true} />
-                </Animatable.View>
-
-                {this.state.animationActive && (
-                  <Animatable.View
+                  {/* <Animatable.View
                     animation={
                       this.state.animationActive
                         ? this.state.renderInviteCode
-                          ? "fadeOutRightBig"
-                          : "fadeInRightBig"
+                          ? "fadeInLeftBig"
+                          : "fadeOutLeftBig"
                         : ""
                     }
-                    style={{ height: "45%", bottom: "5%" }}
+                    style={{
+                      //   position: "absolute",
+                      height: "45%",
+                      alignSelf: "center",
+                      flex: 1
+                      //   top: "10%"
+                    }}
                   >
-                    <GetInviteCode toggleComps={this.toggleComps} />
-                  </Animatable.View>
-                )}
-                {this.state.renderInviteCode && (
-                  <Text
-                    style={[styles.link]}
-                    onPress={() => this.toggleComps()}
-                  >
-                    Get an invitation code now!
-                  </Text>
-                )}
+                    {this.state.renderInviteCode && (
+                      <Verification
+                        invite={true}
+                        renderInviteCode={this.state.renderInviteCode}
+                        toggleComps={this.toggleComps}
+                      />
+                    )}
+                  </Animatable.View> */}
 
-                <View style={styles.registered}>
-                  <Text style={[styles.registeredText, { bottom: 5 }]}>
+                  {/* {this.state.animationActive && ( */}
+                  <Animatable.View
+                    animation={
+                      !this.state.animationActive && this.state.renderInviteCode
+                        ? "fadeInLeftBig"
+                        : "fadeInRightBig"
+                    }
+                    style={{
+                      height: "45%",
+                      flex: 1
+                      //  bottom: "5%"
+                    }}
+                  >
+                    {!this.state.animationActive &&
+                    this.state.renderInviteCode ? (
+                      <Verification
+                        invite={true}
+                        renderInviteCode={this.state.renderInviteCode}
+                        toggleComps={this.toggleComps}
+                      />
+                    ) : (
+                      <GetInviteCode toggleComps={this.toggleComps} />
+                    )}
+                  </Animatable.View>
+                  {/* )} */}
+                  {/* {this.state.renderInviteCode && (
+                    <Text
+                      style={[styles.link]}
+                      onPress={() => this.toggleComps()}
+                    >
+                      Get an invitation code now!
+                    </Text>
+                  )} */}
+                </Content>
+                <Footer style={styles.registered}>
+                  <Text style={[styles.registeredText]}>
                     Already registered?
                   </Text>
                   <Button
@@ -173,7 +202,7 @@ export default class Invitation extends Component {
                       Log In!
                     </Text>
                   </Button>
-                </View>
+                </Footer>
               </View>
             </TouchableWithoutFeedback>
           </Container>

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF"
+    backgroundColor: newFunction()
   },
   image: {
     alignSelf: "center",
@@ -21,16 +21,19 @@ const styles = StyleSheet.create({
     margin: 15
   },
   mainCard: {
-    bottom: 15,
+    // bottom: 15,
     shadowColor: "#595959",
     shadowRadius: 1,
     shadowOpacity: 0.7,
     shadowOffset: { width: 8, height: 8 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: heightPercentageToDP(90),
+    flex: 1,
+    // height: heightPercentageToDP(90),
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    marginTop: 0,
+    marginBottom: 0
   },
   text: {
     textAlign: "center",
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: "3%",
+    // top: "3%",
     backgroundColor: "#5F5F5F",
     paddingHorizontal: 50,
     borderRadius: 15,
@@ -130,3 +133,6 @@ export const htmlStyles = {
   }
 };
 export default styles;
+function newFunction() {
+  return "#751AFF";
+}

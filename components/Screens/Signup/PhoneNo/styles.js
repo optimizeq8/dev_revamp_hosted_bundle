@@ -33,16 +33,16 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "transparent",
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
-    padding: 20,
-    paddingTop: 40,
+    // padding: 20,
+    // paddingTop: 20,
     justifyContent: "space-around"
   },
   info: {
     borderRadius: 5,
     padding: 10,
-    marginTop: 20
+    marginBottom: 20
   },
   mainCard: {
     top: 15,
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     color: "#717171",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    marginBottom: 60
+    marginTop: 20
+    // marginBottom: 60
   },
   input: {
     fontFamily: "montserrat-light",

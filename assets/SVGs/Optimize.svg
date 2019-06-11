@@ -1,8 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="250px" height="250px" viewBox="0 0 318 320">  
 
-<svg xmlns="http://www.w3.org/2000/svg" width="317.012" height="416.188" viewBox="0 0 317.012 416.188" >
-  <g id="Group_11" data-name="Group 11" transform="translate(7.5 7.5)">
-    <ellipse id="Ellipse_13" data-name="Ellipse 13" cx="151.006" cy="151.005" rx="151.006" ry="151.005" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="15"/>
-    <path id="Path_7" data-name="Path 7" d="M976.127,541.035l66.592-74.3,40.674,39.547,37.5-43.409-16.971-18.738,58.715-9.683-9.505,62.3-17.713-18.675-51.139,59.286-44.227-41.991Z" transform="translate(-929.108 -334.956)" fill="#fff"/>
-  </g>
-
-</svg>
+<g class="currentLayer" style=""><title>Layer 1</title><g id="Group_11" data-name="Group 11" class="">
+    <ellipse id="Ellipse_13" data-name="Ellipse 13" cx="159.24775505065918" cy="159.79621410369873" rx="151.00599670410156" ry="151.0050048828125" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="15"/>
+    <path id="Path_7" data-name="Path 7" d="M55.26078715515132,214.87021556854245 l66.592,-74.3 l40.674,39.547 l37.5,-43.409 l-16.971,-18.738 l58.715,-9.683 l-9.505,62.3 l-17.713,-18.675 l-51.139,59.286 l-44.227,-41.991 z" fill="#fff"/>
+  </g></g></svg>

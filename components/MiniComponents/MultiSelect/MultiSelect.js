@@ -1,7 +1,5 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import MultiSelect from "react-native-multiple-select";
-import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import {
   View,
   ScrollView,
@@ -10,12 +8,9 @@ import {
   PixelRatio
 } from "react-native";
 
+
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import CustomChips from "./CustomChips";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
@@ -28,9 +23,7 @@ import InterestsIcon from "../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //styles
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import styles1 from "./styles";
-import SectionStyle from "./SectionStyle";
+import styles from "./styles";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -110,9 +103,7 @@ class MultiSelectList extends Component {
     let countrylist = this.state.filteredCountreis.map(c => (
       <TouchableOpacity
         key={c.value}
-        style={{
-          paddingVertical: 20
-        }}
+        style={styles.selectTextContainer}
         onPress={() => {
           this.props.onSelectedCountryChange(
             !this.props.addressForm ? c.value : c,
@@ -133,21 +124,20 @@ class MultiSelectList extends Component {
       </TouchableOpacity>
     ));
     return (
-      <SafeAreaView style={styles1.safeAreaContainer}>
-        <View style={styles1.container}>
-          <View style={[styles1.dataContainer, { marginTop: 30 }]}>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <View style={[styles.dataContainer]}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles1.title]}> Select Country </Text>
+            <Text style={[styles.title]}> Select Country </Text>
 
-            <View style={styles1.slidercontainer}>
+            <View style={styles.slidercontainer}>
               <Item>
                 <Input
                   placeholder="Search Country..."
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
+                  style={[styles.searchInputText,{
                     fontSize: 14 / PixelRatio.getFontScale()
-                  }}
+                  }]}
+
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>
@@ -158,14 +148,14 @@ class MultiSelectList extends Component {
                 />
               </Item>
 
-              <ScrollView style={styles1.countryScrollContainer}>
+              <ScrollView style={styles.countryScrollContainer}>
                 {countrylist}
               </ScrollView>
             </View>
           </View>
 
           <Button
-            style={[styles1.button]}
+            style={[styles.button]}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />

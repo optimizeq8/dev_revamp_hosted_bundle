@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
-    paddingTop: heightPercentageToDP(10),
+    // paddingTop: heightPercentageToDP(10),
     flex: 1
   },
   logotext: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium",
-    bottom: "5%"
+    fontFamily: "montserrat-medium"
+    // bottom: "5%"
   },
   content: {
     flexDirection: "row",
@@ -46,15 +46,26 @@ const styles = StyleSheet.create({
   },
 
   registered: {
-    position: "absolute",
-    bottom: "5%",
-    alignSelf: "center"
+    // position: "absolute",
+    // bottom: "5%",
+    alignSelf: "center",
+    // flex: 1,
+    backgroundColor: "#0000",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    borderTopColor: "#0000",
+    width: "100%",
+    marginBottom: 15,
+    elevation: 0
   },
   registeredText: {
     fontSize: 12,
     fontFamily: "montserrat-regular",
     textAlign: "center",
-    color: "#fff"
+    color: "#fff",
+    marginBottom: 10
   },
 
   bottomView: {
@@ -70,9 +81,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logo: {
-    position: "relative",
-    alignSelf: "center",
-    top: heightPercentageToDP(0.25)
+    // position: "relative",
+    alignSelf: "center"
+    // top: heightPercentageToDP(0.25)
     // marginBottom: "40%"
   },
   background: {
@@ -87,11 +98,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    position: "absolute",
+    // position: "absolute",
     paddingVertical: 20,
     textDecorationLine: "underline",
-    alignSelf: "center",
-    top: "65%"
+    alignSelf: "center"
+    // top: "65%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

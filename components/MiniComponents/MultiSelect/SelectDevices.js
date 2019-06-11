@@ -16,7 +16,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 
 //Styles
-import SectionStyle from "./SectionStyle";
+import SectionStyle, { colors } from "./SectionStyle";
 import CustomChips2 from "./CustomChips2";
 import styles from "./styles";
 import { globalColors } from "../../../Global Styles";
@@ -45,7 +45,7 @@ class SelectDevices extends Component {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>
-          <View style={[styles.dataContainer, { marginTop: 30 }]}>
+          <View style={[styles.dataContainer]}>
             <Icon
               name="cellphone-settings"
               type="MaterialCommunityIcons"
@@ -126,7 +126,7 @@ class SelectDevices extends Component {
                       />
                     </View>
                   }
-                  colors={SectionStyle.colors}
+                  colors={colors}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

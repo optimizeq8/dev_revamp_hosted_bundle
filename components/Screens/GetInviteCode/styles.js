@@ -12,12 +12,13 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   title: {
-    position: "relative",
+    // position: "relative",
     marginBottom: 30,
     fontSize: 22,
     color: "#fff",
     textAlign: "center",
-    top: "20%",
+    // top: "20%",
+    marginTop: 20,
     alignSelf: "center",
     fontFamily: "montserrat-medium"
   },
@@ -31,7 +32,10 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "transparent",
-    flex: 1
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+    // paddingTop: 50
   },
   content: {
     flexDirection: "row",
@@ -39,13 +43,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   mainCard: {
-    borderColor: "transparent",
-    flex: 1
+    borderColor: "transparent"
+    // flex: 1
   },
 
   input: {
-    top: "10%",
-    position: "relative",
+    // top: "10%",
+    marginTop: 10,
+    // position: "relative",
     marginBottom: 20,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 15,
@@ -63,8 +68,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: widthPercentageToDP(20)
   },
   button: {
-    position: "relative",
-    top: "10%",
+    // position: "relative",
+    // top: "10%",
+    marginTop: 0,
     shadowColor: "#6C6C6C",
     shadowRadius: 5,
     shadowOpacity: 0.5,
@@ -74,19 +80,22 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: widthPercentageToDP(70),
     height: 50,
-    justifyContent: "center"
+    justifyContent: "center",
+    elevation: 2
   },
   link: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    position: "absolute",
+    // position: "absolute",
     paddingVertical: 20,
     textDecorationLine: "underline",
     alignSelf: "center",
-    top: 25,
-    position: "relative"
+    elevation: 2
+
+    // top: 25,
+    // position: "relative"
   }
 });
 

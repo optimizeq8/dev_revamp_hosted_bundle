@@ -74,11 +74,8 @@ class PersonalInfo extends Component {
           width={55}
           height={55}
         />
-        <View style={styles.mainCard}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.mainCard}>
             <KeyboardShift>
               {() => (
                 <View style={styles.contentContainer}>
@@ -191,8 +188,8 @@ class PersonalInfo extends Component {
                 </View>
               )}
             </KeyboardShift>
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     );
   }

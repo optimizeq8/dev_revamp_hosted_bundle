@@ -97,20 +97,35 @@ class Verification extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <KeyboardShift>
+        <KeyboardShift
+          style={{
+            height: "100%",
+            alignItems: "center",
+            flex: 1,
+            justifyContent: "center"
+          }}
+        >
           {() => (
-            <ScrollView contentContainerStyle={{ height: "100%" }}>
+            <ScrollView
+              contentContainerStyle={{
+                // height: "100%",
+                paddingTop: !this.props.invite ? 30 : 0,
+                alignItems: "center",
+                flex: 1,
+                width: "100%",
+                justifyContent: this.props.invite ? "center" : "flex-start"
+              }}
+            >
               {!this.props.invite ? (
                 <Text style={[styles.text, { lineHeight: 20 }]}>
                   Please enter the {"\n"}
-                  verification code sent to {"\n"} {this.props.mobileNo}
+                  verification code sent to {"\n"}
+                  {this.props.mobileNo}
                 </Text>
               ) : (
-                <>
-                  <Text style={[styles.inviteText, { paddingTop: 20 }]}>
-                    Invite Code
-                  </Text>
-                </>
+                <Text style={[styles.inviteText, { paddingTop: 20 }]}>
+                  Invite Code
+                </Text>
               )}
               {!this.props.invite &&
                 (this.state.timerStart ? (
@@ -186,8 +201,16 @@ class Verification extends Component {
                   />
                 </View>
               )}
+              {this.props.renderInviteCode && (
+                <Text
+                  style={[styles.link, { color: "#FFFF" }]}
+                  onPress={() => this.props.toggleComps()}
+                >
+                  Get an invitation code now!
+                </Text>
+              )}
               {!this.props.invite && (
-                <View style={{ top: "10%" }}>
+                <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
                   <Text
                     onPress={() => {
                       this.setState({ showEmail: !this.state.showEmail });
