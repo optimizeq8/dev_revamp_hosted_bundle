@@ -201,14 +201,14 @@ class Verification extends Component {
                   />
                 </View>
               )}
-              {this.props.renderInviteCode && (
-                <Text
-                  style={[styles.link, { color: "#FFFF" }]}
-                  onPress={() => this.props.toggleComps()}
-                >
-                  Get an invitation code now!
-                </Text>
-              )}
+              {/* {this.props.renderInviteCode && ( */}
+              <Text
+                style={[styles.link, { color: "#FFFF" }]}
+                onPress={() => this.props.toggleComps()}
+              >
+                Get an invitation code now!
+              </Text>
+              {/* )} */}
               {!this.props.invite && (
                 <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
                   <Text

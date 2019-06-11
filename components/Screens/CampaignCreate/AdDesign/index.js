@@ -244,6 +244,20 @@ class AdDesign extends Component {
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
+      } else {
+        showMessage({
+          message: "Please choose a media file!",
+          position: "top",
+          type: "warning"
+        });
+        this.setState({
+          imageError:
+            "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
+          image: null
+        });
+        this.onToggleModal(false);
+
+        return;
       }
     }
 
