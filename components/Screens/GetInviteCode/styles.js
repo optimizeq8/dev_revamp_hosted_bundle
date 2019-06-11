@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     // position: "absolute",
     paddingVertical: 20,
     textDecorationLine: "underline",
-    alignSelf: "center",
-    elevation: 2
+    alignSelf: "center"
+    // elevation: 2
 
     // top: 25,
     // position: "relative"
