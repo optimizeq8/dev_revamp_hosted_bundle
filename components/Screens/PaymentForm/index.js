@@ -6,27 +6,15 @@ import {
   Platform,
   BackHandler
 } from "react-native";
-import {
-  Card,
-  Button,
-  Text,
-  Container,
-  Header,
-  Left,
-  Right,
-  Body,
-  Content,
-  Footer
-} from "native-base";
+import { Button, Text, Container, Content, Footer } from "native-base";
 import { Modal } from "react-native-paper";
-import { LinearGradient, WebBrowser, Linking, Segment, BlurView } from "expo";
+import { WebBrowser, Linking, Segment, BlurView } from "expo";
 import UseWallet from "./UseWallet";
 import BackDrop from "../../../assets/SVGs/BackDropIcon";
-import NavigationService from "../../../NavigationService.js";
 import formatNumber from "../../formatNumber";
-import BackButton from "../../MiniComponents/BackButton";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //terms&conditions
 import { openTerms } from "../../Terms&Condtions";
@@ -36,14 +24,12 @@ import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
+import { globalColors } from "../../../Global Styles";
 
 //Reddux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import { globalColors } from "../../../Global Styles";
-import isIphoneXorAbove from "../../isIphoneXorAbove";
+
 class PaymentForm extends Component {
   static navigationOptions = {
     header: null
@@ -293,26 +279,6 @@ class PaymentForm extends Component {
             navigation={this.props.navigation}
             title="Payment"
           />
-          {/* <Header transparent noShadow iosBarStyle={"light-content"}>
-
-            <Left style={{ flex: 0 }}>
-              <BackButton
-                navigation={this.props.navigation.goBack}
-                nav={this.props.navigation}
-                style={{ left: 0, top: 0 }}
-              />
-            </Left>
-
-            <Body
-              style={
-                {
-                  // minHeight: 100
-                }
-              }
-            >
-              <Text style={[styles.header]}>Payment</Text>
-            </Body>
-          </Header> */}
           <Content
             padder
             scrollEnabled={false}
@@ -331,7 +297,6 @@ class PaymentForm extends Component {
                   style={[
                     styles.whitebutton,
                     {
-                      // width: "33.33%",
                       backgroundColor:
                         this.state.choice === 1 ? globalColors.orange : "#fff"
                     }
@@ -380,7 +345,6 @@ class PaymentForm extends Component {
                 style={[
                   styles.whitebutton3,
                   {
-                    //   width: "33.33%",
                     backgroundColor:
                       this.state.choice === 3 ? globalColors.orange : "#fff"
                   }
@@ -415,7 +379,6 @@ class PaymentForm extends Component {
                   flex: 1,
                   alignItems: "center",
                   justifyContent: "center"
-                  // bottom: "5%"
                 }}
               >
                 <Image
@@ -445,7 +408,6 @@ class PaymentForm extends Component {
                   flex: 1,
                   alignItems: "center",
                   justifyContent: "center"
-                  // bottom: "5%"
                 }}
               >
                 <Image
@@ -475,7 +437,6 @@ class PaymentForm extends Component {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                // alignItems: "center",
                 justifyContent: "space-between",
                 width: "100%"
               }}
@@ -581,9 +542,12 @@ class PaymentForm extends Component {
               //   style={[styles.bottomCard]}
               style={{ width: "100%", paddingTop: 5 }}
             >
-              <Text style={[styles.link]}>
-                {`By tapping this button you \n agree to the `}
+              <>
+                <Text allowFontScaling={false} style={[styles.link]}>
+                  {`By tapping this button you \n agree to the `}
+                </Text>
                 <Text
+                  allowFontScaling={false}
                   onPress={() => {
                     this.setState({ browserLoading: true });
                     openTerms(this.closeBrowserLoading);
@@ -597,9 +561,9 @@ class PaymentForm extends Component {
                     }
                   ]}
                 >
-                  {`Terms & Conditions`}
+                  Terms & Conditions
                 </Text>
-              </Text>
+              </>
             </TouchableOpacity>
           </Footer>
         </Container>

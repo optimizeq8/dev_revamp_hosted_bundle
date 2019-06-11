@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   contentContainer: {
-    paddingBottom: heightPercentageToDP(30),
-    marginBottom: heightPercentageToDP(50)
+    paddingBottom: heightPercentageToDP(30)
+    // marginBottom: heightPercentageToDP(50)
   },
   activebutton: {
     backgroundColor: "#fff",

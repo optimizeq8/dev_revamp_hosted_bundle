@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -80,6 +80,13 @@ const styles = StyleSheet.create({
     height: 50
   },
   inputtext: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14 / PixelRatio.getFontScale(),
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center"
+  },
+  label: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
     color: "#fff",

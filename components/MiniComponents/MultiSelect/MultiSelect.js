@@ -1,6 +1,13 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  PixelRatio
+} from "react-native";
+
 
 import { Button, Text, Item, Input, Container, Icon } from "native-base";
 import * as actionCreators from "../../../store/actions";
@@ -127,7 +134,10 @@ class MultiSelectList extends Component {
               <Item>
                 <Input
                   placeholder="Search Country..."
-                  style={styles.searchInputText}
+                  style={[styles.searchInputText,{
+                    fontSize: 14 / PixelRatio.getFontScale()
+                  }]}
+
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>

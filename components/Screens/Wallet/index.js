@@ -1,41 +1,34 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity,
   Modal,
   Platform,
   BackHandler
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import Header from "../../MiniComponents/Header";
-import { LinearGradient, BlurView } from "expo";
+import { BlurView } from "expo";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import BackButton from "../../MiniComponents/BackButton";
-import formatNumber from "../../formatNumber";
+import * as Animatable from "react-native-animatable";
+
 //icons
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
+import { connect } from "react-redux";
 
+//Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
-import * as Animatable from "react-native-animatable";
+import formatNumber from "../../formatNumber";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -98,44 +91,6 @@ class Wallet extends Component {
           ]}
         >
           <Header title={"Wallet"} navigation={this.props.navigation} />
-          {/* <View
-            style={{
-              justifyContent: "space-between",
-              zIndex: 13,
-              paddingHorizontal: wp(5),
-              paddingTop: hp(1),
-              flexDirection: "row",
-              backgroundColor: "#0000"
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => this.props.navigation.goBack()}
-              style={{
-                flex: 0
-              }}
-            >
-              <BackIcon width={24} height={24} />
-            </TouchableOpacity>
-            <Text
-              style={[
-                styles.title,
-                {
-                  flex: 1,
-                  alignSelf: "center",
-                  alignItems: "center"
-                }
-              ]}
-            >
-              Wallet
-            </Text>
-
-            <View
-              style={{
-                flex: 0,
-                width: 24
-              }}
-            />
-          </View> */}
 
           <WalletIcon
             style={{
@@ -231,7 +186,6 @@ class Wallet extends Component {
                               : this.state.amountError
                               ? "red"
                               : "#D9D9D9"
-                            // width: 250
                           }
                         ]}
                       >
@@ -282,8 +236,6 @@ class Wallet extends Component {
                   </View>
                 </TouchableWithoutFeedback>
               </KeyboardAwareScrollView>
-
-              {/* <LowerButton function={this._handleSubmission} /> */}
             </BlurView>
           </Modal>
         </Container>

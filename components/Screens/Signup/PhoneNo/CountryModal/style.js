@@ -1,6 +1,6 @@
 "use strict";
 
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, PixelRatio } from "react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP
@@ -10,7 +10,7 @@ const { height, width } = Dimensions.get("window");
 
 const PADDING = 8;
 const BORDER_RADIUS = 5;
-const FONT_SIZE = 16;
+const FONT_SIZE = 16 / PixelRatio.getFontScale();
 const HIGHLIGHT_COLOR = "rgba(0,118,255,0.9)";
 const OPTION_CONTAINER_HEIGHT = heightPercentageToDP(40);
 

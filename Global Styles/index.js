@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -13,7 +13,7 @@ export default (styles = {
     backgroundColor: "transparent"
   },
   title: {
-    fontSize: 24,
+    fontSize: 24 / PixelRatio.getFontScale(),
     color: "#fff",
     textAlign: "center",
     paddingTop: 10,
@@ -24,7 +24,7 @@ export default (styles = {
     textAlign: "center",
     color: "#FF9D00",
     fontFamily: "montserrat-bold",
-    fontSize: 16,
+    fontSize: 16 / PixelRatio.getFontScale(),
     paddingHorizontal: 10
   },
   backButton: {

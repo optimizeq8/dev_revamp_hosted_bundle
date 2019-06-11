@@ -1,32 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-  BackHandler
-} from "react-native";
+import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import {
   Header,
   Left,
-  Right,
   Title,
   Body,
-  Card,
-  Button,
   Content,
   Text,
-  CardItem,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
+  Container
 } from "native-base";
+import { SafeAreaView } from "react-navigation";
+import CustomHeader from "../../../MiniComponents/Header";
 import Sidemenu from "react-native-side-menu";
 import { LinearGradient, ImageBackground } from "expo";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -113,149 +99,125 @@ class SwipeUpDestination extends Component {
       }
     }
     return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <Sidemenu
-          onChange={isOpen => {
-            if (isOpen === false) this.setState({ sidemenustate: isOpen });
-          }}
-          menuPosition="right"
-          disableGestures={true}
-          isOpen={this.state.sidemenustate}
-          menu={this.state.sidemenustate && menu}
-          openMenuOffset={wp(85)}
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
+        <Container
+          style={[
+            styles.container,
+            {
+              // paddingTop: 30,
+            }
+          ]}
         >
-          <Container
-            style={[
-              styles.container,
-              {
-                top: 50,
+          <Sidemenu
+            onChange={isOpen => {
+              if (isOpen === false) this.setState({ sidemenustate: isOpen });
+            }}
+            menuPosition="right"
+            disableGestures={true}
+            isOpen={this.state.sidemenustate}
+            menu={this.state.sidemenustate && menu}
+            openMenuOffset={wp(85)}
+          >
+            <CustomHeader
+              closeButton={false}
+              title={"Swipe up Destination"}
+              navigation={this.props.navigation}
+            />
+
+            <Content
+              contentContainerStyle={{
+                backgroundColor: "black",
+                // paddingTop: 30,
+                overflow: "hidden",
+                marginTop: 10,
+                flexGrow: 1,
                 borderBottomLeftRadius: 0,
                 borderBottomRightRadius: 0,
                 borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
-                overflow: "hidden"
-              }
-            ]}
-          >
-            {!isNull(this.state.image) && this.state.image.length > 0 && (
-              <Image
-                style={styles.placeholder1}
-                source={{ uri: this.state.image }}
-                resizeMode="cover"
-              />
-            )}
-            <Header
-              style={{ paddingTop: 0 }}
-              transparent
-              noShadow
-              iosBarStyle={"light-content"}
+                borderTopRightRadius: 30
+              }}
             >
-              <Left
-                style={{
-                  alignItems: "flex-start",
-                  alignSelf: "center",
-                  flex: 0,
-                  marginLeft: 10
-                }}
-              >
-                <BackButton
-                  screenname="Ad Design"
-                  // businessname={this.state.businessname}
-                  navigation={this.props.navigation.goBack}
-                  style={{ top: 0, left: 0 }}
-                />
-              </Left>
-              <Body
-                style={[
-                  {
-                    flex: 2,
-                    alignItems: "center",
-                    alignSelf: "center",
-                    width: "100%",
-                    color: "#fff"
-                  }
-                ]}
-              >
-                <Title style={[styles.headerTitle, { width: "100%" }]}>
-                  Swipe up Destination
-                </Title>
-              </Body>
-              {/* <Right /> */}
-            </Header>
-
-            <Content contentContainerStyle={{ flexGrow: 1 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  // this.props.navigation.push("SwipeUpChoice", {
-                  //   _changeDestination: this.props.navigation.state.params
-                  //     ._changeDestination,
-                  //   objective: "website"
-                  // });
-                  this.setState({
-                    selected: "website",
-                    sidemenustate: true
-                  });
-                }}
-                style={[
-                  styles.buttonN,
-                  {
-                    backgroundColor:
-                      this.state.selected === "website"
-                        ? "#FF9D00"
-                        : "transparent"
-                  }
-                ]}
-              >
-                <WebsiteIcon
-                  // type="MaterialCommunityIcons"
-                  // name="web"
-                  style={styles.icon}
-                />
-                <View style={styles.textcontainer}>
-                  <Text style={[styles.titletext]}>Website</Text>
-                  <Text style={[styles.subtext]}>
-                    Send Snapchatters directly to your website
-                  </Text>
+              {!isNull(this.state.image) && this.state.image.length > 0 && (
+                <View style={{ ...styles.placeholder1 }}>
+                  <Image
+                    style={{ width: "100%", height: "100%", opacity: 0.4 }}
+                    source={{ uri: this.state.image }}
+                    resizeMode="cover"
+                  />
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  // this.props.navigation.push("SwipeUpChoice", {
-                  //   _changeDestination: this.props.navigation.state.params
-                  //     ._changeDestination,
-                  //   objective: "deep link"
-                  // });
-                  this.setState({
-                    selected: "deep link",
-                    sidemenustate: true
-                  });
-                }}
-                style={[
-                  styles.buttonN,
-                  {
-                    backgroundColor:
-                      this.state.selected === "deep link"
-                        ? "#FF9D00"
-                        : "transparent"
-                  }
-                ]}
-              >
-                <LayersIcon style={styles.icon} />
-                <View style={styles.textcontainer}>
-                  <Text style={[styles.titletext]}>Deep Link</Text>
-                  <Text style={[styles.subtext]}>
-                    Send Snapchatters to your app or a third-party app
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              )}
+              <View style={{ marginTop: 30 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    // this.props.navigation.push("SwipeUpChoice", {
+                    //   _changeDestination: this.props.navigation.state.params
+                    //     ._changeDestination,
+                    //   objective: "website"
+                    // });
+                    this.setState({
+                      selected: "website",
+                      sidemenustate: true
+                    });
+                  }}
+                  style={[
+                    styles.buttonN,
+                    {
+                      backgroundColor:
+                        this.state.selected === "website"
+                          ? "#FF9D00"
+                          : "transparent"
+                    }
+                  ]}
+                >
+                  <WebsiteIcon
+                    // type="MaterialCommunityIcons"
+                    // name="web"
+                    style={styles.icon}
+                  />
+                  <View style={styles.textcontainer}>
+                    <Text style={[styles.titletext]}>Website</Text>
+                    <Text style={[styles.subtext]}>
+                      Send Snapchatters directly to your website
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    // this.props.navigation.push("SwipeUpChoice", {
+                    //   _changeDestination: this.props.navigation.state.params
+                    //     ._changeDestination,
+                    //   objective: "deep link"
+                    // });
+                    this.setState({
+                      selected: "deep link",
+                      sidemenustate: true
+                    });
+                  }}
+                  style={[
+                    styles.buttonN,
+                    {
+                      backgroundColor:
+                        this.state.selected === "deep link"
+                          ? "#FF9D00"
+                          : "transparent"
+                    }
+                  ]}
+                >
+                  <LayersIcon style={styles.icon} />
+                  <View style={styles.textcontainer}>
+                    <Text style={[styles.titletext]}>Deep Link</Text>
+                    <Text style={[styles.subtext]}>
+                      Send Snapchatters to your app or a third-party app
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </Content>
-          </Container>
-        </Sidemenu>
+          </Sidemenu>
+        </Container>
       </SafeAreaView>
     );
   }

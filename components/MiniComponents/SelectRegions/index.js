@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  PixelRatio
 } from "react-native";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
@@ -60,7 +61,12 @@ export default class SelectRegions extends Component {
               <Item>
                 <Input
                   placeholder="Search Region..."
-                  style={styles.searchRegionText}
+                  style={[styles.searchRegionText,{
+                    fontFamily: "montserrat-regular",
+                    color: "#fff",
+                    fontSize: 14 / PixelRatio.getFontScale()
+                  }]}
+
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredR = this.props.regions.filter(c =>

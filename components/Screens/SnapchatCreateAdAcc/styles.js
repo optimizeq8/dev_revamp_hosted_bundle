@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../Global Styles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center"
   },
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 
 export const htmlStyles = {
   h1: {
-    fontSize: 30
+    fontSize: 30 / PixelRatio.getFontScale()
   },
   a: {
     fontWeight: "300",
@@ -121,13 +121,16 @@ export const htmlStyles = {
   },
   h4: {
     marginBottom: -30,
-    fontSize: 20
+    fontSize: 20 / PixelRatio.getFontScale()
   },
   img: {
     width: 75,
     height: 75
   },
-  h2: { marginBottom: -40, fontSize: 25 }
+  h2: {
+    marginBottom: -40,
+    fontSize: 25 / PixelRatio.getFontScale()
+  }
 };
 export default styles;
 function newFunction() {

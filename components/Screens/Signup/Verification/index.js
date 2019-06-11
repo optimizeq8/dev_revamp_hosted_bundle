@@ -4,6 +4,9 @@ import { View, Image, ScrollView } from "react-native";
 import { Text, Container, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { Segment } from "expo";
+
+Input.defaultProps = Input.defaultProps || {};
+Input.defaultProps.allowFontScaling = false;
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
