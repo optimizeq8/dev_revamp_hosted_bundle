@@ -93,6 +93,6 @@ export default (sectionStyle = {
     paddingTop: 10
   },
   countryScrollContainer: {
-    height: 300
+    height: 250
   }
 });

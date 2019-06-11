@@ -208,7 +208,7 @@ class MainForm extends Component {
                         }}
                         style={[
                           styles.link,
-                          { paddingVertical: 25, fontSize: 12 }
+                          { paddingVertical: 20, fontSize: 12 }
                         ]}
                       >
                         Forgot Password?
@@ -251,15 +251,14 @@ class MainForm extends Component {
                       Enter Invite Code!
                     </Text>
                   </Button>
-
                 </View>
               )}
             </View>
           </TouchableWithoutFeedback>
-          <Modal visible={this.props.loading}>
-            <LoadingScreen top={0} />
-          </Modal>
         </Container>
+        <Modal visible={this.props.loading}>
+          <LoadingScreen top={0} />
+        </Modal>
       </SafeAreaView>
     );
   }
