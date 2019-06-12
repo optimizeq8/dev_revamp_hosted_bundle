@@ -34,6 +34,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 export default class DateFields extends Component {
   constructor(props) {
@@ -115,7 +116,7 @@ export default class DateFields extends Component {
             <View
               style={{
                 flexDirection: "row",
-                // alignSelf: "center",
+                alignItems: "center",
                 justifyContent: "space-around"
               }}
             >
@@ -129,6 +130,26 @@ export default class DateFields extends Component {
                 <CloseIcon width={20} height={20} />
               </Button>
               <Text style={styles.title}>Duration</Text>
+              {this.props.chartRange && (
+                <Text
+                  onPress={() => {
+                    this.props.durationChange(
+                      this.props.selectedCampaign.start_date,
+                      this.props.selectedCampaign.end_date
+                      // "2019-05-09",
+                      // "2019-05-25"
+                    );
+                    this.setState({
+                      modalVisible: false,
+                      start_choice: false,
+                      end_choice: false
+                    });
+                  }}
+                  style={[styles.title, { left: "85%", position: "absolute" }]}
+                >
+                  Reset
+                </Text>
+              )}
               <Text
                 style={[styles.textModal, { fontFamily: "montserrat-light" }]}
                 onPress={() =>
@@ -159,6 +180,8 @@ export default class DateFields extends Component {
             </Text>
             <DateRangePicker
               filterMenu={this.props.filterMenu}
+              chartRange={this.props.chartRange}
+              selectedCampaign={this.props.selectedCampaign}
               startDatePicked={this.startDatePicked}
               endDatePicked={this.endDatePicked}
               // initialRange={[this.props.start_time, this.props.end_time]}
@@ -176,24 +199,37 @@ export default class DateFields extends Component {
               <Button
                 style={styles.button}
                 onPress={async () => {
-                  if (!this.props.filterMenu) {
-                    let timeDiff = Math.round(
-                      Math.abs(
-                        (new Date(this.state.start_date).getTime() -
-                          new Date(this.state.end_date).getTime()) /
-                          86400000
-                      )
-                    );
+                  let timeDiff = Math.round(
+                    Math.abs(
+                      (new Date(this.state.start_date).getTime() -
+                        new Date(this.state.end_date).getTime()) /
+                        86400000
+                    )
+                  );
+                  if (!this.props.filterMenu && !this.props.chartRange) {
                     this.props.getMinimumCash(timeDiff + 1);
                     await this.props.handleStartDatePicked(
                       this.state.start_date
                     );
                     await this.props.handleEndDatePicked(this.state.end_date);
-                  } else {
+                  } else if (this.props.filterMenu) {
                     await this.props.handleStartDatePicked(
                       this.state.start_date
                     );
                     await this.props.handleEndDatePicked(this.state.end_date);
+                  } else if (this.props.chartRange) {
+                    if (true) {
+                      this.props.durationChange(
+                        this.state.start_date,
+                        this.state.end_date
+                      );
+                    } else {
+                      showMessage({
+                        message: "Please choose more than 2 days.",
+                        type: "warning",
+                        position: "top"
+                      });
+                    }
                   }
                   this.setState({
                     modalVisible: false,
