@@ -24,6 +24,7 @@ import styles from "./styles";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Address from "../../../assets/SVGs/Location";
+import { showMessage } from "react-native-flash-message";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -274,7 +275,15 @@ class BillingAddressCard extends React.Component {
                         flexDirection: "row"
                       }
                     ]}
-                    onPress={() => this._renderSideMenu("regions")}
+                    onPress={() => {
+                      this.state.country_code === ""
+                        ? showMessage({
+                            message: "Please select a country first.",
+                            type: "warning",
+                            position: "top"
+                          })
+                        : this._renderSideMenu("regions");
+                    }}
                   >
                     <Label
                       style={[

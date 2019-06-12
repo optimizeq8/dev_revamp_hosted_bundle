@@ -251,6 +251,13 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
     borderRadius: 50
+  },
+  warningText: {
+    color: "#fff",
+    textAlign: "center",
+    top: 10,
+    fontFamily: "montserrat-semibold",
+    fontSize: 13
   }
 });
 

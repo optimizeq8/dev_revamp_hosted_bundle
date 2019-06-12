@@ -1,41 +1,16 @@
 import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-  BackHandler
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
-import { LinearGradient, ImageBackground } from "expo";
+import { View, SafeAreaView, BackHandler } from "react-native";
+import { Text, Item, Input, Icon } from "native-base";
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
 import LowerButton from "../../../MiniComponents/LowerButton";
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 export default class Website extends Component {
   static navigationOptions = {
@@ -65,7 +40,7 @@ export default class Website extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  _handleSubmission = () => {
+  validateUrl = () => {
     const urlError = validateWrapper(
       "website",
       this.state.campaignInfo.attachment
@@ -73,7 +48,22 @@ export default class Website extends Component {
     this.setState({
       urlError
     });
-    if (!urlError) {
+    if (urlError) {
+      showMessage({
+        message: "Please enter a vaild url",
+        description:
+          'Make sure to include the network location (e.g., "http://" or "https://") in the URL',
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+  _handleSubmission = () => {
+    if (this.validateUrl()) {
       this.props._changeDestination(
         this.props.objective !== "LEAD_GENERATION"
           ? "REMOTE_WEBPAGE"
@@ -174,16 +164,13 @@ export default class Website extends Component {
                     }
                   })
                 }
-                onBlur={() => {
-                  this.setState({
-                    urlError: validateWrapper(
-                      "website",
-                      this.state.campaignInfo.attachment
-                    )
-                  });
-                }}
+                onBlur={() => this.validateUrl()}
               />
             </Item>
+            <Text style={styles.warningText}>
+              Please make sure not include social media sites such as Facbook,
+              Instagram, Youtube, SnapChat, etc.
+            </Text>
           </View>
           <View />
           <View>

@@ -180,6 +180,10 @@ const styles = StyleSheet.create({
     height: hp(7),
     justifyContent: "center",
     borderWidth: 0.5
+  },
+  minBudget: {
+    color: "#fff",
+    alignSelf: "center"
   }
 });
 
