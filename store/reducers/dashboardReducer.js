@@ -11,6 +11,7 @@ const initialState = {
   filterValue: "",
   filterStatus: null,
   campaignStartSearch: "",
+  granularity: "DAY",
   campaignEndSearch: "",
   loadingCampaignDetails: false,
   loadingCampaignStats: false
@@ -70,16 +71,25 @@ const reducer = (state = initialState, action) => {
         loading: action.payload.loading
       };
     case actionTypes.SET_CAMPAIGN_STATS:
+      console.log(
+        action.payload.data.timeseries_stats[0].timeseries_stat.granularity
+      );
+
       return {
         ...state,
         selectedCampaign: {
           ...state.selectedCampaign,
+
           avg_spend_per_day: action.payload.data.avg_spend_per_day,
           highest_spend_per_day: action.payload.data.highest_spend_per_day,
           highest_spend_date: action.payload.data.highest_spend_date
         },
-        campaignStats:
-          action.payload.data.timeseries_stats[0].timeseries_stat.timeseries,
+        granularity: action.payload.data.hasOwnProperty("timeseries_stats")
+          ? action.payload.data.timeseries_stats[0].timeseries_stat.granularity
+          : "DAY",
+        campaignStats: action.payload.data.hasOwnProperty("timeseries_stats")
+          ? action.payload.data.timeseries_stats[0].timeseries_stat.timeseries
+          : [],
         loadingCampaignStats: action.payload.loading
       };
     case actionTypes.SET_STATS_LOADING:

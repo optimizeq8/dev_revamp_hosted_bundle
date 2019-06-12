@@ -53,12 +53,14 @@ export const getCampaignDetails = (id, navigation) => {
   };
 };
 
-export const getCampaignStats = (campaign, navigation) => {
-  console.log({
-    campaign_id: campaign.snap_campaign_id,
-    start_time: "2019-05-29",
-    end_time: "2019-05-30"
-  });
+export const getCampaignStats = (campaign, duration) => {
+  let timeDiff = Math.round(
+    Math.abs(
+      (new Date(duration.start_time).getTime() -
+        new Date(duration.end_time).getTime()) /
+        86400000
+    )
+  );
 
   return dispatch => {
     dispatch({
@@ -67,9 +69,19 @@ export const getCampaignStats = (campaign, navigation) => {
     });
     instance
       .post(`getcampaignStats`, {
+        //testing
+        // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
+        // start_time: "2019-05-09",
+        // end_time: "2019-05-25",
+        // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
+        // start_time: duration.start_time, //"2019-05-09",
+        // end_time: duration.end_time, //"2019-05-25",
+
+        //Actual api
         campaign_id: campaign.snap_campaign_id,
-        start_time: "2019-05-29",
-        end_time: "2019-06-02"
+        start_time: duration.start_time,
+        end_time: duration.end_time,
+        hour: timeDiff + 1 <= 5 ? 1 : 0
       })
       .then(res => {
         return res.data;
