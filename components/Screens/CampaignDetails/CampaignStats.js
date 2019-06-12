@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
-
+import shortMonths from "./ShortMonths";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 //styles
 import styles from "./styles";
@@ -11,14 +11,32 @@ import globalStyles, { globalColors } from "../../../Global Styles";
 class CampaignStats extends Component {
   render() {
     let selectedCampaign = this.props.selectedCampaign;
-    let highestDate = new Date(selectedCampaign.highest_spend_date);
-    let month = highestDate.toLocaleString("en-us", { month: "short" });
-    let date = highestDate.getDate() + " " + highestDate.getFullYear();
+    let date = "N/A";
+    if (selectedCampaign.highest_spend_date !== "") {
+      let highestDate = new Date(selectedCampaign.highest_spend_date);
+      let month = highestDate.getMonth();
+      date =
+        shortMonths[month] +
+        " " +
+        highestDate.getDate() +
+        " " +
+        highestDate.getFullYear();
+    }
     return (
       <>
         <View
           style={{
-            top: hp(5) > 44 ? 33 : 15,
+            width: 200,
+            top: 35,
+            borderBottomWidth: 1,
+            borderBottomColor: "rgba(255,255,255,0.4)",
+            alignSelf: "center"
+          }}
+        />
+
+        <View
+          style={{
+            top: 50,
             flexDirection: "row",
             justifyContent: "space-evenly"
           }}
@@ -68,7 +86,13 @@ class CampaignStats extends Component {
             </Text>
           ) : null}
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            top: hp(4)
+          }}
+        >
           <View style={styles.boxStats}>
             <Text style={styles.stats}>Average Spend Per day</Text>
             <Text style={[globalStyles.numbers, { fontSize: 25 }]}>
@@ -90,7 +114,13 @@ class CampaignStats extends Component {
         <View
           style={[
             styles.boxStats,
-            { width: "85%", alignSelf: "center", top: 40, height: 90 }
+            {
+              width: "85%",
+              alignSelf: "center",
+              top: 40,
+              height: "21%",
+              top: hp(10)
+            }
           ]}
         >
           <Text style={[styles.stats, { width: 130 }]}>Highest Spend Date</Text>
@@ -98,9 +128,7 @@ class CampaignStats extends Component {
           {this.props.loadingCampaignStats ? (
             <PlaceholderLine />
           ) : (
-            <Text style={[globalStyles.numbers, { fontSize: 25 }]}>
-              {month + " " + date}
-            </Text>
+            <Text style={[globalStyles.numbers, { fontSize: 25 }]}>{date}</Text>
           )}
         </View>
       </>
