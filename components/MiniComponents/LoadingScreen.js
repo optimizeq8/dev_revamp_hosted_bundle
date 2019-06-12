@@ -1,13 +1,10 @@
 import React from "react";
-import { View, Platform, StyleSheet, Image } from "react-native";
-import { LinearGradient } from "expo";
+import { View } from "react-native";
 import LottieView from "lottie-react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { ActivityIndicator } from "react-native-paper";
-import { colors } from "../GradiantColors/colors";
 
 class Loading extends React.Component {
   state = { visible: true };
@@ -57,7 +54,6 @@ class Loading extends React.Component {
 }
 
 export default Loading;
-
 
 const styles = {
   gradient: {

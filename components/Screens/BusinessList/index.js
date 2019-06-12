@@ -1,14 +1,16 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
 import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import { Segment } from "expo";
 import BusinessCard from "../../MiniComponents/BusinessCard";
-import * as actionCreators from "../../../store/actions";
+
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 class BusinessList extends Component {
   static navigationOptions = {
@@ -27,11 +29,6 @@ class BusinessList extends Component {
     ));
     return (
       <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
         <View padder style={[styles.mainCard]}>
           <Text style={styles.title}>Switch Account</Text>
           <Text style={[styles.text, styles.switchAccountText]}>
