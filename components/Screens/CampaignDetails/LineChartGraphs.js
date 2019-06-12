@@ -25,18 +25,17 @@ import LineGraph from "./LineGraph";
 export default class LineChartGraphs extends Component {
   render() {
     let campaign = this.props.campaign;
-    let Graphs = [
-      { Spend: campaign.spends }
-      // { Impressions: campaign.impressions },
-      // { Swipes: campaign.swipes }
-    ].map((category, i) => <LineGraph chartCategory={category} key={i} />);
+
     return (
       <View
         style={{
           paddingLeft: 25
         }}
       >
-        {Graphs}
+        <LineGraph
+          chartChoice={this.props.chartChoice}
+          chartCategory={campaign.spends}
+        />
       </View>
     );
   }

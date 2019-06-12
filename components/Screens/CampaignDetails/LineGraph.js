@@ -1,114 +1,117 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity
-} from "react-native";
-import LineChart from "./line-chart";
-import LineChartDevider from "../../../assets/SVGs/LineChartDevider.svg";
-import styles from "./styles";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { ScrollView } from "react-native";
+import CustomLabel from "./CustomLabel";
+import { connect } from "react-redux";
+
+import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
   VictoryLine,
-  VictoryTooltip,
   VictoryVoronoiContainer,
-  VictoryLabel,
   VictoryAxis
 } from "victory-native";
+import chartData from "./ChartData";
 
-export default class LineGraph extends Component {
+class LineGraph extends Component {
+  kFormatter = num => {
+    return Math.abs(num) > 999
+      ? (Math.abs(num) / 1000).toFixed(1) + " k"
+      : Math.abs(num);
+  };
   render() {
+    let data = chartData;
+
+    if (this.props.campaignStats.length > 1) {
+      data = this.props.campaignStats.map((stat, i) => {
+        let date = new Date(stat.end_time.split("-07:00")[0]);
+
+        let day = date.getDate();
+        let month = date.getMonth();
+        let hour = date.getHours();
+        return {
+          x:
+            this.props.granularity !== "DAY"
+              ? `${hour}:00`
+              : `${day}/${shortMonths[month]}`,
+          y:
+            this.props.chartChoice === "Spend"
+              ? stat.stats.spend / 1000000
+              : this.props.chartChoice === "Impressions"
+              ? stat.stats.impressions
+              : this.props.chartChoice !== "Swipe-Ups" && stat.stats.swipes
+        };
+      });
+    }
+
     return (
-      <View>
+      <ScrollView horizontal style={{ height: 200 }}>
         <VictoryChart
+          domainPadding={{ y: 10 }}
           containerComponent={
             <VictoryVoronoiContainer
               labels={d => parseFloat(d.y).toFixed(0)}
               labelComponent={
-                <VictoryTooltip
-                  cornerRadius={10}
-                  pointerLength={7}
-                  flyoutStyle={{
-                    stroke: "#fff",
-                    fill: "#fff"
-                  }}
-                />
+                <CustomLabel chartChoice={this.props.chartChoice} />
               }
-              height={200}
             />
           }
-          padding={{ top: 50, bottom: 90, left: 50, right: 50 }}
-          height={250}
+          padding={{ top: 60, bottom: 30, left: 50, right: 50 }}
+          height={200}
+          width={500}
         >
           <VictoryLine
-            animate={{
-              duration: 2000,
-              onLoad: { duration: 1000 }
-            }}
-            interpolation="catmullRom"
+            interpolation="cardinal"
             style={{
               data: {
                 stroke: "#FFFC00",
                 strokeWidth: 5
-              },
-              labels: { fill: "#FF9D00", fontSize: 23 }
+              }
             }}
-            data={[
-              { x: "Jan", y: Math.random() * 1000 },
-              { x: "Feb", y: Math.random() * 1000 },
-              { x: "Mar", y: Math.random() * 1000 },
-              { x: "Apr", y: Math.random() * 1000 },
-              { x: "May", y: Math.random() * 1000 },
-              { x: "Jun", y: Math.random() * 1000 },
-              { x: "Jul", y: Math.random() * 1000 },
-              { x: "Aug", y: Math.random() * 1000 },
-              { x: "Sept", y: Math.random() * 1000 }
-            ]}
+            data={data}
           />
           <VictoryAxis
-            animate={{
-              duration: 2000,
-              easing: "linear"
-            }}
             dependentAxis
+            tickFormat={t => this.kFormatter(t)}
+            offsetX={45}
+            tickCount={4}
             style={{
               axis: { stroke: "none" },
               tickLabels: {
                 stroke: "#fff",
                 fill: "#fff",
                 fontFamily: "montserrat-bold",
-                ticks: { stroke: "#fff", size: 10 },
+                fontSize: 8
+              },
+              ticks: { stroke: "#fff", size: 5 }
+            }}
+          />
+          <VictoryAxis
+            tickCount={5}
+            crossAxis
+            offsetY={25}
+            style={{
+              axis: { stroke: "none" },
+              ticks: { stroke: "#fff", size: 6, padding: -3 },
+              tickLabels: {
+                stroke: "#fff",
+                fill: "#fff",
+                fontFamily: "montserrat-bold",
                 fontSize: 10
               }
             }}
           />
-          <VictoryAxis
-            animate={{
-              duration: 2000,
-              easing: "linear"
-            }}
-            crossAxis
-            style={{
-              axis: { stroke: "none" },
-              tickLabels: {
-                stroke: "#fff",
-                fill: "#fff",
-                fontFamily: "montserrat-bold",
-                ticks: { stroke: "#fff", size: 10 },
-                fontSize: widthPercentageToDP("3.8")
-              }
-            }}
-          />
         </VictoryChart>
-
-        <LineChartDevider style={{ alignSelf: "center" }} />
-      </View>
+      </ScrollView>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  campaignStats: state.dashboard.campaignStats,
+  granularity: state.dashboard.granularity
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(LineGraph);
