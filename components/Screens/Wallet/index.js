@@ -1,41 +1,34 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity,
   Modal,
   Platform,
   BackHandler
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-
-import { LinearGradient, BlurView } from "expo";
+import Header from "../../MiniComponents/Header";
+import { BlurView } from "expo";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
-import BackButton from "../../MiniComponents/BackButton";
-import formatNumber from "../../formatNumber";
+import * as Animatable from "react-native-animatable";
+
 //icons
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
+import { connect } from "react-redux";
 
+//Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
-import * as Animatable from "react-native-animatable";
+import formatNumber from "../../formatNumber";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -81,15 +74,16 @@ class Wallet extends Component {
       );
     }
   };
+  handleModalVisibility = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  };
 
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaContainer}
         forceInset={{ bottom: "never" }}
       >
-        <BackButton navigation={this.props.navigation.goBack} />
-
         <Container
           style={[
             styles.container,
@@ -99,20 +93,13 @@ class Wallet extends Component {
             }
           ]}
         >
-          <Text style={styles.title}>Wallet</Text>
-          <WalletIcon
-            style={{
-              alignSelf: "center",
-              marginTop: 15
-            }}
-            width={85}
-            height={85}
-          />
-          <Text style={[globalStyles.numbers, { fontSize: 40 }]}>
+          <Header title={"Wallet"} navigation={this.props.navigation} />
+
+          <WalletIcon style={styles.walletIcon} width={85} height={85} />
+          <Text style={[globalStyles.numbers, styles.walletAmountText]}>
             {formatNumber(this.props.wallet, true)}
             <Text style={styles.dollar}>$</Text>
           </Text>
-
           <Text style={styles.text}>Avalible Balance</Text>
           {!this.state.modalVisible && (
             <View style={[styles.mainCard]}>
@@ -124,9 +111,7 @@ class Wallet extends Component {
               <Button
                 full
                 style={styles.button}
-                onPress={() => {
-                  this.setState({ modalVisible: true });
-                }}
+                onPress={this.handleModalVisibility}
               >
                 <Text style={styles.buttontext}>Top up wallet </Text>
               </Button>
@@ -144,32 +129,23 @@ class Wallet extends Component {
           <Modal
             animationType={"fade"}
             transparent
-            onRequestClose={() => this.setState({ modalVisible: false })}
+            onRequestClose={this.handleModalVisibility}
             visible={this.state.modalVisible}
           >
             <BlurView tint="dark" intensity={100} style={styles.BlurView}>
-              <Button
-                transparent
-                onPress={() => {
-                  this.setState({ modalVisible: false });
-                }}
-                style={styles.btnClose}
-              >
+              <Button transparent onPress={this.handleModalVisibility}>
                 <CloseIcon width={20} height={20} />
               </Button>
               <KeyboardAwareScrollView
-                contentContainerStyle={{ height: "100%" }}
+                contentContainerStyle={styles.keyboardContainer}
               >
                 <TouchableWithoutFeedback
                   onPress={Keyboard.dismiss}
                   accessible={false}
                 >
-                  <View style={{ flex: 2, justifyContent: "center" }}>
+                  <View style={styles.midContainer}>
                     <WalletIcon
-                      style={{
-                        alignSelf: "center",
-                        marginBottom: 15
-                      }}
+                      style={styles.walletIcon}
                       width={85}
                       height={85}
                     />
@@ -181,7 +157,7 @@ class Wallet extends Component {
 
                     <Animatable.View
                       animation={!this.state.amountError ? "" : "shake"}
-                      style={{ paddingVertical: 30 }}
+                      style={styles.inputAnimatableView}
                       onAnimationEnd={() =>
                         this.setState({ amountError: null })
                       }
@@ -195,7 +171,6 @@ class Wallet extends Component {
                               : this.state.amountError
                               ? "red"
                               : "#D9D9D9"
-                            // width: 250
                           }
                         ]}
                       >
@@ -227,10 +202,7 @@ class Wallet extends Component {
                         />
                         <Button
                           transparent
-                          style={{
-                            position: "relative",
-                            left: "20%"
-                          }}
+                          style={styles.sendButton}
                           onPress={() => this._handleSubmission()}
                         >
                           <Icon
@@ -246,8 +218,6 @@ class Wallet extends Component {
                   </View>
                 </TouchableWithoutFeedback>
               </KeyboardAwareScrollView>
-
-              {/* <LowerButton function={this._handleSubmission} /> */}
             </BlurView>
           </Modal>
         </Container>

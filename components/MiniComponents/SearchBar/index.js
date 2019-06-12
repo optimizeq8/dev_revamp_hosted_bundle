@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, PixelRatio } from "react-native";
 import { Text, Icon, View, Input, Item, Button } from "native-base";
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
@@ -68,6 +68,7 @@ class SearchBar extends Component {
           >
             <SearchIcon width={18} height={18} stroke="#575757" />
             <Input
+              style={{ fontSize: 20 / PixelRatio.getFontScale() }}
               placeholder="Search"
               onChangeText={value => {
                 this.setState({ value: value }, () => this._handleSubmit());

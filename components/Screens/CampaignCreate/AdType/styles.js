@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
   },
   container: {
     // paddingTop: hp(5),
-    paddingTop: 20,
+    // paddingTop: 20,
     flex: 1,
-    backgroundColor: "#751AFF"
+    backgroundColor: "#0000"
   },
 
   text: {

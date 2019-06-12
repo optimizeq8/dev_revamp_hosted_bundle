@@ -8,6 +8,8 @@ import { Modal } from "react-native-paper";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
 import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
+import { SafeAreaView } from "react-navigation";
+import Header from "../../MiniComponents/Header";
 
 // Style
 import styles from "./styles";
@@ -17,8 +19,6 @@ import { colors } from "../../GradiantColors/colors";
 import Address from "../../../assets/SVGs/Location";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import globalStyles from "../../../Global Styles";
-
-//Data
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
@@ -144,59 +144,55 @@ class AddressForm extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        {!this.state.sidemenustate && (
-          <View style={{ marginBottom: 10 }}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.goBack()}
-              style={globalStyles.backButton}
-            >
-              <BackIcon />
-            </TouchableOpacity>
-            <Text style={styles.title}>Billing Address</Text>
-            <Address
-              fill="#fff"
-              style={{
-                alignSelf: "center",
-                marginTop: 20
-              }}
-              width={55}
-              height={55}
-            />
+      <SafeAreaView
+        style={styles.safeAreaContainer}
+        forceInset={{ bottom: "never" }}
+      >
+        <Container style={styles.container}>
+          {/* {!this.state.sidemenustate && (
+            <View style={styles.headerBlock}>
+              <Header
+                title={"Billing Address"}
+                navigation={this.props.navigation}
+              />
+            
+              <Address
+                fill="#fff"
+                style={styles.addressIcon}
+                width={55}
+                height={55}
+              />
+            </View>
+          )} */}
+          <View style={styles.dataContainer}>
+            {/* TODO: When user selects CC display this */}
+            {this.state.from === "creditCard" &&
+            !isUndefined(this.state.addressId) &&
+            !isNull(this.state.addressId) ? (
+              <SelectBillingAddressCard
+                address={this.state.address}
+                addressId={this.state.addressId}
+                navigation={this.props.navigation}
+                kdamount={this.state.kdamount}
+              />
+            ) : (
+              <BillingAddressCard
+                address={this.state.address}
+                _handleSubmission={this._handleSubmission}
+                _handleAddressChange={this._handleAddressChange}
+                country_code={this.state.country_code}
+                _handleSideMenuState={this._handleSideMenuState}
+                sidemenustate={this.state.sidemenustate}
+                errorLoading={this.props.errorLoading}
+                navigation={this.props.navigation}
+              />
+            )}
           </View>
-        )}
-        <View style={{ display: "flex", flex: 3 }}>
-          {/* TODO: When user selects CC display this */}
-          {this.state.from === "creditCard" &&
-          !isUndefined(this.state.addressId) &&
-          !isNull(this.state.addressId) ? (
-            <SelectBillingAddressCard
-              address={this.state.address}
-              addressId={this.state.addressId}
-              navigation={this.props.navigation}
-              kdamount={this.state.kdamount}
-            />
-          ) : (
-            <BillingAddressCard
-              address={this.state.address}
-              _handleSubmission={this._handleSubmission}
-              _handleAddressChange={this._handleAddressChange}
-              country_code={this.state.country_code}
-              _handleSideMenuState={this._handleSideMenuState}
-              sidemenustate={this.state.sidemenustate}
-              errorLoading={this.props.errorLoading}
-            />
-          )}
-        </View>
+        </Container>
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
-      </Container>
+      </SafeAreaView>
     );
   }
 }

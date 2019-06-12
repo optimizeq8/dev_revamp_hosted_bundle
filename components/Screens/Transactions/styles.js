@@ -10,16 +10,27 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  searchContainer: {
+    flex: 1,
+    zIndex: 10
+  },
+  headerBlock: {
+    flexDirection: "row",
+    paddingVertical: widthPercentageToDP(5)
+  },
   container: {
-    marginTop: heightPercentageToDP("4"),
-    backgroundColor: "#751AFF"
+    backgroundColor: "#0000"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
   contentContainer: {
-    paddingBottom: heightPercentageToDP(30),
-    marginBottom: heightPercentageToDP(50)
+    paddingBottom: heightPercentageToDP(30)
+    // marginBottom: heightPercentageToDP(50)
   },
   activebutton: {
     backgroundColor: "#fff",

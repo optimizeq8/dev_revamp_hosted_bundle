@@ -1,46 +1,34 @@
 //Components
 import React, { Component } from "react";
-import RNPickerSelect from "react-native-picker-select";
 import {
   View,
-  TouchableOpacity,
-  ScrollView,
   TouchableWithoutFeedback,
-  TouchableHighlight,
   Keyboard,
   BackHandler
 } from "react-native";
 import {
-  Button,
   Content,
   Text,
   Item,
   Input,
   Container,
   Icon,
-  Label,
-  Header,
-  Left,
-  Body,
-  Footer
+  Label
 } from "native-base";
-import { LinearGradient, BlurView, Segment } from "expo";
+import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import BackButton from "../../../MiniComponents/BackButton";
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
+import CustomHeader from "../../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 //icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 
-import BackButtonIcon from "../../../../assets/SVGs/BackButton.svg";
-import ForwardButton from "../../../../assets/SVGs/ForwardButton.svg";
-
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 
 //data
 import ObjectiveData from "./ObjectiveData";
@@ -208,28 +196,26 @@ class AdObjective extends Component {
     ));
 
     return (
-      <>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
-            <LinearGradient
-              colors={[colors.background1, colors.background2]}
-              locations={[0.7, 1]}
-              style={styles.gradient}
-            />
             <BackdropIcon
               style={styles.backDrop}
               height={heightPercentageToDP("100%")}
             />
+            <CustomHeader
+              closeButton={false}
+              segment={{
+                str: "Ad Objective Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname }
+              }}
+              navigation={this.props.navigation}
+              title="Snap Ad Campaign"
+            />
             <View style={styles.block1}>
-              <View style={styles.innerBlock1}>
-                <BackButton
-                  screenname="Ad Objective"
-                  businessname={this.props.mainBusiness.businessname}
-                  navigation={this.props.navigation.goBack}
-                  style={styles.backButton}
-                />
-                <Text style={[styles.title, styles.block1Title]}>Snap Ad</Text>
-              </View>
               <PhoneIcon
                 style={styles.phoneicon}
                 width={heightPercentageToDP(5) < 30 ? 50 : 70}
@@ -269,7 +255,10 @@ class AdObjective extends Component {
                   autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({
-                      campaignInfo: { ...this.state.campaignInfo, name: value }
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        name: value
+                      }
                     })
                   }
                   autoFocus={true}
@@ -316,7 +305,7 @@ class AdObjective extends Component {
                   this.setModalVisible(true);
                 }}
               >
-                <Text style={[styles.inputtext, { width: "100%" }]}>
+                <Text style={[styles.label, { width: "100%" }]}>
                   {this.state.campaignInfo.objective === ""
                     ? this.state.objectiveLabel
                     : this.state.objectives.find(
@@ -348,40 +337,36 @@ class AdObjective extends Component {
           visible={this.state.modalVisible}
         >
           <BlurView intensity={95} tint="dark">
-            <View style={styles.popupOverlay}>
-              <Header
-                transparent
-                style={styles.popupContent}
-                iosBarStyle={"light-content"}
-              >
-                <Left style={{ flex: 0 }}>
-                  <Button
-                    onPress={() => this.setModalVisible(false)}
-                    transparent
-                  >
-                    <BackButtonIcon width={24} height={24} />
-                  </Button>
-                </Left>
-                <Body style={{ alignItems: "center" }}>
-                  <Text style={styles.modaltitle}>Campaign Objective</Text>
-                </Body>
-              </Header>
-              <Content
-                padder
-                indicatorStyle="white"
-                contentContainerStyle={{
-                  marginTop: 15,
-                  marginBottom: 15
-                }}
-              >
-                {list}
-              </Content>
+            <SafeAreaView
+              style={{ height: "100%", backgroundColor: "#0000" }}
+              forceInset={{ bottom: "never" }}
+            >
+              <View style={styles.popupOverlay}>
+                <CustomHeader
+                  closeButton={false}
+                  actionButton={() => {
+                    this.setModalVisible(false);
+                  }}
+                  title="Campaign Objective"
+                />
+                <Content
+                  padder
+                  indicatorStyle="white"
+                  contentContainerStyle={{
+                    marginTop: 15,
+                    paddingTop: 15,
+                    marginBottom: 15
+                  }}
+                >
+                  {list}
+                </Content>
 
-              <LowerButton bottom={3} function={this.setModalVisible} />
-            </View>
+                <LowerButton bottom={4} function={this.setModalVisible} />
+              </View>
+            </SafeAreaView>
           </BlurView>
         </Modal>
-      </>
+      </SafeAreaView>
     );
   }
 }

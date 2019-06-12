@@ -10,7 +10,6 @@ import { Permissions, Notifications } from "expo";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
   // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
 });
 
 export const send_push_notification = () => {
@@ -61,7 +60,7 @@ export const checkForExpiredToken = navigation => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
-        if (user.exp >= currentTime) {
+        if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           setAuthToken(token)
             .then(() =>
               dispatch(
@@ -116,22 +115,28 @@ export const login = (userData, navigation) => {
           const obj = { user: decodedUser, message: user.message };
           return obj;
         }
+        // }
       })
       .then(decodedUser => {
-        if (decodedUser.user) {
+        if (decodedUser && decodedUser.user) {
           dispatch(setCurrentUser(decodedUser));
         }
       })
       .then(() => {
         if (getState().auth.userInfo) {
-          navigation.navigate("Dashboard");
+          console.log("userInfo", getState().auth.userInfo);
+          if (getState().auth.userInfo.tmp_pwd === "1") {
+            navigation.navigate("ChangePassword", { temp_pwd: true });
+          } else {
+            navigation.navigate("Dashboard");
+          }
 
           dispatch(getBusinessAccounts());
           dispatch(send_push_notification());
         }
       })
       .catch(err => {
-        // console.log("login error", err.message || err.response);
+        console.log("login error", err.message || err.response);
         showMessage({
           type: "danger",
           message:
@@ -146,8 +151,11 @@ export const login = (userData, navigation) => {
 
 export const logout = navigation => {
   return dispatch => {
-    navigation.navigate("Signin", { loggedout: true });
-    setAuthToken().then(() => dispatch(setCurrentUser(null)));
+    setAuthToken()
+      .then(() => dispatch(setCurrentUser(null)))
+      .then(() => {
+        navigation.navigate("Signin", { loggedout: true });
+      });
   };
 };
 
@@ -219,5 +227,68 @@ export const setCurrentUser = user => {
     } else {
       return dispatch({ type: actionTypes.LOGOUT_USER, payload: { user } });
     }
+  };
+};
+
+export const changePassword = (currentPass, newPass, navigation, userEmail) => {
+  axios.defaults.headers.common = {
+    ...axios.defaults.headers.common,
+    "Content-Type": "application/x-www-form-urlencoded"
+  };
+  return dispatch => {
+    dispatch({
+      type: actionTypes.CHANGE_PASSWORD,
+      payload: { success: false }
+    });
+    instance
+      .put("changePassword", {
+        current_password: currentPass,
+        password: newPass
+      })
+      .then(response => {
+        showMessage({
+          message: response.data.message,
+          type: response.data.success ? "success" : "warning",
+          position: "top"
+        });
+        const temPwd = navigation.getParam("temp_pwd", false);
+        // if tempPwd change relogin for setting new auth token
+        if (temPwd && response.data.success) {
+          dispatch(
+            login(
+              {
+                email: userEmail,
+                emailError: null,
+                password: newPass,
+                passwordError: ""
+              },
+              navigation
+            )
+          );
+        } else if (response.data.success) {
+          navigation.goBack();
+        }
+        return dispatch({
+          type: actionTypes.CHANGE_PASSWORD,
+          payload: response.data
+        });
+      })
+      .catch(err => {
+        console.log("changePasswordError", err.message || err.response);
+
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
+
+        return dispatch({
+          type: actionTypes.ERROR_CHANGE_PASSWORD,
+          payload: {
+            success: false
+          }
+        });
+      });
   };
 };

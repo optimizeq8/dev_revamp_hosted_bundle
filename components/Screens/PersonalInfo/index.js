@@ -1,40 +1,27 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  BackHandler
+  BackHandler,
+  Platform,
+  PixelRatio
 } from "react-native";
-import { LinearGradient } from "expo";
-import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text, Item, Input, Label } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
+import Header from "../../MiniComponents/Header";
 
 //icons
-import ChangePassIcon from "../../../assets/SVGs/MenuIcons/ChangePassIcon";
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PersonalInfo from "../../../assets/SVGs/Person";
+import PersonalInfoIcon from "../../../assets/SVGs/Person";
+
 // Style
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
-import * as actionCreators from "../../../store/actions/";
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
+import { connect } from "react-redux";
 
-class ChangePassword extends Component {
+class PersonalInfo extends Component {
   static navigationOptions = {
     header: null
   };
@@ -77,37 +64,9 @@ class ChangePassword extends Component {
         style={{ flex: 1, backgroundColor: "#0000" }}
         forceInset={{ bottom: "never" }}
       >
-        <View
-          style={{
-            justifyContent: "space-between",
-            zIndex: 13,
-            // top: 40,
-            //padding: 2,
-            flexDirection: "row",
-            backgroundColor: "#0000"
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={{
-              left: 5,
-              flex: 0,
-              top: hp(1),
-              left: wp(6)
-              // width: wp(5),
-              //height: hp(5),
-              //position: "absolute"
-            }}
-          >
-            <BackIcon width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-        <Text
-          style={[styles.title, { alignSelf: "center", textAlign: "center" }]}
-        >
-          Personal Info
-        </Text>
-        <PersonalInfo
+        <Header title={"Personal Info"} navigation={this.props.navigation} />
+
+        <PersonalInfoIcon
           style={{
             alignSelf: "center",
             marginTop: 20
@@ -115,11 +74,8 @@ class ChangePassword extends Component {
           width={55}
           height={55}
         />
-        <View style={styles.mainCard}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.mainCard}>
             <KeyboardShift>
               {() => (
                 <View style={styles.contentContainer}>
@@ -147,6 +103,10 @@ class ChangePassword extends Component {
                       style={[
                         styles.input,
                         {
+                          // fontSize:
+                          //   Platform.OS === "android"
+                          //     ? 14 / PixelRatio.getFontScale()
+                          //     : 14,
                           marginBottom: 30,
                           borderColor: this.state.inputPR
                             ? "#7039FF"
@@ -161,6 +121,10 @@ class ChangePassword extends Component {
                           styles.label,
                           {
                             bottom: 5
+                            // fontSize:
+                            //   Platform.OS === "android"
+                            //     ? 14 / PixelRatio.getFontScale()
+                            //     : 14
                           }
                         ]}
                       >
@@ -190,7 +154,11 @@ class ChangePassword extends Component {
                         style={[
                           styles.label,
                           {
-                            bottom: 5
+                            bottom: 5,
+                            fontSize:
+                              Platform.OS === "android"
+                                ? 14 / PixelRatio.getFontScale()
+                                : 14
                           }
                         ]}
                       >
@@ -220,8 +188,8 @@ class ChangePassword extends Component {
                 </View>
               )}
             </KeyboardShift>
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     );
   }
@@ -233,4 +201,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(ChangePassword);
+)(PersonalInfo);

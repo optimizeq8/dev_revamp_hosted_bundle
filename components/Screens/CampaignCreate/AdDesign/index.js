@@ -12,7 +12,6 @@ import {
   WebBrowser
 } from "expo";
 import {
-  SafeAreaView,
   View,
   TouchableOpacity,
   Image,
@@ -34,6 +33,8 @@ import {
   Icon
 } from "native-base";
 import BackButton from "../../../MiniComponents/BackButton";
+import CustomHeader from "../../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
@@ -51,8 +52,8 @@ import { colors } from "../../../GradiantColors/colors";
 //Validator
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
-  heightPercentageToDP,
-  widthPercentageToDP
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
 import Modal from "react-native-modal";
@@ -60,6 +61,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CloseButton from "../../../MiniComponents/CloseButton";
+import isNull from "lodash/isNull";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -213,32 +215,49 @@ class AdDesign extends Component {
     this.setState({ directory: "/ImagePicker/" });
     let newWidth = result.width;
     let newHeight = result.height;
-    if (
-      result.type === "image" &&
-      Math.floor(result.width / 9) !== Math.floor(result.height / 16)
-    ) {
-      if (
-        result.width <= result.height &&
-        result.width > 1080 &&
-        result.height > 1920
-      ) {
-        //newHeight = (result.width / 9) * 16;
-        newWidth = Math.floor((result.height / 16) * 9);
+    if (result.type === "image") {
+      if (result.width > 1080 && result.height > 1920) {
+        if (result.width <= result.height) {
+          newWidth = Math.floor((result.height / 16) * 9);
+        } else {
+          newWidth = 1080;
+          newHeight = 1920;
+        }
+        console.log("width:", newWidth);
+        console.log("height:", newHeight);
 
         const manipResult = await ImageManipulator.manipulateAsync(result.uri, [
           {
             crop: {
-              originX: 0,
-              originY: 0,
+              originX: result.width / 2 - newWidth / 2,
+              originY: result.height / 2 - newHeight / 2,
               width: newWidth,
               height: newHeight
             }
           }
         ]);
+
+        console.log("width:", manipResult.width);
+        console.log("height:", manipResult.height);
+
         this.setState({ directory: "/ImageManipulator/" });
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
+      } else {
+        showMessage({
+          message: "Please choose a media file!",
+          position: "top",
+          type: "warning"
+        });
+        this.setState({
+          imageError:
+            "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
+          image: null
+        });
+        this.onToggleModal(false);
+
+        return;
       }
     }
 
@@ -277,19 +296,22 @@ class AdDesign extends Component {
         });
       } else {
         this.setState({
-          imageError: "Media size must be in 9:16 aspect ratio.",
+          imageError:
+            "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
           image: null
         });
         this.onToggleModal(false);
       }
     } else {
+      //if (isNull(this.state.image))
       showMessage({
         message: "Please choose a media file!",
         position: "top",
         type: "warning"
       });
       this.setState({
-        imageError: "Media size must be in 9:16 aspect ratio.",
+        imageError:
+          "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
         image: null
       });
       this.onToggleModal(false);
@@ -659,7 +681,6 @@ class AdDesign extends Component {
       </>
     );
 
-
     let swipeDestination = (
       <TouchableOpacity
         style={styles.swipeUp}
@@ -702,41 +723,22 @@ class AdDesign extends Component {
       />
     );
     return (
-      <SafeAreaView style={{ height: "100%" }}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-
+      <SafeAreaView
+        style={{ height: "100%", backgroundColor: "#0000" }}
+        forceInset={{ bottom: "never" }}
+      >
         <Container style={styles.container}>
-          <Header transparent noShadow iosBarStyle={"light-content"}>
-            <Left
-              style={{ alignItems: "center", alignSelf: "center", flex: 0 }}
-            >
-              <BackButton
-                screenname="Ad Design"
-                businessname={this.props.mainBusiness.businessname}
-                navigation={this.props.navigation.goBack}
-                style={{ top: 0, left: 0 }}
-              />
-            </Left>
-            <Body
-              style={[
-                {
-                  alignItems: "center",
-                  alignSelf: "center",
-                  width: "100%"
-                }
-              ]}
-            >
-              <Text style={[styles.title, { width: "100%" }]}>Compose Ad</Text>
-            </Body>
-            {/* <Right /> */}
-          </Header>
-
+          <CustomHeader
+            closeButton={false}
+            segment={{
+              str: "Ad Design Back Button",
+              obj: { businessname: this.props.mainBusiness.businessname }
+            }}
+            navigation={this.props.navigation}
+            title="Compose Ad"
+          />
           <Content
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={{ flexGrow: 1, marginTop: hp(3) }}
             scrollEnabled={false}
             padder
           >
@@ -812,7 +814,7 @@ class AdDesign extends Component {
                   textAlign: "center",
                   color: "#fff",
                   fontFamily: "montserrat-medium",
-                  fontSize: heightPercentageToDP(1.7)
+                  fontSize: hp(1.7)
                 }}
               >
                 {!this.state.imageError.includes("blank")
@@ -839,19 +841,13 @@ class AdDesign extends Component {
                   style={[styles.button]}
                   onPress={() => this.perviewHandler()}
                 >
-                  <EyeIcon
-                    width={widthPercentageToDP(24)}
-                    height={heightPercentageToDP(8)}
-                  />
+                  <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={this._handleSubmission}
                   style={styles.button}
                 >
-                  <ForwardButton
-                    width={widthPercentageToDP(24)}
-                    height={heightPercentageToDP(8)}
-                  />
+                  <ForwardButton width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
               </View>
             ) : (
@@ -890,7 +886,7 @@ class AdDesign extends Component {
                 style={[
                   styles.title,
                   {
-                    top: heightPercentageToDP(12),
+                    top: hp(12),
                     left: "0%",
                     alignSelf: "center"
                   }

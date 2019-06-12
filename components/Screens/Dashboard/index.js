@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import {
   View,
   TouchableOpacity,
@@ -8,26 +7,21 @@ import {
   TouchableWithoutFeedback,
   BackHandler
 } from "react-native";
-import { Button, Content, Text, Container } from "native-base";
+import { Button, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
-import isNull from "lodash/isNull";
 import { SafeAreaView } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import { Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "react-native-side-menu";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
 import Menu from "../Menu";
-import * as actionCreators from "../../../store/actions";
 import * as Animatable from "react-native-animatable";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
@@ -37,6 +31,17 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
 // Style
 import styles from "./styles";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+//Functions
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import isNull from "lodash/isNull";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -87,7 +92,10 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.mainBusiness !== this.props.mainBusiness) {
+    if (
+      this.props.mainBusiness &&
+      prevProps.mainBusiness !== this.props.mainBusiness
+    ) {
       if (
         this.props.mainBusiness &&
         !this.props.mainBusiness.snap_ad_account_id
@@ -186,22 +194,19 @@ class Dashboard extends Component {
       }
     };
 
-    let menu = (
+    let menu = !this.state.open ? (
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
       />
-    );
+    ) : null;
     if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
       return (
         <>
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else if (
-      isNull(this.props.mainBusiness) &&
-      !this.props.loadingAccountMgmt
-    ) {
+    } else if (!this.props.mainBusiness && !this.props.loadingAccountMgmt) {
       return (
         <ErrorComponent
           dashboard={true}
@@ -223,7 +228,7 @@ class Dashboard extends Component {
             <View
               style={{
                 justifyContent: "center",
-                // zIndex: 10,
+                zIndex: 10,
                 display: this.state.sidemenustate ? "none" : "flex",
                 height: 40,
                 backgroundColor: "#0000",
@@ -287,7 +292,7 @@ class Dashboard extends Component {
             style={{
               zIndex: 1,
               display: this.state.open ? "none" : "flex",
-              height: hp(100)
+              height: "100%"
             }}
           >
             <Container style={styles.container}>
@@ -296,7 +301,7 @@ class Dashboard extends Component {
                   if (isOpen === false) this._handleSideMenuState(isOpen);
                 }}
                 disableGestures={true}
-                menu={this.state.sidemenustate ? menu : null}
+                menu={menu}
                 menuPosition="right"
                 openMenuOffset={wp("85%")}
                 isOpen={this.state.sidemenustate}

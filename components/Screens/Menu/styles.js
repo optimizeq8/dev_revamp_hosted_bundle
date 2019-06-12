@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center"
   },
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   buttontext: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    fontSize: heightPercentageToDP(5) < 40 ? 9 : 12
+    fontSize: 12
   },
   businessTitle: {
     alignSelf: "center",

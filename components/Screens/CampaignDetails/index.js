@@ -1,10 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Image, ImageBackground, Animated } from "react-native";
-import { Card, Text, Container, Icon } from "native-base";
+
+import {
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+  Dimensions,
+  Animated,
+  TouchableWithoutFeedback,
+  Platform,
+  Modal
+} from "react-native";
+import { Card, Button, Text, Container, Icon } from "native-base";
 import dateFormat from "dateformat";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
+import Header from "../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
 import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView, Segment } from "expo";
 import { interestNames } from "./interesetNames";
@@ -275,13 +288,21 @@ class CampaignDetails extends Component {
               height: "100%"
             }}
           >
-            <Container style={styles.container}>
-              <CloseButton
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
+              forceInset={{ bottom: "never" }}
+            >
+              <Container style={styles.container}>
+                <Header
+                  closeButton={true}
+                  navigation={this.props.navigation}
+                  selectedCampaign={selectedCampaign}
+                />
+                 <CloseButton
                 navigation={() => {
                   this.props.navigation.goBack();
                 }}
               />
-
               <Text
                 onPress={() =>
                   !loading &&
@@ -365,6 +386,7 @@ class CampaignDetails extends Component {
                         </Text>
                       </View>
                     )}
+
                   </View>
                 )}
                 {loading ? (
@@ -461,7 +483,8 @@ class CampaignDetails extends Component {
                   <View style={{ flexDirection: "column" }}>
                     <View
                       style={{
-                        flexDirection: "row"
+                        flexDirection: "column",
+                        alignSelf: "center"
                       }}
                     >
                       <GenderIcon width={hp("2")} height={hp("2")} />
@@ -504,7 +527,7 @@ class CampaignDetails extends Component {
                     </View>
                     <View
                       style={{
-                        flexDirection: "row",
+                        flexDirection: "column",
                         alignSelf: "center"
                       }}
                     >

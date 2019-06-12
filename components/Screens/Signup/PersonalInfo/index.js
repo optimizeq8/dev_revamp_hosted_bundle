@@ -101,7 +101,7 @@ class PersonalInfo extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView contentContainerStyle={{ flex: 1, marginVertical: 10 }}>
+        <ScrollView contentContainerStyle={styles.scrollViewStyleContainer}>
           <KeyboardShift>
             {() => (
               <View style={styles.contentContainer}>
@@ -121,18 +121,19 @@ class PersonalInfo extends Component {
                   <Label
                     style={[
                       styles.inputtext,
+                      styles.labelInputText,
                       {
-                        bottom: 5,
-                        flexDirection: "column",
                         color: this.state.inputF ? "#FF9D00" : "#717171"
                       }
                     ]}
                   >
                     <Icon
-                      style={{
-                        fontSize: 20,
-                        color: this.state.inputF ? "#FF9D00" : "#717171"
-                      }}
+                      style={[
+                        styles.iconSize,
+                        {
+                          color: this.state.inputF ? "#FF9D00" : "#717171"
+                        }
+                      ]}
                       name="person"
                       type="MaterialIcons"
                     />
@@ -179,9 +180,8 @@ class PersonalInfo extends Component {
                   <Label
                     style={[
                       styles.inputtext,
-
+                      styles.labelInputText,
                       {
-                        bottom: 5,
                         color: this.state.inputL ? "#FF9D00" : "#717171"
                       }
                     ]}
@@ -231,18 +231,20 @@ class PersonalInfo extends Component {
                   <Label
                     style={[
                       styles.inputtext,
+                      styles.labelInputText,
                       {
-                        bottom: 5,
                         flexDirection: "row",
                         color: this.state.inputE ? "#FF9D00" : "#717171"
                       }
                     ]}
                   >
                     <Icon
-                      style={{
-                        fontSize: 20,
-                        color: this.state.inputE ? "#FF9D00" : "#717171"
-                      }}
+                      style={[
+                        styles.iconSize,
+                        {
+                          color: this.state.inputE ? "#FF9D00" : "#717171"
+                        }
+                      ]}
                       name="mail"
                       type="MaterialIcons"
                     />
@@ -274,15 +276,7 @@ class PersonalInfo extends Component {
                   />
                 </Item>
                 {this.state.emailError ? (
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: "#717171",
-                      fontFamily: "montserrat-regular",
-                      fontSize: 15,
-                      bottom: 40
-                    }}
-                  >
+                  <Text style={styles.emailErrorText}>
                     {this.state.emailError}
                   </Text>
                 ) : null}
@@ -345,18 +339,7 @@ class PersonalInfo extends Component {
                 </Item>
                 {this.state.passwordError &&
                 this.state.passwordError.includes("8 characters") ? (
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        bottom: 40,
-                        paddingVertical: 0,
-                        paddingTop: 0,
-                        marginBottom: 0,
-                        paddingVertical: 0
-                      }
-                    ]}
-                  >
+                  <Text style={[styles.text, styles.passwordErrorText]}>
                     {this.state.passwordError}
                   </Text>
                 ) : null}
@@ -406,17 +389,7 @@ class PersonalInfo extends Component {
 
                 {this.state.repasswordError !== "" &&
                 this.state.userInfo.password !== "" ? (
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        bottom: 15,
-                        paddingTop: 0,
-                        marginBottom: 0,
-                        paddingVertical: 0
-                      }
-                    ]}
-                  >
+                  <Text style={[styles.text, styles.repasswordErrorText]}>
                     {this.state.repasswordError}
                   </Text>
                 ) : null}

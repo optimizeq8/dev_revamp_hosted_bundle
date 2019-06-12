@@ -1,9 +1,18 @@
+import { StyleSheet } from "react-native";
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-
-export default (sectionStyle = {
+export const colors = {
+  subItemBackground: "transparent",
+  itemBackground: "transparent",
+  chipColor: "#fff",
+  primary: "#FF9D00",
+  searchPlaceholderTextColor: "#fff",
+  searchSelectionColor: "#fff"
+};
+export default (styles = StyleSheet.create({
   selectToggle: {
     marginBottom: 30,
     borderBottomWidth: 0.5,
@@ -52,13 +61,5 @@ export default (sectionStyle = {
     height: 50,
     alignSelf: "center"
   },
-  confirmText: { color: "#fff" },
-  colors: {
-    subItemBackground: "transparent",
-    itemBackground: "transparent",
-    chipColor: "#fff",
-    primary: "#FF9D00",
-    searchPlaceholderTextColor: "#fff",
-    searchSelectionColor: "#fff"
-  }
-});
+  confirmText: { color: "#fff" }
+}));

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -6,8 +6,51 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  touchableViewContainer: {
+    backgroundColor: "#751AFF",
+    flex: 1
+  },
+  block1: {
+    alignSelf: "center",
+    width: 380,
+    backgroundColor: "#751AFF",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "center",
+    marginBottom: 20
+  },
+  block1ButtonLeft: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 15,
+    borderTopStartRadius: 15
+  },
+  block1ButtonRight: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 15,
+    borderTopEndRadius: 15
+  },
+  textCenter: {
+    textAlign: "center"
+  },
+  nameErrorText: { paddingTop: 0, marginBottom: 0, bottom: 20 },
+  pickerInputText: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    color: "rgb(113,113,113)"
+  },
+  iconDownCountry: {
+    color: "#5F5F5F",
+    fontSize: 20,
+    left: 25
+  },
+  left25: {
+    left: 25
+  },
   title: { color: "#000", fontSize: 48 },
-  container: {
+  block2: {
     justifyContent: "center",
     borderTopStartRadius: 30,
     backgroundColor: "#fff",
@@ -18,6 +61,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: -3 },
     flex: 1
+  },
+  block3: {
+    backgroundColor: "#fff"
   },
   text: {
     textAlign: "center",
@@ -36,7 +82,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center"
   },
@@ -87,11 +133,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    height: 100
+    height: 100,
+    justifyContent: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
-  }
+  },
+  iconSize: { fontSize: 20 }
 });
 
 export default styles;

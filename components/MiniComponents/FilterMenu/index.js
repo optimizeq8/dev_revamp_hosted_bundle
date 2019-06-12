@@ -27,7 +27,9 @@ class FilterMenu extends Component {
       selected: "A"
     };
   }
-
+  componentWillUnmount() {
+    console.log("Here!");
+  }
   handleStartDatePicked = date => {
     this.setState({
       start_time: date

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center"
   },

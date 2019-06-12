@@ -28,10 +28,12 @@ const reducer = (state = initialState, action) => {
         loading: action.payload.loading
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
+      let main = action.payload.data.business_accounts[action.payload.index]
+        ? action.payload.data.business_accounts[action.payload.index]
+        : action.payload.data.business_accounts[0];
       return {
         ...state,
-        mainBusiness:
-          action.payload.data.business_accounts[action.payload.index],
+        mainBusiness: main,
         businessAccounts: action.payload.data.business_accounts,
         loading: false
       };

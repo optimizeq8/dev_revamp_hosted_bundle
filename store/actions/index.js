@@ -2,7 +2,7 @@ export {
   changeBusiness,
   getBusinessAccounts,
   createBusinessAccount,
-  changePassword,
+  //   changePassword,
   addressForm,
   getAddressForm,
   create_snapchat_ad_account
@@ -57,7 +57,8 @@ export {
   forgotPassword,
   clearPushToken,
   setCurrentUser,
-  send_push_notification
+  send_push_notification,
+  changePassword
 } from "./loginActions";
 
 export {

@@ -12,14 +12,15 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   placeholder1: {
-    opacity: 0.4,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
     height: "100%",
     zIndex: 0,
     justifyContent: "center",
-    position: "absolute"
+    position: "absolute",
+    // borderTopStartRadius: 0,
+    borderBottomLeftRadius: 0
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
@@ -32,11 +33,10 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   container: {
-    // marginTop: 30,
-    backgroundColor: "black",
-    height: "100%",
-    flex: 1,
-    width: "100%"
+    backgroundColor: "#0000"
+    // height: "100%",
+    // flex: 1,
+    // width: "100%"
   },
   textcontainer: {
     flex: 1,

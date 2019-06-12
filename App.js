@@ -19,10 +19,10 @@ Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 
 Label.defaultProps = Label.defaultProps || {};
-Label.defaultProps.allowFontScaling = false;
+Label.defaultProps.allowFontScaling = true;
 
 Input.defaultProps = Input.defaultProps || {};
-Input.defaultProps.allowFontScaling = false;
+Input.defaultProps.allowFontScaling = true;
 
 import { TextInputMask } from "react-native-masked-text";
 
@@ -209,7 +209,10 @@ class App extends React.Component {
           />
           <View
             style={{
-              height: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+              height:
+                Platform.OS === "ios"
+                  ? 0
+                  : StatusBar.currentHeight - StatusBar.currentHeight / 4 + 10,
               backgroundColor: "transparent"
             }}
           />
@@ -223,8 +226,9 @@ class App extends React.Component {
                 }}
               />
             </Root>
-            <FlashMessage icon="auto" duration={4000} position="top" />
           </View>
+          <FlashMessage icon="auto" duration={4000} position="top" />
+
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>
       );

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -7,9 +7,8 @@ import { globalColors } from "../../../Global Styles";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     height: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)"
+    backgroundColor: "#0000"
   },
   image: {
     alignSelf: "center",
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   mainCard: {
-    top: hp("2"),
     borderColor: "transparent",
     backgroundColor: "transparent",
     flex: 1,
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center"
   },

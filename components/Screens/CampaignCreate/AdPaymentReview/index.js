@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
   Dimensions,
-  SafeAreaView,
   Platform
 } from "react-native";
 import {
@@ -22,12 +21,19 @@ import { LinearGradient, Segment, Video } from "expo";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import dateFormat from "dateformat";
 import formatNumber from "../../../formatNumber";
+import CustomHeader from "../../../MiniComponents/Header";
+import { SafeAreaView } from "react-navigation";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
 import BackButton from "../../../MiniComponents/BackButton";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-
+import isUndefined from "lodash/isUndefined";
 class AdPaymentReview extends Component {
   static navigationOptions = {
     header: null
@@ -104,7 +110,7 @@ class AdPaymentReview extends Component {
     });
   }
   render() {
-    if (this.props.loading) {
+    if (this.props.loading || isUndefined(this.props.data.targeting)) {
       return <LoadingScreen top={50} />;
     } else {
       let targeting = this.props.data.targeting;
@@ -137,25 +143,35 @@ class AdPaymentReview extends Component {
 
       const image = this.props.image;
       return (
-        <SafeAreaView style={styles.safeAreaContainer}>
-          <LinearGradient
-            colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
-            style={styles.gradient}
+        <SafeAreaView
+          style={{ height: "100%", flex: 1 }}
+          forceInset={{ bottom: "never" }}
+        >
+          <CustomHeader
+            closeButton={false}
+            segment={{
+              str: "Ad Payment Review Back Button",
+              obj: {
+                businessname: this.props.mainBusiness.businessname
+              }
+            }}
+            navigation={this.props.navigation}
+            title="Review Selection"
           />
           <Container
             style={[
               styles.container,
               {
-                marginTop:
-                  Platform.OS === "ios" && !this.isIphoneXorAbove()
-                    ? 20
-                    : Platform.OS === "android"
-                    ? 40
-                    : -45,
+                marginTop: hp(2)
 
-                // bottom: this.isIphoneXorAbove() ? -100 : 0,
-                top: Platform.OS === "ios" && this.isIphoneXorAbove() ? 40 : 0
+                // marginTop:
+                //   Platform.OS === "ios" && !this.isIphoneXorAbove()
+                //     ? 20
+                //     : Platform.OS === "android"
+                //     ? 40
+                //     : -45,
+                // // bottom: this.isIphoneXorAbove() ? -100 : 0,
+                // top: Platform.OS === "ios" && this.isIphoneXorAbove() ? 40 : 0
               }
             ]}
           >
@@ -209,9 +225,12 @@ class AdPaymentReview extends Component {
             >
               <Content
                 scrollEnabled={false}
-                contentContainerStyle={{ flex: 1 }}
+                contentContainerStyle={{
+                  flex: 1,
+                  paddingTop: hp(2)
+                }}
               >
-                <Header transparent noShadow iosBarStyle={"light-content"}>
+                {/* <Header transparent noShadow iosBarStyle={"light-content"}>
                   <Left style={{ flex: 0 }}>
                     <BackButton
                       navigation={this.props.navigation.goBack}
@@ -222,7 +241,7 @@ class AdPaymentReview extends Component {
                   <Body>
                     <Text style={[styles.headline]}>Review your selection</Text>
                   </Body>
-                </Header>
+                </Header> */}
                 <Content
                   scrollEnabled={false}
                   contentContainerStyle={{ flex: 1 }}
@@ -253,7 +272,10 @@ class AdPaymentReview extends Component {
                           title: "Business Name",
                           content: this.props.data.brand_name
                         },
-                        { title: "Headline", content: this.props.data.headline }
+                        {
+                          title: "Headline",
+                          content: this.props.data.headline
+                        }
                       ]}
                     />
 
@@ -334,12 +356,36 @@ class AdPaymentReview extends Component {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text style={styles.text}>Budget</Text>
-                      {/* <Text style={styles.text}>Agency Fee</Text> */}
-                      <Text style={[styles.text, { color: "#FF9D00" }]}>
-                        {this.props.data.lifetime_budget_micro} $
-                      </Text>
-                      {/* <Text style={styles.text}>20 $</Text> */}
+                      <View
+                        style={{
+                          flexDirection: "column"
+                        }}
+                      >
+                        <Text style={[styles.text, { textAlign: "left" }]}>
+                          Budget
+                        </Text>
+                        {/* <Text style={[styles.text, { textAlign: "left" }]}>
+                          Agency Fee
+                        </Text> */}
+                      </View>
+                      <View style={{ flexDirection: "column" }}>
+                        <Text
+                          style={[
+                            styles.text,
+                            { color: "#FF9D00", textAlign: "right" }
+                          ]}
+                        >
+                          {this.props.data.lifetime_budget_micro} $
+                        </Text>
+                        {/* <Text
+                          style={[
+                            styles.text,
+                            { color: "#FF9D00", textAlign: "right" }
+                          ]}
+                        >
+                          {this.props.data.lifetime_budget_micro * 0.1} $
+                        </Text> */}
+                      </View>
                     </View>
                     {/* <View
                   style={{
@@ -365,8 +411,8 @@ class AdPaymentReview extends Component {
                     borderTopWidth: 0,
                     height: 100,
                     backgroundColor: "#FF9D00",
-                    borderTopStartRadius: 30,
-                    borderTopEndRadius: 30,
+                    borderTopStartRadius: 35,
+                    borderTopEndRadius: 35,
                     marginLeft: 0,
                     marginRight: 0,
                     width: "100%"

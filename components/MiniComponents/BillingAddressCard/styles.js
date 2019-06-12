@@ -12,7 +12,16 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20
+    // paddingTop: 20
+  },
+
+  headerBlock: {
+    marginBottom: 10
+  },
+
+  addressIcon: {
+    alignSelf: "center",
+    marginTop: 20
   },
   title: {
     textAlign: "center",
@@ -27,7 +36,8 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.orange,
     alignSelf: "center",
     borderRadius: 50,
-    top: "30%",
+    // top: "30%",
+    marginTop: 30,
     height: 50,
     justifyContent: "center",
     shadowColor: "#000",

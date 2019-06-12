@@ -1,34 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableWithoutFeedback
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Thumbnail,
-  Spinner
-} from "native-base";
+import { View, ScrollView } from "react-native";
+import { Button, Text, Container } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class BusinessList extends Component {
   static navigationOptions = {
@@ -54,23 +34,14 @@ class BusinessList extends Component {
         />
         <View padder style={[styles.mainCard]}>
           <Text style={styles.title}>Switch Account</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignSelf: "center",
-              marginBottom: 20,
-              paddingBottom: 10
-            }}
-          >
-            <Text style={[styles.text, { alignSelf: "center", marginTop: 5 }]}>
-              You can switch between businesses here.
-            </Text>
-          </View>
+          <Text style={[styles.text, styles.switchAccountText]}>
+            You can switch between businesses here.
+          </Text>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
           </ScrollView>
           <Button
-            style={[styles.bottomCard, { justifyContent: "center" }]}
+            style={[styles.bottomCard]}
             onPress={() =>
               this.props.navigation.navigate("CreateBusinessAccount")
             }

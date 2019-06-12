@@ -8,17 +8,22 @@ import styles from "./styles";
 import LocationIcon from "../../../assets/SVGs/Location";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 import { Button, Icon } from "native-base";
-import SectionStyle from "./SectionStyle";
+import { SafeAreaView } from "react-navigation";
+
+import SectionStyle, { colors } from "./SectionStyle";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class RegionAndAreas extends Component {
   render() {
     return (
-      <>
+      <SafeAreaView
+        forceInset={{ bottom: "never" }}
+        style={[styles.container, { flex: 1, justifyContent: "space-around" }]}
+      >
         <View>
           <View
             style={{
-              top: 40,
+              //   marginTop: 40,
               alignItems: "center"
             }}
           >
@@ -31,7 +36,7 @@ export default class RegionAndAreas extends Component {
           >
             <PlusCircle width={53} height={53} />
           </Button>
-          <Text style={[styles.title, { top: "45%" }]}>
+          <Text style={[styles.title, { marginTop: 30 }]}>
             {this.props.selectedObjectets.length > 0
               ? this.props.selectedObjectets[0].name
               : this.props.area
@@ -77,7 +82,7 @@ export default class RegionAndAreas extends Component {
             subKey="areas"
             styles={SectionStyle}
             confirmText={"\u2714"}
-            colors={SectionStyle.colors}
+            colors={colors}
             searchIconComponent={
               <Icon
                 type="MaterialCommunityIcons"
@@ -89,7 +94,7 @@ export default class RegionAndAreas extends Component {
             selectText="Select Interests"
             noItemsComponent={
               <Text style={styles.text}>
-                Sorry, no interests for selected country
+                Sorry, no areas for selected country
               </Text>
             }
             modalAnimationType="fade"
@@ -102,13 +107,11 @@ export default class RegionAndAreas extends Component {
             selectedItems={this.props.selectedItems}
           />
         </View>
+
         {this.props.selectedItems.length > 0 || this.props.area ? (
-          <LowerButton
-            function={this.props._handleSideMenuState}
-            bottom={-50}
-          />
+          <LowerButton function={this.props._handleSideMenuState} bottom={0} />
         ) : null}
-      </>
+      </SafeAreaView>
     );
   }
 }
