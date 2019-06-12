@@ -1,9 +1,8 @@
+//Components
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { View, TouchableOpacity, BackHandler } from "react-native";
-import isEqual from "lodash/isEqual";
-import { LinearGradient, Segment } from "expo";
-import { Text, Container } from "native-base";
+import { View, BackHandler } from "react-native";
+import { Segment } from "expo";
+import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
@@ -13,19 +12,19 @@ import Header from "../../MiniComponents/Header";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Icons
 import Address from "../../../assets/SVGs/Location";
-import BackIcon from "../../../assets/SVGs/BackButton.svg";
-import globalStyles from "../../../Global Styles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
+import { connect } from "react-redux";
 
+//Functions
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 import Countries from "../../MiniComponents/BillingAddressCard/Countries";
+import isEqual from "lodash/isEqual";
 
 class AddressForm extends Component {
   static navigationOptions = {

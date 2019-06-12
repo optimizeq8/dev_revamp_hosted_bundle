@@ -1,7 +1,6 @@
 //Components
 import React, { Component } from "react";
 import {
-  LinearGradient,
   ImagePicker,
   Permissions,
   Video,
@@ -9,7 +8,9 @@ import {
   Segment,
   ImageManipulator,
   Linking,
-  WebBrowser
+  WebBrowser,
+  BlurView,
+  LinearGradient
 } from "expo";
 import {
   View,
@@ -25,29 +26,23 @@ import {
   Item,
   Input,
   Container,
-  Header,
-  Body,
-  Left,
-  Right,
   Footer,
   Icon
 } from "native-base";
-import BackButton from "../../../MiniComponents/BackButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
+
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //icons
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
-// import BackButton from "../../../../assets/SVGs/BackButton";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 
 //Validator
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
@@ -56,7 +51,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import { Transition } from "react-navigation-fluid-transitions";
-import Modal from "react-native-modal";
+import { Modal } from "react-native-paper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
@@ -196,14 +191,16 @@ class AdDesign extends Component {
   };
   pick = async () => {
     await this.askForPermssion();
-    let result = ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 1,
-      aspect: [9, 16],
-      allowsEditing: Platform.OS === "android"
+      quality: 1
+      //aspect: [9, 16],
+      //allowsEditing: Platform.OS === "android"
     });
+
+    console.log("after picker", result);
 
     this.onToggleModal(true);
 
@@ -215,6 +212,7 @@ class AdDesign extends Component {
     this.setState({ directory: "/ImagePicker/" });
     let newWidth = result.width;
     let newHeight = result.height;
+
     if (result.type === "image") {
       if (result.width > 1080 && result.height > 1920) {
         if (result.width <= result.height) {
@@ -244,9 +242,10 @@ class AdDesign extends Component {
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
-      } else {
+      } else if (result.width < 1080 || result.height < 1920) {
         showMessage({
-          message: "Please choose a media file!",
+          message:
+            "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.\nAndroid's maximum image size is for height 2000.",
           position: "top",
           type: "warning"
         });
@@ -276,22 +275,43 @@ class AdDesign extends Component {
                 "Video must be less than 32 MBs and less than 10 seconds.",
               image: null
             });
+            showMessage({
+              message:
+                "Video must be less than 32 MBs and less than 10 seconds.",
+              position: "top",
+              type: "warning"
+            });
             this.onToggleModal(false);
+            return;
           } else if (result.type === "image" && file.size > 5000000) {
             this.setState({
               imageError: "Image must be less than 5 MBs",
               image: null
             });
             this.onToggleModal(false);
-          } else {
-            this.setState({
-              image: result.uri,
-              type: result.type.toUpperCase(),
-              imageError: null,
-              result: result.uri
+            showMessage({
+              message: "Image must be less than 5 MBs",
+              position: "top",
+              type: "warning"
             });
-            this.formatMedia();
+            return;
+          } else {
+            this.setState(
+              {
+                image: result.uri,
+                type: result.type.toUpperCase(),
+                imageError: null,
+                result: result.uri
+              },
+              () => this.formatMedia()
+            );
             this.onToggleModal(false);
+            showMessage({
+              message: "Image has been selected successfully ",
+              position: "top",
+              type: "success"
+            });
+            return;
           }
         });
       } else {
@@ -301,20 +321,28 @@ class AdDesign extends Component {
           image: null
         });
         this.onToggleModal(false);
+        showMessage({
+          message: "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.",
+          position: "top",
+          type: "warning"
+        });
+        return;
       }
-    } else {
-      //if (isNull(this.state.image))
+    } else if (!result.cancelled && isNull(this.state.image)) {
       showMessage({
-        message: "Please choose a media file!",
+        message: "Please choose a media file.",
         position: "top",
         type: "warning"
       });
       this.setState({
-        imageError:
-          "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
+        imageError: "Please choose a media file.",
         image: null
       });
       this.onToggleModal(false);
+      return;
+    } else {
+      this.onToggleModal(false);
+      return;
     }
   };
 
@@ -389,7 +417,6 @@ class AdDesign extends Component {
         position: "top",
         description: "Please try again later."
       });
-      // console.log(error);
     }
   };
 
@@ -488,7 +515,6 @@ class AdDesign extends Component {
       !this.state.swipeUpError &&
       !this.state.imageError
     ) {
-      let t = await this.formatMedia();
       Segment.trackWithProperties("Select Ad Design Button", {
         business_name: this.props.mainBusiness.businessname
       });
@@ -627,28 +653,13 @@ class AdDesign extends Component {
     const mediaButton = (
       <>
         <Button
-          style={[
-            styles.inputMiddleButton,
-            { flexDirection: "column", opacity: 1 }
-          ]}
+          style={styles.inputMiddleButton}
           onPress={() => {
             this._pickImage();
           }}
         >
-          <Icon
-            style={[styles.icon, { fontSize: 50, paddingTop: 12 }]}
-            name="camera"
-          />
-          <Text
-            style={{
-              textAlign: "center",
-              paddingTop: 23,
-              fontFamily: "montserrat-medium",
-              fontSize: 14,
-              width: 150,
-              color: "#FF9D00"
-            }}
-          >
+          <Icon style={styles.icon} name="camera" />
+          <Text style={styles.mediaButtonMsg}>
             {image
               ? Platform.OS === "ios"
                 ? "Edit Photo"
@@ -660,14 +671,7 @@ class AdDesign extends Component {
         </Button>
         {Platform.OS === "ios" && (
           <Text
-            style={[
-              styles.title,
-              {
-                position: "absolute",
-                top: "70%",
-                textDecorationLine: "underline"
-              }
-            ]}
+            style={styles.title}
             onPress={() =>
               this.props.getVideoUploadUrl(
                 this.props.campaign_id,
@@ -712,21 +716,17 @@ class AdDesign extends Component {
       </TouchableOpacity>
     );
 
-    let blankView = (
-      <View
-        style={{
-          backgroundColor: "rgba(0,0,0,0.5)",
-          opacity: 0.4,
-          height: "100%",
-          width: "100%"
-        }}
-      />
-    );
+    let blankView = <View style={styles.blankView} />;
     return (
       <SafeAreaView
-        style={{ height: "100%", backgroundColor: "#0000" }}
+        style={styles.mainSafeArea}
         forceInset={{ bottom: "never" }}
       >
+        <LinearGradient
+          colors={["#751AFF", "#6268FF"]}
+          locations={[0.3, 1]}
+          style={styles.gradient}
+        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}
@@ -738,14 +738,14 @@ class AdDesign extends Component {
             title="Compose Ad"
           />
           <Content
-            contentContainerStyle={{ flexGrow: 1, marginTop: hp(3) }}
+            contentContainerStyle={styles.contentContainer}
             scrollEnabled={false}
             padder
           >
-            <Transition style={{ height: "100%" }} shared="image">
-              <View style={[styles.buttonN]}>
+            <Transition style={styles.transition} shared="image">
+              <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
-                  <View style={[styles.placeholder]}>
+                  <View style={styles.placeholder}>
                     {this.state.videoIsLoading ? (
                       <LoadingScreen dash={true} />
                     ) : null}
@@ -761,13 +761,7 @@ class AdDesign extends Component {
                       isLooping
                       isMuted
                       resizeMode={"stretch"}
-                      style={[
-                        {
-                          width: "100%",
-                          height: "100%",
-                          opacity: 0.2
-                        }
-                      ]}
+                      style={styles.video}
                     />
 
                     {penIconBrand}
@@ -809,14 +803,7 @@ class AdDesign extends Component {
             </Transition>
 
             {!this.state.imageError ? null : (
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#fff",
-                  fontFamily: "montserrat-medium",
-                  fontSize: hp(1.7)
-                }}
-              >
+              <Text style={styles.errorMsg}>
                 {!this.state.imageError.includes("blank")
                   ? this.state.imageError
                   : "Please choose an image or video"}
@@ -829,14 +816,9 @@ class AdDesign extends Component {
             )}
           </Content>
 
-          <Footer style={[styles.footerStyle]}>
+          <Footer style={styles.footerStyle}>
             {image ? (
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
+              <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
                   style={[styles.button]}
                   onPress={() => this.perviewHandler()}
@@ -856,47 +838,41 @@ class AdDesign extends Component {
               </Text>
             )}
           </Footer>
-          <Modal
-            isVisible={
-              this.props.videoUrlLoading ||
-              this.props.loading ||
-              this.state.isVisible
-            }
-          >
-            <>
+        </Container>
+        <Modal
+          visible={
+            this.props.videoUrlLoading ||
+            this.props.loading ||
+            this.state.isVisible
+          }
+          animationType={"slide"}
+        >
+          <BlurView intensity={95} tint="dark">
+            <SafeAreaView style={styles.loadingSafeArea}>
               {this.props.loading && (
-                <Text
-                  style={[
-                    styles.footerTextStyle,
-                    { bottom: "20%", textAlign: "center", width: 250 }
-                  ]}
-                >
-                  Please make sure not to close the app or lock the phone while
-                  uploading.
-                </Text>
-              )}
-              {this.props.loading && (
-                <CloseButton
-                  style={{ position: "absolute", left: 0, top: "9.5%" }}
-                  navigation={() => this.cancelUpload()}
+                <CustomHeader
+                  closeButton={true}
+                  actionButton={() => this.cancelUpload()}
+                  title="Uploading Image"
                 />
               )}
+
               <LoadingScreen top={50} />
-              <Text
-                style={[
-                  styles.title,
-                  {
-                    top: hp(12),
-                    left: "0%",
-                    alignSelf: "center"
-                  }
-                ]}
-              >
-                {Math.round(this.state.loaded, 2)}%
-              </Text>
-            </>
-          </Modal>
-        </Container>
+              {this.props.loading && (
+                <View style={styles.loadingContainer}>
+                  <Text style={styles.uplaodPercentage}>
+                    {Math.round(this.state.loaded, 2)}%
+                  </Text>
+
+                  <Text style={styles.uplaodText}>
+                    Please make sure not to close {"\n"}the app or lock the
+                    phone while uploading.
+                  </Text>
+                </View>
+              )}
+            </SafeAreaView>
+          </BlurView>
+        </Modal>
       </SafeAreaView>
     );
   }
