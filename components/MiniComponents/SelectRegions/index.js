@@ -61,12 +61,14 @@ export default class SelectRegions extends Component {
               <Item>
                 <Input
                   placeholder="Search Region..."
-                  style={[styles.searchRegionText,{
-                    fontFamily: "montserrat-regular",
-                    color: "#fff",
-                    fontSize: 14 / PixelRatio.getFontScale()
-                  }]}
-
+                  style={[
+                    styles.searchRegionText,
+                    {
+                      fontFamily: "montserrat-regular",
+                      color: "#fff",
+                      fontSize: 14 / PixelRatio.getFontScale()
+                    }
+                  ]}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredR = this.props.regions.filter(c =>
@@ -76,9 +78,23 @@ export default class SelectRegions extends Component {
                   }}
                 />
               </Item>
-              <ScrollView style={[styles.regionListContainer]}>
-                {regionlist}
-              </ScrollView>
+              {this.props.countryName === "" ? (
+                <Text
+                  style={{
+                    paddingVertical: 20,
+                    color: "#FFFF",
+                    fontSize: 16,
+                    textAlign: "center",
+                    fontFamily: "montserrat-regular"
+                  }}
+                >
+                  Please select a country to see the regions
+                </Text>
+              ) : (
+                <ScrollView style={[styles.regionListContainer]}>
+                  {regionlist}
+                </ScrollView>
+              )}
             </View>
           </View>
 

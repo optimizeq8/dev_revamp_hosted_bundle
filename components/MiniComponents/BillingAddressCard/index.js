@@ -11,6 +11,7 @@ import isUndefined from "lodash/isUndefined";
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
 import KeyboardShift from "../KeyboardShift";
+import Header from "../Header";
 
 //Data
 import Countries from "./Countries";
@@ -22,6 +23,7 @@ import styles from "./styles";
 //Icons
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import Address from "../../../assets/SVGs/Location";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class BillingAddressCard extends React.Component {
     this.state = {
       country_code: this.props.country_code,
       region_id: [],
-      areas: kuwaitAreas[0].areas,
+      areas: [],
       sidemenustate: false,
       sidemenu: "",
       selectedItems: [],
@@ -202,10 +204,29 @@ class BillingAddressCard extends React.Component {
         openMenuOffset={wp("85%")}
         isOpen={this.props.sidemenustate}
       >
+        <View style={styles.headerBlock}>
+          <Header
+            title={"Billing Address"}
+            navigation={this.props.navigation}
+          />
+          {/* <TouchableOpacity
+                onPress={() => this.props.navigation.goBack()}
+                style={globalStyles.backButton}
+              >
+                <BackIcon />
+              </TouchableOpacity>
+              <Text style={styles.title}>Billing Address</Text> */}
+          <Address
+            fill="#fff"
+            style={styles.addressIcon}
+            width={55}
+            height={55}
+          />
+        </View>
         <View
           style={[
-            styles.mainCard,
-            { top: this.props.sidemenustate ? hp(20) : 0 }
+            styles.mainCard
+            // { top: this.props.sidemenustate ? hp(13) : 0 }
           ]}
         >
           <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>

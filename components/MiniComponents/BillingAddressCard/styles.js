@@ -14,6 +14,15 @@ const styles = StyleSheet.create({
   container: {
     // paddingTop: 20
   },
+
+  headerBlock: {
+    marginBottom: 10
+  },
+
+  addressIcon: {
+    alignSelf: "center",
+    marginTop: 20
+  },
   title: {
     textAlign: "center",
     color: "#fff",

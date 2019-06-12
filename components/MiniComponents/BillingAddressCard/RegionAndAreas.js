@@ -94,7 +94,7 @@ export default class RegionAndAreas extends Component {
             selectText="Select Interests"
             noItemsComponent={
               <Text style={styles.text}>
-                Sorry, no interests for selected country
+                Sorry, no areas for selected country
               </Text>
             }
             modalAnimationType="fade"
