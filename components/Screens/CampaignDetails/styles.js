@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: wp("100"),
+    // height: 200,
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
@@ -221,10 +222,16 @@ const styles = StyleSheet.create({
   boxStats: {
     top: 30,
     width: 140,
-    paddingVertical: "3%",
+    paddingVertical: "4%",
     paddingHorizontal: "5%",
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 15
+  },
+  wideBoxStat: {
+    width: "83%",
+    alignSelf: "center",
+    paddingVertical: "3%",
+    top: "18%"
   },
   stats: {
     textAlign: "center",
@@ -279,6 +286,17 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-semibold",
     color: "#fff",
     textAlign: "center"
+  },
+  boxStatsRow: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    top: hp(4)
+  },
+  mainMetrics: {
+    top: 50,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginBottom: 10
   }
 });
 

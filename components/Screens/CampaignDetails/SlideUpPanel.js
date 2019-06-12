@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   Text,
   View,
-  TouchableWithoutFeedback,
+  RefreshControl,
   Animated,
   ScrollView,
   TouchableOpacity
@@ -12,7 +12,7 @@ import { LinearGradient } from "expo";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import Duration from "../../Screens/CampaignCreate/AdObjective/Duration";
 import LineChartGraphs from "./LineChartGraphs";
-import CampaginStats from "./CampaignStats";
+import CampaginStats from "./CampStats/CampaignStats";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 import BarIcon from "../../../assets/SVGs/Bar.svg";
@@ -21,17 +21,30 @@ import { colors } from "../../GradiantColors/colors";
 
 import styles from "./styles";
 import ChartChoices from "./ChartChoices";
+
 export default class SlideUpPanel extends Component {
   _draggedValue = new Animated.Value(0);
   draggableRange = {
     top: hp(80),
-    bottom: 200
+    bottom: hp(27)
   };
   state = {
     chartAnimation: new Animated.Value(1),
     LineAnimation: new Animated.Value(0),
     chartChoice: "Spend",
-    gotStats: false
+    gotStats: false,
+    refreshing: false
+  };
+
+  _onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.props.getCampaignStats(this.props.selectedCampaign, {
+      // start_time: "2019-05-09",
+      // end_time: "2019-05-25"
+      start_time: selectedCampaign.start_time,
+      end_time: selectedCampaign.end_time
+    });
+    this.setState({ refreshing: false });
   };
   changeChart = chartChoice => {
     this.setState({ chartChoice });
@@ -97,10 +110,10 @@ export default class SlideUpPanel extends Component {
           onDragStart={() => {
             if (!this.state.gotStats)
               this.props.getCampaignStats(selectedCampaign, {
-                // start_time: "2019-05-09",
-                // end_time: "2019-05-25"
-                start_time: selectedCampaign.start_time,
-                end_time: selectedCampaign.end_time
+                start_time: "2019-05-09",
+                end_time: "2019-05-25"
+                // start_time: selectedCampaign.start_time,
+                // end_time: selectedCampaign.end_time
               });
           }}
           onDragEnd={value => {
@@ -151,7 +164,6 @@ export default class SlideUpPanel extends Component {
                     overflow: "hidden",
                     width: "100%",
                     height: "93%"
-                    // paddingTop: 10
                   }}
                 >
                   <Animated.View style={[styles.chartPosition, animatedStyles]}>
@@ -179,8 +191,15 @@ export default class SlideUpPanel extends Component {
                       />
                     </View>
                     <ScrollView
+                      refreshControl={
+                        <RefreshControl
+                          tintColor={"#fff"}
+                          refreshing={this.state.refreshing}
+                          onRefresh={this._onRefresh}
+                        />
+                      }
                       contentContainerStyle={{
-                        paddingBottom: 130000 / (hp(100) / 2)
+                        paddingBottom: 130000 / (hp(100) / 3)
                       }}
                     >
                       <LineChartGraphs

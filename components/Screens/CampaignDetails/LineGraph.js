@@ -20,18 +20,29 @@ class LineGraph extends Component {
   };
   render() {
     let data = chartData;
-
+    let category = [];
     if (this.props.campaignStats.length > 1) {
       data = this.props.campaignStats.map((stat, i) => {
         let date = new Date(stat.end_time.split("-07:00")[0]);
+        let startDate = new Date(stat.start_time.split("-07:00")[0]);
 
         let day = date.getDate();
         let month = date.getMonth();
-        let hour = date.getHours();
+        let hour =
+          startDate.getHours() +
+          ":00" +
+          "/" +
+          date.getHours() +
+          ":00" +
+          "\n" +
+          day +
+          "/" +
+          shortMonths[month];
+        if (this.props.granularity !== "DAY") category.push(hour);
         return {
           x:
             this.props.granularity !== "DAY"
-              ? `${hour}:00`
+              ? i
               : `${day}/${shortMonths[month]}`,
           y:
             this.props.chartChoice === "Spend"
@@ -51,7 +62,10 @@ class LineGraph extends Component {
             <VictoryVoronoiContainer
               labels={d => parseFloat(d.y).toFixed(0)}
               labelComponent={
-                <CustomLabel chartChoice={this.props.chartChoice} />
+                <CustomLabel
+                  category={category}
+                  chartChoice={this.props.chartChoice}
+                />
               }
             />
           }
@@ -60,6 +74,7 @@ class LineGraph extends Component {
           width={500}
         >
           <VictoryLine
+            categories={{ x: category }}
             interpolation="cardinal"
             style={{
               data: {
@@ -91,12 +106,13 @@ class LineGraph extends Component {
             offsetY={25}
             style={{
               axis: { stroke: "none" },
-              ticks: { stroke: "#fff", size: 6, padding: -3 },
+              ticks: { stroke: "#fff", size: 6, padding: 0 },
               tickLabels: {
                 stroke: "#fff",
                 fill: "#fff",
                 fontFamily: "montserrat-bold",
-                fontSize: 10
+                fontSize: 9,
+                padding: 1
               }
             }}
           />

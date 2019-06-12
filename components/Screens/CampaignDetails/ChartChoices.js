@@ -12,7 +12,9 @@ export default class ChartChoices extends Component {
     let choices = [
       "Spend",
       "Impressions",
-      selectedCampaign.objective === "BRAND_AWARENESS" ? "CPM" : "Swipe-Ups"
+      selectedCampaign && selectedCampaign.objective === "BRAND_AWARENESS"
+        ? "CPM"
+        : "Swipe-Ups"
     ].map(choice => (
       <Button
         key={choice}

@@ -71,18 +71,16 @@ const reducer = (state = initialState, action) => {
         loading: action.payload.loading
       };
     case actionTypes.SET_CAMPAIGN_STATS:
-      console.log(
-        action.payload.data.timeseries_stats[0].timeseries_stat.granularity
-      );
-
       return {
         ...state,
         selectedCampaign: {
           ...state.selectedCampaign,
 
-          avg_spend_per_day: action.payload.data.avg_spend_per_day,
-          highest_spend_per_day: action.payload.data.highest_spend_per_day,
-          highest_spend_date: action.payload.data.highest_spend_date
+          total_installs: action.payload.data.total_installs,
+          video_views: action.payload.data.video_views,
+          eCPV: action.payload.data.eCPV,
+          eCPI: action.payload.data.eCPI,
+          eCPSU: action.payload.data.eCPSU
         },
         granularity: action.payload.data.hasOwnProperty("timeseries_stats")
           ? action.payload.data.timeseries_stats[0].timeseries_stat.granularity

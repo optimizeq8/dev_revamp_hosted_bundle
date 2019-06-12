@@ -18,16 +18,21 @@ export default class CustomLabel extends Component {
             fontSize: 23
           }}
           orientation="top"
-          pointerLength={10}
+          pointerLength={20}
           cornerRadius={15}
           width={80}
+          active={true}
           height={55}
           flyoutStyle={{ fill: "#fff", stroke: "#fff", marginBottom: 20 }}
         />
         <VictoryTooltip
           {...this.props}
-          text={`${this.props.datum.x}`}
-          y={this.props.y - 8}
+          text={
+            this.props.category.length > 0
+              ? `${this.props.category[this.props.datum.x].split("\n")[0]}`
+              : `${this.props.datum.x}`
+          }
+          y={this.props.y - 20}
           orientation="top"
           pointerLength={10}
           style={{ fill: "#C6C6C6", fontSize: 12 }}

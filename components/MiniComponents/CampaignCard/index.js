@@ -53,14 +53,14 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
+            Segment.trackWithProperties("Campaign Card Button", {
+              campaign_id: this.props.campaign.campaign_id
+            });
             if (this.review_status !== "REJECTED") {
               this.props.getCampaignDetails(
                 this.props.campaign.campaign_id,
                 this.props.navigation
               );
-              Segment.trackWithProperties("Campaign Card Button", {
-                campaign_id: this.props.campaign.campaign_id
-              });
             } else {
               this.props.navigation.navigate("AdDesign", {
                 rejected: true,

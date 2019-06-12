@@ -11,7 +11,7 @@ export default class PlaceholderLine extends Component {
       <Animatable.View
         animation="flash"
         iterationCount="infinite"
-        duration={2000}
+        duration={2500}
         easing="linear"
         style={{
           width: width ? width : 100,

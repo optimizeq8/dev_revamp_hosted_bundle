@@ -73,6 +73,7 @@ export const getCampaignStats = (campaign, duration) => {
         // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
         // start_time: "2019-05-09",
         // end_time: "2019-05-25",
+
         // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
         // start_time: duration.start_time, //"2019-05-09",
         // end_time: duration.end_time, //"2019-05-25",
@@ -95,7 +96,7 @@ export const getCampaignStats = (campaign, duration) => {
         });
       })
       .catch(err => {
-        console.log("getCampaignDetails error", err.message || err.response);
+        console.log("getCampaignStats error", err.message || err.response);
         showMessage({
           message:
             err.message ||
