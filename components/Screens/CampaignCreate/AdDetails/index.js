@@ -565,6 +565,7 @@ class AdDetails extends Component {
       case "regions": {
         menu = (
           <SelectRegions
+            countryName={this.state.countryName}
             filteredRegions={this.state.filteredRegions}
             onSelectedRegionChange={this.onSelectedRegionChange}
             _handleSideMenuState={this._handleSideMenuState}

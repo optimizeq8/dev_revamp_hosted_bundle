@@ -104,5 +104,12 @@ export default (sectionStyle = {
   selectTextContainer: {
     paddingVertical: 20,
     flexDirection: "row"
+  },
+  errorText: {
+    color: "#FFFF",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "center",
+    paddingVertical: 20
   }
 });

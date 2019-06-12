@@ -79,112 +79,135 @@ class SelectInterests extends Component {
 
             <View style={styles.slidercontainer}>
               <Button
-                style={[styles.interestButton, { elevation: -1 }]}
+                disabled={this.props.country_code === ""}
+                style={[
+                  styles.interestButton,
+                  {
+                    elevation: -1,
+                    opacity: this.props.country_code === "" ? 0.5 : 1
+                  }
+                ]}
                 onPress={() => this.Section._toggleSelector()}
               >
                 <PlusCircle width={53} height={53} />
               </Button>
-              <ScrollView style={styles.scrollContainer}>
-                <SectionedMultiSelect
-                  ref={ref => (this.Section = ref)}
-                  loading={!this.props.interests ? true : false}
-                  items={this.state.interests}
-                  uniqueKey="id"
-                  selectToggleIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="menu-down"
-                      style={styles.indicator}
-                    />
-                  }
-                  selectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle"
-                      style={[styles.itemCircles]}
-                    />
-                  }
-                  unselectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle-outline"
-                      style={[styles.itemCircles]}
-                    />
-                  }
-                  hideSelect
-                  hideConfirm
-                  subKey="children"
-                  styles={SectionStyle}
-                  confirmText={"\u2714"}
-                  stickyFooterComponent={
-                    <Button
-                      style={[
-                        styles.button,
-                        { marginBottom: 30, elevation: -1 }
-                      ]}
-                      onPress={() => this.Section._submitSelection()}
-                    >
-                      <CheckmarkIcon width={53} height={53} />
-                    </Button>
-                  }
-                  headerComponent={
-                    <View
-                      style={{ height: 70, marginBottom: hp(5), top: hp(3) }}
-                    >
-                      <BackButton
-                        screenname="Select Interests"
-                        businessname={this.props.mainBusiness.businessname}
-                        navigation={() => this.Section._cancelSelection()}
-                      />
-                    </View>
-                  }
-                  colors={colors}
-                  searchIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="magnify"
-                      style={[styles.indicator]}
-                    />
-                  }
-                  // customChipsRenderer={info => {
-                  //   return (
-                  //     <CustomChips
-                  //       Section={this.Section}
-                  //       uniqueKey={info.uniqueKey}
-                  //       subKey={info.subKey}
-                  //       displayKey={info.displayKey}
-                  //       items={info.items}
-                  //       selectedItems={info.selectedItems}
-                  //     />
-                  //   );
-                  // }}
-                  iconKey="icon"
-                  selectText={"Select All"}
-                  selectedText={"Select All"}
-                  showDropDowns={false}
-                  showRemoveAll={true}
-                  // readOnlyHeadings={true}
-                  noItemsComponent={
-                    <Text style={{}}>
-                      Sorry, no interests for selected country
-                    </Text>
-                  }
-                  onCancel={() => {
-                    this.props.onSelectedItemsChange([]);
-                    this.props.onSelectedItemObjectsChange([]);
+              {this.props.country_code === "" ? (
+                <Text
+                  style={{
+                    paddingVertical: 20,
+                    color: "#FFFF",
+                    fontSize: 16,
+                    textAlign: "center",
+                    fontFamily: "montserrat-regular"
                   }}
-                  selectChildren
-                  modalAnimationType="fade"
-                  onSelectedItemsChange={this.props.onSelectedItemsChange}
-                  onSelectedItemObjectsChange={
-                    this.props.onSelectedItemObjectsChange
-                  }
-                  selectedItems={this.props.selectedItems}
-                />
-                {this.state.interests.length === 0 && (
-                  <LoadingScreen top={-10} />
-                )}
-              </ScrollView>
+                >
+                  Please select a country first
+                </Text>
+              ) : (
+                <ScrollView style={styles.scrollContainer}>
+                  <SectionedMultiSelect
+                    ref={ref => (this.Section = ref)}
+                    loading={!this.props.interests ? true : false}
+                    items={this.state.interests}
+                    uniqueKey="id"
+                    selectToggleIconComponent={
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="menu-down"
+                        style={styles.indicator}
+                      />
+                    }
+                    selectedIconComponent={
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="circle"
+                        style={[styles.itemCircles]}
+                      />
+                    }
+                    unselectedIconComponent={
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="circle-outline"
+                        style={[styles.itemCircles]}
+                      />
+                    }
+                    noResultsComponent={
+                      <Text style={styles.errorText}>No item found</Text>
+                    }
+                    hideSelect
+                    hideConfirm
+                    subKey="children"
+                    styles={SectionStyle}
+                    confirmText={"\u2714"}
+                    stickyFooterComponent={
+                      <Button
+                        style={[
+                          styles.button,
+                          { marginBottom: 30, elevation: -1 }
+                        ]}
+                        onPress={() => this.Section._submitSelection()}
+                      >
+                        <CheckmarkIcon width={53} height={53} />
+                      </Button>
+                    }
+                    headerComponent={
+                      <View
+                        style={{ height: 70, marginBottom: hp(5), top: hp(3) }}
+                      >
+                        <BackButton
+                          screenname="Select Interests"
+                          businessname={this.props.mainBusiness.businessname}
+                          navigation={() => this.Section._cancelSelection()}
+                        />
+                      </View>
+                    }
+                    colors={colors}
+                    searchIconComponent={
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="magnify"
+                        style={[styles.indicator]}
+                      />
+                    }
+                    // customChipsRenderer={info => {
+                    //   return (
+                    //     <CustomChips
+                    //       Section={this.Section}
+                    //       uniqueKey={info.uniqueKey}
+                    //       subKey={info.subKey}
+                    //       displayKey={info.displayKey}
+                    //       items={info.items}
+                    //       selectedItems={info.selectedItems}
+                    //     />
+                    //   );
+                    // }}
+                    iconKey="icon"
+                    selectText={"Select All"}
+                    showDropDowns={false}
+                    showRemoveAll={true}
+                    // readOnlyHeadings={true}
+                    noItemsComponent={
+                      <Text style={styles.errorText}>
+                        Sorry, no interests for selected country
+                      </Text>
+                    }
+                    onCancel={() => {
+                      this.props.onSelectedItemsChange([]);
+                      this.props.onSelectedItemObjectsChange([]);
+                    }}
+                    selectChildren
+                    modalAnimationType="fade"
+                    onSelectedItemsChange={this.props.onSelectedItemsChange}
+                    onSelectedItemObjectsChange={
+                      this.props.onSelectedItemObjectsChange
+                    }
+                    selectedItems={this.props.selectedItems}
+                  />
+                  {this.state.interests.length === 0 && (
+                    <LoadingScreen top={-10} />
+                  )}
+                </ScrollView>
+              )}
             </View>
           </View>
 

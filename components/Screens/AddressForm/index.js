@@ -149,19 +149,13 @@ class AddressForm extends Component {
         forceInset={{ bottom: "never" }}
       >
         <Container style={styles.container}>
-          {!this.state.sidemenustate && (
+          {/* {!this.state.sidemenustate && (
             <View style={styles.headerBlock}>
               <Header
                 title={"Billing Address"}
                 navigation={this.props.navigation}
               />
-              {/* <TouchableOpacity
-                onPress={() => this.props.navigation.goBack()}
-                style={globalStyles.backButton}
-              >
-                <BackIcon />
-              </TouchableOpacity>
-              <Text style={styles.title}>Billing Address</Text> */}
+            
               <Address
                 fill="#fff"
                 style={styles.addressIcon}
@@ -169,7 +163,7 @@ class AddressForm extends Component {
                 height={55}
               />
             </View>
-          )}
+          )} */}
           <View style={styles.dataContainer}>
             {/* TODO: When user selects CC display this */}
             {this.state.from === "creditCard" &&
@@ -190,6 +184,7 @@ class AddressForm extends Component {
                 _handleSideMenuState={this._handleSideMenuState}
                 sidemenustate={this.state.sidemenustate}
                 errorLoading={this.props.errorLoading}
+                navigation={this.props.navigation}
               />
             )}
           </View>
