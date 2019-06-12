@@ -11,9 +11,29 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  walletIcon: {
+    alignSelf: "center",
+    marginTop: 15
+  },
+  walletAmountText: {
+    fontSize: 40
+  },
+  sendButton: {
+    position: "relative",
+    left: "20%"
+  },
+  midContainer: { flex: 2, justifyContent: "center" },
   container: {
     backgroundColor: "#0000"
   },
+  inputAnimatableView: {
+    paddingVertical: 30
+  },
+  keyboardContainer: { height: "100%" },
   title: {
     fontSize: 18,
     color: "#fff",
@@ -31,11 +51,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: -3 }
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
   },
   button: {
     zIndex: 4,
@@ -59,12 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
     paddingTop: 45
-  },
-  closeIcon: {
-    top: heightPercentageToDP(2.3),
-    left: widthPercentageToDP(4),
-    zIndex: 10,
-    elevation: 5
   },
   text: {
     textAlign: "center",

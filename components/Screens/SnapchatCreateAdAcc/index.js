@@ -1,22 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { View, Image, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import { LinearGradient, Segment } from "expo";
-import * as actionCreators from "../../../store/actions";
 import HTMLView from "react-native-htmlview";
 import { terms, secondTerms } from "./SnapchatTerms";
+import * as actionCreators from "../../../store/actions";
 
 // Style
 import styles, { htmlStyles } from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import { ActivityIndicator } from "react-native-paper";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../Global Styles";
 
 class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
@@ -61,21 +55,6 @@ class SnapchatCreateAdAcc extends Component {
     );
   };
   render() {
-    const htmlContent = `<p><a href="http://jsdf.co">&hearts; nice job!</a></p>`;
-
-    const Slide = ({ title }) => (
-      <View style={styles.slide}>
-        <Image
-          style={{
-            height: 250,
-            width: 250
-          }}
-          source={require("../../../assets/images/tutorial/inst01.png")}
-          resizeMode="contain"
-        />
-      </View>
-    );
-
     return (
       <Container style={styles.container}>
         <LinearGradient
@@ -97,33 +76,15 @@ class SnapchatCreateAdAcc extends Component {
               }
             }}
             scrollEventThrottle={400}
-            contentContainerStyle={{
-              // height: heightPercentageToDP("100%")
-              // flex: 1
-              paddingBottom: 50
-            }}
-            style={{
-              height: heightPercentageToDP(40)
-            }}
+            contentContainerStyle={styles.scrollViewContentContainer}
+            style={styles.scrollViewContainer}
           >
-            <View
-              style={{
-                width: widthPercentageToDP(85),
-                alignSelf: "center"
-              }}
-            >
+            <View style={styles.htmlContainer}>
               <HTMLView value={terms} stylesheet={htmlStyles} />
               <HTMLView value={secondTerms} stylesheet={htmlStyles} />
             </View>
           </ScrollView>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              marginBottom: 10
-            }}
-          >
+          <View style={styles.bottomContainer}>
             {this.props.loading ? (
               <ActivityIndicator size="large" />
             ) : (
@@ -131,12 +92,7 @@ class SnapchatCreateAdAcc extends Component {
                 block
                 dark
                 // disabled={!this.state.accept}
-                style={[
-                  styles.button,
-                  {
-                    backgroundColor: "#5F5F5F"
-                  }
-                ]}
+                style={[styles.button]}
                 onPress={() => {
                   this.props.create_snapchat_ad_account(
                     this.props.mainBusiness.businessid,

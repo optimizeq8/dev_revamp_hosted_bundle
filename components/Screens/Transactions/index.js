@@ -62,10 +62,10 @@ class Transactions extends Component {
       ));
       return (
         <SafeAreaView
-          style={{ flex: 1, backgroundColor: "#0000" }}
+          style={styles.safeAreaContainer}
           forceInset={{ bottom: "never" }}
         >
-          <Container style={{ backgroundColor: "#0000" }}>
+          <Container style={styles.container}>
             <Sidemenu
               onChange={isOpen => {
                 if (isOpen === false) this._handleSideMenuState(isOpen);
@@ -81,13 +81,8 @@ class Transactions extends Component {
                 navigation={this.props.navigation}
               />
               <View style={styles.container}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingVertical: widthPercentageToDP(5)
-                  }}
-                >
-                  <View style={{ flex: 1, zIndex: 10 }}>
+                <View style={styles.headerBlock}>
+                  <View style={styles.searchContainer}>
                     <SearchBar transactionSearch={true} />
                   </View>
                   <Button

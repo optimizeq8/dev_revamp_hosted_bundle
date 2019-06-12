@@ -10,6 +10,18 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  safeAreaContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  searchContainer: {
+    flex: 1,
+    zIndex: 10
+  },
+  headerBlock: {
+    flexDirection: "row",
+    paddingVertical: widthPercentageToDP(5)
+  },
   container: {
     backgroundColor: "#0000"
   },
