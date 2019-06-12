@@ -184,19 +184,21 @@ const styles = StyleSheet.create({
   },
   dragHandler: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    flex: 1
   },
   bottomContainer: {
     width: wp("100"),
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    bottom: 30
   },
   tab: {
     // position: "absolute",
     // backgroundColor: "red",
-    bottom: -43,
+    top: 15,
     alignSelf: "center",
     width: wp("63%"),
     borderRadius: 30,
@@ -218,8 +220,9 @@ const styles = StyleSheet.create({
   },
   boxStats: {
     top: 30,
-    width: 150,
-    padding: 15,
+    width: 140,
+    paddingVertical: "3%",
+    paddingHorizontal: "5%",
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 15
   },
@@ -230,8 +233,52 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: "center"
   },
-  chartPosition: {
-    // bottom: 10
+  editButton: {
+    position: "absolute",
+    left: wp(85),
+    top: hp(10),
+    fontFamily: "montserrat-regular"
+  },
+  switchButtonTex: {
+    fontFamily: "montserrat-medium",
+    fontSize: 10,
+    color: "#fff",
+    top: 7,
+    textAlign: "center"
+  },
+  switchCircle: {
+    width: wp("13"),
+    height: hp("3.8"),
+    borderRadius: 25
+  },
+  statusText: {
+    fontFamily: "montserrat-medium",
+    fontSize: 10,
+    paddingTop: 5,
+    color: "#fff",
+    textAlign: "center"
+  },
+  choicesStyles: {
+    elevation: 11,
+    zIndex: 11,
+    position: "absolute",
+    width: "80%",
+    backgroundColor: "rgba(255,255,255,0.3)",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-between",
+    borderRadius: 30
+  },
+  choiceButtons: {
+    borderRadius: 30,
+
+    width: 90,
+    justifyContent: "center"
+  },
+  choiceText: {
+    fontFamily: "montserrat-semibold",
+    color: "#fff",
+    textAlign: "center"
   }
 });
 
