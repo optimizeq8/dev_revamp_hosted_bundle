@@ -160,15 +160,15 @@ export default class DateRangePicker extends Component<Props> {
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
-              ? null //new Date(this.props.selectedCampaign.start_time)
+              ? new Date(this.props.selectedCampaign.start_time)
               : Date()
             : null
         }
-        // maxDate={
-        //   this.props.chartRange
-        //     ? new Date(this.props.selectedCampaign.end_time)
-        //     : null
-        // }
+        maxDate={
+          this.props.chartRange
+            ? new Date(this.props.selectedCampaign.end_time)
+            : null
+        }
         {...this.props}
         markingType={"period"}
         current={this.state.fromDate}

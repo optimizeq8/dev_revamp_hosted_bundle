@@ -298,302 +298,290 @@ class CampaignDetails extends Component {
                   navigation={this.props.navigation}
                   selectedCampaign={selectedCampaign}
                 />
-                 <CloseButton
-                navigation={() => {
-                  this.props.navigation.goBack();
-                }}
-              />
-              <Text
-                onPress={() =>
-                  !loading &&
-                  this.props.navigation.push("AdDetails", {
-                    editCampaign: true,
-                    campaign: selectedCampaign,
-                    image: "http://" + selectedCampaign.media
-                  })
-                }
-                style={[styles.subtext, styles.editButton]}
-              >
-                Edit
-              </Text>
-              <Card style={styles.mainCard}>
-                <Image
-                  style={styles.image}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-                {loading ? (
-                  <View style={{ margin: 5 }}>
-                    <PlaceholderLine />
-                  </View>
-                ) : (
-                  <Text style={[styles.title, { width: 150 }]}>
-                    {selectedCampaign.name}
-                  </Text>
-                )}
-                {loading ? (
-                  <View style={{ margin: 5 }}>
-                    <PlaceholderLine />
-                  </View>
-                ) : (
-                  <View>
-                    {selectedCampaign.review_status === "APPROVED" ? (
-                      selectedCampaign.campaign_end === "0" &&
-                      !this.props.campaignEnded &&
-                      selectedCampaign.end_time > new Date() ? (
-                        <View padder style={styles.toggleSpace}>
-                          <View style={{ alignSelf: "center" }}>
-                            {selectedCampaign && (
-                              <Toggle
-                                buttonTextStyle={styles.switchButtonText}
-                                buttonText={
-                                  this.state.toggleText !== "PAUSED"
-                                    ? "LIVE"
-                                    : "PAUSED"
-                                }
-                                containerStyle={styles.toggleStyle}
-                                switchOn={this.state.toggle}
-                                onPress={() => {
-                                  this.state.toggle
-                                    ? this.setState({ modalVisible: true })
-                                    : this.updateStatus();
-                                }}
-                                backgroundColorOff="rgba(255,255,255,0.1)"
-                                backgroundColorOn="rgba(255,255,255,0.1)"
-                                circleColorOff="#FF9D00"
-                                circleColorOn="#66D072"
-                                duration={500}
-                                circleStyle={styles.switchCircle}
-                              />
-                            )}
-                            <Text style={styles.statusText}>
-                              {this.state.toggle
-                                ? "Tap to pause AD"
-                                : "Tap to activate AD"}
+
+                <Card style={styles.mainCard}>
+                  <Image
+                    style={styles.image}
+                    source={require("../../../assets/images/snap-ghost.png")}
+                    resizeMode="contain"
+                  />
+                  {loading ? (
+                    <View style={{ margin: 5 }}>
+                      <PlaceholderLine />
+                    </View>
+                  ) : (
+                    <Text style={[styles.title, { width: 150 }]}>
+                      {selectedCampaign.name}
+                    </Text>
+                  )}
+                  {loading ? (
+                    <View style={{ margin: 5 }}>
+                      <PlaceholderLine />
+                    </View>
+                  ) : (
+                    <View>
+                      {selectedCampaign.review_status === "APPROVED" ? (
+                        selectedCampaign.campaign_end === "0" &&
+                        !this.props.campaignEnded &&
+                        selectedCampaign.end_time > new Date() ? (
+                          <View padder style={styles.toggleSpace}>
+                            <View style={{ alignSelf: "center" }}>
+                              {selectedCampaign && (
+                                <Toggle
+                                  buttonTextStyle={styles.switchButtonText}
+                                  buttonText={
+                                    this.state.toggleText !== "PAUSED"
+                                      ? "LIVE"
+                                      : "PAUSED"
+                                  }
+                                  containerStyle={styles.toggleStyle}
+                                  switchOn={this.state.toggle}
+                                  onPress={() => {
+                                    this.state.toggle
+                                      ? this.setState({ modalVisible: true })
+                                      : this.updateStatus();
+                                  }}
+                                  backgroundColorOff="rgba(255,255,255,0.1)"
+                                  backgroundColorOn="rgba(255,255,255,0.1)"
+                                  circleColorOff="#FF9D00"
+                                  circleColorOn="#66D072"
+                                  duration={500}
+                                  circleStyle={styles.switchCircle}
+                                />
+                              )}
+                              <Text style={styles.statusText}>
+                                {this.state.toggle
+                                  ? "Tap to pause AD"
+                                  : "Tap to activate AD"}
+                              </Text>
+                            </View>
+                          </View>
+                        ) : (
+                          <View style={styles.adStatus}>
+                            <Text style={styles.reviewtext}>
+                              Campagin Ended
                             </Text>
                           </View>
-                        </View>
+                        )
                       ) : (
                         <View style={styles.adStatus}>
-                          <Text style={styles.reviewtext}>Campagin Ended</Text>
+                          <Text style={styles.reviewtext}>
+                            {selectedCampaign.review_status.includes(
+                              "PENDING"
+                            ) && "In Review"}
+                          </Text>
                         </View>
-                      )
-                    ) : (
-                      <View style={styles.adStatus}>
-                        <Text style={styles.reviewtext}>
-                          {selectedCampaign.review_status.includes("PENDING") &&
-                            "In Review"}
-                        </Text>
-                      </View>
-                    )}
-
-                  </View>
-                )}
-                {loading ? (
-                  <View style={{ margin: 5 }}>
-                    <PlaceholderLine />
-                  </View>
-                ) : (
-                  <Text style={styles.subHeadings}>
-                    Budget{"\n"}
-                    <Text
-                      style={[
-                        styles.numbers,
-                        { fontSize: 25, fontFamily: "montserrat-semibold" }
-                      ]}
-                    >
-                      {formatNumber(
-                        selectedCampaign.lifetime_budget_micro,
-                        true
-                      )}
-                    </Text>
-                    <Text style={{ color: "white" }}>$</Text>
-                  </Text>
-                )}
-                <Text style={styles.subHeadings}>Duration</Text>
-                <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      alignSelf: "center"
-                    }}
-                  >
-                    {loading ? (
-                      <View style={{ margin: 5 }}>
-                        <PlaceholderLine />
-                      </View>
-                    ) : (
-                      <>
-                        <Text
-                          style={[
-                            styles.categories,
-                            { fontSize: 16, fontFamily: "montserrat-medium" }
-                          ]}
-                        >
-                          Start
-                        </Text>
-                        <Text style={styles.numbers}>
-                          {start_time}{" "}
-                          <Text style={[styles.numbers, { fontSize: 12 }]}>
-                            {start_year}
-                          </Text>
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      alignSelf: "center"
-                    }}
-                  >
-                    {loading ? (
-                      <View style={{ margin: 5 }}>
-                        <PlaceholderLine />
-                      </View>
-                    ) : (
-                      <>
-                        <Text
-                          style={[
-                            styles.categories,
-                            { fontSize: 16, fontFamily: "montserrat-medium" }
-                          ]}
-                        >
-                          End
-                        </Text>
-
-                        <Text style={styles.numbers}>
-                          {end_time}{" "}
-                          <Text style={[styles.numbers, { fontSize: 12 }]}>
-                            {end_year}
-                          </Text>
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                </View>
-                <Text style={styles.subHeadings}>Audience</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    marginHorizontal: 40
-                  }}
-                >
-                  <View style={{ flexDirection: "column" }}>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        alignSelf: "center"
-                      }}
-                    >
-                      <GenderIcon width={hp("2")} height={hp("2")} />
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <Text style={styles.categories}>
-                          Gender{"\n "}
-                          <Text style={styles.subtext}>
-                            {targeting &&
-                            (targeting.gender === "" ||
-                              !targeting.hasOwnProperty("gender"))
-                              ? "All"
-                              : targeting && targeting.demographics[0].gender}
-                          </Text>
-                        </Text>
                       )}
                     </View>
-                    <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                      <Icon
-                        style={styles.icon}
-                        type="FontAwesome"
-                        name="language"
-                      />
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <Text style={styles.categories}>
-                          Languages{"\n "}
-                          <Text style={styles.subtext}>
-                            {targeting &&
-                              targeting.demographics[0].languages.join(", ")}
-                          </Text>
-                        </Text>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        alignSelf: "center"
-                      }}
-                    >
-                      <Icon
-                        style={styles.icon}
-                        type="MaterialCommunityIcons"
-                        name="human-male-girl"
-                      />
-
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <Text style={[styles.categories]}>
-                          Age range{"\n"}
-                          <Text style={styles.subtext}>
-                            {targeting && targeting.demographics[0].min_age} -{" "}
-                            {targeting && targeting.demographics[0].max_age}
-                          </Text>
-                        </Text>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: "row" }}>
-                      <LocationIcon width={hp("2")} height={hp("2")} />
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <Text style={styles.categories}>
-                          Location(s) {"\n"}
-                          {targeting && targeting.geos[0].country_code}
-                        </Text>
-                      )}
-                    </View>
-                  </View>
-
-                  {this.checkOptionalTargerts(
-                    interesetNames,
-                    deviceMakes,
-                    targeting
-                  ) && (
-                    <OptionalTargets
-                      region_names={region_names}
-                      deviceMakes={deviceMakes}
-                      interesetNames={interesetNames}
-                      targeting={targeting}
-                    />
                   )}
+                  {loading ? (
+                    <View style={{ margin: 5 }}>
+                      <PlaceholderLine />
+                    </View>
+                  ) : (
+                    <Text style={styles.subHeadings}>
+                      Budget{"\n"}
+                      <Text
+                        style={[
+                          styles.numbers,
+                          { fontSize: 25, fontFamily: "montserrat-semibold" }
+                        ]}
+                      >
+                        {formatNumber(
+                          selectedCampaign.lifetime_budget_micro,
+                          true
+                        )}
+                      </Text>
+                      <Text style={{ color: "white" }}>$</Text>
+                    </Text>
+                  )}
+                  <Text style={styles.subHeadings}>Duration</Text>
+                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        alignSelf: "center"
+                      }}
+                    >
+                      {loading ? (
+                        <View style={{ margin: 5 }}>
+                          <PlaceholderLine />
+                        </View>
+                      ) : (
+                        <>
+                          <Text
+                            style={[
+                              styles.categories,
+                              { fontSize: 16, fontFamily: "montserrat-medium" }
+                            ]}
+                          >
+                            Start
+                          </Text>
+                          <Text style={styles.numbers}>
+                            {start_time}{" "}
+                            <Text style={[styles.numbers, { fontSize: 12 }]}>
+                              {start_year}
+                            </Text>
+                          </Text>
+                        </>
+                      )}
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        alignSelf: "center"
+                      }}
+                    >
+                      {loading ? (
+                        <View style={{ margin: 5 }}>
+                          <PlaceholderLine />
+                        </View>
+                      ) : (
+                        <>
+                          <Text
+                            style={[
+                              styles.categories,
+                              { fontSize: 16, fontFamily: "montserrat-medium" }
+                            ]}
+                          >
+                            End
+                          </Text>
+
+                          <Text style={styles.numbers}>
+                            {end_time}{" "}
+                            <Text style={[styles.numbers, { fontSize: 12 }]}>
+                              {end_year}
+                            </Text>
+                          </Text>
+                        </>
+                      )}
+                    </View>
+                  </View>
+                  <Text style={styles.subHeadings}>Audience</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      marginHorizontal: 40
+                    }}
+                  >
+                    <View style={{ flexDirection: "column" }}>
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          alignSelf: "center"
+                        }}
+                      >
+                        <GenderIcon width={hp("2")} height={hp("2")} />
+                        {loading ? (
+                          <View style={{ margin: 5 }}>
+                            <PlaceholderLine />
+                          </View>
+                        ) : (
+                          <Text style={styles.categories}>
+                            Gender{"\n "}
+                            <Text style={styles.subtext}>
+                              {targeting &&
+                              (targeting.gender === "" ||
+                                !targeting.hasOwnProperty("gender"))
+                                ? "All"
+                                : targeting && targeting.demographics[0].gender}
+                            </Text>
+                          </Text>
+                        )}
+                      </View>
+                      <View
+                        style={{ flexDirection: "row", alignSelf: "center" }}
+                      >
+                        <Icon
+                          style={styles.icon}
+                          type="FontAwesome"
+                          name="language"
+                        />
+                        {loading ? (
+                          <View style={{ margin: 5 }}>
+                            <PlaceholderLine />
+                          </View>
+                        ) : (
+                          <Text style={styles.categories}>
+                            Languages{"\n "}
+                            <Text style={styles.subtext}>
+                              {targeting &&
+                                targeting.demographics[0].languages.join(", ")}
+                            </Text>
+                          </Text>
+                        )}
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          alignSelf: "center"
+                        }}
+                      >
+                        <Icon
+                          style={styles.icon}
+                          type="MaterialCommunityIcons"
+                          name="human-male-girl"
+                        />
+
+                        {loading ? (
+                          <View style={{ margin: 5 }}>
+                            <PlaceholderLine />
+                          </View>
+                        ) : (
+                          <Text style={[styles.categories]}>
+                            Age range{"\n"}
+                            <Text style={styles.subtext}>
+                              {targeting && targeting.demographics[0].min_age} -{" "}
+                              {targeting && targeting.demographics[0].max_age}
+                            </Text>
+                          </Text>
+                        )}
+                      </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <LocationIcon width={hp("2")} height={hp("2")} />
+                        {loading ? (
+                          <View style={{ margin: 5 }}>
+                            <PlaceholderLine />
+                          </View>
+                        ) : (
+                          <Text style={styles.categories}>
+                            Location(s) {"\n"}
+                            {targeting && targeting.geos[0].country_code}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+
+                    {this.checkOptionalTargerts(
+                      interesetNames,
+                      deviceMakes,
+                      targeting
+                    ) && (
+                      <OptionalTargets
+                        region_names={region_names}
+                        deviceMakes={deviceMakes}
+                        interesetNames={interesetNames}
+                        targeting={targeting}
+                      />
+                    )}
+                  </View>
+                </Card>
+              </Container>
+              {loading ? (
+                <View style={{ margin: 5 }}>
+                  <PlaceholderLine />
                 </View>
-              </Card>
-            </Container>
-            {loading ? (
-              <View style={{ margin: 5 }}>
-                <PlaceholderLine />
-              </View>
-            ) : (
-              <StatusModal
-                selectedCampaign={selectedCampaign}
-                updateStatus={this.updateStatus}
-                endCampaign={this.endCampaign}
-                modalVisible={this.state.modalVisible}
-                showModal={this.showModal}
-              />
-            )}
+              ) : (
+                <StatusModal
+                  selectedCampaign={selectedCampaign}
+                  updateStatus={this.updateStatus}
+                  endCampaign={this.endCampaign}
+                  modalVisible={this.state.modalVisible}
+                  showModal={this.showModal}
+                />
+              )}
+            </SafeAreaView>
           </ImageBackground>
           <SlideUpPanel
             start_time={this.state.start_time}
