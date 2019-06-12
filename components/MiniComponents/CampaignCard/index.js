@@ -53,14 +53,14 @@ class CampaignCard extends Component {
       >
         <TouchableOpacity
           onPress={() => {
+            Segment.trackWithProperties("Campaign Card Button", {
+              campaign_id: this.props.campaign.campaign_id
+            });
             if (this.review_status !== "REJECTED") {
               this.props.getCampaignDetails(
                 this.props.campaign.campaign_id,
                 this.props.navigation
               );
-              Segment.trackWithProperties("Campaign Card Button", {
-                campaign_id: this.props.campaign.campaign_id
-              });
             } else {
               this.props.navigation.navigate("AdDesign", {
                 rejected: true,
@@ -144,9 +144,11 @@ class CampaignCard extends Component {
                       {campaign.objective !== "BRAND_AWARENESS"
                         ? formatNumber(campaign.swipes, true)
                         : campaign.impressions > 0
-                        ? (parseFloat(campaign.spends) /
-                            parseFloat(campaign.impressions)) *
-                          1000
+                        ? (
+                            (parseFloat(campaign.spends) /
+                              parseFloat(campaign.impressions)) *
+                            1000
+                          ).toFixed(3)
                         : 0}
                     </Text>
                     <Text style={[styles.subtext]}>

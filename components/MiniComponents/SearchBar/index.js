@@ -77,6 +77,7 @@ class SearchBar extends Component {
             {!this.props.transactionSearch && (
               <TouchableOpacity
                 onPress={() => {
+                  this._handleSubmit(true);
                   this.props.renderSearchBar();
                 }}
               >

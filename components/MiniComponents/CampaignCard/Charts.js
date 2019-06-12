@@ -7,7 +7,9 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 export default class Charts extends Component {
   render() {
     let spends = this.props.chartCategory.spend;
-    let x = (spends / this.props.campaign.lifetime_budget_micro) * 100;
+    let x = this.props.campaign
+      ? (spends / this.props.campaign.lifetime_budget_micro) * 100
+      : 0;
     return (
       <View>
         <AnimatedCircularProgress
