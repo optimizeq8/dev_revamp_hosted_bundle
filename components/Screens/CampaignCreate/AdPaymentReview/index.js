@@ -33,7 +33,7 @@ import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
 import BackButton from "../../../MiniComponents/BackButton";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-
+import isUndefined from "lodash/isUndefined";
 class AdPaymentReview extends Component {
   static navigationOptions = {
     header: null
@@ -110,7 +110,7 @@ class AdPaymentReview extends Component {
     });
   }
   render() {
-    if (this.props.loading) {
+    if (this.props.loading || isUndefined(this.props.data.targeting)) {
       return <LoadingScreen top={50} />;
     } else {
       let targeting = this.props.data.targeting;

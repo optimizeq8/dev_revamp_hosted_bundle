@@ -6,6 +6,37 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  scrollViewStyleContainer: {
+    flex: 1,
+    marginVertical: 10
+  },
+  labelInputText: {
+    bottom: 5,
+    flexDirection: "column"
+  },
+  iconSize: {
+    fontSize: 20
+  },
+  emailerrorText: {
+    textAlign: "center",
+    color: "#717171",
+    fontFamily: "montserrat-regular",
+    fontSize: 15,
+    bottom: 40
+  },
+  passwordErrorText: {
+    bottom: 40,
+    paddingVertical: 0,
+    paddingTop: 0,
+    marginBottom: 0,
+    paddingVertical: 0
+  },
+  repassworderrorText: {
+    bottom: 15,
+    paddingTop: 0,
+    marginBottom: 0,
+    paddingVertical: 0
+  },
   container: {
     paddingTop: 20
   },

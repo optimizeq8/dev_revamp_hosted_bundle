@@ -8,13 +8,40 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    // marginTop: 30,
-    backgroundColor: "#751AFF"
+  keyboardContainer: {
+    height: "100%",
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center"
   },
+  scrollViewContentContainer: {
+    // height: "100%",
+    backgroundColor: "#0000",
+    alignItems: "center",
+    flex: 1,
+    width: "100%"
+  },
+  codeInputContainer: { height: "10%" },
+  renderInviteCodeLink: { color: "#FFFF" },
+  emailLink: {
+    paddingVertical: 0
+  },
+  emailLabel: {
+    bottom: 5
+  },
+  emailLinkContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10
+  },
+  sendButton: {
+    position: "relative",
+    bottom: "2%",
+    alignSelf: "flex-end"
+  },
+
   container: {
+    // backgroundColor: "#751AFF",
+
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
@@ -26,13 +53,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#717171",
     fontFamily: "montserrat-light",
-    fontSize: 14
+    fontSize: 14,
+    lineHeight: 20
   },
   inviteText: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 20
+    fontSize: 20,
+    paddingTop: 20
   },
   button: {
     shadowColor: "#6C6C6C",
@@ -62,9 +91,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // bottom: 20
     paddingVertical: 10
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
   },
   emailInput: {
     top: 15,

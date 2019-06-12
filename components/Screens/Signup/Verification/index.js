@@ -97,35 +97,25 @@ class Verification extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <KeyboardShift
-          style={{
-            height: "100%",
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "center"
-          }}
-        >
+        <KeyboardShift style={styles.keyboardContainer}>
           {() => (
             <ScrollView
-              contentContainerStyle={{
-                // height: "100%",
-                paddingTop: !this.props.invite ? 30 : 0,
-                alignItems: "center",
-                flex: 1,
-                width: "100%",
-                justifyContent: this.props.invite ? "center" : "flex-start"
-              }}
+              contentContainerStyle={[
+                styles.scrollViewContentContainer,
+                {
+                  paddingTop: !this.props.invite ? 30 : 0,
+                  justifyContent: this.props.invite ? "center" : "flex-start"
+                }
+              ]}
             >
               {!this.props.invite ? (
-                <Text style={[styles.text, { lineHeight: 20 }]}>
+                <Text style={[styles.text]}>
                   Please enter the {"\n"}
                   verification code sent to {"\n"}
                   {this.props.mobileNo}
                 </Text>
               ) : (
-                <Text style={[styles.inviteText, { paddingTop: 20 }]}>
-                  Invite Code
-                </Text>
+                <Text style={[styles.inviteText]}>Invite Code</Text>
               )}
               {!this.props.invite &&
                 (this.state.timerStart ? (
@@ -188,7 +178,7 @@ class Verification extends Component {
                   </Button>
                 </>
               ) : (
-                <View style={{ height: "10%" }}>
+                <View style={styles.codeInputContainer}>
                   <CodeInput
                     inactiveColor="black"
                     activeColor="purple"
@@ -203,19 +193,19 @@ class Verification extends Component {
               )}
               {this.props.renderInviteCode && (
                 <Text
-                  style={[styles.link, { color: "#FFFF" }]}
+                  style={[styles.link, styles.renderInviteCodeLink]}
                   onPress={() => this.props.toggleComps()}
                 >
                   Get an invitation code now!
                 </Text>
               )}
               {!this.props.invite && (
-                <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
+                <View style={styles.emailLinkContainer}>
                   <Text
                     onPress={() => {
                       this.setState({ showEmail: !this.state.showEmail });
                     }}
-                    style={[styles.link, { paddingVertical: 0 }]}
+                    style={[styles.link, styles.emailLink]}
                   >
                     Not receiving the SMS? Try verifying your account by email.
                   </Text>
@@ -237,8 +227,8 @@ class Verification extends Component {
                       >
                         <Label
                           style={[
+                            styles.emailLabel,
                             {
-                              bottom: 5,
                               color: this.state.InputE ? "#FF9D00" : "#717171"
                             }
                           ]}
@@ -269,11 +259,7 @@ class Verification extends Component {
                       </Item>
                       <Button
                         transparent
-                        style={{
-                          position: "relative",
-                          bottom: "2%",
-                          alignSelf: "flex-end"
-                        }}
+                        style={styles.sendButton}
                         onPress={() => this._handleSubmission()}
                       >
                         <Icon

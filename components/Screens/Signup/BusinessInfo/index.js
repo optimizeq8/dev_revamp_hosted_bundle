@@ -30,6 +30,7 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
+import BusinessCategoryList from "../../CreateBusinessAccount/BusinessCategoriesList";
 
 //Validator
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
@@ -66,84 +67,7 @@ class BusinessInfo extends Component {
           value: "2"
         }
       ],
-      items: [
-        {
-          label: "Agriculure",
-          value: "0"
-        },
-        {
-          label: "Automotive",
-          value: "3"
-        },
-        {
-          label: "Construstion",
-          value: "4"
-        },
-        {
-          label: "Defense",
-          value: "5"
-        },
-        {
-          label: "Education",
-          value: "6"
-        },
-        {
-          label: "Finance",
-          value: "7"
-        },
-        {
-          label: "Food & Bevrage",
-          value: "8"
-        },
-        {
-          label: "Government",
-          value: "9"
-        },
-        {
-          label: "Health Care",
-          value: "10"
-        },
-        {
-          label: "Home Business",
-          value: "1"
-        },
-        {
-          label: "Insurance",
-          value: "11"
-        },
-        {
-          label: "Mass Media",
-          value: "12"
-        },
-        {
-          label: "Oil & Gas",
-          value: "13"
-        },
-        {
-          label: "Real Estate",
-          value: "14"
-        },
-        {
-          label: "Retail",
-          value: "15"
-        },
-        {
-          label: "Tech Business",
-          value: "2"
-        },
-        {
-          label: "Telecommunications",
-          value: "16"
-        },
-        {
-          label: "Transport",
-          value: "17"
-        },
-        {
-          label: "Wholesale",
-          value: "18"
-        }
-      ],
+      items: BusinessCategoryList,
       countries: [
         {
           label: "Kuwait",
@@ -230,23 +154,8 @@ class BusinessInfo extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View
-          style={{
-            backgroundColor: "#751AFF",
-            flex: 1
-          }}
-        >
-          <View
-            style={{
-              alignSelf: "center",
-              width: 380,
-              backgroundColor: "#751AFF",
-              flexDirection: "row",
-              alignSelf: "center",
-              justifyContent: "center",
-              marginBottom: 20
-            }}
-          >
+        <View style={styles.touchableViewContainer}>
+          <View style={styles.block1}>
             <Button
               block
               dark
@@ -254,12 +163,7 @@ class BusinessInfo extends Component {
                 this.state.userInfo.businesstype === "1"
                   ? styles.activebutton
                   : styles.button,
-                {
-                  borderBottomEndRadius: 0,
-                  borderTopEndRadius: 0,
-                  borderBottomStartRadius: 15,
-                  borderTopStartRadius: 15
-                }
+                styles.block1ButtonLeft
               ]}
               onPress={() => {
                 this.setState({
@@ -272,7 +176,7 @@ class BusinessInfo extends Component {
                   this.state.userInfo.businesstype === "1"
                     ? styles.activetext
                     : styles.inactivetext,
-                  { textAlign: "center" }
+                  styles.textCenter
                 ]}
               >
                 {/* <Icon
@@ -297,12 +201,7 @@ class BusinessInfo extends Component {
                 this.state.userInfo.businesstype === "2"
                   ? styles.activebutton
                   : styles.button,
-                {
-                  borderTopStartRadius: 0,
-                  borderBottomStartRadius: 0,
-                  borderBottomEndRadius: 15,
-                  borderTopEndRadius: 15
-                }
+                styles.block1ButtonRight
               ]}
               onPress={async () => {
                 await this.setState({
@@ -319,7 +218,7 @@ class BusinessInfo extends Component {
                   this.state.userInfo.businesstype === "2"
                     ? styles.activetext
                     : styles.inactivetext,
-                  { textAlign: "center" }
+                  styles.textCenter
                 ]}
               >
                 <Icon
@@ -329,16 +228,14 @@ class BusinessInfo extends Component {
                     this.state.userInfo.businesstype === "2"
                       ? styles.activetext
                       : styles.inactivetext,
-                    {
-                      left: 25
-                    }
+                    styles.left25
                   ]}
                 />
                 {"\n"}A Company
               </Text>
             </Button>
           </View>
-          <View style={styles.container}>
+          <View style={styles.block2}>
             <Item
               floatingLabel
               style={[
@@ -362,10 +259,12 @@ class BusinessInfo extends Component {
                 ]}
               >
                 <Icon
-                  style={{
-                    fontSize: 20,
-                    color: this.state.inputN ? "#FF9D00" : "#717171"
-                  }}
+                  style={[
+                    styles.iconSize,
+                    {
+                      color: this.state.inputN ? "#FF9D00" : "#717171"
+                    }
+                  ]}
                   name="person"
                 />
                 {"  "}
@@ -398,12 +297,7 @@ class BusinessInfo extends Component {
             {this.state.nameError !== "" &&
               this.state.nameError &&
               !this.state.nameError.includes("blank") && (
-                <Text
-                  style={[
-                    styles.text,
-                    { paddingTop: 0, marginBottom: 0, bottom: 20 }
-                  ]}
-                >
+                <Text style={[styles.text, styles.nameErrorText]}>
                   {this.state.nameError}
                 </Text>
               )}
@@ -441,17 +335,7 @@ class BusinessInfo extends Component {
                   }
                 ]}
               >
-                <Text
-                  style={[
-                    styles.inputtext,
-                    {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "rgb(113,113,113)"
-                    }
-                  ]}
-                >
+                <Text style={[styles.inputtext, styles.pickerInputText]}>
                   {this.state.userInfo.country === ""
                     ? this.state.userInfo.businesstype === "1"
                       ? "Where do you live?"
@@ -461,7 +345,7 @@ class BusinessInfo extends Component {
                 <Icon
                   type="AntDesign"
                   name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                  style={styles.iconDownCountry}
                 />
               </Item>
             </RNPickerSelect>
@@ -505,15 +389,7 @@ class BusinessInfo extends Component {
                       ? this.state.userInfo.businesscategory
                       : ""
                   }
-                  style={[
-                    styles.inputtext,
-                    {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "rgb(113,113,113)"
-                    }
-                  ]}
+                  style={[styles.inputtext, styles.pickerInputText]}
                 >
                   {this.state.userInfo.businesscategory === ""
                     ? this.state.userInfo.businesstype === "1"
@@ -526,7 +402,7 @@ class BusinessInfo extends Component {
                 <Icon
                   type="AntDesign"
                   name="down"
-                  style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                  style={styles.iconDownCountry}
                 />
               </Item>
             </RNPickerSelect>
@@ -535,11 +411,11 @@ class BusinessInfo extends Component {
               Agree to the Terms & Conditions
             </Text>
           </View>
-          <View style={{ backgroundColor: "#fff" }}>
+          <View style={styles.block3}>
             <Button
               block
               dark
-              style={[styles.bottomCard, { justifyContent: "center" }]}
+              style={[styles.bottomCard]}
               onPress={() => {
                 this._handleSubmission();
               }}
