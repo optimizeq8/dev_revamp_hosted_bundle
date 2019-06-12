@@ -3,7 +3,8 @@ import {
   View,
   AsyncStorage,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Animated
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
 import { LinearGradient } from "expo";
@@ -25,24 +26,35 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import GetInviteCode from "../GetInviteCode";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 export default class Invitation extends Component {
   static navigationOptions = {
     header: null
   };
-  state = {
-    registeredWithInvite: null,
-    renderInviteCode: true,
-    animationActive: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      registeredWithInvite: null,
+      renderInviteCode: true,
+      animationActive: false,
+      firstAnimation: true
+    };
+    this.animation = new Animated.Value(1);
+
+    this.movePannel = this.movePannel.bind(this);
+  }
+
   componentDidMount() {
     AsyncStorage.getItem("registeredWithInvite")
       .then(value => {
         if (value == null) {
-          this.setState({ registeredWithInvite: false });
+          this.setState({
+            registeredWithInvite: false
+          });
         } else {
-          this.setState({ registeredWithInvite: true });
+          this.setState({
+            registeredWithInvite: true
+          });
         }
       })
       .catch(err => {
@@ -55,13 +67,32 @@ export default class Invitation extends Component {
         //  console.log(err)
       });
   }
+
+  movePannel(val) {
+    Animated.timing(this.animation, {
+      toValue: val,
+      Duration: 500
+    }).start();
+  }
+
   toggleComps = () => {
-    this.setState({
-      renderInviteCode: !this.state.renderInviteCode,
-      animationActive: !this.state.animationActive
-    });
+    this.setState(
+      {
+        renderInviteCode: !this.state.renderInviteCode,
+        animationActive: !this.state.animationActive
+      },
+      () => {
+        if (this.state.renderInviteCode) this.movePannel(1);
+        else this.movePannel(0);
+      }
+    );
   };
   render() {
+    const interpolation = this.animation.interpolate({
+      inputRange: [0, 1],
+      outputRange: [widthPercentageToDP(-50), widthPercentageToDP(50)]
+    });
+
     if (this.state.registeredWithInvite == null) {
       return (
         <>
@@ -78,7 +109,10 @@ export default class Invitation extends Component {
     } else
       return (
         <SafeAreaView
-          style={{ flex: 1, backgroundColor: "#0000" }}
+          style={{
+            flex: 1,
+            backgroundColor: "#0000"
+          }}
           forceInset={{ bottom: "never" }}
         >
           <Container style={styles.container}>
@@ -121,64 +155,54 @@ export default class Invitation extends Component {
                     height: "100%"
                   }}
                 >
-                  {/* <Animatable.View
-                    animation={
-                      this.state.animationActive
-                        ? this.state.renderInviteCode
-                          ? "fadeInLeftBig"
-                          : "fadeOutLeftBig"
-                        : ""
-                    }
+                  <Animated.View
                     style={{
-                      //   position: "absolute",
-                      height: "45%",
-                      alignSelf: "center",
-                      flex: 1
-                      //   top: "10%"
+                      left:
+                        !this.state.animationActive &&
+                        this.state.renderInviteCode
+                          ? interpolation
+                          : interpolation,
+                      width: widthPercentageToDP(200),
+                      flexDirection: "row",
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "space-around"
                     }}
                   >
-                    {this.state.renderInviteCode && (
-                      <Verification
-                        invite={true}
-                        renderInviteCode={this.state.renderInviteCode}
-                        toggleComps={this.toggleComps}
-                      />
-                    )}
-                  </Animatable.View> */}
-
-                  {/* {this.state.animationActive && ( */}
-                  <Animatable.View
-                    animation={
-                      !this.state.animationActive && this.state.renderInviteCode
-                        ? "fadeInLeftBig"
-                        : "fadeInRightBig"
-                    }
-                    style={{
-                      height: "45%",
-                      flex: 1
-                      //  bottom: "5%"
-                    }}
-                  >
-                    {!this.state.animationActive &&
-                    this.state.renderInviteCode ? (
-                      <Verification
-                        invite={true}
-                        renderInviteCode={this.state.renderInviteCode}
-                        toggleComps={this.toggleComps}
-                      />
-                    ) : (
-                      <GetInviteCode toggleComps={this.toggleComps} />
-                    )}
-                  </Animatable.View>
-                  {/* )} */}
-                  {/* {this.state.renderInviteCode && (
-                    <Text
-                      style={[styles.link]}
-                      onPress={() => this.toggleComps()}
+                    <Animatable.View
+                      animation={
+                        !this.state.animationActive &&
+                        this.state.renderInviteCode
+                          ? "slideInLeft"
+                          : "slideOutLeft"
+                      }
+                      style={{
+                        flexDirection: "column",
+                        flex: 1
+                      }}
                     >
-                      Get an invitation code now!
-                    </Text>
-                  )} */}
+                      <Verification
+                        invite={true}
+                        renderInviteCode={this.state.renderInviteCode}
+                        toggleComps={this.toggleComps}
+                      />
+                    </Animatable.View>
+
+                    <Animatable.View
+                      animation={
+                        this.state.animationActive &&
+                        !this.state.renderInviteCode
+                          ? "slideInRight"
+                          : "slideOutRight"
+                      }
+                      style={{
+                        flexDirection: "column",
+                        flex: 1
+                      }}
+                    >
+                      <GetInviteCode toggleComps={this.toggleComps} />
+                    </Animatable.View>
+                  </Animated.View>
                 </Content>
                 <Footer style={styles.registered}>
                   <Text style={[styles.registeredText]}>
@@ -196,7 +220,10 @@ export default class Invitation extends Component {
                     <Text
                       style={[
                         styles.buttontext,
-                        { color: "#fff", fontFamily: "montserrat-semibold" }
+                        {
+                          color: "#fff",
+                          fontFamily: "montserrat-semibold"
+                        }
                       ]}
                     >
                       Log In!
