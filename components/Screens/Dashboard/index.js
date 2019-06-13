@@ -200,7 +200,7 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     ) : null;
-    if (isNull(this.props.mainBusiness) && this.props.loadingAccountMgmt) {
+    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
       return (
         <>
           <LoadingScreen dash={true} top={0} />

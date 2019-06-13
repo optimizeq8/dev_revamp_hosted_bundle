@@ -6,18 +6,33 @@ import { showMessage } from "react-native-flash-message";
 import { getBusinessAccounts } from "./accountManagementActions";
 import { setAuthToken } from "./genericActions";
 import { Permissions, Notifications } from "expo";
+import store from "../index";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
+
+export const chanege_base_url = admin => {
+  return dispatch => {
+    console.log("changed");
+    if (admin)
+      dispatch({
+        type: actionTypes.SET_BASEURL
+      });
+  };
+};
 
 export const send_push_notification = () => {
   return (dispatch, getState) => {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
       if (permission.status === "granted") {
         Notifications.getExpoPushTokenAsync().then(token => {
-          instance
+          createBaseUrl()
             .post(`updatepushToken`, {
               token: token,
               userid: getState().auth.userInfo.userid
@@ -61,6 +76,17 @@ export const checkForExpiredToken = navigation => {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
+          console.log(user);
+          if (
+            [
+              "sam.omran@hotmail.com",
+              "imran@optimizekw.com",
+              "saadiya@optimizekw.com",
+              "shorook@optimizekw.com",
+              "jarrah@optimizeapp.com"
+            ].includes(user.email)
+          )
+            dispatch(chanege_base_url(true));
           setAuthToken(token)
             .then(() =>
               dispatch(
@@ -87,11 +113,22 @@ export const checkForExpiredToken = navigation => {
 
 export const login = (userData, navigation) => {
   return (dispatch, getState) => {
+    if (
+      [
+        "sam.omran@hotmail.com",
+        "imran@optimizekw.com",
+        "saadiya@optimizekw.com",
+        "shorook@optimizekw.com",
+        "jarrah@optimizeapp.com"
+      ].includes(userData.email)
+    ) {
+      dispatch(chanege_base_url(true));
+    }
     dispatch({
       type: actionTypes.SET_LOADING_USER,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post("userLogin", userData)
       .then(res => {
         return res.data;
@@ -165,7 +202,7 @@ export const forgotPassword = (email, navigation) => {
     //   type: actionTypes.CHANGE_PASSWORD,
     //   payload: { success: false }
     // });
-    instance
+    createBaseUrl()
       .post("forgotPassword", {
         email: email
       })
@@ -191,7 +228,7 @@ export const forgotPassword = (email, navigation) => {
 
 export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .post(`updatepushToken`, {
         token: null,
         userid: userid
@@ -240,7 +277,7 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
       type: actionTypes.CHANGE_PASSWORD,
       payload: { success: false }
     });
-    instance
+    createBaseUrl()
       .put("changePassword", {
         current_password: currentPass,
         password: newPass

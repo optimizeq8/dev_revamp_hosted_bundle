@@ -4,12 +4,6 @@ import * as actionTypes from "./actionTypes";
 import { Segment } from "expo";
 import { AsyncStorage } from "react-native";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
-});
-
 export const setAuthToken = token => {
   if (token) {
     return AsyncStorage.setItem("token", token)
