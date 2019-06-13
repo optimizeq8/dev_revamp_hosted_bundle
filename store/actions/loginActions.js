@@ -82,9 +82,7 @@ export const checkForExpiredToken = navigation => {
               "sam.omran@hotmail.com",
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
-              "shorook@optimizekw.com",
-              "jarrah@optimizeapp.com"
-            ].includes(user.email)
+              "shorook@optimizekw.com"].includes(user.email)
           )
             dispatch(chanege_base_url(true));
           setAuthToken(token)
@@ -118,9 +116,7 @@ export const login = (userData, navigation) => {
         "sam.omran@hotmail.com",
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
-        "shorook@optimizekw.com",
-        "jarrah@optimizeapp.com"
-      ].includes(userData.email)
+        "shorook@optimizekw.com"].includes(userData.email)
     ) {
       dispatch(chanege_base_url(true));
     }
