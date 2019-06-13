@@ -77,12 +77,7 @@ class MainForm extends Component {
     return (
       <SafeAreaView
         forceInset={{ bottom: "never" }}
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#0000"
-        }}
+        style={styles.safeAreaViewContainer}
       >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
@@ -94,16 +89,7 @@ class MainForm extends Component {
             onPress={Keyboard.dismiss}
             accessible={false}
           >
-            <View
-              style={[
-                {
-                  flex: 1,
-                  height: "100%",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }
-              ]}
-            >
+            <View style={[styles.touchableViewContainer]}>
               <View>
                 <Background
                   style={styles.background}
@@ -111,25 +97,17 @@ class MainForm extends Component {
                   height={heightPercentageToDP(65)}
                 />
               </View>
-              <View
-                style={{
-                  //   flex: 1,
-                  //   height: "100%",
-                  alignItems: "center"
-                  //   marginTop: 5
-                  //   justifyContent: "space-between"
-                }}
-              >
+              <View style={styles.logoContainer}>
                 <Logo
                   style={styles.logo}
                   width={heightPercentageToDP(15)}
                   height={heightPercentageToDP(15)}
                 />
-                <Text style={styles.logotext}>Optimize</Text>
+                <Text style={styles.logoText}>Optimize</Text>
               </View>
-              <KeyboardShift style={{ flex: 1, alignItems: "center" }}>
+              <KeyboardShift style={styles.keyboardShiftContainer}>
                 {() => (
-                  <View style={{ alignItems: "center" }}>
+                  <View style={styles.keyboardShiftContainer}>
                     <Text style={styles.text}>Sign In</Text>
 
                     <View style={styles.mainView}>
@@ -148,7 +126,7 @@ class MainForm extends Component {
                           placeholderTextColor="#fff"
                           autoCorrect={false}
                           autoCapitalize="none"
-                          style={styles.inputtext}
+                          style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
                               email: value
@@ -183,7 +161,7 @@ class MainForm extends Component {
                           autoCorrect={false}
                           textContentType="password"
                           autoCapitalize="none"
-                          style={styles.inputtext}
+                          style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
                               password: value
@@ -206,10 +184,7 @@ class MainForm extends Component {
                           Segment.track("Forgot Password Button");
                           this.props.navigation.push("ForgotPassword");
                         }}
-                        style={[
-                          styles.link,
-                          { paddingVertical: 20, fontSize: 12 }
-                        ]}
+                        style={[styles.link, styles.forgotPasswordLink]}
                       >
                         Forgot Password?
                       </Text>
@@ -220,7 +195,7 @@ class MainForm extends Component {
                           this._handleSubmission();
                         }}
                       >
-                        <Text style={styles.buttontext}>Sign in</Text>
+                        <Text style={styles.buttonText}>Sign in</Text>
                       </Button>
                     </View>
                   </View>
@@ -228,8 +203,8 @@ class MainForm extends Component {
               </KeyboardShift>
 
               {invite && (
-                <View style={{ bottom: "5%" }}>
-                  <Text style={[styles.link, { paddingBottom: 7 }]}>
+                <View style={styles.bottomInviteViewContainer}>
+                  <Text style={[styles.link, styles.dontHaveAccountText]}>
                     Don’t Have an Account?
                   </Text>
                   <Button
@@ -239,15 +214,7 @@ class MainForm extends Component {
                     }}
                     style={styles.bottomView}
                   >
-                    <Text
-                      style={[
-                        styles.buttontext,
-                        {
-                          color: "#fff",
-                          fontFamily: "montserrat-semibold"
-                        }
-                      ]}
-                    >
+                    <Text style={[styles.buttonText, styles.textInviteCode]}>
                       Enter Invite Code!
                     </Text>
                   </Button>

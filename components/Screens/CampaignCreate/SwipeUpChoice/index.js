@@ -29,6 +29,8 @@ import {
 import BackButton from "../../../MiniComponents/BackButton";
 
 import { LinearGradient } from "expo";
+import CustomeHeader from "../../../MiniComponents/Header";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import * as actionCreators from "../../../../store/actions";
@@ -69,7 +71,11 @@ class SwipeUpChoice extends Component {
           style={styles.gradient}
         />
         <Container style={[styles.container]}>
-          <Header transparent noShadow iosBarStyle={"light-content"}>
+          <CustomeHeader
+            closeButton={false}
+            navigation={this.props.navigation}
+          />
+          {/* <Header transparent noShadow iosBarStyle={"light-content"}>
             <Left
               style={{
                 alignItems: "center",
@@ -85,7 +91,7 @@ class SwipeUpChoice extends Component {
             </Left>
             <Body />
             <Right />
-          </Header>
+          </Header> */}
           <Content
             // padder
             contentContainerStyle={{
