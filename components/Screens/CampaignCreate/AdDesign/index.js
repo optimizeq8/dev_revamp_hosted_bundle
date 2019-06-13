@@ -523,6 +523,7 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
+      this.formatMedia();
       this.handleUpload();
       !this.props.loading &&
         this.props.ad_design(
