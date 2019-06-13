@@ -81,6 +81,8 @@ class AdObjective extends Component {
     }
   };
   componentDidMount() {
+    let rep = this.state.campaignInfo;
+
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
@@ -94,6 +96,13 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    if (this.props.data) {
+      // console.log("data", this.props.data);
+      rep = { ...this.props.data };
+      console.log("rep", this.props.data);
+
+      this.setState({ campaignInfo: { ...rep } });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -186,6 +195,8 @@ class AdObjective extends Component {
   };
 
   render() {
+    console.log("state", this.state.campaignInfo);
+
     const list = this.state.objectives.map(o => (
       <ObjectivesCard
         choice={o}
@@ -249,6 +260,7 @@ class AdObjective extends Component {
                 </Label>
 
                 <Input
+                  value={this.state.campaignInfo.name}
                   style={[styles.inputtext]}
                   autoCorrect={false}
                   maxLength={35}
@@ -385,7 +397,8 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data
 });
 
 const mapDispatchToProps = dispatch => ({

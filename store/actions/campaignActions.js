@@ -60,7 +60,7 @@ export const payment_request_credit_card = (
       });
   };
 };
-export const resetCampaignId = () => {
+export const resetCampaignInfo = () => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
   };

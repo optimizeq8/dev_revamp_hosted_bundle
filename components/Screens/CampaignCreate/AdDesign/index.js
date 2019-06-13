@@ -549,6 +549,8 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
+    console.log(this.props.data);
+
     let { image } = this.state;
     const penIconBrand = (
       <Item

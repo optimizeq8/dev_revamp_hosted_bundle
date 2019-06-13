@@ -539,6 +539,8 @@ class AdDetails extends Component {
   };
 
   render() {
+    console.log(this.props.data);
+
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {

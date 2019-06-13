@@ -19,7 +19,7 @@ export {
 export { setAuthToken } from "./genericActions";
 
 export {
-  resetCampaignId,
+  resetCampaignInfo,
   ad_objective,
   getMinimumCash,
   ad_design,
