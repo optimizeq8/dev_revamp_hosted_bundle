@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 30,
-    backgroundColor: "#751AFF",
+    backgroundColor: "#0000",
     zIndex: 10
   },
   mainCard: {

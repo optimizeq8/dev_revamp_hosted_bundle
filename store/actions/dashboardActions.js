@@ -7,7 +7,6 @@ import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
   // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
 });
 
 export const filterCampaigns = query => {
@@ -49,6 +48,62 @@ export const getCampaignDetails = (id, navigation) => {
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
           payload: { loading: false }
+        });
+      });
+  };
+};
+
+export const getCampaignStats = (campaign, duration) => {
+  let timeDiff = Math.round(
+    Math.abs(
+      (new Date(duration.start_time).getTime() -
+        new Date(duration.end_time).getTime()) /
+        86400000
+    )
+  );
+
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_STATS_LOADING,
+      payload: true
+    });
+    instance
+      .post(`getcampaignStats`, {
+        //testing
+        // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
+        // start_time: "2019-05-09",
+        // end_time: "2019-05-25",
+
+        // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
+        // start_time: duration.start_time, //"2019-05-09",
+        // end_time: duration.end_time, //"2019-05-25",
+
+        //Actual api
+        campaign_id: campaign.snap_campaign_id,
+        start_time: duration.start_time,
+        end_time: duration.end_time,
+        hour: timeDiff + 1 <= 5 ? 1 : 0
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: data }
+        });
+      })
+      .catch(err => {
+        console.log("getCampaignStats error", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
       });
   };

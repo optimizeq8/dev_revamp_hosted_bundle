@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   btnClose: {
-    top: hp("1%")
+    top: "30%"
   },
   BlurView: {
     // height: "100%"

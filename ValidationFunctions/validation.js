@@ -31,14 +31,14 @@ const validation = {
     }
   },
   website: {
-    format: /((http|https):\/\/?)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/?))/,
+    format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/,
     presence: { allowEmpty: false }
   },
   deepLink: {
     format: {
-      pattern: /^((?!https|http))([a-z]{2,5}\.\w*)?\w*:\/\/=?([a-z0-9]+([\-\.])?[a-z0-9]+)*(\??[a-z]*\=?[a-z0-9]+)(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/,
+      pattern: /^([a-z]+\.?\w*)+\w*:\/\/=?([a-z0-9]+([\-\.])?[a-z0-9]+)*(\w*\??[a-z]*\=?[a-z0-9]+)(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/,
       message:
-        "^Invalid deep link url. A few format examples: my-app://your_url_here or my-app://?content="
+        "^Invalid deep link url. A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'"
     },
     presence: { allowEmpty: false }
   },

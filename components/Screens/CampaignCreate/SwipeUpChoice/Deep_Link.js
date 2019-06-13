@@ -2,33 +2,10 @@ import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { ImagePicker, Permissions, LinearGradient } from "expo";
 
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-  Platform
-} from "react-native";
+import { View, SafeAreaView, Platform } from "react-native";
 
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { Content, Text, Container } from "native-base";
 import list from "./callactions";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
@@ -38,7 +15,6 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 
 export default class Deep_Link extends Component {
   static navigationOptions = {

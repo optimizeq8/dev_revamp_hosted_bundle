@@ -3,6 +3,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { View, SafeAreaView, BackHandler } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -11,6 +12,7 @@ import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
+import { showMessage } from "react-native-flash-message";
 
 export default class Website extends Component {
   static navigationOptions = {
@@ -40,7 +42,7 @@ export default class Website extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  _handleSubmission = () => {
+  validateUrl = () => {
     const urlError = validateWrapper(
       "website",
       this.state.campaignInfo.attachment
@@ -48,7 +50,22 @@ export default class Website extends Component {
     this.setState({
       urlError
     });
-    if (!urlError) {
+    if (urlError) {
+      showMessage({
+        message: "Please enter a vaild url",
+        description:
+          'Make sure to include the network location (e.g., "http://" or "https://") in the URL',
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+  _handleSubmission = () => {
+    if (this.validateUrl()) {
       this.props._changeDestination(
         this.props.objective !== "LEAD_GENERATION"
           ? "REMOTE_WEBPAGE"
@@ -156,36 +173,33 @@ export default class Website extends Component {
                           ...this.state.campaignInfo,
                           attachment: value
                         }
-                      })
-                    }
-                    onBlur={() => {
-                      this.setState({
-                        urlError: validateWrapper(
-                          "website",
-                          this.state.campaignInfo.attachment
-                        )
-                      });
-                    }}
-                  />
-                </Item>
-              </View>
-
-              <View>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
-                  </Text>
-                )}
-                <LowerButton
-                  checkmark={true}
-                  bottom={0}
-                  function={this._handleSubmission}
-                />
-              </View>
-            </View>
+                            })
+                }
+                onBlur={() => this.validateUrl()}
+              />
+            </Item>
+            <Text style={styles.warningText}>
+              Please make sure not include social media sites such as Facbook,
+              Instagram, Youtube, SnapChat, etc.
+            </Text>
+          </View>
+          <View />
+          <View>
+            {this.props.swipeUpDestination && (
+              <Text
+                style={styles.footerText}
+                onPress={() => this.props.toggleSideMenu()}
+              >
+                Change Swipe-up Destination
+              </Text>
+            )}
+            <LowerButton
+              checkmark={true}
+              bottom={0}
+              function={this._handleSubmission}
+            />
+          </View>
+        </View>
           )}
         </KeyboardShift>
       </SafeAreaView>

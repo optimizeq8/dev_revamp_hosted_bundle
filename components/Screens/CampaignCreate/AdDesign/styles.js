@@ -10,24 +10,120 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  slide: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
-  },
-  title: {
-    // flex: 1,
+  uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
     fontFamily: "montserrat-semibold",
     textAlign: "center",
-    alignSelf: "center"
+    alignSelf: "center",
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  },
+  uplaodText: {
+    justifyContent: "center",
+    fontSize: 12,
+    color: "white",
+    fontFamily: "montserrat-medium",
+    alignSelf: "center",
+    paddingTop: 10,
+    textAlign: "center"
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
+    marginTop: hp(25)
+  },
+  loadingSafeArea: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center"
+  },
+  footerButtonsContainer: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  errorMsg: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: hp(1.7)
+  },
+  video: {
+    width: "100%",
+    height: "100%",
+    opacity: 0.2
+  },
+  transition: {
+    height: "100%"
+  },
+  contentContainer: {
+    flexGrow: 1,
+    marginTop: hp(3)
+  },
+  mainSafeArea: {
+    height: "100%",
+    backgroundColor: "#0000"
+  },
+  blankView: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    opacity: 0.4,
+    height: "100%",
+    width: "100%"
+  },
+  title: {
+    fontSize: 16,
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    textAlign: "center",
+    alignSelf: "center",
+    position: "absolute",
+    top: "70%",
+    textDecorationLine: "underline"
+  },
+  mediaButtonMsg: {
+    textAlign: "center",
+    paddingTop: 23,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    width: 150,
+    color: "#FF9D00"
+  },
+  icon: {
+    color: "#fff",
+    paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: 50,
+    paddingTop: 12
+  },
+  inputMiddleButton: {
+    position: "absolute",
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    borderColor: "transparent",
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    opacity: 1,
+    transform: [
+      {
+        translateX: -50
+      },
+      {
+        translateY: -50
+      }
+    ]
   },
   container: {
     backgroundColor: "transparent",
     flex: 1
   },
-
   inputtext: {
     fontFamily: "montserrat-medium",
     fontSize: 16,
@@ -81,25 +177,7 @@ const styles = StyleSheet.create({
       }
     ]
   },
-  inputMiddleButton: {
-    position: "absolute",
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    borderColor: "transparent",
-    top: "50%",
-    left: "50%",
-    transform: [
-      {
-        translateX: -50
-      },
-      {
-        translateY: -50
-      }
-    ]
-  },
+
   swipeUp: {
     position: "absolute",
     height: 50,
@@ -187,14 +265,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     marginHorizontal: wp(10)
   },
-  icon: {
-    fontSize: 35,
-    color: "#fff",
-    paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
+
   gradient: {
     ...StyleSheet.absoluteFillObject
   },

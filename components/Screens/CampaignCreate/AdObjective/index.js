@@ -285,7 +285,17 @@ class AdObjective extends Component {
                 end_timeError={this.state.end_timeError}
                 dateField={this.dateField}
               />
-
+              <Text
+                style={[
+                  styles.minBudget,
+                  {
+                    fontSize: 11
+                    // alignSelf: "center"
+                  }
+                ]}
+              >
+                Minimum of $25/day
+              </Text>
               <Text style={[styles.title, styles.selectObjectiveTitle]}>
                 Objective
               </Text>
