@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   cardStyle: {
     justifyContent: "space-between",
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "#FFFF",
     flexDirection: "row",
     flex: 1,
     marginHorizontal: 25,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    shadowColor: "#6268FF",
+    shadowColor: "#a0a0a0",
     shadowOffset: { height: 6, width: 0 },
     elevation: 5
   },
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     paddingBottom: heightPercentageToDP(0.5),
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    color: "#C6C6C6"
+    color: "#a0a0a0"
   },
   transactionButton: {
     flex: 1,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    color: "#fff",
+    color: "#a0a0a0",
     left: widthPercentageToDP("63%"),
     fontSize: widthPercentageToDP("15%"),
     top: widthPercentageToDP("-3%"),

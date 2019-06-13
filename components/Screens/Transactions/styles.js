@@ -40,6 +40,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     elevation: 0,
     marginRight: 10
+  },
+  mainContainer: {
+    backgroundColor: "#F4F4F4",
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
+    width: "100%",
+    height: "100%",
+    marginTop: 10
   }
 });
 
