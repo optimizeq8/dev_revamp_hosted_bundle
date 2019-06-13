@@ -7,11 +7,14 @@ const initialState = {
   isListEnd: false,
   loading: false,
   selectedCampaign: null,
+  campaignStats: [],
   filterValue: "",
   filterStatus: null,
   campaignStartSearch: "",
+  granularity: "DAY",
   campaignEndSearch: "",
-  loadingCampaignDetails: false
+  loadingCampaignDetails: false,
+  loadingCampaignStats: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -67,7 +70,31 @@ const reducer = (state = initialState, action) => {
         loadingCampaignDetails: action.payload.loading,
         loading: action.payload.loading
       };
+    case actionTypes.SET_CAMPAIGN_STATS:
+      return {
+        ...state,
+        selectedCampaign: {
+          ...state.selectedCampaign,
 
+          total_installs: action.payload.data.total_installs,
+          video_views: action.payload.data.video_views,
+          eCPV: action.payload.data.eCPV,
+          eCPI: action.payload.data.eCPI,
+          eCPSU: action.payload.data.eCPSU
+        },
+        granularity: action.payload.data.hasOwnProperty("timeseries_stats")
+          ? action.payload.data.timeseries_stats[0].timeseries_stat.granularity
+          : "DAY",
+        campaignStats: action.payload.data.hasOwnProperty("timeseries_stats")
+          ? action.payload.data.timeseries_stats[0].timeseries_stat.timeseries
+          : [],
+        loadingCampaignStats: action.payload.loading
+      };
+    case actionTypes.SET_STATS_LOADING:
+      return {
+        ...state,
+        loadingCampaignStats: action.payload
+      };
     case actionTypes.FILTER_CAMPAIGNS:
       let filtered = state.campaignList.filter(campaign =>
         campaign.name.toLowerCase().includes(action.payload.value.toLowerCase())

@@ -3,12 +3,16 @@ import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
 import { Segment } from "expo";
 import { showMessage } from "react-native-flash-message";
+import store from "../index";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
-});
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const filterCampaigns = query => {
   return {
@@ -25,7 +29,7 @@ export const getCampaignDetails = (id, navigation) => {
     });
     navigation.push("CampaignDetails");
 
-    instance
+    createBaseUrl()
       .get(`campaigndetail/${id}`)
       .then(res => {
         return res.data;
@@ -54,13 +58,71 @@ export const getCampaignDetails = (id, navigation) => {
   };
 };
 
+export const getCampaignStats = (campaign, duration) => {
+  let timeDiff = Math.round(
+    Math.abs(
+      (new Date(duration.start_time).getTime() -
+        new Date(duration.end_time).getTime()) /
+        86400000
+    )
+  );
+
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_STATS_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .post(`getcampaignStats`, {
+        //testing
+        // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
+        // start_time: "2019-05-09",
+        // end_time: "2019-05-25",
+
+        // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
+        // start_time: duration.start_time, //"2019-05-09",
+        // end_time: duration.end_time, //"2019-05-25",
+
+        //Actual api
+        campaign_id: campaign.snap_campaign_id,
+        start_time: duration.start_time,
+        end_time: duration.end_time,
+        hour: timeDiff + 1 <= 5 ? 1 : 0
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+
+        return dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: data }
+        });
+      })
+      .catch(err => {
+        console.log("getCampaignStats error", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+      });
+  };
+};
+
 export const getCampaignList = (id, increasePage, cancelToken) => {
+  console.log("dashboard", store.getState().login.admin);
+
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: { isListEnd: false, fetching_from_server: false, loading: true }
     });
-    instance
+    createBaseUrl()
       .get(`campaignlist/${id}/${1}`, {
         cancelToken
       })
@@ -103,7 +165,7 @@ export const updateCampaignList = (id, page, increasePage) => {
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: { isListEnd: false, fetching_from_server: true }
     });
-    instance
+    createBaseUrl()
       .get(`campaignlist/${id}/${page}`)
       .then(res => {
         return res.data;

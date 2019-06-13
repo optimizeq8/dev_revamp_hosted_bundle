@@ -39,7 +39,7 @@ class SelectDevices extends Component {
         children.push({ ...device.marketing_name });
       });
 
-      this.setState({ deviceBrands: [{ name: "Devices", id: 0, children }] });
+      this.setState({ deviceBrands: children });
     }
   }
   render() {
@@ -70,6 +70,8 @@ class SelectDevices extends Component {
                   loading={!this.props.deviceBrands ? true : false}
                   items={this.state.deviceBrands}
                   uniqueKey="id"
+                  readOnlyHeadings={false}
+                  selectChildren={true}
                   filterItems={(searchText, items) => {
                     if (this.state.deviceBrands.length !== 0) {
                       return items[0].children.filter(device =>
@@ -79,13 +81,7 @@ class SelectDevices extends Component {
                       );
                     }
                   }}
-                  selectToggleIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="menu-down"
-                      style={styles.indicator}
-                    />
-                  }
+                  modalWithSafeAreaView={true}
                   selectedIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
@@ -100,7 +96,10 @@ class SelectDevices extends Component {
                       style={[styles.itemCircles]}
                     />
                   }
-                  hideSelect
+                  noResultsComponent={
+                    <Text style={styles.errorText}>No item found</Text>
+                  }
+                  hideSelect={true}
                   hideConfirm
                   subKey="children"
                   styles={SectionStyle}
@@ -135,12 +134,12 @@ class SelectDevices extends Component {
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
-                    <Text>Sorry, no interests for selected country</Text>
+                    <Text>Sorry, no Devices for selected country</Text>
+
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");
                   }}
-                  selectChildren
                   modalAnimationType="fade"
                   onSelectedItemsChange={items =>
                     this.props.onSelectedItemsChange(items, "devices")

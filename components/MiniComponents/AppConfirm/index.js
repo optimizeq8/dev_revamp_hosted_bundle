@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity, BackHandler } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+  ScrollView
+} from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -12,6 +19,7 @@ import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
 import LowerButton from "../LowerButton";
 import { Item, Input } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import { showMessage } from "react-native-flash-message";
 export default class index extends Component {
   state = { deep_link_url: "", deep_link_urlError: "" };
   componentWillMount() {
@@ -25,22 +33,39 @@ export default class index extends Component {
     this.props.renderPreviousStep();
     return true;
   };
-  validate = () => {
+  validateUrl = () => {
     const deep_link_urlError = validateWrapper(
       "deepLink",
       this.state.deep_link_url
     );
-    this.setState({ deep_link_urlError });
+    this.setState({
+      deep_link_urlError
+    });
+    if (deep_link_urlError) {
+      showMessage({
+        message: "Invalid deep link url.",
+        description:
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+  _submitDeepLink = () => {
     if (!this.props.deepLink) {
       this.props._handleSubmission();
-    } else if (!deep_link_urlError) {
+    } else if (this.validateUrl()) {
       this.props._handleSubmission(this.state.deep_link_url);
     }
   };
   render() {
     return (
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           alignSelf: "center",
           width: "100%",
           flex: 1,
@@ -49,7 +74,14 @@ export default class index extends Component {
           //   overflow: "hidden"
         }}
       >
-        <KeyboardShift style={{ flex: 1, justifyContent: "space-around" }}>
+        <KeyboardShift
+          style={{
+            alignSelf: "center",
+            width: "100%",
+            flex: 1,
+            justifyContent: "space-around"
+          }}
+        >
           {() => (
             <>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
@@ -185,20 +217,10 @@ export default class index extends Component {
                         })
                       }
                       onBlur={() => {
-                        this.setState({
-                          deep_link_urlError: validateWrapper(
-                            "deepLink",
-                            this.state.deep_link_url
-                          )
-                        });
+                        this.validateUrl();
                       }}
                     />
                   </Item>
-                  {this.state.deep_link_urlError ? (
-                    <Text style={styles.deepLinkError}>
-                      {this.state.deep_link_urlError}
-                    </Text>
-                  ) : null}
                 </>
               )}
               {this.props.swipeUpDestination && (
@@ -230,14 +252,14 @@ export default class index extends Component {
 
                 <LowerButton
                   checkmark={true}
-                  function={() => this.validate()}
+                  function={() => this._submitDeepLink()}
                   bottom={0}
                 />
               </View>
             </>
           )}
         </KeyboardShift>
-      </View>
+      </ScrollView>
     );
   }
 }

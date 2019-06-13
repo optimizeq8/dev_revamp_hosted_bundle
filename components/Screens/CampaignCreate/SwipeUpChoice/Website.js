@@ -1,41 +1,18 @@
 import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-  BackHandler
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
-import { LinearGradient, ImageBackground } from "expo";
+import { View, SafeAreaView, BackHandler } from "react-native";
+import { Text, Item, Input, Icon } from "native-base";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
 import LowerButton from "../../../MiniComponents/LowerButton";
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { showMessage } from "react-native-flash-message";
 
 export default class Website extends Component {
   static navigationOptions = {
@@ -65,7 +42,7 @@ export default class Website extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  _handleSubmission = () => {
+  validateUrl = () => {
     const urlError = validateWrapper(
       "website",
       this.state.campaignInfo.attachment
@@ -73,7 +50,22 @@ export default class Website extends Component {
     this.setState({
       urlError
     });
-    if (!urlError) {
+    if (urlError) {
+      showMessage({
+        message: "Please enter a vaild url",
+        description:
+          'Make sure to include the network location (e.g., "http://" or "https://") in the URL',
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+  _handleSubmission = () => {
+    if (this.validateUrl()) {
       this.props._changeDestination(
         this.props.objective !== "LEAD_GENERATION"
           ? "REMOTE_WEBPAGE"
@@ -91,99 +83,105 @@ export default class Website extends Component {
           height: "100%"
         }}
       >
-        <View
-          style={{
-            height: "100%",
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-            alignItems: "center",
-            padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
-          }}
-        >
-          <View style={{}}>
-            <WebsiteIcon style={styles.icon} />
-            <View style={[styles.textcontainer, { marginBottom: 20 }]}>
-              <Text style={[styles.titletext]}>Website</Text>
-              <Text style={[styles.subtext]}>
-                The user will be taken to your website
-              </Text>
-            </View>
-            <RNPickerSelect
-              items={this.state.callactions}
-              placeholder={{}}
-              onValueChange={(value, index) => {
-                this.setState({
-                  campaignInfo: {
-                    ...this.state.campaignInfo,
-                    callaction: {
-                      label: list[0].call_to_action_list[index].label,
-                      value
-                    }
-                  }
-                });
+        <KeyboardShift>
+          {() => (
+            <View
+              style={{
+                height: "100%",
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
               }}
             >
-              <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-                <Text
+              <View
+                style={
+                  {
+                    //   marginTop: this.props.swipeUpDestination ? 40 : 0
+                  }
+                }
+              >
+                <WebsiteIcon style={styles.icon} />
+                <View style={[styles.textcontainer, { marginBottom: 20 }]}>
+                  <Text style={[styles.titletext]}>Website</Text>
+                  <Text style={[styles.subtext]}>
+                    The user will be taken to your website
+                  </Text>
+                </View>
+                <RNPickerSelect
+                  items={this.state.callactions}
+                  placeholder={{}}
+                  onValueChange={(value, index) => {
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        callaction: {
+                          label: list[0].call_to_action_list[index].label,
+                          value
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <Item rounded style={[styles.input, { marginBottom: 20 }]}>
+                    <Text
+                      style={[
+                        styles.inputtext,
+                        {
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          color: "#fff"
+                        }
+                      ]}
+                    >
+                      {this.state.campaignInfo.callaction === ""
+                        ? this.state.callactions[0].label
+                        : this.state.callactions.find(
+                            c =>
+                              this.state.campaignInfo.callaction.value ===
+                              c.value
+                          ).label}
+                    </Text>
+                    <Icon
+                      type="AntDesign"
+                      name="down"
+                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                    />
+                  </Item>
+                </RNPickerSelect>
+                <Item
+                  rounded
                   style={[
-                    styles.inputtext,
+                    styles.input,
                     {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "#fff"
+                      borderColor: this.state.urlError ? "red" : "transparent"
                     }
                   ]}
                 >
-                  {this.state.campaignInfo.callaction === ""
-                    ? this.state.callactions[0].label
-                    : this.state.callactions.find(
-                        c =>
-                          this.state.campaignInfo.callaction.value === c.value
-                      ).label}
-                </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#fff", fontSize: 20, left: 25 }}
-                />
-              </Item>
-            </RNPickerSelect>
-            <Item
-              rounded
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.urlError ? "red" : "transparent"
+                  <Input
+                    style={styles.inputtext}
+                    placeholder="Enter your website's URL"
+                    placeholderTextColor="#fff"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          attachment: value
+                        }
+                            })
                 }
-              ]}
-            >
-              <Input
-                style={styles.inputtext}
-                placeholder="Enter your website's URL"
-                placeholderTextColor="#fff"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value =>
-                  this.setState({
-                    campaignInfo: {
-                      ...this.state.campaignInfo,
-                      attachment: value
-                    }
-                  })
-                }
-                onBlur={() => {
-                  this.setState({
-                    urlError: validateWrapper(
-                      "website",
-                      this.state.campaignInfo.attachment
-                    )
-                  });
-                }}
+                onBlur={() => this.validateUrl()}
               />
             </Item>
+            <Text style={styles.warningText}>
+              Please make sure not include social media sites such as Facbook,
+              Instagram, Youtube, SnapChat, etc.
+            </Text>
           </View>
           <View />
           <View>
@@ -202,6 +200,8 @@ export default class Website extends Component {
             />
           </View>
         </View>
+          )}
+        </KeyboardShift>
       </SafeAreaView>
     );
   }

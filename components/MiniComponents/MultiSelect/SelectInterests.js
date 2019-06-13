@@ -92,11 +92,6 @@ class SelectInterests extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </Button>
-              {this.props.country_code === "" ? (
-                <Text style={styles.countrySelectorText}>
-                  Please select a country first
-                </Text>
-              ) : (
                 <ScrollView style={styles.scrollContainer}>
                   <SectionedMultiSelect
                     ref={ref => (this.Section = ref)}
@@ -182,7 +177,6 @@ class SelectInterests extends Component {
                     <LoadingScreen top={-10} />
                   )}
                 </ScrollView>
-              )}
             </View>
           </View>
 

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   container: {
     backgroundColor: "transparent",
+    marginTop: 0,
     height: "100%"
     // marginTop: heightPercentageToDP(3)
   },
@@ -251,6 +252,13 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
     borderRadius: 50
+  },
+  warningText: {
+    color: "#fff",
+    textAlign: "center",
+    top: 10,
+    fontFamily: "montserrat-semibold",
+    fontSize: 13
   }
 });
 

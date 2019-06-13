@@ -11,7 +11,7 @@ class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
     let charts = [
-      { spend: campaign.spends }
+      { spend: campaign ? campaign.spends : 0 }
       // { impressions: campaign.impressions },
       // { swipes: campaign.swipes }
     ].map((category, i) => (
@@ -44,7 +44,7 @@ class CampaignCard extends Component {
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
-                {formatNumber(campaign.impressions, true)}
+                {formatNumber(campaign ? campaign.impressions : 0, true)}
               </Text>
               <Text style={[styles.subtext]}>Impressions</Text>
             </View>
@@ -60,16 +60,16 @@ class CampaignCard extends Component {
                 numberOfLines={1}
                 style={[GlobalStyles.numbers, styles.campaignNumbers]}
               >
-                {campaign.objective !== "BRAND_AWARENESS"
-                  ? formatNumber(campaign.swipes, true)
-                  : campaign.impressions > 0
-                  ? (parseFloat(campaign.spends) /
-                      parseFloat(campaign.impressions)) *
-                    1000
+                {campaign && campaign.objective !== "BRAND_AWARENESS"
+                  ? formatNumber(campaign ? campaign.swipes : 0, true)
+                  : campaign
+                  ? campaign.cpm
                   : 0}
               </Text>
               <Text style={[styles.subtext]}>
-                {campaign.objective !== "BRAND_AWARENESS" ? "Swipe Ups" : "CPM"}
+                {campaign && campaign.objective !== "BRAND_AWARENESS"
+                  ? "Swipe Ups"
+                  : "CPM"}
               </Text>
             </View>
           </View>

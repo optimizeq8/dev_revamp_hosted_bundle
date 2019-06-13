@@ -26,10 +26,11 @@ export default class Duration extends Component {
           styles.dateInput,
           {
             borderColor: this.props.start_timeError ? "red" : "transparent"
-          }
+          },
+          this.props.style
         ]}
         onPress={() => {
-          this.props.dismissKeyboard();
+          this.props.dismissKeyboard && this.props.dismissKeyboard();
           this.props.dateField.showModal();
         }}
       >

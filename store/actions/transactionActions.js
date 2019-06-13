@@ -2,10 +2,16 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+import store from "../index";
+
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const getTransactions = () => {
   return dispatch => {
@@ -13,7 +19,7 @@ export const getTransactions = () => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .get(`paymentHistory`)
       .then(res => {
         return res.data;
@@ -47,7 +53,7 @@ export const getWalletAmount = () => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`)
       .then(res => {
         return res.data;
@@ -81,7 +87,7 @@ export const addWalletAmount = (info, openBrowser) => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`purchaseBusinessWalletAmount`, {
         ...info,
         businessid: getState().account.mainBusiness.businessid
@@ -119,7 +125,7 @@ export const getWalletAmountInKwd = amount => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .get(`kdamount/${amount}`)
       .then(res => {
         return res.data;
@@ -155,7 +161,7 @@ export const useWallet = campaign_id => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`useWallet`, { campaign_id })
       .then(res => {
         return res.data;
@@ -195,7 +201,7 @@ export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`removeWallet`, { campaign_id })
       .then(res => {
         return res.data;
@@ -235,7 +241,7 @@ export const checkoutwithWallet = campaign_id => {
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`checkoutwithWallet`, { campaign_id })
       .then(res => {
         return res.data;

@@ -830,17 +830,7 @@ class AdDetails extends Component {
                         }}
 <
                       > */}
-                          <Text
-                            style={[
-                              styles.colorGrey,
-                              {
-                                fontSize: 11
-                                // alignSelf: "center"
-                              }
-                            ]}
-                          >
-                            $25/day
-                          </Text>
+
                           {/* </View> */}
                           <Text style={styles.colorGrey}>
                             ${this.state.maxValueBudget}
@@ -1064,7 +1054,14 @@ class AdDetails extends Component {
 
                     <TouchableOpacity
                       onPress={() => {
-                        this._renderSideMenu("selectors", "interests");
+                        this.state.campaignInfo.targeting.geos[0]
+                          .country_code === ""
+                          ? showMessage({
+                              message: "Please select a country first",
+                              position: "top",
+                              type: "warning"
+                            })
+                          : this._renderSideMenu("selectors", "interests");
                       }}
                       style={{
                         flexDirection: "row",

@@ -26,7 +26,10 @@ class TransactionCard extends Component {
               </Text>
             </View>
             {transaction.iswallet === "1" ? (
-              <WalletIcon style={[styles.icon, { top: "1%", left: "90%" }]} />
+              <WalletIcon
+                fill="#a0a0a0"
+                style={[styles.icon, { top: "1%", left: "90%" }]}
+              />
             ) : (
               <Icon
                 type="MaterialCommunityIcons"
