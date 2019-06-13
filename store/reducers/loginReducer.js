@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { Segment } from "expo";
 const initialState = {
   exponentPushToken: null,
+  admin: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,11 +17,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         exponentPushToken: action.payload.token
       };
+    case actionTypes.SET_BASEURL:
+      return {
+        ...state,
+        admin: true
+      };
     case actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN:
-    return {
-    ...state,
-    exponentPushToken: null
-    };
+      return {
+        ...state,
+        exponentPushToken: null
+      };
     default:
       return state;
   }

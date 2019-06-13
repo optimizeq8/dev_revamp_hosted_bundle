@@ -4,11 +4,16 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
 import { AsyncStorage } from "react-native";
+import store from "../index";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const changeBusiness = business => {
   return dispatch => {
@@ -25,11 +30,11 @@ export const changeBusiness = business => {
 };
 
 export const getBusinessAccounts = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_BUSINESS_LIST
     });
-    instance
+    createBaseUrl()
       .get(`businessaccounts`)
       .then(res => {
         return res.data;
@@ -69,7 +74,7 @@ export const createBusinessAccount = (account, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`businessaccount`, account)
       .then(res => {
         return res.data;
@@ -181,14 +186,14 @@ export const addressForm = (address, navigation, addressId) => {
         type: actionTypes.SET_BILLING_ADDRESS_LOADING,
         payload: true
       });
-      const response = await instance.put("businessaddress", {
+      const response = await createBaseUrl().put("businessaddress", {
         businessid: getState().account.mainBusiness.businessid,
         id: addressId,
         ...address
       });
 
       if (response.data && response.data.message === "Address ID missing") {
-        const respData = await instance.post("businessaddress", {
+        const respData = await createBaseUrl().post("businessaddress", {
           businessid: getState().account.mainBusiness.businessid,
           ...address
         });
@@ -236,7 +241,7 @@ export const getAddressForm = () => {
       type: actionTypes.SET_BILLING_ADDRESS_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .get(`businessaddresses/${getState().account.mainBusiness.businessid}`)
       .then(response => {
         if (response.data && response.data.success)
@@ -273,7 +278,7 @@ export const create_snapchat_ad_account = (id, navigation) => {
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post("snapadaccounts", { businessid: id })
       .then(res => {
         return res.data;
