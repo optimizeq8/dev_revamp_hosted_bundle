@@ -214,7 +214,6 @@ class PaymentForm extends Component {
   };
 
   reviewPurchase = () => {
-    console.log("walletUsed", this.props.walletUsed);
     if (this.props.walletUsed)
       this.props.removeWalletAmount(
         this.props.campaign_id,
