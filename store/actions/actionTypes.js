@@ -75,7 +75,7 @@ export const SET_AD_LOADING_DETAIL = "SET_AD_LOADING_DETAIL";
 export const SET_AD_LOADING_DESIGN = "SET_AD_LOADING_DESIGN";
 
 //Campaign Action Types
-export const RESET_CAMPAING_ID = "RESET_CAMPAING_ID";
+export const RESET_CAMPAING_INFO = "RESET_CAMPAING_INFO";
 export const SET_AD_TYPE = "SET_AD_TYPE";
 
 export const SET_AD_OBJECTIVE = "SET_AD_OBJECTIVE";

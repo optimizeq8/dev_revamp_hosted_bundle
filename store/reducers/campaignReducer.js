@@ -213,10 +213,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         languagesList: []
       };
-    case actionTypes.RESET_CAMPAING_ID:
+    case actionTypes.RESET_CAMPAING_INFO:
       return {
         ...state,
-        campaign_id: ""
+        campaign_id: "",
+        data: null
       };
     default:
       return state;

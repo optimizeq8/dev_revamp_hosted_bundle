@@ -5,7 +5,6 @@ import { showMessage } from "react-native-flash-message";
 const instance = axios.create({
   baseURL: "https://optimizekwtestingserver.com/optimize/public/"
   // baseURL: "https://www.optimizeapp.com/optimize/public/"
-
 });
 
 export const payment_request_credit_card = (
@@ -63,7 +62,7 @@ export const payment_request_credit_card = (
 };
 export const resetCampaignId = () => {
   return dispatch => {
-    dispatch({ type: actionTypes.RESET_CAMPAING_ID });
+    dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
   };
 };
 
