@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -10,12 +7,22 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  backDrop: {
-    position: "absolute",
-    bottom: "50%",
-    alignSelf: "center"
+  container: {
+    flex: 1,
+    top: hp("10"),
+    alignItems: "center",
+    flexDirection: "column",
+    opacity: 1,
+    elevation: 0
   },
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
+  headerContainer: {
+    justifyContent: "flex-start",
+    marginTop: 10,
+    alignItems: "center"
+  },
+  transactionFilterContainer: {
+    justifyContent: "space-between"
+  },
   title: {
     textAlign: "center",
     color: "#fff",
@@ -25,102 +32,25 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignSelf: "center"
   },
-  container: {
-    marginTop: heightPercentageToDP("4"),
-    backgroundColor: "#751AFF"
-  },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
-  mainCard: {
-    top: -heightPercentageToDP(1.1),
-    backgroundColor: "#F4F4F4",
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    width: "100%",
-    height: "100%"
-  },
-  text: {
-    bottom: heightPercentageToDP(2),
-    alignSelf: "flex-start",
-    color: "#fff",
-    marginLeft: widthPercentageToDP(4),
-    fontFamily: "montserrat-semibold",
-    fontSize: heightPercentageToDP(2)
-  },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    marginHorizontal: 20,
-    height: 55,
-    borderRadius: 33,
-    elevation: 0
-  },
-  link: {
-    marginTop: 20,
+  titleStatus: {
     textAlign: "center",
-    color: "#5F5F5F",
-    fontFamily: "montserrat-regular",
-    fontSize: 20
-  },
-  bottomCard: {
-    top: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 1,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 8, height: 8 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: 100
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
-
-  textcontainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    paddingHorizontal: 7
-  },
-  titletext: {
-    textAlign: "left",
     color: "#fff",
-    paddingTop: 10,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
-    paddingVertical: 0
+    width: 150,
+    paddingTop: 20,
+    alignSelf: "center",
+    paddingBottom: 20
+  },
+  titleDate: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    width: 150,
+    paddingTop: 20,
+    alignSelf: "center",
+    paddingBottom: 10
   },
   subtext: {
     fontFamily: "montserrat-regular",
@@ -129,56 +59,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center"
   },
-  campaignButton: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    backgroundColor: "#FF9D00",
-    padding: 10,
-    marginBottom: 20,
-    bottom: 15
-  },
-  icon: {
-    alignSelf: "center",
+  clearFilterText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingTop: 25,
     color: "#fff",
-    fontSize: 40,
-    paddingVertical: 10,
-    paddingHorizontal: 7
-  },
-  contentContainer: {
-    paddingTop: 30
-  },
-  checkbutton: {
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 27.5,
-    borderColor: "transparent",
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginVertical: 5
-  },
-  activebutton: {
-    backgroundColor: "#fff",
-    alignSelf: "center",
-    justifyContent: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 33,
-    top: 30,
-    marginBottom: 10,
-    elevation: 0
+    textAlign: "center",
+    textDecorationLine: "underline",
+    marginBottom: 20,
+    textDecorationColor: "#fff"
   },
   dateInput: {
     marginBottom: 15,
@@ -186,7 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignSelf: "center",
     width: 270,
-    height: heightPercentageToDP(7.9),
+    height: hp(7.9),
     justifyContent: "center"
   },
   categories: {
@@ -194,7 +83,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: 13,
+    fontSize: 16,
     paddingHorizontal: 10
   },
   numbers: {
@@ -206,9 +95,26 @@ const styles = StyleSheet.create({
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
-    height: heightPercentageToDP("100%"),
-
+    height: hp("100%"),
     marginTop: 0
+  },
+  dateContainer: {
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  startColumn: {
+    flexDirection: "column",
+    textAlign: "center"
+  },
+  middleColumn: {
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+  endColumn: {
+    flexDirection: "column"
+  },
+  bottomView: {
+    bottom: "10%"
   }
 });
 

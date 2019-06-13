@@ -49,7 +49,7 @@ import { colors } from "../../GradiantColors/colors";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import isUndefined from "lodash/isUndefined";
-import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
+import { country_regions as regionsCountries } from "../../Screens/CampaignCreate/AdDetails/data";
 
 class CampaignDetails extends Component {
   _draggedValue = new Animated.Value(0);

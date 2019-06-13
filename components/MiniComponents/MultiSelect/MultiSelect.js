@@ -1,29 +1,20 @@
-import { connect } from "react-redux";
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  PixelRatio
-} from "react-native";
-
-
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
-import * as actionCreators from "../../../store/actions";
-import CustomChips from "./CustomChips";
+import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import { Button, Text, Item, Input } from "native-base";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
 
-//icon
-import BackButton from "../../MiniComponents/BackButton";
+//Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../assets/SVGs/Interests.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
-//styles
+
+//Styles
 import styles from "./styles";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 class MultiSelectList extends Component {
   constructor() {
@@ -126,18 +117,15 @@ class MultiSelectList extends Component {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>
-          <View style={[styles.dataContainer]}>
+          <View style={styles.dataContainer}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}> Select Country </Text>
+            <Text style={styles.title}> Select Country </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
                   placeholder="Search Country..."
-                  style={[styles.searchInputText,{
-                    fontSize: 14 / PixelRatio.getFontScale()
-                  }]}
-
+                  style={styles.searchInputText}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>
@@ -155,7 +143,7 @@ class MultiSelectList extends Component {
           </View>
 
           <Button
-            style={[styles.button]}
+            style={styles.button}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />

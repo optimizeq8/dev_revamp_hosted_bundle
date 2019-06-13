@@ -1,27 +1,28 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
 import { Text, View, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import * as actionCreators from "../../../store/actions";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import BackButton from "../../MiniComponents/BackButton";
+import LoadingScreen from "../LoadingScreen";
 
-//icons
+//Icons
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 
 //Styles
 import SectionStyle, { colors } from "./SectionStyle";
-import CustomChips2 from "./CustomChips2";
 import styles from "./styles";
-import { globalColors } from "../../../Global Styles";
 
-import LoadingScreen from "../LoadingScreen";
+//Redux
+import * as actionCreators from "../../../store/actions";
+import { connect } from "react-redux";
+
+//Functions
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 class SelectDevices extends Component {
   state = { deviceBrands: [] };
 
@@ -45,20 +46,20 @@ class SelectDevices extends Component {
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <View style={styles.container}>
-          <View style={[styles.dataContainer]}>
+          <View style={styles.dataContainer}>
             <Icon
               name="cellphone-settings"
               type="MaterialCommunityIcons"
-              style={[styles.icon]}
+              style={styles.icon}
             />
-            <Text style={[styles.title]}> Select Devices Make</Text>
-            <Text style={[styles.subHeadings]}>
+            <Text style={styles.title}> Select Devices Make</Text>
+            <Text style={styles.subHeadings}>
               Choose which phones you want to target
             </Text>
 
             <View style={styles.slidercontainer}>
               <Button
-                style={[styles.interestButton, { elevation: -1 }]}
+                style={styles.toggleSelectorButton}
                 onPress={() => this.DeviceSection._toggleSelector()}
               >
                 <PlusCircle width={53} height={53} />
@@ -106,19 +107,14 @@ class SelectDevices extends Component {
                   confirmText={"\u2714"}
                   stickyFooterComponent={
                     <Button
-                      style={[
-                        styles.button,
-                        { marginBottom: 30, elevation: -1 }
-                      ]}
+                      style={styles.stickyFooterButton}
                       onPress={() => this.DeviceSection._submitSelection()}
                     >
                       <CheckmarkIcon width={53} height={53} />
                     </Button>
                   }
                   headerComponent={
-                    <View
-                      style={{ height: 70, marginBottom: hp(5), top: hp(3) }}
-                    >
+                    <View style={styles.headerComponent}>
                       <BackButton
                         screenname="Select Devices"
                         businessname={this.props.mainBusiness.businessname}
@@ -131,7 +127,7 @@ class SelectDevices extends Component {
                     <Icon
                       type="MaterialCommunityIcons"
                       name="magnify"
-                      style={[styles.indicator]}
+                      style={styles.indicator}
                     />
                   }
                   iconKey="icon"
@@ -139,9 +135,7 @@ class SelectDevices extends Component {
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
-                    <Text style={{}}>
-                      Sorry, no interests for selected country
-                    </Text>
+                    <Text>Sorry, no interests for selected country</Text>
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");
@@ -161,7 +155,7 @@ class SelectDevices extends Component {
           </View>
 
           <Button
-            style={[styles.button]}
+            style={styles.button}
             onPress={() => this.props._handleSideMenuState(false)}
           >
             <CheckmarkIcon width={53} height={53} />

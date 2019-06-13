@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { View, Platform, Slider, SafeAreaView } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
+import { View } from "react-native";
+import { Button, Text, Container } from "native-base";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+
+//Styles
+import styles from "./styles";
+
+//Functions
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+
+//Icon
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
-import InputNumber from "rmc-input-number";
-import inputNumberStyles from "./inputNumber";
-import { globalColors } from "../../../Global Styles";
 
 export default class AgeOption extends Component {
   state = {
@@ -34,45 +34,12 @@ export default class AgeOption extends Component {
 
   render() {
     return (
-      <Container
-        style={[
-          {
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-around",
-            backgroundColor: "#0000"
-          }
-        ]}
-      >
-        <View
-          style={
-            {
-              //   felx: 1,
-              // justifyContent: "flex-start",
-              //   marginTop: 10
-            }
-          }
-        >
-          <AgeIcon fill="#fff" style={{ alignSelf: "center" }} />
-          <Text
-            style={[
-              styles.title,
-              { fontSize: 20, fontFamily: "montserrat-semibold" }
-            ]}
-          >
-            Age
-          </Text>
-          <Text style={[styles.title, { width: 250 }]}>
-            Select your audience's Age Range
-          </Text>
-          <View
-            style={{
-              //   top: 20,
-              marginTop: 20,
-              alignSelf: "center"
-            }}
-          >
+      <Container style={styles.container}>
+        <View>
+          <AgeIcon fill="#fff" style={styles.icon} />
+          <Text style={styles.title}>Age</Text>
+          <Text style={styles.title}>Select your audience's Age Range</Text>
+          <View style={styles.multiSliderContainer}>
             <MultiSlider
               values={[this.state.values[0], this.state.values[1]]}
               sliderLength={wp(60)}
@@ -85,22 +52,17 @@ export default class AgeOption extends Component {
               min={13}
               max={35}
               step={1}
-              selectedStyle={{
-                backgroundColor: globalColors.orange
-              }}
+              selectedStyle={styles.selected}
               unselectedStyle={{
                 backgroundColor: "rgba(255,255,255,0.3)",
                 height: 2
               }}
-              trackStyle={{
-                height: 3,
-                backgroundColor: "#fff"
-              }}
+              trackStyle={styles.track}
             />
           </View>
         </View>
         <Button
-          style={[styles.button, { marginBottom: 25, elevation: -1 }]}
+          style={styles.button}
           onPress={() => this.props._handleSideMenuState(false)}
         >
           <CheckmarkIcon width={53} height={53} />

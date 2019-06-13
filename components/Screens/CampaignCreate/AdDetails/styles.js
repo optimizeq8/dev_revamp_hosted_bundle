@@ -12,15 +12,12 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    // width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
+  safeArea: {
+    height: "100%",
+    flex: 1
+  },
+  mainContainer: {
+    backgroundColor: "#0000"
   },
   container: {
     borderTopRightRadius: 30,
@@ -32,6 +29,40 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1
   },
+  backgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    backgroundColor: "black",
+    opacity: 0.2
+  },
+  imageBackgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    overflow: "hidden"
+  },
+  videoBackgroundViewWrapper: {
+    width: "100%",
+    height: "100%",
+    opacity: 0.4,
+    backgroundColor: "black"
+  },
+
+  title: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    // width: 150,
+    paddingTop: 20,
+    alignSelf: "center"
+  },
+
   textCon: {
     width: "100%",
     flexDirection: "row",
@@ -53,9 +84,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20
   },
-  backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
-  },
+
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 17,
@@ -111,15 +140,6 @@ const styles = StyleSheet.create({
   btnClose: {
     top: hp("1%")
   },
-  BlurView: {
-    // height: "100%"
-    // paddingTop: hp("10%")
-  },
-  dateModal: {
-    ...StyleSheet.absoluteFillObject,
-    height: "110%",
-    borderRadius: 30
-  },
 
   dateInput: {
     marginBottom: 5,
@@ -132,18 +152,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5
   },
 
-  calender: {
-    width: wp("85%"),
-    alignSelf: "center"
-  },
-  textModal: {
-    textAlign: "center",
-    color: "#fff",
-
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 10
-  },
   chart: {
     alignItems: "center",
     // top: hp(10),
