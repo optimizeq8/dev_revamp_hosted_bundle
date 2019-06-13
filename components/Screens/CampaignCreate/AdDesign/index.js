@@ -296,15 +296,12 @@ class AdDesign extends Component {
             });
             return;
           } else {
-            this.setState(
-              {
-                image: result.uri,
-                type: result.type.toUpperCase(),
-                imageError: null,
-                result: result.uri
-              },
-              () => this.formatMedia()
-            );
+            this.setState({
+              image: result.uri,
+              type: result.type.toUpperCase(),
+              imageError: null,
+              result: result.uri
+            });
             this.onToggleModal(false);
             showMessage({
               message: "Image has been selected successfully ",
