@@ -296,15 +296,12 @@ class AdDesign extends Component {
             });
             return;
           } else {
-            this.setState(
-              {
-                image: result.uri,
-                type: result.type.toUpperCase(),
-                imageError: null,
-                result: result.uri
-              },
-              () => this.formatMedia()
-            );
+            this.setState({
+              image: result.uri,
+              type: result.type.toUpperCase(),
+              imageError: null,
+              result: result.uri
+            });
             this.onToggleModal(false);
             showMessage({
               message: "Image has been selected successfully ",
@@ -523,6 +520,7 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
+      this.formatMedia();
       this.handleUpload();
       !this.props.loading &&
         this.props.ad_design(
