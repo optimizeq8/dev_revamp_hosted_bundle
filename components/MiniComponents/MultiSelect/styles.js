@@ -57,8 +57,9 @@ export default (sectionStyle = {
   },
   indicator: {
     fontSize: 30,
-    marginRight: 20,
-    color: "#fff"
+    color: globalColors.orange
+    // marginRight: 20,
+    // color: "#fff"
   },
   itemCircles: {
     fontSize: 30,
