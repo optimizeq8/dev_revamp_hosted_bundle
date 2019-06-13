@@ -1,4 +1,15 @@
-var list = [
+export const gender = [
+  { label: "Female", value: "FEMALE" },
+  { label: "Male", value: "MALE" },
+  { label: "All", value: "" }
+];
+export const OSType = [
+  { value: "iOS", label: "iOS" },
+  { value: "ANDROID", label: "ANDROID" },
+  { label: "All", value: "" }
+];
+
+export const country_regions = [
   {
     country_code: "kw",
     regions: [
@@ -249,4 +260,30 @@ var list = [
     ]
   }
 ];
-export default list;
+
+export default (countries = [
+  {
+    label: "Kuwait",
+    value: "kw"
+  },
+  {
+    label: "UAE",
+    value: "ae"
+  },
+  {
+    label: "KSA",
+    value: "sa"
+  },
+  {
+    label: "Bahrain",
+    value: "bh"
+  },
+  {
+    label: "Qatar",
+    value: "qa"
+  },
+  {
+    label: "Oman",
+    value: "om"
+  }
+]);

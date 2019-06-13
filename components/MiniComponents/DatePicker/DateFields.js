@@ -1,26 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Dimensions
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { View } from "react-native";
+import { Button, Text } from "native-base";
 import { BlurView } from "expo";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
@@ -28,10 +8,9 @@ import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import { SafeAreaView } from "react-navigation";
 // Style
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles from "./styles";
 
 //icons
-import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
 
@@ -123,7 +102,7 @@ export default class DateFields extends Component {
             ]}
           >
             <SafeAreaView
-              style={{ height: "100%", backgroundColor: "#0000" }}
+              style={styles.safeArea}
               forceInset={{ bottom: "never" }}
             >
               <CustomHeader
@@ -144,7 +123,7 @@ export default class DateFields extends Component {
                 height={hp(5) < 30 ? 30 : 60}
                 style={styles.icon}
               />
-              <Text style={[styles.textModal, { color: "#FF9D00" }]}>
+              <Text style={styles.textModalOrange}>
                 Select the{" "}
                 {!this.state.start_choice ? "Start Date" : "End Date"}
               </Text>

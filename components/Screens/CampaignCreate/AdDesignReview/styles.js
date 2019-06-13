@@ -1,53 +1,23 @@
 import { StyleSheet } from "react-native";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    // paddingTop: heightPercentageToDP(1),
+  safeAreaContainer: {
     backgroundColor: "black",
     height: "100%"
-    // height: heightPercentageToDP(110)
   },
-  image: {
-    alignSelf: "center",
-    height: 50,
-    width: 50,
-    margin: 15
-  },
-  placeholder: {
-    borderRadius: 15,
-    // alignSelf: "center",
-    width: "100%",
-    minHeight: 300,
-    flex: 1,
-    // height: "100%",
-    zIndex: 0,
+  container: {
     backgroundColor: "black",
-    justifyContent: "center"
-  },
-
-  mainCard: {
-    // borderTopStartRadius: 30,
-    // borderTopEndRadius: 30,
-    borderRadius: 15,
+    height: "100%",
     flex: 1,
-    margin: 0,
-    padding: 0
-    //width: "110%"
-    // position: "relative"
-    // height: heightPercentageToDP(93)
+    width: "100%"
   },
-  brand_name: {
+  header: {
+    backgroundColor: "transparent",
+    borderBottomWidth: 0
+  },
+  headerBody: {
+    alignItems: "flex-start"
+  },
+  brandName: {
     textAlign: "left",
     color: "#fff",
     fontFamily: "montserrat-medium",
@@ -67,13 +37,42 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     paddingLeft: 10
   },
-  call_to_action: {
+  content: {
+    flexGrow: 1,
+    margin: 0,
+    padding: 0
+  },
+  mainCard: {
+    borderRadius: 15,
+    flex: 1,
+    margin: 0,
+    padding: 0
+  },
+  video: {
+    width: "100%",
+    height: "100%"
+  },
+  placeholder: {
+    borderRadius: 15,
+    width: "100%",
+    minHeight: 300,
+    flex: 1,
+    zIndex: 0,
+    backgroundColor: "black",
+    justifyContent: "center"
+  },
+  callToActionContainer: {
+    bottom: "10%",
+    width: "100%",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row"
+  },
+  callToActionText: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 20,
-    // bottom: "10%",
-    // paddingVertical: 17,
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 0, height: 0.5 },
     textShadowRadius: 20,
@@ -82,46 +81,14 @@ const styles = StyleSheet.create({
     paddingLeft: 50
   },
   AD: {
-    // position: "absolute",
     color: "#fff",
     fontFamily: "montserrat-medium",
     fontSize: 14,
-    // bottom: "2%",
-    // left: "90%",
-    // paddingVertical: 17,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1.5 },
     textShadowRadius: 10,
     textAlign: "right",
     paddingRight: 20
-  },
-  activeBadege: {
-    backgroundColor: "#5F5F5F",
-    width: 40,
-    height: 40,
-    borderRadius: 20
-  },
-  badge: {
-    backgroundColor: "#fff",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderColor: "#5F5F5F",
-    borderWidth: 2
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#000"
-  },
-  backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)"
   }
 });
 

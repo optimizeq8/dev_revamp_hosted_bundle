@@ -9,18 +9,8 @@ import {
   BackHandler
 } from "react-native";
 import Modal from "react-native-modal";
-import {
-  Text,
-  Container,
-  Icon,
-  Content,
-  Header,
-  Left,
-  Body
-} from "native-base";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
-import { LinearGradient, Segment, Video } from "expo";
+import { Text, Container, Icon, Content } from "native-base";
+import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
 import ReachBar from "./ReachBar";
@@ -29,18 +19,16 @@ import SelectLanguages from "../../../MiniComponents/SelectLanguages";
 import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
-import deepmerge from "deepmerge";
-import BackButton from "../../../MiniComponents/BackButton";
-import isNan from "lodash/isNaN";
 import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
-//Data
-import country_regions from "./regions";
-import countries from "./countries";
-import OSType from "./OSType";
-import { gender, languages } from "./demograph";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import SelectOS from "../../../MiniComponents/SelectOS";
+import { showMessage } from "react-native-flash-message";
 
-//Icnos
+//Data
+import countries, { gender, OSType, country_regions } from "./data";
+
+//Icons
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
@@ -49,26 +37,24 @@ import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 
-// Style
+//Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../../Global Styles";
-import { colors } from "../../../GradiantColors/colors";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { globalColors } from "../../../../Global Styles";
 
 //Redux Axios
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
-//Validators
+//Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import SelectOS from "../../../MiniComponents/SelectOS";
-import { showMessage } from "react-native-flash-message";
 import isEqual from "lodash/isEqual";
 import combineMerge from "./combineMerge";
+import isNan from "lodash/isNaN";
+import deepmerge from "deepmerge";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
+
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
@@ -674,11 +660,8 @@ class AdDetails extends Component {
     const campaign = this.props.navigation.getParam("campaign", {});
     const image = this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView
-        style={{ height: "100%", flex: 1 }}
-        forceInset={{ bottom: "never" }}
-      >
-        <Container style={{ backgroundColor: "#0000" }}>
+      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never" }}>
+        <Container style={styles.mainContainer}>
           <Sidemenu
             onChange={isOpen => {
               if (isOpen === false) {
@@ -713,19 +696,7 @@ class AdDetails extends Component {
                 !image.includes(".png") ||
                 (campaign.media && !campaign.media.includes(".jpg")) ||
                 (campaign.media && !campaign.media.includes(".png"))) && (
-                <View
-                  style={[
-                    styles.backgroundViewWrapper,
-                    {
-                      // borderTopRightRadius: 20,
-                      // borderTopLeftRadius: 20,
-                      borderTopRightRadius: 30,
-                      borderTopLeftRadius: 30,
-                      backgroundColor: "black",
-                      opacity: 0.2
-                    }
-                  ]}
-                >
+                <View style={styles.backgroundViewWrapper}>
                   <Video
                     source={{
                       uri: editCampaign ? "http://" + campaign.media : image
@@ -734,30 +705,13 @@ class AdDetails extends Component {
                     isLooping
                     isMuted
                     resizeMode="cover"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      opacity: 0.4,
-                      backgroundColor: "black"
-                    }}
+                    style={styles.videoBackgroundViewWrapper}
                   />
                 </View>
               )}
               <ImageBackground
                 imageStyle={{ opacity: 0.2 }}
-                style={[
-                  styles.backgroundViewWrapper,
-
-                  {
-                    width: "100%",
-                    height: "100%",
-                    borderBottomLeftRadius: 0,
-                    borderBottomRightRadius: 0,
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
-                    overflow: "hidden"
-                  }
-                ]}
+                style={styles.imageBackgroundViewWrapper}
                 source={{
                   uri: image.includes(".jpg") ? image : "www.go.com"
                 }}

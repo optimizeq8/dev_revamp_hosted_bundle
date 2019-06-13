@@ -120,30 +120,6 @@ const styles = StyleSheet.create({
       }
     ]
   },
-  container: {
-    backgroundColor: "transparent",
-    flex: 1
-  },
-  inputtext: {
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    textAlign: "left",
-    color: "#fff",
-    marginLeft: 8,
-    // zIndex: 30,
-    elevation: 500
-  },
-  brand_name: {
-    textAlign: "left",
-    color: "#fff",
-    paddingTop: 30,
-    fontFamily: "montserrat-medium",
-    fontSize: 14,
-    paddingLeft: 20,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 1
-  },
   inputBrand: {
     position: "absolute",
     alignSelf: "center",
@@ -151,6 +127,7 @@ const styles = StyleSheet.create({
     height: 50,
     top: "2%",
     left: "8%",
+    borderColor: "transparent",
     transform: [
       {
         translateX: -5
@@ -168,6 +145,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     top: "3%",
     left: "8%",
+    borderColor: "transparent",
     transform: [
       {
         translateX: -5
@@ -177,7 +155,18 @@ const styles = StyleSheet.create({
       }
     ]
   },
-
+  container: {
+    backgroundColor: "transparent",
+    flex: 1
+  },
+  inputText: {
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    textAlign: "left",
+    color: "#fff",
+    marginLeft: 8,
+    elevation: 500
+  },
   swipeUp: {
     position: "absolute",
     height: 50,
@@ -189,7 +178,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: "88%"
   },
-
   swipeUpText: {
     color: "white",
     fontFamily: "montserrat-medium",
@@ -199,25 +187,12 @@ const styles = StyleSheet.create({
     minHeight: 300,
     flex: 1
   },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  image: {
-    alignSelf: "center",
-    height: 50,
-    width: 50,
-    margin: 15
-  },
   placeholder: {
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
     width: "94%",
     height: "100%",
-    // minHeight: 300,
-    // zIndex: 0,
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center"
   },
@@ -231,29 +206,6 @@ const styles = StyleSheet.create({
     zIndex: 0,
     justifyContent: "center"
   },
-  mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
-  },
-
-  activeBadege: {
-    backgroundColor: "#5F5F5F",
-    width: 40,
-    height: 40,
-    borderRadius: 20
-  },
-  badge: {
-    backgroundColor: "#fff",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderColor: "#5F5F5F",
-    borderWidth: 2
-  },
   button: {
     alignSelf: "center",
     width: wp(10),
@@ -265,7 +217,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     marginHorizontal: wp(10)
   },
-
   gradient: {
     ...StyleSheet.absoluteFillObject
   },

@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
 import {
   View,
   Image,
@@ -13,26 +11,18 @@ import {
   Modal
 } from "react-native";
 import { Card, Button, Text, Container, Icon } from "native-base";
-import dateFormat from "dateformat";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
-import * as actionCreators from "../../../store/actions";
 import { Video, LinearGradient, BlurView, Segment } from "expo";
-import { interestNames } from "./interesetNames";
 import Toggle from "react-native-switch-toggle";
 import CloseButton from "../../MiniComponents/CloseButton";
 import SlideUpPanel from "./SlideUpPanel";
-
+import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
 import OptionalTargets from "./OptionalTargets";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-import formatNumber from "../../formatNumber";
-import regionsCountries from "../../Screens/CampaignCreate/AdDetails/regions";
+
 
 //Icons
 import LocationIcon from "../../../assets/SVGs/Location.svg";
@@ -42,7 +32,27 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
+
+//Functions
+import isNull from "lodash/isNull";
+import isEmpty from "lodash/isEmpty";
+import isUndefined from "lodash/isUndefined";
+import formatNumber from "../../formatNumber";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import dateFormat from "dateformat";
+
+//Data
+import { country_regions as regionsCountries } from "../../Screens/CampaignCreate/AdDetails/data";
+import { interestNames } from "./interesetNames";
+
+//Redux 
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+
 class CampaignDetails extends Component {
   static navigationOptions = {
     header: null

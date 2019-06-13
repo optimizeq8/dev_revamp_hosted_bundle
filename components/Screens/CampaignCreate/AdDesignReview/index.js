@@ -1,13 +1,6 @@
+//Components
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  Platform,
-  BackHandler
-} from "react-native";
+import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Video, Segment } from "expo";
 import {
   Text,
@@ -21,6 +14,8 @@ import {
   Subtitle
 } from "native-base";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import { Transition } from "react-navigation-fluid-transitions";
+import { SafeAreaView } from "react-navigation";
 
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
@@ -28,11 +23,12 @@ import CloseIcon from "../../../../assets/SVGs/Close";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../Global Styles";
+
+//Functions
 import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { Transition } from "react-navigation-fluid-transitions";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 
@@ -55,23 +51,11 @@ class AdDesignReview extends Component {
   }
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <Container
-          style={[
-            {
-              flex: 1,
-              width: "100%"
-            },
-            styles.container,
-            { paddingTop: Platform.OS === "android" ? 30 : 0 }
-          ]}
-        >
-          <Header
-            iosBarStyle={"light-content"}
-            style={{ backgroundColor: "transparent", borderBottomWidth: 0 }}
-          >
-            <Body style={{ alignItems: "flex-start" }}>
-              <Title style={styles.brand_name}>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <Container style={styles.container}>
+          <Header iosBarStyle={"light-content"} style={styles.header}>
+            <Body style={styles.headerBody}>
+              <Title style={styles.brandName}>
                 {this.props.navigation.state.params.brand_name}
               </Title>
               <Subtitle style={styles.headline}>
@@ -96,7 +80,7 @@ class AdDesignReview extends Component {
           <Content
             padder
             scrollEnabled={false}
-            contentContainerStyle={{ flexGrow: 1, margin: 0, padding: 0 }}
+            contentContainerStyle={styles.content}
           >
             <Transition shared="image">
               <View style={styles.mainCard}>
@@ -116,7 +100,7 @@ class AdDesignReview extends Component {
                       isLooping
                       shouldPlay
                       resizeMode="stretch"
-                      style={{ width: "100%", height: "100%" }}
+                      style={styles.video}
                     />
                   </>
                 ) : (
@@ -128,19 +112,8 @@ class AdDesignReview extends Component {
                     }}
                   />
                 )}
-                <View
-                  style={{
-                    // position: "absolute",
-                    bottom: "10%",
-                    width: "100%",
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "row"
-                    // justifyContent: "space-around"
-                    // flex: 1
-                  }}
-                >
-                  <Text style={[styles.call_to_action]}>
+                <View style={styles.callToActionContainer}>
+                  <Text style={styles.callToActionText}>
                     {this.props.navigation.state.params.call_to_action !==
                     "BLANK"
                       ? startCase(
@@ -150,7 +123,7 @@ class AdDesignReview extends Component {
                         )
                       : ""}
                   </Text>
-                  <Text style={[styles.AD]}>Ad</Text>
+                  <Text style={styles.AD}>Ad</Text>
                 </View>
               </View>
             </Transition>

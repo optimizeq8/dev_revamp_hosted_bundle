@@ -1,10 +1,11 @@
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../Global Styles";
 
-export default (sectionStyle = {
+const styles = StyleSheet.create({
   safeAreaContainer: {
     height: "100%"
   },
@@ -18,6 +19,13 @@ export default (sectionStyle = {
     alignItems: "center",
     width: "100%",
     marginTop: 30
+  },
+  countrySelectorText: {
+    paddingVertical: 20,
+    color: "#FFFF",
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: "montserrat-regular"
   },
   title: {
     textAlign: "center",
@@ -40,7 +48,7 @@ export default (sectionStyle = {
     paddingHorizontal: 40,
     width: "100%"
   },
-  interestButton: {
+  toggleSelectorButton: {
     backgroundColor: globalColors.orange,
     alignSelf: "center",
     borderRadius: 50,
@@ -49,7 +57,12 @@ export default (sectionStyle = {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
+    elevation: -1
+  },
+  selectVersionIcon: {
+    fontSize: 60,
+    color: "#fff"
   },
   scrollContainer: {
     height: 180,
@@ -65,6 +78,10 @@ export default (sectionStyle = {
     fontSize: 30,
     color: globalColors.orange
   },
+  choiceContainer: {
+    flexDirection: "column",
+    justifyContent: "space-evenly"
+  },
   button: {
     backgroundColor: "transparent",
     alignSelf: "center",
@@ -76,7 +93,27 @@ export default (sectionStyle = {
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 5
+    marginVertical: 52
+  },
+  stickyFooterButton: {
+    backgroundColor: "transparent",
+    alignSelf: "center",
+    borderRadius: 50,
+    borderColor: "transparent",
+    borderWidth: 1,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    marginVertical: 5,
+    marginBottom: 30,
+    elevation: -1
+  },
+  headerComponent: {
+    height: 70,
+    marginBottom: hp(5),
+    top: hp(3)
   },
   icon: {
     fontSize: 70,
@@ -100,7 +137,7 @@ export default (sectionStyle = {
   searchInputText: {
     fontFamily: "montserrat-regular",
     color: "#fff",
-    fontSize: 14
+    fontSize: 14 / PixelRatio.getFontScale()
   },
   selectTextContainer: {
     paddingVertical: 20,
@@ -114,3 +151,4 @@ export default (sectionStyle = {
     paddingVertical: 20
   }
 });
+export default styles;
