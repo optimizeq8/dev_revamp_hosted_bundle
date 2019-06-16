@@ -93,38 +93,33 @@ export default class CountryModal extends BaseComponent {
           style={[
             styles.optionStyle,
             this.props.optionStyle,
-            {
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }
+            styles.optionStyleContainer
           ]}
         >
-          <View style={{ flex: 0.15 }}>
+          <View style={styles.imageView}>
             <Image
               source={option.image}
               resizeMode="stretch"
-              style={{ width: 30, height: 16 }}
+              style={styles.imageStyle}
             />
           </View>
-          <View style={{ flex: 0.7, alignItems: "center" }}>
+          <View style={styles.labelContainer}>
             <Text
               style={[
                 styles.optionTextStyle,
                 this.props.optionTextStyle,
-                { color: "#434343", fontSize: 12 }
+                styles.optionTextStyleContainer
               ]}
             >
               {option.label}
             </Text>
           </View>
-          <View style={{ flex: 0.15, alignItems: "flex-end" }}>
+          <View style={styles.dialCodeContainer}>
             <Text
               style={[
                 styles.optionTextStyle,
                 this.props.optionTextStyle,
-                { color: "#434343", fontSize: 12 }
+                styles.optionTextStyleContainer
               ]}
             >
               {option.dialCode}

@@ -21,6 +21,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
@@ -111,11 +112,9 @@ class ForgotPassword extends Component {
                       rounded
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.emailError
-                            ? "red"
-                            : "rgba(0, 0, 0, 0)"
-                        }
+                        this.state.emailError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                       ]}
                     >
                       <Input

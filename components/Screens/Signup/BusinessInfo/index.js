@@ -25,6 +25,7 @@ import CompanyIcon from "../../../../assets/SVGs/Group";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../../GlobalStyles";
 import { colors } from "../../../GradiantColors/colors";
 
 //Redux
@@ -252,18 +253,20 @@ class BusinessInfo extends Component {
               <Label
                 style={[
                   styles.inputtext,
+                  this.state.inputN
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.darkGrayTextColor,
                   {
-                    flexDirection: "column",
-                    color: this.state.inputN ? "#FF9D00" : "#717171"
+                    flexDirection: "column"
                   }
                 ]}
               >
                 <Icon
                   style={[
                     styles.iconSize,
-                    {
-                      color: this.state.inputN ? "#FF9D00" : "#717171"
-                    }
+                    this.state.inputN
+                      ? globalStyles.orangeTextColor
+                      : globalStyles.darkGrayTextColor
                   ]}
                   name="person"
                 />
@@ -326,13 +329,11 @@ class BusinessInfo extends Component {
               <Item
                 style={[
                   styles.input,
-                  {
-                    borderColor: this.state.inputC
-                      ? "#7039FF"
-                      : this.state.countryError
-                      ? "red"
-                      : "#D9D9D9"
-                  }
+                  this.state.inputC
+                    ? globalStyles.purpleBorderColor
+                    : this.state.countryError
+                    ? globalStyles.redBorderColor
+                    : globalStyles.lightGrayBorderColor
                 ]}
               >
                 <Text style={[styles.inputtext, styles.pickerInputText]}>
@@ -374,13 +375,11 @@ class BusinessInfo extends Component {
               <Item
                 style={[
                   styles.input,
-                  {
-                    borderColor: this.state.inputT
-                      ? "#7039FF"
-                      : this.state.businesscategoryError
-                      ? "red"
-                      : "#D9D9D9"
-                  }
+                  this.state.inputT
+                    ? globalStyles.purpleBorderColor
+                    : this.state.businesscategoryError
+                    ? globalStyles.redBorderColor
+                    : globalStyles.lightGrayBorderColor
                 ]}
               >
                 <Text

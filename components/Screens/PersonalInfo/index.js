@@ -17,6 +17,7 @@ import PersonalInfoIcon from "../../../assets/SVGs/Person";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -86,17 +87,11 @@ class PersonalInfo extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          // fontSize:
-                          //   Platform.OS === "android"
-                          //     ? 14 / PixelRatio.getFontScale()
-                          //     : 14,
-                          borderColor: this.state.inputPR
-                            ? "#7039FF"
-                            : this.state.repasswordError !== ""
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputPR
+                          ? globalStyles.purpleBorderColor
+                          : this.state.repasswordError !== ""
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
@@ -124,13 +119,11 @@ class PersonalInfo extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputP
-                            ? "#7039FF"
-                            : this.state.passwordError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputP
+                          ? globalStyles.purpleBorderColor
+                          : this.state.passwordError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label style={[styles.label, styles.labelEmail]}>

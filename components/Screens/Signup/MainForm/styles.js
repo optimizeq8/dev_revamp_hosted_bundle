@@ -7,14 +7,9 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  title: {
-    top: -15,
-    fontSize: 24,
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 0,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
   },
   subtitle: {
     fontSize: 18,
@@ -76,19 +71,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     fontFamily: "montserrat-light"
-  },
-  keyboard: {
-    marginTop: 15,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -5 },
-    shadowRadius: 5,
-    shadowOpacity: 0.9
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
   }
 });
 

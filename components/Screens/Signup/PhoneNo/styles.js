@@ -85,6 +85,38 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: widthPercentageToDP(70),
     height: 50
+  },
+  flagTouchableArea: {
+    width: 60,
+    height: 30,
+    position: "absolute",
+    borderWidth: 0.3,
+    borderColor: "transparent",
+    borderRadius: 5,
+    left: 4,
+    zIndex: 5
+  },
+  flagIcon: {
+    marginRight: -30,
+    left: -5
+  },
+  flagStyle: {
+    left: 14,
+    zIndex: 5
+  },
+  phoneInputTextStyle: {
+    left: "3%"
+  },
+  optionTextStyle: {
+    alignSelf: "flex-start"
+  },
+  keyboardArea: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  phoneViewContainer: {
+    justifyContent: "space-around"
   }
 });
 

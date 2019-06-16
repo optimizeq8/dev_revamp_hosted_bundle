@@ -23,7 +23,7 @@ import Background from "../../../assets/SVGs/Background";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-
+import globalStyles from "../../../GlobalStyles";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -115,11 +115,9 @@ class MainForm extends Component {
                         rounded
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.emailError
-                              ? "red"
-                              : "rgba(0, 0, 0, 0)"
-                          }
+                          this.state.emailError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.transparentBorderColor
                         ]}
                       >
                         <Input
@@ -148,11 +146,9 @@ class MainForm extends Component {
                         rounded
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.passwordError
-                              ? "red"
-                              : "rgba(0, 0, 0, 0)"
-                          }
+                          this.state.passwordError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.transparentBorderColor
                         ]}
                       >
                         <Input

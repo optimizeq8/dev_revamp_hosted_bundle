@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 14 / PixelRatio.getFontScale(),
     color: "#fff",
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: widthPercentageToDP(20)
   },
-  buttontext: {
+  buttonText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14
