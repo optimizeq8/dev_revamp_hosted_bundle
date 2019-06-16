@@ -205,149 +205,159 @@ class AdDesign extends Component {
   };
 
   _pickImage = async () => {
-    let result = await this.pick();
-    this.setState({ directory: "/ImagePicker/" });
-    let newWidth = result.width;
-    let newHeight = result.height;
+    try {
+      let result = await this.pick();
+      this.setState({ directory: "/ImagePicker/" });
+      let newWidth = result.width;
+      let newHeight = result.height;
 
-    if (result.type === "image") {
-      if (result.width >= 1080 && result.height >= 1920) {
-        if (result.width > Math.floor((result.height / 16) * 9)) {
-          newWidth = Math.floor((result.height / 16) * 9);
-        } else if (result.height > Math.floor((result.width * 16) / 9)) {
-          newHeight = Math.floor((result.width * 16) / 9);
-        } else {
-          newWidth = 1080;
-          newHeight = 1920;
-        }
-        console.log("width:", newWidth);
-        console.log("height:", newHeight);
-
-        const manipResult = await ImageManipulator.manipulateAsync(result.uri, [
-          {
-            crop: {
-              originX: result.width / 2 - newWidth / 2,
-              originY: result.height / 2 - newHeight / 2,
-              width: newWidth,
-              height: newHeight
-            }
-          }
-        ]);
-        const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
-          size: true
-        });
-        const oldSize = await FileSystem.getInfoAsync(result.uri, {
-          size: true
-        });
-        console.log("width:", manipResult.width);
-        console.log("height:", manipResult.height);
-        console.log("new result: ", newSize.size);
-        console.log("old result: ", oldSize.size);
-
-        this.setState({
-          directory: "/ImageManipulator/"
-        });
-        result.uri = manipResult.uri;
-        result.height = manipResult.height;
-        result.width = manipResult.width;
-      } else if (result.width < 1080 || result.height < 1920) {
-        showMessage({
-          message:
-            "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.\nAndroid's maximum image size is for height 2000.",
-          position: "top",
-          type: "warning"
-        });
-        this.setState({
-          imageError:
-            "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
-          image: null
-        });
-        this.onToggleModal(false);
-
-        return;
-      }
-    }
-
-    if (!result.cancelled) {
-      if (
-        Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-        Math.floor(result.width / 16) === Math.floor(result.height / 9)
-      ) {
-        FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
-          if (
-            (result.type === "video" && file.size > 32000000) ||
-            result.duration > 10999
-          ) {
-            this.setState({
-              imageError:
-                "Video must be less than 32 MBs and less than 10 seconds.",
-              image: null
-            });
-            showMessage({
-              message:
-                "Video must be less than 32 MBs and less than 10 seconds.",
-              position: "top",
-              type: "warning"
-            });
-            this.onToggleModal(false);
-            return;
-          } else if (result.type === "image" && file.size > 5000000) {
-            this.setState({
-              imageError: "Image must be less than 5 MBs",
-              image: null
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Image must be less than 5 MBs",
-              position: "top",
-              type: "warning"
-            });
-            return;
+      if (result.type === "image") {
+        if (result.width >= 1080 && result.height >= 1920) {
+          if (result.width >= Math.floor((result.height / 16) * 9)) {
+            newWidth = Math.floor((result.height / 16) * 9);
+          } else if (result.height >= Math.floor((result.width * 16) / 9)) {
+            newHeight = Math.floor((result.width * 16) / 9);
           } else {
-            this.setState({
-              image: result.uri,
-              type: result.type.toUpperCase(),
-              imageError: null,
-              result: result.uri
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Image has been selected successfully ",
-              position: "top",
-              type: "success"
-            });
-            return;
+            newWidth = 1080;
+            newHeight = 1920;
           }
-        });
-      } else {
-        this.setState({
-          imageError:
-            "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
-          image: null
-        });
-        this.onToggleModal(false);
+          console.log("width:", newWidth);
+          console.log("height:", newHeight);
+
+          const manipResult = await ImageManipulator.manipulateAsync(
+            result.uri,
+            [
+              {
+                // resize: { width: newWidth },
+                crop: {
+                  originX: result.width / 2 - newWidth / 2,
+                  originY: result.height / 2 - newHeight / 2,
+                  width: newWidth,
+                  height: newHeight
+                }
+              }
+            ]
+          );
+          console.log("promise", manipResult);
+
+          const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+            size: true
+          });
+          const oldSize = await FileSystem.getInfoAsync(result.uri, {
+            size: true
+          });
+          console.log("width:", manipResult.width);
+          console.log("height:", manipResult.height);
+          console.log("new result: ", newSize.size);
+          console.log("old result: ", oldSize.size);
+
+          this.setState({
+            directory: "/ImageManipulator/"
+          });
+          result.uri = manipResult.uri;
+          result.height = manipResult.height;
+          result.width = manipResult.width;
+        } else if (result.width < 1080 || result.height < 1920) {
+          showMessage({
+            message:
+              "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.\nAndroid's maximum image size is for height 2000.",
+            position: "top",
+            type: "warning"
+          });
+          this.setState({
+            imageError:
+              "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
+            image: null
+          });
+          this.onToggleModal(false);
+
+          return;
+        }
+      }
+
+      if (!result.cancelled) {
+        if (
+          Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
+          Math.floor(result.width / 16) === Math.floor(result.height / 9)
+        ) {
+          FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
+            if (
+              (result.type === "video" && file.size > 32000000) ||
+              result.duration > 10999
+            ) {
+              this.setState({
+                imageError:
+                  "Video must be less than 32 MBs and less than 10 seconds.",
+                image: null
+              });
+              showMessage({
+                message:
+                  "Video must be less than 32 MBs and less than 10 seconds.",
+                position: "top",
+                type: "warning"
+              });
+              this.onToggleModal(false);
+              return;
+            } else if (result.type === "image" && file.size > 5000000) {
+              this.setState({
+                imageError: "Image must be less than 5 MBs",
+                image: null
+              });
+              this.onToggleModal(false);
+              showMessage({
+                message: "Image must be less than 5 MBs",
+                position: "top",
+                type: "warning"
+              });
+              return;
+            } else {
+              this.setState({
+                image: result.uri,
+                type: result.type.toUpperCase(),
+                imageError: null,
+                result: result.uri
+              });
+              this.onToggleModal(false);
+              showMessage({
+                message: "Image has been selected successfully ",
+                position: "top",
+                type: "success"
+              });
+              return;
+            }
+          });
+        } else {
+          this.setState({
+            imageError:
+              "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
+            image: null
+          });
+          this.onToggleModal(false);
+          showMessage({
+            message: "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.",
+            position: "top",
+            type: "warning"
+          });
+          return;
+        }
+      } else if (!result.cancelled && isNull(this.state.image)) {
         showMessage({
-          message: "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.",
+          message: "Please choose a media file.",
           position: "top",
           type: "warning"
         });
+        this.setState({
+          imageError: "Please choose a media file.",
+          image: null
+        });
+        this.onToggleModal(false);
+        return;
+      } else {
+        this.onToggleModal(false);
         return;
       }
-    } else if (!result.cancelled && isNull(this.state.image)) {
-      showMessage({
-        message: "Please choose a media file.",
-        position: "top",
-        type: "warning"
-      });
-      this.setState({
-        imageError: "Please choose a media file.",
-        image: null
-      });
-      this.onToggleModal(false);
-      return;
-    } else {
-      this.onToggleModal(false);
-      return;
+    } catch (error) {
+      console.log("error image pick", error);
     }
   };
 

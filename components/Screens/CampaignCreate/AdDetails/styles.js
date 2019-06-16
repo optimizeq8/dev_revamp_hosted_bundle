@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 20
   },
-  slidercontainer: {
+  sliderContainer: {
     marginHorizontal: 40,
     width: "100%",
     alignSelf: "center",
@@ -105,14 +105,32 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 40
   },
-
-  textCon: {
+  budgetSliderText: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     textAlign: "center",
     paddingBottom: 10
-    // height: 50
+  },
+  slider: {
+    width: "100%",
+    height: 20
+  },
+  sliderPlaceHolder: {
+    height: 50
+  },
+  targetList: {
+    flexDirection: "column",
+    marginHorizontal: 40,
+    paddingBottom: 50
+  },
+  targetTouchable: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 8
+  },
+  icon: {
+    alignSelf: "center"
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -303,8 +321,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: 13,
     fontFamily: "montserrat-light",
-    color: "#fff",
-    paddingVertical: 3
+    color: "#fff"
+    // paddingVertical: 3
   },
   menudetails: {
     paddingLeft: 15,

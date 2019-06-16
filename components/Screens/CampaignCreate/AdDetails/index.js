@@ -36,7 +36,8 @@ import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
-
+import LanguageIcon from "../../../../assets/SVGs/Language";
+import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
@@ -747,8 +748,8 @@ class AdDetails extends Component {
                         Tap to enter manually
                       </Text>
                     </View>
-                    <View style={styles.slidercontainer}>
-                      <View style={styles.textCon}>
+                    <View style={styles.sliderContainer}>
+                      <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
                         </Text>
@@ -760,10 +761,7 @@ class AdDetails extends Component {
                       <Slider
                         thumbTintColor={globalColors.orange}
                         disabled={editCampaign}
-                        style={{
-                          width: "100%",
-                          height: 20
-                        }}
+                        style={styles.slider}
                         step={10}
                         minimumValue={this.state.minValueBudget}
                         maximumValue={this.state.maxValueBudget}
@@ -777,43 +775,32 @@ class AdDetails extends Component {
                           this.onSelectedBudgetChange,
                           60
                         )}
-                        maximumTrackTintColor="#fff"
-                        minimumTrackTintColor="#751AFF"
+                        maximumTrackTintColor={globalColors.white}
+                        minimumTrackTintColor={globalColors.purple}
                       />
                     </View>
                   </>
                 ) : (
-                  <View style={{ height: 50 }} />
+                  <View style={styles.sliderPlaceHolder} />
                 )}
                 <Text style={styles.subHeadings}>
                   Who would you like to reach?
                 </Text>
                 <ScrollView
                   ref={ref => (this.scrollView = ref)}
-                  indicatorStyle="white"
-                  style={{
-                    flexDirection: "column",
-                    marginHorizontal: 40,
-                    paddingBottom: 50
-                  }}
+                  indicatorStyle={globalColors.white}
+                  style={styles.targetList}
                 >
                   <TouchableOpacity
                     onPress={() => {
                       this._renderSideMenu("gender");
                     }}
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      textAlign: "center",
-                      justifyContent: "space-between",
-                      marginVertical: 5
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row" }}>
-                      <GenderIcon width={25} height={25} />
+                    <View style={globalStyles.row}>
+                      <GenderIcon width={25} height={25} style={styles.icon} />
 
-                      <View style={{ flexDirection: "column" }}>
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Gender</Text>
                         <Text style={styles.menudetails}>
                           {
@@ -829,7 +816,7 @@ class AdDetails extends Component {
                         </Text>
                       </View>
                     </View>
-                    <View style={{ flexDirection: "column" }}>
+                    <View style={globalStyles.column}>
                       {this.state.campaignInfo.targeting.demographics[0]
                         .gender === "" ||
                       this.state.campaignInfo.targeting.demographics[0]
@@ -844,19 +831,16 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("age");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={globalStyles.row}>
                       <AgeIcon
                         fill={globalColors.orange}
                         width={25}
                         height={25}
+                        style={styles.icon}
                       />
-                      <View style={{ flexDirection: "column" }}>
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Age</Text>
                         <Text style={styles.menudetails}>
                           {
@@ -885,16 +869,16 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("selectors", "countries");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row" }}>
-                      <LocationIcon width={25} height={25} />
+                    <View style={globalStyles.row}>
+                      <LocationIcon
+                        width={25}
+                        height={25}
+                        style={styles.icon}
+                      />
 
-                      <View style={{ flexDirection: "column" }}>
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Country</Text>
                         <Text style={styles.menudetails}>
                           {this.state.countryName}
@@ -912,15 +896,15 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("regions");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row", width: "80%" }}>
-                      <LocationIcon width={25} height={25} />
-                      <View style={{ flexDirection: "column" }}>
+                    <View style={globalStyles.row}>
+                      <LocationIcon
+                        width={25}
+                        height={25}
+                        style={styles.icon}
+                      />
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Regions</Text>
                         <Text style={styles.menudetails}>
                           {this.state.regionNames.join(", ")}
@@ -938,24 +922,15 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("languages");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row", width: "80%" }}>
-                      <Icon
-                        name="language"
-                        type="MaterialIcons"
+                    <View style={globalStyles.row}>
+                      <LanguageIcon
                         width={25}
                         height={25}
-                        style={{
-                          color: globalColors.orange,
-                          right: 3
-                        }}
+                        style={styles.icon}
                       />
-                      <View style={{ flexDirection: "column" }}>
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Language</Text>
                         <Text style={styles.menudetails}>
                           {languages_names}
@@ -982,22 +957,22 @@ class AdDetails extends Component {
                           })
                         : this._renderSideMenu("selectors", "interests");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row", width: "80%" }}>
-                      <InterestsIcon width={25} height={25} />
-                      <View style={{ flexDirection: "column" }}>
+                    <View style={globalStyles.row}>
+                      <InterestsIcon
+                        width={25}
+                        height={25}
+                        style={styles.icon}
+                      />
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Interests</Text>
                         <Text style={styles.menudetails}>
                           {interests_names}
                         </Text>
                       </View>
                     </View>
-                    <View style={{ flexDirection: "column" }}>
+                    <View style={globalStyles.column}>
                       {this.state.campaignInfo.targeting.interests[0]
                         .category_id.length !== 0 ? (
                         <GreenCheckmarkIcon width={25} height={25} />
@@ -1010,19 +985,16 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("OS");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row", width: "80%" }}>
+                    <View style={globalStyles.row}>
                       <OperatingSystemIcon
                         width={25}
                         height={25}
                         fill={globalColors.orange}
+                        style={styles.icon}
                       />
-                      <View style={{ flexDirection: "column" }}>
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Operating System</Text>
                         <Text style={styles.menudetails}>
                           {
@@ -1053,13 +1025,9 @@ class AdDetails extends Component {
                       onPress={() => {
                         this._renderSideMenu("selectors", "deviceVersions");
                       }}
-                      style={{
-                        flexDirection: "row",
-                        marginVertical: 5,
-                        justifyContent: "space-between"
-                      }}
+                      style={styles.targetTouchable}
                     >
-                      <View style={{ flexDirection: "row", width: "80%" }}>
+                      <View style={globalStyles.row}>
                         <Icon
                           name="versions"
                           type="Octicons"
@@ -1070,7 +1038,7 @@ class AdDetails extends Component {
                             right: 2
                           }}
                         />
-                        <View style={{ flexDirection: "column" }}>
+                        <View style={globalStyles.column}>
                           <Text style={styles.menutext}>OS Versions</Text>
                           <Text style={styles.menudetails}>
                             {this.state.campaignInfo.targeting.devices[0]
@@ -1094,24 +1062,17 @@ class AdDetails extends Component {
                     onPress={() => {
                       this._renderSideMenu("selectors", "deviceBrands");
                     }}
-                    style={{
-                      flexDirection: "row",
-                      marginVertical: 5,
-                      justifyContent: "space-between"
-                    }}
+                    style={styles.targetTouchable}
                   >
-                    <View style={{ flexDirection: "row", width: "80%" }}>
-                      <Icon
-                        name="cellphone-settings"
-                        type="MaterialCommunityIcons"
+                    <View style={globalStyles.row}>
+                      <DeviceMakeIcon
                         width={25}
                         height={25}
-                        style={{
-                          color: globalColors.orange,
-                          right: 2
-                        }}
+                        style={styles.icon}
+                        fill={globalColors.orange}
                       />
-                      <View style={{ flexDirection: "column" }}>
+
+                      <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Device Make</Text>
                         <Text style={styles.menudetails}>
                           {

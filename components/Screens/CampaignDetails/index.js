@@ -23,7 +23,6 @@ import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
 import OptionalTargets from "./OptionalTargets";
 
-
 //Icons
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
@@ -32,7 +31,7 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-
+import globalStyles from "../../../GlobalStyles";
 //Functions
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
@@ -48,10 +47,9 @@ import dateFormat from "dateformat";
 import { country_regions as regionsCountries } from "../../Screens/CampaignCreate/AdDetails/data";
 import { interestNames } from "./interesetNames";
 
-//Redux 
+//Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -261,7 +259,13 @@ class CampaignDetails extends Component {
             chartRange={true}
           />
           {this.state.imageIsLoading && (
-            <View>
+            <View
+              style={[
+                globalStyles.orangeBackgroundColor,
+                { flex: 1, width: "100%" },
+                globalStyles.redBorderColor
+              ]}
+            >
               <Loading dash={true} />
             </View>
           )}
@@ -274,7 +278,7 @@ class CampaignDetails extends Component {
                   source={{
                     uri: !loading
                       ? "http://" + selectedCampaign.media
-                      : "placeholder.com"
+                      : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
                   resizeMode="cover"
@@ -287,16 +291,20 @@ class CampaignDetails extends Component {
             )}
 
           <ImageBackground
-            source={{
-              uri: !loading
-                ? "http://" + selectedCampaign.media
-                : "placeholder.com"
+            source={
+              !loading
+                ? { uri: "http://" + selectedCampaign.media }
+                : require("../../../assets/images/emptyPlaceHolder.png")
+            }
+            onLoad={() => {
+              console.log("ended???");
+              if (!loading) this.setState({ imageIsLoading: false });
             }}
-            onLoadEnd={() => this.setState({ imageIsLoading: false })}
             style={{
               width: "100%",
               height: "100%"
             }}
+            onError={error => console.log("????", error)}
           >
             <SafeAreaView
               style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
@@ -348,7 +356,9 @@ class CampaignDetails extends Component {
                                   switchOn={this.state.toggle}
                                   onPress={() => {
                                     this.state.toggle
-                                      ? this.setState({ modalVisible: true })
+                                      ? this.setState({
+                                          modalVisible: true
+                                        })
                                       : this.updateStatus();
                                   }}
                                   backgroundColorOff="rgba(255,255,255,0.1)"
@@ -394,7 +404,10 @@ class CampaignDetails extends Component {
                       <Text
                         style={[
                           styles.numbers,
-                          { fontSize: 25, fontFamily: "montserrat-semibold" }
+                          {
+                            fontSize: 25,
+                            fontFamily: "montserrat-semibold"
+                          }
                         ]}
                       >
                         {formatNumber(
@@ -422,7 +435,10 @@ class CampaignDetails extends Component {
                           <Text
                             style={[
                               styles.categories,
-                              { fontSize: 16, fontFamily: "montserrat-medium" }
+                              {
+                                fontSize: 16,
+                                fontFamily: "montserrat-medium"
+                              }
                             ]}
                           >
                             Start
@@ -451,7 +467,10 @@ class CampaignDetails extends Component {
                           <Text
                             style={[
                               styles.categories,
-                              { fontSize: 16, fontFamily: "montserrat-medium" }
+                              {
+                                fontSize: 16,
+                                fontFamily: "montserrat-medium"
+                              }
                             ]}
                           >
                             End
@@ -501,7 +520,10 @@ class CampaignDetails extends Component {
                         )}
                       </View>
                       <View
-                        style={{ flexDirection: "row", alignSelf: "center" }}
+                        style={{
+                          flexDirection: "row",
+                          alignSelf: "center"
+                        }}
                       >
                         <Icon
                           style={styles.icon}

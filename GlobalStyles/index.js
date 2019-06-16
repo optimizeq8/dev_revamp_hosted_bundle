@@ -57,6 +57,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "transparent"
   },
+  row: {
+    flexDirection: "row"
+  },
+  column: {
+    flexDirection: "column"
+  },
   title: {
     fontSize: 24 / PixelRatio.getFontScale(),
     color: "#fff",
