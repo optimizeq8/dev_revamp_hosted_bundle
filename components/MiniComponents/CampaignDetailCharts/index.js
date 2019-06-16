@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import Chart from "../CampaignCard/Charts";
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
-import GlobalStyles from "../../../Global Styles";
+import GlobalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import { heightPercentageToDP } from "react-native-responsive-screen";

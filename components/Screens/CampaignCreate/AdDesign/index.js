@@ -55,7 +55,6 @@ import { Modal } from "react-native-paper";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import CloseButton from "../../../MiniComponents/CloseButton";
 import isNull from "lodash/isNull";
 
 class AdDesign extends Component {
@@ -196,8 +195,6 @@ class AdDesign extends Component {
       base64: false,
       exif: false,
       quality: 1
-      //aspect: [9, 16],
-      //allowsEditing: Platform.OS === "android"
     });
 
     console.log("after picker", result);
@@ -214,9 +211,11 @@ class AdDesign extends Component {
     let newHeight = result.height;
 
     if (result.type === "image") {
-      if (result.width > 1080 && result.height > 1920) {
-        if (result.width <= result.height) {
+      if (result.width >= 1080 && result.height >= 1920) {
+        if (result.width > Math.floor((result.height / 16) * 9)) {
           newWidth = Math.floor((result.height / 16) * 9);
+        } else if (result.height > Math.floor((result.width * 16) / 9)) {
+          newHeight = Math.floor((result.width * 16) / 9);
         } else {
           newWidth = 1080;
           newHeight = 1920;
@@ -234,11 +233,20 @@ class AdDesign extends Component {
             }
           }
         ]);
-
+        const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+          size: true
+        });
+        const oldSize = await FileSystem.getInfoAsync(result.uri, {
+          size: true
+        });
         console.log("width:", manipResult.width);
         console.log("height:", manipResult.height);
+        console.log("new result: ", newSize.size);
+        console.log("old result: ", oldSize.size);
 
-        this.setState({ directory: "/ImageManipulator/" });
+        this.setState({
+          directory: "/ImageManipulator/"
+        });
         result.uri = manipResult.uri;
         result.height = manipResult.height;
         result.width = manipResult.width;
@@ -549,14 +557,7 @@ class AdDesign extends Component {
   render() {
     let { image } = this.state;
     const penIconBrand = (
-      <Item
-        style={[
-          styles.inputBrand,
-          {
-            borderColor: "transparent"
-          }
-        ]}
-      >
+      <Item style={styles.inputBrand}>
         <PenIcon
           fill={
             this.state.inputB
@@ -567,13 +568,13 @@ class AdDesign extends Component {
           }
         />
         <Input
-          style={styles.inputtext}
+          style={styles.inputText}
           defaultValue={
             this.props.mainBusiness.businessname
               ? this.props.mainBusiness.businessname
               : "Brand Name"
           }
-          placeholderLabel={styles.inputtext}
+          placeholderLabel={styles.inputText}
           placeholderTextColor="white"
           autoCorrect={false}
           autoCapitalize="none"
@@ -602,14 +603,7 @@ class AdDesign extends Component {
     );
 
     const penIconHeadLine = (
-      <Item
-        style={[
-          styles.inputHeadline,
-          {
-            borderColor: "transparent"
-          }
-        ]}
-      >
+      <Item style={styles.inputHeadline}>
         <PenIcon
           fill={
             this.state.inputH
@@ -620,7 +614,7 @@ class AdDesign extends Component {
           }
         />
         <Input
-          style={styles.inputtext}
+          style={styles.inputText}
           defaultValue={!this.props.data ? "Headline" : this.props.data.name}
           placeholderTextColor="white"
           autoCorrect={false}
@@ -818,7 +812,7 @@ class AdDesign extends Component {
             {image ? (
               <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
-                  style={[styles.button]}
+                  style={styles.button}
                   onPress={() => this.perviewHandler()}
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
@@ -843,6 +837,7 @@ class AdDesign extends Component {
             this.props.loading ||
             this.state.isVisible
           }
+          onDismiss={() => this.onToggleModal(false)}
           animationType={"slide"}
         >
           <BlurView intensity={95} tint="dark">
@@ -854,7 +849,12 @@ class AdDesign extends Component {
                   title="Uploading Image"
                 />
               )}
-
+              {!this.props.loading && (
+                <CustomHeader
+                  closeButton={true}
+                  actionButton={() => this.onToggleModal(false)}
+                />
+              )}
               <LoadingScreen top={50} />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>

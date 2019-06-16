@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../../Global Styles/";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -12,15 +12,12 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    // width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
+  safeArea: {
+    height: "100%",
+    flex: 1
+  },
+  mainContainer: {
+    backgroundColor: "#0000"
   },
   container: {
     borderTopRightRadius: 30,
@@ -32,17 +29,46 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1
   },
-  textCon: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    textAlign: "center",
-    paddingBottom: 10
-    // height: 50
+  backgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    backgroundColor: "black",
+    opacity: 0.2
   },
-
-  colorGrey: {
-    color: "#fff"
+  imageBackgroundViewWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    overflow: "hidden"
+  },
+  videoBackgroundViewWrapper: {
+    width: "100%",
+    height: "100%",
+    opacity: 0.4,
+    backgroundColor: "black"
+  },
+  contentContainer: {
+    flex: 1
+  },
+  subHeadings: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingVertical: 10
+  },
+  moneyInputContainer: {
+    flexDirection: "column",
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 15,
+    alignSelf: "center",
+    justifyContent: "space-around",
+    paddingVertical: 10
   },
   budget: {
     alignSelf: "center",
@@ -51,10 +77,42 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     textAlign: "center",
     width: "100%",
-    paddingBottom: 20
+    paddingBottom: 0,
+    width: "100%"
   },
-  backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
+  moreOptionsText: {
+    alignSelf: "center",
+    color: "#FF9D00",
+    fontSize: 14,
+    fontFamily: "montserrat-medium",
+    textAlign: "center",
+    width: "100%",
+    paddingBottom: 30
+  },
+  budgetInstructionText: {
+    color: "#fff",
+    fontSize: 11,
+    alignSelf: "center",
+    paddingHorizontal: 20
+  },
+  slidercontainer: {
+    marginHorizontal: 40,
+    width: "100%",
+    alignSelf: "center",
+    paddingVertical: 10,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-around",
+    paddingHorizontal: 40
+  },
+
+  textCon: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    textAlign: "center",
+    paddingBottom: 10
+    // height: 50
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -64,7 +122,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 10
   },
-  slidercontainer: { marginHorizontal: 40, width: "100%" },
+
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
@@ -111,15 +169,6 @@ const styles = StyleSheet.create({
   btnClose: {
     top: "30%"
   },
-  BlurView: {
-    // height: "100%"
-    // paddingTop: hp("10%")
-  },
-  dateModal: {
-    ...StyleSheet.absoluteFillObject,
-    height: "110%",
-    borderRadius: 30
-  },
 
   dateInput: {
     marginBottom: 5,
@@ -132,18 +181,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5
   },
 
-  calender: {
-    width: wp("85%"),
-    alignSelf: "center"
-  },
-  textModal: {
-    textAlign: "center",
-    color: "#fff",
-
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 10
-  },
   chart: {
     alignItems: "center",
     // top: hp(10),
@@ -245,13 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingHorizontal: 10
   },
-  subHeadings: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 20
-  },
+
   numbers: {
     textAlign: "center",
     color: "#FF9D00",

@@ -3,7 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 
 export const colors = {
   subItemBackground: "transparent",

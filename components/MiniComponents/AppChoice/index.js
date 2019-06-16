@@ -21,6 +21,7 @@ import data, { androidDataTest } from "./data";
 
 //styles
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
+import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
 import {
@@ -31,6 +32,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ToggleButton, ActivityIndicator } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
+
 class AppChoice extends Component {
   constructor(props) {
     super(props);
@@ -390,8 +392,11 @@ class AppChoice extends Component {
                   rounded
                   style={[
                     styles.input,
+                    this.state.nameError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.transparentBorderColor,
+
                     {
-                      borderColor: this.state.nameError ? "red" : "transparent",
                       borderRadius: 30,
                       // marginBottom: 10,
                       marginTop: 0
@@ -449,7 +454,10 @@ class AppChoice extends Component {
                 />
               ) : (
                 <View
-                  style={{ height: heightPercentageToDP(25), width: "100%" }}
+                  style={{
+                    height: heightPercentageToDP(25),
+                    width: "100%"
+                  }}
                 >
                   {this.state.showList && this.state.choice === "" && (
                     <Text style={styles.text}>
@@ -540,7 +548,7 @@ class AppChoice extends Component {
                       </TouchableOpacity>
                     )}
                     numcolumnns={3}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item, index) => item.id.toString()}
                   />
                 </View>
               )}

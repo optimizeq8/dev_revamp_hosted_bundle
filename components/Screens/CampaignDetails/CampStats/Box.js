@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, View } from "react-native";
 import styles from "../styles";
-import GlobalStyles from "../../../../Global Styles";
+import GlobalStyles from "../../../../GlobalStyles";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 
 class Box extends Component {
