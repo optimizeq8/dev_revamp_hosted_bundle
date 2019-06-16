@@ -63,6 +63,10 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingVertical: 10
+  },
+  resetStyle: {
+    color: "#fff",
+    alignSelf: "center"
   }
 });
 

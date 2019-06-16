@@ -852,7 +852,7 @@ class AdDesign extends Component {
               {!this.props.loading && (
                 <CustomHeader
                   closeButton={true}
-                  actionButton={() => this.cancelUpload()}
+                  actionButton={() => this.onToggleModal(false)}
                 />
               )}
               <LoadingScreen top={50} />
