@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import GlobalStyles from "../../../Global Styles";
+import GlobalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 
 export default class RangeMarkers extends Component {

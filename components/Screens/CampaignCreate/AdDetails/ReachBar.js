@@ -1,16 +1,21 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Text, View, TouchableOpacity, Platform } from "react-native";
+import { Text, View, Platform } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import LowerButton from "../../../MiniComponents/LowerButton";
+
+//Styles
 import styles from "./styles";
-import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+
+//Redux
+import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
+
+//Functions
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { TouchableRipple } from "react-native-paper";
-import LowerButton from "../../../MiniComponents/LowerButton";
+
 class ReachBar extends Component {
   render() {
     return (

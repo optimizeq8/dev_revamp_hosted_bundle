@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import BackIcon from "../../assets/SVGs/BackButton";
-import globalStyles from "../../Global Styles";
+import globalStyles from "../../GlobalStyles";
 import { Segment } from "expo";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export default class CloseButton extends Component {

@@ -5,9 +5,54 @@ import {
 } from "react-native-responsive-screen";
 export const globalColors = {
   orange: "#FF9D00",
-  purple: "#751AFF"
+  purple: "#751AFF",
+  white: "#FFFFFF",
+  black: "#000000",
+  transparent: "#0000"
 };
-export default (styles = {
+const styles = StyleSheet.create({
+  orangeTextColor: {
+    color: "#FF9D00"
+  },
+  orangeBackgroundColor: {
+    backgroundColor: "#FF9D00"
+  },
+  whiteTextColor: {
+    color: "#FFFFFF"
+  },
+  whiteBackgroundColor: {
+    backgroundColor: "#FFFFFF"
+  },
+  blackTextColor: {
+    color: "#000"
+  },
+  blackBackgroundColor: {
+    backgroundColor: "#000"
+  },
+  purpleTextColor: {
+    color: "#751AFF"
+  },
+  purpleBackgroundColor: {
+    backgroundColor: "#751AFF"
+  },
+  transparentBackgroundColor: {
+    backgroundColor: "#0000"
+  },
+  grayTextColor: {
+    color: "#a0a0a0"
+  },
+  grayBackgroundColor: {
+    backgroundColor: "#a0a0a0"
+  },
+  redTextColor: {
+    color: "red"
+  },
+  redBorderColor: {
+    borderColor: "red"
+  },
+  transparentBorderColor: {
+    borderColor: "#0000"
+  },
   container: {
     marginTop: 30,
     backgroundColor: "transparent"
@@ -46,3 +91,4 @@ export default (styles = {
     ...StyleSheet.absoluteFillObject
   }
 });
+export default styles;

@@ -15,7 +15,7 @@ import { colors } from "../../../GradiantColors/colors";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { globalColors } from "../../../../Global Styles";
+import { globalColors } from "../../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 

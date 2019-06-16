@@ -24,7 +24,7 @@ import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 
 // Style
 import styles from "./styles";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 
 //Reddux
 import * as actionCreators from "../../../store/actions";

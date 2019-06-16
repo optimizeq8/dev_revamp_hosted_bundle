@@ -1,5 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
   widthPercentageToDP

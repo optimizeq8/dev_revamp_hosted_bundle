@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import styles from "./styles";
 import { Button } from "native-base";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
   state = { selectedChoice: "Spend" };

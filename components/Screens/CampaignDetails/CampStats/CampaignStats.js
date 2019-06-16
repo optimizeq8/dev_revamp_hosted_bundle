@@ -7,7 +7,7 @@ import BoxStats from "./BoxStats";
 //styles
 import styles from "../styles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import globalStyles, { globalColors } from "../../../../Global Styles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 
 class CampaignStats extends Component {
   render() {

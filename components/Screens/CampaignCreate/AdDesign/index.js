@@ -215,7 +215,7 @@ class AdDesign extends Component {
         if (result.width > Math.floor((result.height / 16) * 9)) {
           newWidth = Math.floor((result.height / 16) * 9);
         } else if (result.height > Math.floor((result.width * 16) / 9)) {
-          newWidth = Math.floor((result.width * 16) / 9);
+          newHeight = Math.floor((result.width * 16) / 9);
         } else {
           newWidth = 1080;
           newHeight = 1920;

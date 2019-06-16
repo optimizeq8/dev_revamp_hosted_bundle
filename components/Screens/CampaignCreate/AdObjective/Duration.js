@@ -4,7 +4,7 @@ import dateFormat from "dateformat";
 
 //styles
 import styles from "./styles";
-import GlobalStyles from "../../../../Global Styles";
+import GlobalStyles from "../../../../GlobalStyles";
 export default class Duration extends Component {
   render() {
     let end_time = "";

@@ -22,7 +22,7 @@ import CloseIcon from "../../../../assets/SVGs/Close";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../Global Styles";
+import globalStyles from "../../../../GlobalStyles";
 
 //Functions
 import {

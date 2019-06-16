@@ -20,7 +20,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../Global Styles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";

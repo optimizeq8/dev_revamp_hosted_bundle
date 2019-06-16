@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import styles from "./styles";
-import GlobalStyles from "../../../Global Styles";
+import GlobalStyles from "../../../GlobalStyles";
 import { Button } from "native-base";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
