@@ -186,11 +186,11 @@ class AdDetails extends Component {
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: this.props.minValueBudget
+          lifetime_budget_micro: this.props.data.minValueBudget
         },
-        minValueBudget: this.props.minValueBudget,
-        maxValueBudget: this.props.maxValueBudget,
-        value: this.formatNumber(this.props.minValueBudget)
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget,
+        value: this.formatNumber(this.props.data.minValueBudget)
       });
       if (
         this.props.navigation.state.params &&
@@ -456,8 +456,7 @@ class AdDetails extends Component {
             regionNames: this.state.regionNames,
             countryName: this.state.countryName
           },
-          this.props.navigation,
-          this.props.navigation.getParam("image", "")
+          this.props.navigation
         );
       }
     }
@@ -539,7 +538,7 @@ class AdDetails extends Component {
   };
 
   render() {
-    console.log(this.props.data);
+    console.log("details", this.props.data);
 
     let menu;
     switch (this.state.sidemenu) {
@@ -671,10 +670,10 @@ class AdDetails extends Component {
     interests_names = interests_names.join(", ");
 
     let editCampaign = this.props.navigation.getParam("editCampaign", false);
-    //   this.props.navigation.state.params &&
-    //   this.props.navigation.state.params.editCampaign;
+
     const campaign = this.props.navigation.getParam("campaign", {});
-    const image = this.props.navigation.getParam("image", "");
+
+    const image = this.props.data.image;
     return (
       <SafeAreaView
         style={{ height: "100%", flex: 1 }}
@@ -1299,8 +1298,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, names, navigation, image) =>
-    dispatch(actionCreators.ad_details(info, names, navigation, image)),
+  ad_details: (info, names, navigation) =>
+    dispatch(actionCreators.ad_details(info, names, navigation)),
   updateCampaign: (info, businessid, navigation) =>
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
 

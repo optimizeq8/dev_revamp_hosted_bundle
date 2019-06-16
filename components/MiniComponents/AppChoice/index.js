@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Text,
   View,
@@ -56,10 +57,6 @@ class AppChoice extends Component {
     };
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
-
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -73,6 +70,19 @@ class AppChoice extends Component {
     this.setState({
       callactions: list[this.props.listNum].call_to_action_list
     });
+    // if (
+    //   this.props.data.hasOwnProperty("attachment") &&
+    //   this.props.data.attachment !== "BLANK"
+    // ) {
+    //   this.setState({
+    //     attachment: {
+    //       ...this.state.attachment,
+    //       ...this.props.data.attachment
+    //     },
+    //     callaction: this.props.data.call_to_action
+    //   });
+    // }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   _searchIosApps = () => {
@@ -228,6 +238,8 @@ class AppChoice extends Component {
     });
   };
   render() {
+    // console.log(this.state);
+
     return (
       <View
         style={{
@@ -237,6 +249,7 @@ class AppChoice extends Component {
         <RNPickerSelect
           items={this.state.callactions}
           placeholder={{ label: "Call to Action", value: "" }}
+          value={this.state.callaction.value}
           onValueChange={(value, index) => {
             this.setState({
               callaction: {
@@ -541,4 +554,10 @@ class AppChoice extends Component {
     );
   }
 }
-export default AppChoice;
+const mapStateToProps = state => ({ data: state.campaignC.data });
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppChoice);

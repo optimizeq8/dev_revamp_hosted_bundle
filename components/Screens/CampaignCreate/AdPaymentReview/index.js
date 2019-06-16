@@ -141,7 +141,7 @@ class AdPaymentReview extends Component {
           : []
         : [];
 
-      const image = this.props.image;
+      const image = this.props.data.image;
       return (
         <SafeAreaView
           style={{ height: "100%", flex: 1 }}

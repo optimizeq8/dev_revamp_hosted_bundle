@@ -222,6 +222,14 @@ export const getMinimumCash = values => {
     });
 };
 
+export const save_campaign_info = info => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SAVE_CAMPAIGN_INFO,
+      payload: info
+    });
+  };
+};
 export const ad_design = (
   info,
   laoding,
@@ -234,6 +242,8 @@ export const ad_design = (
   iosUploadVideo
 ) => {
   onToggleModal(true);
+  console.log(info);
+
   return dispatch => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,
@@ -253,6 +263,13 @@ export const ad_design = (
         return res.data;
       })
       .then(data => {
+        // dispatch(
+        //   save_campaign_info("adDesign", {
+        //     appChoice,
+        //     longVideo,
+        //     iosUploadVideo
+        //   })
+        // );
         rejected &&
           showMessage({
             message: data.message,
@@ -267,18 +284,11 @@ export const ad_design = (
       .then(() => {
         onToggleModal(false);
       })
-      .then(() =>
+      .then(() => {
         !rejected
-          ? navigation.push("AdDetails", {
-              image: longVideo
-                ? info._parts[3][1].uri
-                : iosUploadVideo.iosUploaded
-                ? iosUploadVideo.image
-                : info._parts[0][1].uri,
-              appChoice: appChoice
-            })
-          : navigation.navigate("Dashboard")
-      )
+          ? navigation.push("AdDetails")
+          : navigation.navigate("Dashboard");
+      })
       .catch(err => {
         laoding(0);
         onToggleModal(false);
@@ -447,7 +457,7 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation, image) => {
+export const ad_details = (info, names, navigation) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
@@ -461,7 +471,7 @@ export const ad_details = (info, names, navigation, image) => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_AD_DETAILS,
-          payload: { data, names, image }
+          payload: { data, names }
         });
       })
       .then(() => {

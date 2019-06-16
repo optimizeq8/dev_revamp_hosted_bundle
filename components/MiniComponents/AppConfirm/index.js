@@ -5,7 +5,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import KeyboardShift from "../KeyboardShift";
-
+import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 //styles
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
@@ -13,10 +13,17 @@ import LowerButton from "../LowerButton";
 import { Item, Input } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
-export default class index extends Component {
+class index extends Component {
   state = { deep_link_url: "", deep_link_urlError: "" };
-  componentWillMount() {
+  componentDidMount() {
+    this.setState({ deep_link_url: this.props.deep_link_url });
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.deep_link_url !== this.props.deep_link_url) {
+      this.setState({ deep_link_url: this.props.deep_link_url });
+    }
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -79,7 +86,7 @@ export default class index extends Component {
                     borderRadius: 18
                   }}
                   source={{
-                    uri: this.props.icon_media_url
+                    uri: this.props.icon_media_url || "place.co"
                   }}
                 />
                 <View style={{ flexDirection: "column", paddingTop: 10 }}>
@@ -192,6 +199,7 @@ export default class index extends Component {
                     ]}
                   >
                     <Input
+                      value={this.state.deep_link_url}
                       style={styles.inputtext}
                       placeholder="Deep Link URL"
                       placeholderTextColor="white"
@@ -249,3 +257,10 @@ export default class index extends Component {
     );
   }
 }
+const mapStateToProps = state => ({ data: state.campaignC.data });
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(index);

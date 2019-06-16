@@ -66,13 +66,11 @@ class AdDesign extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        campaign_id: "",
         brand_name: "",
         headline: "",
         destination: "BLANK",
         call_to_action: { label: "BLANK", value: "BLANK" },
-        attachment: "BLANK",
-        media_type: ""
+        attachment: "BLANK"
       },
       directory: "/ImagePicker/",
       result: "",
@@ -106,6 +104,9 @@ class AdDesign extends Component {
     this.props.navigation.goBack();
     return true;
   };
+  // shouldComponentUpdate(prevProps, prevState) {
+  //   return prevState.campaignInfo.headline !== this.state.campaignInfo.headline;
+  // }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -148,6 +149,27 @@ class AdDesign extends Component {
         });
       }
     }
+    if (
+      this.props.data.hasOwnProperty("attachment") ||
+      this.props.data.hasOwnProperty("image")
+    ) {
+      rep = { ...this.props.data };
+      this.setState({
+        ...this.state,
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          // brand_name: this.props.data.brand_name,
+          // headline: this.props.data.headline,
+          destination: rep.destination ? rep.destination : "BLANK",
+          call_to_action: rep.call_to_action,
+          attachment: rep.attachment
+        },
+        image: rep.image,
+        type: rep.type,
+        objective: rep.objective,
+        iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -166,8 +188,9 @@ class AdDesign extends Component {
   };
 
   _changeDestination = (destination, call_to_action, attachment, appChoice) => {
+    let newData = {};
     if (attachment.hasOwnProperty("longformvideo_media")) {
-      this.setState({
+      newData = {
         campaignInfo: {
           ...this.state.campaignInfo,
           destination,
@@ -176,9 +199,11 @@ class AdDesign extends Component {
 
         [Object.keys(attachment)[0]]: attachment.longformvideo_media,
         [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-      });
+      };
+      this.setState(newData);
+      this.props.save_campaign_info(newData);
     } else {
-      this.setState({
+      newData = {
         campaignInfo: {
           ...this.state.campaignInfo,
           destination,
@@ -186,7 +211,9 @@ class AdDesign extends Component {
           attachment
         },
         appChoice
-      });
+      };
+      this.setState(newData);
+      this.props.save_campaign_info(newData.campaignInfo);
     }
   };
   pick = async () => {
@@ -296,20 +323,20 @@ class AdDesign extends Component {
             });
             return;
           } else {
-            this.setState(
-              {
-                image: result.uri,
-                type: result.type.toUpperCase(),
-                imageError: null,
-                result: result.uri
-              },
-              () => this.formatMedia()
-            );
+            this.setState({
+              image: result.uri,
+              type: result.type.toUpperCase(),
+              imageError: null
+            });
             this.onToggleModal(false);
             showMessage({
               message: "Image has been selected successfully ",
               position: "top",
               type: "success"
+            });
+            this.props.save_campaign_info({
+              image: result.uri,
+              type: result.type.toUpperCase()
             });
             return;
           }
@@ -349,7 +376,11 @@ class AdDesign extends Component {
   formatMedia() {
     var body = new FormData();
     if (!this.state.iosVideoUploaded) {
-      let res = this.state.image.split(this.state.directory);
+      let res = this.state.image.split(
+        this.state.image.includes("/ImageManipulator/")
+          ? "/ImageManipulator/"
+          : this.state.directory
+      );
       let format = res[1].split(".");
 
       var photo = {
@@ -361,19 +392,14 @@ class AdDesign extends Component {
       body.append("media_type", this.state.type);
     }
     if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media;
-      this.state.longformvideo_media.split("/ImagePicker/");
-
+      let resVideo = this.state.longformvideo_media.split(this.state.directory);
       let formatVideo = resVideo[1].split(".");
       var video = {
         uri: this.state.longformvideo_media,
         type: this.state.longformvideo_media_type + "/" + formatVideo[1],
         name: resVideo[1]
       };
-      body.append(
-        "attachment",
-        JSON.stringify(this.state.campaignInfo.attachment)
-      );
+
       body.append("longformvideo_media", video);
       body.append(
         "longformvideo_media_type",
@@ -438,20 +464,13 @@ class AdDesign extends Component {
       iosVideoUploaded: true,
       type: "VIDEO"
     });
+    this.props.save_campaign_info({
+      image: data.queryParams.media,
+      iosVideoUploaded: true,
+      type: "VIDEO"
+    });
   };
-  _handleLandscapeVideos = info => {
-    if (info.naturalSize.orientation === "landscape") {
-      this.setState({
-        image: "null",
-        imageError: "Landscape videos are not supported"
-      });
-    } else {
-      this.setState({
-        image: this.state.result,
-        imageError: null
-      });
-    }
-  };
+
   _getUploadState = loading => {
     this.setState({
       loaded: loading
@@ -523,6 +542,7 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
+      this.formatMedia();
       this.handleUpload();
       !this.props.loading &&
         this.props.ad_design(
@@ -549,7 +569,7 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    console.log(this.props.data);
+    console.log("data", this.props.data);
 
     let { image } = this.state;
     const penIconBrand = (
@@ -581,14 +601,15 @@ class AdDesign extends Component {
           placeholderTextColor="white"
           autoCorrect={false}
           autoCapitalize="none"
-          onChangeText={value =>
+          onChangeText={value => {
             this.setState({
               campaignInfo: {
                 ...this.state.campaignInfo,
                 brand_name: value
               }
-            })
-          }
+            });
+            this.props.save_campaign_info({ brand_name: value });
+          }}
           onFocus={() => {
             this.setState({ inputB: true });
           }}
@@ -629,14 +650,15 @@ class AdDesign extends Component {
           placeholderTextColor="white"
           autoCorrect={false}
           autoCapitalize="none"
-          onChangeText={value =>
+          onChangeText={value => {
             this.setState({
               campaignInfo: {
                 ...this.state.campaignInfo,
                 headline: value
               }
-            })
-          }
+            });
+            this.props.save_campaign_info({ headline: value });
+          }}
           onFocus={() => {
             this.setState({ inputH: true });
           }}
@@ -915,7 +937,8 @@ const mapDispatchToProps = dispatch => ({
       )
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>
-    dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser))
+    dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
 });
 export default connect(
   mapStateToProps,

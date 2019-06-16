@@ -99,9 +99,11 @@ class AdObjective extends Component {
     if (this.props.data) {
       // console.log("data", this.props.data);
       rep = { ...this.props.data };
-      console.log("rep", this.props.data);
-
-      this.setState({ campaignInfo: { ...rep } });
+      this.setState({
+        campaignInfo: { ...rep },
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -113,6 +115,7 @@ class AdObjective extends Component {
         objective: value
       }
     });
+    this.props.save_campaign_info({ objective: value });
   };
 
   handleStartDatePicked = date => {
@@ -122,6 +125,7 @@ class AdObjective extends Component {
         start_time: date
       }
     });
+    this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = date => {
     this.setState({
@@ -130,6 +134,7 @@ class AdObjective extends Component {
         end_time: date
       }
     });
+    this.props.save_campaign_info({ end_time: date });
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
@@ -177,7 +182,12 @@ class AdObjective extends Component {
         campaign_objective: this.state.campaignInfo.objective
       });
 
-      this.props.getMinimumCash({
+      // this.props.getMinimumCash({
+      //   minValueBudget: this.state.minValueBudget,
+      //   maxValueBudget: this.state.maxValueBudget
+      // });
+
+      this.props.save_campaign_info({
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
@@ -195,8 +205,6 @@ class AdObjective extends Component {
   };
 
   render() {
-    console.log("state", this.state.campaignInfo);
-
     const list = this.state.objectives.map(o => (
       <ObjectivesCard
         choice={o}
@@ -265,14 +273,15 @@ class AdObjective extends Component {
                   autoCorrect={false}
                   maxLength={35}
                   autoCapitalize="none"
-                  onChangeText={value =>
+                  onChangeText={value => {
                     this.setState({
                       campaignInfo: {
                         ...this.state.campaignInfo,
                         name: value
                       }
-                    })
-                  }
+                    });
+                    this.props.save_campaign_info({ name: value });
+                  }}
                   autoFocus={true}
                   onFocus={() => {
                     this.setState({ inputN: true });
@@ -404,6 +413,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   ad_objective: (info, navigation) =>
     dispatch(actionCreators.ad_objective(info, navigation)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values))
 });
 export default connect(

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { View, SafeAreaView, BackHandler } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
@@ -12,7 +13,7 @@ import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 import styles from "./styles";
 import { showMessage } from "react-native-flash-message";
 
-export default class Website extends Component {
+class Website extends Component {
   static navigationOptions = {
     header: null
   };
@@ -27,10 +28,21 @@ export default class Website extends Component {
       callactions: list[0].call_to_action_list,
       urlError: ""
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    if (
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.attachment !== "BLANK" &&
+      !this.props.data.attachment.hasOwnProperty("android_app_url")
+    ) {
+      this.setState({
+        campaignInfo: {
+          attachment: this.props.data.attachment.url,
+          callaction: this.props.data.call_to_action
+        }
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   handleBackButton = () => {
@@ -103,6 +115,7 @@ export default class Website extends Component {
             <RNPickerSelect
               items={this.state.callactions}
               placeholder={{}}
+              value={this.state.campaignInfo.callaction.value}
               onValueChange={(value, index) => {
                 this.setState({
                   campaignInfo: {
@@ -154,6 +167,7 @@ export default class Website extends Component {
                 style={styles.inputtext}
                 placeholder="Enter your website's URL"
                 placeholderTextColor="#fff"
+                value={this.state.campaignInfo.attachment}
                 autoCorrect={false}
                 autoCapitalize="none"
                 onChangeText={value =>
@@ -193,3 +207,11 @@ export default class Website extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({ data: state.campaignC.data });
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Website);

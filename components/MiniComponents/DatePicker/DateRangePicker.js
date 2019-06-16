@@ -176,7 +176,6 @@ export default class DateRangePicker extends Component<Props> {
         onDayPress={day => {
           this.onDayPress(day);
         }}
-        firstDay={1}
         style={styles.calender}
         theme={{
           calendarBackground: "transparent",
