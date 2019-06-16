@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../../Global Styles/";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -52,15 +52,58 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     backgroundColor: "black"
   },
-
-  title: {
+  contentContainer: {
+    flex: 1
+  },
+  subHeadings: {
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    // width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
+    paddingVertical: 10
+  },
+  moneyInputContainer: {
+    flexDirection: "column",
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 15,
+    alignSelf: "center",
+    justifyContent: "space-around",
+    paddingVertical: 10
+  },
+  budget: {
+    alignSelf: "center",
+    color: "#FF9D00",
+    fontSize: 25,
+    fontFamily: "montserrat-medium",
+    textAlign: "center",
+    width: "100%",
+    paddingBottom: 0,
+    width: "100%"
+  },
+  moreOptionsText: {
+    alignSelf: "center",
+    color: "#FF9D00",
+    fontSize: 14,
+    fontFamily: "montserrat-medium",
+    textAlign: "center",
+    width: "100%",
+    paddingBottom: 30
+  },
+  budgetInstructionText: {
+    color: "#fff",
+    fontSize: 11,
+    alignSelf: "center",
+    paddingHorizontal: 20
+  },
+  slidercontainer: {
+    marginHorizontal: 40,
+    width: "100%",
+    alignSelf: "center",
+    paddingVertical: 10,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-around",
+    paddingHorizontal: 40
   },
 
   textCon: {
@@ -71,20 +114,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10
     // height: 50
   },
-
-  colorGrey: {
-    color: "#fff"
-  },
-  budget: {
-    alignSelf: "center",
-    color: "#FF9D00",
-    fontSize: 25,
-    fontFamily: "montserrat-medium",
-    textAlign: "center",
-    width: "100%",
-    paddingBottom: 20
-  },
-
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 17,
@@ -93,7 +122,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 10
   },
-  slidercontainer: { marginHorizontal: 40, width: "100%" },
+
   input: {
     marginBottom: 15,
     backgroundColor: "#D9D9D9",
@@ -253,13 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     paddingHorizontal: 10
   },
-  subHeadings: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingVertical: 20
-  },
+
   numbers: {
     textAlign: "center",
     color: "#FF9D00",

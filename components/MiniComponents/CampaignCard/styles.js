@@ -4,7 +4,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 
 export const colors = {
   black: "#1a1917",

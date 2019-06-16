@@ -37,7 +37,7 @@ import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { globalColors } from "../../../../Global Styles";
+import { globalColors } from "../../../../GlobalStyles";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 

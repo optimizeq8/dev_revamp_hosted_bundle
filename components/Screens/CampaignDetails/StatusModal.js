@@ -10,7 +10,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 //styles
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 export default class StatusModal extends Component {
   render() {
     let selectedCampaign = this.props.selectedCampaign;

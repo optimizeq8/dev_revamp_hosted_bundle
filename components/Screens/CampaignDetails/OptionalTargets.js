@@ -7,7 +7,7 @@ import InterestIcon from "../../../assets/SVGs/Interests.svg";
 import OperatingSystem from "../../../assets/SVGs/AdDetails/OperatingSystem";
 
 import styles from "./styles";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 import { Icon } from "native-base";
 export default class OptionalTargets extends Component {
   render() {
