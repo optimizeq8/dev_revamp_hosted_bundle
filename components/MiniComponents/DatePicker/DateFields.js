@@ -27,7 +27,7 @@ export default class DateFields extends Component {
       modalVisible: false,
       start_choice: false,
       end_choice: false,
-
+      reset: false,
       start_timeError: "",
       endt_time: ""
     };
@@ -129,6 +129,7 @@ export default class DateFields extends Component {
               </Text>
               <DateRangePicker
                 filterMenu={this.props.filterMenu}
+                reset={this.state.reset}
                 chartRange={this.props.chartRange}
                 selectedCampaign={this.props.selectedCampaign}
                 startDatePicked={this.startDatePicked}
@@ -138,7 +139,8 @@ export default class DateFields extends Component {
                   this.endDatePicked();
                   this.setState({
                     start_date: s,
-                    end_date: e
+                    end_date: e,
+                    reset: false
                   });
                 }}
                 theme={{ markColor: "#FF9D00", markTextColor: "white" }}
@@ -153,6 +155,7 @@ export default class DateFields extends Component {
                       modalVisible: false,
                       end_time: ""
                     });
+                    this.setState({ modalVisible: false });
                     this.props.durationChange(
                       this.props.selectedCampaign.start_time,
                       this.props.selectedCampaign.end_time
@@ -164,11 +167,12 @@ export default class DateFields extends Component {
                       start_choice: false,
                       end_choice: false,
                       start_timeError: "",
-                      end_time: ""
+                      end_time: "",
+                      reset: true
                     });
                   }
                 }}
-                style={[styles.title, { textDecorationLine: "underline" }]}
+                style={[styles.resetStyle, { textDecorationLine: "underline" }]}
               >
                 Reset
               </Text>
