@@ -15,6 +15,31 @@ const HIGHLIGHT_COLOR = "rgba(0,118,255,0.9)";
 const OPTION_CONTAINER_HEIGHT = heightPercentageToDP(40);
 
 export default StyleSheet.create({
+  optionStyleContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  imageView: {
+    flex: 0.15
+  },
+  imageStyle: {
+    width: 30,
+    height: 16
+  },
+  optionTextStyleContainer: {
+    color: "#434343",
+    fontSize: 12
+  },
+  labelContainer: {
+    flex: 0.7,
+    alignItems: "center"
+  },
+  dialCodeContainer: {
+    flex: 0.15,
+    alignItems: "flex-end"
+  },
   overlayStyle: {
     width: width,
     height: height,
@@ -41,12 +66,6 @@ export default StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     borderRadius: BORDER_RADIUS
-  },
-
-  selectTextStyle: {
-    textAlign: "center",
-    color: "#333",
-    fontSize: FONT_SIZE
   },
 
   cancelStyle: {

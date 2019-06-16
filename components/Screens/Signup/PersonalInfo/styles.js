@@ -6,6 +6,19 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  labelEmail: {
+    flexDirection: "row"
+  },
+  labelPassword: {
+    bottom: 5
+  },
+  labelIcon: {
+    fontSize: 20
+  },
+  repeatPassword: {
+    marginBottom: 0,
+    paddingBottom: 0
+  },
   scrollViewStyleContainer: {
     flex: 1,
     marginVertical: 10
@@ -78,7 +91,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 40
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",

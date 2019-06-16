@@ -38,11 +38,17 @@ const styles = StyleSheet.create({
   transparentBackgroundColor: {
     backgroundColor: "#0000"
   },
+  transparentTextColor: {
+    color: "#0000"
+  },
+  darkGrayTextColor: {
+    color: "#717171"
+  },
   grayTextColor: {
     color: "#a0a0a0"
   },
   grayBackgroundColor: {
-    backgroundColor: "#a0a0a0"
+    backgroundColor: "#A0A0A0"
   },
   redTextColor: {
     color: "red"
@@ -52,6 +58,12 @@ const styles = StyleSheet.create({
   },
   transparentBorderColor: {
     borderColor: "#0000"
+  },
+  lightGrayBorderColor: {
+    borderColor: "#D9D9D9"
+  },
+  purpleBorderColor: {
+    borderColor: "#7039FF"
   },
   container: {
     marginTop: 30,

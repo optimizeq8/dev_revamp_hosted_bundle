@@ -165,13 +165,11 @@ class Wallet extends Component {
                       <Item
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.inputA
-                              ? "#7039FF"
-                              : this.state.amountError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.inputA
+                            ? globalStyles.purpleBorderColor
+                            : this.state.amountError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor
                         ]}
                       >
                         <Label style={[styles.labeltext]}>$</Label>
