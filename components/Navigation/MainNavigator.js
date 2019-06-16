@@ -3,7 +3,6 @@ import { Platform } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import { createStackNavigator } from "react-navigation";
-import Home from "../Screens/Home";
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
@@ -32,7 +31,6 @@ import Animated, { Easing } from "react-native-reanimated";
 
 export default FluidNavigator(
   {
-    Home: Home,
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,

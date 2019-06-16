@@ -11,30 +11,23 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+  menuContainer: {
+    backgroundColor: "#0000",
+    flexGrow: 1
   },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 10
+  switchArrowIcon: {
+    marginLeft: 5,
+    right: 20,
+    top: 1
   },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
+  scrollViewContainer: {
+    paddingLeft: 20,
+    flexGrow: 1,
+    paddingBottom: heightPercentageToDP(35)
+
+    //   bottom: heightPercentageToDP(5) < 30 ? 10 : 0
   },
-  mainCard: {
-    flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0
-    // elevation: 10,
-    // zIndex: -1
-  },
+
   background: {
     position: "absolute",
     opacity: 0.2,
@@ -49,25 +42,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20
   },
-  buttontext: {
+  buttonText: {
     fontFamily: "montserrat-regular",
     fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14 / PixelRatio.getFontScale(),
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
   },
   button: {
     top: heightPercentageToDP("2"),
@@ -80,7 +57,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     zIndex: 2
   },
-  buttontext: {
+  buttonText: {
     fontFamily: "montserrat-bold",
     color: "#fff",
     fontSize: 12
@@ -106,10 +83,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#fff"
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject,
-    height: heightPercentageToDP("110")
-  },
   menuModal: {
     // ...StyleSheet.absoluteFillObject
     backgroundColor: "#0000",
@@ -117,27 +90,12 @@ const styles = StyleSheet.create({
     // elevation: 1,
     flexGrow: 1
   },
-  backDrop: {
-    position: "absolute",
-    top: -heightPercentageToDP("50%"),
-    alignSelf: "center"
-  },
-  DropIcon: {
-    position: "relative",
-    top: heightPercentageToDP("5"),
-    left: widthPercentageToDP("46%")
-  },
   CloseIcon: {
     position: "absolute",
     top: heightPercentageToDP("5"),
     left: widthPercentageToDP("6%"),
     zIndex: 15,
     padding: 10
-  },
-  logoutIcon: {
-    zIndex: 20,
-    bottom: 30,
-    left: widthPercentageToDP("85%")
   },
   options: {
     alignItems: "center",
@@ -158,12 +116,7 @@ const styles = StyleSheet.create({
     // height: 55
     // paddingBottom: heightPercentageToDP(5) < 30 ? 0 : 12
   },
-  privacy: {
-    justifyContent: "flex-start",
-    color: globalColors.orange,
-    fontFamily: "montserrat-light",
-    textDecorationLine: "underline"
-  },
+
   version: {
     color: "#fff",
     fontFamily: "montserrat-extralight",

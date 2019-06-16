@@ -88,14 +88,14 @@ class ForgotPassword extends Component {
         />
         <CustomHeader navigation={this.props.navigation} closeButton={true} />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
-          <View style={{ backgroundColor: "#0000" }}>
+          <View style={styles.mainCard}>
             <View>
               <Logo
-                style={{ alignSelf: "center" }}
+                style={styles.logo}
                 width={heightPercentageToDP(15)}
                 height={heightPercentageToDP(15)}
               />
-              <Text style={styles.logotext}>Optimize</Text>
+              <Text style={styles.logoText}>Optimize</Text>
             </View>
             <KeyboardShift>
               {() => (
@@ -122,7 +122,7 @@ class ForgotPassword extends Component {
                         placeholderTextColor="#fff"
                         autoCorrect={false}
                         autoCapitalize="none"
-                        style={styles.inputtext}
+                        style={styles.inputText}
                         onChangeText={value => {
                           this.setState({
                             email: value

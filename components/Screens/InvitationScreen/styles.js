@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 import { globalColors } from "../../../Global Styles";
 export const colors = {
   black: "#1a1917",
@@ -8,37 +11,45 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 0,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
   },
-  subtitle: {
-    fontSize: 18,
+  contentContainerView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%"
+  },
+  verificationView: {
+    flexDirection: "column",
+    flex: 1
+  },
+  getInviteCodeView: {
+    flexDirection: "column",
+    flex: 1
+  },
+  slidingContainer: {
+    width: widthPercentageToDP(200),
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-around"
+  },
+  logInButtonText: {
     color: "#fff",
-    textAlign: "center",
-    paddingTop: 13,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-semibold"
   },
   container: {
     // paddingTop: heightPercentageToDP(10),
     flex: 1
   },
-  logotext: {
+  logoText: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
     fontFamily: "montserrat-medium"
     // bottom: "5%"
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
   },
   mainCard: {
     borderColor: "transparent",
@@ -92,17 +103,6 @@ const styles = StyleSheet.create({
     opacity: 0.45,
     alignSelf: "center",
     zIndex: 0
-  },
-  link: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    // position: "absolute",
-    paddingVertical: 20,
-    textDecorationLine: "underline",
-    alignSelf: "center"
-    // top: "65%"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject

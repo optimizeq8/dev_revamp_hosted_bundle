@@ -8,12 +8,31 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
+  contentStyle: { flex: 1, backgroundColor: "#0000" },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
+  knetContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  mastercardContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
   container: {
+    backgroundColor: "#0000"
     // flex: 1,
     // height: "100%",
     // width: "100%"
+  },
+  buttonGroupBlock: {
+    flexDirection: "row",
+    marginHorizontal: 40,
+    marginTop: 20,
+    alignSelf: "center"
   },
   errortext: {
     // marginTop: 5,
@@ -127,8 +146,18 @@ const styles = StyleSheet.create({
     minHeight: 170,
     alignItems: "center",
     shadowRadius: 5,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
+    borderTopWidth: 0,
+    width: "100%",
+    paddingHorizontal: 20
   },
+  bottomCardBlock1: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%"
+  },
+  bottomCardBlock2: { width: "100%", paddingTop: 5 },
   button: {
     borderWidth: 0.3,
     borderColor: "#fff",
@@ -206,6 +235,70 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  optimizeFeesTextContainer: { flexDirection: "row", paddingTop: 3 },
+  optimizeFeesText: {
+    fontSize: 12,
+    fontFamily: "montserrat-regular",
+    textAlign: "left"
+  },
+  payNowText: {
+    color: "#FF9D00",
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: "montserrat-bold"
+    //   paddingBottom: 3
+  },
+  tNcText: {
+    textDecorationLine: "underline",
+    color: "#FFF",
+    fontFamily: "montserrat-bold"
+  },
+  dollarAmountContainer: {
+    flexDirection: "row",
+    alignItems: "baseline"
+  },
+  dollarAmountText: {
+    fontSize: 18
+  },
+  kdAmountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 2
+  },
+  kdText: {
+    fontSize: 14,
+    fontFamily: "montserrat-regular"
+  },
+  kdAmountText: {
+    fontSize: 14,
+    fontFamily: "montserrat-bold"
+  },
+  mastercardImage: {
+    width: 250
+  },
+  errorTextKNET: {
+    fontFamily: "montserrat-semibold"
+  },
+  walletPaymentModalContainer: {
+    height: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  reviewPurchaseText: {
+    fontSize: 20,
+    fontFamily: "montserrat-bold"
+  },
+  useWalletText: {
+    fontSize: 20,
+    fontFamily: "montserrat-bold"
+  },
+  colorWhite: {
+    color: "#FFFF"
+  },
+  walltetAmountText: {
+    fontSize: 25
   }
 });
 
