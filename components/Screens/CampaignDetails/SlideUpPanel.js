@@ -108,13 +108,16 @@ export default class SlideUpPanel extends Component {
           animatedValue={this._draggedValue}
           friction={0.4}
           onDragStart={() => {
-            if (!this.state.gotStats)
-              this.props.getCampaignStats(selectedCampaign, {
-                start_time: "2019-05-09",
-                end_time: "2019-05-25"
-                // start_time: selectedCampaign.start_time,
-                // end_time: selectedCampaign.end_time
-              });
+            if (selectedCampaign) {
+              if (!this.state.gotStats) {
+                this.props.getCampaignStats(selectedCampaign, {
+                  start_time: "2019-05-09",
+                  end_time: "2019-05-25"
+                  // start_time: selectedCampaign.start_time,
+                  // end_time: selectedCampaign.end_time
+                });
+              }
+            }
           }}
           onDragEnd={value => {
             if (!this.state.gotStats) this.setState({ gotStats: true });
@@ -169,14 +172,16 @@ export default class SlideUpPanel extends Component {
                   <Animated.View style={[styles.chartPosition, animatedStyles]}>
                     <TouchableOpacity
                       onPress={() => {
-                        if (!this.state.gotStats)
-                          this.props.getCampaignStats(selectedCampaign, {
-                            // start_time: "2019-05-09",
-                            // end_time: "2019-05-25"
-                            start_time: selectedCampaign.start_time,
-                            end_time: selectedCampaign.end_time
-                          });
-                        this._panel.show();
+                        if (selectedCampaign) {
+                          if (!this.state.gotStats)
+                            this.props.getCampaignStats(selectedCampaign, {
+                              // start_time: "2019-05-09",
+                              // end_time: "2019-05-25"
+                              start_time: selectedCampaign.start_time,
+                              end_time: selectedCampaign.end_time
+                            });
+                          this._panel.show();
+                        }
                       }}
                     >
                       <Chart campaign={selectedCampaign} />
