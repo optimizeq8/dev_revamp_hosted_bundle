@@ -45,16 +45,12 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "flex-start"
   },
-  errortext: {
+  errorText: {
     marginTop: 15,
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-light",
     textAlign: "center"
-  },
-  header: {
-    fontSize: 25,
-    marginBottom: 25
   },
   button: {
     marginTop: 25,
@@ -65,7 +61,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center"
   },
-  whitebutton: {
+  whiteButton: {
     marginTop: 15,
     backgroundColor: "#fff",
     borderRadius: 15,
@@ -74,12 +70,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center"
   },
-  buttontext: {
+  buttonText: {
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-regular"
   },
-  whitebuttontext: {
+  whiteButtonText: {
     color: "#751AFF",
     fontSize: 14,
     fontFamily: "montserrat-regular"

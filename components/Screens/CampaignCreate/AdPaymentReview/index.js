@@ -91,9 +91,6 @@ class AdPaymentReview extends Component {
         (dimen.height === 896 || dimen.width === 896))
     );
   };
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -108,6 +105,7 @@ class AdPaymentReview extends Component {
       business_name: this.props.mainBusiness.businessname,
       checkout_id: this.props.campaign_ids
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
     if (this.props.loading || isUndefined(this.props.data.targeting)) {

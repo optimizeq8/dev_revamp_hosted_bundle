@@ -11,6 +11,16 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  keyboardContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1
+  },
+  keyboardView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
   title: {
     // position: "relative",
     marginBottom: 30,
@@ -20,14 +30,6 @@ const styles = StyleSheet.create({
     // top: "20%",
     marginTop: 20,
     alignSelf: "center",
-    fontFamily: "montserrat-medium"
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 13,
-    textAlign: "center",
     fontFamily: "montserrat-medium"
   },
   container: {
@@ -42,11 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  mainCard: {
-    borderColor: "transparent"
-    // flex: 1
-  },
-
   input: {
     // top: "10%",
     marginTop: 10,
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(70),
     height: 50
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 14 / PixelRatio.getFontScale(),
     color: "#fff",

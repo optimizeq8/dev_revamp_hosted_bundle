@@ -109,10 +109,7 @@ export default class Invitation extends Component {
     } else
       return (
         <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: "#0000"
-          }}
+          style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never" }}
         >
           <Container style={styles.container}>
@@ -144,30 +141,23 @@ export default class Invitation extends Component {
                     width={heightPercentageToDP(15)}
                     height={heightPercentageToDP(15)}
                   />
-                  <Text style={styles.logotext}>Optimize</Text>
+                  <Text style={styles.logoText}>Optimize</Text>
                 </View>
                 <Content
                   scrollEnabled={false}
-                  contentContainerStyle={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%"
-                  }}
+                  contentContainerStyle={styles.contentContainerView}
                 >
                   <Animated.View
-                    style={{
-                      left:
-                        !this.state.animationActive &&
-                        this.state.renderInviteCode
-                          ? interpolation
-                          : interpolation,
-                      width: widthPercentageToDP(200),
-                      flexDirection: "row",
-                      flex: 1,
-                      alignItems: "center",
-                      justifyContent: "space-around"
-                    }}
+                    style={[
+                      {
+                        left:
+                          !this.state.animationActive &&
+                          this.state.renderInviteCode
+                            ? interpolation
+                            : interpolation
+                      },
+                      styles.slidingContainer
+                    ]}
                   >
                     <Animatable.View
                       animation={
@@ -176,10 +166,7 @@ export default class Invitation extends Component {
                           ? "slideInLeft"
                           : "slideOutLeft"
                       }
-                      style={{
-                        flexDirection: "column",
-                        flex: 1
-                      }}
+                      style={styles.verificationView}
                     >
                       <Verification
                         invite={true}
@@ -195,10 +182,7 @@ export default class Invitation extends Component {
                           ? "slideInRight"
                           : "slideOutRight"
                       }
-                      style={{
-                        flexDirection: "column",
-                        flex: 1
-                      }}
+                      style={styles.getInviteCodeView}
                     >
                       <GetInviteCode toggleComps={this.toggleComps} />
                     </Animatable.View>
@@ -217,15 +201,7 @@ export default class Invitation extends Component {
                     }}
                     style={styles.bottomView}
                   >
-                    <Text
-                      style={[
-                        styles.buttontext,
-                        {
-                          color: "#fff",
-                          fontFamily: "montserrat-semibold"
-                        }
-                      ]}
-                    >
+                    <Text style={[styles.buttontext, styles.logInButtonText]}>
                       Log In!
                     </Text>
                   </Button>
