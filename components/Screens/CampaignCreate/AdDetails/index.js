@@ -190,24 +190,26 @@ class AdDetails extends Component {
       //   os_type: ""
       // });
 
-      if (this.props.data) {
-        rep = { ...this.state.campaignInfo, ...this.props.data };
-        this.setState({
-          ...this.state,
-          campaignInfo: {
-            // ...this.state.campaignInfo,
-            // brand_name: this.props.data.brand_name,
-            // headline: this.props.data.headline,
-            // destination: rep.destination ? rep.destination : "BLANK",
-            // call_to_action: rep.call_to_action,
-            // attachment: rep.attachment
-            ...rep
+      if (this.props.data.hasOwnProperty("campaignInfo")) {
+        rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
+
+        this.setState(
+          {
+            ...this.state,
+            campaignInfo: {
+              // ...this.state.campaignInfo,
+              // brand_name: this.props.data.brand_name,
+              // headline: this.props.data.headline,
+              // destination: rep.destination ? rep.destination : "BLANK",
+              // call_to_action: rep.call_to_action,
+              // attachment: rep.attachment
+              ...rep
+            },
+            ...this.props.data,
+            value: this.props.data.campaignInfo.lifetime_budget_micro
           },
-          image: rep.image,
-          type: rep.type,
-          objective: rep.objective,
-          iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded
-        });
+          () => this._calcReach()
+        );
       }
       if (
         this.props.navigation.state.params &&
@@ -597,8 +599,6 @@ class AdDetails extends Component {
   };
 
   render() {
-    console.log("details", this.props.data);
-
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -732,7 +732,7 @@ class AdDetails extends Component {
 
     const campaign = this.props.navigation.getParam("campaign", {});
 
-    const image = this.props.data.image;
+    const image = this.props.data ? this.props.data.image : "";
     return (
       <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never" }}>
         <Container style={styles.mainContainer}>
@@ -809,7 +809,7 @@ class AdDetails extends Component {
                         }}
                         disabled={editCampaign}
                         maxLength={8}
-                       // defaultValue={this.state.value + ""}
+                        // defaultValue={this.state.value + ""}
                         value={this.state.value + ""}
                         onChangeText={(value, rawText) => {
                           if (!editCampaign) this._handleBudget(value, rawText);
@@ -979,9 +979,7 @@ class AdDetails extends Component {
                       />
                       <View style={globalStyles.column}>
                         <Text style={styles.menutext}>Regions</Text>
-                        <Text style={styles.menudetails}>
-                          {this.state.regionNames.join(", ")}
-                        </Text>
+                        <Text style={styles.menudetails}>{regions_names}</Text>
                       </View>
                     </View>
                     {this.state.campaignInfo.targeting.geos[0].region_id

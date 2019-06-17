@@ -3,7 +3,6 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 
-
 createBaseUrl = () =>
   axios.create({
     baseURL: store.getState().login.admin
@@ -103,7 +102,7 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
         }
       })
       .catch(err => {
-        // console.log("payment_request_knet", err.message || err.response);
+        // console.log("payment_request_knet", err || err);
         showMessage({
           message:
             err.message ||
