@@ -1,44 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  SafeAreaView
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Header,
-  Left,
-  Body,
-  Right,
-  Text,
-  CardItem,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { SafeAreaView } from "react-native";
+import { Content, Header, Left, Body, Right, Container } from "native-base";
 import BackButton from "../../../MiniComponents/BackButton";
 
 import { LinearGradient } from "expo";
 import CustomeHeader from "../../../MiniComponents/Header";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
-// import list from "./callactions";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import Website from "./Website";
 import App_Install from "./App_Install";
-import Deep_Link from "./Deep_Link";
 import Long_Form_Video from "./Long_Form_Video";
 // Style
 import styles from "./styles";
@@ -48,19 +19,6 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null
   };
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     campaignInfo: {
-  //       attachment: "",
-  //       callaction: list[0].call_to_action_list[0]
-  //     },
-
-  //     callactions: list[0].call_to_action_list,
-  //     urlError: ""
-  //   };
-  // }
 
   render() {
     return (

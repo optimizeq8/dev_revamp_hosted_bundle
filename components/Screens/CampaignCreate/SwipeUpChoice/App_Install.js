@@ -42,15 +42,6 @@ export default class App_Install extends Component {
     };
   }
 
-  handleCallAction = value => {
-    this.setState({
-      callaction: {
-        label: list[1].call_to_action_list[index - 1 > 0 ? index - 1 : 0].label,
-        value
-      }
-    });
-  };
-
   renderNextStep = (
     nameError,
     callActionError,

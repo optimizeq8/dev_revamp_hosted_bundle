@@ -44,9 +44,6 @@ class SwipeUpDestination extends Component {
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
@@ -58,8 +55,10 @@ class SwipeUpDestination extends Component {
     const image = this.props.navigation.state.params.image;
 
     this.setState({
-      image
+      image,
+      selected: this.props.data.destination
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   toggleSideMenu() {
     this.setState({
@@ -69,13 +68,12 @@ class SwipeUpDestination extends Component {
   render() {
     let menu;
     switch (this.state.selected) {
-      case "website": {
+      case "REMOTE_WEBPAGE": {
         menu = (
           <Website
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
-            objective={"website"}
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
@@ -83,13 +81,12 @@ class SwipeUpDestination extends Component {
         );
         break;
       }
-      case "deep link": {
+      case "DEEP_LINK": {
         menu = (
           <Deep_Link
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
-            objective={"deep link"}
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
@@ -152,13 +149,8 @@ class SwipeUpDestination extends Component {
               <View style={{ marginTop: 30 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    // this.props.navigation.push("SwipeUpChoice", {
-                    //   _changeDestination: this.props.navigation.state.params
-                    //     ._changeDestination,
-                    //   objective: "website"
-                    // });
                     this.setState({
-                      selected: "website",
+                      selected: "REMOTE_WEBPAGE",
                       sidemenustate: true
                     });
                   }}
@@ -166,33 +158,24 @@ class SwipeUpDestination extends Component {
                     styles.buttonN,
                     {
                       backgroundColor:
-                        this.state.selected === "website"
+                        this.state.selected === "REMOTE_WEBPAGE"
                           ? "#FF9D00"
                           : "transparent"
                     }
                   ]}
                 >
-                  <WebsiteIcon
-                    // type="MaterialCommunityIcons"
-                    // name="web"
-                    style={styles.icon}
-                  />
+                  <WebsiteIcon style={styles.icon} />
                   <View style={styles.textcontainer}>
                     <Text style={[styles.titletext]}>Website</Text>
                     <Text style={[styles.subtext]}>
-                      Send Snapchatters directly to your website
+                      Send Snapchatters directly to your REMOTE_WEBPAGE
                     </Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    // this.props.navigation.push("SwipeUpChoice", {
-                    //   _changeDestination: this.props.navigation.state.params
-                    //     ._changeDestination,
-                    //   objective: "deep link"
-                    // });
                     this.setState({
-                      selected: "deep link",
+                      selected: "DEEP_LINK",
                       sidemenustate: true
                     });
                   }}
@@ -200,7 +183,7 @@ class SwipeUpDestination extends Component {
                     styles.buttonN,
                     {
                       backgroundColor:
-                        this.state.selected === "deep link"
+                        this.state.selected === "DEEP_LINK"
                           ? "#FF9D00"
                           : "transparent"
                     }
@@ -223,7 +206,7 @@ class SwipeUpDestination extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ data: state.campaignC.data });
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

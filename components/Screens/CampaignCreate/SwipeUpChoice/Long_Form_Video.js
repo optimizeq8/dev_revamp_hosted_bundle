@@ -1,31 +1,9 @@
 import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  BackHandler
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { View, TouchableOpacity, BackHandler } from "react-native";
+import { Button, Text, Item, Icon } from "native-base";
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
 import { ImagePicker, Permissions, Video, FileSystem } from "expo";
 import Modal from "react-native-modal";
 //icons
@@ -34,10 +12,11 @@ import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 import LowerButton from "../../../MiniComponents/LowerButton";
+
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
+
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 

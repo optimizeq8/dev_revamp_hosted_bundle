@@ -15,6 +15,7 @@ import {
   Icon,
   Label
 } from "native-base";
+import isUndefined from "lodash/isUndefined";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
@@ -81,6 +82,8 @@ class AdObjective extends Component {
     }
   };
   componentDidMount() {
+    let rep = this.state.campaignInfo;
+
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
@@ -94,6 +97,15 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    if (this.props.data) {
+      // console.log("data", this.props.data);
+      rep = { ...this.state.campaignInfo, ...this.props.data };
+      this.setState({
+        campaignInfo: { ...rep },
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -104,6 +116,7 @@ class AdObjective extends Component {
         objective: value
       }
     });
+    this.props.save_campaign_info({ objective: value });
   };
 
   handleStartDatePicked = date => {
@@ -113,6 +126,7 @@ class AdObjective extends Component {
         start_time: date
       }
     });
+    this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = date => {
     this.setState({
@@ -121,6 +135,7 @@ class AdObjective extends Component {
         end_time: date
       }
     });
+    this.props.save_campaign_info({ end_time: date });
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
@@ -168,7 +183,12 @@ class AdObjective extends Component {
         campaign_objective: this.state.campaignInfo.objective
       });
 
-      this.props.getMinimumCash({
+      // this.props.getMinimumCash({
+      //   minValueBudget: this.state.minValueBudget,
+      //   maxValueBudget: this.state.maxValueBudget
+      // });
+
+      this.props.save_campaign_info({
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
@@ -249,18 +269,20 @@ class AdObjective extends Component {
                 </Label>
 
                 <Input
+                  value={this.state.campaignInfo.name}
                   style={[styles.inputtext]}
                   autoCorrect={false}
                   maxLength={35}
                   autoCapitalize="none"
-                  onChangeText={value =>
+                  onChangeText={value => {
                     this.setState({
                       campaignInfo: {
                         ...this.state.campaignInfo,
                         name: value
                       }
-                    })
-                  }
+                    });
+                    this.props.save_campaign_info({ name: value });
+                  }}
                   autoFocus={true}
                   onFocus={() => {
                     this.setState({ inputN: true });
@@ -385,12 +407,14 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data
 });
 
 const mapDispatchToProps = dispatch => ({
   ad_objective: (info, navigation) =>
     dispatch(actionCreators.ad_objective(info, navigation)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values))
 });
 export default connect(

@@ -105,6 +105,11 @@ class ErrorRedirect extends Component {
               <Text style={styles.buttonText}> Retry </Text>
             </Button>
             <Button
+              style={styles.whitebutton}
+              onPress={() => {
+                this.props.resetCampaignInfo();
+                this.props.navigation.navigate("Dashboard");
+              }}
               style={styles.whiteButton}
               onPress={() => this.props.navigation.navigate("Dashboard")}
             >
@@ -123,7 +128,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
-  resetCampaignId: () => dispatch(actionCreators.resetCampaignId())
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(
   mapStateToProps,
