@@ -70,8 +70,6 @@ const reducer = (state = initialState, action) => {
         loadingDesign: false
       };
     case actionTypes.SAVE_CAMPAIGN_INFO:
-      console.log("SAVE_CAMPAIGN_INFO", action.payload);
-
       return {
         ...state,
         data: {

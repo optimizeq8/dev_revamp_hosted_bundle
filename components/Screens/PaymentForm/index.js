@@ -290,8 +290,6 @@ class PaymentForm extends Component {
     });
   };
   render() {
-    console.log(this.props.campaign_id);
-
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
