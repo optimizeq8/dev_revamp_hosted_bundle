@@ -17,6 +17,7 @@ import { openPrivacy } from "../../Terms&Condtions";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -196,13 +197,13 @@ class CreateBusinessAccount extends Component {
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never" }}
       >
         <Container
           style={[
-            styles.maincontainer,
-            { marginTop: this.props.registering ? 0 : 0 }
+            styles.mainContainer
+            // { marginTop: this.props.registering ? 0 : 0 }
           ]}
         >
           {!this.props.registering && (
@@ -214,31 +215,20 @@ class CreateBusinessAccount extends Component {
               />
               {/* <CloseButton navigation={this.props.navigation.goBack} />
               <Text style={styles.title}>New Business</Text> */}
-              <Text style={styles.subtitle}>
+              <Text style={styles.subTitle}>
                 You can create a new Business under you!
               </Text>
             </>
           )}
-          <View
-            style={{
-              paddingVertical: 10,
-              flexDirection: "row",
-              alignSelf: "center"
-            }}
-          >
+          <View style={styles.topContainer}>
             <Button
               block
               dark
               style={[
                 this.state.businessAccount.businesstype === "1"
-                  ? styles.activebutton
+                  ? styles.activeButton
                   : styles.button,
-                {
-                  borderBottomEndRadius: 0,
-                  borderTopEndRadius: 0,
-                  borderBottomStartRadius: 15,
-                  borderTopStartRadius: 15
-                }
+                styles.businessTypeButton1
               ]}
               onPress={() => {
                 this._handleBusinessCategories("1");
@@ -247,8 +237,8 @@ class CreateBusinessAccount extends Component {
               <Text
                 style={[
                   this.state.businessAccount.businesstype === "1"
-                    ? styles.activetext
-                    : styles.inactivetext
+                    ? styles.activeText
+                    : styles.inactiveText
                 ]}
               >
                 <Icon
@@ -256,12 +246,9 @@ class CreateBusinessAccount extends Component {
                   name="home-account"
                   style={[
                     this.state.businessAccount.businesstype === "1"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    {
-                      left: 25,
-                      fontSize: 25 / PixelRatio.getFontScale()
-                    }
+                      ? styles.activeText
+                      : styles.inactiveText,
+                    styles.iconButtonStyleLeft
                   ]}
                 />
                 {"\n"}
@@ -274,14 +261,9 @@ class CreateBusinessAccount extends Component {
               dark
               style={[
                 this.state.businessAccount.businesstype === "2"
-                  ? styles.activebutton
+                  ? styles.activeButton
                   : styles.button,
-                {
-                  borderBottomEndRadius: 0,
-                  borderTopEndRadius: 0,
-                  borderBottomStartRadius: 0,
-                  borderTopStartRadius: 0
-                }
+                styles.businessTypeButton2
               ]}
               onPress={() => {
                 this._handleBusinessCategories("2");
@@ -290,8 +272,8 @@ class CreateBusinessAccount extends Component {
               <Text
                 style={[
                   this.state.businessAccount.businesstype === "2"
-                    ? styles.activetext
-                    : styles.inactivetext
+                    ? styles.activeText
+                    : styles.inactiveText
                 ]}
               >
                 <Icon
@@ -299,12 +281,9 @@ class CreateBusinessAccount extends Component {
                   name="torsos-all"
                   style={[
                     this.state.businessAccount.businesstype === "2"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    {
-                      alignSelf: "center",
-                      fontSize: 25 / PixelRatio.getFontScale()
-                    }
+                      ? styles.activeText
+                      : styles.inactiveText,
+                    styles.iconButtonStyle2
                   ]}
                 />
                 {"\n"}Agency
@@ -315,14 +294,9 @@ class CreateBusinessAccount extends Component {
               dark
               style={[
                 this.state.businessAccount.businesstype === "3"
-                  ? styles.activebutton
+                  ? styles.activeButton
                   : styles.button,
-                {
-                  borderTopStartRadius: 0,
-                  borderBottomStartRadius: 0,
-                  borderBottomEndRadius: 15,
-                  borderTopEndRadius: 15
-                }
+                styles.businessTypeButton3
               ]}
               onPress={() => {
                 this._handleBusinessCategories("3");
@@ -333,19 +307,16 @@ class CreateBusinessAccount extends Component {
                 name="building"
                 style={[
                   this.state.businessAccount.businesstype === "3"
-                    ? styles.activetext
-                    : styles.inactivetext,
-                  {
-                    fontSize: 25 / PixelRatio.getFontScale(),
-                    bottom: 5
-                  }
+                    ? styles.activeText
+                    : styles.inactiveText,
+                  styles.iconButtonStyle3
                 ]}
               />
               <Text
                 style={[
                   this.state.businessAccount.businesstype === "3"
-                    ? styles.activetext
-                    : styles.inactivetext
+                    ? styles.activeText
+                    : styles.inactiveText
                 ]}
               >
                 Corporate
@@ -363,31 +334,33 @@ class CreateBusinessAccount extends Component {
                     floatingLabel
                     style={[
                       styles.input,
-                      {
-                        borderColor: this.state.inputN
-                          ? "#7039FF"
-                          : this.state.businessnameError ||
-                            !this.props.successName
-                          ? "red"
-                          : "#D9D9D9"
-                      }
+                      this.state.inputN
+                        ? globalStyles.purpleBorderColor
+                        : this.state.businessnameError ||
+                          !this.props.successName
+                        ? globalStyles.redBorderColor
+                        : globalStyles.lightGrayBorderColor
                     ]}
                   >
                     <Label style={styles.label}>
                       <Text
                         style={[
-                          styles.inputtext,
+                          styles.inputText,
+                          this.state.inputN
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor,
                           {
-                            flexDirection: "column",
-                            color: this.state.inputN ? "#FF9D00" : "#717171"
+                            flexDirection: "column"
                           }
                         ]}
                       >
                         <Icon
-                          style={{
-                            fontSize: 14 / PixelRatio.getFontScale(),
-                            color: this.state.inputN ? "#FF9D00" : "#717171"
-                          }}
+                          style={[
+                            this.state.inputN
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
+                            styles.iconStartUp
+                          ]}
                           name="person"
                         />
                         {"  "}
@@ -399,7 +372,7 @@ class CreateBusinessAccount extends Component {
                       </Text>
                     </Label>
                     <Input
-                      style={[styles.inputtext]}
+                      style={[styles.inputText]}
                       onChangeText={value => {
                         this.setState({
                           businessAccount: {
@@ -427,27 +400,28 @@ class CreateBusinessAccount extends Component {
                     floatingLabel
                     style={[
                       styles.input,
-                      {
-                        borderColor: this.state.inputBN ? "#7039FF" : "#D9D9D9"
-                      }
+                      this.state.inputBN
+                        ? globalStyles.purpleBorderColor
+                        : globalStyles.lightGrayBorderColor
                     ]}
                   >
                     <Label style={styles.label}>
                       <Text
                         style={[
-                          styles.inputtext,
-                          {
-                            color: this.state.inputBN ? "#FF9D00" : "#717171"
-                          }
+                          styles.inputText,
+                          this.state.inputBN
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor
                         ]}
                       >
                         <Icon
                           type="MaterialIcons"
-                          style={{
-                            fontSize: 18 / PixelRatio.getFontScale(),
-                            alignSelf: "flex-end",
-                            color: this.state.inputBN ? "#FF9D00" : "#717171"
-                          }}
+                          style={[
+                            this.state.inputBN
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
+                            styles.iconBrandName
+                          ]}
                           name="label"
                         />
                         {"  "}
@@ -461,7 +435,7 @@ class CreateBusinessAccount extends Component {
                     </Label>
 
                     <Input
-                      style={styles.inputtext}
+                      style={styles.inputText}
                       autoCorrect={false}
                       onChangeText={value =>
                         this.setState({
@@ -488,31 +462,31 @@ class CreateBusinessAccount extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputE
-                            ? "#7039FF"
-                            : this.state.businessemailError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputE
+                          ? globalStyles.purpleBorderColor
+                          : this.state.businessemailError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label style={styles.label}>
                         <Text
                           style={[
-                            styles.inputtext,
-                            {
-                              bottom: 5,
-                              flexDirection: "row",
-                              color: this.state.inputE ? "#FF9D00" : "#717171"
-                            }
+                            styles.inputText,
+                            this.state.inputE
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
+                            styles.labelEmail
                           ]}
                         >
                           <Icon
-                            style={{
-                              fontSize: 20 / PixelRatio.getFontScale(),
-                              color: this.state.inputE ? "#FF9D00" : "#717171"
-                            }}
+                            style={[
+                              this.state.inputE
+                                ? globalStyles.orangeTextColor
+                                : globalStyles.darkGrayTextColor,
+
+                              styles.iconEmail
+                            ]}
                             name="mail"
                           />
                           {"  "}
@@ -521,7 +495,7 @@ class CreateBusinessAccount extends Component {
                       </Label>
 
                       <Input
-                        style={styles.inputtext}
+                        style={styles.inputText}
                         autoCorrect={false}
                         autoCapitalize="none"
                         onChangeText={value =>
@@ -575,16 +549,14 @@ class CreateBusinessAccount extends Component {
                     <Item
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputC
-                            ? "#7039FF"
-                            : this.state.countryError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputC
+                          ? globalStyles.purpleBorderColor
+                          : this.state.countryError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
-                      <Text style={styles.pickertext}>
+                      <Text style={styles.pickerText}>
                         {this.state.businessAccount.country === ""
                           ? "Country"
                           : this.state.businessAccount.country}
@@ -592,7 +564,7 @@ class CreateBusinessAccount extends Component {
                       <Icon
                         type="AntDesign"
                         name="down"
-                        style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                        style={styles.iconDown}
                       />
                     </Item>
                   </RNPickerSelect>
@@ -626,13 +598,11 @@ class CreateBusinessAccount extends Component {
                     <Item
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputT
-                            ? "#7039FF"
-                            : this.state.businesscategoryError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputT
+                          ? globalStyles.purpleBorderColor
+                          : this.state.businesscategoryError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Text
@@ -641,7 +611,7 @@ class CreateBusinessAccount extends Component {
                             ? this.state.businessAccount.businesscategory
                             : ""
                         }
-                        style={styles.pickertext}
+                        style={styles.pickerText}
                       >
                         {this.state.businessAccount.businesscategory === ""
                           ? this.state.businessAccount.businesstype === "1"
@@ -658,7 +628,7 @@ class CreateBusinessAccount extends Component {
                       <Icon
                         type="AntDesign"
                         name="down"
-                        style={{ color: "#5F5F5F", fontSize: 20, left: 25 }}
+                        style={styles.iconDown}
                       />
                     </Item>
                   </RNPickerSelect>
@@ -670,26 +640,24 @@ class CreateBusinessAccount extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputBusinessCategoryOther
-                            ? "#7039FF"
-                            : this.state.businesscategoryOtherError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputBusinessCategoryOther
+                          ? globalStyles.purpleBorderColor
+                          : this.state.businesscategoryOtherError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
                         style={[
-                          styles.inputtext,
+                          styles.inputText,
+                          this.state.inputBusinessCategoryOther
+                            ? globalStyles.orangeTextColor
+                            : this.state.businesscategoryOtherError
+                            ? globalStyles.redTextColor
+                            : globalStyles.darkGrayTextColor,
                           {
                             bottom: 5,
-                            flexDirection: "row",
-                            color: this.state.inputBusinessCategoryOther
-                              ? "#FF9D00"
-                              : this.state.businesscategoryOtherError
-                              ? "red"
-                              : "#717171"
+                            flexDirection: "row"
                           }
                         ]}
                       >
@@ -697,7 +665,7 @@ class CreateBusinessAccount extends Component {
                       </Label>
 
                       <Input
-                        style={styles.inputtext}
+                        style={styles.inputText}
                         autoCorrect={false}
                         onChangeText={value =>
                           this.setState({
@@ -723,18 +691,12 @@ class CreateBusinessAccount extends Component {
                 </View>
               </TouchableWithoutFeedback>
               {this.props.registering && (
-                <Text style={{ bottom: 10 }}>
-                  <Text style={[styles.link, { lineHeight: 20 }]}>
+                <Text style={styles.textAgreement}>
+                  <Text style={[styles.link, styles.buttonLink]}>
                     {` By tapping the button below you agree to all the`}
                     <Text
                       onPress={() => openPrivacy()}
-                      style={[
-                        styles.link,
-                        {
-                          textDecorationLine: "underline",
-                          color: "blue"
-                        }
-                      ]}
+                      style={[styles.link, styles.tNcLink]}
                     >
                       {`  Terms & Conditions`}
                     </Text>{" "}
@@ -743,11 +705,8 @@ class CreateBusinessAccount extends Component {
                       onPress={() => openPrivacy()}
                       style={[
                         styles.link,
-                        {
-                          textDecorationLine: "underline",
-                          color: "blue",
-                          zIndex: 10
-                        }
+                        styles.tNcLink,
+                        styles.agreementLink
                       ]}
                     >
                       {`agreement`}
@@ -757,16 +716,16 @@ class CreateBusinessAccount extends Component {
               )}
             </ScrollView>
           </View>
-          <View style={{ backgroundColor: "#fff" }}>
+          <View style={globalStyles.whiteBackgroundColor}>
             <Button
               block
               dark
-              style={[styles.bottomCard, { justifyContent: "center" }]}
+              style={[styles.bottomCard]}
               onPress={() => {
                 this._handleSubmission();
               }}
             >
-              <Text style={styles.buttontext}>CREATE NEW BUSINESS</Text>
+              <Text style={styles.buttonText}>CREATE NEW BUSINESS</Text>
             </Button>
           </View>
         </Container>

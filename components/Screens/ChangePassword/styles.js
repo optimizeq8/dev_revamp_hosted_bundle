@@ -10,6 +10,36 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  iconChangePassword: {
+    alignSelf: "center"
+  },
+  errorText: {
+    bottom: 40,
+    paddingVertical: 0,
+    paddingTop: 0,
+    marginBottom: 0,
+    paddingVertical: 0
+  },
+  newPasswordLabel: {
+    bottom: 10
+  },
+  repasswordErrorText: {
+    bottom: 15,
+    paddingTop: 0,
+    marginBottom: 0,
+    paddingVertical: 0
+  },
+  repasswordLabel: {
+    bottom: 10
+  },
+  repasswordItem: {
+    marginBottom: 0,
+    paddingBottom: 0
+  },
   container: {
     backgroundColor: "#0000"
   },

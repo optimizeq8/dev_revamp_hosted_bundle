@@ -3,9 +3,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler,
-  Platform,
-  PixelRatio
+  BackHandler
 } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
