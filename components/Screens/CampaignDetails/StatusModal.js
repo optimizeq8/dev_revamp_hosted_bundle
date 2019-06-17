@@ -11,6 +11,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import { globalColors } from "../../../GlobalStyles";
+import { LinearGradient } from "expo";
 export default class StatusModal extends Component {
   render() {
     let selectedCampaign = this.props.selectedCampaign;
@@ -22,6 +23,11 @@ export default class StatusModal extends Component {
         onRequestClose={() => this.setState({ modalVisible: false })}
         visible={this.props.modalVisible}
       >
+        <LinearGradient
+          colors={["#751AFF", "#6268FF"]}
+          locations={[0.3, 1]}
+          style={styles.gradient}
+        />
         <BlurView tint="dark" intensity={100} style={styles.BlurView}>
           <Button
             transparent
@@ -70,28 +76,18 @@ export default class StatusModal extends Component {
           <View style={{ top: 20 }}>
             <Button
               onPress={() => this.props.updateStatus()}
-              style={{
-                backgroundColor: "transparent",
-                borderColor: globalColors.orange,
-                borderWidth: 0.5,
-                alignSelf: "center",
-                marginVertical: 5
-              }}
+              style={styles.statusButtons}
+              transparent
             >
-              <Text>Pause Campaign</Text>
+              <Text style={styles.statusButtonsText}>Pause Campaign</Text>
             </Button>
 
             <Button
               onPress={() => this.props.endCampaign()}
-              style={{
-                backgroundColor: "transparent",
-                borderColor: globalColors.orange,
-                borderWidth: 0.5,
-                alignSelf: "center",
-                marginVertical: 5
-              }}
+              style={styles.statusButtons}
+              transparent
             >
-              <Text>End campaign</Text>
+              <Text style={styles.statusButtonsText}>End campaign</Text>
             </Button>
             <Text
               style={[

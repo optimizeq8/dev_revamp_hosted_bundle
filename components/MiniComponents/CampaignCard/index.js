@@ -35,6 +35,8 @@ class CampaignCard extends Component {
   getRightText = () => {
     return this.review_status === "REJECTED" && this.campaign_status !== "LIVE"
       ? "Rejected"
+      : this.review_status === "APPROVED"
+      ? ""
       : this.campaign_status === "PAUSED"
       ? " Paused"
       : "";
@@ -82,7 +84,18 @@ class CampaignCard extends Component {
                 {this.props.campaign.name}
               </Text>
             </View>
-            {this.review_status.includes("PENDING") && (
+            {this.review_status.includes("APPROVED") ? (
+              <View
+                style={[
+                  styles.adStatus,
+                  {
+                    backgroundColor: globalColors.green
+                  }
+                ]}
+              >
+                <Text style={styles.reviewtext}>Approved</Text>
+              </View>
+            ) : (
               <View
                 style={[
                   styles.adStatus,
@@ -166,7 +179,10 @@ class CampaignCard extends Component {
                 backTextLeft={this.getLeftText()}
                 backTextRight={this.getRightText()}
                 containerStyle={styles.toggleStyle}
-                switchOn={campaign.status !== "PAUSED"}
+                switchOn={
+                  campaign.status !== "PAUSED" ||
+                  campaign.review_status === "APPROVED"
+                }
                 textLeftStyle={[
                   styles.toggleTextLeft,
                   {

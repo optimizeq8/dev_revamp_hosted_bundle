@@ -297,14 +297,12 @@ class CampaignDetails extends Component {
                 : require("../../../assets/images/emptyPlaceHolder.png")
             }
             onLoad={() => {
-              console.log("ended???");
               if (!loading) this.setState({ imageIsLoading: false });
             }}
             style={{
               width: "100%",
               height: "100%"
             }}
-            onError={error => console.log("????", error)}
           >
             <SafeAreaView
               style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
@@ -341,41 +339,55 @@ class CampaignDetails extends Component {
                       {selectedCampaign.review_status === "APPROVED" ? (
                         selectedCampaign.campaign_end === "0" &&
                         !this.props.campaignEnded &&
-                        selectedCampaign.end_time > new Date() ? (
-                          <View padder style={styles.toggleSpace}>
-                            <View style={{ alignSelf: "center" }}>
-                              {selectedCampaign && (
-                                <Toggle
-                                  buttonTextStyle={styles.switchButtonText}
-                                  buttonText={
-                                    this.state.toggleText !== "PAUSED"
-                                      ? "LIVE"
-                                      : "PAUSED"
-                                  }
-                                  containerStyle={styles.toggleStyle}
-                                  switchOn={this.state.toggle}
-                                  onPress={() => {
-                                    this.state.toggle
-                                      ? this.setState({
-                                          modalVisible: true
-                                        })
-                                      : this.updateStatus();
-                                  }}
-                                  backgroundColorOff="rgba(255,255,255,0.1)"
-                                  backgroundColorOn="rgba(255,255,255,0.1)"
-                                  circleColorOff="#FF9D00"
-                                  circleColorOn="#66D072"
-                                  duration={500}
-                                  circleStyle={styles.switchCircle}
-                                />
-                              )}
-                              <Text style={styles.statusText}>
-                                {this.state.toggle
-                                  ? "Tap to pause AD"
-                                  : "Tap to activate AD"}
+                        new Date(selectedCampaign.end_time) > new Date() ? (
+                          selectedCampaign.review_status === "APPROVED" &&
+                          new Date(selectedCampaign.start_time) > new Date() ? (
+                            <View
+                              style={[
+                                styles.adStatus,
+                                { backgroundColor: "#66D072" }
+                              ]}
+                            >
+                              <Text style={styles.reviewtext}>
+                                Scheduled for {start_time}
                               </Text>
                             </View>
-                          </View>
+                          ) : (
+                            <View padder style={styles.toggleSpace}>
+                              <View style={{ alignSelf: "center" }}>
+                                {selectedCampaign && (
+                                  <Toggle
+                                    buttonTextStyle={styles.switchButtonText}
+                                    buttonText={
+                                      this.state.toggleText !== "PAUSED"
+                                        ? "LIVE"
+                                        : "PAUSED"
+                                    }
+                                    containerStyle={styles.toggleStyle}
+                                    switchOn={this.state.toggle}
+                                    onPress={() => {
+                                      this.state.toggle
+                                        ? this.setState({
+                                            modalVisible: true
+                                          })
+                                        : this.updateStatus();
+                                    }}
+                                    backgroundColorOff="rgba(255,255,255,0.1)"
+                                    backgroundColorOn="rgba(255,255,255,0.1)"
+                                    circleColorOff="#FF9D00"
+                                    circleColorOn="#66D072"
+                                    duration={500}
+                                    circleStyle={styles.switchCircle}
+                                  />
+                                )}
+                                <Text style={styles.statusText}>
+                                  {this.state.toggle
+                                    ? "Tap to pause AD"
+                                    : "Tap to activate AD"}
+                                </Text>
+                              </View>
+                            </View>
+                          )
                         ) : (
                           <View style={styles.adStatus}>
                             <Text style={styles.reviewtext}>
@@ -386,9 +398,8 @@ class CampaignDetails extends Component {
                       ) : (
                         <View style={styles.adStatus}>
                           <Text style={styles.reviewtext}>
-                            {selectedCampaign.review_status.includes(
-                              "PENDING"
-                            ) && "In Review"}
+                            {selectedCampaign.review_status === "PENDING" &&
+                              "In Review"}
                           </Text>
                         </View>
                       )}
