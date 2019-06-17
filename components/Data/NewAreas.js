@@ -1,18 +1,3 @@
-// let reg = ["Doha"];
-// let y = [];
-// reg.forEach((r, i) => {
-//   let x = { name: r, areas: [], id: i };
-//   areas.forEach(ar => {
-//     if (ar.cn === r) {
-//       x.areas.push({ name: ar.an, id: ar.id });
-//     }
-//   });
-//   y.push(x);
-// });
-
-// console.dir([...new Set(areas.map(item => item.cn))], { maxArrayLength: null });
-// console.dir(y, { maxArrayLength: null, depth: null });
-
 export const kuwaitAreas = [
   {
     name: "Farwaniya",
@@ -181,7 +166,7 @@ export const kuwaitAreas = [
   }
 ];
 
-let ksaAreas = [
+const ksaAreas = [
   {
     name: "Hautat Sudair",
     areas: [
@@ -6872,7 +6857,7 @@ let ksaAreas = [
   }
 ];
 
-let bahrainAreas = [
+const bahrainAreas = [
   {
     name: "Bahrain",
     areas: [
@@ -7011,7 +6996,7 @@ let bahrainAreas = [
   }
 ];
 
-let uaeAreas = [
+const uaeAreas = [
   {
     name: "Abu Dhabi",
     areas: [
@@ -9386,7 +9371,7 @@ let uaeAreas = [
   }
 ];
 
-let omanAreas = [
+const omanAreas = [
   {
     name: "Sur",
     areas: [
@@ -10379,7 +10364,7 @@ let omanAreas = [
   }
 ];
 
-let qatarAreas = [
+const qatarAreas = [
   {
     name: "Doha",
     areas: [
@@ -10538,11 +10523,11 @@ let qatarAreas = [
   }
 ];
 
-export const all = [
+export default (all = [
   { country_code: "kw", list: kuwaitAreas },
   { country_code: "sa", list: ksaAreas },
   { country_code: "ae", list: uaeAreas },
   { country_code: "qa", list: qatarAreas },
   { country_code: "bh", list: bahrainAreas },
   { country_code: "om", list: omanAreas }
-];
+]);

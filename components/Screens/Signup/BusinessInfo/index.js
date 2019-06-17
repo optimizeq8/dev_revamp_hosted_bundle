@@ -1,37 +1,25 @@
 //Components
 import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard
-} from "react-native";
-import {
-  Button,
-  Text,
-  Item,
-  Input,
-  Container,
-  Badge,
-  Icon,
-  Label
-} from "native-base";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Button, Text, Item, Input, Icon, Label } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
-import RadioGroup from "react-native-radio-buttons-group";
 import { Segment } from "expo";
-//icons
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
+
+// Icons
 import HomeBussinesIcon from "../../../../assets/SVGs/Person";
-import CompanyIcon from "../../../../assets/SVGs/Group";
 
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
-import { colors } from "../../../GradiantColors/colors";
 
-//Redux
-import * as actionCreators from "../../../../store/actions";
-import { connect } from "react-redux";
-import BusinessCategoryList from "../../CreateBusinessAccount/BusinessCategoriesList";
+// Data
+import BusinessCategoryList from "../../../Data/businessCategoriesList.data";
+import countries from "../../../Data/countries.businessInfo.data";
+import businessType from "../../../Data/businessType.businessInfo.data";
 
 //Validator
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
@@ -58,43 +46,9 @@ class BusinessInfo extends Component {
       nameError: "",
       countryError: "",
       businesscategoryError: "",
-      data: [
-        {
-          label: "Individual",
-          value: "1"
-        },
-        {
-          label: "Business",
-          value: "2"
-        }
-      ],
+      data: businessType,
       items: BusinessCategoryList,
-      countries: [
-        {
-          label: "Kuwait",
-          value: "Kuwait"
-        },
-        {
-          label: "UAE",
-          value: "UAE"
-        },
-        {
-          label: "KSA",
-          value: "KSA"
-        },
-        {
-          label: "Bahrain",
-          value: "Bahrain"
-        },
-        {
-          label: "Qatar",
-          value: "Qatar"
-        },
-        {
-          label: "Oman",
-          value: "Oman"
-        }
-      ]
+      countries: countries
     };
     this._handleSubmission = this._handleSubmission.bind(this);
   }

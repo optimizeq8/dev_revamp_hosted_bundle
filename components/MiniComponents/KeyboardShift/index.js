@@ -4,7 +4,6 @@ import {
   Animated,
   Dimensions,
   Keyboard,
-  StyleSheet,
   TextInput,
   UIManager
 } from "react-native";

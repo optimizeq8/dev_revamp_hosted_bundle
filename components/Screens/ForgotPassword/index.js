@@ -1,18 +1,20 @@
 //// components
 import React, { Component } from "react";
-import { View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Text, Item, Input } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import { SafeAreaView } from "react-navigation";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+
+// Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
 import LowerButton from "../../MiniComponents/LowerButton";
 import KeyboardShift from "../../MiniComponents/KeyboardShift";
 import CustomHeader from "../../MiniComponents/Header";
 
-//Validation
+// Validation
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 // Style
@@ -22,10 +24,6 @@ import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
-
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
 
 class ForgotPassword extends Component {
   static navigationOptions = {

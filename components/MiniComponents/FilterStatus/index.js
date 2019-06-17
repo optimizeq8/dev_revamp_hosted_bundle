@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Text, Icon, View, Input, Item, Button } from "native-base";
-import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
-import * as actionCreators from "../../../store/actions";
+import { Text, View, Button } from "native-base";
+// Redux
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+import styles from "./styles";
 
 class FilterStatus extends Component {
   constructor(props) {
@@ -36,54 +37,52 @@ class FilterStatus extends Component {
   // };
   render() {
     return (
-      <View>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={styles.text}> Active </Text>
+      <View style={styles.mainViewFilterStatus}>
+        <View style={styles.flexDirectionCol}>
+          <Text style={styles.text}> Active </Text>
 
-            <Button
-              onPress={() =>
-                this.setState({ selected: "LIVE" }, () =>
-                  this.props._handleSubmission(this.state.selected, true)
-                )
-              }
-              style={
-                this.props.selected === "LIVE"
-                  ? styles.activebutton
-                  : styles.inactivebutton
-              }
-            />
-          </View>
-          <View style={{ flexDirection: "column", paddingHorizontal: 40 }}>
-            <Text style={styles.text}> Inactive </Text>
-            <Button
-              onPress={() =>
-                this.setState({ selected: "PAUSED" }, () =>
-                  this.props._handleSubmission(this.state.selected, true)
-                )
-              }
-              style={
-                this.props.selected === "PAUSED"
-                  ? styles.activebutton
-                  : styles.inactivebutton
-              }
-            />
-          </View>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={styles.text}> All </Text>
-            <Button
-              onPress={() =>
-                this.setState({ selected: "A" }, () =>
-                  this.props._handleSubmission(this.state.selected, true)
-                )
-              }
-              style={
-                this.props.selected === "A"
-                  ? styles.activebutton
-                  : styles.inactivebutton
-              }
-            />
-          </View>
+          <Button
+            onPress={() =>
+              this.setState({ selected: "LIVE" }, () =>
+                this.props._handleSubmission(this.state.selected, true)
+              )
+            }
+            style={
+              this.props.selected === "LIVE"
+                ? styles.activeButton
+                : styles.inactiveButton
+            }
+          />
+        </View>
+        <View style={[styles.flexDirectionCol, styles.middleBlock]}>
+          <Text style={styles.text}> Inactive </Text>
+          <Button
+            onPress={() =>
+              this.setState({ selected: "PAUSED" }, () =>
+                this.props._handleSubmission(this.state.selected, true)
+              )
+            }
+            style={
+              this.props.selected === "PAUSED"
+                ? styles.activeButton
+                : styles.inactiveButton
+            }
+          />
+        </View>
+        <View style={styles.flexDirectionCol}>
+          <Text style={styles.text}> All </Text>
+          <Button
+            onPress={() =>
+              this.setState({ selected: "A" }, () =>
+                this.props._handleSubmission(this.state.selected, true)
+              )
+            }
+            style={
+              this.props.selected === "A"
+                ? styles.activeButton
+                : styles.inactiveButton
+            }
+          />
         </View>
       </View>
     );

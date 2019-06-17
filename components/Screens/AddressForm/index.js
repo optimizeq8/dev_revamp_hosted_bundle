@@ -1,14 +1,13 @@
-//Components
 import React, { Component } from "react";
 import { View, BackHandler } from "react-native";
 import { Segment } from "expo";
 import { Container } from "native-base";
 import { Modal } from "react-native-paper";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
-import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
 import { SafeAreaView } from "react-navigation";
-import Header from "../../MiniComponents/Header";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions/";
 
 // Style
 import styles from "./styles";
@@ -16,15 +15,15 @@ import styles from "./styles";
 //Icons
 import Address from "../../../assets/SVGs/Location";
 
-//Redux
-import * as actionCreators from "../../../store/actions/";
-import { connect } from "react-redux";
-
 //Functions
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
-import Countries from "../../MiniComponents/BillingAddressCard/Countries";
 import isEqual from "lodash/isEqual";
+
+import Countries from "../../Data/countries.billingAddress";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
+import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
 
 class AddressForm extends Component {
   static navigationOptions = {

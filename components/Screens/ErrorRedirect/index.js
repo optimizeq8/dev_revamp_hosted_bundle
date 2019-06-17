@@ -1,17 +1,25 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler, SafeAreaView } from "react-native";
-import { Linking, LinearGradient, Segment } from "expo";
-import { Button, Text, Container } from "native-base";
-import ErrorIcon from "../../../assets/SVGs/Error.svg";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import { View, Image, BackHandler, ScrollView } from "react-native";
+import { LinearGradient, Segment } from "expo";
+import { Button, Text } from "native-base";
+import { SafeAreaView } from "react-navigation";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 //styles
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
-//Reddux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
+// Icons
+import ErrorIcon from "../../../assets/SVGs/Error.svg";
+
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 class ErrorRedirect extends Component {
   static navigationOptions = {
@@ -20,7 +28,9 @@ class ErrorRedirect extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      logoImage: require("../../../assets/images/logo01.png")
+    };
   }
 
   componentDidMount() {
@@ -50,19 +60,14 @@ class ErrorRedirect extends Component {
     }
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
-        <Container style={styles.container}>
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
           <Image
             style={styles.image}
-            source={require("../../../assets/images/logo01.png")}
+            source={this.state.logoImage}
             resizeMode="contain"
           />
           <View style={styles.view}>
-            <ErrorIcon width={93} height={93} />
+            <ErrorIcon width={80} height={80} />
 
             <Text style={styles.title}> Sorry </Text>
             <Text style={styles.errorText}>
@@ -111,7 +116,7 @@ class ErrorRedirect extends Component {
               <Text style={styles.whiteButtonText}> Home </Text>
             </Button>
           </View>
-        </Container>
+        </ScrollView>
       </SafeAreaView>
     );
   }

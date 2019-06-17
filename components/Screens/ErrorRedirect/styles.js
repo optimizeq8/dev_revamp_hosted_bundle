@@ -1,4 +1,8 @@
 import { StyleSheet } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -8,6 +12,10 @@ export const colors = {
 const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: heightPercentageToDP(35)
   },
   container: {
     flex: 1,
@@ -38,11 +46,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   image: {
-    flex: 1,
+    // flex: 1,
     alignSelf: "center",
-    height: 120,
-    width: 120,
+    height: heightPercentageToDP(20),
     margin: 10,
+    width: "100%",
     justifyContent: "flex-start"
   },
   errorText: {

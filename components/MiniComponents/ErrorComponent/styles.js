@@ -35,10 +35,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   image: {
-    flex: 1,
     alignSelf: "center",
     height: 120,
-    width: 120,
+    width: "100%",
     margin: 10,
     justifyContent: "flex-start"
   },

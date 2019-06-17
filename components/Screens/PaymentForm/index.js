@@ -7,12 +7,16 @@ import {
   BackHandler
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { WebBrowser, Linking, Segment, BlurView } from "expo";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
 import UseWallet from "./UseWallet";
-import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import formatNumber from "../../formatNumber";
-import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
@@ -21,14 +25,11 @@ import { openTerms } from "../../Terms&Condtions";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
+import BackDrop from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
-
-//Reddux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
 
 class PaymentForm extends Component {
   static navigationOptions = {
