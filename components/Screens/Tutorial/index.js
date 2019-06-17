@@ -12,11 +12,14 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import Invitation from "../InvitationScreen";
+import isNull from "lodash/isNull";
+
 // Style
 import styles from "./styles";
-import isNull from "lodash/isNull";
-import Background from "../../../assets/SVGs/Background";
 import { colors } from "../../GradiantColors/colors";
+
+// icons
+import Background from "../../../assets/SVGs/Background";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -60,32 +63,16 @@ class Tutorial extends Component {
       return (
         <>
           <Image
-            style={{
-              height: heightPercentageToDP(100),
-
-              flex: 1,
-              alignContent: "center",
-              alignSelf: "center",
-              bottom: i === 3 ? heightPercentageToDP("-2%") : 0
-            }}
+            style={[
+              styles.imageSlide,
+              { bottom: i === 3 ? heightPercentageToDP("-2%") : 0 }
+            ]}
             source={url}
             resizeMode="contain"
           />
           {i === 3 && (
             <Button
-              style={{
-                alignSelf: "flex-end",
-                // marginRight: widthPercentageToDP("7%"),
-                bottom: heightPercentageToDP("7.5%"),
-                alignSelf: "center",
-                zIndex: 80,
-                elevation: 3,
-                backgroundColor: "#FF9D00",
-                width: widthPercentageToDP(60),
-                height: heightPercentageToDP(7),
-                borderRadius: 15,
-                justifyContent: "center"
-              }}
+              style={[styles.getStartedButton]}
               onPress={() => {
                 AsyncStorage.getItem("tutorialOpened")
                   .then(value => {
@@ -100,16 +87,7 @@ class Tutorial extends Component {
                   .catch(err => console.log(err));
               }}
             >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontFamily: "montserrat-bold",
-                  fontSize: 20,
-                  textAlign: "center"
-                }}
-              >
-                Get Started!
-              </Text>
+              <Text style={styles.getStartedText}>Get Started!</Text>
             </Button>
           )}
         </>
@@ -117,7 +95,7 @@ class Tutorial extends Component {
     };
     if (isNull(this.state.tutorialOpened)) {
       return (
-        <Container style={{ backgroundColor: "#fff" }}>
+        <Container style={styles.imageView}>
           <Image
             style={{ height: "100%", width: "100%" }}
             source={require("../../../assets/splash.png")}
@@ -130,7 +108,7 @@ class Tutorial extends Component {
     } else {
       return (
         <SafeAreaView
-          style={{ flex: 1, backgroundColor: "#0000" }}
+          style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never" }}
         >
           <LinearGradient

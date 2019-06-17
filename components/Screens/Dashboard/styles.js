@@ -10,6 +10,49 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  mainView: {
+    justifyContent: "center",
+    zIndex: 10,
+    height: 40,
+    backgroundColor: "#0000",
+    width: "100%"
+  },
+  lottieView: {
+    left: 5,
+    // width: wp(5),
+    height: heightPercentageToDP(5),
+    position: "absolute"
+  },
+  animateView: {
+    zIndex: 1,
+    height: "100%"
+  },
+  sideMenuCard: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginBottom: 20,
+    paddingBottom: 10
+  },
+  sideMenuTop: {
+    flexDirection: "row"
+  },
+  newCampaignTitle: {
+    paddingTop: 0,
+    fontSize: 12
+  },
+  menuContainer: {
+    left: 0,
+    top: 0,
+    flexGrow: 1
+  },
+  flatlistContainerStyle: {
+    paddingBottom: heightPercentageToDP(35)
+  },
+  footerActivityIndicator: { margin: 15 },
   title: {
     textAlign: "center",
     color: "#fff",

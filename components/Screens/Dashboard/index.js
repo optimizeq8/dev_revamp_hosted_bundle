@@ -31,6 +31,7 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -163,7 +164,10 @@ class Dashboard extends Component {
     return (
       <View style={styles.footer}>
         {this.props.fetching_from_server ? (
-          <ActivityIndicator color="black" style={{ margin: 15 }} />
+          <ActivityIndicator
+            color="black"
+            style={styles.footerActivityIndicator}
+          />
         ) : null}
       </View>
     );
@@ -217,7 +221,7 @@ class Dashboard extends Component {
     } else {
       return (
         <SafeAreaView
-          style={{ flex: 1, backgroundColor: "#0000" }}
+          style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never" }}
         >
           {this.state.anim && (
@@ -226,14 +230,10 @@ class Dashboard extends Component {
 
           {!this.state.sidemenustate && (
             <View
-              style={{
-                justifyContent: "center",
-                zIndex: 10,
-                display: this.state.sidemenustate ? "none" : "flex",
-                height: 40,
-                backgroundColor: "#0000",
-                width: "100%"
-              }}
+              style={[
+                styles.mainView,
+                { display: this.state.sidemenustate ? "none" : "flex" }
+              ]}
             >
               <TouchableWithoutFeedback
                 onPress={() => {
@@ -245,12 +245,7 @@ class Dashboard extends Component {
                 }}
               >
                 <LottieView
-                  style={{
-                    left: 5,
-                    // width: wp(5),
-                    height: hp(5),
-                    position: "absolute"
-                  }}
+                  style={styles.lottieView}
                   resizeMode="contain"
                   source={require("../../../assets/animation/menu-btn.json")}
                   progress={this.state.menu}
@@ -289,11 +284,12 @@ class Dashboard extends Component {
               this.state.open && this.setState({ anim: true })
             }
             animation={this.state.anim ? mySlideOutDown : mySlideInUp}
-            style={{
-              zIndex: 1,
-              display: this.state.open ? "none" : "flex",
-              height: "100%"
-            }}
+            style={[
+              styles.animateView,
+              {
+                display: this.state.open ? "none" : "flex"
+              }
+            ]}
           >
             <Container style={styles.container}>
               <Sidemenu
@@ -313,23 +309,14 @@ class Dashboard extends Component {
                     { top: this.state.sidemenustate ? 40 : 0 }
                   ]}
                 >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignSelf: "center",
-                      marginBottom: 20,
-                      paddingBottom: 10
-                    }}
-                  >
-                    <View style={{ flexDirection: "row" }}>
+                  <View style={styles.sideMenuCard}>
+                    <View style={styles.sideMenuTop}>
                       <Button
                         style={[
                           styles.activebutton,
-                          {
-                            backgroundColor: this.state.showSearchBar
-                              ? "#FF9D00"
-                              : "#fff"
-                          }
+                          this.state.showSearchBar
+                            ? globalStyles.orangeBackgroundColor
+                            : globalStyles.whiteBackgroundColor
                         ]}
                         onPress={this.renderSearchBar}
                       >
@@ -355,12 +342,7 @@ class Dashboard extends Component {
                           }
                         }}
                       >
-                        <Text
-                          style={[
-                            styles.title,
-                            { paddingTop: 0, fontSize: 12 }
-                          ]}
-                        >
+                        <Text style={[styles.title, styles.newCampaignTitle]}>
                           New {"\n"}
                           Campaign
                         </Text>
@@ -383,7 +365,7 @@ class Dashboard extends Component {
                     <ActivityIndicator size="large" />
                   ) : (
                     <FlatList
-                      contentContainerStyle={{ paddingBottom: hp(35) }}
+                      contentContainerStyle={styles.flatlistContainerStyle}
                       keyExtractor={item => item.campaign_id}
                       data={this.props.filteredCampaigns}
                       onEndReached={() => this.loadMoreData()}
@@ -408,7 +390,7 @@ class Dashboard extends Component {
           <Animatable.View
             duration={800}
             animation={this.state.anim ? "fadeIn" : "fadeOut"}
-            style={{ left: 0, top: 0, flexGrow: 1 }}
+            style={styles.menuContainer}
           >
             <Menu
               closeAnimation={this.closeAnimation}

@@ -6,7 +6,8 @@ import ErrorIcon from "../../../assets/SVGs/Error.svg";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //styles
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 //Reddux
 import * as actionCreators from "../../../store/actions";

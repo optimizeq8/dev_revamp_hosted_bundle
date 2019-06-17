@@ -115,7 +115,7 @@ class PhoneNo extends Component {
       style={[
         styles.phoneInput,
         this.props.invite
-          ? [globalStyles.blackBackgroundColor]
+          ? globalStyles.blackBackgroundColor
           : globalStyles.transparentBackgroundColor,
         this.props.invite ? { opacity: 0.5 } : { opacity: 0 }
       ]}
@@ -135,22 +135,18 @@ class PhoneNo extends Component {
         ]}
       />
       <PhoneInput
-        style={{ width: widthPercentageToDP(70) }}
-        textStyle={[
-          this.props.invite
-            ? globalStyles.whiteTextColor
-            : globalStyles.transparentTextColor,
-          styles.phoneInputTextStyle,
-          {
-            ...styles.input,
+        style={styles.phoneInputStyle}
+        textStyle={{
+          color: this.props.invite ? "#FFF" : "#0000",
+          ...styles.phoneInputTextStyle,
+          ...styles.input,
 
-            borderBottomColor: this.props.invite
-              ? "#0000"
-              : this.state.valid
-              ? "#5F5F5F"
-              : "red"
-          }
-        ]}
+          borderBottomColor: this.props.invite
+            ? "#0000"
+            : this.state.valid
+            ? "#5F5F5F"
+            : "red"
+        }}
         flagStyle={styles.flagStyle}
         textProps={{
           autoFocus: false,

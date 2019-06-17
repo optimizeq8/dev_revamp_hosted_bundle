@@ -11,6 +11,12 @@ export const globalColors = {
   transparent: "#0000"
 };
 const styles = StyleSheet.create({
+  linearGradientBackground1: {
+    backgroundColor: "#751AFF"
+  },
+  linearGradientBackground2: {
+    backgroundColor: "#6268FF"
+  },
   orangeTextColor: {
     color: "#FF9D00"
   },
