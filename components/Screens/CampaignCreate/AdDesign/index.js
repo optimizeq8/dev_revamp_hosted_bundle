@@ -229,7 +229,7 @@ class AdDesign extends Component {
       quality: 1
     });
 
-    console.log("after picker", result);
+    // console.log("after picker", result);
 
     this.onToggleModal(true);
 
@@ -253,8 +253,8 @@ class AdDesign extends Component {
             newWidth = 1080;
             newHeight = 1920;
           }
-          console.log("width:", newWidth);
-          console.log("height:", newHeight);
+          // console.log("width:", newWidth);
+          // console.log("height:", newHeight);
 
           const manipResult = await ImageManipulator.manipulateAsync(
             result.uri,
@@ -270,7 +270,7 @@ class AdDesign extends Component {
               }
             ]
           );
-          console.log("promise", manipResult);
+          // console.log("promise", manipResult);
 
           const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
             size: true
@@ -278,10 +278,10 @@ class AdDesign extends Component {
           const oldSize = await FileSystem.getInfoAsync(result.uri, {
             size: true
           });
-          console.log("width:", manipResult.width);
-          console.log("height:", manipResult.height);
-          console.log("new result: ", newSize.size);
-          console.log("old result: ", oldSize.size);
+          // console.log("width:", manipResult.width);
+          // console.log("height:", manipResult.height);
+          // console.log("new result: ", newSize.size);
+          // console.log("old result: ", oldSize.size);
 
           this.setState({
             directory: "/ImageManipulator/"
@@ -322,6 +322,10 @@ class AdDesign extends Component {
                   "Video must be less than 32 MBs and less than 10 seconds.",
                 image: null
               });
+              this.props.save_campaign_info({
+                image: null,
+                type: ""
+              });
               showMessage({
                 message:
                   "Video must be less than 32 MBs and less than 10 seconds.",
@@ -341,6 +345,10 @@ class AdDesign extends Component {
                 position: "top",
                 type: "warning"
               });
+              this.props.save_campaign_info({
+                image: null,
+                type: ""
+              });
               return;
             } else {
               this.setState({
@@ -355,6 +363,10 @@ class AdDesign extends Component {
                 position: "top",
                 type: "success"
               });
+              this.props.save_campaign_info({
+                image: result.uri,
+                type: result.type.toUpperCase()
+              });
               return;
             }
           });
@@ -363,6 +375,10 @@ class AdDesign extends Component {
             imageError:
               "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
             image: null
+          });
+          this.props.save_campaign_info({
+            image: null,
+            type: ""
           });
           this.onToggleModal(false);
           showMessage({
@@ -382,66 +398,10 @@ class AdDesign extends Component {
           imageError: "Please choose a media file.",
           image: null
         });
-        this.onToggleModal(false);
-        return;
-      }
-    }
-
-    if (!result.cancelled) {
-      if (
-        Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-        Math.floor(result.width / 16) === Math.floor(result.height / 9)
-      ) {
-        FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
-          if (
-            (result.type === "video" && file.size > 32000000) ||
-            result.duration > 10999
-          ) {
-            this.setState({
-              imageError:
-                "Video must be less than 32 MBs and less than 10 seconds.",
-              image: null
-            });
-            showMessage({
-              message:
-                "Video must be less than 32 MBs and less than 10 seconds.",
-              position: "top",
-              type: "warning"
-            });
-            this.onToggleModal(false);
-            return;
-          } else if (result.type === "image" && file.size > 5000000) {
-            this.setState({
-              imageError: "Image must be less than 5 MBs",
-              image: null
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Image must be less than 5 MBs",
-              position: "top",
-              type: "warning"
-            });
-            return;
-          } else {
-            this.setState({
-              image: result.uri,
-              type: result.type.toUpperCase(),
-              imageError: null
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Image has been selected successfully ",
-              position: "top",
-              type: "success"
-            });
-            this.props.save_campaign_info({
-              image: result.uri,
-              type: result.type.toUpperCase()
-            });
-            return;
-          }
+        this.props.save_campaign_info({
+          image: null,
+          type: ""
         });
-      } else {
         this.onToggleModal(false);
         return;
       }
@@ -646,8 +606,6 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    console.log("data", this.props.data);
-
     let { image } = this.state;
     const penIconBrand = (
       <Item style={styles.inputBrand}>

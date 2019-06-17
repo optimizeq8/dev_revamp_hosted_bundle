@@ -173,69 +173,46 @@ class Website extends Component {
                     }
                   ]}
                 >
-                  {this.state.campaignInfo.callaction === ""
-                    ? this.state.callactions[0].label
-                    : this.state.callactions.find(
-                        c =>
-                          this.state.campaignInfo.callaction.value === c.value
-                      ).label}
-                </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#fff", fontSize: 20, left: 25 }}
-                />
-              </Item>
-            </RNPickerSelect>
-            <Item
-              rounded
-              style={[
-                styles.input,
-                {
-                  borderColor: this.state.urlError ? "red" : "transparent"
-                }
-              ]}
-            >
-              <Input
-                style={styles.inputtext}
-                placeholder="Enter your website's URL"
-                placeholderTextColor="#fff"
-                value={this.state.campaignInfo.attachment}
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value =>
-                  this.setState({
-                    campaignInfo: {
-                      ...this.state.campaignInfo,
-                      attachment: value
+                  <Input
+                    style={styles.inputtext}
+                    placeholder="Enter your website's URL"
+                    placeholderTextColor="#fff"
+                    value={this.state.campaignInfo.attachment}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          attachment: value
+                        }
+                      })
                     }
-                  })
-                }
-                onBlur={() => this.validateUrl()}
-              />
-            </Item>
-            <Text style={styles.warningText}>
-              Please make sure not include social media sites such as Facbook,
-              Instagram, Youtube, SnapChat, etc.
-            </Text>
-          </View>
-          <View />
-          <View>
-            {this.props.swipeUpDestination && (
-              <Text
-                style={styles.footerText}
-                onPress={() => this.props.toggleSideMenu()}
-              >
-                Change Swipe-up Destination
-              </Text>
-            )}
-            <LowerButton
-              checkmark={true}
-              bottom={0}
-              function={this._handleSubmission}
-            />
-          </View>
-        </View>
+                    onBlur={() => this.validateUrl()}
+                  />
+                </Item>
+                <Text style={styles.warningText}>
+                  Please make sure not include social media sites such as
+                  Facbook, Instagram, Youtube, SnapChat, etc.
+                </Text>
+              </View>
+              <View />
+              <View>
+                {this.props.swipeUpDestination && (
+                  <Text
+                    style={styles.footerText}
+                    onPress={() => this.props.toggleSideMenu()}
+                  >
+                    Change Swipe-up Destination
+                  </Text>
+                )}
+                <LowerButton
+                  checkmark={true}
+                  bottom={0}
+                  function={this._handleSubmission}
+                />
+              </View>
+            </View>
           )}
         </KeyboardShift>
       </SafeAreaView>

@@ -98,7 +98,6 @@ class AdObjective extends Component {
       }
     });
     if (this.props.data) {
-      // console.log("data", this.props.data);
       rep = { ...this.state.campaignInfo, ...this.props.data };
       this.setState({
         campaignInfo: { ...rep },

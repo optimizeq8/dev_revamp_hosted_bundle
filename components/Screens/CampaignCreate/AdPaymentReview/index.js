@@ -110,7 +110,8 @@ class AdPaymentReview extends Component {
   render() {
     if (
       this.props.loading ||
-      isUndefined(this.props.data.campaignInfo.targeting)
+      !this.props.data ||
+      !this.props.data.campaignInfo.targeting
     ) {
       return <LoadingScreen top={50} />;
     } else {
@@ -142,7 +143,7 @@ class AdPaymentReview extends Component {
           : []
         : [];
 
-      const image = this.props.data.image;
+      const image = this.props.data ? this.props.data.image : "";
       return (
         <SafeAreaView
           style={{ height: "100%", flex: 1 }}
@@ -327,16 +328,17 @@ class AdPaymentReview extends Component {
                               ? targeting.devices[0].os_type
                               : "All"
                         },
-                        targeting.hasOwnProperty("devices") && {
-                          title: "OS Version",
-                          content:
-                            targeting.devices[0].hasOwnProperty(
-                              "os_version_max"
-                            ) &&
-                            targeting.devices[0].os_version_min +
-                              ", " +
-                              targeting.devices[0].os_version_max
-                        }
+                        targeting.hasOwnProperty("devices") &&
+                          targeting.devices[0].os_version_max !== "" && {
+                            title: "OS Version",
+                            content:
+                              targeting.devices[0].hasOwnProperty(
+                                "os_version_min"
+                              ) &&
+                              targeting.devices[0].os_version_min +
+                                ", " +
+                                targeting.devices[0].os_version_max
+                          }
                       ]}
                     />
                   </Content>
