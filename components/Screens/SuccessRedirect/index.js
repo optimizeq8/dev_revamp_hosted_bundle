@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
 import { LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
-import SuccessIcon from "../../../assets/SVGs/Success.svg";
+import { SafeAreaView } from "react-navigation";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 //styles
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
-//Reddux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
+// Icons
+import SuccessIcon from "../../../assets/SVGs/Success.svg";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -20,7 +22,9 @@ class SuccessRedirect extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      image: require("../../../assets/images/logo01.png")
+    };
   }
 
   componentDidMount() {
@@ -68,19 +72,14 @@ class SuccessRedirect extends Component {
   }
   render() {
     return (
-      <Container style={styles.container}>
-        <LinearGradient
-          colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
-          style={styles.gradient}
-        />
+      <SafeAreaView style={styles.container}>
         <Image
           style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
+          source={this.state.image}
           resizeMode="contain"
         />
         <View style={styles.view}>
-          <SuccessIcon width={93} height={93} />
+          <SuccessIcon width={80} height={80} />
           <Text style={styles.title}> Success! </Text>
           <Text style={styles.errortext}>
             {this.state.isWallet !== "1"
@@ -103,7 +102,7 @@ class SuccessRedirect extends Component {
             <Text style={styles.buttontext}> Home </Text>
           </Button>
         </View>
-      </Container>
+      </SafeAreaView>
     );
   }
 }

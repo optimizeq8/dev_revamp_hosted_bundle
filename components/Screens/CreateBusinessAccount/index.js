@@ -12,6 +12,9 @@ import { Segment } from "expo";
 import RNPickerSelect from "react-native-picker-select";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
+
+import businessCategoryList from "../../Data/businessCategoriesList.data";
+
 //privay
 import { openPrivacy } from "../../Terms&Condtions";
 
@@ -25,7 +28,6 @@ import * as actionCreators from "../../../store/actions";
 
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import businessCategoryList from "./BusinessCategoriesList";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {

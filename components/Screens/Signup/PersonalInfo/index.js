@@ -1,27 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PhoneInput from "react-native-phone-input";
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
   ScrollView
 } from "react-native";
-import { Button, Text, Item, Input, Icon, Label } from "native-base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+import { Text, Item, Input, Icon, Label } from "native-base";
 import { Segment } from "expo";
+
+import LowerButton from "../../../MiniComponents/LowerButton";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 import globalStyles from "../../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import LowerButton from "../../../MiniComponents/LowerButton";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class PersonalInfo extends Component {
   constructor(props) {

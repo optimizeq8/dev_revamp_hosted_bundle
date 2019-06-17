@@ -1,23 +1,24 @@
 //Components
 import React, { Component, createRef } from "react";
-import { View, Image, ScrollView } from "react-native";
-import { Text, Container, Icon, Input, Label, Item, Button } from "native-base";
+import { View, ScrollView } from "react-native";
+import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
+import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
+
+// Style
+import styles from "./styles";
+import globalStyles from "../../../../GlobalStyles";
+
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 Input.defaultProps = Input.defaultProps || {};
 Input.defaultProps.allowFontScaling = false;
-// Style
-import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
-
-//Redux
-import * as actionCreators from "../../../../store/actions";
-import { connect } from "react-redux";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import { showMessage } from "react-native-flash-message";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 class Verification extends Component {
   inputRef = createRef();

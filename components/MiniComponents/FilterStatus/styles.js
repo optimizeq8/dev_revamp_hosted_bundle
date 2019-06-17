@@ -1,7 +1,17 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  inactivebutton: {
+  mainViewFilterStatus: {
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  flexDirectionCol: {
+    flexDirection: "column"
+  },
+  middleBlock: {
+    paddingHorizontal: 40
+  },
+  inactiveButton: {
     backgroundColor: "transparent",
     alignSelf: "center",
     borderColor: "#fff",
@@ -11,7 +21,7 @@ const styles = StyleSheet.create({
     borderRadius: 11.5,
     marginBottom: 10
   },
-  activebutton: {
+  activeButton: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
     width: 23,

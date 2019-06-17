@@ -79,7 +79,7 @@ class CampaignCard extends Component {
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
-                style={[styles.titletext]}
+                style={[styles.titleText]}
               >
                 {this.props.campaign.name}
               </Text>
@@ -99,14 +99,12 @@ class CampaignCard extends Component {
               <View
                 style={[
                   styles.adStatus,
-                  {
-                    backgroundColor: this.review_status.includes("REJECTED")
-                      ? "#FF5700"
-                      : globalColors.orange
-                  }
+                  this.review_status.includes("REJECTED")
+                    ? { backgroundColor: "#FF5700" }
+                    : GlobalStyles.orangeBackgroundColor
                 ]}
               >
-                <Text style={styles.reviewtext}>
+                <Text style={styles.reviewText}>
                   {this.review_status.includes("PENDING")
                     ? "In Review"
                     : this.review_status.includes("REJECTED")
@@ -130,11 +128,11 @@ class CampaignCard extends Component {
               </Text>
             )}
 
-            <View style={{ flexDirection: "row" }}>
+            <View style={styles.chartContainer}>
               {chart}
               <View>
                 <View style={styles.campaignIcons}>
-                  <ImpressionsIcons style={{ bottom: 3 }} />
+                  <ImpressionsIcons style={styles.iconImpression} />
                   <View style={styles.campaignInfo}>
                     <Text
                       style={[GlobalStyles.numbers, styles.campaignNumbers]}
@@ -197,11 +195,7 @@ class CampaignCard extends Component {
                 circleColorOff="#FF9D00"
                 circleColorOn="#66D072"
                 duration={200}
-                circleStyle={{
-                  width: 17,
-                  height: 17,
-                  borderRadius: 50
-                }}
+                circleStyle={styles.circleStyle}
               />
             </View>
           </View>

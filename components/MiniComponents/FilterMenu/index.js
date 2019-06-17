@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { View, TouchableHighlight } from "react-native";
 import { Text } from "native-base";
-import FilterStatus from "../../MiniComponents/FilterStatus";
 import dateFormat from "dateformat";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+
+// Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+// Components
+import FilterStatus from "../../MiniComponents/FilterStatus";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import LowerButton from "../LowerButton";
 
-//Icons
+// Icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 
 // Style
+import globalStyles from "../../../GlobalStyles";
 import styles from "./styles";
-
-//Functions
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
 
 class FilterMenu extends Component {
   constructor(props) {
@@ -28,9 +29,7 @@ class FilterMenu extends Component {
       selected: "A"
     };
   }
-  componentWillUnmount() {
-    console.log("Here!");
-  }
+
   handleStartDatePicked = date => {
     this.setState({
       start_time: date
@@ -116,9 +115,9 @@ class FilterMenu extends Component {
               underlayColor="rgba(0,0,0,0.2)"
               style={[
                 styles.dateInput,
-                {
-                  borderColor: this.state.start_timeError ? "red" : "#D9D9D9"
-                }
+                this.state.start_timeError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.lightGrayBorderColor
               ]}
               onPress={() => {
                 this.dateField.showModal();
@@ -133,7 +132,7 @@ class FilterMenu extends Component {
                     <Text style={styles.numbers}>
                       {start_time}
                       {"\n"}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                      <Text style={[styles.numbers, styles.fontSize12]}>
                         {start_year}
                       </Text>
                     </Text>
@@ -151,7 +150,7 @@ class FilterMenu extends Component {
                     <Text style={styles.numbers}>
                       {end_time}
                       {"\n"}
-                      <Text style={[styles.numbers, { fontSize: 12 }]}>
+                      <Text style={[styles.numbers, styles.fontSize12]}>
                         {end_year}
                       </Text>
                     </Text>

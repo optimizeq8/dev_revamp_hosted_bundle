@@ -1,38 +1,33 @@
 //// components
 import React, { Component } from "react";
-import { View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container
-} from "native-base";
-import { SafeAreaView } from "react-navigation";
-import { LinearGradient, Segment } from "expo";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-//Validation
-import validateWrapper from "./ValidateWrapper";
-
-//icons
-import Logo from "../../../assets/SVGs/Optimize";
-import Background from "../../../assets/SVGs/Background";
-
-// Style
-import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
-import globalStyles from "../../../GlobalStyles";
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Button, Text, Item, Input, Container } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import { Modal } from "react-native-paper";
+import { SafeAreaView } from "react-navigation";
+import { Segment, LinearGradient } from "expo";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import KeyboardShift from "../../MiniComponents/KeyboardShift";
+
+// Validation
+import validateWrapper from "./ValidateWrapper";
+
+// Icons
+import Logo from "../../../assets/SVGs/Optimize";
+import Background from "../../../assets/SVGs/Background";
+
+// Style
+import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
+import { colors } from "../../GradiantColors/colors";
 
 class MainForm extends Component {
   static navigationOptions = {

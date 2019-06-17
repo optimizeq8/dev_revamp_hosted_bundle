@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import { TouchableOpacity, PixelRatio } from "react-native";
-import { Text, Icon, View, Input, Item, Button } from "native-base";
-import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
-import * as actionCreators from "../../../store/actions";
+import { TouchableOpacity } from "react-native";
+import { View, Input, Item } from "native-base";
+
+// Redux
 import { connect } from "react-redux";
-import RadioGroup from "react-native-radio-buttons-group";
+import * as actionCreators from "../../../store/actions";
+
+// Styles
+import styles from "./styles";
+
+// Icons
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 
@@ -51,41 +55,27 @@ class SearchBar extends Component {
   };
   render() {
     return (
-      <View>
-        <View
-          searchBar
-          style={{
-            marginHorizontal: 15
-          }}
-        >
-          <Item
-            rounded
-            style={{
-              backgroundColor: "#fff",
-              borderColor: "#fff",
-              paddingHorizontal: 15
+      <View searchBar style={styles.searchBarView}>
+        <Item rounded style={styles.searchBarItem}>
+          <SearchIcon width={18} height={18} stroke="#575757" />
+          <Input
+            style={styles.searchBarInput}
+            placeholder="Search"
+            onChangeText={value => {
+              this.setState({ value: value }, () => this._handleSubmit());
             }}
-          >
-            <SearchIcon width={18} height={18} stroke="#575757" />
-            <Input
-              style={{ fontSize: 20 / PixelRatio.getFontScale() }}
-              placeholder="Search"
-              onChangeText={value => {
-                this.setState({ value: value }, () => this._handleSubmit());
+          />
+          {!this.props.transactionSearch && (
+            <TouchableOpacity
+              onPress={() => {
+                this._handleSubmit(true);
+                this.props.renderSearchBar();
               }}
-            />
-            {!this.props.transactionSearch && (
-              <TouchableOpacity
-                onPress={() => {
-                  this._handleSubmit(true);
-                  this.props.renderSearchBar();
-                }}
-              >
-                <CloseIcon width={18} height={18} stroke="#C6C6C6" />
-              </TouchableOpacity>
-            )}
-          </Item>
-        </View>
+            >
+              <CloseIcon width={18} height={18} stroke="#C6C6C6" />
+            </TouchableOpacity>
+          )}
+        </Item>
       </View>
     );
   }

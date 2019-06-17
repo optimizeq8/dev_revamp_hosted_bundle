@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, BackHandler } from "react-native";
+import { View, ScrollView, BackHandler } from "react-native";
 import { Button, Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
+import Sidemenu from "react-native-side-menu";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Header from "../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
 import FilterMenu from "../../MiniComponents/FilterMenu";
-import Sidemenu from "react-native-side-menu";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //icons
@@ -15,16 +21,6 @@ import FilterIcon from "../../../assets/SVGs/Filter";
 
 //Styles
 import styles from "./styles";
-
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
-
-//Fuctions
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
 
 class Transactions extends Component {
   state = {

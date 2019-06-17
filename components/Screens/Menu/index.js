@@ -8,27 +8,27 @@ import {
   BackHandler,
   ScrollView
 } from "react-native";
-import { Button, Text, Container, Icon, Content } from "native-base";
-import { LinearGradient } from "expo";
-import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
-import LottieView from "lottie-react-native";
+import { Button, Text, Container, Icon } from "native-base";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import BusinessList from "../BusinessList/index";
+
+import BusinessList from "../BusinessList";
 import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
+
+// Icons
+import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
 //browser
 import { openPrivacy, openTerms } from "../../Terms&Condtions";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
+// Redux
 import * as actionCreators from "../../../store/actions";
 
 class Menu extends Component {

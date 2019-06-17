@@ -8,8 +8,6 @@ import {
   Image
 } from "react-native";
 
-import PropTypes from "prop-types";
-
 import styles from "./style";
 import BaseComponent from "./BaseComponent";
 

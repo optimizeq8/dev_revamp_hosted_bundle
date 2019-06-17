@@ -12,21 +12,22 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+  iconWallet: {
+    top: "1%",
+    left: "90%"
   },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
+  mainView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flex: 1,
+    width: "100%"
   },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
+  amountContainer: {
+    flexDirection: "column"
+  },
+  amountText: {
+    fontSize: heightPercentageToDP(3.4),
+    paddingHorizontal: 0
   },
   cardStyle: {
     justifyContent: "space-between",
@@ -49,24 +50,21 @@ const styles = StyleSheet.create({
     textAlign: "left",
     paddingTop: heightPercentageToDP(0.5)
   },
-  datetext: {
+  dateText: {
     color: "#5F5F5F",
     fontFamily: "montserrat-medium",
     fontSize: 13,
     paddingTop: heightPercentageToDP(0.5)
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
   header: {
     paddingBottom: heightPercentageToDP(1)
   },
-  textcontainer: {
+  textContainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start"
   },
-  titletext: {
+  titleText: {
     textAlign: "left",
     color: "#5F5F5F",
     fontFamily: "montserrat-bold",
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
     width: 200
   },
 
-  subtext: {
+  subText: {
     paddingTop: heightPercentageToDP(0.25),
     paddingBottom: heightPercentageToDP(0.5),
     fontFamily: "montserrat-regular",
@@ -86,35 +84,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20
   },
-  chart: {
-    paddingHorizontal: 5,
-    top: 15
-  },
-  chartText: {
-    color: "#fff",
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    marginLeft: 10
-  },
-  chartSubtext: {
-    alignSelf: "center",
-    paddingTop: 17,
-    fontFamily: "montserrat-regular",
-    fontSize: 12,
-    color: "#fff"
-  },
   containerStyle: {
     justifyContent: "center",
     alignItems: "center",
 
     backgroundColor: "transparent",
     borderRadius: 20
-  },
-  toggleStyle: {
-    width: widthPercentageToDP(10),
-    height: 20,
-    borderRadius: 20,
-    padding: 0
   },
   icon: {
     position: "absolute",
@@ -127,9 +102,6 @@ const styles = StyleSheet.create({
     shadowColor: "#6268FF",
     shadowOffset: { height: 1, width: 0 },
     elevation: 5
-  },
-  contentContainer: {
-    paddingTop: 30
   }
 });
 

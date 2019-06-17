@@ -6,29 +6,7 @@ import {
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
 const styles = StyleSheet.create({
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
-  },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
   cardStyle: {
     marginHorizontal: 20,
     borderRadius: 30,
@@ -38,52 +16,6 @@ const styles = StyleSheet.create({
     shadowColor: "#6268FF",
     shadowOffset: { height: 6, width: 0 },
     elevation: 5
-  },
-  text: {
-    textAlign: "center",
-    color: "#5F5F5F",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
-  },
-  link: {
-    marginTop: 20,
-    textAlign: "center",
-    color: "#5F5F5F",
-    fontFamily: "montserrat-regular",
-    fontSize: 20
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
   },
   header: {
     flex: 1,
@@ -95,7 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start"
   },
-  titletext: {
+  titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
@@ -152,10 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     top: "-3%"
   },
-  contentContainer: {
-    paddingTop: 30
-  },
-  reviewtext: {
+  reviewText: {
     fontFamily: "montserrat-regular",
     fontSize: 13,
     padding: 3,
@@ -199,6 +128,17 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingHorizontal: 10,
     top: 5
+  },
+  circleStyle: {
+    width: 17,
+    height: 17,
+    borderRadius: 50
+  },
+  chartContainer: {
+    flexDirection: "row"
+  },
+  iconImpression: {
+    bottom: 3
   }
 });
 

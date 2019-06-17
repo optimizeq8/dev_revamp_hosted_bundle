@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
 import { LinearGradient } from "expo";
+import * as Animatable from "react-native-animatable";
+import { SafeAreaView } from "react-navigation";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+
+import GetInviteCode from "../GetInviteCode";
 import Verification from "../Signup/Verification";
 import Signin from "../Signin/";
-import * as Animatable from "react-native-animatable";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
-//icons
+
+// Icons
 import Logo from "../../../assets/SVGs/Optimize";
 import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
-import { SafeAreaView } from "react-navigation";
-//Redux
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-import GetInviteCode from "../GetInviteCode";
 
 export default class Invitation extends Component {
   static navigationOptions = {

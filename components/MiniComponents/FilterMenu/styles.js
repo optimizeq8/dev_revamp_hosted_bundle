@@ -1,11 +1,6 @@
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -93,11 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 10
   },
-  dateModal: {
-    ...StyleSheet.absoluteFillObject,
-    height: hp("100%"),
-    marginTop: 0
-  },
   dateContainer: {
     flexDirection: "row",
     justifyContent: "center"
@@ -115,6 +105,9 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     bottom: "10%"
+  },
+  fontSize12: {
+    fontSize: 12
   }
 });
 
