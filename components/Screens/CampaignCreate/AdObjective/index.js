@@ -15,6 +15,7 @@ import {
   Icon,
   Label
 } from "native-base";
+import isUndefined from "lodash/isUndefined";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
@@ -98,7 +99,7 @@ class AdObjective extends Component {
     });
     if (this.props.data) {
       // console.log("data", this.props.data);
-      rep = { ...this.props.data };
+      rep = { ...this.state.campaignInfo, ...this.props.data };
       this.setState({
         campaignInfo: { ...rep },
         minValueBudget: this.props.data.minValueBudget,

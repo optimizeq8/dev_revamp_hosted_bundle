@@ -149,20 +149,25 @@ class AdDesign extends Component {
         });
       }
     }
+    let rep = this.state.campaignInfo;
     if (
-      this.props.data.hasOwnProperty("attachment") ||
-      this.props.data.hasOwnProperty("image")
+      Object.keys(this.state.campaignInfo)
+        .map(key => {
+          if (this.props.data.hasOwnProperty(key)) return true;
+        })
+        .includes(true)
     ) {
-      rep = { ...this.props.data };
+      rep = { ...this.state.campaignInfo, ...this.props.data };
       this.setState({
         ...this.state,
         campaignInfo: {
-          ...this.state.campaignInfo,
+          // ...this.state.campaignInfo,
           // brand_name: this.props.data.brand_name,
           // headline: this.props.data.headline,
-          destination: rep.destination ? rep.destination : "BLANK",
-          call_to_action: rep.call_to_action,
-          attachment: rep.attachment
+          // destination: rep.destination ? rep.destination : "BLANK",
+          // call_to_action: rep.call_to_action,
+          // attachment: rep.attachment
+          ...rep
         },
         image: rep.image,
         type: rep.type,

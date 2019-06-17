@@ -260,6 +260,8 @@ class PaymentForm extends Component {
     });
   };
   render() {
+    console.log(this.props.campaign_id);
+
     return (
       <SafeAreaView
         style={{ flex: 1, backgroundColor: "#0000" }}
@@ -454,7 +456,7 @@ class PaymentForm extends Component {
                       ? formatNumber(this.props.campaign_balance_amount, true)
                       : this.props.data &&
                         formatNumber(
-                          this.props.data.lifetime_budget_micro,
+                          this.props.data.campaignInfo.lifetime_budget_micro,
                           true
                         )}
                   </Text>

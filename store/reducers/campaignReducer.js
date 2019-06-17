@@ -60,7 +60,10 @@ const reducer = (state = initialState, action) => {
             value: action.payload.data.call_to_action,
             label: action.payload.data.call_to_action.replace(/_/g, " ")
           },
-          attachment: JSON.parse(action.payload.data.attachment)
+          attachment:
+            action.payload.data.attachment !== "BLANK"
+              ? JSON.parse(action.payload.data.attachment)
+              : action.payload.data.attachment
         },
         message: action.payload.message,
 
@@ -73,7 +76,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: {
           ...state.data,
-
           ...action.payload
         }
       };

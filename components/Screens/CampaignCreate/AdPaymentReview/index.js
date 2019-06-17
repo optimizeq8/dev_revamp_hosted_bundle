@@ -110,10 +110,13 @@ class AdPaymentReview extends Component {
     });
   }
   render() {
-    if (this.props.loading || isUndefined(this.props.data.targeting)) {
+    if (
+      this.props.loading ||
+      isUndefined(this.props.data.campaignInfo.targeting)
+    ) {
       return <LoadingScreen top={50} />;
     } else {
-      let targeting = this.props.data.targeting;
+      let targeting = this.props.data.campaignInfo.targeting;
       let interestNames = [];
       if (this.props.interestNames.length > 0) {
         interestNames = this.props.interestNames.map(interest => interest.name);
@@ -126,13 +129,13 @@ class AdPaymentReview extends Component {
         ? targeting.demographics[0].gender
         : "All";
       let countryName = this.props.countryName;
-      let regionNames = [];
-      if (
-        targeting.geos[0].hasOwnProperty("region_id") &&
-        this.props.regionNames.length > 0
-      ) {
-        regionNames = this.props.regionNames.map(region => region);
-      }
+      let regionNames = this.props.regionNames;
+      // if (
+      //   targeting.geos[0].hasOwnProperty("region_id") &&
+      //   this.props.regionNames.length > 0
+      // ) {
+      //   regionNames = this.props.regionNames.map(region => region);
+      // }
 
       let devices = [];
       devices = targeting.hasOwnProperty("devices")
@@ -261,7 +264,10 @@ class AdPaymentReview extends Component {
                         { title: "End", content: end_time },
                         {
                           title: "Objective",
-                          content: this.props.data.objective
+                          content: this.props.data.objective.replace(
+                            /BRAND_/i,
+                            ""
+                          )
                         }
                       ]}
                     />
@@ -375,7 +381,7 @@ class AdPaymentReview extends Component {
                             { color: "#FF9D00", textAlign: "right" }
                           ]}
                         >
-                          {this.props.data.lifetime_budget_micro} $
+                          {this.props.data.campaignInfo.lifetime_budget_micro} $
                         </Text>
                         {/* <Text
                           style={[
@@ -473,7 +479,9 @@ class AdPaymentReview extends Component {
                           textAlign: "center"
                         }}
                       >
-                        {formatNumber(this.props.data.lifetime_budget_micro)}{" "}
+                        {formatNumber(
+                          this.props.data.campaignInfo.lifetime_budget_micro
+                        )}{" "}
                         USD {"\n"}({this.props.kdamount} KWD)
                       </Text>
                       <Text
