@@ -254,7 +254,9 @@ const styles = StyleSheet.create({
   switchCircle: {
     width: wp("13"),
     height: hp("3.8"),
-    borderRadius: 25
+    borderRadius: 25,
+    flexDirection: "column",
+    justifyContent: "center"
   },
   statusText: {
     fontFamily: "montserrat-medium",
@@ -295,6 +297,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginBottom: 10
+  },
+  statusButtonsText: {
+    fontFamily: "montserrat-medium",
+    color: "#fff",
+    backgroundColor: "transparent"
+  },
+  statusButtons: {
+    borderRadius: 10,
+    borderColor: globalColors.orange,
+    borderWidth: 0.5,
+    alignSelf: "center",
+    marginVertical: 5,
+    padding: 10
+  },
+  switchButtonText: {
+    fontSize: 10,
+    color: "#fff",
+    alignSelf: "center",
+    justifyContent: "center"
   }
 });
 

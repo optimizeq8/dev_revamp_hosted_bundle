@@ -6,6 +6,7 @@ import {
 export const globalColors = {
   orange: "#FF9D00",
   purple: "#751AFF",
+  green: "#66D072",
   white: "#FFFFFF",
   black: "#000000",
   transparent: "#0000"
