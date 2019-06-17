@@ -19,7 +19,6 @@ const instance = createBaseUrl();
 
 export const chanege_base_url = admin => {
   return dispatch => {
-    console.log("changed");
     if (admin)
       dispatch({
         type: actionTypes.SET_BASEURL
@@ -76,13 +75,13 @@ export const checkForExpiredToken = navigation => {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
-          console.log(user);
           if (
             [
               "sam.omran@hotmail.com",
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
-              "shorook@optimizekw.com"].includes(user.email)
+              "shorook@optimizekw.com"
+            ].includes(user.email)
           )
             dispatch(chanege_base_url(true));
           setAuthToken(token)
@@ -116,7 +115,8 @@ export const login = (userData, navigation) => {
         "sam.omran@hotmail.com",
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
-        "shorook@optimizekw.com"].includes(userData.email)
+        "shorook@optimizekw.com"
+      ].includes(userData.email)
     ) {
       dispatch(chanege_base_url(true));
     }
@@ -157,7 +157,6 @@ export const login = (userData, navigation) => {
       })
       .then(() => {
         if (getState().auth.userInfo) {
-          console.log("userInfo", getState().auth.userInfo);
           if (getState().auth.userInfo.tmp_pwd === "1") {
             navigation.navigate("ChangePassword", { temp_pwd: true });
           } else {
@@ -169,7 +168,7 @@ export const login = (userData, navigation) => {
         }
       })
       .catch(err => {
-        console.log("login error", err.message || err.response);
+        // console.log("login error", err.message || err.response);
         showMessage({
           type: "danger",
           message:
@@ -307,7 +306,7 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         });
       })
       .catch(err => {
-        console.log("changePasswordError", err.message || err.response);
+        // console.log("changePasswordError", err.message || err.response);
 
         showMessage({
           message: "Oops! Something went wrong. Please try again.",

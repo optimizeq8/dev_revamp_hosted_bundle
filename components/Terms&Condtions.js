@@ -10,8 +10,6 @@ export const openTerms = async (closeBrowserLoading = () => {}) => {
     //   campaign_id: this.props.campaign_id
     // });
   } catch (error) {
-    console.log(error);
-
     if (error)
       showMessage({
         message: "Something went wrong!",
