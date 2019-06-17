@@ -3,13 +3,8 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../Global Styles";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+import { globalColors } from "../../../GlobalStyles";
+
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,

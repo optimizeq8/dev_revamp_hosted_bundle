@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import styles from "../styles";
-import GlobalStyles from "../../../../Global Styles";
+import GlobalStyles from "../../../../GlobalStyles";
 
 import Box from "./Box";
 export default class BoxStats extends Component {

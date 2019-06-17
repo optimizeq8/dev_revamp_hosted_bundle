@@ -15,7 +15,7 @@ import { colors } from "../../../GradiantColors/colors";
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { globalColors } from "../../../../Global Styles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
@@ -150,7 +150,7 @@ class Verification extends Component {
                       autoCorrect={false}
                       maxLength={5}
                       autoCapitalize="none"
-                      style={styles.inputtext}
+                      style={styles.inputText}
                       onChangeText={value => {
                         this.setState({
                           code: value
@@ -174,7 +174,7 @@ class Verification extends Component {
                       this._handleInviteCode();
                     }}
                   >
-                    <Text style={styles.buttontext}>Get Started!</Text>
+                    <Text style={styles.buttonText}>Get Started!</Text>
                   </Button>
                 </>
               ) : (
@@ -216,21 +216,19 @@ class Verification extends Component {
                         floatingLabel
                         style={[
                           styles.emailInput,
-                          {
-                            borderColor: this.state.InputE
-                              ? "#7039FF"
-                              : this.state.emailError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.InputE
+                            ? globalStyles.purpleBorderColor
+                            : this.state.emailError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor
                         ]}
                       >
                         <Label
                           style={[
                             styles.emailLabel,
-                            {
-                              color: this.state.InputE ? "#FF9D00" : "#717171"
-                            }
+                            this.state.InputE
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor
                           ]}
                         >
                           Email
@@ -265,9 +263,11 @@ class Verification extends Component {
                         <Icon
                           type="MaterialIcons"
                           name="send"
-                          style={{
-                            color: this.state.InputE ? "#FF9D00" : "#717171"
-                          }}
+                          style={[
+                            this.state.InputE
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor
+                          ]}
                         />
                       </Button>
                     </>

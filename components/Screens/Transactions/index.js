@@ -80,7 +80,7 @@ class Transactions extends Component {
                 title={"Transactions"}
                 navigation={this.props.navigation}
               />
-              <View style={styles.container}>
+              <View style={styles.mainContainer}>
                 <View style={styles.headerBlock}>
                   <View style={styles.searchContainer}>
                     <SearchBar transactionSearch={true} />

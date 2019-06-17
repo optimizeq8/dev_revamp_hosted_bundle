@@ -1,15 +1,10 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+
 const styles = StyleSheet.create({
   scrollViewContentContainer: {
     // height: heightPercentageToDP("100%")

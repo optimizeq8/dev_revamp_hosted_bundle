@@ -1,19 +1,16 @@
 //// components
 import React, { Component } from "react";
 import { View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon
-} from "native-base";
+import { Text, Item, Input } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import { SafeAreaView } from "react-navigation";
-import CloseIcon from "../../../assets/SVGs/Close";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
+import LowerButton from "../../MiniComponents/LowerButton";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
+import CustomHeader from "../../MiniComponents/Header";
 
 //Validation
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -21,6 +18,7 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
@@ -28,14 +26,6 @@ import Logo from "../../../assets/SVGs/Optimize";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import LowerButton from "../../MiniComponents/LowerButton";
-import CloseButton from "../../MiniComponents/CloseButton";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
-import CustomHeader from "../../MiniComponents/Header";
 
 class ForgotPassword extends Component {
   static navigationOptions = {
@@ -88,14 +78,14 @@ class ForgotPassword extends Component {
         />
         <CustomHeader navigation={this.props.navigation} closeButton={true} />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
-          <View style={{ backgroundColor: "#0000" }}>
+          <View style={styles.mainCard}>
             <View>
               <Logo
-                style={{ alignSelf: "center" }}
+                style={styles.logo}
                 width={heightPercentageToDP(15)}
                 height={heightPercentageToDP(15)}
               />
-              <Text style={styles.logotext}>Optimize</Text>
+              <Text style={styles.logoText}>Optimize</Text>
             </View>
             <KeyboardShift>
               {() => (
@@ -111,18 +101,16 @@ class ForgotPassword extends Component {
                       rounded
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.emailError
-                            ? "red"
-                            : "rgba(0, 0, 0, 0)"
-                        }
+                        this.state.emailError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                       ]}
                     >
                       <Input
                         placeholderTextColor="#fff"
                         autoCorrect={false}
                         autoCapitalize="none"
-                        style={styles.inputtext}
+                        style={styles.inputText}
                         onChangeText={value => {
                           this.setState({
                             email: value

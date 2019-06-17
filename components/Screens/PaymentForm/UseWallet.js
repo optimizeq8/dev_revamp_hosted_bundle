@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import styles from "./styles";
-import GlobalStyles from "../../../Global Styles";
+import GlobalStyles from "../../../GlobalStyles";
 import { Button } from "native-base";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
@@ -45,20 +45,13 @@ class UseWallet extends Component {
 
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center"
-          //   bottom: "5%"
-        }}
-      >
+      <View style={[styles.walletPaymentModalContainer]}>
         <WalletIcon
           width={heightPercentageToDP(10)}
           height={heightPercentageToDP(10)}
         />
         <Text style={styles.text}>Wallet Balance</Text>
-        <Text style={[GlobalStyles.numbers, { fontSize: 25 }]}>
+        <Text style={[GlobalStyles.numbers, styles.walltetAmountText]}>
           {this.props.walletUsed
             ? this.props.wallet_balance_amount
             : this.props.wallet}
@@ -96,24 +89,13 @@ class UseWallet extends Component {
           visible={this.props.showWalletModal}
         >
           <BlurView tint="dark" intensity={100} style={styles.BlurView}>
-            <View
-              style={{
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
+            <View style={styles.walletPaymentModalContainer}>
               {this.props.loading ? (
                 <LoadingScreen top={50} />
               ) : (
                 <>
                   <WalletIcon width={80} height={80} />
-                  <Text
-                    style={[
-                      styles.walletInfo,
-                      { fontSize: 20, fontFamily: "montserrat-bold" }
-                    ]}
-                  >
+                  <Text style={[styles.walletInfo, styles.useWalletText]}>
                     Use Wallet
                   </Text>
                   <Text style={styles.walletInfo}>
@@ -129,7 +111,7 @@ class UseWallet extends Component {
                     onPress={() => this._handleConfirm()}
                     style={styles.walletButton}
                   >
-                    <Text style={{ color: "#fff" }}>Confirm</Text>
+                    <Text style={styles.colorWhite}>Confirm</Text>
                   </Button>
                   <Button
                     onPress={() => {
@@ -138,7 +120,7 @@ class UseWallet extends Component {
                     }}
                     style={styles.walletButton}
                   >
-                    <Text style={{ color: "#fff" }}>Cancel</Text>
+                    <Text style={styles.colorWhite}>Cancel</Text>
                   </Button>
                 </>
               )}

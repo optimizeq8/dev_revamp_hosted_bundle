@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import { Linking, LinearGradient, Segment } from "expo";
+import { LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
 
 //styles
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 //Reddux
 import * as actionCreators from "../../../store/actions";

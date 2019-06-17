@@ -5,6 +5,8 @@ import { Content, Header, Left, Body, Right, Container } from "native-base";
 import BackButton from "../../../MiniComponents/BackButton";
 
 import { LinearGradient } from "expo";
+import CustomeHeader from "../../../MiniComponents/Header";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Website from "./Website";
 import App_Install from "./App_Install";
@@ -27,7 +29,11 @@ class SwipeUpChoice extends Component {
           style={styles.gradient}
         />
         <Container style={[styles.container]}>
-          <Header transparent noShadow iosBarStyle={"light-content"}>
+          <CustomeHeader
+            closeButton={false}
+            navigation={this.props.navigation}
+          />
+          {/* <Header transparent noShadow iosBarStyle={"light-content"}>
             <Left
               style={{
                 alignItems: "center",
@@ -43,7 +49,7 @@ class SwipeUpChoice extends Component {
             </Left>
             <Body />
             <Right />
-          </Header>
+          </Header> */}
           <Content
             // padder
             contentContainerStyle={{

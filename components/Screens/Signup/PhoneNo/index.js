@@ -13,6 +13,7 @@ import CountryModal from "./CountryModal";
 import { Segment } from "expo";
 // Style
 import styles from "./styles";
+import globalStyles from "../../../../GlobalStyles";
 import { colors } from "../../../GradiantColors/colors";
 
 //Redux
@@ -113,51 +114,40 @@ class PhoneNo extends Component {
       rounded
       style={[
         styles.phoneInput,
-        {
-          backgroundColor: this.props.invite
-            ? "rgba(0, 0, 0, 0.5)"
-            : "transparent"
-        }
+        this.props.invite
+          ? globalStyles.blackBackgroundColor
+          : globalStyles.transparentBackgroundColor,
+        this.props.invite ? { opacity: 0.5 } : { opacity: 0 }
       ]}
     >
       <TouchableOpacity
-        style={{
-          width: 60,
-          height: 30,
-          position: "absolute",
-          borderWidth: 0.3,
-          borderColor: "transparent",
-          borderRadius: 5,
-          left: 4,
-          zIndex: 5
-        }}
+        style={styles.flagTouchableArea}
         onPress={this.onPressFlag}
       />
       <Icon
         name="arrow-drop-down"
         type="MaterialIcons"
-        style={{
-          color: this.props.invite ? "#fff" : "#000",
-          marginRight: -30,
-          left: -5
-        }}
+        style={[
+          styles.flagIcon,
+          this.props.invite
+            ? globalStyles.whiteTextColor
+            : globalStyles.transparentTextColor
+        ]}
       />
       <PhoneInput
-        style={{ width: widthPercentageToDP(70) }}
+        style={styles.phoneInputStyle}
         textStyle={{
+          color: this.props.invite ? "#FFF" : "#0000",
+          ...styles.phoneInputTextStyle,
           ...styles.input,
-          color: this.props.invite ? "#fff" : "#000",
+
           borderBottomColor: this.props.invite
             ? "#0000"
             : this.state.valid
             ? "#5F5F5F"
-            : "red",
-          left: "3%"
+            : "red"
         }}
-        flagStyle={{
-          left: 14,
-          zIndex: 5
-        }}
+        flagStyle={styles.flagStyle}
         textProps={{
           autoFocus: false,
           maxLength: 14,
@@ -201,10 +191,12 @@ class PhoneNo extends Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
-          style={{
-            flex: !this.props.invite ? 1 : 0,
-            justifyContent: "space-around"
-          }}
+          style={[
+            {
+              flex: !this.props.invite ? 1 : 0
+            },
+            styles.phoneViewContainer
+          ]}
         >
           <View
             style={[styles.container, { flex: !this.props.invite ? 1 : 0 }]}
@@ -216,13 +208,7 @@ class PhoneNo extends Component {
               </Text>
             )}
             {!this.props.invite && (
-              <KeyboardShift
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
+              <KeyboardShift style={styles.keyboardArea}>
                 {() => this.phoneInputRender()}
               </KeyboardShift>
             )}
@@ -231,7 +217,7 @@ class PhoneNo extends Component {
               ref={ref => {
                 this.myCountryPicker = ref;
               }}
-              optionTextStyle={{ alignSelf: "flex-start" }}
+              optionTextStyle={styles.optionTextStyle}
               data={this.state.pickerData}
               onChange={country => {
                 this.selectCountry(country);

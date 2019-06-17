@@ -3,9 +3,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler,
-  Platform,
-  PixelRatio
+  BackHandler
 } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
@@ -17,6 +15,7 @@ import PersonalInfoIcon from "../../../assets/SVGs/Person";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -61,16 +60,13 @@ class PersonalInfo extends Component {
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never" }}
       >
         <Header title={"Personal Info"} navigation={this.props.navigation} />
 
         <PersonalInfoIcon
-          style={{
-            alignSelf: "center",
-            marginTop: 20
-          }}
+          style={styles.personalInfoIcon}
           width={55}
           height={55}
         />
@@ -79,22 +75,9 @@ class PersonalInfo extends Component {
             <KeyboardShift>
               {() => (
                 <View style={styles.contentContainer}>
-                  <View
-                    style={{
-                      paddingHorizontal: 35,
-                      textAlign: "left"
-                    }}
-                  >
+                  <View style={styles.dataContainer}>
                     <Text style={styles.label}>Full Name</Text>
-                    <Text
-                      style={{
-                        color: "#5F5F5F",
-                        fontFamily: "montserrat-medium",
-                        fontSize: 23,
-                        textAlign: "left",
-                        paddingBottom: 60
-                      }}
-                    >
+                    <Text style={styles.nameText}>
                       {this.props.userInfo.firstname}{" "}
                       {this.props.userInfo.lastname}
                     </Text>
@@ -102,25 +85,18 @@ class PersonalInfo extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          // fontSize:
-                          //   Platform.OS === "android"
-                          //     ? 14 / PixelRatio.getFontScale()
-                          //     : 14,
-                          marginBottom: 30,
-                          borderColor: this.state.inputPR
-                            ? "#7039FF"
-                            : this.state.repasswordError !== ""
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputPR
+                          ? globalStyles.purpleBorderColor
+                          : this.state.repasswordError !== ""
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
                         style={[
                           styles.label,
+                          styles.labelMobileNo,
                           {
-                            bottom: 5
                             // fontSize:
                             //   Platform.OS === "android"
                             //     ? 14 / PixelRatio.getFontScale()
@@ -133,7 +109,7 @@ class PersonalInfo extends Component {
 
                       <Input
                         disabled
-                        style={styles.inputtext}
+                        style={styles.inputText}
                         value={`${this.props.userInfo.mobile}`}
                       />
                     </Item>
@@ -141,27 +117,14 @@ class PersonalInfo extends Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputP
-                            ? "#7039FF"
-                            : this.state.passwordError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputP
+                          ? globalStyles.purpleBorderColor
+                          : this.state.passwordError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
-                      <Label
-                        style={[
-                          styles.label,
-                          {
-                            bottom: 5,
-                            fontSize:
-                              Platform.OS === "android"
-                                ? 14 / PixelRatio.getFontScale()
-                                : 14
-                          }
-                        ]}
-                      >
+                      <Label style={[styles.label, styles.labelEmail]}>
                         {/* <Icon
                         style={{
                           fontSize: 20,
@@ -173,7 +136,7 @@ class PersonalInfo extends Component {
                       </Label>
                       <Input
                         disabled
-                        style={[styles.inputtext]}
+                        style={[styles.inputText]}
                         value={this.props.userInfo.email}
                       />
                     </Item>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
-import globalStyles from "../../../Global Styles";
+import globalStyles from "../../../GlobalStyles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
 class TransactionCard extends Component {
@@ -26,7 +26,10 @@ class TransactionCard extends Component {
               </Text>
             </View>
             {transaction.iswallet === "1" ? (
-              <WalletIcon style={[styles.icon, { top: "1%", left: "90%" }]} />
+              <WalletIcon
+                fill="#a0a0a0"
+                style={[styles.icon, { top: "1%", left: "90%" }]}
+              />
             ) : (
               <Icon
                 type="MaterialCommunityIcons"

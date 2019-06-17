@@ -65,21 +65,9 @@ class GetInviteCode extends Component {
   render() {
     return (
       <Container style={[styles.container]}>
-        <KeyboardShift
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            flex: 1
-          }}
-        >
+        <KeyboardShift style={styles.keyboardContainer}>
           {() => (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
+            <View style={styles.keyboardView}>
               <Text style={styles.title}>Get your invite code</Text>
               <PhoneNo _getMobile={this._getMobile} invite={true} />
               <Item rounded style={[styles.input]}>
@@ -87,7 +75,7 @@ class GetInviteCode extends Component {
                   placeholderTextColor="#fff"
                   autoCorrect={false}
                   autoCapitalize="none"
-                  style={styles.inputtext}
+                  style={styles.inputText}
                   onChangeText={email => {
                     this.setState({
                       email

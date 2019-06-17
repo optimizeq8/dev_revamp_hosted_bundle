@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Item, Icon, Input } from "native-base";
@@ -21,6 +22,7 @@ import data, { androidDataTest } from "./data";
 
 //styles
 import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
+import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
 import {
@@ -30,6 +32,8 @@ import {
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ToggleButton, ActivityIndicator } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
+import KeyboradShift from "../../MiniComponents/KeyboardShift";
+
 class AppChoice extends Component {
   constructor(props) {
     super(props);
@@ -241,304 +245,336 @@ class AppChoice extends Component {
     // console.log(this.state);
 
     return (
-      <View
-        style={{
-          width: "100%"
+      <ScrollView
+        contentContainerStyle={{
+          width: "100%",
+          display: "flex",
+          flex: 1,
+          height: "100%",
+          justifyContent: "space-between"
         }}
       >
-        <RNPickerSelect
-          items={this.state.callactions}
-          placeholder={{ label: "Call to Action", value: "" }}
-          value={this.state.callaction.value}
-          onValueChange={(value, index) => {
-            this.setState({
-              callaction: {
-                label: this.state.callactions[index - 1 > 0 ? index - 1 : 0]
-                  .label,
-                value
-              },
-              callActionError: validateWrapper(
-                "mandatory",
-                this.state.callaction
-              )
-            });
-          }}
-        >
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                marginTop: 20,
-                borderColor: this.state.callActionError ? "red" : "transparent"
-              }
-            ]}
-          >
-            <Text
-              style={[
-                styles.inputtext,
-                {
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  color: "#fff"
-                }
-              ]}
-            >
-              {this.state.callactions.find(
-                c => this.state.callaction.value === c.value
-              )
-                ? this.state.callactions.find(
-                    c => this.state.callaction.value === c.value
-                  ).label
-                : "Call to Action"}
-            </Text>
-            <Icon
-              type="AntDesign"
-              name="down"
-              style={{
-                color: "#fff",
-                fontSize: 20
-                // left: 25
-              }}
-            />
-          </Item>
-        </RNPickerSelect>
-        <Animatable.View animation={"zoomInUp"}>
-          <Animatable.View
-            onAnimationEnd={() => this.setState({ choiceError: null })}
-            style={{
-              flexDirection: "row",
-              alignSelf: "center",
-              marginVertical: 10
-            }}
-            animation={!this.state.choiceError ? "" : "shake"}
-          >
-            <TouchableOpacity
-              style={[
-                styles.OS,
-                {
-                  backgroundColor:
-                    this.state.choice === "iOS" ? "#FF9D00" : "#fff"
-                }
-              ]}
-              onPress={() => this.handleChoice("iOS")}
-            >
-              <Text
-                style={[
-                  styles.OSText,
-                  {
-                    color: this.state.choice === "iOS" ? "#fff" : "#751AFF"
-                  }
-                ]}
+        <KeyboradShift style={{ flex: 1, height: "100%" }}>
+          {() => (
+            <>
+              <RNPickerSelect
+                items={this.state.callactions}
+                placeholder={{ label: "Call to Action", value: "" }}
+                 value={this.state.callaction.value}
+                onValueChange={(value, index) => {
+                  this.setState({
+                    callaction: {
+                      label: this.state.callactions[
+                        index - 1 > 0 ? index - 1 : 0
+                      ].label,
+                      value
+                    },
+                    callActionError: validateWrapper(
+                      "mandatory",
+                      this.state.callaction
+                    )
+                  });
+                }}
               >
-                iOS
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.OS,
-                {
-                  paddingHorizontal: 0,
-                  backgroundColor:
-                    this.state.choice === "ANDROID" ? "#FF9D00" : "#fff"
-                }
-              ]}
-              onPress={() => this.handleChoice("ANDROID")}
-            >
-              <Text
-                style={[
-                  styles.OSText,
-                  {
-                    color: this.state.choice === "ANDROID" ? "#fff" : "#751AFF"
-                  }
-                ]}
-              >
-                Android
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.OS,
-                {
-                  paddingHorizontal: 0,
-                  backgroundColor: this.state.choice === "" ? "#FF9D00" : "#fff"
-                }
-              ]}
-              onPress={() => this.handleChoice("")}
-            >
-              <Text
-                style={[
-                  styles.OSText,
-                  {
-                    color: this.state.choice === "" ? "#fff" : "#751AFF"
-                  }
-                ]}
-              >
-                Both
-              </Text>
-            </TouchableOpacity>
-          </Animatable.View>
-        </Animatable.View>
-
-        {this.state.choice || this.state.choice === "" ? (
-          <Item
-            rounded
-            style={[
-              styles.input,
-              {
-                borderColor: this.state.nameError ? "red" : "transparent",
-                borderRadius: 30,
-                // marginBottom: 10,
-                marginTop: 0
-              }
-            ]}
-          >
-            <SearchIcon stroke="white" style={{ left: "-60%" }} />
-            <Input
-              style={styles.inputtext}
-              placeholder={`Search ${this.state.choice}`}
-              defaultValue={this.state.attachment.app_name + ""}
-              placeholderTextColor="white"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={value =>
-                this.setState({
-                  attachment: {
-                    ...this.state.attachment,
-                    app_name: value
-                  }
-                })
-              }
-              onBlur={value => {
-                if (this.state.attachment.app_name !== "") {
-                  switch (this.state.choice) {
-                    case "iOS":
-                      this._searchIosApps();
-                      break;
-                    case "ANDROID":
-                      this._searchAndroidApps();
-                      break;
-                    case "":
-                      this._searchAndroidApps();
-                      this._searchIosApps();
-                      break;
-                  }
-                }
-                this.setState({
-                  nameError: validateWrapper(
-                    "mandatory",
-                    this.state.attachment.app_name
-                  ),
-                  showList: this.state.attachment.app_name !== ""
-                });
-              }}
-            />
-          </Item>
-        ) : null}
-
-        {this.state.loading ? (
-          <ActivityIndicator
-            color="#fff"
-            size="large"
-            style={{ height: heightPercentageToDP(30) }}
-          />
-        ) : (
-          <View style={{ height: heightPercentageToDP(30), width: "100%" }}>
-            {this.state.showList && this.state.choice === "" && (
-              <Text style={styles.text}>
-                Choose the {this.state.appSelection} app
-              </Text>
-            )}
-            <FlatList
-              style={{ flex: 1, width: "100%" }}
-              //-----------This is for actual app data searches-----------
-              data={
-                this.state.showList
-                  ? this.state.choice !== ""
-                    ? this.state.choice !== "ANDROID"
-                      ? this.state.data
-                      : this.state.androidData
-                    : this.state.appSelection === "iOS"
-                    ? this.state.data
-                    : this.state.androidData
-                  : []
-              }
-              //-----------This is for dummy app data searches-----------
-              // data={
-              //   this.state.showList
-              //     ? this.state.choice !== "ANDROID"
-              //       ? data
-              //       : androidDataTest
-              //     : []
-              // }
-              // contentContainerStyle={{ height: heightPercentageToDP(35) }}
-              // contentInset={{ bottom: heightPercentageToDP(15) }}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.state.choice !== ""
-                      ? this.state.choice === "iOS"
-                        ? this._getIosAppIds(item)
-                        : this._getAndroidAppIds(item)
-                      : this._handleBothOS(item)
-                  }
+                <Item
+                  rounded
                   style={[
-                    styles.campaignButton,
+                    styles.input,
                     {
-                      backgroundColor:
-                        this.state.attachment.ios_app_id === item.id ||
-                        this.state.attachment.android_app_url === item.id
-                          ? "#FF9D00"
-                          : "transparent"
+                      marginTop: 20,
+                      borderColor: this.state.callActionError
+                        ? "red"
+                        : "transparent"
                     }
                   ]}
                 >
-                  <Animatable.View
-                    animation={!this.state.AppError ? "" : "shake"}
-                    onAnimationEnd={() => this.setState({ AppError: null })}
+                  <Text
                     style={[
+                      styles.inputtext,
                       {
-                        display: "flex",
+                        flex: 1,
                         flexDirection: "row",
-                        alignItems: "center",
-                        // justifyContent: "space-around",
-                        flex: 1
-                        // width: "100%"
+                        justifyContent: "space-between",
+                        color: "#fff"
                       }
                     ]}
                   >
-                    <Image
-                      onLoadEnd={() => {
-                        this.setState({ appLoading: false });
-                      }}
-                      onLoadStart={() => {
-                        this.setState({ appLoading: true });
-                      }}
-                      style={styles.image}
-                      source={{
-                        uri: item.icon
-                      }}
-                    />
-                    {this.state.appLoading && (
-                      <ActivityIndicator
-                        color="white"
-                        style={{ position: "absolute", left: "7%" }}
-                      />
-                    )}
+                    {this.state.callactions.find(
+                      c => this.state.callaction.value === c.value
+                    )
+                      ? this.state.callactions.find(
+                          c => this.state.callaction.value === c.value
+                        ).label
+                      : "Call to Action"}
+                  </Text>
+                  <Icon
+                    type="AntDesign"
+                    name="down"
+                    style={{
+                      color: "#fff",
+                      fontSize: 20
+                      // left: 25
+                    }}
+                  />
+                </Item>
+              </RNPickerSelect>
+              <Animatable.View animation={"zoomInUp"}>
+                <Animatable.View
+                  onAnimationEnd={() => this.setState({ choiceError: null })}
+                  style={{
+                    flexDirection: "row",
+                    alignSelf: "center",
+                    marginVertical: 10
+                  }}
+                  animation={!this.state.choiceError ? "" : "shake"}
+                >
+                  <TouchableOpacity
+                    style={[
+                      styles.OS,
+                      {
+                        backgroundColor:
+                          this.state.choice === "iOS" ? "#FF9D00" : "#fff"
+                      }
+                    ]}
+                    onPress={() => this.handleChoice("iOS")}
+                  >
+                    <Text
+                      style={[
+                        styles.OSText,
+                        {
+                          color:
+                            this.state.choice === "iOS" ? "#fff" : "#751AFF"
+                        }
+                      ]}
+                    >
+                      iOS
+                    </Text>
+                  </TouchableOpacity>
 
-                    <Text style={[styles.listText]}>{item.title}</Text>
-                  </Animatable.View>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.OS,
+                      {
+                        paddingHorizontal: 0,
+                        backgroundColor:
+                          this.state.choice === "ANDROID" ? "#FF9D00" : "#fff"
+                      }
+                    ]}
+                    onPress={() => this.handleChoice("ANDROID")}
+                  >
+                    <Text
+                      style={[
+                        styles.OSText,
+                        {
+                          color:
+                            this.state.choice === "ANDROID" ? "#fff" : "#751AFF"
+                        }
+                      ]}
+                    >
+                      Android
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[
+                      styles.OS,
+                      {
+                        paddingHorizontal: 0,
+                        backgroundColor:
+                          this.state.choice === "" ? "#FF9D00" : "#fff"
+                      }
+                    ]}
+                    onPress={() => this.handleChoice("")}
+                  >
+                    <Text
+                      style={[
+                        styles.OSText,
+                        {
+                          color: this.state.choice === "" ? "#fff" : "#751AFF"
+                        }
+                      ]}
+                    >
+                      Both
+                    </Text>
+                  </TouchableOpacity>
+                </Animatable.View>
+              </Animatable.View>
+
+              {this.state.choice || this.state.choice === "" ? (
+                <Item
+                  rounded
+                  style={[
+                    styles.input,
+                    this.state.nameError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.transparentBorderColor,
+
+                    {
+                      borderRadius: 30,
+                      // marginBottom: 10,
+                      marginTop: 0
+                    }
+                  ]}
+                >
+                  <SearchIcon stroke="white" style={{ left: "-60%" }} />
+                  <Input
+                    style={styles.inputtext}
+                    placeholder={`Search ${this.state.choice}`}
+                    defaultValue={this.state.attachment.app_name + ""}
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        attachment: {
+                          ...this.state.attachment,
+                          app_name: value
+                        }
+                      })
+                    }
+                    onBlur={value => {
+                      if (this.state.attachment.app_name !== "") {
+                        switch (this.state.choice) {
+                          case "iOS":
+                            this._searchIosApps();
+                            break;
+                          case "ANDROID":
+                            this._searchAndroidApps();
+                            break;
+                          case "":
+                            this._searchAndroidApps();
+                            this._searchIosApps();
+                            break;
+                        }
+                      }
+                      this.setState({
+                        nameError: validateWrapper(
+                          "mandatory",
+                          this.state.attachment.app_name
+                        ),
+                        showList: this.state.attachment.app_name !== ""
+                      });
+                    }}
+                  />
+                </Item>
+              ) : null}
+
+              {this.state.loading ? (
+                <ActivityIndicator
+                  color="#fff"
+                  size="large"
+                  style={{ height: 150 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    height: heightPercentageToDP(25),
+                    width: "100%"
+                  }}
+                >
+                  {this.state.showList && this.state.choice === "" && (
+                    <Text style={styles.text}>
+                      Choose the {this.state.appSelection} app
+                    </Text>
+                  )}
+                  <FlatList
+                    style={{ flex: 1, width: "100%" }}
+                    //-----------This is for actual app data searches-----------
+                    data={
+                      this.state.showList
+                        ? this.state.choice !== ""
+                          ? this.state.choice !== "ANDROID"
+                            ? this.state.data
+                            : this.state.androidData
+                          : this.state.appSelection === "iOS"
+                          ? this.state.data
+                          : this.state.androidData
+                        : []
+                    }
+                    //-----------This is for dummy app data searches-----------
+                    // data={
+                    //   this.state.showList
+                    //     ? this.state.choice !== "ANDROID"
+                    //       ? data
+                    //       : androidDataTest
+                    //     : []
+                    // }
+                    // contentContainerStyle={{ height: heightPercentageToDP(35) }}
+                    // contentInset={{ bottom: heightPercentageToDP(15) }}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.state.choice !== ""
+                            ? this.state.choice === "iOS"
+                              ? this._getIosAppIds(item)
+                              : this._getAndroidAppIds(item)
+                            : this._handleBothOS(item)
+                        }
+                        style={[
+                          styles.campaignButton,
+                          {
+                            backgroundColor:
+                              this.state.attachment.ios_app_id === item.id ||
+                              this.state.attachment.android_app_url === item.id
+                                ? "#FF9D00"
+                                : "transparent"
+                          }
+                        ]}
+                      >
+                        <Animatable.View
+                          animation={!this.state.AppError ? "" : "shake"}
+                          onAnimationEnd={() =>
+                            this.setState({ AppError: null })
+                          }
+                          style={[
+                            {
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              // justifyContent: "space-around",
+                              flex: 1
+                              // width: "100%"
+                            }
+                          ]}
+                        >
+                          <Image
+                            onLoadEnd={() => {
+                              this.setState({ appLoading: false });
+                            }}
+                            onLoadStart={() => {
+                              this.setState({ appLoading: true });
+                            }}
+                            style={styles.image}
+                            source={{
+                              uri: item.icon
+                            }}
+                          />
+                          {this.state.appLoading && (
+                            <ActivityIndicator
+                              color="white"
+                              style={{ position: "absolute", left: "7%" }}
+                            />
+                          )}
+
+                          <Text style={[styles.listText]}>{item.title}</Text>
+                        </Animatable.View>
+                      </TouchableOpacity>
+                    )}
+                    numcolumnns={3}
+                    keyExtractor={(item, index) => item.id.toString()}
+                  />
+                </View>
               )}
-              numcolumnns={3}
-              keyExtractor={(item, index) => item.id}
-            />
-          </View>
-        )}
-        <View>
+            </>
+          )}
+        </KeyboradShift>
+        <View
+          style={{
+            justifyContent: "flex-end"
+            // flexDirection: "column",
+            // flex: 1
+          }}
+        >
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}
@@ -550,7 +586,7 @@ class AppChoice extends Component {
 
           <LowerButton function={() => this.validate()} bottom={0} />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

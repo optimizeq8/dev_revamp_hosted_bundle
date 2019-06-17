@@ -1,6 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { globalColors } from "../../../../Global Styles";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 14 / PixelRatio.getFontScale(),
     color: "#fff",
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: widthPercentageToDP(20)
   },
-  buttontext: {
+  buttonText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14

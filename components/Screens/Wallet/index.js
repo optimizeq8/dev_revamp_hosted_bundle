@@ -20,7 +20,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 
 // Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../Global Styles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
@@ -165,13 +165,11 @@ class Wallet extends Component {
                       <Item
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.inputA
-                              ? "#7039FF"
-                              : this.state.amountError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.inputA
+                            ? globalStyles.purpleBorderColor
+                            : this.state.amountError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor
                         ]}
                       >
                         <Label style={[styles.labeltext]}>$</Label>

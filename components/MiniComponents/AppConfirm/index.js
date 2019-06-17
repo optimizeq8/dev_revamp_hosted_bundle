@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity, BackHandler } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+  ScrollView
+} from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -64,8 +71,8 @@ class index extends Component {
   };
   render() {
     return (
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           alignSelf: "center",
           width: "100%",
           flex: 1,
@@ -74,7 +81,14 @@ class index extends Component {
           //   overflow: "hidden"
         }}
       >
-        <KeyboardShift style={{ flex: 1, justifyContent: "space-around" }}>
+        <KeyboardShift
+          style={{
+            alignSelf: "center",
+            width: "100%",
+            flex: 1,
+            justifyContent: "space-around"
+          }}
+        >
           {() => (
             <>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
@@ -253,7 +267,7 @@ class index extends Component {
             </>
           )}
         </KeyboardShift>
-      </View>
+      </ScrollView>
     );
   }
 }

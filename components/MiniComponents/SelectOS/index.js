@@ -11,7 +11,7 @@ import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.svg";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 export default class SelectOS extends Component {
   render() {
     return (

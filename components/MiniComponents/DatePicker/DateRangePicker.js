@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles from "./styles";
 
 const XDate = require("xdate");
 
@@ -59,7 +59,14 @@ export default class DateRangePicker extends Component<Props> {
   componentDidMount() {
     this.setupInitialRange();
   }
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.reset !== this.props.reset && this.props.reset)
+      this.setState({
+        isFromDatePicked: false,
+        isToDatePicked: false,
+        markedDates: {}
+      });
+  }
   onDayPress = day => {
     if (
       !this.state.isFromDatePicked ||

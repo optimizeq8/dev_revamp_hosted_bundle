@@ -3,12 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
+
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
@@ -40,6 +35,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     elevation: 0,
     marginRight: 10
+  },
+  mainContainer: {
+    backgroundColor: "#F4F4F4",
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
+    width: "100%",
+    height: "100%",
+    marginTop: 10
   }
 });
 

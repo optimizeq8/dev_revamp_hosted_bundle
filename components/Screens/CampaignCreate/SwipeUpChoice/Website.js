@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { View, SafeAreaView, BackHandler } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+
 import list from "./callactions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -93,50 +95,81 @@ class Website extends Component {
           height: "100%"
         }}
       >
-        <View
-          style={{
-            height: "100%",
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-            alignItems: "center",
-            padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
-          }}
-        >
-          <View style={{}}>
-            <WebsiteIcon style={styles.icon} />
-            <View style={[styles.textcontainer, { marginBottom: 20 }]}>
-              <Text style={[styles.titletext]}>Website</Text>
-              <Text style={[styles.subtext]}>
-                The user will be taken to your website
-              </Text>
-            </View>
-            <RNPickerSelect
-              items={this.state.callactions}
-              placeholder={{}}
-              value={this.state.campaignInfo.callaction.value}
-              onValueChange={(value, index) => {
-                this.setState({
-                  campaignInfo: {
-                    ...this.state.campaignInfo,
-                    callaction: {
-                      label: list[0].call_to_action_list[index].label,
-                      value
-                    }
-                  }
-                });
+        <KeyboardShift>
+          {() => (
+            <View
+              style={{
+                height: "100%",
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
               }}
             >
-              <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-                <Text
+              <View
+                style={
+                  {
+                    //   marginTop: this.props.swipeUpDestination ? 40 : 0
+                  }
+                }
+              >
+                <WebsiteIcon style={styles.icon} />
+                <View style={[styles.textcontainer, { marginBottom: 20 }]}>
+                  <Text style={[styles.titletext]}>Website</Text>
+                  <Text style={[styles.subtext]}>
+                    The user will be taken to your website
+                  </Text>
+                </View>
+                <RNPickerSelect
+                  items={this.state.callactions}
+                  placeholder={{}}
+                  onValueChange={(value, index) => {
+                    this.setState({
+                      campaignInfo: {
+                        ...this.state.campaignInfo,
+                        callaction: {
+                          label: list[0].call_to_action_list[index].label,
+                          value
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <Item rounded style={[styles.input, { marginBottom: 20 }]}>
+                    <Text
+                      style={[
+                        styles.inputtext,
+                        {
+                          flex: 1,
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          color: "#fff"
+                        }
+                      ]}
+                    >
+                      {this.state.campaignInfo.callaction === ""
+                        ? this.state.callactions[0].label
+                        : this.state.callactions.find(
+                            c =>
+                              this.state.campaignInfo.callaction.value ===
+                              c.value
+                          ).label}
+                    </Text>
+                    <Icon
+                      type="AntDesign"
+                      name="down"
+                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                    />
+                  </Item>
+                </RNPickerSelect>
+                <Item
+                  rounded
                   style={[
-                    styles.inputtext,
+                    styles.input,
                     {
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      color: "#fff"
+                      borderColor: this.state.urlError ? "red" : "transparent"
                     }
                   ]}
                 >
@@ -203,6 +236,8 @@ class Website extends Component {
             />
           </View>
         </View>
+          )}
+        </KeyboardShift>
       </SafeAreaView>
     );
   }

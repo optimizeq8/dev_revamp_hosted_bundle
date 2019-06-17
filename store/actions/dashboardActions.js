@@ -3,11 +3,16 @@ import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
 import { Segment } from "expo";
 import { showMessage } from "react-native-flash-message";
+import store from "../index";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const filterCampaigns = query => {
   return {
@@ -24,7 +29,7 @@ export const getCampaignDetails = (id, navigation) => {
     });
     navigation.push("CampaignDetails");
 
-    instance
+    createBaseUrl()
       .get(`campaigndetail/${id}`)
       .then(res => {
         return res.data;
@@ -67,7 +72,7 @@ export const getCampaignStats = (campaign, duration) => {
       type: actionTypes.SET_STATS_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`getcampaignStats`, {
         //testing
         // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
@@ -110,12 +115,14 @@ export const getCampaignStats = (campaign, duration) => {
 };
 
 export const getCampaignList = (id, increasePage, cancelToken) => {
+  console.log("dashboard", store.getState().login.admin);
+
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: { isListEnd: false, fetching_from_server: false, loading: true }
     });
-    instance
+    createBaseUrl()
       .get(`campaignlist/${id}/${1}`, {
         cancelToken
       })
@@ -158,7 +165,7 @@ export const updateCampaignList = (id, page, increasePage) => {
       type: actionTypes.GOT_ALL_CAMPAIGNS,
       payload: { isListEnd: false, fetching_from_server: true }
     });
-    instance
+    createBaseUrl()
       .get(`campaignlist/${id}/${page}`)
       .then(res => {
         return res.data;

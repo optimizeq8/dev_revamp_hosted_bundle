@@ -1,26 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  Dimensions
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
+import { View } from "react-native";
+import { Button, Text } from "native-base";
 import { BlurView } from "expo";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
@@ -28,10 +8,9 @@ import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import { SafeAreaView } from "react-navigation";
 // Style
-import styles from "../../Screens/CampaignCreate/AdDetails/styles";
+import styles from "./styles";
 
 //icons
-import CloseIcon from "../../../assets/SVGs/Close.svg";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
 
@@ -48,7 +27,7 @@ export default class DateFields extends Component {
       modalVisible: false,
       start_choice: false,
       end_choice: false,
-
+      reset: false,
       start_timeError: "",
       endt_time: ""
     };
@@ -123,7 +102,7 @@ export default class DateFields extends Component {
             ]}
           >
             <SafeAreaView
-              style={{ height: "100%", backgroundColor: "#0000" }}
+              style={styles.safeArea}
               forceInset={{ bottom: "never" }}
             >
               <CustomHeader
@@ -144,12 +123,13 @@ export default class DateFields extends Component {
                 height={hp(5) < 30 ? 30 : 60}
                 style={styles.icon}
               />
-              <Text style={[styles.textModal, { color: "#FF9D00" }]}>
+              <Text style={styles.textModalOrange}>
                 Select the{" "}
                 {!this.state.start_choice ? "Start Date" : "End Date"}
               </Text>
               <DateRangePicker
                 filterMenu={this.props.filterMenu}
+                reset={this.state.reset}
                 chartRange={this.props.chartRange}
                 selectedCampaign={this.props.selectedCampaign}
                 startDatePicked={this.startDatePicked}
@@ -159,7 +139,8 @@ export default class DateFields extends Component {
                   this.endDatePicked();
                   this.setState({
                     start_date: s,
-                    end_date: e
+                    end_date: e,
+                    reset: false
                   });
                 }}
                 theme={{ markColor: "#FF9D00", markTextColor: "white" }}
@@ -174,6 +155,7 @@ export default class DateFields extends Component {
                       modalVisible: false,
                       end_time: ""
                     });
+                    this.setState({ modalVisible: false });
                     this.props.durationChange(
                       this.props.selectedCampaign.start_time,
                       this.props.selectedCampaign.end_time
@@ -185,11 +167,12 @@ export default class DateFields extends Component {
                       start_choice: false,
                       end_choice: false,
                       start_timeError: "",
-                      end_time: ""
+                      end_time: "",
+                      reset: true
                     });
                   }
                 }}
-                style={[styles.title, { textDecorationLine: "underline" }]}
+                style={[styles.resetStyle, { textDecorationLine: "underline" }]}
               >
                 Reset
               </Text>

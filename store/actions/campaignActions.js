@@ -1,11 +1,17 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
+import store from "../index";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const payment_request_credit_card = (
   campaign_id,
@@ -17,7 +23,7 @@ export const payment_request_credit_card = (
       type: actionTypes.SET_AD_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`makeccpayment/${campaign_id}`)
       .then(res => {
         return res.data;
@@ -72,7 +78,7 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
       type: actionTypes.SET_AD_LOADING,
       payload: true
     });
-    instance
+    createBaseUrl()
       .get(`makeknetpayment/${campaign_id}`)
       .then(res => {
         return res.data;
@@ -118,7 +124,7 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
 
 export const snap_ad_audience_size = (info, totalReach) => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .post(`snapaudiencesize`, info)
       .then(res => {
         return res.data;
@@ -149,7 +155,7 @@ export const snap_ad_audience_size = (info, totalReach) => {
 
 export const get_total_reach = info => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post("snapaudiencesize", info)
       .then(res => {
         return res.data;
@@ -183,7 +189,7 @@ export const ad_objective = (info, navigation) => {
       type: actionTypes.SET_AD_LOADING_OBJ,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`savecampaign`, info)
       .then(res => {
         return res.data;
@@ -253,7 +259,7 @@ export const ad_design = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
     };
-    instance
+    createBaseUrl()
       .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
         onUploadProgress: ProgressEvent =>
           laoding((ProgressEvent.loaded / ProgressEvent.total) * 100),
@@ -311,7 +317,7 @@ export const ad_design = (
 export const getVideoUploadUrl = (campaign_id, openBrowser) => {
   return dispatch => {
     dispatch({ type: actionTypes.GET_VIDEO_URL_LOADING, payload: true });
-    instance
+    createBaseUrl()
       .get(`uploadMedia/${campaign_id}`)
       .then(res => {
         return res.data;
@@ -339,7 +345,7 @@ export const getVideoUploadUrl = (campaign_id, openBrowser) => {
 
 export const get_interests = countryCode => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .get(`interestsbycountry/${countryCode}`)
       .then(res => {
         return res.data.interests;
@@ -369,7 +375,7 @@ export const get_interests = countryCode => {
 
 export const get_device_brands = () => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .get(`deviceBrands`)
       .then(res => {
         return res.data.targeting_dimensions;
@@ -399,7 +405,7 @@ export const get_device_brands = () => {
 
 export const get_ios_versions = () => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .get(`osversion/iOS`)
       .then(res => {
         return res.data.targeting_dimensions;
@@ -429,7 +435,7 @@ export const get_ios_versions = () => {
 
 export const get_android_versions = () => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .get(`osversion/ANDROID`)
       .then(res => {
         return res.data.targeting_dimensions;
@@ -463,7 +469,7 @@ export const ad_details = (info, names, navigation) => {
       type: actionTypes.SET_AD_LOADING_DETAIL,
       payload: true
     });
-    instance
+    createBaseUrl()
       .post(`savetargeting`, info)
       .then(res => {
         return res.data;
@@ -496,7 +502,7 @@ export const ad_details = (info, names, navigation) => {
 
 export const updateCampaign = (info, businessid, navigation) => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .put(`savetargeting`, { ...info, businessid })
       .then(res => {
         // console.log("back end info", res.data);
@@ -532,7 +538,7 @@ export const updateCampaign = (info, businessid, navigation) => {
 // Does not have a reducer case (nothing is done with it yet)
 export const updateStatus = (info, handleToggle) => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .put(`updateCampaignStatus`, info)
       .then(res => {
         return res.data;
@@ -563,7 +569,7 @@ export const updateStatus = (info, handleToggle) => {
 
 export const endCampaign = (info, handleToggle) => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .put(`endCampaign`, info)
       .then(res => {
         return res.data;
@@ -594,7 +600,7 @@ export const endCampaign = (info, handleToggle) => {
 
 export const get_languages = () => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .get(`language`)
       .then(res => {
         return res.data;

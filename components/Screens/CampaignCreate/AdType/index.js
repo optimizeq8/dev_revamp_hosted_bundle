@@ -38,7 +38,7 @@ import CloseIcon from "../../../../assets/SVGs/Close";
 import Placeholder from "../../../../assets/SVGs/AdType/Placeholder";
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../Global Styles";
+import globalStyles from "../../../../GlobalStyles";
 
 import { colors } from "../../../GradiantColors/colors";
 

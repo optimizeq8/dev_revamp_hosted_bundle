@@ -11,7 +11,7 @@ import { LinearGradient, Segment } from "expo";
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
-import GlobalStyles, { globalColors } from "../../../Global Styles";
+import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
 class CampaignCard extends Component {
   review_status = this.props.campaign.review_status;

@@ -15,6 +15,7 @@ import { Segment } from "expo";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
+import globalStyles from "../../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";
@@ -109,30 +110,28 @@ class PersonalInfo extends Component {
                   floatingLabel
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.inputF
-                        ? "#7039FF"
-                        : this.state.firstnameError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
+                    this.state.inputF
+                      ? globalStyles.purpleBorderColor
+                      : this.state.firstnameError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.lightGrayBorderColor
                   ]}
                 >
                   <Label
                     style={[
-                      styles.inputtext,
+                      styles.inputText,
                       styles.labelInputText,
-                      {
-                        color: this.state.inputF ? "#FF9D00" : "#717171"
-                      }
+                      this.state.inputF
+                        ? globalStyles.orangeTextColor
+                        : globalStyles.darkGrayTextColor
                     ]}
                   >
                     <Icon
                       style={[
                         styles.iconSize,
-                        {
-                          color: this.state.inputF ? "#FF9D00" : "#717171"
-                        }
+                        this.state.inputF
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor
                       ]}
                       name="person"
                       type="MaterialIcons"
@@ -142,7 +141,7 @@ class PersonalInfo extends Component {
                   </Label>
 
                   <Input
-                    style={styles.inputtext}
+                    style={styles.inputText}
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value => {
@@ -168,29 +167,27 @@ class PersonalInfo extends Component {
                   floatingLabel
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.inputL
-                        ? "#7039FF"
-                        : this.state.lastnameError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
+                    this.state.inputL
+                      ? globalStyles.purpleBorderColor
+                      : this.state.lastnameError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.lightGrayBorderColor
                   ]}
                 >
                   <Label
                     style={[
-                      styles.inputtext,
+                      styles.inputText,
                       styles.labelInputText,
-                      {
-                        color: this.state.inputL ? "#FF9D00" : "#717171"
-                      }
+                      this.state.inputL
+                        ? globalStyles.orangeTextColor
+                        : globalStyles.darkGrayTextColor
                     ]}
                   >
                     Last Name
                   </Label>
 
                   <Input
-                    style={styles.inputtext}
+                    style={styles.inputText}
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value =>
@@ -219,31 +216,29 @@ class PersonalInfo extends Component {
                   floatingLabel
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.inputE
-                        ? "#7039FF"
-                        : this.state.emailError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
+                    this.state.inputE
+                      ? globalStyles.purpleBorderColor
+                      : this.state.emailError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.lightGrayBorderColor
                   ]}
                 >
                   <Label
                     style={[
-                      styles.inputtext,
+                      styles.inputText,
                       styles.labelInputText,
-                      {
-                        flexDirection: "row",
-                        color: this.state.inputE ? "#FF9D00" : "#717171"
-                      }
+                      this.state.inputE
+                        ? globalStyles.orangeTextColor
+                        : globalStyles.darkGrayTextColor,
+                      styles.labelEmail
                     ]}
                   >
                     <Icon
                       style={[
                         styles.iconSize,
-                        {
-                          color: this.state.inputE ? "#FF9D00" : "#717171"
-                        }
+                        this.state.inputE
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor
                       ]}
                       name="mail"
                       type="MaterialIcons"
@@ -253,7 +248,7 @@ class PersonalInfo extends Component {
                   </Label>
 
                   <Input
-                    style={styles.inputtext}
+                    style={styles.inputText}
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value =>
@@ -284,29 +279,29 @@ class PersonalInfo extends Component {
                   floatingLabel
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.inputP
-                        ? "#7039FF"
-                        : this.state.passwordError
-                        ? "red"
-                        : "#D9D9D9"
-                    }
+                    this.state.inputP
+                      ? globalStyles.purpleBorderColor
+                      : this.state.passwordError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.lightGrayBorderColor
                   ]}
                 >
                   <Label
                     style={[
-                      styles.inputtext,
-                      {
-                        bottom: 5,
-                        color: this.state.inputP ? "#FF9D00" : "#717171"
-                      }
+                      styles.inputText,
+                      this.state.inputP
+                        ? globalStyles.orangeTextColor
+                        : globalStyles.darkGrayTextColor,
+                      styles.labelPassword
                     ]}
                   >
                     <Icon
-                      style={{
-                        fontSize: 20,
-                        color: this.state.inputP ? "#FF9D00" : "#717171"
-                      }}
+                      style={[
+                        this.state.inputP
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor,
+                        styles.labelIcon
+                      ]}
                       name="key"
                       type="Entypo"
                     />
@@ -314,7 +309,7 @@ class PersonalInfo extends Component {
                     Password
                   </Label>
                   <Input
-                    style={styles.inputtext}
+                    style={styles.inputText}
                     secureTextEntry={true}
                     autoCorrect={false}
                     autoCapitalize="none"
@@ -348,31 +343,28 @@ class PersonalInfo extends Component {
                   floatingLabel
                   style={[
                     styles.input,
-                    {
-                      marginBottom: 0,
-                      paddingBottom: 0,
-                      borderColor: this.state.inputPR
-                        ? "#7039FF"
-                        : this.state.repasswordError !== ""
-                        ? "red"
-                        : "#D9D9D9"
-                    }
+                    this.state.inputPR
+                      ? globalStyles.purpleBorderColor
+                      : this.state.repasswordError !== ""
+                      ? globalStyles.redBorderColor
+                      : globalStyles.lightGrayBorderColor,
+                    styles.repeatPassword
                   ]}
                 >
                   <Label
                     style={[
-                      styles.inputtext,
-                      {
-                        bottom: 5,
-                        color: this.state.inputPR ? "#FF9D00" : "#717171"
-                      }
+                      styles.inputText,
+                      this.state.inputPR
+                        ? globalStyles.orangeTextColor
+                        : globalStyles.darkGrayTextColor,
+                      styles.labelPassword
                     ]}
                   >
                     Retype Password
                   </Label>
 
                   <Input
-                    style={styles.inputtext}
+                    style={styles.inputText}
                     secureTextEntry={true}
                     autoCorrect={false}
                     autoCapitalize="none"

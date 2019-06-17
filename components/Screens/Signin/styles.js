@@ -1,16 +1,30 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
+
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0000"
+  },
+  touchableViewContainer: {
+    flex: 1,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  bottomInviteViewContainer: { bottom: "5%" },
+  textInviteCode: { fontFamily: "montserrat-semibold" },
+  logoContainer: { alignSelf: "center" },
+  dontHaveAccountText: { paddingBottom: 7 },
+
+  keyboardShiftContainer: { flex: 1, alignItems: "center" },
+  forgotPasswordLink: { paddingVertical: 20, fontSize: 12 },
   title: { color: "#000", fontSize: 48 },
   container: {
     marginTop: heightPercentageToDP(3),
@@ -25,7 +39,7 @@ const styles = StyleSheet.create({
     position: "relative"
     // top: heightPercentageToDP(1)
   },
-  logotext: {
+  logoText: {
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
@@ -49,12 +63,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 0
   },
-  buttontext: {
+  buttonText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 14
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-regular",
     fontSize: 14 / PixelRatio.getFontScale(),
     color: "#fff",
@@ -99,13 +113,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 40,
     justifyContent: "center"
-  },
-  error: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 15,
-    marginTop: 25
   },
   background: {
     position: "absolute",

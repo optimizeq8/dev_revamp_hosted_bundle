@@ -1,7 +1,6 @@
 //Components
 import React, { Component } from "react";
 import { View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button, Text, Container, Icon, Badge } from "native-base";
 import { LinearGradient } from "expo";
 import PersonalInfo from "../PersonalInfo";
@@ -55,7 +54,7 @@ class MainForm extends Component {
 
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never" }}
       >
         <Container style={styles.container}>

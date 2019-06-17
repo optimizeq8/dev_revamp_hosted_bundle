@@ -13,7 +13,10 @@ import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
 // Style
 import styles from "./styles";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import { globalColors } from "../../../../Global Styles";
+
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
+
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 
@@ -148,20 +151,20 @@ export default class Long_Form_Video extends Component {
           //   height: "100%",
           flex: 1,
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           paddingHorizontal: 30
         }}
       >
         <View
           style={{
-            flexDirection: "column"
+            flexDirection: "column",
             // flex: 1,
             // justifyContent: "space-around"
-            // paddingTop: 30
+            paddingTop: 30
           }}
         >
           <VideoIcon style={[styles.icon]} />
-          <View style={[styles.textcontainer, { paddingBottom: 25 }]}>
+          <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
             <Text style={[styles.titletext]}>LongForm Video</Text>
             <Text style={[styles.subtext]}>
               Promote your brand or product to{"\n"}Snapchatters through video.

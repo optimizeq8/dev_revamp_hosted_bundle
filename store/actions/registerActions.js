@@ -9,17 +9,23 @@ import { setAuthToken } from "./genericActions";
 import { setCurrentUser } from "./loginActions";
 import { getBusinessAccounts } from "./accountManagementActions";
 
-const instance = axios.create({
-  baseURL: "https://optimizekwtestingserver.com/optimize/public/"
-  // baseURL: "https://www.optimizeapp.com/optimize/public/"
-});
+import store from "../index";
+
+createBaseUrl = () =>
+  axios.create({
+    baseURL: store.getState().login.admin
+      ? "https://optimizekwtestingserver.com/optimize/public/"
+      : "https://www.optimizeapp.com/optimize/public/"
+    // baseURL: "https://www.optimizeapp.com/optimize/public/"
+  });
+const instance = createBaseUrl();
 
 export const send_push_notification = () => {
   return (dispatch, getState) => {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
       if (permission.status === "granted") {
         Notifications.getExpoPushTokenAsync().then(token => {
-          instance
+          createBaseUrl()
             .post(`updatepushToken`, {
               token: token,
               userid: getState().auth.userInfo.userid
@@ -50,7 +56,7 @@ export const send_push_notification = () => {
 
 export const verifyBusinessName = (businessname, _handleBusinessName) => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`verifyBusinessName`, { businessname })
       .then(res => res.data)
       .then(data => {
@@ -89,7 +95,7 @@ export const verifyBusinessName = (businessname, _handleBusinessName) => {
 
 export const registerUser = (userInfo, navigation) => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .post(`registerUser`, userInfo)
       .then(res => {
         return res.data;
@@ -133,7 +139,7 @@ export const resetRegister = () => {
 
 export const sendMobileNo = mobileNo => {
   return (dispatch, getState) => {
-    instance
+    createBaseUrl()
       .post(`addMobile`, mobileNo)
       .then(res => {
         return res.data;
@@ -164,7 +170,7 @@ export const sendMobileNo = mobileNo => {
 
 export const verifyMobileCode = mobileAuth => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`verifyMobileCode`, mobileAuth)
       .then(res => {
         return res.data;
@@ -203,7 +209,7 @@ export const verifyMobileCode = mobileAuth => {
 
 export const resendVerifyMobileCode = mobileAuth => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`resendVerificationCode`, mobileAuth)
       .then(res => {
         return res.data;
@@ -245,7 +251,7 @@ export const resendVerifyMobileCode = mobileAuth => {
 
 export const resendVerifyMobileCodeByEmail = mobileAuth => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`resendVerificationCodebyEmail`, mobileAuth)
       .then(res => {
         return res.data;
@@ -289,7 +295,7 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
 
 export const verifyEmail = (email, userInfo) => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`verifyEmail`, { email: email })
       .then(res => {
         return res.data;
@@ -329,7 +335,7 @@ export const verifyEmail = (email, userInfo) => {
 
 export const verifyInviteCode = verificationCode => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`verifyInvitationCode`, { verificationCode })
       .then(res => res.data)
       .then(data => {
@@ -369,7 +375,7 @@ export const verifyInviteCode = verificationCode => {
 
 export const requestInvitationCode = info => {
   return dispatch => {
-    instance
+    createBaseUrl()
       .post(`requestinvitationCode`, info)
       .then(res => {
         return res.data;

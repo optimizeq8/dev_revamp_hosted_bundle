@@ -7,16 +7,47 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  title: {
-    top: -15,
-    fontSize: 24,
-    color: "#fff",
-    textAlign: "center",
-    paddingTop: 0,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
   },
-  subtitle: {
+  topContainer: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignSelf: "center"
+  },
+  businessTypeButton1: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 15,
+    borderTopStartRadius: 15
+  },
+  businessTypeButton2: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 0,
+    borderTopStartRadius: 0
+  },
+  businessTypeButton3: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 15,
+    borderTopEndRadius: 15
+  },
+  iconButtonStyleLeft: {
+    left: 25,
+    fontSize: 25 / PixelRatio.getFontScale()
+  },
+  iconButtonStyle2: {
+    alignSelf: "center",
+    fontSize: 25 / PixelRatio.getFontScale()
+  },
+  iconButtonStyle3: {
+    fontSize: 25 / PixelRatio.getFontScale(),
+    bottom: 5
+  },
+
+  subTitle: {
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
@@ -25,8 +56,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     paddingVertical: 10
   },
-  maincontainer: {
-    marginTop: 30,
+  mainContainer: {
+    // marginTop: 30,
+    marginTop: 0,
     backgroundColor: "#0000",
     flex: 1
   },
@@ -56,19 +88,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column"
   },
-  activebutton: {
+  activeButton: {
     backgroundColor: "#FF9D00",
     height: 70,
     justifyContent: "center",
     flexDirection: "column"
   },
-  inactivetext: {
+  inactiveText: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
     color: "#7039FF",
     textAlign: "center"
   },
-  activetext: {
+  activeText: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
     color: "#fff",
@@ -89,7 +121,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 40
   },
-  buttontext: {
+  buttonText: {
     fontFamily: "montserrat-medium",
     fontSize: 16,
     textAlign: "center",
@@ -101,13 +133,13 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center"
   },
-  inputtext: {
+  inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     textAlign: "center"
     // marginBottom: 130
   },
-  pickertext: {
+  pickerText: {
     fontFamily: "montserrat-light",
     fontSize: 14,
     textAlign: "center",
@@ -147,6 +179,38 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 10,
     paddingVertical: 10
+  },
+  tNcLink: {
+    textDecorationLine: "underline",
+    color: "blue"
+  },
+  buttonLink: {
+    lineHeight: 20
+  },
+  textAgreement: {
+    bottom: 10
+  },
+  agreementLink: {
+    zIndex: 10
+  },
+  iconStartUp: {
+    fontSize: 14 / PixelRatio.getFontScale()
+  },
+  iconBrandName: {
+    fontSize: 18 / PixelRatio.getFontScale(),
+    alignSelf: "flex-end"
+  },
+  iconEmail: {
+    fontSize: 20 / PixelRatio.getFontScale()
+  },
+  iconDown: {
+    color: "#5F5F5F",
+    fontSize: 20,
+    left: 25
+  },
+  labelEmail: {
+    bottom: 5,
+    flexDirection: "row"
   }
 });
 

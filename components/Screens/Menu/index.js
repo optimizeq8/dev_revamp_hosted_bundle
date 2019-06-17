@@ -102,13 +102,7 @@ class Menu extends Component {
           <Icons.LogoutIcon style={styles.icons} />
         </TouchableOpacity> */}
 
-        <View
-          style={{
-            // bottom: heightPercentageToDP(5) < 30 ? 10 : 0,
-            backgroundColor: "#0000",
-            flexGrow: 1
-          }}
-        >
+        <View style={styles.menuContainer}>
           <Text style={styles.menutext}> Menu </Text>
           <Text style={styles.businessTitle}>
             {!this.props.mainBusiness ? "" : this.props.mainBusiness.brandname}
@@ -126,22 +120,11 @@ class Menu extends Component {
             ]}
             onPress={() => this.slidePanelShow()}
           >
-            <Text style={styles.buttontext}>Switch Account</Text>
-            <DownArrowIcon
-              style={{ marginLeft: 5, right: 20, top: 1 }}
-              stroke="#fff"
-            />
+            <Text style={styles.buttonText}>Switch Account</Text>
+            <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
           </Button>
 
-          <ScrollView
-            contentContainerStyle={{
-              paddingLeft: 20,
-              flexGrow: 1,
-              paddingBottom: hp(35)
-
-              //   bottom: heightPercentageToDP(5) < 30 ? 10 : 0
-            }}
-          >
+          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <TouchableOpacity
               style={styles.options}
               onPress={() => this.props.navigation.navigate("PersonalInfo")}

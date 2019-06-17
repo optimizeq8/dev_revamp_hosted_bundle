@@ -93,51 +93,44 @@ export default class App_Install extends Component {
             flex: 1
           }}
         >
-          <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={false}
-            contentContainerStyle={{ flex: 1 }}
-            style={{ flex: 1 }}
+          <View
+            style={{
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "space-around"
+              // paddingTop: 30
+            }}
           >
-            <View
-              style={{
-                flexDirection: "column",
-                flex: 1,
-                justifyContent: "space-around"
-                // paddingTop: 30
-              }}
-            >
-              <AppInstallIcon
-                width={widthPercentageToDP(18)}
-                height={heightPercentageToDP(10)}
-                style={styles.icon}
-              />
-              <View style={styles.textcontainer}>
-                <Text style={[styles.titletext]}>App Install</Text>
-                <Text style={[styles.subtext, { marginBottom: 0 }]}>
-                  Send Snapchatters to the app store to download your app
-                </Text>
-              </View>
-              {!this.state.firstStepDone ? (
-                // <AppSearch renderNextStep={this.renderNextStep} />
-                <AppChoice
-                  listNum={1}
-                  renderNextStep={this.renderNextStep}
-                  navigation={this.props.navigation}
-                />
-              ) : (
-                <AppConfirm
-                  icon_media_url={this.state.attachment.icon_media_url}
-                  app_name={this.state.attachment.app_name}
-                  ios_app_id={this.state.attachment.ios_app_id}
-                  android_app_url={this.state.attachment.android_app_url}
-                  _handleSubmission={this._handleSubmission}
-                  renderPreviousStep={this.renderPreviousStep}
-                  deepLink={false}
-                />
-              )}
+            <AppInstallIcon
+              width={widthPercentageToDP(18)}
+              height={heightPercentageToDP(10)}
+              style={styles.icon}
+            />
+            <View style={styles.textcontainer}>
+              <Text style={[styles.titletext]}>App Install</Text>
+              <Text style={[styles.subtext, { marginBottom: 0 }]}>
+                Send Snapchatters to the app store to download your app
+              </Text>
             </View>
-          </KeyboardAwareScrollView>
+            {!this.state.firstStepDone ? (
+              // <AppSearch renderNextStep={this.renderNextStep} />
+              <AppChoice
+                listNum={1}
+                renderNextStep={this.renderNextStep}
+                navigation={this.props.navigation}
+              />
+            ) : (
+              <AppConfirm
+                icon_media_url={this.state.attachment.icon_media_url}
+                app_name={this.state.attachment.app_name}
+                ios_app_id={this.state.attachment.ios_app_id}
+                android_app_url={this.state.attachment.android_app_url}
+                _handleSubmission={this._handleSubmission}
+                renderPreviousStep={this.renderPreviousStep}
+                deepLink={false}
+              />
+            )}
+          </View>
         </View>
       </Container>
     );

@@ -10,7 +10,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import { globalColors } from "../../../Global Styles";
+import { globalColors } from "../../../GlobalStyles";
 export default class SelectLanguages extends Component {
   render() {
     let languagelist = this.props.filteredLanguages.map(c => (

@@ -6,7 +6,8 @@ import ErrorIcon from "../../../assets/SVGs/Error.svg";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //styles
-import styles, { colors } from "./styles";
+import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 //Reddux
 import * as actionCreators from "../../../store/actions";
@@ -64,7 +65,7 @@ class ErrorRedirect extends Component {
             <ErrorIcon width={93} height={93} />
 
             <Text style={styles.title}> Sorry </Text>
-            <Text style={styles.errortext}>
+            <Text style={styles.errorText}>
               There seems to be a problem with {"\n"}
               your payment method.
             </Text>
@@ -101,7 +102,7 @@ class ErrorRedirect extends Component {
                 }
               }}
             >
-              <Text style={styles.buttontext}> Retry </Text>
+              <Text style={styles.buttonText}> Retry </Text>
             </Button>
             <Button
               style={styles.whitebutton}
@@ -109,8 +110,10 @@ class ErrorRedirect extends Component {
                 this.props.resetCampaignInfo();
                 this.props.navigation.navigate("Dashboard");
               }}
+              style={styles.whiteButton}
+              onPress={() => this.props.navigation.navigate("Dashboard")}
             >
-              <Text style={styles.whitebuttontext}> Home </Text>
+              <Text style={styles.whiteButtonText}> Home </Text>
             </Button>
           </View>
         </Container>
