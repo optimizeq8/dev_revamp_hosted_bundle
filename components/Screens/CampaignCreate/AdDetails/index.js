@@ -732,7 +732,10 @@ class AdDetails extends Component {
 
     const campaign = this.props.navigation.getParam("campaign", {});
 
-    const image = this.props.data ? this.props.data.image : "";
+    const image =
+      this.props.data && this.props.data.image
+        ? this.props.data.image
+        : this.props.navigation.getParam("image", null);
     return (
       <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never" }}>
         <Container style={styles.mainContainer}>
