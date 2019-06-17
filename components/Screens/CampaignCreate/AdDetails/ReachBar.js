@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, Platform } from "react-native";
+import { Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
 //Styles
 import styles from "./styles";
-
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -19,7 +19,7 @@ import {
 class ReachBar extends Component {
   render() {
     return (
-      <View style={[styles.bottom, {}]}>
+      <View style={styles.bottom}>
         <AnimatedCircularProgress
           size={wp(80)}
           width={15}
@@ -27,44 +27,17 @@ class ReachBar extends Component {
           arcSweepAngle={200}
           rotation={260}
           lineCap="round"
-          style={[
-            styles.chart,
-            {
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              top: -20,
-              right: 0
-            }
-          ]}
-          tintColor="#FF9D00"
+          style={styles.chart}
+          tintColor={globalColors.orange}
           backgroundColor="rgba(255,255,255,0.3)"
         />
-        <View
-          style={[
-            styles.chartItems,
-            { paddingVertical: Platform.OS === "android" ? 0 : 10 }
-          ]}
-        >
-          <Text style={styles.chartText}>
+        <View style={styles.chartItems}>
+          <Text style={styles.chartTextNum}>
             {this.props.average_reach}
             {"\n"}
-            <Text
-              style={[
-                styles.chartText,
-                { fontFamily: "montserrat-regular", fontSize: 12 }
-              ]}
-            >
-              Potential Reach
-            </Text>
+            <Text style={styles.chartText}>Potential Reach</Text>
           </Text>
           <LowerButton function={() => this.props._handleSubmission()} />
-          {/* <TouchableOpacity
-                onPress={() => this.props._handleSubmission()}
-                style={styles.button}
-              >
-                <ForwardButton />
-              </TouchableOpacity> */}
         </View>
       </View>
     );

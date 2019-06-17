@@ -1,45 +1,26 @@
 import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import {
-  View,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  BackHandler
-} from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  CardItem,
-  Body,
-  Item,
-  Input,
-  Container,
-  Icon,
-  H1,
-  Badge
-} from "native-base";
-import list from "./callactions";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
+import { View, TouchableOpacity, BackHandler } from "react-native";
+import { Button, Text, Item, Icon } from "native-base";
 import { ImagePicker, Permissions, Video, FileSystem } from "expo";
 import Modal from "react-native-modal";
+import { showMessage } from "react-native-flash-message";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import LowerButton from "../../../MiniComponents/LowerButton";
+
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
 import AddVidIcon from "../../../../assets/SVGs/SwipeUps/AddVid";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
-import LowerButton from "../../../MiniComponents/LowerButton";
-import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import { showMessage } from "react-native-flash-message";
+
+//Data
+import list from "../../../Data/callactions.data";
+
+//Functions
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
 export default class Long_Form_Video extends Component {
   static navigationOptions = {
@@ -98,7 +79,6 @@ export default class Long_Form_Video extends Component {
   _pickImage = async () => {
     let result = await this.pick();
 
-    //if (result.width >= 1080 && result.height >= 1920)
     if (!result.cancelled) {
       if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
@@ -167,32 +147,17 @@ export default class Long_Form_Video extends Component {
   };
   render() {
     return (
-      <View
-        style={{
-          //   height: "100%",
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 30
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "column",
-            // flex: 1,
-            // justifyContent: "space-around"
-            paddingTop: 30
-          }}
-        >
-          <VideoIcon style={[styles.icon]} />
+      <View style={styles.longFormVideoContainer}>
+        <View style={styles.longFormVideoContent}>
+          <VideoIcon style={styles.icon} />
           <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
-            <Text style={[styles.titletext]}>LongForm Video</Text>
-            <Text style={[styles.subtext]}>
+            <Text style={styles.titletext}>LongForm Video</Text>
+            <Text style={styles.subtext}>
               Promote your brand or product to{"\n"}Snapchatters through video.
             </Text>
           </View>
           {this.state.longformvideo_media && (
-            <View style={{}}>
+            <View>
               <Text style={[styles.subtext, { paddingBottom: 5 }]}>
                 Preview Only
               </Text>
@@ -204,18 +169,13 @@ export default class Long_Form_Video extends Component {
                 isLooping
                 isMuted
                 resizeMode="cover"
-                style={[styles.placeholder]}
+                style={styles.placeholder}
               />
               <Button
                 onPress={() => {
                   this._pickImage();
                 }}
-                style={{
-                  backgroundColor: globalColors.orange,
-                  alignSelf: "center",
-                  marginVertical: 10,
-                  borderRadius: 30
-                }}
+                style={styles.videoSelectButton}
               >
                 <Text> Change Video</Text>
               </Button>
@@ -234,19 +194,7 @@ export default class Long_Form_Video extends Component {
                 name="video-plus"
                 style={[styles.icon, { fontSize: 70 }]}
               />
-              <Text
-                style={[
-                  styles.subtext,
-                  {
-                    color: "#FF9D00",
-                    position: "absolute",
-                    top: "70%",
-                    fontFamily: "montserrat-bold"
-                  }
-                ]}
-              >
-                Add Video
-              </Text>
+              <Text style={styles.addVideoText}>Add Video</Text>
             </TouchableOpacity>
           )}
           {/* {this.state.durationError ? (
@@ -281,32 +229,14 @@ export default class Long_Form_Video extends Component {
             }}
           >
             <Item rounded style={styles.input}>
-              <Text
-                style={[
-                  styles.inputtext,
-                  {
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    color: "#fff"
-                  }
-                ]}
-              >
+              <Text style={styles.callActionLabel}>
                 {this.state.callaction === ""
                   ? this.state.callactions[0].label
                   : this.state.callactions.find(
                       c => this.state.callaction.value === c.value
                     ).label}
               </Text>
-              <Icon
-                type="AntDesign"
-                name="down"
-                style={{
-                  color: "#fff",
-                  fontSize: 20,
-                  left: 25
-                }}
-              />
+              <Icon type="AntDesign" name="down" style={styles.downArrowIcon} />
             </Item>
           </RNPickerSelect>
           <Modal isVisible={this.state.videoLoading}>

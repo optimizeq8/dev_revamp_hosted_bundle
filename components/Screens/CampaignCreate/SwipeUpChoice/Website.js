@@ -2,17 +2,22 @@ import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { View, SafeAreaView, BackHandler } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
+import { showMessage } from "react-native-flash-message";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
-import list from "./callactions";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
+
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import { showMessage } from "react-native-flash-message";
+import GlobalStyles from "../../../../GlobalStyles";
+
+//Data
+import list from "../../../Data/callactions.data";
+
+//Functions
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
 export default class Website extends Component {
   static navigationOptions = {
@@ -78,41 +83,27 @@ export default class Website extends Component {
   };
   render() {
     return (
-      <SafeAreaView
-        style={{
-          height: "100%"
-        }}
-      >
+      <SafeAreaView style={styles.safeAreaContainer}>
         <KeyboardShift>
           {() => (
             <View
-              style={{
-                height: "100%",
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
-              }}
-            >
-              <View
-                style={
-                  {
-                    //   marginTop: this.props.swipeUpDestination ? 40 : 0
-                  }
+              style={[
+                styles.websiteContent,
+                {
+                  padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
                 }
-              >
+              ]}
+            >
+              <View>
                 <WebsiteIcon style={styles.icon} />
                 <View style={[styles.textcontainer, { marginBottom: 20 }]}>
-                  <Text style={[styles.titletext]}>Website</Text>
-                  <Text style={[styles.subtext]}>
+                  <Text style={styles.titletext}>Website</Text>
+                  <Text style={styles.subtext}>
                     The user will be taken to your website
                   </Text>
                 </View>
                 <RNPickerSelect
                   items={this.state.callactions}
-                  placeholder={{}}
                   onValueChange={(value, index) => {
                     this.setState({
                       campaignInfo: {
@@ -126,17 +117,7 @@ export default class Website extends Component {
                   }}
                 >
                   <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-                    <Text
-                      style={[
-                        styles.inputtext,
-                        {
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          color: "#fff"
-                        }
-                      ]}
-                    >
+                    <Text style={styles.callActionLabel}>
                       {this.state.campaignInfo.callaction === ""
                         ? this.state.callactions[0].label
                         : this.state.callactions.find(
@@ -156,9 +137,9 @@ export default class Website extends Component {
                   rounded
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.urlError ? "red" : "transparent"
-                    }
+                    this.state.urlError
+                      ? GlobalStyles.redBorderColor
+                      : GlobalStyles.transparentBorderColor
                   ]}
                 >
                   <Input
@@ -173,33 +154,33 @@ export default class Website extends Component {
                           ...this.state.campaignInfo,
                           attachment: value
                         }
-                            })
-                }
-                onBlur={() => this.validateUrl()}
-              />
-            </Item>
-            <Text style={styles.warningText}>
-              Please make sure not include social media sites such as Facbook,
-              Instagram, Youtube, SnapChat, etc.
-            </Text>
-          </View>
-          <View />
-          <View>
-            {this.props.swipeUpDestination && (
-              <Text
-                style={styles.footerText}
-                onPress={() => this.props.toggleSideMenu()}
-              >
-                Change Swipe-up Destination
-              </Text>
-            )}
-            <LowerButton
-              checkmark={true}
-              bottom={0}
-              function={this._handleSubmission}
-            />
-          </View>
-        </View>
+                      })
+                    }
+                    onBlur={() => this.validateUrl()}
+                  />
+                </Item>
+                <Text style={styles.warningText}>
+                  Please make sure not include social media sites such as
+                  Facbook, Instagram, Youtube, SnapChat, etc.
+                </Text>
+              </View>
+              <View />
+              <View>
+                {this.props.swipeUpDestination && (
+                  <Text
+                    style={styles.footerText}
+                    onPress={() => this.props.toggleSideMenu()}
+                  >
+                    Change Swipe-up Destination
+                  </Text>
+                )}
+                <LowerButton
+                  checkmark={true}
+                  bottom={0}
+                  function={this._handleSubmission}
+                />
+              </View>
+            </View>
           )}
         </KeyboardShift>
       </SafeAreaView>

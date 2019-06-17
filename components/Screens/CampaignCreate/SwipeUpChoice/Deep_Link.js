@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import RNPickerSelect from "react-native-picker-select";
-import { ImagePicker, Permissions, LinearGradient } from "expo";
-
 import { View, SafeAreaView, Platform } from "react-native";
-
 import { Content, Text, Container } from "native-base";
-import list from "./callactions";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
@@ -15,6 +9,9 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 
 // Style
 import styles from "./styles";
+
+//List
+import list from "../../../Data/callactions.data";
 
 export default class Deep_Link extends Component {
   static navigationOptions = {
@@ -86,23 +83,13 @@ export default class Deep_Link extends Component {
         <Container style={[styles.container]}>
           <Content
             style={styles.container}
-            // scrollEnabled={true}
-            contentContainerStyle={{ flex: 1, padding: 10, width: "100%" }}
+            contentContainerStyle={styles.deepLinkContainer}
           >
-            <View
-              style={{
-                flexDirection: "column",
-                width: "100%",
-                justifyContent: "space-between",
-                paddingTop: Platform.OS === "android" ? 10 : 0
-              }}
-            >
+            <View style={styles.deepLinkHeader}>
               <AppInstallIcon style={styles.icon} />
               <View style={styles.textcontainer}>
-                <Text style={[styles.titletext]}>Deep Link</Text>
-                <Text
-                  style={[styles.subtext, { marginBottom: 0, width: "100%" }]}
-                >
+                <Text style={styles.titletext}>Deep Link</Text>
+                <Text style={styles.subtext}>
                   Send Snapchatters to a specific{"\n"} page in your app
                 </Text>
               </View>
@@ -128,7 +115,6 @@ export default class Deep_Link extends Component {
                 swipeUpDestination={this.props.swipeUpDestination}
               />
             )}
-            {/* </KeyboardAwareScrollView> */}
           </Content>
         </Container>
       </SafeAreaView>

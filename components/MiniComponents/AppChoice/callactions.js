@@ -76,6 +76,18 @@ var list = [
         value: "INSTALL_NOW"
       },
       {
+        label: "BOOK NOW",
+        value: "BOOK_NOW"
+      },
+      {
+        label: "GET NOW",
+        value: "GET_NOW"
+      },
+      {
+        label: "ORDER NOW",
+        value: "ORDER_NOW"
+      },
+      {
         label: "PLAY",
         value: "PLAY"
       },
@@ -111,12 +123,12 @@ var list = [
     type: "DEEP_LINK",
     call_to_action_list: [
       {
-        label: "DOWNLOAD",
-        value: "DOWNLOAD"
+        label: "OPEN APP",
+        value: "OPEN_APP"
       },
       {
-        label: "INSTALL NOW",
-        value: "INSTALL_NOW"
+        label: "TRY",
+        value: "TRY"
       },
       {
         label: "USE APP",
