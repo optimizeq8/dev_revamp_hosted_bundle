@@ -3,17 +3,22 @@ import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { View, SafeAreaView, BackHandler } from "react-native";
 import { Text, Item, Input, Icon } from "native-base";
+import { showMessage } from "react-native-flash-message";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
-import list from "./callactions";
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import LowerButton from "../../../MiniComponents/LowerButton";
+
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import { showMessage } from "react-native-flash-message";
+import GlobalStyles from "../../../../GlobalStyles";
+
+//Data
+import list from "../../../Data/callactions.data";
+
+//Functions
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
 class Website extends Component {
   static navigationOptions = {
@@ -90,41 +95,27 @@ class Website extends Component {
   };
   render() {
     return (
-      <SafeAreaView
-        style={{
-          height: "100%"
-        }}
-      >
+      <SafeAreaView style={styles.safeAreaContainer}>
         <KeyboardShift>
           {() => (
             <View
-              style={{
-                height: "100%",
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
-              }}
-            >
-              <View
-                style={
-                  {
-                    //   marginTop: this.props.swipeUpDestination ? 40 : 0
-                  }
+              style={[
+                styles.websiteContent,
+                {
+                  padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
                 }
-              >
+              ]}
+            >
+              <View>
                 <WebsiteIcon style={styles.icon} />
                 <View style={[styles.textcontainer, { marginBottom: 20 }]}>
-                  <Text style={[styles.titletext]}>Website</Text>
-                  <Text style={[styles.subtext]}>
+                  <Text style={styles.titletext}>Website</Text>
+                  <Text style={styles.subtext}>
                     The user will be taken to your website
                   </Text>
                 </View>
                 <RNPickerSelect
                   items={this.state.callactions}
-                  placeholder={{}}
                   onValueChange={(value, index) => {
                     this.setState({
                       campaignInfo: {
@@ -138,17 +129,7 @@ class Website extends Component {
                   }}
                 >
                   <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-                    <Text
-                      style={[
-                        styles.inputtext,
-                        {
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          color: "#fff"
-                        }
-                      ]}
-                    >
+                    <Text style={styles.callActionLabel}>
                       {this.state.campaignInfo.callaction === ""
                         ? this.state.callactions[0].label
                         : this.state.callactions.find(
@@ -168,9 +149,9 @@ class Website extends Component {
                   rounded
                   style={[
                     styles.input,
-                    {
-                      borderColor: this.state.urlError ? "red" : "transparent"
-                    }
+                    this.state.urlError
+                      ? GlobalStyles.redBorderColor
+                      : GlobalStyles.transparentBorderColor
                   ]}
                 >
                   <Input

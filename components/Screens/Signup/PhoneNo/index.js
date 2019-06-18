@@ -141,6 +141,7 @@ class PhoneNo extends Component {
         ]}
       />
       <PhoneInput
+
         style={styles.phoneInputStyle}
         textStyle={{
           color: this.props.invite ? "#FFF" : "#0000",
