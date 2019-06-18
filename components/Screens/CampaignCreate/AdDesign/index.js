@@ -514,6 +514,9 @@ class AdDesign extends Component {
     });
   };
   perviewHandler = async () => {
+    console.log("campaignInfo", this.state.campaignInfo);
+    console.log("appChoice", this.state.appChoice);
+
     await this.validator();
     if (
       !this.state.brand_nameError &&
@@ -525,7 +528,9 @@ class AdDesign extends Component {
         type: this.state.type,
         call_to_action: this.state.campaignInfo.call_to_action.label,
         headline: this.state.campaignInfo.headline,
-        brand_name: this.state.campaignInfo.brand_name
+        brand_name: this.state.campaignInfo.brand_name,
+        destination: this.state.campaignInfo.destination,
+        icon_media_url: this.state.campaignInfo.attachment.icon_media_url
       });
   };
 

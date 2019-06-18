@@ -1,9 +1,14 @@
 //Components
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  Animated
+} from "react-native";
 import { Video, Segment } from "expo";
 import {
-  Text,
   Container,
   Header,
   Left,
@@ -11,24 +16,25 @@ import {
   Right,
   Content,
   Title,
-  Subtitle
+  Subtitle,
+  Button,
+  Text
 } from "native-base";
+import * as Animatable from "react-native-animatable";
+
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
 
 //icons
 import CloseIcon from "../../../../assets/SVGs/Close";
+import ArrowUpIcon from "../../../../assets/SVGs/ArrowUp";
 
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
 
 //Functions
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 
@@ -50,6 +56,9 @@ class AdDesignReview extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
+    const destination = this.props.navigation.getParam("destination", "");
+    const appIcon = this.props.navigation.getParam("icon_media_url", "");
+
     return (
       <SafeAreaView style={styles.safeAreaContainer}>
         <Container style={styles.container}>
@@ -58,20 +67,14 @@ class AdDesignReview extends Component {
               <Title style={styles.brandName}>
                 {this.props.navigation.state.params.brand_name}
               </Title>
-              <Subtitle style={styles.headline}>
+              <Subtitle numberOfLines={1} style={styles.headline}>
                 {this.props.navigation.state.params.headline}
               </Subtitle>
             </Body>
-            <Right>
+            <Right style={{ flex: 0 }}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.goBack()}
-                style={[
-                  globalStyles.backButton,
-                  {
-                    left: widthPercentageToDP(0),
-                    top: heightPercentageToDP(0)
-                  }
-                ]}
+                style={[globalStyles.backButton, styles.closeButton]}
               >
                 <CloseIcon />
               </TouchableOpacity>
@@ -112,19 +115,100 @@ class AdDesignReview extends Component {
                     }}
                   />
                 )}
-                <View style={styles.callToActionContainer}>
-                  <Text style={styles.callToActionText}>
-                    {this.props.navigation.state.params.call_to_action !==
-                    "BLANK"
-                      ? startCase(
-                          toLower(
-                            this.props.navigation.state.params.call_to_action
+                <View
+                  style={[
+                    styles.callToActionContainer,
+                    destination === "APP_INSTALL" &&
+                      styles.appInstallCallToActionContainer
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.callToActionText,
+                      destination === "APP_INSTALL" &&
+                        styles.appInstallCallToActionText,
+                      destination !== "APP_INSTALL" &&
+                        destination !== "BLANK" &&
+                        styles.appInstallAndBlankCallToActionContainer
+                    ]}
+                  >
+                    {destination !== "APP_INSTALL" && destination !== "BLANK" && (
+                      <View
+                        style={[
+                          styles.iconArrowUp,
+                          { paddingRight: 0, marginBottom: 5 }
+                        ]}
+                      >
+                        <ArrowUpIcon />
+                      </View>
+                    )}
+                    <Text
+                      style={[
+                        styles.callToActionText,
+                        destination === "APP_INSTALL" &&
+                          styles.appInstallCallToActionText
+                      ]}
+                    >
+                      {this.props.navigation.state.params.call_to_action !==
+                      "BLANK"
+                        ? startCase(
+                            toLower(
+                              this.props.navigation.state.params.call_to_action
+                            )
                           )
-                        )
-                      : ""}
-                  </Text>
+                        : ""}
+                    </Text>
+                  </View>
+
+                  {destination === "APP_INSTALL" && (
+                    <View style={styles.iconArrowUp}>
+                      <ArrowUpIcon />
+                    </View>
+                  )}
                   <Text style={styles.AD}>Ad</Text>
                 </View>
+                {destination === "APP_INSTALL" && (
+                  <Animatable.View
+                    animation={"fadeInUpBig"}
+                    style={styles.bottomView}
+                  >
+                    <View style={[globalStyles.lightGrayBorderColor]}>
+                      <Image
+                        source={{ uri: appIcon }}
+                        style={[
+                          globalStyles.grayBorderColor,
+                          styles.appIconBottom
+                        ]}
+                        resizeMode="cover"
+                      />
+                    </View>
+                    <View style={styles.textContainerBottom}>
+                      <Text
+                        numberOfLines={2}
+                        style={styles.brandNameBottomText}
+                      >
+                        {this.props.navigation.state.params.brand_name}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          globalStyles.grayTextColor,
+                          styles.headlineBottomText
+                        ]}
+                      >
+                        {this.props.navigation.state.params.headline}
+                      </Text>
+                    </View>
+                    <Button
+                      style={[
+                        styles.getButton,
+                        globalStyles.darkGrayBackgroundColor
+                      ]}
+                    >
+                      <Text style={styles.getButtonText}>GET</Text>
+                    </Button>
+                  </Animatable.View>
+                )}
               </View>
             </Transition>
           </Content>
