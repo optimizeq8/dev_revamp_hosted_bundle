@@ -1,17 +1,16 @@
 import { StyleSheet } from "react-native";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+
 const styles = StyleSheet.create({
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#0000",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -22,10 +21,10 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    flex: 1,
+    // flex: 1,
     alignSelf: "center",
-    height: 120,
-    width: 120,
+    height: heightPercentageToDP(20),
+    width: "100%",
     margin: 10,
     justifyContent: "flex-start"
   },

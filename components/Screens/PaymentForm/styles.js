@@ -1,12 +1,7 @@
 import { StyleSheet, PixelRatio } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+
 const styles = StyleSheet.create({
   safeAreaViewContainer: { flex: 1, backgroundColor: "#0000" },
   contentStyle: { flex: 1, backgroundColor: "#0000" },

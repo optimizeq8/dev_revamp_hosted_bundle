@@ -1,21 +1,20 @@
 //// components
 import React, { Component } from "react";
-import { View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
-import {
-  Card,
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon
-} from "native-base";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Text, Item, Input } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import { SafeAreaView } from "react-navigation";
-import CloseIcon from "../../../assets/SVGs/Close";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
-//Validation
+// Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+import LowerButton from "../../MiniComponents/LowerButton";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
+import CustomHeader from "../../MiniComponents/Header";
+
+// Validation
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 // Style
@@ -25,18 +24,6 @@ import globalStyles from "../../../GlobalStyles";
 
 //icons
 import Logo from "../../../assets/SVGs/Optimize";
-
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import LowerButton from "../../MiniComponents/LowerButton";
-import CloseButton from "../../MiniComponents/CloseButton";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
-import CustomHeader from "../../MiniComponents/Header";
 
 class ForgotPassword extends Component {
   static navigationOptions = {

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { View, Image, Animated, Easing } from "react-native";
-import { Button, Content, Text, Container } from "native-base";
-import * as actionCreators from "../../../store/actions";
+import { Image, Animated, Easing } from "react-native";
+import { Container } from "native-base";
 import { LinearGradient } from "expo";
+
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";

@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { View, Image, ScrollView, Switch, Dimensions } from "react-native";
+import { View } from "react-native";
 import { Text, Icon } from "native-base";
+
+// styles
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+
+// icons
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
 class TransactionCard extends Component {
   state = {
@@ -21,14 +24,14 @@ class TransactionCard extends Component {
         <View style={styles.transactionButton}>
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <Text numberOfLines={2} style={[styles.titletext]}>
+              <Text numberOfLines={2} style={[styles.titleText]}>
                 {transaction.campaign_name}
               </Text>
             </View>
             {transaction.iswallet === "1" ? (
               <WalletIcon
                 fill="#a0a0a0"
-                style={[styles.icon, { top: "1%", left: "90%" }]}
+                style={[styles.icon, styles.iconWallet]}
               />
             ) : (
               <Icon
@@ -39,39 +42,20 @@ class TransactionCard extends Component {
             )}
 
             <Text style={[styles.text]}>Card Type</Text>
-            <Text style={[styles.subtext]}>
+            <Text style={[styles.subText]}>
               {transaction.payment_type}: {transaction.card_ending_with}
             </Text>
             <Text style={[styles.text]}>Transaction ID</Text>
-            <Text style={[styles.subtext]}>{transaction.reference_id}</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                flex: 1,
-                width: "100%"
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "column"
-                }}
-              >
+            <Text style={[styles.subText]}>{transaction.reference_id}</Text>
+            <View style={styles.mainView}>
+              <View style={styles.amountContainer}>
                 <Text style={[styles.text]}>Amount</Text>
-                <Text
-                  style={[
-                    globalStyles.numbers,
-                    {
-                      fontSize: heightPercentageToDP(3.4),
-                      paddingHorizontal: 0
-                    }
-                  ]}
-                >
+                <Text style={[globalStyles.numbers, styles.amountText]}>
                   {transaction.total_amount}$
                 </Text>
               </View>
               <View pointerEvents="none" style={[styles.containerStyle]}>
-                <Text style={[styles.datetext]}>
+                <Text style={[styles.dateText]}>
                   {transaction.payment_date.split(" ")[0] +
                     "\n   " +
                     transaction.payment_date.split(" ")[1]}

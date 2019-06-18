@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
+import { LinearGradient, Segment } from "expo";
+import { Button, Text, Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
+
+// Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
-import { Linking, LinearGradient, Segment } from "expo";
-import { Button, Text, Container } from "native-base";
-import ErrorIcon from "../../../assets/SVGs/Error.svg";
-import LoadingScreen from "../LoadingScreen";
-
 //styles
 import styles, { colors } from "./styles";
+
+// Icons
+import ErrorIcon from "../../../assets/SVGs/Error.svg";
+
+import LoadingScreen from "../LoadingScreen";
+
+const imageLogo = require("../../../assets/images/logo01.png");
 
 class ErrorComponent extends Component {
   static navigationOptions = {
@@ -18,7 +25,9 @@ class ErrorComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      logoImage: require("../../../assets/images/logo01.png")
+    };
   }
 
   componentDidMount() {
@@ -46,19 +55,15 @@ class ErrorComponent extends Component {
       );
     }
     return (
-      <Container style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Image
-          style={styles.image}
-          source={require("../../../assets/images/logo01.png")}
-          resizeMode="contain"
-        />
+        <Image style={styles.image} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
-          <ErrorIcon width={93} height={93} />
+          <ErrorIcon width={80} height={80} />
 
           <Text style={styles.title}> Sorry </Text>
           <Text style={styles.errortext}>
@@ -93,7 +98,7 @@ class ErrorComponent extends Component {
             </Text>
           </Button>
         </View>
-      </Container>
+      </SafeAreaView>
     );
   }
 }

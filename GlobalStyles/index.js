@@ -6,11 +6,18 @@ import {
 export const globalColors = {
   orange: "#FF9D00",
   purple: "#751AFF",
+  green: "#66D072",
   white: "#FFFFFF",
   black: "#000000",
   transparent: "#0000"
 };
 const styles = StyleSheet.create({
+  linearGradientBackground1: {
+    backgroundColor: "#751AFF"
+  },
+  linearGradientBackground2: {
+    backgroundColor: "#6268FF"
+  },
   orangeTextColor: {
     color: "#FF9D00"
   },

@@ -10,10 +10,10 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
 
-//List
+
 import list from "../../../Data/callactions.data";
 
-export default class Deep_Link extends Component {
+class Deep_Link extends Component {
   static navigationOptions = {
     header: null
   };
@@ -42,14 +42,23 @@ export default class Deep_Link extends Component {
     };
   }
 
-  handleCallAction = value => {
-    this.setState({
-      callaction: {
-        label: list[1].call_to_action_list[index - 1 > 0 ? index - 1 : 0].label,
-        value
-      }
-    });
-  };
+  componentDidMount() {
+    if (
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.destination !== "REMOTE_WEBPAGE"
+    ) {
+      this.props.data.attachment !== "BLANK"
+        ? this.setState({
+            attachment: {
+              ...this.props.data.attachment
+            },
+            firstStepDone: true
+          })
+        : this.setState({
+            firstStepDone: false
+          });
+    }
+  }
 
   renderNextStep = (nameError, callActionError, attachment, callaction) => {
     if (!nameError && !callActionError) {
@@ -62,7 +71,7 @@ export default class Deep_Link extends Component {
   };
 
   renderPreviousStep = () => {
-    this.setState({ firstStepDone: false });
+    this.setState({ firstStepDone: !this.state.firstStepDone });
   };
 
   _handleSubmission = async deep_link_url => {
@@ -93,6 +102,7 @@ export default class Deep_Link extends Component {
                   Send Snapchatters to a specific{"\n"} page in your app
                 </Text>
               </View>
+
             </View>
             {!this.state.firstStepDone ? (
               <AppChoice
@@ -110,6 +120,7 @@ export default class Deep_Link extends Component {
                 android_app_url={this.state.attachment.android_app_url}
                 _handleSubmission={this._handleSubmission}
                 renderPreviousStep={this.renderPreviousStep}
+                deep_link_url={this.state.attachment.deep_link_url}
                 deepLink={true}
                 toggleSideMenu={this.props.toggleSideMenu}
                 swipeUpDestination={this.props.swipeUpDestination}
@@ -121,3 +132,11 @@ export default class Deep_Link extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({ data: state.campaignC.data });
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Deep_Link);

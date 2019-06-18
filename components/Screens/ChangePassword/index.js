@@ -20,6 +20,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
@@ -107,7 +108,7 @@ class ChangePassword extends Component {
     const tempPassword = this.props.navigation.getParam("temp_pwd", false);
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never" }}
       >
         <Container style={styles.container}>
@@ -116,9 +117,7 @@ class ChangePassword extends Component {
             navigation={this.props.navigation}
           />
           <ChangePassIcon
-            style={{
-              alignSelf: "center"
-            }}
+            style={styles.iconChangePassword}
             fill="#fff"
             fillOpacity={1}
             width={100}
@@ -137,23 +136,21 @@ class ChangePassword extends Component {
                         floatingLabel
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.inputP
-                              ? "#7039FF"
-                              : this.state.currentPasswordError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.inputP
+                            ? globalStyles.purpleBorderColor
+                            : this.state.currentPasswordError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor
                         ]}
                       >
                         <Label
                           style={[
                             styles.label,
-                            {
-                              bottom: 10,
+                            this.state.inputF
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
 
-                              color: this.state.inputF ? "#FF9D00" : "#717171"
-                            }
+                            styles.newPasswordLabel
                           ]}
                         >
                           {tempPassword ? "Current Password" : "Old Password"}
@@ -191,23 +188,20 @@ class ChangePassword extends Component {
                         floatingLabel
                         style={[
                           styles.input,
-                          {
-                            borderColor: this.state.inputP
-                              ? "#7039FF"
-                              : this.state.passwordError
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.inputP
+                            ? globalStyles.purpleBorderColor
+                            : this.state.passwordError
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor
                         ]}
                       >
                         <Label
                           style={[
                             styles.label,
-                            {
-                              bottom: 10,
-
-                              color: this.state.inputP ? "#FF9D00" : "#717171"
-                            }
+                            this.state.inputP
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
+                            styles.newPasswordLabel
                           ]}
                         >
                           New Password
@@ -241,18 +235,7 @@ class ChangePassword extends Component {
                       </Item>
                       {this.state.passwordError &&
                       this.state.passwordError.includes("8 characters") ? (
-                        <Text
-                          style={[
-                            styles.text,
-                            {
-                              bottom: 40,
-                              paddingVertical: 0,
-                              paddingTop: 0,
-                              marginBottom: 0,
-                              paddingVertical: 0
-                            }
-                          ]}
-                        >
+                        <Text style={[styles.text, styles.errorText]}>
                           {this.state.passwordError}
                         </Text>
                       ) : null}
@@ -261,24 +244,21 @@ class ChangePassword extends Component {
                         floatingLabel
                         style={[
                           styles.input,
-                          {
-                            marginBottom: 0,
-                            paddingBottom: 0,
-                            borderColor: this.state.inputPR
-                              ? "#7039FF"
-                              : this.state.repasswordError !== ""
-                              ? "red"
-                              : "#D9D9D9"
-                          }
+                          this.state.inputPR
+                            ? globalStyles.purpleBorderColor
+                            : this.state.repasswordError !== ""
+                            ? globalStyles.redBorderColor
+                            : globalStyles.lightGrayBorderColor,
+                          styles.repasswordItem
                         ]}
                       >
                         <Label
                           style={[
                             styles.label,
-                            {
-                              bottom: 10,
-                              color: this.state.inputPR ? "#FF9D00" : "#717171"
-                            }
+                            this.state.inputPR
+                              ? globalStyles.orangeTextColor
+                              : globalStyles.darkGrayTextColor,
+                            styles.repasswordLabel
                           ]}
                         >
                           Re-enter Password
@@ -303,17 +283,7 @@ class ChangePassword extends Component {
                       </Item>
                       {this.state.repasswordError !== "" &&
                       this.state.userInfo.password !== "" ? (
-                        <Text
-                          style={[
-                            styles.text,
-                            {
-                              bottom: 15,
-                              paddingTop: 0,
-                              marginBottom: 0,
-                              paddingVertical: 0
-                            }
-                          ]}
-                        >
+                        <Text style={[styles.text, styles.repasswordErrorText]}>
                           {this.state.repasswordError}
                         </Text>
                       ) : null}

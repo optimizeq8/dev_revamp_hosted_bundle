@@ -1,16 +1,42 @@
 import { StyleSheet } from "react-native";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+
 import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  imageView: { backgroundColor: "#fff" },
+  getStartedText: {
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 20,
+    textAlign: "center"
+  },
+  getStartedButton: {
+    alignSelf: "flex-end",
+    // marginRight: widthPercentageToDP("7%"),
+    bottom: heightPercentageToDP("7.5%"),
+    alignSelf: "center",
+    zIndex: 80,
+    elevation: 3,
+    backgroundColor: "#FF9D00",
+    width: widthPercentageToDP(60),
+    height: heightPercentageToDP(7),
+    borderRadius: 15,
+    justifyContent: "center"
+  },
+  imageSlide: {
+    height: heightPercentageToDP(100),
+
+    flex: 1,
+    alignContent: "center",
+    alignSelf: "center"
+  },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
   container: {

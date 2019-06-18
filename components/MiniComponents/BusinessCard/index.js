@@ -5,7 +5,7 @@ import styles from "./styles";
 import { colors } from ".././../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import businessList from "../../Screens/CreateBusinessAccount/BusinessCategoriesList";
+import businessList from "../../Data/businessCategoriesList.data";
 import find from "lodash/find";
 
 class BusinessCard extends Component {

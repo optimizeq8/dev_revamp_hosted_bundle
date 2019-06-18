@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
   },
   phoneViewContainer: {
     justifyContent: "space-around"
-  }
+  },
+  phoneInputStyle: { width: widthPercentageToDP(70) }
 });
 
 export default styles;

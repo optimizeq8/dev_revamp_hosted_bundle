@@ -3,14 +3,16 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler,
-  Platform,
-  PixelRatio
+  BackHandler
 } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
+
+//Redux
+import { connect } from "react-redux";
+
 import Header from "../../MiniComponents/Header";
+import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 
 //icons
 import PersonalInfoIcon from "../../../assets/SVGs/Person";
@@ -18,9 +20,6 @@ import PersonalInfoIcon from "../../../assets/SVGs/Person";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
-
-//Redux
-import { connect } from "react-redux";
 
 class PersonalInfo extends Component {
   static navigationOptions = {

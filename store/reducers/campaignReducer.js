@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaign_id: action.payload.campaign_id,
-        data: action.payload.data,
+        data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
         loadingObj: false
       };
@@ -53,9 +53,29 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AD_DESIGN:
       return {
         ...state,
-        data: { ...state.data, ...action.payload.data },
+        data: {
+          ...state.data,
+          ...action.payload.data,
+          call_to_action: {
+            value: action.payload.data.call_to_action,
+            label: action.payload.data.call_to_action.replace(/_/g, " ")
+          },
+          attachment:
+            action.payload.data.attachment !== "BLANK"
+              ? JSON.parse(action.payload.data.attachment)
+              : action.payload.data.attachment
+        },
         message: action.payload.message,
+
         loadingDesign: false
+      };
+    case actionTypes.SAVE_CAMPAIGN_INFO:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...action.payload
+        }
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {
@@ -213,10 +233,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         languagesList: []
       };
-    case actionTypes.RESET_CAMPAING_ID:
+    case actionTypes.RESET_CAMPAING_INFO:
       return {
         ...state,
-        campaign_id: ""
+        campaign_id: "",
+        data: null
       };
     default:
       return state;

@@ -8,9 +8,19 @@ import {
   TouchableWithoutFeedback,
   Text
 } from "react-native";
-import { Button, Icon, Item } from "native-base";
-import CountryModal from "./CountryModal";
 import { Segment } from "expo";
+
+import { Icon, Item } from "native-base";
+import { showMessage } from "react-native-flash-message";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+
+import CountryModal from "./CountryModal";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+
+import countriesMobileData from "../../../Data/countries.mobilephone";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
@@ -19,13 +29,9 @@ import { colors } from "../../../GradiantColors/colors";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
+
+//icons
 import LowerButton from "../../../MiniComponents/LowerButton";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-import { showMessage } from "react-native-flash-message";
-import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -115,7 +121,7 @@ class PhoneNo extends Component {
       style={[
         styles.phoneInput,
         this.props.invite
-          ? [globalStyles.blackBackgroundColor]
+          ? globalStyles.blackBackgroundColor
           : globalStyles.transparentBackgroundColor,
         this.props.invite ? { opacity: 0.5 } : { opacity: 0 }
       ]}
@@ -135,7 +141,8 @@ class PhoneNo extends Component {
         ]}
       />
       <PhoneInput
-        style={{ width: widthPercentageToDP(70) }}
+
+        style={styles.phoneInputStyle}
         textStyle={{
           color: this.props.invite ? "#FFF" : "#0000",
           ...styles.phoneInputTextStyle,
@@ -181,7 +188,7 @@ class PhoneNo extends Component {
         }}
         onPressFlag={this.onPressFlag}
         initialCountry="kw"
-        countriesList={require("./countries.json")}
+        countriesList={countriesMobileData}
         value="+965"
         offset={10}
       />

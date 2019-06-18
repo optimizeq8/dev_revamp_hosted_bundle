@@ -14,9 +14,9 @@ import KeyboardShift from "../KeyboardShift";
 import Header from "../Header";
 
 //Data
-import Countries from "./Countries";
+import Countries from "../../Data/countries.billingAddress";
 
-import { all, kuwaitAreas } from "../../Screens/AddressForm/NewAreas";
+import allAreas from "../../Data/NewAreas";
 // Style
 import styles from "./styles";
 
@@ -86,7 +86,7 @@ class BillingAddressCard extends React.Component {
     if (selectedItem) {
       replace.country = selectedItem.label;
       if (!mounting) replace.area = "";
-      let area = all.find(
+      let area = allAreas.find(
         c => c.country_code.toLowerCase() === selectedItem.value
       );
       this.props._handleAddressChange("address", replace, selectedItem.value);

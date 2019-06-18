@@ -93,15 +93,13 @@ export const getCampaignStats = (campaign, duration) => {
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_STATS,
           payload: { loading: false, data: data }
         });
       })
       .catch(err => {
-        console.log("getCampaignStats error", err.message || err.response);
+        // console.log("getCampaignStats error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -115,8 +113,6 @@ export const getCampaignStats = (campaign, duration) => {
 };
 
 export const getCampaignList = (id, increasePage, cancelToken) => {
-  console.log("dashboard", store.getState().login.admin);
-
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,

@@ -1,25 +1,21 @@
-//Components
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Button, Text, Container, Icon, Badge } from "native-base";
-import { LinearGradient } from "expo";
-import PersonalInfo from "../PersonalInfo";
-import PhoneNo from "../PhoneNo";
-import Verification from "../Verification";
-import BusinessInfo from "../BusinessInfo";
-import CreateBusinessAccount from "../../CreateBusinessAccount";
-import * as actionCreators from "../../../../store/actions";
-
+import { Text, Container, Badge } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import CustomHeader from "../../../MiniComponents/Header";
-
-// Style
-import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
-import CloseButton from "../../../MiniComponents/CloseButton";
+import * as actionCreators from "../../../../store/actions";
+
+//Components
+import CustomHeader from "../../../MiniComponents/Header";
+import PersonalInfo from "../PersonalInfo";
+import PhoneNo from "../PhoneNo";
+import Verification from "../Verification";
+import CreateBusinessAccount from "../../CreateBusinessAccount";
+
+// Style
+import styles from "./styles";
 
 class MainForm extends Component {
   static navigationOptions = {
