@@ -6,16 +6,16 @@ export const snapAds = [
     rout: "AdObjective",
     icon: "snapchat-ghost",
     title: "Snap Ad",
-    image: require("../../../../assets/images/AdTypes/SnapAd.gif")
+    image: require("../../assets/images/AdTypes/SnapAd.gif")
   }
-// {
+  // {
   //   id: 2,
   //   media: "snapchat",
   //   text: "Create Your Ad Now!",
   //   rout: "",
   //   icon: "snapchat-ghost",
   //   title: "Story Ad",
-  //   image: require("../../../../assets/images/AdTypes/StoryAd.gif")
+  //   image: require("../../assets/images/AdTypes/StoryAd.gif")
   // },
   // {
   //   id: 3,
@@ -24,7 +24,7 @@ export const snapAds = [
   //   rout: "",
   //   icon: "snapchat-ghost",
   //   title: "Collection Ad",
-  //   image: require("../../../../assets/images/AdTypes/CollectionAd.gif")
+  //   image: require("../../assets/images/AdTypes/CollectionAd.gif")
   // }
 ];
 
@@ -35,7 +35,7 @@ export const twittwerAds = [
     text: "Create Your Ad Now!",
     rout: "",
     title: "",
-    image: require("../../../../assets/images/logoP.png")
+    image: require("../../assets/images/logoP.png")
   }
 ];
 
@@ -46,6 +46,6 @@ export const instagramAds = [
     text: "Create Your Ad Now!",
     rout: "",
     title: "",
-    image: require("../../../../assets/images/logoP.png")
+    image: require("../../assets/images/logoP.png")
   }
 ];

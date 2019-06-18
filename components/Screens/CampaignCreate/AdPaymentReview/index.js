@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import {
   ImageBackground,
   View,
@@ -8,32 +7,29 @@ import {
   Dimensions,
   Platform
 } from "react-native";
-import {
-  Content,
-  Text,
-  Body,
-  Container,
-  Header,
-  Left,
-  Footer
-} from "native-base";
-import { LinearGradient, Segment, Video } from "expo";
-import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
-import dateFormat from "dateformat";
-import formatNumber from "../../../formatNumber";
-import CustomHeader from "../../../MiniComponents/Header";
+import { Content, Text, Container, Footer } from "native-base";
+import { Segment, Video } from "expo";
 import { SafeAreaView } from "react-navigation";
+import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
+import CustomHeader from "../../../MiniComponents/Header";
+import BackButton from "../../../MiniComponents/BackButton";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+
+// Style
+import styles from "./styles";
+
+//Redux
+import { connect } from "react-redux";
+
+//Functions
+import isUndefined from "lodash/isUndefined";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import formatNumber from "../../../formatNumber";
+import dateFormat from "dateformat";
 
-// Style
-import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
-import BackButton from "../../../MiniComponents/BackButton";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import isUndefined from "lodash/isUndefined";
 class AdPaymentReview extends Component {
   static navigationOptions = {
     header: null
@@ -146,7 +142,7 @@ class AdPaymentReview extends Component {
       const image = this.props.data ? this.props.data.image : "";
       return (
         <SafeAreaView
-          style={{ height: "100%", flex: 1 }}
+          style={styles.safeAreaView}
           forceInset={{ bottom: "never" }}
         >
           <CustomHeader
@@ -232,18 +228,6 @@ class AdPaymentReview extends Component {
                   paddingTop: hp(2)
                 }}
               >
-                {/* <Header transparent noShadow iosBarStyle={"light-content"}>
-                  <Left style={{ flex: 0 }}>
-                    <BackButton
-                      navigation={this.props.navigation.goBack}
-                      style={{ left: 0, top: 0 }}
-                    />
-                  </Left>
-
-                  <Body>
-                    <Text style={[styles.headline]}>Review your selection</Text>
-                  </Body>
-                </Header> */}
                 <Content
                   scrollEnabled={false}
                   contentContainerStyle={{ flex: 1 }}

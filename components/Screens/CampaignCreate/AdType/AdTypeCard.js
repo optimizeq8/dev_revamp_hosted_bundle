@@ -1,20 +1,11 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Image
-} from "react-native";
-import { Icon } from "native-base";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import { Segment } from "expo";
+import { ActivityIndicator } from "react-native-paper";
+
 //styles
 import styles from "./styles";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import { ActivityIndicator } from "react-native-paper";
+import { globalColors } from "../../../../GlobalStyles";
 export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
@@ -28,31 +19,19 @@ export default class AdTypeCard extends Component {
           this.props.navigationHandler(adType.rout);
         }}
       >
-        <View
-          style={{
-            top: "0%",
-            width: "100%",
-            height: "95%",
-            bottom: "5%",
-            paddingTop: 10,
-            alignSelf: "center"
-          }}
-        >
-          <Text style={styles.slidtitle}>{adType.title} </Text>
-          <View style={[styles.placeholder]}>
+        <View style={styles.typeCardContainer}>
+          <Text style={styles.slidTitle}>{adType.title} </Text>
+          <View style={styles.placeholder}>
             <Image
-              loadingIndicatorSource={<ActivityIndicator color="#fff" />}
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: "#fff"
-              }}
+              loadingIndicatorSource={
+                <ActivityIndicator color={globalColors.white} />
+              }
+              style={styles.image}
               resizeMode={adType.media !== "snapchat" ? "center" : "stretch"}
               source={adType.image}
             />
-
             {adType.text.includes("Soon") && (
-              <Text style={styles.slidetext}> {adType.text} </Text>
+              <Text style={styles.slidetText}> {adType.text} </Text>
             )}
           </View>
         </View>

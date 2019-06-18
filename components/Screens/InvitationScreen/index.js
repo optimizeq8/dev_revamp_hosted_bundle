@@ -111,15 +111,14 @@ export default class Invitation extends Component {
       return (
         <SafeAreaView
           style={styles.safeAreaViewContainer}
-          forceInset={{ bottom: "never" }}
+          forceInset={{ bottom: "never", top: "always" }}
         >
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[0.7, 1]}
+            style={styles.gradient}
+          />
           <Container style={styles.container}>
-            <LinearGradient
-              colors={[colors.background1, colors.background2]}
-              locations={[0.7, 1]}
-              style={styles.gradient}
-            />
-
             <Animatable.View
               // onAnimationEnd={() => this.setState({ animationActive: true })}
               delay={500}

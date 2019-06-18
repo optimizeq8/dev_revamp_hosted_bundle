@@ -10,8 +10,11 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
 
-
+//Data
 import list from "../../../Data/callactions.data";
+
+//Redux
+import { connect } from "react-redux";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -102,7 +105,6 @@ class Deep_Link extends Component {
                   Send Snapchatters to a specific{"\n"} page in your app
                 </Text>
               </View>
-
             </View>
             {!this.state.firstStepDone ? (
               <AppChoice

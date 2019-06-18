@@ -6,9 +6,9 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  safeAreaContainer: {
+  safeAreaView: {
     height: "100%",
-    width: "100%"
+    flex: 1
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },
   title: { color: "#000", fontSize: 48 },
