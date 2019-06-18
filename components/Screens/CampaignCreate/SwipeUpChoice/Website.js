@@ -116,6 +116,7 @@ class Website extends Component {
                 </View>
                 <RNPickerSelect
                   items={this.state.callactions}
+                  placeholder={{}}
                   onValueChange={(value, index) => {
                     this.setState({
                       campaignInfo: {

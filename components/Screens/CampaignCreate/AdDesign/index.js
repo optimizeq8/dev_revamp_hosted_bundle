@@ -404,8 +404,12 @@ class AdDesign extends Component {
         });
         this.onToggleModal(false);
         return;
+      } else {
+        this.onToggleModal(false);
       }
     } catch (error) {
+      this.onToggleModal(false);
+
       console.log("error image pick", error);
     }
   };
