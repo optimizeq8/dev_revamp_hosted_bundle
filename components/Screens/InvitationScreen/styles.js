@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
   },
   container: {
     // paddingTop: heightPercentageToDP(10),
-    flex: 1
+    flex: 1,
+    backgroundColor: "#0000"
   },
   logoText: {
     textAlign: "center",

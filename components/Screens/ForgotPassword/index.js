@@ -68,7 +68,7 @@ class ForgotPassword extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container} forceInset={{ bottom: "never" }}>
+      <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}

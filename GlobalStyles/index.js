@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
   whiteBackgroundColor: {
     backgroundColor: "#FFFFFF"
   },
+  whiteBorderColor: {
+    borderColor: "#FFFFFF"
+  },
   blackTextColor: {
     color: "#000"
   },

@@ -222,7 +222,7 @@ class Dashboard extends Component {
       return (
         <SafeAreaView
           style={styles.safeAreaViewContainer}
-          forceInset={{ bottom: "never" }}
+          forceInset={{ bottom: "never", top: "always" }}
         >
           {this.state.anim && (
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />

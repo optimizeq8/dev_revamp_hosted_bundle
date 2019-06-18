@@ -1,35 +1,25 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
-import {
-  Header,
-  Left,
-  Title,
-  Body,
-  Content,
-  Text,
-  Container
-} from "native-base";
+import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import CustomHeader from "../../../MiniComponents/Header";
 import Sidemenu from "react-native-side-menu";
-import { LinearGradient, ImageBackground } from "expo";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import * as actionCreators from "../../../../store/actions";
-import BackButton from "../../../MiniComponents/BackButton";
+import CustomHeader from "../../../MiniComponents/Header";
 import WebsiteIcon from "../../../../assets/SVGs/Objectives/BRAND_AWARENESS";
 import LayersIcon from "../../../../assets/SVGs/Layers";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
+
+// Style
+import styles from "./styles";
+import GlobalStyles from "../../../../GlobalStyles";
+
+//Functions
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isUndefined from "lodash/isUndefined";
 
-// Style
-import styles from "./styles";
-import { colors } from "../../../GradiantColors/colors";
+//Redux
+import { connect } from "react-redux";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -101,14 +91,7 @@ class SwipeUpDestination extends Component {
         style={{ flex: 1, backgroundColor: "#0000" }}
         forceInset={{ bottom: "never" }}
       >
-        <Container
-          style={[
-            styles.container,
-            {
-              // paddingTop: 30,
-            }
-          ]}
-        >
+        <Container style={styles.container}>
           <Sidemenu
             onChange={isOpen => {
               if (isOpen === false) this.setState({ sidemenustate: isOpen });
@@ -125,31 +108,19 @@ class SwipeUpDestination extends Component {
               navigation={this.props.navigation}
             />
 
-            <Content
-              contentContainerStyle={{
-                backgroundColor: "black",
-                // paddingTop: 30,
-                overflow: "hidden",
-                marginTop: 10,
-                flexGrow: 1,
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-                borderTopLeftRadius: 30,
-                borderTopRightRadius: 30
-              }}
-            >
+            <Content contentContainerStyle={styles.contentContainer}>
               {!isNull(this.state.image) &&
                 !isUndefined(this.state.image) &&
                 this.state.image.length > 0 && (
-                  <View style={{ ...styles.placeholder1 }}>
+                  <View style={styles.placeholder1}>
                     <Image
-                      style={{ width: "100%", height: "100%", opacity: 0.4 }}
+                      style={styles.image}
                       source={{ uri: this.state.image }}
                       resizeMode="cover"
                     />
                   </View>
                 )}
-              <View style={{ marginTop: 30 }}>
+              <View style={styles.content}>
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -159,19 +130,17 @@ class SwipeUpDestination extends Component {
                   }}
                   style={[
                     styles.buttonN,
-                    {
-                      backgroundColor:
-                        this.state.selected === "REMOTE_WEBPAGE"
-                          ? "#FF9D00"
-                          : "transparent"
-                    }
+                    this.state.selected === "REMOTE_WEBPAGE"
+                      ? GlobalStyles.orangeBackgroundColor
+                      : GlobalStyles.transparentBackgroundColor
                   ]}
                 >
                   <WebsiteIcon style={styles.icon} />
                   <View style={styles.textcontainer}>
-                    <Text style={[styles.titletext]}>Website</Text>
-                    <Text style={[styles.subtext]}>
+                    <Text style={styles.titletext}>Website</Text>
+                    <Text style={styles.subtext}>
                       Send Snapchatters directly to your REMOTE_WEBPAGE
+
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -184,18 +153,15 @@ class SwipeUpDestination extends Component {
                   }}
                   style={[
                     styles.buttonN,
-                    {
-                      backgroundColor:
-                        this.state.selected === "DEEP_LINK"
-                          ? "#FF9D00"
-                          : "transparent"
-                    }
+                    this.state.selected === "DEEP_LINK"
+                      ? GlobalStyles.orangeBackgroundColor
+                      : GlobalStyles.transparentBackgroundColor
                   ]}
                 >
                   <LayersIcon style={styles.icon} />
                   <View style={styles.textcontainer}>
-                    <Text style={[styles.titletext]}>Deep Link</Text>
-                    <Text style={[styles.subtext]}>
+                    <Text style={styles.titletext}>Deep Link</Text>
+                    <Text style={styles.subtext}>
                       Send Snapchatters to your app or a third-party app
                     </Text>
                   </View>

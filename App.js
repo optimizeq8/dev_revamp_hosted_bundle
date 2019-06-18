@@ -201,7 +201,15 @@ class App extends React.Component {
 
       return (
         <Provider store={store}>
-          <StatusBar barStyle="light-content" />
+          <StatusBar
+            barStyle="light-content"
+            translucent={true}
+            style={{
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0
+            }}
+          />
           <LinearGradient
             colors={["#751AFF", "#6268FF"]}
             locations={[0.3, 1]}
@@ -209,11 +217,9 @@ class App extends React.Component {
           />
           <View
             style={{
-              height:
-                Platform.OS === "ios"
-                  ? 0
-                  : StatusBar.currentHeight - StatusBar.currentHeight / 4 + 10,
-              backgroundColor: "transparent"
+              backgroundColor: "transparent",
+              marginTop: 0,
+              paddingTop: 0
             }}
           />
           <View style={styles.container}>

@@ -1,53 +1,30 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView } from "react-navigation";
-import {
-  View,
-  Image,
-  TouchableWithoutFeedback,
-  ScrollView,
-  BackHandler
-} from "react-native";
-import {
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon
-} from "native-base";
-import { LinearGradient, Segment } from "expo";
-import Header from "../../../MiniComponents/Header";
-
+import { View, BackHandler } from "react-native";
+import { Text, Container } from "native-base";
+import { Segment } from "expo";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-// import Swiper from "../../../MiniComponents/Swiper";
+import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import CloseButton from "../../../MiniComponents/CloseButton";
-import Swiper from "react-native-swiper";
 import AdTypeCard from "./AdTypeCard";
+
+//Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
 
-//icons
-import CloseIcon from "../../../../assets/SVGs/Close";
-import Placeholder from "../../../../assets/SVGs/AdType/Placeholder";
-// Style
+//Style
 import styles from "./styles";
-import globalStyles from "../../../../GlobalStyles";
-
-import { colors } from "../../../GradiantColors/colors";
+import GlobalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
 
-//data
-import { snapAds, twittwerAds, instagramAds } from "./AdTypesData";
-import { SocialPlatforms } from "./SocialMedias";
+//Data
+import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
+import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
+//Functions
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class AdType extends Component {
   static navigationOptions = {
@@ -59,6 +36,7 @@ class AdType extends Component {
     campaign_type: "SnapAd",
     route: "AdObjective"
   };
+
   componentDidMount() {
     Segment.screen("Select Ad Type Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
@@ -68,7 +46,6 @@ class AdType extends Component {
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-  componentWillMount() {}
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -136,11 +113,11 @@ class AdType extends Component {
     this.props.navigation.navigate(this.state.route);
   };
 
-  _renderItem({ item, index }) {
+  _renderItem({ item }) {
     let MediaIcon = item.icon.type;
     return (
       <View style={styles.slide}>
-        <MediaIcon width={"75%"} height={"75%"} style={styles.slideicon} />
+        <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
         <Text style={styles.iconTitle}>{item.title}</Text>
       </View>
     );
@@ -160,7 +137,7 @@ class AdType extends Component {
   render() {
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaView}
         forceInset={{ bottom: "never" }}
       >
         <Container style={styles.container}>
@@ -177,7 +154,6 @@ class AdType extends Component {
 
           <View style={{ height: 90 }}>
             <Carousel
-              // enableMomentum
               ref={c => {
                 this._carousel = c;
               }}

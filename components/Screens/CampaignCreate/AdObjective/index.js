@@ -15,33 +15,33 @@ import {
   Icon,
   Label
 } from "native-base";
-import isUndefined from "lodash/isUndefined";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
+import { SafeAreaView } from "react-navigation";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
-//icons
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+
+//Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
-
-//data
-import ObjectiveData from "./ObjectiveData";
+import GlobalStyles from "../../../../GlobalStyles";
+//Data
+import ObjectiveData from "../../../Data/snapchatObjectives.data";
 
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
-//Validators
+//Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -83,7 +83,6 @@ class AdObjective extends Component {
   };
   componentDidMount() {
     let rep = this.state.campaignInfo;
-
     Segment.screen("Select Ad Objective Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 2,
@@ -216,7 +215,7 @@ class AdObjective extends Component {
 
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
+        style={styles.safeAreaView}
         forceInset={{ bottom: "never" }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -241,27 +240,24 @@ class AdObjective extends Component {
                 height={heightPercentageToDP(5) < 30 ? 50 : 70}
               />
             </View>
-            <View style={styles.maincontent}>
+            <View style={styles.mainContent}>
               <Item
                 floatingLabel
                 style={[
                   styles.input1,
-                  {
-                    borderColor: this.state.inputN
-                      ? "#fff"
-                      : this.state.nameError
-                      ? "red"
-                      : "#D9D9D9"
-                  }
+                  this.state.inputN
+                    ? GlobalStyles.whiteBorderColor
+                    : this.state.nameError
+                    ? GlobalStyles.redBorderColor
+                    : GlobalStyles.lightGrayBorderColor
                 ]}
               >
                 <Label
                   style={[
-                    styles.inputtext,
-                    {
-                      color: this.state.inputN ? "#FF9D00" : "#fff",
-                      fontFamily: "montserrat-semibold"
-                    }
+                    styles.inputLabel,
+                    this.state.inputN
+                      ? GlobalStyles.orangeTextColor
+                      : GlobalStyles.whiteTextColor
                   ]}
                 >
                   Enter Your Ad Name
@@ -269,7 +265,7 @@ class AdObjective extends Component {
 
                 <Input
                   value={this.state.campaignInfo.name}
-                  style={[styles.inputtext]}
+                  style={styles.inputText}
                   autoCorrect={false}
                   maxLength={35}
                   autoCapitalize="none"
@@ -306,37 +302,23 @@ class AdObjective extends Component {
                 end_timeError={this.state.end_timeError}
                 dateField={this.dateField}
               />
-              <Text
-                style={[
-                  styles.minBudget,
-                  {
-                    fontSize: 11
-                    // alignSelf: "center"
-                  }
-                ]}
-              >
-                Minimum of $25/day
-              </Text>
-              <Text style={[styles.title, styles.selectObjectiveTitle]}>
-                Objective
-              </Text>
+              <Text style={styles.minBudget}>Minimum of $25/day</Text>
+              <Text style={styles.title}>Objective</Text>
 
               <Item
                 rounded
                 style={[
                   styles.input2,
-                  {
-                    borderColor: this.state.objectiveError
-                      ? "red"
-                      : "transparent"
-                  }
+                  this.state.objectiveError
+                    ? GlobalStyles.redBorderColor
+                    : GlobalStyles.transparentBorderColor
                 ]}
                 onPress={() => {
                   Keyboard.dismiss();
                   this.setModalVisible(true);
                 }}
               >
-                <Text style={[styles.label, { width: "100%" }]}>
+                <Text style={styles.label}>
                   {this.state.campaignInfo.objective === ""
                     ? this.state.objectiveLabel
                     : this.state.objectives.find(
@@ -369,7 +351,7 @@ class AdObjective extends Component {
         >
           <BlurView intensity={95} tint="dark">
             <SafeAreaView
-              style={{ height: "100%", backgroundColor: "#0000" }}
+              style={styles.safeAreaView}
               forceInset={{ bottom: "never" }}
             >
               <View style={styles.popupOverlay}>
@@ -383,15 +365,10 @@ class AdObjective extends Component {
                 <Content
                   padder
                   indicatorStyle="white"
-                  contentContainerStyle={{
-                    marginTop: 15,
-                    paddingTop: 15,
-                    marginBottom: 15
-                  }}
+                  contentContainerStyle={styles.contentContainer}
                 >
                   {list}
                 </Content>
-
                 <LowerButton bottom={4} function={this.setModalVisible} />
               </View>
             </SafeAreaView>

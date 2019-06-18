@@ -9,28 +9,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  container: {
-    // paddingTop: hp(5),
-    // paddingTop: 20,
-    flex: 1,
-    backgroundColor: "#0000"
-  },
-
-  text: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-semibold",
-    fontSize: 17,
-    paddingVertical: 10,
-    bottom: 5
-  },
-  title: {
-    fontSize: 16,
-    color: "#fff",
-    textAlign: "center",
-    marginTop: 10,
-    textAlign: "center",
-    fontFamily: "montserrat-semibold"
+  slideIcon: {
+    top: 5,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5
   },
   iconTitle: {
     fontSize: 16,
@@ -40,7 +24,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
-  slidtitle: {
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
+  text: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    fontSize: 17,
+    paddingVertical: 10,
+    bottom: 5
+  },
+  slidTitle: {
     fontSize: 19,
     color: "#fff",
     textAlign: "center",
@@ -48,19 +48,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-semibold"
   },
-  slideicon: {
-    top: 5,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    // backgroundColor: "#fff",
-    shadowRadius: 5
-    // width: 150,
-    // height: 150,
-    // borderRadius: 40,
-    // elevation: 3
+  placeholder: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "100%",
+    height: "90%",
+    zIndex: 0,
+    marginTop: 10,
+    backgroundColor: "black",
+    justifyContent: "center"
   },
-  slidetext: {
+  slideText: {
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
@@ -69,26 +69,18 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     zIndex: 10
   },
-
-  placeholder: {
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    overflow: "hidden",
-    alignSelf: "center",
+  typeCardContainer: {
+    top: "0%",
     width: "100%",
-    height: "90%",
-
-    zIndex: 0,
-    marginTop: 10,
-    backgroundColor: "black",
-    justifyContent: "center"
+    height: "95%",
+    bottom: "5%",
+    paddingTop: 10,
+    alignSelf: "center"
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
-  closeIcon: {
-    top: hp(6),
-    left: wp(4.5)
+  image: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff"
   }
 });
 

@@ -93,7 +93,7 @@ class CampaignCard extends Component {
                   }
                 ]}
               >
-                <Text style={styles.reviewtext}>Approved</Text>
+                <Text style={styles.reviewText}>Approved</Text>
               </View>
             ) : (
               <View
