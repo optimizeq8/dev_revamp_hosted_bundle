@@ -25,6 +25,7 @@ import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 
 // Style
 import styles from "./styles";
@@ -52,7 +53,7 @@ class SwipeUpDestination extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
-    const image = this.props.navigation.state.params.image;
+    const image = this.props.navigation.getParam("image", "");
 
     this.setState({
       image,
@@ -137,15 +138,17 @@ class SwipeUpDestination extends Component {
                 borderTopRightRadius: 30
               }}
             >
-              {!isNull(this.state.image) && this.state.image.length > 0 && (
-                <View style={{ ...styles.placeholder1 }}>
-                  <Image
-                    style={{ width: "100%", height: "100%", opacity: 0.4 }}
-                    source={{ uri: this.state.image }}
-                    resizeMode="cover"
-                  />
-                </View>
-              )}
+              {!isNull(this.state.image) &&
+                !isUndefined(this.state.image) &&
+                this.state.image.length > 0 && (
+                  <View style={{ ...styles.placeholder1 }}>
+                    <Image
+                      style={{ width: "100%", height: "100%", opacity: 0.4 }}
+                      source={{ uri: this.state.image }}
+                      resizeMode="cover"
+                    />
+                  </View>
+                )}
               <View style={{ marginTop: 30 }}>
                 <TouchableOpacity
                   onPress={() => {
