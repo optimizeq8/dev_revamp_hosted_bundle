@@ -24,9 +24,9 @@ export default class Duration extends Component {
         underlayColor="rgba(255,255,255,0.2)"
         style={[
           styles.dateInput,
-          {
-            borderColor: this.props.start_timeError ? "red" : "transparent"
-          },
+          this.props.start_timeError
+            ? GlobalStyles.redBorderColor
+            : GlobalStyles.transparentBorderColor,
           this.props.style
         ]}
         onPress={() => {
@@ -34,19 +34,9 @@ export default class Duration extends Component {
           this.props.dateField.showModal();
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "column",
-              textAlign: "center"
-            }}
-          >
-            <Text style={[styles.categories, { fontSize: 16 }]}>Start</Text>
+        <View style={styles.dateContainer}>
+          <View style={styles.dateColumn}>
+            <Text style={styles.dateLabel}>Start</Text>
             {this.props.start_time !== "" && (
               <Text style={styles.date}>
                 {start_time} {start_year}
@@ -56,10 +46,9 @@ export default class Duration extends Component {
 
           <Text
             style={[
-              styles.categories,
+              styles.dateLabel,
+              GlobalStyles.whiteTextColor,
               {
-                fontSize: 16,
-                color: "#fff",
                 top: this.props.start_time === "" ? 0 : 10,
                 marginHorizontal: 5
               }
@@ -68,12 +57,8 @@ export default class Duration extends Component {
             To
           </Text>
 
-          <View
-            style={{
-              flexDirection: "column"
-            }}
-          >
-            <Text style={[styles.categories, { fontSize: 16 }]}>End</Text>
+          <View style={styles.dateColumn}>
+            <Text style={styles.dateLabel}>End</Text>
 
             {this.props.end_time !== "" && (
               <Text style={styles.date}>

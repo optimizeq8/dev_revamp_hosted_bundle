@@ -5,12 +5,6 @@ export default [
     info: "Increase awareness of your brand or product.",
     icon: ""
   },
-  //   {
-  //     label: "Reach",
-  //     value: "REACH",
-  //     info: "The user will be shown A video of 10 Mins.",
-  //     icon: ""
-  //   },
   {
     label: "Traffic",
     value: "TRAFFIC",
