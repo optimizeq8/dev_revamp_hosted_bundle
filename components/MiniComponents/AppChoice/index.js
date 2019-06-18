@@ -11,28 +11,29 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Item, Icon, Input } from "native-base";
+import { showMessage } from "react-native-flash-message";
+import { ActivityIndicator } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
-
-//icons
-import SearchIcon from "../../../assets/SVGs/Search";
-
-//data
-import list from "./callactions";
-import data, { androidDataTest } from "./data";
-
-//styles
-import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
-import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
+import KeyboradShift from "../../MiniComponents/KeyboardShift";
+
+//Icons
+import SearchIcon from "../../../assets/SVGs/Search";
+
+//Data
+import list from "./callactions";
+
+//Styles
+import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
+
+//Functions
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { ToggleButton, ActivityIndicator } from "react-native-paper";
-import { showMessage } from "react-native-flash-message";
-import KeyboradShift from "../../MiniComponents/KeyboardShift";
 
 class AppChoice extends Component {
   constructor(props) {

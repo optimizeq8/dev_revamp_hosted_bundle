@@ -15,7 +15,7 @@ import KeyboardShift from "../KeyboardShift";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 //styles
-import styles from "../../Screens/CampaignCreate/SwipeUpChoice/styles";
+import styles from "./styles";
 import LowerButton from "../LowerButton";
 import { Item, Input } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";

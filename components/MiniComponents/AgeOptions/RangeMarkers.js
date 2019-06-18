@@ -13,13 +13,13 @@ export default class RangeMarkers extends Component {
         ]}
       >
         {!this.props.down && (
-          <Text style={[GlobalStyles.numbers, { color: "#fff" }]}>
+          <Text style={[GlobalStyles.numbers, GlobalStyles.whiteTextColor]}>
             {this.props.value === 35 ? "35+" : this.props.value}
           </Text>
         )}
         <View style={styles.breaker} />
         {this.props.down && (
-          <Text style={[GlobalStyles.numbers, { color: "#fff" }]}>
+          <Text style={[GlobalStyles.numbers, GlobalStyles.whiteTextColor]}>
             {this.props.value === 35 ? "35+" : this.props.value}
           </Text>
         )}
