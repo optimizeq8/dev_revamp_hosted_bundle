@@ -140,6 +140,7 @@ class SwipeUpDestination extends Component {
                     <Text style={styles.titletext}>Website</Text>
                     <Text style={styles.subtext}>
                       Send Snapchatters directly to your REMOTE_WEBPAGE
+
                     </Text>
                   </View>
                 </TouchableOpacity>

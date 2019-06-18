@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, SafeAreaView, Platform } from "react-native";
 import { Content, Text, Container } from "native-base";
+import { connect } from "react-redux";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
