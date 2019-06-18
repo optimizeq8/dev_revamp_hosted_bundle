@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
   transparentTextColor: {
     color: "#0000"
   },
+  darkGrayBackgroundColor: {
+    backgroundColor: "#717171"
+  },
   darkGrayTextColor: {
     color: "#717171"
   },
@@ -59,6 +62,9 @@ const styles = StyleSheet.create({
   },
   grayBackgroundColor: {
     backgroundColor: "#A0A0A0"
+  },
+  grayBorderColor: {
+    borderColor: "#A0A0A0"
   },
   redTextColor: {
     color: "red"

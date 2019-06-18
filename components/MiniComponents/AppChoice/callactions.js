@@ -83,10 +83,10 @@ var list = [
         label: "GET NOW",
         value: "GET_NOW"
       },
-      {
-        label: "ORDER NOW",
-        value: "ORDER_NOW"
-      },
+      //   {
+      //     label: "ORDER NOW",
+      //     value: "ORDER_NOW"
+      //   },
       {
         label: "PLAY",
         value: "PLAY"
