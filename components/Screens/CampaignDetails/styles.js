@@ -316,7 +316,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     justifyContent: "center"
-  }
+  },
+  placeHolderChart: {
+    position: "absolute",
+    zIndex: 100,
+    width: "90%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15
+  },
+  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" }
 });
 
 export default styles;

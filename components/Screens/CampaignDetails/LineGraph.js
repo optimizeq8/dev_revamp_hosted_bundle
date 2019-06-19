@@ -11,6 +11,7 @@ import {
   VictoryAxis
 } from "victory-native";
 import chartData from "./ChartData";
+import styles from "./styles";
 
 class LineGraph extends Component {
   kFormatter = num => {
@@ -61,20 +62,8 @@ class LineGraph extends Component {
         style={{ height: 200 }}
       >
         {this.props.campaignStats.length < 1 && (
-          <BlurView
-            intensity={70}
-            tint="dark"
-            style={{
-              position: "absolute",
-              zIndex: 100,
-              width: "90%",
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 15
-            }}
-          >
-            <Text style={{ fontFamily: "montserrat-medium", color: "#fff" }}>
+          <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
+            <Text style={styles.placeHolderChartText}>
               Not enough data to display.
             </Text>
           </BlurView>
