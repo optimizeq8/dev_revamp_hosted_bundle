@@ -72,7 +72,10 @@ class SuccessRedirect extends Component {
   }
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
         <Image
           style={styles.image}
           source={this.state.image}

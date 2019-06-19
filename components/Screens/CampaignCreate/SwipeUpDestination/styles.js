@@ -6,6 +6,10 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    flex: 1,
+    backgroundColor: "#0000"
+  },
   contentContainer: {
     backgroundColor: "black",
     overflow: "hidden",

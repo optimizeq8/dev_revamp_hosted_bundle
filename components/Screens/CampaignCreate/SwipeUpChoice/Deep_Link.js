@@ -14,9 +14,6 @@ import styles from "./styles";
 
 import list from "../../../Data/callactions.data";
 
-//Redux
-import { connect } from "react-redux";
-
 class Deep_Link extends Component {
   static navigationOptions = {
     header: null

@@ -29,12 +29,21 @@ import {
   Footer,
   Icon
 } from "native-base";
-import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import { Transition } from "react-navigation-fluid-transitions";
+import { Modal } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
+import Axios from "axios";
+import isNull from "lodash/isNull";
 
 //Redux
-import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
@@ -46,16 +55,11 @@ import styles from "./styles";
 
 //Validator
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
-import { Transition } from "react-navigation-fluid-transitions";
-import { Modal } from "react-native-paper";
+
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import { showMessage } from "react-native-flash-message";
-import Axios from "axios";
-import isNull from "lodash/isNull";
+import CustomHeader from "../../../MiniComponents/Header";
+import CameraLoading from "../../../MiniComponents/CameraLoading";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -518,9 +522,6 @@ class AdDesign extends Component {
     });
   };
   perviewHandler = async () => {
-    console.log("campaignInfo", this.state.campaignInfo);
-    console.log("appChoice", this.state.appChoice);
-
     await this.validator();
     if (
       !this.state.brand_nameError &&
@@ -774,7 +775,7 @@ class AdDesign extends Component {
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <LinearGradient
           colors={["#751AFF", "#6268FF"]}
@@ -801,7 +802,7 @@ class AdDesign extends Component {
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
                     {this.state.videoIsLoading ? (
-                      <LoadingScreen dash={true} />
+                      <CameraLoading dash={true} />
                     ) : null}
                     <Video
                       onLoadStart={() =>
@@ -879,6 +880,7 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   onPress={this._handleSubmission}
                   style={styles.button}
@@ -903,7 +905,10 @@ class AdDesign extends Component {
           animationType={"slide"}
         >
           <BlurView intensity={95} tint="dark">
-            <SafeAreaView style={styles.loadingSafeArea}>
+            <SafeAreaView
+              forceInset={{ top: "always" }}
+              style={styles.loadingSafeArea}
+            >
               {this.props.loading && (
                 <CustomHeader
                   closeButton={true}
@@ -917,7 +922,13 @@ class AdDesign extends Component {
                   actionButton={() => this.onToggleModal(false)}
                 />
               )}
-              <LoadingScreen top={50} />
+
+              <CameraLoading
+                style={{ width: 110, height: 110 }}
+                //   styles={{ width: hp(30), height: hp(30) }}
+                // top={"50%"}
+                // left={"55%"}
+              />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>

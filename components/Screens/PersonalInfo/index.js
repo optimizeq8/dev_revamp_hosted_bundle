@@ -62,7 +62,7 @@ class PersonalInfo extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Header title={"Personal Info"} navigation={this.props.navigation} />
 

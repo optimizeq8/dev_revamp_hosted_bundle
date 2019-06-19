@@ -71,7 +71,7 @@ class MainForm extends Component {
 
     return (
       <SafeAreaView
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
         style={styles.safeAreaViewContainer}
       >
         <LinearGradient

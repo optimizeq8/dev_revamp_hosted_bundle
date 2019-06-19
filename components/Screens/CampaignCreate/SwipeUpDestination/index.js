@@ -88,8 +88,8 @@ class SwipeUpDestination extends Component {
     }
     return (
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#0000" }}
-        forceInset={{ bottom: "never" }}
+        style={styles.safeAreaViewContainer}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
           <Sidemenu
@@ -140,7 +140,6 @@ class SwipeUpDestination extends Component {
                     <Text style={styles.titletext}>Website</Text>
                     <Text style={styles.subtext}>
                       Send Snapchatters directly to your REMOTE_WEBPAGE
-
                     </Text>
                   </View>
                 </TouchableOpacity>
