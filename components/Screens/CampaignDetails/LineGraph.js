@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
-
+import { BlurView } from "expo";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
@@ -19,6 +19,8 @@ class LineGraph extends Component {
       : Math.abs(num);
   };
   render() {
+    console.log(this.props.campaignStats);
+
     let data = chartData;
     let category = [];
     if (this.props.campaignStats.length > 1) {
@@ -55,7 +57,30 @@ class LineGraph extends Component {
     }
 
     return (
-      <ScrollView horizontal style={{ height: 200 }}>
+      <ScrollView
+        scrollEnabled={this.props.campaignStats.length > 1}
+        horizontal
+        style={{ height: 200 }}
+      >
+        {this.props.campaignStats.length < 1 && (
+          <BlurView
+            intensity={70}
+            tint="dark"
+            style={{
+              position: "absolute",
+              zIndex: 100,
+              width: "90%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 15
+            }}
+          >
+            <Text style={{ fontFamily: "montserrat-medium", color: "#fff" }}>
+              Not enough data to display.
+            </Text>
+          </BlurView>
+        )}
         <VictoryChart
           domainPadding={{ y: 10 }}
           containerComponent={
@@ -71,7 +96,7 @@ class LineGraph extends Component {
           }
           padding={{ top: 60, bottom: 30, left: 50, right: 50 }}
           height={200}
-          width={500}
+          width={this.props.campaignStats.length < 1 ? 400 : 500}
         >
           <VictoryLine
             categories={{ x: category }}

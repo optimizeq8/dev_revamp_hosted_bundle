@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 import styles from "../styles";
 import GlobalStyles from "../../../../GlobalStyles";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
-
+import formatNumber from "../../../formatNumber";
 class Box extends Component {
   render() {
     let info = this.props.info;
@@ -12,10 +12,12 @@ class Box extends Component {
     return (
       <View style={styles.boxStats}>
         <Text style={styles.stats}>{title}</Text>
-        {this.props.loadingCampaignStats ? (
+        {this.props.loadingCampaignStats || (!info && info !== 0) ? (
           <PlaceholderLine />
         ) : (
-          <Text style={[GlobalStyles.numbers, { fontSize: 23 }]}>{info}</Text>
+          <Text style={[GlobalStyles.numbers, { fontSize: 23 }]}>
+            {formatNumber(info, true)}
+          </Text>
         )}
       </View>
     );
