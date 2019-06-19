@@ -247,7 +247,6 @@ export const ad_design = (
   iosUploadVideo
 ) => {
   onToggleModal(true);
-
   return dispatch => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,

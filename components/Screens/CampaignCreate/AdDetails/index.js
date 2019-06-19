@@ -421,9 +421,9 @@ class AdDetails extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: this.state.minValueBudget
+          lifetime_budget_micro: rawValue
         },
-        value: this.state.minValueBudget
+        value: value
       });
       this.props.save_campaign_info({
         campaignInfo: {
