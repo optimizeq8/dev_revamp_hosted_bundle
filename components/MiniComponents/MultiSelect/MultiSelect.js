@@ -45,15 +45,16 @@ class MultiSelectList extends Component {
       let interests = [];
       let lenOfLists = 0;
 
-      Object.keys(this.props.interests).forEach((key, i) => {
-        if (this.props.interests[key].length > 0) {
-          interests.push({
-            id: key,
-            children: this.props.interests[key]
-          });
-        }
-        lenOfLists += this.props.interests[key].length;
-      });
+      this.props.interests &&
+        Object.keys(this.props.interests).forEach((key, i) => {
+          if (this.props.interests[key].length > 0) {
+            interests.push({
+              id: key,
+              children: this.props.interests[key]
+            });
+          }
+          lenOfLists += this.props.interests[key].length;
+        });
 
       if (lenOfLists === 0) {
         this.setState({ interests: [] });

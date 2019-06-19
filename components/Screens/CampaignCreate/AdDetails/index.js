@@ -52,7 +52,10 @@ import isEqual from "lodash/isEqual";
 import combineMerge from "./combineMerge";
 import isNan from "lodash/isNaN";
 import deepmerge from "deepmerge";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 
@@ -206,11 +209,12 @@ class AdDetails extends Component {
           },
           () => {
             this._calcReach();
-            this.onSelectedCountryChange(
-              rep.targeting.geos[0].country_code,
-              null,
-              this.props.data.countryName
-            );
+            rep.targeting.geos[0].country_code &&
+              this.onSelectedCountryChange(
+                rep.targeting.geos[0].country_code,
+                null,
+                this.props.data.countryName
+              );
           }
         );
       }
@@ -862,14 +866,19 @@ class AdDetails extends Component {
                     </View>
                   </>
                 ) : (
-                  <View style={styles.sliderPlaceHolder} />
+                  <View style={styles.sliderPlaceHolder}>
+                    <Text style={styles.subHeadings}>
+                      Editing budget and duration {"\n"} is currently
+                      unavailable.
+                    </Text>
+                  </View>
                 )}
                 <Text style={styles.subHeadings}>
                   Who would you like to reach?
                 </Text>
                 <ScrollView
                   ref={ref => (this.scrollView = ref)}
-                  indicatorStyle={globalColors.white}
+                  indicatorStyle="white"
                   style={styles.targetList}
                 >
                   <TouchableOpacity
@@ -1174,16 +1183,19 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
                 </ScrollView>
-                <Text
-                  onPress={() => {
-                    this.scrollView.scrollToEnd({ animated: true });
 
-                    this.setState({ advance: !this.state.advance });
-                  }}
-                  style={styles.moreOptionsText}
-                >
-                  Scroll for more options+
-                </Text>
+                {!editCampaign && hp(100) < 800 && (
+                  <Text
+                    onPress={() => {
+                      this.scrollView.scrollToEnd({ animated: true });
+
+                      this.setState({ advance: !this.state.advance });
+                    }}
+                    style={styles.moreOptionsText}
+                  >
+                    Scroll for more options+
+                  </Text>
+                )}
 
                 <ReachBar
                   advance={this.state.advance}
