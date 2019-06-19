@@ -36,9 +36,9 @@ export default class SlideUpPanel extends Component {
     refreshing: false
   };
 
-  _onRefresh = async () => {
+  _onRefresh = async selectedCampaign => {
     this.setState({ refreshing: true });
-    await this.props.getCampaignStats(this.props.selectedCampaign, {
+    await this.props.getCampaignStats(selectedCampaign, {
       // start_time: "2019-05-09",
       // end_time: "2019-05-25"
       start_time: selectedCampaign.start_time,
@@ -200,7 +200,7 @@ export default class SlideUpPanel extends Component {
                         <RefreshControl
                           tintColor={"#fff"}
                           refreshing={this.state.refreshing}
-                          onRefresh={this._onRefresh}
+                          onRefresh={() => this._onRefresh(selectedCampaign)}
                         />
                       }
                       contentContainerStyle={{

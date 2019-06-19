@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
-
+import { BlurView } from "expo";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
@@ -11,6 +11,7 @@ import {
   VictoryAxis
 } from "victory-native";
 import chartData from "./ChartData";
+import styles from "./styles";
 
 class LineGraph extends Component {
   kFormatter = num => {
@@ -49,13 +50,26 @@ class LineGraph extends Component {
               ? stat.stats.spend / 1000000
               : this.props.chartChoice === "Impressions"
               ? stat.stats.impressions
-              : this.props.chartChoice !== "Swipe-Ups" && stat.stats.swipes
+              : this.props.chartChoice === "Swipe-Ups"
+              ? stat.stats.swipes
+              : 0
         };
       });
     }
 
     return (
-      <ScrollView horizontal style={{ height: 200 }}>
+      <ScrollView
+        scrollEnabled={this.props.campaignStats.length > 1}
+        horizontal
+        style={{ height: 200 }}
+      >
+        {this.props.campaignStats.length < 1 && (
+          <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
+            <Text style={styles.placeHolderChartText}>
+              Not enough data to display.
+            </Text>
+          </BlurView>
+        )}
         <VictoryChart
           domainPadding={{ y: 10 }}
           containerComponent={
@@ -71,7 +85,7 @@ class LineGraph extends Component {
           }
           padding={{ top: 60, bottom: 30, left: 50, right: 50 }}
           height={200}
-          width={500}
+          width={this.props.campaignStats.length < 1 ? 400 : 500}
         >
           <VictoryLine
             categories={{ x: category }}

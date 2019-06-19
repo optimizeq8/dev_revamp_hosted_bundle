@@ -209,19 +209,20 @@ class AdDesign extends Component {
         [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
       };
       this.setState(newData);
-      this.props.save_campaign_info(newData);
+
+      this.props.save_campaign_info({ ...newData });
     } else {
       newData = {
         campaignInfo: {
           ...this.state.campaignInfo,
           destination,
-          call_to_action: call_to_action,
+          call_to_action,
           attachment
         },
         appChoice
       };
       this.setState(newData);
-      this.props.save_campaign_info(newData.campaignInfo);
+      this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
     }
   };
   pick = async () => {
@@ -454,6 +455,7 @@ class AdDesign extends Component {
 
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
       body.append("brand_name", this.state.campaignInfo.brand_name);
       body.append("headline", this.state.campaignInfo.headline);

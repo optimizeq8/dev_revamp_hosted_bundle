@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  ImageBackground,
-  Dimensions,
-  Animated,
-  TouchableWithoutFeedback,
-  Platform,
-  Modal
-} from "react-native";
-import { Card, Button, Text, Container, Icon } from "native-base";
+import { View, Image, ImageBackground, Animated } from "react-native";
+import { Card, Text, Container, Icon } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import { Video, LinearGradient, BlurView, Segment } from "expo";
 import Toggle from "react-native-switch-toggle";
-import CloseButton from "../../MiniComponents/CloseButton";
 import SlideUpPanel from "./SlideUpPanel";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
@@ -30,12 +19,8 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 import globalStyles from "../../../GlobalStyles";
 //Functions
-import isNull from "lodash/isNull";
-import isEmpty from "lodash/isEmpty";
-import isUndefined from "lodash/isUndefined";
 import formatNumber from "../../formatNumber";
 import {
   widthPercentageToDP as wp,

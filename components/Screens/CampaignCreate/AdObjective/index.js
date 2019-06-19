@@ -118,7 +118,7 @@ class AdObjective extends Component {
         objective: value
       }
     });
-    this.props.save_campaign_info({ objective: value });
+    this.props.save_campaign_info({ objective: value, reset: true });
   };
 
   handleStartDatePicked = date => {
