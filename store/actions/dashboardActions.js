@@ -80,8 +80,10 @@ export const getCampaignStats = (campaign, duration) => {
         // end_time: "2019-05-25",
 
         // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
-        // start_time: duration.start_time, //"2019-05-09",
-        // end_time: duration.end_time, //"2019-05-25",
+        // //duration.start_time,
+        // start_time: "2019-05-09",
+        // //duration.end_time,
+        // end_time: "2019-05-25",
 
         //Actual api
         campaign_id: campaign.snap_campaign_id,
@@ -93,6 +95,8 @@ export const getCampaignStats = (campaign, duration) => {
         return res.data;
       })
       .then(data => {
+        console.log(data);
+
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_STATS,
           payload: { loading: false, data: data }
