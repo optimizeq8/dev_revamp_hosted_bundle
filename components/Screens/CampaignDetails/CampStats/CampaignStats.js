@@ -8,6 +8,7 @@ import BoxStats from "./BoxStats";
 import styles from "../styles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
+import formatNumber from "../../../formatNumber";
 
 class CampaignStats extends Component {
   render() {
@@ -37,7 +38,8 @@ class CampaignStats extends Component {
             >
               Impressions{"\n "}
               <Text style={globalStyles.numbers}>
-                {selectedCampaign && selectedCampaign.impressions}
+                {selectedCampaign &&
+                  formatNumber(selectedCampaign.impressions, true)}
               </Text>
             </Text>
           ) : (
@@ -54,7 +56,7 @@ class CampaignStats extends Component {
             >
               Reach{" \n"}
               <Text style={globalStyles.numbers}>
-                {selectedCampaign && selectedCampaign.reach}
+                {selectedCampaign && formatNumber(selectedCampaign.reach, true)}
               </Text>
             </Text>
           ) : (
@@ -71,7 +73,8 @@ class CampaignStats extends Component {
             >
               Paid Frequency{" \n"}
               <Text style={globalStyles.numbers}>
-                {selectedCampaign && selectedCampaign.paid_frequency}
+                {selectedCampaign &&
+                  formatNumber(selectedCampaign.paid_frequency, true)}
               </Text>
             </Text>
           ) : (

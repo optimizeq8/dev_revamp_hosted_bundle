@@ -84,7 +84,8 @@ class CampaignCard extends Component {
                 {this.props.campaign.name}
               </Text>
             </View>
-            {this.review_status.includes("APPROVED") ? (
+            {this.review_status.includes("APPROVED") &&
+            new Date(campaign.start_time) > new Date() ? (
               <View
                 style={[
                   styles.adStatus,
@@ -94,6 +95,13 @@ class CampaignCard extends Component {
                 ]}
               >
                 <Text style={styles.reviewText}>Approved</Text>
+              </View>
+            ) : campaign.campaign_end === "1" ||
+              new Date(campaign.end_time) < new Date() ? (
+              <View
+                style={[styles.adStatus, GlobalStyles.orangeBackgroundColor]}
+              >
+                <Text style={styles.reviewText}>Campaign ended</Text>
               </View>
             ) : (
               <View
