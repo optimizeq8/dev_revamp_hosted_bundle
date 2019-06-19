@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  BackHandler,
   PixelRatio
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
@@ -99,8 +100,15 @@ class CreateBusinessAccount extends Component {
   }
   componentDidMount() {
     Segment.screen("Create New Business");
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   _handleBusinessCategories = async type => {
     await this.setState({
       businessAccount: {
@@ -200,7 +208,7 @@ class CreateBusinessAccount extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Container
           style={[

@@ -178,6 +178,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-extralight",
     fontSize: 11
+  },
+  flex: {
+    flex: 1
   }
 });
 
