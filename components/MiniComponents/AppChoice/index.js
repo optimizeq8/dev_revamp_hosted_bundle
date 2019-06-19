@@ -101,7 +101,7 @@ class AppChoice extends Component {
       }
     });
     instance
-      .get(`/searches.json?term=${this.state.attachment.app_name}&num=10`)
+      .get(`/searches.json?term=${this.state.attachment.app_name}&num=50`)
       .then(res => {
         return res.data.content;
       })
@@ -133,7 +133,7 @@ class AppChoice extends Component {
       }
     });
     instance
-      .get(`/searches.json?term=${this.state.attachment.app_name}&num=10`)
+      .get(`/searches.json?term=${this.state.attachment.app_name}&num=50`)
       .then(res => {
         return res.data.content;
       })
@@ -261,7 +261,7 @@ class AppChoice extends Component {
               <RNPickerSelect
                 items={this.state.callactions}
                 placeholder={{ label: "Call to Action", value: "" }}
-                 value={this.state.callaction.value}
+                value={this.state.callaction.value}
                 onValueChange={(value, index) => {
                   this.setState({
                     callaction: {
