@@ -127,21 +127,21 @@ export const country_regions = [
         code: "13",
         name: "Al Asimah"
       },
-      {
-        id: "28673",
-        code: "14",
-        name: "Al Janubiyah"
-      },
-      {
-        id: "28674",
-        code: "15",
-        name: "Al Muharraq"
-      },
-      {
-        id: "28675",
-        code: "16",
-        name: "Al Wusta"
-      },
+      // {
+      //   id: "28673",
+      //   code: "14",
+      //   name: "Al Janubiyah"
+      // },
+      // {
+      //   id: "28674",
+      //   code: "15",
+      //   name: "Al Muharraq"
+      // },
+      // {
+      //   id: "28675",
+      //   code: "16",
+      //   name: "Al Wusta"
+      // },
       {
         id: "28676",
         code: "17",
@@ -162,31 +162,31 @@ export const country_regions = [
         code: "kh",
         name: "Al Khawr Wa Adh Dhakhira"
       },
-      {
-        id: "30061",
-        code: "ms",
-        name: "Ash Shamal"
-      },
-      {
-        id: "30062",
-        code: "ra",
-        name: "Ar Rayyan"
-      },
-      {
-        id: "30063",
-        code: "us",
-        name: "Umm Salai"
-      },
+      // {
+      //   id: "30061",
+      //   code: "ms",
+      //   name: "Ash Shamal"
+      // },
+      // {
+      //   id: "30062",
+      //   code: "ra",
+      //   name: "Ar Rayyan"
+      // },
+      // {
+      //   id: "30063",
+      //   code: "us",
+      //   name: "Umm Salai"
+      // },
       {
         id: "30064",
         code: "wa",
         name: "Al Wakrah"
-      },
-      {
-        id: "30065",
-        code: "za",
-        name: "Az Zain"
       }
+      // {
+      //   id: "30065",
+      //   code: "za",
+      //   name: "Az Zain"
+      // }
     ]
   },
   {
@@ -197,66 +197,66 @@ export const country_regions = [
         code: "ma",
         name: "Masqat"
       },
-      {
-        id: "29714",
-        code: "ba",
-        name: "Al Batinah"
-      },
-      {
-        id: "29715",
-        code: "bu",
-        name: "Al Buraimi"
-      },
+      // {
+      //   id: "29714",
+      //   code: "ba",
+      //   name: "Al Batinah"
+      // },
+      // {
+      //   id: "29715",
+      //   code: "bu",
+      //   name: "Al Buraimi"
+      // },
       {
         id: "29716",
         code: "da",
         name: "Ad Dakhiliyah"
       },
-      {
-        id: "29717",
-        code: "mu",
-        name: "Musandam"
-      },
-      {
-        id: "29718",
-        code: "sh",
-        name: "Ash Sharqiyah"
-      },
-      {
-        id: "29719",
-        code: "wu",
-        name: "Al Wusta"
-      },
-      {
-        id: "29720",
-        code: "za",
-        name: "Az Zahirah"
-      },
+      // {
+      //   id: "29717",
+      //   code: "mu",
+      //   name: "Musandam"
+      // },
+      // {
+      //   id: "29718",
+      //   code: "sh",
+      //   name: "Ash Sharqiyah"
+      // },
+      // {
+      //   id: "29719",
+      //   code: "wu",
+      //   name: "Al Wusta"
+      // },
+      // {
+      //   id: "29720",
+      //   code: "za",
+      //   name: "Az Zahirah"
+      // },
       {
         id: "29721",
         code: "zu",
         name: "Zufar"
-      },
-      {
-        id: "34944",
-        code: "bj",
-        name: "Janub Al Batinah"
-      },
-      {
-        id: "34945",
-        code: "sj",
-        name: "Janub Ash Sharqiyah"
-      },
-      {
-        id: "34946",
-        code: "bs",
-        name: "Shamal Al Batinah"
-      },
-      {
-        id: "34947",
-        code: "ss",
-        name: "Shamal Ash Sharqiyah"
       }
+      // {
+      //   id: "34944",
+      //   code: "bj",
+      //   name: "Janub Al Batinah"
+      // },
+      // {
+      //   id: "34945",
+      //   code: "sj",
+      //   name: "Janub Ash Sharqiyah"
+      // },
+      // {
+      //   id: "34946",
+      //   code: "bs",
+      //   name: "Shamal Al Batinah"
+      // },
+      // {
+      //   id: "34947",
+      //   code: "ss",
+      //   name: "Shamal Ash Sharqiyah"
+      // }
     ]
   }
 ];

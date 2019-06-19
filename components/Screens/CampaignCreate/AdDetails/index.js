@@ -105,7 +105,8 @@ class AdDetails extends Component {
       interestNames: [],
       modalVisible: false,
       totalReach: 0,
-      selectionOption: ""
+      selectionOption: "",
+      showRegions: false
     };
   }
 
@@ -197,18 +198,20 @@ class AdDetails extends Component {
           {
             ...this.state,
             campaignInfo: {
-              // ...this.state.campaignInfo,
-              // brand_name: this.props.data.brand_name,
-              // headline: this.props.data.headline,
-              // destination: rep.destination ? rep.destination : "BLANK",
-              // call_to_action: rep.call_to_action,
-              // attachment: rep.attachment
               ...rep
             },
             ...this.props.data,
-            value: this.props.data.campaignInfo.lifetime_budget_micro
+            value: this.props.data.campaignInfo.lifetime_budget_micro,
+            showRegions: this.props.data.showRegions
           },
-          () => this._calcReach()
+          () => {
+            this._calcReach();
+            this.onSelectedCountryChange(
+              rep.targeting.geos[0].country_code,
+              null,
+              this.props.data.countryName
+            );
+          }
         );
       }
       if (
@@ -257,12 +260,14 @@ class AdDetails extends Component {
         regions: reg.regions,
         filteredRegions: reg.regions,
         regionNames: [],
-        countryName
+        countryName,
+        showRegions: reg.regions.length > 3
       });
       this.props.save_campaign_info({
         campaignInfo: replace,
         country_code: newCountry,
-        countryName
+        countryName,
+        showRegions: reg.regions.length > 3
       });
     }
   };
@@ -968,30 +973,34 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => {
-                      this._renderSideMenu("regions");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Regions</Text>
-                        <Text style={styles.menudetails}>{regions_names}</Text>
+                  {this.state.showRegions && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this._renderSideMenu("regions");
+                      }}
+                      style={styles.targetTouchable}
+                    >
+                      <View style={globalStyles.row}>
+                        <LocationIcon
+                          width={25}
+                          height={25}
+                          style={styles.icon}
+                        />
+                        <View style={globalStyles.column}>
+                          <Text style={styles.menutext}>Regions</Text>
+                          <Text style={styles.menudetails}>
+                            {regions_names}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    {this.state.campaignInfo.targeting.geos[0].region_id
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
+                      {this.state.campaignInfo.targeting.geos[0].region_id
+                        .length !== 0 ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                      ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                      )}
+                    </TouchableOpacity>
+                  )}
                   <TouchableOpacity
                     onPress={() => {
                       this._renderSideMenu("languages");
