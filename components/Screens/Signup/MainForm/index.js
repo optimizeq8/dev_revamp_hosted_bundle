@@ -51,7 +51,7 @@ class MainForm extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
           <CustomHeader

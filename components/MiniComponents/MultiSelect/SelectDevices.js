@@ -74,7 +74,7 @@ class SelectDevices extends Component {
                   selectChildren={true}
                   filterItems={(searchText, items) => {
                     if (this.state.deviceBrands.length !== 0) {
-                      return items[0].children.filter(device =>
+                      return items.filter(device =>
                         device.name
                           .toLowerCase()
                           .includes(searchText.toLowerCase())
@@ -135,7 +135,6 @@ class SelectDevices extends Component {
                   showRemoveAll={true}
                   noItemsComponent={
                     <Text>Sorry, no Devices for selected country</Text>
-
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");

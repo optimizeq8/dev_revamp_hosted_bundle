@@ -60,7 +60,10 @@ class AdDesignReview extends Component {
     const appIcon = this.props.navigation.getParam("icon_media_url", "");
 
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        style={styles.safeAreaContainer}
+        forceInset={{ top: "always" }}
+      >
         <Container style={styles.container}>
           <Header iosBarStyle={"light-content"} style={styles.header}>
             <Body style={styles.headerBody}>
