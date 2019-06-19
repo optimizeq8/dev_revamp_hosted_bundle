@@ -8,14 +8,12 @@ import {
   ImageBackground,
   BackHandler
 } from "react-native";
-import Modal from "react-native-modal";
 import { Text, Container, Icon, Content } from "native-base";
 import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
-import isNan from "lodash/isNaN";
+
 import deepmerge from "deepmerge";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
@@ -28,8 +26,6 @@ import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
@@ -59,13 +55,11 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import combineMerge from "./combineMerge";
 
 import isNan from "lodash/isNaN";
-import deepmerge from "deepmerge";
+
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -998,7 +992,6 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
 
-
                   {this.state.showRegions && (
                     <TouchableOpacity
                       onPress={() => {
@@ -1018,14 +1011,16 @@ class AdDetails extends Component {
                             {regions_names}
                           </Text>
                         </View>
-                      {this.state.campaignInfo.targeting.geos[0].region_id
-                        .length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
+                        {this.state.campaignInfo.targeting.geos[0].region_id
+                          .length !== 0 ? (
+                          <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                          <PlusCircleIcon width={25} height={25} />
+                        )}
+                      </View>
                     </TouchableOpacity>
                   )}
+
                   <TouchableOpacity
                     disabled={this.props.loading}
                     onPress={() => {
