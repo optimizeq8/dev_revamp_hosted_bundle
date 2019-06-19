@@ -103,7 +103,7 @@ export default class DateFields extends Component {
           >
             <SafeAreaView
               style={styles.safeArea}
-              forceInset={{ bottom: "never" }}
+              forceInset={{ bottom: "never", top: "always" }}
             >
               <CustomHeader
                 closeButton={true}

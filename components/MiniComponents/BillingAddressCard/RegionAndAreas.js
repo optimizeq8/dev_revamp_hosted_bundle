@@ -17,7 +17,7 @@ export default class RegionAndAreas extends Component {
   render() {
     return (
       <SafeAreaView
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
         style={[styles.container, { flex: 1, justifyContent: "space-around" }]}
       >
         <View>

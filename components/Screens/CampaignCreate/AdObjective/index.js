@@ -24,6 +24,7 @@ import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
@@ -41,7 +42,10 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -216,7 +220,7 @@ class AdObjective extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaView}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
@@ -264,6 +268,7 @@ class AdObjective extends Component {
                 </Label>
 
                 <Input
+                  disabled={this.props.loading}
                   value={this.state.campaignInfo.name}
                   style={styles.inputText}
                   autoCorrect={false}
@@ -295,6 +300,7 @@ class AdObjective extends Component {
               </Item>
 
               <Duration
+                loading={this.props.loading}
                 dismissKeyboard={Keyboard.dismiss}
                 start_time={this.state.campaignInfo.start_time}
                 end_time={this.state.campaignInfo.end_time}
@@ -306,6 +312,7 @@ class AdObjective extends Component {
               <Text style={styles.title}>Objective</Text>
 
               <Item
+                disabled={this.props.loading}
                 rounded
                 style={[
                   styles.input2,
@@ -328,8 +335,17 @@ class AdObjective extends Component {
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
             </View>
-
-            <LowerButton bottom={4} function={this._handleSubmission} />
+            {this.props.loading ? (
+              <ForwardLoading
+                bottom={18}
+                mainViewStyle={{
+                  width: widthPercentageToDP(9),
+                  height: heightPercentageToDP(9)
+                }}
+              />
+            ) : (
+              <LowerButton bottom={4} function={this._handleSubmission} />
+            )}
           </Container>
         </TouchableWithoutFeedback>
         <DateField
@@ -340,9 +356,9 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
         />
-        <Modal visible={this.props.loading}>
+        {/* <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
-        </Modal>
+        </Modal> */}
         <Modal
           animationType={"slide"}
           transparent={true}
@@ -352,7 +368,7 @@ class AdObjective extends Component {
           <BlurView intensity={95} tint="dark">
             <SafeAreaView
               style={styles.safeAreaView}
-              forceInset={{ bottom: "never" }}
+              forceInset={{ bottom: "never", top: "always" }}
             >
               <View style={styles.popupOverlay}>
                 <CustomHeader

@@ -21,6 +21,7 @@ export default class Duration extends Component {
     }
     return (
       <TouchableHighlight
+        disabled={this.props.loading}
         underlayColor="rgba(255,255,255,0.2)"
         style={[
           styles.dateInput,

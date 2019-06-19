@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView
-} from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "./styles";
