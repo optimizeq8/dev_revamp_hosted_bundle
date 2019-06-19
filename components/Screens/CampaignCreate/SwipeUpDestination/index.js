@@ -139,7 +139,7 @@ class SwipeUpDestination extends Component {
                   <View style={styles.textcontainer}>
                     <Text style={styles.titletext}>Website</Text>
                     <Text style={styles.subtext}>
-                      Send Snapchatters directly to your REMOTE_WEBPAGE
+                      Send Snapchatters directly to your website
 
                     </Text>
                   </View>
