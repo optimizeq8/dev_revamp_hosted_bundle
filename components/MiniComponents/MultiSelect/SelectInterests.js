@@ -43,16 +43,17 @@ class SelectInterests extends Component {
       let interests = [];
       let lenOfLists = 0;
 
-      Object.keys(this.props.interests).forEach((key, i) => {
-        if (this.props.interests[key].length > 0) {
-          interests.push({
-            id: key,
-            children: this.props.interests[key],
-            name: "SELECT ALL" // should actual be the key name
-          });
-        }
-        lenOfLists += this.props.interests[key].length;
-      });
+      this.props.interests &&
+        Object.keys(this.props.interests).forEach((key, i) => {
+          if (this.props.interests[key].length > 0) {
+            interests.push({
+              id: key,
+              children: this.props.interests[key],
+              name: "SELECT ALL" // should actual be the key name
+            });
+          }
+          lenOfLists += this.props.interests[key].length;
+        });
 
       if (lenOfLists === 0) {
         this.setState({ interests: [] });
@@ -92,91 +93,91 @@ class SelectInterests extends Component {
               >
                 <PlusCircle width={53} height={53} />
               </Button>
-                <ScrollView style={styles.scrollContainer}>
-                  <SectionedMultiSelect
-                    ref={ref => (this.Section = ref)}
-                    loading={!this.props.interests ? true : false}
-                    items={this.state.interests}
-                    uniqueKey="id"
-                    selectToggleIconComponent={
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="menu-down"
-                        style={styles.indicator}
+              <ScrollView style={styles.scrollContainer}>
+                <SectionedMultiSelect
+                  ref={ref => (this.Section = ref)}
+                  loading={!this.props.interests ? true : false}
+                  items={this.state.interests}
+                  uniqueKey="id"
+                  selectToggleIconComponent={
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name="menu-down"
+                      style={styles.indicator}
+                    />
+                  }
+                  selectedIconComponent={
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name="circle"
+                      style={styles.itemCircles}
+                    />
+                  }
+                  unselectedIconComponent={
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name="circle-outline"
+                      style={styles.itemCircles}
+                    />
+                  }
+                  noResultsComponent={
+                    <Text style={styles.errorText}>No item found</Text>
+                  }
+                  hideSelect
+                  hideConfirm
+                  subKey="children"
+                  styles={SectionStyle}
+                  confirmText={"\u2714"}
+                  stickyFooterComponent={
+                    <Button
+                      style={styles.stickyFooterButton}
+                      onPress={() => this.Section._submitSelection()}
+                    >
+                      <CheckmarkIcon width={53} height={53} />
+                    </Button>
+                  }
+                  headerComponent={
+                    <View style={styles.headerComponent}>
+                      <BackButton
+                        screenname="Select Interests"
+                        businessname={this.props.mainBusiness.businessname}
+                        navigation={() => this.Section._cancelSelection()}
                       />
-                    }
-                    selectedIconComponent={
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="circle"
-                        style={styles.itemCircles}
-                      />
-                    }
-                    unselectedIconComponent={
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="circle-outline"
-                        style={styles.itemCircles}
-                      />
-                    }
-                    noResultsComponent={
-                      <Text style={styles.errorText}>No item found</Text>
-                    }
-                    hideSelect
-                    hideConfirm
-                    subKey="children"
-                    styles={SectionStyle}
-                    confirmText={"\u2714"}
-                    stickyFooterComponent={
-                      <Button
-                        style={styles.stickyFooterButton}
-                        onPress={() => this.Section._submitSelection()}
-                      >
-                        <CheckmarkIcon width={53} height={53} />
-                      </Button>
-                    }
-                    headerComponent={
-                      <View style={styles.headerComponent}>
-                        <BackButton
-                          screenname="Select Interests"
-                          businessname={this.props.mainBusiness.businessname}
-                          navigation={() => this.Section._cancelSelection()}
-                        />
-                      </View>
-                    }
-                    colors={colors}
-                    searchIconComponent={
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="magnify"
-                        style={styles.indicator}
-                      />
-                    }
-                    iconKey="icon"
-                    selectText={"Select All"}
-                    showDropDowns={false}
-                    showRemoveAll={true}
-                    noItemsComponent={
-                      <Text style={styles.errorText}>
-                        Sorry, no interests for selected country
-                      </Text>
-                    }
-                    onCancel={() => {
-                      this.props.onSelectedItemsChange([]);
-                      this.props.onSelectedItemObjectsChange([]);
-                    }}
-                    selectChildren
-                    modalAnimationType="fade"
-                    onSelectedItemsChange={this.props.onSelectedItemsChange}
-                    onSelectedItemObjectsChange={
-                      this.props.onSelectedItemObjectsChange
-                    }
-                    selectedItems={this.props.selectedItems}
-                  />
-                  {this.state.interests.length === 0 && (
-                    <LoadingScreen top={-10} />
-                  )}
-                </ScrollView>
+                    </View>
+                  }
+                  colors={colors}
+                  searchIconComponent={
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name="magnify"
+                      style={styles.indicator}
+                    />
+                  }
+                  iconKey="icon"
+                  selectText={"Select All"}
+                  showDropDowns={false}
+                  showRemoveAll={true}
+                  noItemsComponent={
+                    <Text style={styles.errorText}>
+                      Sorry, no interests for selected country
+                    </Text>
+                  }
+                  onCancel={() => {
+                    this.props.onSelectedItemsChange([]);
+                    this.props.onSelectedItemObjectsChange([]);
+                  }}
+                  selectChildren
+                  modalAnimationType="fade"
+                  onSelectedItemsChange={this.props.onSelectedItemsChange}
+                  onSelectedItemObjectsChange={
+                    this.props.onSelectedItemObjectsChange
+                  }
+                  selectedItems={this.props.selectedItems}
+                />
+                {this.state.interests.length === 0 && (
+                  <LoadingScreen top={-10} />
+                )}
+              </ScrollView>
             </View>
           </View>
 

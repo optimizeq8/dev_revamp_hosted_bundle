@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   placeHolderChart: {
     position: "absolute",
     zIndex: 100,
-    width: "90%",
+    width: wp(90),
     height: "100%",
     alignItems: "center",
     justifyContent: "center",

@@ -467,7 +467,7 @@ class AdDesign extends Component {
     }
 
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
-    body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append("campaign_id", this.props.campaign_id);
     body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
       body.append("brand_name", this.state.campaignInfo.brand_name);

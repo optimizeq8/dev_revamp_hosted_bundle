@@ -11,13 +11,15 @@ export default class Duration extends Component {
     let start_time = "";
     let end_year = "";
     let start_year = "";
-    if (this.props.start_time !== "" && this.props.end_time !== "") {
-      end_time = new Date(this.props.end_time.split("T")[0]);
-      start_time = new Date(this.props.start_time.split("T")[0]);
-      end_year = end_time.getFullYear();
-      start_year = start_time.getFullYear();
-      end_time = dateFormat(end_time, "d mmm").toUpperCase();
-      start_time = dateFormat(start_time, "d mmm").toUpperCase();
+    if (this.props.end_time) {
+      if (this.props.start_time !== "" && this.props.end_time !== "") {
+        end_time = new Date(this.props.end_time.split("T")[0]);
+        start_time = new Date(this.props.start_time.split("T")[0]);
+        end_year = end_time.getFullYear();
+        start_year = start_time.getFullYear();
+        end_time = dateFormat(end_time, "d mmm").toUpperCase();
+        start_time = dateFormat(start_time, "d mmm").toUpperCase();
+      }
     }
     return (
       <TouchableHighlight

@@ -8,14 +8,12 @@ import {
   ImageBackground,
   BackHandler
 } from "react-native";
-import Modal from "react-native-modal";
 import { Text, Container, Icon, Content } from "native-base";
 import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
-import isNan from "lodash/isNaN";
+
 import deepmerge from "deepmerge";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
@@ -28,8 +26,6 @@ import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
@@ -57,6 +53,13 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import combineMerge from "./combineMerge";
+
+import isNan from "lodash/isNaN";
+
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -208,11 +211,12 @@ class AdDetails extends Component {
           },
           () => {
             this._calcReach();
-            this.onSelectedCountryChange(
-              rep.targeting.geos[0].country_code,
-              null,
-              this.props.data.countryName
-            );
+            rep.targeting.geos[0].country_code &&
+              this.onSelectedCountryChange(
+                rep.targeting.geos[0].country_code,
+                null,
+                this.props.data.countryName
+              );
           }
         );
       }
@@ -411,9 +415,9 @@ class AdDetails extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: this.state.minValueBudget
+          lifetime_budget_micro: rawValue
         },
-        value: this.state.minValueBudget
+        value: value
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -869,14 +873,19 @@ class AdDetails extends Component {
                     </View>
                   </>
                 ) : (
-                  <View style={styles.sliderPlaceHolder} />
+                  <View style={styles.sliderPlaceHolder}>
+                    <Text style={styles.subHeadings}>
+                      Editing budget and duration {"\n"} is currently
+                      unavailable.
+                    </Text>
+                  </View>
                 )}
                 <Text style={styles.subHeadings}>
                   Who would you like to reach?
                 </Text>
                 <ScrollView
                   ref={ref => (this.scrollView = ref)}
-                  indicatorStyle={globalColors.white}
+                  indicatorStyle="white"
                   style={styles.targetList}
                 >
                   <TouchableOpacity
@@ -1010,8 +1019,10 @@ class AdDetails extends Component {
                       ) : (
                         <PlusCircleIcon width={25} height={25} />
                       )}
+
                     </TouchableOpacity>
                   )}
+
                   <TouchableOpacity
                     disabled={this.props.loading}
                     onPress={() => {
@@ -1190,16 +1201,19 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
                 </ScrollView>
-                <Text
-                  onPress={() => {
-                    this.scrollView.scrollToEnd({ animated: true });
 
-                    this.setState({ advance: !this.state.advance });
-                  }}
-                  style={styles.moreOptionsText}
-                >
-                  Scroll for more options+
-                </Text>
+                {!editCampaign && hp(100) < 800 && (
+                  <Text
+                    onPress={() => {
+                      this.scrollView.scrollToEnd({ animated: true });
+
+                      this.setState({ advance: !this.state.advance });
+                    }}
+                    style={styles.moreOptionsText}
+                  >
+                    Scroll for more options+
+                  </Text>
+                )}
 
                 <ReachBar
                   loading={this.props.loading}

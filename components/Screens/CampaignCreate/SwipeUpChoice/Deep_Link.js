@@ -13,7 +13,8 @@ import styles from "./styles";
 //Data
 import list from "../../../Data/callactions.data";
 
-// redux
+
+//redux
 import { connect } from "react-redux";
 
 class Deep_Link extends Component {
