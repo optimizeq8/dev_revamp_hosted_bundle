@@ -71,6 +71,8 @@ class CampaignDetails extends Component {
         campaign_id: this.props.selectedCampaign.campaign_id
       });
       this.setState({
+        start_time: this.props.selectedCampaign.start_time,
+        end_time: this.props.selectedCampaign.end_time,
         toggleText: this.props.selectedCampaign.status,
         toggle: this.props.selectedCampaign.status !== "PAUSED"
       });
