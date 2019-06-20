@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   view: {
-    flex: 2,
+    flex: 1,
     alignItems: "center",
     justifyContent: "flex-start"
   },
@@ -71,6 +71,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 41,
     fontFamily: "montserrat-semibold"
+  },
+  lottieViewContainer: {
+    // zIndex: 10,
+    // position: "re",
+    alignSelf: "center",
+    // width: widthPercentageToDP(50),
+    // height: heightPercentageToDP(40),
+    alignContent: "center",
+    alignItems: "center"
+    // top: 10
   }
 });
 

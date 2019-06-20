@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   callToActionContainer: {
-    bottom: "10%",
+    bottom: "12%",
+    // marginBottom: -60,
     width: "100%",
     alignItems: "center",
     display: "flex",

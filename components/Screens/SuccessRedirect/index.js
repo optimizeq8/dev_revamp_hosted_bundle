@@ -3,6 +3,7 @@ import { View, Image, BackHandler } from "react-native";
 import { LinearGradient, Segment } from "expo";
 import { Button, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import LottieView from "lottie-react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -13,6 +14,10 @@ import styles from "./styles";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -23,12 +28,13 @@ class SuccessRedirect extends Component {
     super(props);
 
     this.state = {
-      image: require("../../../assets/images/logo01.png")
+      image: require("../../../assets/images/logo01.png"),
+      successLogo: require("../../../assets/animation/success.json")
     };
   }
 
   componentDidMount() {
-    this.props.resetCampaignInfo();
+    this.animation.play();
     Segment.screen("Payment Success Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 7,
@@ -47,6 +53,8 @@ class SuccessRedirect extends Component {
 
       if (this.props.data) {
         Segment.trackWithProperties("Order Completed", {
+          label: "Campaign Purchase Completed",
+          category: "Checkout",
           business_name: this.props.mainBusiness.businessname,
           order_id: this.props.campaign_id,
           currency: "USD",
@@ -70,6 +78,9 @@ class SuccessRedirect extends Component {
   handleBackButton() {
     return true;
   }
+  onLottieEnd = () => {
+    this.animation.play();
+  };
   render() {
     return (
       <SafeAreaView
@@ -81,7 +92,24 @@ class SuccessRedirect extends Component {
           source={this.state.image}
           resizeMode="contain"
         />
+
         <View style={styles.view}>
+          {/* <View
+            style={{
+              width: widthPercentageToDP(50),
+              height: heightPercentageToDP(20)
+              //   justifyContent: "flex-start"
+            }}
+          >
+            <LottieView
+              ref={animation => {
+                this.animation = animation;
+              }}
+              style={[styles.lottieViewContainer]}
+              //   resizeMode="cover"
+              source={this.state.successLogo}
+            />
+          </View> */}
           <SuccessIcon width={80} height={80} />
           <Text style={styles.title}> Success! </Text>
           <Text style={styles.errortext}>

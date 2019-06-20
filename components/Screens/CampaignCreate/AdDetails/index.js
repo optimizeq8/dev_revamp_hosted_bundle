@@ -41,7 +41,7 @@ import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
@@ -983,7 +983,6 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
 
-
                   {this.state.showRegions && (
                     <TouchableOpacity
                       onPress={() => {
@@ -991,18 +990,20 @@ class AdDetails extends Component {
                       }}
                       style={styles.targetTouchable}
                     >
-                      <View style={globalStyles.row}>
+                      <View style={[globalStyles.row, styles.flex]}>
                         <LocationIcon
                           width={25}
                           height={25}
                           style={styles.icon}
                         />
-                        <View style={globalStyles.column}>
+                        <View style={[globalStyles.column, styles.flex]}>
                           <Text style={styles.menutext}>Regions</Text>
                           <Text style={styles.menudetails}>
                             {regions_names}
                           </Text>
                         </View>
+                      </View>
+
                       {this.state.campaignInfo.targeting.geos[0].region_id
                         .length !== 0 ? (
                         <GreenCheckmarkIcon width={25} height={25} />

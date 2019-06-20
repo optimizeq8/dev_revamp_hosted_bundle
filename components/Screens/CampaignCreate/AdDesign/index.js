@@ -181,6 +181,19 @@ class AdDesign extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.objective !== "BRAND_AWARENESS" &&
+      ((prevState.campaignInfo.attachment === "BLANK" &&
+        this.state.campaignInfo.attachment !== "BLANK") ||
+        (prevState.campaignInfo.call_to_action.label === "BLANK" &&
+          this.state.campaignInfo.call_to_action.label !== "BLANK"))
+    ) {
+      this.setState({
+        swipeUpError: null
+      });
+    }
+  }
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -557,7 +570,7 @@ class AdDesign extends Component {
     );
     const imageError = validateWrapper("mandatory", this.state.image);
 
-    let swipeUpError = "";
+    let swipeUpError = null;
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
@@ -774,6 +787,7 @@ class AdDesign extends Component {
     );
 
     let blankView = <View style={styles.blankView} />;
+
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
@@ -882,13 +896,23 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={this._handleSubmission}
-                  style={styles.button}
-                >
-                  <ForwardButton width={wp(24)} height={hp(8)} />
-                </TouchableOpacity>
+                {this.state.objective === "BRAND_AWARENESS" && (
+                  <TouchableOpacity
+                    onPress={this._handleSubmission}
+                    style={styles.button}
+                  >
+                    <ForwardButton width={wp(24)} height={hp(8)} />
+                  </TouchableOpacity>
+                )}
+                {this.state.objective !== "BRAND_AWARENESS" &&
+                  isNull(this.state.swipeUpError) && (
+                    <TouchableOpacity
+                      onPress={this._handleSubmission}
+                      style={styles.button}
+                    >
+                      <ForwardButton width={wp(24)} height={hp(8)} />
+                    </TouchableOpacity>
+                  )}
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>

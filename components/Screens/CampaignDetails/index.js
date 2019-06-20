@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Image, ImageBackground, Animated } from "react-native";
+import {
+  View,
+  Image,
+  ImageBackground,
+  Animated,
+  BackHandler
+} from "react-native";
 import { Card, Text, Container, Icon } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
@@ -60,8 +66,15 @@ class CampaignDetails extends Component {
         campaign_id: this.props.selectedCampaign.campaign_id
       });
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.selectedCampaign !== this.props.selectedCampaign &&

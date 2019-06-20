@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, SafeAreaView, Platform } from "react-native";
 import { Content, Text, Container } from "native-base";
-
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
@@ -11,7 +10,11 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
 
+//Data
 import list from "../../../Data/callactions.data";
+
+// redux
+import { connect } from "react-redux";
 
 class Deep_Link extends Component {
   static navigationOptions = {
