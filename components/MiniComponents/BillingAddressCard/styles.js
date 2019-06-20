@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 32.5,
-    bottom: 30,
+    bottom: 45,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -132,6 +132,33 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  flex: {
+    flex: 1
+  },
+  blockAndBuildingView: {
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-between",
+    width: 250,
+    marginBottom: 15
+  },
+  streetItem: {
+    width: 250
+  },
+  officeAndAvenueView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 250,
+    marginTop: 20,
+    alignSelf: "center"
+  },
+  bottom5: {
+    bottom: 5
+  },
+  contentScrollViewContainer: {
+    paddingBottom: 50,
+    flex: 1
   }
 });
 

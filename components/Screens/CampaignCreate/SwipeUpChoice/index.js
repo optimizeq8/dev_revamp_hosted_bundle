@@ -17,7 +17,7 @@ class SwipeUpChoice extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <Container style={styles.container}>
           <CustomeHeader
             closeButton={false}

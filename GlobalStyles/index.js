@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
   orangeTextColor: {
     color: "#FF9D00"
   },
+  orangeBorderColor: {
+    borderColor: "#FF9D00"
+  },
   orangeBackgroundColor: {
     backgroundColor: "#FF9D00"
   },

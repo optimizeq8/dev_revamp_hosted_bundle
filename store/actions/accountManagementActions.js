@@ -1,10 +1,10 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Segment } from "expo";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Animated } from "react-native";
 import store from "../index";
+import * as actionTypes from "./actionTypes";
 
 createBaseUrl = () =>
   axios.create({
@@ -191,33 +191,45 @@ export const addressForm = (address, navigation, addressId) => {
         id: addressId,
         ...address
       });
-
+      var time = new Animated.Value(0);
       if (response.data && response.data.message === "Address ID missing") {
         const respData = await createBaseUrl().post("businessaddress", {
           businessid: getState().account.mainBusiness.businessid,
           ...address
         });
 
-        showMessage({
-          message: respData.data.message,
-          type: respData.data.success ? "success" : "warning",
-          position: "top"
-        });
-        if (respData.data.success) navigation.goBack();
-        return dispatch({
-          type: actionTypes.ADD_ADDRESS,
-          payload: respData.data
+        Animated.timing(time, {
+          toValue: 1,
+          duration: 2000
+        }).start(() => {
+          showMessage({
+            message: respData.data.message,
+            type: respData.data.success ? "success" : "warning",
+            position: "top"
+          });
+          if (respData.data.success) navigation.goBack();
+          return dispatch({
+            type: actionTypes.ADD_ADDRESS,
+            payload: respData.data
+          });
         });
       } else {
-        showMessage({
-          message: response.data.message,
-          type: response.data.success ? "success" : "warning",
-          position: "top"
-        });
-        if (response.data.success) navigation.goBack();
-        return dispatch({
-          type: actionTypes.ADD_ADDRESS,
-          payload: response.data
+        Animated.timing(time, {
+          toValue: 1,
+          duration: 2000
+        }).start(() => {
+          showMessage({
+            message: response.data.message,
+            type: response.data.success ? "success" : "warning",
+            position: "top"
+          });
+          if (response.data.success) {
+            navigation.goBack();
+          }
+          return dispatch({
+            type: actionTypes.ADD_ADDRESS,
+            payload: response.data
+          });
         });
       }
     } catch (error) {
@@ -238,7 +250,7 @@ export const addressForm = (address, navigation, addressId) => {
 export const getAddressForm = () => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_BILLING_ADDRESS_LOADING,
+      type: actionTypes.GET_BILLING_ADDRESS_LOADING,
       payload: true
     });
     createBaseUrl()

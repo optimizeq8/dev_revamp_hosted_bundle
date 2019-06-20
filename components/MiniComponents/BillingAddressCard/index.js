@@ -1,30 +1,33 @@
 import React from "react";
 import { View, TouchableOpacity, ScrollView } from "react-native";
-import { Button, Text, Item, Input, Label, Content } from "native-base";
+import { Text, Item, Input, Label } from "native-base";
 import Sidemenu from "react-native-side-menu";
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
+import { showMessage } from "react-native-flash-message";
+
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
 import KeyboardShift from "../KeyboardShift";
 import Header from "../Header";
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
-
 import allAreas from "../../Data/NewAreas";
+
 // Style
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
 
 //Icons
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Address from "../../../assets/SVGs/Location";
-import { showMessage } from "react-native-flash-message";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -230,30 +233,31 @@ class BillingAddressCard extends React.Component {
             // { top: this.props.sidemenustate ? hp(13) : 0 }
           ]}
         >
-          <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+          <ScrollView contentContainerStyle={styles.contentScrollViewContainer}>
             <KeyboardShift>
               {() => (
                 <View>
                   <Item
+                    disabled={this.props.saving}
                     style={[
                       styles.selector,
-                      {
-                        borderColor: this.state.inputC
-                          ? "#7039FF"
-                          : this.state.countryError
-                          ? "red"
-                          : "#D9D9D9",
-                        flexDirection: "row"
-                      }
+                      this.state.inputC
+                        ? globalStyles.purpleBorderColor
+                        : this.state.countryError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.lightGrayBorderColor,
+                      globalStyles.row
                     ]}
                     onPress={() => this._renderSideMenu("countries")}
                   >
                     <Label
                       style={[
                         styles.inputtext,
+                        this.state.inputC
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor,
                         {
-                          flex: 3,
-                          color: this.state.inputC ? "#FF9D00" : "#717171"
+                          flex: 3
                         }
                       ]}
                     >
@@ -261,19 +265,18 @@ class BillingAddressCard extends React.Component {
                         ? "Country"
                         : this.props.address.country}
                     </Label>
-                    <DownButton style={{ flex: 1 }} />
+                    <DownButton style={styles.flex} />
                   </Item>
                   <Item
+                    disabled={this.props.saving}
                     style={[
                       styles.selector,
-                      {
-                        borderColor: this.state.inputA
-                          ? "#7039FF"
-                          : this.state.areaError
-                          ? "red"
-                          : "#D9D9D9",
-                        flexDirection: "row"
-                      }
+                      this.state.inputA
+                        ? globalStyles.purpleBorderColor
+                        : this.state.areaError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.lightGrayBorderColor,
+                      globalStyles.row
                     ]}
                     onPress={() => {
                       this.state.country_code === ""
@@ -288,9 +291,11 @@ class BillingAddressCard extends React.Component {
                     <Label
                       style={[
                         styles.inputtext,
+                        this.state.inputA
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor,
                         {
-                          flex: 3,
-                          color: this.state.inputA ? "#FF9D00" : "#717171"
+                          flex: 3
                         }
                       ]}
                     >
@@ -299,44 +304,36 @@ class BillingAddressCard extends React.Component {
                         ? "Area"
                         : this.props.address.area}
                     </Label>
-                    <DownButton style={{ flex: 1 }} />
+                    <DownButton style={styles.flex} />
                   </Item>
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignSelf: "center",
-                      justifyContent: "space-between",
-                      width: 250,
-                      marginBottom: 15
-                    }}
-                  >
+                  <View style={styles.blockAndBuildingView}>
                     <Item
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputBL
-                            ? "#7039FF"
-                            : this.state.blockError
-                            ? "red"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputBL
+                          ? globalStyles.orangeBorderColor
+                          : this.state.blockError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
                         style={[
                           styles.inputtext,
-                          {
-                            bottom: 5,
-                            color: this.state.inputBL ? "#FF9D00" : "#717171"
-                          }
+                          this.state.inputBL
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor,
+
+                          styles.bottom5
                         ]}
                       >
                         <Text style={styles.required}> *</Text>
                         Block
                       </Label>
                       <Input
+                        disabled={this.props.saving}
                         multiline={false}
                         maxLength={10}
                         style={styles.inputtext}
@@ -361,15 +358,16 @@ class BillingAddressCard extends React.Component {
                       />
                     </Item>
                     <Item
+                      disabled={this.props.saving}
                       floatingLabel
                       style={[
                         styles.input,
+                        this.state.inputB
+                          ? globalStyles.purpleBorderColor
+                          : this.state.buildingError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.lightGrayBorderColor,
                         {
-                          borderColor: this.state.inputB
-                            ? "#7039FF"
-                            : this.state.buildingError
-                            ? "red"
-                            : "#D9D9D9",
                           alignSelf: "flex-end"
                         }
                       ]}
@@ -377,10 +375,12 @@ class BillingAddressCard extends React.Component {
                       <Label
                         style={[
                           styles.inputtext,
+                          this.state.inputB
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor,
+                          styles.bottom5,
                           {
-                            bottom: 5,
-                            fontSize: 11,
-                            color: this.state.inputB ? "#FF9D00" : "#717171"
+                            fontSize: 11
                           }
                         ]}
                       >
@@ -388,6 +388,7 @@ class BillingAddressCard extends React.Component {
                         Building/House
                       </Label>
                       <Input
+                        disabled={this.props.saving}
                         multiline={false}
                         numberOfLines={1}
                         value={this.props.address.building}
@@ -417,28 +418,27 @@ class BillingAddressCard extends React.Component {
                     floatingLabel
                     style={[
                       styles.input,
-                      {
-                        borderColor: this.state.inputS
-                          ? "#7039FF"
-                          : this.state.streetError
-                          ? "red"
-                          : "#D9D9D9",
-                        width: 250
-                      }
+                      this.state.inputS
+                        ? globalStyles.purpleBorderColor
+                        : this.state.streetError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.lightGrayBorderColor,
+                      styles.streetItem
                     ]}
                   >
                     <Label
                       style={[
                         styles.inputtext,
-                        {
-                          color: this.state.inputS ? "#FF9D00" : "#717171"
-                        }
+                        this.state.inputS
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor
                       ]}
                     >
                       <Text style={styles.required}> *</Text>
                       Street
                     </Label>
                     <Input
+                      disabled={this.props.saving}
                       value={this.props.address.street}
                       numberOfLines={1}
                       maxLength={70}
@@ -463,36 +463,29 @@ class BillingAddressCard extends React.Component {
                     />
                   </Item>
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: 250,
-                      marginTop: 20,
-                      alignSelf: "center"
-                    }}
-                  >
+                  <View style={styles.officeAndAvenueView}>
                     <Item
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputO ? "#7039FF" : "#D9D9D9"
-                        }
+                        this.state.inputO
+                          ? globalStyles.purpleBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
                         style={[
                           styles.inputtext,
-                          {
-                            bottom: 5,
-                            color: this.state.inputO ? "#FF9D00" : "#717171"
-                          }
+                          this.state.inputO
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor,
+                          styles.bottom5
                         ]}
                       >
                         Office No.
                       </Label>
                       <Input
+                        disabled={this.props.saving}
                         value={this.props.address.office}
                         multiline={false}
                         maxLength={10}
@@ -516,26 +509,25 @@ class BillingAddressCard extends React.Component {
                       floatingLabel
                       style={[
                         styles.input,
-                        {
-                          borderColor: this.state.inputAv
-                            ? "#7039FF"
-                            : "#D9D9D9"
-                        }
+                        this.state.inputAv
+                          ? globalStyles.purpleBorderColor
+                          : globalStyles.lightGrayBorderColor
                       ]}
                     >
                       <Label
                         style={[
                           styles.inputtext,
-                          {
-                            bottom: 5,
+                          this.state.inputAv
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor,
 
-                            color: this.state.inputAv ? "#FF9D00" : "#717171"
-                          }
+                          styles.bottom5
                         ]}
                       >
                         Avenue
                       </Label>
                       <Input
+                        disabled={this.props.saving}
                         value={this.props.address.avenue}
                         multiline={false}
                         maxLength={10}
@@ -559,19 +551,25 @@ class BillingAddressCard extends React.Component {
                 </View>
               )}
             </KeyboardShift>
-
-            <TouchableOpacity
-              onPress={() => this._handleSubmission()}
-              style={[
-                styles.button,
-                {
-                  opacity: this.props.errorLoading ? 0.5 : 1
-                }
-              ]}
-              disabled={this.props.errorLoading}
-            >
-              <CheckmarkIcon />
-            </TouchableOpacity>
+            {this.props.saving ? (
+              <CheckmarkLoading
+                style={{ bottom: 10, width: 65, height: 65 }}
+                progress={this.props.progressSaving}
+              />
+            ) : (
+              <TouchableOpacity
+                onPress={() => this._handleSubmission()}
+                style={[
+                  styles.button,
+                  {
+                    opacity: this.props.errorLoading ? 0.5 : 1
+                  }
+                ]}
+                disabled={this.props.errorLoading}
+              >
+                <CheckmarkIcon />
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </View>
       </Sidemenu>
