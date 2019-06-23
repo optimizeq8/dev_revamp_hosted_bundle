@@ -21,7 +21,7 @@ export default class Duration extends Component {
         end_time = dateFormat(end_time, "d mmm").toUpperCase();
         start_time = dateFormat(start_time, "d mmm").toUpperCase();
       }
-    } else {
+    } else if (this.props.slidePanel) {
       end_time = new Date(selectedCampaign.end_time.split("T")[0]);
       start_time = new Date(selectedCampaign.start_time.split("T")[0]);
       end_year = end_time.getFullYear();
@@ -68,7 +68,8 @@ export default class Duration extends Component {
             To
           </Text>
 
-          {new Date(selectedCampaign.end_time) < new Date() ? (
+          {!this.props.slidePanel ||
+          new Date(selectedCampaign.end_time) < new Date() ? (
             <View style={styles.dateColumn}>
               <Text style={styles.dateLabel}>End</Text>
 
@@ -79,14 +80,16 @@ export default class Duration extends Component {
               )}
             </View>
           ) : (
-            <View style={styles.dateColumn}>
-              <Text style={styles.dateLabel}>End</Text>
+            this.props.slidePanel && (
+              <View style={styles.dateColumn}>
+                <Text style={styles.dateLabel}>End</Text>
 
-              <Text style={styles.date}>
-                {dateFormat(new Date(), "d mmm").toUpperCase()}{" "}
-                {new Date().getFullYear()}
-              </Text>
-            </View>
+                <Text style={styles.date}>
+                  {dateFormat(new Date(), "d mmm").toUpperCase()}{" "}
+                  {new Date().getFullYear()}
+                </Text>
+              </View>
+            )
           )}
         </View>
       </TouchableHighlight>

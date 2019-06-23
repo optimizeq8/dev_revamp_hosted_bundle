@@ -193,6 +193,7 @@ export default class SlideUpPanel extends Component {
                     <View style={{ top: 10, marginBottom: 10 }}>
                       {selectedCampaign ? (
                         <Duration
+                          slidePanel={true}
                           start_time={this.props.start_time}
                           end_time={this.props.end_time}
                           dateField={this.props.dateField}
