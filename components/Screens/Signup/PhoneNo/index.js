@@ -16,6 +16,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import find from "lodash/find";
 
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -123,7 +124,7 @@ class PhoneNo extends Component {
         this.props.invite
           ? globalStyles.blackBackgroundColor
           : globalStyles.transparentBackgroundColor,
-        this.props.invite ? { opacity: 0.5 } : { opacity: 0 }
+        this.props.invite ? { opacity: 0.6 } : { opacity: 0 }
       ]}
     >
       <TouchableOpacity
@@ -141,10 +142,11 @@ class PhoneNo extends Component {
         ]}
       />
       <PhoneInput
-
         style={styles.phoneInputStyle}
         textStyle={{
-          color: this.props.invite ? "#FFF" : "#0000",
+          //   backgroundColor: this.props.invite ? "#000000" : "#0000",
+
+          color: this.props.invite ? "#FFFF" : "#0000",
           ...styles.phoneInputTextStyle,
           ...styles.input,
 
@@ -153,12 +155,18 @@ class PhoneNo extends Component {
             : this.state.valid
             ? "#5F5F5F"
             : "red"
+          //   opacity: this.props.invite ? 0.5 : 0
         }}
         flagStyle={styles.flagStyle}
         textProps={{
           autoFocus: false,
           maxLength: 14,
           onBlur: () => {
+            const country_name = find(
+              this.phone.getAllCountries(),
+              country => country.dialCode === this.phone.getCountryCode()
+            ).name;
+
             if (!this.phone.isValidNumber()) {
               showMessage({
                 message: "Please enter a valid number!",
@@ -170,7 +178,8 @@ class PhoneNo extends Component {
               this.props._getMobile({
                 country_code: this.phone.getCountryCode(),
                 mobile: this.state.value,
-                valid: this.phone.isValidNumber()
+                valid: this.phone.isValidNumber(),
+                country_name
               });
             }
           }
