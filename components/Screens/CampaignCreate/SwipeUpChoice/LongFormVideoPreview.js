@@ -3,7 +3,6 @@ import { SafeAreaView } from "react-navigation";
 import { BackHandler, View, StatusBar } from "react-native";
 
 import { Video, ScreenOrientation } from "expo";
-import VideoPlayer from "expo-video-player";
 import CustomHeader from "../../../MiniComponents/Header";
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
