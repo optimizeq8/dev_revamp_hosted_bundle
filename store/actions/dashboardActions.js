@@ -66,6 +66,7 @@ export const getCampaignStats = (campaign, duration) => {
         86400000
     )
   );
+
   let addDays = (date, days) => {
     let result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -94,7 +95,7 @@ export const getCampaignStats = (campaign, duration) => {
 
         //Actual api
         campaign_id: campaign.snap_campaign_id,
-        start_time: duration.start_time,
+        start_time: duration.start_time.split("T")[0],
         end_time: addDays(duration.end_time, 1),
         hour: timeDiff + 1 <= 5 ? 1 : 0
       })
@@ -102,8 +103,6 @@ export const getCampaignStats = (campaign, duration) => {
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_STATS,
           payload: { loading: false, data: data }

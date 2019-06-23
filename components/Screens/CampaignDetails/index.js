@@ -189,8 +189,9 @@ class CampaignDetails extends Component {
       let end_year = "";
       let start_year = "";
       let end_time = "";
-      if (!loading) {
+      if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+
         targeting = selectedCampaign.targeting;
         deviceMakes =
           targeting &&
@@ -581,7 +582,7 @@ class CampaignDetails extends Component {
                       </View>
                       <View style={{ flexDirection: "row" }}>
                         <LocationIcon width={hp("2")} height={hp("2")} />
-                        {loading ? (
+                        {loading && !targeting ? (
                           <View style={{ margin: 5 }}>
                             <PlaceholderLine />
                           </View>
