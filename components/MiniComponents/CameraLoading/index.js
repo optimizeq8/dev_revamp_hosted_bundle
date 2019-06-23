@@ -12,7 +12,8 @@ class CameraLoading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cameraLoader: require("../../../assets/animation/cameraLoader.json")
+      cameraLoader: require("../../../assets/animation/cameraLoader.json"),
+      camera: require("../../../assets/animation/camera.json")
     };
   }
   componentDidMount() {
@@ -44,6 +45,14 @@ class CameraLoading extends React.Component {
           resizeMode="cover"
           source={this.state.cameraLoader}
         />
+        {/* <LottieView
+          ref={animation => {
+            this.animationCamera = animation;
+          }}
+          style={[styles.lottieViewContainer, { ...this.props.style }]}
+          resizeMode="cover"
+          source={this.state.camera}
+        /> */}
       </View>
     );
   }
