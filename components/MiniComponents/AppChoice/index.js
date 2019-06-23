@@ -106,7 +106,7 @@ class AppChoice extends Component {
       .get(
         `/${appIdorName ? "applications/" : "searches.json?term="}${
           this.state.appValue
-        }${appIdorName ? "/metadata.json" : "&num=50"}`
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
       )
       .then(res => {
         return !appIdorName ? res.data.content : [res.data.content];
@@ -149,7 +149,7 @@ class AppChoice extends Component {
       .get(
         `/${appIdorName ? "applications/" : "searches.json?term="}${
           this.state.appValue
-        }${appIdorName ? "/metadata.json" : "&num=50"}`
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
         // `/applications/com.espn.score_center/metadata.json`
       )
       .then(res => {
@@ -492,7 +492,7 @@ class AppChoice extends Component {
               ) : (
                 <View
                   style={{
-                    height: heightPercentageToDP(25),
+                    height: heightPercentageToDP(40),
                     width: "100%"
                   }}
                 >
@@ -562,25 +562,21 @@ class AppChoice extends Component {
                             }
                           ]}
                         >
-                          <Image
-                            onLoadEnd={() => {
-                              this.setState({ appLoading: false });
-                            }}
-                            onLoadStart={() => {
-                              this.setState({ appLoading: true });
-                            }}
-                            style={styles.image}
-                            source={{
-                              uri: item.icon
-                            }}
-                          />
-                          {this.state.appLoading && (
-                            <ActivityIndicator
-                              color="white"
-                              style={{ position: "absolute", left: "7%" }}
+                          <View
+                            style={[
+                              styles.image,
+                              {
+                                backgroundColor: "rgba(0,0,0,0.4)"
+                              }
+                            ]}
+                          >
+                            <Image
+                              style={[styles.image, { marginHorizontal: 0 }]}
+                              source={{
+                                uri: item.icon
+                              }}
                             />
-                          )}
-
+                          </View>
                           <Text style={[styles.listText]}>{item.title}</Text>
                         </Animatable.View>
                       </TouchableOpacity>
