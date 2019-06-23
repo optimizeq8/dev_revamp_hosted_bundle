@@ -46,6 +46,7 @@ class AppChoice extends Component {
         icon_media_id: "",
         icon_media_url: ""
       },
+      appValue: "",
       choice: null,
       appSelection: "iOS",
       showList: false,
@@ -100,10 +101,15 @@ class AppChoice extends Component {
         }
       }
     });
+    let appIdorName = /^\d+$/.test(this.state.appValue);
     instance
-      .get(`/searches.json?term=${this.state.attachment.app_name}&num=50`)
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.state.appValue
+        }${appIdorName ? "/metadata.json" : "&num=50"}`
+      )
       .then(res => {
-        return res.data.content;
+        return !appIdorName ? res.data.content : [res.data.content];
       })
       .then(data =>
         this.setState({
@@ -113,11 +119,17 @@ class AppChoice extends Component {
         })
       )
       .catch(err => {
+        this.setState({ loading: false });
         showMessage({
-          message: "Something went wrong!",
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
           type: "warning",
           position: "top",
-          description: "Please try again later."
+          duration: 4500,
+          description: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later."
         });
         // console.log(err.response)
       });
@@ -132,10 +144,17 @@ class AppChoice extends Component {
         }
       }
     });
+    let appIdorName = this.state.appValue.includes(".");
     instance
-      .get(`/searches.json?term=${this.state.attachment.app_name}&num=50`)
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.state.appValue
+        }${appIdorName ? "/metadata.json" : "&num=50"}`
+        // `/applications/com.espn.score_center/metadata.json`
+      )
       .then(res => {
-        return res.data.content;
+        // console.log(res);
+        return !appIdorName ? res.data.content : [res.data.content];
       })
       .then(data =>
         this.setState({
@@ -145,13 +164,19 @@ class AppChoice extends Component {
         })
       )
       .catch(err => {
+        this.setState({ loading: false });
         showMessage({
-          message: "Something went wrong!",
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
           type: "warning",
           position: "top",
-          description: "Please try again later."
+          duration: 4500,
+          description: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later."
         });
-        // console.log(err.response)
+        // console.log(err.response.data);
       });
   };
 
@@ -173,7 +198,7 @@ class AppChoice extends Component {
         app_name: app.title,
         ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
         icon_media_url: app.icon,
-        android_app_url: app.id
+        android_app_url: app.id ? app.id : app.application_id
       }
     });
   };
@@ -187,13 +212,14 @@ class AppChoice extends Component {
           ios_app_id: app.id,
           icon_media_url: app.icon
         },
+        appValue: "",
         appSelection: "ANDROID"
       });
     } else {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          android_app_url: app.id
+          android_app_url: app.id ? app.id : app.application_id
         },
         appSelection: "iOS"
       });
@@ -243,16 +269,11 @@ class AppChoice extends Component {
     });
   };
   render() {
-    // console.log(this.state);
-
     return (
       <ScrollView
         contentContainerStyle={{
           width: "100%",
-          display: "flex",
-          flex: 1,
-          height: "100%",
-          justifyContent: "space-between"
+          flex: 1
         }}
       >
         <KeyboradShift style={{ flex: 1, height: "100%" }}>
@@ -417,24 +438,25 @@ class AppChoice extends Component {
                     }
                   ]}
                 >
-                  <SearchIcon stroke="white" style={{ left: "-60%" }} />
+                  <SearchIcon stroke="white" />
                   <Input
                     style={styles.inputtext}
-                    placeholder={`Search ${this.state.choice}`}
-                    defaultValue={this.state.attachment.app_name + ""}
+                    placeholder={`Search for ${this.state.choice} name or id`}
+                    defaultValue={this.state.appValue + ""}
                     placeholderTextColor="white"
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value =>
                       this.setState({
-                        attachment: {
-                          ...this.state.attachment,
-                          app_name: value
-                        }
+                        // attachment: {
+                        //   ...this.state.attachment,
+                        //   app_name: value
+                        // }
+                        appValue: value
                       })
                     }
                     onBlur={value => {
-                      if (this.state.attachment.app_name !== "") {
+                      if (this.state.appValue !== "") {
                         switch (this.state.choice) {
                           case "iOS":
                             this._searchIosApps();
@@ -443,17 +465,18 @@ class AppChoice extends Component {
                             this._searchAndroidApps();
                             break;
                           case "":
-                            this._searchAndroidApps();
-                            this._searchIosApps();
+                            this.state.appSelection === "iOS"
+                              ? this._searchIosApps()
+                              : this._searchAndroidApps();
                             break;
                         }
                       }
                       this.setState({
                         nameError: validateWrapper(
                           "mandatory",
-                          this.state.attachment.app_name
+                          this.state.appValue
                         ),
-                        showList: this.state.attachment.app_name !== ""
+                        showList: this.state.appValue !== ""
                       });
                     }}
                   />
@@ -516,7 +539,8 @@ class AppChoice extends Component {
                           {
                             backgroundColor:
                               this.state.attachment.ios_app_id === item.id ||
-                              this.state.attachment.android_app_url === item.id
+                              this.state.attachment.android_app_url ===
+                                (item.id ? item.id : item.application_id)
                                 ? "#FF9D00"
                                 : "transparent"
                           }
@@ -562,7 +586,11 @@ class AppChoice extends Component {
                       </TouchableOpacity>
                     )}
                     numcolumnns={3}
-                    keyExtractor={(item, index) => item.id.toString()}
+                    keyExtractor={(item, index) =>
+                      item.id
+                        ? item.id.toString()
+                        : item.application_id.toString()
+                    }
                   />
                 </View>
               )}
