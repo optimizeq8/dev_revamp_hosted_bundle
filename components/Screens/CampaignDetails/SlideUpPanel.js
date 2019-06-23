@@ -103,6 +103,7 @@ export default class SlideUpPanel extends Component {
     return (
       <>
         <SlidingUpPanel
+          backdropOpacity={0.92}
           ref={c => (this._panel = c)}
           draggableRange={this.draggableRange}
           animatedValue={this._draggedValue}
@@ -111,10 +112,10 @@ export default class SlideUpPanel extends Component {
             if (selectedCampaign) {
               if (!this.state.gotStats) {
                 this.props.getCampaignStats(selectedCampaign, {
-                  start_time: "2019-05-09",
-                  end_time: "2019-05-25"
-                  // start_time: selectedCampaign.start_time,
-                  // end_time: selectedCampaign.end_time
+                  // start_time: "2019-05-09",
+                  // end_time: "2019-05-25"
+                  start_time: selectedCampaign.start_time,
+                  end_time: selectedCampaign.end_time
                 });
               }
             }

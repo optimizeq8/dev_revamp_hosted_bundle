@@ -37,14 +37,24 @@ export default class BoxStats extends Component {
         return [
           <Box
             key={"APP_INSTALLS 1"}
-            title={"App Installs"}
-            info={selectedCampaign.total_installs}
+            title={"Swipe Ups"}
+            info={selectedCampaign.swipes}
           />,
           <Box
             key={"APP_INSTALLS 2"}
-            title={"Cost per App Install"}
-            info={selectedCampaign.eCPI}
+            title={"Cost Per Swipe Up"}
+            info={selectedCampaign.eCPSU}
           />
+          // <Box
+          //   key={"APP_INSTALLS 1"}
+          //   title={"App Installs"}
+          //   info={selectedCampaign.total_installs}
+          // />,
+          // <Box
+          //   key={"APP_INSTALLS 2"}
+          //   title={"Cost per App Install"}
+          //   info={selectedCampaign.eCPI}
+          // />
         ];
       case "VIDEO_VIEWS":
         return [
