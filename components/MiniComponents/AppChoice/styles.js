@@ -143,13 +143,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#5D1CD8",
-    paddingHorizontal: 50,
+    paddingHorizontal: 15,
     borderRadius: 10,
     borderColor: "#5D1CD8",
     alignSelf: "center",
     width: "100%",
-    height: 50
-    // marginHorizontal: 50
+    height: 50,
+    marginVertical: 10
   },
   inputtext: {
     fontFamily: "montserrat-light",
