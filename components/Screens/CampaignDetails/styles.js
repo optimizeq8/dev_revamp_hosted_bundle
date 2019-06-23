@@ -278,8 +278,7 @@ const styles = StyleSheet.create({
   },
   choiceButtons: {
     borderRadius: 30,
-
-    width: 90,
+    width: 100,
     justifyContent: "center"
   },
   choiceText: {

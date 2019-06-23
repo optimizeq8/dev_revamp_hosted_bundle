@@ -21,6 +21,7 @@ import { colors } from "../../GradiantColors/colors";
 
 import styles from "./styles";
 import ChartChoices from "./ChartChoices";
+import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 export default class SlideUpPanel extends Component {
   _draggedValue = new Animated.Value(0);
@@ -115,7 +116,7 @@ export default class SlideUpPanel extends Component {
                   // start_time: "2019-05-09",
                   // end_time: "2019-05-25"
                   start_time: selectedCampaign.start_time,
-                  end_time: selectedCampaign.end_time
+                  end_time: new Date()
                 });
               }
             }
@@ -190,11 +191,16 @@ export default class SlideUpPanel extends Component {
                   </Animated.View>
                   <Animated.View style={[lineAnimatedStyles]}>
                     <View style={{ top: 10, marginBottom: 10 }}>
-                      <Duration
-                        start_time={this.props.start_time}
-                        end_time={this.props.end_time}
-                        dateField={this.props.dateField}
-                      />
+                      {selectedCampaign ? (
+                        <Duration
+                          start_time={this.props.start_time}
+                          end_time={this.props.end_time}
+                          dateField={this.props.dateField}
+                          selectedCampaign={selectedCampaign}
+                        />
+                      ) : (
+                        <PlaceholderLine width={200} height={30} />
+                      )}
                     </View>
                     <ScrollView
                       refreshControl={
