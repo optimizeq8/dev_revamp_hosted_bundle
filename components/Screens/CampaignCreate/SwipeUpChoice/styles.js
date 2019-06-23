@@ -195,6 +195,25 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontFamily: "montserrat-bold",
     fontSize: 16
+  },
+  previewButtonContainer: {
+    paddingVertical: 40
+  },
+  videoPreviewView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  videoStyle: {
+    width: "100%",
+    minHeight: 200,
+    alignSelf: "center"
+    //   flex: 1
+    // marginTop: 30
+    // height: 300
+  },
+  safeAreaViewLongFormVideoPreview: {
+    paddingTop: 10
   }
 });
 

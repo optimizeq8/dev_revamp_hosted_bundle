@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { View, TouchableOpacity, BackHandler } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
-import { ImagePicker, Permissions, Video, FileSystem } from "expo";
+import {
+  ImagePicker,
+  Permissions,
+  Video,
+  FileSystem,
+  ScreenOrientation
+} from "expo";
 import Modal from "react-native-modal";
 import { showMessage } from "react-native-flash-message";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
@@ -53,6 +59,7 @@ export default class Long_Form_Video extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -157,11 +164,11 @@ export default class Long_Form_Video extends Component {
             </Text>
           </View>
           {this.state.longformvideo_media && (
-            <View>
-              <Text style={[styles.subtext, { paddingBottom: 5 }]}>
+            <View style={styles.previewButtonContainer}>
+              {/* <Text style={[styles.subtext, { paddingBottom: 5 }]}>
                 Preview Only
-              </Text>
-              <Video
+              </Text> */}
+              {/* <Video
                 source={{
                   uri: this.state.longformvideo_media
                 }}
@@ -170,7 +177,17 @@ export default class Long_Form_Video extends Component {
                 isMuted
                 resizeMode="cover"
                 style={styles.placeholder}
-              />
+              /> */}
+              <Button
+                onPress={() => {
+                  this.props.navigation.navigate("LongFormVideoPreview", {
+                    longformvideo_media: this.state.longformvideo_media
+                  });
+                }}
+                style={styles.videoSelectButton}
+              >
+                <Text> Preview Video</Text>
+              </Button>
               <Button
                 onPress={() => {
                   this._pickImage();
@@ -240,7 +257,7 @@ export default class Long_Form_Video extends Component {
             </Item>
           </RNPickerSelect>
           <Modal isVisible={this.state.videoLoading}>
-            <LoadingScreen top={30} />
+            <LoadingScreen top={50} />
           </Modal>
         </View>
         <LowerButton function={this._handleSubmission} />
