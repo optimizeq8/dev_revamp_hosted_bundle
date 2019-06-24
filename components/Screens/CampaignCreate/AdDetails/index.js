@@ -185,16 +185,6 @@ class AdDetails extends Component {
         maxValueBudget: this.props.data.maxValueBudget,
         value: this.formatNumber(this.props.data.minValueBudget)
       });
-      // this.props.save_campaign_info({
-      //   lifetime_budget_micro: this.props.data.minValueBudget,
-      //   minValueBudget: this.props.data.minValueBudget,
-      //   maxValueBudget: this.props.data.maxValueBudget,
-      //   gender: "",
-      //   languages: ["ar", "en"],
-      //   min_age: 13,
-      //   max_age: 35,
-      //   os_type: ""
-      // });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
@@ -1019,7 +1009,6 @@ class AdDetails extends Component {
                       ) : (
                         <PlusCircleIcon width={25} height={25} />
                       )}
-
                     </TouchableOpacity>
                   )}
 
