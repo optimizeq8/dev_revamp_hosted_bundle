@@ -124,7 +124,7 @@ class PhoneNo extends Component {
         this.props.invite
           ? globalStyles.blackBackgroundColor
           : globalStyles.transparentBackgroundColor,
-        this.props.invite ? { opacity: 0.6 } : { opacity: 0 }
+        this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
       ]}
     >
       <TouchableOpacity
@@ -146,7 +146,7 @@ class PhoneNo extends Component {
         textStyle={{
           //   backgroundColor: this.props.invite ? "#000000" : "#0000",
 
-          color: this.props.invite ? "#FFFF" : "#0000",
+          color: this.props.invite ? "#FFFF" : "#000",
           ...styles.phoneInputTextStyle,
           ...styles.input,
 
@@ -162,10 +162,7 @@ class PhoneNo extends Component {
           autoFocus: false,
           maxLength: 14,
           onBlur: () => {
-            const country_name = find(
-              this.phone.getAllCountries(),
-              country => country.dialCode === this.phone.getCountryCode()
-            ).name;
+            let country_name = "";
 
             if (!this.phone.isValidNumber()) {
               showMessage({
@@ -174,7 +171,13 @@ class PhoneNo extends Component {
                 position: "top"
               });
             }
-            if (this.props.invite) {
+            if (this.props.invite && this.phone.isValidNumber()) {
+              country_name = find(
+                this.phone.getAllCountries(),
+                country => country.dialCode === this.phone.getCountryCode()
+              ).name;
+              console.log(country_name);
+
               this.props._getMobile({
                 country_code: this.phone.getCountryCode(),
                 mobile: this.state.value,
