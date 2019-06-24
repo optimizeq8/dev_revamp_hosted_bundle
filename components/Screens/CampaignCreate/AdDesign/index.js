@@ -223,7 +223,11 @@ class AdDesign extends Component {
       };
       this.setState(newData);
 
-      this.props.save_campaign_info({ ...newData });
+      this.props.save_campaign_info({
+        ...newData.campaignInfo,
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      });
     } else {
       newData = {
         campaignInfo: {
@@ -451,7 +455,7 @@ class AdDesign extends Component {
       body.append("media_type", this.state.type);
     }
     if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media.split(this.state.directory);
+      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
       let formatVideo = resVideo[1].split(".");
       var video = {
         uri: this.state.longformvideo_media,
