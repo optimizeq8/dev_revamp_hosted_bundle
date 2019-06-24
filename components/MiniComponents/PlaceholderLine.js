@@ -18,7 +18,7 @@ export default class PlaceholderLine extends Component {
           backgroundColor: color ? color : "rgba(255,157,0,0.8)",
           borderRadius: 20,
           alignSelf: "center",
-          marginVertical: marginVertical ? marginVertical : 10
+          marginVertical: marginVertical ? marginVertical : 5
         }}
       />
     );

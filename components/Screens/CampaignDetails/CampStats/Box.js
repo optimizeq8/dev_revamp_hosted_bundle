@@ -7,8 +7,8 @@ import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import formatNumber from "../../../formatNumber";
 class Box extends Component {
   render() {
-    let info = this.props.info;
-    let title = this.props.title;
+    let { info, title, dollar } = this.props;
+
     return (
       <View style={styles.boxStats}>
         <Text style={styles.stats}>{title}</Text>
@@ -16,7 +16,7 @@ class Box extends Component {
           <PlaceholderLine />
         ) : (
           <Text style={[GlobalStyles.numbers, { fontSize: 23 }]}>
-            {formatNumber(info, true)}
+            {formatNumber(info.toFixed(2), !dollar)}
           </Text>
         )}
       </View>

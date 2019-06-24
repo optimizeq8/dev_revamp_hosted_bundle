@@ -116,7 +116,10 @@ export default class SlideUpPanel extends Component {
                   // start_time: "2019-05-09",
                   // end_time: "2019-05-25"
                   start_time: selectedCampaign.start_time,
-                  end_time: new Date()
+                  end_time:
+                    new Date(selectedCampaign.end_time) < new Date()
+                      ? selectedCampaign.end_time
+                      : new Date()
                 });
               }
             }

@@ -17,6 +17,7 @@ export default class BoxStats extends Component {
           <Box
             key={"BRAND_AWARENESS 2"}
             title={"CPM"}
+            dollar={true}
             info={selectedCampaign.cpm}
           />
         ];
@@ -30,6 +31,7 @@ export default class BoxStats extends Component {
           <Box
             key={"TRAFFIC 2"}
             title={"Cost Per Swipe Up"}
+            dollar={true}
             info={selectedCampaign.eCPSU}
           />
         ];
@@ -44,6 +46,7 @@ export default class BoxStats extends Component {
             key={"APP_INSTALLS 2"}
             title={"Cost Per Swipe Up"}
             info={selectedCampaign.eCPSU}
+            dollar={true}
           />
           // <Box
           //   key={"APP_INSTALLS 1"}
@@ -66,6 +69,7 @@ export default class BoxStats extends Component {
           <Box
             key={"VIDEO_VIEWS 2"}
             title={"Cost per Video View"}
+            dollar={true}
             info={selectedCampaign.eCPV}
           />
         ];
