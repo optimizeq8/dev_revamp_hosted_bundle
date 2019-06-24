@@ -104,7 +104,7 @@ export default class SlideUpPanel extends Component {
     return (
       <>
         <SlidingUpPanel
-          backdropOpacity={0.92}
+          backdropOpacity={0.95}
           ref={c => (this._panel = c)}
           draggableRange={this.draggableRange}
           animatedValue={this._draggedValue}
