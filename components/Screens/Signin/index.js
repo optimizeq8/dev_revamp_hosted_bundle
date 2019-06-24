@@ -122,7 +122,7 @@ class MainForm extends Component {
                           style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
-                              email: value
+                              email: value.trim()
                             });
                           }}
                           onBlur={() => {
