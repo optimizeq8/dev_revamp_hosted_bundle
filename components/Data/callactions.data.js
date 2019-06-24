@@ -137,4 +137,15 @@ var list = [
     ]
   }
 ];
+
+export const netLoc = [
+  {
+    label: "http://",
+    value: "http://"
+  },
+  {
+    label: "https://",
+    value: "https://"
+  }
+];
 export default list;
