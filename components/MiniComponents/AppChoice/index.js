@@ -492,7 +492,7 @@ class AppChoice extends Component {
               ) : (
                 <View
                   style={{
-                    height: heightPercentageToDP(40),
+                    height: heightPercentageToDP(30),
                     width: "100%"
                   }}
                 >
