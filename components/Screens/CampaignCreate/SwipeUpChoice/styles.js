@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#5D1CD8",
     alignSelf: "center",
-    width: "100%",
+    width: widthPercentageToDP(75),
     height: 50
   },
   inputtext: {
