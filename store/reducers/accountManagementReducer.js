@@ -11,7 +11,7 @@ const initialState = {
   loadingBillingAddress: false,
   address: {},
   errorLoadingBillingAddress: false,
-  businessLoadError: false
+  businessLoadError: false,
   savingBillingAddress: false,
   progress: new Animated.Value(0),
   progressSaving: new Animated.Value(0)
