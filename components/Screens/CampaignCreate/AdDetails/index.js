@@ -197,14 +197,15 @@ class AdDetails extends Component {
             },
             ...this.props.data,
             value: this.props.data.campaignInfo.lifetime_budget_micro,
-            showRegions: this.props.data.showRegions
+            showRegions: this.props.data.showRegions,
+            filteredLanguages: this.props.languages
           },
           () => {
             this._calcReach();
             rep.targeting.geos[0].country_code &&
               this.onSelectedCountryChange(
                 rep.targeting.geos[0].country_code,
-                null,
+                true,
                 this.props.data.countryName
               );
           }
@@ -241,13 +242,19 @@ class AdDetails extends Component {
     });
     this.props.save_campaign_info({ campaignInfo: rep });
   };
-  onSelectedCountryChange = async (selectedItem, mounting, countryName) => {
+  onSelectedCountryChange = async (
+    selectedItem,
+    mounting = null,
+    countryName
+  ) => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
 
     if (typeof newCountry !== "undefined") {
       replace.targeting.geos[0].country_code = newCountry;
-      replace.targeting.geos[0].region_id = [];
+      replace.targeting.geos[0].region_id = mounting
+        ? this.props.data.campaignInfo.targeting.geos[0].region_id
+        : [];
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
@@ -345,24 +352,19 @@ class AdDetails extends Component {
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
-    let saveRegs = [];
-    let saveRegNames = [];
+
     let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
       replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
         r => r !== selectedItem
       );
-      saveRegs = replace.targeting.geos[0].region_id;
     } else {
       replace.targeting.geos[0].region_id.push(selectedItem);
-      saveRegs = replace.targeting.geos[0].region_id;
     }
     if (names.find(r => r === regionName)) {
       names = names.filter(r => r !== regionName);
-      saveRegNames = names;
     } else {
       names.push(regionName);
-      saveRegNames = names;
     }
     this.setState({ campaignInfo: replace, regionNames: names });
     this.props.save_campaign_info({

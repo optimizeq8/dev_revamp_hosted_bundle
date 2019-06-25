@@ -52,7 +52,7 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: { label: "Call to Action", value: "" },
+      callaction: list[1].call_to_action_list[0],
       callactions: list[1].call_to_action_list,
       nameError: "",
       callActionError: "",
@@ -281,14 +281,12 @@ class AppChoice extends Component {
             <>
               <RNPickerSelect
                 items={this.state.callactions}
-                placeholder={{ label: "Call to Action", value: "" }}
+                placeholder={{}}
                 value={this.state.callaction.value}
                 onValueChange={(value, index) => {
                   this.setState({
                     callaction: {
-                      label: this.state.callactions[
-                        index - 1 > 0 ? index - 1 : 0
-                      ].label,
+                      label: this.state.callactions[index].label,
                       value
                     },
                     callActionError: validateWrapper(
@@ -321,13 +319,7 @@ class AppChoice extends Component {
                       }
                     ]}
                   >
-                    {this.state.callactions.find(
-                      c => this.state.callaction.value === c.value
-                    )
-                      ? this.state.callactions.find(
-                          c => this.state.callaction.value === c.value
-                        ).label
-                      : "Call to Action"}
+                    {this.state.callaction.label}
                   </Text>
                   <Icon
                     type="AntDesign"

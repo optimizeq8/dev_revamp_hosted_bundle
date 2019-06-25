@@ -608,21 +608,33 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
-      this.formatMedia();
-      this.handleUpload();
-      !this.props.loading &&
-        this.props.ad_design(
-          this.state.formatted,
-          this._getUploadState,
-          this.props.navigation,
-          this.onToggleModal,
-          this.state.appChoice,
-          this.rejected,
-          this.state.signal,
-          this.state.longformvideo_media &&
-            this.state.longformvideo_media_type === "VIDEO",
-          { iosUploaded: this.state.iosVideoUploaded, image: this.state.image }
-        );
+      await this.formatMedia();
+      await this.handleUpload();
+      if (
+        !this.props.data.hasOwnProperty("formatted") ||
+        JSON.stringify(this.props.data.formatted) !==
+          JSON.stringify(this.state.formatted)
+      ) {
+        if (!this.props.loading) {
+          await this.props.ad_design(
+            this.state.formatted,
+            this._getUploadState,
+            this.props.navigation,
+            this.onToggleModal,
+            this.state.appChoice,
+            this.rejected,
+            this.state.signal,
+            this.state.longformvideo_media &&
+              this.state.longformvideo_media_type === "VIDEO",
+            {
+              iosUploaded: this.state.iosVideoUploaded,
+              image: this.state.image
+            }
+          );
+        }
+      } else {
+        this.props.navigation.push("AdDetails");
+      }
     }
   };
   onToggleModal = visibile => {
