@@ -1,16 +1,19 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { View, Image, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 import { LinearGradient, Segment } from "expo";
+import { NavigationEvents } from "react-navigation";
 import HTMLView from "react-native-htmlview";
-import { terms, secondTerms } from "./SnapchatTerms";
+import { ActivityIndicator } from "react-native-paper";
+import { terms, secondTerms } from "../../Data/snapchatTerms.data";
+
+//Redux
 import * as actionCreators from "../../../store/actions";
+import { connect } from "react-redux";
 
 // Style
 import styles, { htmlStyles } from "./styles";
 import { colors } from "../../GradiantColors/colors";
-import { ActivityIndicator } from "react-native-paper";
 
 class SnapchatCreateAdAcc extends Component {
   static navigationOptions = {
@@ -25,7 +28,6 @@ class SnapchatCreateAdAcc extends Component {
   }
 
   componentDidMount() {
-    Segment.screen("Create Snap Ad Account Screen");
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     if (this.props.mainBusiness.snap_ad_account_id) {
       this.props.navigation.navigate("Dashboard");
@@ -57,6 +59,13 @@ class SnapchatCreateAdAcc extends Component {
   render() {
     return (
       <Container style={styles.container}>
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Snap Ad Account", {
+              category: "Sign Up"
+            });
+          }}
+        />
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Content, Container } from "native-base";
+import { Segment } from "expo";
 import CustomeHeader from "../../../MiniComponents/Header";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Website from "./Website";
@@ -18,6 +19,36 @@ class SwipeUpChoice extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+        <NavigationEvents
+          onDidFocus={() => {
+            switch (this.props.navigation.getParam("objective")) {
+              case "LEAD_GENERATION":
+                Segment.screenWithProperties("Snap Ad Website SwipeUp", {
+                  category: "Campaign Creation",
+                  label: "Lead Generation Objective"
+                });
+                // Segment.trackWithProperties(
+                //   "Selected Lead Generation Website Swipeup",
+                //   {
+                //     category: "Campaign Creation"
+                //   }
+                // );
+                break;
+              case "VIDEO_VIEWS":
+                Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
+                  category: "Campaign Creation",
+                  label: "Video Views Objective"
+                });
+                break;
+              default:
+                Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
+                  category: "Campaign Creation",
+                  label: "App Install Objective"
+                });
+            }
+          }}
+        />
+
         <Container style={styles.container}>
           <CustomeHeader
             closeButton={false}
@@ -29,9 +60,8 @@ class SwipeUpChoice extends Component {
               scrollEnabled={false}
               contentContainerStyle={styles.contentContainer}
             >
-              {(this.props.navigation.state.params.objective === "website" ||
-                this.props.navigation.state.params.objective ===
-                  "LEAD_GENERATION") && (
+              {this.props.navigation.getParam("objective") ===
+                "LEAD_GENERATION" && (
                 <Website
                   objective={this.props.navigation.state.params.objective}
                   _changeDestination={

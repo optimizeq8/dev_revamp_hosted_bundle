@@ -38,7 +38,7 @@ export default class AgeOption extends Component {
         <View>
           <AgeIcon fill="#fff" style={styles.icon} />
           <Text style={styles.title}>Age</Text>
-          <Text style={styles.title}>Select your audience's Age Range</Text>
+          <Text style={styles.subtitle}>Select your audience's Age Range</Text>
           <View style={styles.multiSliderContainer}>
             <MultiSlider
               values={[this.state.values[0], this.state.values[1]]}

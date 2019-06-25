@@ -72,13 +72,25 @@ class AddressForm extends Component {
     return true;
   };
   componentDidMount() {
-    Segment.screen("Address Form Screen");
     this.props.getAddressDetail();
-    this.setState({
-      from: this.props.navigation.getParam("from", null),
-      kdamount: this.props.navigation.getParam("kdamount", null),
-      interestNames: this.props.navigation.getParam("interestNames", null)
-    });
+    this.setState(
+      {
+        from: this.props.navigation.getParam("from", null),
+        kdamount: this.props.navigation.getParam("kdamount", null),
+        interestNames: this.props.navigation.getParam("interestNames", null)
+      },
+      () => {
+        if (this.state.from === "creditCard")
+          Segment.screenWithProperties("Address Select", {
+            category: "Campaign Creation"
+          });
+        else {
+          Segment.screenWithProperties("Address Form", {
+            category: "User Menu"
+          });
+        }
+      }
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

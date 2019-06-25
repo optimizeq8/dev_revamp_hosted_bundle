@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Image, Animated, Easing } from "react-native";
+import { Image, Animated } from "react-native";
 import { Container } from "native-base";
 import { LinearGradient } from "expo";
 

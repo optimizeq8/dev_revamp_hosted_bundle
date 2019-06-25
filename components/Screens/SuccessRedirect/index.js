@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, Image, BackHandler } from "react-native";
+import { View, Image } from "react-native";
 import { LinearGradient, Segment } from "expo";
-import { Button, Text, Container } from "native-base";
+import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import LottieView from "lottie-react-native";
 
@@ -11,6 +11,7 @@ import * as actionCreators from "../../../store/actions";
 
 //styles
 import styles from "./styles";
+import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
@@ -34,22 +35,31 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
-    // this.animation.play();
-    Segment.screen("Payment Success Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 7,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
+    Segment.screenWithProperties("Payment Success", {
+      category:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "Wallet Top Up"
+          : "Campaign Creation",
+      label:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "Wallet Transaction"
+          : "Campaign Transaction"
     });
+        // this.animation.play();
 
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    // Segment.trackWithProperties("Viewed Checkout Step", {
+    //   step: 7,
+    //   business_name: this.props.mainBusiness.businessname,
+    //   checkout_id: this.props.campaign_id
+    // });
+
     this.setState(this.props.navigation.state.params, () => {
-      Segment.trackWithProperties("Completed Checkout Step", {
-        step: 7,
-        business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign_id,
-        paymentMethod: ""
-      });
+      // Segment.trackWithProperties("Completed Checkout Step", {
+      //   step: 7,
+      //   business_name: this.props.mainBusiness.businessname,
+      //   checkout_id: this.props.campaign_id,
+      //   paymentMethod: ""
+      // });
 
       if (this.props.data) {
         Segment.trackWithProperties("Order Completed", {
@@ -58,6 +68,8 @@ class SuccessRedirect extends Component {
           business_name: this.props.mainBusiness.businessname,
           order_id: this.props.campaign_id,
           currency: "USD",
+          label: "Campaign Purchase Completed",
+          category: "Checkout",
           revenue: this.props.data.lifetime_budget_micro,
           products: [
             {
@@ -65,28 +77,26 @@ class SuccessRedirect extends Component {
               name: "Snapchat Snap Ad",
               price: this.props.data.lifetime_budget_micro,
               quantity: 1,
-              category: "Advertisment"
+              category: "Advertisement"
             }
           ]
         });
       }
+      this.props.resetCampaignInfo();
     });
-  }
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  handleBackButton() {
-    return true;
   }
   onLottieEnd = () => {
     // this.animation.play();
   };
   render() {
     return (
-      <SafeAreaView
-        style={styles.container}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <SafeAreaView style={styles.container} forceInset={{ bottom: "never", top: "always" }}>
+        <LinearGradient
+          colors={[colors.background1, colors.background2]}
+          locations={[0.7, 1]}
+          style={styles.gradient}
+        />
+
         <Image
           style={styles.image}
           source={this.state.image}

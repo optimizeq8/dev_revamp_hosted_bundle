@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import {
   View,
   Animated,
@@ -9,18 +8,13 @@ import {
   ScrollView
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
 import SlidingUpPanel from "rn-sliding-up-panel";
-
 import BusinessList from "../BusinessList";
-import Background from "../../../assets/SVGs/Background";
-import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
+import Background from "../../../assets/SVGs/Background";
+import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
 //browser
 import { openPrivacy, openTerms } from "../../Terms&Condtions";
@@ -30,6 +24,13 @@ import styles from "./styles";
 
 // Redux
 import * as actionCreators from "../../../store/actions";
+import { connect } from "react-redux";
+
+//Functions
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
@@ -89,7 +90,6 @@ class Menu extends Component {
           width={widthPercentageToDP(85)}
           height={hp(61)}
         />
-
         {/* <TouchableOpacity
           onPress={() => {
             this.props.clearPushToken(
@@ -108,7 +108,9 @@ class Menu extends Component {
             {!this.props.mainBusiness ? "" : this.props.mainBusiness.brandname}
           </Text>
           <Text style={styles.businessname}>
-            {this.props.mainBusiness.businessname}
+            {!this.props.mainBusiness
+              ? ""
+              : this.props.mainBusiness.businessname}
           </Text>
           <Button
             style={[

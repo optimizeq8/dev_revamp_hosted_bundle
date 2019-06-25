@@ -61,7 +61,10 @@ export const verifyBusinessName = (businessname, _handleBusinessName) => {
       .then(res => res.data)
       .then(data => {
         if (data.success === true)
-          Segment.track("Business Info Register Button");
+          Segment.trackWithProperties("Register Business Info", {
+            category: "Sign Up",
+            label: "Step 4 of Registration"
+          });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -102,7 +105,10 @@ export const registerUser = (userInfo, navigation) => {
       })
       .then(async user => {
         if (user.success === true)
-          Segment.track("User Registered Successfully");
+          Segment.trackWithProperties("Complete Registration", {
+            category: "Sign Up",
+            label: "Successfully Registered"
+          });
 
         const decodedUser = jwt_decode(user.token);
         let peomise = await setAuthToken(user.token);
@@ -145,7 +151,11 @@ export const sendMobileNo = mobileNo => {
         return res.data;
       })
       .then(data => {
-        if (data.success === true) Segment.track("Phone No. Register Button");
+        if (data.success === true)
+          Segment.track("Register Phone No.", {
+            category: "Sign Up",
+            label: "Step 1 of Registration"
+          });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -176,7 +186,11 @@ export const verifyMobileCode = mobileAuth => {
         return res.data;
       })
       .then(data => {
-        if (data.success === true) Segment.track("Phone No. Verified Button");
+        if (data.success === true)
+          Segment.trackWithProperties("Verify Phone No.", {
+            category: "Sign Up",
+            label: "Step 2 of Registration"
+          });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -216,7 +230,10 @@ export const resendVerifyMobileCode = mobileAuth => {
       })
       .then(data => {
         if (data.success === true)
-          Segment.track("Phone No. Resend Verification Button");
+          Segment.trackWithProperties("Resend Verification Code by Phone No.", {
+            category: "Sign Up",
+            label: "Request a new Verification Code"
+          });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -258,8 +275,10 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
       })
       .then(data => {
         if (data.success === true)
-          Segment.track("Phone No. Email Resend Verification Button");
-
+          Segment.trackWithProperties("Resend Verification Code by Email", {
+            category: "Sign Up",
+            label: "Request a new Verification Code"
+          });
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
@@ -302,7 +321,10 @@ export const verifyEmail = (email, userInfo) => {
       })
       .then(data => {
         if (data.success === true)
-          Segment.track("Personal Info Register Button");
+          Segment.trackWithProperties("Register Personal Info", {
+            category: "Sign Up",
+            label: "Step 3 of Registration"
+          });
         if (!data.success) {
           showMessage({
             message: data.message,

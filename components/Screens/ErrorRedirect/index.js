@@ -34,7 +34,16 @@ class ErrorRedirect extends Component {
   }
 
   componentDidMount() {
-    Segment.screen("Payment Error Screen");
+    Segment.screenWithProperties("Payment Error", {
+      category:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "Wallet"
+          : "Campaign",
+      label:
+        this.props.navigation.getParam("isWallet") === "1"
+          ? "Wallet Transaction"
+          : "Campaign Transaction"
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 

@@ -12,12 +12,7 @@ import { Text, Container, Icon, Content } from "native-base";
 import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
-
-import deepmerge from "deepmerge";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
-import isEqual from "lodash/isEqual";
-
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -25,7 +20,7 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
@@ -42,6 +37,7 @@ import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
 import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
+
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
@@ -53,9 +49,11 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import combineMerge from "./combineMerge";
-
+import deepmerge from "deepmerge";
+import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
+import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
-
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
@@ -137,11 +135,6 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    Segment.screen("Select Ad Details Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 4
-    });
     this.props.get_languages();
     if (this.props.navigation.getParam("editCampaign", false)) {
       let editedCampaign = deepmerge(
@@ -567,18 +560,17 @@ class AdDetails extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
 
       if (this.props.navigation.getParam("editCampaign", false)) {
-        Segment.trackWithProperties("Select Ad Details Button (Update)", {
+        Segment.trackWithProperties("Updated Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
-
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation
         );
       } else {
-        Segment.trackWithProperties("Select Ad Details Button", {
+        Segment.trackWithProperties("Submitted Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
           campaign_id: this.props.campaign_id
@@ -740,10 +732,24 @@ class AdDetails extends Component {
         ? this.props.data.image
         : this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView
-        style={styles.safeArea}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never", top: "always"  }}>
+        <NavigationEvents
+          onDidFocus={() => {
+            if (this.props.navigation.getParam("editCampaign", false)) {
+              Segment.screenWithProperties("Snap Ad Targetting Update", {
+                category: "Campaign Update"
+              });
+            } else {
+              Segment.screenWithProperties("Snap Ad Targetting", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                checkout_id: this.props.campaign_id,
+                step: 4
+              });
+            }
+          }}
+        />
         <Container style={styles.mainContainer}>
           <Sidemenu
             onChange={isOpen => {

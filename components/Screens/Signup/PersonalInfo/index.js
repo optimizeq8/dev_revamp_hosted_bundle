@@ -48,7 +48,9 @@ class PersonalInfo extends Component {
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
-    Segment.screen("Signup Enter PersonalInfo Screen");
+    Segment.screenWithProperties("Personal Info Registration", {
+      category: "Sign Up"
+    });
   }
 
   _passwordVarification = () => {

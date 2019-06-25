@@ -29,17 +29,15 @@ import {
   Footer,
   Icon
 } from "native-base";
-import { SafeAreaView } from "react-navigation";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import isNull from "lodash/isNull";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import CustomHeader from "../../../MiniComponents/Header";
+import CameraLoading from "../../../MiniComponents/CameraLoading";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Redux
 import { connect } from "react-redux";
@@ -53,13 +51,14 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 // Style
 import styles from "./styles";
 
-//Validator
+//Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import CustomHeader from "../../../MiniComponents/Header";
-import CameraLoading from "../../../MiniComponents/CameraLoading";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import isNull from "lodash/isNull";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -114,12 +113,6 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
-    Segment.screen("Design Ad Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 3,
-      business_name: this.props.mainBusiness.businessname
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -248,7 +241,7 @@ class AdDesign extends Component {
       mediaTypes: Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 1
+      quality: 0.1
     });
 
     // console.log("after picker", result);
@@ -600,7 +593,7 @@ class AdDesign extends Component {
       !this.state.swipeUpError &&
       !this.state.imageError
     ) {
-      Segment.trackWithProperties("Select Ad Design Button", {
+      Segment.trackWithProperties("Ad Design Submitted", {
         business_name: this.props.mainBusiness.businessname
       });
       Segment.trackWithProperties("Completed Checkout Step", {
@@ -809,6 +802,18 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Snap Ad Design", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              checkout_id: this.props.campaign_id,
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
+        />
         <LinearGradient
           colors={["#751AFF", "#6268FF"]}
           locations={[0.3, 1]}
