@@ -10,6 +10,10 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    width: "100%",
+    flex: 1
+  },
   listText: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
@@ -98,13 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   mainCard: {
-    top: 15,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    borderColor: "#fff",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0
+    flex: 1
   },
   text: {
     color: "#fff",

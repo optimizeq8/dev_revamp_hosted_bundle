@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
-import styles from "./styles";
+import styles from "../MultiSelect/styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import { globalColors } from "../../../GlobalStyles";
+
 export default class SelectLanguages extends Component {
   render() {
     let languagelist = this.props.filteredLanguages.map(c => (
@@ -34,12 +33,15 @@ export default class SelectLanguages extends Component {
       </TouchableOpacity>
     ));
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon name="language" type="MaterialIcons" style={styles.icon} />
             <Text style={[styles.title]}>Select Languages</Text>
-            <View style={styles.optionsContainer}>
+            <View style={styles.slidercontainer}>
               <Item>
                 <Input
                   placeholder="Search Language..."
@@ -54,7 +56,7 @@ export default class SelectLanguages extends Component {
                 />
               </Item>
 
-              <ScrollView style={styles.languageListContainer}>
+              <ScrollView style={styles.scrollContainer}>
                 {languagelist}
               </ScrollView>
             </View>

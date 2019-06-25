@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, SafeAreaView } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
 import { showMessage } from "react-native-flash-message";
+import { SafeAreaView } from "react-navigation";
 
 //Icons
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
@@ -18,11 +19,6 @@ import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
-//Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import compareVersions from "compare-versions";
 
 class SelectVersions extends Component {
@@ -93,7 +89,10 @@ class SelectVersions extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon

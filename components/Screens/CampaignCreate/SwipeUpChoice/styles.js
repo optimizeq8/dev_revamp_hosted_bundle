@@ -214,6 +214,9 @@ const styles = StyleSheet.create({
   },
   safeAreaViewLongFormVideoPreview: {
     paddingTop: 10
+  },
+  bottonViewWebsite: {
+    marginBottom: 40
   }
 });
 

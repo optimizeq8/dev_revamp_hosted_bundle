@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
-import { View, SafeAreaView, BackHandler } from "react-native";
+import { View, BackHandler } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -95,14 +96,18 @@ class Website extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <KeyboardShift>
           {() => (
             <View
               style={[
                 styles.websiteContent,
                 {
-                  padding: this.props.objective === "LEAD_GENERATION" ? 40 : 10
+                  paddingHorizontal:
+                    this.props.objective === "LEAD_GENERATION" ? 40 : 10
                 }
               ]}
             >
@@ -179,7 +184,7 @@ class Website extends Component {
                 </Text>
               </View>
               <View />
-              <View>
+              <View style={styles.bottonViewWebsite}>
                 {this.props.swipeUpDestination && (
                   <Text
                     style={styles.footerText}

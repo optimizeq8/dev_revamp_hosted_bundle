@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    justifyContent: "space-around"
+    justifyContent: "space-between"
   },
   dataContainer: {
     alignItems: "center",
     width: "100%",
-    marginTop: 30
+    marginTop: 30,
+    flex: 1,
+    justifyContent: "space-between"
   },
   countrySelectorText: {
     paddingVertical: 20,
@@ -46,7 +48,8 @@ const styles = StyleSheet.create({
   },
   slidercontainer: {
     paddingHorizontal: 40,
-    width: "100%"
+    width: "100%",
+    flex: 1
   },
   toggleSelectorButton: {
     backgroundColor: globalColors.orange,
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   scrollContainer: {
-    height: 180,
-    marginVertical: 10
+    marginVertical: 10,
+    flexGrow: 1
   },
   indicator: {
     fontSize: 30,
@@ -93,7 +96,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginVertical: 52
+    marginTop: 10,
+    marginBottom: 40
   },
   stickyFooterButton: {
     backgroundColor: "transparent",
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   countryScrollContainer: {
-    height: 250
+    height: 180
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
@@ -149,6 +153,42 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     paddingVertical: 20
+  },
+  languageRowConatiner: {
+    paddingVertical: 10,
+    marginVertical: 10,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+
+  optionsIconSize: {
+    fontSize: 25
+  },
+  optionsTextContainer: {
+    fontFamily: "montserrat-bold",
+    color: "#fff",
+    fontSize: 14,
+    paddingLeft: 20
+  },
+  inactivetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#fff"
+  },
+  activetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: globalColors.orange
+  },
+  optionsRowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingBottom: 20
+  },
+  optionsContainer: {
+    flex: 1,
+    flexDirection: "column"
+    // alignItems: "center"
   }
 });
 export default styles;

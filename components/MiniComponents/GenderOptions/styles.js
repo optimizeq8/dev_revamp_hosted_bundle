@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     alignItems: "center",
-    width: "100%"
+    width: "100%",
+    paddingTop: 30
   },
   title: {
     textAlign: "center",
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     flexDirection: "column",
-    justifyContent: "space-around"
+    justifyContent: "space-between"
   },
   button: {
     backgroundColor: "#FF9D00",
@@ -53,7 +54,8 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
+    marginBottom: 40
   },
   icon: {
     fontSize: 35,

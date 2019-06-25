@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text, Item, Input } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
@@ -116,7 +117,10 @@ class MultiSelectList extends Component {
       </TouchableOpacity>
     ));
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={110} height={110} fill="#fff" />

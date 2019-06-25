@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Text, Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
@@ -85,38 +86,43 @@ export default class App_Install extends Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <View style={styles.appInstallContent}>
-          <AppInstallIcon
-            width={widthPercentageToDP(18)}
-            height={heightPercentageToDP(10)}
-            style={styles.icon}
-          />
-          <View style={styles.textcontainer}>
-            <Text style={styles.titletext}>App Install</Text>
-            <Text style={styles.subtext}>
-              Send Snapchatters to the app store to download your app.
-            </Text>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
+        <Container style={styles.container}>
+          <View style={styles.appInstallContent}>
+            <AppInstallIcon
+              width={widthPercentageToDP(18)}
+              height={heightPercentageToDP(10)}
+              style={styles.icon}
+            />
+            <View style={styles.textcontainer}>
+              <Text style={styles.titletext}>App Install</Text>
+              <Text style={styles.subtext}>
+                Send Snapchatters to the app store to download your app.
+              </Text>
+            </View>
+            {!this.state.firstStepDone ? (
+              <AppChoice
+                listNum={1}
+                renderNextStep={this.renderNextStep}
+                navigation={this.props.navigation}
+              />
+            ) : (
+              <AppConfirm
+                icon_media_url={this.state.attachment.icon_media_url}
+                app_name={this.state.attachment.app_name}
+                ios_app_id={this.state.attachment.ios_app_id}
+                android_app_url={this.state.attachment.android_app_url}
+                _handleSubmission={this._handleSubmission}
+                renderPreviousStep={this.renderPreviousStep}
+                deepLink={false}
+              />
+            )}
           </View>
-          {!this.state.firstStepDone ? (
-            <AppChoice
-              listNum={1}
-              renderNextStep={this.renderNextStep}
-              navigation={this.props.navigation}
-            />
-          ) : (
-            <AppConfirm
-              icon_media_url={this.state.attachment.icon_media_url}
-              app_name={this.state.attachment.app_name}
-              ios_app_id={this.state.attachment.ios_app_id}
-              android_app_url={this.state.attachment.android_app_url}
-              _handleSubmission={this._handleSubmission}
-              renderPreviousStep={this.renderPreviousStep}
-              deepLink={false}
-            />
-          )}
-        </View>
-      </Container>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

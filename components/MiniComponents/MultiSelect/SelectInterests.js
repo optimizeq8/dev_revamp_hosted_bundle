@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView, SafeAreaView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Button, Text, Icon } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import LoadingScreen from "../LoadingScreen";
 
 //Icons
@@ -71,7 +72,10 @@ class SelectInterests extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <InterestsIcon width={100} height={100} fill="#fff" />
@@ -180,7 +184,6 @@ class SelectInterests extends Component {
               </ScrollView>
             </View>
           </View>
-
           <Button style={styles.button} onPress={this.handleSideMenu}>
             <CheckmarkIcon width={53} height={53} />
           </Button>

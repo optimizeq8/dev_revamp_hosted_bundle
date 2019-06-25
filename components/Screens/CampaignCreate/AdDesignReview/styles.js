@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "transparent",
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    paddingTop: 0,
+    height: 35
   },
   headerBody: {
     alignItems: "flex-start"
