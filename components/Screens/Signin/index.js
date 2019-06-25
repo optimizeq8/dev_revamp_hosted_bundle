@@ -57,7 +57,9 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
-    Segment.screen("Sign in Screen");
+    Segment.screenWithProperties("Sign In", {
+      category: "Sign In"
+    });
     // if (
     //   this.props.navigation &&
     //   this.props.navigation.getParam("loggedout", false)

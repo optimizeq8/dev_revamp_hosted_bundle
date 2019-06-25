@@ -19,7 +19,7 @@ class LineGraph extends Component {
       : Math.abs(num);
   };
   render() {
-    console.log(this.props.campaignStats);
+    // console.log(this.props.campaignStats);
 
     let data = chartData;
     let category = [];

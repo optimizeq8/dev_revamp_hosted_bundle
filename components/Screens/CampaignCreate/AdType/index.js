@@ -1,6 +1,6 @@
 // Components
 import React, { Component } from "react";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { View, BackHandler } from "react-native";
 import { Text, Container } from "native-base";
 import { Segment } from "expo";
@@ -38,12 +38,6 @@ class AdType extends Component {
   };
 
   componentDidMount() {
-    Segment.screen("Select Ad Type Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 1,
-      business_name: this.props.mainBusiness.businessname,
-      campaign_type: this.state.campaign_type
-    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -52,7 +46,7 @@ class AdType extends Component {
   }
 
   handleBackButton = () => {
-    Segment.trackWithProperties("Close Ad Type Button", {
+    Segment.trackWithProperties("Closed Ad Type", {
       business_name: this.props.mainBusiness.businessname
     });
 
@@ -101,7 +95,7 @@ class AdType extends Component {
   };
 
   navigationHandler = route => {
-    Segment.trackWithProperties("Select Ad Type Button", {
+    Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
@@ -140,12 +134,24 @@ class AdType extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Ad Type", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 1,
+              business_name: this.props.mainBusiness.businessname,
+              campaign_type: this.state.campaign_type
+            });
+          }}
+        />
         <Container style={styles.container}>
           <BackDrop />
           <Header
             closeButton={true}
             segment={{
-              str: "Ad Type Close Button",
+              str: "Ad Type Close",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}

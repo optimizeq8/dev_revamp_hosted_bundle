@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Button, Text, Container } from "native-base";
 import LottieView from "lottie-react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import { Segment } from "expo";
 import CampaignCard from "../../MiniComponents/CampaignCard";
@@ -43,6 +43,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -73,10 +74,7 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
-      Segment.screenWithProperties("Home", {
-        business_name: this.props.mainBusiness.businessname,
-        business_id: this.props.mainBusiness.businessid
-      });
+      Segment.screen("Dashboard");
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
@@ -110,10 +108,6 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
-      Segment.screenWithProperties("Home", {
-        business_name: this.props.mainBusiness.businessname,
-        business_id: this.props.mainBusiness.businessid
-      });
     }
   }
 
@@ -204,13 +198,18 @@ class Dashboard extends Component {
         open={this.state.sidemenustate}
       />
     ) : null;
-    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
+
+    if (
+      (isNull(this.props.mainBusiness) ||
+        isUndefined(this.props.mainBusiness)) &&
+      this.props.loadingAccountMgmt
+    ) {
       return (
         <>
           <LoadingScreen dash={true} top={0} />
         </>
       );
-    } else if (!this.props.mainBusiness && !this.props.loadingAccountMgmt) {
+    } else if (this.props.businessLoadError) {
       return (
         <ErrorComponent
           dashboard={true}
@@ -232,7 +231,9 @@ class Dashboard extends Component {
             <View
               style={[
                 styles.mainView,
-                { display: this.state.sidemenustate ? "none" : "flex" }
+                {
+                  display: this.state.sidemenustate ? "none" : "flex"
+                }
               ]}
             >
               <TouchableWithoutFeedback
@@ -254,7 +255,9 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <Text style={[styles.text]}>
-                    {this.props.mainBusiness.brandname}
+                    {!this.props.mainBusiness
+                      ? ""
+                      : this.props.mainBusiness.brandname}
                   </Text>
                   <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("Wallet")}
@@ -330,14 +333,23 @@ class Dashboard extends Component {
                         style={styles.button}
                         onPress={() => {
                           if (!this.props.mainBusiness.snap_ad_account_id) {
-                            Segment.track(
-                              "Create SnapAd Acount Button Pressed "
+                            Segment.trackWithProperties(
+                              "Create SnapAd Acount",
+                              {
+                                category: "Ad Account",
+                                label: "New SnapAd Account"
+                                // business_name: this.props.mainBusiness
+                                //   .businessname,
+                                // business_id: this.props.mainBusiness.businessid
+                              }
                             );
                             this.props.navigation.navigate(
                               "SnapchatCreateAdAcc"
                             );
                           } else {
-                            Segment.track("Create Campaign Button Pressed");
+                            Segment.trackWithProperties("Create Campaign", {
+                              category: "Campaign Creation"
+                            });
                             this.props.navigation.navigate("AdType");
                           }
                         }}
@@ -385,9 +397,22 @@ class Dashboard extends Component {
                 </View>
               </Sidemenu>
             </Container>
+            <NavigationEvents
+              onDidFocus={() => {
+                Segment.screen("Dashboard");
+              }}
+            />
           </Animatable.View>
-
           <Animatable.View
+            onAnimationEnd={() => {
+              if (this.state.anim) {
+                Segment.screenWithProperties("Home Menu", {
+                  category: "User Menu"
+                });
+              } else {
+                Segment.screen("Dashboard");
+              }
+            }}
             duration={800}
             animation={this.state.anim ? "fadeIn" : "fadeOut"}
             style={styles.menuContainer}
@@ -409,6 +434,7 @@ const mapStateToProps = state => ({
   loading: state.dashboard.loading,
   loadingAccountMgmt: state.account.loading,
   mainBusiness: state.account.mainBusiness,
+  businessLoadError: state.account.businessLoadError,
   campaignList: state.dashboard.campaignList,
   fetching_from_server: state.dashboard.fetching_from_server,
   isListEnd: state.dashboard.isListEnd,

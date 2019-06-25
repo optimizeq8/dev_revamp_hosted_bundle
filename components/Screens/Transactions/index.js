@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { View, ScrollView, BackHandler } from "react-native";
 import { Button, Container } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Sidemenu from "react-native-side-menu";
-import { widthPercentageToDP } from "react-native-responsive-screen";
-
-//Redux
-import { connect } from "react-redux";
-import * as actionCreators from "../../../store/actions";
-
+import { Segment } from "expo";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -16,11 +11,18 @@ import Header from "../../MiniComponents/Header";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 
 //Styles
 import styles from "./styles";
+
+//Functions
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 class Transactions extends Component {
   state = {
@@ -61,6 +63,13 @@ class Transactions extends Component {
           style={styles.safeAreaContainer}
           forceInset={{ bottom: "never" }}
         >
+          <NavigationEvents
+            onDidFocus={() => {
+              Segment.screenWithProperties("Transactions List", {
+                category: "User Menu"
+              });
+            }}
+          />
           <Container style={styles.container}>
             <Sidemenu
               onChange={isOpen => {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
 import { LinearGradient, Segment } from "expo";
-import { Button, Text, Container } from "native-base";
+import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 // Redux
@@ -31,16 +31,16 @@ class ErrorComponent extends Component {
   }
 
   componentDidMount() {
-    Segment.screen(" Error Screen");
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    Segment.screen("Error");
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  handleBackButton() {
-    return true;
-  }
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  // }
+  // handleBackButton() {
+  //   return true;
+  // }
   render() {
     if (this.props.loading) {
       return (

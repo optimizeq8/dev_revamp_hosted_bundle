@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import { View, Image, ScrollView, AsyncStorage } from "react-native";
-import { SafeAreaView } from "react-navigation";
-
+import { Image, AsyncStorage } from "react-native";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Button, Text, Container } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import Swiper from "../../MiniComponents/Swiper";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
 import Invitation from "../InvitationScreen";
-import isNull from "lodash/isNull";
 
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
-// icons
+// Icons
 import Background from "../../../assets/SVGs/Background";
+
+//Functions
+import isNull from "lodash/isNull";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -106,11 +106,17 @@ class Tutorial extends Component {
     } else if (this.state.tutorialOpened) {
       return <Invitation navigation={this.props.navigation} />;
     } else {
+      Segment.screen("Tutorial");
       return (
         <SafeAreaView
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never" }}
         >
+          {/* <NavigationEvents
+            onDidFocus={() => {
+              Segment.screen("Tutorial");
+            }}
+          /> */}
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[0.7, 1]}

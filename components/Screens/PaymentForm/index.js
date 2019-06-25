@@ -7,7 +7,7 @@ import {
   BackHandler
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { WebBrowser, Linking, Segment, BlurView } from "expo";
 
@@ -50,15 +50,6 @@ class PaymentForm extends Component {
     };
   }
   componentDidMount() {
-    Segment.screenWithProperties("Payment Form Screen", {
-      businessname: this.props.mainBusiness.businessname,
-      campaign_id: this.props.campaign_id
-    });
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 6,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_id
-    });
     this.setState({
       browserLoading: false
     });
@@ -119,7 +110,7 @@ class PaymentForm extends Component {
               browserLoading: false
             });
         });
-        Segment.screenWithProperties("Payment Knet Screen", {
+        Segment.screenWithProperties("Knet Payment", {
           businessname: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
@@ -135,7 +126,7 @@ class PaymentForm extends Component {
               browserLoading: false
             });
         });
-        Segment.screenWithProperties("Payment CC Screen", {
+        Segment.screenWithProperties("Credit Card Payment", {
           businessname: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
@@ -149,7 +140,6 @@ class PaymentForm extends Component {
         position: "top",
         description: "Please try again later."
       });
-      // console.log("broweser error", error);
     }
   };
   _addLinkingListener = () => {
@@ -233,9 +223,6 @@ class PaymentForm extends Component {
       );
     }
     if (!this.props.loading) {
-      //   this.props.navigation.navigate("AdPaymentReview", {
-      //     names: this.navState.names
-      //   });
       this.props.navigation.setParams({
         names: this.props.navigation.getParam("names", [])
       });
@@ -254,9 +241,6 @@ class PaymentForm extends Component {
       //   );
     } else {
       if (!this.props.loading) {
-        //   this.props.navigation.navigate("AdPaymentReview", {
-        //     names: this.navState.names
-        //   });
         this.props.navigation.setParams({
           names: this.props.navigation.getParam("names", [])
         });
@@ -296,9 +280,29 @@ class PaymentForm extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            if (this.props.navigation.getParam("addingCredits") === true) {
+              Segment.screenWithProperties("Payment Selection", {
+                category: "Wallet Top Up"
+              });
+            } else {
+              Segment.screenWithProperties("Payment Selection", {
+                businessname: this.props.mainBusiness.businessname,
+                campaign_id: this.props.campaign_id,
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                step: 6,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_id
+              });
+            }
+          }}
+        />
+
         <Container style={[styles.container]}>
           <BackDrop style={styles.backDrop} />
-
           <CustomHeader
             closeButton={false}
             segment={{

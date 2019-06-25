@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import { Segment } from "expo";
 import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
 import WebsiteIcon from "../../../../assets/SVGs/Objectives/BRAND_AWARENESS";
@@ -43,6 +44,9 @@ class SwipeUpDestination extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
+      category: "Campaign Creation"
+    });
     const image = this.props.navigation.getParam("image", "");
 
     this.setState({
@@ -94,7 +98,27 @@ class SwipeUpDestination extends Component {
         <Container style={styles.container}>
           <Sidemenu
             onChange={isOpen => {
-              if (isOpen === false) this.setState({ sidemenustate: isOpen });
+              if (isOpen === false)
+                this.setState({ sidemenustate: isOpen }, () => {
+                  Segment.screenWithProperties(
+                    "Snap Ad Traffic SwipeUp Selection",
+                    {
+                      category: "Campaign Creation"
+                    }
+                  );
+                });
+              else {
+                if (this.state.selected === "REMOTE_WEBPAGE")
+                  Segment.screenWithProperties("Snap Ad Website SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Traffic Objective"
+                  });
+                else
+                  Segment.screenWithProperties("Snap Ad Deep link SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Traffic Objective"
+                  });
+              }
             }}
             menuPosition="right"
             disableGestures={true}
@@ -123,10 +147,21 @@ class SwipeUpDestination extends Component {
               <View style={styles.content}>
                 <TouchableOpacity
                   onPress={() => {
-                    this.setState({
-                      selected: "REMOTE_WEBPAGE",
-                      sidemenustate: true
-                    });
+                    this.setState(
+                      {
+                        selected: "REMOTE_WEBPAGE",
+                        sidemenustate: true
+                      },
+                      () => {
+                        Segment.trackWithProperties(
+                          "Selected Traffic Website Swipeup",
+                          {
+                            category: "Campaign Creation",
+                            label: "Traffic Objective"
+                          }
+                        );
+                      }
+                    );
                   }}
                   style={[
                     styles.buttonN,
@@ -139,17 +174,27 @@ class SwipeUpDestination extends Component {
                   <View style={styles.textcontainer}>
                     <Text style={styles.titletext}>Website</Text>
                     <Text style={styles.subtext}>
-                      Send Snapchatters directly to your REMOTE_WEBPAGE
-
+                      Send Snapchatters directly to your Website
                     </Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    this.setState({
-                      selected: "DEEP_LINK",
-                      sidemenustate: true
-                    });
+                    this.setState(
+                      {
+                        selected: "DEEP_LINK",
+                        sidemenustate: true
+                      },
+                      () => {
+                        Segment.trackWithProperties(
+                          "Selected Traffic Deep Link Swipeup",
+                          {
+                            category: "Campaign Creation",
+                            label: "Traffic Objective"
+                          }
+                        );
+                      }
+                    );
                   }}
                   style={[
                     styles.buttonN,

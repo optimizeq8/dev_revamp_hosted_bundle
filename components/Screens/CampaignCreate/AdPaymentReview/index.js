@@ -9,10 +9,9 @@ import {
 } from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { Segment, Video } from "expo";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
-import BackButton from "../../../MiniComponents/BackButton";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 
 // Style
@@ -22,7 +21,6 @@ import styles from "./styles";
 import { connect } from "react-redux";
 
 //Functions
-import isUndefined from "lodash/isUndefined";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -37,43 +35,6 @@ class AdPaymentReview extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    // this.state = {
-    //   ad_account_id: "undefined",
-    //   attachment: "BLANK",
-    //   brand_name: "fm,dn,ngs,n",
-    //   businessid: "14",
-    //   call_to_action: "BLANK",
-    //   destination: "BLANK",
-    //   end_time: "2019-06-19T11:58:39.000Z",
-    //   headline: "sdgm,gsdmngm,m,dg",
-    //   lifetime_budget_micro: 440,
-    //   media: "A4146B3D-5267-44A5-8AEA-460F4F0DBEE8.jpg",
-    //   media_type: "IMAGE",
-    //   name: "m,gt,gm",
-    //   objective: "REACH",
-    //   start_time: "2019-04-19T11:58:39.000Z",
-    //   targeting: {
-    //     demographics: [
-    //       {
-    //         languages: ["en", "ar"],
-    //         max_age: "35+",
-    //         min_age: 13
-    //       }
-    //     ],
-    //     interests: [
-    //       {
-    //         category_id: ["SLC_1", "SLC_103"]
-    //       }
-    //     ],
-    //     geos: [
-    //       {
-    //         country_code: "kw",
-    //         region_id: ["25680"]
-    //       }
-    //     ]
-    //   },
-    //   userid: "8"
-    // };
   }
 
   isIphoneXorAbove = () => {
@@ -95,12 +56,6 @@ class AdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
-    Segment.screen("Ad Payment Review Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 5,
-      business_name: this.props.mainBusiness.businessname,
-      checkout_id: this.props.campaign_ids
-    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
@@ -145,6 +100,18 @@ class AdPaymentReview extends Component {
           style={styles.safeAreaView}
           forceInset={{ bottom: "never" }}
         >
+          <NavigationEvents
+            onDidFocus={() => {
+              Segment.screenWithProperties("Snap Ad Payment Review", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                step: 5,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_ids
+              });
+            }}
+          />
           <CustomHeader
             closeButton={false}
             segment={{
@@ -161,15 +128,6 @@ class AdPaymentReview extends Component {
               styles.container,
               {
                 marginTop: hp(2)
-
-                // marginTop:
-                //   Platform.OS === "ios" && !this.isIphoneXorAbove()
-                //     ? 20
-                //     : Platform.OS === "android"
-                //     ? 40
-                //     : -45,
-                // // bottom: this.isIphoneXorAbove() ? -100 : 0,
-                // top: Platform.OS === "ios" && this.isIphoneXorAbove() ? 40 : 0
               }
             ]}
           >
@@ -179,11 +137,8 @@ class AdPaymentReview extends Component {
                   styles.backgroundViewWrapper,
                   {
                     height: "100%",
-                    // borderTopRightRadius: 20,
-                    // borderTopLeftRadius: 20,
                     borderTopRightRadius: 30,
                     borderTopLeftRadius: 30,
-                    // backgroundColor: "black",
                     opacity: 0.2
                   }
                 ]}
@@ -200,7 +155,6 @@ class AdPaymentReview extends Component {
                     width: "100%",
                     height: "100%",
                     opacity: 0.4
-                    //   backgroundColor: "black"
                   }}
                 />
               </View>
@@ -235,9 +189,6 @@ class AdPaymentReview extends Component {
                   <Content
                     contentContainerStyle={{
                       paddingHorizontal: 20
-                      //   //   flex: 0,
-                      //   borderBottomColor: "#FFF",
-                      //   borderBottomWidth: 1
                     }}
                   >
                     <ReviewItemCard
@@ -337,11 +288,9 @@ class AdPaymentReview extends Component {
                   >
                     <View
                       style={{
-                        //   paddingHorizontal: 40,
                         width: "100%",
                         flexDirection: "row",
                         alignSelf: "center",
-
                         alignItems: "center",
                         justifyContent: "space-between"
                       }}
@@ -406,7 +355,6 @@ class AdPaymentReview extends Component {
                     marginLeft: 0,
                     marginRight: 0,
                     width: "100%"
-                    // flex: 1
                   }}
                 >
                   <TouchableWithoutFeedback
@@ -426,16 +374,6 @@ class AdPaymentReview extends Component {
 
                       this.props.navigation.navigate("PaymentForm");
                     }}
-                    style={
-                      {
-                        //   zIndex: this.isIphoneXorAbove() ? 12 : 0,
-                        //   elevation: this.isIphoneXorAbove() ? 3 : 0
-                        //   //   flex: 1,
-                        //   justifyContent: "center",
-                        //   alignSelf: "center",
-                        //   alignItems: "center"
-                      }
-                    }
                   >
                     <View
                       style={{

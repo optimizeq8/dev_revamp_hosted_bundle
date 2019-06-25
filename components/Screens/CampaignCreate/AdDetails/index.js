@@ -20,7 +20,7 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
@@ -131,11 +131,6 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    Segment.screen("Select Ad Details Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 4
-    });
     this.props.get_languages();
     if (this.props.navigation.getParam("editCampaign", false)) {
       let editedCampaign = deepmerge(
@@ -564,18 +559,17 @@ class AdDetails extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
 
       if (this.props.navigation.getParam("editCampaign", false)) {
-        Segment.trackWithProperties("Select Ad Details Button (Update)", {
+        Segment.trackWithProperties("Updated Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
-
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation
         );
       } else {
-        Segment.trackWithProperties("Select Ad Details Button", {
+        Segment.trackWithProperties("Submitted Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
           campaign_id: this.props.campaign_id
@@ -738,6 +732,23 @@ class AdDetails extends Component {
         : this.props.navigation.getParam("image", "");
     return (
       <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never" }}>
+        <NavigationEvents
+          onDidFocus={() => {
+            if (this.props.navigation.getParam("editCampaign", false)) {
+              Segment.screenWithProperties("Snap Ad Targetting Update", {
+                category: "Campaign Update"
+              });
+            } else {
+              Segment.screenWithProperties("Snap Ad Targetting", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                checkout_id: this.props.campaign_id,
+                step: 4
+              });
+            }
+          }}
+        />
         <Container style={styles.mainContainer}>
           <Sidemenu
             onChange={isOpen => {

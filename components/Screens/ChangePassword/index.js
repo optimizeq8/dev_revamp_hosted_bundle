@@ -54,7 +54,9 @@ class ChangePassword extends Component {
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
-    Segment.screen("Change Password Screen");
+    Segment.screenWithProperties("Change Password", {
+      category: "User Menu"
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

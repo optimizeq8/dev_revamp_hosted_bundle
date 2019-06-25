@@ -247,7 +247,7 @@ export const ad_design = (
   iosUploadVideo
 ) => {
   onToggleModal(true);
-  console.log(info);
+  // console.log(info);
 
   return dispatch => {
     dispatch({

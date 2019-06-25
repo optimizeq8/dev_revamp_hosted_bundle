@@ -20,9 +20,7 @@ class BusinessList extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
-    Segment.screen("Business List Screen");
-  }
+
   render() {
     const list = this.props.businessAccounts.map(business => (
       <BusinessCard business={business} key={business.businessid} />

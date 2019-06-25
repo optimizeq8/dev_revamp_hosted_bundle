@@ -4,8 +4,8 @@ import { Card, Text, Container, Icon } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
-import { Video, LinearGradient, BlurView, Segment } from "expo";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { Video, Segment } from "expo";
 import Toggle from "react-native-switch-toggle";
 import SlideUpPanel from "./SlideUpPanel";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
@@ -54,22 +54,11 @@ class CampaignDetails extends Component {
     };
   }
 
-  componentDidMount() {
-    if (this.props.selectedCampaign) {
-      Segment.screenWithProperties("Campaign Details Screen", {
-        campaign_id: this.props.selectedCampaign.campaign_id
-      });
-    }
-  }
-
   componentDidUpdate(prevProps) {
     if (
       prevProps.selectedCampaign !== this.props.selectedCampaign &&
       this.props.selectedCampaign
     ) {
-      Segment.screenWithProperties("Campaign Details Screen", {
-        campaign_id: this.props.selectedCampaign.campaign_id
-      });
       this.setState({
         toggleText: this.props.selectedCampaign.status,
         toggle: this.props.selectedCampaign.status !== "PAUSED"
@@ -293,6 +282,15 @@ class CampaignDetails extends Component {
               style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
               forceInset={{ bottom: "never" }}
             >
+              <NavigationEvents
+                onDidFocus={() => {
+                  if (this.props.selectedCampaign) {
+                    Segment.screenWithProperties("Campaign Details", {
+                      campaign_id: this.props.selectedCampaign.campaign_id
+                    });
+                  }
+                }}
+              />
               <Container style={styles.container}>
                 <Header
                   closeButton={true}

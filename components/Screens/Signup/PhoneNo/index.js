@@ -9,22 +9,17 @@ import {
   Text
 } from "react-native";
 import { Segment } from "expo";
-
 import { Icon, Item } from "native-base";
 import { showMessage } from "react-native-flash-message";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
+//Data
 import countriesMobileData from "../../../Data/countries.mobilephone";
+
 // Style
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";
-import { colors } from "../../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
@@ -32,6 +27,12 @@ import * as actionCreators from "../../../../store/actions";
 
 //icons
 import LowerButton from "../../../MiniComponents/LowerButton";
+
+//Functions
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -50,7 +51,9 @@ class PhoneNo extends Component {
   }
 
   componentDidMount() {
-    Segment.screen("Signup Enter Phone No. Screen");
+    Segment.screenWithProperties("Phone No. Registration", {
+      category: "Sign Up"
+    });
 
     this.setState({
       pickerData: this.phone.getPickerData()
@@ -141,7 +144,6 @@ class PhoneNo extends Component {
         ]}
       />
       <PhoneInput
-
         style={styles.phoneInputStyle}
         textStyle={{
           color: this.props.invite ? "#FFF" : "#0000",

@@ -7,9 +7,9 @@ import {
   Platform,
   BackHandler
 } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
-import { BlurView } from "expo";
+import { BlurView, Segment } from "expo";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Animatable from "react-native-animatable";
@@ -84,6 +84,13 @@ class Wallet extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Wallet", {
+              category: "Wallet Top Up"
+            });
+          }}
+        />
         <Container
           style={[
             styles.container,

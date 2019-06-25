@@ -30,7 +30,7 @@ import {
   Icon
 } from "native-base";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 
 //Redux
 import * as actionCreators from "../../../../store/actions";
@@ -110,12 +110,6 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
-    Segment.screen("Design Ad Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 3,
-      business_name: this.props.mainBusiness.businessname
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -226,7 +220,7 @@ class AdDesign extends Component {
       mediaTypes: Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 1
+      quality: 0.1
     });
 
     // console.log("after picker", result);
@@ -580,7 +574,7 @@ class AdDesign extends Component {
       !this.state.swipeUpError &&
       !this.state.imageError
     ) {
-      Segment.trackWithProperties("Select Ad Design Button", {
+      Segment.trackWithProperties("Ad Design Submitted", {
         business_name: this.props.mainBusiness.businessname
       });
       Segment.trackWithProperties("Completed Checkout Step", {
@@ -776,6 +770,18 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Snap Ad Design", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              checkout_id: this.props.campaign_id,
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
+        />
         <LinearGradient
           colors={["#751AFF", "#6268FF"]}
           locations={[0.3, 1]}
