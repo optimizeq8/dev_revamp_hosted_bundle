@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Animated } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { getBusinessAccounts } from "./accountManagementActions";
@@ -269,10 +269,10 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
     ...axios.defaults.headers.common,
     "Content-Type": "application/x-www-form-urlencoded"
   };
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.CHANGE_PASSWORD,
-      payload: { success: false }
+      payload: { success: false, loading: true }
     });
     createBaseUrl()
       .put("changePassword", {
@@ -280,14 +280,14 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
         password: newPass
       })
       .then(response => {
-        showMessage({
-          message: response.data.message,
-          type: response.data.success ? "success" : "warning",
-          position: "top"
-        });
         const temPwd = navigation.getParam("temp_pwd", false);
         // if tempPwd change relogin for setting new auth token
         if (temPwd && response.data.success) {
+          showMessage({
+            message: response.data.message,
+            type: response.data.success ? "success" : "warning",
+            position: "top"
+          });
           dispatch(
             login(
               {
@@ -299,12 +299,34 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
               navigation
             )
           );
-        } else if (response.data.success) {
-          navigation.goBack();
+          return dispatch({
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: { success: response.data.success, loading: false }
+          });
         }
-        return dispatch({
-          type: actionTypes.CHANGE_PASSWORD,
-          payload: response.data
+        //   let time = new Animated.Value(0);
+        let time = new Animated.Value(0);
+
+        Animated.timing(time, {
+          toValue: 1,
+          duration: 2000
+          //   easing: Easing.linear
+        }).start(() => {
+          showMessage({
+            message: response.data.message,
+            type: response.data.success ? "success" : "warning",
+            position: "top"
+          });
+          if (response.data.success) {
+            navigation.goBack();
+          }
+          return dispatch({
+            type: actionTypes.CHANGE_PASSWORD,
+            payload: {
+              success: response.data.success,
+              loading: false
+            }
+          });
         });
       })
       .catch(err => {

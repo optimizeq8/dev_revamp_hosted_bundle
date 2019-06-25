@@ -18,7 +18,7 @@ class SwipeUpChoice extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <NavigationEvents
           onDidFocus={() => {
             switch (this.props.navigation.getParam("objective")) {
@@ -48,6 +48,7 @@ class SwipeUpChoice extends Component {
             }
           }}
         />
+
         <Container style={styles.container}>
           <CustomeHeader
             closeButton={false}

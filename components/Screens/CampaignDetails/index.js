@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Image, ImageBackground, Animated } from "react-native";
+import {
+  View,
+  Image,
+  ImageBackground,
+  Animated,
+  BackHandler
+} from "react-native";
 import { Card, Text, Container, Icon } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
@@ -54,6 +60,17 @@ class CampaignDetails extends Component {
     };
   }
 
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.selectedCampaign !== this.props.selectedCampaign &&
@@ -165,8 +182,9 @@ class CampaignDetails extends Component {
       let end_year = "";
       let start_year = "";
       let end_time = "";
-      if (!loading) {
+      if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+
         targeting = selectedCampaign.targeting;
         deviceMakes =
           targeting &&
@@ -280,7 +298,7 @@ class CampaignDetails extends Component {
           >
             <SafeAreaView
               style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
-              forceInset={{ bottom: "never" }}
+              forceInset={{ bottom: "never", top: "always" }}
             >
               <NavigationEvents
                 onDidFocus={() => {
@@ -566,7 +584,7 @@ class CampaignDetails extends Component {
                       </View>
                       <View style={{ flexDirection: "row" }}>
                         <LocationIcon width={hp("2")} height={hp("2")} />
-                        {loading ? (
+                        {loading && !targeting ? (
                           <View style={{ margin: 5 }}>
                             <PlaceholderLine />
                           </View>

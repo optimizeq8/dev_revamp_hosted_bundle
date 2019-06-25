@@ -3,6 +3,7 @@ import { View, Image } from "react-native";
 import { LinearGradient, Segment } from "expo";
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import LottieView from "lottie-react-native";
 
 //Redux
 import { connect } from "react-redux";
@@ -14,6 +15,10 @@ import { colors } from "../../GradiantColors/colors";
 
 // Icons
 import SuccessIcon from "../../../assets/SVGs/Success.svg";
+import {
+  widthPercentageToDP,
+  heightPercentageToDP
+} from "react-native-responsive-screen";
 
 class SuccessRedirect extends Component {
   static navigationOptions = {
@@ -24,7 +29,8 @@ class SuccessRedirect extends Component {
     super(props);
 
     this.state = {
-      image: require("../../../assets/images/logo01.png")
+      image: require("../../../assets/images/logo01.png"),
+      successLogo: require("../../../assets/animation/success.json")
     };
   }
 
@@ -39,6 +45,8 @@ class SuccessRedirect extends Component {
           ? "Wallet Transaction"
           : "Campaign Transaction"
     });
+        // this.animation.play();
+
     // Segment.trackWithProperties("Viewed Checkout Step", {
     //   step: 7,
     //   business_name: this.props.mainBusiness.businessname,
@@ -55,6 +63,8 @@ class SuccessRedirect extends Component {
 
       if (this.props.data) {
         Segment.trackWithProperties("Order Completed", {
+          label: "Campaign Purchase Completed",
+          category: "Checkout",
           business_name: this.props.mainBusiness.businessname,
           order_id: this.props.campaign_id,
           currency: "USD",
@@ -75,21 +85,41 @@ class SuccessRedirect extends Component {
       this.props.resetCampaignInfo();
     });
   }
-
+  onLottieEnd = () => {
+    // this.animation.play();
+  };
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ bottom: "never", top: "always" }}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
           style={styles.gradient}
         />
+
         <Image
           style={styles.image}
           source={this.state.image}
           resizeMode="contain"
         />
+
         <View style={styles.view}>
+          {/* <View
+            style={{
+              width: widthPercentageToDP(50),
+              height: heightPercentageToDP(20)
+              //   justifyContent: "flex-start"
+            }}
+          >
+            <LottieView
+              ref={animation => {
+                this.animation = animation;
+              }}
+              style={[styles.lottieViewContainer]}
+              //   resizeMode="cover"
+              source={this.state.successLogo}
+            />
+          </View> */}
           <SuccessIcon width={80} height={80} />
           <Text style={styles.title}> Success! </Text>
           <Text style={styles.errortext}>
@@ -107,7 +137,8 @@ class SuccessRedirect extends Component {
           <Button
             style={styles.button}
             onPress={() => {
-              this.props.navigation.navigate("Dashboard");
+              this.props.resetCampaignInfo();
+              this.props.navigation.replace("Dashboard");
             }}
           >
             <Text style={styles.buttontext}> Home </Text>
@@ -125,7 +156,6 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(

@@ -110,7 +110,7 @@ class Tutorial extends Component {
       return (
         <SafeAreaView
           style={styles.safeAreaViewContainer}
-          forceInset={{ bottom: "never" }}
+          forceInset={{ bottom: "never", top: "always" }}
         >
           {/* <NavigationEvents
             onDidFocus={() => {

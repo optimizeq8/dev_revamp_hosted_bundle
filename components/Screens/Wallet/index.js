@@ -82,7 +82,7 @@ class Wallet extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
           onDidFocus={() => {

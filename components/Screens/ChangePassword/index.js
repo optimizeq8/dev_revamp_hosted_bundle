@@ -13,6 +13,7 @@ import { Text, Item, Input, Icon, Label, Container } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
 import Header from "../../MiniComponents/Header";
+import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 
 //icons
 import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon.svg";
@@ -63,7 +64,7 @@ class ChangePassword extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
-
+  componentDidUpdate(prevProps) {}
   handleBackPress = () => {
     this.props.navigation.goBack();
     return true;
@@ -111,7 +112,7 @@ class ChangePassword extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
           <Header
@@ -135,6 +136,7 @@ class ChangePassword extends Component {
                   <View style={styles.contentContainer}>
                     <View>
                       <Item
+                        disabled={this.props.loading}
                         floatingLabel
                         style={[
                           styles.input,
@@ -158,6 +160,7 @@ class ChangePassword extends Component {
                           {tempPassword ? "Current Password" : "Old Password"}
                         </Label>
                         <Input
+                          disabled={this.props.loading}
                           // allowFontScaling={true}
                           style={styles.inputtext}
                           secureTextEntry={true}
@@ -187,6 +190,7 @@ class ChangePassword extends Component {
                       </Item>
 
                       <Item
+                        disabled={this.props.loading}
                         floatingLabel
                         style={[
                           styles.input,
@@ -209,6 +213,7 @@ class ChangePassword extends Component {
                           New Password
                         </Label>
                         <Input
+                          disabled={this.props.loading}
                           style={styles.inputtext}
                           secureTextEntry={true}
                           autoCorrect={false}
@@ -243,6 +248,7 @@ class ChangePassword extends Component {
                       ) : null}
 
                       <Item
+                        disabled={this.props.loading}
                         floatingLabel
                         style={[
                           styles.input,
@@ -267,6 +273,7 @@ class ChangePassword extends Component {
                         </Label>
 
                         <Input
+                          disabled={this.props.loading}
                           style={styles.inputtext}
                           secureTextEntry={true}
                           autoCorrect={false}
@@ -290,12 +297,16 @@ class ChangePassword extends Component {
                         </Text>
                       ) : null}
                     </View>
-                    <TouchableOpacity
-                      onPress={() => this._handleSubmission()}
-                      style={styles.button}
-                    >
-                      <CheckmarkIcon />
-                    </TouchableOpacity>
+                    {this.props.loading ? (
+                      <CheckMarkLoading progress={this.props.progress} />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => this._handleSubmission()}
+                        style={styles.button}
+                      >
+                        <CheckmarkIcon />
+                      </TouchableOpacity>
+                    )}
                   </View>
                 )}
               </KeyboardShift>
@@ -316,7 +327,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  user: state.auth.userInfo
+  user: state.auth.userInfo,
+  loading: state.account.loadingPasswordChanged,
+  progress: state.account.progress
 });
 
 export default connect(

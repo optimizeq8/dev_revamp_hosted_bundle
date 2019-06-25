@@ -20,17 +20,25 @@ class GetInviteCode extends Component {
     header: null
   };
 
-  state = { country_code: "", mobile: "", email: "", emailError: "" };
+  state = {
+    country_code: "",
+    mobile: "",
+    email: "",
+    emailError: "",
+    country_name: ""
+  };
 
   _getMobile = info => {
     info.valid
       ? this.setState({
           mobile: info.mobile,
-          country_code: info.country_code
+          country_code: info.country_code,
+          country_name: info.country_name
         })
       : this.setState({
           mobile: "",
-          country_code: ""
+          country_code: "",
+          country_name: ""
         });
   };
   _handleGetInviteCode = () => {
@@ -46,7 +54,8 @@ class GetInviteCode extends Component {
       this.props.requestInvitationCode({
         country_code: this.state.country_code,
         mobile: this.state.mobile,
-        email: this.state.email
+        email: this.state.email,
+        country_name: this.state.country_name
       });
     }
   };

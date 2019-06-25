@@ -194,13 +194,16 @@ export const ad_objective = (info, navigation) => {
         return res.data;
       })
       .then(data => {
-        return dispatch({
+        dispatch({
           type: actionTypes.SET_AD_OBJECTIVE,
           payload: data
         });
+        return data;
       })
-      .then(() => {
-        navigation.push("AdDesign");
+      .then(data => {
+        data.success
+          ? navigation.push("AdDesign")
+          : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
         // console.log("ad_objective", err.message || err.response);
@@ -247,8 +250,6 @@ export const ad_design = (
   iosUploadVideo
 ) => {
   onToggleModal(true);
-  // console.log(info);
-
   return dispatch => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DESIGN,
@@ -288,6 +289,7 @@ export const ad_design = (
       })
       .then(() => {
         onToggleModal(false);
+        dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
         !rejected

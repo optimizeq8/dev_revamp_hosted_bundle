@@ -156,7 +156,7 @@ class AddressForm extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
           {/* {!this.state.sidemenustate && (
@@ -195,6 +195,8 @@ class AddressForm extends Component {
                 sidemenustate={this.state.sidemenustate}
                 errorLoading={this.props.errorLoading}
                 navigation={this.props.navigation}
+                saving={this.props.saving}
+                progressSaving={this.props.progressSaving}
               />
             )}
           </View>
@@ -209,7 +211,9 @@ class AddressForm extends Component {
 const mapStateToProps = state => ({
   address: state.account.address,
   loading: state.account.loadingBillingAddress,
-  errorLoading: state.account.errorLoadingBillingAddress
+  saving: state.account.savingBillingAddress,
+  errorLoading: state.account.errorLoadingBillingAddress,
+  progressSaving: state.account.progressSaving
 });
 
 const mapDispatchToProps = dispatch => ({

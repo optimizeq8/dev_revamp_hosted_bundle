@@ -78,16 +78,16 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
-    BackHandler.addEventListener("hardwareBackPress", () => {
-      BackHandler.exitApp();
-    });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-
+  handleBackPress = () => {
+    // this.props.navigation.goBack();
+    BackHandler.exitApp();
+    return true;
+  };
   componentWillUnmount() {
     this.signal.cancel("Api is being canceled");
-    BackHandler.removeEventListener("hardwareBackPress", () => {
-      BackHandler.exitApp();
-    });
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentDidUpdate(prevProps) {

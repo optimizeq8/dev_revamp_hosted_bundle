@@ -4,9 +4,8 @@ import * as Animatable from "react-native-animatable";
 
 export default class PlaceholderLine extends Component {
   render() {
-    let width = this.props.width;
-    let height = this.props.height;
-    let color = this.props.color;
+    let { width, height, color, marginVertical } = this.props;
+
     return (
       <Animatable.View
         animation="flash"
@@ -18,7 +17,8 @@ export default class PlaceholderLine extends Component {
           height: height ? height : 20,
           backgroundColor: color ? color : "rgba(255,157,0,0.8)",
           borderRadius: 20,
-          alignSelf: "center"
+          alignSelf: "center",
+          marginVertical: marginVertical ? marginVertical : 5
         }}
       />
     );

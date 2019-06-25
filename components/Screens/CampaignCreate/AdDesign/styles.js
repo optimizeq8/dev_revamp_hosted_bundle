@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#fff",
-    paddingLeft: 5,
+    // paddingLeft: 5,
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center",

@@ -231,23 +231,23 @@ class index extends Component {
                   </Item>
                 </>
               )}
-              {this.props.swipeUpDestination && (
-                <Text
-                  style={[
-                    styles.subtext,
-                    {
-                      marginBottom: 0,
-                      // top: heightPercentageToDP(17),
-                      textDecorationLine: "underline",
-                      fontFamily: "montserrat-bold",
-                      fontSize: heightPercentageToDP(2)
-                    }
-                  ]}
-                  onPress={() => this.props.renderPreviousStep()}
-                >
-                  Change app
-                </Text>
-              )}
+
+              <Text
+                style={[
+                  styles.subtext,
+                  {
+                    marginBottom: 0,
+                    // top: heightPercentageToDP(17),
+                    textDecorationLine: "underline",
+                    fontFamily: "montserrat-bold",
+                    fontSize: heightPercentageToDP(2)
+                  }
+                ]}
+                onPress={() => this.props.renderPreviousStep()}
+              >
+                Change app
+              </Text>
+
               <View>
                 {this.props.swipeUpDestination && (
                   <Text

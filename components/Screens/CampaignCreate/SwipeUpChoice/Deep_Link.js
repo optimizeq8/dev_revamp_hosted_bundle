@@ -10,9 +10,11 @@ import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
 // Style
 import styles from "./styles";
 
+//Data
 import list from "../../../Data/callactions.data";
 
-//Redux
+
+//redux
 import { connect } from "react-redux";
 
 class Deep_Link extends Component {
@@ -78,7 +80,7 @@ class Deep_Link extends Component {
 
   _handleSubmission = async deep_link_url => {
     await this.setState({
-      attachment: { ...this.state.attachment, deep_link_url }
+      attachment: { ...this.state.attachment, deep_link_uri: deep_link_url }
     });
 
     this.props._changeDestination(

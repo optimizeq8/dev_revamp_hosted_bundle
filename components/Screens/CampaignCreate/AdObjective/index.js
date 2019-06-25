@@ -24,6 +24,7 @@ import DateField from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
@@ -41,7 +42,10 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -91,7 +95,15 @@ class AdObjective extends Component {
       }
     });
     if (this.props.data) {
-      rep = { ...this.state.campaignInfo, ...this.props.data };
+      rep = {
+        ...this.state.campaignInfo,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid,
+        name: this.props.data.name,
+        objective: this.props.data.objective,
+        start_time: this.props.data.start_time,
+        end_time: this.props.data.end_time
+      };
       this.setState({
         campaignInfo: { ...rep },
         minValueBudget: this.props.data.minValueBudget,
@@ -108,7 +120,7 @@ class AdObjective extends Component {
         objective: value
       }
     });
-    this.props.save_campaign_info({ objective: value });
+    this.props.save_campaign_info({ objective: value, reset: true });
   };
 
   handleStartDatePicked = date => {
@@ -181,6 +193,9 @@ class AdObjective extends Component {
       // });
 
       this.props.save_campaign_info({
+        campaign_id: this.props.campaign_id,
+        ...this.state.campaignInfo,
+
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
@@ -210,7 +225,7 @@ class AdObjective extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaView}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
           onDidFocus={() => {
@@ -269,6 +284,7 @@ class AdObjective extends Component {
                 </Label>
 
                 <Input
+                  disabled={this.props.loading}
                   value={this.state.campaignInfo.name}
                   style={styles.inputText}
                   autoCorrect={false}
@@ -300,6 +316,7 @@ class AdObjective extends Component {
               </Item>
 
               <Duration
+                loading={this.props.loading}
                 dismissKeyboard={Keyboard.dismiss}
                 start_time={this.state.campaignInfo.start_time}
                 end_time={this.state.campaignInfo.end_time}
@@ -311,6 +328,7 @@ class AdObjective extends Component {
               <Text style={styles.title}>Objective</Text>
 
               <Item
+                disabled={this.props.loading}
                 rounded
                 style={[
                   styles.input2,
@@ -333,8 +351,17 @@ class AdObjective extends Component {
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
             </View>
-
-            <LowerButton bottom={4} function={this._handleSubmission} />
+            {this.props.loading ? (
+              <ForwardLoading
+                bottom={18}
+                mainViewStyle={{
+                  width: widthPercentageToDP(9),
+                  height: heightPercentageToDP(9)
+                }}
+              />
+            ) : (
+              <LowerButton bottom={4} function={this._handleSubmission} />
+            )}
           </Container>
         </TouchableWithoutFeedback>
         <DateField
@@ -345,9 +372,9 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
         />
-        <Modal visible={this.props.loading}>
+        {/* <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
-        </Modal>
+        </Modal> */}
         <Modal
           animationType={"slide"}
           transparent={true}
@@ -357,7 +384,7 @@ class AdObjective extends Component {
           <BlurView intensity={95} tint="dark">
             <SafeAreaView
               style={styles.safeAreaView}
-              forceInset={{ bottom: "never" }}
+              forceInset={{ bottom: "never", top: "always" }}
             >
               <View style={styles.popupOverlay}>
                 <CustomHeader

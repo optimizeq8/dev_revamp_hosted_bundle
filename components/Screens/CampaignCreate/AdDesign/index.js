@@ -29,12 +29,19 @@ import {
   Footer,
   Icon
 } from "native-base";
-import CustomHeader from "../../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { Transition } from "react-navigation-fluid-transitions";
+import { Modal } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
+import Axios from "axios";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import CustomHeader from "../../../MiniComponents/Header";
+import CameraLoading from "../../../MiniComponents/CameraLoading";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Redux
-import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
@@ -44,18 +51,14 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 // Style
 import styles from "./styles";
 
-//Validator
+//Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import isNull from "lodash/isNull";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp
+  widthPercentageToDP as wp,
+  widthPercentageToDP
 } from "react-native-responsive-screen";
-import { Transition } from "react-navigation-fluid-transitions";
-import { Modal } from "react-native-paper";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import { showMessage } from "react-native-flash-message";
-import Axios from "axios";
-import isNull from "lodash/isNull";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -171,6 +174,19 @@ class AdDesign extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.objective !== "BRAND_AWARENESS" &&
+      ((prevState.campaignInfo.attachment === "BLANK" &&
+        this.state.campaignInfo.attachment !== "BLANK") ||
+        (prevState.campaignInfo.call_to_action.label === "BLANK" &&
+          this.state.campaignInfo.call_to_action.label !== "BLANK"))
+    ) {
+      this.setState({
+        swipeUpError: null
+      });
+    }
+  }
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -199,19 +215,24 @@ class AdDesign extends Component {
         [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
       };
       this.setState(newData);
-      this.props.save_campaign_info(newData);
+
+      this.props.save_campaign_info({
+        ...newData.campaignInfo,
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      });
     } else {
       newData = {
         campaignInfo: {
           ...this.state.campaignInfo,
           destination,
-          call_to_action: call_to_action,
+          call_to_action,
           attachment
         },
         appChoice
       };
       this.setState(newData);
-      this.props.save_campaign_info(newData.campaignInfo);
+      this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
     }
   };
   pick = async () => {
@@ -427,7 +448,7 @@ class AdDesign extends Component {
       body.append("media_type", this.state.type);
     }
     if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media.split(this.state.directory);
+      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
       let formatVideo = resVideo[1].split(".");
       var video = {
         uri: this.state.longformvideo_media,
@@ -443,7 +464,8 @@ class AdDesign extends Component {
     }
 
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
-    body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append("campaign_id", this.props.campaign_id);
+    body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
       body.append("brand_name", this.state.campaignInfo.brand_name);
       body.append("headline", this.state.campaignInfo.headline);
@@ -512,9 +534,6 @@ class AdDesign extends Component {
     });
   };
   perviewHandler = async () => {
-    console.log("campaignInfo", this.state.campaignInfo);
-    console.log("appChoice", this.state.appChoice);
-
     await this.validator();
     if (
       !this.state.brand_nameError &&
@@ -548,7 +567,7 @@ class AdDesign extends Component {
     );
     const imageError = validateWrapper("mandatory", this.state.image);
 
-    let swipeUpError = "";
+    let swipeUpError = null;
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
@@ -582,21 +601,33 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
-      this.formatMedia();
-      this.handleUpload();
-      !this.props.loading &&
-        this.props.ad_design(
-          this.state.formatted,
-          this._getUploadState,
-          this.props.navigation,
-          this.onToggleModal,
-          this.state.appChoice,
-          this.rejected,
-          this.state.signal,
-          this.state.longformvideo_media &&
-            this.state.longformvideo_media_type === "VIDEO",
-          { iosUploaded: this.state.iosVideoUploaded, image: this.state.image }
-        );
+      await this.formatMedia();
+      await this.handleUpload();
+      if (
+        !this.props.data.hasOwnProperty("formatted") ||
+        JSON.stringify(this.props.data.formatted) !==
+          JSON.stringify(this.state.formatted)
+      ) {
+        if (!this.props.loading) {
+          await this.props.ad_design(
+            this.state.formatted,
+            this._getUploadState,
+            this.props.navigation,
+            this.onToggleModal,
+            this.state.appChoice,
+            this.rejected,
+            this.state.signal,
+            this.state.longformvideo_media &&
+              this.state.longformvideo_media_type === "VIDEO",
+            {
+              iosUploaded: this.state.iosVideoUploaded,
+              image: this.state.image
+            }
+          );
+        }
+      } else {
+        this.props.navigation.push("AdDetails");
+      }
     }
   };
   onToggleModal = visibile => {
@@ -765,10 +796,11 @@ class AdDesign extends Component {
     );
 
     let blankView = <View style={styles.blankView} />;
+
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
           onDidFocus={() => {
@@ -807,7 +839,7 @@ class AdDesign extends Component {
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
                     {this.state.videoIsLoading ? (
-                      <LoadingScreen dash={true} />
+                      <CameraLoading dash={true} />
                     ) : null}
                     <Video
                       onLoadStart={() =>
@@ -885,12 +917,23 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this._handleSubmission}
-                  style={styles.button}
-                >
-                  <ForwardButton width={wp(24)} height={hp(8)} />
-                </TouchableOpacity>
+                {this.state.objective === "BRAND_AWARENESS" && (
+                  <TouchableOpacity
+                    onPress={this._handleSubmission}
+                    style={styles.button}
+                  >
+                    <ForwardButton width={wp(24)} height={hp(8)} />
+                  </TouchableOpacity>
+                )}
+                {this.state.objective !== "BRAND_AWARENESS" &&
+                  isNull(this.state.swipeUpError) && (
+                    <TouchableOpacity
+                      onPress={this._handleSubmission}
+                      style={styles.button}
+                    >
+                      <ForwardButton width={wp(24)} height={hp(8)} />
+                    </TouchableOpacity>
+                  )}
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
@@ -909,7 +952,10 @@ class AdDesign extends Component {
           animationType={"slide"}
         >
           <BlurView intensity={95} tint="dark">
-            <SafeAreaView style={styles.loadingSafeArea}>
+            <SafeAreaView
+              forceInset={{ top: "always" }}
+              style={styles.loadingSafeArea}
+            >
               {this.props.loading && (
                 <CustomHeader
                   closeButton={true}
@@ -923,7 +969,13 @@ class AdDesign extends Component {
                   actionButton={() => this.onToggleModal(false)}
                 />
               )}
-              <LoadingScreen top={50} />
+
+              <CameraLoading
+                style={{ width: 110, height: 110 }}
+                //   styles={{ width: hp(30), height: hp(30) }}
+                // top={"50%"}
+                // left={"55%"}
+              />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>

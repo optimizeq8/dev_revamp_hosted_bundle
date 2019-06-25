@@ -27,6 +27,8 @@ import AdPaymentReview from "../Screens/CampaignCreate/AdPaymentReview";
 import PaymentForm from "../Screens/PaymentForm";
 import ErrorRedirect from "../Screens/ErrorRedirect";
 import SuccessRedirect from "../Screens/SuccessRedirect";
+import LongFormVideoPreview from "../Screens/CampaignCreate/SwipeUpChoice/LongFormVideoPreview";
+
 import Animated, { Easing } from "react-native-reanimated";
 
 export default FluidNavigator(
@@ -53,7 +55,7 @@ export default FluidNavigator(
     AdPaymentReview: AdPaymentReview,
     AddressForm: AddressForm,
     PaymentForm: PaymentForm,
-
+    LongFormVideoPreview: LongFormVideoPreview,
     ErrorRedirect: {
       screen: ErrorRedirect,
       path: "error/"

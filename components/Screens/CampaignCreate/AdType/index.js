@@ -132,7 +132,7 @@ class AdType extends Component {
     return (
       <SafeAreaView
         style={styles.safeAreaView}
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
       >
         <NavigationEvents
           onDidFocus={() => {

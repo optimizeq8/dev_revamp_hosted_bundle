@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../../MiniComponents/LowerButton";
-
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 //Styles
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
@@ -27,7 +27,7 @@ class ReachBar extends Component {
           arcSweepAngle={200}
           rotation={260}
           lineCap="round"
-          style={styles.chart}
+          style={[styles.chart]}
           tintColor={globalColors.orange}
           backgroundColor="rgba(255,255,255,0.3)"
         />
@@ -37,7 +37,15 @@ class ReachBar extends Component {
             {"\n"}
             <Text style={styles.chartText}>Potential Reach</Text>
           </Text>
-          <LowerButton function={() => this.props._handleSubmission()} />
+          {this.props.loading ? (
+            <ForwardLoading
+              mainViewStyle={{ width: wp(9), height: hp(9) }}
+              bottom={5}
+              style={{ width: wp(7), height: hp(7) }}
+            />
+          ) : (
+            <LowerButton function={() => this.props._handleSubmission()} />
+          )}
         </View>
       </View>
     );

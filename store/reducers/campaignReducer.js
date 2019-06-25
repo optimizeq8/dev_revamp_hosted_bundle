@@ -70,11 +70,24 @@ const reducer = (state = initialState, action) => {
         loadingDesign: false
       };
     case actionTypes.SAVE_CAMPAIGN_INFO:
+      let resetSwipeUps = {};
+      if (action.payload.reset) {
+        resetSwipeUps = {
+          attachment: "BLANK",
+          call_to_action: {
+            label: "BLANK",
+            value: "BLANK"
+          },
+          destination: "BLANK",
+          reset: false
+        };
+      }
       return {
         ...state,
         data: {
           ...state.data,
-          ...action.payload
+          ...action.payload,
+          ...resetSwipeUps
         }
       };
     case actionTypes.ERROR_SET_AD_DESIGN:

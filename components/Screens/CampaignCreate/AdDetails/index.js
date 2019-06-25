@@ -8,11 +8,11 @@ import {
   ImageBackground,
   BackHandler
 } from "react-native";
-import Modal from "react-native-modal";
 import { Text, Container, Icon, Content } from "native-base";
 import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -20,7 +20,6 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
@@ -33,11 +32,12 @@ import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import LocationIcon from "../../../../assets/SVGs/Location.svg";
 import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircle.svg";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
 import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
+
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
@@ -48,13 +48,16 @@ import { connect } from "react-redux";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import isEqual from "lodash/isEqual";
 import combineMerge from "./combineMerge";
-import isNan from "lodash/isNaN";
 import deepmerge from "deepmerge";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
+import isEqual from "lodash/isEqual";
+import isNan from "lodash/isNaN";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -105,7 +108,8 @@ class AdDetails extends Component {
       interestNames: [],
       modalVisible: false,
       totalReach: 0,
-      selectionOption: ""
+      selectionOption: "",
+      showRegions: false
     };
   }
 
@@ -174,16 +178,6 @@ class AdDetails extends Component {
         maxValueBudget: this.props.data.maxValueBudget,
         value: this.formatNumber(this.props.data.minValueBudget)
       });
-      // this.props.save_campaign_info({
-      //   lifetime_budget_micro: this.props.data.minValueBudget,
-      //   minValueBudget: this.props.data.minValueBudget,
-      //   maxValueBudget: this.props.data.maxValueBudget,
-      //   gender: "",
-      //   languages: ["ar", "en"],
-      //   min_age: 13,
-      //   max_age: 35,
-      //   os_type: ""
-      // });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
@@ -192,18 +186,22 @@ class AdDetails extends Component {
           {
             ...this.state,
             campaignInfo: {
-              // ...this.state.campaignInfo,
-              // brand_name: this.props.data.brand_name,
-              // headline: this.props.data.headline,
-              // destination: rep.destination ? rep.destination : "BLANK",
-              // call_to_action: rep.call_to_action,
-              // attachment: rep.attachment
               ...rep
             },
             ...this.props.data,
-            value: this.props.data.campaignInfo.lifetime_budget_micro
+            value: this.props.data.campaignInfo.lifetime_budget_micro,
+            showRegions: this.props.data.showRegions,
+            filteredLanguages: this.props.languages
           },
-          () => this._calcReach()
+          () => {
+            this._calcReach();
+            rep.targeting.geos[0].country_code &&
+              this.onSelectedCountryChange(
+                rep.targeting.geos[0].country_code,
+                true,
+                this.props.data.countryName
+              );
+          }
         );
       }
       if (
@@ -237,13 +235,19 @@ class AdDetails extends Component {
     });
     this.props.save_campaign_info({ campaignInfo: rep });
   };
-  onSelectedCountryChange = async (selectedItem, mounting, countryName) => {
+  onSelectedCountryChange = async (
+    selectedItem,
+    mounting = null,
+    countryName
+  ) => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
 
     if (typeof newCountry !== "undefined") {
       replace.targeting.geos[0].country_code = newCountry;
-      replace.targeting.geos[0].region_id = [];
+      replace.targeting.geos[0].region_id = mounting
+        ? this.props.data.campaignInfo.targeting.geos[0].region_id
+        : [];
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
@@ -252,12 +256,14 @@ class AdDetails extends Component {
         regions: reg.regions,
         filteredRegions: reg.regions,
         regionNames: [],
-        countryName
+        countryName,
+        showRegions: reg.regions.length > 3
       });
       this.props.save_campaign_info({
         campaignInfo: replace,
         country_code: newCountry,
-        countryName
+        countryName,
+        showRegions: reg.regions.length > 3
       });
     }
   };
@@ -339,24 +345,19 @@ class AdDetails extends Component {
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
-    let saveRegs = [];
-    let saveRegNames = [];
+
     let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
       replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
         r => r !== selectedItem
       );
-      saveRegs = replace.targeting.geos[0].region_id;
     } else {
       replace.targeting.geos[0].region_id.push(selectedItem);
-      saveRegs = replace.targeting.geos[0].region_id;
     }
     if (names.find(r => r === regionName)) {
       names = names.filter(r => r !== regionName);
-      saveRegNames = names;
     } else {
       names.push(regionName);
-      saveRegNames = names;
     }
     this.setState({ campaignInfo: replace, regionNames: names });
     this.props.save_campaign_info({
@@ -399,9 +400,9 @@ class AdDetails extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          lifetime_budget_micro: this.state.minValueBudget
+          lifetime_budget_micro: rawValue
         },
-        value: this.state.minValueBudget
+        value: value
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -731,7 +732,7 @@ class AdDetails extends Component {
         ? this.props.data.image
         : this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never" }}>
+      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never", top: "always"  }}>
         <NavigationEvents
           onDidFocus={() => {
             if (this.props.navigation.getParam("editCampaign", false)) {
@@ -814,6 +815,8 @@ class AdDetails extends Component {
                     <Text style={styles.subHeadings}>Budget</Text>
                     <View style={styles.moneyInputContainer}>
                       <TextInputMask
+                        disableFullscreenUI={this.props.loading}
+                        // disableFullscreenUI={this.props.loading}
                         includeRawValueInChangeText
                         type={"money"}
                         options={{
@@ -821,7 +824,7 @@ class AdDetails extends Component {
                           delimiter: ",",
                           unit: "$"
                         }}
-                        disabled={editCampaign}
+                        // disabled={editCampaign || this.props.loading}
                         maxLength={8}
                         // defaultValue={this.state.value + ""}
                         value={this.state.value + ""}
@@ -847,7 +850,7 @@ class AdDetails extends Component {
 
                       <Slider
                         thumbTintColor={globalColors.orange}
-                        disabled={editCampaign}
+                        disabled={editCampaign || this.props.loading}
                         style={styles.slider}
                         step={10}
                         minimumValue={this.state.minValueBudget}
@@ -868,17 +871,23 @@ class AdDetails extends Component {
                     </View>
                   </>
                 ) : (
-                  <View style={styles.sliderPlaceHolder} />
+                  <View style={styles.sliderPlaceHolder}>
+                    <Text style={styles.subHeadings}>
+                      Editing budget and duration {"\n"} is currently
+                      unavailable.
+                    </Text>
+                  </View>
                 )}
                 <Text style={styles.subHeadings}>
                   Who would you like to reach?
                 </Text>
                 <ScrollView
                   ref={ref => (this.scrollView = ref)}
-                  indicatorStyle={globalColors.white}
+                  indicatorStyle="white"
                   style={styles.targetList}
                 >
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("gender");
                     }}
@@ -915,6 +924,7 @@ class AdDetails extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("age");
                     }}
@@ -953,6 +963,7 @@ class AdDetails extends Component {
                   </TouchableOpacity>
 
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("selectors", "countries");
                     }}
@@ -979,45 +990,52 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => {
-                      this._renderSideMenu("regions");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Regions</Text>
-                        <Text style={styles.menudetails}>{regions_names}</Text>
+                  {this.state.showRegions && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        this._renderSideMenu("regions");
+                      }}
+                      style={styles.targetTouchable}
+                    >
+                      <View style={[globalStyles.row, styles.flex]}>
+                        <LocationIcon
+                          width={25}
+                          height={25}
+                          style={styles.icon}
+                        />
+                        <View style={[globalStyles.column, styles.flex]}>
+                          <Text style={styles.menutext}>Regions</Text>
+                          <Text style={styles.menudetails}>
+                            {regions_names}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    {this.state.campaignInfo.targeting.geos[0].region_id
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
+
+                      {this.state.campaignInfo.targeting.geos[0].region_id
+                        .length !== 0 ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                      ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                      )}
+                    </TouchableOpacity>
+                  )}
+
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("languages");
                     }}
                     style={styles.targetTouchable}
                   >
-                    <View style={globalStyles.row}>
+                    <View style={[globalStyles.row, styles.flex]}>
                       <LanguageIcon
                         width={25}
                         height={25}
                         style={styles.icon}
                       />
-                      <View style={globalStyles.column}>
+                      <View style={[globalStyles.column, styles.flex]}>
                         <Text style={styles.menutext}>Language</Text>
-                        <Text style={styles.menudetails}>
+                        <Text numberOfLines={1} style={styles.menudetails}>
                           {languages_names}
                         </Text>
                       </View>
@@ -1032,6 +1050,7 @@ class AdDetails extends Component {
                   </TouchableOpacity>
 
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this.state.campaignInfo.targeting.geos[0].country_code ===
                       ""
@@ -1044,15 +1063,15 @@ class AdDetails extends Component {
                     }}
                     style={styles.targetTouchable}
                   >
-                    <View style={globalStyles.row}>
+                    <View style={[globalStyles.row, styles.flex]}>
                       <InterestsIcon
                         width={25}
                         height={25}
                         style={styles.icon}
                       />
-                      <View style={globalStyles.column}>
+                      <View style={[globalStyles.column, styles.flex]}>
                         <Text style={styles.menutext}>Interests</Text>
-                        <Text style={styles.menudetails}>
+                        <Text numberOfLines={1} style={styles.menudetails}>
                           {interests_names}
                         </Text>
                       </View>
@@ -1067,19 +1086,20 @@ class AdDetails extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("OS");
                     }}
                     style={styles.targetTouchable}
                   >
-                    <View style={globalStyles.row}>
+                    <View style={[globalStyles.row, styles.flex]}>
                       <OperatingSystemIcon
                         width={25}
                         height={25}
                         fill={globalColors.orange}
                         style={styles.icon}
                       />
-                      <View style={globalStyles.column}>
+                      <View style={[globalStyles.column, styles.flex]}>
                         <Text style={styles.menutext}>Operating System</Text>
                         <Text style={styles.menudetails}>
                           {
@@ -1107,12 +1127,13 @@ class AdDetails extends Component {
                   {this.state.campaignInfo.targeting.devices[0].os_type !==
                     "" && (
                     <TouchableOpacity
+                      disabled={this.props.loading}
                       onPress={() => {
                         this._renderSideMenu("selectors", "deviceVersions");
                       }}
                       style={styles.targetTouchable}
                     >
-                      <View style={globalStyles.row}>
+                      <View style={[globalStyles.row, styles.flex]}>
                         <Icon
                           name="versions"
                           type="Octicons"
@@ -1123,7 +1144,7 @@ class AdDetails extends Component {
                             right: 2
                           }}
                         />
-                        <View style={globalStyles.column}>
+                        <View style={[globalStyles.column, styles.flex]}>
                           <Text style={styles.menutext}>OS Versions</Text>
                           <Text style={styles.menudetails}>
                             {this.state.campaignInfo.targeting.devices[0]
@@ -1144,12 +1165,13 @@ class AdDetails extends Component {
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity
+                    disabled={this.props.loading}
                     onPress={() => {
                       this._renderSideMenu("selectors", "deviceBrands");
                     }}
                     style={styles.targetTouchable}
                   >
-                    <View style={globalStyles.row}>
+                    <View style={[globalStyles.row, styles.flex]}>
                       <DeviceMakeIcon
                         width={25}
                         height={25}
@@ -1157,9 +1179,9 @@ class AdDetails extends Component {
                         fill={globalColors.orange}
                       />
 
-                      <View style={globalStyles.column}>
+                      <View style={[globalStyles.column, styles.flex]}>
                         <Text style={styles.menutext}>Device Make</Text>
-                        <Text style={styles.menudetails}>
+                        <Text numberOfLines={1} style={styles.menudetails}>
                           {
                             this.state.campaignInfo.targeting.devices[0]
                               .marketing_name
@@ -1176,18 +1198,22 @@ class AdDetails extends Component {
                     )}
                   </TouchableOpacity>
                 </ScrollView>
-                <Text
-                  onPress={() => {
-                    this.scrollView.scrollToEnd({ animated: true });
 
-                    this.setState({ advance: !this.state.advance });
-                  }}
-                  style={styles.moreOptionsText}
-                >
-                  Scroll for more options+
-                </Text>
+                {!editCampaign && hp(100) < 800 && (
+                  <Text
+                    onPress={() => {
+                      this.scrollView.scrollToEnd({ animated: true });
+
+                      this.setState({ advance: !this.state.advance });
+                    }}
+                    style={styles.moreOptionsText}
+                  >
+                    Scroll for more options+
+                  </Text>
+                )}
 
                 <ReachBar
+                  loading={this.props.loading}
                   advance={this.state.advance}
                   _handleSubmission={this._handleSubmission}
                 />
@@ -1195,9 +1221,9 @@ class AdDetails extends Component {
             </Container>
           </Sidemenu>
         </Container>
-        <Modal isVisible={this.props.loading}>
+        {/* <Modal isVisible={this.props.loading}>
           <LoadingScreen top={50} />
-        </Modal>
+        </Modal> */}
       </SafeAreaView>
     );
   }

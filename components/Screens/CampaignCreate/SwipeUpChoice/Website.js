@@ -16,6 +16,7 @@ import GlobalStyles from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
+import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
@@ -31,7 +32,9 @@ class Website extends Component {
         attachment: "",
         callaction: list[0].call_to_action_list[0]
       },
-
+      callActionLabel: "",
+      networkString: netLoc[0].label,
+      netLoc: netLoc,
       callactions: list[0].call_to_action_list,
       urlError: ""
     };
@@ -62,7 +65,7 @@ class Website extends Component {
   validateUrl = () => {
     const urlError = validateWrapper(
       "website",
-      this.state.campaignInfo.attachment
+      this.state.networkString + this.state.campaignInfo.attachment
     );
     this.setState({
       urlError
@@ -70,8 +73,6 @@ class Website extends Component {
     if (urlError) {
       showMessage({
         message: "Please enter a vaild url",
-        description:
-          'Make sure to include the network location (e.g., "http://" or "https://") in the URL',
         type: "warning",
         position: "top",
         duration: 7000
@@ -88,7 +89,7 @@ class Website extends Component {
           ? "REMOTE_WEBPAGE"
           : "LEAD_GENERATION",
         this.state.campaignInfo.callaction,
-        { url: this.state.campaignInfo.attachment }
+        { url: this.state.networkString + this.state.campaignInfo.attachment }
       );
       this.props.navigation.navigate("AdDesign");
     }
@@ -106,50 +107,82 @@ class Website extends Component {
                 }
               ]}
             >
-              <View>
-                <WebsiteIcon style={styles.icon} />
-                <View style={[styles.textcontainer, { marginBottom: 20 }]}>
-                  <Text style={styles.titletext}>Website</Text>
-                  <Text style={styles.subtext}>
-                    The user will be taken to your website
+              <WebsiteIcon style={styles.icon} />
+              <View style={[styles.textcontainer]}>
+                <Text style={styles.titletext}>Website</Text>
+                <Text style={styles.subtext}>
+                  The user will be taken to your website
+                </Text>
+              </View>
+              <RNPickerSelect
+                items={this.state.callactions}
+                placeholder={{}}
+                onValueChange={(value, index) => {
+                  this.setState({
+                    campaignInfo: {
+                      ...this.state.campaignInfo,
+                      callaction: {
+                        label: list[0].call_to_action_list[index].label,
+                        value
+                      }
+                    }
+                  });
+                }}
+              >
+                <Item rounded style={[styles.input]}>
+                  <Text style={styles.callActionLabel}>
+                    {this.state.campaignInfo.callaction.label}
                   </Text>
-                </View>
+                  <Icon
+                    type="AntDesign"
+                    name="down"
+                    style={{ color: "#fff", fontSize: 20, left: 25 }}
+                  />
+                </Item>
+              </RNPickerSelect>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-evenly"
+                }}
+              >
                 <RNPickerSelect
-                  items={this.state.callactions}
+                  items={this.state.netLoc}
                   placeholder={{}}
                   onValueChange={(value, index) => {
                     this.setState({
-                      campaignInfo: {
-                        ...this.state.campaignInfo,
-                        callaction: {
-                          label: list[0].call_to_action_list[index].label,
-                          value
-                        }
-                      }
+                      networkString: value
                     });
                   }}
                 >
-                  <Item rounded style={[styles.input, { marginBottom: 20 }]}>
-                    <Text style={styles.callActionLabel}>
-                      {this.state.campaignInfo.callaction === ""
-                        ? this.state.callactions[0].label
-                        : this.state.callactions.find(
-                            c =>
-                              this.state.campaignInfo.callaction.value ===
-                              c.value
-                          ).label}
-                    </Text>
+                  <Item rounded style={styles.netLocStyle}>
                     <Icon
                       type="AntDesign"
                       name="down"
-                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                      style={{
+                        color: "#fff",
+                        fontSize: 20,
+                        top: 5
+                      }}
                     />
+                    <Text
+                      style={[styles.callActionLabel, { top: 3, right: 4 }]}
+                    >
+                      {this.state.networkString}
+                    </Text>
                   </Item>
                 </RNPickerSelect>
+
                 <Item
                   rounded
                   style={[
                     styles.input,
+                    {
+                      paddingHorizontal: 0,
+                      width: "65%"
+                    },
                     this.state.urlError
                       ? GlobalStyles.redBorderColor
                       : GlobalStyles.transparentBorderColor
@@ -173,11 +206,11 @@ class Website extends Component {
                     onBlur={() => this.validateUrl()}
                   />
                 </Item>
-                <Text style={styles.warningText}>
-                  Please make sure not include social media sites such as
-                  Facbook, Instagram, Youtube, SnapChat, etc.
-                </Text>
               </View>
+              <Text style={styles.warningText}>
+                Please make sure not include social media sites such as Facbook,
+                Instagram, Youtube, SnapChat, etc.
+              </Text>
               <View />
               <View>
                 {this.props.swipeUpDestination && (

@@ -67,6 +67,14 @@ export const getCampaignStats = (campaign, duration) => {
     )
   );
 
+  let addDays = (date, days) => {
+    let result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(
+      -2
+    )}-${result.getDate()}`;
+  };
+
   return dispatch => {
     dispatch({
       type: actionTypes.SET_STATS_LOADING,
@@ -80,13 +88,15 @@ export const getCampaignStats = (campaign, duration) => {
         // end_time: "2019-05-25",
 
         // campaign_id: "e5f5477b-583f-4519-9757-cab7f4155a5f",
-        // start_time: duration.start_time, //"2019-05-09",
-        // end_time: duration.end_time, //"2019-05-25",
+        // //duration.start_time,
+        // start_time: "2019-05-18",
+        // //duration.end_time,
+        // end_time: addDays("2019-05-25", 1),
 
         //Actual api
         campaign_id: campaign.snap_campaign_id,
-        start_time: duration.start_time,
-        end_time: duration.end_time,
+        start_time: duration.start_time.split("T")[0],
+        end_time: addDays(duration.end_time, 1),
         hour: timeDiff + 1 <= 5 ? 1 : 0
       })
       .then(res => {

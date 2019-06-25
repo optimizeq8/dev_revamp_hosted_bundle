@@ -73,7 +73,7 @@ class MainForm extends Component {
 
     return (
       <SafeAreaView
-        forceInset={{ bottom: "never" }}
+        forceInset={{ bottom: "never", top: "always" }}
         style={styles.safeAreaViewContainer}
       >
         <LinearGradient
@@ -124,7 +124,7 @@ class MainForm extends Component {
                           style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
-                              email: value
+                              email: value.trim()
                             });
                           }}
                           onBlur={() => {
