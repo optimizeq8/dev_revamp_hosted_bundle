@@ -7,6 +7,10 @@ import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
 export default class Duration extends Component {
   render() {
+    let currentDay =
+      dateFormat(new Date(), "d mmm").toUpperCase() +
+      " " +
+      new Date().getFullYear();
     let end_time = "";
     let start_time = "";
     let end_year = "";
@@ -83,10 +87,11 @@ export default class Duration extends Component {
             this.props.slidePanel && (
               <View style={styles.dateColumn}>
                 <Text style={styles.dateLabel}>End</Text>
-
                 <Text style={styles.date}>
-                  {dateFormat(new Date(), "d mmm").toUpperCase()}{" "}
-                  {new Date().getFullYear()}
+                  {new Date(selectedCampaign.start_time.split("T")[0]) >=
+                  new Date()
+                    ? end_time + " " + end_year
+                    : currentDay}
                 </Text>
               </View>
             )

@@ -34,7 +34,7 @@ class SuccessRedirect extends Component {
   }
 
   componentDidMount() {
-    this.animation.play();
+    // this.animation.play();
     Segment.screen("Payment Success Screen");
     Segment.trackWithProperties("Viewed Checkout Step", {
       step: 7,
@@ -79,7 +79,7 @@ class SuccessRedirect extends Component {
     return true;
   }
   onLottieEnd = () => {
-    this.animation.play();
+    // this.animation.play();
   };
   render() {
     return (
@@ -127,7 +127,8 @@ class SuccessRedirect extends Component {
           <Button
             style={styles.button}
             onPress={() => {
-              this.props.navigation.navigate("Dashboard");
+              this.props.resetCampaignInfo();
+              this.props.navigation.replace("Dashboard");
             }}
           >
             <Text style={styles.buttontext}> Home </Text>
@@ -145,7 +146,6 @@ const mapStateToProps = state => ({
   interestsNames: state.campaignC.interestsNames
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(
