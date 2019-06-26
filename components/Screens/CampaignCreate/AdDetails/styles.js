@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   budget: {
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 25,
+    fontSize: 25 / PixelRatio.getFontScale(),
     fontFamily: "montserrat-medium",
     textAlign: "center",
     width: "100%",

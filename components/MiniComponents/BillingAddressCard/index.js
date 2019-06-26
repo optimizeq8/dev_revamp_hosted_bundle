@@ -213,13 +213,7 @@ class BillingAddressCard extends React.Component {
             title={"Billing Address"}
             navigation={this.props.navigation}
           />
-          {/* <TouchableOpacity
-                onPress={() => this.props.navigation.goBack()}
-                style={globalStyles.backButton}
-              >
-                <BackIcon />
-              </TouchableOpacity>
-              <Text style={styles.title}>Billing Address</Text> */}
+
           <Address
             fill="#fff"
             style={styles.addressIcon}
@@ -227,12 +221,7 @@ class BillingAddressCard extends React.Component {
             height={55}
           />
         </View>
-        <View
-          style={[
-            styles.mainCard
-            // { top: this.props.sidemenustate ? hp(13) : 0 }
-          ]}
-        >
+        <View style={[styles.mainCard]}>
           <ScrollView contentContainerStyle={styles.contentScrollViewContainer}>
             <KeyboardShift>
               {() => (

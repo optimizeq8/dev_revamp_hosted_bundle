@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 import {
   widthPercentageToDP as wp,
@@ -38,7 +38,7 @@ export default (styles = StyleSheet.create({
     width: wp(80),
     alignSelf: "center"
   },
-  searchTextInput: { color: "#FFF" },
+  searchTextInput: { color: "#FFF", fontSize: 17 / PixelRatio.getFontScale() },
   item: {
     backgroundColor: "rgba(0,0,0,0)",
     color: "#fff"

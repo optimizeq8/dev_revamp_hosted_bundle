@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     marginTop: 15,
     flex: 1,
-    paddingTop: 20
+    paddingTop: 30
     // maxHeight: "100%"
     // flexDirection: "column",
     //justifyContent:""
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center",
     height: 40
@@ -151,7 +151,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   flex: {
-    flex: 1
+    flex: 1,
+    bottom: 9
   },
   blockAndBuildingView: {
     flexDirection: "row",

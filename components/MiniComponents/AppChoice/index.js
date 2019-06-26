@@ -305,7 +305,7 @@ class AppChoice extends Component {
                     ]}
                   >
                     <Text
-                      style={[styles.inputText, styles.itemCallToActionText]}
+                      style={styles.pickerText}
                     >
                       {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
@@ -456,6 +456,7 @@ class AppChoice extends Component {
                   <ActivityIndicator
                     color="#fff"
                     size="large"
+
                     style={styles.activityIndicator}
                   />
                 ) : (
@@ -467,6 +468,7 @@ class AppChoice extends Component {
                     )}
                     <FlatList
                       style={{ flex: 1, width: "100%" }}
+
                       contentContainerStyle={
                         styles.flatListContentContainerStyle
                       }

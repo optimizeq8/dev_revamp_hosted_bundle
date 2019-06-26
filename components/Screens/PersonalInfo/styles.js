@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   labelMobileNo: {
-    bottom: 5
+    bottom: 5,
+    fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
     bottom: 5,

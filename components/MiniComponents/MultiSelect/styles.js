@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontFamily: "montserrat-light",
-    fontSize: 17,
+    fontSize: 17 / PixelRatio.getFontScale(),
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
