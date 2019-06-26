@@ -4,6 +4,9 @@ import { Segment } from "expo";
 import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
+import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
 
 //Redux
 import { connect } from "react-redux";
@@ -12,18 +15,13 @@ import * as actionCreators from "../../../store/actions/";
 // Style
 import styles from "./styles";
 
-//Icons
-import Address from "../../../assets/SVGs/Location";
+//Data
+import Countries from "../../Data/countries.billingAddress";
 
 //Functions
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
 import isEqual from "lodash/isEqual";
-
-import Countries from "../../Data/countries.billingAddress";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
-import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
-import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
 
 class AddressForm extends Component {
   static navigationOptions = {
@@ -159,21 +157,6 @@ class AddressForm extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
-          {/* {!this.state.sidemenustate && (
-            <View style={styles.headerBlock}>
-              <Header
-                title={"Billing Address"}
-                navigation={this.props.navigation}
-              />
-            
-              <Address
-                fill="#fff"
-                style={styles.addressIcon}
-                width={55}
-                height={55}
-              />
-            </View>
-          )} */}
           <View style={styles.dataContainer}>
             {/* TODO: When user selects CC display this */}
             {this.state.from === "creditCard" &&

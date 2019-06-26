@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
-import { View, BackHandler } from "react-native";
+import { View, BackHandler, PixelRatio } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";

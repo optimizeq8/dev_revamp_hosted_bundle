@@ -292,7 +292,6 @@ class AppChoice extends Component {
                         this.state.callaction
                       )
                     });
-
                   }}
                 >
                   <Item
@@ -307,17 +306,7 @@ class AppChoice extends Component {
                       }
                     ]}
                   >
-                    <Text
-                      style={[
-                        styles.inputtext,
-                        {
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          color: "#fff"
-                        }
-                      ]}
-                    >
+                    <Text style={[styles.pickerText]}>
                       {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
                       )
@@ -479,39 +468,38 @@ class AppChoice extends Component {
                   </Item>
                 ) : null}
 
-
-              {this.state.loading ? (
-                <ActivityIndicator
-                  color="#fff"
-                  size="large"
-                  style={{ height: 150 }}
-                />
-              ) : (
-                <View
-                  style={{
-                    height: heightPercentageToDP(30),
-                    width: "100%"
-                  }}
-                >
-                  {this.state.showList && this.state.choice === "" && (
-                    <Text style={styles.text}>
-                      Choose the {this.state.appSelection} app
-                    </Text>
-                  )}
-                  <FlatList
-                    style={{ flex: 1, width: "100%" }}
+                {this.state.loading ? (
+                  <ActivityIndicator
+                    color="#fff"
+                    size="large"
+                    style={{ height: 150 }}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      height: heightPercentageToDP(30),
+                      width: "100%"
+                    }}
+                  >
+                    {this.state.showList && this.state.choice === "" && (
+                      <Text style={styles.text}>
+                        Choose the {this.state.appSelection} app
+                      </Text>
+                    )}
+                    <FlatList
+                      style={{ flex: 1, width: "100%" }}
                       contentContainerStyle={{ paddingBottom: 30 }}
-                    //-----------This is for actual app data searches-----------
-                    data={
+                      //-----------This is for actual app data searches-----------
+                      data={
                         this.state.showList
-                        ? this.state.choice !== ""
-                          ? this.state.choice !== "ANDROID"
+                          ? this.state.choice !== ""
+                            ? this.state.choice !== "ANDROID"
+                              ? this.state.data
+                              : this.state.androidData
+                            : this.state.appSelection === "iOS"
                             ? this.state.data
                             : this.state.androidData
-                          : this.state.appSelection === "iOS"
-                          ? this.state.data
-                          : this.state.androidData
-                        : []
+                          : []
                       }
                       //-----------This is for dummy app data searches-----------
                       // data={

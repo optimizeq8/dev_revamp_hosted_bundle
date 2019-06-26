@@ -117,6 +117,7 @@ class SelectInterests extends Component {
                       style={styles.itemCircles}
                     />
                   }
+                  searchPlaceholderText={"Search Interests"}
                   unselectedIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
