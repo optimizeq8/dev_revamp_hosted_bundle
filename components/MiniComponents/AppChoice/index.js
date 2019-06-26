@@ -272,7 +272,7 @@ class AppChoice extends Component {
     return (
       <View style={styles.mainCard}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          <KeyboradShift style={{ flex: 1, height: "100%" }}>
+          <KeyboradShift style={styles.keyboardContainer}>
             {() => (
               <>
                 <RNPickerSelect
@@ -292,31 +292,20 @@ class AppChoice extends Component {
                         this.state.callaction
                       )
                     });
-
                   }}
                 >
                   <Item
                     rounded
                     style={[
                       styles.input,
-                      {
-                        marginTop: 20,
-                        borderColor: this.state.callActionError
-                          ? "red"
-                          : "transparent"
-                      }
+                      this.state.callActionError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor,
+                      styles.itemCallToAction
                     ]}
                   >
                     <Text
-                      style={[
-                        styles.inputtext,
-                        {
-                          flex: 1,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          color: "#fff"
-                        }
-                      ]}
+                      style={[styles.inputText, styles.itemCallToActionText]}
                     >
                       {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
@@ -329,22 +318,14 @@ class AppChoice extends Component {
                     <Icon
                       type="AntDesign"
                       name="down"
-                      style={{
-                        color: "#fff",
-                        fontSize: 20
-                        // left: 25
-                      }}
+                      style={styles.iconDown}
                     />
                   </Item>
                 </RNPickerSelect>
                 <Animatable.View animation={"zoomInUp"}>
                   <Animatable.View
                     onAnimationEnd={() => this.setState({ choiceError: null })}
-                    style={{
-                      flexDirection: "row",
-                      alignSelf: "center",
-                      marginVertical: 10
-                    }}
+                    style={styles.animateView1}
                     animation={!this.state.choiceError ? "" : "shake"}
                   >
                     <TouchableOpacity
@@ -374,9 +355,7 @@ class AppChoice extends Component {
                         this.state.choice === "ANDROID"
                           ? globalStyles.orangeBackgroundColor
                           : globalStyles.whiteBackgroundColor,
-                        {
-                          paddingHorizontal: 0
-                        }
+                        styles.buttonAndroid
                       ]}
                       onPress={() => this.handleChoice("ANDROID")}
                     >
@@ -398,9 +377,7 @@ class AppChoice extends Component {
                         this.state.choice === ""
                           ? globalStyles.orangeBackgroundColor
                           : globalStyles.whiteBackgroundColor,
-                        {
-                          paddingHorizontal: 0
-                        }
+                        styles.buttonBoth
                       ]}
                       onPress={() => this.handleChoice("")}
                     >
@@ -427,16 +404,12 @@ class AppChoice extends Component {
                         ? globalStyles.redBorderColor
                         : globalStyles.transparentBorderColor,
 
-                      {
-                        borderRadius: 30,
-                        // marginBottom: 10,
-                        marginTop: 0
-                      }
+                      styles.searchContainer
                     ]}
                   >
                     <SearchIcon stroke="white" />
                     <Input
-                      style={styles.inputtext}
+                      style={styles.inputText}
                       placeholder={`Search for ${this.state.choice} name or id`}
                       defaultValue={this.state.appValue + ""}
                       placeholderTextColor="white"
@@ -479,39 +452,35 @@ class AppChoice extends Component {
                   </Item>
                 ) : null}
 
-
-              {this.state.loading ? (
-                <ActivityIndicator
-                  color="#fff"
-                  size="large"
-                  style={{ height: 150 }}
-                />
-              ) : (
-                <View
-                  style={{
-                    height: heightPercentageToDP(30),
-                    width: "100%"
-                  }}
-                >
-                  {this.state.showList && this.state.choice === "" && (
-                    <Text style={styles.text}>
-                      Choose the {this.state.appSelection} app
-                    </Text>
-                  )}
-                  <FlatList
-                    style={{ flex: 1, width: "100%" }}
-                      contentContainerStyle={{ paddingBottom: 30 }}
-                    //-----------This is for actual app data searches-----------
-                    data={
+                {this.state.loading ? (
+                  <ActivityIndicator
+                    color="#fff"
+                    size="large"
+                    style={styles.activityIndicator}
+                  />
+                ) : (
+                  <View style={styles.searchView}>
+                    {this.state.showList && this.state.choice === "" && (
+                      <Text style={styles.text}>
+                        Choose the {this.state.appSelection} app
+                      </Text>
+                    )}
+                    <FlatList
+                      style={{ flex: 1, width: "100%" }}
+                      contentContainerStyle={
+                        styles.flatListContentContainerStyle
+                      }
+                      //-----------This is for actual app data searches-----------
+                      data={
                         this.state.showList
-                        ? this.state.choice !== ""
-                          ? this.state.choice !== "ANDROID"
+                          ? this.state.choice !== ""
+                            ? this.state.choice !== "ANDROID"
+                              ? this.state.data
+                              : this.state.androidData
+                            : this.state.appSelection === "iOS"
                             ? this.state.data
                             : this.state.androidData
-                          : this.state.appSelection === "iOS"
-                          ? this.state.data
-                          : this.state.androidData
-                        : []
+                          : []
                       }
                       //-----------This is for dummy app data searches-----------
                       // data={
@@ -549,27 +518,11 @@ class AppChoice extends Component {
                             onAnimationEnd={() =>
                               this.setState({ AppError: null })
                             }
-                            style={[
-                              {
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                // justifyContent: "space-around",
-                                flex: 1
-                                // width: "100%"
-                              }
-                            ]}
+                            style={styles.animateView2}
                           >
-                            <View
-                              style={[
-                                styles.image,
-                                {
-                                  backgroundColor: "rgba(0,0,0,0.4)"
-                                }
-                              ]}
-                            >
+                            <View style={[styles.image, styles.optionsRowView]}>
                               <Image
-                                style={[styles.image, { marginHorizontal: 0 }]}
+                                style={[styles.image, styles.listImage]}
                                 source={{
                                   uri: item.icon
                                 }}
@@ -592,13 +545,7 @@ class AppChoice extends Component {
             )}
           </KeyboradShift>
         </ScrollView>
-        <View
-          style={{
-            justifyContent: "flex-end"
-            // flexDirection: "column",
-            // flex: 1
-          }}
-        >
+        <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}

@@ -29,7 +29,7 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 
 // Style
 import styles from "./styles";
-import { globalColors } from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -324,24 +324,18 @@ class PaymentForm extends Component {
                 <Button
                   style={[
                     styles.whitebutton,
-                    {
-                      backgroundColor:
-                        this.state.choice === 1
-                          ? globalColors.orange
-                          : globalColors.white
-                    }
+                    this.state.choice === 1
+                      ? globalStyles.orangeBackgroundColor
+                      : globalStyles.whiteBackgroundColor
                   ]}
                   onPress={() => this._handleChoice(1)}
                 >
                   <Text
                     style={[
                       styles.whitebuttontext,
-                      {
-                        color:
-                          this.state.choice === 1
-                            ? globalColors.white
-                            : globalColors.purple
-                      }
+                      this.state.choice === 1
+                        ? globalStyles.whiteTextColor
+                        : globalStyles.purpleTextColor
                     ]}
                   >
                     WALLET
@@ -352,13 +346,12 @@ class PaymentForm extends Component {
               <Button
                 style={[
                   styles.whitebutton2,
+                  this.state.choice === 2
+                    ? globalStyles.orangeBackgroundColor
+                    : globalStyles.whiteBackgroundColor,
                   {
                     borderTopStartRadius: this.state.addingCredits ? 15 : 0,
-                    borderBottomStartRadius: this.state.addingCredits ? 15 : 0,
-                    backgroundColor:
-                      this.state.choice === 2
-                        ? globalColors.orange
-                        : globalColors.white
+                    borderBottomStartRadius: this.state.addingCredits ? 15 : 0
                   }
                 ]}
                 onPress={() => this._handleChoice(2)}
@@ -366,12 +359,9 @@ class PaymentForm extends Component {
                 <Text
                   style={[
                     styles.whitebuttontext,
-                    {
-                      color:
-                        this.state.choice === 2
-                          ? globalColors.white
-                          : globalColors.purple
-                    }
+                    this.state.choice === 2
+                      ? globalStyles.whiteTextColor
+                      : globalStyles.purpleTextColor
                   ]}
                 >
                   KNET
@@ -380,24 +370,18 @@ class PaymentForm extends Component {
               <Button
                 style={[
                   styles.whitebutton3,
-                  {
-                    backgroundColor:
-                      this.state.choice === 3
-                        ? globalColors.orange
-                        : globalColors.white
-                  }
+                  this.state.choice === 3
+                    ? globalStyles.orangeBackgroundColor
+                    : globalStyles.whiteBackgroundColor
                 ]}
                 onPress={() => this._handleChoice(3)}
               >
                 <Text
                   style={[
                     styles.whitebuttontext,
-                    {
-                      color:
-                        this.state.choice === 3
-                          ? globalColors.white
-                          : globalColors.purple
-                    }
+                    this.state.choice === 3
+                      ? globalStyles.whiteTextColor
+                      : globalStyles.purpleTextColor
                   ]}
                 >
                   CREDIT CARD

@@ -7,19 +7,23 @@ import {
   BackHandler,
   ScrollView
 } from "react-native";
+import { Item, Input } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-import KeyboardShift from "../KeyboardShift";
+import { showMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
+
 //styles
 import styles from "./styles";
+import globalStyles from "../../../GlobalStyles";
+
 import LowerButton from "../LowerButton";
-import { Item, Input } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { showMessage } from "react-native-flash-message";
+import KeyboardShift from "../KeyboardShift";
+
 class index extends Component {
   state = { deep_link_url: "", deep_link_urlError: "" };
   componentDidMount() {
@@ -71,89 +75,50 @@ class index extends Component {
   };
   render() {
     return (
-      <ScrollView
-        contentContainerStyle={{
-          alignSelf: "center",
-          width: "100%",
-          flex: 1,
-          justifyContent: "space-around"
-          //   height: heightPercentageToDP(80),
-          //   overflow: "hidden"
-        }}
-      >
-        <KeyboardShift
-          style={{
-            alignSelf: "center",
-            width: "100%",
-            flex: 1,
-            justifyContent: "space-around"
-          }}
-        >
+      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+        <KeyboardShift style={styles.keyboardContainer}>
           {() => (
             <>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
+              <View style={styles.mainView}>
                 <Image
-                  style={{
-                    height: heightPercentageToDP(8.3),
-                    width: heightPercentageToDP(8.3),
-                    alignSelf: "center",
-                    borderRadius: 18
-                  }}
+                  style={styles.imageApp}
                   source={{
                     uri: this.props.icon_media_url || "place.co"
                   }}
                 />
-                <View style={{ flexDirection: "column", paddingTop: 10 }}>
+                <View style={styles.appDetailsContainer}>
                   <Text style={[styles.title]}>{this.props.app_name}</Text>
                   {this.props.ios_app_id !== "" && (
-                    <Text
-                      style={[styles.appTexts, { flexDirection: "column" }]}
-                    >
+                    <Text style={[styles.appTexts, globalStyles.column]}>
                       iOS App ID{" "}
-                      <Text style={{ color: "#FF9D00" }}>
+                      <Text style={globalStyles.orangeTextColor}>
                         {" "}
                         {this.props.ios_app_id}
                       </Text>
                     </Text>
                   )}
                   {this.props.android_app_url !== "" && (
-                    <Text
-                      style={[styles.appTexts, { flexDirection: "column" }]}
-                    >
+                    <Text style={[styles.appTexts, globalStyles.column]}>
                       Android URL{" "}
-                      <Text style={{ color: "#FF9D00" }}>
+                      <Text style={globalStyles.orangeTextColor}>
                         {this.props.android_app_url}
                       </Text>
                     </Text>
                   )}
                 </View>
               </View>
-              <View
-                style={{
-                  // marginTop: heightPercentageToDP(4),
-                  alignSelf: "center"
-                }}
-              >
+              <View style={styles.advertiseOSView}>
                 <Text style={[styles.text]}>
                   Your app will be advertised for
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-evenly",
-                    alignItems: "center"
-                  }}
-                >
-                  <View style={{ flexDirection: "column" }}>
+                <View style={styles.advertiseOSButtonView}>
+                  <View style={globalStyles.column}>
                     <TouchableOpacity
                       style={[
                         styles.OS,
-                        {
-                          backgroundColor:
-                            this.props.ios_app_id !== ""
-                              ? "#fff"
-                              : "rgba(255,255,255,0.3)"
-                        }
+                        this.props.ios_app_id !== ""
+                          ? globalStyles.whiteBackgroundColor
+                          : { backgroundColor: "rgba(255,255,255,0.3)" }
                       ]}
                     >
                       <Text style={styles.OSText}>iOS</Text>
@@ -169,17 +134,14 @@ class index extends Component {
                       containerStyle={styles.toggleStyle}
                     />
                   </View>
-                  <View style={{ flexDirection: "column" }}>
+                  <View style={globalStyles.column}>
                     <TouchableOpacity
                       style={[
                         styles.OS,
-                        {
-                          paddingHorizontal: 0,
-                          backgroundColor:
-                            this.props.android_app_url !== ""
-                              ? "#fff"
-                              : "rgba(255,255,255,0.3)"
-                        }
+                        this.props.android_app_url !== ""
+                          ? globalStyles.whiteBackgroundColor
+                          : { backgroundColor: "rgba(255,255,255,0.3)" },
+                        styles.androidButton
                       ]}
                     >
                       <Text style={[styles.OSText]}>Android</Text>
@@ -203,13 +165,10 @@ class index extends Component {
                     rounded
                     style={[
                       styles.input,
-                      {
-                        borderColor: this.state.deep_link_urlError
-                          ? "red"
-                          : "transparent",
-                        marginBottom: 0
-                        //   top: heightPercentageToDP(4)
-                      }
+                      this.state.deep_link_urlError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor,
+                      styles.deepLinkItem
                     ]}
                   >
                     <Input
@@ -233,16 +192,7 @@ class index extends Component {
               )}
 
               <Text
-                style={[
-                  styles.subtext,
-                  {
-                    marginBottom: 0,
-                    // top: heightPercentageToDP(17),
-                    textDecorationLine: "underline",
-                    fontFamily: "montserrat-bold",
-                    fontSize: heightPercentageToDP(2)
-                  }
-                ]}
+                style={[styles.subtext, styles.changeAppText]}
                 onPress={() => this.props.renderPreviousStep()}
               >
                 Change app

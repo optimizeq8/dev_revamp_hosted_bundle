@@ -6,76 +6,27 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    marginTop: 30,
-    backgroundColor: "#751AFF"
+  contentText: {
+    color: "#FF9D00",
+    fontSize: 12
   },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
+  listTitleText: {
+    fontFamily: "montserrat-medium"
   },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
-  text: {
-    textAlign: "center",
-    color: "#5F5F5F",
-    paddingTop: 40,
-    paddingBottom: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 13,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
-  },
-  link: {
-    marginTop: 20,
-    textAlign: "center",
-    color: "#5F5F5F",
-    fontFamily: "montserrat-regular",
-    fontSize: 20
+  listView: {
+    paddingLeft: 15
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
 
-  textcontainer: {
+  textContainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
     paddingHorizontal: 7
   },
-  titletext: {
+  titleText: {
     textAlign: "left",
     color: "#fff",
     // paddingTop: 10,
@@ -83,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 0
   },
-  subtext: {
+  subText: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingTop: 5,
@@ -104,9 +55,6 @@ const styles = StyleSheet.create({
     fontSize: 24
     // paddingVertical: 10,
     // paddingHorizontal: 7
-  },
-  contentContainer: {
-    paddingTop: 30
   }
 });
 

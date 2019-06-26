@@ -18,25 +18,20 @@ export default class RegionAndAreas extends Component {
     return (
       <SafeAreaView
         forceInset={{ bottom: "never", top: "always" }}
-        style={[styles.container, { flex: 1, justifyContent: "space-around" }]}
+        style={[styles.container, styles.safeAreaViewRegionsAndAreas]}
       >
         <View>
-          <View
-            style={{
-              //   marginTop: 40,
-              alignItems: "center"
-            }}
-          >
+          <View style={styles.topView}>
             <LocationIcon width={110} height={110} fill="#fff" />
             <Text style={[styles.title]}>Select Region</Text>
           </View>
           <Button
-            style={[styles.interestButton, { elevation: -1 }]}
+            style={[styles.interestButton, styles.addIconButton]}
             onPress={() => this.SectionedMultiSelect._toggleSelector()}
           >
             <PlusCircle width={53} height={53} />
           </Button>
-          <Text style={[styles.title, { marginTop: 30 }]}>
+          <Text style={[styles.title, styles.areaText]}>
             {this.props.selectedObjectets.length > 0
               ? this.props.selectedObjectets[0].name
               : this.props.area
@@ -49,24 +44,17 @@ export default class RegionAndAreas extends Component {
             }
             items={this.props.areas}
             uniqueKey="id"
+            searchPlaceholderText={"Search Area"}
             stickyFooterComponent={
               <Button
-                style={[
-                  styles.button,
-                  {
-                    elevation: -1,
-                    height: 0,
-                    backgroundColor: "transparent",
-                    top: "5%"
-                  }
-                ]}
+                style={[styles.button, styles.submitButton]}
                 onPress={() => this.SectionedMultiSelect._submitSelection()}
               >
                 <CheckmarkIcon width={53} height={53} />
               </Button>
             }
             headerComponent={
-              <View style={{ height: 20, marginBottom: "5%", bottom: "5%" }}>
+              <View style={styles.headerComponent}>
                 <BackButton
                   screenname="Select Devices"
                   navigation={() =>
@@ -91,7 +79,6 @@ export default class RegionAndAreas extends Component {
               />
             }
             iconKey="icon"
-            selectText="Select Interests"
             noItemsComponent={
               <Text style={styles.text}>
                 Sorry, no areas for selected country
