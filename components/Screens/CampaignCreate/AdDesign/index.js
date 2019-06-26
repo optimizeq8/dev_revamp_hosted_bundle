@@ -154,6 +154,16 @@ class AdDesign extends Component {
         .includes(true)
     ) {
       rep = { ...this.state.campaignInfo, ...this.props.data };
+      let swipeUpError = null;
+      if (
+        this.state.objective !== "BRAND_AWARENESS" &&
+        this.state.campaignInfo.attachment === "BLANK" &&
+        this.state.campaignInfo.call_to_action.label === "BLANK"
+      ) {
+        swipeUpError = "Choose A Swipe Up Destination";
+      } else {
+        swipeUpError = null;
+      }
       this.setState({
         ...this.state,
         campaignInfo: {
@@ -168,7 +178,8 @@ class AdDesign extends Component {
         image: rep.image,
         type: rep.type,
         objective: rep.objective,
-        iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded
+        iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
+        swipeUpError
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -257,6 +268,7 @@ class AdDesign extends Component {
       this.setState({ directory: "/ImagePicker/" });
       let newWidth = result.width;
       let newHeight = result.height;
+      await this.validator();
 
       if (result.type === "image") {
         if (result.width >= 1080 && result.height >= 1920) {
@@ -283,20 +295,24 @@ class AdDesign extends Component {
                   height: newHeight
                 }
               }
-            ]
+            ],
+            {
+              compress: 1
+            }
           );
           // console.log("promise", manipResult);
 
           const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
             size: true
           });
+
           const oldSize = await FileSystem.getInfoAsync(result.uri, {
             size: true
           });
           // console.log("width:", manipResult.width);
           // console.log("height:", manipResult.height);
-          // console.log("new result: ", newSize.size);
-          // console.log("old result: ", oldSize.size);
+          console.log("new result: ", newSize.size);
+          console.log("old result: ", oldSize.size);
 
           this.setState({
             directory: "/ImageManipulator/"
@@ -328,6 +344,8 @@ class AdDesign extends Component {
           Math.floor(result.width / 16) === Math.floor(result.height / 9)
         ) {
           FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
+            console.log("image size", file.size);
+
             if (
               (result.type === "video" && file.size > 32000000) ||
               result.duration > 10999

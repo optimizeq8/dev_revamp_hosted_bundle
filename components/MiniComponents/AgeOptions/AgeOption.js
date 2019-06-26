@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, Text, Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import RangeMarkers from "./RangeMarkers";
 
@@ -34,40 +35,47 @@ export default class AgeOption extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <View>
-          <AgeIcon fill="#fff" style={styles.icon} />
-          <Text style={styles.title}>Age</Text>
-          <Text style={styles.subtitle}>Select your audience's Age Range</Text>
-          <View style={styles.multiSliderContainer}>
-            <MultiSlider
-              values={[this.state.values[0], this.state.values[1]]}
-              sliderLength={wp(60)}
-              isMarkersSeparated
-              customMarkerLeft={e => (
-                <RangeMarkers value={e.currentValue} down={true} />
-              )}
-              customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
-              onValuesChange={this.multiSliderValuesChange}
-              min={13}
-              max={35}
-              step={1}
-              selectedStyle={styles.selected}
-              unselectedStyle={{
-                backgroundColor: "rgba(255,255,255,0.3)",
-                height: 2
-              }}
-              trackStyle={styles.track}
-            />
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaViewContainer}
+      >
+        <Container style={styles.container}>
+          <View style={styles.dataContainer}>
+            <AgeIcon fill="#fff" style={styles.icon} />
+            <Text style={styles.title}>Age</Text>
+            <Text style={styles.subtitle}>
+              Select your audience's Age Range
+            </Text>
+            <View style={styles.multiSliderContainer}>
+              <MultiSlider
+                values={[this.state.values[0], this.state.values[1]]}
+                sliderLength={wp(60)}
+                isMarkersSeparated
+                customMarkerLeft={e => (
+                  <RangeMarkers value={e.currentValue} down={true} />
+                )}
+                customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
+                onValuesChange={this.multiSliderValuesChange}
+                min={13}
+                max={35}
+                step={1}
+                selectedStyle={styles.selected}
+                unselectedStyle={{
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  height: 2
+                }}
+                trackStyle={styles.track}
+              />
+            </View>
           </View>
-        </View>
-        <Button
-          style={styles.button}
-          onPress={() => this.props._handleSideMenuState(false)}
-        >
-          <CheckmarkIcon width={53} height={53} />
-        </Button>
-      </Container>
+          <Button
+            style={styles.button}
+            onPress={() => this.props._handleSideMenuState(false)}
+          >
+            <CheckmarkIcon width={53} height={53} />
+          </Button>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

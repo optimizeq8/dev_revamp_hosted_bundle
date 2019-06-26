@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 10,
     fontFamily: "montserrat-medium",
-    fontSize: 14
+    fontSize: 12
   },
   footerTextStyle: {
     fontSize: 12,

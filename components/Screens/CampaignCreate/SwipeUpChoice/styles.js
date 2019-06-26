@@ -212,6 +212,9 @@ const styles = StyleSheet.create({
   safeAreaViewLongFormVideoPreview: {
     paddingTop: 10
   },
+  bottonViewWebsite: {
+    marginBottom: 40
+  }, 
   netLocStyle: {
     backgroundColor: "#5D1CD8",
     borderRadius: 10,

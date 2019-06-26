@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, SafeAreaView } from "react-native";
-import { Button, Text, Item, Input, Container, Icon } from "native-base";
+import { View, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-navigation";
+import { Button, Text, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";
 import styles from "./styles";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class GenderOptions extends Component {
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <GenderIcon width={110} height={110} fill="#fff" />

@@ -8,12 +8,18 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewContainer: {
+    height: "100%"
+  },
   container: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     backgroundColor: "#0000"
+  },
+  dataContainer: {
+    paddingTop: 30
   },
   icon: {
     alignSelf: "center"
@@ -23,8 +29,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingTop: 20,
     alignSelf: "center",
-    fontSize: 20,
-    fontFamily: "montserrat-semibold"
+    fontSize: 16,
+    fontFamily: "montserrat-bold"
   },
   subtitle: {
     textAlign: "center",
@@ -61,8 +67,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    top: heightPercentageToDP(5) < 30 ? -5 : 30,
-    marginBottom: 25,
+    // top: heightPercentageToDP(5) < 30 ? -5 : 30,
+    marginBottom: 40,
     elevation: -1
   },
   rangeMakerContainer: {

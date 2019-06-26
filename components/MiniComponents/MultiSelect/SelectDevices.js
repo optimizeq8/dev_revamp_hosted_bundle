@@ -1,7 +1,14 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, SafeAreaView } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { Button, Icon } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+
+//Redux
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+
+// Components
 import BackButton from "../../MiniComponents/BackButton";
 import LoadingScreen from "../LoadingScreen";
 
@@ -12,16 +19,6 @@ import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
 //Styles
 import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
-
-//Redux
-import * as actionCreators from "../../../store/actions";
-import { connect } from "react-redux";
-
-//Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 
 class SelectDevices extends Component {
   state = { deviceBrands: [] };
@@ -44,7 +41,10 @@ class SelectDevices extends Component {
   }
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <Icon

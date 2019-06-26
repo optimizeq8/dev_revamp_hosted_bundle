@@ -4,20 +4,23 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   PixelRatio
 } from "react-native";
-import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
-import styles from "./styles";
+import { SafeAreaView } from "react-navigation";
+
+import styles from "../MultiSelect/styles";
+
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import LocationIcon from "../../../assets/SVGs/Location";
+
 export default class SelectRegions extends Component {
   render() {
     let regionlist = this.props.filteredRegions.map(c => {
       return (
         <TouchableOpacity
           key={c.id}
-          style={styles.regionTextContainer}
+          style={styles.languageRowConatiner}
           onPress={() => {
             this.props.onSelectedRegionChange(
               this.props.addressForm ? c : c.id,
@@ -44,7 +47,10 @@ export default class SelectRegions extends Component {
       );
     });
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={styles.safeAreaContainer}
+      >
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <LocationIcon

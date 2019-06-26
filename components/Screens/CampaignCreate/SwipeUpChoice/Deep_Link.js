@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, SafeAreaView, Platform } from "react-native";
+import { View } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import { Content, Text, Container } from "native-base";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
@@ -12,7 +13,6 @@ import styles from "./styles";
 
 //Data
 import list from "../../../Data/callactions.data";
-
 
 //redux
 import { connect } from "react-redux";
@@ -92,7 +92,7 @@ class Deep_Link extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.safeAreaContainer}>
         <Container style={[styles.container]}>
           <Content
             style={styles.container}

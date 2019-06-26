@@ -1005,7 +1005,7 @@ class AdDetails extends Component {
                         />
                         <View style={[globalStyles.column, styles.flex]}>
                           <Text style={styles.menutext}>Regions</Text>
-                          <Text style={styles.menudetails}>
+                          <Text style={styles.menudetails} numberOfLines={1}>
                             {regions_names}
                           </Text>
                         </View>
