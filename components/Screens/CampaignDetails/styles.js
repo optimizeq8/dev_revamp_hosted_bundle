@@ -325,6 +325,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 15
   },
+  ScrollChartArea: {
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.4)",
+    height: 35
+  },
   placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" }
 });
 

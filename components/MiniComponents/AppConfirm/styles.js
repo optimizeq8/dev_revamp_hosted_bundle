@@ -10,6 +10,57 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  contentContainerStyle: {
+    alignSelf: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-around"
+    //   height: heightPercentageToDP(80),
+    //   overflow: "hidden"
+  },
+  keyboardContainer: {
+    alignSelf: "center",
+    width: "100%",
+    flex: 1,
+    justifyContent: "space-around"
+  },
+  mainView: {
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  imageApp: {
+    height: heightPercentageToDP(8.3),
+    width: heightPercentageToDP(8.3),
+    alignSelf: "center",
+    borderRadius: 18
+  },
+  appDetailsContainer: {
+    flexDirection: "column",
+    paddingTop: 10
+  },
+  advertiseOSView: {
+    flexDirection: "column",
+    paddingTop: 10
+  },
+  changeAppText: {
+    marginBottom: 0,
+    // top: heightPercentageToDP(17),
+    textDecorationLine: "underline",
+    fontFamily: "montserrat-bold",
+    fontSize: heightPercentageToDP(2)
+  },
+  advertiseOSButtonView: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  },
+  androidButton: {
+    paddingHorizontal: 0
+  },
+  deepLinkItem: {
+    marginBottom: 0
+    //   top: heightPercentageToDP(4)
+  },
   listText: {
     fontFamily: "montserrat-regular",
     fontSize: 14,
@@ -198,35 +249,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 6
   },
-  separator: {
-    height: 1,
-    backgroundColor: "#CCCCCC"
-  },
-  image: {
-    width: 30,
-    height: 30,
-    borderRadius: 13,
-    marginHorizontal: 20
-  },
-  time: {
-    fontSize: 11,
-    color: "#808080"
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold"
-  },
-  campaignButton: {
-    flexDirection: "row",
-    marginHorizontal: 15,
-    // paddingHorizontal: 10,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
-    backgroundColor: "#FF9D00",
-    height: heightPercentageToDP(7.3)
-  },
   OS: {
     padding: widthPercentageToDP(4),
     marginHorizontal: widthPercentageToDP(2),
@@ -252,13 +274,6 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
     borderRadius: 50
-  },
-  warningText: {
-    color: "#fff",
-    textAlign: "center",
-    top: 10,
-    fontFamily: "montserrat-semibold",
-    fontSize: 13
   }
 });
 

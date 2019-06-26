@@ -11,6 +11,23 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  safeAreaViewRegionsAndAreas: {
+    flex: 1,
+    justifyContent: "space-around"
+  },
+  submitButton: {
+    elevation: -1,
+    height: 0,
+    backgroundColor: "transparent",
+    top: "5%"
+  },
+  addIconButton: { elevation: -1 },
+  areaText: { marginTop: 30 },
+  headerComponent: { height: 20, marginBottom: "5%", bottom: "5%" },
+  topView: {
+    //   marginTop: 40,
+    alignItems: "center"
+  },
   container: {
     // paddingTop: 20
   },
