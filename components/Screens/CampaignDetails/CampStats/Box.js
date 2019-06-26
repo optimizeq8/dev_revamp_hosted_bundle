@@ -8,7 +8,6 @@ import formatNumber from "../../../formatNumber";
 class Box extends Component {
   render() {
     let { info, title, dollar } = this.props;
-
     return (
       <View style={styles.boxStats}>
         <Text style={styles.stats}>{title}</Text>
@@ -16,7 +15,7 @@ class Box extends Component {
           <PlaceholderLine />
         ) : (
           <Text style={[GlobalStyles.numbers, { fontSize: 23 }]}>
-            {formatNumber(info.toFixed(2), !dollar)}
+            {formatNumber(info.toFixed(dollar ? 2 : 0), !dollar)}
           </Text>
         )}
       </View>

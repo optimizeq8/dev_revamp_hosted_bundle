@@ -61,13 +61,32 @@ ${day}/${shortMonths[month]}`;
         horizontal
         style={{ height: 200 }}
       >
-        {this.props.campaignStats.length < 1 && (
+        {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
             <Text style={styles.placeHolderChartText}>
               Not enough data to display.
             </Text>
           </BlurView>
+        ) : (
+          <View
+            style={[
+              styles.placeHolderChart,
+              styles.ScrollChartArea,
+              {
+                width: this.props.campaignStats.length < 1 ? wp(90) : wp(150)
+              }
+            ]}
+          />
         )}
+        {/* <View
+          style={[
+            styles.placeHolderChart,
+            styles.ScrollChartArea,
+            {
+              width: this.props.campaignStats.length < 1 ? wp(90) : wp(150)
+            }
+          ]}
+        /> */}
         <VictoryChart
           domainPadding={{ y: 10 }}
           containerComponent={
@@ -81,7 +100,7 @@ ${day}/${shortMonths[month]}`;
               }
             />
           }
-          padding={{ top: 60, bottom: 30, left: 50, right: 50 }}
+          padding={{ top: 70, bottom: 20, left: 50, right: 50 }}
           height={200}
           width={this.props.campaignStats.length < 1 ? wp(90) : wp(150)}
         >
