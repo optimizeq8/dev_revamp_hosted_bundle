@@ -78,15 +78,6 @@ ${day}/${shortMonths[month]}`;
             ]}
           />
         )}
-        {/* <View
-          style={[
-            styles.placeHolderChart,
-            styles.ScrollChartArea,
-            {
-              width: this.props.campaignStats.length < 1 ? wp(90) : wp(150)
-            }
-          ]}
-        /> */}
         <VictoryChart
           domainPadding={{ y: 10 }}
           containerComponent={
