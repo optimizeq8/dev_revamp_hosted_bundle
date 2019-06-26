@@ -5,6 +5,7 @@ import { View, BackHandler } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
+import split from "lodash/split";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
@@ -47,11 +48,13 @@ class Website extends Component {
       this.props.data.attachment !== "BLANK" &&
       !this.props.data.attachment.hasOwnProperty("android_app_url")
     ) {
+      const url = split(this.props.data.attachment.url, "://");
       this.setState({
         campaignInfo: {
-          attachment: this.props.data.attachment.url,
+          attachment: url[1],
           callaction: this.props.data.call_to_action
-        }
+        },
+        networkString: url[0] + "://"
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -161,6 +164,7 @@ class Website extends Component {
                       networkString: value
                     });
                   }}
+                  //   value={this.state.networkString}
                 >
                   <Item rounded style={styles.netLocStyle}>
                     <Icon

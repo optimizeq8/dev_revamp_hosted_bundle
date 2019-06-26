@@ -3,6 +3,8 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { View, ScrollView } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import isNull from "lodash/isNull";
+import { ActivityIndicator } from "react-native-paper";
 import LoadingScreen from "../LoadingScreen";
 
 //Icons
@@ -26,7 +28,7 @@ import {
 } from "react-native-responsive-screen";
 
 class SelectInterests extends Component {
-  state = { interests: [] };
+  state = { interests: null };
   componentDidMount() {
     !this.props.addressForm &&
       this.props.get_interests(this.props.country_code);
@@ -71,6 +73,8 @@ class SelectInterests extends Component {
     this.props._handleSideMenuState(false);
   };
   render() {
+    // console.log("interest length", this.props.interests.length);
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -100,7 +104,7 @@ class SelectInterests extends Component {
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.Section = ref)}
-                  loading={!this.props.interests ? true : false}
+                  loading={isNull(this.state.interests) ? true : false}
                   items={this.state.interests}
                   uniqueKey="id"
                   selectToggleIconComponent={
@@ -178,8 +182,8 @@ class SelectInterests extends Component {
                   }
                   selectedItems={this.props.selectedItems}
                 />
-                {this.state.interests.length === 0 && (
-                  <LoadingScreen top={-10} />
+                {isNull(this.state.interests) && (
+                  <ActivityIndicator color="#FFF" size="large" />
                 )}
               </ScrollView>
             </View>

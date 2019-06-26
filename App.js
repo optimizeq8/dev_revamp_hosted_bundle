@@ -346,6 +346,7 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/tutorial/tutorial-4.png")]),
 
       Asset.loadAsync([require("./assets/images/knet.png")]),
+      Asset.loadAsync([require("./assets/images/mastercard.png")]),
       Asset.loadAsync([require("./assets/splash.png")]),
       Asset.loadAsync([require("./assets/images/AdTypes/SnapAd.gif")]),
       Asset.loadAsync([require("./assets/images/AdTypes/StoryAd.gif")]),
