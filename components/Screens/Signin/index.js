@@ -57,7 +57,9 @@ class MainForm extends Component {
   };
 
   componentDidMount() {
-    Segment.screen("Sign in Screen");
+    Segment.screenWithProperties("Sign In", {
+      category: "Sign In"
+    });
     // if (
     //   this.props.navigation &&
     //   this.props.navigation.getParam("loggedout", false)
@@ -122,7 +124,7 @@ class MainForm extends Component {
                           style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
-                              email: value
+                              email: value.trim()
                             });
                           }}
                           onBlur={() => {

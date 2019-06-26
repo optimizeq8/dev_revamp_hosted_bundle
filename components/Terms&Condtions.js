@@ -1,14 +1,11 @@
-import { WebBrowser } from "expo";
+import { WebBrowser, Segment } from "expo";
 import { showMessage } from "react-native-flash-message";
 export const openTerms = async (closeBrowserLoading = () => {}) => {
   try {
     await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/terms`).then(
       action => action.type === "cancel" && closeBrowserLoading()
     );
-    // Segment.screenWithProperties("Payment Knet Screen", {
-    //   businessname: this.props.mainBusiness.businessname,
-    //   campaign_id: this.props.campaign_id
-    // });
+    Segment.screen("Terms and Conditions");
   } catch (error) {
     if (error)
       showMessage({
@@ -24,10 +21,7 @@ export const openTerms = async (closeBrowserLoading = () => {}) => {
 export const openPrivacy = async () => {
   try {
     await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/privacy`);
-    // Segment.screenWithProperties("Payment Knet Screen", {
-    //   businessname: this.props.mainBusiness.businessname,
-    //   campaign_id: this.props.campaign_id
-    // });
+    Segment.screen("Privacy Policy");
   } catch (error) {
     if (error)
       showMessage({

@@ -1,31 +1,19 @@
 import React, { Component } from "react";
-import {
-  View,
-  AsyncStorage,
-  TouchableWithoutFeedback,
-  Keyboard
-} from "react-native";
-import { Button, Text, Container, Icon, Badge, Item, Input } from "native-base";
-import { LinearGradient } from "expo";
-import Verification from "../Signup/Verification";
-import Signin from "../Signin/";
-import * as Animatable from "react-native-animatable";
+import { View } from "react-native";
+import { Button, Text, Container, Item, Input } from "native-base";
+import { showMessage } from "react-native-flash-message";
 import PhoneNo from "../Signup/PhoneNo";
-//icons
-import Logo from "../../../assets/SVGs/Optimize";
-import Background from "../../../assets/SVGs/Background";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 // Style
 import styles from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
+//Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import { showMessage } from "react-native-flash-message";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 class GetInviteCode extends Component {
   static navigationOptions = {
@@ -102,14 +90,7 @@ class GetInviteCode extends Component {
                   placeholder="Enter your email"
                 />
               </Item>
-              {/* <View
-                    style={{
-                      padding: 12,
-                      borderWidth: 2
-                      // bottom: "-30%",
-                      // position: "absolute"
-                    }}
-                  > */}
+
               <Button
                 style={[styles.button]}
                 onPress={() => {
@@ -124,7 +105,6 @@ class GetInviteCode extends Component {
               >
                 Already have an invite code?
               </Text>
-              {/* </View> */}
             </View>
           )}
         </KeyboardShift>

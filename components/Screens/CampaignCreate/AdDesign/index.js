@@ -29,17 +29,15 @@ import {
   Footer,
   Icon
 } from "native-base";
-import { SafeAreaView } from "react-navigation";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import isNull from "lodash/isNull";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import CustomHeader from "../../../MiniComponents/Header";
+import CameraLoading from "../../../MiniComponents/CameraLoading";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Redux
 import { connect } from "react-redux";
@@ -53,13 +51,14 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 // Style
 import styles from "./styles";
 
-//Validator
+//Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import CustomHeader from "../../../MiniComponents/Header";
-import CameraLoading from "../../../MiniComponents/CameraLoading";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import isNull from "lodash/isNull";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -114,12 +113,6 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
-    Segment.screen("Design Ad Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 3,
-      business_name: this.props.mainBusiness.businessname
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -234,7 +227,11 @@ class AdDesign extends Component {
       };
       this.setState(newData);
 
-      this.props.save_campaign_info({ ...newData });
+      this.props.save_campaign_info({
+        ...newData.campaignInfo,
+        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+      });
     } else {
       newData = {
         campaignInfo: {
@@ -469,7 +466,7 @@ class AdDesign extends Component {
       body.append("media_type", this.state.type);
     }
     if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media.split(this.state.directory);
+      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
       let formatVideo = resVideo[1].split(".");
       var video = {
         uri: this.state.longformvideo_media,
@@ -614,7 +611,7 @@ class AdDesign extends Component {
       !this.state.swipeUpError &&
       !this.state.imageError
     ) {
-      Segment.trackWithProperties("Select Ad Design Button", {
+      Segment.trackWithProperties("Ad Design Submitted", {
         business_name: this.props.mainBusiness.businessname
       });
       Segment.trackWithProperties("Completed Checkout Step", {
@@ -622,21 +619,33 @@ class AdDesign extends Component {
         step: 3,
         business_name: this.props.mainBusiness.businessname
       });
-      this.formatMedia();
-      this.handleUpload();
-      !this.props.loading &&
-        this.props.ad_design(
-          this.state.formatted,
-          this._getUploadState,
-          this.props.navigation,
-          this.onToggleModal,
-          this.state.appChoice,
-          this.rejected,
-          this.state.signal,
-          this.state.longformvideo_media &&
-            this.state.longformvideo_media_type === "VIDEO",
-          { iosUploaded: this.state.iosVideoUploaded, image: this.state.image }
-        );
+      await this.formatMedia();
+      await this.handleUpload();
+      if (
+        !this.props.data.hasOwnProperty("formatted") ||
+        JSON.stringify(this.props.data.formatted) !==
+          JSON.stringify(this.state.formatted)
+      ) {
+        if (!this.props.loading) {
+          await this.props.ad_design(
+            this.state.formatted,
+            this._getUploadState,
+            this.props.navigation,
+            this.onToggleModal,
+            this.state.appChoice,
+            this.rejected,
+            this.state.signal,
+            this.state.longformvideo_media &&
+              this.state.longformvideo_media_type === "VIDEO",
+            {
+              iosUploaded: this.state.iosVideoUploaded,
+              image: this.state.image
+            }
+          );
+        }
+      } else {
+        this.props.navigation.push("AdDetails");
+      }
     }
   };
   onToggleModal = visibile => {
@@ -811,6 +820,18 @@ class AdDesign extends Component {
         style={styles.mainSafeArea}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Snap Ad Design", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              checkout_id: this.props.campaign_id,
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
+        />
         <LinearGradient
           colors={["#751AFF", "#6268FF"]}
           locations={[0.3, 1]}

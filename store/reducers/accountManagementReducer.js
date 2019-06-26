@@ -11,6 +11,7 @@ const initialState = {
   loadingBillingAddress: false,
   address: {},
   errorLoadingBillingAddress: false,
+  businessLoadError: false,
   savingBillingAddress: false,
   progress: new Animated.Value(0),
   progressSaving: new Animated.Value(0)
@@ -39,12 +40,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainBusiness: main,
         businessAccounts: action.payload.data.business_accounts,
-        loading: false
+        loading: false,
+        businessLoadError: false
       };
     case actionTypes.ERROR_SET_BUSINESS_ACCOUNTS:
       return {
         ...state,
-        loading: false
+        loading: false,
+        businessLoadError: true
       };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
       let indexOfMainBusiness = state.businessAccounts.findIndex(

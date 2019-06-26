@@ -7,6 +7,8 @@ import { Modal } from "react-native-paper";
 import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import { SafeAreaView } from "react-navigation";
+import dateFormat from "dateformat";
+
 // Style
 import styles from "./styles";
 
@@ -29,12 +31,17 @@ export default class DateFields extends Component {
       end_choice: false,
       reset: false,
       start_timeError: "",
-      endt_time: ""
+      end_date: "",
+      start_date: ""
     };
   }
 
   componentDidMount() {
     this.props.onRef(this);
+    this.setState({
+      end_date: this.props.end_time,
+      start_date: this.props.start_time
+    });
   }
   componentWillUnmount() {
     this.props.onRef(undefined);
@@ -66,6 +73,31 @@ export default class DateFields extends Component {
   showModal = () => {
     this.setState({
       modalVisible: true
+    });
+  };
+
+  handleDate = async () => {
+    let timeDiff = Math.round(
+      Math.abs(
+        (new Date(this.state.start_date).getTime() -
+          new Date(this.state.end_date).getTime()) /
+          86400000
+      )
+    );
+    if (!this.props.filterMenu && !this.props.chartRange) {
+      this.props.getMinimumCash(timeDiff + 1);
+      await this.props.handleStartDatePicked(this.state.start_date);
+      await this.props.handleEndDatePicked(this.state.end_date);
+    } else if (this.props.filterMenu) {
+      await this.props.handleStartDatePicked(this.state.start_date);
+      await this.props.handleEndDatePicked(this.state.end_date);
+    } else if (this.props.chartRange) {
+      this.props.durationChange(this.state.start_date, this.state.end_date);
+    }
+    this.setState({
+      modalVisible: false,
+      start_choice: false,
+      end_choice: false
     });
   };
 
@@ -128,6 +160,11 @@ export default class DateFields extends Component {
                 {!this.state.start_choice ? "Start Date" : "End Date"}
               </Text>
               <DateRangePicker
+                initialRange={
+                  this.props.start_time
+                    ? [this.props.start_time, this.props.end_time]
+                    : ["", ""]
+                }
                 filterMenu={this.props.filterMenu}
                 reset={this.state.reset}
                 chartRange={this.props.chartRange}
@@ -145,73 +182,48 @@ export default class DateFields extends Component {
                 }}
                 theme={{ markColor: "#FF9D00", markTextColor: "white" }}
               />
-              <Text
-                onPress={() => {
-                  if (this.props.chartRange) {
-                    this.setState({
-                      start_choice: false,
-                      end_choice: false,
-                      start_timeError: "",
-                      modalVisible: false,
-                      end_time: ""
-                    });
-                    this.setState({ modalVisible: false });
-                    this.props.durationChange(
-                      this.props.selectedCampaign.start_time,
-                      this.props.selectedCampaign.end_time
-                      // "2019-05-09",
-                      // "2019-05-25"
-                    );
-                  } else {
-                    this.setState({
-                      start_choice: false,
-                      end_choice: false,
-                      start_timeError: "",
-                      end_time: "",
-                      reset: true
-                    });
-                  }
-                }}
-                style={[styles.resetStyle, { textDecorationLine: "underline" }]}
-              >
-                Reset
-              </Text>
 
-              {this.state.end_choice ? (
-                <Button
-                  style={styles.button}
-                  onPress={async () => {
-                    let timeDiff = Math.round(
-                      Math.abs(
-                        (new Date(this.state.start_date).getTime() -
-                          new Date(this.state.end_date).getTime()) /
-                          86400000
-                      )
-                    );
-                    if (!this.props.filterMenu && !this.props.chartRange) {
-                      this.props.getMinimumCash(timeDiff + 1);
-                      await this.props.handleStartDatePicked(
-                        this.state.start_date
-                      );
-                      await this.props.handleEndDatePicked(this.state.end_date);
-                    } else if (this.props.filterMenu) {
-                      await this.props.handleStartDatePicked(
-                        this.state.start_date
-                      );
-                      await this.props.handleEndDatePicked(this.state.end_date);
-                    } else if (this.props.chartRange) {
+              {this.state.start_date || this.props.chartRange ? (
+                <Text
+                  onPress={() => {
+                    if (this.props.chartRange) {
+                      this.setState({
+                        start_choice: false,
+                        end_choice: false,
+                        start_timeError: "",
+                        modalVisible: false,
+                        start_date: "",
+                        end_date: ""
+                      });
+                      this.setState({ modalVisible: false });
                       this.props.durationChange(
-                        this.state.start_date,
-                        this.state.end_date
+                        this.props.selectedCampaign.start_time,
+                        this.props.selectedCampaign.end_time
+                        // "2019-05-09",
+                        // "2019-05-25"
                       );
+                    } else {
+                      this.setState({
+                        start_choice: false,
+                        end_choice: false,
+                        start_timeError: "",
+                        start_date: "",
+                        end_date: "",
+                        reset: true
+                      });
                     }
-                    this.setState({
-                      modalVisible: false,
-                      start_choice: false,
-                      end_choice: false
-                    });
                   }}
+                  style={[
+                    styles.resetStyle,
+                    { textDecorationLine: "underline" }
+                  ]}
                 >
+                  Reset
+                </Text>
+              ) : null}
+              {this.state.end_choice ||
+              (this.props.start_time && !this.state.reset) ? (
+                <Button style={styles.button} onPress={() => this.handleDate()}>
                   <CheckmarkIcon
                     width={hp(5) < 30 ? 40 : 53}
                     height={hp(5) < 30 ? 40 : 53}

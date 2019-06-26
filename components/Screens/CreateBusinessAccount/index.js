@@ -17,7 +17,7 @@ import { SafeAreaView } from "react-navigation";
 import businessCategoryList from "../../Data/businessCategoriesList.data";
 
 //privay
-import { openPrivacy } from "../../Terms&Condtions";
+import { openPrivacy, openTerms } from "../../Terms&Condtions";
 
 // Style
 import styles from "./styles";
@@ -99,7 +99,14 @@ class CreateBusinessAccount extends Component {
     };
   }
   componentDidMount() {
-    Segment.screen("Create New Business");
+    Segment.screen(
+      this.props.registering
+        ? "Business Info Registration"
+        : "Create New Business",
+      {
+        category: this.props.registering ? "Sign Up" : "User Menu"
+      }
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentWillUnmount() {
@@ -210,12 +217,7 @@ class CreateBusinessAccount extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Container
-          style={[
-            styles.mainContainer
-            // { marginTop: this.props.registering ? 0 : 0 }
-          ]}
-        >
+        <Container style={[styles.mainContainer]}>
           {!this.props.registering && (
             <>
               <CustomHeader
@@ -223,8 +225,6 @@ class CreateBusinessAccount extends Component {
                 title={"New Business"}
                 closeButton={true}
               />
-              {/* <CloseButton navigation={this.props.navigation.goBack} />
-              <Text style={styles.title}>New Business</Text> */}
               <Text style={styles.subTitle}>
                 You can create a new Business under you!
               </Text>
@@ -705,7 +705,7 @@ class CreateBusinessAccount extends Component {
                   <Text style={[styles.link, styles.buttonLink]}>
                     {` By tapping the button below you agree to all the`}
                     <Text
-                      onPress={() => openPrivacy()}
+                      onPress={() => openTerms()}
                       style={[styles.link, styles.tNcLink]}
                     >
                       {`  Terms & Conditions`}

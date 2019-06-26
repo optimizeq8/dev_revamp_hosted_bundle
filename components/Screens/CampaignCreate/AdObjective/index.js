@@ -17,7 +17,7 @@ import {
 } from "native-base";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import DateField from "../../../MiniComponents/DatePicker/DateFields";
@@ -87,12 +87,6 @@ class AdObjective extends Component {
   };
   componentDidMount() {
     let rep = this.state.campaignInfo;
-    Segment.screen("Select Ad Objective Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      step: 2,
-      business_name: this.props.mainBusiness.businessname,
-      campaign_objective: this.state.campaignInfo.objective
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -101,7 +95,15 @@ class AdObjective extends Component {
       }
     });
     if (this.props.data) {
-      rep = { ...this.state.campaignInfo, ...this.props.data };
+      rep = {
+        ...this.state.campaignInfo,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid,
+        name: this.props.data.name,
+        objective: this.props.data.objective,
+        start_time: this.props.data.start_time,
+        end_time: this.props.data.end_time
+      };
       this.setState({
         campaignInfo: { ...rep },
         minValueBudget: this.props.data.minValueBudget,
@@ -175,7 +177,7 @@ class AdObjective extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      Segment.trackWithProperties("Select Ad Objective Button", {
+      Segment.trackWithProperties("Select Ad Objective", {
         business_name: this.props.mainBusiness.businessname,
         campaign_objective: this.state.campaignInfo.objective
       });
@@ -191,6 +193,9 @@ class AdObjective extends Component {
       // });
 
       this.props.save_campaign_info({
+        campaign_id: this.props.campaign_id,
+        ...this.state.campaignInfo,
+
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
@@ -222,6 +227,17 @@ class AdObjective extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Snap Ad Objective", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 2,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <BackdropIcon

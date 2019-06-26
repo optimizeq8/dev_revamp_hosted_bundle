@@ -160,25 +160,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#5D1CD8",
     alignSelf: "center",
-    width: "100%",
+    width: widthPercentageToDP(75),
     height: 50
   },
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14,
     alignSelf: "center",
-    textAlign: "center",
+    textAlign: "left",
     color: "#fff"
   },
   callActionLabel: {
     fontFamily: "montserrat-light",
     fontSize: 14,
-    alignSelf: "center",
     textAlign: "center",
     color: "#fff",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flex: 1
   },
   websiteContent: {
     height: "100%",
@@ -217,6 +214,14 @@ const styles = StyleSheet.create({
   },
   bottonViewWebsite: {
     marginBottom: 40
+  }, 
+  netLocStyle: {
+    backgroundColor: "#5D1CD8",
+    borderRadius: 10,
+    marginRight: 50,
+    borderColor: "#5D1CD8",
+    width: "100%",
+    height: 50
   }
 });
 

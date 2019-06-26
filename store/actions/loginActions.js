@@ -251,6 +251,8 @@ export const clearPushToken = (navigation, userid) => {
 
 export const setCurrentUser = user => {
   return dispatch => {
+    // console.log("user:", user);
+
     if (user) {
       return dispatch({
         type: actionTypes.SET_CURRENT_USER,

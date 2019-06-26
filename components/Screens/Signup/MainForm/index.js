@@ -60,7 +60,7 @@ class MainForm extends Component {
               this.props.navigation.navigate("Invitation");
               this.props.resetRegister();
             }}
-            navigation={this.props.navigation}
+            // navigation={this.props.navigation}
             title="Registration"
           />
           {/* <CloseButton

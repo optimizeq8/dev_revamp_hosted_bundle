@@ -5,14 +5,13 @@ import { Text, Item, Input } from "native-base";
 import { LinearGradient, Segment } from "expo";
 import { SafeAreaView } from "react-navigation";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import LowerButton from "../../MiniComponents/LowerButton";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
+import CustomHeader from "../../MiniComponents/Header";
 
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
-import LowerButton from "../../MiniComponents/LowerButton";
-import KeyboardShift from "../../MiniComponents/KeyboardShift";
-import CustomHeader from "../../MiniComponents/Header";
 
 // Validation
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -39,7 +38,9 @@ class ForgotPassword extends Component {
     this._handleSubmission = this._handleSubmission.bind(this);
   }
   componentDidMount() {
-    Segment.screen("Forgot Password Screen");
+    Segment.screenWithProperties("Forgot Password", {
+      category: "Sign In"
+    });
   }
   // componentDidUpdate(prevProps) {
   //   if (prevProps.message !== this.props.message) {

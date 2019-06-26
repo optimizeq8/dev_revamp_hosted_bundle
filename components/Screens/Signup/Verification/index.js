@@ -36,7 +36,12 @@ class Verification extends Component {
     InputE: false
   };
   componentDidMount() {
-    Segment.screen("Signup Enter OTP Verification Screen");
+    Segment.screenWithProperties(
+      this.props.invite ? "Invite Code" : "OTP Verification",
+      {
+        category: "Sign Up"
+      }
+    );
   }
 
   componentWillUnmount() {

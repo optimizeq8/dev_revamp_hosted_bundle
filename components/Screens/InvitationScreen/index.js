@@ -7,9 +7,9 @@ import {
   Animated
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient, Segment } from "expo";
 import * as Animatable from "react-native-animatable";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -46,6 +46,8 @@ export default class Invitation extends Component {
   }
 
   componentDidMount() {
+    // Segment.screen("Invitation Code Request");
+
     AsyncStorage.getItem("registeredWithInvite")
       .then(value => {
         if (value == null) {
@@ -113,6 +115,13 @@ export default class Invitation extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
+          <NavigationEvents
+            onDidFocus={() => {
+              Segment.screenWithProperties("Invitation Code Request", {
+                category: "Pre Registration"
+              });
+            }}
+          />
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[0.7, 1]}

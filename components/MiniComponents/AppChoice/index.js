@@ -52,7 +52,7 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: { label: "Call to Action", value: "" },
+      callaction: list[1].call_to_action_list[0],
       callactions: list[1].call_to_action_list,
       nameError: "",
       callActionError: "",
@@ -292,6 +292,7 @@ class AppChoice extends Component {
                         this.state.callaction
                       )
                     });
+
                   }}
                 >
                   <Item
@@ -478,38 +479,39 @@ class AppChoice extends Component {
                   </Item>
                 ) : null}
 
-                {this.state.loading ? (
-                  <ActivityIndicator
-                    color="#fff"
-                    size="large"
-                    style={{ height: 150 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      height: heightPercentageToDP(40),
-                      width: "100%"
-                    }}
-                  >
-                    {this.state.showList && this.state.choice === "" && (
-                      <Text style={styles.text}>
-                        Choose the {this.state.appSelection} app
-                      </Text>
-                    )}
-                    <FlatList
-                      style={{ flex: 1, width: "100%" }}
+
+              {this.state.loading ? (
+                <ActivityIndicator
+                  color="#fff"
+                  size="large"
+                  style={{ height: 150 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    height: heightPercentageToDP(30),
+                    width: "100%"
+                  }}
+                >
+                  {this.state.showList && this.state.choice === "" && (
+                    <Text style={styles.text}>
+                      Choose the {this.state.appSelection} app
+                    </Text>
+                  )}
+                  <FlatList
+                    style={{ flex: 1, width: "100%" }}
                       contentContainerStyle={{ paddingBottom: 30 }}
-                      //-----------This is for actual app data searches-----------
-                      data={
+                    //-----------This is for actual app data searches-----------
+                    data={
                         this.state.showList
-                          ? this.state.choice !== ""
-                            ? this.state.choice !== "ANDROID"
-                              ? this.state.data
-                              : this.state.androidData
-                            : this.state.appSelection === "iOS"
+                        ? this.state.choice !== ""
+                          ? this.state.choice !== "ANDROID"
                             ? this.state.data
                             : this.state.androidData
-                          : []
+                          : this.state.appSelection === "iOS"
+                          ? this.state.data
+                          : this.state.androidData
+                        : []
                       }
                       //-----------This is for dummy app data searches-----------
                       // data={

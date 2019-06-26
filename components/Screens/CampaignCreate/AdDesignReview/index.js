@@ -46,7 +46,9 @@ class AdDesignReview extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
-    Segment.screen("Ad Preview Screen");
+    Segment.screenWithProperties("Ad Preview", {
+      category: "Campaign Creation"
+    });
   }
   handleBackButton = () => {
     this.props.navigation.goBack();

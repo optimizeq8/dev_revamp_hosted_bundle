@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import { Segment } from "expo";
 
 //Redux
 import { connect } from "react-redux";
@@ -55,6 +56,9 @@ class PersonalInfo extends Component {
     return true;
   };
   componentDidMount() {
+    Segment.screenWithProperties("Personal Info", {
+      category: "User Menu"
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

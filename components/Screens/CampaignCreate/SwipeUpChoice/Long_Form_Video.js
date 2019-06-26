@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { View, TouchableOpacity, BackHandler } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
+import { connect } from "react-redux";
 import {
   ImagePicker,
   Permissions,
@@ -28,7 +29,7 @@ import list from "../../../Data/callactions.data";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
-export default class Long_Form_Video extends Component {
+class Long_Form_Video extends Component {
   static navigationOptions = {
     header: null
   };
@@ -46,11 +47,8 @@ export default class Long_Form_Video extends Component {
       durationError: "",
       videoLoading: false
     };
-    this._handleSubmission = this._handleSubmission.bind(this);
   }
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
+
   handleBackButton = () => {
     this.props.navigation.goBack();
     return true;
@@ -64,6 +62,13 @@ export default class Long_Form_Video extends Component {
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     }
+    if (this.props.data.hasOwnProperty("longformvideo_media")) {
+      this.setState({
+        longformvideo_media: this.props.data.longformvideo_media,
+        longformvideo_media_type: this.props.longformvideo_media_type
+      });
+    }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   componentWillUnmount() {
@@ -265,3 +270,13 @@ export default class Long_Form_Video extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  data: state.campaignC.data
+});
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Long_Form_Video);

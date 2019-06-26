@@ -12,12 +12,7 @@ import { Text, Container, Icon, Content } from "native-base";
 import { Segment, Video } from "expo";
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
-
-import deepmerge from "deepmerge";
-import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
-import isEqual from "lodash/isEqual";
-
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -25,7 +20,7 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
-import { SafeAreaView } from "react-navigation";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
 
@@ -42,6 +37,7 @@ import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
 import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
+
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
@@ -53,9 +49,11 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import combineMerge from "./combineMerge";
-
+import deepmerge from "deepmerge";
+import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
+import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
-
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
@@ -137,11 +135,6 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-    Segment.screen("Select Ad Details Screen");
-    Segment.trackWithProperties("Viewed Checkout Step", {
-      checkout_id: this.props.campaign_id,
-      step: 4
-    });
     this.props.get_languages();
     if (this.props.navigation.getParam("editCampaign", false)) {
       let editedCampaign = deepmerge(
@@ -185,16 +178,6 @@ class AdDetails extends Component {
         maxValueBudget: this.props.data.maxValueBudget,
         value: this.formatNumber(this.props.data.minValueBudget)
       });
-      // this.props.save_campaign_info({
-      //   lifetime_budget_micro: this.props.data.minValueBudget,
-      //   minValueBudget: this.props.data.minValueBudget,
-      //   maxValueBudget: this.props.data.maxValueBudget,
-      //   gender: "",
-      //   languages: ["ar", "en"],
-      //   min_age: 13,
-      //   max_age: 35,
-      //   os_type: ""
-      // });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
@@ -207,14 +190,15 @@ class AdDetails extends Component {
             },
             ...this.props.data,
             value: this.props.data.campaignInfo.lifetime_budget_micro,
-            showRegions: this.props.data.showRegions
+            showRegions: this.props.data.showRegions,
+            filteredLanguages: this.props.languages
           },
           () => {
             this._calcReach();
             rep.targeting.geos[0].country_code &&
               this.onSelectedCountryChange(
                 rep.targeting.geos[0].country_code,
-                null,
+                true,
                 this.props.data.countryName
               );
           }
@@ -251,13 +235,19 @@ class AdDetails extends Component {
     });
     this.props.save_campaign_info({ campaignInfo: rep });
   };
-  onSelectedCountryChange = async (selectedItem, mounting, countryName) => {
+  onSelectedCountryChange = async (
+    selectedItem,
+    mounting = null,
+    countryName
+  ) => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
 
     if (typeof newCountry !== "undefined") {
       replace.targeting.geos[0].country_code = newCountry;
-      replace.targeting.geos[0].region_id = [];
+      replace.targeting.geos[0].region_id = mounting
+        ? this.props.data.campaignInfo.targeting.geos[0].region_id
+        : [];
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
@@ -355,24 +345,19 @@ class AdDetails extends Component {
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
-    let saveRegs = [];
-    let saveRegNames = [];
+
     let names = this.state.regionNames;
     if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
       replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
         r => r !== selectedItem
       );
-      saveRegs = replace.targeting.geos[0].region_id;
     } else {
       replace.targeting.geos[0].region_id.push(selectedItem);
-      saveRegs = replace.targeting.geos[0].region_id;
     }
     if (names.find(r => r === regionName)) {
       names = names.filter(r => r !== regionName);
-      saveRegNames = names;
     } else {
       names.push(regionName);
-      saveRegNames = names;
     }
     this.setState({ campaignInfo: replace, regionNames: names });
     this.props.save_campaign_info({
@@ -575,18 +560,17 @@ class AdDetails extends Component {
       rep.targeting = JSON.stringify(rep.targeting);
 
       if (this.props.navigation.getParam("editCampaign", false)) {
-        Segment.trackWithProperties("Select Ad Details Button (Update)", {
+        Segment.trackWithProperties("Updated Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
-
         this.props.updateCampaign(
           rep,
           this.props.mainBusiness.businessid,
           this.props.navigation
         );
       } else {
-        Segment.trackWithProperties("Select Ad Details Button", {
+        Segment.trackWithProperties("Submitted Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
           campaign_id: this.props.campaign_id
@@ -748,10 +732,24 @@ class AdDetails extends Component {
         ? this.props.data.image
         : this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView
-        style={styles.safeArea}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
+      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never", top: "always"  }}>
+        <NavigationEvents
+          onDidFocus={() => {
+            if (this.props.navigation.getParam("editCampaign", false)) {
+              Segment.screenWithProperties("Snap Ad Targetting Update", {
+                category: "Campaign Update"
+              });
+            } else {
+              Segment.screenWithProperties("Snap Ad Targetting", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                checkout_id: this.props.campaign_id,
+                step: 4
+              });
+            }
+          }}
+        />
         <Container style={styles.mainContainer}>
           <Sidemenu
             onChange={isOpen => {
