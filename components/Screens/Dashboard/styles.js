@@ -266,6 +266,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 50,
     height: 50
+  },
+  placeHolderCardsStyle: {
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 150,
+    width: "90%",
+    marginHorizontal: 20,
+    borderRadius: 30,
+    marginVertical: 8,
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowColor: "#6268FF",
+    shadowOffset: { height: 6, width: 0 },
+    elevation: 5
   }
 });
 

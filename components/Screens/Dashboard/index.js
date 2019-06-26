@@ -44,6 +44,7 @@ import {
 } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isUndefined from "lodash/isUndefined";
+import PlacholderDashboard from "./PlacholderDashboard";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -192,6 +193,9 @@ class Dashboard extends Component {
       }
     };
 
+    let placeHolderCards = [1, 2, 3, 4].map(x => (
+      <View key={x} style={styles.placeHolderCardsStyle} />
+    ));
     let menu = !this.state.open ? (
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
@@ -200,14 +204,24 @@ class Dashboard extends Component {
     ) : null;
 
     if (
-      (isNull(this.props.mainBusiness) ||
-        isUndefined(this.props.mainBusiness)) &&
+      // (isNull(this.props.mainBusiness) ||
+      //   isUndefined(this.props.mainBusiness))
+      !this.props.mainBusiness &&
       this.props.loadingAccountMgmt
+      // true
     ) {
       return (
-        <>
-          <LoadingScreen dash={true} top={0} />
-        </>
+        <PlacholderDashboard
+          placeHolderCards={placeHolderCards}
+          navigation={this.props.navigation}
+          open={this.state.open}
+          startAnimation={this.startAnimation}
+          closeAnimation={this.closeAnimation}
+          mySlideInUp={mySlideInUp}
+        />
+        // <>
+        //   <LoadingScreen dash={true} top={0} />
+        // </>
       );
     } else if (this.props.businessLoadError) {
       return (
@@ -286,7 +300,13 @@ class Dashboard extends Component {
             onAnimationStart={() =>
               this.state.open && this.setState({ anim: true })
             }
-            animation={this.state.anim ? mySlideOutDown : mySlideInUp}
+            animation={
+              this.props.loadingAccountMgmt
+                ? this.state.anim
+                  ? mySlideOutDown
+                  : mySlideInUp
+                : ""
+            }
             style={[
               styles.animateView,
               {
@@ -374,25 +394,28 @@ class Dashboard extends Component {
                     <SearchBar renderSearchBar={this.renderSearchBar} />
                   )}
                   {this.props.loading ? (
-                    <ActivityIndicator size="large" />
+                    placeHolderCards
                   ) : (
-                    <FlatList
-                      contentContainerStyle={styles.flatlistContainerStyle}
-                      keyExtractor={item => item.campaign_id}
-                      data={this.props.filteredCampaigns}
-                      onEndReached={() => this.loadMoreData()}
-                      onEndReachedThreshold={0.3}
-                      renderItem={({ item, index }) => (
-                        <CampaignCard
-                          campaign={item}
-                          navigation={this.props.navigation}
-                          key={item.campaign_id}
-                        />
-                      )}
-                      onRefresh={() => this.reloadData()}
-                      refreshing={this.state.fetching_from_server}
-                      ListFooterComponent={() => this.renderFooter()}
-                    />
+                    // <ActivityIndicator size="large" />
+                    <Animatable.View duration={800} animation="pulse">
+                      <FlatList
+                        contentContainerStyle={styles.flatlistContainerStyle}
+                        keyExtractor={item => item.campaign_id}
+                        data={this.props.filteredCampaigns}
+                        onEndReached={() => this.loadMoreData()}
+                        onEndReachedThreshold={0.3}
+                        renderItem={({ item, index }) => (
+                          <CampaignCard
+                            campaign={item}
+                            navigation={this.props.navigation}
+                            key={item.campaign_id}
+                          />
+                        )}
+                        onRefresh={() => this.reloadData()}
+                        refreshing={this.state.fetching_from_server}
+                        ListFooterComponent={() => this.renderFooter()}
+                      />
+                    </Animatable.View>
                   )}
                 </View>
               </Sidemenu>
@@ -403,6 +426,7 @@ class Dashboard extends Component {
               }}
             />
           </Animatable.View>
+
           <Animatable.View
             onAnimationEnd={() => {
               if (this.state.anim) {
