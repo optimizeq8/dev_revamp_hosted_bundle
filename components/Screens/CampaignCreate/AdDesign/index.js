@@ -38,7 +38,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-
+import MediaModal from "./MediaModal";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -59,6 +59,9 @@ import {
   widthPercentageToDP as wp,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import PenIconBrand from "./PenIconBrand";
+import SwipeUpComponent from "./SwipeUpComponent";
+import MediaButton from "./MediaButton";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -92,6 +95,7 @@ class AdDesign extends Component {
       imageError: "",
       swipeUpError: "",
       isVisible: false,
+      mediaModalVisible: false,
       imageLoading: false,
       videoIsLoading: false,
       heightComponent: 0
@@ -106,9 +110,7 @@ class AdDesign extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  // shouldComponentUpdate(prevProps, prevState) {
-  //   return prevState.campaignInfo.headline !== this.state.campaignInfo.headline;
-  // }
+
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -212,6 +214,9 @@ class AdDesign extends Component {
     }
   };
 
+  setMediaModalVisible = visible => {
+    this.setState({ mediaModalVisible: visible });
+  };
   _changeDestination = (destination, call_to_action, attachment, appChoice) => {
     let newData = {};
     if (attachment.hasOwnProperty("longformvideo_media")) {
@@ -246,10 +251,28 @@ class AdDesign extends Component {
       this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
     }
   };
-  pick = async () => {
+
+  changeBusinessName = brand_name => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        brand_name
+      }
+    });
+  };
+  changeHeadline = headline => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        headline
+      }
+    });
+  };
+  pick = async mediaTypes => {
     await this.askForPermssion();
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: Platform.OS === "ios" ? "Images" : "All",
+      mediaTypes: mediaTypes,
+      //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
       quality: 0.1
@@ -262,9 +285,10 @@ class AdDesign extends Component {
     return result;
   };
 
-  _pickImage = async () => {
+  _pickImage = async (mediaTypes = "All") => {
     try {
-      let result = await this.pick();
+      let result = await this.pick(mediaTypes);
+      this.setMediaModalVisible(false);
       this.setState({ directory: "/ImagePicker/" });
       let newWidth = result.width;
       let newHeight = result.height;
@@ -504,7 +528,10 @@ class AdDesign extends Component {
       formatted: body
     });
   }
-
+  getVideoUploadUrl = () => {
+    this.setMediaModalVisible(false);
+    this.props.getVideoUploadUrl(this.props.campaign_id, this.openUploadVideo);
+  };
   openUploadVideo = async () => {
     try {
       this._addLinkingListener();
@@ -659,159 +686,25 @@ class AdDesign extends Component {
   };
   render() {
     let { image } = this.state;
-    const penIconBrand = (
-      <Item style={styles.inputBrand}>
-        <PenIcon
-          fill={
-            this.state.inputB
-              ? "#FF9D00"
-              : this.state.brand_nameError
-              ? "red"
-              : "#fff"
-          }
-        />
-        <Input
-          style={styles.inputText}
-          defaultValue={
-            this.props.mainBusiness.businessname
-              ? this.props.mainBusiness.businessname
-              : "Brand Name"
-          }
-          placeholderLabel={styles.inputText}
-          placeholderTextColor="white"
-          autoCorrect={false}
-          autoCapitalize="none"
-          onChangeText={value => {
-            this.setState({
-              campaignInfo: {
-                ...this.state.campaignInfo,
-                brand_name: value
-              }
-            });
-            this.props.save_campaign_info({ brand_name: value });
-          }}
-          onFocus={() => {
-            this.setState({ inputB: true });
-          }}
-          onBlur={() => {
-            this.setState({ inputB: false });
-            this.setState({
-              brand_nameError: validateWrapper(
-                "mandatory",
-                this.state.campaignInfo.brand_name
-              )
-            });
-          }}
-        />
-      </Item>
-    );
+    let {
+      brand_name,
+      headline,
+      destination,
+      attachment
+    } = this.state.campaignInfo;
 
-    const penIconHeadLine = (
-      <Item style={styles.inputHeadline}>
-        <PenIcon
-          fill={
-            this.state.inputH
-              ? "#FF9D00"
-              : this.state.headlineError
-              ? "red"
-              : "#fff"
-          }
-        />
-        <Input
-          style={styles.inputText}
-          defaultValue={!this.props.data ? "Headline" : this.props.data.name}
-          placeholderTextColor="white"
-          autoCorrect={false}
-          autoCapitalize="none"
-          onChangeText={value => {
-            this.setState({
-              campaignInfo: {
-                ...this.state.campaignInfo,
-                headline: value
-              }
-            });
-            this.props.save_campaign_info({ headline: value });
-          }}
-          onFocus={() => {
-            this.setState({ inputH: true });
-          }}
-          onBlur={() => {
-            this.setState({ inputH: false });
-            this.setState({
-              headlineError: validateWrapper(
-                "mandatory",
-                this.state.campaignInfo.headline
-              )
-            });
-          }}
-        />
-      </Item>
-    );
-    const mediaButton = (
-      <>
-        <Button
-          style={styles.inputMiddleButton}
-          onPress={() => {
-            this._pickImage();
-          }}
-        >
-          <Icon style={styles.icon} name="camera" />
-          <Text style={styles.mediaButtonMsg}>
-            {image
-              ? Platform.OS === "ios"
-                ? "Edit Photo"
-                : "Edit Photo"
-              : Platform.OS === "ios"
-              ? "Add Photo"
-              : "Add Media"}
-          </Text>
-        </Button>
-        {Platform.OS === "ios" && (
-          <Text
-            style={styles.title}
-            onPress={() =>
-              this.props.getVideoUploadUrl(
-                this.props.campaign_id,
-                this.openUploadVideo
-              )
-            }
-          >
-            Upload Video
-          </Text>
-        )}
-      </>
-    );
-
-    let swipeDestination = (
-      <TouchableOpacity
-        style={styles.swipeUp}
-        onPress={() => {
-          this.state.objective.toLowerCase() === "traffic"
-            ? this.props.navigation.push("SwipeUpDestination", {
-                _changeDestination: this._changeDestination,
-                image: this.state.image
-              })
-            : this.props.navigation.navigate("SwipeUpChoice", {
-                _changeDestination: this._changeDestination,
-                objective: this.state.objective
-              });
-        }}
-      >
-        <Text style={styles.swipeUpText}>
-          {this.state.campaignInfo.destination !== "BLANK" &&
-          this.state.campaignInfo.destination !== "REMOTE_WEBPAGE"
-            ? this.state.campaignInfo.destination
-            : this.state.campaignInfo.destination === "REMOTE_WEBPAGE"
-            ? "Website"
-            : "Swipe Up destination"}
-        </Text>
-        <Icon
-          type="MaterialIcons"
-          name="arrow-drop-down"
-          style={{ color: "orange" }}
-        />
-      </TouchableOpacity>
-    );
+    let inputFields = ["Business Name", "Headline"].map(field => (
+      <PenIconBrand
+        data={this.props.data}
+        changeBusinessName={this.changeBusinessName}
+        changeHeadline={this.changeHeadline}
+        brand_name={brand_name}
+        headline={headline}
+        key={field}
+        field={field}
+        mainBusiness={this.props.mainBusiness}
+      />
+    ));
 
     let blankView = <View style={styles.blankView} />;
 
@@ -852,6 +745,12 @@ class AdDesign extends Component {
             scrollEnabled={false}
             padder
           >
+            <MediaModal
+              getVideoUploadUrl={this.getVideoUploadUrl}
+              _pickImage={this._pickImage}
+              mediaModalVisible={this.state.mediaModalVisible}
+              setMediaModalVisible={this.setMediaModalVisible}
+            />
             <Transition style={styles.transition} shared="image">
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
@@ -874,24 +773,45 @@ class AdDesign extends Component {
                       style={styles.video}
                     />
 
-                    {penIconBrand}
-                    {penIconHeadLine}
-                    {mediaButton}
+                    {inputFields}
+                    <MediaButton
+                      setMediaModalVisible={this.setMediaModalVisible}
+                      image={this.state.image}
+                    />
                     {!["BRAND_AWARENESS", "reach"].find(
                       obj =>
                         this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && swipeDestination}
+                    ) && (
+                      <SwipeUpComponent
+                        _changeDestination={this._changeDestination}
+                        navigation={this.props.navigation}
+                        objective={this.state.campaignInfo.objective}
+                        destination={destination}
+                        attachment={attachment}
+                      />
+                    )}
                   </View>
                 ) : !image ? (
                   <View style={styles.placeholder}>
                     {blankView}
-                    {penIconBrand}
-                    {penIconHeadLine}
-                    {mediaButton}
+
+                    {inputFields}
+                    <MediaButton
+                      setMediaModalVisible={this.setMediaModalVisible}
+                      image={this.state.image}
+                    />
                     {!["BRAND_AWARENESS", "reach"].find(
                       obj =>
                         this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && swipeDestination}
+                    ) && (
+                      <SwipeUpComponent
+                        _changeDestination={this._changeDestination}
+                        navigation={this.props.navigation}
+                        objective={this.state.campaignInfo.objective}
+                        destination={destination}
+                        attachment={attachment}
+                      />
+                    )}
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -900,13 +820,24 @@ class AdDesign extends Component {
                       source={{ uri: image }}
                       resizeMode="cover"
                     />
-                    {penIconBrand}
-                    {penIconHeadLine}
-                    {mediaButton}
+
+                    {inputFields}
+                    <MediaButton
+                      setMediaModalVisible={this.setMediaModalVisible}
+                      image={this.state.image}
+                    />
                     {!["BRAND_AWARENESS", "reach"].find(
                       obj =>
                         this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && swipeDestination}
+                    ) && (
+                      <SwipeUpComponent
+                        _changeDestination={this._changeDestination}
+                        navigation={this.props.navigation}
+                        objective={this.state.campaignInfo.objective}
+                        destination={destination}
+                        attachment={attachment}
+                      />
+                    )}
                   </View>
                 )}
               </View>
