@@ -745,12 +745,6 @@ class AdDesign extends Component {
             scrollEnabled={false}
             padder
           >
-            <MediaModal
-              getVideoUploadUrl={this.getVideoUploadUrl}
-              _pickImage={this._pickImage}
-              mediaModalVisible={this.state.mediaModalVisible}
-              setMediaModalVisible={this.setMediaModalVisible}
-            />
             <Transition style={styles.transition} shared="image">
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
@@ -891,6 +885,12 @@ class AdDesign extends Component {
             )}
           </Footer>
         </Container>
+        <MediaModal
+          getVideoUploadUrl={this.getVideoUploadUrl}
+          _pickImage={this._pickImage}
+          mediaModalVisible={this.state.mediaModalVisible}
+          setMediaModalVisible={this.setMediaModalVisible}
+        />
         <Modal
           visible={
             this.props.videoUrlLoading ||
