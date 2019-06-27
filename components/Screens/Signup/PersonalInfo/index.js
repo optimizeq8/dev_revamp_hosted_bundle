@@ -4,9 +4,10 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  ScrollView
+  ScrollView,
+  Text
 } from "react-native";
-import { Text, Item, Input, Icon, Label } from "native-base";
+import { Item, Input, Icon, Label } from "native-base";
 import { Segment } from "expo";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -145,7 +146,10 @@ class PersonalInfo extends Component {
                     autoCapitalize="none"
                     onChangeText={value => {
                       this.setState({
-                        userInfo: { ...this.state.userInfo, firstname: value }
+                        userInfo: {
+                          ...this.state.userInfo,
+                          firstname: value
+                        }
                       });
                     }}
                     onFocus={() => {
@@ -191,7 +195,10 @@ class PersonalInfo extends Component {
                     autoCapitalize="none"
                     onChangeText={value =>
                       this.setState({
-                        userInfo: { ...this.state.userInfo, lastname: value }
+                        userInfo: {
+                          ...this.state.userInfo,
+                          lastname: value
+                        }
                       })
                     }
                     onFocus={() => {
@@ -270,10 +277,14 @@ class PersonalInfo extends Component {
                   />
                 </Item>
                 {this.state.emailError ? (
-                  <Text style={styles.emailErrorText}>
+                  // <View
+                  //   style={{ justifyContent: "center", alignSelf: "center" }}
+                  // >
+                  <Text style={[styles.text, styles.emailErrorText]}>
                     {this.state.emailError}
                   </Text>
-                ) : null}
+                ) : // </View>
+                null}
                 <Item
                   floatingLabel
                   style={[
@@ -314,7 +325,10 @@ class PersonalInfo extends Component {
                     autoCapitalize="none"
                     onChangeText={value =>
                       this.setState({
-                        userInfo: { ...this.state.userInfo, password: value }
+                        userInfo: {
+                          ...this.state.userInfo,
+                          password: value
+                        }
                       })
                     }
                     onFocus={() => {
@@ -333,7 +347,7 @@ class PersonalInfo extends Component {
                 </Item>
                 {this.state.passwordError &&
                 this.state.passwordError.includes("8 characters") ? (
-                  <Text style={[styles.text, styles.passwordErrorText]}>
+                  <Text style={[styles.text, styles.repasswordErrorText]}>
                     {this.state.passwordError}
                   </Text>
                 ) : null}

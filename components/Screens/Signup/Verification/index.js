@@ -217,7 +217,7 @@ class Verification extends Component {
                   </Text>
 
                   {this.state.showEmail && (
-                    <>
+                    <View>
                       <Item
                         floatingLabel
                         style={[
@@ -245,6 +245,7 @@ class Verification extends Component {
                           onChangeText={value =>
                             this.setState({ email: value })
                           }
+                          style={styles.emailLabel}
                           onFocus={() => {
                             this.setState({ InputE: true });
                           }}
@@ -276,7 +277,7 @@ class Verification extends Component {
                           ]}
                         />
                       </Button>
-                    </>
+                    </View>
                   )}
                 </View>
               )}

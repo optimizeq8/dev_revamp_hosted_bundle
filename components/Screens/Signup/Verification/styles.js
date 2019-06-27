@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   scrollViewContentContainer: {
-    // height: "100%",
     backgroundColor: "#0000",
     alignItems: "center",
     flex: 1,
-    width: "100%"
+    width: "100%",
+    paddingHorizontal: 20
   },
   codeInputContainer: { height: "10%" },
   renderInviteCodeLink: { color: "#FFFF" },
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   emailLabel: {
-    bottom: 5
+    bottom: 5,
+    fontSize: 16 / PixelRatio.getFontScale()
   },
   emailLinkContainer: {
     marginTop: 20,
@@ -40,13 +41,9 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    // backgroundColor: "#751AFF",
-
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    // padding: 20,
-    // paddingTop: 40,
     overflow: "hidden"
   },
   text: {
@@ -68,7 +65,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.5,
     backgroundColor: globalColors.orange,
-    // paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
     width: 250,
@@ -89,7 +85,6 @@ const styles = StyleSheet.create({
     color: "red",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    // bottom: 20
     paddingVertical: 10
   },
   emailInput: {

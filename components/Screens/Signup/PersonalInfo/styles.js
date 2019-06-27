@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     bottom: 5
   },
   labelIcon: {
-    fontSize: 20
+    fontSize: 20 / PixelRatio.getFontScale()
   },
   repeatPassword: {
     marginBottom: 0,
@@ -28,14 +28,16 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   iconSize: {
-    fontSize: 20
+    fontSize: 16 / PixelRatio.getFontScale()
   },
   emailerrorText: {
     textAlign: "center",
     color: "#717171",
     fontFamily: "montserrat-regular",
     fontSize: 15,
-    bottom: 40
+    // bottom: 40,
+    alignSelf: "center",
+    justifyContent: "center"
   },
   passwordErrorText: {
     bottom: 40,
@@ -84,12 +86,12 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#717171",
-    paddingTop: 40,
+    // paddingTop: 40,
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    marginBottom: 40
+    paddingHorizontal: 10
+    // paddingVertical: 10,
+    // marginBottom: 40
   },
   inputText: {
     fontFamily: "montserrat-light",
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   input: {
-    bottom: 25,
+    // bottom: 25,
     marginBottom: 20,
     paddingHorizontal: 50,
     borderRadius: 15,

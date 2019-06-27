@@ -14,7 +14,10 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingVertical: 10,
     flexDirection: "row",
-    alignSelf: "center"
+    alignSelf: "center",
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.2
   },
   businessTypeButton1: {
     borderBottomEndRadius: 0,
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 10,
     fontFamily: "montserrat-light",
-    fontSize: 12,
+    fontSize: 12 / PixelRatio.getFontScale(),
     paddingHorizontal: 10,
     paddingVertical: 10
   },
@@ -188,7 +191,10 @@ const styles = StyleSheet.create({
     lineHeight: 20
   },
   textAgreement: {
-    bottom: 10
+    bottom: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
   },
   agreementLink: {
     zIndex: 10
