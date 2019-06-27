@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="92.43" height="77.991" viewBox="0 0 92.43 77.991">
   <g id="Group_186" data-name="Group 186" transform="translate(-65 -327)">
-    <path id="Path_174" data-name="Path 174" d="M88.88,58.195V52.416a8.509,8.509,0,0,0-8.666-8.666H25.334a8.509,8.509,0,0,0-8.666,8.666V81.3a8.69,8.69,0,0,0,8.666,8.666h54.88A8.69,8.69,0,0,0,88.88,81.3V75.52L109.1,89.965V43.75Z" transform="translate(48.332 315.026)" fill="#fff"/>
-    <path id="Path_175" data-name="Path 175" d="M46.829,33.83a13,13,0,1,1-13-13,12.995,12.995,0,0,1,13,13" transform="translate(49.942 306.168)" fill="#fff"/>
-    <path id="Path_176" data-name="Path 176" d="M71.829,33.83a13,13,0,1,1-13-13,12.995,12.995,0,0,1,13,13" transform="translate(59.604 306.168)" fill="#fff"/>
+    <path id="Path_174" data-name="Path 174" d="M88.88,58.195V52.416a8.509,8.509,0,0,0-8.666-8.666H25.334a8.509,8.509,0,0,0-8.666,8.666V81.3a8.69,8.69,0,0,0,8.666,8.666h54.88A8.69,8.69,0,0,0,88.88,81.3V75.52L109.1,89.965V43.75Z" transform="translate(48.332 315.026)" />
+    <path id="Path_175" data-name="Path 175" d="M46.829,33.83a13,13,0,1,1-13-13,12.995,12.995,0,0,1,13,13" transform="translate(49.942 306.168)" />
+    <path id="Path_176" data-name="Path 176" d="M71.829,33.83a13,13,0,1,1-13-13,12.995,12.995,0,0,1,13,13" transform="translate(59.604 306.168)" />
   </g>
 </svg>

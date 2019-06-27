@@ -53,9 +53,6 @@ class Long_Form_Video extends Component {
     this.props.navigation.goBack();
     return true;
   };
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
   async componentDidMount() {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -74,6 +71,7 @@ class Long_Form_Video extends Component {
   componentWillUnmount() {
     this._didFocusSubscription && this._didFocusSubscription.remove();
     this._willBlurSubscription && this._willBlurSubscription.remove();
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   pick = () => {
     let result = ImagePicker.launchImageLibraryAsync({
@@ -161,7 +159,7 @@ class Long_Form_Video extends Component {
     return (
       <View style={styles.longFormVideoContainer}>
         <View style={styles.longFormVideoContent}>
-          <VideoIcon style={styles.icon} />
+          <VideoIcon fill="#fff" style={styles.icon} />
           <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
             <Text style={styles.titletext}>LongForm Video</Text>
             <Text style={styles.subtext}>
@@ -211,11 +209,7 @@ class Long_Form_Video extends Component {
               }}
               style={[styles.video]}
             >
-              <AddVidIcon
-                type="MaterialCommunityIcons"
-                name="video-plus"
-                style={[styles.icon, { fontSize: 70 }]}
-              />
+              <AddVidIcon style={[styles.icon, { fontSize: 70 }]} />
               <Text style={styles.addVideoText}>Add Video</Text>
             </TouchableOpacity>
           )}

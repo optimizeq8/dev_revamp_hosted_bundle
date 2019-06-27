@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -10,6 +11,14 @@ export const colors = {
   background2: "#6268FF"
 };
 const styles = StyleSheet.create({
+  safeAreaView: {
+    backgroundColor: "#0000",
+    height: "100%"
+  },
+  popupOverlay: {
+    height: "100%"
+  },
+
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
@@ -142,7 +151,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 250,
     height: 50,
-    marginTop: 30,
+    marginVertical: 50,
     top: "3%",
     left: "8%",
     borderColor: "transparent",
@@ -160,25 +169,27 @@ const styles = StyleSheet.create({
     flex: 1
   },
   inputText: {
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16 / PixelRatio.getFontScale(),
     textAlign: "left",
     color: "#fff",
     marginLeft: 8,
-    elevation: 500
+    elevation: 10
   },
   swipeUp: {
+    backgroundColor: globalColors.orange,
     position: "absolute",
-    height: 50,
+    alignSelf: "center",
+    width: "70%",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    position: "absolute",
-    left: 0,
-    right: 0,
+    borderRadius: 25,
+    paddingVertical: 2,
     top: "88%"
   },
   swipeUpText: {
+    alignSelf: "center",
     color: "white",
     fontFamily: "montserrat-medium",
     fontSize: 16
@@ -237,6 +248,31 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderTopWidth: 0,
     elevation: 0
+  },
+  subtitleHeading: {
+    fontSize: 12,
+    marginBottom: -10,
+    fontFamily: "montserrat-regular"
+  },
+  MediaOptionsStyle: {
+    width: "80%",
+    height: "40%",
+    flexDirection: "row",
+    padding: 20,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    marginVertical: 10
+  },
+
+  MediaOptionsTitle: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.orange,
+    fontSize: 16
+  },
+  MediaOptionsDescription: {
+    fontFamily: "montserrat-light",
+    color: "#fff",
+    fontSize: 13
   }
 });
 
