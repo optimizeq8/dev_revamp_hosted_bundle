@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { Text, View, Modal } from "react-native";
+import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
-// import { Modal } from "react-native-paper";
+import { Modal } from "react-native-paper";
 import { BlurView } from "expo";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
 import styles from "./styles";
-// import Modal from "react-native-modal";
+
 export default class MediaModal extends Component {
   render() {
     let options = ["Image", "Video"].map(op => (
@@ -21,8 +21,9 @@ export default class MediaModal extends Component {
     return (
       <Modal
         animationType={"fade"}
-        transparent={true}
-        // onDismiss={() => this.props.setMediaModalVisible(false)}
+        transparent={Platform.OS === "ios"}
+        onRequestClose={() => this.props.setMediaModalVisible(false)}
+        onDismiss={() => this.props.setMediaModalVisible(false)}
         visible={this.props.mediaModalVisible}
       >
         <BlurView intensity={95} tint="dark">
