@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
-import { View, BackHandler, PixelRatio } from "react-native";
+import { View, BackHandler, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
+import isEmpty from "lodash/isEmpty";
+import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
@@ -38,7 +39,8 @@ class Website extends Component {
       networkString: netLoc[0].label,
       netLoc: netLoc,
       callactions: list[0].call_to_action_list,
-      urlError: ""
+      urlError: "",
+      inputCallToAction: false
     };
   }
 
@@ -98,6 +100,34 @@ class Website extends Component {
       this.props.navigation.navigate("AdDesign");
     }
   };
+  onSelectedCallToActionIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("businescatId", value);
+  };
+  closeCallToActionModal = () => {
+    this.setState({
+      inputCallToAction: false
+    });
+  };
+
+  onSelectedCallToActionChange = value => {
+    if (value && !isEmpty(value)) {
+      this.setState(
+        {
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            callaction: {
+              label: value[0].label,
+              value: value[0].value
+            }
+          }
+        },
+        () => {
+          this.closeCallToActionModal();
+        }
+      );
+    }
+  };
   render() {
     return (
       <SafeAreaView
@@ -122,67 +152,117 @@ class Website extends Component {
                   The user will be taken to your website
                 </Text>
               </View>
-              <RNPickerSelect
-                items={this.state.callactions}
-                placeholder={{}}
-                onValueChange={(value, index) => {
-                  this.setState({
-                    campaignInfo: {
-                      ...this.state.campaignInfo,
-                      callaction: {
-                        label: list[0].call_to_action_list[index].label,
-                        value
-                      }
-                    }
-                  });
+              <Picker
+                searchPlaceholderText={"Search Call To Action"}
+                data={this.state.callactions}
+                uniqueKey={"value"}
+                displayKey={"label"}
+                open={this.state.inputCallToAction}
+                onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
+                selectedItems={[this.state.campaignInfo.callaction.value]}
+                single={true}
+                screenName={"Swipe up destination Website"}
+                closeCategoryModal={this.closeCallToActionModal}
+              />
+
+              <Item
+                rounded
+                style={[styles.input]}
+                onPress={() => {
+                  this.setState({ inputCallToAction: true });
                 }}
               >
-                <Item rounded style={[styles.input]}>
-                  <Text style={styles.callActionLabel}>
-                    {this.state.campaignInfo.callaction.label}
-                  </Text>
-                  <Icon
-                    type="AntDesign"
-                    name="down"
-                    style={{ color: "#fff", fontSize: 20, left: 25 }}
-                  />
-                </Item>
-              </RNPickerSelect>
+                <Text style={styles.callActionLabel}>
+                  {this.state.campaignInfo.callaction.label}
+                </Text>
+                <Icon
+                  type="AntDesign"
+                  name="down"
+                  style={{ color: "#fff", fontSize: 20, left: 25 }}
+                />
+              </Item>
 
               <View
                 style={{
                   flexDirection: "row",
-                  width: "100%",
-                  justifyContent: "space-evenly"
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  width: "100%"
                 }}
               >
-                <RNPickerSelect
-                  items={this.state.netLoc}
-                  placeholder={{}}
-                  onValueChange={(value, index) => {
+                <TouchableOpacity
+                  style={styles.optionsRowContainer}
+                  onPress={() => {
                     this.setState({
-                      networkString: value
+                      networkString: "http://"
                     });
                   }}
-                  //   value={this.state.networkString}
+                  // onPress={() => this.props.onSelectedGenderChange("MALE")}
                 >
-                  <Item rounded style={styles.netLocStyle}>
-                    <Icon
-                      type="AntDesign"
-                      name="down"
-                      style={{
-                        color: "#fff",
-                        fontSize: 20,
-                        top: 5
-                      }}
-                    />
-                    <Text
-                      style={[styles.callActionLabel, { top: 3, right: 4 }]}
-                    >
-                      {this.state.networkString}
-                    </Text>
-                  </Item>
-                </RNPickerSelect>
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name={
+                      this.state.networkString === "http://"
+                        ? "circle"
+                        : "circle-outline"
+                    }
+                    style={[
+                      this.state.networkString === "http://"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      styles.optionsIconSize
+                    ]}
+                  />
+                  <Text
+                    style={[styles.inactivetext, styles.optionsTextContainer]}
+                  >
+                    http://
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.optionsRowContainer}
+                  onPress={() => {
+                    this.setState({
+                      networkString: "https://"
+                    });
+                  }}
+                  // onPress={() => this.props.onSelectedGenderChange("FEMALE")}
+                >
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name={
+                      this.state.networkString === "https://"
+                        ? "circle"
+                        : "circle-outline"
+                    }
+                    style={[
+                      this.state.networkString === "https://"
+                        ? styles.activetext
+                        : styles.inactivetext,
+                      styles.optionsIconSize
+                    ]}
+                  />
+                  <Text
+                    style={[styles.inactivetext, styles.optionsTextContainer]}
+                  >
+                    https://
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "center"
+                }}
+              >
+                <Item rounded style={styles.netLocStyle}>
+                  <Text style={[styles.callActionLabel, { top: 3, right: 4 }]}>
+                    {this.state.networkString}
+                  </Text>
+                </Item>
 
                 <Item
                   rounded

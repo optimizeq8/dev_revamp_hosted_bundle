@@ -56,7 +56,7 @@ export default class RegionAndAreas extends Component {
             headerComponent={
               <View style={styles.headerComponent}>
                 <BackButton
-                  screenname="Select Devices"
+                  screenname="Select Area"
                   navigation={() =>
                     this.SectionedMultiSelect._cancelSelection()
                   }

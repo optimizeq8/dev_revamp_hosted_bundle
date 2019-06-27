@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import RNPickerSelect from "react-native-picker-select";
 import { View, TouchableOpacity, BackHandler } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
 import { connect } from "react-redux";
@@ -11,9 +10,11 @@ import {
   ScreenOrientation
 } from "expo";
 import Modal from "react-native-modal";
+import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import Picker from "../../../MiniComponents/Picker";
 
 //icons
 import VideoIcon from "../../../../assets/SVGs/SwipeUps/Video";
@@ -45,7 +46,8 @@ class Long_Form_Video extends Component {
       callactions: list[2].call_to_action_list,
       videoError: "",
       durationError: "",
-      videoLoading: false
+      videoLoading: false,
+      inputCallToAction: false
     };
   }
 
@@ -157,6 +159,32 @@ class Long_Form_Video extends Component {
       this.props.navigation.navigate("AdDesign");
     }
   };
+
+  onSelectedCallToActionIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("businescatId", value);
+  };
+  closeCallToActionModal = () => {
+    this.setState({
+      inputCallToAction: false
+    });
+  };
+
+  onSelectedCallToActionChange = value => {
+    if (value && !isEmpty(value)) {
+      this.setState(
+        {
+          callaction: {
+            label: value[0].label,
+            value: value[0].value
+          }
+        },
+        () => {
+          this.closeCallToActionModal();
+        }
+      );
+    }
+  };
   render() {
     return (
       <View style={styles.longFormVideoContainer}>
@@ -238,29 +266,35 @@ class Long_Form_Video extends Component {
               {this.state.videoError}
             </Text>
           ) : null} */}
-          <RNPickerSelect
-            items={this.state.callactions}
-            placeholder={{}}
-            onValueChange={(value, index) => {
-              this.setState({
-                callaction: {
-                  label: list[2].call_to_action_list[index].label,
-                  value
-                }
-              });
+          <Picker
+            searchPlaceholderText={"Search Call To Action"}
+            data={this.state.callactions}
+            uniqueKey={"value"}
+            displayKey={"label"}
+            open={this.state.inputCallToAction}
+            onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+            onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
+            selectedItems={[this.state.callaction.value]}
+            single={true}
+            screenName={"Long form video"}
+            closeCategoryModal={this.closeCallToActionModal}
+          />
+          <Item
+            onPress={() => {
+              this.setState({ inputCallToAction: true });
             }}
+            rounded
+            style={styles.input}
           >
-            <Item rounded style={styles.input}>
-              <Text style={styles.callActionLabel}>
-                {this.state.callaction === ""
-                  ? this.state.callactions[0].label
-                  : this.state.callactions.find(
-                      c => this.state.callaction.value === c.value
-                    ).label}
-              </Text>
-              <Icon type="AntDesign" name="down" style={styles.downArrowIcon} />
-            </Item>
-          </RNPickerSelect>
+            <Text style={styles.callActionLabel}>
+              {this.state.callaction === ""
+                ? this.state.callactions[0].label
+                : this.state.callactions.find(
+                    c => this.state.callaction.value === c.value
+                  ).label}
+            </Text>
+            <Icon type="AntDesign" name="down" style={styles.downArrowIcon} />
+          </Item>
           <Modal isVisible={this.state.videoLoading}>
             <LoadingScreen top={50} />
           </Modal>

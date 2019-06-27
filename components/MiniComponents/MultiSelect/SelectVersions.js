@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, StatusBar } from "react-native";
 import { Button, Icon } from "native-base";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import LoadingScreen from "../LoadingScreen";
@@ -30,6 +30,8 @@ class SelectVersions extends Component {
   };
 
   componentDidMount() {
+    console.log("selectedItems", this.props.selectedItems);
+
     this.props.OSType === "iOS"
       ? this.props.get_ios_verisons()
       : this.props.get_android_versions();
@@ -156,9 +158,11 @@ class SelectVersions extends Component {
                       <CheckmarkIcon width={53} height={53} />
                     </Button>
                   }
+                  modalWithSafeAreaView={true}
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        style={{ top: 0, left: 0 }}
                         navigation={() =>
                           this.VersionSection._cancelSelection()
                         }

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, ActivityIndicator } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import isNull from "lodash/isNull";
-import { ActivityIndicator } from "react-native-paper";
-import LoadingScreen from "../LoadingScreen";
 
 //Icons
 import BackButton from "../../MiniComponents/BackButton";
@@ -20,12 +18,6 @@ import SectionStyle, { colors } from "./SectionStyle";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
-//Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 
 class SelectInterests extends Component {
   state = { interests: null };
@@ -105,6 +97,7 @@ class SelectInterests extends Component {
                 <SectionedMultiSelect
                   ref={ref => (this.Section = ref)}
                   loading={isNull(this.state.interests) ? true : false}
+                  modalWithSafeAreaView={true}
                   items={this.state.interests}
                   uniqueKey="id"
                   selectToggleIconComponent={
@@ -148,6 +141,7 @@ class SelectInterests extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        style={{ top: 0, left: 0 }}
                         screenname="Select Interests"
                         businessname={this.props.mainBusiness.businessname}
                         navigation={() => this.Section._cancelSelection()}
@@ -184,7 +178,7 @@ class SelectInterests extends Component {
                   selectedItems={this.props.selectedItems}
                 />
                 {isNull(this.state.interests) && (
-                  <ActivityIndicator color="#FFF" size="large" />
+                  <ActivityIndicator color="#FFFF" size="large" />
                 )}
               </ScrollView>
             </View>
