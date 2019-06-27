@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, StatusBar } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -116,10 +116,11 @@ const styles = StyleSheet.create({
   },
   headerComponent: {
     // height: 70,
+    alignSelf: "flex-start",
     // marginBottom: hp(5),
-    // top: hp(3)
-    paddingHorizontal: wp(5),
-    marginTop: hp(1)
+    top: hp(0),
+    paddingHorizontal: wp(4),
+    paddingTop: hp(1)
   },
   icon: {
     fontSize: 70,

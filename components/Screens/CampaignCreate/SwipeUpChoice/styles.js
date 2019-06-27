@@ -218,10 +218,46 @@ const styles = StyleSheet.create({
   netLocStyle: {
     backgroundColor: "#5D1CD8",
     borderRadius: 10,
-    marginRight: 50,
+    // marginRight: 50,
     borderColor: "#5D1CD8",
-    width: "100%",
+    // width: "100%",
+    width: widthPercentageToDP(20),
     height: 50
+  },
+  icon: {
+    fontSize: 35,
+    color: "#fff",
+    paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  inactivetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#fff"
+    // paddingLeft: 10
+  },
+  activetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#FF9D00"
+  },
+  optionsContainer: {
+    flexDirection: "column",
+    paddingTop: 20
+  },
+  optionsRowContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+    // paddingBottom: 20
+  },
+  optionsIconSize: {
+    fontSize: 25
+  },
+  optionsTextContainer: {
+    textAlign: "center",
+    paddingLeft: 10
   }
 });
 

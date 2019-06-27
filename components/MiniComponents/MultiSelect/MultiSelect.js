@@ -35,7 +35,8 @@ class MultiSelectList extends Component {
     this.setState({
       filteredCountreis: this.props.countries,
       selectedItems: this.props.selectedItems,
-      selectedDevices: this.props.selectedDevices
+      selectedDevices: this.props.selectedDevices,
+      selectedVersions: this.props.selectedVersions
     });
   }
   componentDidUpdate(prevProps) {

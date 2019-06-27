@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import isNull from "lodash/isNull";
 
 //Redux
 import { connect } from "react-redux";
@@ -10,7 +11,6 @@ import * as actionCreators from "../../../store/actions";
 
 // Components
 import BackButton from "../../MiniComponents/BackButton";
-import LoadingScreen from "../LoadingScreen";
 
 //Icons
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
@@ -21,7 +21,7 @@ import SectionStyle, { colors } from "./SectionStyle";
 import styles from "./styles";
 
 class SelectDevices extends Component {
-  state = { deviceBrands: [] };
+  state = { deviceBrands: null };
 
   componentDidMount() {
     this.props.get_device_brands();
@@ -67,8 +67,9 @@ class SelectDevices extends Component {
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
                   ref={ref => (this.DeviceSection = ref)}
-                  loading={!this.props.deviceBrands ? true : false}
+                  loading={isNull(this.state.deviceBrands) ? true : false}
                   items={this.state.deviceBrands}
+                  modalWithSafeAreaView={true}
                   uniqueKey="id"
                   readOnlyHeadings={false}
                   selectChildren={true}
@@ -81,7 +82,7 @@ class SelectDevices extends Component {
                       );
                     }
                   }}
-                  modalWithSafeAreaView={true}
+                  //   modalWithSafeAreaView={true}
                   selectedIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
@@ -115,6 +116,7 @@ class SelectDevices extends Component {
                   headerComponent={
                     <View style={styles.headerComponent}>
                       <BackButton
+                        style={{ top: 0, left: 0 }}
                         screenname="Select Devices"
                         businessname={this.props.mainBusiness.businessname}
                         navigation={() => this.DeviceSection._cancelSelection()}
@@ -145,8 +147,8 @@ class SelectDevices extends Component {
                   }
                   selectedItems={this.props.selectedItems}
                 />
-                {this.state.deviceBrands.length === 0 && (
-                  <LoadingScreen top={-10} />
+                {isNull(this.state.deviceBrands) && (
+                  <ActivityIndicator color="#FFFF" size="large" />
                 )}
               </ScrollView>
             </View>

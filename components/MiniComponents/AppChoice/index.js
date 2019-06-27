@@ -9,7 +9,7 @@ import {
   BackHandler,
   ScrollView
 } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
+import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import { ActivityIndicator } from "react-native-paper";
@@ -17,6 +17,7 @@ import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
+import Picker from "../Picker";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
@@ -28,11 +29,6 @@ import list from "./callactions";
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
-//Functions
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 
 class AppChoice extends Component {
@@ -59,7 +55,8 @@ class AppChoice extends Component {
       choiceError: "",
       AppError: "",
       loading: false,
-      appLoading: false
+      appLoading: false,
+      inputCallToAction: false
     };
   }
 
@@ -268,6 +265,31 @@ class AppChoice extends Component {
       showList: false
     });
   };
+  onSelectedCallToActionIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("businescatId", value);
+  };
+  closeCallToActionModal = () => {
+    this.setState({
+      inputCallToAction: false
+    });
+  };
+
+  onSelectedCallToActionChange = value => {
+    if (value && !isEmpty(value)) {
+      this.setState(
+        {
+          callaction: {
+            label: value[0].label,
+            value: value[0].value
+          }
+        },
+        () => {
+          this.closeCallToActionModal();
+        }
+      );
+    }
+  };
   render() {
     return (
       <View style={styles.mainCard}>
@@ -275,53 +297,48 @@ class AppChoice extends Component {
           <KeyboradShift style={styles.keyboardContainer}>
             {() => (
               <>
-                <RNPickerSelect
-                  items={this.state.callactions}
-                  placeholder={{ label: "Call to Action", value: "" }}
-                  value={this.state.callaction.value}
-                  onValueChange={(value, index) => {
+                <Picker
+                  searchPlaceholderText={"Search Call To Action"}
+                  data={this.state.callactions}
+                  uniqueKey={"value"}
+                  displayKey={"label"}
+                  open={this.state.inputCallToAction}
+                  onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                  onSelectedItemObjectsChange={
+                    this.onSelectedCallToActionChange
+                  }
+                  selectedItems={[this.state.callaction.value]}
+                  single={true}
+                  screenName={" App Choice"}
+                  closeCategoryModal={this.closeCallToActionModal}
+                />
+                <Item
+                  onPress={() => {
                     this.setState({
-                      callaction: {
-                        label: this.state.callactions[
-                          index - 1 > 0 ? index - 1 : 0
-                        ].label,
-                        value
-                      },
-                      callActionError: validateWrapper(
-                        "mandatory",
-                        this.state.callaction
-                      )
+                      inputCallToAction: true
                     });
                   }}
+                  rounded
+                  style={[
+                    styles.input,
+                    this.state.callActionError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.transparentBorderColor,
+                    styles.itemCallToAction
+                  ]}
                 >
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      this.state.callActionError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
-                      styles.itemCallToAction
-                    ]}
-                  >
-                    <Text
-                      style={styles.pickerText}
-                    >
-                      {this.state.callactions.find(
-                        c => this.state.callaction.value === c.value
-                      )
-                        ? this.state.callactions.find(
-                            c => this.state.callaction.value === c.value
-                          ).label
-                        : "Call to Action"}
-                    </Text>
-                    <Icon
-                      type="AntDesign"
-                      name="down"
-                      style={styles.iconDown}
-                    />
-                  </Item>
-                </RNPickerSelect>
+                  <Text style={styles.pickerText}>
+                    {this.state.callactions.find(
+                      c => this.state.callaction.value === c.value
+                    )
+                      ? this.state.callactions.find(
+                          c => this.state.callaction.value === c.value
+                        ).label
+                      : "Call to Action"}
+                  </Text>
+                  <Icon type="AntDesign" name="down" style={styles.iconDown} />
+                </Item>
+
                 <Animatable.View animation={"zoomInUp"}>
                   <Animatable.View
                     onAnimationEnd={() => this.setState({ choiceError: null })}
@@ -456,7 +473,6 @@ class AppChoice extends Component {
                   <ActivityIndicator
                     color="#fff"
                     size="large"
-
                     style={styles.activityIndicator}
                   />
                 ) : (
@@ -468,7 +484,6 @@ class AppChoice extends Component {
                     )}
                     <FlatList
                       style={{ flex: 1, width: "100%" }}
-
                       contentContainerStyle={
                         styles.flatListContentContainerStyle
                       }
