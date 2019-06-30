@@ -10,7 +10,8 @@ import {
   Linking,
   WebBrowser,
   BlurView,
-  LinearGradient
+  LinearGradient,
+  MediaLibrary
 } from "expo";
 import {
   View,
@@ -326,17 +327,82 @@ class AdDesign extends Component {
           );
           // console.log("promise", manipResult);
 
-          const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
-            size: true
-          });
+          // const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
+          //   size: true
+          // });
+          const imageAsset = await MediaLibrary.createAssetAsync(
+            manipResult.uri
+          );
+          console.log("OptimizeApp", imageAsset.uri);
 
-          const oldSize = await FileSystem.getInfoAsync(result.uri, {
-            size: true
-          });
+          MediaLibrary.getAlbumAsync("OptimizeApp")
+            .then(res => {
+              if (isNull(res)) {
+                MediaLibrary.createAlbumAsync("OptimizeApp", imageAsset)
+                  .then(() => {
+                    MediaLibrary.getAssetInfoAsync(imageAsset)
+                      .then(res => console.log("image:", res.localUri))
+                      .catch(error => {
+                        console.log("album should exist but,", error);
+                      });
+                  })
+                  .catch(error => {
+                    console.log("err", error);
+                  });
+              } else {
+                MediaLibrary.addAssetsToAlbumAsync([imageAsset], res, true)
+                  .then(res => {
+                    console.log("addAssetsToAlbumAsync", res);
+
+                    MediaLibrary.getAssetInfoAsync(imageAsset).then(res =>
+                      console.log("image:", res.localUri)
+                    );
+                  })
+                  .catch(error => {
+                    console.log("err", error);
+                  });
+              }
+            })
+            .catch(error => {
+              console.log("getAlbumAsync err", error);
+            });
+
+          // if (MediaLibrary.getAlbumAsync("OptimizeApp")) {
+          //   MediaLibrary.addAssetsToAlbumAsync(
+          //     [imageAsset],
+          //     "OptimizeApp",
+          //     true
+          //   )
+          //     .then(() => {
+          //       console.log("");
+
+          //       MediaLibrary.getAssetsAsync({
+          //         album: "OptimizeApp"
+          //       }).then(res => console.log("image:", res));
+          //     })
+          //     .catch(error => {
+          //       console.log("is there", error);
+          //     });
+          // } else {
+          //   MediaLibrary.createAlbumAsync("OptimizeApp", imageAsset)
+          //     .then(() => {
+          //       console.log("Album created!");
+          //       MediaLibrary.getAssetsAsync({ album: "OptimizeApp" }).then(
+          //         res => console.log("image:", res)
+          //       );
+          //     })
+          //     .catch(error => {
+          //       console.log("err", error);
+          //     });
+          // }
+
+          // const oldSize = await FileSystem.getInfoAsync(result.uri, {
+          //   size: true
+          // });
           // console.log("width:", manipResult.width);
           // console.log("height:", manipResult.height);
-          console.log("new result: ", newSize.size);
-          console.log("old result: ", oldSize.size);
+          // console.log("new result: ", newSize.size);
+          // console.log("old result: ", oldSize.size);
 
           this.setState({
             directory: "/ImageManipulator/"
