@@ -31,7 +31,11 @@ const validation = {
     }
   },
   website: {
-    format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
+    url: {
+      schemes: ["ftp", "http", "https"],
+      allowLocal: true
+    },
+    // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
     presence: { allowEmpty: false }
   },
   deepLink: {
