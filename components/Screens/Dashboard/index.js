@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   BackHandler
 } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
@@ -24,7 +24,7 @@ import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
+import SnapAd from "../../../assets/SVGs/AdType/SnapAd.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
@@ -144,6 +144,19 @@ class Dashboard extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
 
+  navigationHandler = route => {
+    Segment.trackWithProperties("Selected Ad Type", {
+      business_name: this.props.mainBusiness.businessname,
+      campaign_type: this.state.campaign_type
+    });
+    Segment.trackWithProperties("Completed Checkout Step", {
+      step: 1,
+      business_name: this.props.mainBusiness.businessname,
+      campaign_type: this.state.campaign_type
+    });
+    this.props.navigation.navigate("AdObjective");
+  };
+
   increasePage = () => {
     this.page = this.page + 1;
   };
@@ -242,7 +255,7 @@ class Dashboard extends Component {
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />
           )}
 
-          {!this.state.sidemenustate && (
+          {!false && (
             <View
               style={[
                 styles.mainView,
@@ -269,11 +282,6 @@ class Dashboard extends Component {
               </TouchableWithoutFeedback>
               {!this.state.open ? (
                 <>
-                  <Text style={[styles.text]}>
-                    {!this.props.mainBusiness
-                      ? ""
-                      : this.props.mainBusiness.brandname}
-                  </Text>
                   <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("Wallet")}
                     style={[styles.wallet]}
@@ -326,30 +334,36 @@ class Dashboard extends Component {
                 openMenuOffset={wp("85%")}
                 isOpen={this.state.sidemenustate}
               >
+                <View style={[styles.nameStyle]}>
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={[styles.text]}
+                  >
+                    {this.props.mainBusiness.businessname}
+                  </Text>
+                </View>
+
                 <View
                   padder
                   style={[
-                    styles.mainCard,
-                    { top: this.state.sidemenustate ? 40 : 0 }
+                    styles.mainCard
+                    // { top: this.state.sidemenustate ? 40 : 0 }
                   ]}
                 >
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={[styles.brandStyle]}
+                  >
+                    {this.props.mainBusiness.brandname}
+                  </Text>
                   <View style={styles.sideMenuCard}>
-                    <View style={styles.sideMenuTop}>
-                      <Button
-                        style={[
-                          styles.activebutton,
-                          this.state.showSearchBar
-                            ? globalStyles.orangeBackgroundColor
-                            : globalStyles.whiteBackgroundColor
-                        ]}
-                        onPress={this.renderSearchBar}
-                      >
-                        <SearchIcon
-                          width={23}
-                          height={23}
-                          stroke={this.state.showSearchBar ? "#fff" : "#575757"}
-                        />
-                      </Button>
+                    <View
+                      style={{
+                        flexDirection: "column"
+                      }}
+                    >
                       <Button
                         style={styles.button}
                         onPress={() => {
@@ -375,25 +389,57 @@ class Dashboard extends Component {
                           }
                         }}
                       >
-                        <Text style={[styles.title, styles.newCampaignTitle]}>
-                          New {"\n"}
-                          Campaign
-                        </Text>
+                        <Icon name="plus" type="MaterialCommunityIcons" />
                       </Button>
-
+                      <Text style={[styles.title, styles.newCampaignTitle]}>
+                        New Ad
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "column"
+                      }}
+                    >
                       <Button
-                        style={styles.activebutton}
+                        style={styles.snapAd}
                         onPress={() => {
-                          this._handleSideMenuState(true);
+                          this.navigationHandler();
                         }}
                       >
-                        <FilterIcon width={23} height={23} fill="#575757" />
+                        <SnapAd />
                       </Button>
+
+                      <Text
+                        style={[
+                          styles.title,
+                          styles.newCampaignTitle
+                          // { left: 5 }
+                        ]}
+                      >
+                        Snap Ad
+                      </Text>
                     </View>
                   </View>
-                  {this.state.showSearchBar && (
+                  {/* {this.state.showSearchBar && ( */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      height: 50,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
                     <SearchBar renderSearchBar={this.renderSearchBar} />
-                  )}
+                    <Button
+                      style={styles.activebutton}
+                      onPress={() => {
+                        this._handleSideMenuState(true);
+                      }}
+                    >
+                      <FilterIcon width={23} height={23} fill="#575757" />
+                    </Button>
+                  </View>
+                  {/* )} */}
                   {this.props.loading ? (
                     placeHolderCards
                   ) : (

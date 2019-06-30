@@ -60,7 +60,7 @@ class SearchBar extends Component {
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
             style={styles.searchBarInput}
-            placeholder="Search"
+            placeholder="Search ads..."
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());
             }}

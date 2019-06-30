@@ -2,14 +2,21 @@ import { StyleSheet, PixelRatio } from "react-native";
 
 const styles = StyleSheet.create({
   searchBarView: {
-    marginHorizontal: 15
+    height: "70%",
+    width: "70%"
+    // marginVertical: 5
   },
   searchBarItem: {
     backgroundColor: "#fff",
     borderColor: "#fff",
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    height: "100%"
   },
-  searchBarInput: { fontSize: 20 / PixelRatio.getFontScale() }
+  searchBarInput: {
+    fontFamily: "montserrat-light",
+
+    fontSize: 15 / PixelRatio.getFontScale()
+  }
 });
 
 export default styles;

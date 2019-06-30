@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -17,7 +18,10 @@ const styles = StyleSheet.create({
   mainView: {
     justifyContent: "center",
     zIndex: 10,
-    height: 40,
+    height: 10,
+    top: 13,
+    zIndex: 100,
+    elevation: 10,
     backgroundColor: "#0000",
     width: "100%"
   },
@@ -33,12 +37,15 @@ const styles = StyleSheet.create({
   },
   sideMenuCard: {
     flexDirection: "row",
-    alignSelf: "center",
-    marginBottom: 20,
+    alignItems: "flex-end",
+    left: 20,
+    marginBottom: 10,
     paddingBottom: 10
   },
   sideMenuTop: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
   },
   newCampaignTitle: {
     paddingTop: 0,
@@ -55,12 +62,10 @@ const styles = StyleSheet.create({
   footerActivityIndicator: { margin: 15 },
   title: {
     textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-bold",
+    color: "#C6C6C6",
+    fontFamily: "montserrat-regular",
     fontSize: 16,
-    width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
+    top: 20
   },
   container: { backgroundColor: "#0000" },
   image: {
@@ -79,7 +84,8 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     width: "100%",
-    height: "100%"
+    height: "100%",
+    bottom: 20
   },
   backDrop: {
     position: "absolute",
@@ -100,10 +106,31 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: "center",
-    // bottom: "50%",
-    color: "#fff",
+    color: "#5F5F5F",
     fontFamily: "montserrat-semibold",
-    fontSize: 22
+    fontSize: 18
+  },
+  brandStyle: {
+    alignSelf: "center",
+    top: 8,
+    width: 200,
+    color: "#5F5F5F",
+    textAlign: "center",
+    fontFamily: "montserrat-regular",
+    fontSize: 14
+  },
+  nameStyle: {
+    top: 2,
+    alignSelf: "center",
+    width: "50%",
+    height: 55,
+    color: "#5F5F5F",
+    fontFamily: "montserrat-semibold",
+    fontSize: 21,
+    backgroundColor: "#F4F4F4",
+    borderRadius: 30,
+    paddingTop: 10,
+    paddingHorizontal: 30
   },
   buttontext: {
     fontFamily: "montserrat-regular",
@@ -126,14 +153,19 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    marginHorizontal: 20,
-    height: 55,
+    top: 15,
+    // marginBottom: 10,
+    justifyContent: "center",
+    backgroundColor: globalColors.orange,
+    // marginHorizontal: 20,
+    width: 60,
+    height: 60,
     borderRadius: 33,
-    elevation: 0
+    elevation: 0,
+    shadowColor: "#6C6C6C",
+    shadowRadius: 4,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 3, height: 3 }
   },
   link: {
     marginTop: 20,
@@ -219,14 +251,14 @@ const styles = StyleSheet.create({
   //   marginVertical: 5
   // },
   activebutton: {
-    backgroundColor: "#fff",
+    backgroundColor: "#0000",
     alignSelf: "center",
     justifyContent: "center",
     width: 55,
     height: 55,
     borderRadius: 33,
-    top: 30,
-    marginBottom: 10,
+    // top: 30,
+    // marginBottom: 10,
     elevation: 0
   },
   dateInput: {
@@ -260,7 +292,7 @@ const styles = StyleSheet.create({
   },
   wallet: {
     // top: "50%",
-    right: 5,
+    right: "2%",
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
@@ -279,6 +311,19 @@ const styles = StyleSheet.create({
     shadowColor: "#6268FF",
     shadowOffset: { height: 6, width: 0 },
     elevation: 5
+  },
+  snapAd: {
+    top: 10,
+    justifyContent: "center",
+    backgroundColor: globalColors.white,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    shadowColor: "#6C6C6C",
+    shadowRadius: 4,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 3, height: 3 }
   }
 });
 
