@@ -32,7 +32,11 @@ export default class SwipeUpComponent extends Component {
           {["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(
             destination
           ) && (
-            <Text style={[styles.swipeUpText, { fontSize: 12 }]}>
+            <Text
+              ellipsizeMode={4}
+              numberOfLines={1}
+              style={[styles.swipeUpText, { fontSize: 12, width: 150 }]}
+            >
               {attachment.hasOwnProperty("deep_link_uri")
                 ? attachment.deep_link_uri
                 : attachment.url}
