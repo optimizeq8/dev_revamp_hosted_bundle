@@ -43,8 +43,10 @@ class SelectInterests extends Component {
           if (this.props.interests[key].length > 0) {
             interests.push({
               id: key,
-              children: this.props.interests[key],
-              name: "SELECT ALL" // should actual be the key name
+              children: this.props.interests[key].filter(
+                obj => obj.hasChild === 0
+              ),
+              name: "INTERESTS" // should actual be the key name
             });
           }
           lenOfLists += this.props.interests[key].length;
@@ -95,6 +97,7 @@ class SelectInterests extends Component {
               </Button>
               <ScrollView style={styles.scrollContainer}>
                 <SectionedMultiSelect
+                  readOnlyHeadings
                   ref={ref => (this.Section = ref)}
                   loading={isNull(this.state.interests) ? true : false}
                   modalWithSafeAreaView={true}
@@ -129,7 +132,6 @@ class SelectInterests extends Component {
                   hideConfirm
                   subKey="children"
                   styles={SectionStyle}
-                  confirmText={"\u2714"}
                   stickyFooterComponent={
                     <Button
                       style={styles.stickyFooterButton}
@@ -157,7 +159,7 @@ class SelectInterests extends Component {
                     />
                   }
                   iconKey="icon"
-                  selectText={"Select All"}
+                  // selectText={"Select All"}
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
@@ -169,7 +171,8 @@ class SelectInterests extends Component {
                     this.props.onSelectedItemsChange([]);
                     this.props.onSelectedItemObjectsChange([]);
                   }}
-                  selectChildren
+                  // highlightChildren
+                  // selectChildren
                   modalAnimationType="fade"
                   onSelectedItemsChange={this.props.onSelectedItemsChange}
                   onSelectedItemObjectsChange={
