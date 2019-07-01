@@ -5,7 +5,8 @@ import {
   FlatList,
   Animated,
   TouchableWithoutFeedback,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
 import LottieView from "lottie-react-native";
@@ -20,11 +21,10 @@ import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
 import Menu from "../Menu";
 import * as Animatable from "react-native-animatable";
-import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import AdButtions from "./AdButtons";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import SnapAd from "../../../assets/SVGs/AdType/SnapAd.svg";
 import WalletIcon from "../../../assets/SVGs/Wallet.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
@@ -32,6 +32,9 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
+
+//data
+import { snapAds } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -42,8 +45,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import isNull from "lodash/isNull";
-import isUndefined from "lodash/isUndefined";
 import PlacholderDashboard from "./PlacholderDashboard";
 
 class Dashboard extends Component {
@@ -144,17 +145,19 @@ class Dashboard extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
 
-  navigationHandler = route => {
+  navigationHandler = adType => {
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: this.state.campaign_type
+      campaign_type: adType.title
     });
     Segment.trackWithProperties("Completed Checkout Step", {
       step: 1,
       business_name: this.props.mainBusiness.businessname,
-      campaign_type: this.state.campaign_type
+      campaign_type: adType.title
     });
-    this.props.navigation.navigate("AdObjective");
+    this.props.resetCampaignInfo();
+    this.props.set_adType(adType.value);
+    this.props.navigation.navigate(adType.rout);
   };
 
   increasePage = () => {
@@ -217,9 +220,14 @@ class Dashboard extends Component {
       />
     ) : null;
 
+    let adButtons = snapAds.map(adType => (
+      <AdButtions
+        key={adType.id}
+        navigationHandler={this.navigationHandler}
+        ad={adType}
+      />
+    ));
     if (
-      // (isNull(this.props.mainBusiness) ||
-      //   isUndefined(this.props.mainBusiness))
       !this.props.mainBusiness &&
       this.props.loadingAccountMgmt
       // true
@@ -255,7 +263,7 @@ class Dashboard extends Component {
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />
           )}
 
-          {!false && (
+          {!this.state.sidemenustate && (
             <View
               style={[
                 styles.mainView,
@@ -340,7 +348,9 @@ class Dashboard extends Component {
                     numberOfLines={1}
                     style={[styles.text]}
                   >
-                    {this.props.mainBusiness.businessname}
+                    {this.props.mainBusiness
+                      ? this.props.mainBusiness.businessname
+                      : ""}
                   </Text>
                 </View>
 
@@ -356,7 +366,9 @@ class Dashboard extends Component {
                     numberOfLines={1}
                     style={[styles.brandStyle]}
                   >
-                    {this.props.mainBusiness.brandname}
+                    {this.props.mainBusiness
+                      ? this.props.mainBusiness.brandname
+                      : ""}
                   </Text>
                   <View style={styles.sideMenuCard}>
                     <View
@@ -391,36 +403,20 @@ class Dashboard extends Component {
                       >
                         <Icon name="plus" type="MaterialCommunityIcons" />
                       </Button>
-                      <Text style={[styles.title, styles.newCampaignTitle]}>
+                      <Text
+                        style={[
+                          styles.campaignButtonText,
+                          styles.newCampaignTitle
+                        ]}
+                      >
                         New Ad
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "column"
-                      }}
-                    >
-                      <Button
-                        style={styles.snapAd}
-                        onPress={() => {
-                          this.navigationHandler();
-                        }}
-                      >
-                        <SnapAd />
-                      </Button>
-
-                      <Text
-                        style={[
-                          styles.title,
-                          styles.newCampaignTitle
-                          // { left: 5 }
-                        ]}
-                      >
-                        Snap Ad
-                      </Text>
-                    </View>
+                    <ScrollView style={{ height: 90, top: 10 }} horizontal>
+                      {adButtons}
+                    </ScrollView>
                   </View>
-                  {/* {this.state.showSearchBar && ( */}
+
                   <View
                     style={{
                       flexDirection: "row",
@@ -439,7 +435,7 @@ class Dashboard extends Component {
                       <FilterIcon width={23} height={23} fill="#575757" />
                     </Button>
                   </View>
-                  {/* )} */}
+
                   {this.props.loading ? (
                     placeHolderCards
                   ) : (
@@ -503,6 +499,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   wallet: state.transA.wallet,
   loading: state.dashboard.loading,
+  adType: state.campaignC.adType,
   loadingAccountMgmt: state.account.loading,
   mainBusiness: state.account.mainBusiness,
   businessLoadError: state.account.businessLoadError,
@@ -522,7 +519,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.updateCampaignList(id, page, increasePage)),
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
   getCampaignList: (id, increasePage, cancelToken) =>
-    dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken))
+    dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken)),
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(
   mapStateToProps,

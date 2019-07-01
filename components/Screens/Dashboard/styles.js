@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     left: 20,
-    marginBottom: 10,
-    paddingBottom: 10
+    marginBottom: 5
   },
   sideMenuTop: {
     flexDirection: "row",
@@ -60,7 +59,14 @@ const styles = StyleSheet.create({
     paddingBottom: heightPercentageToDP(35)
   },
   footerActivityIndicator: { margin: 15 },
-  title: {
+  campaignButtonText: {
+    textAlign: "center",
+    color: "#C6C6C6",
+    fontFamily: "montserrat-regular",
+    fontSize: 16,
+    top: 5
+  },
+  adButtonText: {
     textAlign: "center",
     color: "#C6C6C6",
     fontFamily: "montserrat-regular",
@@ -153,7 +159,6 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    top: 15,
     // marginBottom: 10,
     justifyContent: "center",
     backgroundColor: globalColors.orange,
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center"
   },
-  campaignButton: {
+  Text: {
     justifyContent: "space-between",
     flexDirection: "row",
     flex: 1,
@@ -316,7 +321,7 @@ const styles = StyleSheet.create({
     top: 10,
     justifyContent: "center",
     backgroundColor: globalColors.white,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     width: 50,
     height: 50,
     borderRadius: 50,
