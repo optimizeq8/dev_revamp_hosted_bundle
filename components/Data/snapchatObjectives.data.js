@@ -31,7 +31,7 @@ export default [
     icon: ObjIcons.Group
   },
   {
-    label: "WhatsApp Campaign",
+    label: "WhatsApp Leads",
     value: "WEB_CONVERSION",
     info: "Send customers directly to your business's whatsapp.",
     icon: ObjIcons.WhatsApp
