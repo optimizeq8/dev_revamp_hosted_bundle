@@ -238,6 +238,15 @@ export const save_campaign_info = info => {
     });
   };
 };
+
+export const saveSnapAdType = adType => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_TYPE,
+      payload: adType
+    });
+  };
+};
 export const ad_design = (
   info,
   laoding,

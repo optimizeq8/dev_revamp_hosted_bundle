@@ -140,6 +140,54 @@ const styles = StyleSheet.create({
   },
   dateColumn: {
     flexDirection: "column"
+  },
+  activeButton: {
+    backgroundColor: "#FF9D00",
+    height: 80,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  activeText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#fff",
+    textAlign: "center"
+  },
+  button: {
+    backgroundColor: "#fff",
+    height: 80,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  businessTypeButton1: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 15,
+    borderTopStartRadius: 15
+  },
+  businessTypeButton3: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 15,
+    borderTopEndRadius: 15
+  },
+  inactiveText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#7039FF",
+    textAlign: "center"
+  },
+  iconButtonStyleLeft: {
+    left: 25,
+    fontSize: 25 / PixelRatio.getFontScale()
+  },
+  topContainer: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignSelf: "center",
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.2
   }
 });
 

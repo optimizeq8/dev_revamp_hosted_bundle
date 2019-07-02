@@ -4,6 +4,7 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
+  adType: "",
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -30,6 +31,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_AD_TYPE:
+      return {
+        ...state,
+        adType: action.payload
+      };
     case actionTypes.SET_AD_OBJECTIVE:
       return {
         ...state,

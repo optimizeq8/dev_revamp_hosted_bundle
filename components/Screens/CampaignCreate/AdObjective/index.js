@@ -30,7 +30,8 @@ import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
-
+import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
+import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";
 // Style
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
@@ -62,6 +63,7 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
+      storyOption: "1",
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
@@ -213,6 +215,12 @@ class AdObjective extends Component {
     }
   };
 
+  handleStoryOption = storyOption => {
+    this.setState({
+      storyOption
+    });
+  };
+
   render() {
     let campaign_type = this.props.navigation.getParam("campaign_type", "");
     const list = this.state.objectives.map(o => (
@@ -355,70 +363,75 @@ class AdObjective extends Component {
               {campaign_type === "StoryAd" && (
                 <View style={styles.topContainer}>
                   <Button
-                    block
-                    dark
                     style={[
-                      this.state.businessAccount.businesstype === "1"
+                      this.state.storyOption === "1"
                         ? styles.activeButton
                         : styles.button,
                       styles.businessTypeButton1
                     ]}
                     onPress={() => {
-                      this._handleBusinessCategories("1");
+                      this.handleStoryOption("1");
                     }}
                   >
+                    <LoopStoryIcon
+                      width={40}
+                      height={40}
+                      fill={
+                        this.state.storyOption === "1"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
+                    />
                     <Text
                       style={[
-                        this.state.businessAccount.businesstype === "1"
+                        this.state.storyOption === "1"
                           ? styles.activeText
                           : styles.inactiveText
                       ]}
                     >
-                      <Icon
-                        type="MaterialCommunityIcons"
-                        name="home-account"
-                        style={[
-                          this.state.businessAccount.businesstype === "1"
-                            ? styles.activeText
-                            : styles.inactiveText,
-                          styles.iconButtonStyleLeft
-                        ]}
-                      />
-                      {"\n"}
-                      SME{"\n"} or Startup
+                      Loop story
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.storyOption === "1"
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        { fontFamily: "montserrat-regular" }
+                      ]}
+                    >
+                      Advance with tap
                     </Text>
                   </Button>
 
                   <Button
                     dark
                     style={[
-                      this.state.businessAccount.businesstype === "3"
+                      this.state.storyOption === "2"
                         ? styles.activeButton
                         : styles.button,
                       styles.businessTypeButton3
                     ]}
                     onPress={() => {
-                      this._handleBusinessCategories("3");
+                      this.handleStoryOption("2");
                     }}
                   >
-                    <Icon
-                      type="FontAwesome"
-                      name="building"
-                      style={[
-                        this.state.businessAccount.businesstype === "3"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                        styles.iconButtonStyle3
-                      ]}
+                    <AutoAdvanceIcon
+                      width={40}
+                      height={40}
+                      fill={
+                        this.state.storyOption === "2"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
                     />
                     <Text
                       style={[
-                        this.state.businessAccount.businesstype === "3"
+                        this.state.storyOption === "2"
                           ? styles.activeText
                           : styles.inactiveText
                       ]}
                     >
-                      Corporate
+                      Auto Advance
                     </Text>
                   </Button>
                 </View>

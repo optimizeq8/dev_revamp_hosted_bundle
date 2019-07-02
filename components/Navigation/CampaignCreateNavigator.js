@@ -6,6 +6,7 @@ import { createStackNavigator } from "react-navigation";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
+import AdCover from "../Screens/CampaignCreate/AdCover";
 import AdDetails from "../Screens/CampaignCreate/AdDetails";
 import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
 import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
@@ -20,6 +21,7 @@ export default FluidNavigator(
     AdType: AdType,
     AdObjective: AdObjective,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
+    AdCover: AdCover,
     AdDetails: AdDetails,
     AdDesignReview: AdDesignReview,
     SwipeUpDestination: SwipeUpDestination,
