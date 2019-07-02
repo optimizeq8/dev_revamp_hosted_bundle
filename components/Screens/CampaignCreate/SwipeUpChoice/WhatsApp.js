@@ -47,17 +47,27 @@ class WhatsApp extends Component {
 
   componentDidMount() {
     if (
-      this.props.data.hasOwnProperty("attachment") &&
-      this.props.data.attachment !== "BLANK"
+      (this.props.data.hasOwnProperty("attachment") &&
+        this.props.data.attachment !== "BLANK") ||
+      this.props.mainBusiness.hasOwnProperty("whatsappnumber")
     ) {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           weburl: this.props.mainBusiness.brandname.replace(/[^0-9a-z]/gi, ""),
-          insta_handle: this.props.data.insta_handle,
-          whatsappnumber: this.props.data.whatsappnumber,
-          callnumber: this.props.data.callnumber,
-          callaction: this.props.data.call_to_action
+          insta_handle: this.props.mainBusiness.insta_handle
+            ? this.props.mainBusiness.insta_handle
+            : this.props.data.insta_handle,
+          whatsappnumber: this.props.mainBusiness.whatsappnumber
+            ? this.props.mainBusiness.whatsappnumber
+            : this.props.data.whatsappnumber,
+          callnumber: this.props.mainBusiness.callnumber
+            ? this.props.mainBusiness.callnumber
+            : this.props.data.callnumber,
+          callaction:
+            this.props.data.call_to_action.value !== "BLANK"
+              ? this.props.data.call_to_action
+              : list[4].call_to_action_list[0]
         }
       });
     }

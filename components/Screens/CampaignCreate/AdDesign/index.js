@@ -869,8 +869,6 @@ class AdDesign extends Component {
     ));
 
     let blankView = <View style={styles.blankView} />;
-    console.log("isVisible", this.state.isVisible);
-    console.log("videoIsLoading", this.state.videoIsLoading);
 
     return (
       <SafeAreaView
