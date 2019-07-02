@@ -331,9 +331,9 @@ class AdDesign extends Component {
               newWidth = 1080;
               newHeight = 1920;
             }
-            console.log("image res:", result);
-            console.log("width:", newWidth);
-            console.log("height:", newHeight);
+            // console.log("image res:", result);
+            // console.log("width:", newWidth);
+            // console.log("height:", newHeight);
             ImageManipulator.manipulateAsync(
               result.uri,
               [
@@ -484,7 +484,6 @@ class AdDesign extends Component {
               position: "top",
               type: "warning"
             });
-            console.log("????");
 
             return;
           } else {
@@ -836,8 +835,6 @@ class AdDesign extends Component {
     }
   };
   onToggleModal = visibile => {
-    console.log("toggle off");
-
     this.setState({ isVisible: visibile });
   };
   handleUpload = () => {

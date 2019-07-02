@@ -13,7 +13,8 @@ import {
   Input,
   Container,
   Icon,
-  Label
+  Label,
+  Button
 } from "native-base";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
@@ -213,6 +214,7 @@ class AdObjective extends Component {
   };
 
   render() {
+    let campaign_type = this.props.navigation.getParam("campaign_type", "");
     const list = this.state.objectives.map(o => (
       <ObjectivesCard
         choice={o}
@@ -350,6 +352,77 @@ class AdObjective extends Component {
                 </Text>
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
+              {campaign_type === "StoryAd" && (
+                <View style={styles.topContainer}>
+                  <Button
+                    block
+                    dark
+                    style={[
+                      this.state.businessAccount.businesstype === "1"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.businessTypeButton1
+                    ]}
+                    onPress={() => {
+                      this._handleBusinessCategories("1");
+                    }}
+                  >
+                    <Text
+                      style={[
+                        this.state.businessAccount.businesstype === "1"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      <Icon
+                        type="MaterialCommunityIcons"
+                        name="home-account"
+                        style={[
+                          this.state.businessAccount.businesstype === "1"
+                            ? styles.activeText
+                            : styles.inactiveText,
+                          styles.iconButtonStyleLeft
+                        ]}
+                      />
+                      {"\n"}
+                      SME{"\n"} or Startup
+                    </Text>
+                  </Button>
+
+                  <Button
+                    dark
+                    style={[
+                      this.state.businessAccount.businesstype === "3"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.businessTypeButton3
+                    ]}
+                    onPress={() => {
+                      this._handleBusinessCategories("3");
+                    }}
+                  >
+                    <Icon
+                      type="FontAwesome"
+                      name="building"
+                      style={[
+                        this.state.businessAccount.businesstype === "3"
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        styles.iconButtonStyle3
+                      ]}
+                    />
+                    <Text
+                      style={[
+                        this.state.businessAccount.businesstype === "3"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Corporate
+                    </Text>
+                  </Button>
+                </View>
+              )}
             </View>
             {this.props.loading ? (
               <ForwardLoading

@@ -9,6 +9,7 @@ import { globalColors } from "../../../../GlobalStyles";
 export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
+
     return (
       <TouchableOpacity
         onPress={() => {
@@ -30,9 +31,6 @@ export default class AdTypeCard extends Component {
               resizeMode={adType.media !== "snapchat" ? "center" : "stretch"}
               source={adType.image}
             />
-            {adType.text.includes("Soon") && (
-              <Text style={styles.slidetText}> {adType.text} </Text>
-            )}
           </View>
         </View>
       </TouchableOpacity>

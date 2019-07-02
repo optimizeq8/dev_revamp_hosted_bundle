@@ -66,6 +66,7 @@ class AdType extends Component {
 
         break;
       case 1:
+        route = "AdObjective";
         campaign_type = "StoryAd";
         break;
       case 2:
@@ -104,7 +105,9 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
-    this.props.navigation.navigate(this.state.route);
+    this.props.navigation.navigate(this.state.route, {
+      campaign_type: this.state.campaign_type
+    });
   };
 
   _renderItem({ item }) {
