@@ -10,6 +10,7 @@ import Long_Form_Video from "./Long_Form_Video";
 
 // Style
 import styles from "./styles";
+import WhatsApp from "./WhatsApp";
 
 class SwipeUpChoice extends Component {
   static navigationOptions = {
@@ -38,6 +39,12 @@ class SwipeUpChoice extends Component {
                 Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
                   category: "Campaign Creation",
                   label: "Video Views Objective"
+                });
+                break;
+              case "WEB_CONVERSION":
+                Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
+                  category: "Campaign Creation",
+                  label: "Whatsapp Campaign Objective"
                 });
                 break;
               default:
@@ -73,6 +80,15 @@ class SwipeUpChoice extends Component {
               {this.props.navigation.state.params.objective ===
                 "VIDEO_VIEWS" && (
                 <Long_Form_Video
+                  _changeDestination={
+                    this.props.navigation.state.params._changeDestination
+                  }
+                  navigation={this.props.navigation}
+                />
+              )}
+              {this.props.navigation.state.params.objective ===
+                "WEB_CONVERSION" && (
+                <WhatsApp
                   _changeDestination={
                     this.props.navigation.state.params._changeDestination
                   }

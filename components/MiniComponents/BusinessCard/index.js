@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
-import { colors } from ".././../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import businessList from "../../Data/businessCategoriesList.data";

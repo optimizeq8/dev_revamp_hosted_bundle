@@ -218,7 +218,13 @@ class AdDesign extends Component {
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
   };
-  _changeDestination = (destination, call_to_action, attachment, appChoice) => {
+  _changeDestination = (
+    destination,
+    call_to_action,
+    attachment,
+    appChoice = null,
+    whatsAppCampaign = null
+  ) => {
     let newData = {};
     if (attachment.hasOwnProperty("longformvideo_media")) {
       newData = {
@@ -248,6 +254,22 @@ class AdDesign extends Component {
         },
         appChoice
       };
+      if (whatsAppCampaign) {
+        newData = {
+          ...newData,
+          campaignInfo: {
+            ...newData.campaignInfo,
+            insta_handle: whatsAppCampaign.insta_handle,
+            whatsappnumber: whatsAppCampaign.whatsappnumber,
+            callnumber: whatsAppCampaign.callnumber
+          }
+        };
+        this.props.save_campaign_info({
+          insta_handle: whatsAppCampaign.insta_handle,
+          whatsappnumber: whatsAppCampaign.whatsappnumber,
+          callnumber: whatsAppCampaign.callnumber
+        });
+      }
       this.setState(newData);
       this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
     }
@@ -636,7 +658,14 @@ class AdDesign extends Component {
       );
     }
 
+    if (this.state.campaignInfo.insta_handle) {
+      body.append("insta_handle", this.state.campaignInfo.insta_handle);
+      body.append("weburl", this.state.campaignInfo.attachment.url);
+      body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
+      body.append("callnumber", this.state.campaignInfo.callnumber);
+    }
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
+    body.append("businessid", this.props.mainBusiness.businessid);
     body.append("campaign_id", this.props.campaign_id);
     body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {

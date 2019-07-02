@@ -29,10 +29,7 @@ import * as actionCreators from "../../../../store/actions";
 import LowerButton from "../../../MiniComponents/LowerButton";
 
 //Functions
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import find from "lodash/find";
 
 class PhoneNo extends Component {
@@ -125,7 +122,9 @@ class PhoneNo extends Component {
       style={[
         styles.phoneInput,
         this.props.invite
-          ? globalStyles.blackBackgroundColor
+          ? this.props.whatsApp
+            ? { backgroundColor: "rgba(0,0,0,0.3)" }
+            : globalStyles.blackBackgroundColor
           : globalStyles.transparentBackgroundColor,
         this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
       ]}
@@ -179,14 +178,14 @@ class PhoneNo extends Component {
                 this.phone.getAllCountries(),
                 country => country.dialCode === this.phone.getCountryCode()
               ).name;
-              console.log(country_name);
 
-              this.props._getMobile({
-                country_code: this.phone.getCountryCode(),
-                mobile: this.state.value,
-                valid: this.phone.isValidNumber(),
-                country_name
-              });
+              this.props._getMobile &&
+                this.props._getMobile({
+                  country_code: this.phone.getCountryCode(),
+                  mobile: this.state.value,
+                  valid: this.phone.isValidNumber(),
+                  country_name
+                });
             }
           }
         }}
@@ -200,11 +199,12 @@ class PhoneNo extends Component {
               value: number.split(this.phone.getCountryCode())[1]
             });
           }
+          this.props.changeFunction(number, this.phone.isValidNumber());
         }}
         onPressFlag={this.onPressFlag}
         initialCountry="kw"
         countriesList={countriesMobileData}
-        value="+965"
+        value={this.props.phoneNum ? this.props.phoneNum : "+965"}
         offset={10}
       />
     </Item>

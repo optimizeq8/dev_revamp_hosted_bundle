@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   },
   swipeUpText: {
     alignSelf: "center",
+    textAlign: "center",
     color: "white",
     fontFamily: "montserrat-medium",
     fontSize: 16
