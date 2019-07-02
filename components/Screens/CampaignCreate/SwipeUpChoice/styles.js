@@ -24,10 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 40
   },
-  icon: {
-    alignSelf: "center",
-    paddingHorizontal: 7
-  },
+
   titletext: {
     textAlign: "left",
     color: "#fff",
@@ -69,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingTop: 5,
     color: "#fff",
+    paddingHorizontal: 20,
     textAlign: "center"
   },
   addVideoText: {

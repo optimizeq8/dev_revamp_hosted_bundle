@@ -1,32 +1,39 @@
+import * as ObjIcons from "../../assets/SVGs/Objectives";
 export default [
   {
     label: "Awareness",
     value: "BRAND_AWARENESS",
     info: "Increase awareness of your brand or product.",
-    icon: ""
+    icon: ObjIcons.Awareness
   },
   {
     label: "Traffic",
     value: "TRAFFIC",
     info: "Send Snapchatters directly to your website or to your app",
-    icon: ""
+    icon: ObjIcons.BRAND_AWARENESS
   },
   {
     label: "App Installs",
     value: "APP_INSTALLS",
     info: "Send Snapchatters to the app store to download your app",
-    icon: ""
+    icon: ObjIcons.Download
   },
   {
     label: "Video Views",
     value: "VIDEO_VIEWS",
     info: "Promote your brand or product to Snapchatters through video.",
-    icon: ""
+    icon: ObjIcons.Video
   },
   {
     label: "Lead Generation",
     value: "LEAD_GENERATION",
     info: "Generate leads for your business.",
-    icon: ""
+    icon: ObjIcons.Group
+  },
+  {
+    label: "WhatsApp Campaign",
+    value: "WEB_CONVERSION",
+    info: "Send customers directly to your business's whatsapp.",
+    icon: ObjIcons.WhatsApp
   }
 ];

@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "transparent",
     alignSelf: "center",
-    width: widthPercentageToDP(70),
+    width: widthPercentageToDP(75),
     height: 50
   },
   flagTouchableArea: {
