@@ -13,7 +13,8 @@ import {
   Input,
   Container,
   Icon,
-  Label
+  Label,
+  Button
 } from "native-base";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
@@ -61,12 +62,13 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
+      collectionAdLinkForm: 0,
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
       objectiveLabel: "Select Objective",
       inputN: false,
-      objectives: ObjectiveData,
+      objectives: ObjectiveData[this.props.adType],
       nameError: "",
       objectiveError: "",
       start_timeError: "",
@@ -87,6 +89,10 @@ class AdObjective extends Component {
   };
   componentDidMount() {
     let rep = this.state.campaignInfo;
+    if (this.props.adType === "CollectionAd")
+      this._handleCollectionAdLinkForm(1);
+    else this._handleCollectionAdLinkForm(0);
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -152,6 +158,11 @@ class AdObjective extends Component {
       minValueBudget,
       maxValueBudget
     });
+  };
+  _handleCollectionAdLinkForm = val => {
+    this.setState({ collectionAdLinkForm: val }, () =>
+      this.props.set_collectionAd_link_form(val)
+    );
   };
   _handleSubmission = () => {
     const nameError = validateWrapper(
@@ -350,6 +361,76 @@ class AdObjective extends Component {
                 </Text>
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
+              {this.props.adType === "CollectionAd" && (
+                <View style={styles.topContainer}>
+                  <Button
+                    block
+                    dark
+                    style={[
+                      this.state.collectionAdLinkForm === 1
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm1
+                    ]}
+                    onPress={() => {
+                      this._handleCollectionAdLinkForm(1);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 1
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Website
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 1
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        styles.buttonSubText
+                      ]}
+                    >
+                      Links to your site
+                    </Text>
+                  </Button>
+                  <Button
+                    block
+                    dark
+                    style={[
+                      this.state.collectionAdLinkForm === 2
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm2
+                    ]}
+                    onPress={() => {
+                      this._handleCollectionAdLinkForm(2);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 2
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      App DeepLink
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 2
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        styles.buttonSubText
+                      ]}
+                    >
+                      Links to your App
+                    </Text>
+                  </Button>
+                </View>
+              )}
             </View>
             {this.props.loading ? (
               <ForwardLoading
@@ -416,14 +497,17 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
   campaign_id: state.campaignC.campaign_id,
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  adType: state.campaignC.adType
 });
 
 const mapDispatchToProps = dispatch => ({
   ad_objective: (info, navigation) =>
     dispatch(actionCreators.ad_objective(info, navigation)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values))
+  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
+  set_collectionAd_link_form: value =>
+    dispatch(actionCreators.set_collectionAd_link_form(value))
 });
 export default connect(
   mapStateToProps,

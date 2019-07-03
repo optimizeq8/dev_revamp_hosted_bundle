@@ -25,11 +25,23 @@ const initialState = {
   countryName: "",
   interestNames: [],
   regionNames: [],
-  campaignEnded: false
+  campaignEnded: false,
+  adType: "SnapAd",
+  collectionAdLinkForm: 0
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_AD_TYPE:
+      return {
+        ...state,
+        adType: action.payload
+      };
+    case actionTypes.SET_COLLECTION_AD_LINK_FORM:
+      return {
+        ...state,
+        collectionAdLinkForm: action.payload
+      };
     case actionTypes.SET_AD_OBJECTIVE:
       return {
         ...state,
@@ -250,7 +262,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaign_id: "",
-        data: null
+        data: null,
+        adType: "SnapAd"
       };
     default:
       return state;

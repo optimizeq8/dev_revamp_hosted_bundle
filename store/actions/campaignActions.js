@@ -191,6 +191,8 @@ export const ad_objective = (info, navigation) => {
     createBaseUrl()
       .post(`savecampaign`, info)
       .then(res => {
+        console.log("objectives", res.data);
+
         return res.data;
       })
       .then(data => {
@@ -266,6 +268,8 @@ export const ad_design = (
         cancelToken: cancelUplaod.token
       })
       .then(res => {
+        console.log("objectives", res.data);
+
         return res.data;
       })
       .then(data => {
@@ -626,5 +630,23 @@ export const get_languages = () => {
           type: actionTypes.ERROR_SET_LANGUAGE_LIST
         });
       });
+  };
+};
+
+export const set_adType = data => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.SET_AD_TYPE,
+      payload: data
+    });
+  };
+};
+
+export const set_collectionAd_link_form = data => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.SET_COLLECTION_AD_LINK_FORM,
+      payload: data
+    });
   };
 };

@@ -5,37 +5,53 @@ import styles from "./styles";
 import { Icon } from "native-base";
 export default class SwipeUpComponent extends Component {
   render() {
-    let { destination, attachment } = this.props;
+    let { destination, attachment, collectionAdLinkForm, adType } = this.props;
     return (
       <TouchableOpacity
         style={styles.swipeUp}
         onPress={() => {
-          this.props.objective.toLowerCase() === "traffic"
-            ? this.props.navigation.push("SwipeUpDestination", {
-                _changeDestination: this.props._changeDestination,
-                image: this.props.image
-              })
-            : this.props.navigation.navigate("SwipeUpChoice", {
-                _changeDestination: this.props._changeDestination,
-                objective: this.props.objective
-              });
+          if (adType === "CollectionAd") {
+            this.props.navigation.navigate("SwipeUpChoice", {
+              _changeDestination: this.props._changeDestination,
+              objective: this.props.objective,
+              collectionAdLinkForm: collectionAdLinkForm,
+              adType: adType
+            });
+          } else {
+            this.props.objective.toLowerCase() === "traffic"
+              ? this.props.navigation.push("SwipeUpDestination", {
+                  _changeDestination: this.props._changeDestination,
+                  image: this.props.image
+                })
+              : this.props.navigation.navigate("SwipeUpChoice", {
+                  _changeDestination: this.props._changeDestination,
+                  objective: this.props.objective,
+                  collectionAdLinkForm: collectionAdLinkForm
+                });
+          }
         }}
       >
         <View style={{ flexDirection: "column" }}>
           <Text style={styles.swipeUpText}>
             {destination !== "BLANK" && destination !== "REMOTE_WEBPAGE"
               ? destination
-              : destination === "REMOTE_WEBPAGE"
+              : destination === "REMOTE_WEBPAGE" || destination === "COLLECTION"
               ? "Website"
               : "Swipe Up destination"}
           </Text>
-          {["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(
-            destination
-          ) && (
+          {[
+            "REMOTE_WEBPAGE",
+            "DEEP_LINK",
+            "LEAD_GENERATION",
+            "COLLECTION"
+          ].includes(destination) && (
             <Text
-              ellipsizeMode={4}
+              ellipsizeMode={"tail"}
               numberOfLines={1}
-              style={[styles.swipeUpText, { fontSize: 12, width: 150 }]}
+              style={[
+                styles.swipeUpText,
+                { fontSize: 12, width: 150, textAlign: "center" }
+              ]}
             >
               {attachment.hasOwnProperty("deep_link_uri")
                 ? attachment.deep_link_uri

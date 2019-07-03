@@ -23,7 +23,7 @@ import Picker from "../Picker";
 import SearchIcon from "../../../assets/SVGs/Search";
 
 //Data
-import list from "./callactions";
+import list from "../../Data/callactions.data";
 
 //Styles
 import styles from "./styles";
@@ -48,8 +48,8 @@ class AppChoice extends Component {
       showList: false,
       data: [],
       androidData: [],
-      callaction: list[1].call_to_action_list[0],
-      callactions: list[1].call_to_action_list,
+      callaction: list.SnapAd[1].call_to_action_list[0],
+      callactions: list.SnapAd[1].call_to_action_list,
       nameError: "",
       callActionError: "",
       choiceError: "",
@@ -71,7 +71,14 @@ class AppChoice extends Component {
 
   componentDidMount() {
     this.setState({
-      callactions: list[this.props.listNum].call_to_action_list
+      callaction:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list[0]
+          : list.SnapAd[this.props.listNum].call_to_action_list[0],
+      callactions:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list
+          : list.SnapAd[this.props.listNum].call_to_action_list
     });
     // if (
     //   this.props.data.hasOwnProperty("attachment") &&
@@ -578,7 +585,11 @@ class AppChoice extends Component {
     );
   }
 }
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = state => ({
+  data: state.campaignC.data,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  adType: state.campaignC.adType
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

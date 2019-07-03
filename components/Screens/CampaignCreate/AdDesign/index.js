@@ -839,6 +839,32 @@ class AdDesign extends Component {
       />
     ));
 
+    let swipeUpComp =
+      this.props.adType === "SnapAd" ? (
+        !["BRAND_AWARENESS", "reach"].find(
+          obj => this.state.objective.toLowerCase() === obj.toLowerCase()
+        ) && (
+          <SwipeUpComponent
+            _changeDestination={this._changeDestination}
+            navigation={this.props.navigation}
+            objective={this.state.campaignInfo.objective}
+            destination={destination}
+            attachment={attachment}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
+            adType={this.props.adType}
+          />
+        )
+      ) : (
+        <SwipeUpComponent
+          _changeDestination={this._changeDestination}
+          navigation={this.props.navigation}
+          objective={this.state.campaignInfo.objective}
+          destination={destination}
+          attachment={attachment}
+          collectionAdLinkForm={this.props.collectionAdLinkForm}
+          adType={this.props.adType}
+        />
+      );
     let blankView = <View style={styles.blankView} />;
     console.log("isVisible", this.state.isVisible);
     console.log("videoIsLoading", this.state.videoIsLoading);
@@ -907,18 +933,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {swipeUpComp}
                   </View>
                 ) : !image ? (
                   <View style={styles.placeholder}>
@@ -929,18 +944,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {swipeUpComp}
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -955,18 +959,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {swipeUpComp}
                   </View>
                 )}
               </View>
@@ -1086,7 +1079,9 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign,
   videoUrlLoading: state.campaignC.videoUrlLoading,
-  videoUrl: state.campaignC.videoUrl
+  videoUrl: state.campaignC.videoUrl,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  adType: state.campaignC.adType
 });
 
 const mapDispatchToProps = dispatch => ({
