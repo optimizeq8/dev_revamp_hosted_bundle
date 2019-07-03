@@ -29,11 +29,11 @@ export default [
     value: "LEAD_GENERATION",
     info: "Generate leads for your business.",
     icon: ObjIcons.Group
-  },
-  {
-    label: "WhatsApp Leads",
-    value: "WEB_CONVERSION",
-    info: "Send customers directly to your business's whatsapp.",
-    icon: ObjIcons.WhatsApp
   }
+  // {
+  //   label: "WhatsApp Leads",
+  //   value: "WEB_CONVERSION",
+  //   info: "Send customers directly to your business's whatsapp.",
+  //   icon: ObjIcons.WhatsApp
+  // }
 ];
