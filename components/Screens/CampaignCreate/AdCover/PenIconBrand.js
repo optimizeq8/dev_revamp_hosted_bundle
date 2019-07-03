@@ -6,7 +6,7 @@ import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 export default class PenIconBrand extends Component {
-  state = { input: false, brand_nameError: "" };
+  state = { input: false, coverHeadline: "" };
   render() {
     return (
       <Item style={styles.inputHeadline}>
@@ -14,7 +14,7 @@ export default class PenIconBrand extends Component {
           fill={
             this.state.input
               ? "#FF9D00"
-              : this.props.brand_nameError || this.state.brand_nameError
+              : this.props.coverHeadline || this.state.coverHeadline
               ? "red"
               : "#fff"
           }
@@ -26,13 +26,7 @@ export default class PenIconBrand extends Component {
           <Input
             style={styles.inputText}
             defaultValue={
-              this.props.field === "Logo"
-                ? this.props.mainBusiness.businessname
-                  ? this.props.mainBusiness.businessname
-                  : "Brand Name"
-                : !this.props.data
-                ? "Headline"
-                : this.props.data.name
+              !this.props.data ? "Headline" : this.props.data.coverHeadline
             }
             placeholderLabel={styles.inputText}
             placeholderTextColor="white"

@@ -40,6 +40,8 @@ import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import MediaModal from "./MediaModal";
+import SnapAds from "./SnapAds";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -85,7 +87,7 @@ class AdDesign extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      image: null,
+      image: "blank",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -148,6 +150,7 @@ class AdDesign extends Component {
         });
       }
     }
+
     let rep = this.state.campaignInfo;
     if (
       Object.keys(this.state.campaignInfo)
@@ -170,12 +173,6 @@ class AdDesign extends Component {
       this.setState({
         ...this.state,
         campaignInfo: {
-          // ...this.state.campaignInfo,
-          // brand_name: this.props.data.brand_name,
-          // headline: this.props.data.headline,
-          // destination: rep.destination ? rep.destination : "BLANK",
-          // call_to_action: rep.call_to_action,
-          // attachment: rep.attachment
           ...rep
         },
         image: rep.image,
@@ -755,11 +752,6 @@ class AdDesign extends Component {
       });
   };
 
-  _onLayoutEvent = event => {
-    const h = event.nativeEvent.layout.height;
-
-    this.setState({ heightComponent: h - 40 });
-  };
   validator = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -944,41 +936,47 @@ class AdDesign extends Component {
                       />
                     )}
                   </View>
-                ) : !image ? (
-                  <View style={styles.placeholder}>
-                    {blankView}
-
-                    {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
-                  </View>
                 ) : (
+                  // !image ? (
+                  //   <View style={styles.placeholder}>
+                  //     {blankView}
+
+                  //     {inputFields}
+                  //     <MediaButton
+                  //       setMediaModalVisible={this.setMediaModalVisible}
+                  //       image={this.state.image}
+                  //     />
+                  //     {!["BRAND_AWARENESS", "reach"].find(
+                  //       obj =>
+                  //         this.state.objective.toLowerCase() === obj.toLowerCase()
+                  //     ) && (
+                  //       <SwipeUpComponent
+                  //         _changeDestination={this._changeDestination}
+                  //         navigation={this.props.navigation}
+                  //         objective={this.state.campaignInfo.objective}
+                  //         destination={destination}
+                  //         attachment={attachment}
+                  //       />
+                  //     )}
+                  //   </View>
+                  // ) :
                   <View style={styles.placeholder}>
-                    <Image
+                    {/* <Image
                       style={styles.placeholder1}
                       source={{ uri: image }}
                       resizeMode="cover"
-                    />
+                    /> */}
 
                     {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
+                    {true ? (
+                      // this.props.adType === "StoryAd"
+                      <SnapAds />
+                    ) : (
+                      <MediaButton
+                        setMediaModalVisible={this.setMediaModalVisible}
+                        image={this.state.image}
+                      />
+                    )}
                     {!["BRAND_AWARENESS", "reach"].find(
                       obj =>
                         this.state.objective.toLowerCase() === obj.toLowerCase()

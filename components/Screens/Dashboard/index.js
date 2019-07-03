@@ -370,7 +370,7 @@ class Dashboard extends Component {
                             Segment.trackWithProperties("Create Campaign", {
                               category: "Campaign Creation"
                             });
-                            this.props.navigation.navigate("AdType");
+                            this.props.navigation.navigate("AdDesign");
                           }
                         }}
                       >

@@ -78,8 +78,9 @@ const styles = StyleSheet.create({
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
     opacity: 0.4,
-    height: "100%",
-    width: "100%"
+    height: 70,
+    width: 50,
+    margin: 10
   },
   title: {
     fontSize: 16,

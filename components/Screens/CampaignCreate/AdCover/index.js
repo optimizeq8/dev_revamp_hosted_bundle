@@ -73,8 +73,7 @@ class AdCover extends Component {
     this.state = {
       campaignInfo: {
         logo: "blank",
-        headline: "",
-        cover: ""
+        coverHeadline: ""
       },
       directory: "/ImagePicker/",
       result: "",
@@ -83,19 +82,18 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      image: "blank",
+      cover: "blank",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
-      formatted: null,
-      brand_nameError: "",
-      headlineError: "",
+      formattedCover: null,
+      coverHeadlineError: "",
       orientationError: "",
-      imageError: "",
+      coverError: "",
       swipeUpError: "",
       isVisible: false,
       mediaModalVisible: false,
-      imageLoading: false,
+      coverLoading: false,
       videoIsLoading: false,
       heightComponent: 0
     };
@@ -120,11 +118,11 @@ class AdCover extends Component {
         campaign_id: this.rejected
           ? this.params.campaign_id
           : this.props.campaign_id,
-        headline: !this.props.data
+        coverHeadline: !this.props.data
           ? this.rejected
-            ? this.params.headline
+            ? this.params.coverHeadline
             : "Headline"
-          : this.props.data.headlineCover
+          : this.props.data.coverHeadline
       },
       objective: this.props.data
         ? this.props.data.objective
@@ -154,16 +152,7 @@ class AdCover extends Component {
         .includes(true)
     ) {
       rep = { ...this.state.campaignInfo, ...this.props.data };
-      let swipeUpError = null;
-      if (
-        this.state.objective !== "BRAND_AWARENESS" &&
-        this.state.campaignInfo.attachment === "BLANK" &&
-        this.state.campaignInfo.call_to_action.label === "BLANK"
-      ) {
-        swipeUpError = "Choose A Swipe Up Destination";
-      } else {
-        swipeUpError = null;
-      }
+
       this.setState({
         ...this.state,
         campaignInfo: {
@@ -175,29 +164,13 @@ class AdCover extends Component {
           // attachment: rep.attachment
           ...rep
         },
-        image: rep.image,
-        type: rep.type,
-        objective: rep.objective,
-        iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
-        swipeUpError
+        cover: rep.cover,
+        objective: rep.objective
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.objective !== "BRAND_AWARENESS" &&
-      ((prevState.campaignInfo.attachment === "BLANK" &&
-        this.state.campaignInfo.attachment !== "BLANK") ||
-        (prevState.campaignInfo.call_to_action.label === "BLANK" &&
-          this.state.campaignInfo.call_to_action.label !== "BLANK"))
-    ) {
-      this.setState({
-        swipeUpError: null
-      });
-    }
-  }
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -216,13 +189,16 @@ class AdCover extends Component {
     this.setState({ mediaModalVisible: visible });
   };
 
-  changeHeadline = headline => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        headline
-      }
-    });
+  changeHeadline = coverHeadline => {
+    this.setState(
+      {
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          coverHeadline
+        }
+      },
+      this.props.save_campaign_info({ coverHeadline })
+    );
   };
   pick = async mediaTypes => {
     await this.askForPermssion();
@@ -239,31 +215,32 @@ class AdCover extends Component {
 
   _pickLogo = async () => {
     let logo = await this.pick("Images");
-    console.log(logo);
+
     let correctLogo = logo.width === 993 && logo.height === 284;
+    if (!logo.cancelled) {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          logo: correctLogo ? logo.uri : "blank"
+        },
+        logoError: correctLogo
+      });
+      showMessage({
+        message: correctLogo
+          ? "Logo selected successfully"
+          : "Logo must be exactly 993px by 284px",
+        description: correctLogo
+          ? ""
+          : "In .png format and transparent background.",
+        position: "top",
+        duration: correctLogo ? 2000 : 10000,
+        type: correctLogo ? "success" : "warning"
+      });
 
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
+      this.props.save_campaign_info({
         logo: correctLogo ? logo.uri : "blank"
-      },
-      logoError: correctLogo
-    });
-    showMessage({
-      message: correctLogo
-        ? "Logo selected successfully"
-        : "Logo must be exactly 993px by 284px",
-      description: correctLogo
-        ? ""
-        : "In .png format and transparent background.",
-      position: "top",
-      duration: 10000,
-      type: correctLogo ? "success" : "warning"
-    });
-
-    this.props.save_campaign_info({
-      logo: logo.uri
-    });
+      });
+    }
   };
 
   _pickImage = async (mediaTypes = "All") => {
@@ -335,9 +312,9 @@ class AdCover extends Component {
               })
               .then(() => {
                 this.setState({
-                  image: result.uri,
+                  cover: result.uri,
                   type: result.type.toUpperCase(),
-                  imageError: null,
+                  coverError: null,
                   result: result.uri
                 });
                 this.onToggleModal(false);
@@ -347,8 +324,7 @@ class AdCover extends Component {
                   type: "success"
                 });
                 this.props.save_campaign_info({
-                  image: result.uri,
-                  type: result.type.toUpperCase()
+                  cover: result.uri
                 });
               })
               .catch(error => {
@@ -364,7 +340,7 @@ class AdCover extends Component {
             return;
           } else if (file.size > 2000000) {
             this.setState({
-              image: "blank"
+              cover: "blank"
             });
             this.onToggleModal(false);
             showMessage({
@@ -373,8 +349,7 @@ class AdCover extends Component {
               type: "warning"
             });
             this.props.save_campaign_info({
-              image: "blank",
-              type: ""
+              cover: "blank"
             });
             return;
           } else if (
@@ -383,12 +358,11 @@ class AdCover extends Component {
             result.height < 600
           ) {
             this.setState({
-              image: "blank",
+              cover: "blank",
               type: ""
             });
             this.props.save_campaign_info({
-              image: "blank",
-              type: ""
+              cover: "blank"
             });
             this.onToggleModal(false);
             showMessage({
@@ -401,9 +375,9 @@ class AdCover extends Component {
             return;
           } else {
             this.setState({
-              image: result.uri,
+              cover: result.uri,
               type: result.type.toUpperCase(),
-              imageError: null,
+              coverError: null,
               result: result.uri
             });
             this.onToggleModal(false);
@@ -414,24 +388,22 @@ class AdCover extends Component {
             });
 
             this.props.save_campaign_info({
-              image: result.uri,
-              type: result.type.toUpperCase()
+              cover: result.uri
             });
             return;
           }
         }
-      } else if (!result.cancelled && isNull(this.state.image)) {
+      } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: "Please choose a media file.",
           position: "top",
           type: "warning"
         });
         this.setState({
-          image: "blank"
+          cover: "blank"
         });
         this.props.save_campaign_info({
-          image: "blank",
-          type: ""
+          cover: "blank"
         });
         this.onToggleModal(false);
         return;
@@ -441,147 +413,78 @@ class AdCover extends Component {
       }
     } catch (error) {
       this.onToggleModal(false);
-      console.log("error image pick", error);
+      console.log("error cover pick", error);
     }
   };
 
   formatMedia() {
     var body = new FormData();
-    if (!this.state.iosVideoUploaded) {
-      let res = this.state.image.split(
-        this.state.image.includes("/ImageManipulator/")
-          ? "/ImageManipulator/"
-          : this.state.directory
-      );
-      let format = res[1].split(".");
 
-      var photo = {
-        uri: this.state.image,
-        type: this.state.type + "/" + format[1],
-        name: res[1]
-      };
-      body.append("media", photo);
-      body.append("media_type", this.state.type);
-    }
-    if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
-      let formatVideo = resVideo[1].split(".");
-      var video = {
-        uri: this.state.longformvideo_media,
-        type: this.state.longformvideo_media_type + "/" + formatVideo[1],
-        name: resVideo[1]
-      };
-
-      body.append("longformvideo_media", video);
-      body.append(
-        "longformvideo_media_type",
-        this.state.longformvideo_media_type
-      );
-    }
-
-    if (this.state.campaignInfo.insta_handle) {
-      body.append("insta_handle", this.state.campaignInfo.insta_handle);
-      body.append("weburl", this.state.campaignInfo.attachment.url);
-      body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
-      body.append("callnumber", this.state.campaignInfo.callnumber);
-    }
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("businessid", this.props.mainBusiness.businessid);
     body.append("campaign_id", this.props.campaign_id);
     body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
-      body.append("brand_name", this.state.campaignInfo.brand_name);
-      body.append("headline", this.state.campaignInfo.headline);
+      body.append("coverHeadline", this.state.campaignInfo.coverHeadline);
     }
-    body.append("destination", this.state.campaignInfo.destination);
-    body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
-    body.append(
-      "attachment",
-      this.state.campaignInfo.attachment === "BLANK"
-        ? this.state.campaignInfo.attachment
-        : JSON.stringify(this.state.campaignInfo.attachment)
-    );
-    body.append(
-      "ios_upload",
-      Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
-    );
+
     this.setState({
-      formatted: body
+      formattedCover: body
     });
   }
 
   validator = () => {
-    const brand_nameError = validateWrapper(
+    const coverHeadlineError = validateWrapper(
       "mandatory",
-      this.state.campaignInfo.brand_name
+      this.state.campaignInfo.coverHeadline
     );
-    const headlineError = validateWrapper(
+    const coverError = validateWrapper("mandatory", this.state.cover);
+    const logoError = validateWrapper(
       "mandatory",
-      this.state.campaignInfo.headline
+      this.state.campaignInfo.logo
     );
-    const imageError = validateWrapper("mandatory", this.state.image);
-
-    let swipeUpError = null;
-    if (
-      this.state.objective !== "BRAND_AWARENESS" &&
-      this.state.campaignInfo.attachment === "BLANK" &&
-      this.state.campaignInfo.call_to_action.label === "BLANK"
-    ) {
-      swipeUpError = "Choose A Swipe Up Destination";
-    } else {
-      swipeUpError = null;
-    }
 
     this.setState({
-      brand_nameError,
-      headlineError,
-      imageError,
-      swipeUpError
+      coverHeadlineError,
+      coverError,
+      logoError
     });
   };
   _handleSubmission = async () => {
     await this.validator();
     if (
-      !this.state.brand_nameError &&
-      !this.state.headlineError &&
-      !this.state.swipeUpError &&
-      !this.state.imageError
+      !this.state.coverHeadlineError &&
+      !this.state.logoError &&
+      !this.state.coverError
     ) {
-      Segment.trackWithProperties("Ad Design Submitted", {
+      Segment.trackWithProperties("Ad Cover Submitted", {
         business_name: this.props.mainBusiness.businessname
       });
       Segment.trackWithProperties("Completed Checkout Step", {
         checkout_id: this.props.campaign_id,
-        step: 3,
+        step: 2,
         business_name: this.props.mainBusiness.businessname
       });
       await this.formatMedia();
       await this.handleUpload();
-      if (
-        !this.props.data.hasOwnProperty("formatted") ||
-        JSON.stringify(this.props.data.formatted) !==
-          JSON.stringify(this.state.formatted)
-      ) {
-        if (!this.props.loading) {
-          await this.props.ad_design(
-            this.state.formatted,
-            this._getUploadState,
-            this.props.navigation,
-            this.onToggleModal,
-            this.state.appChoice,
-            this.rejected,
-            this.state.signal,
-            this.state.longformvideo_media &&
-              this.state.longformvideo_media_type === "VIDEO",
-            {
-              iosUploaded: this.state.iosVideoUploaded,
-              image: this.state.image
-            }
-          );
-        }
-      } else {
-        this.props.navigation.push("AdDetails");
-      }
+      // if (
+      //   !this.props.data.hasOwnProperty("formattedCover") ||
+      //   JSON.stringify(this.props.data.formattedCover) !==
+      //     JSON.stringify(this.state.formattedCover)
+      // ) {
+      //   if (!this.props.loading) {
+      //     await this.props.ad_design(
+      //       this.state.formattedCover,
+      //       this._getUploadState,
+      //       this.props.navigation,
+      //       this.onToggleModal,
+      //       this.rejected,
+      //       this.state.signal
+      //     );
+      //   }
+      // } else {
+      this.props.navigation.push("AdDesign");
+      // }
     }
   };
   onToggleModal = visibile => {
@@ -594,15 +497,14 @@ class AdCover extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    let { image } = this.state;
-    let { headline } = this.state.campaignInfo;
+    let { cover } = this.state;
+    let { coverHeadline } = this.state.campaignInfo;
 
     let inputFields = (
       <PenIconBrand
         data={this.props.data}
-        changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
-        headline={headline}
+        headline={coverHeadline}
         field={"Headline"}
         mainBusiness={this.props.mainBusiness}
       />
@@ -645,34 +547,49 @@ class AdCover extends Component {
             scrollEnabled={false}
             padder
           >
-            <Transition style={styles.transition} shared="image">
+            <Transition style={styles.transition} shared="cover">
               <View style={styles.buttonN}>
                 <View style={styles.placeholder}>
                   <Image
                     style={styles.placeholder1}
-                    source={{ uri: image }}
+                    source={{ uri: cover }}
                     resizeMode="cover"
+                  />
+                  <Image
+                    source={{ uri: this.state.campaignInfo.logo }}
+                    style={{
+                      height: "15%",
+                      width: "90%",
+                      position: "absolute",
+                      top: 40,
+                      alignSelf: "center"
+                    }}
                   />
                   <Button
                     transparent
                     onPress={() => this._pickLogo()}
                     style={{
                       position: "absolute",
-                      top: 20,
+                      top: 0,
                       alignSelf: "center"
                     }}
                   >
-                    <PenIcon fill={"#FF9D00"} />
-                    <Text style={{ color: "#fff" }}>Your Logo</Text>
-                    <Image
-                      source={{ uri: this.state.campaignInfo.logo }}
-                      style={{ height: 100, width: 100 }}
+                    <Icon
+                      name="plus"
+                      type="MaterialCommunityIcons"
+                      style={{ color: "#FF9D00", marginRight: -10 }}
                     />
+                    <Text
+                      style={{ color: "#fff", fontFamily: "montserrat-light" }}
+                    >
+                      Your Logo
+                    </Text>
                   </Button>
+
                   {inputFields}
                   <MediaButton
                     _pickImage={this._pickImage}
-                    image={this.state.image}
+                    image={this.state.cover}
                   />
                 </View>
               </View>
@@ -681,7 +598,7 @@ class AdCover extends Component {
               The cover shows on the Discover page mong subscriptions and
               trending content
             </Text>
-            {!this.state.imageError ? null : (
+            {/* {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
                 {!this.state.imageError.includes("blank")
                   ? this.state.imageError
@@ -692,29 +609,18 @@ class AdCover extends Component {
               <Text style={styles.swipeUpErrorText}>
                 {this.state.swipeUpError}
               </Text>
-            )}
+            )} */}
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {image ? (
+            {cover ? (
               <View style={styles.footerButtonsContainer}>
-                {this.state.objective === "BRAND_AWARENESS" && (
-                  <TouchableOpacity
-                    onPress={this._handleSubmission}
-                    style={styles.button}
-                  >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  </TouchableOpacity>
-                )}
-                {this.state.objective !== "BRAND_AWARENESS" &&
-                  isNull(this.state.swipeUpError) && (
-                    <TouchableOpacity
-                      onPress={this._handleSubmission}
-                      style={styles.button}
-                    >
-                      <ForwardButton width={wp(24)} height={hp(8)} />
-                    </TouchableOpacity>
-                  )}
+                <TouchableOpacity
+                  onPress={this._handleSubmission}
+                  style={styles.button}
+                >
+                  <ForwardButton width={wp(24)} height={hp(8)} />
+                </TouchableOpacity>
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
