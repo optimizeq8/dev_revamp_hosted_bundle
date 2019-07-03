@@ -9,13 +9,7 @@ export default class PenIconBrand extends Component {
   state = { input: false, brand_nameError: "" };
   render() {
     return (
-      <Item
-        style={
-          this.props.field === "Business Name"
-            ? styles.inputBrand
-            : styles.inputHeadline
-        }
-      >
+      <Item style={styles.inputHeadline}>
         <PenIcon
           fill={
             this.state.input
@@ -32,7 +26,7 @@ export default class PenIconBrand extends Component {
           <Input
             style={styles.inputText}
             defaultValue={
-              this.props.field === "Business Name"
+              this.props.field === "Logo"
                 ? this.props.mainBusiness.businessname
                   ? this.props.mainBusiness.businessname
                   : "Brand Name"
@@ -45,7 +39,7 @@ export default class PenIconBrand extends Component {
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={value =>
-              this.props.field === "Business Name"
+              this.props.field === "Logo"
                 ? this.props.changeBusinessName(value)
                 : this.props.changeHeadline(value)
             }
@@ -58,7 +52,7 @@ export default class PenIconBrand extends Component {
               this.setState({
                 brand_nameError: validateWrapper(
                   "mandatory",
-                  this.props.field === "Business Name"
+                  this.props.field === "Logo"
                     ? this.props.brand_name
                     : this.props.headline
                 )

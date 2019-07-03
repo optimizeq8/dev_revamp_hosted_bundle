@@ -39,7 +39,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-import MediaModal from "./MediaModal";
+import MediaModal from "../AdDesign/MediaModal";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -72,9 +72,9 @@ class AdCover extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        logo: "",
+        logo: "blank",
         headline: "",
-        attachment: "BLANK"
+        cover: ""
       },
       directory: "/ImagePicker/",
       result: "",
@@ -83,7 +83,7 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      image: null,
+      image: "blank",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -120,12 +120,11 @@ class AdCover extends Component {
         campaign_id: this.rejected
           ? this.params.campaign_id
           : this.props.campaign_id,
-        brand_name: this.props.mainBusiness.businessname,
         headline: !this.props.data
           ? this.rejected
             ? this.params.headline
             : "Headline"
-          : this.props.data.name
+          : this.props.data.headlineCover
       },
       objective: this.props.data
         ? this.props.data.objective
@@ -216,71 +215,7 @@ class AdCover extends Component {
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
   };
-  _changeDestination = (
-    destination,
-    call_to_action,
-    attachment,
-    appChoice = null,
-    whatsAppCampaign = null
-  ) => {
-    let newData = {};
-    if (attachment.hasOwnProperty("longformvideo_media")) {
-      newData = {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          destination,
-          call_to_action: call_to_action
-        },
 
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-      };
-      this.setState(newData);
-
-      this.props.save_campaign_info({
-        ...newData.campaignInfo,
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-      });
-    } else {
-      newData = {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          destination,
-          call_to_action,
-          attachment
-        },
-        appChoice
-      };
-      if (whatsAppCampaign) {
-        newData = {
-          ...newData,
-          campaignInfo: {
-            ...newData.campaignInfo,
-            insta_handle: whatsAppCampaign.insta_handle,
-            whatsappnumber: whatsAppCampaign.whatsappnumber,
-            callnumber: whatsAppCampaign.callnumber
-          }
-        };
-        this.props.save_campaign_info({
-          insta_handle: whatsAppCampaign.insta_handle,
-          whatsappnumber: whatsAppCampaign.whatsappnumber,
-          callnumber: whatsAppCampaign.callnumber
-        });
-      }
-      this.setState(newData);
-      this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
-    }
-  };
-
-  changeBusinessName = brand_name => {
-    this.setState({
-      campaignInfo: {
-        ...this.state.campaignInfo,
-        brand_name
-      }
-    });
-  };
   changeHeadline = headline => {
     this.setState({
       campaignInfo: {
@@ -293,17 +228,42 @@ class AdCover extends Component {
     await this.askForPermssion();
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: mediaTypes,
-      //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
       quality: 0.1
     });
 
-    // console.log("after picker", result);
-
-    this.onToggleModal(true);
-
+    // this.onToggleModal(true);
     return result;
+  };
+
+  _pickLogo = async () => {
+    let logo = await this.pick("Images");
+    console.log(logo);
+    let correctLogo = logo.width === 993 && logo.height === 284;
+
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        logo: correctLogo ? logo.uri : "blank"
+      },
+      logoError: correctLogo
+    });
+    showMessage({
+      message: correctLogo
+        ? "Logo selected successfully"
+        : "Logo must be exactly 993px by 284px",
+      description: correctLogo
+        ? ""
+        : "In .png format and transparent background.",
+      position: "top",
+      duration: 10000,
+      type: correctLogo ? "success" : "warning"
+    });
+
+    this.props.save_campaign_info({
+      logo: logo.uri
+    });
   };
 
   _pickImage = async (mediaTypes = "All") => {
@@ -317,17 +277,16 @@ class AdCover extends Component {
       let newWidth = result.width;
       let newHeight = result.height;
       await this.validator();
-
       if (!result.cancelled) {
         if (result.type === "image") {
-          if (result.width >= 1080 && result.height >= 1920) {
-            if (result.width >= Math.floor((result.height / 16) * 9)) {
-              newWidth = Math.floor((result.height / 16) * 9);
-            } else if (result.height >= Math.floor((result.width * 16) / 9)) {
-              newHeight = Math.floor((result.width * 16) / 9);
+          if (result.width > 360 && result.height > 600) {
+            if (result.width >= Math.floor((result.height / 5) * 3)) {
+              newWidth = Math.floor((result.height / 5) * 3);
+            } else if (result.height >= Math.floor((result.width * 5) / 3)) {
+              newHeight = Math.floor((result.width * 5) / 3);
             } else {
-              newWidth = 1080;
-              newHeight = 1920;
+              newWidth = 360;
+              newHeight = 600;
             }
             // console.log("image res:", result);
             // console.log("width:", newWidth);
@@ -336,13 +295,16 @@ class AdCover extends Component {
               result.uri,
               [
                 {
-                  // resize: { width: newWidth },
                   crop: {
                     originX: (result.width - newWidth) / 2,
                     originY: (result.height - newHeight) / 2,
                     width: newWidth,
                     height: newHeight
                   }
+                  // resize: {
+                  //   width: Math.floor((result.width / result.height) * 600)
+                  //   // height: Math.floor((result.height / result.width) * 360)
+                  // }
                 }
               ],
               {
@@ -357,64 +319,19 @@ class AdCover extends Component {
                 // const oldSize = await FileSystem.getInfoAsync(result.uri, {
                 //   size: true
                 // });
-                // console.log("width:", manipResult.width);
-                // console.log("height:", manipResult.height);
+                console.log("width:", manipResult.width);
+                console.log("height:", manipResult.height);
                 // console.log("new result: ", newSize.size);
                 // console.log("old result: ", oldSize.size);
 
-                MediaLibrary.createAssetAsync(manipResult.uri)
-                  .then(imageAsset => {
-                    console.log("OptimizeApp", imageAsset.uri);
-                    MediaLibrary.getAlbumAsync("OptimizeApp")
-                      .then(res => {
-                        if (isNull(res)) {
-                          MediaLibrary.createAlbumAsync(
-                            "OptimizeApp",
-                            imageAsset
-                          )
-                            .then(() => {
-                              MediaLibrary.getAssetInfoAsync(imageAsset)
-                                .then(res =>
-                                  console.log("image:", res.localUri)
-                                )
-                                .catch(error => {
-                                  console.log("album should exist but,", error);
-                                });
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        } else {
-                          MediaLibrary.addAssetsToAlbumAsync(
-                            [imageAsset],
-                            res,
-                            true
-                          )
-                            .then(res => {
-                              console.log("addAssetsToAlbumAsync", res);
-
-                              MediaLibrary.getAssetInfoAsync(imageAsset).then(
-                                res => console.log("image:", res.localUri)
-                              );
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        }
-                      })
-                      .catch(error => {
-                        console.log("getAlbumAsync err", error);
-                      });
-                  })
-                  .catch(error => {
-                    console.log("getAlbumAsync err", error);
-                  });
                 this.setState({
                   directory: "/ImageManipulator/"
                 });
                 result.uri = manipResult.uri;
                 result.height = manipResult.height;
                 result.width = manipResult.width;
+
+                console.log(manipResult.height, manipResult.width);
               })
               .then(() => {
                 this.setState({
@@ -437,7 +354,7 @@ class AdCover extends Component {
               .catch(error => {
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Please choose an image not ",
+                  message: "Please choose an image",
                   position: "top",
                   type: "warning"
                 });
@@ -445,40 +362,38 @@ class AdCover extends Component {
                 return;
               });
             return;
-          } else if (file.size > 5000000) {
+          } else if (file.size > 2000000) {
             this.setState({
-              imageError: "Image must be less than 5 MBs",
-              image: null
+              image: "blank"
             });
             this.onToggleModal(false);
             showMessage({
-              message: "Image must be less than 5 MBs",
+              message: "Image must be less than 2 MBs",
               position: "top",
               type: "warning"
             });
             this.props.save_campaign_info({
-              image: null,
+              image: "blank",
               type: ""
             });
             return;
           } else if (
-            Math.floor(result.width / 9) !== Math.floor(result.height / 16)
+            Math.floor(result.width / 3) !== Math.floor(result.height / 5) ||
+            result.width < 360 ||
+            result.height < 600
           ) {
             this.setState({
-              imageError:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-              image: null,
+              image: "blank",
               type: ""
-              // videoIsLoading: false
             });
             this.props.save_campaign_info({
-              image: null,
+              image: "blank",
               type: ""
             });
             this.onToggleModal(false);
             showMessage({
               message:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 3:5\nwith a minimum size of 360px by 600px.",
               position: "top",
               type: "warning"
             });
@@ -497,82 +412,10 @@ class AdCover extends Component {
               position: "top",
               type: "success"
             });
+
             this.props.save_campaign_info({
               image: result.uri,
               type: result.type.toUpperCase()
-            });
-            return;
-          }
-        } else if (result.type === "video") {
-          if (result.duration > 10999) {
-            this.setState({
-              imageError: "Allowed video durations is up to 10 seconds.",
-              image: null
-            });
-            this.props.save_campaign_info({
-              image: null,
-              type: ""
-            });
-            showMessage({
-              message: "Allowed video durations is up to 10 seconds.",
-              position: "top",
-              type: "warning"
-            });
-            this.onToggleModal(false);
-            return;
-          } else if (file.size > 32000000) {
-            this.setState({
-              imageError: "Allowed video size is up to 32 MBs.",
-              image: null
-            });
-            this.props.save_campaign_info({
-              image: null,
-              type: ""
-            });
-            showMessage({
-              message: "Allowed video size is up to 32 MBs.",
-              position: "top",
-              type: "warning"
-            });
-            this.onToggleModal(false);
-            return;
-          } else if (
-            Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-            Math.floor(result.height / 9) === Math.floor(result.width / 16)
-          ) {
-            this.setState({
-              image: result.uri,
-              type: result.type.toUpperCase(),
-              imageError: null,
-              result: result.uri
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Video has been selected successfully ",
-              position: "top",
-              type: "success"
-            });
-            this.props.save_campaign_info({
-              image: result.uri,
-              type: result.type.toUpperCase()
-            });
-            return;
-          } else {
-            this.setState({
-              imageError:
-                "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-              image: null
-            });
-            this.props.save_campaign_info({
-              image: null,
-              type: ""
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message:
-                "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-              position: "top",
-              type: "warning"
             });
             return;
           }
@@ -584,16 +427,15 @@ class AdCover extends Component {
           type: "warning"
         });
         this.setState({
-          imageError: "Please choose a media file.",
-          image: null
+          image: "blank"
         });
         this.props.save_campaign_info({
-          image: null,
+          image: "blank",
           type: ""
         });
         this.onToggleModal(false);
         return;
-      } else {
+      } else if (result.cancelled) {
         this.onToggleModal(false);
         return;
       }
@@ -601,24 +443,6 @@ class AdCover extends Component {
       this.onToggleModal(false);
       console.log("error image pick", error);
     }
-
-    //   } else if (result.width < 1080 || result.height < 1920) {
-    //     showMessage({
-    //       message:
-    //         "Media minimum size is 1080 x 1920 and 9:16 aspect ratio.\nAndroid's maximum image size is for height 2000.",
-    //       position: "top",
-    //       type: "warning"
-    //     });
-    //     this.setState({
-    //       imageError:
-    //         "Media minimum size is 1080 x 1920 \nand 9:16 aspect ratio.",
-    //       image: null
-    //     });
-    //     this.onToggleModal(false);
-
-    //     return;
-    //   }
-    // }
   };
 
   formatMedia() {
@@ -685,79 +509,7 @@ class AdCover extends Component {
       formatted: body
     });
   }
-  getVideoUploadUrl = () => {
-    this.setMediaModalVisible(false);
-    this.props.getVideoUploadUrl(this.props.campaign_id, this.openUploadVideo);
-  };
-  openUploadVideo = async () => {
-    try {
-      this._addLinkingListener();
-      if (this.props.videoUrl)
-        await WebBrowser.openBrowserAsync(this.props.videoUrl);
-      this._removeLinkingListener();
-    } catch (error) {
-      showMessage({
-        message: "Something went wrong!",
-        type: "warning",
-        position: "top",
-        description: "Please try again later."
-      });
-    }
-  };
 
-  _addLinkingListener = () => {
-    Linking.addEventListener("url", this._handleRedirect);
-  };
-
-  _removeLinkingListener = () => {
-    Linking.removeEventListener("url", this._handleRedirect);
-  };
-
-  _handleRedirect = event => {
-    WebBrowser.dismissBrowser();
-
-    let data = Linking.parse(event.url);
-
-    this.setState({
-      image: data.queryParams.media,
-      iosVideoUploaded: true,
-      type: "VIDEO"
-    });
-    this.props.save_campaign_info({
-      image: data.queryParams.media,
-      iosVideoUploaded: true,
-      type: "VIDEO"
-    });
-  };
-
-  _getUploadState = loading => {
-    this.setState({
-      loaded: loading
-    });
-  };
-  perviewHandler = async () => {
-    await this.validator();
-    if (
-      !this.state.brand_nameError &&
-      !this.state.headlineError &&
-      !this.state.imageError
-    )
-      this.props.navigation.push("AdDesignReview", {
-        image: this.state.image,
-        type: this.state.type,
-        call_to_action: this.state.campaignInfo.call_to_action.label,
-        headline: this.state.campaignInfo.headline,
-        brand_name: this.state.campaignInfo.brand_name,
-        destination: this.state.campaignInfo.destination,
-        icon_media_url: this.state.campaignInfo.attachment.icon_media_url
-      });
-  };
-
-  _onLayoutEvent = event => {
-    const h = event.nativeEvent.layout.height;
-
-    this.setState({ heightComponent: h - 40 });
-  };
   validator = () => {
     const brand_nameError = validateWrapper(
       "mandatory",
@@ -843,27 +595,18 @@ class AdCover extends Component {
   };
   render() {
     let { image } = this.state;
-    let {
-      brand_name,
-      headline,
-      destination,
-      attachment
-    } = this.state.campaignInfo;
+    let { headline } = this.state.campaignInfo;
 
-    let inputFields = ["Business Name", "Headline"].map(field => (
+    let inputFields = (
       <PenIconBrand
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
-        brand_name={brand_name}
         headline={headline}
-        key={field}
-        field={field}
+        field={"Headline"}
         mainBusiness={this.props.mainBusiness}
       />
-    ));
-
-    let blankView = <View style={styles.blankView} />;
+    );
 
     return (
       <SafeAreaView
@@ -904,96 +647,40 @@ class AdCover extends Component {
           >
             <Transition style={styles.transition} shared="image">
               <View style={styles.buttonN}>
-                {this.state.type === "VIDEO" ? (
-                  <View style={styles.placeholder}>
-                    {this.state.videoIsLoading ? (
-                      <CameraLoading dash={true} />
-                    ) : null}
-                    <Video
-                      onLoadStart={() =>
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri: image ? image : ""
-                      }}
-                      shouldPlay
-                      isLooping
-                      isMuted
-                      resizeMode={"stretch"}
-                      style={styles.video}
-                    />
-
-                    {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
-                  </View>
-                ) : !image ? (
-                  <View style={styles.placeholder}>
-                    {blankView}
-
-                    {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
-                  </View>
-                ) : (
-                  <View style={styles.placeholder}>
+                <View style={styles.placeholder}>
+                  <Image
+                    style={styles.placeholder1}
+                    source={{ uri: image }}
+                    resizeMode="cover"
+                  />
+                  <Button
+                    transparent
+                    onPress={() => this._pickLogo()}
+                    style={{
+                      position: "absolute",
+                      top: 20,
+                      alignSelf: "center"
+                    }}
+                  >
+                    <PenIcon fill={"#FF9D00"} />
+                    <Text style={{ color: "#fff" }}>Your Logo</Text>
                     <Image
-                      style={styles.placeholder1}
-                      source={{ uri: image }}
-                      resizeMode="cover"
+                      source={{ uri: this.state.campaignInfo.logo }}
+                      style={{ height: 100, width: 100 }}
                     />
-
-                    {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
-                  </View>
-                )}
+                  </Button>
+                  {inputFields}
+                  <MediaButton
+                    _pickImage={this._pickImage}
+                    image={this.state.image}
+                  />
+                </View>
               </View>
             </Transition>
-
+            <Text style={styles.subText}>
+              The cover shows on the Discover page mong subscriptions and
+              trending content
+            </Text>
             {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
                 {!this.state.imageError.includes("blank")
@@ -1011,12 +698,6 @@ class AdCover extends Component {
           <Footer style={styles.footerStyle}>
             {image ? (
               <View style={styles.footerButtonsContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.perviewHandler()}
-                >
-                  <EyeIcon width={wp(24)} height={hp(8)} />
-                </TouchableOpacity>
                 {this.state.objective === "BRAND_AWARENESS" && (
                   <TouchableOpacity
                     onPress={this._handleSubmission}
@@ -1042,12 +723,7 @@ class AdCover extends Component {
             )}
           </Footer>
         </Container>
-        <MediaModal
-          getVideoUploadUrl={this.getVideoUploadUrl}
-          _pickImage={this._pickImage}
-          mediaModalVisible={this.state.mediaModalVisible}
-          setMediaModalVisible={this.setMediaModalVisible}
-        />
+
         <Modal
           visible={
             this.props.videoUrlLoading ||

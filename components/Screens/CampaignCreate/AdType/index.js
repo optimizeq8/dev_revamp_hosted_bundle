@@ -9,6 +9,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
+import * as actionCreators from "../../../../store/actions";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
@@ -105,9 +106,8 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
-    this.props.navigation.navigate(this.state.route, {
-      campaign_type: this.state.campaign_type
-    });
+    this.props.navigation.navigate(this.state.route);
+    this.props.set_AdType(this.state.campaign_type);
   };
 
   _renderItem({ item }) {
@@ -247,7 +247,9 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  set_AdType: adType => dispatch(actionCreators.set_AdType(adType))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

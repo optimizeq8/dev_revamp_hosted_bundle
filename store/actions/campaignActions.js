@@ -202,7 +202,9 @@ export const ad_objective = (info, navigation) => {
       })
       .then(data => {
         data.success
-          ? navigation.push("AdDesign")
+          ? navigation.push(
+              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+            )
           : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
@@ -239,7 +241,7 @@ export const save_campaign_info = info => {
   };
 };
 
-export const saveSnapAdType = adType => {
+export const set_AdType = adType => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_AD_TYPE,

@@ -222,7 +222,7 @@ class AdObjective extends Component {
   };
 
   render() {
-    let campaign_type = this.props.navigation.getParam("campaign_type", "");
+    let adType = this.props.adType;
     const list = this.state.objectives.map(o => (
       <ObjectivesCard
         choice={o}
@@ -239,9 +239,16 @@ class AdObjective extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            Segment.screenWithProperties("Snap Ad Objective", {
-              category: "Campaign Creation"
-            });
+            Segment.screenWithProperties(
+              (adType === "SnapAd"
+                ? "Snap Ad"
+                : adType === "StoryAd"
+                ? "Story Ad"
+                : "Collection Ad") + " Objective",
+              {
+                category: "Campaign Creation"
+              }
+            );
             Segment.trackWithProperties("Viewed Checkout Step", {
               step: 2,
               business_name: this.props.mainBusiness.businessname
@@ -261,7 +268,13 @@ class AdObjective extends Component {
                 obj: { businessname: this.props.mainBusiness.businessname }
               }}
               navigation={this.props.navigation}
-              title="Snap Ad Campaign"
+              title={
+                (adType === "SnapAd"
+                  ? "Snap Ad"
+                  : adType === "StoryAd"
+                  ? "Story Ad"
+                  : "Collection Ad") + " Campaign"
+              }
             />
             <View style={styles.block1}>
               <PhoneIcon
@@ -360,7 +373,7 @@ class AdObjective extends Component {
                 </Text>
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
-              {campaign_type === "StoryAd" && (
+              {adType === "StoryAd" && (
                 <View style={styles.topContainer}>
                   <Button
                     style={[
@@ -501,6 +514,7 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
+  adType: state.campaignC.adType,
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data
 });

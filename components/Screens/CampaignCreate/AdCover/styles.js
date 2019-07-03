@@ -68,7 +68,9 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   contentContainer: {
-    flexGrow: 1,
+    alignSelf: "center",
+    height: "85%",
+    width: "90%",
     marginTop: hp(3)
   },
   mainSafeArea: {
@@ -147,13 +149,12 @@ const styles = StyleSheet.create({
     ]
   },
   inputHeadline: {
+    justifyContent: "center",
     alignSelf: "center",
     position: "absolute",
     width: 250,
     height: 50,
-    marginVertical: 50,
-    top: "3%",
-    left: "8%",
+    bottom: 0,
     borderColor: "transparent",
     transform: [
       {
@@ -274,6 +275,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     color: "#fff",
     fontSize: 13
+  },
+  subText: {
+    top: 10,
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-light",
+    fontSize: hp(1.7)
   }
 });
 

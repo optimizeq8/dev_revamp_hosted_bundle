@@ -21,6 +21,7 @@ export { setAuthToken } from "./genericActions";
 export {
   save_campaign_info,
   resetCampaignInfo,
+  set_AdType,
   ad_objective,
   getMinimumCash,
   ad_design,
