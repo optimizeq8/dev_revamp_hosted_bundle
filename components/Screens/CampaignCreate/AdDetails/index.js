@@ -656,6 +656,7 @@ class AdDetails extends Component {
         );
         break;
       }
+
       case "selectors": {
         menu = (
           <MultiSelectSections
@@ -732,7 +733,10 @@ class AdDetails extends Component {
         ? this.props.data.image
         : this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never", top: "always"  }}>
+      <SafeAreaView
+        style={styles.safeArea}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
         <NavigationEvents
           onDidFocus={() => {
             if (this.props.navigation.getParam("editCampaign", false)) {
