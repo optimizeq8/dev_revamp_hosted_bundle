@@ -16,31 +16,20 @@ import {
 import {
   View,
   TouchableOpacity,
-  Image,
   Platform,
-  BackHandler
+  BackHandler,
+  Image
 } from "react-native";
-import {
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Footer,
-  Icon
-} from "native-base";
+import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import MediaModal from "./MediaModal";
-import SnapAds from "./SnapAds";
+import SnapAds from "./SnapAdCards/SnapAds";
 
 //Redux
 import { connect } from "react-redux";
@@ -79,6 +68,11 @@ class AdDesign extends Component {
         destination: "BLANK",
         call_to_action: { label: "BLANK", value: "BLANK" },
         attachment: "BLANK"
+      },
+      storyAdCards: {
+        snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }],
+        storyAdSelected: false,
+        selectedStoryAd: {}
       },
       directory: "/ImagePicker/",
       result: "",
@@ -223,7 +217,27 @@ class AdDesign extends Component {
     whatsAppCampaign = null
   ) => {
     let newData = {};
-    if (attachment.hasOwnProperty("longformvideo_media")) {
+    if (true) {
+      let cards = this.state.storyAdCards.snapAdsCards;
+      let card = this.state.storyAdCards.snapAdsCards[
+        this.state.storyAdCards.selectedStoryAd.index
+      ];
+      card = {
+        ...card,
+        destination,
+        call_to_action,
+        attachment
+      };
+      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+      this.setState({
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          // storyAdSelected: false,
+          selectedStoryAd: card,
+          snapAdsCards: cards
+        }
+      });
+    } else if (attachment.hasOwnProperty("longformvideo_media")) {
       newData = {
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -361,53 +375,54 @@ class AdDesign extends Component {
                 // console.log("new result: ", newSize.size);
                 // console.log("old result: ", oldSize.size);
 
-                MediaLibrary.createAssetAsync(manipResult.uri)
-                  .then(imageAsset => {
-                    console.log("OptimizeApp", imageAsset.uri);
-                    MediaLibrary.getAlbumAsync("OptimizeApp")
-                      .then(res => {
-                        if (isNull(res)) {
-                          MediaLibrary.createAlbumAsync(
-                            "OptimizeApp",
-                            imageAsset
-                          )
-                            .then(() => {
-                              MediaLibrary.getAssetInfoAsync(imageAsset)
-                                .then(res =>
-                                  console.log("image:", res.localUri)
-                                )
-                                .catch(error => {
-                                  console.log("album should exist but,", error);
-                                });
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        } else {
-                          MediaLibrary.addAssetsToAlbumAsync(
-                            [imageAsset],
-                            res,
-                            true
-                          )
-                            .then(res => {
-                              console.log("addAssetsToAlbumAsync", res);
+                // MediaLibrary.createAssetAsync(manipResult.uri)
+                //   .then(imageAsset => {
+                //     console.log("OptimizeApp", imageAsset.uri);
+                //     MediaLibrary.getAlbumAsync("OptimizeApp")
+                //       .then(res => {
+                //         if (isNull(res)) {
+                //           MediaLibrary.createAlbumAsync(
+                //             "OptimizeApp",
+                //             imageAsset
+                //           )
+                //             .then(() => {
+                //               MediaLibrary.getAssetInfoAsync(imageAsset)
+                //                 .then(res =>
+                //                   console.log("image:", res.localUri)
+                //                 )
+                //                 .catch(error => {
+                //                   console.log("album should exist but,", error);
+                //                 });
+                //             })
+                //             .catch(error => {
+                //               console.log("err", error);
+                //             });
+                //         } else {
+                //           MediaLibrary.addAssetsToAlbumAsync(
+                //             [imageAsset],
+                //             res,
+                //             true
+                //           )
+                //             .then(res => {
+                //               console.log("addAssetsToAlbumAsync", res);
 
-                              MediaLibrary.getAssetInfoAsync(imageAsset).then(
-                                res => console.log("image:", res.localUri)
-                              );
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        }
-                      })
-                      .catch(error => {
-                        console.log("getAlbumAsync err", error);
-                      });
-                  })
-                  .catch(error => {
-                    console.log("getAlbumAsync err", error);
-                  });
+                //               MediaLibrary.getAssetInfoAsync(imageAsset).then(
+                //                 res => console.log("image:", res.localUri)
+                //               );
+                //             })
+                //             .catch(error => {
+                //               console.log("err", error);
+                //             });
+                //         }
+                //       })
+                //       .catch(error => {
+                //         console.log("getAlbumAsync err", error);
+                //       });
+                //   })
+                //   .catch(error => {
+                //     console.log("getAlbumAsync err", error);
+                //   });
+
                 this.setState({
                   directory: "/ImageManipulator/"
                 });
@@ -416,12 +431,36 @@ class AdDesign extends Component {
                 result.width = manipResult.width;
               })
               .then(() => {
-                this.setState({
-                  image: result.uri,
-                  type: result.type.toUpperCase(),
-                  imageError: null,
-                  result: result.uri
-                });
+                if (
+                  true
+                  // this.props.adType === "StoryAd"
+                ) {
+                  let cards = this.state.storyAdCards.snapAdsCards;
+                  let card = this.state.storyAdCards.snapAdsCards[
+                    this.state.storyAdCards.selectedStoryAd.index
+                  ];
+                  card = {
+                    ...card,
+                    image: result.uri
+                  };
+                  cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+                  this.setState({
+                    storyAdCards: {
+                      ...this.state.storyAdCards,
+                      // storyAdSelected: false,
+                      selectedStoryAd: card,
+                      snapAdsCards: cards
+                    },
+                    image: result.uri
+                  });
+                } else {
+                  this.setState({
+                    image: result.uri,
+                    type: result.type.toUpperCase(),
+                    imageError: null,
+                    result: result.uri
+                  });
+                }
                 this.onToggleModal(false);
                 showMessage({
                   message: "Image has been selected successfully ",
@@ -766,8 +805,9 @@ class AdDesign extends Component {
     let swipeUpError = null;
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
-      this.state.campaignInfo.attachment === "BLANK" &&
-      this.state.campaignInfo.call_to_action.label === "BLANK"
+      ((this.state.campaignInfo.attachment === "BLANK" &&
+        this.state.campaignInfo.call_to_action.label === "BLANK") ||
+        this.state.storyAdCards.hasOwnProperty("destination"))
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -779,6 +819,42 @@ class AdDesign extends Component {
       headlineError,
       imageError,
       swipeUpError
+    });
+  };
+
+  addSnapCard = () => {
+    let newSnapCard = { id: (Math.random() * 1000).toFixed(0) };
+    this.state.storyAdCards.snapAdsCards.length < 21 &&
+      this.setState({
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          snapAdsCards: [...this.state.storyAdCards.snapAdsCards, newSnapCard]
+        }
+      });
+  };
+  removeSnapCard = index => {
+    if (this.state.storyAdCards.snapAdsCards.length > 4) {
+      let result = this.state.storyAdCards.snapAdsCards.filter(
+        data => data.id !== index
+      );
+
+      this.setState({
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          snapAdsCards: result
+        }
+      });
+    }
+  };
+  _handleStoryAdCards = card => {
+    console.log(card);
+
+    this.setState({
+      storyAdCards: {
+        ...this.state.storyAdCards,
+        storyAdSelected: true,
+        selectedStoryAd: card
+      }
     });
   };
   _handleSubmission = async () => {
@@ -857,7 +933,7 @@ class AdDesign extends Component {
       />
     ));
 
-    let blankView = <View style={styles.blankView} />;
+    console.log(this.props.adType);
 
     return (
       <SafeAreaView
@@ -961,16 +1037,25 @@ class AdDesign extends Component {
                   //   </View>
                   // ) :
                   <View style={styles.placeholder}>
-                    {/* <Image
+                    <Image
                       style={styles.placeholder1}
                       source={{ uri: image }}
                       resizeMode="cover"
-                    /> */}
+                    />
 
                     {inputFields}
-                    {true ? (
+                    {//this.props.adType === "StoryAd" &&
+                    !this.state.storyAdCards.storyAdSelected ? (
                       // this.props.adType === "StoryAd"
-                      <SnapAds />
+                      <SnapAds
+                        addSnapCard={this.addSnapCard}
+                        removeSnapCard={this.removeSnapCard}
+                        selectedStoryAd={
+                          this.state.storyAdCards.selectedStoryAd
+                        }
+                        snapAdsCards={this.state.storyAdCards.snapAdsCards}
+                        _handleStoryAdCards={this._handleStoryAdCards}
+                      />
                     ) : (
                       <MediaButton
                         setMediaModalVisible={this.setMediaModalVisible}
@@ -1104,6 +1189,7 @@ class AdDesign extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
+  adType: state.campaignC.adType,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign,

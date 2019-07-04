@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#0000"
   },
-  blankView: {
+  SnapAdCard: {
+    justifyContent: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
-    opacity: 0.4,
-    height: 70,
-    width: 50,
+    borderRadius: 15,
+    height: 150,
+    width: 90,
     margin: 10
   },
   title: {
@@ -94,7 +95,8 @@ const styles = StyleSheet.create({
   },
   mediaButtonMsg: {
     textAlign: "center",
-    paddingTop: 23,
+    alignSelf: "center",
+    top: "10%",
     fontFamily: "montserrat-medium",
     fontSize: 14,
     width: 150,
@@ -102,17 +104,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#fff",
-    // paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    fontSize: 50,
-    paddingTop: 12
+    fontSize: 50
   },
   inputMiddleButton: {
     position: "absolute",
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
+    backgroundColor: globalColors.orange,
+    // alignSelf: "center",
+    justifyContent: "center",
     width: 90,
     height: 90,
     borderRadius: 45,
@@ -275,6 +273,21 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     color: "#fff",
     fontSize: 13
+  },
+  addButtonStyle: {
+    backgroundColor: globalColors.orange,
+    borderRadius: 50,
+    width: 50,
+    height: 50,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    // paddingHorizontal: 10,
+    marginBottom: 10
+  },
+  addButtonText: {
+    color: globalColors.orange,
+    fontFamily: "montserrat-semibold"
   }
 });
 
