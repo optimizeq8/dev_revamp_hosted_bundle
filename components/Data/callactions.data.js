@@ -135,39 +135,39 @@ var list = [
         value: "SIGN_UP"
       }
     ]
+  },
+  {
+    type: "WEB_CONVERSION",
+    call_to_action_list: [
+      {
+        label: "ORDER NOW",
+        value: "ORDER_NOW"
+      },
+      {
+        label: "BOOK NOW",
+        value: "BOOK_NOW"
+      },
+      {
+        label: "GET NOW",
+        value: "GET_NOW"
+      },
+
+      {
+        label: "MORE",
+        value: "MORE"
+      },
+
+      {
+        label: "SHOP NOW",
+        value: "SHOP_NOW"
+      },
+
+      {
+        label: "VIEW",
+        value: "VIEW"
+      }
+    ]
   }
-  // {
-  //   type: "WEB_CONVERSION",
-  //   call_to_action_list: [
-  //     {
-  //       label: "ORDER NOW",
-  //       value: "ORDER_NOW"
-  //     },
-  //     {
-  //       label: "BOOK NOW",
-  //       value: "BOOK_NOW"
-  //     },
-  //     {
-  //       label: "GET NOW",
-  //       value: "GET_NOW"
-  //     },
-
-  //     {
-  //       label: "MORE",
-  //       value: "MORE"
-  //     },
-
-  //     {
-  //       label: "SHOP NOW",
-  //       value: "SHOP_NOW"
-  //     },
-
-  //     {
-  //       label: "VIEW",
-  //       value: "VIEW"
-  //     }
-  //   ]
-  // }
 ];
 
 export const netLoc = [

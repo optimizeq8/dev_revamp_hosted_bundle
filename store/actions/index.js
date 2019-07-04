@@ -37,7 +37,8 @@ export {
   get_total_reach,
   payment_request_knet,
   get_languages,
-  payment_request_credit_card
+  payment_request_credit_card,
+  verifyBusinessUrl
 } from "./campaignActions";
 
 export {

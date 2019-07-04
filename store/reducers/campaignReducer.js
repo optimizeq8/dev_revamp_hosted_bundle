@@ -25,7 +25,8 @@ const initialState = {
   countryName: "",
   interestNames: [],
   regionNames: [],
-  campaignEnded: false
+  campaignEnded: false,
+  weburlAvalible: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -251,6 +252,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaign_id: "",
         data: null
+      };
+    case actionTypes.VERIFY_BUSINESSURL:
+      return {
+        ...state,
+        weburlAvalible: action.payload.success
       };
     default:
       return state;
