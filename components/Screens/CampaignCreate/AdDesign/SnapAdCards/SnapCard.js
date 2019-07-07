@@ -12,10 +12,21 @@ export default class SnapCard extends Component {
 
     return (
       <View key={snapCardInfo.index} style={styles.SnapAdCard}>
-        <Image
-          source={{ uri: snapCardInfo.item.image }}
-          style={{ height: "100%", width: "100%", position: "absolute" }}
-        />
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            borderRadius: 15,
+            overflow: "hidden",
+            opacity: 0.5,
+            position: "absolute"
+          }}
+        >
+          <Image
+            source={{ uri: snapCardInfo.item.image }}
+            style={{ height: "100%", width: "100%", position: "absolute" }}
+          />
+        </View>
         <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
         <Icon
           onPress={() => removeSnapCard(snapCardInfo.item.id)}

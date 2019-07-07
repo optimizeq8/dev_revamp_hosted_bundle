@@ -51,7 +51,7 @@ class SwipeUpDestination extends Component {
 
     this.setState({
       image,
-      selected: this.props.data.destination
+      selected: this.props.data ? this.props.data.destination : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }

@@ -72,7 +72,8 @@ class AdDesign extends Component {
       storyAdCards: {
         snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }],
         storyAdSelected: false,
-        selectedStoryAd: {}
+        selectedStoryAd: {},
+        numOfAds: 0
       },
       directory: "/ImagePicker/",
       result: "",
@@ -129,7 +130,7 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : this.rejected
         ? this.params.objective
-        : ""
+        : "TRAFFIC"
     });
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -222,8 +223,11 @@ class AdDesign extends Component {
       let card = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.selectedStoryAd.index
       ];
+      console.log("card", card);
+
       card = {
-        ...card,
+        // ...card,
+        ...this.state.storyAdCards.selectedStoryAd,
         destination,
         call_to_action,
         attachment
@@ -235,7 +239,8 @@ class AdDesign extends Component {
           // storyAdSelected: false,
           selectedStoryAd: card,
           snapAdsCards: cards
-        }
+        },
+        swipeUpError: null
       });
     } else if (attachment.hasOwnProperty("longformvideo_media")) {
       newData = {
@@ -440,7 +445,7 @@ class AdDesign extends Component {
                     this.state.storyAdCards.selectedStoryAd.index
                   ];
                   card = {
-                    ...card,
+                    ...this.state.storyAdCards.selectedStoryAd,
                     image: result.uri
                   };
                   cards[this.state.storyAdCards.selectedStoryAd.index] = card;
@@ -807,7 +812,7 @@ class AdDesign extends Component {
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
-        this.state.storyAdCards.hasOwnProperty("destination"))
+        this.state.storyAdCards.snapAdsCards.forEach(ad=>ad.hasOwnProperty("destination")))
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -859,6 +864,15 @@ class AdDesign extends Component {
   };
   _handleSubmission = async () => {
     await this.validator();
+    if (true) {
+      this.setState({
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          storyAdSelected: false,
+          numOfAds: this.state.numOfAds++
+        }
+      });
+    }
     if (
       !this.state.brand_nameError &&
       !this.state.headlineError &&
@@ -912,6 +926,8 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
+    console.log(this.state.swipeUpError);
+
     let { image } = this.state;
     let {
       brand_name,
@@ -932,8 +948,6 @@ class AdDesign extends Component {
         mainBusiness={this.props.mainBusiness}
       />
     ));
-
-    console.log(this.props.adType);
 
     return (
       <SafeAreaView
@@ -999,14 +1013,12 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
+                    {"BRAND_AWARENESS" !==
+                      this.state.objective.toLowerCase() && (
                       <SwipeUpComponent
                         _changeDestination={this._changeDestination}
                         navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
+                        objective={this.state.objective}
                         destination={destination}
                         attachment={attachment}
                       />
@@ -1062,18 +1074,16 @@ class AdDesign extends Component {
                         image={this.state.image}
                       />
                     )}
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {"BRAND_AWARENESS" !== this.state.objective.toLowerCase() &&
+                      this.state.storyAdCards.storyAdSelected && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
                   </View>
                 )}
               </View>

@@ -11,7 +11,6 @@ export default class MediaButton extends Component {
       _handleStoryAdCards,
       setMediaModalVisible
     } = this.props;
-    console.log(image);
 
     return (
       <>

@@ -6,6 +6,7 @@ import { Icon } from "native-base";
 export default class SwipeUpComponent extends Component {
   render() {
     let { destination, attachment, objective, image } = this.props;
+
     return (
       <TouchableOpacity
         style={styles.swipeUp}
