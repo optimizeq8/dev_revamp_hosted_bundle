@@ -32,7 +32,7 @@ class ObjectiveCard extends Component {
           { backgroundColor: changeState.backgroundColor }
         ]}
       >
-        <IconName fill="#fff" style={[styles.icon]} />
+        <IconName width={30} height={30} fill="#fff" style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
             {obj.label}
