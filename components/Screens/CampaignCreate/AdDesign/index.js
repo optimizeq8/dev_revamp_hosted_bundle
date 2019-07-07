@@ -812,7 +812,9 @@ class AdDesign extends Component {
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
-        this.state.storyAdCards.snapAdsCards.forEach(ad=>ad.hasOwnProperty("destination")))
+        this.state.storyAdCards.snapAdsCards.forEach(ad =>
+          ad.hasOwnProperty("destination")
+        ))
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -839,9 +841,12 @@ class AdDesign extends Component {
   };
   removeSnapCard = index => {
     if (this.state.storyAdCards.snapAdsCards.length > 4) {
-      let result = this.state.storyAdCards.snapAdsCards.filter(
-        data => data.id !== index
-      );
+      let result = this.state.storyAdCards.snapAdsCards.filter(data => {
+        if (data.id ? data.id : data.item.id !== index) {
+          return data;
+        }
+        console.log(data.id ? data.id : data.item.id);
+      });
 
       this.setState({
         storyAdCards: {
@@ -864,12 +869,12 @@ class AdDesign extends Component {
   };
   _handleSubmission = async () => {
     await this.validator();
-    if (true) {
+    if (this.state.storyAdCards.storyAdSelected) {
       this.setState({
         storyAdCards: {
           ...this.state.storyAdCards,
           storyAdSelected: false,
-          numOfAds: this.state.numOfAds++
+          numOfAds: this.state.storyAdCards.numOfAds + 1
         }
       });
     }
@@ -926,7 +931,13 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    console.log(this.state.swipeUpError);
+    // console.log(this.state.storyAdCards.snapAdsCards);
+
+    let selectedAd =
+      (!this.state.storyAdCards.storyAdSelected &&
+        this.state.storyAdCards.numOfAds >= 3) ||
+      (this.state.storyAdCards.storyAdSelected &&
+        this.state.storyAdCards.selectedStoryAd.hasOwnProperty("image"));
 
     let { image } = this.state;
     let {
@@ -1120,15 +1131,17 @@ class AdDesign extends Component {
                     <ForwardButton width={wp(24)} height={hp(8)} />
                   </TouchableOpacity>
                 )}
-                {this.state.objective !== "BRAND_AWARENESS" &&
-                  isNull(this.state.swipeUpError) && (
-                    <TouchableOpacity
-                      onPress={this._handleSubmission}
-                      style={styles.button}
-                    >
-                      <ForwardButton width={wp(24)} height={hp(8)} />
-                    </TouchableOpacity>
-                  )}
+                {selectedAd && (
+                  //this.props.adType !== "StoryAd" &&
+                  // (this.state.objective !== "BRAND_AWARENESS" &&
+                  //   isNull(this.state.swipeUpError))
+                  <TouchableOpacity
+                    onPress={this._handleSubmission}
+                    style={styles.button}
+                  >
+                    <ForwardButton width={wp(24)} height={hp(8)} />
+                  </TouchableOpacity>
+                )}
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
