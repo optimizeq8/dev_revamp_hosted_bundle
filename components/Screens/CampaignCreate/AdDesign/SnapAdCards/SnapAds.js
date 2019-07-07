@@ -9,8 +9,7 @@ import SnapCard from "./SnapCard";
 export default class SnapAds extends Component {
   state = { snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }] };
 
-  componentDidMount(prevProps) {
-    console.log("kmiouiy------------------bvuiol", this.props.snapAdsCards);
+  componentDidMount() {
     // console.log("prevporps", prevProps.snapAdsCards);
 
     // if (prevProps.snapAdsCards !== this.props.snapAdsCards) {
@@ -39,6 +38,8 @@ export default class SnapAds extends Component {
     } else
       return (
         <SnapCard
+          video={this.props.video}
+          openUploadVideo={this.props.openUploadVideo}
           _handleStoryAdCards={this.props._handleStoryAdCards}
           removeSnapCard={this.props.removeSnapCard}
           snapCardInfo={item}

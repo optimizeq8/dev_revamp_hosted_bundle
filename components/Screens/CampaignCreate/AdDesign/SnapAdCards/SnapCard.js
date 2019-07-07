@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { Text, View, Image } from "react-native";
 import { Button, Icon } from "native-base";
-
+import { Video } from "expo";
 import styles from "../styles";
 import MediaButton from "../MediaButton";
 export default class SnapCard extends Component {
   navigateToCreative = card => {};
   render() {
-    let { snapCardInfo, removeSnapCard, _handleStoryAdCards } = this.props;
+    let {
+      snapCardInfo,
+      removeSnapCard,
+      _handleStoryAdCards,
+      video
+    } = this.props;
     // console.log(snapCardInfo);
 
     return (
@@ -22,10 +27,21 @@ export default class SnapCard extends Component {
             position: "absolute"
           }}
         >
-          <Image
-            source={{ uri: snapCardInfo.item.image }}
-            style={{ height: "100%", width: "100%", position: "absolute" }}
-          />
+          {video ? (
+            <Video
+              source={{
+                uri: snapCardInfo.item.image
+              }}
+              isMuted
+              resizeMode={"stretch"}
+              style={[styles.video, { opacity: 0.5 }]}
+            />
+          ) : (
+            <Image
+              source={{ uri: snapCardInfo.item.image }}
+              style={{ height: "100%", width: "100%", position: "absolute" }}
+            />
+          )}
         </View>
         <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
         <Icon

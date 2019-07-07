@@ -251,7 +251,7 @@ export const set_AdType = adType => {
 };
 export const ad_design = (
   info,
-  laoding,
+  loading,
   navigation,
   onToggleModal,
   appChoice,
@@ -273,7 +273,7 @@ export const ad_design = (
     createBaseUrl()
       .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
         onUploadProgress: ProgressEvent =>
-          laoding((ProgressEvent.loaded / ProgressEvent.total) * 100),
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token
       })
       .then(res => {
@@ -308,7 +308,80 @@ export const ad_design = (
           : navigation.navigate("Dashboard");
       })
       .catch(err => {
-        laoding(0);
+        loading(0);
+        onToggleModal(false);
+        // console.log("ad_design", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_DESIGN
+        });
+      });
+  };
+};
+
+export const uploadStoryAdCard = (
+  info,
+  loading,
+  rejected,
+  cancelUplaod,
+  longVideo,
+  iosUploadVideo
+) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_DESIGN,
+      payload: true
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data"
+    };
+    createBaseUrl()
+      .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
+        onUploadProgress: ProgressEvent =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        // dispatch(
+        //   save_campaign_info("adDesign", {
+        //     appChoice,
+        //     longVideo,
+        //     iosUploadVideo
+        //   })
+        // );
+        rejected &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top"
+          });
+        return dispatch({
+          type: actionTypes.SET_AD_DESIGN,
+          payload: data
+        });
+      })
+      .then(() => {
+        onToggleModal(false);
+        dispatch(save_campaign_info({ formatted: info }));
+      })
+      .then(() => {
+        !rejected
+          ? navigation.push("AdDetails")
+          : navigation.navigate("Dashboard");
+      })
+      .catch(err => {
+        loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
         showMessage({

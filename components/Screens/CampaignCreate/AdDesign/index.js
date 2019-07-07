@@ -223,7 +223,6 @@ class AdDesign extends Component {
       let card = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-      console.log("card", card);
 
       card = {
         // ...card,
@@ -455,8 +454,7 @@ class AdDesign extends Component {
                       // storyAdSelected: false,
                       selectedStoryAd: card,
                       snapAdsCards: cards
-                    },
-                    image: result.uri
+                    }
                   });
                 } else {
                   this.setState({
@@ -670,7 +668,7 @@ class AdDesign extends Component {
       let res = this.state.image.split(
         this.state.image.includes("/ImageManipulator/")
           ? "/ImageManipulator/"
-          : this.state.directory
+          : "/ImagePicker/"
       );
       let format = res[1].split(".");
 
@@ -730,7 +728,11 @@ class AdDesign extends Component {
   }
   getVideoUploadUrl = () => {
     this.setMediaModalVisible(false);
-    this.props.getVideoUploadUrl(this.props.campaign_id, this.openUploadVideo);
+    this.props.getVideoUploadUrl(
+      3058,
+      // this.props.campaign_id,
+      this.openUploadVideo
+    );
   };
   openUploadVideo = async () => {
     try {
@@ -760,12 +762,33 @@ class AdDesign extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-
-    this.setState({
-      image: data.queryParams.media,
-      iosVideoUploaded: true,
-      type: "VIDEO"
-    });
+    if (
+      true
+      // this.props.adType === "StoryAd"
+    ) {
+      let cards = this.state.storyAdCards.snapAdsCards;
+      let card = this.state.storyAdCards.snapAdsCards[
+        this.state.storyAdCards.selectedStoryAd.index
+      ];
+      card = {
+        ...this.state.storyAdCards.selectedStoryAd,
+        image: data.queryParams.media
+      };
+      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+      this.setState({
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          // storyAdSelected: false,
+          selectedStoryAd: card,
+          snapAdsCards: cards
+        }
+      });
+    } else
+      this.setState({
+        image: data.queryParams.media,
+        iosVideoUploaded: true,
+        type: "VIDEO"
+      });
     this.props.save_campaign_info({
       image: data.queryParams.media,
       iosVideoUploaded: true,
@@ -841,12 +864,9 @@ class AdDesign extends Component {
   };
   removeSnapCard = index => {
     if (this.state.storyAdCards.snapAdsCards.length > 4) {
-      let result = this.state.storyAdCards.snapAdsCards.filter(data => {
-        if (data.id ? data.id : data.item.id !== index) {
-          return data;
-        }
-        console.log(data.id ? data.id : data.item.id);
-      });
+      let result = this.state.storyAdCards.snapAdsCards.filter(
+        data => data.id !== index
+      );
 
       this.setState({
         storyAdCards: {
@@ -857,9 +877,8 @@ class AdDesign extends Component {
     }
   };
   _handleStoryAdCards = card => {
-    console.log(card);
-
     this.setState({
+      ...this.state,
       storyAdCards: {
         ...this.state.storyAdCards,
         storyAdSelected: true,
@@ -869,7 +888,7 @@ class AdDesign extends Component {
   };
   _handleSubmission = async () => {
     await this.validator();
-    if (this.state.storyAdCards.storyAdSelected) {
+    if (true) {
       this.setState({
         storyAdCards: {
           ...this.state.storyAdCards,
@@ -931,8 +950,6 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    // console.log(this.state.storyAdCards.snapAdsCards);
-
     let selectedAd =
       (!this.state.storyAdCards.storyAdSelected &&
         this.state.storyAdCards.numOfAds >= 3) ||
@@ -940,6 +957,7 @@ class AdDesign extends Component {
         this.state.storyAdCards.selectedStoryAd.hasOwnProperty("image"));
 
     let { image } = this.state;
+
     let {
       brand_name,
       headline,
@@ -1020,10 +1038,26 @@ class AdDesign extends Component {
                     />
 
                     {inputFields}
-                    <MediaButton
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      image={this.state.image}
-                    />
+                    {//this.props.adType === "StoryAd" &&
+                    !this.state.storyAdCards.storyAdSelected ? (
+                      // this.props.adType === "StoryAd"
+                      <SnapAds
+                        video={true}
+                        openUploadVideo={this.openUploadVideo}
+                        addSnapCard={this.addSnapCard}
+                        removeSnapCard={this.removeSnapCard}
+                        selectedStoryAd={
+                          this.state.storyAdCards.selectedStoryAd
+                        }
+                        snapAdsCards={this.state.storyAdCards.snapAdsCards}
+                        _handleStoryAdCards={this._handleStoryAdCards}
+                      />
+                    ) : (
+                      <MediaButton
+                        setMediaModalVisible={this.setMediaModalVisible}
+                        image={this.state.image}
+                      />
+                    )}
                     {"BRAND_AWARENESS" !==
                       this.state.objective.toLowerCase() && (
                       <SwipeUpComponent
@@ -1071,6 +1105,7 @@ class AdDesign extends Component {
                     !this.state.storyAdCards.storyAdSelected ? (
                       // this.props.adType === "StoryAd"
                       <SnapAds
+                        openUploadVideo={this.openUploadVideo}
                         addSnapCard={this.addSnapCard}
                         removeSnapCard={this.removeSnapCard}
                         selectedStoryAd={
@@ -1115,7 +1150,7 @@ class AdDesign extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {image ? (
+            {image && this.props.adType !== "StoryAd" ? (
               <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
                   style={styles.button}
@@ -1123,14 +1158,15 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
-                {this.state.objective === "BRAND_AWARENESS" && (
-                  <TouchableOpacity
-                    onPress={this._handleSubmission}
-                    style={styles.button}
-                  >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  </TouchableOpacity>
-                )}
+                {this.state.objective === "BRAND_AWARENESS" &&
+                  this.props.adType !== "StoryAd" && (
+                    <TouchableOpacity
+                      onPress={this._handleSubmission}
+                      style={styles.button}
+                    >
+                      <ForwardButton width={wp(24)} height={hp(8)} />
+                    </TouchableOpacity>
+                  )}
                 {selectedAd && (
                   //this.props.adType !== "StoryAd" &&
                   // (this.state.objective !== "BRAND_AWARENESS" &&
