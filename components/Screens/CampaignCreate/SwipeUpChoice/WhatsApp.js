@@ -128,13 +128,13 @@ class WhatsApp extends Component {
     if (this.validate() && weburlAvalible) {
       let whatsAppCampaign = {
         weburl: this.state.campaignInfo.weburl,
-        whatsappnumber: this.state.campaignInfo.whatsappnumber,
+        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
         insta_handle: this.state.campaignInfo.insta_handle,
         callnumber:
           this.state.campaignInfo.callnumber ||
           this.state.campaignInfo.callnumber !== ""
-            ? this.state.campaignInfo.callnumber
-            : this.state.campaignInfo.whatsappnumber
+            ? this.state.campaignInfo.callnumber.replace("+", "")
+            : this.state.campaignInfo.whatsappnumber.replace("+", "")
       };
 
       this.props._changeDestination(
