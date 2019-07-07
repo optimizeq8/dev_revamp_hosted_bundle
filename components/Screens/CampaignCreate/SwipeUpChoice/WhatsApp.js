@@ -50,7 +50,7 @@ class WhatsApp extends Component {
     if (
       (this.props.data.hasOwnProperty("attachment") &&
         this.props.data.attachment !== "BLANK") ||
-      this.props.mainBusiness.hasOwnProperty("whatsappnumber")
+      this.props.mainBusiness.whatsappnumber !== ""
     ) {
       this.setState({
         campaignInfo: {
@@ -131,6 +131,7 @@ class WhatsApp extends Component {
         whatsappnumber: this.state.campaignInfo.whatsappnumber,
         insta_handle: this.state.campaignInfo.insta_handle,
         callnumber:
+          this.state.campaignInfo.callnumber ||
           this.state.campaignInfo.callnumber !== ""
             ? this.state.campaignInfo.callnumber
             : this.state.campaignInfo.whatsappnumber
