@@ -8,7 +8,12 @@ export default class SwipeUpComponent extends Component {
     let { destination, attachment, collectionAdLinkForm, adType } = this.props;
     return (
       <TouchableOpacity
-        style={styles.swipeUp}
+        style={[
+          styles.swipeUp,
+          {
+            top: adType === "CollectionAd" ? "76%" : "88%"
+          }
+        ]}
         onPress={() => {
           if (adType === "CollectionAd") {
             this.props.navigation.navigate("SwipeUpChoice", {

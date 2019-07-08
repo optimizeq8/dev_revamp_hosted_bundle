@@ -106,6 +106,8 @@ class AdType extends Component {
       campaign_type: this.state.campaign_type
     });
 
+    console.log("adtype", this.props.adType !== this.state.campaign_type);
+
     if (this.props.adType !== this.state.campaign_type) {
       this.props.resetCampaignInfo();
     }

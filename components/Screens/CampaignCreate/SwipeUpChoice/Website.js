@@ -89,9 +89,6 @@ class Website extends Component {
     }
   };
   _handleSubmission = () => {
-    console.log(this.props.objective);
-    console.log(this.props.collectionAdLinkForm);
-
     if (this.validateUrl()) {
       this.props._changeDestination(
         this.props.collectionAdLinkForm === 0

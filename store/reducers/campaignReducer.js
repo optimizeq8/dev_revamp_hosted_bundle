@@ -27,7 +27,9 @@ const initialState = {
   regionNames: [],
   campaignEnded: false,
   adType: "SnapAd",
-  collectionAdLinkForm: 0
+  collectionAdLinkForm: 0,
+  collectionLoader: false,
+  collectionAdMedia: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -61,7 +63,26 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingObj: false
       };
+    case actionTypes.SET_AD_LOADING_COLLECTION_MEDIA:
+      return {
+        ...state,
+        collectionLoader: action.payload
+      };
+    case actionTypes.SET_AD_COLLECTION_MEDIA:
+      let arr = state.collectionAdMedia;
+      arr[action.payload.collection_order] = action.payload;
+      console.log("arr:", arr);
 
+      return {
+        ...state,
+        collectionLoader: false,
+        collectionAdMedia: [...arr]
+      };
+    case actionTypes.ERROR_SET_AD_COLLECTION_MEDIA:
+      return {
+        ...state,
+        collectionLoader: false
+      };
     case actionTypes.SET_AD_DESIGN:
       return {
         ...state,
@@ -263,7 +284,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaign_id: "",
         data: null,
-        adType: "SnapAd"
+        adType: "SnapAd",
+        collectionAdLinkForm: 0,
+        collectionLoader: false,
+        collectionAdMedia: []
       };
     default:
       return state;

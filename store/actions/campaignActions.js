@@ -242,7 +242,7 @@ export const save_campaign_info = info => {
 };
 export const ad_design = (
   info,
-  laoding,
+  loading,
   navigation,
   onToggleModal,
   appChoice,
@@ -264,12 +264,10 @@ export const ad_design = (
     createBaseUrl()
       .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
         onUploadProgress: ProgressEvent =>
-          laoding((ProgressEvent.loaded / ProgressEvent.total) * 100),
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token
       })
       .then(res => {
-        console.log("objectives", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -301,7 +299,7 @@ export const ad_design = (
           : navigation.navigate("Dashboard");
       })
       .catch(err => {
-        laoding(0);
+        loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
         showMessage({
@@ -648,5 +646,70 @@ export const set_collectionAd_link_form = data => {
       type: actionTypes.SET_COLLECTION_AD_LINK_FORM,
       payload: data
     });
+  };
+};
+
+export const save_collection_media = (
+  media,
+  localUri,
+  loading,
+  navigation,
+  cancelUplaod,
+  onToggleModal
+) => {
+  onToggleModal(true);
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING_COLLECTION_MEDIA,
+      payload: true
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data"
+    };
+    createBaseUrl()
+      .post(`savecollectionmedia`, media, {
+        onUploadProgress: ProgressEvent =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
+      })
+      .then(res => {
+        console.log("data:", res.data);
+
+        return res.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.SET_AD_COLLECTION_MEDIA,
+          payload: { ...data.data, localUri }
+        });
+      })
+      .then(() => {
+        onToggleModal(false);
+      })
+      .then(() => {
+        navigation.navigate("AdDesign");
+      })
+      .catch(err => {
+        loading(0);
+        onToggleModal(false);
+        // console.log("ad_design", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA
+        });
+      });
   };
 };

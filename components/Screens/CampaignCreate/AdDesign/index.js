@@ -63,6 +63,7 @@ import {
 import PenIconBrand from "./PenIconBrand";
 import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
+import isUndefined from "lodash/isUndefined";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -200,6 +201,7 @@ class AdDesign extends Component {
         swipeUpError: null
       });
     }
+    console.log("hi");
   }
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -446,7 +448,7 @@ class AdDesign extends Component {
           ) {
             this.setState({
               imageError:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               image: null,
               type: ""
               // videoIsLoading: false
@@ -458,12 +460,10 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             showMessage({
               message:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               position: "top",
               type: "warning"
             });
-            console.log("????");
-
             return;
           } else {
             this.setState({
@@ -817,6 +817,57 @@ class AdDesign extends Component {
   cancelUpload = () => {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
+
+  collectionComp = i => {
+    console.log("i", this.props.collectionAdMedia[i]);
+
+    return (
+      <TouchableOpacity
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          alignSelf: "center",
+          width: "24%",
+          height: hp(9.5),
+          borderRadius: 20,
+          paddingVertical: 2,
+          paddingHorizontal: 2,
+          justifyContent: "center"
+        }}
+        onPress={() => {
+          this.props.navigation.push("CollectionMedia", {
+            collection_order: i
+          });
+        }}
+      >
+        {!isUndefined(this.props.collectionAdMedia[i]) && (
+          <Image
+            style={{
+              borderRadius: 20,
+              overflow: "hidden",
+              alignSelf: "center",
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 0,
+              justifyContent: "center"
+            }}
+            source={{ uri: this.props.collectionAdMedia[i].localUri }}
+            resizeMode="cover"
+          />
+        )}
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 9,
+            fontFamily: "montserrat-medium",
+            textAlign: "center"
+          }}
+        >
+          Add{"\n"}Product
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   render() {
     let { image } = this.state;
     let {
@@ -852,6 +903,7 @@ class AdDesign extends Component {
             attachment={attachment}
             collectionAdLinkForm={this.props.collectionAdLinkForm}
             adType={this.props.adType}
+            image={image}
           />
         )
       ) : (
@@ -865,9 +917,38 @@ class AdDesign extends Component {
           adType={this.props.adType}
         />
       );
+
+    let collection = (
+      <View
+        style={{
+          alignContent: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+          bottom: "10%",
+          flex: 1,
+          position: "absolute",
+          height: hp(13),
+          width: "100%",
+          bottom: 0,
+          paddingHorizontal: 8
+        }}
+      >
+        {this.collectionComp(0)}
+        {this.collectionComp(1)}
+        {this.collectionComp(2)}
+        {this.collectionComp(3)}
+      </View>
+    );
+
     let blankView = <View style={styles.blankView} />;
-    console.log("isVisible", this.state.isVisible);
-    console.log("videoIsLoading", this.state.videoIsLoading);
+    // console.log("isVisible", this.state.isVisible);
+    // console.log("videoIsLoading", this.state.videoIsLoading);
+    // console.log("collectionAdMedia", this.props.collectionAdMedia);
+    // console.log(
+    //   "isUndefined(this.props.collectionAdMedia[1]) ",
+    //   isUndefined(this.props.collectionAdMedia[1])
+    // );
 
     return (
       <SafeAreaView
@@ -945,6 +1026,7 @@ class AdDesign extends Component {
                       image={this.state.image}
                     />
                     {swipeUpComp}
+                    {this.props.adType === "CollectionAd" && collection}
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -960,6 +1042,8 @@ class AdDesign extends Component {
                       image={this.state.image}
                     />
                     {swipeUpComp}
+
+                    {this.props.adType === "CollectionAd" && collection}
                   </View>
                 )}
               </View>
@@ -1081,7 +1165,8 @@ const mapStateToProps = state => ({
   videoUrlLoading: state.campaignC.videoUrlLoading,
   videoUrl: state.campaignC.videoUrl,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  collectionAdMedia: state.campaignC.collectionAdMedia
 });
 
 const mapDispatchToProps = dispatch => ({
