@@ -328,31 +328,38 @@ export const ad_design = (
 
 export const uploadStoryAdCard = (
   info,
-  loading,
+  card,
   rejected,
   cancelUplaod,
-  longVideo,
   iosUploadVideo
 ) => {
+  // console.log(info);
+
   return dispatch => {
     dispatch({
-      type: actionTypes.SET_AD_LOADING_DESIGN,
-      payload: true
+      type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
+      payload: { uploading: true, index: card.index }
     });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
     };
     createBaseUrl()
-      .post(rejected ? `reuploadbrandmedia` : `savebrandmedia`, info, {
-        onUploadProgress: ProgressEvent =>
-          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUplaod.token
-      })
+      .post(
+        rejected ? `reuploadbrandmedia` : `savestorymedia`,
+        info
+        // {
+        //   onUploadProgress: ProgressEvent =>
+        //     loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        //   cancelToken: cancelUplaod.token
+        // }
+      )
       .then(res => {
         return res.data;
       })
       .then(data => {
+        console.log(data);
+
         // dispatch(
         //   save_campaign_info("adDesign", {
         //     appChoice,
@@ -367,23 +374,23 @@ export const uploadStoryAdCard = (
             position: "top"
           });
         return dispatch({
-          type: actionTypes.SET_AD_DESIGN,
-          payload: data
+          type: actionTypes.SET_STORYADMEDIA_DESIGN,
+          payload: { data: data.data, card }
         });
       })
       .then(() => {
-        onToggleModal(false);
-        dispatch(save_campaign_info({ formatted: info }));
+        // onToggleModal(false);
+        // dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
-        !rejected
-          ? navigation.push("AdDetails")
-          : navigation.navigate("Dashboard");
+        // !rejected
+        //   ? navigation.push("AdDetails")
+        //   : navigation.navigate("Dashboard");
       })
       .catch(err => {
-        loading(0);
-        onToggleModal(false);
-        // console.log("ad_design", err.message || err.response);
+        // loading(0);
+        // onToggleModal(false);
+        console.log("ad_design", err.message || err.response);
         showMessage({
           message:
             err.message ||

@@ -4,8 +4,11 @@ import { Button, Icon } from "native-base";
 import { Video } from "expo";
 import styles from "../styles";
 import MediaButton from "../MediaButton";
-export default class SnapCard extends Component {
-  navigateToCreative = card => {};
+import { ActivityIndicator } from "react-native-paper";
+import { connect } from "react-redux";
+
+class SnapCard extends Component {
+  state = { uploading: false };
   render() {
     let {
       snapCardInfo,
@@ -13,8 +16,10 @@ export default class SnapCard extends Component {
       _handleStoryAdCards,
       video
     } = this.props;
-    // console.log(snapCardInfo);
 
+    handleUpload = uploading => {
+      this.setState({ uploading });
+    };
     return (
       <View key={snapCardInfo.index} style={styles.SnapAdCard}>
         <View
@@ -44,17 +49,23 @@ export default class SnapCard extends Component {
           )}
         </View>
         <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
-        <Icon
-          onPress={() => removeSnapCard(snapCardInfo.item.id)}
-          name="close"
-          type="MaterialCommunityIcons"
-          style={{ bottom: "35%", color: "#fff" }}
-        />
-        <MediaButton
-          _handleStoryAdCards={_handleStoryAdCards}
-          snapAdCard={true}
-          snapCardInfo={snapCardInfo}
-        />
+        {snapCardInfo.index > 2 && (
+          <Icon
+            onPress={() => removeSnapCard(snapCardInfo.item.id)}
+            name="close"
+            type="MaterialCommunityIcons"
+            style={{ bottom: "35%", color: "#fff" }}
+          />
+        )}
+        {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
+          <MediaButton
+            _handleStoryAdCards={_handleStoryAdCards}
+            snapAdCard={true}
+            snapCardInfo={snapCardInfo}
+          />
+        ) : (
+          <ActivityIndicator />
+        )}
         {/* <Button
           style={styles.addButtonStyle}
           onPress={() => removeSnapCard(snapCard.item.id)}
@@ -66,3 +77,10 @@ export default class SnapCard extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray
+});
+export default connect(
+  mapStateToProps,
+  null
+)(SnapCard);

@@ -26,7 +26,10 @@ const initialState = {
   countryName: "",
   interestNames: [],
   regionNames: [],
-  campaignEnded: false
+  campaignEnded: false,
+  storyAdsArray: [],
+
+  loadingStoryAdsArray: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -241,6 +244,27 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingDetail: action.payload
+      };
+    case actionTypes.SET_STORYADMEDIA_DESIGN:
+      let storyAds = state.storyAdsArray;
+      storyAds[action.payload.data.story_order] = {
+        ...action.payload.data,
+        ...action.payload.card
+      };
+      let loadingAr = state.loadingStoryAdsArray;
+      loadingAr[action.payload.data.story_order] = false;
+
+      return {
+        ...state,
+        loadingStoryAdsArray: [...loadingAr],
+        storyAdsArray: [...storyAds]
+      };
+    case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
+      let ar = state.loadingStoryAdsArray;
+      ar[action.payload.index] = action.payload.uploading;
+      return {
+        ...state,
+        loadingStoryAdsArray: [...ar]
       };
     case actionTypes.SET_LANGUAGE_LIST:
       return {

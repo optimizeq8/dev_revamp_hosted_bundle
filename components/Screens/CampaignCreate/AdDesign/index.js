@@ -177,6 +177,31 @@ class AdDesign extends Component {
         swipeUpError
       });
     }
+    if (this.props.storyAdsArray.length > 0) {
+      let cards = this.state.storyAdCards.snapAdsCards;
+      let plusButton = this.state.storyAdCards.snapAdsCards[
+        this.state.storyAdCards.snapAdsCards.length - 1
+      ];
+      this.props.storyAdsArray.forEach(
+        (ad, i) =>
+          (cards[ad.story_order] = {
+            ...cards[ad.story_order - 1],
+            ...ad
+          })
+      );
+      plusButton = {
+        ...plusButton,
+        id: this.state.storyAdCards.snapAdsCards.length
+      };
+      cards.push(plusButton);
+      this.setState({
+        ...this.state,
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          snapAdsCards: cards
+        }
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -191,6 +216,28 @@ class AdDesign extends Component {
       this.setState({
         swipeUpError: null
       });
+    }
+    if (
+      prevProps.storyAdsArray !== this.props.storyAdsArray &&
+      !this.props.storyAdsArray.includes(undefined)
+    ) {
+      let cards = this.state.storyAdCards.snapAdsCards;
+      this.props.storyAdsArray.forEach(
+        (ad, i) =>
+          (cards[ad.story_order] = {
+            ...cards[ad.story_order],
+            ...ad
+          })
+      );
+      // console.log("newsnap-=====", cards);
+
+      // this.setState({
+      //   ...this.state,
+      //   storyAdCards: {
+      //     ...this.state.storyAdCards,
+      //     snapAdsCards: newSnapsCards
+      //   }
+      // });
     }
   }
   askForPermssion = async () => {
@@ -225,12 +272,13 @@ class AdDesign extends Component {
       ];
 
       card = {
-        // ...card,
-        ...this.state.storyAdCards.selectedStoryAd,
+        ...card,
+        index: this.state.storyAdCards.selectedStoryAd.index,
         destination,
         call_to_action,
         attachment
       };
+
       cards[this.state.storyAdCards.selectedStoryAd.index] = card;
       this.setState({
         storyAdCards: {
@@ -443,10 +491,14 @@ class AdDesign extends Component {
                   let card = this.state.storyAdCards.snapAdsCards[
                     this.state.storyAdCards.selectedStoryAd.index
                   ];
+
                   card = {
-                    ...this.state.storyAdCards.selectedStoryAd,
-                    image: result.uri
+                    ...card,
+                    index: this.state.storyAdCards.selectedStoryAd.index,
+                    image: result.uri,
+                    media_type: result.type.toUpperCase()
                   };
+
                   cards[this.state.storyAdCards.selectedStoryAd.index] = card;
                   this.setState({
                     storyAdCards: {
@@ -771,7 +823,8 @@ class AdDesign extends Component {
         this.state.storyAdCards.selectedStoryAd.index
       ];
       card = {
-        ...this.state.storyAdCards.selectedStoryAd,
+        ...card,
+        index: this.state.storyAdCards.selectedStoryAd.index,
         image: data.queryParams.media
       };
       cards[this.state.storyAdCards.selectedStoryAd.index] = card;
@@ -853,7 +906,12 @@ class AdDesign extends Component {
   };
 
   addSnapCard = () => {
-    let newSnapCard = { id: (Math.random() * 1000).toFixed(0) };
+    let newSnapCard = {
+      id:
+        this.state.storyAdCards.snapAdsCards[
+          this.state.storyAdCards.snapAdsCards.length - 1
+        ].id + 1
+    };
     this.state.storyAdCards.snapAdsCards.length < 21 &&
       this.setState({
         storyAdCards: {
@@ -864,9 +922,10 @@ class AdDesign extends Component {
   };
   removeSnapCard = index => {
     if (this.state.storyAdCards.snapAdsCards.length > 4) {
-      let result = this.state.storyAdCards.snapAdsCards.filter(
-        data => data.id !== index
-      );
+      let result = this.state.storyAdCards.snapAdsCards.filter(data => {
+        if ((data.item && data.item.id !== index) || data.id !== index)
+          return data;
+      });
 
       this.setState({
         storyAdCards: {
@@ -889,10 +948,55 @@ class AdDesign extends Component {
   _handleSubmission = async () => {
     await this.validator();
     if (true) {
+      var body = new FormData();
+      let cards = this.state.storyAdCards.snapAdsCards;
+      let card = this.state.storyAdCards.snapAdsCards[
+        this.state.storyAdCards.selectedStoryAd.index
+      ];
+
+      card = {
+        ...card,
+        uploading: true
+      };
+
+      let res = card.image.split(
+        card.image.includes("/ImageManipulator/")
+          ? "/ImageManipulator/"
+          : "/ImagePicker/"
+      );
+      let format = res[1].split(".");
+      var photo = {
+        uri: card.image,
+        type: card.media_type + "/" + format[1],
+        name: res[1]
+      };
+      body.append(
+        "story_name",
+        this.state.campaignInfo.brand_name + " " + card.index
+      );
+      body.append("story_destination", "STORY");
+      body.append("story_media", photo);
+      body.append("campaign_id", this.props.campaign_id);
+      body.append("story_order", card.index);
+      body.append("story_media_type", card.media_type);
+      body.append(
+        "story_call_to_action",
+        card.call_to_action ? card.call_to_action.value : "BLANK"
+      );
+      body.append(
+        "story_attachment",
+        card.attachment ? JSON.stringify(card.attachment) : "BLANK"
+      );
+
+      this.props.uploadStoryAdCard(body, card);
+      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+
       this.setState({
         storyAdCards: {
           ...this.state.storyAdCards,
+          snapAdsCards: cards,
           storyAdSelected: false,
+          selectedStoryAd: card,
           numOfAds: this.state.storyAdCards.numOfAds + 1
         }
       });
@@ -950,6 +1054,8 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
+    // console.log("this.props.storyAdsArray", this.props.storyAdsArray);
+
     let selectedAd =
       (!this.state.storyAdCards.storyAdSelected &&
         this.state.storyAdCards.numOfAds >= 3) ||
@@ -1101,7 +1207,7 @@ class AdDesign extends Component {
                     />
 
                     {inputFields}
-                    {//this.props.adType === "StoryAd" &&
+                    {this.props.adType === "StoryAd" &&
                     !this.state.storyAdCards.storyAdSelected ? (
                       // this.props.adType === "StoryAd"
                       <SnapAds
@@ -1150,7 +1256,8 @@ class AdDesign extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {image && this.props.adType !== "StoryAd" ? (
+            {true ? (
+              //image && this.props.adType !== "StoryAd"
               <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
                   style={styles.button}
@@ -1249,6 +1356,8 @@ class AdDesign extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   adType: state.campaignC.adType,
+  storyAdsArray: state.campaignC.storyAdsArray,
+  loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign,
@@ -1257,6 +1366,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  uploadStoryAdCard: (info, loading, rejected, cancelUplaod, iosUploadVideo) =>
+    dispatch(
+      actionCreators.uploadStoryAdCard(
+        info,
+        loading,
+        rejected,
+        cancelUplaod,
+        iosUploadVideo
+      )
+    ),
   ad_design: (
     info,
     loading,
