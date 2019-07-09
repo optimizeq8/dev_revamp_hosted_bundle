@@ -542,8 +542,9 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             return;
           } else if (
-            Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-            Math.floor(result.height / 9) === Math.floor(result.width / 16)
+            result.width >= 1080 &&
+            result.height >= 1920 &&
+            Math.floor(result.width / 9) === Math.floor(result.height / 16)
           ) {
             this.setState({
               image: result.uri,
