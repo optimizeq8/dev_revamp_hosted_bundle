@@ -83,6 +83,7 @@ class SnapCard extends Component {
   }
 }
 const mapStateToProps = state => ({
+  storyAdsArray: state.campaignC.storyAdsArray,
   loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray
 });
 

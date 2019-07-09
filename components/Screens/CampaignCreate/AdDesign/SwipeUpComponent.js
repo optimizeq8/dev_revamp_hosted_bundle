@@ -14,11 +14,11 @@ export default class SwipeUpComponent extends Component {
           objective === "TRAFFIC"
             ? this.props.navigation.push("SwipeUpDestination", {
                 _changeDestination: this.props._changeDestination,
-                image: image
+                image
               })
             : this.props.navigation.navigate("SwipeUpChoice", {
                 _changeDestination: this.props._changeDestination,
-                objective: objective
+                objective
               });
         }}
       >

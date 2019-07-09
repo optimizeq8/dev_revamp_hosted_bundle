@@ -29,7 +29,10 @@ export default class MediaButton extends Component {
           onPress={() => {
             // this._pickImage();
             snapAdCard
-              ? _handleStoryAdCards(snapCardInfo)
+              ? _handleStoryAdCards({
+                  index: snapCardInfo.index,
+                  ...snapCardInfo.item
+                })
               : setMediaModalVisible(true);
           }}
         >

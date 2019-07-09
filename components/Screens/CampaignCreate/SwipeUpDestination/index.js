@@ -10,6 +10,9 @@ import LayersIcon from "../../../../assets/SVGs/Layers";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
 
+//data
+import attachmentOptionData from "../../../Data/attachmentOptions.data";
+
 // Style
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
@@ -21,6 +24,7 @@ import isUndefined from "lodash/isUndefined";
 
 //Redux
 import { connect } from "react-redux";
+import AttachmentCard from "./AttachmentCard";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -31,7 +35,8 @@ class SwipeUpDestination extends Component {
     this.state = {
       image: "",
       sidemenustate: false,
-      selected: ""
+      selected: "",
+      attachmentOptions: attachmentOptionData
     };
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
@@ -60,7 +65,44 @@ class SwipeUpDestination extends Component {
       sidemenustate: false
     });
   }
+
+  attachmentTypes = () => {
+    let menu;
+    switch (this.state.selected) {
+      case "REMOTE_WEBPAGE": {
+        menu = (
+          <Website
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
+        break;
+      }
+      case "DEEP_LINK": {
+        menu = (
+          <Deep_Link
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
+        break;
+      }
+    }
+  };
+
   render() {
+    let storyAd = this.props.adType === "StoryAd";
+    let attachmentOptionsCard = this.state.attachmentOptions
+      .slice(0, storyAd ? this.state.attachmentOptions.length : 2)
+      .map(opt => <AttachmentCard opt={opt} />);
     let menu;
     switch (this.state.selected) {
       case "REMOTE_WEBPAGE": {
@@ -178,6 +220,7 @@ class SwipeUpDestination extends Component {
                     </Text>
                   </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   onPress={() => {
                     this.setState(
@@ -220,7 +263,10 @@ class SwipeUpDestination extends Component {
   }
 }
 
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = state => ({
+  data: state.campaignC.data,
+  adType: state.campaignC.adType
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

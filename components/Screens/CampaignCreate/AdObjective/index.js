@@ -63,13 +63,13 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
-      storyOption: "1",
+      playback_type: "LOOPING",
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
       objectiveLabel: "Select Objective",
       inputN: false,
-      objectives: ObjectiveData,
+      objectives: ObjectiveData[this.props.adType],
       nameError: "",
       objectiveError: "",
       start_timeError: "",
@@ -110,7 +110,8 @@ class AdObjective extends Component {
       this.setState({
         campaignInfo: { ...rep },
         minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget
+        maxValueBudget: this.props.data.maxValueBudget,
+        playback_type: this.props.data.playback_type
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -198,26 +199,32 @@ class AdObjective extends Component {
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
-
+        playback_type: this.state.playback_type,
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
-      if (this.props.campaign_id !== "")
+      let info = {
+        campaign_type: this.props.adType,
+        ...this.state.campaignInfo
+      };
+      this.props.adType === "StoryAd" &&
+        (info["playback_type"] = this.state.playback_type);
+      if (this.props.campaign_id !== "") {
         this.props.ad_objective(
-          { campaign_id: this.props.campaign_id, ...this.state.campaignInfo },
+          { ...info, campaign_id: this.props.campaign_id },
           this.props.navigation
         );
-      else
+      } else
         this.props.ad_objective(
-          { campaign_id: 0, ...this.state.campaignInfo },
+          { ...info, campaign_id: 0 },
           this.props.navigation
         );
     }
   };
 
-  handleStoryOption = storyOption => {
+  handleStoryOption = playback_type => {
     this.setState({
-      storyOption
+      playback_type
     });
   };
 
@@ -377,27 +384,27 @@ class AdObjective extends Component {
                 <View style={styles.topContainer}>
                   <Button
                     style={[
-                      this.state.storyOption === "1"
+                      this.state.playback_type === "LOOPING"
                         ? styles.activeButton
                         : styles.button,
                       styles.businessTypeButton1
                     ]}
                     onPress={() => {
-                      this.handleStoryOption("1");
+                      this.handleStoryOption("LOOPING");
                     }}
                   >
                     <LoopStoryIcon
                       width={40}
                       height={40}
                       fill={
-                        this.state.storyOption === "1"
+                        this.state.playback_type === "LOOPING"
                           ? styles.activeText.color
                           : styles.inactiveText.color
                       }
                     />
                     <Text
                       style={[
-                        this.state.storyOption === "1"
+                        this.state.playback_type === "LOOPING"
                           ? styles.activeText
                           : styles.inactiveText
                       ]}
@@ -406,7 +413,7 @@ class AdObjective extends Component {
                     </Text>
                     <Text
                       style={[
-                        this.state.storyOption === "1"
+                        this.state.playback_type === "LOOPING"
                           ? styles.activeText
                           : styles.inactiveText,
                         { fontFamily: "montserrat-regular" }
@@ -419,27 +426,27 @@ class AdObjective extends Component {
                   <Button
                     dark
                     style={[
-                      this.state.storyOption === "2"
+                      this.state.playback_type === "AUTO_ADVANCING"
                         ? styles.activeButton
                         : styles.button,
                       styles.businessTypeButton3
                     ]}
                     onPress={() => {
-                      this.handleStoryOption("2");
+                      this.handleStoryOption("AUTO_ADVANCING");
                     }}
                   >
                     <AutoAdvanceIcon
                       width={40}
                       height={40}
                       fill={
-                        this.state.storyOption === "2"
+                        this.state.playback_type === "AUTO_ADVANCING"
                           ? styles.activeText.color
                           : styles.inactiveText.color
                       }
                     />
                     <Text
                       style={[
-                        this.state.storyOption === "2"
+                        this.state.playback_type === "AUTO_ADVANCING"
                           ? styles.activeText
                           : styles.inactiveText
                       ]}

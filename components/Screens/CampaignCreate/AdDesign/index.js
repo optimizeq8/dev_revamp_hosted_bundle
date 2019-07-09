@@ -1012,6 +1012,22 @@ class AdDesign extends Component {
         type: card.media_type + "/" + format[1],
         name: res[1]
       };
+
+      if (card.hasOwnProperty("longformvideo_media")) {
+        let resVideo = card.longformvideo_media.split("/ImagePicker/");
+        let formatVideo = resVideo[1].split(".");
+        var video = {
+          uri: card.longformvideo_media,
+          type: card.longformvideo_media_type + "/" + formatVideo[1],
+          name: resVideo[1]
+        };
+
+        storyBody.append("story_longformvideo_media", video);
+        storyBody.append(
+          "story_longformvideo_media_type",
+          card.longformvideo_media_type
+        );
+      }
       storyBody.append(
         "story_name",
         this.state.campaignInfo.brand_name + " " + card.index
@@ -1034,17 +1050,14 @@ class AdDesign extends Component {
           ? JSON.stringify(card.attachment)
           : "BLANK"
       );
-      if (card.hasOwnProperty("longformvideo_media")) {
-        storyBody.append("story_longformvideo_media", card.longformvideo_media);
-        storyBody.append(
-          "story_longformvideo_media_type",
-          card.longformvideo_media_type
-        );
-      }
+
       card.story_id && storyBody.append("story_id", card.story_id);
+      storyBody.append(
+        "ios_upload",
+        Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
+      );
       this.props.uploadStoryAdCard(storyBody, card);
       cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-
       this.setState({
         storyAdCards: {
           ...this.state.storyAdCards,
@@ -1112,8 +1125,22 @@ class AdDesign extends Component {
   cancelUpload = () => {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
+  toggleAdSelection = () => {
+    this.state.storyAdCards.storyAdSelected
+      ? this.setState({
+          ...this.state,
+          storyAdCards: {
+            ...this.state.storyAdCards,
+            storyAdSelected: false
+          }
+        })
+      : this.props.navigation.goBack();
+  };
   render() {
-    // console.log("this.props.storyAdsArray", this.state.formatted);
+    console.log(
+      "this.props.storyAdsArray",
+      this.state.storyAdCards.selectedStoryAd
+    );
     // console.log(() =>
     //   this.props.adType !== "StoryAd"
     //     ? this.state.image
@@ -1178,7 +1205,7 @@ class AdDesign extends Component {
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
-            navigation={this.props.navigation}
+            actionButton={this.toggleAdSelection}
             title="Compose Ad"
           />
           <Content
@@ -1267,7 +1294,13 @@ class AdDesign extends Component {
                   <View style={styles.placeholder}>
                     <Image
                       style={styles.placeholder1}
-                      source={{ uri: image }}
+                      source={{
+                        uri: image
+                          ? image
+                          : this.state.storyAdCards.selectedStoryAd.image
+                          ? this.state.storyAdCards.selectedStoryAd.image
+                          : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                      }}
                       resizeMode="cover"
                     />
 
