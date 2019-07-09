@@ -6,7 +6,7 @@ import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 export default class PenIconBrand extends Component {
-  state = { input: false, coverHeadline: "" };
+  state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
     return (
       <Item style={styles.inputHeadline}>
@@ -14,7 +14,7 @@ export default class PenIconBrand extends Component {
           fill={
             this.state.input
               ? "#FF9D00"
-              : this.props.coverHeadline || this.state.coverHeadline
+              : this.props.coverHeadlineError
               ? "red"
               : "#fff"
           }
@@ -32,11 +32,7 @@ export default class PenIconBrand extends Component {
             placeholderTextColor="white"
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={value =>
-              this.props.field === "Logo"
-                ? this.props.changeBusinessName(value)
-                : this.props.changeHeadline(value)
-            }
+            onChangeText={value => this.props.changeHeadline(value)}
             onFocus={() => {
               //   this.props.focus(businessNameComp ? "inputB" : "inputH");
               this.setState({ input: true });
@@ -44,11 +40,9 @@ export default class PenIconBrand extends Component {
             onBlur={() => {
               this.setState({ input: false });
               this.setState({
-                brand_nameError: validateWrapper(
+                coverHeadlineError: validateWrapper(
                   "mandatory",
-                  this.props.field === "Logo"
-                    ? this.props.brand_name
-                    : this.props.headline
+                  this.props.coverHeadline
                 )
               });
             }}

@@ -198,7 +198,9 @@ class AdDesign extends Component {
         ...this.state,
         storyAdCards: {
           ...this.state.storyAdCards,
-          snapAdsCards: cards
+          snapAdsCards: cards,
+          selectedStoryAd: cards.find(card => card !== undefined),
+          numOfAds: cards.length
         }
       });
     }
@@ -217,27 +219,27 @@ class AdDesign extends Component {
         swipeUpError: null
       });
     }
-    if (
-      prevProps.storyAdsArray !== this.props.storyAdsArray &&
-      !this.props.storyAdsArray.includes(undefined)
-    ) {
+    if (prevProps.storyAdsArray !== this.props.storyAdsArray) {
       let cards = this.state.storyAdCards.snapAdsCards;
-      this.props.storyAdsArray.forEach(
-        (ad, i) =>
-          (cards[ad.story_order] = {
-            ...cards[ad.story_order],
-            ...ad
-          })
-      );
-      // console.log("newsnap-=====", cards);
 
-      // this.setState({
-      //   ...this.state,
-      //   storyAdCards: {
-      //     ...this.state.storyAdCards,
-      //     snapAdsCards: newSnapsCards
-      //   }
-      // });
+      this.props.storyAdsArray.forEach((ad, i) =>
+        ad
+          ? (cards[ad.story_order] = {
+              ...cards[ad.story_order],
+              ...ad
+            })
+          : (cards[i] = {
+              ...cards[i]
+            })
+      );
+
+      this.setState({
+        ...this.state,
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          snapAdsCards: cards
+        }
+      });
     }
   }
   askForPermssion = async () => {
@@ -265,19 +267,29 @@ class AdDesign extends Component {
     whatsAppCampaign = null
   ) => {
     let newData = {};
-    if (true) {
+    if (this.props.adType === "StoryAd") {
       let cards = this.state.storyAdCards.snapAdsCards;
       let card = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-
-      card = {
-        ...card,
-        index: this.state.storyAdCards.selectedStoryAd.index,
-        destination,
-        call_to_action,
-        attachment
-      };
+      if (attachment.hasOwnProperty("longformvideo_media")) {
+        card = {
+          ...card,
+          index: this.state.storyAdCards.selectedStoryAd.index,
+          destination,
+          call_to_action,
+          attachment: { label: "BLANK", value: "BLANK" },
+          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+        };
+      } else
+        card = {
+          ...card,
+          index: this.state.storyAdCards.selectedStoryAd.index,
+          destination,
+          call_to_action,
+          attachment
+        };
 
       cards[this.state.storyAdCards.selectedStoryAd.index] = card;
       this.setState({
@@ -508,6 +520,7 @@ class AdDesign extends Component {
                       snapAdsCards: cards
                     }
                   });
+                  this.onToggleModal(false);
                 } else {
                   this.setState({
                     image: result.uri,
@@ -515,17 +528,18 @@ class AdDesign extends Component {
                     imageError: null,
                     result: result.uri
                   });
+
+                  this.onToggleModal(false);
+                  showMessage({
+                    message: "Image has been selected successfully ",
+                    position: "top",
+                    type: "success"
+                  });
+                  this.props.save_campaign_info({
+                    image: result.uri,
+                    type: result.type.toUpperCase()
+                  });
                 }
-                this.onToggleModal(false);
-                showMessage({
-                  message: "Image has been selected successfully ",
-                  position: "top",
-                  type: "success"
-                });
-                this.props.save_campaign_info({
-                  image: result.uri,
-                  type: result.type.toUpperCase()
-                });
               })
               .catch(error => {
                 this.onToggleModal(false);
@@ -717,20 +731,43 @@ class AdDesign extends Component {
   formatMedia() {
     var body = new FormData();
     if (!this.state.iosVideoUploaded) {
-      let res = this.state.image.split(
-        this.state.image.includes("/ImageManipulator/")
+      let res = (() =>
+        this.props.adType !== "StoryAd"
+          ? this.state.image
+          : this.state.storyAdCards.snapAdsCards.find(
+              card => card !== undefined
+            ).image)().split(
+        (() =>
+          this.props.adType !== "StoryAd"
+            ? this.state.image
+            : this.state.storyAdCards.snapAdsCards.find(
+                card => card !== undefined
+              ).image)().includes("/ImageManipulator/")
           ? "/ImageManipulator/"
           : "/ImagePicker/"
       );
+      console.log(res);
+
       let format = res[1].split(".");
 
       var photo = {
-        uri: this.state.image,
-        type: this.state.type + "/" + format[1],
+        uri:
+          this.props.adType !== "StoryAd"
+            ? this.state.image
+            : this.state.storyAdCards.snapAdsCards.find(
+                card => card !== undefined
+              ).image,
+        type:
+          (this.props.adType !== "StoryAd" ? this.state.type : "IMAGE") +
+          "/" +
+          format[1],
         name: res[1]
       };
       body.append("media", photo);
-      body.append("media_type", this.state.type);
+      body.append(
+        "media_type",
+        this.props.adType !== "StoryAd" ? this.state.type : "IMAGE"
+      );
     }
     if (this.state.longformvideo_media) {
       let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
@@ -762,7 +799,12 @@ class AdDesign extends Component {
       body.append("brand_name", this.state.campaignInfo.brand_name);
       body.append("headline", this.state.campaignInfo.headline);
     }
-    body.append("destination", this.state.campaignInfo.destination);
+    body.append(
+      "destination",
+      this.props.adType !== "StoryAd"
+        ? this.state.campaignInfo.destination
+        : "STORY"
+    );
     body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
     body.append(
       "attachment",
@@ -814,10 +856,7 @@ class AdDesign extends Component {
     WebBrowser.dismissBrowser();
 
     let data = Linking.parse(event.url);
-    if (
-      true
-      // this.props.adType === "StoryAd"
-    ) {
+    if (this.props.adType === "StoryAd") {
       let cards = this.state.storyAdCards.snapAdsCards;
       let card = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.selectedStoryAd.index
@@ -881,10 +920,16 @@ class AdDesign extends Component {
       "mandatory",
       this.state.campaignInfo.headline
     );
-    const imageError = validateWrapper("mandatory", this.state.image);
+    const imageError = validateWrapper(
+      "mandatory",
+      this.props.adType === "StoryAd"
+        ? this.state.storyAdCards.selectedStoryAd.image
+        : this.state.image
+    );
 
     let swipeUpError = null;
     if (
+      this.props.adType !== "StoryAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
@@ -946,18 +991,15 @@ class AdDesign extends Component {
     });
   };
   _handleSubmission = async () => {
-    await this.validator();
-    if (true) {
-      var body = new FormData();
+    if (
+      this.props.adType === "StoryAd" &&
+      this.state.storyAdCards.storyAdSelected
+    ) {
+      var storyBody = new FormData();
       let cards = this.state.storyAdCards.snapAdsCards;
       let card = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-
-      card = {
-        ...card,
-        uploading: true
-      };
 
       let res = card.image.split(
         card.image.includes("/ImageManipulator/")
@@ -970,25 +1012,37 @@ class AdDesign extends Component {
         type: card.media_type + "/" + format[1],
         name: res[1]
       };
-      body.append(
+      storyBody.append(
         "story_name",
         this.state.campaignInfo.brand_name + " " + card.index
       );
-      body.append("story_destination", "STORY");
-      body.append("story_media", photo);
-      body.append("campaign_id", this.props.campaign_id);
-      body.append("story_order", card.index);
-      body.append("story_media_type", card.media_type);
-      body.append(
+      storyBody.append(
+        "story_destination",
+        card.destination ? card.destination : "BLANK"
+      );
+      storyBody.append("story_media", photo);
+      storyBody.append("campaign_id", this.props.campaign_id);
+      storyBody.append("story_order", card.index);
+      storyBody.append("story_media_type", card.media_type);
+      storyBody.append(
         "story_call_to_action",
         card.call_to_action ? card.call_to_action.value : "BLANK"
       );
-      body.append(
+      storyBody.append(
         "story_attachment",
-        card.attachment ? JSON.stringify(card.attachment) : "BLANK"
+        card.attachment && card.attachment.value !== "BLANK"
+          ? JSON.stringify(card.attachment)
+          : "BLANK"
       );
-
-      this.props.uploadStoryAdCard(body, card);
+      if (card.hasOwnProperty("longformvideo_media")) {
+        storyBody.append("story_longformvideo_media", card.longformvideo_media);
+        storyBody.append(
+          "story_longformvideo_media_type",
+          card.longformvideo_media_type
+        );
+      }
+      card.story_id && storyBody.append("story_id", card.story_id);
+      this.props.uploadStoryAdCard(storyBody, card);
       cards[this.state.storyAdCards.selectedStoryAd.index] = card;
 
       this.setState({
@@ -1000,7 +1054,10 @@ class AdDesign extends Component {
           numOfAds: this.state.storyAdCards.numOfAds + 1
         }
       });
+      return;
     }
+    await this.validator();
+
     if (
       !this.state.brand_nameError &&
       !this.state.headlineError &&
@@ -1023,6 +1080,8 @@ class AdDesign extends Component {
           JSON.stringify(this.state.formatted)
       ) {
         if (!this.props.loading) {
+          console.log("swrberb", this.state.formatted);
+
           await this.props.ad_design(
             this.state.formatted,
             this._getUploadState,
@@ -1054,7 +1113,13 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
   render() {
-    // console.log("this.props.storyAdsArray", this.props.storyAdsArray);
+    // console.log("this.props.storyAdsArray", this.state.formatted);
+    // console.log(() =>
+    //   this.props.adType !== "StoryAd"
+    //     ? this.state.image
+    //     : this.state.storyAdCards.snapAdsCards.find(card => card !== undefined)
+    //         .image
+    // );
 
     let selectedAd =
       (!this.state.storyAdCards.storyAdSelected &&

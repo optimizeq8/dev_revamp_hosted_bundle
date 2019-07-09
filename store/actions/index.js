@@ -26,6 +26,8 @@ export {
   getMinimumCash,
   ad_design,
   uploadStoryAdCard,
+  deleteStoryAdCard,
+  uploadStoryAdCover,
   getVideoUploadUrl,
   ad_details,
   updateCampaign,

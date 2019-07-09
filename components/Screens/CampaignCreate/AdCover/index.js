@@ -48,7 +48,7 @@ import * as actionCreators from "../../../../store/actions";
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-
+const transparentImage = require("../../../../assets/images/emptyPlaceHolder.png");
 // Style
 import styles from "./styles";
 
@@ -72,7 +72,7 @@ class AdCover extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        logo: "blank",
+        logo: "",
         coverHeadline: ""
       },
       directory: "/ImagePicker/",
@@ -82,7 +82,7 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      cover: "blank",
+      cover: "",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -195,7 +195,8 @@ class AdCover extends Component {
         campaignInfo: {
           ...this.state.campaignInfo,
           coverHeadline
-        }
+        },
+        coverHeadlineError: validateWrapper("mandatory", coverHeadline)
       },
       this.props.save_campaign_info({ coverHeadline })
     );
@@ -217,13 +218,14 @@ class AdCover extends Component {
     let logo = await this.pick("Images");
 
     let correctLogo = logo.width === 993 && logo.height === 284;
+    let logoFormat = logo.uri.split(".")[1] === "png";
     if (!logo.cancelled) {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          logo: correctLogo ? logo.uri : "blank"
+          logo: correctLogo && logoFormat ? logo.uri : ""
         },
-        logoError: correctLogo
+        logoError: correctLogo || logoFormat
       });
       showMessage({
         message: correctLogo
@@ -238,7 +240,7 @@ class AdCover extends Component {
       });
 
       this.props.save_campaign_info({
-        logo: correctLogo ? logo.uri : "blank"
+        logo: correctLogo && logoFormat ? logo.uri : ""
       });
     }
   };
@@ -254,8 +256,11 @@ class AdCover extends Component {
       let newWidth = result.width;
       let newHeight = result.height;
       await this.validator();
+
       if (!result.cancelled) {
         if (result.type === "image") {
+          console.log("oineboin", result.uri);
+
           if (result.width > 360 && result.height > 600) {
             if (result.width >= Math.floor((result.height / 5) * 3)) {
               newWidth = Math.floor((result.height / 5) * 3);
@@ -285,10 +290,11 @@ class AdCover extends Component {
                 }
               ],
               {
-                compress: 1
+                compress: 1,
+                format: "png"
               }
             )
-              .then(manipResult => {
+              .then(async manipResult => {
                 // console.log("promise", manipResult);
                 // const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
                 //   size: true
@@ -296,7 +302,7 @@ class AdCover extends Component {
                 // const oldSize = await FileSystem.getInfoAsync(result.uri, {
                 //   size: true
                 // });
-                console.log("width:", manipResult.width);
+                console.log("mani:", manipResult);
                 console.log("height:", manipResult.height);
                 // console.log("new result: ", newSize.size);
                 // console.log("old result: ", oldSize.size);
@@ -307,10 +313,28 @@ class AdCover extends Component {
                 result.uri = manipResult.uri;
                 result.height = manipResult.height;
                 result.width = manipResult.width;
-
-                console.log(manipResult.height, manipResult.width);
+                file = await FileSystem.getInfoAsync(result.uri, {
+                  size: true
+                });
               })
               .then(() => {
+                console.log("---------", file);
+
+                if (file.size > 2000000) {
+                  this.setState({
+                    cover: ""
+                  });
+                  this.onToggleModal(false);
+                  showMessage({
+                    message: "Image must be less than 2 MBs",
+                    position: "top",
+                    type: "warning"
+                  });
+                  this.props.save_campaign_info({
+                    cover: ""
+                  });
+                  return;
+                }
                 this.setState({
                   cover: result.uri,
                   type: result.type.toUpperCase(),
@@ -340,7 +364,7 @@ class AdCover extends Component {
             return;
           } else if (file.size > 2000000) {
             this.setState({
-              cover: "blank"
+              cover: ""
             });
             this.onToggleModal(false);
             showMessage({
@@ -349,7 +373,7 @@ class AdCover extends Component {
               type: "warning"
             });
             this.props.save_campaign_info({
-              cover: "blank"
+              cover: ""
             });
             return;
           } else if (
@@ -358,11 +382,11 @@ class AdCover extends Component {
             result.height < 600
           ) {
             this.setState({
-              cover: "blank",
+              cover: "",
               type: ""
             });
             this.props.save_campaign_info({
-              cover: "blank"
+              cover: ""
             });
             this.onToggleModal(false);
             showMessage({
@@ -392,6 +416,18 @@ class AdCover extends Component {
             });
             return;
           }
+        } else {
+          showMessage({
+            message: "Please make sure the image is in .png format.",
+            position: "top",
+            type: "warning"
+          });
+          this.setState({
+            cover: ""
+          });
+          this.props.save_campaign_info({
+            cover: ""
+          });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
@@ -400,10 +436,10 @@ class AdCover extends Component {
           type: "warning"
         });
         this.setState({
-          cover: "blank"
+          cover: ""
         });
         this.props.save_campaign_info({
-          cover: "blank"
+          cover: ""
         });
         this.onToggleModal(false);
         return;
@@ -419,14 +455,36 @@ class AdCover extends Component {
 
   formatMedia() {
     var body = new FormData();
-
-    body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
-    body.append("businessid", this.props.mainBusiness.businessid);
+    let res = this.state.cover.split(
+      this.state.cover.includes("/ImageManipulator/")
+        ? "/ImageManipulator/"
+        : "/ImagePicker/"
+    );
+    let format = res[1].split(".");
+    var cover = {
+      uri: this.state.cover,
+      type: "IMAGE" + "/" + format[1],
+      name: res[1]
+    };
+    let logoRes = this.state.campaignInfo.logo.split(
+      this.state.campaignInfo.logo.includes("/ImageManipulator/")
+        ? "/ImageManipulator/"
+        : "/ImagePicker/"
+    );
+    let formatLogo = logoRes[1].split(".");
+    var logo = {
+      uri: this.state.campaignInfo.logo,
+      type: "IMAGE" + "/" + formatLogo[1],
+      name: logoRes[1]
+    };
+    body.append("logo_media", logo);
+    body.append("preview_media", cover);
     body.append("campaign_id", this.props.campaign_id);
-    body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
-      body.append("coverHeadline", this.state.campaignInfo.coverHeadline);
+      body.append("headline", this.state.campaignInfo.coverHeadline);
     }
+    this.props.storyAdCover &&
+      body.append("preview_media_id", this.props.storyAdCover.preview_media_id);
 
     this.setState({
       formattedCover: body
@@ -444,10 +502,26 @@ class AdCover extends Component {
       this.state.campaignInfo.logo
     );
 
+    (coverError || logoError) &&
+      showMessage({
+        message: coverError
+          ? "Please add a cover image"
+          : logoError
+          ? "Please add a logo"
+          : "",
+        type: coverError || logoError ? "warning" : "",
+        position: "top"
+      });
     this.setState({
       coverHeadlineError,
       coverError,
       logoError
+    });
+  };
+
+  _getUploadState = loading => {
+    this.setState({
+      loaded: loading
     });
   };
   _handleSubmission = async () => {
@@ -467,24 +541,26 @@ class AdCover extends Component {
       });
       await this.formatMedia();
       await this.handleUpload();
-      // if (
-      //   !this.props.data.hasOwnProperty("formattedCover") ||
-      //   JSON.stringify(this.props.data.formattedCover) !==
-      //     JSON.stringify(this.state.formattedCover)
-      // ) {
-      //   if (!this.props.loading) {
-      //     await this.props.ad_design(
-      //       this.state.formattedCover,
-      //       this._getUploadState,
-      //       this.props.navigation,
-      //       this.onToggleModal,
-      //       this.rejected,
-      //       this.state.signal
-      //     );
-      //   }
-      // } else {
-      this.props.navigation.push("AdDesign");
-      // }
+      if (
+        !this.props.data.hasOwnProperty("formattedCover") ||
+        JSON.stringify(this.props.data.formattedCover) !==
+          JSON.stringify(this.state.formattedCover)
+      ) {
+        if (!this.props.coverLoading) {
+          console.log(this.state.formattedCover);
+
+          await this.props.uploadStoryAdCover(
+            this.state.formattedCover,
+            this._getUploadState,
+            this.props.navigation,
+            this.onToggleModal,
+            this.rejected,
+            this.state.signal
+          );
+        }
+      } else {
+        this.props.navigation.push("AdDesign");
+      }
     }
   };
   onToggleModal = visibile => {
@@ -494,15 +570,19 @@ class AdCover extends Component {
     this.setState({ signal: Axios.CancelToken.source() });
   };
   cancelUpload = () => {
-    if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
+    if (this.state.signal) {
+      this.state.signal.cancel("Upload Cancelled");
+    }
   };
   render() {
-    let { cover } = this.state;
+    let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline } = this.state.campaignInfo;
+    console.log(this.props.coverLoading);
 
     let inputFields = (
       <PenIconBrand
         data={this.props.data}
+        coverHeadlineError={coverHeadlineError}
         changeHeadline={this.changeHeadline}
         headline={coverHeadline}
         field={"Headline"}
@@ -552,11 +632,15 @@ class AdCover extends Component {
                 <View style={styles.placeholder}>
                   <Image
                     style={styles.placeholder1}
-                    source={{ uri: cover }}
+                    source={cover !== "" ? { uri: cover } : transparentImage}
                     resizeMode="cover"
                   />
                   <Image
-                    source={{ uri: this.state.campaignInfo.logo }}
+                    source={
+                      this.state.campaignInfo.logo !== ""
+                        ? { uri: this.state.campaignInfo.logo }
+                        : transparentImage
+                    }
                     style={{
                       height: "15%",
                       width: "90%",
@@ -577,7 +661,10 @@ class AdCover extends Component {
                     <Icon
                       name="plus"
                       type="MaterialCommunityIcons"
-                      style={{ color: "#FF9D00", marginRight: -10 }}
+                      style={{
+                        color: logoError ? "red" : "#FF9D00",
+                        marginRight: -10
+                      }}
                     />
                     <Text
                       style={{ color: "#fff", fontFamily: "montserrat-light" }}
@@ -600,7 +687,7 @@ class AdCover extends Component {
             </Text>
             {/* {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
-                {!this.state.imageError.includes("blank")
+                {!this.state.imageError.includes(transparentImage)
                   ? this.state.imageError
                   : "Please choose an image or video"}
               </Text>
@@ -631,11 +718,7 @@ class AdCover extends Component {
         </Container>
 
         <Modal
-          visible={
-            this.props.videoUrlLoading ||
-            this.props.loading ||
-            this.state.isVisible
-          }
+          visible={this.props.coverLoading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}
           animationType={"slide"}
         >
@@ -644,14 +727,14 @@ class AdCover extends Component {
               forceInset={{ top: "always" }}
               style={styles.loadingSafeArea}
             >
-              {this.props.loading && (
+              {this.props.coverLoading && (
                 <CustomHeader
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
                   title="Uploading Image"
                 />
               )}
-              {!this.props.loading && (
+              {!this.props.coverLoading && (
                 <CustomHeader
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
@@ -664,7 +747,7 @@ class AdCover extends Component {
                 // top={"50%"}
                 // left={"55%"}
               />
-              {this.props.loading && (
+              {this.props.coverLoading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>
                     {Math.round(this.state.loaded, 2)}%
@@ -688,38 +771,29 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
-  loading: state.campaignC.loadingDesign,
-  videoUrlLoading: state.campaignC.videoUrlLoading,
-  videoUrl: state.campaignC.videoUrl
+  storyAdCover: state.campaignC.storyAdCover,
+  coverLoading: state.campaignC.coverLoading
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_design: (
+  uploadStoryAdCover: (
     info,
     loading,
     navigation,
     onToggleModal,
-    appChoice,
     rejected,
-    cancelUpload,
-    longVideo,
-    iosUplaod
+    cancelUpload
   ) =>
     dispatch(
-      actionCreators.ad_design(
+      actionCreators.uploadStoryAdCover(
         info,
         loading,
         navigation,
         onToggleModal,
-        appChoice,
         rejected,
-        cancelUpload,
-        longVideo,
-        iosUplaod
+        cancelUpload
       )
     ),
-  getVideoUploadUrl: (campaign_id, openBrowser) =>
-    dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
 });
 export default connect(

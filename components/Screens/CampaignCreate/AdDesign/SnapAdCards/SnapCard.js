@@ -6,6 +6,7 @@ import styles from "../styles";
 import MediaButton from "../MediaButton";
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
+import * as actionCreators from "../../../../../store/actions";
 
 class SnapCard extends Component {
   state = { uploading: false };
@@ -17,9 +18,6 @@ class SnapCard extends Component {
       video
     } = this.props;
 
-    handleUpload = uploading => {
-      this.setState({ uploading });
-    };
     return (
       <View key={snapCardInfo.index} style={styles.SnapAdCard}>
         <View
@@ -51,7 +49,14 @@ class SnapCard extends Component {
         <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
         {snapCardInfo.index > 2 && (
           <Icon
-            onPress={() => removeSnapCard(snapCardInfo.item.id)}
+            onPress={() => {
+              console.log(snapCardInfo.item.story_id);
+              this.props.deleteStoryAdCard(
+                snapCardInfo.item.story_id,
+                snapCardInfo,
+                removeSnapCard
+              );
+            }}
             name="close"
             type="MaterialCommunityIcons"
             style={{ bottom: "35%", color: "#fff" }}
@@ -80,7 +85,13 @@ class SnapCard extends Component {
 const mapStateToProps = state => ({
   loadingStoryAdsArray: state.campaignC.loadingStoryAdsArray
 });
+
+const mapDispatchToProps = dispatch => ({
+  deleteStoryAdCard: (story_id, card, removeCard) =>
+    dispatch(actionCreators.deleteStoryAdCard(story_id, card, removeCard))
+});
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SnapCard);

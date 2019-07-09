@@ -28,8 +28,9 @@ const initialState = {
   regionNames: [],
   campaignEnded: false,
   storyAdsArray: [],
-
-  loadingStoryAdsArray: []
+  loadingStoryAdsArray: [],
+  coverLoading: false,
+  storyAdCover: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -245,6 +246,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingDetail: action.payload
       };
+    case actionTypes.SET_COVER_LOADING_DESIGN:
+      return {
+        ...state,
+        coverLoading: action.payload
+      };
+    case actionTypes.ERROR_SET_COVER_DESIGN:
+      return {
+        ...state,
+        coverLoading: false
+      };
+    case actionTypes.SET_COVER_DESIGN:
+      return {
+        ...state,
+        storyAdCover: {
+          ...action.payload.data,
+          preview_media_id: action.payload.preview_media_id
+        },
+        coverLoading: false
+      };
     case actionTypes.SET_STORYADMEDIA_DESIGN:
       let storyAds = state.storyAdsArray;
       storyAds[action.payload.data.story_order] = {
@@ -259,12 +279,39 @@ const reducer = (state = initialState, action) => {
         loadingStoryAdsArray: [...loadingAr],
         storyAdsArray: [...storyAds]
       };
+    case actionTypes.DELETE_STORY_AD_CARD:
+      console.log("card", action.payload.card.item.story_order);
+
+      let deleteStoryAds = state.storyAdsArray.filter(ad => {
+        console.log("adddsss", ad);
+
+        if (ad && ad.story_id !== action.payload.data.story_id) return ad;
+      });
+      // deleteStoryAds[action.payload.data.story_order] = {
+      //   ...action.payload.data,
+      //   ...action.payload.card
+      // };
+      let deletedLoadingAr = state.loadingStoryAdsArray;
+      deletedLoadingAr[action.payload.card.item.story_order] = false;
+
+      return {
+        ...state,
+        loadingStoryAdsArray: [...deletedLoadingAr],
+        storyAdsArray: [...deleteStoryAds]
+      };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
       ar[action.payload.index] = action.payload.uploading;
       return {
         ...state,
         loadingStoryAdsArray: [...ar]
+      };
+    case actionTypes.SET_DELETE_CARD_LOADING:
+      let deleteLoadAr = state.loadingStoryAdsArray;
+      deleteLoadAr[action.payload.index] = action.payload.deleteing;
+      return {
+        ...state,
+        loadingStoryAdsArray: [...deleteLoadAr]
       };
     case actionTypes.SET_LANGUAGE_LIST:
       return {
