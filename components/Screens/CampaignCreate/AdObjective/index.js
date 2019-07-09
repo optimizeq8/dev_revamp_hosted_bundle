@@ -99,10 +99,7 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
-        objective: this.props.data.objective,
-        start_time: this.props.data.start_time,
-        end_time: this.props.data.end_time
+        ...this.props.data
       };
       this.setState({
         campaignInfo: { ...rep },
