@@ -467,8 +467,11 @@ class PaymentForm extends Component {
                 </View>
                 {!this.state.addingCredits && (
                   <View style={styles.optimizeFeesTextContainer}>
+                      <Text style={styles.optimizeFeesAmountText}>
+                      10% 
+                      </Text>
                     <Text style={[styles.money, styles.optimizeFeesText]}>
-                      Optimize App fees{"\n"}10% included
+                   Optimize App fees included
                     </Text>
                   </View>
                 )}
@@ -500,7 +503,7 @@ class PaymentForm extends Component {
             >
               <>
                 <Text allowFontScaling={false} style={[styles.link]}>
-                  {`By tapping this button you \n agree to the `}
+                  {`By tapping this button you  agree to the `}
                 </Text>
                 <Text
                   allowFontScaling={false}
