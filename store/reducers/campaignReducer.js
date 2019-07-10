@@ -29,7 +29,8 @@ const initialState = {
   adType: "SnapAd",
   collectionAdLinkForm: 0,
   collectionLoader: false,
-  collectionAdMedia: []
+  collectionAdMedia: [],
+  weburlAvalible: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -295,6 +296,11 @@ const reducer = (state = initialState, action) => {
         collectionAdLinkForm: 0,
         collectionLoader: false,
         collectionAdMedia: []
+      };
+    case actionTypes.VERIFY_BUSINESSURL:
+      return {
+        ...state,
+        weburlAvalible: action.payload.success
       };
     default:
       return state;

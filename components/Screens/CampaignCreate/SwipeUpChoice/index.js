@@ -11,6 +11,7 @@ import Deep_Link from "./Deep_Link";
 
 // Style
 import styles from "./styles";
+import WhatsApp from "./WhatsApp";
 
 //Redux
 import { connect } from "react-redux";
@@ -90,6 +91,16 @@ class SwipeUpChoice extends Component {
             navigation={this.props.navigation}
           />
         );
+      } else if ( this.props.navigation.state.params.objective ===
+                "WEB_CONVERSION")              { 
+        menu = (
+                <WhatsApp
+                  _changeDestination={
+                    this.props.navigation.state.params._changeDestination
+                  }
+                  navigation={this.props.navigation}
+                />
+              );
       }
     }
 
@@ -116,6 +127,12 @@ class SwipeUpChoice extends Component {
                   label: "Video Views Objective"
                 });
                 break;
+              case "WEB_CONVERSION":
+                Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
+                  category: "Campaign Creation",
+                  label: "Whatsapp Campaign Objective"
+                });
+                break;
               default:
                 Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
                   category: "Campaign Creation",
@@ -136,7 +153,9 @@ class SwipeUpChoice extends Component {
               scrollEnabled={false}
               contentContainerStyle={styles.contentContainer}
             >
+
               {menu}
+
             </KeyboardAwareScrollView>
           </Content>
         </Container>

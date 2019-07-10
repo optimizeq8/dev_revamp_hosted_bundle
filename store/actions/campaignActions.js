@@ -182,6 +182,49 @@ export const get_total_reach = info => {
   };
 };
 
+export const verifyBusinessUrl = weburl => {
+  return dispatch => {
+    createBaseUrl()
+      .post(`verifyBusinessUrl`, { weburl })
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+
+        // Segment.trackWithProperties("Register Business Info", {
+        //   category: "Sign Up",
+        //   label: "Step 4 of Registration"
+        // });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning",
+          position: "top"
+        });
+
+        return dispatch({
+          type: actionTypes.VERIFY_BUSINESSURL,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // console.log("verifyBusinessName", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
+          payload: {
+            success: false
+          }
+        });
+      });
+  };
+};
+
 export const ad_objective = (info, navigation) => {
   return (dispatch, getState) => {
     dispatch({

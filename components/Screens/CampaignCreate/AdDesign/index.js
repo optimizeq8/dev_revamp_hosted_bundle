@@ -219,7 +219,13 @@ class AdDesign extends Component {
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
   };
-  _changeDestination = (destination, call_to_action, attachment, appChoice) => {
+  _changeDestination = (
+    destination,
+    call_to_action,
+    attachment,
+    appChoice = null,
+    whatsAppCampaign = null
+  ) => {
     let newData = {};
     if (attachment.hasOwnProperty("longformvideo_media")) {
       newData = {
@@ -249,6 +255,24 @@ class AdDesign extends Component {
         },
         appChoice
       };
+      if (whatsAppCampaign) {
+        newData = {
+          ...newData,
+          campaignInfo: {
+            ...newData.campaignInfo,
+            insta_handle: whatsAppCampaign.insta_handle,
+            whatsappnumber: whatsAppCampaign.whatsappnumber,
+            weburl: whatsAppCampaign.weburl,
+            callnumber: whatsAppCampaign.callnumber
+          }
+        };
+        this.props.save_campaign_info({
+          insta_handle: whatsAppCampaign.insta_handle,
+          whatsappnumber: whatsAppCampaign.whatsappnumber,
+          weburl: whatsAppCampaign.weburl,
+          callnumber: whatsAppCampaign.callnumber
+        });
+      }
       this.setState(newData);
       this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
     }
@@ -310,9 +334,9 @@ class AdDesign extends Component {
               newWidth = 1080;
               newHeight = 1920;
             }
-            console.log("image res:", result);
-            console.log("width:", newWidth);
-            console.log("height:", newHeight);
+            // console.log("image res:", result);
+            // console.log("width:", newWidth);
+            // console.log("height:", newHeight);
             ImageManipulator.manipulateAsync(
               result.uri,
               [
@@ -343,53 +367,53 @@ class AdDesign extends Component {
                 // console.log("new result: ", newSize.size);
                 // console.log("old result: ", oldSize.size);
 
-                MediaLibrary.createAssetAsync(manipResult.uri)
-                  .then(imageAsset => {
-                    console.log("OptimizeApp", imageAsset.uri);
-                    MediaLibrary.getAlbumAsync("OptimizeApp")
-                      .then(res => {
-                        if (isNull(res)) {
-                          MediaLibrary.createAlbumAsync(
-                            "OptimizeApp",
-                            imageAsset
-                          )
-                            .then(() => {
-                              MediaLibrary.getAssetInfoAsync(imageAsset)
-                                .then(res =>
-                                  console.log("image:", res.localUri)
-                                )
-                                .catch(error => {
-                                  console.log("album should exist but,", error);
-                                });
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        } else {
-                          MediaLibrary.addAssetsToAlbumAsync(
-                            [imageAsset],
-                            res,
-                            true
-                          )
-                            .then(res => {
-                              console.log("addAssetsToAlbumAsync", res);
+                // MediaLibrary.createAssetAsync(manipResult.uri)
+                //   .then(imageAsset => {
+                //     console.log("OptimizeApp", imageAsset.uri);
+                //     MediaLibrary.getAlbumAsync("OptimizeApp")
+                //       .then(res => {
+                //         if (isNull(res)) {
+                //           MediaLibrary.createAlbumAsync(
+                //             "OptimizeApp",
+                //             imageAsset
+                //           )
+                //             .then(() => {
+                //               MediaLibrary.getAssetInfoAsync(imageAsset)
+                //                 .then(res =>
+                //                   console.log("image:", res.localUri)
+                //                 )
+                //                 .catch(error => {
+                //                   console.log("album should exist but,", error);
+                //                 });
+                //             })
+                //             .catch(error => {
+                //               console.log("err", error);
+                //             });
+                //         } else {
+                //           MediaLibrary.addAssetsToAlbumAsync(
+                //             [imageAsset],
+                //             res,
+                //             true
+                //           )
+                //             .then(res => {
+                //               console.log("addAssetsToAlbumAsync", res);
 
-                              MediaLibrary.getAssetInfoAsync(imageAsset).then(
-                                res => console.log("image:", res.localUri)
-                              );
-                            })
-                            .catch(error => {
-                              console.log("err", error);
-                            });
-                        }
-                      })
-                      .catch(error => {
-                        console.log("getAlbumAsync err", error);
-                      });
-                  })
-                  .catch(error => {
-                    console.log("getAlbumAsync err", error);
-                  });
+                //               MediaLibrary.getAssetInfoAsync(imageAsset).then(
+                //                 res => console.log("image:", res.localUri)
+                //               );
+                //             })
+                //             .catch(error => {
+                //               console.log("err", error);
+                //             });
+                //         }
+                //       })
+                //       .catch(error => {
+                //         console.log("getAlbumAsync err", error);
+                //       });
+                //   })
+                //   .catch(error => {
+                //     console.log("getAlbumAsync err", error);
+                //   });
                 this.setState({
                   directory: "/ImageManipulator/"
                 });
@@ -422,7 +446,7 @@ class AdDesign extends Component {
                   position: "top",
                   type: "warning"
                 });
-                console.log("ImageManipulator err", error);
+                // console.log("ImageManipulator err", error);
                 return;
               });
             return;
@@ -517,8 +541,9 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             return;
           } else if (
-            Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-            Math.floor(result.height / 9) === Math.floor(result.width / 16)
+            result.width >= 1080 &&
+            result.height >= 1920 &&
+            Math.floor(result.width / 9) === Math.floor(result.height / 16)
           ) {
             this.setState({
               image: result.uri,
@@ -579,7 +604,7 @@ class AdDesign extends Component {
       }
     } catch (error) {
       this.onToggleModal(false);
-      console.log("error image pick", error);
+      // console.log("error image pick", error);
     }
 
     //   } else if (result.width < 1080 || result.height < 1920) {
@@ -635,7 +660,14 @@ class AdDesign extends Component {
       );
     }
 
+    if (this.state.campaignInfo.insta_handle) {
+      body.append("insta_handle", this.state.campaignInfo.insta_handle);
+      body.append("weburl", this.state.campaignInfo.weburl);
+      body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
+      body.append("callnumber", this.state.campaignInfo.callnumber);
+    }
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
+    body.append("businessid", this.props.mainBusiness.businessid);
     body.append("campaign_id", this.props.campaign_id);
     body.append("campaign_name", this.props.data.name);
     if (!this.rejected) {
@@ -823,8 +855,6 @@ class AdDesign extends Component {
     }
   };
   onToggleModal = visibile => {
-    // console.log("toggle off");
-
     this.setState({ isVisible: visibile });
   };
   handleUpload = () => {

@@ -75,6 +75,7 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
+      this.props.getBusinessAccounts();
       Segment.screen("Dashboard");
     }
     this.setState({ menu: new Animated.Value(0) });
@@ -467,6 +468,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid)),

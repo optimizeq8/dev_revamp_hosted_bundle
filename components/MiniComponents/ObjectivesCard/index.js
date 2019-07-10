@@ -9,7 +9,7 @@ import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Icons from "../../../assets/SVGs/Objectives/";
-class BusinessCard extends Component {
+class ObjectiveCard extends Component {
   constructor(props) {
     super(props);
   }
@@ -17,10 +17,10 @@ class BusinessCard extends Component {
     this.props.setObjective(this.props.choice.value);
   };
   render() {
-    let va = this.props.choice.value;
-    let IconName = Icons[va].default;
+    let obj = this.props.choice;
+    let IconName = obj.icon;
     let changeState = { backgroundColor: "transparent", color: "#fff" };
-    if (this.props.selected === this.props.choice.value) {
+    if (this.props.selected === obj.value) {
       changeState.backgroundColor = "#FF9D00";
       changeState.color = "#fff";
     }
@@ -32,13 +32,13 @@ class BusinessCard extends Component {
           { backgroundColor: changeState.backgroundColor }
         ]}
       >
-        <IconName style={[styles.icon]} />
+        <IconName width={30} height={30} fill="#fff" style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
-            {this.props.choice.label}
+            {obj.label}
           </Text>
           <Text style={[styles.subtext, { color: changeState.color }]}>
-            {this.props.choice.info}
+            {obj.info}
           </Text>
         </View>
       </TouchableOpacity>
@@ -54,4 +54,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BusinessCard);
+)(ObjectiveCard);

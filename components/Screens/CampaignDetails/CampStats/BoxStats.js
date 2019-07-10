@@ -22,6 +22,7 @@ export default class BoxStats extends Component {
           />
         ];
       case "TRAFFIC":
+      case "WEB_CONVERSION":
         return [
           <Box
             key={"TRAFFIC 1"}

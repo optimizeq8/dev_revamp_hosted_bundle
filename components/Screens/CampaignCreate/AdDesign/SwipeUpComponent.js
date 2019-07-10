@@ -5,7 +5,8 @@ import styles from "./styles";
 import { Icon } from "native-base";
 export default class SwipeUpComponent extends Component {
   render() {
-    let { destination, attachment, collectionAdLinkForm, adType } = this.props;
+    let { destination, attachment, collectionAdLinkForm, adType, objective, image } = this.props;
+
     return (
       <TouchableOpacity
         style={[
@@ -18,33 +19,37 @@ export default class SwipeUpComponent extends Component {
           if (adType === "CollectionAd") {
             this.props.navigation.navigate("SwipeUpChoice", {
               _changeDestination: this.props._changeDestination,
-              objective: this.props.objective,
+              objective: objective,
               collectionAdLinkForm: collectionAdLinkForm,
               adType: adType
             });
           } else {
-            this.props.objective.toLowerCase() === "traffic"
+           objective === "TRAFFIC"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
-                  image: this.props.image
+                  image: image
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
-                  objective: this.props.objective,
+                  objective: objective,
                   collectionAdLinkForm: collectionAdLinkForm
                 });
           }
+
         }}
       >
         <View style={{ flexDirection: "column" }}>
           <Text style={styles.swipeUpText}>
-            {destination !== "BLANK" && destination !== "REMOTE_WEBPAGE"
+            {(destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") || (destination === "COLLECTION" && collectionAdLinkForm=== 2) 
               ? destination
-              : destination === "REMOTE_WEBPAGE" || destination === "COLLECTION"
+              : (destination === "REMOTE_WEBPAGE"  &&
+                objective !== "WEB_CONVERSION") || (destination === "COLLECTION" && collectionAdLinkForm=== 1) 
               ? "Website"
+              : objective === "WEB_CONVERSION" && destination !== "BLANK"
+              ? "WhatsApp Campaign"
               : "Swipe Up destination"}
           </Text>
-          {[
+          {objective !== "WEB_CONVERSION" &&[
             "REMOTE_WEBPAGE",
             "DEEP_LINK",
             "LEAD_GENERATION",
@@ -63,11 +68,12 @@ export default class SwipeUpComponent extends Component {
                 : attachment.url}
             </Text>
           )}
+
         </View>
         <Icon
           type="MaterialIcons"
           name="arrow-drop-down"
-          style={{ left: 15, color: "#fff" }}
+          style={{ left: 10, color: "#fff" }}
         />
       </TouchableOpacity>
     );
