@@ -103,9 +103,7 @@ class AdDesign extends Component {
       heightComponent: 0
     };
     this.params = this.props.navigation.state.params;
-    this.rejected =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.rejected;
+    this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
   handleBackButton = () => {
@@ -151,6 +149,7 @@ class AdDesign extends Component {
     }
     let rep = this.state.campaignInfo;
     if (
+      this.props.data &&
       Object.keys(this.state.campaignInfo)
         .map(key => {
           if (this.props.data.hasOwnProperty(key)) return true;
@@ -926,6 +925,7 @@ class AdDesign extends Component {
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
+        rejected={this.rejected}
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -936,12 +936,20 @@ class AdDesign extends Component {
         mainBusiness={this.props.mainBusiness}
       />
     ));
-
+    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.campaignInfo.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
     let swipeUpComp =
       this.props.adType === "SnapAd" ? (
-        !["BRAND_AWARENESS", "reach"].find(
-          obj => this.state.objective.toLowerCase() === obj.toLowerCase()
-        ) && (
+        !this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
@@ -1106,6 +1114,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
+
                     {swipeUpComp}
                   </View>
                 ) : !image ? (
@@ -1117,6 +1126,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
+
                     {swipeUpComp}
                     {this.props.adType === "CollectionAd" && collection}
                   </View>
@@ -1133,6 +1143,7 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
+
                     {swipeUpComp}
 
                     {this.props.adType === "CollectionAd" && collection}

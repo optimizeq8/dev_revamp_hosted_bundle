@@ -23,15 +23,17 @@ class SwipeUpChoice extends Component {
   };
 
   render() {
+    let objective = this.props.navigation.getParam("objective", "");
+    let _changeDestination = this.props.navigation.getParam("_changeDestination", ()=>());
     let menu = <View />;
     if (this.props.adType === "CollectionAd") {
       switch (this.props.collectionAdLinkForm) {
         case 1: {
           menu = (
             <Website
-              objective={this.props.navigation.getParam("objective")}
+              objective={objective}
               _changeDestination={
-                this.props.navigation.state.params._changeDestination
+                _changeDestination
               }
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
@@ -43,9 +45,9 @@ class SwipeUpChoice extends Component {
         case 2: {
           menu = (
             <Deep_Link
-              objective={this.props.navigation.getParam("objective")}
+              objective={objective}
               _changeDestination={
-                this.props.navigation.state.params._changeDestination
+                _changeDestination
               }
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
@@ -56,12 +58,12 @@ class SwipeUpChoice extends Component {
         }
       }
     } else {
-      if (this.props.navigation.getParam("objective") === "LEAD_GENERATION")
+      if (objective === "LEAD_GENERATION")
         menu = (
           <Website
-            objective={this.props.navigation.state.params.objective}
+            objective={objective}
             _changeDestination={
-              this.props.navigation.state.params._changeDestination
+              _changeDestination
             }
             navigation={this.props.navigation}
             collectionAdLinkForm={this.props.navigation.getParam(
@@ -69,34 +71,34 @@ class SwipeUpChoice extends Component {
             )}
           />
         );
-      else if (this.props.navigation.state.params.objective === "VIDEO_VIEWS") {
+      else if (objective === "VIDEO_VIEWS") {
         menu = (
           <Long_Form_Video
             _changeDestination={
-              this.props.navigation.state.params._changeDestination
+              _changeDestination
             }
             navigation={this.props.navigation}
           />
         );
       } else if (
-        this.props.navigation.state.params.objective
+        objective
           .toLowerCase()
           .includes("app")
       ) {
         menu = (
           <App_Install
             _changeDestination={
-              this.props.navigation.state.params._changeDestination
+              _changeDestination
             }
             navigation={this.props.navigation}
           />
         );
-      } else if ( this.props.navigation.state.params.objective ===
+      } else if ( objective ===
                 "WEB_CONVERSION")              { 
         menu = (
                 <WhatsApp
                   _changeDestination={
-                    this.props.navigation.state.params._changeDestination
+                    _changeDestination
                   }
                   navigation={this.props.navigation}
                 />
@@ -153,9 +155,7 @@ class SwipeUpChoice extends Component {
               scrollEnabled={false}
               contentContainerStyle={styles.contentContainer}
             >
-
               {menu}
-
             </KeyboardAwareScrollView>
           </Content>
         </Container>
