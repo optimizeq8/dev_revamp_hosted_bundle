@@ -5,13 +5,13 @@ import styles from "./styles";
 import { Icon } from "native-base";
 export default class SwipeUpComponent extends Component {
   render() {
-    let { destination, attachment, objective, image } = this.props;
+    let { destination, attachment, objective, image, adType } = this.props;
 
     return (
       <TouchableOpacity
         style={styles.swipeUp}
         onPress={() => {
-          objective === "TRAFFIC"
+          objective === "TRAFFIC" || adType === "StoryAd"
             ? this.props.navigation.push("SwipeUpDestination", {
                 _changeDestination: this.props._changeDestination,
                 image
@@ -24,12 +24,19 @@ export default class SwipeUpComponent extends Component {
       >
         <View style={{ flexDirection: "column" }}>
           <Text style={styles.swipeUpText}>
-            {destination !== "BLANK" && destination !== "REMOTE_WEBPAGE"
-              ? destination
+            {(destination !== "BLANK" ||
+              (this.props.selectedStoryAd.destination &&
+                this.props.selectedStoryAd.destination !== "BLANK")) &&
+            (destination !== "REMOTE_WEBPAGE" ||
+              (this.props.selectedStoryAd.destination &&
+                this.props.selectedStoryAd.destination !== "REMOTE_WEBPAGE"))
+              ? this.props.selectedStoryAd.destination || destination
               : destination === "REMOTE_WEBPAGE" &&
                 objective !== "WEB_CONVERSION"
               ? "Website"
-              : objective === "WEB_CONVERSION" && destination !== "BLANK"
+              : objective === "WEB_CONVERSION" &&
+                (destination !== "BLANK" ||
+                  this.props.selectedStoryAd.destination !== "BLANK")
               ? "WhatsApp Campaign"
               : "Swipe Up destination"}
           </Text>

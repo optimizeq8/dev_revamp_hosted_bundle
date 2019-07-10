@@ -5,10 +5,11 @@ import { SafeAreaView } from "react-navigation";
 import { Segment } from "expo";
 import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
-import WebsiteIcon from "../../../../assets/SVGs/Objectives/BRAND_AWARENESS";
-import LayersIcon from "../../../../assets/SVGs/Layers";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
+import App_Install from "../SwipeUpChoice/App_Install";
+import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
+import WhatsApp from "../SwipeUpChoice/WhatsApp";
 
 //data
 import attachmentOptionData from "../../../Data/attachmentOptions.data";
@@ -66,6 +67,21 @@ class SwipeUpDestination extends Component {
     });
   }
 
+  handleChoice = value => {
+    this.setState(
+      {
+        selected: value,
+        sidemenustate: true
+      },
+      () => {
+        Segment.trackWithProperties("Selected " + value + " Swipeup", {
+          category: "Campaign Creation",
+          label: this.props.data.objective + " Objective"
+        });
+      }
+    );
+  };
+
   attachmentTypes = () => {
     let menu;
     switch (this.state.selected) {
@@ -102,7 +118,14 @@ class SwipeUpDestination extends Component {
     let storyAd = this.props.adType === "StoryAd";
     let attachmentOptionsCard = this.state.attachmentOptions
       .slice(0, storyAd ? this.state.attachmentOptions.length : 2)
-      .map(opt => <AttachmentCard opt={opt} />);
+      .map(opt => (
+        <AttachmentCard
+          key={opt.label}
+          handleChoice={this.handleChoice}
+          selected={this.state.selected}
+          opt={opt}
+        />
+      ));
     let menu;
     switch (this.state.selected) {
       case "REMOTE_WEBPAGE": {
@@ -121,6 +144,45 @@ class SwipeUpDestination extends Component {
       case "DEEP_LINK": {
         menu = (
           <Deep_Link
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
+        break;
+      }
+      case "APP_INSTALL": {
+        menu = (
+          <App_Install
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
+        break;
+      }
+      case "LONGFORM_VIDEO": {
+        menu = (
+          <Long_Form_Video
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+          />
+        );
+        break;
+      }
+      case "WEB_CONVERSION": {
+        menu = (
+          <WhatsApp
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -186,75 +248,7 @@ class SwipeUpDestination extends Component {
                     />
                   </View>
                 )}
-              <View style={styles.content}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState(
-                      {
-                        selected: "REMOTE_WEBPAGE",
-                        sidemenustate: true
-                      },
-                      () => {
-                        Segment.trackWithProperties(
-                          "Selected Traffic Website Swipeup",
-                          {
-                            category: "Campaign Creation",
-                            label: "Traffic Objective"
-                          }
-                        );
-                      }
-                    );
-                  }}
-                  style={[
-                    styles.buttonN,
-                    this.state.selected === "REMOTE_WEBPAGE"
-                      ? GlobalStyles.orangeBackgroundColor
-                      : GlobalStyles.transparentBackgroundColor
-                  ]}
-                >
-                  <WebsiteIcon style={styles.icon} />
-                  <View style={styles.textcontainer}>
-                    <Text style={styles.titletext}>Website</Text>
-                    <Text style={styles.subtext}>
-                      Send Snapchatters directly to your Website
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState(
-                      {
-                        selected: "DEEP_LINK",
-                        sidemenustate: true
-                      },
-                      () => {
-                        Segment.trackWithProperties(
-                          "Selected Traffic Deep Link Swipeup",
-                          {
-                            category: "Campaign Creation",
-                            label: "Traffic Objective"
-                          }
-                        );
-                      }
-                    );
-                  }}
-                  style={[
-                    styles.buttonN,
-                    this.state.selected === "DEEP_LINK"
-                      ? GlobalStyles.orangeBackgroundColor
-                      : GlobalStyles.transparentBackgroundColor
-                  ]}
-                >
-                  <LayersIcon style={styles.icon} />
-                  <View style={styles.textcontainer}>
-                    <Text style={styles.titletext}>Deep Link</Text>
-                    <Text style={styles.subtext}>
-                      Send Snapchatters to your app or a third-party app
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <View style={styles.content}>{attachmentOptionsCard}</View>
             </Content>
           </Sidemenu>
         </Container>

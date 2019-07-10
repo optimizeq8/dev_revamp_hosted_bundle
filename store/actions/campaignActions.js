@@ -400,8 +400,8 @@ export const uploadStoryAdCover = (
 export const uploadStoryAdCard = (
   info,
   card,
+  cancelUpload,
   rejected,
-  cancelUplaod,
   iosUploadVideo
 ) => {
   console.log(info);
@@ -416,15 +416,11 @@ export const uploadStoryAdCard = (
       "Content-Type": "multipart/form-data"
     };
     createBaseUrl()
-      .post(
-        rejected ? `reuploadbrandmedia` : `savestorymedia`,
-        info
-        // {
-        //   onUploadProgress: ProgressEvent =>
-        //     loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        //   cancelToken: cancelUplaod.token
-        // }
-      )
+      .post(rejected ? `reuploadbrandmedia` : `savestorymedia`, info, {
+        // onUploadProgress: ProgressEvent =>
+        // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUpload.token
+      })
       .then(res => {
         return res.data;
       })

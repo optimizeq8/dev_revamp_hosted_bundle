@@ -280,11 +280,7 @@ const reducer = (state = initialState, action) => {
         storyAdsArray: [...storyAds]
       };
     case actionTypes.DELETE_STORY_AD_CARD:
-      console.log("card", action.payload.card.item.story_order);
-
       let deleteStoryAds = state.storyAdsArray.filter(ad => {
-        console.log("adddsss", ad);
-
         if (ad && ad.story_id !== action.payload.data.story_id) return ad;
       });
       // deleteStoryAds[action.payload.data.story_order] = {
@@ -292,7 +288,7 @@ const reducer = (state = initialState, action) => {
       //   ...action.payload.card
       // };
       let deletedLoadingAr = state.loadingStoryAdsArray;
-      deletedLoadingAr[action.payload.card.item.story_order] = false;
+      deletedLoadingAr[action.payload.card.index] = false;
 
       return {
         ...state,
@@ -327,7 +323,20 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         campaign_id: "",
-        data: null
+        data: null,
+        average_reach: 0,
+        total_reach: 0,
+        image: "",
+        minValueBudget: 0,
+        adType: "",
+        maxValueBudget: 0,
+        countryName: "",
+        interestNames: [],
+        regionNames: [],
+        storyAdsArray: [],
+        loadingStoryAdsArray: [],
+        coverLoading: false,
+        storyAdCover: null
       };
     default:
       return state;

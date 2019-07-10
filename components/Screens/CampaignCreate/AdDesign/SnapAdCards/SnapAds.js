@@ -10,28 +10,9 @@ export default class SnapAds extends Component {
   state = { snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }] };
 
   componentDidMount() {
-    // console.log("prevporps", prevProps.snapAdsCards);
-
-    // if (prevProps.snapAdsCards !== this.props.snapAdsCards) {
     this.setState({ snapAdsCards: this.props.snapAdsCards });
-    // }
   }
-  // addSnapCard = () => {
-  //   let newSnapCard = { id: (Math.random() * 1000).toFixed(0) };
-  //   this.state.snapAdsCards.length < 21 &&
-  //     this.setState({
-  //       snapAdsCards: [...this.state.snapAdsCards, newSnapCard]
-  //     });
-  // };
-  // removeSnapCard = index => {
-  //   if (this.state.snapAdsCards.length > 4) {
-  //     let result = this.state.snapAdsCards.filter(data => data.id !== index);
 
-  //     this.setState({
-  //       snapAdsCards: result
-  //     });
-  //   }
-  // };
   snapCards = item => {
     if (item.index === this.props.snapAdsCards.length - 1) {
       return <AddCard addButton={item} addSnapCard={this.props.addSnapCard} />;
@@ -40,6 +21,7 @@ export default class SnapAds extends Component {
         <SnapCard
           video={this.props.video}
           openUploadVideo={this.props.openUploadVideo}
+          cancelUpload={this.props.cancelUpload}
           _handleStoryAdCards={this.props._handleStoryAdCards}
           removeSnapCard={this.props.removeSnapCard}
           snapCardInfo={item}
@@ -47,8 +29,6 @@ export default class SnapAds extends Component {
       );
   };
   render() {
-    // console.log("selected", this.props.snapAdsCards);
-
     return (
       <View
         style={{

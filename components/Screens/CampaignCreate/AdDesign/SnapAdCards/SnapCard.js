@@ -7,6 +7,7 @@ import MediaButton from "../MediaButton";
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
+import { globalColors } from "../../../../../GlobalStyles";
 
 class SnapCard extends Component {
   state = { uploading: false };
@@ -50,12 +51,13 @@ class SnapCard extends Component {
         {snapCardInfo.index > 2 && (
           <Icon
             onPress={() => {
-              console.log(snapCardInfo.item.story_id);
-              this.props.deleteStoryAdCard(
-                snapCardInfo.item.story_id,
-                snapCardInfo,
-                removeSnapCard
-              );
+              //   this.props.cancelUpload();
+              !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                this.props.deleteStoryAdCard(
+                  snapCardInfo.item.story_id,
+                  snapCardInfo,
+                  removeSnapCard
+                );
             }}
             name="close"
             type="MaterialCommunityIcons"
@@ -69,7 +71,7 @@ class SnapCard extends Component {
             snapCardInfo={snapCardInfo}
           />
         ) : (
-          <ActivityIndicator />
+          <ActivityIndicator color={globalColors.orange} />
         )}
         {/* <Button
           style={styles.addButtonStyle}

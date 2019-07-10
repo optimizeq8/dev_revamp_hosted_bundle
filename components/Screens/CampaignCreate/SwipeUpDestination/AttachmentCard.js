@@ -1,33 +1,28 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
 
+import styles from "./styles";
 export default class AttachmentCard extends Component {
   render() {
     let { value, label, icon, info } = this.props.opt;
+    let CardIcon = icon;
     return (
       <TouchableOpacity
-        onPress={() => {
-          this.setState(
-            {
-              selected: value,
-              sidemenustate: true
-            },
-            () => {
-              Segment.trackWithProperties("Selected Traffic Website Swipeup", {
-                category: "Campaign Creation",
-                label: "Traffic Objective"
-              });
-            }
-          );
-        }}
+        onPress={() => this.props.handleChoice(value)}
         style={[
           styles.buttonN,
-          this.state.selected === value
-            ? GlobalStyles.orangeBackgroundColor
-            : GlobalStyles.transparentBackgroundColor
+          this.props.selected === value
+            ? globalStyles.orangeBackgroundColor
+            : globalStyles.transparentBackgroundColor
         ]}
       >
-        <WebsiteIcon style={styles.icon} />
+        <CardIcon
+          fill={globalColors.white}
+          width={30}
+          height={30}
+          style={styles.icon}
+        />
         <View style={styles.textcontainer}>
           <Text style={styles.titletext}>{label}</Text>
           <Text style={styles.subtext}>{info}</Text>

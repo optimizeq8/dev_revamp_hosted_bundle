@@ -496,8 +496,8 @@ class AdDesign extends Component {
               })
               .then(() => {
                 if (
-                  true
-                  // this.props.adType === "StoryAd"
+                  this.props.adType === "StoryAd" &&
+                  this.state.storyAdCards.storyAdSelected
                 ) {
                   let cards = this.state.storyAdCards.snapAdsCards;
                   let card = this.state.storyAdCards.snapAdsCards[
@@ -519,6 +519,10 @@ class AdDesign extends Component {
                       selectedStoryAd: card,
                       snapAdsCards: cards
                     }
+                  });
+                  this.props.save_campaign_info({
+                    image: result.uri,
+                    type: result.type.toUpperCase()
                   });
                   this.onToggleModal(false);
                 } else {
@@ -990,88 +994,95 @@ class AdDesign extends Component {
       }
     });
   };
+
+  formatStoryAd = async () => {
+    var storyBody = new FormData();
+    let cards = this.state.storyAdCards.snapAdsCards;
+    let card = this.state.storyAdCards.snapAdsCards[
+      this.state.storyAdCards.selectedStoryAd.index
+    ];
+
+    let res = card.image.split(
+      card.image.includes("/ImageManipulator/")
+        ? "/ImageManipulator/"
+        : "/ImagePicker/"
+    );
+    let format = res[1].split(".");
+    var photo = {
+      uri: card.image,
+      type: card.media_type + "/" + format[1],
+      name: res[1]
+    };
+
+    if (card.hasOwnProperty("longformvideo_media")) {
+      let resVideo = card.longformvideo_media.split("/ImagePicker/");
+      let formatVideo = resVideo[1].split(".");
+      var video = {
+        uri: card.longformvideo_media,
+        type: card.longformvideo_media_type + "/" + formatVideo[1],
+        name: resVideo[1]
+      };
+
+      storyBody.append("story_longformvideo_media", video);
+      storyBody.append(
+        "story_longformvideo_media_type",
+        card.longformvideo_media_type
+      );
+    }
+    storyBody.append(
+      "story_name",
+      this.state.campaignInfo.brand_name + " " + card.index
+    );
+    storyBody.append(
+      "story_destination",
+      card.destination ? card.destination : "BLANK"
+    );
+    storyBody.append("story_media", photo);
+    storyBody.append("campaign_id", this.props.campaign_id);
+    storyBody.append("story_order", card.index);
+    storyBody.append("story_media_type", card.media_type);
+    storyBody.append(
+      "story_call_to_action",
+      card.call_to_action ? card.call_to_action.value : "BLANK"
+    );
+    storyBody.append(
+      "story_attachment",
+      card.attachment && card.attachment.value !== "BLANK"
+        ? JSON.stringify(card.attachment)
+        : "BLANK"
+    );
+
+    card.story_id && storyBody.append("story_id", card.story_id);
+    storyBody.append(
+      "ios_upload",
+      Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
+    );
+    await this.handleUpload();
+    this.props.uploadStoryAdCard(storyBody, card, this.state.signal);
+    cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+    this.setState({
+      storyAdCards: {
+        ...this.state.storyAdCards,
+        snapAdsCards: cards,
+        storyAdSelected: false,
+        selectedStoryAd: card,
+        numOfAds: this.state.storyAdCards.numOfAds + 1
+      }
+    });
+    return;
+  };
+
   _handleSubmission = async () => {
     if (
       this.props.adType === "StoryAd" &&
       this.state.storyAdCards.storyAdSelected
-    ) {
-      var storyBody = new FormData();
-      let cards = this.state.storyAdCards.snapAdsCards;
-      let card = this.state.storyAdCards.snapAdsCards[
-        this.state.storyAdCards.selectedStoryAd.index
-      ];
+    )
+      this.formatStoryAd();
 
-      let res = card.image.split(
-        card.image.includes("/ImageManipulator/")
-          ? "/ImageManipulator/"
-          : "/ImagePicker/"
-      );
-      let format = res[1].split(".");
-      var photo = {
-        uri: card.image,
-        type: card.media_type + "/" + format[1],
-        name: res[1]
-      };
-
-      if (card.hasOwnProperty("longformvideo_media")) {
-        let resVideo = card.longformvideo_media.split("/ImagePicker/");
-        let formatVideo = resVideo[1].split(".");
-        var video = {
-          uri: card.longformvideo_media,
-          type: card.longformvideo_media_type + "/" + formatVideo[1],
-          name: resVideo[1]
-        };
-
-        storyBody.append("story_longformvideo_media", video);
-        storyBody.append(
-          "story_longformvideo_media_type",
-          card.longformvideo_media_type
-        );
-      }
-      storyBody.append(
-        "story_name",
-        this.state.campaignInfo.brand_name + " " + card.index
-      );
-      storyBody.append(
-        "story_destination",
-        card.destination ? card.destination : "BLANK"
-      );
-      storyBody.append("story_media", photo);
-      storyBody.append("campaign_id", this.props.campaign_id);
-      storyBody.append("story_order", card.index);
-      storyBody.append("story_media_type", card.media_type);
-      storyBody.append(
-        "story_call_to_action",
-        card.call_to_action ? card.call_to_action.value : "BLANK"
-      );
-      storyBody.append(
-        "story_attachment",
-        card.attachment && card.attachment.value !== "BLANK"
-          ? JSON.stringify(card.attachment)
-          : "BLANK"
-      );
-
-      card.story_id && storyBody.append("story_id", card.story_id);
-      storyBody.append(
-        "ios_upload",
-        Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
-      );
-      this.props.uploadStoryAdCard(storyBody, card);
-      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      this.setState({
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          snapAdsCards: cards,
-          storyAdSelected: false,
-          selectedStoryAd: card,
-          numOfAds: this.state.storyAdCards.numOfAds + 1
-        }
-      });
-      return;
-    }
     await this.validator();
 
     if (
+      !this.props.loadingStoryAdsArray.includes(true) &&
       !this.state.brand_nameError &&
       !this.state.headlineError &&
       !this.state.swipeUpError &&
@@ -1137,17 +1148,6 @@ class AdDesign extends Component {
       : this.props.navigation.goBack();
   };
   render() {
-    console.log(
-      "this.props.storyAdsArray",
-      this.state.storyAdCards.selectedStoryAd
-    );
-    // console.log(() =>
-    //   this.props.adType !== "StoryAd"
-    //     ? this.state.image
-    //     : this.state.storyAdCards.snapAdsCards.find(card => card !== undefined)
-    //         .image
-    // );
-
     let selectedAd =
       (!this.state.storyAdCards.storyAdSelected &&
         this.state.storyAdCards.numOfAds >= 3) ||
@@ -1315,6 +1315,7 @@ class AdDesign extends Component {
                         selectedStoryAd={
                           this.state.storyAdCards.selectedStoryAd
                         }
+                        cancelUpload={this.cancelUpload}
                         snapAdsCards={this.state.storyAdCards.snapAdsCards}
                         _handleStoryAdCards={this._handleStoryAdCards}
                       />
@@ -1324,16 +1325,23 @@ class AdDesign extends Component {
                         image={this.state.image}
                       />
                     )}
-                    {"BRAND_AWARENESS" !== this.state.objective.toLowerCase() &&
-                      this.state.storyAdCards.storyAdSelected && (
-                        <SwipeUpComponent
-                          _changeDestination={this._changeDestination}
-                          navigation={this.props.navigation}
-                          objective={this.state.objective}
-                          destination={destination}
-                          attachment={attachment}
-                        />
-                      )}
+                    {((this.props.adType !== "StoryAd" &&
+                      "BRAND_AWARENESS" !==
+                        this.state.objective.toLowerCase()) ||
+                      (this.props.adType === "StoryAd" &&
+                        this.state.storyAdCards.storyAdSelected)) && (
+                      <SwipeUpComponent
+                        selectedStoryAd={
+                          this.state.storyAdCards.selectedStoryAd
+                        }
+                        adType={this.props.adType}
+                        _changeDestination={this._changeDestination}
+                        navigation={this.props.navigation}
+                        objective={this.state.objective}
+                        destination={destination}
+                        attachment={attachment}
+                      />
+                    )}
                   </View>
                 )}
               </View>
@@ -1464,15 +1472,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  uploadStoryAdCard: (info, loading, rejected, cancelUplaod, iosUploadVideo) =>
+  uploadStoryAdCard: (info, card, cancelUpload, iosUploadVideo) =>
     dispatch(
-      actionCreators.uploadStoryAdCard(
-        info,
-        loading,
-        rejected,
-        cancelUplaod,
-        iosUploadVideo
-      )
+      actionCreators.uploadStoryAdCard(info, card, cancelUpload, iosUploadVideo)
     ),
   ad_design: (
     info,
