@@ -21,6 +21,8 @@ export { setAuthToken } from "./genericActions";
 export {
   save_campaign_info,
   resetCampaignInfo,
+  reset_collections,
+  set_adType,
   ad_objective,
   getMinimumCash,
   ad_design,
@@ -38,6 +40,8 @@ export {
   payment_request_knet,
   get_languages,
   payment_request_credit_card,
+  set_collectionAd_link_form,
+  save_collection_media,
   verifyBusinessUrl
 } from "./campaignActions";
 

@@ -36,8 +36,14 @@ class Deep_Link extends Component {
       data: [],
       androidData: [],
       image: "",
-      callaction: list[3].call_to_action_list[0],
-      callactions: list[3].call_to_action_list,
+      callaction:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list[0]
+          : list.SnapAd[3].call_to_action_list[0],
+      callactions:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list
+          : list.SnapAd[3].call_to_action_list,
       nameError: "",
       appError: "",
       android_app_urlError: "",
@@ -84,7 +90,7 @@ class Deep_Link extends Component {
     });
 
     this.props._changeDestination(
-      "DEEP_LINK",
+      this.props.collectionAdLinkForm === 0 ? "DEEP_LINK" : "COLLECTION",
       this.state.callaction,
       this.state.attachment
     );
@@ -136,7 +142,11 @@ class Deep_Link extends Component {
   }
 }
 
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = state => ({
+  data: state.campaignC.data,
+  adType: state.campaignC.adType,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

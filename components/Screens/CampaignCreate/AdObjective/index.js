@@ -13,7 +13,8 @@ import {
   Input,
   Container,
   Icon,
-  Label
+  Label,
+  Button
 } from "native-base";
 import { BlurView, Segment } from "expo";
 import { Modal } from "react-native-paper";
@@ -61,12 +62,13 @@ class AdObjective extends Component {
         start_time: "",
         end_time: ""
       },
+      collectionAdLinkForm: 0,
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
       objectiveLabel: "Select Objective",
       inputN: false,
-      objectives: ObjectiveData,
+      objectives: ObjectiveData[this.props.adType],
       nameError: "",
       objectiveError: "",
       start_timeError: "",
@@ -87,6 +89,17 @@ class AdObjective extends Component {
   };
   componentDidMount() {
     let rep = this.state.campaignInfo;
+
+    if (this.props.adType === "CollectionAd") {
+      if (this.props.collectionAdLinkForm !== 0) {
+        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
+      } else {
+        this._handleCollectionAdLinkForm(1);
+      }
+    } else {
+      this._handleCollectionAdLinkForm(0);
+    }
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -150,7 +163,12 @@ class AdObjective extends Component {
       maxValueBudget
     });
   };
-  _handleSubmission = () => {
+
+  _handleCollectionAdLinkForm = val => {
+    this.setState({ collectionAdLinkForm: val });
+  };
+
+  _handleSubmission = async () => {
     const nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.name
@@ -189,6 +207,21 @@ class AdObjective extends Component {
       //   maxValueBudget: this.state.maxValueBudget
       // });
 
+      console.log(
+        "this.props.collectionAdLinkForm",
+        this.props.collectionAdLinkForm
+      );
+      console.log(
+        "this.state.collectionAdLinkForm",
+        this.state.collectionAdLinkForm
+      );
+      if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
+        // this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
+        this.props.reset_collections();
+      }
+      // else {
+      this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
+      // }
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
@@ -198,12 +231,20 @@ class AdObjective extends Component {
       });
       if (this.props.campaign_id !== "")
         this.props.ad_objective(
-          { campaign_id: this.props.campaign_id, ...this.state.campaignInfo },
+          {
+            campaign_id: this.props.campaign_id,
+            campaign_type: this.props.adType,
+            ...this.state.campaignInfo
+          },
           this.props.navigation
         );
       else
         this.props.ad_objective(
-          { campaign_id: 0, ...this.state.campaignInfo },
+          {
+            campaign_id: 0,
+            campaign_type: this.props.adType,
+            ...this.state.campaignInfo
+          },
           this.props.navigation
         );
     }
@@ -347,6 +388,76 @@ class AdObjective extends Component {
                 </Text>
                 <Icon type="AntDesign" name="down" style={styles.downicon} />
               </Item>
+              {this.props.adType === "CollectionAd" && (
+                <View style={styles.topContainer}>
+                  <Button
+                    block
+                    dark
+                    style={[
+                      this.state.collectionAdLinkForm === 1
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm1
+                    ]}
+                    onPress={() => {
+                      this._handleCollectionAdLinkForm(1);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 1
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Website
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 1
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        styles.buttonSubText
+                      ]}
+                    >
+                      Links to your site
+                    </Text>
+                  </Button>
+                  <Button
+                    block
+                    dark
+                    style={[
+                      this.state.collectionAdLinkForm === 2
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm2
+                    ]}
+                    onPress={() => {
+                      this._handleCollectionAdLinkForm(2);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 2
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      App DeepLink
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.collectionAdLinkForm === 2
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        styles.buttonSubText
+                      ]}
+                    >
+                      Links to your App
+                    </Text>
+                  </Button>
+                </View>
+              )}
             </View>
             {this.props.loading ? (
               <ForwardLoading
@@ -413,14 +524,19 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
   campaign_id: state.campaignC.campaign_id,
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  adType: state.campaignC.adType,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
 const mapDispatchToProps = dispatch => ({
   ad_objective: (info, navigation) =>
     dispatch(actionCreators.ad_objective(info, navigation)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values))
+  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
+  set_collectionAd_link_form: value =>
+    dispatch(actionCreators.set_collectionAd_link_form(value)),
+  reset_collections: () => dispatch(actionCreators.reset_collections())
 });
 export default connect(
   mapStateToProps,

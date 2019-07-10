@@ -185,8 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     borderRadius: 25,
-    paddingVertical: 2,
-    top: "88%"
+    paddingVertical: 2
   },
   swipeUpText: {
     alignSelf: "center",

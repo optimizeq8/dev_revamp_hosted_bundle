@@ -140,6 +140,54 @@ const styles = StyleSheet.create({
   },
   dateColumn: {
     flexDirection: "column"
+  },
+  topContainer: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignSelf: "center",
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.2
+  },
+  collectionAdLinkForm2: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 15,
+    borderTopEndRadius: 15
+  },
+  collectionAdLinkForm1: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 15,
+    borderTopStartRadius: 15
+  },
+  button: {
+    backgroundColor: "#fff",
+    height: 70,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  activeButton: {
+    backgroundColor: "#FF9D00",
+    height: 70,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  inactiveText: {
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    color: "#7039FF",
+    textAlign: "center"
+  },
+  activeText: {
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    color: "#fff",
+    textAlign: "center"
+  },
+  buttonSubText: {
+    fontFamily: "montserrat-light",
+    paddingTop: 2
   }
 });
 
