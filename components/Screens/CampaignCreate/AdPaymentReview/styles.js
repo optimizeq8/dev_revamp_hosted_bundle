@@ -1,130 +1,185 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
+	black: '#1a1917',
+	gray: '#888888',
+	background1: '#751AFF',
+	background2: '#751AFF',
 };
 const styles = StyleSheet.create({
-  safeAreaView: {
-    height: "100%",
-    flex: 1
-  },
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
-  container: {
-    height: "100%",
-    flex: 1,
-    width: "100%",
-    display: "flex",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    overflow: "hidden",
-    justifyContent: "space-between",
-    backgroundColor: "black"
-  },
-  image: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
-  mainCard: {
-    top: 15,
-    borderColor: "#000",
-    backgroundColor: "#000",
-    flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30
-  },
-  text: {
-    textAlign: "center",
-    color: "#fff",
-    paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
-  buttontext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    alignSelf: "center",
-    textAlign: "center"
-  },
-  input: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#D9D9D9",
-    paddingHorizontal: 50,
-    borderRadius: 15,
-    alignSelf: "center",
-    width: 250,
-    height: 50
-  },
-  button: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#5F5F5F",
-    alignSelf: "center"
-  },
-  snapbutton: {
-    top: 30,
-    marginBottom: 10,
-    backgroundColor: "#fff"
-  },
-  link: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 20,
-    paddingHorizontal: 10
-  },
-  header: {
-    fontSize: 20,
-    color: "#fff",
-    textAlign: "center"
-  },
-  headline: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-semibold",
-    fontSize: 14,
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    alignSelf: "center"
-  },
-  bottomCard: {
-    // top: 15,
-    backgroundColor: "#FF9D00",
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    // height: 127,
-    marginLeft: 0,
-    marginRight: 0,
-    width: "100%"
-    // paddingBottom: 34
-  },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
+	videoView: {
+		height: '100%',
+	},
+	video: {
+		width: '100%',
+		height: '100%',
+	},
+	imageBackground: {
+		width: '100%',
+		height: '100%',
+		overflow: 'hidden',
+		flex: 1,
+	},
+	budgetView: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingTop: 12,
+	},
+	budgetText: {
+		fontFamily: 'montserrat-semibold',
+		fontSize: 18,
+		color: '#FFFFFF',
+	},
+	budgetAmountView: {
+		display: 'flex',
+		flexDirection: 'row',
+	},
+	budgetDollarText: {
+		color: '#FFFFFF',
+		fontFamily: 'montserrat-medium',
+		fontSize: 14,
+	},
+	budgetAmountText: {
+		color: '#FF9D00',
+		fontFamily: 'montserrat-bold',
+		fontSize: 24,
+	},
+	contentContainerStyle: {
+		paddingHorizontal: 5,
+	},
+	footerBlock: {
+		paddingBottom: 10,
+		margin: 0,
+		borderTopWidth: 0,
+		height: 100,
+		backgroundColor: '#FF9D00',
+		borderTopStartRadius: 35,
+		borderTopEndRadius: 35,
+		marginLeft: 0,
+		marginRight: 0,
+		width: '100%',
+	},
+	optimizeFeesPercentange: {
+		color: '#FFFFFF',
+		fontFamily: 'montserrat-bold',
+		fontSize: 12,
+		paddingRight: 2,
+	},
+	safeAreaView: {
+		height: '100%',
+		width: '100%',
+		backgroundColor: 'rgba(0,0,0,0.75)',
+	},
+	slide: { alignItems: 'center', flex: 1, justifyContent: 'center' },
+	title: { color: '#000', fontSize: 48 },
+	container: {
+		height: '100%',
+		backgroundColor: 'transparent',
+		flex: 1,
+		width: '100%',
+		display: 'flex',
+		overflow: 'hidden',
+		justifyContent: 'space-between',
+	},
+	image: {
+		alignSelf: 'center',
+		height: 120,
+		width: 120,
+		margin: 15,
+	},
+	imageIcon: {
+		alignSelf: 'center',
+		height: 50,
+		width: 50,
+	},
 
-  backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
-  }
+	mainCard: {
+		// top: 20,
+		// borderColor: "#FF9D00",
+		backgroundColor: '#FFF',
+		shadowRadius: 5,
+		shadowOpacity: 0.2,
+		height: 45,
+		width: widthPercentageToDP(50),
+		marginLeft: 0,
+		marginRight: 0,
+		borderRadius: 30,
+		justifyContent: 'center',
+	},
+	text: {
+		textAlign: 'center',
+		color: '#fff',
+		paddingBottom: 10,
+		fontFamily: 'montserrat-medium',
+		fontSize: 14,
+		paddingHorizontal: 10,
+		paddingVertical: 10,
+	},
+
+	backgroundViewWrapper: {
+		...StyleSheet.absoluteFillObject,
+	},
+	bottomCardBlock1: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		width: '100%',
+		paddingRight: 40,
+		paddingLeft: 55,
+		paddingTop: 15,
+	},
+	dollarAmountContainer: {
+		flexDirection: 'row',
+		// alignItems: 'baseline',
+	},
+	dollarAmountText: {
+		fontSize: 15,
+	},
+	kdAmountContainer: {
+		flexDirection: 'row',
+		// alignItems: 'center',
+		paddingTop: 2,
+	},
+	kdText: {
+		fontSize: 11,
+		fontFamily: 'montserrat-bold',
+	},
+	kdAmountText: {
+		fontSize: 13,
+		fontFamily: 'montserrat-bold',
+		paddingLeft: 4,
+	},
+	optimizeFeesTextContainer: {
+		flexDirection: 'row',
+		paddingTop: 10,
+		// width: '70%',
+	},
+	optimizeFeesText: {
+		fontSize: 12,
+		fontFamily: 'montserrat-light',
+		// textAlign: 'left',
+	},
+	payNowText: {
+		color: '#FF9D00',
+		textAlign: 'center',
+		fontSize: 14,
+		fontFamily: 'montserrat-bold',
+		//   paddingBottom: 3
+	},
+	money: {
+		color: '#fff',
+		// textAlign: 'center',
+		fontSize: 21,
+		fontFamily: 'montserrat-bold',
+		// paddingTop: 3
+	},
+	feesAmountText: {
+		color: '#fff',
+		textAlign: 'left',
+		fontSize: 12,
+		fontFamily: 'montserrat-bold',
+	},
 });
 
 export default styles;
