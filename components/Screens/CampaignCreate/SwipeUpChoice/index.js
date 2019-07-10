@@ -24,7 +24,10 @@ class SwipeUpChoice extends Component {
 
   render() {
     let objective = this.props.navigation.getParam("objective", "");
-    let _changeDestination = this.props.navigation.getParam("_changeDestination", ()=>());
+    let _changeDestination = this.props.navigation.getParam(
+      "_changeDestination",
+      () => {}
+    );
     let menu = <View />;
     if (this.props.adType === "CollectionAd") {
       switch (this.props.collectionAdLinkForm) {
@@ -32,9 +35,7 @@ class SwipeUpChoice extends Component {
           menu = (
             <Website
               objective={objective}
-              _changeDestination={
-                _changeDestination
-              }
+              _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
               swipeUpDestination={true}
@@ -46,9 +47,7 @@ class SwipeUpChoice extends Component {
           menu = (
             <Deep_Link
               objective={objective}
-              _changeDestination={
-                _changeDestination
-              }
+              _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
               swipeUpDestination={true}
@@ -62,9 +61,7 @@ class SwipeUpChoice extends Component {
         menu = (
           <Website
             objective={objective}
-            _changeDestination={
-              _changeDestination
-            }
+            _changeDestination={_changeDestination}
             navigation={this.props.navigation}
             collectionAdLinkForm={this.props.navigation.getParam(
               "collectionAdLinkForm"
@@ -74,35 +71,24 @@ class SwipeUpChoice extends Component {
       else if (objective === "VIDEO_VIEWS") {
         menu = (
           <Long_Form_Video
-            _changeDestination={
-              _changeDestination
-            }
+            _changeDestination={_changeDestination}
             navigation={this.props.navigation}
           />
         );
-      } else if (
-        objective
-          .toLowerCase()
-          .includes("app")
-      ) {
+      } else if (objective.toLowerCase().includes("app")) {
         menu = (
           <App_Install
-            _changeDestination={
-              _changeDestination
-            }
+            _changeDestination={_changeDestination}
             navigation={this.props.navigation}
           />
         );
-      } else if ( objective ===
-                "WEB_CONVERSION")              { 
+      } else if (objective === "WEB_CONVERSION") {
         menu = (
-                <WhatsApp
-                  _changeDestination={
-                    _changeDestination
-                  }
-                  navigation={this.props.navigation}
-                />
-              );
+          <WhatsApp
+            _changeDestination={_changeDestination}
+            navigation={this.props.navigation}
+          />
+        );
       }
     }
 
