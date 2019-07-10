@@ -201,7 +201,6 @@ class AdDesign extends Component {
         swipeUpError: null
       });
     }
-    console.log("hi");
   }
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -745,10 +744,27 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
+      this.props.adType === "CollectionAd" &&
+      this.state.campaignInfo.attachment === "BLANK" &&
+      this.state.campaignInfo.call_to_action.label === "BLANK"
+    ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else if (
+      this.props.adType === "SnapAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
     ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
       swipeUpError = null;
@@ -807,7 +823,7 @@ class AdDesign extends Component {
     }
   };
   onToggleModal = visibile => {
-    console.log("toggle off");
+    // console.log("toggle off");
 
     this.setState({ isVisible: visibile });
   };
@@ -819,7 +835,7 @@ class AdDesign extends Component {
   };
 
   collectionComp = i => {
-    console.log("i", this.props.collectionAdMedia[i]);
+    // console.log("i", this.props.collectionAdMedia[i]);
 
     return (
       <TouchableOpacity
@@ -868,6 +884,7 @@ class AdDesign extends Component {
       </TouchableOpacity>
     );
   };
+
   render() {
     let { image } = this.state;
     let {
@@ -942,14 +959,59 @@ class AdDesign extends Component {
     );
 
     let blankView = <View style={styles.blankView} />;
-    // console.log("isVisible", this.state.isVisible);
-    // console.log("videoIsLoading", this.state.videoIsLoading);
-    // console.log("collectionAdMedia", this.props.collectionAdMedia);
-    // console.log(
-    //   "isUndefined(this.props.collectionAdMedia[1]) ",
-    //   isUndefined(this.props.collectionAdMedia[1])
-    // );
 
+    let submitButton = () => {
+      // console.log("arra: ", this.props.collectionAdMedia);
+      // console.log(
+      //   "??: ",
+      //   this.props.collectionAdMedia.some(c => isUndefined(c))
+      // );
+      // console.log(
+      //   "condi",
+
+      //   !isUndefined(this.props.collectionAdMedia.find(c => isUndefined(c)))
+      // );
+      if (this.props.adType === "CollectionAd") {
+        if (
+          this.props.collectionAdMedia.length === 4 &&
+          !this.props.collectionAdMedia.some(c => isUndefined(c))
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+        return;
+      } else {
+        if (this.state.objective === "BRAND_AWARENESS") {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        } else if (
+          this.state.objective !== "BRAND_AWARENESS" &&
+          isNull(this.state.swipeUpError)
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+      }
+      return;
+    };
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
@@ -1072,23 +1134,7 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
-                {this.state.objective === "BRAND_AWARENESS" && (
-                  <TouchableOpacity
-                    onPress={this._handleSubmission}
-                    style={styles.button}
-                  >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  </TouchableOpacity>
-                )}
-                {this.state.objective !== "BRAND_AWARENESS" &&
-                  isNull(this.state.swipeUpError) && (
-                    <TouchableOpacity
-                      onPress={this._handleSubmission}
-                      style={styles.button}
-                    >
-                      <ForwardButton width={wp(24)} height={hp(8)} />
-                    </TouchableOpacity>
-                  )}
+                {submitButton()}
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>

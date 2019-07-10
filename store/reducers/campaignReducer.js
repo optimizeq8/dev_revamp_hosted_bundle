@@ -45,6 +45,7 @@ const reducer = (state = initialState, action) => {
         collectionAdLinkForm: action.payload
       };
     case actionTypes.SET_AD_OBJECTIVE:
+      console.log("set objective", state.data);
       return {
         ...state,
         campaign_id: action.payload.campaign_id,
@@ -71,8 +72,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AD_COLLECTION_MEDIA:
       let arr = state.collectionAdMedia;
       arr[action.payload.collection_order] = action.payload;
-      console.log("arr:", arr);
-
       return {
         ...state,
         collectionLoader: false,
@@ -84,6 +83,8 @@ const reducer = (state = initialState, action) => {
         collectionLoader: false
       };
     case actionTypes.SET_AD_DESIGN:
+      console.log("set design", state.data);
+
       return {
         ...state,
         data: {
@@ -278,6 +279,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         languagesList: []
+      };
+    case actionTypes.RESET_COLLECTIONS:
+      return {
+        ...state,
+        collectionLoader: false,
+        collectionAdMedia: []
       };
     case actionTypes.RESET_CAMPAING_INFO:
       return {

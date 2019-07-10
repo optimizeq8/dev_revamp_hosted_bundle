@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    width: "100%"
+    width: "100%",
+    marginVertical: 20
   },
   optionsRowContainer: {
     flexDirection: "row",
@@ -120,6 +121,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center"
+  },
+  uplaodPercentage: {
+    fontSize: 16,
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
   },
   loadingContainer: {
     flex: 1,
@@ -209,6 +219,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     marginHorizontal: wp(10)
+  },
+  errorMsg: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    paddingTop: 10
   }
 });
 

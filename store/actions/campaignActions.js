@@ -191,7 +191,7 @@ export const ad_objective = (info, navigation) => {
     createBaseUrl()
       .post(`savecampaign`, info)
       .then(res => {
-        console.log("objectives", res.data);
+        // console.log("objectives", res.data);
 
         return res.data;
       })
@@ -649,6 +649,14 @@ export const set_collectionAd_link_form = data => {
   };
 };
 
+export const reset_collections = () => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.RESET_COLLECTIONS
+    });
+  };
+};
+
 export const save_collection_media = (
   media,
   localUri,
@@ -674,7 +682,7 @@ export const save_collection_media = (
         cancelToken: cancelUplaod.token
       })
       .then(res => {
-        console.log("data:", res.data);
+        // console.log("data:", res.data);
 
         return res.data;
       })

@@ -89,9 +89,16 @@ class AdObjective extends Component {
   };
   componentDidMount() {
     let rep = this.state.campaignInfo;
-    if (this.props.adType === "CollectionAd")
-      this._handleCollectionAdLinkForm(1);
-    else this._handleCollectionAdLinkForm(0);
+
+    if (this.props.adType === "CollectionAd") {
+      if (this.props.collectionAdLinkForm !== 0) {
+        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
+      } else {
+        this._handleCollectionAdLinkForm(1);
+      }
+    } else {
+      this._handleCollectionAdLinkForm(0);
+    }
 
     this.setState({
       campaignInfo: {
@@ -159,12 +166,12 @@ class AdObjective extends Component {
       maxValueBudget
     });
   };
+
   _handleCollectionAdLinkForm = val => {
-    this.setState({ collectionAdLinkForm: val }, () =>
-      this.props.set_collectionAd_link_form(val)
-    );
+    this.setState({ collectionAdLinkForm: val });
   };
-  _handleSubmission = () => {
+
+  _handleSubmission = async () => {
     const nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.name
@@ -203,6 +210,21 @@ class AdObjective extends Component {
       //   maxValueBudget: this.state.maxValueBudget
       // });
 
+      console.log(
+        "this.props.collectionAdLinkForm",
+        this.props.collectionAdLinkForm
+      );
+      console.log(
+        "this.state.collectionAdLinkForm",
+        this.state.collectionAdLinkForm
+      );
+      if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
+        // this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
+        this.props.reset_collections();
+      }
+      // else {
+      this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
+      // }
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
@@ -212,12 +234,20 @@ class AdObjective extends Component {
       });
       if (this.props.campaign_id !== "")
         this.props.ad_objective(
-          { campaign_id: this.props.campaign_id, ...this.state.campaignInfo },
+          {
+            campaign_id: this.props.campaign_id,
+            campaign_type: this.props.adType,
+            ...this.state.campaignInfo
+          },
           this.props.navigation
         );
       else
         this.props.ad_objective(
-          { campaign_id: 0, ...this.state.campaignInfo },
+          {
+            campaign_id: 0,
+            campaign_type: this.props.adType,
+            ...this.state.campaignInfo
+          },
           this.props.navigation
         );
     }
@@ -498,7 +528,8 @@ const mapStateToProps = state => ({
   loading: state.campaignC.loadingObj,
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -507,7 +538,8 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
   set_collectionAd_link_form: value =>
-    dispatch(actionCreators.set_collectionAd_link_form(value))
+    dispatch(actionCreators.set_collectionAd_link_form(value)),
+  reset_collections: () => dispatch(actionCreators.reset_collections())
 });
 export default connect(
   mapStateToProps,

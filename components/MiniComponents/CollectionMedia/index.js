@@ -80,13 +80,12 @@ class CollectionMedia extends Component {
       directory: "/ImagePicker/",
       type: "",
       formatted: null,
-      localUri: null
+      localUri: null,
+      deep_link_urlError: ""
     };
   }
 
   async componentDidMount() {
-    console.log("dklkjfsljkfsfdglkj");
-
     let order = this.props.navigation.getParam("collection_order");
 
     await this.setState({
@@ -96,7 +95,6 @@ class CollectionMedia extends Component {
         collection_name: this.props.data.name + "_" + order
       }
     });
-    console.log("campaign_name", this.state.campaign_name);
 
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
@@ -110,12 +108,6 @@ class CollectionMedia extends Component {
         });
       }
     }
-    let collection = this.state.collection;
-    console.log(
-      "this.props.collectionAdMedia[order]",
-      this.props.collectionAdMedia[order]
-    );
-
     if (
       Object.keys(this.state.collection)
         .map(key => {
@@ -129,19 +121,42 @@ class CollectionMedia extends Component {
         })
         .includes(true)
     ) {
-      const url = split(
-        JSON.parse(this.props.collectionAdMedia[order].collection_attachment)
-          .url,
-        "://"
-      );
-      this.setState({
-        collection: {
-          ...this.props.collectionAdMedia[order],
-          collection_attachment: url[1]
-        },
-        networkString: url[0] + "://",
-        localUri: this.props.collectionAdMedia[order].localUri
-      });
+      if (
+        (this.props.collectionAdLinkForm === 1 &&
+          this.props.collectionAdMedia[order].collection_destination ===
+            "REMOTE_WEBPAGE") ||
+        (this.props.collectionAdLinkForm === 2 &&
+          this.props.collectionAdMedia[order].collection_destination ===
+            "DEEP_LINK")
+      ) {
+        if (this.props.collectionAdLinkForm === 1) {
+          const url = split(
+            JSON.parse(
+              this.props.collectionAdMedia[order].collection_attachment
+            ).url,
+            "://"
+          );
+          this.setState({
+            collection: {
+              ...this.props.collectionAdMedia[order],
+              collection_attachment: url[1]
+            },
+            networkString: url[0] + "://",
+            localUri: this.props.collectionAdMedia[order].localUri
+          });
+        } else {
+          const deep_link_uri = JSON.parse(
+            this.props.collectionAdMedia[order].collection_attachment
+          ).deep_link_uri;
+          this.setState({
+            collection: {
+              ...this.props.collectionAdMedia[order],
+              collection_attachment: deep_link_uri
+            },
+            localUri: this.props.collectionAdMedia[order].localUri
+          });
+        }
+      }
 
       // this.setState({
       //   collection: {
@@ -155,6 +170,7 @@ class CollectionMedia extends Component {
       //   ...this.props.collectionAdMedia[order]
       // };
     }
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentWillUnmount() {
@@ -251,41 +267,15 @@ class CollectionMedia extends Component {
       let newWidth = result.width;
       let newHeight = result.height;
       await this.validateImage();
+
       if (!result.cancelled) {
-        if (file.size > 2000000) {
-          this.setState({
-            imageError: "Image must be less than 2 MBs.",
-            collection: {
-              ...this.state.collection,
-              collection_media: null
-            }
-          });
-          this.onToggleModal(false);
-          showMessage({
-            message: "Image must be less than 2 MBs.",
-            position: "top",
-            type: "warning"
-          });
-
-          return;
-        } else if (result.width >= 160 && result.height >= 160) {
-          if (result.width > result.height) {
-            newWidth = result.height;
-          } else if (result.height > result.width) {
-            newHeight = result.width;
-          } else {
-            newWidth = 160;
-            newHeight = 160;
-          }
-
-          // console.log("image res:", result);
-          // console.log("width:", newWidth);
-          // console.log("height:", newHeight);
+        if (result.width >= 160 && result.height >= 160) {
+          newWidth = 160;
+          newHeight = 160;
           ImageManipulator.manipulateAsync(
             result.uri,
             [
               {
-                // resize: { width: newWidth },
                 crop: {
                   originX: (result.width - newWidth) / 2,
                   originY: (result.height - newHeight) / 2,
@@ -306,22 +296,43 @@ class CollectionMedia extends Component {
               result.height = manipResult.height;
               result.width = manipResult.width;
             })
-            .then(() => {
-              this.setState({
-                type: result.type.toUpperCase(),
-                imageError: null,
-                collection: {
-                  ...this.state.collection,
-                  collection_media: result.uri
-                },
-                localUri: result.uri
+            .then(async () => {
+              file = await FileSystem.getInfoAsync(result.uri, {
+                size: true
               });
-              this.onToggleModal(false);
-              showMessage({
-                message: "Image has been selected successfully ",
-                position: "top",
-                type: "success"
-              });
+              if (file.size > 2000000) {
+                this.setState({
+                  imageError: "Image must be less than 2 MBs.",
+                  collection: {
+                    ...this.state.collection,
+                    collection_media: null
+                  }
+                });
+                this.onToggleModal(false);
+                showMessage({
+                  message: "Image must be less than 2 MBs.",
+                  position: "top",
+                  type: "warning"
+                });
+
+                return;
+              } else {
+                this.setState({
+                  type: result.type.toUpperCase(),
+                  imageError: null,
+                  collection: {
+                    ...this.state.collection,
+                    collection_media: result.uri
+                  },
+                  localUri: result.uri
+                });
+                this.onToggleModal(false);
+                showMessage({
+                  message: "Image has been selected successfully ",
+                  position: "top",
+                  type: "success"
+                });
+              }
             })
             .catch(error => {
               this.onToggleModal(false);
@@ -334,10 +345,10 @@ class CollectionMedia extends Component {
               return;
             });
           return;
-        } else if (result.width !== result.height) {
+        } else if (result.width < 160 || result.height < 160) {
           this.setState({
             imageError:
-              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px.",
             collection: {
               ...this.state.collection,
               collection_media: null
@@ -346,10 +357,26 @@ class CollectionMedia extends Component {
           this.onToggleModal(false);
           showMessage({
             message:
-              "Image's aspect ratio must be 1:1\nwith a minimum size of 160px x 160px.",
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px.",
             position: "top",
             type: "warning"
           });
+          return;
+        } else if (file.size > 2000000) {
+          this.setState({
+            imageError: "Image must be less than 2 MBs.",
+            collection: {
+              ...this.state.collection,
+              collection_media: null
+            }
+          });
+          this.onToggleModal(false);
+          showMessage({
+            message: "Image must be less than 2 MBs.",
+            position: "top",
+            type: "warning"
+          });
+
           return;
         } else {
           this.setState({
@@ -433,40 +460,95 @@ class CollectionMedia extends Component {
     body.append("collection_name", this.state.collection.collection_name);
     body.append(
       "collection_destination",
-      this.state.collection.collection_destination
+      this.props.collectionAdLinkForm === 1 ? "REMOTE_WEBPAGE" : "DEEP_LINK"
     );
-    body.append(
-      "collection_attachment",
-      JSON.stringify({
-        url:
-          this.state.networkString + this.state.collection.collection_attachment
-      })
-    );
+    if (this.props.collectionAdLinkForm === 1) {
+      body.append(
+        "collection_attachment",
+        JSON.stringify({
+          url:
+            this.state.networkString +
+            this.state.collection.collection_attachment
+        })
+      );
+    } else {
+      body.append(
+        "collection_attachment",
+        JSON.stringify({
+          deep_link_uri: this.state.collection.collection_attachment
+        })
+      );
+    }
     body.append("collection_order", this.state.collection.collection_order);
     body.append("collection_media", photo);
     body.append("campaign_id", this.props.campaign_id);
     body.append("campaign_name", this.props.data.name);
     // body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
+
     if (this.state.collection.collection_id !== "") {
       body.append("collection_id", this.state.collection.collection_id);
     }
-    this.setState({
-      formatted: body
-    });
+
+    this.setState(
+      {
+        formatted: body
+      },
+      () => {
+        console.log("formatted", this.state.formatted);
+      }
+    );
   }
 
   _handleSubmission = async () => {
-    if (this.validateUrl() && this.validateImage()) {
-      await this.formatMedia();
-      await this.handleUpload();
-      this.props.save_collection_media(
-        this.state.formatted,
-        this.state.localUri,
-        this._getUploadState,
-        this.props.navigation,
-        this.state.signal,
-        this.onToggleModal
-      );
+    if (this.props.collectionAdLinkForm === 1) {
+      if (this.validateUrl() && this.validateImage()) {
+        await this.formatMedia();
+        await this.handleUpload();
+        this.props.save_collection_media(
+          this.state.formatted,
+          this.state.localUri,
+          this._getUploadState,
+          this.props.navigation,
+          this.state.signal,
+          this.onToggleModal
+        );
+      }
+    } else {
+      if (this.validateDeepLinkUrl() && this.validateImage()) {
+        await this.formatMedia();
+        await this.handleUpload();
+        this.props.save_collection_media(
+          this.state.formatted,
+          this.state.localUri,
+          this._getUploadState,
+          this.props.navigation,
+          this.state.signal,
+          this.onToggleModal
+        );
+      }
+    }
+  };
+
+  validateDeepLinkUrl = () => {
+    const deep_link_urlError = validateWrapper(
+      "deepLink",
+      this.state.collection.collection_attachment
+    );
+    this.setState({
+      deep_link_urlError
+    });
+    if (deep_link_urlError) {
+      showMessage({
+        message: "Invalid deep link url.",
+        description:
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
     }
   };
 
@@ -484,7 +566,6 @@ class CollectionMedia extends Component {
         </Text>
       </Button>
     );
-    // console.log("data??", this.props.data);
 
     return (
       <SafeAreaView
@@ -530,99 +611,136 @@ class CollectionMedia extends Component {
                 </Text>
               )}
             </View>
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity
-                style={styles.optionsRowContainer}
-                onPress={() => {
-                  this.setState({
-                    networkString: "http://"
-                  });
-                }}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={
-                    this.state.networkString === "http://"
-                      ? "circle"
-                      : "circle-outline"
-                  }
+            {this.props.collectionAdLinkForm === 2 ? (
+              <View style={{ marginVertical: 15 }}>
+                <Item
+                  rounded
                   style={[
-                    this.state.networkString === "http://"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize
+                    styles.input,
+                    this.state.deep_link_urlError
+                      ? GlobalStyles.redBorderColor
+                      : GlobalStyles.transparentBorderColor
                   ]}
-                />
-                <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  http://
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.optionsRowContainer}
-                onPress={() => {
-                  this.setState({
-                    networkString: "https://"
-                  });
-                }}
-              >
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name={
-                    this.state.networkString === "https://"
-                      ? "circle"
-                      : "circle-outline"
-                  }
-                  style={[
-                    this.state.networkString === "https://"
-                      ? styles.activetext
-                      : styles.inactivetext,
-                    styles.optionsIconSize
-                  ]}
-                />
-                <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
-                >
-                  https://
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-              <Item rounded style={styles.netLocStyle}>
-                <Text style={styles.networkLabel}>
-                  {this.state.networkString}
-                </Text>
-              </Item>
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  this.state.urlError
-                    ? GlobalStyles.redBorderColor
-                    : GlobalStyles.transparentBorderColor
-                ]}
-              >
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Enter your website's URL"
-                  placeholderTextColor={globalColors.white}
-                  value={this.state.collection.collection_attachment}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value =>
-                    this.setState({
-                      collection: {
-                        ...this.state.collection,
-                        collection_attachment: value
+                  <Input
+                    value={this.state.collection.collection_attachment}
+                    style={styles.inputtext}
+                    placeholder="Deep Link URL"
+                    placeholderTextColor="white"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value =>
+                      this.setState({
+                        collection: {
+                          ...this.state.collection,
+                          collection_attachment: value
+                        }
+                      })
+                    }
+                    onBlur={() => {
+                      this.validateDeepLinkUrl();
+                    }}
+                  />
+                </Item>
+              </View>
+            ) : (
+              <View>
+                <View style={styles.optionsContainer}>
+                  <TouchableOpacity
+                    style={styles.optionsRowContainer}
+                    onPress={() => {
+                      this.setState({
+                        networkString: "http://"
+                      });
+                    }}
+                  >
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name={
+                        this.state.networkString === "http://"
+                          ? "circle"
+                          : "circle-outline"
                       }
-                    })
-                  }
-                  onBlur={() => this.validateUrl()}
-                />
-              </Item>
-            </View>
+                      style={[
+                        this.state.networkString === "http://"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        styles.optionsIconSize
+                      ]}
+                    />
+                    <Text
+                      style={[styles.inactivetext, styles.optionsTextContainer]}
+                    >
+                      http://
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.optionsRowContainer}
+                    onPress={() => {
+                      this.setState({
+                        networkString: "https://"
+                      });
+                    }}
+                  >
+                    <Icon
+                      type="MaterialCommunityIcons"
+                      name={
+                        this.state.networkString === "https://"
+                          ? "circle"
+                          : "circle-outline"
+                      }
+                      style={[
+                        this.state.networkString === "https://"
+                          ? styles.activetext
+                          : styles.inactivetext,
+                        styles.optionsIconSize
+                      ]}
+                    />
+                    <Text
+                      style={[styles.inactivetext, styles.optionsTextContainer]}
+                    >
+                      https://
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.inputContainer}>
+                  <Item rounded style={styles.netLocStyle}>
+                    <Text style={styles.networkLabel}>
+                      {this.state.networkString}
+                    </Text>
+                  </Item>
+                  <Item
+                    rounded
+                    style={[
+                      styles.input,
+                      this.state.urlError
+                        ? GlobalStyles.redBorderColor
+                        : GlobalStyles.transparentBorderColor
+                    ]}
+                  >
+                    <Input
+                      style={styles.inputtext}
+                      placeholder="Enter your website's URL"
+                      placeholderTextColor={globalColors.white}
+                      value={this.state.collection.collection_attachment}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      onChangeText={value =>
+                        this.setState({
+                          collection: {
+                            ...this.state.collection,
+                            collection_attachment: value
+                          }
+                        })
+                      }
+                      onBlur={() => this.validateUrl()}
+                    />
+                  </Item>
+                </View>
+              </View>
+            )}
+
             <Footer style={styles.footerStyle}>
               {this.state.collection.collection_media ? (
                 <View style={styles.footerButtonsContainer}>
@@ -635,7 +753,7 @@ class CollectionMedia extends Component {
                 </View>
               ) : (
                 <Text style={styles.footerTextStyle}>
-                  Please add media to proceed
+                  Please add media and link to proceed
                 </Text>
               )}
             </Footer>
@@ -665,12 +783,7 @@ class CollectionMedia extends Component {
                 />
               )}
 
-              <CameraLoading
-                style={{ width: 110, height: 110 }}
-                //   styles={{ width: hp(30), height: hp(30) }}
-                // top={"50%"}
-                // left={"55%"}
-              />
+              <CameraLoading style={{ width: 110, height: 110 }} />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>
@@ -698,7 +811,8 @@ const mapStateToProps = state => ({
   loading: state.campaignC.collectionLoader,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
-  collectionAdMedia: state.campaignC.collectionAdMedia
+  collectionAdMedia: state.campaignC.collectionAdMedia,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
 const mapDispatchToProps = dispatch => ({
