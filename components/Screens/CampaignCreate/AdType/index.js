@@ -65,12 +65,14 @@ class AdType extends Component {
         route = "AdObjective";
         campaign_type = "SnapAd";
         break;
+
       case 1:
-        route = "AdObjective";
-        campaign_type = "CollectionAd";
+        route = "Dashboard";
+        campaign_type = "StoryAd";
         break;
       case 2:
-        campaign_type = "StoryAd";
+        route = "AdObjective";
+        campaign_type = "CollectionAd";
         break;
     }
     this.setState({ route, campaign_type, activeSlide });
