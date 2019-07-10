@@ -37,13 +37,13 @@ class Long_Form_Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      callaction: list[2].call_to_action_list[0],
+      callaction: list.SnapAd[2].call_to_action_list[0],
       longformvideo_media: null,
       duration: 0,
       width: 0,
       height: 0,
       longformvideo_media_type: "",
-      callactions: list[2].call_to_action_list,
+      callactions: list.SnapAd[2].call_to_action_list,
       videoError: "",
       durationError: "",
       videoLoading: false,
@@ -75,8 +75,8 @@ class Long_Form_Video extends Component {
     this._willBlurSubscription && this._willBlurSubscription.remove();
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
-  pick = () => {
-    let result = ImagePicker.launchImageLibraryAsync({
+  pick = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
       base64: false,
       exif: false,

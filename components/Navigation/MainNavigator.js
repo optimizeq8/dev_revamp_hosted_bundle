@@ -28,6 +28,7 @@ import PaymentForm from "../Screens/PaymentForm";
 import ErrorRedirect from "../Screens/ErrorRedirect";
 import SuccessRedirect from "../Screens/SuccessRedirect";
 import LongFormVideoPreview from "../Screens/CampaignCreate/SwipeUpChoice/LongFormVideoPreview";
+import CollectionMedia from "../MiniComponents/CollectionMedia";
 
 import Animated, { Easing } from "react-native-reanimated";
 
@@ -47,6 +48,7 @@ export default FluidNavigator(
     Wallet: Wallet,
     AdType: AdType,
     AdObjective: AdObjective,
+    CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
     AdDetails: AdDetails,
     AdDesignReview: AdDesignReview,

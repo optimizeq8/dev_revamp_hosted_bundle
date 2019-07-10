@@ -61,6 +61,8 @@ class SwipeUpDestination extends Component {
     });
   }
   render() {
+    console.log(this.props.data.objective);
+
     let menu;
     switch (this.state.selected) {
       case "REMOTE_WEBPAGE": {
@@ -85,6 +87,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            objective={this.props.data.objective}
           />
         );
         break;
@@ -220,7 +223,9 @@ class SwipeUpDestination extends Component {
   }
 }
 
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = state => ({
+  data: state.campaignC.data
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

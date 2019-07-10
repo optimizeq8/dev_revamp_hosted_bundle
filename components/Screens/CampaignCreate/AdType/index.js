@@ -19,6 +19,7 @@ import GlobalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
@@ -63,12 +64,14 @@ class AdType extends Component {
       case 0:
         route = "AdObjective";
         campaign_type = "SnapAd";
-
         break;
+
       case 1:
+        route = "Dashboard";
         campaign_type = "StoryAd";
         break;
       case 2:
+        route = "AdObjective";
         campaign_type = "CollectionAd";
         break;
     }
@@ -104,6 +107,13 @@ class AdType extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
     });
+
+    console.log("adtype", this.props.adType !== this.state.campaign_type);
+
+    if (this.props.adType !== this.state.campaign_type) {
+      this.props.resetCampaignInfo();
+    }
+    this.props.set_adType(this.state.campaign_type);
     this.props.navigation.navigate(this.state.route);
   };
 
@@ -244,7 +254,10 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

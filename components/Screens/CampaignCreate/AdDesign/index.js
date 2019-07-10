@@ -63,6 +63,7 @@ import {
 import PenIconBrand from "./PenIconBrand";
 import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
+import isUndefined from "lodash/isUndefined";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -469,7 +470,7 @@ class AdDesign extends Component {
           ) {
             this.setState({
               imageError:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               image: null,
               type: ""
               // videoIsLoading: false
@@ -481,12 +482,10 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             showMessage({
               message:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               position: "top",
               type: "warning"
             });
-            // console.log("????");
-
             return;
           } else {
             this.setState({
@@ -776,10 +775,27 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
+      this.props.adType === "CollectionAd" &&
+      this.state.campaignInfo.attachment === "BLANK" &&
+      this.state.campaignInfo.call_to_action.label === "BLANK"
+    ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else if (
+      this.props.adType === "SnapAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
     ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
       swipeUpError = null;
@@ -846,6 +862,58 @@ class AdDesign extends Component {
   cancelUpload = () => {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
+
+  collectionComp = i => {
+    // console.log("i", this.props.collectionAdMedia[i]);
+
+    return (
+      <TouchableOpacity
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          alignSelf: "center",
+          width: "24%",
+          height: hp(9.5),
+          borderRadius: 20,
+          paddingVertical: 2,
+          paddingHorizontal: 2,
+          justifyContent: "center"
+        }}
+        onPress={() => {
+          this.props.navigation.push("CollectionMedia", {
+            collection_order: i
+          });
+        }}
+      >
+        {!isUndefined(this.props.collectionAdMedia[i]) && (
+          <Image
+            style={{
+              borderRadius: 20,
+              overflow: "hidden",
+              alignSelf: "center",
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 0,
+              justifyContent: "center"
+            }}
+            source={{ uri: this.props.collectionAdMedia[i].localUri }}
+            resizeMode="cover"
+          />
+        )}
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 9,
+            fontFamily: "montserrat-medium",
+            textAlign: "center"
+          }}
+        >
+          Add{"\n"}Product
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     let { image } = this.state;
     let {
@@ -868,9 +936,120 @@ class AdDesign extends Component {
         mainBusiness={this.props.mainBusiness}
       />
     ));
+    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.campaignInfo.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
+    let swipeUpComp =
+      this.props.adType === "SnapAd" ? (
+        !this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+          <SwipeUpComponent
+            _changeDestination={this._changeDestination}
+            navigation={this.props.navigation}
+            objective={this.state.campaignInfo.objective}
+            destination={destination}
+            attachment={attachment}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
+            adType={this.props.adType}
+            image={image}
+          />
+        )
+      ) : (
+        <SwipeUpComponent
+          _changeDestination={this._changeDestination}
+          navigation={this.props.navigation}
+          objective={this.state.campaignInfo.objective}
+          destination={destination}
+          attachment={attachment}
+          collectionAdLinkForm={this.props.collectionAdLinkForm}
+          adType={this.props.adType}
+        />
+      );
+
+    let collection = (
+      <View
+        style={{
+          alignContent: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+          bottom: "10%",
+          flex: 1,
+          position: "absolute",
+          height: hp(13),
+          width: "100%",
+          bottom: 0,
+          paddingHorizontal: 8
+        }}
+      >
+        {this.collectionComp(0)}
+        {this.collectionComp(1)}
+        {this.collectionComp(2)}
+        {this.collectionComp(3)}
+      </View>
+    );
 
     let blankView = <View style={styles.blankView} />;
 
+    let submitButton = () => {
+      // console.log("arra: ", this.props.collectionAdMedia);
+      // console.log(
+      //   "??: ",
+      //   this.props.collectionAdMedia.some(c => isUndefined(c))
+      // );
+      // console.log(
+      //   "condi",
+
+      //   !isUndefined(this.props.collectionAdMedia.find(c => isUndefined(c)))
+      // );
+      if (this.props.adType === "CollectionAd") {
+        if (
+          this.props.collectionAdMedia.length === 4 &&
+          !this.props.collectionAdMedia.some(c => isUndefined(c))
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+        return;
+      } else {
+        if (this.state.objective === "BRAND_AWARENESS") {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        } else if (
+          this.state.objective !== "BRAND_AWARENESS" &&
+          isNull(this.state.swipeUpError)
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+      }
+      return;
+    };
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
@@ -935,16 +1114,8 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!this.rejected &&
-                      "BRAND_AWARENESS" !== this.state.objective && (
-                        <SwipeUpComponent
-                          _changeDestination={this._changeDestination}
-                          navigation={this.props.navigation}
-                          objective={this.state.campaignInfo.objective}
-                          destination={destination}
-                          attachment={attachment}
-                        />
-                      )}
+
+                    {swipeUpComp}
                   </View>
                 ) : !image ? (
                   <View style={styles.placeholder}>
@@ -955,16 +1126,9 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!this.rejected &&
-                      "BRAND_AWARENESS" !== this.state.objective && (
-                        <SwipeUpComponent
-                          _changeDestination={this._changeDestination}
-                          navigation={this.props.navigation}
-                          objective={this.state.campaignInfo.objective}
-                          destination={destination}
-                          attachment={attachment}
-                        />
-                      )}
+
+                    {swipeUpComp}
+                    {this.props.adType === "CollectionAd" && collection}
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -979,16 +1143,10 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!this.rejected &&
-                      "BRAND_AWARENESS" !== this.state.objective && (
-                        <SwipeUpComponent
-                          _changeDestination={this._changeDestination}
-                          navigation={this.props.navigation}
-                          objective={this.state.campaignInfo.objective}
-                          destination={destination}
-                          attachment={attachment}
-                        />
-                      )}
+
+                    {swipeUpComp}
+
+                    {this.props.adType === "CollectionAd" && collection}
                   </View>
                 )}
               </View>
@@ -1017,23 +1175,7 @@ class AdDesign extends Component {
                 >
                   <EyeIcon width={wp(24)} height={hp(8)} />
                 </TouchableOpacity>
-                {this.state.objective === "BRAND_AWARENESS" && (
-                  <TouchableOpacity
-                    onPress={this._handleSubmission}
-                    style={styles.button}
-                  >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  </TouchableOpacity>
-                )}
-                {this.state.objective !== "BRAND_AWARENESS" &&
-                  isNull(this.state.swipeUpError) && (
-                    <TouchableOpacity
-                      onPress={this._handleSubmission}
-                      style={styles.button}
-                    >
-                      <ForwardButton width={wp(24)} height={hp(8)} />
-                    </TouchableOpacity>
-                  )}
+                {submitButton()}
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
@@ -1108,7 +1250,10 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign,
   videoUrlLoading: state.campaignC.videoUrlLoading,
-  videoUrl: state.campaignC.videoUrl
+  videoUrl: state.campaignC.videoUrl,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  adType: state.campaignC.adType,
+  collectionAdMedia: state.campaignC.collectionAdMedia
 });
 
 const mapDispatchToProps = dispatch => ({
