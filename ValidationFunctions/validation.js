@@ -31,11 +31,12 @@ const validation = {
     }
   },
   website: {
-    url: {
-      schemes: ["ftp", "http", "https"],
-      allowLocal: true
-    },
+    // url: {
+    //   // schemes: ["ftp", "http", "https"],
+    //   allowLocal: true
+    // },
     // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/)?(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*$/,
     presence: { allowEmpty: false }
   },
   deepLink: {

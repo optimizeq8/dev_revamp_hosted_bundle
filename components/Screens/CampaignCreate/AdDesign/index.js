@@ -102,9 +102,7 @@ class AdDesign extends Component {
       heightComponent: 0
     };
     this.params = this.props.navigation.state.params;
-    this.rejected =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.rejected;
+    this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
   handleBackButton = () => {
@@ -150,6 +148,7 @@ class AdDesign extends Component {
     }
     let rep = this.state.campaignInfo;
     if (
+      this.props.data &&
       Object.keys(this.state.campaignInfo)
         .map(key => {
           if (this.props.data.hasOwnProperty(key)) return true;
@@ -858,6 +857,7 @@ class AdDesign extends Component {
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
+        rejected={this.rejected}
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -935,18 +935,16 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.campaignInfo.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
                   </View>
                 ) : !image ? (
                   <View style={styles.placeholder}>
@@ -957,18 +955,16 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.campaignInfo.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -983,18 +979,16 @@ class AdDesign extends Component {
                       setMediaModalVisible={this.setMediaModalVisible}
                       image={this.state.image}
                     />
-                    {!["BRAND_AWARENESS", "reach"].find(
-                      obj =>
-                        this.state.objective.toLowerCase() === obj.toLowerCase()
-                    ) && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.campaignInfo.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                          _changeDestination={this._changeDestination}
+                          navigation={this.props.navigation}
+                          objective={this.state.campaignInfo.objective}
+                          destination={destination}
+                          attachment={attachment}
+                        />
+                      )}
                   </View>
                 )}
               </View>

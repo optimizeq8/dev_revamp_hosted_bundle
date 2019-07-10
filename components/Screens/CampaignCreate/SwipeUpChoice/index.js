@@ -18,6 +18,7 @@ class SwipeUpChoice extends Component {
   };
 
   render() {
+    let objective = this.props.navigation.getParam("objective", "");
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <NavigationEvents
@@ -70,15 +71,14 @@ class SwipeUpChoice extends Component {
               {this.props.navigation.getParam("objective") ===
                 "LEAD_GENERATION" && (
                 <Website
-                  objective={this.props.navigation.state.params.objective}
+                  objective={objective}
                   _changeDestination={
                     this.props.navigation.state.params._changeDestination
                   }
                   navigation={this.props.navigation}
                 />
               )}
-              {this.props.navigation.state.params.objective ===
-                "VIDEO_VIEWS" && (
+              {objective === "VIDEO_VIEWS" && (
                 <Long_Form_Video
                   _changeDestination={
                     this.props.navigation.state.params._changeDestination
@@ -86,8 +86,7 @@ class SwipeUpChoice extends Component {
                   navigation={this.props.navigation}
                 />
               )}
-              {this.props.navigation.state.params.objective ===
-                "WEB_CONVERSION" && (
+              {objective === "WEB_CONVERSION" && (
                 <WhatsApp
                   _changeDestination={
                     this.props.navigation.state.params._changeDestination
@@ -95,9 +94,7 @@ class SwipeUpChoice extends Component {
                   navigation={this.props.navigation}
                 />
               )}
-              {this.props.navigation.state.params.objective
-                .toLowerCase()
-                .includes("app") && (
+              {objective.toLowerCase().includes("app") && (
                 <App_Install
                   _changeDestination={
                     this.props.navigation.state.params._changeDestination

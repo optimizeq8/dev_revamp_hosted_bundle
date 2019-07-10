@@ -10,11 +10,12 @@ export default class PenIconBrand extends Component {
   render() {
     return (
       <Item
-        style={
+        style={[
           this.props.field === "Business Name"
             ? styles.inputBrand
-            : styles.inputHeadline
-        }
+            : styles.inputHeadline,
+          this.props.rejected ? { opacity: 0.5 } : { opacity: 1 }
+        ]}
       >
         <PenIcon
           fill={
@@ -30,6 +31,7 @@ export default class PenIconBrand extends Component {
             {this.props.field}
           </Text>
           <Input
+            disabled={this.props.rejected}
             style={styles.inputText}
             defaultValue={
               this.props.field === "Business Name"
