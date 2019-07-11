@@ -753,7 +753,9 @@ class AdDesign extends Component {
         headline: this.state.campaignInfo.headline,
         brand_name: this.state.campaignInfo.brand_name,
         destination: this.state.campaignInfo.destination,
-        icon_media_url: this.state.campaignInfo.attachment.icon_media_url
+        icon_media_url: this.state.campaignInfo.attachment.icon_media_url,
+        adType: this.props.adType,
+        collectionAdMedia: this.props.collectionAdMedia
       });
   };
 
@@ -871,11 +873,14 @@ class AdDesign extends Component {
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.2)",
           alignSelf: "center",
-          width: "24%",
-          height: hp(9.5),
+          // width: 72,
+          width: 72,
+          height: 72,
+          // height: hp(9.5),
           borderRadius: 20,
           paddingVertical: 2,
           paddingHorizontal: 2,
+
           justifyContent: "center"
         }}
         onPress={() => {
@@ -894,7 +899,8 @@ class AdDesign extends Component {
               width: "100%",
               height: "100%",
               zIndex: 0,
-              justifyContent: "center"
+              alignItems: "center"
+              // justifyContent: "center"
             }}
             source={{ uri: this.props.collectionAdMedia[i].localUri }}
             resizeMode="cover"
@@ -983,7 +989,8 @@ class AdDesign extends Component {
           bottom: "10%",
           flex: 1,
           position: "absolute",
-          height: hp(13),
+          // height: hp(13),
+          minHeight: 90,
           width: "100%",
           bottom: 0,
           paddingHorizontal: 8
@@ -1116,6 +1123,7 @@ class AdDesign extends Component {
                     />
 
                     {swipeUpComp}
+                    {this.props.adType === "CollectionAd" && collection}
                   </View>
                 ) : !image ? (
                   <View style={styles.placeholder}>

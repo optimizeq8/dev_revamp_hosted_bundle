@@ -5,7 +5,14 @@ import styles from "./styles";
 import { Icon } from "native-base";
 export default class SwipeUpComponent extends Component {
   render() {
-    let { destination, attachment, collectionAdLinkForm, adType, objective, image } = this.props;
+    let {
+      destination,
+      attachment,
+      collectionAdLinkForm,
+      adType,
+      objective,
+      image
+    } = this.props;
 
     return (
       <TouchableOpacity
@@ -24,7 +31,7 @@ export default class SwipeUpComponent extends Component {
               adType: adType
             });
           } else {
-           objective === "TRAFFIC"
+            objective === "TRAFFIC"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
                   image: image
@@ -35,40 +42,41 @@ export default class SwipeUpComponent extends Component {
                   collectionAdLinkForm: collectionAdLinkForm
                 });
           }
-
         }}
       >
         <View style={{ flexDirection: "column" }}>
           <Text style={styles.swipeUpText}>
-            {(destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") || (destination === "COLLECTION" && collectionAdLinkForm=== 2) 
+            {(destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
+            (destination === "COLLECTION" && collectionAdLinkForm === 2)
               ? destination
-              : (destination === "REMOTE_WEBPAGE"  &&
-                objective !== "WEB_CONVERSION") || (destination === "COLLECTION" && collectionAdLinkForm=== 1) 
+              : (destination === "REMOTE_WEBPAGE" &&
+                  objective !== "WEB_CONVERSION") ||
+                (destination === "COLLECTION" && collectionAdLinkForm === 1)
               ? "Website"
               : objective === "WEB_CONVERSION" && destination !== "BLANK"
               ? "WhatsApp Campaign"
               : "Swipe Up destination"}
           </Text>
-          {objective !== "WEB_CONVERSION" &&[
-            "REMOTE_WEBPAGE",
-            "DEEP_LINK",
-            "LEAD_GENERATION",
-            "COLLECTION"
-          ].includes(destination) && (
-            <Text
-              ellipsizeMode={"tail"}
-              numberOfLines={1}
-              style={[
-                styles.swipeUpText,
-                { fontSize: 12, width: 150, textAlign: "center" }
-              ]}
-            >
-              {attachment.hasOwnProperty("deep_link_uri")
-                ? attachment.deep_link_uri
-                : attachment.url}
-            </Text>
-          )}
-
+          {objective !== "WEB_CONVERSION" &&
+            [
+              "REMOTE_WEBPAGE",
+              "DEEP_LINK",
+              "LEAD_GENERATION",
+              "COLLECTION"
+            ].includes(destination) && (
+              <Text
+                ellipsizeMode={"tail"}
+                numberOfLines={1}
+                style={[
+                  styles.swipeUpText,
+                  { fontSize: 12, width: 150, textAlign: "center" }
+                ]}
+              >
+                {attachment.hasOwnProperty("deep_link_uri")
+                  ? attachment.deep_link_uri
+                  : attachment.url}
+              </Text>
+            )}
         </View>
         <Icon
           type="MaterialIcons"
