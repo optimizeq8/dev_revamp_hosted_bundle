@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   appInstallCallToActionText: {
     textAlign: "left",
-    paddingLeft: 5,
+    paddingLeft: 10,
     flex: 0,
     fontSize: 14
   },
@@ -156,10 +156,45 @@ const styles = StyleSheet.create({
   textContainerBottom: {
     flex: 1
   },
+  collectionPlaceholder: {
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    alignSelf: "center",
+    // width: 72,
+    width: 72,
+    height: 72,
+    // height: hp(9.5),
+    // borderRadius: 20,
+    paddingVertical: 1,
+    paddingHorizontal: 1,
+    justifyContent: "center"
+  },
+  collectionImage: {
+    overflow: "hidden",
+    alignSelf: "center",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    alignItems: "center"
+    // justifyContent: "center"
+  },
+  collectionView: {
+    alignContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    bottom: "10%",
+    flex: 1,
+    position: "absolute",
+    height: heightPercentageToDP(13),
+    // minHeight: 90,
+    width: "100%",
+    bottom: 0,
+    paddingHorizontal: 8
+  },
   bottomView: {
     width: widthPercentageToDP(94),
     height: heightPercentageToDP(12),
-    backgroundColor: "#FFFF",
     borderRadius: 10,
     bottom: heightPercentageToDP(16),
     marginHorizontal: 10,

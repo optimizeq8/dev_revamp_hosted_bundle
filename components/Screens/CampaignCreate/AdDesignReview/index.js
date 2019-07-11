@@ -37,6 +37,7 @@ import globalStyles from "../../../../GlobalStyles";
 //Functions
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
+import isUndefined from "lodash/isUndefined";
 
 class AdDesignReview extends Component {
   static navigationOptions = {
@@ -57,9 +58,34 @@ class AdDesignReview extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+
+  collectionComp = i => {
+    let collections = this.props.navigation.getParam("collectionAdMedia", []);
+    return (
+      <View style={styles.collectionPlaceholder}>
+        {!isUndefined(collections[i]) && (
+          <Image
+            style={styles.collectionImage}
+            source={{ uri: collections[i].localUri }}
+            resizeMode="cover"
+          />
+        )}
+      </View>
+    );
+  };
   render() {
     const destination = this.props.navigation.getParam("destination", "");
     const appIcon = this.props.navigation.getParam("icon_media_url", "");
+    const adType = this.props.navigation.getParam("adType", "");
+
+    let collection = (
+      <View style={styles.collectionView}>
+        {this.collectionComp(0)}
+        {this.collectionComp(1)}
+        {this.collectionComp(2)}
+        {this.collectionComp(3)}
+      </View>
+    );
 
     return (
       <SafeAreaView
@@ -120,37 +146,45 @@ class AdDesignReview extends Component {
                     }}
                   />
                 )}
+
                 <View
                   style={[
                     styles.callToActionContainer,
-                    destination === "APP_INSTALL" &&
+                    (destination === "APP_INSTALL" ||
+                      adType === "CollectionAd") &&
                       styles.appInstallCallToActionContainer
                   ]}
                 >
                   <View
                     style={[
                       styles.callToActionText,
-                      destination === "APP_INSTALL" &&
+                      (destination === "APP_INSTALL" ||
+                        adType === "CollectionAd") &&
                         styles.appInstallCallToActionText,
                       destination !== "APP_INSTALL" &&
+                        adType !== "CollectionAd" &&
                         destination !== "BLANK" &&
                         styles.appInstallAndBlankCallToActionContainer
                     ]}
                   >
-                    {destination !== "APP_INSTALL" && destination !== "BLANK" && (
-                      <View
-                        style={[
-                          styles.iconArrowUp,
-                          { paddingRight: 0, marginBottom: 5 }
-                        ]}
-                      >
-                        <ArrowUpIcon />
-                      </View>
-                    )}
+                    {destination !== "APP_INSTALL" &&
+                      adType !== "CollectionAd" &&
+                      destination !== "BLANK" && (
+                        <View
+                          style={[
+                            styles.iconArrowUp,
+                            { paddingRight: 0, marginBottom: 5 }
+                          ]}
+                        >
+                          <ArrowUpIcon />
+                        </View>
+                      )}
+
                     <Text
                       style={[
                         styles.callToActionText,
-                        destination === "APP_INSTALL" &&
+                        (destination === "APP_INSTALL" ||
+                          adType === "CollectionAd") &&
                           styles.appInstallCallToActionText
                       ]}
                     >
@@ -172,10 +206,25 @@ class AdDesignReview extends Component {
                   )}
                   <Text style={styles.AD}>Ad</Text>
                 </View>
+
+                {adType === "CollectionAd" && (
+                  <Animatable.View
+                    animation={"fadeInUpBig"}
+                    style={[
+                      styles.bottomView,
+                      globalStyles.transparentBackgroundColor
+                    ]}
+                  >
+                    {collection}
+                  </Animatable.View>
+                )}
                 {destination === "APP_INSTALL" && (
                   <Animatable.View
                     animation={"fadeInUpBig"}
-                    style={styles.bottomView}
+                    style={[
+                      styles.bottomView,
+                      globalStyles.whiteBackgroundColor
+                    ]}
                   >
                     <View style={[globalStyles.lightGrayBorderColor]}>
                       <Image
