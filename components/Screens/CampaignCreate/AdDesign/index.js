@@ -48,6 +48,8 @@ import * as actionCreators from "../../../../store/actions";
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+
 
 // Style
 import styles from "./styles";
@@ -867,21 +869,41 @@ class AdDesign extends Component {
 
   collectionComp = i => {
     // console.log("i", this.props.collectionAdMedia[i]);
-
     return (
+        <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <View style={{
+            backgroundColor: "#FF9D00",
+            width: hp(5) < 30 ? 60  : 72,
+            // width: 70,
+            paddingVertical: 5,
+            paddingHorizontal: 5,
+            height: 25,
+            borderRadius: 20,
+            marginBottom: -15,
+            zIndex: 1,
+            alignItems: "center",
+            // flex: 1
+
+        }}>
+            <Text style={{fontSize: 10, textAlign:"center", width: "100%", fontFamily: "montserrat-bold", color: "#FFF"}}>
+                {`Product ${i + 1}`}
+            </Text>
+        </View>
       <TouchableOpacity
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
-          alignSelf: "center",
-          // width: 72,
-          width: 72,
-          height: 72,
-          // height: hp(9.5),
-          borderRadius: 20,
-          paddingVertical: 2,
-          paddingHorizontal: 2,
-
-          justifyContent: "center"
+            backgroundColor: this.props.collectionAdMedia[i] ? ""  : "rgba(0, 0, 0, 0.75)",
+            alignSelf: "center",
+            borderColor: "#FF9D00",
+            borderWidth: 2,
+            // width: 72,
+            width: hp(5) < 30 ? 60  : 72,
+            height: hp(5) < 30 ? 60  : 72,
+            // height: hp(9.5),
+            borderRadius: 20,
+            // paddingVertical: 2,
+            // paddingHorizontal: 2,
+            alignItems: "center",
+            justifyContent: "center"
         }}
         onPress={() => {
           this.props.navigation.push("CollectionMedia", {
@@ -889,24 +911,43 @@ class AdDesign extends Component {
           });
         }}
       >
-        {!isUndefined(this.props.collectionAdMedia[i]) && (
+        {!isUndefined(this.props.collectionAdMedia[i]) ?  (
           <Image
             style={{
               borderRadius: 20,
-              overflow: "hidden",
+            //   overflow: "hidden",
               alignSelf: "center",
               position: "absolute",
               width: "100%",
               height: "100%",
-              zIndex: 0,
+            //   zIndex: 0,
               alignItems: "center"
               // justifyContent: "center"
             }}
             source={{ uri: this.props.collectionAdMedia[i].localUri }}
             resizeMode="cover"
           />
-        )}
-        <Text
+        ): <Button style={{
+            width: hp(5) <  30? 20:  30,
+            height: hp(5) <  30? 20:  30,
+            alignSelf:"center",
+            borderRadius: hp(5) <  30? 20:  30,
+            backgroundColor: "#FF9D00"
+            }}
+            onPress={() => {
+                this.props.navigation.push("CollectionMedia", {
+                  collection_order: i
+                });}}
+            >
+                <PlusCircle width={hp(5) <  30? 20:  30} height={hp(5) <  30? 35:  30} />
+            </Button>
+        }
+        {!isUndefined(this.props.collectionAdMedia[i]) &&
+             <View style={{position: "absolute", bottom: 6, right: 6}}>
+                <PenIcon width={15} height={15}/>
+            </View>}
+
+        {/* <Text
           style={{
             color: "#fff",
             fontSize: 9,
@@ -915,8 +956,9 @@ class AdDesign extends Component {
           }}
         >
           Add{"\n"}Product
-        </Text>
+        </Text> */}
       </TouchableOpacity>
+      </View>
     );
   };
 
