@@ -281,7 +281,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.DELETE_STORY_AD_CARD:
       let deleteStoryAds = state.storyAdsArray.filter(ad => {
-        if (ad && ad.story_id !== action.payload.data.story_id) return ad;
+        if (ad === undefined || ad.story_id !== action.payload.data.story_id)
+          return ad;
       });
       // deleteStoryAds[action.payload.data.story_order] = {
       //   ...action.payload.data,

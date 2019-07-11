@@ -1,42 +1,21 @@
 //Components
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  Animated
-} from "react-native";
-import { Video, Segment } from "expo";
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Right,
-  Content,
-  Title,
-  Subtitle,
-  Button,
-  Text
-} from "native-base";
-import * as Animatable from "react-native-animatable";
+import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import { connect } from "react-redux";
+import { Segment } from "expo";
+import { Container, Content, Text } from "native-base";
 
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
+import CustomHeader from "../../../../MiniComponents/Header";
 
 //icons
-import CloseIcon from "../../../../assets/SVGs/Close";
-import ArrowUpIcon from "../../../../assets/SVGs/ArrowUp";
-
+import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles.svg";
+import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar.svg";
 // Style
 import styles from "./styles";
-import globalStyles from "../../../../GlobalStyles";
 
 //Functions
-import startCase from "lodash/startCase";
-import toLower from "lodash/toLower";
 
 class StoryAdDesignReview extends Component {
   static navigationOptions = {
@@ -57,9 +36,18 @@ class StoryAdDesignReview extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+
+  perviewStoryAds = () => {
+    this.props.navigation.push("AdDesignReview", {
+      storyAds: true,
+      headline: this.props.navigation.getParam("headline", ""),
+      brand_name: this.props.navigation.getParam("brand_name", "")
+    });
+  };
   render() {
-    const destination = this.props.navigation.getParam("destination", "");
-    const appIcon = this.props.navigation.getParam("icon_media_url", "");
+    const cover = this.props.navigation.getParam("cover", "");
+    const logo = this.props.navigation.getParam("logo", "");
+    const coverHeadline = this.props.navigation.getParam("coverHeadline", "");
 
     return (
       <SafeAreaView
@@ -67,24 +55,15 @@ class StoryAdDesignReview extends Component {
         forceInset={{ top: "always" }}
       >
         <Container style={styles.container}>
-          <Header iosBarStyle={"light-content"} style={styles.header}>
-            <Body style={styles.headerBody}>
-              <Title style={styles.brandName}>
-                {this.props.navigation.state.params.brand_name}
-              </Title>
-              <Subtitle numberOfLines={1} style={styles.headline}>
-                {this.props.navigation.state.params.headline}
-              </Subtitle>
-            </Body>
-            <Right style={{ flex: 0 }}>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.goBack()}
-                style={[globalStyles.backButton, styles.closeButton]}
-              >
-                <CloseIcon />
-              </TouchableOpacity>
-            </Right>
-          </Header>
+          <CustomHeader
+            closeButton={false}
+            segment={{
+              str: "Stroy Ad Design Back Button",
+              obj: { businessname: this.props.mainBusiness.businessname }
+            }}
+            actionButton={this.props.navigation.goBack}
+            title="Compose Ad"
+          />
           <Content
             padder
             scrollEnabled={false}
@@ -92,128 +71,76 @@ class StoryAdDesignReview extends Component {
           >
             <Transition shared="image">
               <View style={styles.mainCard}>
-                {this.props.navigation.state.params.type === "VIDEO" ? (
-                  <>
-                    {this.state.videoIsLoading ? (
-                      <LoadingScreen dash={true} />
-                    ) : null}
-                    <Video
-                      onLoadStart={() =>
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri: this.props.navigation.state.params.image
+                <View style={styles.discoverArea}>
+                  <View style={styles.friendsArea}>
+                    <View
+                      style={{
+                        backgroundColor: "#9E4CDD",
+                        height: "35%"
                       }}
-                      isLooping
-                      shouldPlay
-                      resizeMode="stretch"
-                      style={styles.video}
-                    />
-                  </>
-                ) : (
-                  <Image
-                    resizeMode="stretch"
-                    style={styles.placeholder}
-                    source={{
-                      uri: this.props.navigation.state.params.image
-                    }}
-                  />
-                )}
-                <View
-                  style={[
-                    styles.callToActionContainer,
-                    destination === "APP_INSTALL" &&
-                      styles.appInstallCallToActionContainer
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.callToActionText,
-                      destination === "APP_INSTALL" &&
-                        styles.appInstallCallToActionText,
-                      destination !== "APP_INSTALL" &&
-                        destination !== "BLANK" &&
-                        styles.appInstallAndBlankCallToActionContainer
-                    ]}
-                  >
-                    {destination !== "APP_INSTALL" && destination !== "BLANK" && (
-                      <View
-                        style={[
-                          styles.iconArrowUp,
-                          { paddingRight: 0, marginBottom: 5 }
-                        ]}
-                      >
-                        <ArrowUpIcon />
-                      </View>
-                    )}
-                    <Text
-                      style={[
-                        styles.callToActionText,
-                        destination === "APP_INSTALL" &&
-                          styles.appInstallCallToActionText
-                      ]}
                     >
-                      {this.props.navigation.state.params.call_to_action !==
-                      "BLANK"
-                        ? startCase(
-                            toLower(
-                              this.props.navigation.state.params.call_to_action
-                            )
-                          )
-                        : ""}
-                    </Text>
-                  </View>
-
-                  {destination === "APP_INSTALL" && (
-                    <View style={styles.iconArrowUp}>
-                      <ArrowUpIcon />
+                      <DiscoverBar style={{ bottom: 5 }} />
                     </View>
-                  )}
-                  <Text style={styles.AD}>Ad</Text>
-                </View>
-                {destination === "APP_INSTALL" && (
-                  <Animatable.View
-                    animation={"fadeInUpBig"}
-                    style={styles.bottomView}
-                  >
-                    <View style={[globalStyles.lightGrayBorderColor]}>
+                    <View
+                      style={{
+                        backgroundColor: "#1A1A1A",
+                        borderRadius: 15,
+                        height: "70%"
+                      }}
+                    >
+                      <Text style={styles.heading}>Friends</Text>
+                      <Circles height="80%" width="100%" />
+                    </View>
+                  </View>
+                  <Text style={styles.heading}>For You</Text>
+
+                  <View style={styles.tilesGrid}>
+                    <TouchableOpacity
+                      onPress={this.perviewStoryAds}
+                      style={styles.tiles}
+                    >
                       <Image
-                        source={{ uri: appIcon }}
-                        style={[
-                          globalStyles.grayBorderColor,
-                          styles.appIconBottom
-                        ]}
+                        source={{ uri: cover }}
+                        style={styles.cover}
                         resizeMode="cover"
                       />
-                    </View>
-                    <View style={styles.textContainerBottom}>
-                      <Text
-                        numberOfLines={2}
-                        style={styles.brandNameBottomText}
-                      >
-                        {this.props.navigation.state.params.brand_name}
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={[
-                          globalStyles.grayTextColor,
-                          styles.headlineBottomText
-                        ]}
-                      >
-                        {this.props.navigation.state.params.headline}
-                      </Text>
-                    </View>
-                    <Button
-                      style={[
-                        styles.getButton,
-                        globalStyles.darkGrayBackgroundColor
-                      ]}
-                    >
-                      <Text style={styles.getButtonText}>GET</Text>
-                    </Button>
-                  </Animatable.View>
-                )}
+
+                      <Image
+                        resizeMode="contain"
+                        style={styles.logo}
+                        source={{
+                          uri: logo
+                        }}
+                      />
+                      <View style={{ top: "80%", left: 10 }}>
+                        <Text
+                          style={{
+                            fontFamily: "montserrat-semibold",
+                            color: "#fff",
+                            fontSize: 20
+                          }}
+                        >
+                          {coverHeadline}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: "montserrat-regular",
+                            color: "#fff",
+                            fontSize: 14
+                          }}
+                        >
+                          SPONSORED
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <View style={styles.tiles} />
+                  </View>
+
+                  <View style={styles.tilesGrid}>
+                    <View style={styles.tiles} />
+                    <View style={styles.tiles} />
+                  </View>
+                </View>
               </View>
             </Transition>
           </Content>
@@ -223,4 +150,10 @@ class StoryAdDesignReview extends Component {
   }
 }
 
-export default StoryAdDesignReview;
+const mapStateToProps = state => ({
+  mainBusiness: state.account.mainBusiness
+});
+export default connect(
+  mapStateToProps,
+  null
+)(StoryAdDesignReview);

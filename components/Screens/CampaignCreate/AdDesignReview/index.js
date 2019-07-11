@@ -7,6 +7,7 @@ import {
   BackHandler,
   Animated
 } from "react-native";
+import { connect } from "react-redux";
 import { Video, Segment } from "expo";
 import {
   Container,
@@ -42,7 +43,7 @@ class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
   };
-  state = { videoIsLoading: false };
+  state = { videoIsLoading: false, storyAdIndex: 0 };
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
@@ -57,9 +58,45 @@ class AdDesignReview extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+
   render() {
-    const destination = this.props.navigation.getParam("destination", "");
-    const appIcon = this.props.navigation.getParam("icon_media_url", "");
+    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad !== undefined);
+
+    let storyAds = this.props.navigation.getParam("storyAds", false);
+    let destination = !storyAds
+      ? this.props.navigation.getParam("destination", "")
+      : storyAdsArray[this.state.storyAdIndex].destination;
+    let appIcon = this.props.navigation.getParam("icon_media_url", "");
+    let brand_name = this.props.navigation.getParam("brand_name", "");
+    let headline = this.props.navigation.getParam("headline", "");
+    let type = !storyAds
+      ? this.props.navigation.getParam("type", "")
+      : storyAdsArray[this.state.storyAdIndex].media_type;
+    let call_to_action = this.props.navigation.getParam("call_to_action", "");
+
+    let image = !storyAds
+      ? this.props.navigation.getParam("image", "")
+      : storyAdsArray[this.state.storyAdIndex].image;
+    if (storyAds) {
+      if (
+        storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
+        storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+          "icon_media_url"
+        )
+      ) {
+        appIcon =
+          storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
+      }
+      if (
+        storyAdsArray[this.state.storyAdIndex].hasOwnProperty(
+          "call_to_action"
+        ) &&
+        storyAdsArray[this.state.storyAdIndex].call_to_action !== "BLANK"
+      ) {
+        call_to_action =
+          storyAdsArray[this.state.storyAdIndex].call_to_action.value;
+      }
+    }
 
     return (
       <SafeAreaView
@@ -69,11 +106,9 @@ class AdDesignReview extends Component {
         <Container style={styles.container}>
           <Header iosBarStyle={"light-content"} style={styles.header}>
             <Body style={styles.headerBody}>
-              <Title style={styles.brandName}>
-                {this.props.navigation.state.params.brand_name}
-              </Title>
+              <Title style={styles.brandName}>{brand_name}</Title>
               <Subtitle numberOfLines={1} style={styles.headline}>
-                {this.props.navigation.state.params.headline}
+                {headline}
               </Subtitle>
             </Body>
             <Right style={{ flex: 0 }}>
@@ -92,34 +127,45 @@ class AdDesignReview extends Component {
           >
             <Transition shared="image">
               <View style={styles.mainCard}>
-                {this.props.navigation.state.params.type === "VIDEO" ? (
-                  <>
-                    {this.state.videoIsLoading ? (
-                      <LoadingScreen dash={true} />
-                    ) : null}
-                    <Video
-                      onLoadStart={() =>
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri: this.props.navigation.state.params.image
-                      }}
-                      isLooping
-                      shouldPlay
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() =>
+                    this.state.storyAdIndex + 1 !== storyAdsArray.length
+                      ? this.setState({
+                          storyAdIndex: this.state.storyAdIndex + 1
+                        })
+                      : this.setState({ storyAdIndex: 0 })
+                  }
+                >
+                  {type === "VIDEO" ? (
+                    <>
+                      {this.state.videoIsLoading ? (
+                        <LoadingScreen dash={true} />
+                      ) : null}
+                      <Video
+                        onLoadStart={() =>
+                          this.setState({ videoIsLoading: true })
+                        }
+                        onLoad={() => this.setState({ videoIsLoading: false })}
+                        source={{
+                          uri: image
+                        }}
+                        isLooping
+                        shouldPlay
+                        resizeMode="stretch"
+                        style={styles.video}
+                      />
+                    </>
+                  ) : (
+                    <Image
                       resizeMode="stretch"
-                      style={styles.video}
+                      style={styles.placeholder}
+                      source={{
+                        uri: image
+                      }}
                     />
-                  </>
-                ) : (
-                  <Image
-                    resizeMode="stretch"
-                    style={styles.placeholder}
-                    source={{
-                      uri: this.props.navigation.state.params.image
-                    }}
-                  />
-                )}
+                  )}
+                </TouchableOpacity>
                 <View
                   style={[
                     styles.callToActionContainer,
@@ -137,16 +183,18 @@ class AdDesignReview extends Component {
                         styles.appInstallAndBlankCallToActionContainer
                     ]}
                   >
-                    {destination !== "APP_INSTALL" && destination !== "BLANK" && (
-                      <View
-                        style={[
-                          styles.iconArrowUp,
-                          { paddingRight: 0, marginBottom: 5 }
-                        ]}
-                      >
-                        <ArrowUpIcon />
-                      </View>
-                    )}
+                    {destination &&
+                      destination !== "APP_INSTALL" &&
+                      destination !== "BLANK" && (
+                        <View
+                          style={[
+                            styles.iconArrowUp,
+                            { paddingRight: 0, marginBottom: 5 }
+                          ]}
+                        >
+                          <ArrowUpIcon />
+                        </View>
+                      )}
                     <Text
                       style={[
                         styles.callToActionText,
@@ -154,13 +202,8 @@ class AdDesignReview extends Component {
                           styles.appInstallCallToActionText
                       ]}
                     >
-                      {this.props.navigation.state.params.call_to_action !==
-                      "BLANK"
-                        ? startCase(
-                            toLower(
-                              this.props.navigation.state.params.call_to_action
-                            )
-                          )
+                      {call_to_action !== "BLANK"
+                        ? startCase(toLower(call_to_action))
                         : ""}
                     </Text>
                   </View>
@@ -192,7 +235,7 @@ class AdDesignReview extends Component {
                         numberOfLines={2}
                         style={styles.brandNameBottomText}
                       >
-                        {this.props.navigation.state.params.brand_name}
+                        {brand_name}
                       </Text>
                       <Text
                         numberOfLines={1}
@@ -201,7 +244,7 @@ class AdDesignReview extends Component {
                           styles.headlineBottomText
                         ]}
                       >
-                        {this.props.navigation.state.params.headline}
+                        {headline}
                       </Text>
                     </View>
                     <Button
@@ -222,5 +265,13 @@ class AdDesignReview extends Component {
     );
   }
 }
-
-export default AdDesignReview;
+const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id,
+  mainBusiness: state.account.mainBusiness,
+  data: state.campaignC.data,
+  storyAdsArray: state.campaignC.storyAdsArray
+});
+export default connect(
+  mapStateToProps,
+  null
+)(AdDesignReview);

@@ -42,7 +42,11 @@ class SnapCard extends Component {
             />
           ) : (
             <Image
-              source={{ uri: snapCardInfo.item.image }}
+              source={{
+                uri: !this.props.loadingStoryAdsArray[snapCardInfo.index]
+                  ? snapCardInfo.item.image
+                  : "snapCardInfo.item.image"
+              }}
               style={{ height: "100%", width: "100%", position: "absolute" }}
             />
           )}
@@ -52,12 +56,14 @@ class SnapCard extends Component {
           <Icon
             onPress={() => {
               //   this.props.cancelUpload();
-              !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                this.props.deleteStoryAdCard(
-                  snapCardInfo.item.story_id,
-                  snapCardInfo,
-                  removeSnapCard
-                );
+              snapCardInfo.item.story_id
+                ? !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                  this.props.deleteStoryAdCard(
+                    snapCardInfo.item.story_id,
+                    snapCardInfo,
+                    removeSnapCard
+                  )
+                : removeSnapCard(snapCardInfo.item.id);
             }}
             name="close"
             type="MaterialCommunityIcons"

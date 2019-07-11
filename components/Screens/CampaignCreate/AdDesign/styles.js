@@ -288,6 +288,13 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: globalColors.orange,
     fontFamily: "montserrat-semibold"
+  },
+  loadingButtons: {
+    backgroundColor: "#fff",
+    width: "130%",
+    height: "85%",
+    right: 5,
+    justifyContent: "center"
   }
 });
 

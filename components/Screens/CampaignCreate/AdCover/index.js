@@ -577,7 +577,6 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline } = this.state.campaignInfo;
-    console.log(this.props.coverLoading);
 
     let inputFields = (
       <PenIconBrand

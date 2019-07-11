@@ -20,10 +20,10 @@ import {
   BackHandler,
   Image
 } from "react-native";
-import { Content, Text, Container, Footer } from "native-base";
+import { Content, Text, Container, Footer, Button } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Transition } from "react-navigation-fluid-transitions";
-import { Modal } from "react-native-paper";
+import { Modal, ActivityIndicator } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -54,6 +54,7 @@ import {
 import PenIconBrand from "./PenIconBrand";
 import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
+import { globalColors } from "../../../../GlobalStyles";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -157,6 +158,7 @@ class AdDesign extends Component {
       rep = { ...this.state.campaignInfo, ...this.props.data };
       let swipeUpError = null;
       if (
+        this.props.adType !== "StoryAd" &&
         this.state.objective !== "BRAND_AWARENESS" &&
         this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK"
@@ -170,7 +172,7 @@ class AdDesign extends Component {
         campaignInfo: {
           ...rep
         },
-        image: rep.image,
+        image: this.props.adType !== "StoryAd" ? rep.image : null,
         type: rep.type,
         objective: rep.objective,
         iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
@@ -179,11 +181,13 @@ class AdDesign extends Component {
     }
     if (this.props.storyAdsArray.length > 0) {
       let cards = this.state.storyAdCards.snapAdsCards;
+      let storyAdsArray = this.props.storyAdsArray.filter;
       let plusButton = this.state.storyAdCards.snapAdsCards[
         this.state.storyAdCards.snapAdsCards.length - 1
       ];
       this.props.storyAdsArray.forEach(
         (ad, i) =>
+          ad !== undefined &&
           (cards[ad.story_order] = {
             ...cards[ad.story_order - 1],
             ...ad
@@ -200,7 +204,8 @@ class AdDesign extends Component {
           ...this.state.storyAdCards,
           snapAdsCards: cards,
           selectedStoryAd: cards.find(card => card !== undefined),
-          numOfAds: cards.length
+          numOfAds: this.props.storyAdsArray.filter(ad => ad !== undefined)
+            .length
         }
       });
     }
@@ -222,15 +227,13 @@ class AdDesign extends Component {
     if (prevProps.storyAdsArray !== this.props.storyAdsArray) {
       let cards = this.state.storyAdCards.snapAdsCards;
 
-      this.props.storyAdsArray.forEach((ad, i) =>
-        ad
-          ? (cards[ad.story_order] = {
-              ...cards[ad.story_order],
-              ...ad
-            })
-          : (cards[i] = {
-              ...cards[i]
-            })
+      this.props.storyAdsArray.forEach(
+        (ad, i) =>
+          ad &&
+          (cards[ad.story_order] = {
+            ...cards[ad.story_order],
+            ...ad
+          })
       );
 
       this.setState({
@@ -739,13 +742,13 @@ class AdDesign extends Component {
         this.props.adType !== "StoryAd"
           ? this.state.image
           : this.state.storyAdCards.snapAdsCards.find(
-              card => card !== undefined
+              card => card !== undefined && card.image
             ).image)().split(
         (() =>
           this.props.adType !== "StoryAd"
             ? this.state.image
             : this.state.storyAdCards.snapAdsCards.find(
-                card => card !== undefined
+                card => card !== undefined && card.image
               ).image)().includes("/ImageManipulator/")
           ? "/ImageManipulator/"
           : "/ImagePicker/"
@@ -900,19 +903,33 @@ class AdDesign extends Component {
   perviewHandler = async () => {
     await this.validator();
     if (
+      !this.props.loadingStoryAdsArray.includes(true) &&
       !this.state.brand_nameError &&
       !this.state.headlineError &&
       !this.state.imageError
-    )
-      this.props.navigation.push("AdDesignReview", {
-        image: this.state.image,
-        type: this.state.type,
-        call_to_action: this.state.campaignInfo.call_to_action.label,
-        headline: this.state.campaignInfo.headline,
-        brand_name: this.state.campaignInfo.brand_name,
-        destination: this.state.campaignInfo.destination,
-        icon_media_url: this.state.campaignInfo.attachment.icon_media_url
-      });
+    ) {
+      let image =
+        this.props.adType !== "StoryAd"
+          ? { image: this.state.image }
+          : { cover: this.props.data.cover, logo: this.props.data.logo };
+
+      this.props.navigation.push(
+        this.props.adType === "StoryAd"
+          ? "StoryAdDesignReview"
+          : "AdDesignReview",
+        {
+          ...image,
+          type: this.state.type,
+          call_to_action: this.state.campaignInfo.call_to_action.label,
+          headline: this.state.campaignInfo.headline,
+          brand_name: this.state.campaignInfo.brand_name,
+          destination: this.state.campaignInfo.destination,
+          icon_media_url: this.state.campaignInfo.attachment.icon_media_url,
+          coverHeadline: this.props.data.coverHeadline,
+          storyAdsArray: this.props.storyAdsArray
+        }
+      );
+    }
   };
 
   validator = () => {
@@ -979,7 +996,9 @@ class AdDesign extends Component {
       this.setState({
         storyAdCards: {
           ...this.state.storyAdCards,
-          snapAdsCards: result
+          snapAdsCards: result,
+          numOfAds: this.props.storyAdsArray.filter(ad => ad !== undefined)
+            .length
         }
       });
     }
@@ -1058,7 +1077,7 @@ class AdDesign extends Component {
       Platform.OS === "ios" && this.state.iosVideoUploaded ? 1 : 0
     );
     await this.handleUpload();
-    this.props.uploadStoryAdCard(storyBody, card, this.state.signal);
+    await this.props.uploadStoryAdCard(storyBody, card, this.state.signal);
     cards[this.state.storyAdCards.selectedStoryAd.index] = card;
     this.setState({
       storyAdCards: {
@@ -1076,8 +1095,9 @@ class AdDesign extends Component {
     if (
       this.props.adType === "StoryAd" &&
       this.state.storyAdCards.storyAdSelected
-    )
+    ) {
       this.formatStoryAd();
+    }
 
     await this.validator();
 
@@ -1148,11 +1168,17 @@ class AdDesign extends Component {
       : this.props.navigation.goBack();
   };
   render() {
-    let selectedAd =
-      (!this.state.storyAdCards.storyAdSelected &&
-        this.state.storyAdCards.numOfAds >= 3) ||
-      (this.state.storyAdCards.storyAdSelected &&
-        this.state.storyAdCards.selectedStoryAd.hasOwnProperty("image"));
+    console.log(this.state.storyAdCards.numOfAds);
+    // console.log(this.state.storyAdCards.snapAdsCards);
+    console.log(this.props.storyAdsArray);
+
+    let showContinueBtn =
+      this.props.adType === "SnapAd" ||
+      (this.props.adType === "StoryAd" &&
+        ((!this.state.storyAdCards.storyAdSelected &&
+          this.state.storyAdCards.numOfAds >= 3) ||
+          (this.state.storyAdCards.storyAdSelected &&
+            this.state.storyAdCards.selectedStoryAd.hasOwnProperty("image"))));
 
     let { image } = this.state;
 
@@ -1362,15 +1388,25 @@ class AdDesign extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {true ? (
-              //image && this.props.adType !== "StoryAd"
+            {(this.props.adType !== "StoryAd" && image) ||
+            (this.state.storyAdCards.storyAdSelected &&
+              this.state.storyAdCards.selectedStoryAd.image) ||
+            this.state.storyAdCards.numOfAds >= 3 ? (
               <View style={styles.footerButtonsContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.perviewHandler()}
-                >
-                  <EyeIcon width={wp(24)} height={hp(8)} />
-                </TouchableOpacity>
+                {!this.state.storyAdCards.storyAdSelected && (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.perviewHandler()}
+                  >
+                    {this.props.loadingStoryAdsArray.includes(true) ? (
+                      <Button rounded style={styles.loadingButtons}>
+                        <ActivityIndicator />
+                      </Button>
+                    ) : (
+                      <EyeIcon width={wp(24)} height={hp(8)} />
+                    )}
+                  </TouchableOpacity>
+                )}
                 {this.state.objective === "BRAND_AWARENESS" &&
                   this.props.adType !== "StoryAd" && (
                     <TouchableOpacity
@@ -1380,7 +1416,7 @@ class AdDesign extends Component {
                       <ForwardButton width={wp(24)} height={hp(8)} />
                     </TouchableOpacity>
                   )}
-                {selectedAd && (
+                {showContinueBtn && (
                   //this.props.adType !== "StoryAd" &&
                   // (this.state.objective !== "BRAND_AWARENESS" &&
                   //   isNull(this.state.swipeUpError))
@@ -1388,7 +1424,19 @@ class AdDesign extends Component {
                     onPress={this._handleSubmission}
                     style={styles.button}
                   >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
+                    {this.props.loadingStoryAdsArray.includes(true) ? (
+                      <Button
+                        rounded
+                        style={[
+                          styles.loadingButtons,
+                          { backgroundColor: globalColors.orange }
+                        ]}
+                      >
+                        <ActivityIndicator />
+                      </Button>
+                    ) : (
+                      <ForwardButton width={wp(24)} height={hp(8)} />
+                    )}
                   </TouchableOpacity>
                 )}
               </View>
