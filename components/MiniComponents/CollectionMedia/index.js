@@ -117,7 +117,6 @@ class CollectionMedia extends Component {
     if (
       Object.keys(this.state.collection)
         .map(key => {
-          console.log("key", key);
 
           if (
             this.props.collectionAdMedia[order] &&

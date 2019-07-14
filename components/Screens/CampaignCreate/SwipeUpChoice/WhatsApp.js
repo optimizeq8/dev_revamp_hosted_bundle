@@ -37,9 +37,9 @@ class WhatsApp extends Component {
         whatsappnumber: "",
         insta_handle: "",
         callnumber: "",
-        callaction: list[4].call_to_action_list[0]
+        callaction: list.SnapAd[4].call_to_action_list[0]
       },
-      callactions: list[4].call_to_action_list,
+      callactions: list.SnapAd[4].call_to_action_list,
 
       insta_handleError: "",
       inputCallToAction: false
