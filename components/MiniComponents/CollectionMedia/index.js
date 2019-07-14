@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from "react-native";
 import {
   Button,
@@ -26,10 +27,13 @@ import {
   Icon
 } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
+import * as Animatable from 'react-native-animatable';
 import Axios from "axios";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
+import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
 
 //Redux
@@ -37,7 +41,9 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 //icons
-import ForwardButton from "../../../assets/SVGs/ForwardButton";
+import Checkmark from "../../../assets/SVGs/Checkmark";
+import CameraEdit from "../../../assets/SVGs/CameraCircleOutline";
+
 
 // Style
 import styles from "./styles";
@@ -276,11 +282,13 @@ class CollectionMedia extends Component {
             result.uri,
             [
               {
+                resize: { height: newHeight},
+
                 crop: {
                   originX: (result.width - newWidth) / 2,
                   originY: (result.height - newHeight) / 2,
                   width: newWidth,
-                  height: newHeight
+                //   height: newHeight
                 }
               }
             ],
@@ -552,213 +560,287 @@ class CollectionMedia extends Component {
     }
   };
 
+  renderMediaButton = () => {
+      if(this.state.collection.collection_media) {
+          return (
+              <TouchableOpacity 
+                style={styles.inputMiddleButtonEdit}
+                onPress={() => {
+                    this._pickImage();
+                }}
+              >
+                <CameraEdit width={70} height={70} />
+                <Text style={styles.mediaButtonMsg1}>
+                    {"Edit Image"}
+                </Text>
+              </TouchableOpacity>
+          )
+
+      } else { 
+          return (
+            <Button
+            style={styles.inputMiddleButton}
+            onPress={() => {
+              this._pickImage();
+            }}
+          >
+            <Icon style={styles.icon} name="camera" />
+            <Text style={styles.mediaButtonMsg}>
+              {this.state.collection.collection_media ? "Edit Image" : "Add Image"}
+            </Text>
+          </Button>
+          )
+      }
+  }
+
   render() {
-    let mediaButton = (
-      <Button
-        style={styles.inputMiddleButton}
-        onPress={() => {
-          this._pickImage();
-        }}
-      >
-        <Icon style={styles.icon} name="camera" />
-        <Text style={styles.mediaButtonMsg}>
-          {this.state.collection.collection_media ? "Edit Image" : "Add Image"}
-        </Text>
-      </Button>
-    );
+    // let mediaButton = (
+
+    //   <Button
+    //     style={styles.inputMiddleButton}
+    //     onPress={() => {
+    //       this._pickImage();
+    //     }}
+    //   >
+    //     <Icon style={styles.icon} name="camera" />
+    //     <Text style={styles.mediaButtonMsg}>
+    //       {this.state.collection.collection_media ? "Edit Image" : "Add Image"}
+    //     </Text>
+    //   </Button>
+    // );
 
     return (
       <SafeAreaView
         style={styles.safeAreaView}
-        forceInset={{ bottom: "never", top: "always" }}
+        forceInset={{ bottom: "always", top: "always" }}
       >
-        <Container style={styles.container}>
-          <CustomHeader
-            closeButton={false}
-            segment={{
-              str: "Go Back from Collection Media Upload",
-              obj: { businessname: this.props.mainBusiness.businessname }
-            }}
-            navigation={this.props.navigation}
-            title="Compose Collection Ad"
-          />
-          <Content
-            contentContainerStyle={styles.contentContainer}
-            scrollEnabled={false}
-            padder
-          >
-            <View style={styles.mainView}>
-              {isNull(this.state.collection.collection_media) ? (
-                <View style={styles.placeholder}>
-                  <View style={styles.blankView} />
-                  {mediaButton}
-                </View>
-              ) : (
-                <View style={styles.placeholder}>
-                  <Image
-                    style={styles.imagePlaceholder}
-                    source={{ uri: this.state.localUri }}
-                    resizeMode="cover"
-                  />
-                  {mediaButton}
-                </View>
-              )}
-              {!this.state.imageError ? null : (
-                <Text style={styles.errorMsg}>
-                  {!this.state.imageError.includes("blank")
-                    ? this.state.imageError
-                    : "Please choose an image or video"}
-                </Text>
-              )}
-            </View>
-            {this.props.collectionAdLinkForm === 2 ? (
-              <View style={{ marginVertical: 15 }}>
-                <Item
-                  rounded
-                  style={[
-                    styles.input,
-                    this.state.deep_link_urlError
-                      ? GlobalStyles.redBorderColor
-                      : GlobalStyles.transparentBorderColor
-                  ]}
+       
+            <Container style={styles.container}>
+                <CustomHeader
+                    closeButton={false}
+                    segment={{
+                    str: "Go Back from Collection Media Upload",
+                    obj: { businessname: this.props.mainBusiness.businessname }
+                    }}
+                    navigation={this.props.navigation}
+                    title="Compose Collection Ad"
+                />
+                <ScrollView
+                    contentContainerStyle={styles.contentContainer}
+                    // scrollEnabled={false}
+                    // padder
                 >
-                  <Input
-                    value={this.state.collection.collection_attachment}
-                    style={styles.inputtext}
-                    placeholder="Deep Link URL"
-                    placeholderTextColor="white"
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        collection: {
-                          ...this.state.collection,
-                          collection_attachment: value
-                        }
-                      })
-                    }
-                    onBlur={() => {
-                      this.validateDeepLinkUrl();
-                    }}
-                  />
-                </Item>
-              </View>
-            ) : (
-              <View>
-                <View style={styles.optionsContainer}>
-                  <TouchableOpacity
-                    style={styles.optionsRowContainer}
-                    onPress={() => {
-                      this.setState({
-                        networkString: "http://"
-                      });
-                    }}
-                  >
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name={
-                        this.state.networkString === "http://"
-                          ? "circle"
-                          : "circle-outline"
-                      }
-                      style={[
-                        this.state.networkString === "http://"
-                          ? styles.activetext
-                          : styles.inactivetext,
-                        styles.optionsIconSize
-                      ]}
-                    />
-                    <Text
-                      style={[styles.inactivetext, styles.optionsTextContainer]}
-                    >
-                      http://
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.optionsRowContainer}
-                    onPress={() => {
-                      this.setState({
-                        networkString: "https://"
-                      });
-                    }}
-                  >
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name={
-                        this.state.networkString === "https://"
-                          ? "circle"
-                          : "circle-outline"
-                      }
-                      style={[
-                        this.state.networkString === "https://"
-                          ? styles.activetext
-                          : styles.inactivetext,
-                        styles.optionsIconSize
-                      ]}
-                    />
-                    <Text
-                      style={[styles.inactivetext, styles.optionsTextContainer]}
-                    >
-                      https://
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.inputContainer}>
-                  <Item rounded style={styles.netLocStyle}>
-                    <Text style={styles.networkLabel}>
-                      {this.state.networkString}
-                    </Text>
-                  </Item>
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      this.state.urlError
-                        ? GlobalStyles.redBorderColor
-                        : GlobalStyles.transparentBorderColor
-                    ]}
-                  >
-                    <Input
-                      style={styles.inputtext}
-                      placeholder="Enter your website's URL"
-                      placeholderTextColor={globalColors.white}
-                      value={this.state.collection.collection_attachment}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({
-                          collection: {
-                            ...this.state.collection,
-                            collection_attachment: value
-                          }
-                        })
-                      }
-                      onBlur={() => this.validateUrl()}
-                    />
-                  </Item>
-                </View>
-              </View>
-            )}
-
-            <Footer style={styles.footerStyle}>
-              {this.state.collection.collection_media ? (
-                <View style={styles.footerButtonsContainer}>
-                  <TouchableOpacity
-                    onPress={this._handleSubmission}
-                    style={styles.button}
-                  >
-                    <ForwardButton width={wp(24)} height={hp(8)} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <Text style={styles.footerTextStyle}>
-                  Please add media and link to proceed
-                </Text>
-              )}
-            </Footer>
-          </Content>
-        </Container>
+                     <KeyboardShift style={{}}>{() => (
+                        <View style={styles.mainView}>
+                            <View style={styles.imageView}>
+                                <Text style={styles.productText}>
+                                    {`Product ${parseInt(this.state.collection.collection_order) + 1}`}
+                                </Text>
+                            </View>
+                            {isNull(this.state.collection.collection_media) ? (
+                                <View style={styles.placeholder}>
+                                <View style={styles.blankView} />
+                                {/* {mediaButton} */}
+                                {this.renderMediaButton()}
+                                </View>
+                            ) : (
+                                <View style={styles.placeholder}>
+                                <Image
+                                    style={styles.imagePlaceholder}
+                                    source={{ uri: this.state.localUri }}
+                                    resizeMode="cover"
+                                />
+                                {this.renderMediaButton()}
+                                {/* {mediaButton} */}
+                                </View>
+                            )}
+                            {!this.state.imageError ? null : (
+                                <Text style={styles.errorMsg}>
+                                {!this.state.imageError.includes("blank")
+                                    ? this.state.imageError
+                                    : "Please choose an image or video"}
+                                </Text>
+                            )}
+                                
+                            {this.props.collectionAdLinkForm === 2 ? (
+                                <Animatable.View 
+                                    onAnimationEnd={() => this.setState({ deep_link_urlError: null })}
+                                    duration={200}
+                                    easing={'ease'}
+                                    animation={!this.state.deep_link_urlError ? '' : 'shake'}
+                                    style={{ marginVertical: 30 }}>
+                                    <View style={ styles.deepLinkLabelView}>
+                                        <Text
+                                            uppercase
+                                            style={styles.inputLabel }
+                                        >
+                                            deeplink url
+                                        </Text>
+                                    </View>
+                                    <Item
+                                        style={[
+                                            styles.input,
+                                            // this.state.deep_link_urlError
+                                            //   ? GlobalStyles.redBorderColor
+                                            //   : GlobalStyles.transparentBorderColor
+                                        ]}
+                                    >
+                                        <Input
+                                            value={this.state.collection.collection_attachment}
+                                            style={styles.inputtext}
+                                            placeholder="Enter Deeplink URL"
+                                            placeholderTextColor="white"
+                                            autoCorrect={false}
+                                            autoCapitalize="none"
+                                            onChangeText={value =>
+                                            this.setState({
+                                                collection: {
+                                                ...this.state.collection,
+                                                collection_attachment: value
+                                                }
+                                            })
+                                            }
+                                            onBlur={() => {
+                                            this.validateDeepLinkUrl();
+                                            }}
+                                        />
+                                        </Item>
+                                </Animatable.View>
+                            ) : (
+                                <View>
+                                    <View style={styles.topContainer}>
+                                            <Button
+                                                // block
+                                                // dark
+                                                style={[
+                                                    this.state.networkString === "http://"
+                                                        ? styles.activeButton
+                                                        : styles.button2,
+                                                    styles.collectionAdLinkForm1,
+                                                ]}
+                                                onPress={() => {
+                                                    this.setState({
+                                                        networkString: "http://"
+                                                    });
+                                                }}
+                                            >
+                                                <Text
+                                                    
+                                                    style={[
+                                                        this.state.networkString === "http://"
+                                                            ? styles.activeText
+                                                            : styles.inactiveText,
+                                                    ]}
+                                                >
+                                                    http://
+                                                </Text>
+                                                
+                                            </Button>
+                                            <Button
+                                                // block
+                                                // dark
+                                                style={[
+                                                    this.state.networkString === "https://"
+                                                        ? styles.activeButton
+                                                        : styles.button2,
+                                                    styles.collectionAdLinkForm2,
+                                                ]}
+                                                onPress={() => {
+                                                    this.setState({
+                                                        networkString: "https://"
+                                                    });
+                                                }}
+                                            >
+                                                <Text
+                                                    
+                                                    style={[
+                                                        this.state.networkString === "https://"
+                                                            ? styles.activeText
+                                                            : styles.inactiveText,
+                                                    ]}
+                                                >
+                                                    https://
+                                                </Text>
+                                                
+                                            </Button>
+                                        </View>
+                                        <View style={styles.inputContainer}>
+                                            <View style={styles.websiteView}>
+                                                <View
+                                                    style={[
+                                                       styles.websiteLabelView
+                                                    ]}
+                                                >
+                                                    <Text
+                                                        uppercase
+                                                        style={[
+                                                            styles.inputLabel,
+                                                        ]}
+                                                    >
+                                                        website
+                                                    </Text>
+                                                </View>
+                                                <Item
+                                                    style={[
+                                                    styles.input,
+                                                    // this.state.urlError
+                                                    //     ? GlobalStyles.redBorderColor
+                                                    //     : GlobalStyles.transparentBorderColor
+                                                    ]}
+                                                >
+                                                    <Text style={styles.networkLabel}>
+                                                    {this.state.networkString}
+                                                    </Text>
+                                                    <Input
+                                                    style={[styles.inputtext,
+                                                        {textAlign: "left"}
+                                                    
+                                                    ]}
+                                                    placeholder="Enter your website's URL"
+                                                    placeholderTextColor={globalColors.white}
+                                                    value={this.state.collection.collection_attachment}
+                                                    autoCorrect={false}
+                                                    autoCapitalize="none"
+                                                    onChangeText={value =>
+                                                        this.setState({
+                                                        collection: {
+                                                            ...this.state.collection,
+                                                            collection_attachment: value
+                                                        }
+                                                        })
+                                                    }
+                                                    onBlur={() => this.validateUrl()}
+                                                    />
+                                                </Item>
+                                            </View>
+                                    </View>
+                                
+                                </View>
+                            )}
+                        </View>
+                    )} 
+                    </KeyboardShift>
+                  
+                </ScrollView>    
+                <View style={styles.footerStyle}>
+                        {this.state.collection.collection_media ? (
+                            <View style={styles.footerButtonsContainer}>
+                            <TouchableOpacity
+                                onPress={this._handleSubmission}
+                                style={styles.button}
+                            >
+                                <Checkmark width={wp(24)} height={hp(8)} />
+                            </TouchableOpacity>
+                            </View>
+                        ) : (
+                            <Text style={styles.footerTextStyle}>
+                            Please add media and link to proceed
+                            </Text>
+                        )}
+                        </View>           
+                    
+                  
+            </Container>
         <Modal
           visible={this.props.loading || this.state.isVisible}
           onDismiss={() => this.onToggleModal(false)}
