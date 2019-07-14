@@ -968,7 +968,7 @@ class AdDesign extends Component {
       brand_name,
       headline,
       destination,
-      attachment
+      attachment, call_to_action
     } = this.state.campaignInfo;
 
     let inputFields = ["Business Name", "Headline"].map(field => (
@@ -987,11 +987,12 @@ class AdDesign extends Component {
     {!this.rejected &&
                       "BRAND_AWARENESS" !== this.state.objective && (
                         <SwipeUpComponent
-                          _changeDestination={this._changeDestination}
-                          navigation={this.props.navigation}
-                          objective={this.state.campaignInfo.objective}
-                          destination={destination}
-                          attachment={attachment}
+                            _changeDestination={this._changeDestination}
+                            navigation={this.props.navigation}
+                            objective={this.state.campaignInfo.objective}
+                            destination={destination}
+                            attachment={attachment}
+                            call_to_action_label={call_to_action.label}
                         />
                       )}
     let swipeUpComp =
@@ -1007,36 +1008,25 @@ class AdDesign extends Component {
             collectionAdLinkForm={this.props.collectionAdLinkForm}
             adType={this.props.adType}
             image={image}
+            call_to_action_label={call_to_action.label}
           />
         )
       ) : (
         <SwipeUpComponent
-          _changeDestination={this._changeDestination}
-          navigation={this.props.navigation}
-          objective={this.state.campaignInfo.objective}
-          destination={destination}
-          attachment={attachment}
-          collectionAdLinkForm={this.props.collectionAdLinkForm}
-          adType={this.props.adType}
+            _changeDestination={this._changeDestination}
+            navigation={this.props.navigation}
+            objective={this.state.campaignInfo.objective}
+            destination={destination}
+            attachment={attachment}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
+            adType={this.props.adType}
+            call_to_action_label={call_to_action.label}
         />
       );
 
     let collection = (
       <View
-        style={{
-          alignContent: "center",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-around",
-          bottom: "10%",
-          flex: 1,
-          position: "absolute",
-          // height: hp(13),
-          minHeight: 90,
-          width: "100%",
-          bottom: 0,
-          paddingHorizontal: 8
-        }}
+        style={styles.collectionView}
       >
         {this.collectionComp(0)}
         {this.collectionComp(1)}

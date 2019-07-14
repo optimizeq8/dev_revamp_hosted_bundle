@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#5D1CD8',
 		backgroundColor: 'rgba(0,0,0,0.2)',
 		borderRadius: 40,
-		borderColor: '#5D1CD8',
+		borderColor: 'transparent',
 		alignSelf: 'center',
 		// width: wp(75),
 		height: 50,
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		textAlign: 'center',
 		color: '#FFF',
+		borderColor: 'transparent',
 	},
 	loadingSafeArea: {
 		width: '100%',
