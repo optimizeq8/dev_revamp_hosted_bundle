@@ -1,5 +1,7 @@
 import * as ObjIcons from "../../assets/SVGs/Objectives";
 
+
+
 export default {
   CollectionAd: [
     {
@@ -19,6 +21,32 @@ export default {
       value: "LEAD_GENERATION",
       info: "Generate leads for your business.",
       icon:  ObjIcons.Group
+    }
+  ],
+  StoryAd: [
+    {
+      label: "Awareness",
+      value: "BRAND_AWARENESS",
+      info: "Increase awareness of your brand or product.",
+      icon: ObjIcons.Awareness
+    },
+    {
+      label: "App Installs",
+      value: "APP_INSTALLS",
+      info: "Send Snapchatters to the app store to download your app",
+      icon: ObjIcons.Download
+    },
+    {
+      label: "Lead Generation",
+      value: "LEAD_GENERATION",
+      info: "Generate leads for your business.",
+      icon: ObjIcons.Group
+    },
+    {
+      label: "WhatsApp Campaign",
+      value: "WEB_CONVERSION",
+      info: "Send customers directly to your business's whatsapp.",
+      icon: ObjIcons.WhatsApp
     }
   ],
   SnapAd: [
@@ -60,4 +88,5 @@ export default {
   }
   ]
 };
+
 

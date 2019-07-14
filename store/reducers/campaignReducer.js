@@ -4,6 +4,7 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
+  adType: "",
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -26,6 +27,10 @@ const initialState = {
   interestNames: [],
   regionNames: [],
   campaignEnded: false,
+  storyAdsArray: [],
+  loadingStoryAdsArray: [],
+  coverLoading: false,
+  storyAdCover: null
   adType: "SnapAd",
   collectionAdLinkForm: 0,
   collectionLoader: false,
@@ -271,6 +276,70 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingDetail: action.payload
       };
+    case actionTypes.SET_COVER_LOADING_DESIGN:
+      return {
+        ...state,
+        coverLoading: action.payload
+      };
+    case actionTypes.ERROR_SET_COVER_DESIGN:
+      return {
+        ...state,
+        coverLoading: false
+      };
+    case actionTypes.SET_COVER_DESIGN:
+      return {
+        ...state,
+        storyAdCover: {
+          ...action.payload.data,
+          preview_media_id: action.payload.preview_media_id
+        },
+        coverLoading: false
+      };
+    case actionTypes.SET_STORYADMEDIA_DESIGN:
+      let storyAds = state.storyAdsArray;
+      storyAds[action.payload.data.story_order] = {
+        ...action.payload.data,
+        ...action.payload.card
+      };
+      let loadingAr = state.loadingStoryAdsArray;
+      loadingAr[action.payload.data.story_order] = false;
+
+      return {
+        ...state,
+        loadingStoryAdsArray: [...loadingAr],
+        storyAdsArray: [...storyAds]
+      };
+    case actionTypes.DELETE_STORY_AD_CARD:
+      let deleteStoryAds = state.storyAdsArray.filter(ad => {
+        if (ad === undefined || ad.story_id !== action.payload.data.story_id)
+          return ad;
+      });
+      // deleteStoryAds[action.payload.data.story_order] = {
+      //   ...action.payload.data,
+      //   ...action.payload.card
+      // };
+      let deletedLoadingAr = state.loadingStoryAdsArray;
+      deletedLoadingAr[action.payload.card.index] = false;
+
+      return {
+        ...state,
+        loadingStoryAdsArray: [...deletedLoadingAr],
+        storyAdsArray: [...deleteStoryAds]
+      };
+    case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
+      let ar = state.loadingStoryAdsArray;
+      ar[action.payload.index] = action.payload.uploading;
+      return {
+        ...state,
+        loadingStoryAdsArray: [...ar]
+      };
+    case actionTypes.SET_DELETE_CARD_LOADING:
+      let deleteLoadAr = state.loadingStoryAdsArray;
+      deleteLoadAr[action.payload.index] = action.payload.deleteing;
+      return {
+        ...state,
+        loadingStoryAdsArray: [...deleteLoadAr]
+      };
     case actionTypes.SET_LANGUAGE_LIST:
       return {
         ...state,
@@ -292,7 +361,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaign_id: "",
         data: null,
-        adType: "SnapAd",
+        average_reach: 0,
+        total_reach: 0,
+        image: "",
+        minValueBudget: 0,
+        adType: "",
+        maxValueBudget: 0,
+        countryName: "",
+        interestNames: [],
+        regionNames: [],
+        storyAdsArray: [],
+        loadingStoryAdsArray: [],
+        coverLoading: false,
+        storyAdCover: null,
         collectionAdLinkForm: 0,
         collectionLoader: false,
         collectionAdMedia: []

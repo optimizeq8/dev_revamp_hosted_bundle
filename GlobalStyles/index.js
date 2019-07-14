@@ -11,7 +11,7 @@ export const globalColors = {
   black: "#000000",
   transparent: "#0000"
 };
-const styles = StyleSheet.create({
+const globalStyles = StyleSheet.create({
   linearGradientBackground1: {
     backgroundColor: "#751AFF"
   },
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   }
 });
-export default styles;
+export default globalStyles;

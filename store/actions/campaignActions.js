@@ -247,7 +247,9 @@ export const ad_objective = (info, navigation) => {
       })
       .then(data => {
         data.success
-          ? navigation.push("AdDesign")
+          ? navigation.push(
+              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+            )
           : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
@@ -280,6 +282,15 @@ export const save_campaign_info = info => {
     dispatch({
       type: actionTypes.SAVE_CAMPAIGN_INFO,
       payload: info
+    });
+  };
+};
+
+export const set_AdType = adType => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_AD_TYPE,
+      payload: adType
     });
   };
 };
@@ -355,6 +366,190 @@ export const ad_design = (
         });
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
+        });
+      });
+  };
+};
+
+export const uploadStoryAdCover = (
+  info,
+  loading,
+  navigation,
+  onToggleModal,
+  rejected,
+  cancelUplaod
+) => {
+  console.log("swrberb", info);
+
+  onToggleModal(true);
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_COVER_LOADING_DESIGN,
+      payload: true
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data"
+    };
+    createBaseUrl()
+      .post(rejected ? `reuploadbrandmedia` : `savestorypreviewmedia`, info, {
+        onUploadProgress: ProgressEvent =>
+          loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUplaod.token
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+
+        rejected &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top"
+          });
+        return dispatch({
+          type: actionTypes.SET_COVER_DESIGN,
+          payload: data
+        });
+      })
+      .then(() => {
+        onToggleModal(false);
+        dispatch(save_campaign_info({ formattedCover: info }));
+      })
+      .then(() => {
+        !rejected
+          ? navigation.push("AdDesign")
+          : navigation.navigate("Dashboard");
+      })
+      .catch(err => {
+        loading(0);
+        onToggleModal(false);
+        // console.log("ad_design", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_COVER_DESIGN
+        });
+      });
+  };
+};
+
+export const uploadStoryAdCard = (
+  info,
+  card,
+  cancelUpload,
+  rejected,
+  iosUploadVideo
+) => {
+  console.log(info);
+
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
+      payload: { uploading: true, index: card.index }
+    });
+    axios.defaults.headers.common = {
+      ...axios.defaults.headers.common,
+      "Content-Type": "multipart/form-data"
+    };
+    createBaseUrl()
+      .post(rejected ? `reuploadbrandmedia` : `savestorymedia`, info, {
+        // onUploadProgress: ProgressEvent =>
+        // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        cancelToken: cancelUpload.token
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+
+        // dispatch(
+        //   save_campaign_info("adDesign", {
+        //     appChoice,
+        //     longVideo,
+        //     iosUploadVideo
+        //   })
+        // );
+        rejected &&
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            position: "top"
+          });
+        return dispatch({
+          type: actionTypes.SET_STORYADMEDIA_DESIGN,
+          payload: { data: data.data, card }
+        });
+      })
+      .then(() => {
+        // onToggleModal(false);
+        // dispatch(save_campaign_info({ formatted: info }));
+      })
+      .then(() => {
+        // !rejected
+        //   ? navigation.push("AdDetails")
+        //   : navigation.navigate("Dashboard");
+      })
+      .catch(err => {
+        // loading(0);
+        dispatch({
+          type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
+          payload: { uploading: false, index: card.index }
+        });
+        console.log("ad_design", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_AD_DESIGN
+        });
+      });
+  };
+};
+
+export const deleteStoryAdCard = (story_id, card, removeCrad) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_DELETE_CARD_LOADING,
+      payload: { deleteing: true, index: card.index }
+    });
+    createBaseUrl()
+      .delete(`savestorymedia/${story_id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log(data);
+        removeCrad(card.item.id);
+        return dispatch({
+          type: actionTypes.DELETE_STORY_AD_CARD,
+          payload: { data: data, card }
+        });
+      })
+
+      .catch(err => {
+        // console.log("getVideoUploadUrl", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
         });
       });
   };

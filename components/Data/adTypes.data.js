@@ -16,6 +16,7 @@ export const snapAds = [
     icon: "snapchat-ghost",
     title: "Story Ad",
     image: require("../../assets/images/AdTypes/StoryAd.gif")
+
   },
   {
     id: 3,
@@ -26,6 +27,7 @@ export const snapAds = [
     title: "Collection Ad",
     image: require("../../assets/images/AdTypes/CollectionAd.gif")
   }
+
 ];
 
 export const twittwerAds = [

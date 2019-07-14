@@ -17,6 +17,8 @@ import ForwardLoading from '../../../MiniComponents/ForwardLoading';
 //Icons
 import PhoneIcon from '../../../../assets/SVGs/Phone.svg';
 import BackdropIcon from '../../../../assets/SVGs/BackDropIcon';
+import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
+import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";
 
 // Style
 import styles from './styles';
@@ -47,6 +49,7 @@ class AdObjective extends Component {
 				end_time: '',
 			},
 			collectionAdLinkForm: 0,
+      playback_type: "LOOPING",
 			minValueBudget: 0,
 			maxValueBudget: 0,
 			modalVisible: false,
@@ -59,22 +62,7 @@ class AdObjective extends Component {
 			end_timeError: '',
 		};
 	}
-
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-	}
-	handleBackButton = () => {
-		if (this.state.modalVisible) {
-			this.setModalVisible(false);
-		} else {
-			this.props.navigation.goBack();
-			return true;
-		}
-	};
-	componentDidMount() {
-		let rep = this.state.campaignInfo;
-
-		if (this.props.adType === 'CollectionAd') {
+	if (this.props.adType === 'CollectionAd') {
 			if (this.props.collectionAdLinkForm !== 0) {
 				this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
 			} else {
@@ -102,6 +90,7 @@ class AdObjective extends Component {
 				campaignInfo: { ...rep },
 				minValueBudget: this.props.data.minValueBudget,
 				maxValueBudget: this.props.data.maxValueBudget,
+        playback_type: this.props.data.playback_type
 			});
 		}
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
@@ -151,8 +140,8 @@ class AdObjective extends Component {
 	_handleCollectionAdLinkForm = val => {
 		this.setState({ collectionAdLinkForm: val });
 	};
-
-	_handleSubmission = async () => {
+    
+  _handleSubmission = async () => {
 		const nameError = validateWrapper('mandatory', this.state.campaignInfo.name);
 		const objectiveError = validateWrapper('mandatory', this.state.campaignInfo.objective);
 
@@ -175,47 +164,53 @@ class AdObjective extends Component {
 				campaign_objective: this.state.campaignInfo.objective,
 			});
 
-			// this.props.getMinimumCash({
-			//   minValueBudget: this.state.minValueBudget,
-			//   maxValueBudget: this.state.maxValueBudget
-			// });
-
-			console.log('this.props.collectionAdLinkForm', this.props.collectionAdLinkForm);
-			console.log('this.state.collectionAdLinkForm', this.state.collectionAdLinkForm);
+      
+      
+  
+      if (this.props.campaign_id !== "") {
+        this.props.ad_objective(
+          { ...info, campaign_id: this.props.campaign_id },
+          this.props.navigation
+        );
+      } else
+        this.props.ad_objective(
+          { ...info, campaign_id: 0 },
+          this.props.navigation
+        );
+    }
+  };
 			if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
-				// this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
 				this.props.reset_collections();
 			}
-			// else {
 			this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
-			// }
-			this.props.save_campaign_info({
-				campaign_id: this.props.campaign_id,
-				...this.state.campaignInfo,
-
-				minValueBudget: this.state.minValueBudget,
-				maxValueBudget: this.state.maxValueBudget,
-			});
-			if (this.props.campaign_id !== '')
-				this.props.ad_objective(
-					{
-						campaign_id: this.props.campaign_id,
-						campaign_type: this.props.adType,
-						...this.state.campaignInfo,
-					},
-					this.props.navigation
-				);
-			else
-				this.props.ad_objective(
-					{
-						campaign_id: 0,
-						campaign_type: this.props.adType,
-						...this.state.campaignInfo,
-					},
-					this.props.navigation
-				);
+	
+		this.props.save_campaign_info({
+        campaign_id: this.props.campaign_id,
+        ...this.state.campaignInfo,
+        playback_type: this.state.playback_type,
+        minValueBudget: this.state.minValueBudget,
+        maxValueBudget: this.state.maxValueBudget
+      });
+let info = {
+        campaign_type: this.props.adType,
+        ...this.state.campaignInfo
+      };
+ if (this.props.adType === "StoryAd"){
+   info["playback_type"] = this.state.playback_type;
+ }
+		 if (this.props.campaign_id !== "") {
+        this.props.ad_objective(
+          { ...info, campaign_id: this.props.campaign_id },
+          this.props.navigation
+        );
+      } else
+        this.props.ad_objective(
+          { ...info, campaign_id: 0 },
+          this.props.navigation
+        );
 		}
 	};
+
 
 	render() {
 		const list = this.state.objectives.map(o => (
@@ -230,28 +225,41 @@ class AdObjective extends Component {
 		return (
 			<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
 				<NavigationEvents
-					onDidFocus={() => {
-						Segment.screenWithProperties('Snap Ad Objective', {
-							category: 'Campaign Creation',
-						});
-						Segment.trackWithProperties('Viewed Checkout Step', {
-							step: 2,
-							business_name: this.props.mainBusiness.businessname,
-						});
-					}}
+					 onDidFocus={() => {
+            Segment.screenWithProperties(
+              (adType === "SnapAd"
+                ? "Snap Ad"
+                : adType === "StoryAd"
+                ? "Story Ad"
+                : "Collection Ad") + " Objective",
+              {
+                category: "Campaign Creation"
+              }
+            );
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 2,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
 				/>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 					<Container style={styles.container}>
 						<BackdropIcon style={styles.backDrop} height={hp('100%')} />
-						<CustomHeader
-							closeButton={false}
-							segment={{
-								str: 'Ad Objective Back Button',
-								obj: { businessname: this.props.mainBusiness.businessname },
-							}}
-							navigation={this.props.navigation}
-							title={this.props.adType === 'CollectionAd' ? 'Collection Ad' : 'Snap Ad Campaign'}
-						/>
+          <CustomHeader
+              closeButton={false}
+              segment={{
+                str: "Ad Objective Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname }
+              }}
+              navigation={this.props.navigation}
+              title={
+                (adType === "SnapAd"
+                  ? "Snap Ad"
+                  : adType === "StoryAd"
+                  ? "Story Ad"
+                  : "Collection Ad") + " Campaign"
+              }
+            />
 						<View style={styles.block1}>
 							<PhoneIcon
 								style={styles.phoneicon}
@@ -377,7 +385,130 @@ class AdObjective extends Component {
 									<Icon type="AntDesign" name="down" style={styles.downicon} />
 								</Item>
 							</Animatable.View>
-							{this.props.adType === 'CollectionAd' && (
+							
+{this.props.adType==="StoryAd"&& (  <Item
+                disabled={this.props.loading}
+                rounded
+                style={[
+                  styles.input2,
+                  this.state.objectiveError
+                    ? GlobalStyles.redBorderColor
+                    : GlobalStyles.transparentBorderColor
+                ]}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  this.setModalVisible(true);
+                }}
+              >
+                <Text style={styles.label}>
+                  {this.state.campaignInfo.objective === ""
+                    ? this.state.objectiveLabel
+                    : this.state.objectives.find(
+                        c => this.state.campaignInfo.objective === c.value
+                      ).label}
+                </Text>
+                <Icon type="AntDesign" name="down" style={styles.downicon} />
+              </Item>
+              {adType === "StoryAd" && (
+                <View style={styles.topContainer}>
+                  <Button
+                    style={[
+                      this.state.playback_type === "LOOPING"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.businessTypeButton1
+                    ]}
+                    onPress={() => {
+                      this.handleStoryOption("LOOPING");
+                    }}
+                  >
+                    <LoopStoryIcon
+                      width={40}
+                      height={40}
+                      fill={
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
+                    />
+                    <Text
+                      style={[
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Loop story
+                    </Text>
+                    <Text
+                      style={[
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        { fontFamily: "montserrat-regular" }
+                      ]}
+                    >
+                      Advance with tap
+                    </Text>
+                  </Button>
+
+                  <Button
+                    dark
+                    style={[
+                      this.state.playback_type === "AUTO_ADVANCING"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.businessTypeButton3
+                    ]}
+                    onPress={() => {
+                      this.handleStoryOption("AUTO_ADVANCING");
+                    }}
+                  >
+                    <AutoAdvanceIcon
+                      width={40}
+                      height={40}
+                      fill={
+                        this.state.playback_type === "AUTO_ADVANCING"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
+                    />
+                    <Text
+                      style={[
+                        this.state.playback_type === "AUTO_ADVANCING"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Auto Advance
+                    </Text>
+                  </Button>
+                </View>
+              )}
+            </View>
+            {this.props.loading ? (
+              <ForwardLoading
+                bottom={18}
+                mainViewStyle={{
+                  width: widthPercentageToDP(9),
+                  height: heightPercentageToDP(9)
+                }}
+              />
+            ) : (
+              <LowerButton bottom={4} function={this._handleSubmission} />
+            )}
+          </Container>
+        </TouchableWithoutFeedback>
+        <DateField
+          getMinimumCash={this.getMinimumCash}
+          onRef={ref => (this.dateField = ref)}
+          handleStartDatePicked={this.handleStartDatePicked}
+          handleEndDatePicked={this.handleEndDatePicked}
+          start_time={this.state.campaignInfo.start_time}
+          end_time={this.state.campaignInfo.end_time}
+        />)}
+
+            {this.props.adType === 'CollectionAd' && (
 								<View style={styles.collectionAdView}>
 									<Text uppercase style={styles.collectionAdText}>
 										Where are you taking the user ?
@@ -474,9 +605,6 @@ class AdObjective extends Component {
 					start_time={this.state.campaignInfo.start_time}
 					end_time={this.state.campaignInfo.end_time}
 				/>
-				{/* <Modal visible={this.props.loading}>
-          <LoadingScreen top={0} />
-        </Modal> */}
 				<Modal
 					animationType={'slide'}
 					transparent={true}

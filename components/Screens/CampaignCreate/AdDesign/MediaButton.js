@@ -6,9 +6,15 @@ import styles from './styles';
 
 import EditCameraIcon from '../../../../assets/SVGs/CameraCircleOutline';
 export default class MediaButton extends Component {
-	render() {
-		let image = this.props.image;
-		if (image) {
+  render() {
+    let {
+      image,
+      snapAdCard,
+      snapCardInfo,
+      _handleStoryAdCards,
+      setMediaModalVisible
+    } = this.props;
+if (image) {
 			return (
 				<View style={styles.inputMiddleButton2}>
 					<EditCameraIcon />
@@ -16,26 +22,46 @@ export default class MediaButton extends Component {
 				</View>
 			);
 		} else
-			return (
-				<Button
-					style={styles.inputMiddleButton}
-					onPress={() => {
-						// this._pickImage();
-						this.props.setMediaModalVisible(true);
-					}}
-				>
-					<Icon style={styles.icon} name="camera" />
-					<Text style={[styles.mediaButtonMsg]}>
-						{image
-							? // ? Platform.OS === "ios"
-							  //   ? "Edit Photo"
-							  //   :
-							  'Edit Media'
-							: // : Platform.OS === "ios"
-							  // ? "Add Photo"
-							  'Add Media'}
-					</Text>
-				</Button>
-			);
-	}
+    return (
+      <>
+        <Button
+          style={[
+            styles.inputMiddleButton,
+            snapAdCard
+              ? {
+                  width: 40,
+                  height: 40,
+                  top: "65%",
+                  left: "82%"
+                }
+              : {}
+          ]}
+          onPress={() => {
+            // this._pickImage();
+            snapAdCard
+              ? _handleStoryAdCards({
+                  index: snapCardInfo.index,
+                  ...snapCardInfo.item
+                })
+              : setMediaModalVisible(true);
+          }}
+        >
+          <Icon
+            style={[
+              styles.icon,
+              snapAdCard ? { fontSize: 20, paddingRight: 15 } : {}
+            ]}
+            name="camera"
+          />
+        </Button>
+        <Text style={styles.mediaButtonMsg}>
+          {image !== "blank"
+            ? "Edit Photo"
+            : Platform.OS === "ios"
+            ? "Add Photo"
+            : "Add Media"}
+        </Text>
+      </>
+    );
+  }
 }

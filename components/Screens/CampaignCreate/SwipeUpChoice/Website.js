@@ -46,6 +46,7 @@ class Website extends Component {
 
   componentDidMount() {
     if (
+      this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK" &&
       !this.props.data.attachment.hasOwnProperty("android_app_url")

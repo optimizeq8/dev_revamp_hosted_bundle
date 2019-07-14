@@ -19,6 +19,8 @@ import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
+import AdCover from "../Screens/CampaignCreate/AdCover";
+import StoryAdDesignReview from "../Screens/CampaignCreate/AdDesign/StoryAdReview";
 import AdDetails from "../Screens/CampaignCreate/AdDetails";
 import AdDesignReview from "../Screens/CampaignCreate/AdDesignReview";
 import SwipeUpDestination from "../Screens/CampaignCreate/SwipeUpDestination";
@@ -50,6 +52,8 @@ export default FluidNavigator(
     AdObjective: AdObjective,
     CollectionMedia: CollectionMedia,
     AdDesign: { screen: AdDesign, path: "ad_design/" },
+    AdCover: AdCover,
+    StoryAdDesignReview: StoryAdDesignReview,
     AdDetails: AdDetails,
     AdDesignReview: AdDesignReview,
     SwipeUpDestination: SwipeUpDestination,
