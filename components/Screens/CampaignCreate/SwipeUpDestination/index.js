@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
@@ -10,22 +11,23 @@ import Deep_Link from "../SwipeUpChoice/Deep_Link";
 import App_Install from "../SwipeUpChoice/App_Install";
 import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
 import WhatsApp from "../SwipeUpChoice/WhatsApp";
+import AttachmentCard from "./AttachmentCard";
 
 //data
 import attachmentOptionData from "../../../Data/attachmentOptions.data";
 
+
 // Style
-import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
+import styles from './styles';
+import GlobalStyles from '../../../../GlobalStyles';
 
 //Functions
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import isNull from "lodash/isNull";
-import isUndefined from "lodash/isUndefined";
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 
 //Redux
 import { connect } from "react-redux";
-import AttachmentCard from "./AttachmentCard";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -41,20 +43,18 @@ class SwipeUpDestination extends Component {
     };
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
-
-  handleBackButton = () => {
-    this.props.navigation.goBack();
-    return true;
-  };
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  componentDidMount() {
-    Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
-      category: "Campaign Creation"
-    });
-    const image = this.props.navigation.getParam("image", "");
-
+	handleBackButton = () => {
+		this.props.navigation.goBack();
+		return true;
+	};
+	componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+	}
+	componentDidMount() {
+		Segment.screenWithProperties('Snap Ad Traffic SwipeUp Selection', {
+			category: 'Campaign Creation',
+		});
+		const image = this.props.navigation.getParam('image', '');
     this.setState({
       image,
       selected: this.props.data ? this.props.data.destination : ""
@@ -66,7 +66,6 @@ class SwipeUpDestination extends Component {
       sidemenustate: false
     });
   }
-
   handleChoice = value => {
     this.setState(
       {
@@ -80,38 +79,6 @@ class SwipeUpDestination extends Component {
         });
       }
     );
-  };
-
-  attachmentTypes = () => {
-    let menu;
-    switch (this.state.selected) {
-      case "REMOTE_WEBPAGE": {
-        menu = (
-          <Website
-            _changeDestination={
-              this.props.navigation.state.params._changeDestination
-            }
-            navigation={this.props.navigation}
-            toggleSideMenu={this.toggleSideMenu}
-            swipeUpDestination={true}
-          />
-        );
-        break;
-      }
-      case "DEEP_LINK": {
-        menu = (
-          <Deep_Link
-            _changeDestination={
-              this.props.navigation.state.params._changeDestination
-            }
-            navigation={this.props.navigation}
-            toggleSideMenu={this.toggleSideMenu}
-            swipeUpDestination={true}
-          />
-        );
-        break;
-      }
-    }
   };
 
   render() {
@@ -264,6 +231,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(SwipeUpDestination);

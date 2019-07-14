@@ -19,7 +19,8 @@ import GlobalStyles from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
-import { netLoc } from "../../../Data/callactions.data";
+
+import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
@@ -36,9 +37,9 @@ class WhatsApp extends Component {
         whatsappnumber: "",
         insta_handle: "",
         callnumber: "",
-        callaction: list[4].call_to_action_list[0]
+        callaction: list.SnapAd[4].call_to_action_list[0]
       },
-      callactions: list[4].call_to_action_list,
+      callactions: list.SnapAd[4].call_to_action_list,
 
       insta_handleError: "",
       inputCallToAction: false
@@ -49,12 +50,14 @@ class WhatsApp extends Component {
     if (
       (this.props.data.hasOwnProperty("attachment") &&
         this.props.data.attachment !== "BLANK") ||
-      this.props.mainBusiness.hasOwnProperty("whatsappnumber")
+      this.props.mainBusiness.whatsappnumber !== ""
     ) {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          weburl: this.props.mainBusiness.brandname.replace(/[^0-9a-z]/gi, ""),
+          weburl: this.props.mainBusiness.weburl
+            ? this.props.mainBusiness.weburl
+            : this.props.data.weburl,
           insta_handle: this.props.mainBusiness.insta_handle
             ? this.props.mainBusiness.insta_handle
             : this.props.data.insta_handle,
@@ -85,48 +88,60 @@ class WhatsApp extends Component {
       "mandatory",
       this.state.campaignInfo.insta_handle
     );
+    const weburlError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.weburl
+    );
     const whatsappnumberError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.whatsappnumber
     );
     this.setState({
-      insta_handleError
+      insta_handleError,
+      weburlError
     });
-    if (insta_handleError) {
+    if (insta_handleError || weburlError || whatsappnumberError) {
       showMessage({
-        message: "Please provide an instagram handle",
+        message: insta_handleError
+          ? "Please provide an instagram handle"
+          : weburlError
+          ? "Please provide domain name"
+          : whatsappnumberError
+          ? "Please provide a valid whatsapp number"
+          : "",
         type: "warning",
         position: "top",
         duration: 7000
       });
       return false;
-    } else if (whatsappnumberError) {
-      showMessage({
-        message: "Please provide a valid whatsapp number",
-        type: "warning",
-        position: "top",
-        duration: 7000
-      });
     } else {
       return true;
     }
   };
-  _handleSubmission = () => {
-    if (this.validate()) {
+  _handleSubmission = async () => {
+    if (!this.props.mainBusiness.weburl) {
+      await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
+    }
+    let weburlAvalible =
+      this.props.mainBusiness.weburl || this.props.weburlAvalible;
+
+    if (this.validate() && weburlAvalible) {
       let whatsAppCampaign = {
-        whatsappnumber: this.state.campaignInfo.whatsappnumber,
+        weburl: this.state.campaignInfo.weburl,
+        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
         insta_handle: this.state.campaignInfo.insta_handle,
         callnumber:
+          this.state.campaignInfo.callnumber ||
           this.state.campaignInfo.callnumber !== ""
-            ? this.state.campaignInfo.callnumber
-            : this.state.campaignInfo.whatsappnumber
+            ? this.state.campaignInfo.callnumber.replace("+", "")
+            : this.state.campaignInfo.whatsappnumber.replace("+", "")
       };
 
       this.props._changeDestination(
         "REMOTE_WEBPAGE",
         this.state.campaignInfo.callaction,
         {
-          url: `https://${this.props.mainBusiness.brandname.replace(
+          url: `https://${this.state.campaignInfo.weburl.replace(
             /[^0-9a-z]/gi,
             ""
           )}.optimizeapp.com`
@@ -185,7 +200,14 @@ class WhatsApp extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         insta_handle: value
-        // weburl: value.replace(/[^0-9a-z]/gi, "")
+      }
+    });
+  };
+  changeWebUrl = value => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        weburl: value.replace(/[^0-9a-z]/gi, "")
       }
     });
   };
@@ -197,7 +219,7 @@ class WhatsApp extends Component {
       >
         <KeyboardShift>
           {() => (
-            <View style={[styles.websiteContent, { bottom: "5%" }]}>
+            <View style={[styles.whatsApp, { bottom: "8%" }]}>
               <WhatsAppIcon
                 width={90}
                 height={90}
@@ -207,105 +229,158 @@ class WhatsApp extends Component {
               <View style={[styles.textcontainer]}>
                 <Text style={styles.titletext}>WhatsApp Campaign</Text>
                 <Text style={styles.subtext}>
-                  Send users to a website containing your business's following
-                  information.
+                  We’ll create a mini website for your business. Just fill in
+                  the info below
                 </Text>
               </View>
-              <View>
-                <Text style={[styles.subtext]}>Call to action</Text>
-                <Picker
-                  searchPlaceholderText={"Search Call To Action"}
-                  data={this.state.callactions}
-                  uniqueKey={"value"}
-                  displayKey={"label"}
-                  open={this.state.inputCallToAction}
-                  onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                  onSelectedItemObjectsChange={
-                    this.onSelectedCallToActionChange
-                  }
-                  selectedItems={[this.state.campaignInfo.callaction.value]}
-                  single={true}
-                  screenName={"Swipe up destination Website"}
-                  closeCategoryModal={this.closeCallToActionModal}
-                />
-              </View>
-              <Item
-                rounded
-                style={[styles.input]}
-                onPress={() => {
-                  this.setState({ inputCallToAction: true });
-                }}
-              >
-                <Text style={styles.callActionLabel}>
-                  {this.state.campaignInfo.callaction.label}
-                </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#fff", fontSize: 20, left: 25 }}
-                />
-              </Item>
-              <View style={{}}>
-                <Text style={[styles.subtext, { bottom: 5 }]}>
-                  WhatsApp number
-                </Text>
-                <PhoneNo
-                  whatsApp
-                  phoneNum={this.state.campaignInfo.whatsappnumber}
-                  changeFunction={this.changeWhatsAppPhoneNo}
-                  invite={true}
-                />
-              </View>
-              <View style={{}}>
-                <Text style={[styles.subtext, { bottom: 5 }]}>
-                  Phone number (optional)
-                </Text>
-                <PhoneNo
-                  whatsApp
-                  phoneNum={this.state.campaignInfo.callnumber}
-                  changeFunction={this.changeCallNumberPhoneNo}
-                  invite={true}
-                />
-              </View>
-              <Item
-                rounded
-                style={[
-                  styles.input,
-                  {
-                    paddingHorizontal: 0,
-                    width: "75%",
-                    marginTop: 10
-                  },
-                  this.state.insta_handleError
-                    ? GlobalStyles.redBorderColor
-                    : GlobalStyles.transparentBorderColor
-                ]}
-              >
-                <Input
-                  style={styles.inputtext}
-                  placeholder="Enter your Instagram handle"
-                  placeholderTextColor="#fff"
-                  value={this.state.campaignInfo.insta_handle}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={value => this.changeInstaHandle(value)}
-                  onBlur={() => this.validate()}
-                />
-              </Item>
-
-              <View />
-              <View style={styles.bottonViewWebsite}>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
-                  </Text>
+              <View style={[styles.whatsApp]}>
+                {!this.props.mainBusiness.weburl && (
+                  <View style={{}}>
+                    <Text style={[styles.subTitle]}>
+                      Pick a domain for your Website
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Item
+                        rounded
+                        style={[
+                          styles.input,
+                          {
+                            paddingHorizontal: 0,
+                            width: "50%"
+                          },
+                          this.state.weburlError
+                            ? GlobalStyles.redBorderColor
+                            : GlobalStyles.transparentBorderColor
+                        ]}
+                      >
+                        <Input
+                          style={[styles.inputtext]}
+                          placeholder="eg. businessname"
+                          placeholderTextColor="#fff"
+                          value={this.state.campaignInfo.weburl}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value => this.changeWebUrl(value)}
+                          onBlur={() => {
+                            this.validate();
+                            if (!this.props.mainBusiness.weburl) {
+                              this.props.verifyBusinessUrl(
+                                this.state.campaignInfo.weburl
+                              );
+                            }
+                          }}
+                        />
+                      </Item>
+                      <Text style={[styles.url]}>.optimizeapp.com</Text>
+                    </View>
+                  </View>
                 )}
+                <View style={{}}>
+                  <Text style={[styles.subTitle]}>Call to action</Text>
+                  <Picker
+                    searchPlaceholderText={"Search Call To Action"}
+                    data={this.state.callactions}
+                    uniqueKey={"value"}
+                    displayKey={"label"}
+                    open={this.state.inputCallToAction}
+                    onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                    onSelectedItemObjectsChange={
+                      this.onSelectedCallToActionChange
+                    }
+                    selectedItems={[this.state.campaignInfo.callaction.value]}
+                    single={true}
+                    screenName={"Swipe up destination WhatsApp"}
+                    closeCategoryModal={this.closeCallToActionModal}
+                  />
+                  <Item
+                    rounded
+                    style={[styles.input]}
+                    onPress={() => {
+                      this.setState({ inputCallToAction: true });
+                    }}
+                  >
+                    <Text style={styles.callActionLabel}>
+                      {this.state.campaignInfo.callaction.label}
+                    </Text>
+                    <Icon
+                      type="AntDesign"
+                      name="down"
+                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                    />
+                  </Item>
+                </View>
+
+                <View style={{}}>
+                  <Text style={[styles.subTitle]}>WhatsApp number</Text>
+                  <Text
+                    style={[
+                      styles.subtext,
+                      { fontFamily: "montserrat-regular" }
+                    ]}
+                  >
+                    Customers would be able to call And text this number
+                  </Text>
+                  <PhoneNo
+                    whatsApp
+                    phoneNum={this.state.campaignInfo.whatsappnumber}
+                    changeFunction={this.changeWhatsAppPhoneNo}
+                    invite={true}
+                  />
+                </View>
+                <View style={{}}>
+                  <Text style={[styles.subTitle]}>Phone number (optional)</Text>
+                  <PhoneNo
+                    whatsApp
+                    phoneNum={this.state.campaignInfo.callnumber}
+                    changeFunction={this.changeCallNumberPhoneNo}
+                    invite={true}
+                  />
+                </View>
+
+                <View style={{}}>
+                  <Text style={[styles.subTitle]}>Instagram handle</Text>
+
+                  <Item
+                    rounded
+                    style={[
+                      styles.input,
+                      {
+                        paddingHorizontal: 0,
+                        width: "75%"
+                      },
+                      this.state.insta_handleError
+                        ? GlobalStyles.redBorderColor
+                        : GlobalStyles.transparentBorderColor
+                    ]}
+                  >
+                    <Icon
+                      style={{ color: "#FFF", position: "absolute" }}
+                      name="at"
+                      type="MaterialCommunityIcons"
+                    />
+                    <Input
+                      style={styles.inputtext}
+                      placeholder="Enter your Instagram handle"
+                      placeholderTextColor="#fff"
+                      value={this.state.campaignInfo.insta_handle}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      onChangeText={value => this.changeInstaHandle(value)}
+                      onBlur={() => this.validate()}
+                    />
+                  </Item>
+                </View>
+              </View>
+              <View style={styles.bottonViewWebsite}>
                 <LowerButton
                   checkmark={true}
-                  bottom={-1}
+                  bottom={-5}
                   function={this._handleSubmission}
                 />
               </View>
@@ -319,10 +394,14 @@ class WhatsApp extends Component {
 
 const mapStateToProps = state => ({
   data: state.campaignC.data,
+  weburlAvalible: state.campaignC.weburlAvalible,
   mainBusiness: state.account.mainBusiness
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  verifyBusinessUrl: weburl =>
+    dispatch(actionCreators.verifyBusinessUrl(weburl))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

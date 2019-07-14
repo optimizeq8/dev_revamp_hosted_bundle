@@ -33,12 +33,12 @@ class Website extends Component {
     this.state = {
       campaignInfo: {
         attachment: "",
-        callaction: list[0].call_to_action_list[0]
+        callaction: list.SnapAd[0].call_to_action_list[0]
       },
       callActionLabel: "",
       networkString: netLoc[0].label,
       netLoc: netLoc,
-      callactions: list[0].call_to_action_list,
+      callactions: list.SnapAd[0].call_to_action_list,
       urlError: "",
       inputCallToAction: false
     };
@@ -92,11 +92,16 @@ class Website extends Component {
   _handleSubmission = () => {
     if (this.validateUrl()) {
       this.props._changeDestination(
-        this.props.objective !== "LEAD_GENERATION"
-          ? "REMOTE_WEBPAGE"
-          : "LEAD_GENERATION",
+        this.props.collectionAdLinkForm === 0
+          ? this.props.data.objective !== "LEAD_GENERATION"
+            ? "REMOTE_WEBPAGE"
+            : "LEAD_GENERATION"
+          : "COLLECTION",
+
         this.state.campaignInfo.callaction,
-        { url: this.state.networkString + this.state.campaignInfo.attachment }
+        {
+          url: this.state.networkString + this.state.campaignInfo.attachment
+        }
       );
       this.props.navigation.navigate("AdDesign");
     }
@@ -325,7 +330,11 @@ class Website extends Component {
   }
 }
 
-const mapStateToProps = state => ({ data: state.campaignC.data });
+const mapStateToProps = state => ({
+  data: state.campaignC.data,
+  adType: state.campaignC.adType,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+});
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(

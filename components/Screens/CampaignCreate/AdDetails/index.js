@@ -1,3 +1,4 @@
+    
 //Components
 import React, { Component } from "react";
 import {
@@ -656,6 +657,7 @@ class AdDetails extends Component {
         );
         break;
       }
+
       case "selectors": {
         menu = (
           <MultiSelectSections
@@ -732,499 +734,518 @@ class AdDetails extends Component {
         ? this.props.data.image
         : this.props.navigation.getParam("image", "");
     return (
-      <SafeAreaView style={styles.safeArea} forceInset={{ bottom: "never", top: "always"  }}>
-        <NavigationEvents
-          onDidFocus={() => {
-            if (this.props.navigation.getParam("editCampaign", false)) {
-              Segment.screenWithProperties("Snap Ad Targetting Update", {
-                category: "Campaign Update"
-              });
-            } else {
-              Segment.screenWithProperties("Snap Ad Targetting", {
-                category: "Campaign Creation"
-              });
-              Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign_id,
-                step: 4
-              });
-            }
-          }}
-        />
-        <Container style={styles.mainContainer}>
-          <Sidemenu
-            onChange={isOpen => {
-              if (isOpen === false) {
-                this._handleSideMenuState(isOpen);
-                this._calcReach();
-              }
-            }}
-            disableGestures={true}
-            menu={this.state.sidemenustate && menu}
-            menuPosition="right"
-            openMenuOffset={wp("85%")}
-            isOpen={this.state.sidemenustate}
-          >
-            <CustomHeader
-              closeButton={false}
-              segment={{
-                str: "Ad Details Back Button",
-                obj: {
-                  businessname: this.props.mainBusiness.businessname
-                }
-              }}
-              actionButton={
-                editCampaign
-                  ? () => this.props.navigation.navigate("CampaignDetails")
-                  : undefined
-              }
-              navigation={editCampaign ? undefined : this.props.navigation}
-              title="Campaign details"
-            />
-            <Container style={styles.container}>
-              {(!image.includes(".jpg") ||
-                !image.includes(".png") ||
-                (campaign.media && !campaign.media.includes(".jpg")) ||
-                (campaign.media && !campaign.media.includes(".png"))) && (
-                <View style={styles.backgroundViewWrapper}>
-                  <Video
-                    source={{
-                      uri: editCampaign ? "http://" + campaign.media : image
-                    }}
-                    shouldPlay
-                    isLooping
-                    isMuted
-                    resizeMode="cover"
-                    style={styles.videoBackgroundViewWrapper}
-                  />
-                </View>
-              )}
-              <ImageBackground
-                imageStyle={{ opacity: 0.2 }}
-                style={styles.imageBackgroundViewWrapper}
+      
+         
+
+    <Sidemenu
+        onChange={isOpen => {
+        if (isOpen === false) {
+            this._handleSideMenuState(isOpen);
+            this._calcReach();
+        }
+        }}
+        disableGestures={true}
+        menu={this.state.sidemenustate && menu}
+        menuPosition="right"
+        openMenuOffset={wp("85%")}
+        sty
+        isOpen={this.state.sidemenustate}
+    >
+        {(!image.includes(".jpg") ||
+            !image.includes(".png") ||
+            (campaign.media && !campaign.media.includes(".jpg")) ||
+            (campaign.media && !campaign.media.includes(".png"))) && (
+            <View style={[styles.backgroundViewWrapper, ]}>
+            <Video
                 source={{
-                  uri: image.includes(".jpg") ? image : "www.go.com"
+                uri: editCampaign ? "http://" + campaign.media : image
                 }}
-              />
+                shouldPlay
+                isLooping
+                isMuted
+                resizeMode="cover"
+                style={styles.videoBackgroundViewWrapper}
+            />
+            </View>
+        )}
+                        <ImageBackground
+            // imageStyle={{ opacity: 0.3 }}
+            style={[styles.imageBackgroundViewWrapper, this.state.sidemenustate ? {
+                borderTopRightRadius: 30
+            }: {
 
-              <Content
-                scrollEnabled={false}
-                contentContainerStyle={styles.contentContainer}
-              >
-                {!editCampaign ? (
-                  <>
-                    <Text style={styles.subHeadings}>Budget</Text>
-                    <View style={styles.moneyInputContainer}>
-                      <TextInputMask
-                        disableFullscreenUI={this.props.loading}
-                        // disableFullscreenUI={this.props.loading}
-                        includeRawValueInChangeText
-                        type={"money"}
-                        options={{
-                          precision: 0,
-                          delimiter: ",",
-                          unit: "$"
-                        }}
-                        // disabled={editCampaign || this.props.loading}
-                        maxLength={8}
-                        // defaultValue={this.state.value + ""}
-                        value={this.state.value + ""}
-                        onChangeText={(value, rawText) => {
-                          if (!editCampaign) this._handleBudget(value, rawText);
-                        }}
-                        style={styles.budget}
-                        ref={ref => (this.moneyField = ref)}
-                      />
-                      <Text style={styles.budgetInstructionText}>
-                        Tap to enter manually
-                      </Text>
-                    </View>
-                    <View style={styles.sliderContainer}>
-                      <View style={styles.budgetSliderText}>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.minValueBudget}
-                        </Text>
-                        <Text style={globalStyles.whiteTextColor}>
-                          ${this.state.maxValueBudget}
-                        </Text>
-                      </View>
+            }]}
+            source={{
+            uri: image.includes(".jpg") ? image : "www.go.com"
+            }}
+        >
+        <SafeAreaView
+            style={[styles.safeArea, 
+                // {backgroundColor: this.state.sidemenustate ? "transparent" : 'rgba(0,0,0,0.75)'}
+            ]}
+            forceInset={{ bottom: "never", top: "always" }}
+        >
+            <NavigationEvents
+            onDidFocus={() => {
+                if (this.props.navigation.getParam("editCampaign", false)) {
+                Segment.screenWithProperties("Snap Ad Targetting Update", {
+                    category: "Campaign Update"
+                });
+                } else {
+                Segment.screenWithProperties("Snap Ad Targetting", {
+                    category: "Campaign Creation"
+                });
+                Segment.trackWithProperties("Viewed Checkout Step", {
+                    checkout_id: this.props.campaign_id,
+                    step: 4
+                });
+                }
+            }}
+            />
+            <Container style={styles.mainContainer}>
+            
+                <Container style={styles.container}>
 
-                      <Slider
-                        thumbTintColor={globalColors.orange}
-                        disabled={editCampaign || this.props.loading}
-                        style={styles.slider}
-                        step={10}
-                        minimumValue={this.state.minValueBudget}
-                        maximumValue={this.state.maxValueBudget}
-                        value={
-                          this.state.campaignInfo.lifetime_budget_micro <
-                          90000000000000000000
-                            ? this.state.campaignInfo.lifetime_budget_micro
-                            : 1500
-                        }
-                        onValueChange={debounce(
-                          this.onSelectedBudgetChange,
-                          60
-                        )}
-                        maximumTrackTintColor={globalColors.white}
-                        minimumTrackTintColor={globalColors.purple}
-                      />
-                    </View>
-                  </>
-                ) : (
-                  <View style={styles.sliderPlaceHolder}>
-                    <Text style={styles.subHeadings}>
-                      Editing budget and duration {"\n"} is currently
-                      unavailable.
-                    </Text>
-                  </View>
-                )}
-                <Text style={styles.subHeadings}>
-                  Who would you like to reach?
-                </Text>
-                <ScrollView
-                  ref={ref => (this.scrollView = ref)}
-                  indicatorStyle="white"
-                  style={styles.targetList}
+                <CustomHeader
+                closeButton={false}
+                segment={{
+                    str: "Ad Details Back Button",
+                    obj: {
+                    businessname: this.props.mainBusiness.businessname
+                    }
+                }}
+                actionButton={
+                    editCampaign
+                    ? () => this.props.navigation.navigate("CampaignDetails")
+                    : undefined
+                }
+                navigation={editCampaign ? undefined : this.props.navigation}
+                title="Campaign details"
+                />
+                
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.contentContainer}
                 >
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("gender");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <GenderIcon width={25} height={25} style={styles.icon} />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Gender</Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            gender.find(r => {
-                              if (
-                                r.value ===
-                                this.state.campaignInfo.targeting
-                                  .demographics[0].gender
-                              )
-                                return r;
-                            }).label
-                          }
+                    {!editCampaign ? (
+                    <>
+                        <Text style={styles.subHeadings}>Budget</Text>
+                        <View style={styles.moneyInputContainer}>
+                        <TextInputMask
+                            disableFullscreenUI={this.props.loading}
+                            // disableFullscreenUI={this.props.loading}
+                            includeRawValueInChangeText
+                            type={"money"}
+                            options={{
+                            precision: 0,
+                            delimiter: ",",
+                            unit: "$"
+                            }}
+                            // disabled={editCampaign || this.props.loading}
+                            maxLength={8}
+                            // defaultValue={this.state.value + ""}
+                            value={this.state.value + ""}
+                            onChangeText={(value, rawText) => {
+                            if (!editCampaign) this._handleBudget(value, rawText);
+                            }}
+                            style={styles.budget}
+                            ref={ref => (this.moneyField = ref)}
+                        />
+                        <Text style={styles.budgetInstructionText}>
+                            Tap to enter manually
                         </Text>
-                      </View>
-                    </View>
-                    <View style={globalStyles.column}>
-                      {this.state.campaignInfo.targeting.demographics[0]
-                        .gender === "" ||
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("age");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <AgeIcon
-                        fill={globalColors.orange}
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Age</Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            this.state.campaignInfo.targeting.demographics[0]
-                              .min_age
-                          }{" "}
-                          -{" "}
-                          {this.state.campaignInfo.targeting.demographics[0]
-                            .max_age === 35
-                            ? "35+"
-                            : this.state.campaignInfo.targeting.demographics[0]
-                                .max_age}
-                        </Text>
-                      </View>
-                    </View>
+                        </View>
+                        <View style={styles.sliderContainer}>
+                        <View style={styles.budgetSliderText}>
+                            <Text style={globalStyles.whiteTextColor}>
+                            ${this.state.minValueBudget}
+                            </Text>
+                            <Text style={globalStyles.whiteTextColor}>
+                            ${this.state.maxValueBudget}
+                            </Text>
+                        </View>
 
-                    {this.state.campaignInfo.targeting.demographics[0]
-                      .max_age ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
+                        <Slider
+                            thumbTintColor={globalColors.orange}
+                            disabled={editCampaign || this.props.loading}
+                            style={styles.slider}
+                            step={10}
+                            minimumValue={this.state.minValueBudget}
+                            maximumValue={this.state.maxValueBudget}
+                            value={
+                            this.state.campaignInfo.lifetime_budget_micro <
+                            90000000000000000000
+                                ? this.state.campaignInfo.lifetime_budget_micro
+                                : 1500
+                            }
+                            onValueChange={debounce(
+                            this.onSelectedBudgetChange,
+                            60
+                            )}
+                            maximumTrackTintColor={globalColors.white}
+                            minimumTrackTintColor={globalColors.purple}
+                        />
+                        </View>
+                    </>
                     ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("selectors", "countries");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Country</Text>
-                        <Text style={styles.menudetails}>
-                          {this.state.countryName}
+                    <View style={styles.sliderPlaceHolder}>
+                        <Text style={styles.subHeadings}>
+                        Editing budget and duration {"\n"} is currently
+                        unavailable.
                         </Text>
-                      </View>
                     </View>
-                    {this.state.campaignInfo.targeting.geos[0].country_code ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
                     )}
-                  </TouchableOpacity>
-
-                  {this.state.showRegions && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        this._renderSideMenu("regions");
-                      }}
-                      style={styles.targetTouchable}
+                    <Text style={styles.subHeadings}>
+                    Who would you like to reach?
+                    </Text>
+                    <ScrollView
+                    ref={ref => (this.scrollView = ref)}
+                    indicatorStyle="white"
+                    style={styles.targetList}
                     >
-                      <View style={[globalStyles.row, styles.flex]}>
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("gender");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={globalStyles.row}>
+                        <GenderIcon width={25} height={25} style={styles.icon} />
+
+                        <View style={globalStyles.column}>
+                            <Text style={styles.menutext}>Gender</Text>
+                            <Text style={styles.menudetails}>
+                            {
+                                gender.find(r => {
+                                if (
+                                    r.value ===
+                                    this.state.campaignInfo.targeting
+                                    .demographics[0].gender
+                                )
+                                    return r;
+                                }).label
+                            }
+                            </Text>
+                        </View>
+                        </View>
+                        <View style={globalStyles.column}>
+                        {this.state.campaignInfo.targeting.demographics[0]
+                            .gender === "" ||
+                        this.state.campaignInfo.targeting.demographics[0]
+                            .gender ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                        )}
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("age");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={globalStyles.row}>
+                        <AgeIcon
+                            fill={globalColors.orange}
+                            width={25}
+                            height={25}
+                            style={styles.icon}
+                        />
+                        <View style={globalStyles.column}>
+                            <Text style={styles.menutext}>Age</Text>
+                            <Text style={styles.menudetails}>
+                            {
+                                this.state.campaignInfo.targeting.demographics[0]
+                                .min_age
+                            }{" "}
+                            -{" "}
+                            {this.state.campaignInfo.targeting.demographics[0]
+                                .max_age === 35
+                                ? "35+"
+                                : this.state.campaignInfo.targeting.demographics[0]
+                                    .max_age}
+                            </Text>
+                        </View>
+                        </View>
+
+                        {this.state.campaignInfo.targeting.demographics[0]
+                        .max_age ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                        )}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("selectors", "countries");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={globalStyles.row}>
                         <LocationIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
+                            width={25}
+                            height={25}
+                            style={styles.icon}
+                        />
+
+                        <View style={globalStyles.column}>
+                            <Text style={styles.menutext}>Country</Text>
+                            <Text style={styles.menudetails}>
+                            {this.state.countryName}
+                            </Text>
+                        </View>
+                        </View>
+                        {this.state.campaignInfo.targeting.geos[0].country_code ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                        )}
+                    </TouchableOpacity>
+
+                    {this.state.showRegions && (
+                        <TouchableOpacity
+                        onPress={() => {
+                            this._renderSideMenu("regions");
+                        }}
+                        style={styles.targetTouchable}
+                        >
+                        <View style={[globalStyles.row, styles.flex]}>
+                            <LocationIcon
+                            width={25}
+                            height={25}
+                            style={styles.icon}
+                            />
+                            <View style={[globalStyles.column, styles.flex]}>
+                            <Text style={styles.menutext}>Regions</Text>
+                            <Text style={styles.menudetails} numberOfLines={1}>
+                                {regions_names}
+                            </Text>
+                            </View>
+                        </View>
+
+                        {this.state.campaignInfo.targeting.geos[0].region_id
+                            .length !== 0 ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                        )}
+                        </TouchableOpacity>
+                    )}
+
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("languages");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={[globalStyles.row, styles.flex]}>
+                        <LanguageIcon
+                            width={25}
+                            height={25}
+                            style={styles.icon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Regions</Text>
-                          <Text style={styles.menudetails} numberOfLines={1}>
-                            {regions_names}
-                          </Text>
+                            <Text style={styles.menutext}>Language</Text>
+                            <Text numberOfLines={1} style={styles.menudetails}>
+                            {languages_names}
+                            </Text>
                         </View>
-                      </View>
+                        </View>
 
-                      {this.state.campaignInfo.targeting.geos[0].region_id
+                        {this.state.campaignInfo.targeting.demographics[0].languages
                         .length !== 0 ? (
                         <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
+                        ) : (
                         <PlusCircleIcon width={25} height={25} />
-                      )}
+                        )}
                     </TouchableOpacity>
-                  )}
 
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("languages");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <LanguageIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Language</Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {languages_names}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.demographics[0].languages
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this.state.campaignInfo.targeting.geos[0].country_code ===
-                      ""
-                        ? showMessage({
-                            message: "Please select a country first",
-                            position: "top",
-                            type: "warning"
-                          })
-                        : this._renderSideMenu("selectors", "interests");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <InterestsIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Interests</Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {interests_names}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={globalStyles.column}>
-                      {this.state.campaignInfo.targeting.interests[0]
-                        .category_id.length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("OS");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <OperatingSystemIcon
-                        width={25}
-                        height={25}
-                        fill={globalColors.orange}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Operating System</Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            OSType.find(r => {
-                              if (
-                                r.value ===
-                                this.state.campaignInfo.targeting.devices[0]
-                                  .os_type
-                              )
-                                return r;
-                            }).label
-                          }
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.devices[0].os_type ===
-                      "" ||
-                    this.state.campaignInfo.targeting.devices[0].os_type ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-                  {this.state.campaignInfo.targeting.devices[0].os_type !==
-                    "" && (
                     <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "deviceVersions");
-                      }}
-                      style={styles.targetTouchable}
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this.state.campaignInfo.targeting.geos[0].country_code ===
+                        ""
+                            ? showMessage({
+                                message: "Please select a country first",
+                                position: "top",
+                                type: "warning"
+                            })
+                            : this._renderSideMenu("selectors", "interests");
+                        }}
+                        style={styles.targetTouchable}
                     >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <Icon
-                          name="versions"
-                          type="Octicons"
-                          width={25}
-                          height={25}
-                          style={{
-                            color: globalColors.orange,
-                            right: 2
-                          }}
+                        <View style={[globalStyles.row, styles.flex]}>
+                        <InterestsIcon
+                            width={25}
+                            height={25}
+                            style={styles.icon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>OS Versions</Text>
-                          <Text style={styles.menudetails}>
-                            {this.state.campaignInfo.targeting.devices[0]
-                              .os_version_min +
-                              ", " +
-                              this.state.campaignInfo.targeting.devices[0]
-                                .os_version_max}
-                          </Text>
+                            <Text style={styles.menutext}>Interests</Text>
+                            <Text numberOfLines={1} style={styles.menudetails}>
+                            {interests_names}
+                            </Text>
                         </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.devices[0]
-                        .os_version_min !== "" ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
+                        </View>
+                        <View style={globalStyles.column}>
+                        {this.state.campaignInfo.targeting.interests[0]
+                            .category_id.length !== 0 ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                        )}
+                        </View>
                     </TouchableOpacity>
-                  )}
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("selectors", "deviceBrands");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <DeviceMakeIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                        fill={globalColors.orange}
-                      />
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("OS");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={[globalStyles.row, styles.flex]}>
+                        <OperatingSystemIcon
+                            width={25}
+                            height={25}
+                            fill={globalColors.orange}
+                            style={styles.icon}
+                        />
+                        <View style={[globalStyles.column, styles.flex]}>
+                            <Text style={styles.menutext}>Operating System</Text>
+                            <Text style={styles.menudetails}>
+                            {
+                                OSType.find(r => {
+                                if (
+                                    r.value ===
+                                    this.state.campaignInfo.targeting.devices[0]
+                                    .os_type
+                                )
+                                    return r;
+                                }).label
+                            }
+                            </Text>
+                        </View>
+                        </View>
 
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Device Make</Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {
-                            this.state.campaignInfo.targeting.devices[0]
-                              .marketing_name
-                          }
-                        </Text>
-                      </View>
-                    </View>
+                        {this.state.campaignInfo.targeting.devices[0].os_type ===
+                        "" ||
+                        this.state.campaignInfo.targeting.devices[0].os_type ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                        )}
+                    </TouchableOpacity>
+                    {this.state.campaignInfo.targeting.devices[0].os_type !==
+                        "" && (
+                        <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                            this._renderSideMenu("selectors", "deviceVersions");
+                        }}
+                        style={styles.targetTouchable}
+                        >
+                        <View style={[globalStyles.row, styles.flex]}>
+                            <Icon
+                            name="versions"
+                            type="Octicons"
+                            width={25}
+                            height={25}
+                            style={{
+                                color: globalColors.orange,
+                                right: 2
+                            }}
+                            />
+                            <View style={[globalStyles.column, styles.flex]}>
+                            <Text style={styles.menutext}>OS Versions</Text>
+                            <Text style={styles.menudetails}>
+                                {this.state.campaignInfo.targeting.devices[0]
+                                .os_version_min +
+                                ", " +
+                                this.state.campaignInfo.targeting.devices[0]
+                                    .os_version_max}
+                            </Text>
+                            </View>
+                        </View>
 
-                    {this.state.campaignInfo.targeting.devices[0].marketing_name
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
+                        {this.state.campaignInfo.targeting.devices[0]
+                            .os_version_min !== "" ? (
+                            <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                            <PlusCircleIcon width={25} height={25} />
+                        )}
+                        </TouchableOpacity>
                     )}
-                  </TouchableOpacity>
-                </ScrollView>
+                    <TouchableOpacity
+                        disabled={this.props.loading}
+                        onPress={() => {
+                        this._renderSideMenu("selectors", "deviceBrands");
+                        }}
+                        style={styles.targetTouchable}
+                    >
+                        <View style={[globalStyles.row, styles.flex]}>
+                        <DeviceMakeIcon
+                            width={25}
+                            height={25}
+                            style={styles.icon}
+                            fill={globalColors.orange}
+                        />
 
-                {!editCampaign && hp(100) < 800 && (
-                  <Text
-                    onPress={() => {
-                      this.scrollView.scrollToEnd({ animated: true });
+                        <View style={[globalStyles.column, styles.flex]}>
+                            <Text style={styles.menutext}>Device Make</Text>
+                            <Text numberOfLines={1} style={styles.menudetails}>
+                            {
+                                this.state.campaignInfo.targeting.devices[0]
+                                .marketing_name
+                            }
+                            </Text>
+                        </View>
+                        </View>
 
-                      this.setState({ advance: !this.state.advance });
-                    }}
-                    style={styles.moreOptionsText}
-                  >
-                    Scroll for more options+
-                  </Text>
-                )}
+                        {this.state.campaignInfo.targeting.devices[0].marketing_name
+                        .length !== 0 ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                        ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                        )}
+                    </TouchableOpacity>
+                    </ScrollView>
 
-                <ReachBar
-                  loading={this.props.loading}
-                  advance={this.state.advance}
-                  _handleSubmission={this._handleSubmission}
-                />
-              </Content>
+                    {!editCampaign && hp(100) < 800 && (
+                    <Text
+                        onPress={() => {
+                        this.scrollView.scrollToEnd({ animated: true });
+
+                        this.setState({ advance: !this.state.advance });
+                        }}
+                        style={styles.moreOptionsText}
+                    >
+                        Scroll for more options+
+                    </Text>
+                    )}
+
+                    <ReachBar
+                    loading={this.props.loading}
+                    advance={this.state.advance}
+                    _handleSubmission={this._handleSubmission}
+                    />
+                </Content>
+                </Container>
             </Container>
-          </Sidemenu>
-        </Container>
-        {/* <Modal isVisible={this.props.loading}>
-          <LoadingScreen top={50} />
-        </Modal> */}
-      </SafeAreaView>
+            {/* <Modal isVisible={this.props.loading}>
+            <LoadingScreen top={50} />
+            </Modal> */}
+        </SafeAreaView>
+        </ImageBackground>
+
+    </Sidemenu>
+
+   
     );
   }
 }

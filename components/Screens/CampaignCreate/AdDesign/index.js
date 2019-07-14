@@ -39,6 +39,8 @@ import * as actionCreators from "../../../../store/actions";
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+
 
 // Style
 import styles from "./styles";
@@ -55,6 +57,7 @@ import PenIconBrand from "./PenIconBrand";
 import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
 import { globalColors } from "../../../../GlobalStyles";
+import isUndefined from "lodash/isUndefined";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -100,9 +103,7 @@ class AdDesign extends Component {
       heightComponent: 0
     };
     this.params = this.props.navigation.state.params;
-    this.rejected =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.rejected;
+    this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
   handleBackButton = () => {
@@ -149,6 +150,7 @@ class AdDesign extends Component {
 
     let rep = this.state.campaignInfo;
     if (
+      this.props.data &&
       Object.keys(this.state.campaignInfo)
         .map(key => {
           if (this.props.data.hasOwnProperty(key)) return true;
@@ -339,12 +341,14 @@ class AdDesign extends Component {
             ...newData.campaignInfo,
             insta_handle: whatsAppCampaign.insta_handle,
             whatsappnumber: whatsAppCampaign.whatsappnumber,
+            weburl: whatsAppCampaign.weburl,
             callnumber: whatsAppCampaign.callnumber
           }
         };
         this.props.save_campaign_info({
           insta_handle: whatsAppCampaign.insta_handle,
           whatsappnumber: whatsAppCampaign.whatsappnumber,
+          weburl: whatsAppCampaign.weburl,
           callnumber: whatsAppCampaign.callnumber
         });
       }
@@ -489,7 +493,6 @@ class AdDesign extends Component {
                 //   .catch(error => {
                 //     console.log("getAlbumAsync err", error);
                 //   });
-
                 this.setState({
                   directory: "/ImageManipulator/"
                 });
@@ -555,7 +558,7 @@ class AdDesign extends Component {
                   position: "top",
                   type: "warning"
                 });
-                console.log("ImageManipulator err", error);
+                // console.log("ImageManipulator err", error);
                 return;
               });
             return;
@@ -580,7 +583,7 @@ class AdDesign extends Component {
           ) {
             this.setState({
               imageError:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               image: null,
               type: ""
               // videoIsLoading: false
@@ -592,11 +595,10 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             showMessage({
               message:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
               position: "top",
               type: "warning"
             });
-
             return;
           } else {
             this.setState({
@@ -651,8 +653,9 @@ class AdDesign extends Component {
             this.onToggleModal(false);
             return;
           } else if (
-            Math.floor(result.width / 9) === Math.floor(result.height / 16) ||
-            Math.floor(result.height / 9) === Math.floor(result.width / 16)
+            result.width >= 1080 &&
+            result.height >= 1920 &&
+            Math.floor(result.width / 9) === Math.floor(result.height / 16)
           ) {
             this.setState({
               image: result.uri,
@@ -713,7 +716,7 @@ class AdDesign extends Component {
       }
     } catch (error) {
       this.onToggleModal(false);
-      console.log("error image pick", error);
+      // console.log("error image pick", error);
     }
 
     //   } else if (result.width < 1080 || result.height < 1920) {
@@ -794,7 +797,7 @@ class AdDesign extends Component {
 
     if (this.state.campaignInfo.insta_handle) {
       body.append("insta_handle", this.state.campaignInfo.insta_handle);
-      body.append("weburl", this.state.campaignInfo.attachment.url);
+      body.append("weburl", this.state.campaignInfo.weburl);
       body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
       body.append("callnumber", this.state.campaignInfo.callnumber);
     }
@@ -913,6 +916,19 @@ class AdDesign extends Component {
           ? { image: this.state.image }
           : { cover: this.props.data.cover, logo: this.props.data.logo };
 
+//     )
+//       this.props.navigation.push("AdDesignReview", {
+//         image: this.state.image,
+//         type: this.state.type,
+//         call_to_action: this.state.campaignInfo.call_to_action.label,
+//         headline: this.state.campaignInfo.headline,
+//         brand_name: this.state.campaignInfo.brand_name,
+//         destination: this.state.campaignInfo.destination,
+//         icon_media_url: this.state.campaignInfo.attachment.icon_media_url,
+//         adType: this.props.adType,
+//         collectionAdMedia: this.props.collectionAdMedia
+//       });
+//   };
       this.props.navigation.push(
         this.props.adType === "StoryAd"
           ? "StoryAdDesignReview"
@@ -950,7 +966,18 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
-      this.props.adType !== "StoryAd" &&
+      this.props.adType === "CollectionAd" &&
+      this.state.campaignInfo.attachment === "BLANK" &&
+      this.state.campaignInfo.call_to_action.label === "BLANK"
+    ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else if (
+      this.props.adType === "SnapAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
         this.state.campaignInfo.call_to_action.label === "BLANK") ||
@@ -958,6 +985,11 @@ class AdDesign extends Component {
           ad.hasOwnProperty("destination")
         ))
     ) {
+      showMessage({
+        message: "Choose A Swipe Up Destination",
+        position: "top",
+        type: "warning"
+      });
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
       swipeUpError = null;
@@ -1156,6 +1188,7 @@ class AdDesign extends Component {
   cancelUpload = () => {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
+
   toggleAdSelection = () => {
     this.state.storyAdCards.storyAdSelected
       ? this.setState({
@@ -1167,6 +1200,91 @@ class AdDesign extends Component {
         })
       : this.props.navigation.goBack();
   };
+ 
+  collectionComp = i => {
+    // console.log("i", this.props.collectionAdMedia[i]);
+    return (
+        <View style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <View style={{
+            backgroundColor: "#FF9D00",
+            width: hp(5) < 30 ? 60  : 72,
+            // width: 70,
+            paddingVertical: 5,
+            paddingHorizontal: 5,
+            height: 25,
+            borderRadius: 20,
+            marginBottom: -15,
+            zIndex: 1,
+            alignItems: "center",
+            // flex: 1
+
+        }}>
+            <Text style={{fontSize: 10, textAlign:"center", width: "100%", fontFamily: "montserrat-bold", color: "#FFF"}}>
+                {`Product ${i + 1}`}
+            </Text>
+        </View>
+      <TouchableOpacity
+        style={{
+            backgroundColor: this.props.collectionAdMedia[i] ? ""  : "rgba(0, 0, 0, 0.75)",
+            alignSelf: "center",
+            borderColor: "#FF9D00",
+            borderWidth: 2,
+            // width: 72,
+            width: hp(5) < 30 ? 60  : 72,
+            height: hp(5) < 30 ? 60  : 72,
+            // height: hp(9.5),
+            borderRadius: 20,
+            // paddingVertical: 2,
+            // paddingHorizontal: 2,
+            alignItems: "center",
+            justifyContent: "center"
+        }}
+        onPress={() => {
+          this.props.navigation.push("CollectionMedia", {
+            collection_order: i
+          });
+        }}
+      >
+        {!isUndefined(this.props.collectionAdMedia[i]) ?  (
+          <Image
+            style={{
+              borderRadius: 20,
+            //   overflow: "hidden",
+              alignSelf: "center",
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+            //   zIndex: 0,
+              alignItems: "center"
+              // justifyContent: "center"
+            }}
+            source={{ uri: this.props.collectionAdMedia[i].localUri }}
+            resizeMode="cover"
+          />
+        ): <Button style={{
+            width: hp(5) <  30? 20:  30,
+            height: hp(5) <  30? 20:  30,
+            alignSelf:"center",
+            borderRadius: hp(5) <  30? 20:  30,
+            backgroundColor: "#FF9D00"
+            }}
+            onPress={() => {
+                this.props.navigation.push("CollectionMedia", {
+                  collection_order: i
+                });}}
+            >
+                <PlusCircle width={hp(5) <  30? 20:  30} height={hp(5) <  30? 35:  30} />
+            </Button>
+        }
+        {!isUndefined(this.props.collectionAdMedia[i]) &&
+             <View style={{position: "absolute", bottom: 6, right: 6}}>
+                <PenIcon width={15} height={15}/>
+            </View>}
+      </TouchableOpacity>
+      </View>
+    );
+  };
+
   render() {
     console.log(this.state.storyAdCards.numOfAds);
     // console.log(this.state.storyAdCards.snapAdsCards);
@@ -1186,11 +1304,12 @@ class AdDesign extends Component {
       brand_name,
       headline,
       destination,
-      attachment
+      attachment, call_to_action
     } = this.state.campaignInfo;
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
+        rejected={this.rejected}
         data={this.props.data}
         changeBusinessName={this.changeBusinessName}
         changeHeadline={this.changeHeadline}
@@ -1201,6 +1320,102 @@ class AdDesign extends Component {
         mainBusiness={this.props.mainBusiness}
       />
     ));
+    {!this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+                        <SwipeUpComponent
+                            _changeDestination={this._changeDestination}
+                            navigation={this.props.navigation}
+                            objective={this.state.campaignInfo.objective}
+                            destination={destination}
+                            attachment={attachment}
+                            call_to_action_label={call_to_action.label}
+                        />
+                      )}
+    let swipeUpComp =
+      this.props.adType === "SnapAd" ? (
+        !this.rejected &&
+                      "BRAND_AWARENESS" !== this.state.objective && (
+          <SwipeUpComponent
+            _changeDestination={this._changeDestination}
+            navigation={this.props.navigation}
+            objective={this.state.campaignInfo.objective}
+            destination={destination}
+            attachment={attachment}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
+            adType={this.props.adType}
+            image={image}
+            call_to_action_label={call_to_action.label}
+          />
+        )
+      ) : (
+        <SwipeUpComponent
+            _changeDestination={this._changeDestination}
+            navigation={this.props.navigation}
+            objective={this.state.campaignInfo.objective}
+            destination={destination}
+            attachment={attachment}
+            collectionAdLinkForm={this.props.collectionAdLinkForm}
+            adType={this.props.adType}
+            call_to_action_label={call_to_action.label}
+        />
+      );
+
+    let collection = (
+      <View
+        style={styles.collectionView}
+      >
+        {this.collectionComp(0)}
+        {this.collectionComp(1)}
+        {this.collectionComp(2)}
+        {this.collectionComp(3)}
+      </View>
+    );
+
+
+    let blankView = <View style={styles.blankView} />;
+
+    let submitButton = () => {
+      if (this.props.adType === "CollectionAd") {
+        if (
+          this.props.collectionAdMedia.length === 4 &&
+          !this.props.collectionAdMedia.some(c => isUndefined(c))
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+        return;
+      } else {
+        if (this.state.objective === "BRAND_AWARENESS") {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        } else if (
+          this.state.objective !== "BRAND_AWARENESS" &&
+          isNull(this.state.swipeUpError)
+        ) {
+          return (
+            <TouchableOpacity
+              onPress={this._handleSubmission}
+              style={styles.button}
+            >
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            </TouchableOpacity>
+          );
+        }
+      }
+      return;
+    };
 
     return (
       <SafeAreaView
@@ -1261,10 +1476,8 @@ class AdDesign extends Component {
                       style={styles.video}
                     />
 
-                    {inputFields}
-                    {//this.props.adType === "StoryAd" &&
-                    !this.state.storyAdCards.storyAdSelected ? (
-                      // this.props.adType === "StoryAd"
+                    {inputFields}                    
+                {!this.state.storyAdCards.storyAdSelected ? (
                       <SnapAds
                         video={true}
                         openUploadVideo={this.openUploadVideo}
@@ -1282,16 +1495,23 @@ class AdDesign extends Component {
                         image={this.state.image}
                       />
                     )}
-                    {"BRAND_AWARENESS" !==
-                      this.state.objective.toLowerCase() && (
-                      <SwipeUpComponent
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+
+                    {swipeUpComp}
+                    {this.props.adType === "CollectionAd" && collection}
+                  </View>
+                ) : !image ? (
+                  <View style={styles.placeholder}>
+                    {blankView}
+
+                    {inputFields}
+                    <MediaButton
+                      setMediaModalVisible={this.setMediaModalVisible}
+                      image={this.state.image}
+                    />
+
+                    {swipeUpComp}
+                    {this.props.adType === "CollectionAd" && collection}
+
                   </View>
                 ) : (
                   // !image ? (
@@ -1333,7 +1553,6 @@ class AdDesign extends Component {
                     {inputFields}
                     {this.props.adType === "StoryAd" &&
                     !this.state.storyAdCards.storyAdSelected ? (
-                      // this.props.adType === "StoryAd"
                       <SnapAds
                         openUploadVideo={this.openUploadVideo}
                         addSnapCard={this.addSnapCard}
@@ -1351,23 +1570,10 @@ class AdDesign extends Component {
                         image={this.state.image}
                       />
                     )}
-                    {((this.props.adType !== "StoryAd" &&
-                      "BRAND_AWARENESS" !==
-                        this.state.objective.toLowerCase()) ||
-                      (this.props.adType === "StoryAd" &&
-                        this.state.storyAdCards.storyAdSelected)) && (
-                      <SwipeUpComponent
-                        selectedStoryAd={
-                          this.state.storyAdCards.selectedStoryAd
-                        }
-                        adType={this.props.adType}
-                        _changeDestination={this._changeDestination}
-                        navigation={this.props.navigation}
-                        objective={this.state.objective}
-                        destination={destination}
-                        attachment={attachment}
-                      />
-                    )}
+                    {swipeUpComp}
+
+                    {this.props.adType === "CollectionAd" && collection}
+
                   </View>
                 )}
               </View>
@@ -1393,7 +1599,9 @@ class AdDesign extends Component {
               this.state.storyAdCards.selectedStoryAd.image) ||
             this.state.storyAdCards.numOfAds >= 3 ? (
               <View style={styles.footerButtonsContainer}>
-                {!this.state.storyAdCards.storyAdSelected && (
+
+{this.props.adType === "StoryAd" ? 
+!this.state.storyAdCards.storyAdSelected && (
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => this.perviewHandler()}
@@ -1406,20 +1614,18 @@ class AdDesign extends Component {
                       <EyeIcon width={wp(24)} height={hp(8)} />
                     )}
                   </TouchableOpacity>
-                )}
-                {this.state.objective === "BRAND_AWARENESS" &&
-                  this.props.adType !== "StoryAd" && (
-                    <TouchableOpacity
-                      onPress={this._handleSubmission}
-                      style={styles.button}
-                    >
-                      <ForwardButton width={wp(24)} height={hp(8)} />
-                    </TouchableOpacity>
-                  )}
-                {showContinueBtn && (
-                  //this.props.adType !== "StoryAd" &&
-                  // (this.state.objective !== "BRAND_AWARENESS" &&
-                  //   isNull(this.state.swipeUpError))
+                )
+
+:(<TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.perviewHandler()}
+                >
+                  <EyeIcon width={wp(24)} height={hp(8)} />
+                </TouchableOpacity>)}
+
+
+                {this.props.adType === "StoryAd"?  showContinueBtn && (
+                 
                   <TouchableOpacity
                     onPress={this._handleSubmission}
                     style={styles.button}
@@ -1438,7 +1644,8 @@ class AdDesign extends Component {
                       <ForwardButton width={wp(24)} height={hp(8)} />
                     )}
                   </TouchableOpacity>
-                )}
+                ):submitButton()}
+
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
@@ -1516,7 +1723,10 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   loading: state.campaignC.loadingDesign,
   videoUrlLoading: state.campaignC.videoUrlLoading,
-  videoUrl: state.campaignC.videoUrl
+  videoUrl: state.campaignC.videoUrl,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  adType: state.campaignC.adType,
+  collectionAdMedia: state.campaignC.collectionAdMedia
 });
 
 const mapDispatchToProps = dispatch => ({

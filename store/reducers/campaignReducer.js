@@ -31,6 +31,11 @@ const initialState = {
   loadingStoryAdsArray: [],
   coverLoading: false,
   storyAdCover: null
+  adType: "SnapAd",
+  collectionAdLinkForm: 0,
+  collectionLoader: false,
+  collectionAdMedia: [],
+  weburlAvalible: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,7 +45,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         adType: action.payload
       };
+    case actionTypes.SET_COLLECTION_AD_LINK_FORM:
+      return {
+        ...state,
+        collectionAdLinkForm: action.payload
+      };
     case actionTypes.SET_AD_OBJECTIVE:
+      console.log("set objective", state.data);
       return {
         ...state,
         campaign_id: action.payload.campaign_id,
@@ -59,8 +70,27 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingObj: false
       };
-
+    case actionTypes.SET_AD_LOADING_COLLECTION_MEDIA:
+      return {
+        ...state,
+        collectionLoader: action.payload
+      };
+    case actionTypes.SET_AD_COLLECTION_MEDIA:
+      let arr = state.collectionAdMedia;
+      arr[action.payload.collection_order] = action.payload;
+      return {
+        ...state,
+        collectionLoader: false,
+        collectionAdMedia: [...arr]
+      };
+    case actionTypes.ERROR_SET_AD_COLLECTION_MEDIA:
+      return {
+        ...state,
+        collectionLoader: false
+      };
     case actionTypes.SET_AD_DESIGN:
+      console.log("set design", state.data);
+
       return {
         ...state,
         data: {
@@ -320,6 +350,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         languagesList: []
       };
+    case actionTypes.RESET_COLLECTIONS:
+      return {
+        ...state,
+        collectionLoader: false,
+        collectionAdMedia: []
+      };
     case actionTypes.RESET_CAMPAING_INFO:
       return {
         ...state,
@@ -337,7 +373,15 @@ const reducer = (state = initialState, action) => {
         storyAdsArray: [],
         loadingStoryAdsArray: [],
         coverLoading: false,
-        storyAdCover: null
+        storyAdCover: null,
+        collectionAdLinkForm: 0,
+        collectionLoader: false,
+        collectionAdMedia: []
+      };
+    case actionTypes.VERIFY_BUSINESSURL:
+      return {
+        ...state,
+        weburlAvalible: action.payload.success
       };
     default:
       return state;

@@ -61,8 +61,28 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   subtext: {
+    bottom: 5,
+
     alignSelf: "center",
+    width: 300,
     fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center"
+  },
+  url: {
+    alignSelf: "center",
+    fontFamily: "montserrat-light",
+    fontSize: 13,
+    color: "#fff"
+    // textAlign: "left"
+  },
+  subTitle: {
+    bottom: 5,
+    alignSelf: "center",
+    fontFamily: "montserrat-bold",
     fontSize: 14,
     paddingTop: 5,
     color: "#fff",
@@ -159,13 +179,13 @@ const styles = StyleSheet.create({
     borderColor: "#5D1CD8",
     alignSelf: "center",
     width: widthPercentageToDP(75),
-    height: 50
+    height: 40
   },
   inputtext: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
-    textAlign: "left",
+    textAlign: "center",
     color: "#fff"
   },
   callActionLabel: {
@@ -176,14 +196,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
   websiteContent: {
-    height: "100%",
     flex: 1,
-    display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center"
   },
-
+  whatsApp: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  },
   title: {
     textAlign: "center",
     color: "white",
@@ -211,7 +234,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   bottonViewWebsite: {
-    marginBottom: 40
+    marginBottom: 10
   },
   netLocStyle: {
     backgroundColor: "#5D1CD8",

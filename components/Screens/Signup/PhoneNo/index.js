@@ -199,7 +199,7 @@ class PhoneNo extends Component {
               value: number.split(this.phone.getCountryCode())[1]
             });
           }
-          this.props.changeFunction(number, this.phone.isValidNumber());
+          this.props.changeFunction && this.props.changeFunction(number, this.phone.isValidNumber());
         }}
         onPressFlag={this.onPressFlag}
         initialCountry="kw"
