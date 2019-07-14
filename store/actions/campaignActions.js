@@ -234,8 +234,6 @@ export const ad_objective = (info, navigation) => {
     createBaseUrl()
       .post(`savecampaign`, info)
       .then(res => {
-        // console.log("objectives", res.data);
-
         return res.data;
       })
       .then(data => {
@@ -286,14 +284,6 @@ export const save_campaign_info = info => {
   };
 };
 
-export const set_AdType = adType => {
-  return dispatch => {
-    dispatch({
-      type: actionTypes.SET_AD_TYPE,
-      payload: adType
-    });
-  };
-};
 export const ad_design = (
   info,
   loading,

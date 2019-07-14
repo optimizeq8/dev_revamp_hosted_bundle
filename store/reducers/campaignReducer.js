@@ -30,7 +30,7 @@ const initialState = {
   storyAdsArray: [],
   loadingStoryAdsArray: [],
   coverLoading: false,
-  storyAdCover: null
+  storyAdCover: null,
   adType: "SnapAd",
   collectionAdLinkForm: 0,
   collectionLoader: false,
@@ -51,7 +51,6 @@ const reducer = (state = initialState, action) => {
         collectionAdLinkForm: action.payload
       };
     case actionTypes.SET_AD_OBJECTIVE:
-      console.log("set objective", state.data);
       return {
         ...state,
         campaign_id: action.payload.campaign_id,

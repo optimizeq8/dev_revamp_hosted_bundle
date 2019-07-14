@@ -1,172 +1,232 @@
 //Components
-import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback, Keyboard, BackHandler, ScrollView } from 'react-native';
-import { Content, Text, Item, Input, Container, Icon, Button } from 'native-base';
-import { BlurView, Segment } from 'expo';
-import { Modal } from 'react-native-paper';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import * as Animatable from 'react-native-animatable';
-import ObjectivesCard from '../../../MiniComponents/ObjectivesCard';
-import LowerButton from '../../../MiniComponents/LowerButton';
-import DateField from '../../../MiniComponents/DatePicker/DateFields';
-import Duration from './Duration';
-import CustomHeader from '../../../MiniComponents/Header';
-import LoadingScreen from '../../../MiniComponents/LoadingScreen';
-import ForwardLoading from '../../../MiniComponents/ForwardLoading';
+import React, { Component } from "react";
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  BackHandler,
+  ScrollView
+} from "react-native";
+import {
+  Content,
+  Text,
+  Item,
+  Input,
+  Container,
+  Icon,
+  Button
+} from "native-base";
+import { BlurView, Segment } from "expo";
+import { Modal } from "react-native-paper";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import * as Animatable from "react-native-animatable";
+import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
+import LowerButton from "../../../MiniComponents/LowerButton";
+import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import Duration from "./Duration";
+import CustomHeader from "../../../MiniComponents/Header";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
-import PhoneIcon from '../../../../assets/SVGs/Phone.svg';
-import BackdropIcon from '../../../../assets/SVGs/BackDropIcon';
+import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
 import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";
 
 // Style
-import styles from './styles';
-import GlobalStyles from '../../../../GlobalStyles';
+import styles from "./styles";
+import GlobalStyles from "../../../../GlobalStyles";
 //Data
-import ObjectiveData from '../../../Data/snapchatObjectives.data';
+import ObjectiveData from "../../../Data/snapchatObjectives.data";
 
 //Redux
-import { connect } from 'react-redux';
-import * as actionCreators from '../../../../store/actions';
+import { connect } from "react-redux";
+import * as actionCreators from "../../../../store/actions";
 
 //Functions
-import validateWrapper from '../../../../ValidationFunctions/ValidateWrapper';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 
 class AdObjective extends Component {
-	static navigationOptions = {
-		header: null,
-	};
-	constructor(props) {
-		super(props);
-		this.state = {
-			campaignInfo: {
-				ad_account_id: '',
-				name: '',
-				objective: '',
-				start_time: '',
-				end_time: '',
-			},
-			collectionAdLinkForm: 0,
+  static navigationOptions = {
+    header: null
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      campaignInfo: {
+        ad_account_id: "",
+        name: "",
+        objective: "",
+        start_time: "",
+        end_time: ""
+      },
+      collectionAdLinkForm: 0,
       playback_type: "LOOPING",
-			minValueBudget: 0,
-			maxValueBudget: 0,
-			modalVisible: false,
-			objectiveLabel: 'Select Objective',
-			inputN: false,
-			objectives: ObjectiveData[this.props.adType],
-			nameError: '',
-			objectiveError: '',
-			start_timeError: '',
-			end_timeError: '',
-		};
-	}
-	if (this.props.adType === 'CollectionAd') {
-			if (this.props.collectionAdLinkForm !== 0) {
-				this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-			} else {
-				this._handleCollectionAdLinkForm(1);
-			}
-		} else {
-			this._handleCollectionAdLinkForm(0);
-		}
+      minValueBudget: 0,
+      maxValueBudget: 0,
+      modalVisible: false,
+      objectiveLabel: "Select Objective",
+      inputN: false,
+      objectives: ObjectiveData[this.props.adType],
+      nameError: "",
+      objectiveError: "",
+      start_timeError: "",
+      end_timeError: ""
+    };
+  }
+  componentDidMount() {
+    if (this.props.adType === "CollectionAd") {
+      if (this.props.collectionAdLinkForm !== 0) {
+        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
+      } else {
+        this._handleCollectionAdLinkForm(1);
+      }
+    } else {
+      this._handleCollectionAdLinkForm(0);
+    }
 
-		this.setState({
-			campaignInfo: {
-				...this.state.campaignInfo,
-				ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-				businessid: this.props.mainBusiness.businessid,
-			},
-		});
-		if (this.props.data) {
-			rep = {
-				...this.state.campaignInfo,
-				ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-				businessid: this.props.mainBusiness.businessid,
-				...this.props.data,
-			};
-			this.setState({
-				campaignInfo: { ...rep },
-				minValueBudget: this.props.data.minValueBudget,
-				maxValueBudget: this.props.data.maxValueBudget,
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid
+      }
+    });
+    if (this.props.data) {
+      rep = {
+        ...this.state.campaignInfo,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid,
+        ...this.props.data
+      };
+      this.setState({
+        campaignInfo: { ...rep },
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget,
         playback_type: this.props.data.playback_type
-			});
-		}
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+      });
+    }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  setObjective = value => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        objective: value
+      }
+    });
+    this.props.save_campaign_info({ objective: value, reset: true });
+  };
+
+  handleStartDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        start_time: date
+      }
+    });
+    this.props.save_campaign_info({ start_time: date });
+  };
+  handleEndDatePicked = date => {
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        end_time: date
+      }
+    });
+    this.props.save_campaign_info({ end_time: date });
+  };
+  setModalVisible = visible => {
+    this.setState({ modalVisible: visible });
+  };
+
+  getMinimumCash = days => {
+    let minValueBudget = days !== 0 ? 25 * days : 25;
+    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+    this.setState({
+      minValueBudget,
+      maxValueBudget
+    });
+  };
+
+  _handleCollectionAdLinkForm = val => {
+    this.setState({ collectionAdLinkForm: val });
+  };
+
+
+	handleStoryOption=(playback_type)=>{
+		this.setState({playback_type})
 	}
-
-	setObjective = value => {
-		this.setState({
-			campaignInfo: {
-				...this.state.campaignInfo,
-				objective: value,
-			},
-		});
-		this.props.save_campaign_info({ objective: value, reset: true });
-	};
-
-	handleStartDatePicked = date => {
-		this.setState({
-			campaignInfo: {
-				...this.state.campaignInfo,
-				start_time: date,
-			},
-		});
-		this.props.save_campaign_info({ start_time: date });
-	};
-	handleEndDatePicked = date => {
-		this.setState({
-			campaignInfo: {
-				...this.state.campaignInfo,
-				end_time: date,
-			},
-		});
-		this.props.save_campaign_info({ end_time: date });
-	};
-	setModalVisible = visible => {
-		this.setState({ modalVisible: visible });
-	};
-
-	getMinimumCash = days => {
-		let minValueBudget = days !== 0 ? 25 * days : 25;
-		let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
-		this.setState({
-			minValueBudget,
-			maxValueBudget,
-		});
-	};
-
-	_handleCollectionAdLinkForm = val => {
-		this.setState({ collectionAdLinkForm: val });
-	};
-    
   _handleSubmission = async () => {
-		const nameError = validateWrapper('mandatory', this.state.campaignInfo.name);
-		const objectiveError = validateWrapper('mandatory', this.state.campaignInfo.objective);
+    const nameError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.name
+    );
+    const objectiveError = validateWrapper(
+      "mandatory",
+      this.state.campaignInfo.objective
+    );
 
-		let dateErrors = this.dateField.getErrors();
+    let dateErrors = this.dateField.getErrors();
 
-		this.setState({
-			nameError,
-			objectiveError,
-			start_timeError: dateErrors.start_timeError,
-			end_timeError: dateErrors.end_timeError,
-		});
-		if (!nameError && !objectiveError && !dateErrors.start_timeError && !dateErrors.end_timeError) {
-			Segment.trackWithProperties('Select Ad Objective', {
-				business_name: this.props.mainBusiness.businessname,
-				campaign_objective: this.state.campaignInfo.objective,
-			});
-			Segment.trackWithProperties('Completed Checkout Step', {
-				step: 2,
-				business_name: this.props.mainBusiness.businessname,
-				campaign_objective: this.state.campaignInfo.objective,
-			});
+    this.setState({
+      nameError,
+      objectiveError,
+      start_timeError: dateErrors.start_timeError,
+      end_timeError: dateErrors.end_timeError
+    });
+    if (
+      !nameError &&
+      !objectiveError &&
+      !dateErrors.start_timeError &&
+      !dateErrors.end_timeError
+    ) {
+      Segment.trackWithProperties("Select Ad Objective", {
+        business_name: this.props.mainBusiness.businessname,
+        campaign_objective: this.state.campaignInfo.objective
+      });
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 2,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_objective: this.state.campaignInfo.objective
+      });
 
-      
-      
-  
+    //   if (this.props.campaign_id !== "") {
+    //     this.props.ad_objective(
+    //       { ...info, campaign_id: this.props.campaign_id },
+    //       this.props.navigation
+    //     );
+    //   } else{
+    //     this.props.ad_objective(
+    //       { ...info, campaign_id: 0 },
+    //       this.props.navigation
+    //     );}
+
+      if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
+        this.props.reset_collections();
+      }
+      this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
+
+      this.props.save_campaign_info({
+        campaign_id: this.props.campaign_id,
+        ...this.state.campaignInfo,
+        playback_type: this.state.playback_type,
+        minValueBudget: this.state.minValueBudget,
+        maxValueBudget: this.state.maxValueBudget
+      });
+      let info = {
+        campaign_type: this.props.adType,
+        ...this.state.campaignInfo
+      };
+      if (this.props.adType === "StoryAd") {
+        info["playback_type"] = this.state.playback_type;
+      }
       if (this.props.campaign_id !== "") {
         this.props.ad_objective(
           { ...info, campaign_id: this.props.campaign_id },
@@ -179,40 +239,11 @@ class AdObjective extends Component {
         );
     }
   };
-			if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
-				this.props.reset_collections();
-			}
-			this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
-	
-		this.props.save_campaign_info({
-        campaign_id: this.props.campaign_id,
-        ...this.state.campaignInfo,
-        playback_type: this.state.playback_type,
-        minValueBudget: this.state.minValueBudget,
-        maxValueBudget: this.state.maxValueBudget
-      });
-let info = {
-        campaign_type: this.props.adType,
-        ...this.state.campaignInfo
-      };
- if (this.props.adType === "StoryAd"){
-   info["playback_type"] = this.state.playback_type;
- }
-		 if (this.props.campaign_id !== "") {
-        this.props.ad_objective(
-          { ...info, campaign_id: this.props.campaign_id },
-          this.props.navigation
-        );
-      } else
-        this.props.ad_objective(
-          { ...info, campaign_id: 0 },
-          this.props.navigation
-        );
-		}
-	};
-
 
 	render() {
+		console.log("kjervkj",this.props.campaign_id);
+		
+		let adType = this.props.adType
 		const list = this.state.objectives.map(o => (
 			<ObjectivesCard
 				choice={o}
@@ -225,41 +256,41 @@ let info = {
 		return (
 			<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
 				<NavigationEvents
-					 onDidFocus={() => {
-            Segment.screenWithProperties(
-              (adType === "SnapAd"
-                ? "Snap Ad"
-                : adType === "StoryAd"
-                ? "Story Ad"
-                : "Collection Ad") + " Objective",
-              {
-                category: "Campaign Creation"
-              }
-            );
-            Segment.trackWithProperties("Viewed Checkout Step", {
-              step: 2,
-              business_name: this.props.mainBusiness.businessname
-            });
-          }}
+					onDidFocus={() => {
+						Segment.screenWithProperties(
+							(adType === "SnapAd"
+								? "Snap Ad"
+								: adType === "StoryAd"
+									? "Story Ad"
+									: "Collection Ad") + " Objective",
+							{
+								category: "Campaign Creation"
+							}
+						);
+						Segment.trackWithProperties("Viewed Checkout Step", {
+							step: 2,
+							business_name: this.props.mainBusiness.businessname
+						});
+					}}
 				/>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 					<Container style={styles.container}>
 						<BackdropIcon style={styles.backDrop} height={hp('100%')} />
-          <CustomHeader
-              closeButton={false}
-              segment={{
-                str: "Ad Objective Back Button",
-                obj: { businessname: this.props.mainBusiness.businessname }
-              }}
-              navigation={this.props.navigation}
-              title={
-                (adType === "SnapAd"
-                  ? "Snap Ad"
-                  : adType === "StoryAd"
-                  ? "Story Ad"
-                  : "Collection Ad") + " Campaign"
-              }
-            />
+						<CustomHeader
+							closeButton={false}
+							segment={{
+								str: "Ad Objective Back Button",
+								obj: { businessname: this.props.mainBusiness.businessname }
+							}}
+							navigation={this.props.navigation}
+							title={
+								(adType === "SnapAd"
+									? "Snap Ad"
+									: adType === "StoryAd"
+										? "Story Ad"
+										: "Collection Ad") + " Campaign"
+							}
+						/>
 						<View style={styles.block1}>
 							<PhoneIcon
 								style={styles.phoneicon}
@@ -379,136 +410,95 @@ let info = {
 										{this.state.campaignInfo.objective === ''
 											? this.state.objectiveLabel
 											: this.state.objectives.find(
-													c => this.state.campaignInfo.objective === c.value
-											  ).label}
+												c => this.state.campaignInfo.objective === c.value
+											).label}
 									</Text>
 									<Icon type="AntDesign" name="down" style={styles.downicon} />
 								</Item>
 							</Animatable.View>
+
+
 							
-{this.props.adType==="StoryAd"&& (  <Item
-                disabled={this.props.loading}
-                rounded
-                style={[
-                  styles.input2,
-                  this.state.objectiveError
-                    ? GlobalStyles.redBorderColor
-                    : GlobalStyles.transparentBorderColor
-                ]}
-                onPress={() => {
-                  Keyboard.dismiss();
-                  this.setModalVisible(true);
-                }}
-              >
-                <Text style={styles.label}>
-                  {this.state.campaignInfo.objective === ""
-                    ? this.state.objectiveLabel
-                    : this.state.objectives.find(
-                        c => this.state.campaignInfo.objective === c.value
-                      ).label}
-                </Text>
-                <Icon type="AntDesign" name="down" style={styles.downicon} />
-              </Item>
-              {adType === "StoryAd" && (
-                <View style={styles.topContainer}>
-                  <Button
-                    style={[
-                      this.state.playback_type === "LOOPING"
-                        ? styles.activeButton
-                        : styles.button,
-                      styles.businessTypeButton1
-                    ]}
-                    onPress={() => {
-                      this.handleStoryOption("LOOPING");
-                    }}
-                  >
-                    <LoopStoryIcon
-                      width={40}
-                      height={40}
-                      fill={
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText.color
-                          : styles.inactiveText.color
-                      }
-                    />
-                    <Text
-                      style={[
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText
-                          : styles.inactiveText
-                      ]}
-                    >
-                      Loop story
-                    </Text>
-                    <Text
-                      style={[
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                        { fontFamily: "montserrat-regular" }
-                      ]}
-                    >
-                      Advance with tap
-                    </Text>
-                  </Button>
+							{adType === "StoryAd" && (
+								<View style={styles.topContainer}>
+									<Button
+									block
 
-                  <Button
-                    dark
-                    style={[
-                      this.state.playback_type === "AUTO_ADVANCING"
-                        ? styles.activeButton
-                        : styles.button,
-                      styles.businessTypeButton3
-                    ]}
-                    onPress={() => {
-                      this.handleStoryOption("AUTO_ADVANCING");
-                    }}
-                  >
-                    <AutoAdvanceIcon
-                      width={40}
-                      height={40}
-                      fill={
-                        this.state.playback_type === "AUTO_ADVANCING"
-                          ? styles.activeText.color
-                          : styles.inactiveText.color
-                      }
-                    />
-                    <Text
-                      style={[
-                        this.state.playback_type === "AUTO_ADVANCING"
-                          ? styles.activeText
-                          : styles.inactiveText
-                      ]}
-                    >
-                      Auto Advance
+										style={[
+											this.state.playback_type === "LOOPING"
+												? styles.activeButton
+												: styles.button,
+											styles.collectionAdLinkForm1
+										]}
+										onPress={() => {
+											this.handleStoryOption("LOOPING");
+										}}
+									>
+										<LoopStoryIcon
+											width={40}
+											height={40}
+											fill={
+												this.state.playback_type === "LOOPING"
+													? styles.activeText.color
+													: styles.inactiveText.color
+											}
+										/>
+										<Text
+											style={[
+												this.state.playback_type === "LOOPING"
+													? styles.activeText
+													: styles.inactiveText
+											]}
+										>
+											Loop story
                     </Text>
-                  </Button>
-                </View>
-              )}
-            </View>
-            {this.props.loading ? (
-              <ForwardLoading
-                bottom={18}
-                mainViewStyle={{
-                  width: widthPercentageToDP(9),
-                  height: heightPercentageToDP(9)
-                }}
-              />
-            ) : (
-              <LowerButton bottom={4} function={this._handleSubmission} />
-            )}
-          </Container>
-        </TouchableWithoutFeedback>
-        <DateField
-          getMinimumCash={this.getMinimumCash}
-          onRef={ref => (this.dateField = ref)}
-          handleStartDatePicked={this.handleStartDatePicked}
-          handleEndDatePicked={this.handleEndDatePicked}
-          start_time={this.state.campaignInfo.start_time}
-          end_time={this.state.campaignInfo.end_time}
-        />)}
+										<Text
+											style={[
+												this.state.playback_type === "LOOPING"
+													? styles.activeText
+													: styles.inactiveText,
+												{ fontFamily: "montserrat-regular" }
+											]}
+										>
+											Advance with tap
+                    </Text>
+									</Button>
 
-            {this.props.adType === 'CollectionAd' && (
+									<Button
+										block
+										style={[
+											this.state.playback_type === "AUTO_ADVANCING"
+												? styles.activeButton
+												: styles.button,
+											styles.collectionAdLinkForm2
+										]}
+										onPress={() => {
+											this.handleStoryOption("AUTO_ADVANCING");
+										}}
+									>
+										<AutoAdvanceIcon
+											width={40}
+											height={40}
+											fill={
+												this.state.playback_type === "AUTO_ADVANCING"
+													? styles.activeText.color
+													: styles.inactiveText.color
+											}
+										/>
+										<Text
+											style={[
+												this.state.playback_type === "AUTO_ADVANCING"
+													? styles.activeText
+													: styles.inactiveText
+											]}
+										>
+											Auto Advance
+                    </Text>
+									</Button>
+								</View>
+							)}
+
+							{this.props.adType === 'CollectionAd' && (
 								<View style={styles.collectionAdView}>
 									<Text uppercase style={styles.collectionAdText}>
 										Where are you taking the user ?
@@ -516,7 +506,6 @@ let info = {
 									<View style={styles.topContainer}>
 										<Button
 											block
-											// dark
 											style={[
 												this.state.collectionAdLinkForm === 1
 													? styles.activeButton
@@ -550,7 +539,6 @@ let info = {
 										</Button>
 										<Button
 											block
-											// dark
 											style={[
 												this.state.collectionAdLinkForm === 2
 													? styles.activeButton
@@ -585,6 +573,7 @@ let info = {
 									</View>
 								</View>
 							)}
+
 							{this.props.loading ? (
 								<ForwardLoading
 									mainViewStyle={{ width: wp(8), height: hp(8) }}
@@ -592,66 +581,73 @@ let info = {
 									style={{ width: wp(8), height: hp(8) }}
 								/>
 							) : (
-								<LowerButton bottom={-5} function={this._handleSubmission} />
-							)}
+									<LowerButton bottom={-5} function={this._handleSubmission} />
+								)}
 						</ScrollView>
+
+						
 					</Container>
 				</TouchableWithoutFeedback>
-				<DateField
-					getMinimumCash={this.getMinimumCash}
-					onRef={ref => (this.dateField = ref)}
-					handleStartDatePicked={this.handleStartDatePicked}
-					handleEndDatePicked={this.handleEndDatePicked}
-					start_time={this.state.campaignInfo.start_time}
-					end_time={this.state.campaignInfo.end_time}
-				/>
-				<Modal
-					animationType={'slide'}
-					transparent={true}
-					onDismiss={() => this.setModalVisible(false)}
-					visible={this.state.modalVisible}
-				>
-					<BlurView intensity={95} tint="dark">
-						<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
-							<View style={styles.popupOverlay}>
-								<CustomHeader
-									closeButton={false}
-									actionButton={() => {
-										this.setModalVisible(false);
-									}}
-									title="Campaign Objective"
-								/>
-								<Content padder indicatorStyle="white" contentContainerStyle={styles.contentContainer}>
-									{list}
-								</Content>
-								<LowerButton bottom={4} function={this.setModalVisible} />
-							</View>
-						</SafeAreaView>
-					</BlurView>
-				</Modal>
-			</SafeAreaView>
+				
+		
+
+			<DateField
+				getMinimumCash={this.getMinimumCash}
+				onRef={ref => (this.dateField = ref)}
+				handleStartDatePicked={this.handleStartDatePicked}
+				handleEndDatePicked={this.handleEndDatePicked}
+				start_time={this.state.campaignInfo.start_time}
+				end_time={this.state.campaignInfo.end_time}
+			/>
+			<Modal
+				animationType={'slide'}
+				transparent={true}
+				onDismiss={() => this.setModalVisible(false)}
+				visible={this.state.modalVisible}
+			>
+				<BlurView intensity={95} tint="dark">
+					<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
+						<View style={styles.popupOverlay}>
+							<CustomHeader
+								closeButton={false}
+								actionButton={() => {
+									this.setModalVisible(false);
+								}}
+								title="Campaign Objective"
+							/>
+							<Content padder indicatorStyle="white" contentContainerStyle={styles.contentContainer}>
+								{list}
+							</Content>
+							<LowerButton bottom={4} function={this.setModalVisible} />
+						</View>
+					</SafeAreaView>
+				</BlurView>
+			</Modal>
+			</SafeAreaView >
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	userInfo: state.auth.userInfo,
-	mainBusiness: state.account.mainBusiness,
-	loading: state.campaignC.loadingObj,
-	campaign_id: state.campaignC.campaign_id,
-	data: state.campaignC.data,
-	adType: state.campaignC.adType,
-	collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  userInfo: state.auth.userInfo,
+  mainBusiness: state.account.mainBusiness,
+  loading: state.campaignC.loadingObj,
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data,
+  adType: state.campaignC.adType,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
 const mapDispatchToProps = dispatch => ({
-	ad_objective: (info, navigation) => dispatch(actionCreators.ad_objective(info, navigation)),
-	save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-	getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
-	set_collectionAd_link_form: value => dispatch(actionCreators.set_collectionAd_link_form(value)),
-	reset_collections: () => dispatch(actionCreators.reset_collections()),
+  ad_objective: (info, navigation) =>
+    dispatch(actionCreators.ad_objective(info, navigation)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
+  set_collectionAd_link_form: value =>
+    dispatch(actionCreators.set_collectionAd_link_form(value)),
+  reset_collections: () => dispatch(actionCreators.reset_collections())
 });
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AdObjective);
