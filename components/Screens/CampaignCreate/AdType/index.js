@@ -9,7 +9,6 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
-import * as actionCreators from "../../../../store/actions";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
@@ -116,7 +115,7 @@ class AdType extends Component {
     }
     this.props.set_adType(this.state.campaign_type);
     this.props.navigation.navigate(this.state.route);
-    this.props.set_AdType(this.state.campaign_type);
+    this.props.set_adType(this.state.campaign_type);
   };
 
   _renderItem({ item }) {

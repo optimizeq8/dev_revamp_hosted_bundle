@@ -5,64 +5,72 @@ import { connect } from "react-redux";
 import { Video, Segment } from "expo";
 import * as Animatable from "react-native-animatable";
 
-import { View, TouchableOpacity, Image, BackHandler } from 'react-native';
-import { Container, Header, Body, Right, Content, Title, Subtitle, Button, Text } from 'native-base';
+import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import {
+  Container,
+  Header,
+  Body,
+  Right,
+  Content,
+  Title,
+  Subtitle,
+  Button,
+  Text
+} from "native-base";
 
-
-import LoadingScreen from '../../../MiniComponents/LoadingScreen';
-import { Transition } from 'react-navigation-fluid-transitions';
-import { SafeAreaView } from 'react-navigation';
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import { Transition } from "react-navigation-fluid-transitions";
+import { SafeAreaView } from "react-navigation";
 
 //icons
-import CloseIcon from '../../../../assets/SVGs/Close';
-import ArrowUpIcon from '../../../../assets/SVGs/ArrowUp';
+import CloseIcon from "../../../../assets/SVGs/Close";
+import ArrowUpIcon from "../../../../assets/SVGs/ArrowUp";
 
 // Style
-import styles from './styles';
-import globalStyles from '../../../../GlobalStyles';
+import styles from "./styles";
+import globalStyles from "../../../../GlobalStyles";
 
 //Functions
-import startCase from 'lodash/startCase';
-import toLower from 'lodash/toLower';
-import isUndefined from 'lodash/isUndefined';
+import startCase from "lodash/startCase";
+import toLower from "lodash/toLower";
+import isUndefined from "lodash/isUndefined";
 
 class AdDesignReview extends Component {
+  static navigationOptions = {
+    header: null
+  };
+  state = { videoIsLoading: false, storyAdIndex: 0 };
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
-	static navigationOptions = {
-		header: null,
-	};
-	state = { videoIsLoading: false, storyAdIndex: 0 };
-	componentDidMount() {
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    Segment.screenWithProperties("Ad Preview", {
+      category: "Campaign Creation"
+    });
+  }
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
 
-		Segment.screenWithProperties('Ad Preview', {
-			category: 'Campaign Creation',
-		});
-	}
-	handleBackButton = () => {
-		this.props.navigation.goBack();
-		return true;
-	};
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-	}
-
-	collectionComp = i => {
-		let collections = this.props.navigation.getParam('collectionAdMedia', []);
-		return (
-			<View style={styles.collectionPlaceholder}>
-				{!isUndefined(collections[i]) && (
-					<Image
-						style={styles.collectionImage}
-						source={{ uri: collections[i].localUri }}
-						resizeMode="cover"
-					/>
-				)}
-			</View>
-		);
-	};
-	render() {
-	 let storyAdsArray = this.props.storyAdsArray.filter(ad => ad !== undefined);
+  collectionComp = i => {
+    let collections = this.props.navigation.getParam("collectionAdMedia", []);
+    return (
+      <View style={styles.collectionPlaceholder}>
+        {!isUndefined(collections[i]) && (
+          <Image
+            style={styles.collectionImage}
+            source={{ uri: collections[i].localUri }}
+            resizeMode="cover"
+          />
+        )}
+      </View>
+    );
+  };
+  render() {
+    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad !== undefined);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -100,177 +108,199 @@ class AdDesignReview extends Component {
       }
     }
 
-		let collection = (
-			<View style={styles.collectionView}>
-				{this.collectionComp(0)}
-				{this.collectionComp(1)}
-				{this.collectionComp(2)}
-				{this.collectionComp(3)}
-			</View>
-		);
+    let collection = (
+      <View style={styles.collectionView}>
+        {this.collectionComp(0)}
+        {this.collectionComp(1)}
+        {this.collectionComp(2)}
+        {this.collectionComp(3)}
+      </View>
+    );
 
-		return (
-		<SafeAreaView style={styles.safeAreaContainer} forceInset={{ top: "always" }}>
-  <Container style={styles.container}>
-    <Header iosBarStyle={"light-content"} style={styles.header}>
-      <Body style={styles.headerBody}>
-        <Title style={styles.brandName}>{brand_name}</Title>
-        <Subtitle numberOfLines={1} style={styles.headline}>
-          {headline}
-        </Subtitle>
-      </Body>
-      <Right style={{ flex: 0 }}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-          style={[globalStyles.backButton, styles.closeButton]}
-        >
-          <CloseIcon />
-        </TouchableOpacity>
-      </Right>
-    </Header>
-    <Content
-      padder
-      scrollEnabled={false}
-      contentContainerStyle={styles.content}
-    >
-      <Transition shared="image">
-        <View style={styles.mainCard}>
-          {type === "VIDEO" ? (
-            <>
-              {this.state.videoIsLoading ? <LoadingScreen dash={true} /> : null}
-              <Video
-                onLoadStart={() => this.setState({ videoIsLoading: true })}
-                onLoad={() => this.setState({ videoIsLoading: false })}
-                source={{
-                  uri: image
-                }}
-                isLooping
-                shouldPlay
-                resizeMode="stretch"
-                style={styles.video}
-              />
-            </>
-          ) : (
-            <Image
-              resizeMode="stretch"
-              style={styles.placeholder}
-              source={{
-                uri: image
-              }}
-            />
-          )}
-
-          <View
-            style={[
-              styles.callToActionContainer,
-              (destination === "APP_INSTALL" || adType === "CollectionAd") &&
-                styles.appInstallCallToActionContainer
-            ]}
+    return (
+      <SafeAreaView
+        style={styles.safeAreaContainer}
+        forceInset={{ top: "always" }}
+      >
+        <Container style={styles.container}>
+          <Header iosBarStyle={"light-content"} style={styles.header}>
+            <Body style={styles.headerBody}>
+              <Title style={styles.brandName}>{brand_name}</Title>
+              <Subtitle numberOfLines={1} style={styles.headline}>
+                {headline}
+              </Subtitle>
+            </Body>
+            <Right style={{ flex: 0 }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.goBack()}
+                style={[globalStyles.backButton, styles.closeButton]}
+              >
+                <CloseIcon />
+              </TouchableOpacity>
+            </Right>
+          </Header>
+          <Content
+            padder
+            scrollEnabled={false}
+            contentContainerStyle={styles.content}
           >
-            <View
-              style={[
-                styles.callToActionText,
-                (destination === "APP_INSTALL" || adType === "CollectionAd") &&
-                  styles.appInstallCallToActionText,
-                destination !== "APP_INSTALL" &&
-                  adType !== "CollectionAd" &&
-                  destination !== "BLANK" &&
-                  styles.appInstallAndBlankCallToActionContainer
-              ]}
-            >
-              {destination !== "APP_INSTALL" &&
-                adType !== "CollectionAd" &&
-                destination !== "BLANK" && (
-                  <View
-                    style={[
-                      styles.iconArrowUp,
-                      { paddingRight: 0, marginBottom: 5 }
-                    ]}
-                  >
-                    <ArrowUpIcon />
-                  </View>
+            <Transition shared="image">
+              <View style={styles.mainCard}>
+                {type === "VIDEO" ? (
+                  <>
+                    {this.state.videoIsLoading ? (
+                      <LoadingScreen dash={true} />
+                    ) : null}
+                    <Video
+                      onLoadStart={() =>
+                        this.setState({ videoIsLoading: true })
+                      }
+                      onLoad={() => this.setState({ videoIsLoading: false })}
+                      source={{
+                        uri: image
+                      }}
+                      isLooping
+                      shouldPlay
+                      resizeMode="stretch"
+                      style={styles.video}
+                    />
+                  </>
+                ) : (
+                  <Image
+                    resizeMode="stretch"
+                    style={styles.placeholder}
+                    source={{
+                      uri: image
+                    }}
+                  />
                 )}
 
-              <Text
-                style={[
-                  styles.callToActionText,
-                  (destination === "APP_INSTALL" ||
-                    adType === "CollectionAd") &&
-                    styles.appInstallCallToActionText
-                ]}
-              >
-                {call_to_action !== "BLANK"
-                  ? startCase(toLower(call_to_action))
-                  : ""}
-              </Text>
-            </View>
-
-            {(destination === "APP_INSTALL" || adType === "CollectionAd") && (
-              <View
-                style={[
-                  styles.iconArrowUp,
-                  {
-                    paddingRight: destination === "APP_INSTALL" ? 10 : 60
-                  }
-                ]}
-              >
-                <ArrowUpIcon />
-              </View>
-            )}
-            <Text style={styles.AD}>Ad</Text>
-          </View>
-
-          {adType === "CollectionAd" && (
-            <Animatable.View
-              animation={"fadeInUpBig"}
-              style={[
-                styles.bottomView,
-                globalStyles.transparentBackgroundColor
-              ]}
-            >
-              {collection}
-            </Animatable.View>
-          )}
-          {destination === "APP_INSTALL" && (
-            <Animatable.View
-              animation={"fadeInUpBig"}
-              style={[styles.bottomView, globalStyles.whiteBackgroundColor]}
-            >
-              <View style={[globalStyles.lightGrayBorderColor]}>
-                <Image
-                  source={{ uri: appIcon }}
-                  style={[globalStyles.grayBorderColor, styles.appIconBottom]}
-                  resizeMode="cover"
-                />
-              </View>
-              <View style={styles.textContainerBottom}>
-                <Text numberOfLines={2} style={styles.brandNameBottomText}>
-                  {brand_name}
-                </Text>
-                <Text
-                  numberOfLines={1}
+                <View
                   style={[
-                    globalStyles.grayTextColor,
-                    styles.headlineBottomText
+                    styles.callToActionContainer,
+                    (destination === "APP_INSTALL" ||
+                      adType === "CollectionAd") &&
+                      styles.appInstallCallToActionContainer
                   ]}
                 >
-                  {headline}
-                </Text>
+                  <View
+                    style={[
+                      styles.callToActionText,
+                      (destination === "APP_INSTALL" ||
+                        adType === "CollectionAd") &&
+                        styles.appInstallCallToActionText,
+                      destination !== "APP_INSTALL" &&
+                        adType !== "CollectionAd" &&
+                        destination !== "BLANK" &&
+                        styles.appInstallAndBlankCallToActionContainer
+                    ]}
+                  >
+                    {destination !== "APP_INSTALL" &&
+                      adType !== "CollectionAd" &&
+                      destination !== "BLANK" && (
+                        <View
+                          style={[
+                            styles.iconArrowUp,
+                            { paddingRight: 0, marginBottom: 5 }
+                          ]}
+                        >
+                          <ArrowUpIcon />
+                        </View>
+                      )}
+
+                    <Text
+                      style={[
+                        styles.callToActionText,
+                        (destination === "APP_INSTALL" ||
+                          adType === "CollectionAd") &&
+                          styles.appInstallCallToActionText
+                      ]}
+                    >
+                      {call_to_action !== "BLANK"
+                        ? startCase(toLower(call_to_action))
+                        : ""}
+                    </Text>
+                  </View>
+
+                  {(destination === "APP_INSTALL" ||
+                    adType === "CollectionAd") && (
+                    <View
+                      style={[
+                        styles.iconArrowUp,
+                        {
+                          paddingRight: destination === "APP_INSTALL" ? 10 : 60
+                        }
+                      ]}
+                    >
+                      <ArrowUpIcon />
+                    </View>
+                  )}
+                  <Text style={styles.AD}>Ad</Text>
+                </View>
+
+                {adType === "CollectionAd" && (
+                  <Animatable.View
+                    animation={"fadeInUpBig"}
+                    style={[
+                      styles.bottomView,
+                      globalStyles.transparentBackgroundColor
+                    ]}
+                  >
+                    {collection}
+                  </Animatable.View>
+                )}
+                {destination === "APP_INSTALL" && (
+                  <Animatable.View
+                    animation={"fadeInUpBig"}
+                    style={[
+                      styles.bottomView,
+                      globalStyles.whiteBackgroundColor
+                    ]}
+                  >
+                    <View style={[globalStyles.lightGrayBorderColor]}>
+                      <Image
+                        source={{ uri: appIcon }}
+                        style={[
+                          globalStyles.grayBorderColor,
+                          styles.appIconBottom
+                        ]}
+                        resizeMode="cover"
+                      />
+                    </View>
+                    <View style={styles.textContainerBottom}>
+                      <Text
+                        numberOfLines={2}
+                        style={styles.brandNameBottomText}
+                      >
+                        {brand_name}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          globalStyles.grayTextColor,
+                          styles.headlineBottomText
+                        ]}
+                      >
+                        {headline}
+                      </Text>
+                    </View>
+                    <Button
+                      style={[
+                        styles.getButton,
+                        globalStyles.darkGrayBackgroundColor
+                      ]}
+                    >
+                      <Text style={styles.getButtonText}>GET</Text>
+                    </Button>
+                  </Animatable.View>
+                )}
               </View>
-              <Button
-                style={[styles.getButton, globalStyles.darkGrayBackgroundColor]}
-              >
-                <Text style={styles.getButtonText}>GET</Text>
-              </Button>
-            </Animatable.View>
-          )}
-        </View>
-      </Transition>
-    </Content>
-  </Container>
-</SafeAreaView>;
-		);
-	}
+            </Transition>
+          </Content>
+        </Container>
+      </SafeAreaView>
+    );
+  }
 }
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
