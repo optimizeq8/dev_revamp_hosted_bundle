@@ -60,7 +60,9 @@ class AdDesignReview extends Component {
   }
 
   render() {
-    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad !== undefined);
+    let storyAdsArray = this.props.storyAdsArray.filter(
+      ad => ad !== undefined && ad.image
+    );
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
