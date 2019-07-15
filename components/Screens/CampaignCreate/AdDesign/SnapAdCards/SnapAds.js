@@ -7,12 +7,6 @@ import { heightPercentageToDP } from "react-native-responsive-screen";
 import AddCard from "./AddCard";
 import SnapCard from "./SnapCard";
 export default class SnapAds extends Component {
-  state = { snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }] };
-
-  componentDidMount() {
-    this.setState({ snapAdsCards: this.props.snapAdsCards });
-  }
-
   snapCards = item => {
     if (item.index === this.props.snapAdsCards.length - 1) {
       return <AddCard addButton={item} addSnapCard={this.props.addSnapCard} />;
@@ -40,7 +34,11 @@ export default class SnapAds extends Component {
         }}
       >
         <FlatList
-          contentContainerStyle={{ paddingBottom: 50, alignItems: "center" }}
+          contentContainerStyle={{
+            paddingTop: 20,
+            paddingBottom: 50,
+            alignItems: "center"
+          }}
           keyExtractor={item => item.id}
           data={this.props.snapAdsCards}
           renderItem={this.snapCards}

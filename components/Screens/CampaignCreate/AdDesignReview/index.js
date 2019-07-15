@@ -70,9 +70,8 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let storyAdsArray = this.props.storyAdsArray.filter(
-      ad => ad !== undefined && ad.image
-    );
+    let adType = this.props.adType;
+    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -148,35 +147,45 @@ class AdDesignReview extends Component {
           >
             <Transition shared="image">
               <View style={styles.mainCard}>
-                {type === "VIDEO" ? (
-                  <>
-                    {this.state.videoIsLoading ? (
-                      <LoadingScreen dash={true} />
-                    ) : null}
-                    <Video
-                      onLoadStart={() =>
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() =>
+                    this.state.storyAdIndex + 1 !== storyAdsArray.length
+                      ? this.setState({
+                          storyAdIndex: this.state.storyAdIndex + 1
+                        })
+                      : this.setState({ storyAdIndex: 0 })
+                  }
+                >
+                  {type === "VIDEO" ? (
+                    <>
+                      {this.state.videoIsLoading ? (
+                        <LoadingScreen dash={true} />
+                      ) : null}
+                      <Video
+                        onLoadStart={() =>
+                          this.setState({ videoIsLoading: true })
+                        }
+                        onLoad={() => this.setState({ videoIsLoading: false })}
+                        source={{
+                          uri: image
+                        }}
+                        isLooping
+                        shouldPlay
+                        resizeMode="stretch"
+                        style={styles.video}
+                      />
+                    </>
+                  ) : (
+                    <Image
+                      resizeMode="stretch"
+                      style={styles.placeholder}
                       source={{
                         uri: image
                       }}
-                      isLooping
-                      shouldPlay
-                      resizeMode="stretch"
-                      style={styles.video}
                     />
-                  </>
-                ) : (
-                  <Image
-                    resizeMode="stretch"
-                    style={styles.placeholder}
-                    source={{
-                      uri: image
-                    }}
-                  />
-                )}
-
+                  )}
+                </TouchableOpacity>
                 <View
                   style={[
                     styles.callToActionContainer,
@@ -307,6 +316,7 @@ class AdDesignReview extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
+  adType: state.campaignC.adType,
   data: state.campaignC.data,
   storyAdsArray: state.campaignC.storyAdsArray
 });

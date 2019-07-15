@@ -106,9 +106,7 @@ class AdObjective extends Component {
       };
       this.setState({
         campaignInfo: { ...rep },
-        minValueBudget: this.props.data.minValueBudget,
-        maxValueBudget: this.props.data.maxValueBudget,
-        playback_type: this.props.data.playback_type
+		  ...this.props.data
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -162,6 +160,7 @@ class AdObjective extends Component {
 
 	handleStoryOption=(playback_type)=>{
 		this.setState({playback_type})
+		this.props.save_campaign_info({ playback_type})
 	}
   _handleSubmission = async () => {
     const nameError = validateWrapper(
@@ -197,16 +196,6 @@ class AdObjective extends Component {
         campaign_objective: this.state.campaignInfo.objective
       });
 
-    //   if (this.props.campaign_id !== "") {
-    //     this.props.ad_objective(
-    //       { ...info, campaign_id: this.props.campaign_id },
-    //       this.props.navigation
-    //     );
-    //   } else{
-    //     this.props.ad_objective(
-    //       { ...info, campaign_id: 0 },
-    //       this.props.navigation
-    //     );}
 
       if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
         this.props.reset_collections();
@@ -241,8 +230,6 @@ class AdObjective extends Component {
   };
 
 	render() {
-		console.log("kjervkj",this.props.campaign_id);
-		
 		let adType = this.props.adType
 		const list = this.state.objectives.map(o => (
 			<ObjectivesCard
