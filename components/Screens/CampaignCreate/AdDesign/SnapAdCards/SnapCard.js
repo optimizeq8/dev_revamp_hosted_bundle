@@ -56,14 +56,13 @@ class SnapCard extends Component {
           <Icon
             onPress={() => {
               //   this.props.cancelUpload();
-              snapCardInfo.item.story_id
-                ? !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                  this.props.deleteStoryAdCard(
-                    snapCardInfo.item.story_id,
-                    snapCardInfo,
-                    removeSnapCard
-                  )
-                : removeSnapCard(snapCardInfo.item.id);
+
+              !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                this.props.deleteStoryAdCard(
+                  snapCardInfo.item.story_id,
+                  snapCardInfo,
+                  removeSnapCard
+                );
             }}
             name="close"
             type="MaterialCommunityIcons"
@@ -79,13 +78,6 @@ class SnapCard extends Component {
         ) : (
           <ActivityIndicator color={globalColors.orange} />
         )}
-        {/* <Button
-          style={styles.addButtonStyle}
-          onPress={() => removeSnapCard(snapCard.item.id)}
-        >
-          <Icon style={[styles.icon, { fontSize: 30 }]} name="camera" />
-          <Text style={{ color: "#fff" }}>{snapCard.index + 1}</Text>
-        </Button> */}
       </View>
     );
   }

@@ -27,7 +27,7 @@ const initialState = {
   interestNames: [],
   regionNames: [],
   campaignEnded: false,
-  storyAdsArray: [],
+  storyAdsArray: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }],
   loadingStoryAdsArray: [],
   coverLoading: false,
   storyAdCover: null,
@@ -294,6 +294,16 @@ const reducer = (state = initialState, action) => {
         },
         coverLoading: false
       };
+    case actionTypes.ADD_SNAP_CARD:
+      let newSnapCard = {
+        id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1
+      };
+      let newStoryAdsArray = state.storyAdsArray;
+      newStoryAdsArray.push(newSnapCard);
+      return {
+        ...state,
+        storyAdsArray: [...newStoryAdsArray]
+      };
     case actionTypes.SET_STORYADMEDIA_DESIGN:
       let storyAds = state.storyAdsArray;
       storyAds[action.payload.data.story_order] = {
@@ -309,10 +319,19 @@ const reducer = (state = initialState, action) => {
         storyAdsArray: [...storyAds]
       };
     case actionTypes.DELETE_STORY_AD_CARD:
-      let deleteStoryAds = state.storyAdsArray.filter(ad => {
-        if (ad === undefined || ad.story_id !== action.payload.data.story_id)
+      let deleteStoryAds = state.storyAdsArray;
+
+      deleteStoryAds = deleteStoryAds.filter(ad => {
+        if (
+          (action.payload.card.hasOwnProperty("item") &&
+            action.payload.card.item.id !== ad.id) ||
+          (action.payload.hasOwnProperty("data") &&
+            ad.story_id !== action.payload.data.story_id)
+        )
           return ad;
       });
+      // deleteStoryAds = [];
+
       // deleteStoryAds[action.payload.data.story_order] = {
       //   ...action.payload.data,
       //   ...action.payload.card

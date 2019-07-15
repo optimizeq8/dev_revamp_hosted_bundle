@@ -30,8 +30,6 @@ class SelectVersions extends Component {
   };
 
   componentDidMount() {
-    console.log("selectedItems", this.props.selectedItems);
-
     this.props.OSType === "iOS"
       ? this.props.get_ios_verisons()
       : this.props.get_android_versions();

@@ -26,6 +26,7 @@ export {
   ad_objective,
   getMinimumCash,
   ad_design,
+  addSnapCard,
   uploadStoryAdCard,
   deleteStoryAdCard,
   uploadStoryAdCover,

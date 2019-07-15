@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Button, Icon } from "native-base";
+import * as actionCreators from "../../../../../store/actions";
 
+import { connect } from "react-redux";
 import styles from "../styles";
-export default class AddCard extends Component {
+class AddCard extends Component {
   render() {
-    let { addButton, addSnapCard } = this.props;
     return (
       <View
         style={{
@@ -14,7 +15,10 @@ export default class AddCard extends Component {
           justifyContent: "center"
         }}
       >
-        <Button style={styles.addButtonStyle} onPress={addSnapCard}>
+        <Button
+          style={styles.addButtonStyle}
+          onPress={() => this.props.addSnapCard()}
+        >
           {/* <Text style={{ color: "#fff" }}>{addButton.item.id}</Text> */}
           <Icon
             style={{ alignSelf: "center", right: 2 }}
@@ -27,3 +31,13 @@ export default class AddCard extends Component {
     );
   }
 }
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  addSnapCard: () => dispatch(actionCreators.addSnapCard())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddCard);

@@ -259,7 +259,7 @@ class AdCover extends Component {
 
       if (!result.cancelled) {
         if (result.type === "image") {
-          console.log("oineboin", result.uri);
+          // console.log("oineboin", result.uri);
 
           if (result.width > 360 && result.height > 600) {
             if (result.width >= Math.floor((result.height / 5) * 3)) {
@@ -302,8 +302,8 @@ class AdCover extends Component {
                 // const oldSize = await FileSystem.getInfoAsync(result.uri, {
                 //   size: true
                 // });
-                console.log("mani:", manipResult);
-                console.log("height:", manipResult.height);
+                // console.log("mani:", manipResult);
+                // console.log("height:", manipResult.height);
                 // console.log("new result: ", newSize.size);
                 // console.log("old result: ", oldSize.size);
 
@@ -318,8 +318,6 @@ class AdCover extends Component {
                 });
               })
               .then(() => {
-                console.log("---------", file);
-
                 if (file.size > 2000000) {
                   this.setState({
                     cover: ""
@@ -358,7 +356,7 @@ class AdCover extends Component {
                   position: "top",
                   type: "warning"
                 });
-                console.log("ImageManipulator err", error);
+                // console.log("ImageManipulator err", error);
                 return;
               });
             return;
@@ -449,7 +447,7 @@ class AdCover extends Component {
       }
     } catch (error) {
       this.onToggleModal(false);
-      console.log("error cover pick", error);
+      // console.log("error cover pick", error);
     }
   };
 
@@ -547,8 +545,6 @@ class AdCover extends Component {
           JSON.stringify(this.state.formattedCover)
       ) {
         if (!this.props.coverLoading) {
-          console.log(this.state.formattedCover);
-
           await this.props.uploadStoryAdCover(
             this.state.formattedCover,
             this._getUploadState,

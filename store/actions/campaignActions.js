@@ -369,8 +369,6 @@ export const uploadStoryAdCover = (
   rejected,
   cancelUplaod
 ) => {
-  console.log("swrberb", info);
-
   onToggleModal(true);
   return dispatch => {
     dispatch({
@@ -391,8 +389,6 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         rejected &&
           showMessage({
             message: data.message,
@@ -432,6 +428,14 @@ export const uploadStoryAdCover = (
   };
 };
 
+export const addSnapCard = () => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.ADD_SNAP_CARD
+    });
+  };
+};
+
 export const uploadStoryAdCard = (
   info,
   card,
@@ -439,8 +443,6 @@ export const uploadStoryAdCard = (
   rejected,
   iosUploadVideo
 ) => {
-  console.log(info);
-
   return dispatch => {
     dispatch({
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
@@ -460,8 +462,6 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         // dispatch(
         //   save_campaign_info("adDesign", {
         //     appChoice,
@@ -513,18 +513,21 @@ export const uploadStoryAdCard = (
 
 export const deleteStoryAdCard = (story_id, card, removeCrad) => {
   return dispatch => {
-    dispatch({
-      type: actionTypes.SET_DELETE_CARD_LOADING,
-      payload: { deleteing: true, index: card.index }
-    });
+    !story_id
+      ? dispatch({
+          type: actionTypes.DELETE_STORY_AD_CARD,
+          payload: { card }
+        })
+      : dispatch({
+          type: actionTypes.SET_DELETE_CARD_LOADING,
+          payload: { deleteing: true, index: card.index }
+        });
     createBaseUrl()
       .delete(`savestorymedia/${story_id}`)
       .then(res => {
         return res.data;
       })
       .then(data => {
-        console.log(data);
-        removeCrad(card.item.id);
         return dispatch({
           type: actionTypes.DELETE_STORY_AD_CARD,
           payload: { data: data, card }
