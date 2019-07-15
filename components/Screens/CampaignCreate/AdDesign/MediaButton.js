@@ -14,7 +14,6 @@ export default class MediaButton extends Component {
       _handleStoryAdCards,
       setMediaModalVisible
     } = this.props;
-    console.log(snapCardInfo);
 
     if (image) {
       return (
@@ -48,7 +47,7 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {image !== "blank" && image ? "Edit Photo" : "Add Media"}
+            {image !== "blank" && image !== "//" ? "Edit Photo" : "Add Media"}
           </Text>
         </Button>
       );
@@ -63,7 +62,7 @@ export default class MediaButton extends Component {
                     width: 40,
                     height: 40,
                     top: "65%",
-                    left: "82%"
+                    left: "85%"
                   }
                 : {}
             ]}
@@ -86,9 +85,7 @@ export default class MediaButton extends Component {
               ]}
               name="camera"
             />
-            <Text
-              style={[styles.mediaButtonMsg, snapAdCard ? {} : { width: 150 }]}
-            >
+            <Text style={[styles.mediaButtonMsg]}>
               {image !== "blank" && image ? "Edit Photo" : "Add Media"}
             </Text>
           </Button>

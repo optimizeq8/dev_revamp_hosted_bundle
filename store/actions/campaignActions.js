@@ -188,8 +188,6 @@ export const verifyBusinessUrl = weburl => {
       .post(`verifyBusinessUrl`, { weburl })
       .then(res => res.data)
       .then(data => {
-        console.log(data);
-
         // Segment.trackWithProperties("Register Business Info", {
         //   category: "Sign Up",
         //   label: "Step 4 of Registration"
@@ -448,6 +446,10 @@ export const uploadStoryAdCard = (
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
       payload: { uploading: true, index: card.index }
     });
+    dispatch({
+      type: actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED,
+      payload: { card }
+    });
     axios.defaults.headers.common = {
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
@@ -495,7 +497,7 @@ export const uploadStoryAdCard = (
           type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
           payload: { uploading: false, index: card.index }
         });
-        console.log("ad_design", err.message || err.response);
+        // console.log("ad_design", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -535,6 +537,10 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
       })
 
       .catch(err => {
+        dispatch({
+          type: actionTypes.SET_DELETE_CARD_LOADING,
+          payload: { deleteing: false, index: card.index }
+        });
         // console.log("getVideoUploadUrl", err.message || err.response);
         showMessage({
           message:

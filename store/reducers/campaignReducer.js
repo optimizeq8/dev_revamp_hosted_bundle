@@ -88,8 +88,6 @@ const reducer = (state = initialState, action) => {
         collectionLoader: false
       };
     case actionTypes.SET_AD_DESIGN:
-      console.log("set design", state.data);
-
       return {
         ...state,
         data: {
@@ -296,7 +294,11 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.ADD_SNAP_CARD:
       let newSnapCard = {
-        id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1
+        id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1,
+        call_to_action: {},
+        image: "//",
+        destination: "BLANK",
+        attachment: "BLANK"
       };
       let newStoryAdsArray = state.storyAdsArray;
       newStoryAdsArray.push(newSnapCard);
@@ -308,7 +310,8 @@ const reducer = (state = initialState, action) => {
       let storyAds = state.storyAdsArray;
       storyAds[action.payload.data.story_order] = {
         ...action.payload.data,
-        ...action.payload.card
+        ...action.payload.card,
+        uploaded: true
       };
       let loadingAr = state.loadingStoryAdsArray;
       loadingAr[action.payload.data.story_order] = false;
@@ -317,6 +320,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadingStoryAdsArray: [...loadingAr],
         storyAdsArray: [...storyAds]
+      };
+    case actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED:
+      let storyAdsUploaded = state.storyAdsArray;
+      storyAdsUploaded[action.payload.card.index] = {
+        ...action.payload.card,
+        uploaded: false
+      };
+      return {
+        ...state,
+        storyAdsArray: [...storyAdsUploaded]
       };
     case actionTypes.DELETE_STORY_AD_CARD:
       let deleteStoryAds = state.storyAdsArray;
@@ -388,7 +401,36 @@ const reducer = (state = initialState, action) => {
         countryName: "",
         interestNames: [],
         regionNames: [],
-        storyAdsArray: [],
+        storyAdsArray: [
+          {
+            id: 0,
+            call_to_action: {},
+            image: "//",
+            destination: "BLANK",
+            attachment: "BLANK"
+          },
+          {
+            id: 1,
+            call_to_action: {},
+            image: "//",
+            destination: "BLANK",
+            attachment: "BLANK"
+          },
+          {
+            id: 2,
+            call_to_action: {},
+            image: "//",
+            destination: "BLANK",
+            attachment: "BLANK"
+          },
+          {
+            id: 3,
+            call_to_action: {},
+            image: "//",
+            destination: "BLANK",
+            attachment: "BLANK"
+          }
+        ],
         loadingStoryAdsArray: [],
         coverLoading: false,
         storyAdCover: null,

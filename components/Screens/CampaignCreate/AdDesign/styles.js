@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   },
   mediaButtonMsg: {
     // position: "absolute",
+    width: 150,
     textAlign: "center",
     fontFamily: "montserrat-medium",
     fontSize: 14,
@@ -353,8 +354,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8
   },
   SnapAdCard: {
-    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
+    borderColor: globalColors.orange,
+    borderWidth: 2,
     borderRadius: 15,
     height: 150,
     width: 90,

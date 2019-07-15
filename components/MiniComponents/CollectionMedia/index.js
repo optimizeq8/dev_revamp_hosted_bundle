@@ -348,7 +348,7 @@ class CollectionMedia extends Component {
                 position: "top",
                 type: "warning"
               });
-              console.log("ImageManipulator err", error);
+              // console.log("ImageManipulator err", error);
               return;
             });
           return;
@@ -426,7 +426,7 @@ class CollectionMedia extends Component {
       }
     } catch (error) {
       this.onToggleModal(false);
-      console.log("error image pick", error);
+      // console.log("error image pick", error);
     }
   };
 
@@ -499,9 +499,6 @@ class CollectionMedia extends Component {
     this.setState(
       {
         formatted: body
-      },
-      () => {
-        console.log("formatted", this.state.formatted);
       }
     );
   }

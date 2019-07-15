@@ -39,6 +39,9 @@ class AdType extends Component {
   };
 
   componentDidMount() {
+    if (this.props.data && this.props.data.hasOwnProperty("index")) {
+      this.navigationRouteHandler(this.props.data.index);
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -108,14 +111,12 @@ class AdType extends Component {
       campaign_type: this.state.campaign_type
     });
 
-    console.log("adtype", this.props.adType !== this.state.campaign_type);
-
     if (this.props.adType !== this.state.campaign_type) {
       this.props.resetCampaignInfo();
     }
     this.props.set_adType(this.state.campaign_type);
     this.props.navigation.navigate(this.state.route);
-    this.props.set_adType(this.state.campaign_type);
+    this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
   _renderItem({ item }) {
@@ -172,7 +173,7 @@ class AdType extends Component {
           <View style={{ height: 90 }}>
             <Carousel
               ref={c => {
-                this._carousel = c;
+                this.media_carousel = c;
               }}
               onSnapToItem={indx => this.handleMediaChange(indx)}
               inactiveSlideScale={0.75}
@@ -207,6 +208,7 @@ class AdType extends Component {
           {Slide}
         </Swiper> */}
           <Carousel
+            firstItem={this.props.data ? this.props.data.index : 0}
             ref={c => {
               this._carousel = c;
             }}
@@ -235,15 +237,9 @@ class AdType extends Component {
             inactiveDotScale={0.6}
           />
           <View style={{ height: 70, marginBottom: 10 }}>
-            {this.state.route !== "" ? (
-              <Animatable.View animation={"fadeIn"}>
-                <LowerButton function={this.navigationHandler} bottom={1} />
-              </Animatable.View>
-            ) : (
-              <Animatable.Text animation={"fadeIn"} style={styles.text}>
-                COMING SOON
-              </Animatable.Text>
-            )}
+            <Animatable.View animation={"fadeIn"}>
+              <LowerButton function={this.navigationHandler} bottom={1} />
+            </Animatable.View>
           </View>
         </Container>
       </SafeAreaView>
@@ -252,11 +248,15 @@ class AdType extends Component {
 }
 
 const mapStateToProps = state => ({
+  data: state.campaignC.data,
+  adType: state.campaignC.adType,
+
   mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(
