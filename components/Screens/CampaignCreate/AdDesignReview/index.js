@@ -70,9 +70,8 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let storyAdsArray = this.props.storyAdsArray.filter(
-      ad => ad !== undefined && ad.image
-    );
+    let adType = this.props.adType;
+    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad !== undefined);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -307,6 +306,7 @@ class AdDesignReview extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   mainBusiness: state.account.mainBusiness,
+  adType: state.campaignC.adType,
   data: state.campaignC.data,
   storyAdsArray: state.campaignC.storyAdsArray
 });
