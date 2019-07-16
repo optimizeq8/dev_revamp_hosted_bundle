@@ -159,29 +159,31 @@ export default class DateFields extends Component {
                 Select the{" "}
                 {!this.state.start_choice ? "Start Date" : "End Date"}
               </Text>
-              <DateRangePicker
-                initialRange={
-                  this.props.start_time
-                    ? [this.props.start_time, this.props.end_time]
-                    : ["", ""]
-                }
-                filterMenu={this.props.filterMenu}
-                reset={this.state.reset}
-                chartRange={this.props.chartRange}
-                selectedCampaign={this.props.selectedCampaign}
-                startDatePicked={this.startDatePicked}
-                endDatePicked={this.endDatePicked}
-                // initialRange={[this.props.start_time, this.props.end_time]}
-                onSuccess={async (s, e) => {
-                  this.endDatePicked();
-                  this.setState({
-                    start_date: s,
-                    end_date: e,
-                    reset: false
-                  });
-                }}
-                theme={{ markColor: "#FF9D00", markTextColor: "white" }}
-              />
+              <View style={{ height: "50%" }}>
+                <DateRangePicker
+                  initialRange={
+                    this.props.start_time
+                      ? [this.props.start_time, this.props.end_time]
+                      : ["", ""]
+                  }
+                  filterMenu={this.props.filterMenu}
+                  reset={this.state.reset}
+                  chartRange={this.props.chartRange}
+                  selectedCampaign={this.props.selectedCampaign}
+                  startDatePicked={this.startDatePicked}
+                  endDatePicked={this.endDatePicked}
+                  // initialRange={[this.props.start_time, this.props.end_time]}
+                  onSuccess={async (s, e) => {
+                    this.endDatePicked();
+                    this.setState({
+                      start_date: s,
+                      end_date: e,
+                      reset: false
+                    });
+                  }}
+                  theme={{ markColor: "#FF9D00", markTextColor: "white" }}
+                />
+              </View>
 
               {this.state.start_date || this.props.chartRange ? (
                 <Text
