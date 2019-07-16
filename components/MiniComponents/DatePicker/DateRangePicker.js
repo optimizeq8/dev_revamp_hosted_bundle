@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
 
 const XDate = require("xdate");
@@ -163,7 +163,7 @@ export default class DateRangePicker extends Component<Props> {
 
   render() {
     return (
-      <Calendar
+      <CalendarList
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
@@ -191,7 +191,7 @@ export default class DateRangePicker extends Component<Props> {
           selectedDayTextColor: "#ffffff",
           todayTextColor: "#FF9D00",
           dayTextColor: "#fff",
-          textDisabledColor: "#d9e1e8",
+          textDisabledColor: "#686d70",
           dotColor: "#00adf5",
           selectedDotColor: "#ffffff",
           arrowColor: "#FF9D00",
