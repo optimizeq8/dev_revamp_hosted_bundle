@@ -27,7 +27,36 @@ const initialState = {
   interestNames: [],
   regionNames: [],
   campaignEnded: false,
-  storyAdsArray: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }],
+  storyAdsArray: [
+    {
+      id: 0,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      image: "//",
+      destination: "BLANK",
+      attachment: "BLANK"
+    },
+    {
+      id: 1,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      image: "//",
+      destination: "BLANK",
+      attachment: "BLANK"
+    },
+    {
+      id: 2,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      image: "//",
+      destination: "BLANK",
+      attachment: "BLANK"
+    },
+    {
+      id: 3,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      image: "//",
+      destination: "BLANK",
+      attachment: "BLANK"
+    }
+  ],
   loadingStoryAdsArray: [],
   coverLoading: false,
   storyAdCover: null,
@@ -295,7 +324,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ADD_SNAP_CARD:
       let newSnapCard = {
         id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1,
-        call_to_action: {},
+        call_to_action: { label: "BLANK", value: "BLANK" },
         image: "//",
         destination: "BLANK",
         attachment: "BLANK"
@@ -404,28 +433,28 @@ const reducer = (state = initialState, action) => {
         storyAdsArray: [
           {
             id: 0,
-            call_to_action: {},
+            call_to_action: { label: "BLANK", value: "BLANK" },
             image: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 1,
-            call_to_action: {},
+            call_to_action: { label: "BLANK", value: "BLANK" },
             image: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 2,
-            call_to_action: {},
+            call_to_action: { label: "BLANK", value: "BLANK" },
             image: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 3,
-            call_to_action: {},
+            call_to_action: { label: "BLANK", value: "BLANK" },
             image: "//",
             destination: "BLANK",
             attachment: "BLANK"
