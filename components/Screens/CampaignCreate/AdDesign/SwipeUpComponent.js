@@ -3,65 +3,6 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { Icon } from "native-base";
 import styles from "./styles";
 export default class SwipeUpComponent extends Component {
-  //  render() {
-  //     let { destination, attachment, objective, image, adType } = this.props;
-  //     return (
-  //       <TouchableOpacity
-  //         style={styles.swipeUp}
-  //         onPress={() => {
-  //           objective === "TRAFFIC" || adType === "StoryAd"
-  //             ? this.props.navigation.push("SwipeUpDestination", {
-  //                 _changeDestination: this.props._changeDestination,
-  //                 image
-  //               })
-  //             : this.props.navigation.navigate("SwipeUpChoice", {
-  //                 _changeDestination: this.props._changeDestination,
-  //                 objective
-  //               });
-  //         }}
-  //       >
-  //         <View style={{ flexDirection: "column" }}>
-  //           <Text style={styles.swipeUpText}>
-  //             {(destination !== "BLANK" ||
-  //               (this.props.selectedStoryAd.destination &&
-  //                 this.props.selectedStoryAd.destination !== "BLANK")) &&
-  //             (destination !== "REMOTE_WEBPAGE" ||
-  //               (this.props.selectedStoryAd.destination &&
-  //                 this.props.selectedStoryAd.destination !== "REMOTE_WEBPAGE"))
-  //               ? this.props.selectedStoryAd.destination || destination
-  //               : destination === "REMOTE_WEBPAGE" &&
-  //                 objective !== "WEB_CONVERSION"
-  //               ? "Website"
-  //               : objective === "WEB_CONVERSION" &&
-  //                 (destination !== "BLANK" ||
-  //                   this.props.selectedStoryAd.destination !== "BLANK")
-  //               ? "WhatsApp Campaign"
-  //               : "Swipe Up destination"}
-  //           </Text>
-  //           {objective !== "WEB_CONVERSION" &&
-  //             ["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(
-  //               destination
-  //             ) && (
-  //               <Text
-  //                 ellipsizeMode="tail"
-  //                 numberOfLines={1}
-  //                 style={[styles.swipeUpText, { fontSize: 12, width: 150 }]}
-  //               >
-  //                 {attachment.hasOwnProperty("deep_link_uri")
-  //                   ? attachment.deep_link_uri
-  //                   : attachment.url}
-  //               </Text>
-  //             )}
-  //         </View>
-  //         <Icon
-  //           type="MaterialIcons"
-  //           name="arrow-drop-down"
-  //           style={{ left: 10, color: "#fff" }}
-  //         />
-  //       </TouchableOpacity>
-  //     );
-  //   }
-
   render() {
     let {
       destination,
@@ -73,7 +14,7 @@ export default class SwipeUpComponent extends Component {
       selectedStoryAd,
       call_to_action_label
     } = this.props;
-
+    selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     return (
       <TouchableOpacity
         style={[

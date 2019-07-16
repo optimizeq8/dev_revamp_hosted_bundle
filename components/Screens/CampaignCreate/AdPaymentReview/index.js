@@ -50,8 +50,8 @@ class AdPaymentReview extends Component {
 			if (this.props.interestNames.length > 0) {
 				interestNames = this.props.interestNames.map(interest => interest.name);
 			}
-			let end_time = new Date(this.props.data.end_time);
-			let start_time = new Date(this.props.data.start_time);
+			let end_time = new Date(this.props.data.end_time||"01-01-1970");
+			let start_time = new Date(this.props.data.start_time || "01-01-1970");
 			end_time = dateFormat(end_time, 'd mmm yyyy');
 			start_time = dateFormat(start_time, 'd mmm yyyy');
 			let gender = targeting.demographics[0].gender ? targeting.demographics[0].gender : 'All';

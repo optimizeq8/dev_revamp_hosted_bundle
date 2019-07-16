@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="89" height="89" viewBox="0 0 89 89">
+  <circle id="Ellipse_231" data-name="Ellipse 231" cx="44.5" cy="44.5" r="44.5" fill="#ff9d00"/>
+  <g id="np_camera_888661_000000" transform="translate(23.67 29.059)">
+    <path id="Path_8" data-name="Path 8" d="M50.693,53.472A3.472,3.472,0,1,1,47.222,50a3.471,3.471,0,0,1,3.472,3.472" transform="translate(-26.392 -36.113)" fill="#fff"/>
+    <path id="Path_9" data-name="Path 9" d="M50.689,29.628H41.43L39.115,25H27.543l-2.315,4.628H15.972A3.409,3.409,0,0,0,12.5,33.1V51.615a3.482,3.482,0,0,0,3.472,3.472H50.689a3.482,3.482,0,0,0,3.472-3.472V33.1A3.41,3.41,0,0,0,50.689,29.628ZM33.33,50.458a8.1,8.1,0,1,1,8.1-8.1A8.05,8.05,0,0,1,33.33,50.458Z" transform="translate(-12.5 -25)" fill="#fff"/>
+  </g>
+</svg>

@@ -97,7 +97,12 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
-    if (this.props.data) {
+	  if (this.props.data &&
+		  Object.keys(this.state.campaignInfo)
+			  .map(key => {
+				  if (this.props.data.hasOwnProperty(key)) return true;
+			  })
+			  .includes(true)) {
       rep = {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
@@ -422,8 +427,8 @@ class AdObjective extends Component {
 										}}
 									>
 										<LoopStoryIcon
-											width={40}
-											height={40}
+											width={30}
+											height={30}
 											fill={
 												this.state.playback_type === "LOOPING"
 													? styles.activeText.color

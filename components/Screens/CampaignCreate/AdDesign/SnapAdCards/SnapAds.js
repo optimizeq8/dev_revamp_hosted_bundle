@@ -26,11 +26,10 @@ export default class SnapAds extends Component {
     return (
       <View
         style={{
-          alignSelf: "center",
           position: "absolute",
-          alignItems: "center",
+          top: "20%",
           width: "100%",
-          height: "60%"
+          height: "80%"
         }}
       >
         <FlatList

@@ -5,6 +5,7 @@ import { Button, Icon } from "native-base";
 import styles from "./styles";
 
 import EditCameraIcon from "../../../../assets/SVGs/CameraCircleOutline";
+import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
 export default class MediaButton extends Component {
   render() {
     let {
@@ -15,7 +16,7 @@ export default class MediaButton extends Component {
       setMediaModalVisible
     } = this.props;
 
-    if (image) {
+    if (image && image !== "//") {
       return (
         <Button
           transparent
@@ -76,17 +77,9 @@ export default class MediaButton extends Component {
                 : setMediaModalVisible(true);
             }}
           >
-            <Icon
-              style={[
-                styles.icon,
-                snapAdCard
-                  ? { fontSize: 20, paddingRight: 15, paddingTop: 5 }
-                  : {}
-              ]}
-              name="camera"
-            />
+            <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {image !== "blank" && image ? "Edit Photo" : "Add Media"}
+              {image !== "blank" && image !== "//" ? "Edit Photo" : "Add Media"}
             </Text>
           </Button>
         </>
