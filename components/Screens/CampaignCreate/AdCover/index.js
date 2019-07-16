@@ -218,7 +218,7 @@ class AdCover extends Component {
     let logo = await this.pick("Images");
 
     let correctLogo = logo.width === 993 && logo.height === 284;
-    let logoFormat = logo.uri.split(".")[1] === "png";
+    let logoFormat = logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
     if (!logo.cancelled) {
       this.setState({
         campaignInfo: {
@@ -228,12 +228,14 @@ class AdCover extends Component {
         logoError: correctLogo || logoFormat
       });
       showMessage({
-        message: correctLogo
-          ? "Logo selected successfully"
-          : "Logo must be exactly 993px by 284px",
-        description: correctLogo
-          ? ""
-          : "In .png format and transparent background.",
+        message:
+          correctLogo && logoFormat
+            ? "Logo selected successfully"
+            : "Logo must be exactly 993px by 284px",
+        description:
+          correctLogo && logoFormat
+            ? ""
+            : "In .png format and transparent background.",
         position: "top",
         duration: correctLogo ? 2000 : 10000,
         type: correctLogo ? "success" : "warning"
@@ -573,7 +575,6 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline } = this.state.campaignInfo;
-
     let inputFields = (
       <PenIconBrand
         data={this.props.data}

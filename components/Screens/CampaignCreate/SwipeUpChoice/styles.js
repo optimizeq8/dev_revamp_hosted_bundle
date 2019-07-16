@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     borderColor: "#5D1CD8",
     // width: "100%",
     width: widthPercentageToDP(20),
-    height: 50
+    height: 40
   },
   icon: {
     fontSize: 35,

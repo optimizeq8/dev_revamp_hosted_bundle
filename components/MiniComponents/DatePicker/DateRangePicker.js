@@ -171,6 +171,7 @@ export default class DateRangePicker extends Component<Props> {
               : Date()
             : null
         }
+        calendarHeight={300}
         maxDate={
           this.props.chartRange
             ? new Date(this.props.selectedCampaign.end_time)

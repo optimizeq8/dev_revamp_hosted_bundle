@@ -70,7 +70,7 @@ class WhatsApp extends Component {
           callaction:
             this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
-              : list[4].call_to_action_list[0]
+              : list.SnapAd[4].call_to_action_list[0]
         }
       });
     }
@@ -219,10 +219,10 @@ class WhatsApp extends Component {
       >
         <KeyboardShift>
           {() => (
-            <View style={[styles.whatsApp, { bottom: "8%" }]}>
+            <View style={[styles.whatsApp, { bottom: "5%", paddingTop: 20 }]}>
               <WhatsAppIcon
-                width={90}
-                height={90}
+                width={60}
+                height={60}
                 fill="#fff"
                 style={[styles.icon]}
               />
