@@ -7,7 +7,8 @@ import {
     Image
   } from "react-native";
 import isEqual from "lodash/isEqual";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Text, Item, Input, Icon, Label, Container } from "native-base";
 
 // Style

@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 

@@ -5,7 +5,8 @@ import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { getBusinessAccounts } from "./accountManagementActions";
 import { setAuthToken } from "./genericActions";
-import { Permissions, Notifications } from "expo";
+import { Notifications } from "expo";
+import * as Permissions from 'expo-permissions';
 import store from "../index";
 
 createBaseUrl = () =>

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { connect } from "react-redux";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { Container, Content, Text } from "native-base";
 
 import { Transition } from "react-navigation-fluid-transitions";

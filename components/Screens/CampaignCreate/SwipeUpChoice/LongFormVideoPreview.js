@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { SafeAreaView } from "react-navigation";
 import { BackHandler, View, StatusBar } from "react-native";
 
-import { Video, ScreenOrientation } from "expo";
+import { ScreenOrientation } from "expo";
+import { Video } from 'expo-av';
 import CustomHeader from "../../../MiniComponents/Header";
 import styles from "./styles";
 import globalStyles from "../../../../GlobalStyles";

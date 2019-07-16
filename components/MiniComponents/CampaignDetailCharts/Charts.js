@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import styles from "./styles";
 import { heightPercentageToDP } from "react-native-responsive-screen";

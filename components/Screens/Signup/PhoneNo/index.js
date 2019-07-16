@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   Text
 } from "react-native";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { Icon, Item } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import CountryModal from "./CountryModal";

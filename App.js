@@ -29,18 +29,13 @@ import { TextInputMask } from "react-native-masked-text";
 TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 
-import {
-  AppLoading,
-  Asset,
-  Font,
-  Icon,
-  Linking,
-  SplashScreen,
-  Segment,
-  Permissions,
-  Notifications,
-  LinearGradient
-} from "expo";
+import { AppLoading, Linking, SplashScreen, Notifications } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Permissions from 'expo-permissions';
+import * as Segment from 'expo-analytics-segment';
+import * as Icon from '@expo/vector-icons';
+import * as Font from 'expo-font';
+import { Asset } from 'expo-asset';
 import NavigationService from "./NavigationService";
 
 import * as actionCreators from "./store/actions";

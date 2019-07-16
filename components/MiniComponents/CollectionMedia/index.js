@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import {
-  ImagePicker,
-  Permissions,
-  FileSystem,
-  Segment,
-  ImageManipulator,
-  Linking,
-  BlurView
-} from "expo";
+import { Linking } from "expo";
+import { BlurView } from 'expo-blur';
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as Segment from 'expo-analytics-segment';
+import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import {
   View,
   TouchableOpacity,
@@ -281,13 +279,33 @@ class CollectionMedia extends Component {
             result.uri,
             [
               {
-                resize: { height: newHeight},
+                resize: result.height < result.width ? { height: newHeight } : { width: newWidth },
+
+                // crop: {
+                //   originX: (result.width - newWidth) / 2,
+                //   originY: (result.height - newHeight) / 2,
+                //   width: newWidth,
+                //   height: newHeight
+                // }
+              }
+            ],
+            {
+              compress: 1
+            }
+          )
+            .then(async manipResult => {
+              console.log(manipResult);
+              
+              manipResult = await ImageManipulator.manipulateAsync(
+            manipResult.uri,
+            [
+              {
 
                 crop: {
-                  originX: (result.width - newWidth) / 2,
-                  originY: (result.height - newHeight) / 2,
-                  width: newWidth,
-                //   height: newHeight
+                  originX: (manipResult.width - 160) / 2,
+                  originY: (manipResult.height - 160) / 2,
+                  width: 160,
+                  height: 160
                 }
               }
             ],
@@ -295,7 +313,6 @@ class CollectionMedia extends Component {
               compress: 1
             }
           )
-            .then(manipResult => {
               this.setState({
                 directory: "/ImageManipulator/"
               });
@@ -348,7 +365,7 @@ class CollectionMedia extends Component {
                 position: "top",
                 type: "warning"
               });
-              // console.log("ImageManipulator err", error);
+              console.log("ImageManipulator err", error);
               return;
             });
           return;

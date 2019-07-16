@@ -6,7 +6,7 @@ import CheckmarkIcon from "../../assets/SVGs/Checkmark.svg";
 
 export default class LowerButton extends Component {
   render() {
-    let bottom = this.props.bottom;
+    let bottom = this.props.bottom ? this.props.bottom : 0;
     return (
       <TouchableOpacity
         style={{

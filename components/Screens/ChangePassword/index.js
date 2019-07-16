@@ -8,7 +8,7 @@ import {
   BackHandler,
   TextInput
 } from "react-native";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { Text, Item, Input, Icon, Label, Container } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";

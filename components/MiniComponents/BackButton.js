@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import BackIcon from "../../assets/SVGs/BackButton";
 import globalStyles from "../../GlobalStyles";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export default class CloseButton extends Component {
   render() {

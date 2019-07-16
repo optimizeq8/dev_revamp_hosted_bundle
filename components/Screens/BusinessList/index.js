@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import BusinessCard from "../../MiniComponents/BusinessCard";
 
 // Style

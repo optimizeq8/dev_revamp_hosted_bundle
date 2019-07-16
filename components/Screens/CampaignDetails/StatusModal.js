@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
-import { BlurView } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 import { Button } from "native-base";
 
 //Icons
@@ -11,7 +12,6 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import { globalColors } from "../../../GlobalStyles";
-import { LinearGradient } from "expo";
 export default class StatusModal extends Component {
   render() {
     let selectedCampaign = this.props.selectedCampaign;

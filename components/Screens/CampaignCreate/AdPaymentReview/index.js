@@ -9,7 +9,8 @@ import {
 	Platform,
 } from 'react-native';
 import { Content, Text, Container, Footer } from 'native-base';
-import { Segment, Video } from 'expo';
+import { Video } from 'expo-av';
+import * as Segment from 'expo-analytics-segment';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import ReviewItemCard from '../../../MiniComponents/ReviewItemCard';
 import CustomHeader from '../../../MiniComponents/Header';

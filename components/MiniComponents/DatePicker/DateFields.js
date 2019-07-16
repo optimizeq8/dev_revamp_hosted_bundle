@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, Text } from "native-base";
-import { BlurView } from "expo";
+import { BlurView } from 'expo-blur';
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import DateRangePicker from "./DateRangePicker";

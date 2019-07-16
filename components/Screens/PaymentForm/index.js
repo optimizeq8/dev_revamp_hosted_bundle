@@ -9,7 +9,11 @@ import {
 import { Button, Text, Container, Content, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
-import { WebBrowser, Linking, Segment, BlurView } from "expo";
+import { Linking } from "expo";
+
+import { BlurView } from 'expo-blur';
+import * as Segment from 'expo-analytics-segment';
+import * as WebBrowser from 'expo-web-browser';
 
 //Redux
 import { connect } from "react-redux";

@@ -16,7 +16,8 @@ import {
   Icon,
   Button
 } from "native-base";
-import { BlurView, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { BlurView } from 'expo-blur';
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";

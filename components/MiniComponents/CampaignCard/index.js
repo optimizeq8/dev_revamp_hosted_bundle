@@ -7,7 +7,8 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";

@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Image, AsyncStorage } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Button, Text, Container } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import Swiper from "../../MiniComponents/Swiper";
 import Invitation from "../InvitationScreen";
 

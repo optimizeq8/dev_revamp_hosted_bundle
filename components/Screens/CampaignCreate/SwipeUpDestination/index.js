@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";

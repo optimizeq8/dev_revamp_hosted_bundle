@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { Image, Animated } from "react-native";
 import { Container } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Style
 import styles from "./styles";

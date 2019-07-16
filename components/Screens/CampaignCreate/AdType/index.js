@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { View, BackHandler } from "react-native";
 import { Text, Container } from "native-base";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Header from "../../../MiniComponents/Header";

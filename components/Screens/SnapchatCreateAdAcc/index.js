@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, Image, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationEvents } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";

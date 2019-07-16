@@ -202,22 +202,22 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30
   },
-  checkbutton: {
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 27.5,
-    borderColor: "transparent",
-    borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginVertical: 5
-  },
+  // checkbutton: {
+  //   backgroundColor: "#FF9D00",
+  //   alignSelf: "center",
+  //   width: 55,
+  //   height: 55,
+  //   borderRadius: 27.5,
+  //   borderColor: "transparent",
+  //   borderWidth: 1,
+  //   alignItems: "center",
+  //   justifyContent: "flex-end",
+  //   shadowColor: "#000",
+  //   shadowOffset: { width: 0, height: 3 },
+  //   shadowRadius: 3,
+  //   shadowOpacity: 0.2,
+  //   marginVertical: 5
+  // },
   activebutton: {
     backgroundColor: "#fff",
     alignSelf: "center",

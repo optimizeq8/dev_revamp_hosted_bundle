@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Platform, StyleSheet, Image } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from "lottie-react-native";
 import {
   widthPercentageToDP,

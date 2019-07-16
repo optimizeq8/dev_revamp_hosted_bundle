@@ -7,7 +7,8 @@ import {
   Animated
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import {

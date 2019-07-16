@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
-import { BlurView } from "expo";
+import { BlurView } from 'expo-blur';
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";

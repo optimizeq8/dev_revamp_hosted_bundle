@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler, ScrollView } from "react-native";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import {

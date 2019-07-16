@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, BackHandler } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
 import { connect } from "react-redux";
-import {
-  ImagePicker,
-  Permissions,
-  Video,
-  FileSystem,
-  ScreenOrientation
-} from "expo";
+import { ScreenOrientation } from "expo";
+import * as FileSystem from 'expo-file-system';
+import { Video } from 'expo-av';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import Modal from "react-native-modal";
 import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";

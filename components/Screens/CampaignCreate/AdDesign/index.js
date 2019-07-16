@@ -1,18 +1,16 @@
 //Components
 import React, { Component } from "react";
-import {
-  ImagePicker,
-  Permissions,
-  Video,
-  FileSystem,
-  Segment,
-  ImageManipulator,
-  Linking,
-  WebBrowser,
-  BlurView,
-  LinearGradient,
-  MediaLibrary
-} from "expo";
+import { Linking } from "expo";
+import * as MediaLibrary from "expo-media-library";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
+import * as WebBrowser from "expo-web-browser";
+import * as ImageManipulator from "expo-image-manipulator";
+import * as Segment from "expo-analytics-segment";
+import * as FileSystem from "expo-file-system";
+import { Video } from "expo-av";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import {
   View,
   TouchableOpacity,
@@ -455,6 +453,8 @@ class AdDesign extends Component {
                 }
               })
               .catch(error => {
+                console.log(error);
+
                 this.onToggleModal(false);
                 showMessage({
                   message: "Please choose an image not ",
@@ -1388,12 +1388,13 @@ class AdDesign extends Component {
                       }
                       onLoad={() => this.setState({ videoIsLoading: false })}
                       source={{
-                        uri: image
-                          ? image
-                          : this.state.storyAdCards.selectedStoryAd.image &&
-                            this.state.storyAdCards.storyAdSelected
-                          ? this.state.storyAdCards.selectedStoryAd.image
-                          : "//"
+                        uri:
+                          image !== "//"
+                            ? image
+                            : this.state.storyAdCards.selectedStoryAd.image &&
+                              this.state.storyAdCards.storyAdSelected
+                            ? this.state.storyAdCards.selectedStoryAd.image
+                            : "//"
                       }}
                       shouldPlay
                       isLooping
@@ -1482,11 +1483,12 @@ class AdDesign extends Component {
                     <Image
                       style={styles.placeholder1}
                       source={{
-                        uri: image
-                          ? image
-                          : this.state.storyAdCards.selectedStoryAd.image
-                          ? this.state.storyAdCards.selectedStoryAd.image
-                          : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                        uri:
+                          image !== "//"
+                            ? image
+                            : this.state.storyAdCards.selectedStoryAd.image
+                            ? this.state.storyAdCards.selectedStoryAd.image
+                            : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
                       }}
                       resizeMode="cover"
                     />

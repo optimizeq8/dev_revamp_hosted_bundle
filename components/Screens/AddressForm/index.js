@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, BackHandler } from "react-native";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
