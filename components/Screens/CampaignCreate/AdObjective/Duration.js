@@ -49,7 +49,6 @@ export default class Duration extends Component {
       >
         <View style={styles.dateContainer}>
           <View style={styles.dateColumn}>
-            <Text style={styles.dateLabel}>Start</Text>
             {this.props.start_time !== "" || selectedCampaign ? (
               <Text style={styles.date}>
                 {start_time} {start_year}
@@ -86,7 +85,6 @@ export default class Duration extends Component {
           ) : (
             this.props.slidePanel && (
               <View style={styles.dateColumn}>
-                <Text style={styles.dateLabel}>End</Text>
                 <Text style={styles.date}>
                   {new Date(selectedCampaign.start_time.split("T")[0]) >=
                   new Date()
