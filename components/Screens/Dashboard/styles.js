@@ -257,7 +257,6 @@ const styles = StyleSheet.create({
   // },
   activebutton: {
     backgroundColor: "#0000",
-    alignSelf: "center",
     justifyContent: "center",
     width: 55,
     height: 55,
