@@ -19,13 +19,12 @@
       "backgroundColor": "#fff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
+      "fallbackToCacheTimeout": 10000
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "9",
+      "buildNumber": "12",
       "supportsTablet": false
     },
     "packagerOpts": {
@@ -34,7 +33,7 @@
 
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 9
+      "versionCode": 12
     },
     "hooks": {
       "postPublish": [

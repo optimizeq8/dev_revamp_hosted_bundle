@@ -1,5 +1,6 @@
 //Components
 import React, { Component } from "react";
+import { Updates } from "expo";
 
 import { Image, View } from "react-native";
 import LottieView from "lottie-react-native";
@@ -15,28 +16,28 @@ class AppUpdateChecker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      update: false
+      updateDownloaded: false
     };
   }
-  componentDidMount = async () => {
+  async componentDidMount() {
     try {
-      const update = await Expo.Updates.checkForUpdateAsync();
+      const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
-        await Expo.Updates.fetchUpdateAsync();
-        this.setState({ update: true });
-        Expo.Updates.reloadFromCache();
+        await Updates.fetchUpdateAsync();
+        this.setState({ updateDownloaded: true });
+        Updates.reloadFromCache();
       }
     } catch (e) {
-      console.log(e);
+      console.log("error", e);
     }
-  };
+  }
 
   render() {
-    if (!this.state.update) {
+    if (this.state.updateDownloaded) {
       return <Tutorial navigation={this.props.navigation} />;
     }
     return (
-      <View style={{ backgroundColor: "yellow", height: "100%" }}>
+      <View style={{ height: "100%" }}>
         <Image
           style={{
             width: "100%",
@@ -46,7 +47,7 @@ class AppUpdateChecker extends Component {
             // left: 0,
             // bottom: 0,
             // right: 0,
-            resizeMode: "contain"
+            resizeMode: "cover"
           }}
           source={require("../../../assets/images/MainSplash.png")}
         />

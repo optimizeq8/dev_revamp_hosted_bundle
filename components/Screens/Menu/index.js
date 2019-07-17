@@ -166,7 +166,12 @@ class Menu extends Component {
 
             <TouchableOpacity
               style={styles.options}
-              onPress={() => openPrivacy()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/privacy",
+                  title: "Privacy policy"
+                })
+              }
             >
               <Icon
                 name="security"
@@ -178,7 +183,12 @@ class Menu extends Component {
 
             <TouchableOpacity
               style={styles.options}
-              onPress={() => openTerms()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/terms",
+                  title: "Terms & Condtions"
+                })
+              }
             >
               <Icon
                 name="file-document-box"
@@ -203,7 +213,7 @@ class Menu extends Component {
               <Icons.LogoutIcon style={[styles.icons]} />
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
-            <Text style={styles.version}>Version:0.1.5/9/9</Text>
+            <Text style={styles.version}>Version:0.1.5/12/12</Text>
           </ScrollView>
         </View>
 

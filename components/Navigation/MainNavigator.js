@@ -15,7 +15,7 @@ import TransactionList from "../Screens/Transactions";
 import PersonalInfo from "../Screens/PersonalInfo";
 import Wallet from "../Screens/Wallet";
 import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
-
+import WebView from "../MiniComponents/Webview";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
@@ -39,6 +39,7 @@ export default FluidNavigator(
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
+
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
     BusinessList: BusinessList,
@@ -69,7 +70,8 @@ export default FluidNavigator(
     SuccessRedirect: {
       screen: SuccessRedirect,
       path: "success/"
-    }
+    },
+    WebView: WebView
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
