@@ -1,16 +1,16 @@
 //Components
 import React, { Component } from "react";
 import { Linking } from "expo";
-import * as MediaLibrary from 'expo-media-library';
-import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
-import * as WebBrowser from 'expo-web-browser';
-import * as ImageManipulator from 'expo-image-manipulator';
-import * as Segment from 'expo-analytics-segment';
-import * as FileSystem from 'expo-file-system';
-import { Video } from 'expo-av';
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from "expo-media-library";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
+import * as WebBrowser from "expo-web-browser";
+import * as ImageManipulator from "expo-image-manipulator";
+import * as Segment from "expo-analytics-segment";
+import * as FileSystem from "expo-file-system";
+import { Video } from "expo-av";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import {
   View,
   TouchableOpacity,

@@ -166,7 +166,12 @@ class Menu extends Component {
 
             <TouchableOpacity
               style={styles.options}
-              onPress={() => openPrivacy()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/privacy",
+                  title: "Privacy policy"
+                })
+              }
             >
               <Icon
                 name="security"
@@ -178,7 +183,12 @@ class Menu extends Component {
 
             <TouchableOpacity
               style={styles.options}
-              onPress={() => openTerms()}
+              onPress={() =>
+                this.props.navigation.navigate("WebView", {
+                  url: "https://www.optimizeapp.com/terms",
+                  title: "Terms & Condtions"
+                })
+              }
             >
               <Icon
                 name="file-document-box"
