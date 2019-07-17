@@ -7,12 +7,6 @@ import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
 export default class index extends Component {
-  handleWebViewNavigationStateChange = newNavState => {
-    const { url } = newNavState;
-    if (!url) return;
-
-    this.webview.stopLoading();
-  };
   render() {
     let url = this.props.navigation.getParam("url", "");
     let title = this.props.navigation.getParam("title", "");
@@ -33,11 +27,7 @@ export default class index extends Component {
             scrollEnabled={false}
             padder
           >
-            <WebView
-              ref={ref => (this.webview = ref)}
-              onNavigationStateChange={this.handleWebViewNavigationStateChange}
-              source={{ uri: url }}
-            />
+            <WebView ref={ref => (this.webview = ref)} source={{ uri: url }} />
           </Content>
         </Container>
       </SafeAreaView>

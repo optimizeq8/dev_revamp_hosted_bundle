@@ -3,7 +3,7 @@ import { View, ScrollView, BackHandler } from "react-native";
 import { Button, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Sidemenu from "react-native-side-menu";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";

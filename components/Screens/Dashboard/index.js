@@ -422,10 +422,13 @@ class Dashboard extends Component {
                       flexDirection: "row",
                       height: 50,
                       alignItems: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      marginBottom: 10
                     }}
                   >
-                    <SearchBar renderSearchBar={this.renderSearchBar} />
+                    <View style={{ width: "80%" }}>
+                      <SearchBar renderSearchBar={this.renderSearchBar} />
+                    </View>
                     <Button
                       style={styles.activebutton}
                       onPress={() => {
