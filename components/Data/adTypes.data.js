@@ -1,3 +1,7 @@
+import React from "react";
+
+import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
+
 export const snapAds = [
   {
     id: 1,
@@ -6,7 +10,9 @@ export const snapAds = [
     rout: "AdObjective",
     icon: "snapchat-ghost",
     title: "Snap Ad",
-    image: require("../../assets/images/AdTypes/SnapAd.gif")
+    value: "SnapAd",
+    image: require("../../assets/images/AdTypes/SnapAd.gif"),
+    icon: <AdIcons.SnapAd />
   },
   {
     id: 2,
@@ -15,8 +21,9 @@ export const snapAds = [
     rout: "AdObjective",
     icon: "snapchat-ghost",
     title: "Story Ad",
-    image: require("../../assets/images/AdTypes/StoryAd.gif")
-
+    value: "StoryAd",
+    image: require("../../assets/images/AdTypes/StoryAd.gif"),
+    icon: <AdIcons.StoryAd />
   },
   {
     id: 3,
@@ -25,9 +32,10 @@ export const snapAds = [
     rout: "AdObjective",
     icon: "snapchat-ghost",
     title: "Collection Ad",
-    image: require("../../assets/images/AdTypes/CollectionAd.gif")
+    value: "CollectionAd",
+    image: require("../../assets/images/AdTypes/CollectionAd.gif"),
+    icon: <AdIcons.CollectionAd />
   }
-
 ];
 
 export const twittwerAds = [

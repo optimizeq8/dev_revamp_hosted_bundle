@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { View, BackHandler } from "react-native";
 import { Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Header from "../../../MiniComponents/Header";
@@ -184,29 +184,6 @@ class AdType extends Component {
               scrollEndDragDebounceValue={0}
             />
           </View>
-
-          {/* <Swiper
-          loop={false}
-          activeDotColor="#fff"
-          dotStyle={{
-            backgroundColor: "rgba(255,255,255,0.25)",
-            width: 13,
-            top: 5,
-            height: 13,
-            marginLeft: 10,
-            borderRadius: 50
-          }}
-          activeDotStyle={{
-            width: 13,
-            top: 5,
-            marginLeft: 10,
-            height: 13,
-            borderRadius: 50
-          }}
-          onIndexChanged={index => this.navigationRouteHandler(index)}
-        >
-          {Slide}
-        </Swiper> */}
           <Carousel
             firstItem={this.props.data ? this.props.data.index : 0}
             ref={c => {

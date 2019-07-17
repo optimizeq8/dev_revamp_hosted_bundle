@@ -77,29 +77,20 @@ export default class PlacholderDashboard extends Component {
           animation={mySlideInUp}
           style={[styles.animateView]}
         >
+          <View style={[styles.nameStyle]} />
           <Container style={styles.container}>
-            <View padder style={[styles.mainCard]}>
+            <View padder style={[styles.mainCard, { height: "110%" }]}>
               <View style={styles.sideMenuCard}>
                 <View style={styles.sideMenuTop}>
-                  <Button
-                    style={[
-                      styles.activebutton,
-                      globalStyles.whiteBackgroundColor
-                    ]}
-                  >
-                    <SearchIcon width={23} height={23} stroke={"#575757"} />
-                  </Button>
-                  <Button style={[styles.button, { padding: 63 }]}>
+                  {/* <Button style={[styles.button, { padding: 63 }]}>
                     <ActivityIndicator />
-                    {/* <Text style={[styles.title, styles.newCampaignTitle]}>
-                    New {"\n"}
-                    Campaign
-                  </Text> */}
-                  </Button>
-
-                  <Button style={styles.activebutton} onPress={() => {}}>
-                    <FilterIcon width={23} height={23} fill="#575757" />
-                  </Button>
+                 
+                  </Button> */}
+                  <View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
+                    <Button style={styles.button}>
+                      <ActivityIndicator />
+                    </Button>
+                  </View>
                 </View>
               </View>
 
@@ -110,11 +101,11 @@ export default class PlacholderDashboard extends Component {
             )} */}
             </View>
           </Container>
-          <NavigationEvents
+          {/* <NavigationEvents
             onDidFocus={() => {
               Segment.screen("Dashboard");
             }}
-          />
+          /> */}
         </Animatable.View>
       </SafeAreaView>
     );
