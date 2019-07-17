@@ -398,7 +398,7 @@ class Dashboard extends Component {
                     placeHolderCards
                   ) : (
                     // <ActivityIndicator size="large" />
-                    <Animatable.View duration={800} animation="pulse">
+                    <Animatable.View duration={1000} animation="fadeIn">
                       <FlatList
                         contentContainerStyle={styles.flatlistContainerStyle}
                         keyExtractor={item => item.campaign_id}

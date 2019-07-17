@@ -3,10 +3,10 @@ import { View, TouchableOpacity, BackHandler } from "react-native";
 import { Button, Text, Item, Icon } from "native-base";
 import { connect } from "react-redux";
 import { ScreenOrientation } from "expo";
-import * as FileSystem from 'expo-file-system';
-import { Video } from 'expo-av';
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from "expo-file-system";
+import { Video } from "expo-av";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import Modal from "react-native-modal";
 import isEmpty from "lodash/isEmpty";
 import { showMessage } from "react-native-flash-message";
@@ -54,7 +54,7 @@ class Long_Form_Video extends Component {
     return true;
   };
   async componentDidMount() {
-    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+    ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
