@@ -16,7 +16,6 @@ import PersonalInfo from "../Screens/PersonalInfo";
 import Wallet from "../Screens/Wallet";
 import MultiSelect from "../MiniComponents/MultiSelect/MultiSelect";
 import WebView from "../MiniComponents/Webview";
-// import AppUpdateChecker from "../Screens/AppUpdateChecker";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";
@@ -73,7 +72,6 @@ export default FluidNavigator(
       path: "success/"
     },
     WebView: WebView
-    // AppUpdateChecker: AppUpdateChecker
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
