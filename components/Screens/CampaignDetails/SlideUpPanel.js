@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient';
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import Duration from "../../Screens/CampaignCreate/AdObjective/Duration";
 import LineChartGraphs from "./LineChartGraphs";

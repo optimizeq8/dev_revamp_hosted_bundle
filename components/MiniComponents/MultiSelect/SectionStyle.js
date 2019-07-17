@@ -26,7 +26,7 @@ export default (styles = StyleSheet.create({
   },
   container: {
     // marginTop: hp(5),
-    marginVertical: -"100%",
+    marginVertical: 0,
     marginLeft: 0,
     backgroundColor: "rgba(0,0,0,0.8)",
     width: wp(100)

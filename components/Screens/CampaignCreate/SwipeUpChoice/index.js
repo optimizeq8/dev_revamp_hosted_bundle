@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { Content, Container, View } from 'native-base';
-import { Segment } from 'expo';
+import * as Segment from 'expo-analytics-segment';
 import CustomeHeader from '../../../MiniComponents/Header';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Website from './Website';

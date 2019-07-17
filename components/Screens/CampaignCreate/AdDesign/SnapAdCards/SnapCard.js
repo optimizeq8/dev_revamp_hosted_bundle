@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { Button, Icon } from "native-base";
-import { Video } from "expo";
+import { Video } from 'expo-av';
 import styles from "../styles";
 import MediaButton from "../MediaButton";
 import { ActivityIndicator } from "react-native-paper";

@@ -4,7 +4,7 @@ import { View, ScrollView } from "react-native";
 import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 
 //Redux
 import { connect } from "react-redux";

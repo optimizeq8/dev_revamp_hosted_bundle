@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   addIconButton: { elevation: -1 },
   areaText: { marginTop: 30 },
-  headerComponent: { height: 20, marginBottom: "5%", bottom: "5%" },
+  headerComponent: { height: 20, marginBottom: "5%", bottom: "10%" },
   topView: {
     //   marginTop: 40,
     alignItems: "center"

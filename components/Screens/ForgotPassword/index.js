@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Text, Item, Input } from "native-base";
-import { LinearGradient, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from "react-navigation";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";

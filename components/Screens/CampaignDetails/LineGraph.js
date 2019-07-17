@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
-import { BlurView } from "expo";
+import { BlurView } from 'expo-blur';
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from "expo";
+import { BlurView } from 'expo-blur';
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";

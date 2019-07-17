@@ -4,7 +4,7 @@ import { Text } from 'native-base';
 import styles from './styles';
 import BackIcon from '../../../assets/SVGs/BackButton.svg';
 import CloseIcon from '../../../assets/SVGs/Close.svg';
-import { Segment } from 'expo';
+import * as Segment from 'expo-analytics-segment';
 import isUndefined from 'lodash/isUndefined';
 
 export default class Header extends Component {

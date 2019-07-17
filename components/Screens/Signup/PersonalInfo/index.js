@@ -8,7 +8,7 @@ import {
   Text
 } from "react-native";
 import { Item, Input, Icon, Label } from "native-base";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";

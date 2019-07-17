@@ -5,7 +5,8 @@ import { Button, Text, Item, Input, Container } from 'native-base';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { Modal } from 'react-native-paper';
 import { SafeAreaView } from 'react-navigation';
-import { Segment, LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from 'expo-analytics-segment';
 
 //Redux
 import { connect } from 'react-redux';

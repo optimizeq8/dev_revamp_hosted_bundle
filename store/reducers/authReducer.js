@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 const initialState = {
   userid: null,
   userInfo: null,

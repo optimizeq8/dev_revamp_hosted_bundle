@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
-import { BlurView, Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
+import { BlurView } from 'expo-blur';
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Animatable from "react-native-animatable";

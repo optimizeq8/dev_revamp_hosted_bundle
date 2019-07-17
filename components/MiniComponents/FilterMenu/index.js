@@ -160,6 +160,7 @@ class FilterMenu extends Component {
             </TouchableHighlight>
           </View>
         </View>
+
         <View style={styles.bottomView}>
           <Text
             onPress={() => this._resetFilter()}
@@ -169,6 +170,7 @@ class FilterMenu extends Component {
           </Text>
           <LowerButton
             checkmark={true}
+            bottom={0}
             function={() => this._handleSubmission(this.state.selected)}
           />
         </View>

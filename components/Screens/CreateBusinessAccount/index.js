@@ -8,7 +8,7 @@ import {
   BackHandler
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import isEmpty from "lodash/isEmpty";

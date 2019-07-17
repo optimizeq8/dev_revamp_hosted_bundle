@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 
 //Redux
 import { connect } from "react-redux";

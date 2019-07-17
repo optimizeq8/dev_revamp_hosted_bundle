@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
-import { Segment } from "expo";
+import * as Segment from 'expo-analytics-segment';
 import { ActivityIndicator } from "react-native-paper";
 
 //styles

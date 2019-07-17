@@ -10,7 +10,8 @@ import {
   BackHandler
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
-import { Segment, Video } from "expo";
+import { Video } from 'expo-av';
+import * as Segment from 'expo-analytics-segment';
 import Sidemenu from "react-native-side-menu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
