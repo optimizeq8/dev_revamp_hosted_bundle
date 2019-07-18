@@ -6,6 +6,7 @@ import { Container, Content } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
+import Loading from "../LoadingScreen";
 export default class index extends Component {
   render() {
     let url = this.props.navigation.getParam("url", "");
@@ -27,7 +28,13 @@ export default class index extends Component {
             scrollEnabled={false}
             padder
           >
-            <WebView ref={ref => (this.webview = ref)} source={{ uri: url }} />
+            <WebView
+              startInLoadingState
+              renderLoading={() => <Loading dash={true} />}
+              style={{ backgroundColor: "#0000" }}
+              ref={ref => (this.webview = ref)}
+              source={{ uri: url }}
+            />
           </Content>
         </Container>
       </SafeAreaView>

@@ -83,7 +83,7 @@ class AdDesign extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      image: "blank",
+      image: "//",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -177,13 +177,16 @@ class AdDesign extends Component {
         campaignInfo: {
           ...rep
         },
-        image: this.props.adType !== "StoryAd" ? rep.image : "//",
+        image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
         type: rep.type,
         objective: rep.objective,
         videoIsLoading: false,
         iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
         swipeUpError
       });
+    }
+    if (this.props.navigation.state.params) {
+      this._handleRedirect(this.props.navigation.state.params);
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -320,6 +323,7 @@ class AdDesign extends Component {
         brand_name
       }
     });
+    this.props.save_campaign_info({ brand_name });
   };
   changeHeadline = headline => {
     this.setState({
@@ -328,6 +332,7 @@ class AdDesign extends Component {
         headline
       }
     });
+    this.props.save_campaign_info({ headline });
   };
   pick = async mediaTypes => {
     await this.askForPermssion();
@@ -776,7 +781,13 @@ class AdDesign extends Component {
   openUploadVideo = async () => {
     try {
       this._addLinkingListener();
-
+      // this.props.navigation.replace("WebView", {
+      //   url:
+      //     this.props.adType === "StoryAd"
+      //       ? this.state.creativeVideoUrl
+      //       : this.props.videoUrl,
+      //   title: "Upload Video"
+      // });
       await WebBrowser.openBrowserAsync(
         this.props.adType === "StoryAd"
           ? this.state.creativeVideoUrl
@@ -833,6 +844,7 @@ class AdDesign extends Component {
       });
     } else
       this.setState({
+        ...this.state,
         image: data.queryParams.media,
         iosVideoUploaded: true,
         type: "VIDEO"
@@ -1538,7 +1550,7 @@ class AdDesign extends Component {
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {(this.props.adType !== "StoryAd" && image) ||
+            {(this.props.adType !== "StoryAd" && image !== "//") ||
             (this.state.storyAdCards.storyAdSelected &&
               this.state.storyAdCards.selectedStoryAd.image !== "//") ||
             validCards.length >= 3 ? (

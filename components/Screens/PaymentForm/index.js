@@ -11,9 +11,9 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { Linking } from "expo";
 
-import { BlurView } from 'expo-blur';
-import * as Segment from 'expo-analytics-segment';
-import * as WebBrowser from 'expo-web-browser';
+import { BlurView } from "expo-blur";
+import * as Segment from "expo-analytics-segment";
+import * as WebBrowser from "expo-web-browser";
 
 //Redux
 import { connect } from "react-redux";
@@ -34,6 +34,7 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 // Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { showMessage } from "react-native-flash-message";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -104,32 +105,44 @@ class PaymentForm extends Component {
     try {
       this._addLinkingListener();
       if (this.state.choice === 2) {
-        await WebBrowser.openBrowserAsync(
-          this.state.addingCredits
+        this.props.navigation.navigate("WebView", {
+          url: this.state.addingCredits
             ? this.props.payment_data_wallet.knet_payment_url
-            : this.props.payment_data.knet_payment_url
-        ).then(action => {
-          if (action.type === "cancel")
-            this.setState({
-              browserLoading: false
-            });
+            : this.props.payment_data.knet_payment_url,
+          title: "Knet Payment"
         });
+        // await WebBrowser.openBrowserAsync(
+        //   this.state.addingCredits
+        //     ? this.props.payment_data_wallet.knet_payment_url
+        //     : this.props.payment_data.knet_payment_url
+        // ).then(action => {
+        //   if (action.type === "cancel")
+        //     this.setState({
+        //       browserLoading: false
+        //     });
+        // });
         Segment.screenWithProperties("Knet Payment", {
           businessname: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
         });
       }
       if (this.state.choice === 3) {
-        await WebBrowser.openBrowserAsync(
-          this.state.addingCredits
+        this.props.navigation.navigate("WebView", {
+          url: this.state.addingCredits
             ? this.props.payment_data_wallet.cc_payment_url
-            : this.props.payment_data.cc_payment_url
-        ).then(action => {
-          if (action.type === "cancel")
-            this.setState({
-              browserLoading: false
-            });
+            : this.props.payment_data.cc_payment_url,
+          title: "Credit Card Payment"
         });
+        // await WebBrowser.openBrowserAsync(
+        //   this.state.addingCredits
+        //     ? this.props.payment_data_wallet.cc_payment_url
+        //     : this.props.payment_data.cc_payment_url
+        // ).then(action => {
+        //   if (action.type === "cancel")
+        //     this.setState({
+        //       browserLoading: false
+        //     });
+        // });
         Segment.screenWithProperties("Credit Card Payment", {
           businessname: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
@@ -138,11 +151,16 @@ class PaymentForm extends Component {
       this.closeBrowserLoading();
       this._removeLinkingListener();
     } catch (error) {
+      console.log(error);
+
       showMessage({
         message: "Something went wrong!",
         type: "warning",
         position: "top",
         description: "Please try again later."
+      });
+      this.setState({
+        browserLoading: false
       });
     }
   };
@@ -471,11 +489,9 @@ class PaymentForm extends Component {
                 </View>
                 {!this.state.addingCredits && (
                   <View style={styles.optimizeFeesTextContainer}>
-                      <Text style={styles.optimizeFeesAmountText}>
-                      10% 
-                      </Text>
+                    <Text style={styles.optimizeFeesAmountText}>10%</Text>
                     <Text style={[styles.money, styles.optimizeFeesText]}>
-                   Optimize App fees included
+                      Optimize App fees included
                     </Text>
                   </View>
                 )}

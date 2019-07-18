@@ -554,6 +554,11 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
   };
 };
 
+export const handleStoryAdVideo = card => {
+  return dispatch => {
+    dispatch({ type: actionTypes.HANDLE_STORY_VIDEO, payload: card });
+  };
+};
 export const getVideoUploadUrl = (campaign_id, openBrowser) => {
   return dispatch => {
     dispatch({ type: actionTypes.GET_VIDEO_URL_LOADING, payload: true });

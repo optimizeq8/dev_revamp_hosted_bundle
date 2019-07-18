@@ -168,6 +168,25 @@ const reducer = (state = initialState, action) => {
         videoUrl: action.payload.media_upload_url,
         videoUrlLoading: !action.payload.success
       };
+    case actionTypes.HANDLE_STORY_VIDEO:
+      let videoStoryAds = state.storyAdsArray;
+      let ad = videoStoryAds.find(
+        storyAd => action.payload.card.story_id === storyAd.story_id
+      );
+      ad = { ...ad, ...action.payload.card };
+      videoStoryAds[action.payload.card.story_order] = {
+        ...action.payload.data,
+        ...action.payload.card,
+        uploaded: true
+      };
+      // let loadingAr = state.loadingStoryAdsArray;
+      // loadingAr[action.payload.data.story_order] = false;
+
+      return {
+        ...state,
+        // loadingStoryAdsArray: [...loadingAr],
+        storyAdsArray: [...videoStoryAds]
+      };
     case actionTypes.GET_VIDEO_URL_LOADING:
       return {
         ...state,
@@ -372,12 +391,7 @@ const reducer = (state = initialState, action) => {
         )
           return ad;
       });
-      // deleteStoryAds = [];
 
-      // deleteStoryAds[action.payload.data.story_order] = {
-      //   ...action.payload.data,
-      //   ...action.payload.card
-      // };
       let deletedLoadingAr = state.loadingStoryAdsArray;
       deletedLoadingAr[action.payload.card.index] = false;
 
