@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler, ScrollView } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationActions } from "react-navigation";
 import {
   widthPercentageToDP,
   heightPercentageToDP
@@ -123,7 +123,10 @@ class ErrorRedirect extends Component {
               style={styles.whitebutton}
               onPress={() => {
                 this.props.resetCampaignInfo();
-                this.props.navigation.navigate("Dashboard");
+                this.props.navigation.reset(
+                  [NavigationActions.navigate({ routeName: "Dashboard" })],
+                  0
+                );
               }}
               style={styles.whiteButton}
               onPress={() => this.props.navigation.navigate("Dashboard")}

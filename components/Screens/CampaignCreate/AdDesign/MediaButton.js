@@ -48,7 +48,7 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {image !== "blank" && image !== "//" ? "Edit Photo" : "Add Media"}
+            {image !== "//" ? "Edit Photo" : "Add Media"}
           </Text>
         </Button>
       );
@@ -79,7 +79,7 @@ export default class MediaButton extends Component {
           >
             <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {image !== "blank" && image !== "//" ? "Edit Photo" : "Add Media"}
+              {image !== "//" ? "Edit Photo" : "Add Media"}
             </Text>
           </Button>
         </>

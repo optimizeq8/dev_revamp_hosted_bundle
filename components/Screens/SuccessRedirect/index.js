@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, Image } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationActions } from "react-navigation";
 import LottieView from "lottie-react-native";
 
 //Redux
@@ -46,7 +46,7 @@ class SuccessRedirect extends Component {
           ? "Wallet Transaction"
           : "Campaign Transaction"
     });
-        // this.animation.play();
+    // this.animation.play();
 
     // Segment.trackWithProperties("Viewed Checkout Step", {
     //   step: 7,
@@ -91,7 +91,10 @@ class SuccessRedirect extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.container} forceInset={{ bottom: "never", top: "always" }}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[0.7, 1]}
@@ -139,7 +142,10 @@ class SuccessRedirect extends Component {
             style={styles.button}
             onPress={() => {
               this.props.resetCampaignInfo();
-              this.props.navigation.replace("Dashboard");
+              this.props.navigation.reset(
+                [NavigationActions.navigate({ routeName: "Dashboard" })],
+                0
+              );
             }}
           >
             <Text style={styles.buttontext}> Home </Text>
