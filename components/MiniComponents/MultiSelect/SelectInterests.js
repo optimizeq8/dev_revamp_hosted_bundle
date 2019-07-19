@@ -18,9 +18,10 @@ import SectionStyle, { colors } from "./SectionStyle";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
+import Picker from "../Picker";
 
 class SelectInterests extends Component {
-  state = { interests: null };
+  state = { interests: null, open: false };
   componentDidMount() {
     !this.props.addressForm &&
       this.props.get_interests(this.props.country_code);
@@ -41,13 +42,9 @@ class SelectInterests extends Component {
       this.props.interests &&
         Object.keys(this.props.interests).forEach((key, i) => {
           if (this.props.interests[key].length > 0) {
-            interests.push({
-              id: key,
-              children: this.props.interests[key].filter(
-                obj => obj.hasChild === 0
-              ),
-              name: "INTERESTS" // should actual be the key name
-            });
+            interests = this.props.interests[key].filter(
+              obj => obj.hasChild === 0
+            );
           }
           lenOfLists += this.props.interests[key].length;
         });
@@ -67,8 +64,6 @@ class SelectInterests extends Component {
     this.props._handleSideMenuState(false);
   };
   render() {
-    // console.log("interest length", this.props.interests.length);
-
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -91,12 +86,27 @@ class SelectInterests extends Component {
                     opacity: this.props.country_code === "" ? 0.5 : 1
                   }
                 ]}
-                onPress={() => this.Section._toggleSelector()}
+                onPress={() => this.setState({ open: true })}
               >
                 <PlusCircle width={53} height={53} />
               </Button>
               <ScrollView style={styles.scrollContainer}>
-                <SectionedMultiSelect
+                <Picker
+                  searchPlaceholderText={"Search Interests"}
+                  data={this.state.interests}
+                  uniqueKey={"id"}
+                  displayKey={"name"}
+                  open={this.state.open}
+                  onSelectedItemsChange={this.props.onSelectedItemsChange}
+                  onSelectedItemObjectsChange={
+                    this.props.onSelectedItemObjectsChange
+                  }
+                  selectedItems={this.props.selectedItems}
+                  single={false}
+                  screenName={"Select Interests"}
+                  closeCategoryModal={() => this.setState({ open: false })}
+                />
+                {/* <SectionedMultiSelect
                   readOnlyHeadings
                   ref={ref => (this.Section = ref)}
                   loading={isNull(this.state.interests) ? true : false}
@@ -179,7 +189,7 @@ class SelectInterests extends Component {
                     this.props.onSelectedItemObjectsChange
                   }
                   selectedItems={this.props.selectedItems}
-                />
+                /> */}
                 {isNull(this.state.interests) && (
                   <ActivityIndicator color="#FFFF" size="large" />
                 )}
