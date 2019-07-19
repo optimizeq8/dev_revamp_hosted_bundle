@@ -28,6 +28,7 @@ export default class PenIconBrand extends Component {
             defaultValue={
               !this.props.data ? "Headline" : this.props.data.coverHeadline
             }
+            maxLength={55}
             placeholderLabel={styles.inputText}
             placeholderTextColor="white"
             autoCorrect={false}

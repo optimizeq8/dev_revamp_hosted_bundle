@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { connect } from "react-redux";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { Container, Content, Text } from "native-base";
 
 import { Transition } from "react-navigation-fluid-transitions";
@@ -104,20 +104,38 @@ class StoryAdDesignReview extends Component {
                         style={styles.cover}
                         resizeMode="cover"
                       />
-
-                      <Image
-                        resizeMode="contain"
-                        style={styles.logo}
-                        source={{
-                          uri: logo
+                      <View
+                        style={{
+                          width: "100%",
+                          height: "30%",
+                          justifyContent: "flex-start",
+                          top: 10
                         }}
-                      />
-                      <View style={{ top: "80%", left: 10 }}>
+                      >
+                        <Image
+                          resizeMode="contain"
+                          style={styles.logo}
+                          source={{
+                            uri: logo
+                          }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          // top: "65%",
+                          left: 10,
+                          position: "absolute",
+                          width: "100%",
+                          bottom: 0
+                        }}
+                      >
                         <Text
+                          numberOfLines={4}
                           style={{
-                            fontFamily: "montserrat-semibold",
+                            fontFamily: "montserrat-bold",
                             color: "#fff",
-                            fontSize: 20
+                            fontSize: 16,
+                            width: "90%"
                           }}
                         >
                           {coverHeadline}
@@ -129,7 +147,7 @@ class StoryAdDesignReview extends Component {
                             fontSize: 14
                           }}
                         >
-                          SPONSORED
+                          Sponsored
                         </Text>
                       </View>
                     </TouchableOpacity>

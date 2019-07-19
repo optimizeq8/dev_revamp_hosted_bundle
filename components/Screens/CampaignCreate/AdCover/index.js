@@ -215,9 +215,10 @@ class AdCover extends Component {
   _pickLogo = async () => {
     let logo = await this.pick("Images");
 
-    let correctLogo = logo.width === 993 && logo.height === 284;
-    let logoFormat = logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
     if (!logo.cancelled) {
+      let correctLogo = logo.width === 993 && logo.height === 284;
+      let logoFormat =
+        logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,

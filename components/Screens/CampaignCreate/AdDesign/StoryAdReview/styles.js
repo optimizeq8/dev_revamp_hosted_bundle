@@ -43,11 +43,8 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   logo: {
-    width: "70%",
-    height: "15%",
-    left: "15%",
-    top: 15,
-    position: "absolute"
+    width: "100%",
+    height: "50%"
   },
   tilesGrid: {
     height: "40%",
