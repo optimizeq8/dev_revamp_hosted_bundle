@@ -10,7 +10,9 @@ export default class MediaButton extends Component {
   render() {
     let {
       image,
+      cover,
       snapAdCard,
+      _pickImage,
       snapCardInfo,
       _handleStoryAdCards,
       setMediaModalVisible
@@ -27,6 +29,8 @@ export default class MediaButton extends Component {
                   index: snapCardInfo.index,
                   ...snapCardInfo.item
                 })
+              : cover
+              ? _pickImage()
               : setMediaModalVisible(true);
           }}
           style={[
@@ -74,6 +78,8 @@ export default class MediaButton extends Component {
                     index: snapCardInfo.index,
                     ...snapCardInfo.item
                   })
+                : cover
+                ? _pickImage("Images")
                 : setMediaModalVisible(true);
             }}
           >
