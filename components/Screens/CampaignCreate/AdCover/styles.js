@@ -153,8 +153,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "absolute",
     width: 250,
-    height: 50,
-    bottom: 0,
+    bottom: 20,
     borderColor: "transparent",
     transform: [
       {
@@ -253,7 +252,7 @@ const styles = StyleSheet.create({
   },
   subtitleHeading: {
     fontSize: 12,
-    marginBottom: -10,
+    top: 10,
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
@@ -282,6 +281,33 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: hp(1.7)
+  },
+  addLogoStyle: {
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "#fff",
+    borderStyle: "dashed",
+    height: 100,
+    width: "90%",
+    alignSelf: "center",
+    paddingVertical: 5,
+    position: "absolute",
+    top: 15
+  },
+  addLogoTextStyle: {
+    color: globalColors.white,
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "center",
+    width: 250
+  },
+  changeLogoStyle: {
+    width: "95%",
+    height: "20%",
+    alignSelf: "center",
+    paddingVertical: 5,
+    position: "absolute",
+    top: 10
   }
 });
 

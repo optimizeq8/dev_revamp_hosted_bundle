@@ -43,7 +43,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //icons
-import PenIcon from "../../../../assets/SVGs/Pen.svg";
+import PlusAddIcon from "../../../../assets/SVGs/PlusAdd.svg";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 const transparentImage = require("../../../../assets/images/emptyPlaceHolder.png");
@@ -60,7 +60,9 @@ import {
 } from "react-native-responsive-screen";
 import PenIconBrand from "./PenIconBrand";
 import SwipeUpComponent from "./SwipeUpComponent";
-import MediaButton from "./MediaButton";
+import MediaButton from "../AdDesign/MediaButton";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
+import { globalColors } from "../../../../GlobalStyles";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -256,38 +258,21 @@ class AdCover extends Component {
       this.setState({ directory: "/ImagePicker/" });
       let newWidth = result.width;
       let newHeight = result.height;
-      await this.validator();
-
       if (!result.cancelled) {
         if (result.type === "image") {
-          // console.log("oineboin", result.uri);
-
           if (result.width > 360 && result.height > 600) {
-            if (result.width >= Math.floor((result.height / 5) * 3)) {
-              newWidth = Math.floor((result.height / 5) * 3);
-            } else if (result.height >= Math.floor((result.width * 5) / 3)) {
-              newHeight = Math.floor((result.width * 5) / 3);
-            } else {
-              newWidth = 360;
-              newHeight = 600;
-            }
-            // console.log("image res:", result);
-            // console.log("width:", newWidth);
-            // console.log("height:", newHeight);
             ImageManipulator.manipulateAsync(
               result.uri,
               [
                 {
-                  crop: {
-                    originX: (result.width - newWidth) / 2,
-                    originY: (result.height - newHeight) / 2,
-                    width: newWidth,
-                    height: newHeight
-                  }
-                  // resize: {
-                  //   width: Math.floor((result.width / result.height) * 600)
-                  //   // height: Math.floor((result.height / result.width) * 360)
-                  // }
+                  resize:
+                    result.width >= (result.height / 5) * 3
+                      ? {
+                          height: 600
+                        }
+                      : {
+                          width: 360
+                        }
                 }
               ],
               {
@@ -296,17 +281,23 @@ class AdCover extends Component {
               }
             )
               .then(async manipResult => {
-                // console.log("promise", manipResult);
-                // const newSize = await FileSystem.getInfoAsync(manipResult.uri, {
-                //   size: true
-                // });
-                // const oldSize = await FileSystem.getInfoAsync(result.uri, {
-                //   size: true
-                // });
-                // console.log("mani:", manipResult);
-                // console.log("height:", manipResult.height);
-                // console.log("new result: ", newSize.size);
-                // console.log("old result: ", oldSize.size);
+                manipResult = await ImageManipulator.manipulateAsync(
+                  manipResult.uri,
+                  [
+                    {
+                      crop: {
+                        originX: Math.floor((manipResult.width - 360) / 2),
+                        originY: Math.floor((manipResult.height - 600) / 2),
+                        width: 360,
+                        height: 600
+                      }
+                    }
+                  ],
+                  {
+                    compress: 1,
+                    format: "png"
+                  }
+                );
 
                 this.setState({
                   directory: "/ImageManipulator/"
@@ -573,7 +564,7 @@ class AdCover extends Component {
   };
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
-    let { coverHeadline } = this.state.campaignInfo;
+    let { coverHeadline, logo } = this.state.campaignInfo;
     let inputFields = (
       <PenIconBrand
         data={this.props.data}
@@ -622,76 +613,88 @@ class AdCover extends Component {
             scrollEnabled={false}
             padder
           >
-            <Transition style={styles.transition} shared="cover">
-              <View style={styles.buttonN}>
-                <View style={styles.placeholder}>
-                  <Image
-                    style={styles.placeholder1}
-                    source={cover !== "" ? { uri: cover } : transparentImage}
-                    resizeMode="cover"
-                  />
-                  <Image
-                    source={
-                      this.state.campaignInfo.logo !== ""
-                        ? { uri: this.state.campaignInfo.logo }
-                        : transparentImage
-                    }
-                    style={{
-                      height: "15%",
-                      width: "90%",
-                      position: "absolute",
-                      top: 40,
-                      alignSelf: "center"
-                    }}
-                  />
-                  <Button
-                    transparent
-                    onPress={() => this._pickLogo()}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      alignSelf: "center"
-                    }}
-                  >
-                    <Icon
-                      name="plus"
-                      type="MaterialCommunityIcons"
-                      style={{
-                        color: logoError ? "red" : "#FF9D00",
-                        marginRight: -10
-                      }}
-                    />
-                    <Text
-                      style={{ color: "#fff", fontFamily: "montserrat-light" }}
-                    >
-                      Your Logo
-                    </Text>
-                  </Button>
+            <KeyboardShift>
+              {() => (
+                <>
+                  <Transition style={styles.transition} shared="cover">
+                    <View style={styles.buttonN}>
+                      <View style={styles.placeholder}>
+                        <Image
+                          style={styles.placeholder1}
+                          source={
+                            cover !== "" ? { uri: cover } : transparentImage
+                          }
+                          resizeMode="cover"
+                        />
 
-                  {inputFields}
-                  <MediaButton
-                    _pickImage={this._pickImage}
-                    image={this.state.cover}
-                  />
-                </View>
-              </View>
-            </Transition>
-            <Text style={styles.subText}>
-              The cover shows on the Discover page mong subscriptions and
-              trending content
-            </Text>
-            {/* {!this.state.imageError ? null : (
-              <Text style={styles.errorMsg}>
-                {!this.state.imageError.includes(transparentImage)
-                  ? this.state.imageError
-                  : "Please choose an image or video"}
-              </Text>
-            )}
-            {!this.state.swipeUpError ? null : (
-              <Text style={styles.swipeUpErrorText}>
-                {this.state.swipeUpError}
-              </Text>
-            )} */}
+                        {logo ? (
+                          <TouchableOpacity
+                            onPress={() => this._pickLogo()}
+                            style={styles.changeLogoStyle}
+                          >
+                            <Image
+                              source={
+                                logo !== "" ? { uri: logo } : transparentImage
+                              }
+                              resizeMode="contain"
+                              style={{
+                                height: "100%",
+                                width: "100%",
+                                alignSelf: "center"
+                              }}
+                            />
+                            <Text
+                              style={{
+                                color: globalColors.orange,
+                                fontFamily: "montserrat-medium",
+                                alignSelf: "center"
+                              }}
+                            >
+                              Change logo
+                            </Text>
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => this._pickLogo()}
+                            style={styles.addLogoStyle}
+                          >
+                            <View
+                              style={{
+                                flexDirection: "column",
+                                alignItems: "center"
+                              }}
+                            >
+                              <PlusAddIcon />
+                              <Text
+                                style={{
+                                  color: globalColors.orange,
+                                  fontFamily: "montserrat-bold"
+                                }}
+                              >
+                                Your Logo
+                              </Text>
+                              <Text style={styles.addLogoTextStyle}>
+                                Must be 993px by 284px and transparent
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                        {inputFields}
+                        <MediaButton
+                          cover={true}
+                          _pickImage={this._pickImage}
+                          image={this.state.cover}
+                        />
+                      </View>
+                    </View>
+                  </Transition>
+                  <Text style={styles.subText}>
+                    The cover shows on the Discover page mong subscriptions and
+                    trending content
+                  </Text>
+                </>
+              )}
+            </KeyboardShift>
           </Content>
 
           <Footer style={styles.footerStyle}>

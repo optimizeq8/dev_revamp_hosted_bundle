@@ -344,8 +344,6 @@ class AdDesign extends Component {
       quality: 0.1
     });
 
-    // console.log("after picker", result);
-
     this.onToggleModal(true);
 
     return result;
@@ -374,27 +372,42 @@ class AdDesign extends Component {
               newWidth = 1080;
               newHeight = 1920;
             }
-            // console.log("image res:", result);
-            // console.log("width:", newWidth);
-            // console.log("height:", newHeight);
             ImageManipulator.manipulateAsync(
               result.uri,
               [
                 {
                   // resize: { width: newWidth },
-                  crop: {
-                    originX: (result.width - newWidth) / 2,
-                    originY: (result.height - newHeight) / 2,
-                    width: newWidth,
-                    height: newHeight
-                  }
+                  resize:
+                    result.width >= (result.height / 16) * 9
+                      ? {
+                          height: 1920
+                        }
+                      : {
+                          width: 1080
+                        }
                 }
               ],
               {
                 compress: 1
               }
             )
-              .then(manipResult => {
+              .then(async manipResult => {
+                manipResult = await ImageManipulator.manipulateAsync(
+                  manipResult.uri,
+                  [
+                    {
+                      crop: {
+                        originX: Math.floor((manipResult.width - 1080) / 2),
+                        originY: Math.floor((manipResult.height - 1920) / 2),
+                        width: 1080,
+                        height: 1920
+                      }
+                    }
+                  ],
+                  {
+                    compress: 1
+                  }
+                );
                 this.setState({
                   directory: "/ImageManipulator/"
                 });
@@ -458,7 +471,7 @@ class AdDesign extends Component {
                 }
               })
               .catch(error => {
-                console.log(error);
+                // console.log(error);
 
                 this.onToggleModal(false);
                 showMessage({
@@ -466,8 +479,6 @@ class AdDesign extends Component {
                   position: "top",
                   type: "warning"
                 });
-                // console.log("ImageManipulator err", error);
-                return;
               });
             return;
           } else if (file.size > 5000000) {
@@ -680,7 +691,6 @@ class AdDesign extends Component {
           ? "/ImageManipulator/"
           : "/ImagePicker/"
       );
-      console.log(res);
 
       let format = res[1].split(".");
 
@@ -749,7 +759,6 @@ class AdDesign extends Component {
         ? 1
         : 0
     );
-    console.log(body);
 
     this.setState({
       formatted: body
@@ -1109,7 +1118,6 @@ class AdDesign extends Component {
   };
 
   collectionComp = i => {
-    // console.log("i", this.props.collectionAdMedia[i]);
     return (
       <View
         style={{
@@ -1173,14 +1181,11 @@ class AdDesign extends Component {
             <Image
               style={{
                 borderRadius: 20,
-                //   overflow: "hidden",
                 alignSelf: "center",
                 position: "absolute",
                 width: "100%",
                 height: "100%",
-                //   zIndex: 0,
                 alignItems: "center"
-                // justifyContent: "center"
               }}
               source={{ uri: this.props.collectionAdMedia[i].localUri }}
               resizeMode="cover"
@@ -1522,8 +1527,9 @@ class AdDesign extends Component {
                       <MediaButton
                         setMediaModalVisible={this.setMediaModalVisible}
                         image={
-                          this.state.image ||
-                          this.state.storyAdCards.selectedStoryAd.image
+                          image !== "//"
+                            ? image
+                            : this.state.storyAdCards.selectedStoryAd.image
                         }
                       />
                     )}
