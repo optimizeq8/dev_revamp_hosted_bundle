@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 
@@ -35,10 +35,22 @@ export const getCampaignDetails = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        return dispatch({
+        dispatch({
           type: actionTypes.SET_CAMPAIGN,
           payload: { loading: false, data: data.data }
         });
+        return data.data;
+      })
+      .then(data => {
+        let endDate = new Date(data.end_time);
+        endDate.setDate(endDate.getDate() + 1);
+        if (
+          data.snap_ad_id &&
+          data.campaign_end === "0" &&
+          endDate < new Date()
+        ) {
+          dispatch(checkRemainingBudget(data.campaign_id));
+        }
       })
       .catch(err => {
         // console.log("getCampaignDetails error", err.message || err.response);
@@ -208,5 +220,26 @@ export const updateCampaignList = (id, page, increasePage) => {
           }
         });
       });
+  };
+};
+
+export const checkRemainingBudget = campaign_id => {
+  return dispatch => {
+    createBaseUrl()
+      .post(`checkRemainingSpend`, { campaign_id })
+      .then(res => {
+        return res.data;
+      })
+      .then(
+        data =>
+          data.success &&
+          data.transfer &&
+          showMessage({
+            message: data.message,
+            type: "success",
+            position: "top"
+          })
+      )
+      .catch(err => console.log(err.response));
   };
 };

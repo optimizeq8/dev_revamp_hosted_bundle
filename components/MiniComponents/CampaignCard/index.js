@@ -7,8 +7,8 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -45,6 +45,8 @@ class CampaignCard extends Component {
 
   render() {
     let campaign = this.props.campaign;
+    let endDate = new Date(campaign.end_time);
+    endDate.setDate(endDate.getDate() + 1);
     let chart = [{ spend: campaign.spends }].map((category, i) => (
       <Chart campaign={campaign} chartCategory={category} key={i} />
     ));
@@ -127,6 +129,18 @@ class CampaignCard extends Component {
               name="snapchat"
               style={styles.icon}
             />
+            {campaign.snap_ad_id &&
+              campaign.campaign_end === "0" &&
+              endDate < new Date() && (
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="alert"
+                  style={[
+                    styles.icon,
+                    { left: "75%", color: globalColors.green }
+                  ]}
+                />
+              )}
             {!this.review_status.includes("PENDING") && (
               <Text style={[styles.subtext]}>
                 {this.review_status.includes("REJECTED")
