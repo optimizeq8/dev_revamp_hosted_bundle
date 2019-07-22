@@ -33,17 +33,24 @@ export default class PenIconBrand extends Component {
           <Input
             disabled={this.props.rejected}
             style={styles.inputText}
+            maxLength={this.props.field === "Business Name" ? 25 : 35}
+            placeholder={
+              this.props.field === "Business Name"
+                ? "Enter your business name"
+                : "Enter your Headline"
+            }
             defaultValue={
               this.props.field === "Business Name"
-                ? this.props.mainBusiness.businessname
+                ? this.props.mainBusiness.businessname &&
+                  this.props.mainBusiness.businessname.length <= 25
                   ? this.props.mainBusiness.businessname
-                  : "Brand Name"
+                  : ""
                 : !this.props.data
-                ? "Headline"
+                ? ""
                 : this.props.data.name
             }
             placeholderLabel={styles.inputText}
-            placeholderTextColor="white"
+            placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={value =>
