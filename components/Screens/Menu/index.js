@@ -10,6 +10,7 @@ import {
 import { Button, Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList";
+import Constants from "expo-constants";
 
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
@@ -213,7 +214,11 @@ class Menu extends Component {
               <Icons.LogoutIcon style={[styles.icons]} />
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
-            <Text style={styles.version}>Version:0.1.51/12/12</Text>
+            <Text style={styles.version}>
+              Version:{Constants.manifest.version}1/
+              {Constants.manifest.ios.buildNumber}/
+              {Constants.manifest.android.versionCode}
+            </Text>
           </ScrollView>
         </View>
 
