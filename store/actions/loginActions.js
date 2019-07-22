@@ -6,8 +6,9 @@ import { showMessage } from "react-native-flash-message";
 import { getBusinessAccounts } from "./accountManagementActions";
 import { setAuthToken } from "./genericActions";
 import { Notifications } from "expo";
-import * as Permissions from 'expo-permissions';
+import * as Permissions from "expo-permissions";
 import store from "../index";
+import * as SecureStore from "expo-secure-store";
 
 createBaseUrl = () =>
   axios.create({
@@ -71,7 +72,7 @@ export const send_push_notification = () => {
 
 export const checkForExpiredToken = navigation => {
   return (dispatch, getState) => {
-    return AsyncStorage.getItem("token").then(token => {
+    return SecureStore.getItemAsync("token").then(token => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);

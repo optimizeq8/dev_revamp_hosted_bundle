@@ -1,12 +1,13 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import * as actionTypes from "./actionTypes";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { AsyncStorage } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 export const setAuthToken = token => {
   if (token) {
-    return AsyncStorage.setItem("token", token)
+    return SecureStore.setItemAsync("token", token)
       .then(
         () => (axios.defaults.headers.common.Authorization = `jwt ${token}`)
       )
@@ -20,7 +21,7 @@ export const setAuthToken = token => {
         });
       });
   } else {
-    return AsyncStorage.removeItem("token")
+    return SecureStore.deleteItemAsync("token")
       .then(() => delete axios.defaults.headers.common.Authorization)
       .catch(err => {
         // console.log(
