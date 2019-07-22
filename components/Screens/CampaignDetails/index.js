@@ -294,6 +294,7 @@ class CampaignDetails extends Component {
               />
               <Container style={styles.container}>
                 <Header
+                  campaignEnded={this.props.campaignEnded}
                   closeButton={true}
                   navigation={this.props.navigation}
                   selectedCampaign={selectedCampaign}

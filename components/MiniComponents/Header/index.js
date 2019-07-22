@@ -15,7 +15,8 @@ export default class Header extends Component {
       navigation,
       closeButton,
       selectedCampaign,
-      actionButton
+      actionButton,
+      campaignEnded
     } = this.props;
     return (
       <View style={styles.container}>
@@ -40,7 +41,8 @@ export default class Header extends Component {
         <View style={[styles.right, selectedCampaign ? {} : { width: 24 }]}>
           {selectedCampaign &&
           (selectedCampaign.campaign_end === "0") &
-            (new Date(selectedCampaign.end_time) > new Date()) ? (
+            (new Date(selectedCampaign.end_time) > new Date()) &
+            !campaignEnded ? (
             <Text
               onPress={() =>
                 navigation.push("AdDetails", {
