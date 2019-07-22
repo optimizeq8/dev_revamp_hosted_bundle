@@ -3,6 +3,7 @@ import { Platform, AsyncStorage } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
+import AppUpdateChecker from "../Screens/AppUpdateChecker";
 
 import Signin from "../Screens/Signin";
 import Invitation from "../Screens/InvitationScreen";
@@ -14,12 +15,14 @@ export default createStackNavigator(
   {
     Tutorial: Tutorial,
     MainForm: MainForm,
+    AppUpdateChecker: AppUpdateChecker,
+
     Signin: Signin,
     ForgotPassword: ForgotPassword,
     Invitation: Invitation
   },
   {
-    initialRouteName: "Tutorial",
+    initialRouteName: "AppUpdateChecker",
     mode: "card",
     navigationOptions: {
       header: null,

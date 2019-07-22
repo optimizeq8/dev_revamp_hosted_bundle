@@ -31,7 +31,6 @@ import ErrorRedirect from "../Screens/ErrorRedirect";
 import SuccessRedirect from "../Screens/SuccessRedirect";
 import LongFormVideoPreview from "../Screens/CampaignCreate/SwipeUpChoice/LongFormVideoPreview";
 import CollectionMedia from "../MiniComponents/CollectionMedia";
-
 import Animated, { Easing } from "react-native-reanimated";
 
 export default FluidNavigator(
@@ -39,7 +38,6 @@ export default FluidNavigator(
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
     Dashboard: Dashboard,
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
-
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
     BusinessList: BusinessList,
