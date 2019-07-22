@@ -7,7 +7,7 @@
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.1.5",
+    "version": "0.1.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "notification": {
@@ -24,7 +24,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "12",
+      "buildNumber": "13",
       "supportsTablet": false
     },
     "packagerOpts": {
@@ -33,7 +33,7 @@
 
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 12
+      "versionCode": 13
     },
     "hooks": {
       "postPublish": [

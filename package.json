@@ -19,6 +19,7 @@
     "expo-analytics-segment": "~5.0.1",
     "expo-av": "~5.0.2",
     "expo-blur": "~5.0.1",
+    "expo-constants": "~5.0.1",
     "expo-file-system": "~5.0.1",
     "expo-image-manipulator": "~5.0.1",
     "expo-image-picker": "~5.0.2",
