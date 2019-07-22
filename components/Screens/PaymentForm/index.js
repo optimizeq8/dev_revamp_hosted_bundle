@@ -498,8 +498,14 @@ class PaymentForm extends Component {
               </View>
               <TouchableOpacity
                 onPress={() => this._handleSubmission()}
-                style={[styles.mainCard]}
-                disabled={this.state.choice === 1 && this.props.wallet === "0"}
+                style={[
+                  styles.mainCard,
+                  { opacity: this.props.loadingTrans ? 0.5 : 1 }
+                ]}
+                disabled={
+                  (this.state.choice === 1 && this.props.wallet === "0") ||
+                  this.props.loadingTrans
+                }
               >
                 {/*
               ----------For future maybe----------
@@ -599,6 +605,7 @@ const mapStateToProps = state => ({
   walletUsed: state.transA.walletUsed,
   walletAmountInKwd: state.transA.walletAmountInKwd,
   loading: state.campaignC.loading,
+  loadingTrans: state.transA.loading,
   wallet: state.transA.wallet
 });
 const mapDispatchToProps = dispatch => ({
