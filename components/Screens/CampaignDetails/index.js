@@ -11,8 +11,8 @@ import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Segment from 'expo-analytics-segment';
-import { Video } from 'expo-av';
+import * as Segment from "expo-analytics-segment";
+import { Video } from "expo-av";
 import Toggle from "react-native-switch-toggle";
 import SlideUpPanel from "./SlideUpPanel";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
@@ -60,7 +60,6 @@ class CampaignDetails extends Component {
       imageIsLoading: true
     };
   }
-
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -151,25 +150,8 @@ class CampaignDetails extends Component {
 
   render() {
     let loading = this.props.loading;
-    // if (this.props.loading) {
-    //   return (
-    //     <>
-    //       <LinearGradient
-    //         colors={[colors.background1, colors.background2]}
-    //         locations={[0.7, 1]}
-    //         style={styles.gradient}
-    //       />
-    //       <Loading dash={true} />
-    //     </>
-    //   );
-    // } else
-    if (
-      !loading &&
-      !this.props.selectedCampaign
-      // (isNull(this.props.selectedCampaign) ||
-      //   isUndefined(this.props.selectedCampaign) ||
-      //   isEmpty(this.props.selectedCampaign))
-    ) {
+
+    if (!loading && !this.props.selectedCampaign) {
       return (
         <ErrorComponent loading={loading} navigation={this.props.navigation} />
       );
