@@ -25,6 +25,7 @@
     "expo-linear-gradient": "~5.0.1",
     "expo-media-library": "~5.0.1",
     "expo-permissions": "~5.0.1",
+    "expo-secure-store": "~5.0.1",
     "expo-web-browser": "~5.0.2",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
