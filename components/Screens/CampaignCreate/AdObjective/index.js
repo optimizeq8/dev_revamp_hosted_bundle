@@ -335,7 +335,7 @@ class AdObjective extends Component {
 										value={this.state.campaignInfo.name}
 										style={[styles.inputText]}
 										autoCorrect={false}
-										maxLength={35}
+										maxLength={34}
 										autoCapitalize="none"
 										onChangeText={value => {
 											this.setState({

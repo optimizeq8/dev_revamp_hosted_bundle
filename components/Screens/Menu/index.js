@@ -213,7 +213,7 @@ class Menu extends Component {
               <Icons.LogoutIcon style={[styles.icons]} />
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
-            <Text style={styles.version}>Version:0.1.5/12/12</Text>
+            <Text style={styles.version}>Version:0.1.51/12/12</Text>
           </ScrollView>
         </View>
 
