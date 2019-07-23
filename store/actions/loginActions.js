@@ -79,6 +79,7 @@ export const checkForExpiredToken = navigation => {
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           if (
             [
+              "nouf@optimizeapp.com",
               "sam.omran@hotmail.com",
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
@@ -114,6 +115,7 @@ export const login = (userData, navigation) => {
   return (dispatch, getState) => {
     if (
       [
+        "nouf@optimizeapp.com",
         "sam.omran@hotmail.com",
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
