@@ -13,29 +13,29 @@ export const snapAds = [
     value: "SnapAd",
     image: require("../../assets/images/AdTypes/SnapAd.gif"),
     icon: <AdIcons.SnapAd />
-  },
-  {
-    id: 2,
-    media: "snapchat",
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    icon: "snapchat-ghost",
-    title: "Story Ad",
-    value: "StoryAd",
-    image: require("../../assets/images/AdTypes/StoryAd.gif"),
-    icon: <AdIcons.StoryAd />
-  },
-  {
-    id: 3,
-    media: "snapchat",
-    text: "Create Your Ad Now!",
-    rout: "AdObjective",
-    icon: "snapchat-ghost",
-    title: "Collection Ad",
-    value: "CollectionAd",
-    image: require("../../assets/images/AdTypes/CollectionAd.gif"),
-    icon: <AdIcons.CollectionAd />
   }
+  // {
+  //   id: 2,
+  //   media: "snapchat",
+  //   text: "Create Your Ad Now!",
+  //   rout: "AdObjective",
+  //   icon: "snapchat-ghost",
+  //   title: "Story Ad",
+  //   value: "StoryAd",
+  //   image: require("../../assets/images/AdTypes/StoryAd.gif"),
+  //   icon: <AdIcons.StoryAd />
+  // },
+  // {
+  //   id: 3,
+  //   media: "snapchat",
+  //   text: "Create Your Ad Now!",
+  //   rout: "AdObjective",
+  //   icon: "snapchat-ghost",
+  //   title: "Collection Ad",
+  //   value: "CollectionAd",
+  //   image: require("../../assets/images/AdTypes/CollectionAd.gif"),
+  //   icon: <AdIcons.CollectionAd />
+  // }
 ];
 
 export const twittwerAds = [
