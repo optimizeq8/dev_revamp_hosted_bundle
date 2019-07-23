@@ -53,7 +53,7 @@ export const getCampaignDetails = (id, navigation) => {
         }
       })
       .catch(err => {
-        // console.log("getCampaignDetails error", err.message || err.response);
+        console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
           message:
             err.message ||

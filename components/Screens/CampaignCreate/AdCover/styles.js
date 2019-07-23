@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     position: "absolute",
+    bottom: -10,
     width: 250,
-    bottom: 20,
     borderColor: "transparent",
     transform: [
       {
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   inputText: {
+    alignSelf: "center",
     fontFamily: "montserrat-bold",
     fontSize: 16 / PixelRatio.getFontScale(),
     textAlign: "left",
@@ -176,29 +177,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     elevation: 10
   },
-  swipeUp: {
-    backgroundColor: globalColors.orange,
-    position: "absolute",
-    alignSelf: "center",
-    width: "70%",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-    borderRadius: 25,
-    paddingVertical: 2,
-    top: "88%"
-  },
-  swipeUpText: {
-    alignSelf: "center",
-    textAlign: "center",
-    color: "white",
-    fontFamily: "montserrat-medium",
-    fontSize: 16
-  },
-  buttonN: {
-    minHeight: 300,
-    flex: 1
-  },
+
   placeholder: {
     borderRadius: 30,
     overflow: "hidden",
@@ -229,16 +208,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     marginHorizontal: wp(10)
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
-  swipeUpErrorText: {
-    textAlign: "center",
-    color: "#fff",
-    paddingTop: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 12
-  },
+
   footerTextStyle: {
     fontSize: 12,
     color: "white",
@@ -251,8 +221,9 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   subtitleHeading: {
+    color: "#fff",
     fontSize: 12,
-    top: 10,
+    top: 5,
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {

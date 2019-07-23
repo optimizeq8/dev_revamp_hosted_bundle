@@ -130,7 +130,6 @@ class StoryAdDesignReview extends Component {
                         }}
                       >
                         <Text
-                          numberOfLines={4}
                           style={{
                             fontFamily: "montserrat-bold",
                             color: "#fff",

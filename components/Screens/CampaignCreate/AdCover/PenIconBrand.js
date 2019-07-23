@@ -19,18 +19,21 @@ export default class PenIconBrand extends Component {
               : "#fff"
           }
         />
-        <View style={{ flexDirection: "column" }}>
-          <Text style={[styles.inputText, styles.subtitleHeading]}>
-            {this.props.field}
-          </Text>
+        <View
+          style={{
+            flexDirection: "column",
+            bottom: 30
+          }}
+        >
+          <Text style={[styles.subtitleHeading]}>{this.props.field}</Text>
           <Input
             style={styles.inputText}
             defaultValue={
               !this.props.data ? "Headline" : this.props.data.coverHeadline
             }
             maxLength={55}
-            placeholderLabel={styles.inputText}
-            placeholderTextColor="white"
+            placeholder="Enter your cover headline"
+            placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={value => this.props.changeHeadline(value)}
