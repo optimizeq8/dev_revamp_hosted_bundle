@@ -66,8 +66,8 @@ export default class MediaButton extends Component {
                 ? {
                     width: 40,
                     height: 40,
-                    top: "65%",
-                    left: "85%"
+                    top: "30%"
+                    // left: "85%"
                   }
                 : {}
             ]}

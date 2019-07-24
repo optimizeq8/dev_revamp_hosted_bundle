@@ -28,13 +28,12 @@ class CameraLoading extends React.Component {
     return (
       <View
         style={[
-          styles.mainView
-          //   this.props.top
-          //     ? {
-          //         top: this.props.top
-          //       }
-          //     : {},
-          //     this
+          styles.mainView,
+          this.props.center
+            ? {
+                top: "50%"
+              }
+            : {}
         ]}
       >
         <LottieView

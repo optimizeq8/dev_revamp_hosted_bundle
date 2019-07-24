@@ -21,11 +21,7 @@ const styles = StyleSheet.create({
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
-    textAlign: "center",
-    alignSelf: "center",
-    justifyContent: "flex-end",
-    alignItems: "flex-end"
+    fontFamily: "montserrat-semibold"
   },
   uplaodText: {
     justifyContent: "center",
@@ -41,7 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    marginTop: hp(25)
+    top: "15%"
   },
   loadingSafeArea: {
     width: "100%",
@@ -123,39 +119,39 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     borderColor: "transparent",
-    top: "50%",
-    left: "50%",
+    // top: "50%",
+    // left: "50%",
     flexDirection: "column",
-    opacity: 1,
-    transform: [
-      {
-        translateX: -50
-      },
-      {
-        translateY: -50
-      }
-    ]
+    opacity: 1
+    // transform: [
+    //   {
+    //     translateX: -50
+    //   },
+    //   {
+    //     translateY: -50
+    //   }
+    // ]
   },
   inputMiddleButton2: {
     position: "absolute",
     // backgroundColor: '#FF9D00',
     alignSelf: "center",
-    width: 90,
-    height: 90,
+    width: 100,
+    height: 100,
     borderRadius: 45,
     borderColor: "transparent",
-    top: "50%",
-    left: "50%",
+    // top: "50%",
+    // left: "50%",
     flexDirection: "column",
-    opacity: 1,
-    transform: [
-      {
-        translateX: -40
-      },
-      {
-        translateY: -50
-      }
-    ]
+    opacity: 1
+    // transform: [
+    //   {
+    //     translateX: -40
+    //   },
+    //   {
+    //     translateY: -50
+    //   }
+    // ]
   },
   inputBrand: {
     position: "absolute",
