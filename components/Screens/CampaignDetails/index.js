@@ -42,6 +42,7 @@ import { interestNames } from "./interesetNames";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
+import MediaBox from "./MediaBox";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -165,10 +166,24 @@ class CampaignDetails extends Component {
       let end_year = "";
       let start_year = "";
       let end_time = "";
+      let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
+        if (selectedCampaign.hasOwnProperty("story_creatives"))
+          media = selectedCampaign.story_creatives.map((ad, i) => (
+            <MediaBox
+              key={ad.name}
+              name={i}
+              navigation={this.props.navigation}
+              selectedCampaign={selectedCampaign}
+              ad={ad}
+            />
+          ));
+        console.log(selectedCampaign);
 
-        targeting = selectedCampaign.targeting;
+        targeting = selectedCampaign.targeting
+          ? selectedCampaign.targeting
+          : {};
         deviceMakes =
           targeting &&
           targeting.hasOwnProperty("devices") &&
@@ -482,6 +497,21 @@ class CampaignDetails extends Component {
                       )}
                     </View>
                   </View>
+                  {media.length > 0 && (
+                    <>
+                      <Text style={styles.subHeadings}>Media</Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignSelf: "center",
+                          justifyContent: "space-between",
+                          marginBottom: 20
+                        }}
+                      >
+                        {media}
+                      </View>
+                    </>
+                  )}
                   <Text style={styles.subHeadings}>Audience</Text>
                   <View
                     style={{

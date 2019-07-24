@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   subHeadings: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 15,
     paddingVertical: hp("1")
   },
