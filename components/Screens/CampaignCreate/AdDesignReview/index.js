@@ -6,7 +6,7 @@ import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import { View, TouchableOpacity, BackHandler } from "react-native";
 import {
   Container,
   Header,
@@ -18,6 +18,7 @@ import {
   Button,
   Text
 } from "native-base";
+import { Image } from "react-native-expo-image-cache";
 
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -72,7 +73,13 @@ class AdDesignReview extends Component {
   };
   render() {
     let adType = this.props.adType;
-    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let storyAdsArray = campaignDetails
+      ? this.props.navigation.getParam("sotryAdsArray", [])
+      : this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -88,7 +95,14 @@ class AdDesignReview extends Component {
 
     let image = !storyAds
       ? this.props.navigation.getParam("image", "")
-      : storyAdsArray[this.state.storyAdIndex].image;
+      : campaignDetails
+      ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
+      : storyAdsArray[this.state.storyAdIndex]["image"];
+    const preview = {
+      uri:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    };
+
     if (storyAds) {
       if (
         storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
@@ -181,9 +195,10 @@ class AdDesignReview extends Component {
                     <Image
                       resizeMode="stretch"
                       style={styles.placeholder}
-                      source={{
-                        uri: image
-                      }}
+                      {...{ preview, uri: image }}
+                      // source={{
+                      //   uri: image
+                      // }}
                     />
                   )}
                 </TouchableOpacity>

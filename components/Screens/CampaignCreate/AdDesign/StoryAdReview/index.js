@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import { View, TouchableOpacity, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { Container, Content, Text } from "native-base";
@@ -8,6 +8,7 @@ import { Container, Content, Text } from "native-base";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../../MiniComponents/Header";
+import { Image } from "react-native-expo-image-cache";
 
 //icons
 import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles.svg";
@@ -40,6 +41,8 @@ class StoryAdDesignReview extends Component {
   perviewStoryAds = () => {
     this.props.navigation.push("AdDesignReview", {
       storyAds: true,
+      campaignDetails: this.props.navigation.getParam("campaignDetails", false),
+      sotryAdsArray: this.props.navigation.getParam("storyAdsArray"),
       headline: this.props.navigation.getParam("headline", ""),
       brand_name: this.props.navigation.getParam("brand_name", "")
     });
@@ -48,7 +51,10 @@ class StoryAdDesignReview extends Component {
     const cover = this.props.navigation.getParam("cover", "");
     const logo = this.props.navigation.getParam("logo", "");
     const coverHeadline = this.props.navigation.getParam("coverHeadline", "");
-
+    const preview = {
+      uri:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    };
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -100,7 +106,8 @@ class StoryAdDesignReview extends Component {
                       style={styles.tiles}
                     >
                       <Image
-                        source={{ uri: cover }}
+                        {...{ preview, uri: cover }}
+                        // source={{ uri: cover }}
                         style={styles.cover}
                         resizeMode="cover"
                       />
@@ -113,11 +120,12 @@ class StoryAdDesignReview extends Component {
                         }}
                       >
                         <Image
+                          {...{ preview, uri: logo }}
                           resizeMode="contain"
                           style={styles.logo}
-                          source={{
-                            uri: logo
-                          }}
+                          // source={{
+                          //   uri: logo
+                          // }}
                         />
                       </View>
                       <View
