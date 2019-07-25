@@ -8,12 +8,13 @@ import styles from "./styles";
 //Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
+import Icons from "../../../assets/SVGs/Objectives/";
 class ObjectiveCard extends Component {
   constructor(props) {
     super(props);
   }
   changeObjective = () => {
-    this.props.setObjective(this.props.choice);
+    this.props.setObjective(this.props.choice.value);
   };
   render() {
     let obj = this.props.choice;
