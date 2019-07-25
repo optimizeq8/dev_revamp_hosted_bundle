@@ -59,7 +59,6 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import PenIconBrand from "./PenIconBrand";
-import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
@@ -82,8 +81,8 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      cover: "",
-      loaded: 0,
+      cover: "//",
+      // loaded: 0,
       type: "",
       iosVideoUploaded: false,
       formattedCover: null,
@@ -164,8 +163,7 @@ class AdCover extends Component {
           // attachment: rep.attachment
           ...rep
         },
-        cover: rep.cover,
-        objective: rep.objective
+        ...this.props.data
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -312,7 +310,7 @@ class AdCover extends Component {
               .then(() => {
                 if (file.size > 2000000) {
                   this.setState({
-                    cover: ""
+                    cover: "//"
                   });
                   this.onToggleModal(false);
                   showMessage({
@@ -321,7 +319,7 @@ class AdCover extends Component {
                     type: "warning"
                   });
                   this.props.save_campaign_info({
-                    cover: ""
+                    cover: "//"
                   });
                   return;
                 }
@@ -354,7 +352,7 @@ class AdCover extends Component {
             return;
           } else if (file.size > 2000000) {
             this.setState({
-              cover: ""
+              cover: "//"
             });
             this.onToggleModal(false);
             showMessage({
@@ -363,7 +361,7 @@ class AdCover extends Component {
               type: "warning"
             });
             this.props.save_campaign_info({
-              cover: ""
+              cover: "//"
             });
             return;
           } else if (
@@ -372,11 +370,11 @@ class AdCover extends Component {
             result.height < 600
           ) {
             this.setState({
-              cover: "",
-              type: ""
+              cover: ""
+              //          type: ""
             });
             this.props.save_campaign_info({
-              cover: ""
+              cover: "//"
             });
             this.onToggleModal(false);
             showMessage({
@@ -413,10 +411,10 @@ class AdCover extends Component {
             type: "warning"
           });
           this.setState({
-            cover: ""
+            cover: "//"
           });
           this.props.save_campaign_info({
-            cover: ""
+            cover: "//"
           });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
@@ -426,10 +424,10 @@ class AdCover extends Component {
           type: "warning"
         });
         this.setState({
-          cover: ""
+          cover: "//"
         });
         this.props.save_campaign_info({
-          cover: ""
+          cover: "//"
         });
         this.onToggleModal(false);
         return;
