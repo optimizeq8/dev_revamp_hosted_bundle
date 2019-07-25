@@ -71,8 +71,7 @@ class AdPaymentReview extends Component {
 					? targeting.devices[0].marketing_name.join(', ')
 					: []
 				: [];
-
-			const image = this.props.data ? this.props.data.image : '';
+			const image = this.props.data.image ? this.props.data.image : '//';
 			return (
 				<>
 					{!image.includes('.jpg') && (

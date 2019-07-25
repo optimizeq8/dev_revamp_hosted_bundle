@@ -6,7 +6,7 @@ import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import { View, TouchableOpacity, BackHandler } from "react-native";
 import {
   Container,
   Header,
@@ -18,6 +18,7 @@ import {
   Button,
   Text
 } from "native-base";
+import { Image } from "react-native-expo-image-cache";
 
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -36,6 +37,10 @@ import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
 
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
@@ -63,7 +68,11 @@ class AdDesignReview extends Component {
         {!isUndefined(collections[i]) && (
           <Image
             style={styles.collectionImage}
-            source={{ uri: collections[i].localUri }}
+            {...{
+              preview,
+              uri: collections[i].localUri || "https://" + collections[i].media
+            }}
+            // source={{ uri: collections[i].localUri || collections[i].media }}
             resizeMode="cover"
           />
         )}
@@ -71,8 +80,16 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let adType = this.props.adType;
-    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let adType = this.props.navigation.getParam("adType", null)
+      ? this.props.navigation.getParam("adType", null)
+      : this.props.adType;
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let storyAdsArray = campaignDetails
+      ? this.props.navigation.getParam("sotryAdsArray", [])
+      : this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -88,16 +105,25 @@ class AdDesignReview extends Component {
 
     let image = !storyAds
       ? this.props.navigation.getParam("image", "")
-      : storyAdsArray[this.state.storyAdIndex].image;
+      : campaignDetails
+      ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
+      : storyAdsArray[this.state.storyAdIndex]["image"];
+
     if (storyAds) {
       if (
-        storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
-        storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
-          "icon_media_url"
-        )
+        (storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
+          storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+            "icon_media_url"
+          )) ||
+        (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
+          JSON.parse(
+            storyAdsArray[this.state.storyAdIndex].attachment
+          ).hasOwnProperty("icon_media_url"))
       ) {
-        appIcon =
-          storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
+        appIcon = campaignDetails
+          ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
+              .icon_media_url
+          : storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
       }
       if (
         storyAdsArray[this.state.storyAdIndex].hasOwnProperty(
@@ -105,8 +131,10 @@ class AdDesignReview extends Component {
         ) &&
         storyAdsArray[this.state.storyAdIndex].call_to_action !== "BLANK"
       ) {
-        call_to_action =
-          storyAdsArray[this.state.storyAdIndex].call_to_action.value;
+        call_to_action = storyAdsArray[this.state.storyAdIndex].call_to_action
+          .value
+          ? storyAdsArray[this.state.storyAdIndex].call_to_action.value
+          : storyAdsArray[this.state.storyAdIndex].call_to_action;
       }
     }
 
@@ -181,9 +209,10 @@ class AdDesignReview extends Component {
                     <Image
                       resizeMode="stretch"
                       style={styles.placeholder}
-                      source={{
-                        uri: image
-                      }}
+                      {...{ preview, uri: image }}
+                      // source={{
+                      //   uri: image
+                      // }}
                     />
                   )}
                 </TouchableOpacity>
@@ -271,7 +300,8 @@ class AdDesignReview extends Component {
                   >
                     <View style={[globalStyles.lightGrayBorderColor]}>
                       <Image
-                        source={{ uri: appIcon }}
+                        {...{ preview, uri: appIcon }}
+                        // source={{ uri: appIcon }}
                         style={[
                           globalStyles.grayBorderColor,
                           styles.appIconBottom

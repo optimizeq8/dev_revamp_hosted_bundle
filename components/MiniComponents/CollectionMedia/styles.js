@@ -1,373 +1,376 @@
-import { StyleSheet, PixelRatio } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { globalColors } from '../../../GlobalStyles';
+import { StyleSheet, PixelRatio } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
-	safeAreaView: {
-		backgroundColor: '#0000',
-		height: '100%',
-	},
-	container: {
-		backgroundColor: 'transparent',
-		flex: 1,
-	},
-	contentContainer: {
-		// flexGrow: 1,
-		flex: 1,
-		// marginTop: hp(3),
-		marginTop: 30,
-		// justifyContent: 'space-between',
-	},
-	mainView: {
-		// minHeight: 300,
-		// flex: 1,
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	placeholder: {
-		borderRadius: 30,
-		overflow: 'hidden',
-		alignSelf: 'center',
-		width: 230,
-		height: 230,
-		backgroundColor: 'rgba(0,0,0,0.5)',
-		justifyContent: 'center',
-		borderWidth: 3,
-		borderColor: '#FF9D00',
-	},
-	imagePlaceholder: {
-		opacity: 0.5,
-		// backgroundColor: 'rgba(0,0,0,0.5)',
-		backgroundColor: '#000',
-		borderRadius: 20,
-		// overflow: 'hidden',
-		alignSelf: 'center',
-		width: '100%',
-		height: '100%',
-		zIndex: 0,
-		justifyContent: 'center',
-	},
-	blankView: {
-		backgroundColor: 'rgba(0,0,0,0.5)',
-		opacity: 0.4,
-		height: '100%',
-		width: '100%',
-		flex: 1,
-	},
-	optionsContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-around',
-		width: '100%',
-		marginVertical: 20,
-	},
-	optionsRowContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		// paddingBottom: 20
-	},
-	inactivetext: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 16,
-		color: '#fff',
-		// paddingLeft: 10
-	},
-	activetext: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 16,
-		color: '#FF9D00',
-	},
-	optionsIconSize: {
-		fontSize: 25,
-	},
-	optionsTextContainer: {
-		textAlign: 'center',
-		paddingLeft: 10,
-	},
-	inputContainer: {
-		flexDirection: 'row',
-		width: '100%',
-		justifyContent: 'center',
-	},
-	netLocStyle: {
-		backgroundColor: '#5D1CD8',
-		borderRadius: 10,
-		// marginRight: 50,
-		borderColor: '#5D1CD8',
-		// width: "100%",
-		width: wp(20),
-		height: 50,
-	},
-	networkLabel: {
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		textAlign: 'left',
-		color: '#fff',
-		// flex: 1,
-		paddingLeft: 20,
-		top: 2,
-		// right: 4,
-	},
-	input: {
-		// backgroundColor: '#5D1CD8',
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		borderRadius: 40,
-		borderColor: 'transparent',
-		alignSelf: 'center',
-		// width: wp(75),
-		height: 50,
-		paddingHorizontal: 0,
-		width: 270,
-	},
-	inputtext: {
-		fontFamily: 'montserrat-regular',
-		fontSize: 14 / PixelRatio.getFontScale(),
-		alignSelf: 'center',
-		textAlign: 'center',
-		color: '#FFF',
-		borderColor: 'transparent',
-	},
-	loadingSafeArea: {
-		width: '100%',
-		height: '100%',
-		alignItems: 'center',
-	},
-	uplaodPercentage: {
-		fontSize: 16,
-		color: '#fff',
-		fontFamily: 'montserrat-semibold',
-		textAlign: 'center',
-		alignSelf: 'center',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	loadingContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignSelf: 'center',
-		alignItems: 'center',
-		marginTop: hp(25),
-	},
-	plaodPercentage: {
-		fontSize: 16,
-		color: '#fff',
-		fontFamily: 'montserrat-semibold',
-		textAlign: 'center',
-		alignSelf: 'center',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	uplaodText: {
-		justifyContent: 'center',
-		fontSize: 12,
-		color: 'white',
-		fontFamily: 'montserrat-medium',
-		alignSelf: 'center',
-		paddingTop: 10,
-		textAlign: 'center',
-	},
-	footerTextStyle: {
-		fontSize: 12,
-		color: 'white',
-		fontFamily: 'montserrat-medium',
-		alignSelf: 'center',
-	},
-	footerStyle: {
-		backgroundColor: 'transparent',
-		borderTopWidth: 0,
-		elevation: 0,
-		display: 'flex',
-		alignItems: 'center',
-		// flex: 1,
-		justifyContent: 'flex-end',
-		paddingVertical: 10,
-		// position: 'absolute',
-		// bottom: 50,
-	},
-	footerButtonsContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-	},
-	inputMiddleButton: {
-		position: 'absolute',
-		backgroundColor: '#FF9D00',
-		alignSelf: 'center',
-		width: 70,
-		height: 70,
-		borderRadius: 45,
-		borderColor: 'transparent',
-		top: '50%',
-		left: '50%',
-		flexDirection: 'column',
-		opacity: 1,
-		transform: [
-			{
-				translateX: -35,
-			},
-			{
-				translateY: -40,
-			},
-		],
-	},
-	inputMiddleButtonEdit: {
-		position: 'absolute',
-		// backgroundColor: '#FF9D00',
-		alignSelf: 'center',
-		width: 70,
-		height: 70,
-		borderRadius: 45,
-		borderColor: 'transparent',
-		top: '50%',
-		left: '50%',
-		flexDirection: 'column',
-		opacity: 1,
-		alignItems: 'center',
-		transform: [
-			{
-				translateX: -35,
-			},
-			{
-				translateY: -40,
-			},
-		],
-	},
-	icon: {
-		color: '#fff',
-		// paddingLeft: 5,
-		alignSelf: 'center',
-		justifyContent: 'center',
-		textAlign: 'center',
-		fontSize: 35,
-		paddingTop: 12,
-	},
-	mediaButtonMsg: {
-		textAlign: 'center',
-		paddingTop: 23,
-		fontFamily: 'montserrat-medium',
-		fontSize: 14,
-		width: 150,
-		color: '#FF9D00',
-	},
-	mediaButtonMsg1: {
-		textAlign: 'center',
-		paddingTop: 5,
-		fontFamily: 'montserrat-medium',
-		fontSize: 14,
-		width: 150,
-		color: '#FF9D00',
-	},
-	button: {
-		alignSelf: 'center',
-		width: wp(10),
-		height: hp(7.5),
-		alignItems: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 3 },
-		shadowRadius: 3,
-		shadowOpacity: 0.2,
-		marginHorizontal: wp(10),
-	},
-	errorMsg: {
-		textAlign: 'center',
-		color: '#fff',
-		fontFamily: 'montserrat-medium',
-		fontSize: 12,
-		paddingTop: 10,
-	},
-	inputLabel: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 12 / PixelRatio.getFontScale(),
-		color: '#fff',
-		alignSelf: 'center',
-		textAlign: 'center',
-		borderRadius: 30,
-		marginBottom: -10,
-	},
-	topContainer: {
-		paddingVertical: 30,
-		width: 300,
-		flexDirection: 'row',
-		alignSelf: 'center',
-		// shadowOffset: { width: 1, height: 1 },
-		// shadowColor: 'black',
-		// shadowOpacity: 0.2,
-	},
-	collectionAdLinkForm2: {
-		borderTopStartRadius: 0,
-		borderBottomStartRadius: 0,
-		borderBottomEndRadius: 40,
-		borderTopEndRadius: 40,
-	},
-	collectionAdLinkForm1: {
-		borderBottomEndRadius: 0,
-		borderTopEndRadius: 0,
-		borderBottomStartRadius: 40,
-		borderTopStartRadius: 40,
-	},
-	activeButton: {
-		backgroundColor: '#FF9D00',
-		height: 50,
-		width: 150,
-		justifyContent: 'center',
-		flexDirection: 'column',
-	},
-	inactiveText: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 12,
-		color: 'rgba(255,255,255,0.4)',
-		textAlign: 'center',
-	},
-	activeText: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 12,
-		color: '#fff',
-		textAlign: 'center',
-	},
-	button2: {
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		width: 150,
-		height: 50,
-		justifyContent: 'center',
-		flexDirection: 'column',
-	},
-	imageView: {
-		backgroundColor: '#FF9D00',
-		width: 125,
-		paddingVertical: 10,
-		borderRadius: 30,
-		marginBottom: -20,
-		zIndex: 1,
-	},
-	productText: {
-		textAlign: 'center',
-		color: '#FFF',
-		fontFamily: 'montserrat-semibold',
-		fontSize: 17,
-	},
-	deepLinkLabelView: {
-		borderTopLeftRadius: 150,
-		borderTopRightRadius: 150,
-		paddingTop: 8,
-		width: 150,
-		alignSelf: 'center',
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		height: 15,
-		zIndex: 1,
-	},
-	websiteView: {
-		alignItems: 'center',
-		width: '100%',
-	},
-	websiteLabelView: {
-		borderTopLeftRadius: 150,
-		borderTopRightRadius: 150,
-		paddingTop: 8,
-		width: 150,
-		alignSelf: 'center',
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		height: 15,
-		zIndex: 1,
-	},
+  safeAreaView: {
+    backgroundColor: "#0000",
+    height: "100%"
+  },
+  container: {
+    backgroundColor: "transparent",
+    flex: 1
+  },
+  contentContainer: {
+    // flexGrow: 1,
+    flex: 1,
+    // marginTop: hp(3),
+    marginTop: 30
+    // justifyContent: 'space-between',
+  },
+  mainView: {
+    // minHeight: 300,
+    // flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  placeholder: {
+    borderRadius: 30,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: 230,
+    height: 230,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    borderWidth: 3,
+    borderColor: "#FF9D00"
+  },
+  imagePlaceholder: {
+    opacity: 0.5,
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: "#000",
+    borderRadius: 20,
+    // overflow: 'hidden',
+    alignSelf: "center",
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    justifyContent: "center"
+  },
+  blankView: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    opacity: 0.4,
+    height: "100%",
+    width: "100%",
+    flex: 1
+  },
+  optionsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    marginVertical: 20
+  },
+  optionsRowContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+    // paddingBottom: 20
+  },
+  inactivetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#fff"
+    // paddingLeft: 10
+  },
+  activetext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: "#FF9D00"
+  },
+  optionsIconSize: {
+    fontSize: 25
+  },
+  optionsTextContainer: {
+    textAlign: "center",
+    paddingLeft: 10
+  },
+  inputContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center"
+  },
+  netLocStyle: {
+    backgroundColor: "#5D1CD8",
+    borderRadius: 10,
+    // marginRight: 50,
+    borderColor: "#5D1CD8",
+    // width: "100%",
+    width: wp(20),
+    height: 50
+  },
+  networkLabel: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    textAlign: "left",
+    color: "#fff",
+    // flex: 1,
+    paddingLeft: 20,
+    top: 2
+    // right: 4,
+  },
+  input: {
+    // backgroundColor: '#5D1CD8',
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 40,
+    borderColor: "transparent",
+    alignSelf: "center",
+    // width: wp(75),
+    height: 50,
+    paddingHorizontal: 0,
+    width: 270
+  },
+  inputtext: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14 / PixelRatio.getFontScale(),
+    alignSelf: "center",
+    textAlign: "center",
+    color: "#FFF",
+    borderColor: "transparent"
+  },
+  loadingSafeArea: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center"
+  },
+  uplaodPercentage: {
+    fontSize: 16,
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
+    top: "15%"
+  },
+  plaodPercentage: {
+    fontSize: 16,
+    color: "#fff",
+    fontFamily: "montserrat-semibold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  },
+  uplaodText: {
+    justifyContent: "center",
+    fontSize: 12,
+    color: "white",
+    fontFamily: "montserrat-medium",
+    alignSelf: "center",
+    paddingTop: 10,
+    textAlign: "center"
+  },
+  footerTextStyle: {
+    fontSize: 12,
+    color: "white",
+    fontFamily: "montserrat-medium",
+    alignSelf: "center"
+  },
+  footerStyle: {
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    elevation: 0,
+    display: "flex",
+    alignItems: "center",
+    // flex: 1,
+    justifyContent: "flex-end",
+    paddingVertical: 10
+    // position: 'absolute',
+    // bottom: 50,
+  },
+  footerButtonsContainer: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  inputMiddleButton: {
+    position: "absolute",
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    width: 70,
+    height: 70,
+    borderRadius: 45,
+    borderColor: "transparent",
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    opacity: 1,
+    transform: [
+      {
+        translateX: -35
+      },
+      {
+        translateY: -40
+      }
+    ]
+  },
+  inputMiddleButtonEdit: {
+    position: "absolute",
+    // backgroundColor: '#FF9D00',
+    alignSelf: "center",
+    width: 70,
+    height: 70,
+    borderRadius: 45,
+    borderColor: "transparent",
+    top: "50%",
+    left: "50%",
+    flexDirection: "column",
+    opacity: 1,
+    alignItems: "center",
+    transform: [
+      {
+        translateX: -35
+      },
+      {
+        translateY: -40
+      }
+    ]
+  },
+  icon: {
+    color: "#fff",
+    // paddingLeft: 5,
+    alignSelf: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: 35,
+    paddingTop: 12
+  },
+  mediaButtonMsg: {
+    textAlign: "center",
+    paddingTop: 23,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    width: 150,
+    color: "#FF9D00"
+  },
+  mediaButtonMsg1: {
+    textAlign: "center",
+    paddingTop: 5,
+    fontFamily: "montserrat-medium",
+    fontSize: 14,
+    width: 150,
+    color: "#FF9D00"
+  },
+  button: {
+    alignSelf: "center",
+    width: wp(10),
+    height: hp(7.5),
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    marginHorizontal: wp(10)
+  },
+  errorMsg: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 12,
+    paddingTop: 10
+  },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center",
+    borderRadius: 30,
+    marginBottom: -10
+  },
+  topContainer: {
+    paddingVertical: 30,
+    width: 300,
+    flexDirection: "row",
+    alignSelf: "center"
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowColor: 'black',
+    // shadowOpacity: 0.2,
+  },
+  collectionAdLinkForm2: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 40,
+    borderTopEndRadius: 40
+  },
+  collectionAdLinkForm1: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 40,
+    borderTopStartRadius: 40
+  },
+  activeButton: {
+    backgroundColor: "#FF9D00",
+    height: 50,
+    width: 150,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  inactiveText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "rgba(255,255,255,0.4)",
+    textAlign: "center"
+  },
+  activeText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#fff",
+    textAlign: "center"
+  },
+  button2: {
+    backgroundColor: "rgba(0,0,0,0.2)",
+    width: 150,
+    height: 50,
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  imageView: {
+    backgroundColor: "#FF9D00",
+    width: 125,
+    paddingVertical: 10,
+    borderRadius: 30,
+    marginBottom: -20,
+    zIndex: 1
+  },
+  productText: {
+    textAlign: "center",
+    color: "#FFF",
+    fontFamily: "montserrat-semibold",
+    fontSize: 17
+  },
+  deepLinkLabelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    zIndex: 1
+  },
+  websiteView: {
+    alignItems: "center",
+    width: "100%"
+  },
+  websiteLabelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    zIndex: 1
+  }
 });
 
 export default styles;

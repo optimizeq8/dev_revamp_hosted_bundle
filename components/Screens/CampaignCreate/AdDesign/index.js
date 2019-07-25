@@ -178,16 +178,17 @@ class AdDesign extends Component {
           ...rep
         },
         image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
-        type: rep.type,
-        objective: rep.objective,
-        videoIsLoading: false,
-        iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
+        // type: rep.type,
+        // objective: rep.objective,
+        // videoIsLoading: false,
+        // iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
+        ...this.props.data,
         swipeUpError
       });
     }
-    if (this.props.navigation.state.params) {
-      this._handleRedirect(this.props.navigation.state.params);
-    }
+    // if (this.props.navigation.state.params) {
+    //   this._handleRedirect(this.props.navigation.state.params);
+    // }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -678,29 +679,25 @@ class AdDesign extends Component {
     var body = new FormData();
     if (!this.state.iosVideoUploaded || this.props.adType === "StoryAd") {
       let storyAd = this.props.storyAdsArray.find(
-        card => card !== undefined && card.image && !card.iosVideoUploaded
+        card => card !== undefined && card.image
       );
       let res = (() =>
         this.props.adType !== "StoryAd"
           ? this.state.image
-          : storyAd.image)().split(
-        (() =>
-          this.props.adType !== "StoryAd"
-            ? this.state.image
-            : storyAd.image)().includes("/ImageManipulator/")
-          ? "/ImageManipulator/"
-          : "/ImagePicker/"
-      );
+          : storyAd.image)().split("/");
+      res = res[res.length - 1];
 
-      let format = res[1].split(".");
+      let format = res.split(".")[1];
 
       var photo = {
         uri: this.props.adType !== "StoryAd" ? this.state.image : storyAd.image,
         type:
-          (this.props.adType !== "StoryAd" ? this.state.type : "IMAGE") +
+          (this.props.adType !== "StoryAd"
+            ? this.state.type
+            : storyAd.media_type) +
           "/" +
-          format[1],
-        name: res[1]
+          format,
+        name: res
       };
       body.append("media", photo);
       body.append(
@@ -830,39 +827,83 @@ class AdDesign extends Component {
       let card = this.props.storyAdsArray[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-      card = {
-        ...card,
-        index: this.state.storyAdCards.selectedStoryAd.index,
-        story_id: data.queryParams.story_id,
-        image: data.queryParams.media,
-        iosVideoUploaded: true,
-        media_type: "VIDEO",
-        uploaded: true
-      };
-      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      this.setState({
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          // storyAdSelected: false,
-          selectedStoryAd: {
-            ...card
-          }
-        },
-        iosVideoUploaded: true,
-        type: "VIDEO"
-      });
-    } else
-      this.setState({
-        ...this.state,
-        image: data.queryParams.media,
-        iosVideoUploaded: true,
-        type: "VIDEO"
-      });
-    this.props.save_campaign_info({
-      image: data.queryParams.media,
-      iosVideoUploaded: true,
-      type: "VIDEO"
-    });
+      this.setState({ videoIsLoading: true, image: "//", type: "VIDEO" });
+      FileSystem.downloadAsync(
+        data.queryParams.media,
+        FileSystem.cacheDirectory +
+          data.queryParams.media.split("/")[
+            data.queryParams.media.split("/").length - 1
+          ]
+      )
+        .then(({ uri }) => {
+          card = {
+            ...card,
+            index: this.state.storyAdCards.selectedStoryAd.index,
+            story_id: data.queryParams.story_id,
+            image: uri,
+            iosVideoUploaded: true,
+            media_type: "VIDEO",
+            uploaded: true
+          };
+          cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+          this.setState({
+            storyAdCards: {
+              ...this.state.storyAdCards,
+              // storyAdSelected: false,
+              selectedStoryAd: {
+                ...card
+              }
+            },
+            videoIsLoading: false,
+            iosVideoUploaded: true,
+            type: "VIDEO"
+          });
+          this.props.save_campaign_info({
+            selectedStoryAd: card,
+            iosVideoUploaded: true,
+            type: "VIDEO"
+          });
+        })
+        .catch(error => {
+          // console.error(error);
+          showMessage({
+            message: "Something went wrong!",
+            type: "warning",
+            position: "top",
+            description: "Please try again later. " + error
+          });
+        });
+    } else {
+      this.setState({ videoIsLoading: true, image: "//", type: "VIDEO" });
+      FileSystem.downloadAsync(
+        data.queryParams.media,
+        FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
+      )
+        .then(({ uri }) => {
+          console.log("Finished downloading to ", uri);
+          this.setState({
+            ...this.state,
+            image: uri,
+            iosVideoUploaded: true,
+            type: "VIDEO",
+            videoIsLoading: false
+          });
+          this.props.save_campaign_info({
+            image: uri,
+            iosVideoUploaded: true,
+            type: "VIDEO"
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          showMessage({
+            message: "Something went wrong!",
+            type: "warning",
+            position: "top",
+            description: "Please try again later. " + error
+          });
+        });
+    }
   };
 
   _getUploadState = loading => {
@@ -1048,9 +1089,7 @@ class AdDesign extends Component {
     ) {
       this.formatStoryAd();
     }
-
     await this.validator();
-
     if (
       !this.props.loadingStoryAdsArray.includes(true) &&
       !this.state.brand_nameError &&
@@ -1394,9 +1433,6 @@ class AdDesign extends Component {
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
-                    {this.state.videoIsLoading ? (
-                      <CameraLoading dash={true} />
-                    ) : null}
                     <Video
                       onLoadStart={() =>
                         this.state.storyAdCards.selectedStoryAd.image &&
@@ -1406,7 +1442,8 @@ class AdDesign extends Component {
                       onLoad={() => this.setState({ videoIsLoading: false })}
                       source={{
                         uri:
-                          image !== "//"
+                          image !== "//" &&
+                          !this.state.storyAdCards.storyAdSelected
                             ? image
                             : this.state.storyAdCards.selectedStoryAd.image &&
                               this.state.storyAdCards.storyAdSelected
@@ -1434,11 +1471,16 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        image={
+                          image !== "//"
+                            ? image
+                            : this.state.storyAdCards.selectedStoryAd.image
+                        }
                         setMediaModalVisible={this.setMediaModalVisible}
                         image={this.state.image}
                       />
                     )}
-
+                    {this.state.videoIsLoading ? <CameraLoading /> : null}
                     {swipeUpComp}
                     {this.props.adType === "CollectionAd" && collection}
                   </View>
@@ -1660,12 +1702,7 @@ class AdDesign extends Component {
                 />
               )}
 
-              <CameraLoading
-                style={{ width: 110, height: 110 }}
-                //   styles={{ width: hp(30), height: hp(30) }}
-                // top={"50%"}
-                // left={"55%"}
-              />
+              <CameraLoading center={true} />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>

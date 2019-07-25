@@ -739,12 +739,7 @@ class AdCover extends Component {
                 />
               )}
 
-              <CameraLoading
-                style={{ width: 110, height: 110 }}
-                //   styles={{ width: hp(30), height: hp(30) }}
-                // top={"50%"}
-                // left={"55%"}
-              />
+              <CameraLoading center={true} />
               {this.props.coverLoading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>

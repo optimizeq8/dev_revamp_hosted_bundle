@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    marginTop: hp(25)
+    top: "15%"
   },
   loadingSafeArea: {
     width: "100%",
