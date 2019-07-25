@@ -118,14 +118,14 @@ class AdObjective extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  setObjective = choice => {
+  setObjective = value => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-			objective: choice.value
-      }, objectiveLabel:choice.label
+        objective: value
+      }
     });
-	  this.props.save_campaign_info({ objective: choice.value, objectiveLabel: choice.label, reset: true });
+    this.props.save_campaign_info({ objective: value, reset: true });
   };
 
   handleStartDatePicked = date => {
@@ -400,7 +400,11 @@ class AdObjective extends Component {
 									}}
 								>
 									<Text style={styles.label}>
-										{this.state.objectiveLabel}
+										{this.state.campaignInfo.objective === ''
+											? this.state.objectiveLabel
+											: this.state.objectives.find(
+												c => this.state.campaignInfo.objective === c.value
+											).label}
 									</Text>
 									<Icon type="AntDesign" name="down" style={styles.downicon} />
 								</Item>
