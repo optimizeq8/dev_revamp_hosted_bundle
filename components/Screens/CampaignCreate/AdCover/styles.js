@@ -154,15 +154,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: -10,
     width: 250,
-    borderColor: "transparent",
-    transform: [
-      {
-        translateX: -5
-      },
-      {
-        translateY: -3
-      }
-    ]
+    borderColor: "transparent"
   },
   container: {
     backgroundColor: "transparent",

@@ -11,6 +11,7 @@ export default class PenIconBrand extends Component {
     return (
       <Item style={styles.inputHeadline}>
         <PenIcon
+          style={{ bottom: 20 }}
           fill={
             this.state.input
               ? "#FF9D00"
