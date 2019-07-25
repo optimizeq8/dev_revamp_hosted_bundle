@@ -7,23 +7,38 @@ import { Video } from "expo-av";
 export default class MediaBox extends Component {
   state = { imageLoaded: false };
   perviewHandler = () => {
-    let image = {
-      cover: "https://" + this.props.selectedCampaign.story_preview_media,
-      logo: "https://" + this.props.selectedCampaign.story_logo_media
-    };
-    this.props.navigation.push("StoryAdDesignReview", {
-      ...image,
-      type: this.props.ad.media_type,
-      call_to_action: this.props.ad.call_to_action.label,
-      headline: this.props.selectedCampaign.headline,
-      brand_name: this.props.selectedCampaign.brand_name,
-      destination: this.props.ad.destination,
-      campaignDetails: true,
-      //   icon_media_url: this.props.ad.attachment.icon_media_url,
-      //   coverHeadline: this.props.ad.coverHeadline,
-      storyAdsArray: this.props.selectedCampaign.story_creatives
-      //   collectionAdMedia: this.props.collectionAdMedia
-    });
+    let image =
+      this.props.selectedCampaign.campaign_type === "CollectionAd"
+        ? { image: "https://" + this.props.selectedCampaign.media }
+        : {
+            cover: "https://" + this.props.selectedCampaign.story_preview_media,
+            logo: "https://" + this.props.selectedCampaign.story_logo_media
+          };
+    let icon_media_url =
+      this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
+        ? JSON.parse(this.props.ad.attachment).icon_media_url
+        : "";
+    this.props.navigation.push(
+      this.props.selectedCampaign.campaign_type === "CollectionAd"
+        ? "AdDesignReview"
+        : "StoryAdDesignReview",
+      {
+        ...image,
+        type: this.props.ad.media_type,
+        call_to_action: this.props.ad.call_to_action
+          ? this.props.ad.call_to_action
+          : this.props.selectedCampaign.call_to_action,
+        headline: this.props.selectedCampaign.headline,
+        brand_name: this.props.selectedCampaign.brand_name,
+        destination: this.props.ad.destination,
+        campaignDetails: true,
+        icon_media_url: icon_media_url,
+        adType: this.props.selectedCampaign.campaign_type,
+        coverHeadline: this.props.selectedCampaign.story_headline,
+        storyAdsArray: this.props.selectedCampaign.story_creatives,
+        collectionAdMedia: this.props.selectedCampaign.collection_creatives
+      }
+    );
   };
   render() {
     let { name } = this.props;

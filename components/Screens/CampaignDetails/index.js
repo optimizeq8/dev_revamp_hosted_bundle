@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  Image,
-  ImageBackground,
-  Animated,
-  BackHandler
-} from "react-native";
-import { Card, Text, Container, Icon } from "native-base";
+import { View, Image as RNImage, Animated, BackHandler } from "react-native";
+import { Card, Text, Container, Icon, Content } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
@@ -18,6 +12,7 @@ import SlideUpPanel from "./SlideUpPanel";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
 import OptionalTargets from "./OptionalTargets";
+import { Image } from "react-native-expo-image-cache";
 
 //Icons
 import LocationIcon from "../../../assets/SVGs/Location.svg";
@@ -44,6 +39,10 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import MediaBox from "./MediaBox";
 
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class CampaignDetails extends Component {
   static navigationOptions = {
     header: null
@@ -169,8 +168,14 @@ class CampaignDetails extends Component {
       let media = [];
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = this.props.selectedCampaign;
-        if (selectedCampaign.hasOwnProperty("story_creatives"))
-          media = selectedCampaign.story_creatives.map((ad, i) => (
+        if (
+          selectedCampaign.hasOwnProperty("story_creatives") ||
+          selectedCampaign.hasOwnProperty("collection_creatives")
+        ) {
+          let creatives = selectedCampaign.hasOwnProperty("story_creatives")
+            ? selectedCampaign.story_creatives
+            : selectedCampaign.collection_creatives;
+          media = creatives.map((ad, i) => (
             <MediaBox
               key={ad.name}
               name={i}
@@ -179,6 +184,7 @@ class CampaignDetails extends Component {
               ad={ad}
             />
           ));
+        }
         console.log(selectedCampaign);
 
         targeting = selectedCampaign.targeting
@@ -250,11 +256,7 @@ class CampaignDetails extends Component {
           />
           {this.state.imageIsLoading && (
             <View
-              style={[
-                globalStyles.orangeBackgroundColor,
-                { flex: 1, width: "100%" },
-                globalStyles.redBorderColor
-              ]}
+              style={[{ flex: 1, position: "absolute", alignSelf: "center" }]}
             >
               <Loading dash={true} />
             </View>
@@ -279,224 +281,221 @@ class CampaignDetails extends Component {
                 />
               </View>
             )}
-
-          <ImageBackground
-            source={
-              !loading
-                ? { uri: "http://" + selectedCampaign.media }
-                : require("../../../assets/images/emptyPlaceHolder.png")
-            }
+          <Image
+            {...{
+              preview,
+              uri: !loading ? "http://" + selectedCampaign.media : ""
+            }}
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });
             }}
             style={{
-              width: "100%",
-              height: "100%"
+              position: "absolute",
+              width: !loading ? "100%" : 0,
+              height: !loading ? "100%" : 0
             }}
+          />
+          <SafeAreaView
+            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
+            forceInset={{ bottom: "never", top: "always" }}
           >
-            <SafeAreaView
-              style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
-              forceInset={{ bottom: "never", top: "always" }}
-            >
-              <NavigationEvents
-                onDidFocus={() => {
-                  if (this.props.selectedCampaign) {
-                    Segment.screenWithProperties("Campaign Details", {
-                      campaign_id: this.props.selectedCampaign.campaign_id
-                    });
-                  }
-                }}
+            <NavigationEvents
+              onDidFocus={() => {
+                if (this.props.selectedCampaign) {
+                  Segment.screenWithProperties("Campaign Details", {
+                    campaign_id: this.props.selectedCampaign.campaign_id
+                  });
+                }
+              }}
+            />
+            <Container style={styles.container}>
+              <Header
+                campaignEnded={this.props.campaignEnded}
+                closeButton={true}
+                navigation={this.props.navigation}
+                selectedCampaign={selectedCampaign}
               />
-              <Container style={styles.container}>
-                <Header
-                  campaignEnded={this.props.campaignEnded}
-                  closeButton={true}
-                  navigation={this.props.navigation}
-                  selectedCampaign={selectedCampaign}
+              <Card style={styles.mainCard}>
+                <RNImage
+                  style={styles.image}
+                  source={require("../../../assets/images/snap-ghost.png")}
+                  resizeMode="contain"
                 />
-
-                <Card style={styles.mainCard}>
-                  <Image
-                    style={styles.image}
-                    source={require("../../../assets/images/snap-ghost.png")}
-                    resizeMode="contain"
-                  />
-                  {loading ? (
-                    <View style={{ margin: 5 }}>
-                      <PlaceholderLine />
-                    </View>
-                  ) : (
-                    <Text style={[styles.title, { width: 150 }]}>
-                      {selectedCampaign.name}
-                    </Text>
-                  )}
-                  {loading ? (
-                    <View style={{ margin: 5 }}>
-                      <PlaceholderLine />
-                    </View>
-                  ) : (
-                    <View>
-                      {selectedCampaign.review_status === "APPROVED" ? (
-                        selectedCampaign.campaign_end === "0" &&
-                        !this.props.campaignEnded &&
-                        new Date(selectedCampaign.end_time) > new Date() ? (
-                          selectedCampaign.review_status === "APPROVED" &&
-                          new Date(selectedCampaign.start_time) > new Date() ? (
-                            <View
-                              style={[
-                                styles.adStatus,
-                                { backgroundColor: "#66D072" }
-                              ]}
-                            >
-                              <Text style={styles.reviewtext}>
-                                Scheduled for {start_time}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  <Text style={[styles.title, { width: 150 }]}>
+                    {selectedCampaign.name}
+                  </Text>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  <View>
+                    {selectedCampaign.review_status === "APPROVED" ? (
+                      selectedCampaign.campaign_end === "0" &&
+                      !this.props.campaignEnded &&
+                      new Date(selectedCampaign.end_time) > new Date() ? (
+                        selectedCampaign.review_status === "APPROVED" &&
+                        new Date(selectedCampaign.start_time) > new Date() ? (
+                          <View
+                            style={[
+                              styles.adStatus,
+                              { backgroundColor: "#66D072" }
+                            ]}
+                          >
+                            <Text style={styles.reviewtext}>
+                              Scheduled for {start_time}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View padder style={styles.toggleSpace}>
+                            <View style={{ alignSelf: "center" }}>
+                              {selectedCampaign && (
+                                <Toggle
+                                  buttonTextStyle={styles.switchButtonText}
+                                  buttonText={
+                                    this.state.toggleText !== "PAUSED"
+                                      ? "LIVE"
+                                      : "PAUSED"
+                                  }
+                                  containerStyle={styles.toggleStyle}
+                                  switchOn={this.state.toggle}
+                                  onPress={() => {
+                                    this.state.toggle
+                                      ? this.setState({
+                                          modalVisible: true
+                                        })
+                                      : this.updateStatus();
+                                  }}
+                                  backgroundColorOff="rgba(255,255,255,0.1)"
+                                  backgroundColorOn="rgba(255,255,255,0.1)"
+                                  circleColorOff="#FF9D00"
+                                  circleColorOn="#66D072"
+                                  duration={500}
+                                  circleStyle={styles.switchCircle}
+                                />
+                              )}
+                              <Text style={styles.statusText}>
+                                {this.state.toggle
+                                  ? "Tap to pause AD"
+                                  : "Tap to activate AD"}
                               </Text>
                             </View>
-                          ) : (
-                            <View padder style={styles.toggleSpace}>
-                              <View style={{ alignSelf: "center" }}>
-                                {selectedCampaign && (
-                                  <Toggle
-                                    buttonTextStyle={styles.switchButtonText}
-                                    buttonText={
-                                      this.state.toggleText !== "PAUSED"
-                                        ? "LIVE"
-                                        : "PAUSED"
-                                    }
-                                    containerStyle={styles.toggleStyle}
-                                    switchOn={this.state.toggle}
-                                    onPress={() => {
-                                      this.state.toggle
-                                        ? this.setState({
-                                            modalVisible: true
-                                          })
-                                        : this.updateStatus();
-                                    }}
-                                    backgroundColorOff="rgba(255,255,255,0.1)"
-                                    backgroundColorOn="rgba(255,255,255,0.1)"
-                                    circleColorOff="#FF9D00"
-                                    circleColorOn="#66D072"
-                                    duration={500}
-                                    circleStyle={styles.switchCircle}
-                                  />
-                                )}
-                                <Text style={styles.statusText}>
-                                  {this.state.toggle
-                                    ? "Tap to pause AD"
-                                    : "Tap to activate AD"}
-                                </Text>
-                              </View>
-                            </View>
-                          )
-                        ) : (
-                          <View style={styles.adStatus}>
-                            <Text style={styles.reviewtext}>
-                              Campagin Ended
-                            </Text>
                           </View>
                         )
                       ) : (
                         <View style={styles.adStatus}>
-                          <Text style={styles.reviewtext}>
-                            {selectedCampaign.review_status === "PENDING" &&
-                              "In Review"}
-                          </Text>
+                          <Text style={styles.reviewtext}>Campagin Ended</Text>
                         </View>
-                      )}
-                    </View>
-                  )}
-                  {loading ? (
-                    <View style={{ margin: 5 }}>
-                      <PlaceholderLine />
-                    </View>
-                  ) : (
-                    <Text style={styles.subHeadings}>
-                      Budget{"\n"}
-                      <Text
-                        style={[
-                          styles.numbers,
-                          {
-                            fontSize: 25,
-                            fontFamily: "montserrat-semibold"
-                          }
-                        ]}
-                      >
-                        {formatNumber(
-                          selectedCampaign.lifetime_budget_micro,
-                          true
-                        )}
-                      </Text>
-                      <Text style={{ color: "white" }}>$</Text>
-                    </Text>
-                  )}
-                  <Text style={styles.subHeadings}>Duration</Text>
-                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        alignSelf: "center"
-                      }}
-                    >
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <>
-                          <Text
-                            style={[
-                              styles.categories,
-                              {
-                                fontSize: 16,
-                                fontFamily: "montserrat-medium"
-                              }
-                            ]}
-                          >
-                            Start
-                          </Text>
-                          <Text style={styles.numbers}>
-                            {start_time}{" "}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {start_year}
-                            </Text>
-                          </Text>
-                        </>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        alignSelf: "center"
-                      }}
-                    >
-                      {loading ? (
-                        <View style={{ margin: 5 }}>
-                          <PlaceholderLine />
-                        </View>
-                      ) : (
-                        <>
-                          <Text
-                            style={[
-                              styles.categories,
-                              {
-                                fontSize: 16,
-                                fontFamily: "montserrat-medium"
-                              }
-                            ]}
-                          >
-                            End
-                          </Text>
-
-                          <Text style={styles.numbers}>
-                            {end_time}{" "}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {end_year}
-                            </Text>
-                          </Text>
-                        </>
-                      )}
-                    </View>
+                      )
+                    ) : (
+                      <View style={styles.adStatus}>
+                        <Text style={styles.reviewtext}>
+                          {selectedCampaign.review_status === "PENDING" &&
+                            "In Review"}
+                        </Text>
+                      </View>
+                    )}
                   </View>
+                )}
+                {loading ? (
+                  <View style={{ margin: 5 }}>
+                    <PlaceholderLine />
+                  </View>
+                ) : (
+                  <Text style={styles.subHeadings}>
+                    Budget{"\n"}
+                    <Text
+                      style={[
+                        styles.numbers,
+                        {
+                          fontSize: 25,
+                          fontFamily: "montserrat-semibold"
+                        }
+                      ]}
+                    >
+                      {formatNumber(
+                        selectedCampaign.lifetime_budget_micro,
+                        true
+                      )}
+                    </Text>
+                    <Text style={{ color: "white" }}>$</Text>
+                  </Text>
+                )}
+                <Text style={styles.subHeadings}>Duration</Text>
+                <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      alignSelf: "center"
+                    }}
+                  >
+                    {loading ? (
+                      <View style={{ margin: 5 }}>
+                        <PlaceholderLine />
+                      </View>
+                    ) : (
+                      <>
+                        <Text
+                          style={[
+                            styles.categories,
+                            {
+                              fontSize: 16,
+                              fontFamily: "montserrat-medium"
+                            }
+                          ]}
+                        >
+                          Start
+                        </Text>
+                        <Text style={styles.numbers}>
+                          {start_time}{" "}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {start_year}
+                          </Text>
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      alignSelf: "center"
+                    }}
+                  >
+                    {loading ? (
+                      <View style={{ margin: 5 }}>
+                        <PlaceholderLine />
+                      </View>
+                    ) : (
+                      <>
+                        <Text
+                          style={[
+                            styles.categories,
+                            {
+                              fontSize: 16,
+                              fontFamily: "montserrat-medium"
+                            }
+                          ]}
+                        >
+                          End
+                        </Text>
+
+                        <Text style={styles.numbers}>
+                          {end_time}{" "}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {end_year}
+                          </Text>
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                </View>
+                <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                   {media.length > 0 && (
                     <>
                       <Text style={styles.subHeadings}>Media</Text>
@@ -624,23 +623,23 @@ class CampaignDetails extends Component {
                       />
                     )}
                   </View>
-                </Card>
-              </Container>
-              {loading ? (
-                <View style={{ margin: 5 }}>
-                  <PlaceholderLine />
-                </View>
-              ) : (
-                <StatusModal
-                  selectedCampaign={selectedCampaign}
-                  updateStatus={this.updateStatus}
-                  endCampaign={this.endCampaign}
-                  modalVisible={this.state.modalVisible}
-                  showModal={this.showModal}
-                />
-              )}
-            </SafeAreaView>
-          </ImageBackground>
+                </Content>
+              </Card>
+            </Container>
+            {loading ? (
+              <View style={{ margin: 5 }}>
+                <PlaceholderLine />
+              </View>
+            ) : (
+              <StatusModal
+                selectedCampaign={selectedCampaign}
+                updateStatus={this.updateStatus}
+                endCampaign={this.endCampaign}
+                modalVisible={this.state.modalVisible}
+                showModal={this.showModal}
+              />
+            )}
+          </SafeAreaView>
           <SlideUpPanel
             start_time={this.state.start_time}
             end_time={this.state.end_time}

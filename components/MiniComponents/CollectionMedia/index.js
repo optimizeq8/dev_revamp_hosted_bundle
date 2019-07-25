@@ -842,7 +842,7 @@ class CollectionMedia extends Component {
                 />
               )}
 
-              <CameraLoading style={{ width: 110, height: 110 }} />
+              <CameraLoading center={true} />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>

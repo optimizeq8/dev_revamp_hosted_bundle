@@ -37,6 +37,10 @@ import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
 
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
@@ -64,7 +68,11 @@ class AdDesignReview extends Component {
         {!isUndefined(collections[i]) && (
           <Image
             style={styles.collectionImage}
-            source={{ uri: collections[i].localUri }}
+            {...{
+              preview,
+              uri: collections[i].localUri || "https://" + collections[i].media
+            }}
+            // source={{ uri: collections[i].localUri || collections[i].media }}
             resizeMode="cover"
           />
         )}
@@ -72,7 +80,9 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let adType = this.props.adType;
+    let adType = this.props.navigation.getParam("adType", null)
+      ? this.props.navigation.getParam("adType", null)
+      : this.props.adType;
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
       false
@@ -98,20 +108,22 @@ class AdDesignReview extends Component {
       : campaignDetails
       ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
       : storyAdsArray[this.state.storyAdIndex]["image"];
-    const preview = {
-      uri:
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-    };
 
     if (storyAds) {
       if (
-        storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
-        storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
-          "icon_media_url"
-        )
+        (storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
+          storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+            "icon_media_url"
+          )) ||
+        (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
+          JSON.parse(
+            storyAdsArray[this.state.storyAdIndex].attachment
+          ).hasOwnProperty("icon_media_url"))
       ) {
-        appIcon =
-          storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
+        appIcon = campaignDetails
+          ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
+              .icon_media_url
+          : storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
       }
       if (
         storyAdsArray[this.state.storyAdIndex].hasOwnProperty(
@@ -119,8 +131,10 @@ class AdDesignReview extends Component {
         ) &&
         storyAdsArray[this.state.storyAdIndex].call_to_action !== "BLANK"
       ) {
-        call_to_action =
-          storyAdsArray[this.state.storyAdIndex].call_to_action.value;
+        call_to_action = storyAdsArray[this.state.storyAdIndex].call_to_action
+          .value
+          ? storyAdsArray[this.state.storyAdIndex].call_to_action.value
+          : storyAdsArray[this.state.storyAdIndex].call_to_action;
       }
     }
 
@@ -286,7 +300,8 @@ class AdDesignReview extends Component {
                   >
                     <View style={[globalStyles.lightGrayBorderColor]}>
                       <Image
-                        source={{ uri: appIcon }}
+                        {...{ preview, uri: appIcon }}
+                        // source={{ uri: appIcon }}
                         style={[
                           globalStyles.grayBorderColor,
                           styles.appIconBottom

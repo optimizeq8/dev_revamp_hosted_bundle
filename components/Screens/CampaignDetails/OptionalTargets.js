@@ -13,10 +13,9 @@ export default class OptionalTargets extends Component {
   render() {
     let targeting = this.props.targeting;
     return (
-      <ScrollView
-        contentContainerStyle={{
-          paddingBottom: hp(80),
-          width: "100%"
+      <View
+        style={{
+          width: "60%"
         }}
       >
         {this.props.region_names.length > 0 && (
@@ -103,7 +102,7 @@ export default class OptionalTargets extends Component {
               </Text>
             </View>
           )}
-      </ScrollView>
+      </View>
     );
   }
 }
