@@ -318,7 +318,7 @@ class Dashboard extends Component {
               this.state.open && this.setState({ anim: true })
             }
             animation={
-              this.props.loadingAccountMgmt
+              !this.props.loadingAccountMgmt
                 ? this.state.anim
                   ? mySlideOutDown
                   : mySlideInUp
