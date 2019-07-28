@@ -185,9 +185,9 @@ class AdDesign extends Component {
         swipeUpError
       });
     }
-    if (this.props.navigation.state.params) {
-      this._handleRedirect(this.props.navigation.state.params);
-    }
+    // if (this.props.navigation.state.params) {
+    //   this._handleRedirect(this.props.navigation.state.params);
+    // }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
