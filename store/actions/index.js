@@ -2,7 +2,7 @@ export {
   changeBusiness,
   getBusinessAccounts,
   createBusinessAccount,
-  //   changePassword,
+  updateUserInfo,
   addressForm,
   getAddressForm,
   create_snapchat_ad_account
