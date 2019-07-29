@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     paddingHorizontal: 35,
+    paddingTop: 20,
     textAlign: "left"
   },
   nameText: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   labelMobileNo: {
-    bottom: 5,
+    // bottom: 5,
     fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
@@ -72,9 +73,9 @@ const styles = StyleSheet.create({
   },
   input: {
     bottom: 25,
-    marginBottom: 20,
-
-    width: 250,
+    marginBottom: 30,
+    alignSelf: "center",
+    width: "90%",
     height: 45,
     borderColor: "#7039FF"
   }
