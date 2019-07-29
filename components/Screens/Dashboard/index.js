@@ -227,11 +227,7 @@ class Dashboard extends Component {
         ad={adType}
       />
     ));
-    if (
-      !this.props.mainBusiness &&
-      this.props.loadingAccountMgmt
-      // true
-    ) {
+    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
       return (
         <PlacholderDashboard
           placeHolderCards={placeHolderCards}
@@ -241,9 +237,6 @@ class Dashboard extends Component {
           closeAnimation={this.closeAnimation}
           mySlideInUp={mySlideInUp}
         />
-        // <>
-        //   <LoadingScreen dash={true} top={0} />
-        // </>
       );
     } else if (this.props.businessLoadError) {
       return (
@@ -318,7 +311,7 @@ class Dashboard extends Component {
               this.state.open && this.setState({ anim: true })
             }
             animation={
-              this.props.loadingAccountMgmt
+              !this.props.loadingAccountMgmt
                 ? this.state.anim
                   ? mySlideOutDown
                   : mySlideInUp
