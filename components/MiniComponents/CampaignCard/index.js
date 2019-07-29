@@ -61,19 +61,10 @@ class CampaignCard extends Component {
             Segment.trackWithProperties("Pressed Campaign Card", {
               campaign_id: this.props.campaign.campaign_id
             });
-            if (this.review_status !== "REJECTED") {
-              this.props.getCampaignDetails(
-                this.props.campaign.campaign_id,
-                this.props.navigation
-              );
-            } else {
-              this.props.navigation.navigate("AdDesign", {
-                rejected: true,
-                objective: campaign.objective,
-                headline: campaign.headline,
-                campaign_id: campaign.campaign_id
-              });
-            }
+            this.props.getCampaignDetails(
+              this.props.campaign.campaign_id,
+              this.props.navigation
+            );
           }}
           style={styles.campaignButton}
         >

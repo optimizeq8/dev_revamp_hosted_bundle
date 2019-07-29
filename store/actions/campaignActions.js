@@ -313,13 +313,6 @@ export const ad_design = (
         return res.data;
       })
       .then(data => {
-        // dispatch(
-        //   save_campaign_info("adDesign", {
-        //     appChoice,
-        //     longVideo,
-        //     iosUploadVideo
-        //   })
-        // );
         rejected &&
           showMessage({
             message: data.message,

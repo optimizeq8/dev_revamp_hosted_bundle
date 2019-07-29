@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
     width: hp("5")
   },
   reviewtext: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-medium",
     fontSize: 13,
     padding: 3,
     color: "#fff",
     textAlign: "center"
   },
   adStatus: {
-    backgroundColor: globalColors.orange,
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
@@ -331,7 +330,22 @@ const styles = StyleSheet.create({
     borderTopColor: "rgba(255,255,255,0.4)",
     height: 35
   },
-  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" }
+  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
+  dot: {
+    top: 10,
+    width: 10,
+    height: 10,
+    marginHorizontal: 10,
+    borderRadius: 50,
+    backgroundColor: globalColors.orange
+  },
+  reviewButton: {
+    alignSelf: "center",
+    borderRadius: 12,
+    top: "10%",
+    padding: 20,
+    backgroundColor: globalColors.orange
+  }
 });
 
 export default styles;
