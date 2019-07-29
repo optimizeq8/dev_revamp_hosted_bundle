@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image as RNImage, Animated, BackHandler } from "react-native";
-import { Card, Text, Container, Icon, Content } from "native-base";
+import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
@@ -21,7 +21,7 @@ import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 //Functions
 import formatNumber from "../../formatNumber";
 import {
@@ -38,6 +38,7 @@ import { interestNames } from "./interesetNames";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import MediaBox from "./MediaBox";
+import RejectedComp from "./RejectedComp";
 
 const preview = {
   uri:
@@ -185,7 +186,6 @@ class CampaignDetails extends Component {
             />
           ));
         }
-        console.log(selectedCampaign);
 
         targeting = selectedCampaign.targeting
           ? selectedCampaign.targeting
@@ -394,10 +394,21 @@ class CampaignDetails extends Component {
                         </View>
                       )
                     ) : (
-                      <View style={styles.adStatus}>
+                      <View
+                        style={[
+                          styles.adStatus,
+                          {
+                            backgroundColor:
+                              selectedCampaign.review_status === "PENDING"
+                                ? globalColors.orange
+                                : globalColors.red
+                          }
+                        ]}
+                      >
                         <Text style={styles.reviewtext}>
-                          {selectedCampaign.review_status === "PENDING" &&
-                            "In Review"}
+                          {selectedCampaign.review_status === "PENDING"
+                            ? "In Review"
+                            : "Rejected"}
                         </Text>
                       </View>
                     )}
@@ -495,135 +506,149 @@ class CampaignDetails extends Component {
                     )}
                   </View>
                 </View>
-                <Content contentContainerStyle={{ paddingBottom: "60%" }}>
-                  {media.length > 0 && (
-                    <>
-                      <Text style={styles.subHeadings}>Media</Text>
+                {selectedCampaign &&
+                  (selectedCampaign.review_status !== "REJECTED" ? (
+                    <Content contentContainerStyle={{ paddingBottom: "60%" }}>
+                      {media.length > 0 && (
+                        <>
+                          <Text style={styles.subHeadings}>Media</Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignSelf: "center",
+                              justifyContent: "space-between",
+                              marginBottom: 20
+                            }}
+                          >
+                            {media}
+                          </View>
+                        </>
+                      )}
+                      <Text style={styles.subHeadings}>Audience</Text>
                       <View
                         style={{
                           flexDirection: "row",
-                          alignSelf: "center",
-                          justifyContent: "space-between",
-                          marginBottom: 20
+                          justifyContent: "center",
+                          marginHorizontal: 40
                         }}
                       >
-                        {media}
-                      </View>
-                    </>
-                  )}
-                  <Text style={styles.subHeadings}>Audience</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      marginHorizontal: 40
-                    }}
-                  >
-                    <View style={{ flexDirection: "column" }}>
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          alignSelf: "center"
-                        }}
-                      >
-                        <GenderIcon width={hp("2")} height={hp("2")} />
-                        {loading ? (
-                          <View style={{ margin: 5 }}>
-                            <PlaceholderLine />
+                        <View style={{ flexDirection: "column" }}>
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              alignSelf: "center"
+                            }}
+                          >
+                            <GenderIcon width={hp("2")} height={hp("2")} />
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={styles.categories}>
+                                Gender{"\n "}
+                                <Text style={styles.subtext}>
+                                  {targeting &&
+                                  (targeting.gender === "" ||
+                                    !targeting.hasOwnProperty("gender"))
+                                    ? "All"
+                                    : targeting &&
+                                      targeting.demographics[0].gender}
+                                </Text>
+                              </Text>
+                            )}
                           </View>
-                        ) : (
-                          <Text style={styles.categories}>
-                            Gender{"\n "}
-                            <Text style={styles.subtext}>
-                              {targeting &&
-                              (targeting.gender === "" ||
-                                !targeting.hasOwnProperty("gender"))
-                                ? "All"
-                                : targeting && targeting.demographics[0].gender}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignSelf: "center"
-                        }}
-                      >
-                        <Icon
-                          style={styles.icon}
-                          type="FontAwesome"
-                          name="language"
-                        />
-                        {loading ? (
-                          <View style={{ margin: 5 }}>
-                            <PlaceholderLine />
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignSelf: "center"
+                            }}
+                          >
+                            <Icon
+                              style={styles.icon}
+                              type="FontAwesome"
+                              name="language"
+                            />
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={styles.categories}>
+                                Languages{"\n "}
+                                <Text style={styles.subtext}>
+                                  {targeting &&
+                                    targeting.demographics[0].languages.join(
+                                      ", "
+                                    )}
+                                </Text>
+                              </Text>
+                            )}
                           </View>
-                        ) : (
-                          <Text style={styles.categories}>
-                            Languages{"\n "}
-                            <Text style={styles.subtext}>
-                              {targeting &&
-                                targeting.demographics[0].languages.join(", ")}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          alignSelf: "center"
-                        }}
-                      >
-                        <Icon
-                          style={styles.icon}
-                          type="MaterialCommunityIcons"
-                          name="human-male-girl"
-                        />
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              alignSelf: "center"
+                            }}
+                          >
+                            <Icon
+                              style={styles.icon}
+                              type="MaterialCommunityIcons"
+                              name="human-male-girl"
+                            />
 
-                        {loading ? (
-                          <View style={{ margin: 5 }}>
-                            <PlaceholderLine />
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={[styles.categories]}>
+                                Age range{"\n"}
+                                <Text style={styles.subtext}>
+                                  {targeting &&
+                                    targeting.demographics[0].min_age}{" "}
+                                  -{" "}
+                                  {targeting &&
+                                    targeting.demographics[0].max_age}
+                                </Text>
+                              </Text>
+                            )}
                           </View>
-                        ) : (
-                          <Text style={[styles.categories]}>
-                            Age range{"\n"}
-                            <Text style={styles.subtext}>
-                              {targeting && targeting.demographics[0].min_age} -{" "}
-                              {targeting && targeting.demographics[0].max_age}
-                            </Text>
-                          </Text>
-                        )}
-                      </View>
-                      <View style={{ flexDirection: "row" }}>
-                        <LocationIcon width={hp("2")} height={hp("2")} />
-                        {loading && !targeting ? (
-                          <View style={{ margin: 5 }}>
-                            <PlaceholderLine />
+                          <View style={{ flexDirection: "row" }}>
+                            <LocationIcon width={hp("2")} height={hp("2")} />
+                            {loading && !targeting ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={styles.categories}>
+                                Location(s) {"\n"}
+                                {targeting && targeting.geos[0].country_code}
+                              </Text>
+                            )}
                           </View>
-                        ) : (
-                          <Text style={styles.categories}>
-                            Location(s) {"\n"}
-                            {targeting && targeting.geos[0].country_code}
-                          </Text>
-                        )}
-                      </View>
-                    </View>
+                        </View>
 
-                    {this.checkOptionalTargerts(
-                      interesetNames,
-                      deviceMakes,
-                      targeting
-                    ) && (
-                      <OptionalTargets
-                        region_names={region_names}
-                        deviceMakes={deviceMakes}
-                        interesetNames={interesetNames}
-                        targeting={targeting}
-                      />
-                    )}
-                  </View>
-                </Content>
+                        {this.checkOptionalTargerts(
+                          interesetNames,
+                          deviceMakes,
+                          targeting
+                        ) && (
+                          <OptionalTargets
+                            region_names={region_names}
+                            deviceMakes={deviceMakes}
+                            interesetNames={interesetNames}
+                            targeting={targeting}
+                          />
+                        )}
+                      </View>
+                    </Content>
+                  ) : (
+                    <RejectedComp
+                      selectedCampaign={selectedCampaign}
+                      navigation={this.props.navigation}
+                    />
+                  ))}
               </Card>
             </Container>
             {loading ? (
@@ -640,14 +665,17 @@ class CampaignDetails extends Component {
               />
             )}
           </SafeAreaView>
-          <SlideUpPanel
-            start_time={this.state.start_time}
-            end_time={this.state.end_time}
-            dateField={this.dateField}
-            selectedCampaign={selectedCampaign}
-            hideCharts={this.hideCharts}
-            getCampaignStats={this.props.getCampaignStats}
-          />
+          {selectedCampaign &&
+            selectedCampaign.review_status !== "REJECTED" && (
+              <SlideUpPanel
+                start_time={this.state.start_time}
+                end_time={this.state.end_time}
+                dateField={this.dateField}
+                selectedCampaign={selectedCampaign}
+                hideCharts={this.hideCharts}
+                getCampaignStats={this.props.getCampaignStats}
+              />
+            )}
         </>
       );
     }

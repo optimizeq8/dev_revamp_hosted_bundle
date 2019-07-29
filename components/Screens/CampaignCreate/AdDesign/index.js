@@ -125,16 +125,16 @@ class AdDesign extends Component {
           ? this.params.campaign_id
           : this.props.campaign_id,
         brand_name: this.props.mainBusiness.businessname,
-        headline: !this.props.data
-          ? this.rejected
-            ? this.params.headline
-            : "Headline"
-          : this.props.data.name
+        headline: this.rejected
+          ? this.params.headline
+          : this.props.data
+          ? this.props.data.name
+          : ""
       },
-      objective: this.props.data
-        ? this.props.data.objective
-        : this.rejected
+      objective: this.rejected
         ? this.params.objective
+        : this.props.data
+        ? this.props.data.objective
         : "TRAFFIC"
     });
 
@@ -150,8 +150,17 @@ class AdDesign extends Component {
         });
       }
     }
-
-    let rep = this.state.campaignInfo;
+    let swipeUpError = null;
+    if (
+      this.props.adType !== "StoryAd" &&
+      this.state.objective !== "BRAND_AWARENESS" &&
+      this.state.campaignInfo.attachment === "BLANK" &&
+      this.state.campaignInfo.call_to_action.label === "BLANK"
+    ) {
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else {
+      swipeUpError = null;
+    }
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -160,32 +169,22 @@ class AdDesign extends Component {
         })
         .includes(true)
     ) {
+      let rep = this.state.campaignInfo;
+
       rep = { ...this.state.campaignInfo, ...this.props.data };
-      let swipeUpError = null;
-      if (
-        this.props.adType !== "StoryAd" &&
-        this.state.objective !== "BRAND_AWARENESS" &&
-        this.state.campaignInfo.attachment === "BLANK" &&
-        this.state.campaignInfo.call_to_action.label === "BLANK"
-      ) {
-        swipeUpError = "Choose A Swipe Up Destination";
-      } else {
-        swipeUpError = null;
-      }
+
       this.setState({
         ...this.state,
         campaignInfo: {
           ...rep
         },
         image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
-        // type: rep.type,
-        // objective: rep.objective,
-        // videoIsLoading: false,
-        // iosVideoUploaded: rep.ios_upload === "1" || rep.iosVideoUploaded,
         ...this.props.data,
         swipeUpError
       });
     }
+
+    //----keep for later---//
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
@@ -360,7 +359,7 @@ class AdDesign extends Component {
       this.setState({ directory: "/ImagePicker/" });
       let newWidth = result.width;
       let newHeight = result.height;
-      await this.validator();
+      // await this.validator();
 
       if (!result.cancelled) {
         if (result.type === "image") {
@@ -729,8 +728,11 @@ class AdDesign extends Component {
     }
     body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
     body.append("businessid", this.props.mainBusiness.businessid);
-    body.append("campaign_id", this.props.campaign_id);
-    body.append("campaign_name", this.props.data.name);
+    body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append(
+      "campaign_name",
+      this.rejected ? this.state.campaignInfo.headline : this.props.data.name
+    );
     if (!this.rejected) {
       body.append("brand_name", this.state.campaignInfo.brand_name);
       body.append("headline", this.state.campaignInfo.headline);
@@ -880,7 +882,6 @@ class AdDesign extends Component {
         FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
       )
         .then(({ uri }) => {
-          console.log("Finished downloading to ", uri);
           this.setState({
             ...this.state,
             image: uri,
@@ -961,6 +962,7 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
+      !this.rejected &&
       this.props.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
@@ -972,6 +974,7 @@ class AdDesign extends Component {
       });
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
+      !this.rejected &&
       this.props.adType === "SnapAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
@@ -1377,7 +1380,7 @@ class AdDesign extends Component {
           );
         } else if (
           this.state.objective !== "BRAND_AWARENESS" &&
-          isNull(this.state.swipeUpError)
+          !this.state.swipeUpError
         ) {
           return (
             <TouchableOpacity

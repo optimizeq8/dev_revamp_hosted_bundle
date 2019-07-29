@@ -8,6 +8,7 @@ export const globalColors = {
   purple: "#751AFF",
   green: "#66D072",
   white: "#FFFFFF",
+  red: "#EA514B",
   black: "#000000",
   transparent: "#0000"
 };
