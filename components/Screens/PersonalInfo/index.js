@@ -9,10 +9,10 @@ import {
 import { Text, Item, Input, Label, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
-import * as actionCreators from "../../../store/actions";
-
+import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 //Redux
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
 
 import Header from "../../MiniComponents/Header";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
@@ -45,8 +45,6 @@ class PersonalInfo extends Component {
       inputF: false,
       inputL: false,
       inputE: false,
-      inputP: false,
-      inputPR: false,
 
       firstnameError: "",
       lastnameError: "",
@@ -88,10 +86,11 @@ class PersonalInfo extends Component {
       lastnameError,
       emailError
     });
-    if (firstnameError || lastnameError || emailError) {
+
+    if (firstnameError || lastnameError) {
       showMessage({
         type: "warning",
-        message: `Please provide a(n) ${
+        message: `Please provide a ${
           firstnameError
             ? "first name"
             : lastnameError
@@ -105,12 +104,24 @@ class PersonalInfo extends Component {
 
   _handleSubmission = () => {
     if (this.validator()) {
-      this.props.updateUserInfo();
+      const changedInfo =
+        this.state.firstname !== this.props.userInfo.firstname ||
+        this.state.lastname !== this.props.userInfo.lastname;
+      if (changedInfo)
+        this.props.updateUserInfo({
+          // email: this.state.email,
+          firstname: this.state.firstname,
+          lastname: this.state.lastname
+        });
+      else
+        showMessage({
+          type: "warning",
+          message: "No changes to update",
+          position: "top"
+        });
     }
   };
   render() {
-    console.log("STATE", this.state);
-
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -129,12 +140,10 @@ class PersonalInfo extends Component {
               {() => (
                 <View style={styles.contentContainer}>
                   <View style={styles.dataContainer}>
-                    {/* <Text style={styles.label}>Full Name</Text> */}
-
                     <View
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-evenly"
+                        justifyContent: "space-between"
                       }}
                     >
                       <Item
@@ -142,9 +151,9 @@ class PersonalInfo extends Component {
                         style={[
                           styles.input,
                           { width: "45%" },
-                          this.state.inputP
+                          this.state.inputF
                             ? globalStyles.purpleBorderColor
-                            : this.state.passwordError
+                            : this.state.firstnameError
                             ? globalStyles.redBorderColor
                             : globalStyles.lightGrayBorderColor
                         ]}
@@ -155,7 +164,13 @@ class PersonalInfo extends Component {
                         <Input
                           style={[styles.inputText]}
                           value={this.state.firstname}
-                          onBlur={() => this.validator()}
+                          onBlur={() => {
+                            this.validator();
+                            this.setState({
+                              inputF: false
+                            });
+                          }}
+                          onFocus={() => this.setState({ inputF: true })}
                           onChangeText={firstname =>
                             this.setState({ firstname })
                           }
@@ -167,9 +182,9 @@ class PersonalInfo extends Component {
                           styles.input,
                           { width: "45%" },
 
-                          this.state.inputP
+                          this.state.inputL
                             ? globalStyles.purpleBorderColor
-                            : this.state.passwordError
+                            : this.state.lastnameError
                             ? globalStyles.redBorderColor
                             : globalStyles.lightGrayBorderColor
                         ]}
@@ -180,7 +195,11 @@ class PersonalInfo extends Component {
                         <Input
                           style={[styles.inputText]}
                           value={this.state.lastname}
-                          onBlur={() => this.validator()}
+                          onBlur={() => {
+                            this.validator();
+                            this.setState({ inputL: false });
+                          }}
+                          onFocus={() => this.setState({ inputL: true })}
                           onChangeText={lastname => this.setState({ lastname })}
                         />
                       </Item>
@@ -191,14 +210,7 @@ class PersonalInfo extends Component {
                     </Text> */}
 
                     <View
-                      style={[
-                        styles.input,
-                        this.state.inputPR
-                          ? globalStyles.purpleBorderColor
-                          : this.state.repasswordError !== ""
-                          ? globalStyles.redBorderColor
-                          : globalStyles.lightGrayBorderColor
-                      ]}
+                      style={[styles.input, globalStyles.lightGrayBorderColor]}
                     >
                       <Label
                         style={[
@@ -215,46 +227,45 @@ class PersonalInfo extends Component {
                         Mobile No.
                       </Label>
                       <PhoneNoField
+                        valid
                         disabled={true}
                         changeNo={this.changePersonalNo}
                         phoneNum={this.props.userInfo.mobile}
                       />
-                      {/* <Input
-                        disabled
-                        style={styles.inputText}
-                        value={`${this.props.userInfo.mobile}`}
-                      /> */}
                     </View>
 
                     <Item
                       floatingLabel
                       style={[
                         styles.input,
-                        this.state.inputP
-                          ? globalStyles.purpleBorderColor
-                          : this.state.passwordError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.lightGrayBorderColor
+                        globalStyles.lightGrayBorderColor,
+                        { width: "100%" }
                       ]}
                     >
                       <Label style={[styles.label, styles.labelEmail]}>
                         E-Mail
                       </Label>
                       <Input
-                        style={[styles.inputText]}
+                        disabled
+                        style={[styles.inputText, { opacity: 0.5 }]}
                         value={this.state.email}
                         onBlur={() => this.validator()}
                         onChangeText={email => this.setState({ email })}
                       />
                     </Item>
                   </View>
-                  {/* 
-                  <TouchableOpacity
-                    onPress={() => this._handleSubmission()}
-                    style={styles.button}
-                  > */}
-                  <LowerButton bottom={-20} function={this._handleSubmission} />
-                  {/* </TouchableOpacity> */}
+
+                  {this.props.loadingUpdateInfo ? (
+                    <CheckMarkLoading
+                      style={{ top: "100%", width: 60, height: 60 }}
+                    />
+                  ) : (
+                    <LowerButton
+                      checkmark
+                      bottom={-20}
+                      function={this._handleSubmission}
+                    />
+                  )}
                 </View>
               )}
             </KeyboardShift>
@@ -265,11 +276,12 @@ class PersonalInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  userInfo: state.auth.userInfo
+  userInfo: state.auth.userInfo,
+  loadingUpdateInfo: state.auth.loadingUpdateInfo
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateUserInfo: () => dispatch(actionCreators.updateUserInfo())
+  updateUserInfo: info => dispatch(actionCreators.updateUserInfo(info))
 });
 export default connect(
   mapStateToProps,

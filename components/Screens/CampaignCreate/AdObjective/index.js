@@ -16,8 +16,8 @@ import {
   Icon,
   Button
 } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { BlurView } from 'expo-blur';
+import * as Segment from "expo-analytics-segment";
+import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -98,12 +98,14 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
-	  if (this.props.data &&
-		  Object.keys(this.state.campaignInfo)
-			  .map(key => {
-				  if (this.props.data.hasOwnProperty(key)) return true;
-			  })
-			  .includes(true)) {
+    if (
+      this.props.data &&
+      Object.keys(this.state.campaignInfo)
+        .map(key => {
+          if (this.props.data.hasOwnProperty(key)) return true;
+        })
+        .includes(true)
+    ) {
       rep = {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
@@ -112,7 +114,7 @@ class AdObjective extends Component {
       };
       this.setState({
         campaignInfo: { ...rep },
-		  ...this.props.data
+        ...this.props.data
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -122,10 +124,15 @@ class AdObjective extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-			objective: choice.value
-      }, objectiveLabel:choice.label
+        objective: choice.value
+      },
+      objectiveLabel: choice.label
     });
-	  this.props.save_campaign_info({ objective: choice.value, objectiveLabel: choice.label, reset: true });
+    this.props.save_campaign_info({
+      objective: choice.value,
+      objectiveLabel: choice.label,
+      reset: true
+    });
   };
 
   handleStartDatePicked = date => {
@@ -163,11 +170,10 @@ class AdObjective extends Component {
     this.setState({ collectionAdLinkForm: val });
   };
 
-
-	handleStoryOption=(playback_type)=>{
-		this.setState({playback_type})
-		this.props.save_campaign_info({ playback_type})
-	}
+  handleStoryOption = playback_type => {
+    this.setState({ playback_type });
+    this.props.save_campaign_info({ playback_type });
+  };
   _handleSubmission = async () => {
     const nameError = validateWrapper(
       "mandatory",
@@ -202,7 +208,6 @@ class AdObjective extends Component {
         campaign_objective: this.state.campaignInfo.objective
       });
 
-
       if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
         this.props.reset_collections();
       }
@@ -234,387 +239,396 @@ class AdObjective extends Component {
         );
     }
   };
+  render() {
+    let adType = this.props.adType;
+    const list = this.state.objectives.map(o => (
+      <ObjectivesCard
+        choice={o}
+        selected={this.state.campaignInfo.objective}
+        setObjective={this.setObjective}
+        key={o.value}
+      />
+    ));
 
-	render() {
-		let adType = this.props.adType
-		const list = this.state.objectives.map(o => (
-			<ObjectivesCard
-				choice={o}
-				selected={this.state.campaignInfo.objective}
-				setObjective={this.setObjective}
-				key={o.value}
-			/>
-		));
+    return (
+      <SafeAreaView
+        style={styles.safeAreaView}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties(
+              (adType === "SnapAd"
+                ? "Snap Ad"
+                : adType === "StoryAd"
+                ? "Story Ad"
+                : "Collection Ad") + " Objective",
+              {
+                category: "Campaign Creation"
+              }
+            );
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 2,
+              business_name: this.props.mainBusiness.businessname
+            });
+          }}
+        />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <Container style={styles.container}>
+            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+            <CustomHeader
+              closeButton={false}
+              segment={{
+                str: "Ad Objective Back Button",
+                obj: { businessname: this.props.mainBusiness.businessname }
+              }}
+              navigation={this.props.navigation}
+              title={
+                (adType === "SnapAd"
+                  ? "Snap Ad"
+                  : adType === "StoryAd"
+                  ? "Story Ad"
+                  : "Collection Ad") + " Campaign"
+              }
+            />
+            <View style={styles.block1}>
+              <PhoneIcon
+                style={styles.phoneicon}
+                width={hp(5) < 30 ? 50 : 70}
+                height={hp(5) < 30 ? 50 : 70}
+              />
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.mainContent}
+              scrollEnabled={true}
+              style={styles.scrollViewStyle}
+            >
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ nameError: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.nameError ? "" : "shake"}
+              >
+                <View
+                  style={[
+                    {
+                      borderTopLeftRadius: 150,
+                      borderTopRightRadius: 150,
+                      paddingTop: 8,
+                      width: 150,
+                      alignSelf: "center",
+                      backgroundColor: "rgba(0,0,0,0.2)",
+                      height: 15,
+                      zIndex: 1
+                    }
+                  ]}
+                >
+                  <Text
+                    uppercase
+                    style={[
+                      styles.inputLabel,
+                      this.state.inputN
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
+                    ]}
+                  >
+                    Ad Name
+                  </Text>
+                </View>
+                <Item style={[styles.input1]}>
+                  <Input
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.campaignInfo.name}
+                    style={[styles.inputText]}
+                    autoCorrect={false}
+                    maxLength={34}
+                    autoCapitalize="none"
+                    onChangeText={value => {
+                      this.setState({
+                        campaignInfo: {
+                          ...this.state.campaignInfo,
+                          name: value
+                        }
+                      });
+                      this.props.save_campaign_info({ name: value });
+                    }}
+                    autoFocus={true}
+                    onFocus={() => {
+                      this.setState({ inputN: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputN: false });
+                      this.setState({
+                        nameError: validateWrapper(
+                          "mandatory",
+                          this.state.campaignInfo.name
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
+              <Animatable.View
+                onAnimationEnd={() =>
+                  this.setState({ start_timeError: null, end_timeError: null })
+                }
+                duration={200}
+                easing={"ease"}
+                animation={
+                  !this.state.start_timeError || !this.state.end_timeError
+                    ? ""
+                    : "shake"
+                }
+              >
+                <View style={[styles.dateTextLabel]}>
+                  <Text uppercase style={[styles.inputLabel]}>
+                    Date
+                  </Text>
+                </View>
+                <Duration
+                  loading={this.props.loading}
+                  dismissKeyboard={Keyboard.dismiss}
+                  start_time={this.state.campaignInfo.start_time}
+                  end_time={this.state.campaignInfo.end_time}
+                  start_timeError={this.state.start_timeError}
+                  end_timeError={this.state.end_timeError}
+                  dateField={this.dateField}
+                />
+              </Animatable.View>
+              <Text style={styles.minBudget}>Minimum of $25/day</Text>
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ objectiveError: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.objectiveError ? "" : "shake"}
+              >
+                <View style={[styles.objectiveTextLabel]}>
+                  <Text style={[styles.inputLabel]}>OBJECTIVE</Text>
+                </View>
+                <Item
+                  disabled={this.props.loading}
+                  // rounded
+                  style={[styles.input2]}
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    this.setModalVisible(true);
+                  }}
+                >
+                  <Text style={styles.label}>{this.state.objectiveLabel}</Text>
+                  <Icon type="AntDesign" name="down" style={styles.downicon} />
+                </Item>
+              </Animatable.View>
 
-		return (
-			<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
-				<NavigationEvents
-					onDidFocus={() => {
-						Segment.screenWithProperties(
-							(adType === "SnapAd"
-								? "Snap Ad"
-								: adType === "StoryAd"
-									? "Story Ad"
-									: "Collection Ad") + " Objective",
-							{
-								category: "Campaign Creation"
-							}
-						);
-						Segment.trackWithProperties("Viewed Checkout Step", {
-							step: 2,
-							business_name: this.props.mainBusiness.businessname
-						});
-					}}
-				/>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-					<Container style={styles.container}>
-						<BackdropIcon style={styles.backDrop} height={hp('100%')} />
-						<CustomHeader
-							closeButton={false}
-							segment={{
-								str: "Ad Objective Back Button",
-								obj: { businessname: this.props.mainBusiness.businessname }
-							}}
-							navigation={this.props.navigation}
-							title={
-								(adType === "SnapAd"
-									? "Snap Ad"
-									: adType === "StoryAd"
-										? "Story Ad"
-										: "Collection Ad") + " Campaign"
-							}
-						/>
-						<View style={styles.block1}>
-							<PhoneIcon
-								style={styles.phoneicon}
-								width={hp(5) < 30 ? 50 : 70}
-								height={hp(5) < 30 ? 50 : 70}
-							/>
-						</View>
-						<ScrollView
-							contentContainerStyle={styles.mainContent}
-							scrollEnabled={true}
-							style={styles.scrollViewStyle}
-						>
-							<Animatable.View
-								onAnimationEnd={() => this.setState({ nameError: null })}
-								duration={200}
-								easing={'ease'}
-								animation={!this.state.nameError ? '' : 'shake'}
-							>
-								<View
-									style={[
-										{
-											borderTopLeftRadius: 150,
-											borderTopRightRadius: 150,
-											paddingTop: 8,
-											width: 150,
-											alignSelf: 'center',
-											backgroundColor: 'rgba(0,0,0,0.2)',
-											height: 15,
-											zIndex: 1,
-										},
-									]}
-								>
-									<Text
-										uppercase
-										style={[
-											styles.inputLabel,
-											this.state.inputN
-												? [GlobalStyles.orangeTextColor]
-												: GlobalStyles.whiteTextColor,
-										]}
-									>
-										Ad Name
-									</Text>
-								</View>
-								<Item style={[styles.input1]}>
-									<Input
-										placeholderTextColor={'#FFF'}
-										disabled={this.props.loading}
-										value={this.state.campaignInfo.name}
-										style={[styles.inputText]}
-										autoCorrect={false}
-										maxLength={34}
-										autoCapitalize="none"
-										onChangeText={value => {
-											this.setState({
-												campaignInfo: {
-													...this.state.campaignInfo,
-													name: value,
-												},
-											});
-											this.props.save_campaign_info({ name: value });
-										}}
-										autoFocus={true}
-										onFocus={() => {
-											this.setState({ inputN: true });
-										}}
-										onBlur={() => {
-											this.setState({ inputN: false });
-											this.setState({
-												nameError: validateWrapper('mandatory', this.state.campaignInfo.name),
-											});
-										}}
-									/>
-								</Item>
-							</Animatable.View>
-							<Animatable.View
-								onAnimationEnd={() => this.setState({ start_timeError: null, end_timeError: null })}
-								duration={200}
-								easing={'ease'}
-								animation={!this.state.start_timeError || !this.state.end_timeError ? '' : 'shake'}
-							>
-								<View style={[styles.dateTextLabel]}>
-									<Text uppercase style={[styles.inputLabel]}>
-										Date
-									</Text>
-								</View>
-								<Duration
-									loading={this.props.loading}
-									dismissKeyboard={Keyboard.dismiss}
-									start_time={this.state.campaignInfo.start_time}
-									end_time={this.state.campaignInfo.end_time}
-									start_timeError={this.state.start_timeError}
-									end_timeError={this.state.end_timeError}
-									dateField={this.dateField}
-								/>
-							</Animatable.View>
-							<Text style={styles.minBudget}>Minimum of $25/day</Text>
-							<Animatable.View
-								onAnimationEnd={() => this.setState({ objectiveError: null })}
-								duration={200}
-								easing={'ease'}
-								animation={!this.state.objectiveError ? '' : 'shake'}
-							>
-								<View style={[styles.objectiveTextLabel]}>
-									<Text style={[styles.inputLabel]}>OBJECTIVE</Text>
-								</View>
-								<Item
-									disabled={this.props.loading}
-									// rounded
-									style={[styles.input2]}
-									onPress={() => {
-										Keyboard.dismiss();
-										this.setModalVisible(true);
-									}}
-								>
-									<Text style={styles.label}>
-										{this.state.objectiveLabel}
-									</Text>
-									<Icon type="AntDesign" name="down" style={styles.downicon} />
-								</Item>
-							</Animatable.View>
-
-
-							
-							{adType === "StoryAd" && (
-								<View style={styles.topContainer}>
-									<Button
-									block
-
-										style={[
-											this.state.playback_type === "LOOPING"
-												? styles.activeButton
-												: styles.button,
-											styles.collectionAdLinkForm1
-										]}
-										onPress={() => {
-											this.handleStoryOption("LOOPING");
-										}}
-									>
-										<LoopStoryIcon
-											width={30}
-											height={30}
-											fill={
-												this.state.playback_type === "LOOPING"
-													? styles.activeText.color
-													: styles.inactiveText.color
-											}
-										/>
-										<Text
-											style={[
-												this.state.playback_type === "LOOPING"
-													? styles.activeText
-													: styles.inactiveText
-											]}
-										>
-											Loop story
+              {adType === "StoryAd" && (
+                <View style={styles.topContainer}>
+                  <Button
+                    block
+                    style={[
+                      this.state.playback_type === "LOOPING"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm1
+                    ]}
+                    onPress={() => {
+                      this.handleStoryOption("LOOPING");
+                    }}
+                  >
+                    <LoopStoryIcon
+                      width={30}
+                      height={30}
+                      fill={
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
+                    />
+                    <Text
+                      style={[
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Loop story
                     </Text>
-										<Text
-											style={[
-												this.state.playback_type === "LOOPING"
-													? styles.activeText
-													: styles.inactiveText,
-												{ fontFamily: "montserrat-regular" }
-											]}
-										>
-											Advance with tap
+                    <Text
+                      style={[
+                        this.state.playback_type === "LOOPING"
+                          ? styles.activeText
+                          : styles.inactiveText,
+                        { fontFamily: "montserrat-regular" }
+                      ]}
+                    >
+                      Advance with tap
                     </Text>
-									</Button>
+                  </Button>
 
-									<Button
-										block
-										style={[
-											this.state.playback_type === "AUTO_ADVANCING"
-												? styles.activeButton
-												: styles.button,
-											styles.collectionAdLinkForm2
-										]}
-										onPress={() => {
-											this.handleStoryOption("AUTO_ADVANCING");
-										}}
-									>
-										<AutoAdvanceIcon
-											width={40}
-											height={40}
-											fill={
-												this.state.playback_type === "AUTO_ADVANCING"
-													? styles.activeText.color
-													: styles.inactiveText.color
-											}
-										/>
-										<Text
-											style={[
-												this.state.playback_type === "AUTO_ADVANCING"
-													? styles.activeText
-													: styles.inactiveText
-											]}
-										>
-											Auto Advance
+                  <Button
+                    block
+                    style={[
+                      this.state.playback_type === "AUTO_ADVANCING"
+                        ? styles.activeButton
+                        : styles.button,
+                      styles.collectionAdLinkForm2
+                    ]}
+                    onPress={() => {
+                      this.handleStoryOption("AUTO_ADVANCING");
+                    }}
+                  >
+                    <AutoAdvanceIcon
+                      width={40}
+                      height={40}
+                      fill={
+                        this.state.playback_type === "AUTO_ADVANCING"
+                          ? styles.activeText.color
+                          : styles.inactiveText.color
+                      }
+                    />
+                    <Text
+                      style={[
+                        this.state.playback_type === "AUTO_ADVANCING"
+                          ? styles.activeText
+                          : styles.inactiveText
+                      ]}
+                    >
+                      Auto Advance
                     </Text>
-									</Button>
-								</View>
-							)}
+                  </Button>
+                </View>
+              )}
 
-							{this.props.adType === 'CollectionAd' && (
-								<View style={styles.collectionAdView}>
-									<Text uppercase style={styles.collectionAdText}>
-										Where are you taking the user ?
-									</Text>
-									<View style={styles.topContainer}>
-										<Button
-											block
-											style={[
-												this.state.collectionAdLinkForm === 1
-													? styles.activeButton
-													: styles.button,
-												styles.collectionAdLinkForm1,
-											]}
-											onPress={() => {
-												this._handleCollectionAdLinkForm(1);
-											}}
-										>
-											<Text
-												uppercase
-												style={[
-													this.state.collectionAdLinkForm === 1
-														? styles.activeText
-														: styles.inactiveText,
-												]}
-											>
-												Website
-											</Text>
-											<Text
-												style={[
-													this.state.collectionAdLinkForm === 1
-														? styles.activeText
-														: styles.inactiveText,
-													styles.buttonSubText,
-												]}
-											>
-												Links to your site
-											</Text>
-										</Button>
-										<Button
-											block
-											style={[
-												this.state.collectionAdLinkForm === 2
-													? styles.activeButton
-													: styles.button,
-												styles.collectionAdLinkForm2,
-											]}
-											onPress={() => {
-												this._handleCollectionAdLinkForm(2);
-											}}
-										>
-											<Text
-												uppercase
-												style={[
-													this.state.collectionAdLinkForm === 2
-														? styles.activeText
-														: styles.inactiveText,
-												]}
-											>
-												App DeepLink
-											</Text>
-											<Text
-												style={[
-													this.state.collectionAdLinkForm === 2
-														? styles.activeText
-														: styles.inactiveText,
-													styles.buttonSubText,
-												]}
-											>
-												Links to your App
-											</Text>
-										</Button>
-									</View>
-								</View>
-							)}
+              {this.props.adType === "CollectionAd" && (
+                <View style={styles.collectionAdView}>
+                  <Text uppercase style={styles.collectionAdText}>
+                    Where are you taking the user ?
+                  </Text>
+                  <View style={styles.topContainer}>
+                    <Button
+                      block
+                      style={[
+                        this.state.collectionAdLinkForm === 1
+                          ? styles.activeButton
+                          : styles.button,
+                        styles.collectionAdLinkForm1
+                      ]}
+                      onPress={() => {
+                        this._handleCollectionAdLinkForm(1);
+                      }}
+                    >
+                      <Text
+                        uppercase
+                        style={[
+                          this.state.collectionAdLinkForm === 1
+                            ? styles.activeText
+                            : styles.inactiveText
+                        ]}
+                      >
+                        Website
+                      </Text>
+                      <Text
+                        style={[
+                          this.state.collectionAdLinkForm === 1
+                            ? styles.activeText
+                            : styles.inactiveText,
+                          styles.buttonSubText
+                        ]}
+                      >
+                        Links to your site
+                      </Text>
+                    </Button>
+                    <Button
+                      block
+                      style={[
+                        this.state.collectionAdLinkForm === 2
+                          ? styles.activeButton
+                          : styles.button,
+                        styles.collectionAdLinkForm2
+                      ]}
+                      onPress={() => {
+                        this._handleCollectionAdLinkForm(2);
+                      }}
+                    >
+                      <Text
+                        uppercase
+                        style={[
+                          this.state.collectionAdLinkForm === 2
+                            ? styles.activeText
+                            : styles.inactiveText
+                        ]}
+                      >
+                        App DeepLink
+                      </Text>
+                      <Text
+                        style={[
+                          this.state.collectionAdLinkForm === 2
+                            ? styles.activeText
+                            : styles.inactiveText,
+                          styles.buttonSubText
+                        ]}
+                      >
+                        Links to your App
+                      </Text>
+                    </Button>
+                  </View>
+                </View>
+              )}
 
-							{this.props.loading ? (
-								<ForwardLoading
-									mainViewStyle={{ width: wp(8), height: hp(8) }}
-									bottom={-hp(5)}
-									style={{ width: wp(8), height: hp(8) }}
-								/>
-							) : (
-									<LowerButton bottom={-5} function={this._handleSubmission} />
-								)}
-						</ScrollView>
+              {this.props.loading ? (
+                <ForwardLoading
+                  mainViewStyle={{ width: wp(8), height: hp(8) }}
+                  bottom={-hp(5)}
+                  style={{ width: wp(8), height: hp(8) }}
+                />
+              ) : (
+                <LowerButton bottom={-5} function={this._handleSubmission} />
+              )}
+            </ScrollView>
+          </Container>
+        </TouchableWithoutFeedback>
 
-						
-					</Container>
-				</TouchableWithoutFeedback>
-				
-		
-
-			<DateField
-				getMinimumCash={this.getMinimumCash}
-				onRef={ref => (this.dateField = ref)}
-				handleStartDatePicked={this.handleStartDatePicked}
-				handleEndDatePicked={this.handleEndDatePicked}
-				start_time={this.state.campaignInfo.start_time}
-				end_time={this.state.campaignInfo.end_time}
-			/>
-			<Modal
-				animationType={'slide'}
-				transparent={true}
-				onDismiss={() => this.setModalVisible(false)}
-				visible={this.state.modalVisible}
-			>
-				<BlurView intensity={95} tint="dark">
-					<SafeAreaView style={styles.safeAreaView} forceInset={{ bottom: 'never', top: 'always' }}>
-						<View style={styles.popupOverlay}>
-							<CustomHeader
-								closeButton={false}
-								actionButton={() => {
-									this.setModalVisible(false);
-								}}
-								title="Campaign Objective"
-							/>
-							<Content padder indicatorStyle="white" contentContainerStyle={styles.contentContainer}>
-								{list}
-							</Content>
-							<LowerButton bottom={4} function={this.setModalVisible} />
-						</View>
-					</SafeAreaView>
-				</BlurView>
-			</Modal>
-			</SafeAreaView >
-		);
-	}
+        <DateField
+          getMinimumCash={this.getMinimumCash}
+          onRef={ref => (this.dateField = ref)}
+          handleStartDatePicked={this.handleStartDatePicked}
+          handleEndDatePicked={this.handleEndDatePicked}
+          start_time={this.state.campaignInfo.start_time}
+          end_time={this.state.campaignInfo.end_time}
+        />
+        <Modal
+          animationType={"slide"}
+          transparent={true}
+          onDismiss={() => this.setModalVisible(false)}
+          visible={this.state.modalVisible}
+        >
+          <BlurView intensity={95} tint="dark">
+            <SafeAreaView
+              style={styles.safeAreaView}
+              forceInset={{ bottom: "never", top: "always" }}
+            >
+              <View style={styles.popupOverlay}>
+                <CustomHeader
+                  closeButton={false}
+                  actionButton={() => {
+                    this.setModalVisible(false);
+                  }}
+                  title="Campaign Objective"
+                />
+                <Content
+                  padder
+                  indicatorStyle="white"
+                  contentContainerStyle={styles.contentContainer}
+                >
+                  {list}
+                </Content>
+                <LowerButton bottom={4} function={this.setModalVisible} />
+              </View>
+            </SafeAreaView>
+          </BlurView>
+        </Modal>
+      </SafeAreaView>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

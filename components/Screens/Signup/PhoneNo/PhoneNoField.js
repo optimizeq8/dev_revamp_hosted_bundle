@@ -64,8 +64,8 @@ export default class PhoneNoField extends Component {
                 ? "#0000"
                 : this.props.valid
                 ? "#5F5F5F"
-                : "red"
-              //   opacity: this.props.invite ? 0.5 : 0
+                : "red",
+              opacity: this.props.disabled ? 0.5 : 0
             }}
             disabled={this.props.disabled}
             flagStyle={styles.flagStyle}
