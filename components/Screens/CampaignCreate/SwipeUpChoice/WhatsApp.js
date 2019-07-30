@@ -24,6 +24,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -48,7 +49,8 @@ class WhatsApp extends Component {
 
   componentDidMount() {
     if (
-      (this.props.data.hasOwnProperty("attachment") &&
+      (this.props.data &&
+        this.props.data.hasOwnProperty("attachment") &&
         this.props.data.attachment !== "BLANK") ||
       this.props.mainBusiness.whatsappnumber !== ""
     ) {
@@ -326,7 +328,7 @@ class WhatsApp extends Component {
                   >
                     Customers would be able to call And text this number
                   </Text>
-                  <PhoneNo
+                  <PhoneNoField
                     whatsApp
                     phoneNum={this.state.campaignInfo.whatsappnumber}
                     changeFunction={this.changeWhatsAppPhoneNo}
@@ -335,10 +337,10 @@ class WhatsApp extends Component {
                 </View>
                 <View style={{}}>
                   <Text style={[styles.subTitle]}>Phone number (optional)</Text>
-                  <PhoneNo
+                  <PhoneNoField
                     whatsApp
                     phoneNum={this.state.campaignInfo.callnumber}
-                    changeFunction={this.changeCallNumberPhoneNo}
+                    changeNo={this.changeCallNumberPhoneNo}
                     invite={true}
                   />
                 </View>

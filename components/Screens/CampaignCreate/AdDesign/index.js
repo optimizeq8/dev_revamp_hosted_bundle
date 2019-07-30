@@ -733,10 +733,10 @@ class AdDesign extends Component {
       "campaign_name",
       this.rejected ? this.state.campaignInfo.headline : this.props.data.name
     );
-    if (!this.rejected) {
-      body.append("brand_name", this.state.campaignInfo.brand_name);
-      body.append("headline", this.state.campaignInfo.headline);
-    }
+    // if (!this.rejected) {
+    body.append("brand_name", this.state.campaignInfo.brand_name);
+    body.append("headline", this.state.campaignInfo.headline);
+    // }
     body.append(
       "destination",
       this.props.adType !== "StoryAd"
@@ -1298,12 +1298,12 @@ class AdDesign extends Component {
 
     let swipeUpComp =
       this.props.adType === "SnapAd" ? (
-        !this.rejected &&
+        // !this.rejected &&
         "BRAND_AWARENESS" !== this.state.objective && (
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
-            objective={this.state.campaignInfo.objective}
+            objective={this.state.objective}
             destination={destination}
             attachment={attachment}
             collectionAdLinkForm={this.props.collectionAdLinkForm}
@@ -1316,7 +1316,7 @@ class AdDesign extends Component {
         <SwipeUpComponent
           _changeDestination={this._changeDestination}
           navigation={this.props.navigation}
-          objective={this.state.campaignInfo.objective}
+          objective={this.state.objective}
           destination={destination}
           attachment={attachment}
           collectionAdLinkForm={this.props.collectionAdLinkForm}
@@ -1329,7 +1329,7 @@ class AdDesign extends Component {
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
-            objective={this.state.campaignInfo.objective}
+            objective={this.state.objective}
             destination={this.state.storyAdCards.selectedStoryAd.destination}
             attachment={this.state.storyAdCards.selectedStoryAd.attachment}
             adType={this.props.adType}

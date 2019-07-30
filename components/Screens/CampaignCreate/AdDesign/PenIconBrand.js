@@ -13,8 +13,8 @@ export default class PenIconBrand extends Component {
         style={[
           this.props.field === "Business Name"
             ? styles.inputBrand
-            : styles.inputHeadline,
-          this.props.rejected ? { opacity: 0.5 } : { opacity: 1 }
+            : styles.inputHeadline
+          // this.props.rejected ? { opacity: 0.5 } : { opacity: 1 }
         ]}
       >
         <PenIcon
@@ -31,7 +31,7 @@ export default class PenIconBrand extends Component {
             {this.props.field}
           </Text>
           <Input
-            disabled={this.props.rejected}
+            // disabled={this.props.rejected}
             style={styles.inputText}
             maxLength={this.props.field === "Business Name" ? 25 : 34}
             placeholder={
