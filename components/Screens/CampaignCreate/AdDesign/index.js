@@ -172,15 +172,18 @@ class AdDesign extends Component {
     ) {
       let rep = this.state.campaignInfo;
 
-      rep = { ...this.state.campaignInfo, ...this.props.data };
+      rep = {
+        ...this.state.campaignInfo,
+        call_to_action: this.props.data.call_to_action,
+        attachment: this.props.data.attachment,
+        destination: this.props.data.destination
+      };
 
       this.setState({
         ...this.state,
-        campaignInfo: {
-          ...rep
-        },
-        image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
         ...this.props.data,
+        campaignInfo: rep,
+        image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
         swipeUpError
       });
     }
@@ -1280,8 +1283,6 @@ class AdDesign extends Component {
   };
 
   render() {
-    console.log(this.state.storyAdCards.selectedStoryAd);
-
     let validCards = this.props.storyAdsArray.filter(ad => ad.uploaded);
     let showContinueBtn =
       this.props.adType === "SnapAd" ||
@@ -1584,13 +1585,13 @@ class AdDesign extends Component {
               </View>
             </Transition>
 
-            {!this.state.imageError ? null : (
+            {/* {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
                 {!this.state.imageError.includes("blank")
                   ? this.state.imageError
                   : "Please choose an image or video"}
               </Text>
-            )}
+            )} */}
             {!this.state.swipeUpError ? null : (
               <Text style={styles.swipeUpErrorText}>
                 {this.state.swipeUpError}
