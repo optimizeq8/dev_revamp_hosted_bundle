@@ -152,16 +152,12 @@ class AdCover extends Component {
 
       this.setState({
         ...this.state,
+        ...this.props.data,
         campaignInfo: {
-          // ...this.state.campaignInfo,
-          // brand_name: this.props.data.brand_name,
-          // headline: this.props.data.headline,
-          // destination: rep.destination ? rep.destination : "BLANK",
-          // call_to_action: rep.call_to_action,
-          // attachment: rep.attachment
-          ...rep
-        },
-        ...this.props.data
+          ...this.state.campaignInfo,
+          logo: this.props.data.logo,
+          coverHeadline: this.props.data.coverHeadline
+        }
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
