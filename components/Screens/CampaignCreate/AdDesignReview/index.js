@@ -6,7 +6,13 @@ import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 
-import { View, TouchableOpacity, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  BackHandler,
+  Platform,
+  Image as RNImage
+} from "react-native";
 import {
   Container,
   Header,
@@ -116,9 +122,13 @@ class AdDesignReview extends Component {
             "icon_media_url"
           )) ||
         (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
-          JSON.parse(
-            storyAdsArray[this.state.storyAdIndex].attachment
-          ).hasOwnProperty("icon_media_url"))
+        typeof storyAdsArray[this.state.storyAdIndex].attachment === "string"
+          ? JSON.parse(
+              storyAdsArray[this.state.storyAdIndex].attachment
+            ).hasOwnProperty("icon_media_url")
+          : storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+              "icon_media_url"
+            ))
       ) {
         appIcon = campaignDetails
           ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
@@ -137,6 +147,23 @@ class AdDesignReview extends Component {
           : storyAdsArray[this.state.storyAdIndex].call_to_action;
       }
     }
+
+    let ImageOrRNImage =
+      Platform.OS === "ios" ? (
+        <Image
+          resizeMode="stretch"
+          style={styles.placeholder}
+          {...{ preview, uri: image }}
+        />
+      ) : (
+        <RNImage
+          resizeMode="stretch"
+          style={styles.placeholder}
+          source={{
+            uri: image
+          }}
+        />
+      );
 
     let collection = (
       <View style={styles.collectionView}>
@@ -206,14 +233,7 @@ class AdDesignReview extends Component {
                       />
                     </>
                   ) : (
-                    <Image
-                      resizeMode="stretch"
-                      style={styles.placeholder}
-                      {...{ preview, uri: image }}
-                      // source={{
-                      //   uri: image
-                      // }}
-                    />
+                    ImageOrRNImage
                   )}
                 </TouchableOpacity>
                 <View
@@ -278,7 +298,6 @@ class AdDesignReview extends Component {
                   )}
                   <Text style={styles.AD}>Ad</Text>
                 </View>
-
                 {adType === "CollectionAd" && (
                   <Animatable.View
                     animation={"fadeInUpBig"}

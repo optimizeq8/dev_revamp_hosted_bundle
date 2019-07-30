@@ -37,15 +37,14 @@ export default class MediaButton extends Component {
             styles.inputMiddleButton2,
             snapAdCard
               ? {
-                  width: 40,
+                  width: "100%",
                   height: 40,
-                  top: "65%",
-                  left: "82%"
+                  top: "30%"
                 }
               : {}
           ]}
         >
-          <EditCameraIcon />
+          <EditCameraIcon width={"100%"} height={"100%"} />
           <Text
             style={[
               styles.mediaButtonMsgEdit,

@@ -1,6 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, TouchableOpacity, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  BackHandler,
+  Image as RNImage,
+  Platform
+} from "react-native";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { Container, Content, Text } from "native-base";
@@ -55,6 +61,54 @@ class StoryAdDesignReview extends Component {
       uri:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
     };
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let ImageOrRNImage =
+      Platform.OS === "ios" ? (
+        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
+          <Image
+            {...{ preview, uri: cover }}
+            // source={{ uri: cover }}
+            style={styles.cover}
+            resizeMode="cover"
+          />
+          <View style={styles.logoStyle}>
+            <Image
+              {...{ preview, uri: logo }}
+              resizeMode="contain"
+              style={styles.logo}
+            />
+          </View>
+          <View style={styles.headlineStyle}>
+            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
+            <Text style={styles.sponsoredText}>Sponsored</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
+          <RNImage
+            source={{ uri: cover }}
+            style={styles.cover}
+            resizeMode="cover"
+          />
+          <View style={styles.logoStyle}>
+            <RNImage
+              resizeMode="contain"
+              style={styles.logo}
+              source={{
+                uri: logo
+              }}
+            />
+          </View>
+          <View style={styles.headlineStyle}>
+            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
+            <Text style={styles.sponsoredText}>Sponsored</Text>
+          </View>
+        </TouchableOpacity>
+      );
+
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -68,7 +122,7 @@ class StoryAdDesignReview extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.props.navigation.goBack}
-            title="Compose Ad"
+            title={campaignDetails ? "Cover Review" : "Compose Ad"}
           />
           <Content
             padder
@@ -101,63 +155,7 @@ class StoryAdDesignReview extends Component {
                   <Text style={styles.heading}>For You</Text>
 
                   <View style={styles.tilesGrid}>
-                    <TouchableOpacity
-                      onPress={this.perviewStoryAds}
-                      style={styles.tiles}
-                    >
-                      <Image
-                        {...{ preview, uri: cover }}
-                        // source={{ uri: cover }}
-                        style={styles.cover}
-                        resizeMode="cover"
-                      />
-                      <View
-                        style={{
-                          width: "100%",
-                          height: "30%",
-                          justifyContent: "flex-start",
-                          top: 10
-                        }}
-                      >
-                        <Image
-                          {...{ preview, uri: logo }}
-                          resizeMode="contain"
-                          style={styles.logo}
-                          // source={{
-                          //   uri: logo
-                          // }}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          // top: "65%",
-                          left: 10,
-                          position: "absolute",
-                          width: "100%",
-                          bottom: 0
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-bold",
-                            color: "#fff",
-                            fontSize: 16,
-                            width: "90%"
-                          }}
-                        >
-                          {coverHeadline}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-regular",
-                            color: "#fff",
-                            fontSize: 14
-                          }}
-                        >
-                          Sponsored
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
+                    {ImageOrRNImage}
                     <View style={styles.tiles} />
                   </View>
 
