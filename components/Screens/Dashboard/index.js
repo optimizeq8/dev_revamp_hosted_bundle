@@ -436,7 +436,11 @@ class Dashboard extends Component {
                     placeHolderCards
                   ) : (
                     // <ActivityIndicator size="large" />
-                    <Animatable.View duration={1000} animation="fadeIn">
+                    <Animatable.View
+                      useNativeDriver
+                      duration={1000}
+                      animation="fadeIn"
+                    >
                       <FlatList
                         contentContainerStyle={styles.flatlistContainerStyle}
                         keyExtractor={item => item.campaign_id}
@@ -467,6 +471,7 @@ class Dashboard extends Component {
           </Animatable.View>
 
           <Animatable.View
+            useNativeDriver
             onAnimationEnd={() => {
               if (this.state.anim) {
                 Segment.screenWithProperties("Home Menu", {

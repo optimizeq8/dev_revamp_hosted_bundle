@@ -98,7 +98,8 @@ class AdDesign extends Component {
       imageLoading: false,
       videoIsLoading: false,
       heightComponent: 0,
-      creativeVideoUrl: ""
+      creativeVideoUrl: "",
+      sourceChanging: false
     };
     this.params = this.props.navigation.state.params;
     this.rejected = this.props.navigation.getParam("rejected", false);
@@ -341,7 +342,7 @@ class AdDesign extends Component {
       //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 0.1
+      quality: 0.7
     });
 
     this.onToggleModal(true);
@@ -829,7 +830,17 @@ class AdDesign extends Component {
       let card = this.props.storyAdsArray[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-      this.setState({ videoIsLoading: true, image: "//", type: "VIDEO" });
+      let selectedImage = this.state.storyAdCards.selectedStoryAd;
+      selectedImage.image = "//";
+      this.setState({
+        videoIsLoading: true,
+        image: "//",
+        type: "VIDEO",
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          selectedStoryAd: selectedImage
+        }
+      });
       FileSystem.downloadAsync(
         data.queryParams.media,
         FileSystem.cacheDirectory +
@@ -867,6 +878,9 @@ class AdDesign extends Component {
           });
         })
         .catch(error => {
+          this.setState({
+            videoIsLoading: false
+          });
           // console.error(error);
           showMessage({
             message: "Something went wrong!",
@@ -1002,6 +1016,7 @@ class AdDesign extends Component {
   };
 
   _handleStoryAdCards = card => {
+    this.setState({ sourceChanging: true });
     this.setState({
       ...this.state,
       storyAdCards: {
@@ -1009,7 +1024,8 @@ class AdDesign extends Component {
         storyAdSelected: true,
         selectedStoryAd: { ...card }
       },
-      type: card.media_type
+      type: card.media_type,
+      sourceChanging: false
     });
   };
 
@@ -1264,6 +1280,8 @@ class AdDesign extends Component {
   };
 
   render() {
+    console.log(this.state.storyAdCards.selectedStoryAd);
+
     let validCards = this.props.storyAdsArray.filter(ad => ad.uploaded);
     let showContinueBtn =
       this.props.adType === "SnapAd" ||
@@ -1352,6 +1370,31 @@ class AdDesign extends Component {
 
     let blankView = <View style={styles.blankView} />;
 
+    let videoPlayer = this.state.sourceChanging ? null : (
+      <Video
+        onLoadStart={() =>
+          this.state.storyAdCards.selectedStoryAd.image &&
+          this.state.storyAdCards.storyAdSelected &&
+          this.setState({ videoIsLoading: true })
+        }
+        onLoad={() => this.setState({ videoIsLoading: false })}
+        source={{
+          uri:
+            image !== "//" && !this.state.storyAdCards.storyAdSelected
+              ? image
+              : this.state.storyAdCards.selectedStoryAd.image &&
+                this.state.storyAdCards.storyAdSelected
+              ? this.state.storyAdCards.selectedStoryAd.image
+              : "//"
+        }}
+        shouldPlay
+        isLooping
+        isMuted
+        resizeMode={"stretch"}
+        style={styles.video}
+      />
+    );
+
     let submitButton = () => {
       if (this.props.adType === "CollectionAd") {
         if (
@@ -1436,29 +1479,7 @@ class AdDesign extends Component {
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
-                    <Video
-                      onLoadStart={() =>
-                        this.state.storyAdCards.selectedStoryAd.image &&
-                        this.state.storyAdCards.storyAdSelected &&
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri:
-                          image !== "//" &&
-                          !this.state.storyAdCards.storyAdSelected
-                            ? image
-                            : this.state.storyAdCards.selectedStoryAd.image &&
-                              this.state.storyAdCards.storyAdSelected
-                            ? this.state.storyAdCards.selectedStoryAd.image
-                            : "//"
-                      }}
-                      shouldPlay
-                      isLooping
-                      isMuted
-                      resizeMode={"stretch"}
-                      style={styles.video}
-                    />
+                    {videoPlayer}
 
                     {inputFields}
                     {this.props.adType === "StoryAd" &&
@@ -1518,29 +1539,6 @@ class AdDesign extends Component {
                     {this.props.adType === "CollectionAd" && collection}
                   </View>
                 ) : (
-                  // !image ? (
-                  //   <View style={styles.placeholder}>
-                  //     {blankView}
-
-                  //     {inputFields}
-                  //     <MediaButton
-                  //       setMediaModalVisible={this.setMediaModalVisible}
-                  //       image={this.state.image}
-                  //     />
-                  //     {!["BRAND_AWARENESS", "reach"].find(
-                  //       obj =>
-                  //         this.state.objective.toLowerCase() === obj.toLowerCase()
-                  //     ) && (
-                  //       <SwipeUpComponent
-                  //         _changeDestination={this._changeDestination}
-                  //         navigation={this.props.navigation}
-                  //         objective={this.state.campaignInfo.objective}
-                  //         destination={destination}
-                  //         attachment={attachment}
-                  //       />
-                  //     )}
-                  //   </View>
-                  // ) :
                   <View style={styles.placeholder}>
                     <Image
                       style={styles.placeholder1}
@@ -1603,7 +1601,8 @@ class AdDesign extends Component {
           <Footer style={styles.footerStyle}>
             {(this.props.adType !== "StoryAd" && image !== "//") ||
             (this.state.storyAdCards.storyAdSelected &&
-              this.state.storyAdCards.selectedStoryAd.image !== "//") ||
+              this.state.storyAdCards.selectedStoryAd.image !== "//" &&
+              !this.state.videoIsLoading) ||
             validCards.length >= 3 ? (
               <View style={styles.footerButtonsContainer}>
                 {this.props.adType === "StoryAd" ? (
@@ -1654,7 +1653,9 @@ class AdDesign extends Component {
                   ) : (
                     <Text style={styles.footerTextStyle}>
                       {this.props.adType === "StoryAd"
-                        ? "Please add minimum of 3 medias to proceed"
+                        ? this.state.videoIsLoading
+                          ? "Please wait while the video is downloading"
+                          : "Please add minimum of 3 medias to proceed"
                         : "Please add media to proceed"}
                     </Text>
                   )
@@ -1665,7 +1666,9 @@ class AdDesign extends Component {
             ) : (
               <Text style={styles.footerTextStyle}>
                 {this.props.adType === "StoryAd"
-                  ? "Please add minimum of 3 medias to proceed"
+                  ? this.state.videoIsLoading
+                    ? "Please wait while the video is downloading"
+                    : "Please add minimum of 3 medias to proceed"
                   : "Please add media to proceed"}
               </Text>
             )}

@@ -29,7 +29,6 @@ import {
   Icon
 } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Transition } from "react-navigation-fluid-transitions";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
@@ -55,8 +54,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isNull from "lodash/isNull";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-  widthPercentageToDP
+  widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
@@ -205,7 +203,7 @@ class AdCover extends Component {
       mediaTypes: mediaTypes,
       base64: false,
       exif: false,
-      quality: 0.1
+      quality: 0.7
     });
 
     // this.onToggleModal(true);
@@ -606,93 +604,94 @@ class AdCover extends Component {
             navigation={this.props.navigation}
             title="Compose Ad"
           />
-          <Content
-            contentContainerStyle={styles.contentContainer}
-            scrollEnabled={false}
-            padder
-          >
+          <Content contentContainerStyle={styles.contentContainer} padder>
             <KeyboardShift>
               {() => (
                 <>
-                  <Transition style={styles.transition} shared="cover">
-                    <View style={styles.buttonN}>
-                      <View style={styles.placeholder}>
-                        <Image
-                          style={styles.placeholder1}
-                          source={
-                            cover !== "" ? { uri: cover } : transparentImage
-                          }
-                          resizeMode="cover"
-                        />
+                  <View style={styles.buttonN}>
+                    <View style={styles.placeholder}>
+                      <Image
+                        style={styles.placeholder1}
+                        source={
+                          cover !== "" ? { uri: cover } : transparentImage
+                        }
+                        resizeMode="cover"
+                      />
 
-                        {logo ? (
-                          <TouchableOpacity
-                            onPress={() => this._pickLogo()}
-                            style={styles.changeLogoStyle}
+                      {logo ? (
+                        <TouchableOpacity
+                          onPress={() => this._pickLogo()}
+                          style={styles.changeLogoStyle}
+                        >
+                          <Image
+                            source={
+                              logo !== "" ? { uri: logo } : transparentImage
+                            }
+                            resizeMode="contain"
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                              alignSelf: "center"
+                            }}
+                          />
+                          <Text
+                            style={{
+                              color: globalColors.orange,
+                              fontFamily: "montserrat-medium",
+                              alignSelf: "center"
+                            }}
                           >
-                            <Image
-                              source={
-                                logo !== "" ? { uri: logo } : transparentImage
-                              }
-                              resizeMode="contain"
-                              style={{
-                                height: "100%",
-                                width: "100%",
-                                alignSelf: "center"
-                              }}
-                            />
+                            Change logo
+                          </Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => this._pickLogo()}
+                          style={styles.addLogoStyle}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              alignItems: "center"
+                            }}
+                          >
+                            <PlusAddIcon />
                             <Text
                               style={{
                                 color: globalColors.orange,
-                                fontFamily: "montserrat-medium",
-                                alignSelf: "center"
+                                fontFamily: "montserrat-bold"
                               }}
                             >
-                              Change logo
+                              Your Logo
                             </Text>
-                          </TouchableOpacity>
-                        ) : (
-                          <TouchableOpacity
-                            onPress={() => this._pickLogo()}
-                            style={styles.addLogoStyle}
-                          >
-                            <View
-                              style={{
-                                flexDirection: "column",
-                                alignItems: "center"
-                              }}
-                            >
-                              <PlusAddIcon />
-                              <Text
-                                style={{
-                                  color: globalColors.orange,
-                                  fontFamily: "montserrat-bold"
-                                }}
-                              >
-                                Your Logo
-                              </Text>
-                              <Text style={styles.addLogoTextStyle}>
-                                Must be 993px by 284px and transparent
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        )}
-                        {inputFields}
-                        <MediaButton
-                          cover={true}
-                          _pickImage={this._pickImage}
-                          image={this.state.cover}
-                        />
-                      </View>
+                            <Text style={styles.addLogoTextStyle}>
+                              Must be 993px by 284px and transparent
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                      {inputFields}
+                      <MediaButton
+                        cover={true}
+                        _pickImage={this._pickImage}
+                        image={this.state.cover}
+                      />
                     </View>
-                  </Transition>
-                  <Text style={styles.subText}>
-                    The cover shows on the Discover page mong subscriptions and
-                    trending content
-                  </Text>
+                  </View>
                 </>
               )}
             </KeyboardShift>
+            <Text
+              style={[
+                styles.subText,
+                {
+                  bottom: -10
+                }
+              ]}
+            >
+              The cover shows on the Discover page mong subscriptions and
+              trending content
+            </Text>
           </Content>
 
           <Footer style={styles.footerStyle}>

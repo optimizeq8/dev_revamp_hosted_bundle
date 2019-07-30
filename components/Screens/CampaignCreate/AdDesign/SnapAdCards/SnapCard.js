@@ -32,33 +32,16 @@ class SnapCard extends Component {
             position: "absolute"
           }}
         >
-          {snapCardInfo.item.media_type === "VIDEO" ? (
-            <Video
-              source={{
-                uri:
-                  !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                  snapCardInfo.item.uploaded
-                    ? snapCardInfo.item.image
-                    : "snapCardInfo.item.image"
-              }}
-              shouldPlay
-              isLooping
-              isMuted
-              resizeMode={"stretch"}
-              style={styles.video}
-            />
-          ) : (
-            <Image
-              source={{
-                uri:
-                  !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                  snapCardInfo.item.uploaded
-                    ? snapCardInfo.item.image
-                    : "snapCardInfo.item.image"
-              }}
-              style={{ height: "100%", width: "100%", position: "absolute" }}
-            />
-          )}
+          <Image
+            source={{
+              uri:
+                !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                snapCardInfo.item.uploaded
+                  ? snapCardInfo.item.image
+                  : "snapCardInfo.item.image"
+            }}
+            style={{ height: "100%", width: "100%", position: "absolute" }}
+          />
         </View>
         <View
           style={{
