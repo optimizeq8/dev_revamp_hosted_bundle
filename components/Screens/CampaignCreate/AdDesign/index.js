@@ -163,12 +163,13 @@ class AdDesign extends Component {
       swipeUpError = null;
     }
     if (
-      this.props.data &&
-      Object.keys(this.state.campaignInfo)
-        .map(key => {
-          if (this.props.data.hasOwnProperty(key)) return true;
-        })
-        .includes(true)
+      (this.props.data &&
+        Object.keys(this.state.campaignInfo)
+          .map(key => {
+            if (this.props.data.hasOwnProperty(key)) return true;
+          })
+          .includes(true)) ||
+      this.props.data.hasOwnProperty("image")
     ) {
       let rep = this.state.campaignInfo;
 
@@ -183,7 +184,10 @@ class AdDesign extends Component {
         ...this.state,
         ...this.props.data,
         campaignInfo: rep,
-        image: this.props.adType !== "StoryAd" && rep.image ? rep.image : "//",
+        image:
+          this.props.adType !== "StoryAd" && this.props.data.image
+            ? this.props.data.image
+            : "//",
         swipeUpError
       });
     }
@@ -1322,7 +1326,7 @@ class AdDesign extends Component {
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
-            objective={this.state.campaignInfo.objective}
+            objective={this.state.objective}
             destination={destination}
             attachment={attachment}
             collectionAdLinkForm={this.props.collectionAdLinkForm}
@@ -1335,7 +1339,7 @@ class AdDesign extends Component {
         <SwipeUpComponent
           _changeDestination={this._changeDestination}
           navigation={this.props.navigation}
-          objective={this.state.campaignInfo.objective}
+          objective={this.state.objective}
           destination={destination}
           attachment={attachment}
           collectionAdLinkForm={this.props.collectionAdLinkForm}
@@ -1348,7 +1352,7 @@ class AdDesign extends Component {
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
-            objective={this.state.campaignInfo.objective}
+            objective={this.state.objective}
             destination={this.state.storyAdCards.selectedStoryAd.destination}
             attachment={this.state.storyAdCards.selectedStoryAd.attachment}
             adType={this.props.adType}
