@@ -175,6 +175,7 @@ export default class DateRangePicker extends Component<Props> {
               : startDate
             : null
         }
+        pastScrollRange={0}
         calendarHeight={300}
         calendarWidth={
           this.props.filterMenu
