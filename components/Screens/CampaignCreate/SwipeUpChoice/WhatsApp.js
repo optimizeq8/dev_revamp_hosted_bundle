@@ -9,7 +9,7 @@ import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import PhoneNo from "../../../Screens/Signup/PhoneNo";
+import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 //icons
 import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 
@@ -227,7 +227,7 @@ class WhatsApp extends Component {
                 style={[styles.icon]}
               />
               <View style={[styles.textcontainer]}>
-                <Text style={styles.titletext}>WhatsApp Campaign</Text>
+                <Text style={styles.titletext}>WhatsApp Leads</Text>
                 <Text style={styles.subtext}>
                   We’ll create a mini website for your business. Just fill in
                   the info below
@@ -326,19 +326,19 @@ class WhatsApp extends Component {
                   >
                     Customers would be able to call And text this number
                   </Text>
-                  <PhoneNo
+                  <PhoneNoField
                     whatsApp
                     phoneNum={this.state.campaignInfo.whatsappnumber}
-                    changeFunction={this.changeWhatsAppPhoneNo}
+                    changeNo={this.changeWhatsAppPhoneNo}
                     invite={true}
                   />
                 </View>
                 <View style={{}}>
                   <Text style={[styles.subTitle]}>Phone number (optional)</Text>
-                  <PhoneNo
+                  <PhoneNoField
                     whatsApp
                     phoneNum={this.state.campaignInfo.callnumber}
-                    changeFunction={this.changeCallNumberPhoneNo}
+                    changeNo={this.changeCallNumberPhoneNo}
                     invite={true}
                   />
                 </View>
