@@ -148,7 +148,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
         return res.data;
       })
       .then(data => {
-        increasePage();
+        increasePage(true);
         return dispatch({
           type: actionTypes.SET_CAMPAIGN_LIST,
           payload: data

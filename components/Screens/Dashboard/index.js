@@ -160,8 +160,10 @@ class Dashboard extends Component {
     this.props.navigation.navigate(adType.rout);
   };
 
-  increasePage = () => {
-    this.page = this.page + 1;
+  increasePage = (reset = false) => {
+    if (reset) {
+      this.page = 2;
+    } else this.page = this.page + 1;
   };
   loadMoreData = () => {
     if (!this.props.fetching_from_server && !this.props.isListEnd) {
