@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { Button, Text } from "native-base";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import DateRangePicker from "./DateRangePicker";
@@ -159,7 +159,7 @@ export default class DateFields extends Component {
                 Select the{" "}
                 {!this.state.start_choice ? "Start Date" : "End Date"}
               </Text>
-              <View style={{ height: "50%" }}>
+              <View style={{ height: "55%" }}>
                 <DateRangePicker
                   initialRange={
                     this.props.start_time

@@ -83,7 +83,7 @@ class CampaignStats extends Component {
         </View>
         <BoxStats selectedCampaign={selectedCampaign} />
         <View style={[styles.boxStats, styles.wideBoxStat]}>
-          <Text style={[styles.stats, { width: 130 }]}>Total Spends</Text>
+          <Text style={[styles.stats, { width: 130 }]}>Total Spend</Text>
 
           {this.props.loadingCampaignStats ? (
             <PlaceholderLine />
