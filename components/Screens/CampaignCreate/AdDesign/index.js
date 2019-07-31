@@ -962,7 +962,7 @@ class AdDesign extends Component {
 
     let swipeUpError = null;
     if (
-      !this.rejected &&
+      // !this.rejected &&
       this.props.adType === "CollectionAd" &&
       this.state.campaignInfo.attachment === "BLANK" &&
       this.state.campaignInfo.call_to_action.label === "BLANK"
@@ -974,7 +974,7 @@ class AdDesign extends Component {
       });
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
-      !this.rejected &&
+      // !this.rejected &&
       this.props.adType === "SnapAd" &&
       this.state.objective !== "BRAND_AWARENESS" &&
       ((this.state.campaignInfo.attachment === "BLANK" &&
@@ -1297,7 +1297,7 @@ class AdDesign extends Component {
     ));
 
     let swipeUpComp =
-      this.props.adType === "SnapAd" ? (
+      this.props.adType === "SnapAd" || this.rejected ? (
         // !this.rejected &&
         "BRAND_AWARENESS" !== this.state.objective && (
           <SwipeUpComponent

@@ -70,7 +70,7 @@ class WhatsApp extends Component {
             ? this.props.mainBusiness.callnumber
             : this.props.data.callnumber,
           callaction:
-            this.props.data.call_to_action.value !== "BLANK"
+            this.props.data && this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
               : list.SnapAd[4].call_to_action_list[0]
         }

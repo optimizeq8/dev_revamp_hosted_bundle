@@ -36,6 +36,7 @@ export default class SwipeUpComponent extends Component {
             objective === "TRAFFIC" || adType === "StoryAd"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
+                  objective: objective,
                   image: image
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
