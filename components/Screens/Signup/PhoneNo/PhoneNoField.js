@@ -65,7 +65,7 @@ export default class PhoneNoField extends Component {
                 : this.props.valid
                 ? "#5F5F5F"
                 : "red",
-              opacity: this.props.disabled ? 0.5 : 0
+              opacity: this.props.disabled ? 0.5 : 1
             }}
             disabled={this.props.disabled}
             flagStyle={styles.flagStyle}
@@ -104,6 +104,7 @@ export default class PhoneNoField extends Component {
               this.phone = ref;
             }}
             onChangePhoneNumber={number =>
+              this.phone.isValidNumber() &&
               this.props.changeNo(
                 number,
                 this.phone.getCountryCode(),
