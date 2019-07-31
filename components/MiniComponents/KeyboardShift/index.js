@@ -58,7 +58,7 @@ export default class KeyboardShift extends Component {
         const fieldHeight = height;
         const fieldTop = pageY;
         const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight);
-        if (gap >= 0) {
+        if (gap >= 0 || isNaN(gap)) {
           return;
         }
         Animated.timing(this.state.shift, {
