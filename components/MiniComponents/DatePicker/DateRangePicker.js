@@ -19,7 +19,7 @@ LocaleConfig.locales["en"] = {
     "May",
     "June",
     "July",
-    "Augest",
+    "August",
     "September",
     "October",
     "November",
@@ -164,6 +164,7 @@ export default class DateRangePicker extends Component<Props> {
   render() {
     return (
       <CalendarList
+        pastScrollRange={0}
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
