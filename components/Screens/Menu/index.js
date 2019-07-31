@@ -18,7 +18,7 @@ import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
 //browser
-import { openPrivacy, openTerms } from "../../Terms&Condtions";
+import { openPrivacy, openTerms } from "../../Terms&Conditions";
 
 // Style
 import styles from "./styles";
@@ -187,7 +187,7 @@ class Menu extends Component {
               onPress={() =>
                 this.props.navigation.navigate("WebView", {
                   url: "https://www.optimizeapp.com/terms",
-                  title: "Terms & Condtions"
+                  title: "Terms & Conditions"
                 })
               }
             >
@@ -199,7 +199,7 @@ class Menu extends Component {
                   // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                 ]}
               />
-              <Text style={styles.text}>Terms & Condtions</Text>
+              <Text style={styles.text}>Terms & Conditions</Text>
             </TouchableOpacity>
 
             <TouchableOpacity

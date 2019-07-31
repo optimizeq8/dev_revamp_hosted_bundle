@@ -8,7 +8,7 @@ import {
   BackHandler
 } from "react-native";
 import { Button, Text, Item, Input, Container, Icon, Label } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import isEmpty from "lodash/isEmpty";
@@ -19,7 +19,7 @@ import KeyBoardShift from "../../MiniComponents/KeyboardShift";
 import businessCategoryList from "../../Data/businessCategoriesList.data";
 
 //privay
-import { openPrivacy, openTerms } from "../../Terms&Condtions";
+import { openPrivacy, openTerms } from "../../Terms&Conditions";
 
 // Style
 import styles from "./styles";
