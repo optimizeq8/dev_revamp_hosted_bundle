@@ -19,7 +19,7 @@ LocaleConfig.locales["en"] = {
     "May",
     "June",
     "July",
-    "Augest",
+    "August",
     "September",
     "October",
     "November",
@@ -171,6 +171,7 @@ export default class DateRangePicker extends Component<Props> {
               : Date()
             : null
         }
+        pastScrollRange={0}
         calendarHeight={300}
         maxDate={
           this.props.chartRange
