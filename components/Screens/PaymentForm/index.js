@@ -25,7 +25,7 @@ import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 //terms&conditions
-import { openTerms } from "../../Terms&Condtions";
+import { openTerms } from "../../Terms&Conditions";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
