@@ -422,7 +422,7 @@ class PaymentForm extends Component {
             {this.state.choice === 2 && (
               <View style={styles.knetContainer}>
                 <Image
-                  style={styles.image}
+                  style={styles.media}
                   source={require("../../../assets/images/knet.png")}
                   resizeMode="contain"
                 />
@@ -440,7 +440,7 @@ class PaymentForm extends Component {
             {this.state.choice === 3 && (
               <View style={styles.mastercardContainer}>
                 <Image
-                  style={[styles.image, styles.mastercardImage]}
+                  style={[styles.media, styles.mastercardImage]}
                   source={require("../../../assets/images/mastercard.png")}
                   resizeMode="contain"
                 />

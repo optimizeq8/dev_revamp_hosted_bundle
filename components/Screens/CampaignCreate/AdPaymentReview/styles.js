@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		justifyContent: 'space-between',
 	},
-	image: {
+	media: {
 		alignSelf: 'center',
 		height: 120,
 		width: 120,

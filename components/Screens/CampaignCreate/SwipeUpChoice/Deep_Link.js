@@ -35,7 +35,7 @@ class Deep_Link extends Component {
       firstStepDone: false,
       data: [],
       androidData: [],
-      image: "",
+      media: "",
       callaction:
         this.props.adType === "CollectionAd"
           ? list[this.props.adType][0].call_to_action_list[0]

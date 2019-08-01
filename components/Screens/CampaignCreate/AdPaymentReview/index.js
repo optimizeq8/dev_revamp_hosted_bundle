@@ -71,14 +71,14 @@ class AdPaymentReview extends Component {
 					? targeting.devices[0].marketing_name.join(', ')
 					: []
 				: [];
-			const image = this.props.data.image ? this.props.data.image : '//';
+			const media = this.props.data.media ? this.props.data.media : '//';
 			return (
 				<>
-					{!image.includes('.jpg') && (
+					{!media.includes('.jpg') && (
 						<View style={[styles.backgroundViewWrapper, styles.videoView]}>
 							<Video
 								source={{
-									uri: image,
+									uri: media,
 								}}
 								shouldPlay
 								isLooping
@@ -92,7 +92,7 @@ class AdPaymentReview extends Component {
 						// imageStyle={{ opacity: 0.2 }}
 						style={styles.imageBackground}
 						source={{
-							uri: image.includes('.jpg') ? image : 'www.go.com',
+							uri: media.includes('.jpg') ? media : 'www.go.com',
 						}}
 					>
 						<SafeAreaView style={[styles.safeAreaView]} forceInset={{ bottom: 'never', top: 'always' }}>
@@ -285,7 +285,7 @@ const mapStateToProps = state => ({
 	campaign_id: state.campaignC.campaign_id,
 	userInfo: state.auth.userInfo,
 	data: state.campaignC.data,
-	image: state.campaignC.image,
+	media: state.campaignC.media,
 	countryName: state.campaignC.countryName,
 	interestNames: state.campaignC.interestNames,
 	regionNames: state.campaignC.regionNames,

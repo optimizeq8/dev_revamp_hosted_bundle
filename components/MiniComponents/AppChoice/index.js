@@ -544,9 +544,9 @@ class AppChoice extends Component {
                             }
                             style={styles.animateView2}
                           >
-                            <View style={[styles.image, styles.optionsRowView]}>
+                            <View style={[styles.media, styles.optionsRowView]}>
                               <Image
-                                style={[styles.image, styles.listImage]}
+                                style={[styles.media, styles.listImage]}
                                 source={{
                                   uri: item.icon
                                 }}

@@ -62,7 +62,7 @@ class ErrorComponent extends Component {
           locations={[0.7, 1]}
           style={styles.gradient}
         />
-        <Image style={styles.image} source={imageLogo} resizeMode="contain" />
+        <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
           <ErrorIcon width={80} height={80} />
 

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 120,
     width: "100%",

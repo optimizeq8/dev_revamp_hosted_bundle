@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
-    opacity: 0.2
+    opacity: 0.5
   },
   transition: {
     height: "100%"

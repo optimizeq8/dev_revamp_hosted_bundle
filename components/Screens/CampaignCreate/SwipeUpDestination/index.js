@@ -34,7 +34,7 @@ class SwipeUpDestination extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: "",
+      media: "",
       sidemenustate: false,
       selected: "",
       attachmentOptions: attachmentOptionData
@@ -52,9 +52,9 @@ class SwipeUpDestination extends Component {
     Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
       category: "Campaign Creation"
     });
-    const image = this.props.navigation.getParam("image", "");
+    const media = this.props.navigation.getParam("media", "");
     this.setState({
-      image,
+      media,
       selected: this.props.data ? this.props.data.destination : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -210,13 +210,13 @@ class SwipeUpDestination extends Component {
             />
 
             <Content contentContainerStyle={styles.contentContainer}>
-              {!isNull(this.state.image) &&
-                !isUndefined(this.state.image) &&
-                this.state.image.length > 0 && (
+              {!isNull(this.state.media) &&
+                !isUndefined(this.state.media) &&
+                this.state.media.length > 0 && (
                   <View style={styles.placeholder1}>
                     <Image
-                      style={styles.image}
-                      source={{ uri: this.state.image }}
+                      style={styles.media}
+                      source={{ uri: this.state.media }}
                       resizeMode="cover"
                     />
                   </View>

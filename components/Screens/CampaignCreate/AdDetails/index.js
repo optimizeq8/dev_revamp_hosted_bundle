@@ -733,10 +733,10 @@ class AdDetails extends Component {
 
     const campaign = this.props.navigation.getParam("campaign", {});
 
-    const image =
-      this.props.data && this.props.data.image
-        ? this.props.data.image
-        : this.props.navigation.getParam("image", "");
+    const media =
+      this.props.data && this.props.data.media
+        ? this.props.data.media
+        : this.props.navigation.getParam("media", "");
     return (
       <Sidemenu
         onChange={isOpen => {
@@ -752,14 +752,14 @@ class AdDetails extends Component {
         sty
         isOpen={this.state.sidemenustate}
       >
-        {(!image.includes(".jpg") ||
-          !image.includes(".png") ||
+        {(!media.includes(".jpg") ||
+          !media.includes(".png") ||
           (campaign.media && !campaign.media.includes(".jpg")) ||
           (campaign.media && !campaign.media.includes(".png"))) && (
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? "http://" + campaign.media : image
+                uri: editCampaign ? "http://" + campaign.media : media
               }}
               shouldPlay
               isLooping
@@ -771,7 +771,7 @@ class AdDetails extends Component {
         )}
         <Image
           // imageStyle={{ opacity: 0.3 }}
-          {...{ preview, uri: image }}
+          {...{ preview, uri: media }}
           style={[
             styles.imageBackgroundViewWrapper,
             this.state.sidemenustate
@@ -781,7 +781,7 @@ class AdDetails extends Component {
               : {}
           ]}
           // source={{
-          //   uri: image.includes(".jpg") ? image : "www.go.com"
+          //   uri: media.includes(".jpg") ? image : "www.go.com"
           // }}
         />
         <SafeAreaView

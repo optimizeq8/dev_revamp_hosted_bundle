@@ -318,7 +318,7 @@ class CampaignDetails extends Component {
               />
               <Card style={styles.mainCard}>
                 <RNImage
-                  style={styles.image}
+                  style={styles.media}
                   source={require("../../../assets/images/snap-ghost.png")}
                   resizeMode="contain"
                 />

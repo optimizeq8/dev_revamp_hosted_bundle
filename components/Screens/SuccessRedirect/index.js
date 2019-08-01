@@ -30,7 +30,7 @@ class SuccessRedirect extends Component {
     super(props);
 
     this.state = {
-      image: require("../../../assets/images/logo01.png"),
+      media: require("../../../assets/images/logo01.png"),
       successLogo: require("../../../assets/animation/success.json")
     };
   }
@@ -102,8 +102,8 @@ class SuccessRedirect extends Component {
         />
 
         <Image
-          style={styles.image}
-          source={this.state.image}
+          style={styles.media}
+          source={this.state.media}
           resizeMode="contain"
         />
 

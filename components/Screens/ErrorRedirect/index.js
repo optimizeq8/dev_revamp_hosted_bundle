@@ -72,7 +72,7 @@ class ErrorRedirect extends Component {
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
           <Image
-            style={styles.image}
+            style={styles.media}
             source={this.state.logoImage}
             resizeMode="contain"
           />

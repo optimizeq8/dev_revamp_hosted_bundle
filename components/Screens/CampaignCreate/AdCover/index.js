@@ -681,7 +681,7 @@ class AdCover extends Component {
                         <MediaButton
                           cover={true}
                           _pickImage={this._pickImage}
-                          image={this.state.cover}
+                          media ={this.state.cover}
                         />
                       </View>
                     </View>
