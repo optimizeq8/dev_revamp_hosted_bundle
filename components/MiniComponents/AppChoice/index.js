@@ -448,7 +448,7 @@ class AppChoice extends Component {
                           appValue: value
                         })
                       }
-                      onBlur={value => {
+                      onBlur={() => {
                         if (this.state.appValue !== "") {
                           switch (this.state.choice) {
                             case "iOS":

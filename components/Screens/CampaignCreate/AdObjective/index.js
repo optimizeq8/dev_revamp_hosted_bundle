@@ -80,6 +80,9 @@ class AdObjective extends Component {
       end_timeError: ""
     };
   }
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
   componentDidMount() {
     if (this.props.adType === "CollectionAd") {
       if (this.props.collectionAdLinkForm !== 0) {
@@ -134,7 +137,10 @@ class AdObjective extends Component {
       reset: true
     });
   };
-
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
   handleStartDatePicked = date => {
     this.setState({
       campaignInfo: {

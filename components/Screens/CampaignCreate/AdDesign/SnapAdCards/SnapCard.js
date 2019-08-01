@@ -86,6 +86,7 @@ class SnapCard extends Component {
           ) : (
             ImageOrRNImage
           )}
+
         </View>
         <View
           style={{

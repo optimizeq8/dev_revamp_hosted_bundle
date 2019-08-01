@@ -100,7 +100,8 @@ class AdDesign extends Component {
       mediaModalVisible: false,
       videoIsLoading: false,
       heightComponent: 0,
-      creativeVideoUrl: ""
+      creativeVideoUrl: "",
+      sourceChanging: false
     };
     this.adType =
       this.props.navigation.getParam("adType", "") || this.props.adType;
@@ -170,18 +171,24 @@ class AdDesign extends Component {
       swipeUpError = null;
     }
 
-    if (this.rejected && this.selectedCampaign) {
-    } else if (
-      this.props.data &&
-      Object.keys(this.state.campaignInfo)
-        .map(key => {
-          if (this.props.data.hasOwnProperty(key)) return true;
-        })
-        .includes(true)
+    if (
+      (this.props.data &&
+        Object.keys(this.state.campaignInfo)
+          .map(key => {
+            if (this.props.data.hasOwnProperty(key)) return true;
+          })
+          .includes(true)) ||
+      this.props.data.hasOwnProperty("media")
+
     ) {
       let rep = this.state.campaignInfo;
 
-      rep = { ...this.state.campaignInfo, ...this.props.data };
+      rep = {
+        ...this.state.campaignInfo,
+        call_to_action: this.props.data.call_to_action,
+        attachment: this.props.data.attachment,
+        destination: this.props.data.destination
+      };
 
       this.setState({
         ...this.state,
@@ -190,6 +197,11 @@ class AdDesign extends Component {
         },
         media: this.adType !== "StoryAd" && rep.media ? rep.media : "//",
         ...this.props.data,
+        campaignInfo: rep,
+        image:
+          this.props.adType !== "StoryAd" && this.props.data.image
+            ? this.props.data.image
+            : "//",
         swipeUpError
       });
     }
@@ -351,7 +363,7 @@ class AdDesign extends Component {
       //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 0.1
+      quality: 0.7
     });
 
     this.onToggleModal(true);
@@ -838,7 +850,17 @@ class AdDesign extends Component {
       let card = this.props.storyAdsArray[
         this.state.storyAdCards.selectedStoryAd.index
       ];
-      this.setState({ videoIsLoading: true, media: "//", type: "VIDEO" });
+      let selectedImage = this.state.storyAdCards.selectedStoryAd;
+      selectedImage.image = "//";
+      this.setState({
+        videoIsLoading: true,
+        media: "//",
+        type: "VIDEO",
+        storyAdCards: {
+          ...this.state.storyAdCards,
+          selectedStoryAd: selectedImage
+        }
+      });
       FileSystem.downloadAsync(
         data.queryParams.media,
         FileSystem.cacheDirectory +
@@ -876,6 +898,9 @@ class AdDesign extends Component {
           });
         })
         .catch(error => {
+          this.setState({
+            videoIsLoading: false
+          });
           // console.error(error);
           showMessage({
             message: "Something went wrong!",
@@ -1009,6 +1034,7 @@ class AdDesign extends Component {
   };
 
   _handleStoryAdCards = card => {
+    this.setState({ sourceChanging: true });
     this.setState({
       ...this.state,
       storyAdCards: {
@@ -1016,7 +1042,8 @@ class AdDesign extends Component {
         storyAdSelected: true,
         selectedStoryAd: { ...card }
       },
-      type: card.media_type
+      type: card.media_type,
+      sourceChanging: false
     });
   };
 
@@ -1363,6 +1390,39 @@ class AdDesign extends Component {
 
     let blankView = <View style={styles.blankView} />;
 
+    let videoPlayer = this.state.sourceChanging ? null : (
+          <Video
+                      onLoadStart={() =>
+                        storyAdCards.selectedStoryAd.media &&
+                        this.state.storyAdCards.storyAdSelected &&
+                        this.setState({ videoIsLoading: true })
+                      }
+                      onLoad={() => this.setState({ videoIsLoading: false })}
+                      source={{
+                        uri:
+                          media !== "//" &&
+                          !this.state.storyAdCards.storyAdSelected
+                            ? (this.rejected && media.includes(".com")
+                                ? "https://"
+                                : "") + media
+                            : storyAdCards.selectedStoryAd.media &&
+                              storyAdCards.storyAdSelected
+                            ? (this.rejected &&
+                              storyAdCards.selectedStoryAd.media.includes(
+                                ".com"
+                              )
+                                ? "https://"
+                                : "") + storyAdCards.selectedStoryAd.media
+                            : "//"
+                      }}
+                      shouldPlay
+                      isLooping
+                      isMuted
+                      resizeMode={"stretch"}
+                      style={styles.video}
+                    />
+    );
+
     let submitButton = () => {
       if (this.adType === "CollectionAd") {
         if (
@@ -1447,37 +1507,8 @@ class AdDesign extends Component {
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
-                    <Video
-                      onLoadStart={() =>
-                        storyAdCards.selectedStoryAd.media &&
-                        this.state.storyAdCards.storyAdSelected &&
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri:
-                          media !== "//" &&
-                          !this.state.storyAdCards.storyAdSelected
-                            ? (this.rejected && media.includes(".com")
-                                ? "https://"
-                                : "") + media
-                            : storyAdCards.selectedStoryAd.media &&
-                              storyAdCards.storyAdSelected
-                            ? (this.rejected &&
-                              storyAdCards.selectedStoryAd.media.includes(
-                                ".com"
-                              )
-                                ? "https://"
-                                : "") + storyAdCards.selectedStoryAd.media
-                            : "//"
-                      }}
-                      shouldPlay
-                      isLooping
-                      isMuted
-                      resizeMode={"stretch"}
-                      style={styles.video}
-                    />
 
+                    {videoPlayer}
                     {inputFields}
                     {this.adType === "StoryAd" &&
                     !this.state.storyAdCards.storyAdSelected ? (
@@ -1641,13 +1672,14 @@ class AdDesign extends Component {
               </View>
             </Transition>
 
-            {!this.state.mediaError ? null : (
+
+            {/* {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
                 {!this.state.mediaError.includes("blank")
                   ? this.state.mediaError
                   : "Please choose an image or video"}
               </Text>
-            )}
+            )} */}
             {!this.state.swipeUpError ? null : (
               <Text style={styles.swipeUpErrorText}>
                 {this.state.swipeUpError}
@@ -1658,7 +1690,9 @@ class AdDesign extends Component {
           <Footer style={styles.footerStyle}>
             {(this.adType !== "StoryAd" && media !== "//") ||
             (this.state.storyAdCards.storyAdSelected &&
-              storyAdCards.selectedStoryAd.media !== "//") ||
+              this.state.storyAdCards.selectedStoryAd.media !== "//" &&
+              !this.state.videoIsLoading) ||
+
             validCards.length >= 3 ? (
               <View style={styles.footerButtonsContainer}>
                 {this.adType === "StoryAd" ? (
@@ -1709,7 +1743,9 @@ class AdDesign extends Component {
                   ) : (
                     <Text style={styles.footerTextStyle}>
                       {this.adType === "StoryAd"
-                        ? "Please add minimum of 3 medias to proceed"
+                        ? this.state.videoIsLoading
+                          ? "Please wait while the video is downloading"
+                          : "Please add minimum of 3 medias to proceed"
                         : "Please add media to proceed"}
                     </Text>
                   )
@@ -1720,7 +1756,9 @@ class AdDesign extends Component {
             ) : (
               <Text style={styles.footerTextStyle}>
                 {this.adType === "StoryAd"
-                  ? "Please add minimum of 3 medias to proceed"
+                  ? this.state.videoIsLoading
+                    ? "Please wait while the video is downloading"
+                    : "Please add minimum of 3 medias to proceed"
                   : "Please add media to proceed"}
               </Text>
             )}

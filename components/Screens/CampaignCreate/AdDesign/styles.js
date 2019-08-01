@@ -197,8 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 16 / PixelRatio.getFontScale(),
     textAlign: "left",
     color: "#fff",
-    marginLeft: 8,
-    elevation: 10
+    marginLeft: 8
   },
   swipeUp: {
     backgroundColor: globalColors.orange,
