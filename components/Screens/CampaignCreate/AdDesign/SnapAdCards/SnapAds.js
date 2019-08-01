@@ -13,6 +13,7 @@ export default class SnapAds extends Component {
     } else
       return (
         <SnapCard
+          rejected={this.props.rejected}
           video={this.props.video}
           openUploadVideo={this.props.openUploadVideo}
           cancelUpload={this.props.cancelUpload}

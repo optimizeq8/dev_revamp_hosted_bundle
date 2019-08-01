@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
 
-  image: {
+  media: {
     // flex: 1,
     alignSelf: "center",
     height: heightPercentageToDP(20),

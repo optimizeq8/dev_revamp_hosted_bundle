@@ -42,7 +42,7 @@ class SplashScreen extends Component {
         />
 
         <Image
-          style={styles.image}
+          style={styles.media}
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
         />

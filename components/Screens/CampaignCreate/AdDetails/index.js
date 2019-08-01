@@ -734,39 +734,45 @@ class AdDetails extends Component {
 
     const campaign = this.props.navigation.getParam("campaign", {});
 
-    const image =
-      this.props.data && this.props.data.image
-        ? this.props.data.image
-        : this.props.navigation.getParam("image", "");
+    const media =
+      this.props.data && this.props.data.media
+        ? this.props.data.media
+        : this.props.navigation.getParam("media", "");
 
-    let ImageOrRNImage =
-      Platform.OS === "ios" ? (
-        <Image
-          {...{ preview, uri: image }}
-          style={[
-            styles.imageBackgroundViewWrapper,
-            this.state.sidemenustate
-              ? {
-                  borderTopRightRadius: 30
-                }
-              : {}
-          ]}
-        />
-      ) : (
-        <RNImage
-          style={[
-            styles.imageBackgroundViewWrapper,
-            this.state.sidemenustate
-              ? {
-                  borderTopRightRadius: 30
-                }
-              : {}
-          ]}
-          source={{
-            uri: image.includes(".jpg") ? image : "www.go.com"
-          }}
-        />
-      );
+//     const image =
+//       this.props.data && this.props.data.image
+//         ? this.props.data.image
+//         : this.props.navigation.getParam("image", "");
+
+//     let ImageOrRNImage =
+//       Platform.OS === "ios" ? (
+//         <Image
+//           {...{ preview, uri: image }}
+//           style={[
+//             styles.imageBackgroundViewWrapper,
+//             this.state.sidemenustate
+//               ? {
+//                   borderTopRightRadius: 30
+//                 }
+//               : {}
+//           ]}
+//         />
+//       ) : (
+//         <RNImage
+//           style={[
+//             styles.imageBackgroundViewWrapper,
+//             this.state.sidemenustate
+//               ? {
+//                   borderTopRightRadius: 30
+//                 }
+//               : {}
+//           ]}
+//           source={{
+//             uri: image.includes(".jpg") ? image : "www.go.com"
+//           }}
+//         />
+//       );
+
     return (
       <Sidemenu
         onChange={isOpen => {
@@ -782,14 +788,14 @@ class AdDetails extends Component {
         sty
         isOpen={this.state.sidemenustate}
       >
-        {(!image.includes(".jpg") ||
-          !image.includes(".png") ||
+        {(!media.includes(".jpg") ||
+          !media.includes(".png") ||
           (campaign.media && !campaign.media.includes(".jpg")) ||
           (campaign.media && !campaign.media.includes(".png"))) && (
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? "http://" + campaign.media : image
+                uri: editCampaign ? "http://" + campaign.media : media
               }}
               shouldPlay
               isLooping
@@ -799,7 +805,21 @@ class AdDetails extends Component {
             />
           </View>
         )}
-        {ImageOrRNImage}
+        <Image
+          // imageStyle={{ opacity: 0.3 }}
+          {...{ preview, uri: media }}
+          style={[
+            styles.imageBackgroundViewWrapper,
+            this.state.sidemenustate
+              ? {
+                  borderTopRightRadius: 30
+                }
+              : {}
+          ]}
+        />
+
+//         {ImageOrRNImage}
+
         <SafeAreaView
           style={[
             styles.safeArea

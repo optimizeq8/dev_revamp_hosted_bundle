@@ -7,9 +7,9 @@ import { Video } from "expo-av";
 export default class MediaBox extends Component {
   state = { imageLoaded: false };
   perviewHandler = () => {
-    let image =
+    let media =
       this.props.selectedCampaign.campaign_type === "CollectionAd"
-        ? { image: "https://" + this.props.selectedCampaign.media }
+        ? { media: "https://" + this.props.selectedCampaign.media }
         : {
             cover: "https://" + this.props.selectedCampaign.story_preview_media,
             logo: "https://" + this.props.selectedCampaign.story_logo_media
@@ -23,7 +23,7 @@ export default class MediaBox extends Component {
         ? "AdDesignReview"
         : "StoryAdDesignReview",
       {
-        ...image,
+        ...media,
         type: this.props.ad.media_type,
         call_to_action: this.props.ad.call_to_action
           ? this.props.ad.call_to_action

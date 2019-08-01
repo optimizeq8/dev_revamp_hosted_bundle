@@ -9,7 +9,7 @@ import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
 export default class MediaButton extends Component {
   render() {
     let {
-      image,
+      media,
       cover,
       snapAdCard,
       _pickImage,
@@ -18,7 +18,7 @@ export default class MediaButton extends Component {
       setMediaModalVisible
     } = this.props;
 
-    if (image && image !== "//") {
+    if (media && media !== "//") {
       return (
         <Button
           transparent
@@ -51,7 +51,7 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {image !== "//" ? "Edit Photo" : "Add Media"}
+            {media !== "//" ? "Edit Photo" : "Add Media"}
           </Text>
         </Button>
       );
@@ -84,7 +84,7 @@ export default class MediaButton extends Component {
           >
             <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {image !== "//" ? "Edit Photo" : "Add Media"}
+              {media !== "//" ? "Edit Photo" : "Add Media"}
             </Text>
           </Button>
         </>

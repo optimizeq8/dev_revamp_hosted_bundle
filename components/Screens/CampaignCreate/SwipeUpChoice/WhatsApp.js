@@ -24,6 +24,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -48,7 +49,8 @@ class WhatsApp extends Component {
 
   componentDidMount() {
     if (
-      (this.props.data.hasOwnProperty("attachment") &&
+      (this.props.data &&
+        this.props.data.hasOwnProperty("attachment") &&
         this.props.data.attachment !== "BLANK") ||
       this.props.mainBusiness.whatsappnumber !== ""
     ) {
@@ -68,7 +70,7 @@ class WhatsApp extends Component {
             ? this.props.mainBusiness.callnumber
             : this.props.data.callnumber,
           callaction:
-            this.props.data.call_to_action.value !== "BLANK"
+            this.props.data && this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
               : list.SnapAd[4].call_to_action_list[0]
         }

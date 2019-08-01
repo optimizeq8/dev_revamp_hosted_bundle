@@ -431,8 +431,8 @@ export const uploadStoryAdCard = (
   info,
   card,
   cancelUpload,
-  rejected,
-  iosUploadVideo
+  iosUploadVideo,
+  rejected
 ) => {
   return dispatch => {
     dispatch({
@@ -457,6 +457,8 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then(data => {
+        console.log(data);
+
         // dispatch(
         //   save_campaign_info("adDesign", {
         //     appChoice,

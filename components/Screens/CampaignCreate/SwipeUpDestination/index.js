@@ -1,9 +1,8 @@
-
 import React, { Component } from "react";
 import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";
@@ -16,15 +15,14 @@ import AttachmentCard from "./AttachmentCard";
 //data
 import attachmentOptionData from "../../../Data/attachmentOptions.data";
 
-
 // Style
-import styles from './styles';
-import GlobalStyles from '../../../../GlobalStyles';
+import styles from "./styles";
+import GlobalStyles from "../../../../GlobalStyles";
 
 //Functions
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import isNull from 'lodash/isNull';
-import isUndefined from 'lodash/isUndefined';
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import isNull from "lodash/isNull";
+import isUndefined from "lodash/isUndefined";
 
 //Redux
 import { connect } from "react-redux";
@@ -36,27 +34,27 @@ class SwipeUpDestination extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: "",
+      media: "",
       sidemenustate: false,
       selected: "",
       attachmentOptions: attachmentOptionData
     };
     this.toggleSideMenu = this.toggleSideMenu.bind(this);
   }
-	handleBackButton = () => {
-		this.props.navigation.goBack();
-		return true;
-	};
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-	}
-	componentDidMount() {
-		Segment.screenWithProperties('Snap Ad Traffic SwipeUp Selection', {
-			category: 'Campaign Creation',
-		});
-		const image = this.props.navigation.getParam('image', '');
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  componentDidMount() {
+    Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
+      category: "Campaign Creation"
+    });
+    const media = this.props.navigation.getParam("media", "");
     this.setState({
-      image,
+      media,
       selected: this.props.data ? this.props.data.destination : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -75,7 +73,10 @@ class SwipeUpDestination extends Component {
       () => {
         Segment.trackWithProperties("Selected " + value + " Swipeup", {
           category: "Campaign Creation",
-          label: this.props.data.objective + " Objective"
+          label: this.props.data
+            ? this.props.data.objective
+            : this.props.navigation.getParam("objective", "objective") +
+              " Objective"
         });
       }
     );
@@ -98,6 +99,7 @@ class SwipeUpDestination extends Component {
       case "REMOTE_WEBPAGE": {
         menu = (
           <Website
+            objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -111,6 +113,7 @@ class SwipeUpDestination extends Component {
       case "DEEP_LINK": {
         menu = (
           <Deep_Link
+            objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -124,6 +127,7 @@ class SwipeUpDestination extends Component {
       case "APP_INSTALL": {
         menu = (
           <App_Install
+            objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -137,6 +141,7 @@ class SwipeUpDestination extends Component {
       case "LONGFORM_VIDEO": {
         menu = (
           <Long_Form_Video
+            objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -150,6 +155,7 @@ class SwipeUpDestination extends Component {
       case "WEB_CONVERSION": {
         menu = (
           <WhatsApp
+            objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination
             }
@@ -204,13 +210,13 @@ class SwipeUpDestination extends Component {
             />
 
             <Content contentContainerStyle={styles.contentContainer}>
-              {!isNull(this.state.image) &&
-                !isUndefined(this.state.image) &&
-                this.state.image.length > 0 && (
+              {!isNull(this.state.media) &&
+                !isUndefined(this.state.media) &&
+                this.state.media.length > 0 && (
                   <View style={styles.placeholder1}>
                     <Image
-                      style={styles.image}
-                      source={{ uri: this.state.image }}
+                      style={styles.media}
+                      source={{ uri: this.state.media }}
                       resizeMode="cover"
                     />
                   </View>
@@ -231,6 +237,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(SwipeUpDestination);

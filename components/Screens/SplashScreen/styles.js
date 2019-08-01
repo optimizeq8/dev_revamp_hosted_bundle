@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     top: 0,
     height: 1000
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 180,
     width: 180

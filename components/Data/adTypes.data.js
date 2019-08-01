@@ -11,7 +11,7 @@ export const snapAds = [
     icon: "snapchat-ghost",
     title: "Snap Ad",
     value: "SnapAd",
-    image: require("../../assets/images/AdTypes/SnapAd.gif"),
+    media: require("../../assets/images/AdTypes/SnapAd.gif"),
     icon: <AdIcons.SnapAd />
   },
   {
@@ -22,7 +22,7 @@ export const snapAds = [
     icon: "snapchat-ghost",
     title: "Story Ad",
     value: "StoryAd",
-    image: require("../../assets/images/AdTypes/StoryAd.gif"),
+    media: require("../../assets/images/AdTypes/StoryAd.gif"),
     icon: <AdIcons.StoryAd />
   },
   {
@@ -33,7 +33,7 @@ export const snapAds = [
     icon: "snapchat-ghost",
     title: "Collection Ad",
     value: "CollectionAd",
-    image: require("../../assets/images/AdTypes/CollectionAd.gif"),
+    media: require("../../assets/images/AdTypes/CollectionAd.gif"),
     icon: <AdIcons.CollectionAd />
   }
 ];
@@ -45,7 +45,7 @@ export const twittwerAds = [
     text: "Create Your Ad Now!",
     rout: "",
     title: "",
-    image: require("../../assets/images/logoP.png")
+    media: require("../../assets/images/logoP.png")
   }
 ];
 
@@ -56,6 +56,6 @@ export const instagramAds = [
     text: "Create Your Ad Now!",
     rout: "",
     title: "",
-    image: require("../../assets/images/logoP.png")
+    media: require("../../assets/images/logoP.png")
   }
 ];

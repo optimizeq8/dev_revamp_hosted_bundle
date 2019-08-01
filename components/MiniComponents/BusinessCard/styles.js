@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 120,
     width: 120,

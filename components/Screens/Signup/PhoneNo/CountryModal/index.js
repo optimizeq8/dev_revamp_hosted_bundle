@@ -96,7 +96,7 @@ export default class CountryModal extends BaseComponent {
         >
           <View style={styles.imageView}>
             <Image
-              source={option.image}
+              source={option.media}
               resizeMode="stretch"
               style={styles.imageStyle}
             />

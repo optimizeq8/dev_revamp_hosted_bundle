@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#0000"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: hp("5"),
     width: hp("5")

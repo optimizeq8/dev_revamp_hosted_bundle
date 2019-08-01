@@ -27,9 +27,9 @@ export default class AdTypeCard extends Component {
               loadingIndicatorSource={
                 <ActivityIndicator color={globalColors.white} />
               }
-              style={styles.image}
+              style={styles.media}
               resizeMode={adType.media !== "snapchat" ? "center" : "stretch"}
-              source={adType.image}
+              source={adType.media}
             />
           </View>
         </View>

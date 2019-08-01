@@ -73,7 +73,7 @@ class SnapchatCreateAdAcc extends Component {
           style={styles.gradient}
         />
         <Image
-          style={styles.image}
+          style={styles.media}
           source={require("../../../assets/images/logo01.png")}
           resizeMode="contain"
         />

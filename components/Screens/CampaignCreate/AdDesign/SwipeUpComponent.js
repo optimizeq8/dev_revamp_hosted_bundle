@@ -10,7 +10,7 @@ export default class SwipeUpComponent extends Component {
       collectionAdLinkForm,
       adType,
       objective,
-      image,
+      media,
       selectedStoryAd,
       call_to_action_label
     } = this.props;
@@ -36,7 +36,8 @@ export default class SwipeUpComponent extends Component {
             objective === "TRAFFIC" || adType === "StoryAd"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
-                  image: image
+                  objective: objective,
+                  media: media
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,

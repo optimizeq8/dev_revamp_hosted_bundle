@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#0000"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: heightPercentageToDP(13),
     width: heightPercentageToDP(13),

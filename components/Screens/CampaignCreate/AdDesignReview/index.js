@@ -109,11 +109,11 @@ class AdDesignReview extends Component {
       : storyAdsArray[this.state.storyAdIndex].media_type;
     let call_to_action = this.props.navigation.getParam("call_to_action", "");
 
-    let image = !storyAds
-      ? this.props.navigation.getParam("image", "")
+    let media = !storyAds
+      ? this.props.navigation.getParam("media", "")
       : campaignDetails
       ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
-      : storyAdsArray[this.state.storyAdIndex]["image"];
+      : storyAdsArray[this.state.storyAdIndex]["media"];
 
     if (storyAds) {
       if (
@@ -153,14 +153,14 @@ class AdDesignReview extends Component {
         <Image
           resizeMode="stretch"
           style={styles.placeholder}
-          {...{ preview, uri: image }}
+          {...{ preview, uri: media }}
         />
       ) : (
         <RNImage
           resizeMode="stretch"
           style={styles.placeholder}
           source={{
-            uri: image
+            uri: media
           }}
         />
       );
@@ -224,7 +224,7 @@ class AdDesignReview extends Component {
                         }
                         onLoad={() => this.setState({ videoIsLoading: false })}
                         source={{
-                          uri: image
+                          uri: media
                         }}
                         isLooping
                         shouldPlay

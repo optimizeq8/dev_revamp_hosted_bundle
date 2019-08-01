@@ -22,7 +22,7 @@ const initialState = {
   languagesList: [],
   videoUrl: "",
   videoUrlLoading: "",
-  image: "",
+  media: "",
   countryName: "",
   interestNames: [],
   regionNames: [],
@@ -31,28 +31,28 @@ const initialState = {
     {
       id: 0,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 1,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 2,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 3,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     }
@@ -129,7 +129,8 @@ const reducer = (state = initialState, action) => {
           attachment:
             action.payload.data.attachment !== "BLANK"
               ? JSON.parse(action.payload.data.attachment)
-              : action.payload.data.attachment
+              : action.payload.data.attachment,
+          media: state.data.media
         },
         message: action.payload.message,
 
@@ -196,7 +197,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...action.payload.data.data },
-        image: action.payload.image,
+        media: action.payload.media,
         countryName: action.payload.names.countryName,
         interestNames: action.payload.names.interestNames,
         regionNames: action.payload.names.regionNames,
@@ -344,7 +345,7 @@ const reducer = (state = initialState, action) => {
       let newSnapCard = {
         id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1,
         call_to_action: { label: "BLANK", value: "BLANK" },
-        image: "//",
+        media: "//",
         destination: "BLANK",
         attachment: "BLANK"
       };
@@ -437,7 +438,7 @@ const reducer = (state = initialState, action) => {
         data: null,
         average_reach: 0,
         total_reach: 0,
-        image: "",
+        media: "",
         minValueBudget: 0,
         adType: "",
         maxValueBudget: 0,
@@ -448,28 +449,28 @@ const reducer = (state = initialState, action) => {
           {
             id: 0,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 1,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 2,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 3,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           }

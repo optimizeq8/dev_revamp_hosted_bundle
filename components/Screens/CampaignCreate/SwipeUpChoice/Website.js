@@ -93,7 +93,9 @@ class Website extends Component {
     if (this.validateUrl()) {
       this.props._changeDestination(
         this.props.collectionAdLinkForm === 0
-          ? this.props.data.objective !== "LEAD_GENERATION"
+          ? (this.props.data
+              ? this.props.data.objective
+              : this.props.objective) !== "LEAD_GENERATION"
             ? "REMOTE_WEBPAGE"
             : "LEAD_GENERATION"
           : "COLLECTION",

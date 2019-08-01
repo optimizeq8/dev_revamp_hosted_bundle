@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     color: "#fff"
   },
-  image: {
+  media: {
     width: 30,
     height: 30,
     borderRadius: 13,

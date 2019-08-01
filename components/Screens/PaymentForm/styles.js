@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		lineHeight: 18,
 	},
-	image: {
+	media: {
 		// top: "10%",
 		alignSelf: 'center',
 		// height: heightPercentageToDP(20),

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image as RNImage, TouchableOpacity } from "react-native";
 import { Button, Icon } from "native-base";
 import { Video } from "expo-av";
 import styles from "../styles";
@@ -9,7 +9,11 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
-
+import { Image } from "react-native-expo-image-cache";
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class SnapCard extends Component {
   state = { uploading: false };
   render() {
@@ -17,9 +21,38 @@ class SnapCard extends Component {
       snapCardInfo,
       removeSnapCard,
       _handleStoryAdCards,
-      video
+      rejected
     } = this.props;
 
+    let ImageOrRNImage = rejected ? (
+      <Image
+        {...{
+          preview,
+          uri:
+            rejected ||
+            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+              snapCardInfo.item.uploaded)
+              ? (rejected && snapCardInfo.item.media.includes(".com")
+                  ? "https://"
+                  : "") + snapCardInfo.item["media"]
+              : ""
+        }}
+        style={{ height: "100%", width: "100%", position: "absolute" }}
+      />
+    ) : (
+      <RNImage
+        source={{
+          uri:
+            !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+            snapCardInfo.item.uploaded
+              ? (rejected && snapCardInfo.item.media.includes(".com")
+                  ? "https://"
+                  : "") + snapCardInfo.item["media"]
+              : "snapCardInfo.item"
+        }}
+        style={{ height: "100%", width: "100%", position: "absolute" }}
+      />
+    );
     return (
       <View style={styles.SnapAdCard}>
         <View
@@ -32,16 +65,28 @@ class SnapCard extends Component {
             position: "absolute"
           }}
         >
-          <Image
-            source={{
-              uri:
-                !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                snapCardInfo.item.uploaded
-                  ? snapCardInfo.item.image
-                  : "snapCardInfo.item.image"
-            }}
-            style={{ height: "100%", width: "100%", position: "absolute" }}
-          />
+          {snapCardInfo.item.media_type === "VIDEO" ? (
+            <Video
+              source={{
+                uri:
+                  rejected ||
+                  (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                    snapCardInfo.item.uploaded)
+                    ? (rejected && snapCardInfo.item.media.includes(".com")
+                        ? "https://"
+                        : "") + snapCardInfo.item["media"]
+                    : "snapCardInfo.item"
+              }}
+              shouldPlay
+              isLooping
+              isMuted
+              resizeMode={"stretch"}
+              style={styles.rejected}
+            />
+          ) : (
+            ImageOrRNImage
+          )}
+
         </View>
         <View
           style={{
@@ -59,7 +104,9 @@ class SnapCard extends Component {
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
           !snapCardInfo.item.uploaded ? (
             <MediaButton
-              image={snapCardInfo.item.image}
+              media={
+                snapCardInfo.item[snapCardInfo.item.media ? "image" : "media"]
+              }
               _handleStoryAdCards={_handleStoryAdCards}
               snapAdCard={true}
               snapCardInfo={snapCardInfo}
@@ -109,7 +156,11 @@ class SnapCard extends Component {
             }}
             name="close"
             type="MaterialCommunityIcons"
-            style={{ bottom: "15%", color: "#fff", alignSelf: "flex-start" }}
+            style={{
+              bottom: "15%",
+              color: "#fff",
+              alignSelf: "flex-start"
+            }}
           />
         )}
       </View>

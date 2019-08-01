@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     top: 20
   },
   container: { backgroundColor: "#0000" },
-  image: {
+  media: {
     alignSelf: "center",
     height: heightPercentageToDP(10),
     width: heightPercentageToDP(15),

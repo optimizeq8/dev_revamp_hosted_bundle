@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     alignSelf: "center"
   },
-  image: {
+  media: {
     width: "100%",
     height: "100%",
     backgroundColor: "#fff"
