@@ -24,7 +24,6 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 
 class WhatsApp extends Component {
   static navigationOptions = {
