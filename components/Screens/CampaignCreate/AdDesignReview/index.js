@@ -126,13 +126,6 @@ class AdDesignReview extends Component {
             "icon_media_url"
           )) ||
         (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
-<<<<<<< HEAD
-          (typeof storyAdsArray[this.state.storyAdIndex].attachment ===
-            "object" &&
-            JSON.parse(
-              storyAdsArray[this.state.storyAdIndex].attachment
-            ).hasOwnProperty("icon_media_url")))
-=======
         typeof storyAdsArray[this.state.storyAdIndex].attachment === "string"
           ? JSON.parse(
               storyAdsArray[this.state.storyAdIndex].attachment
@@ -140,7 +133,6 @@ class AdDesignReview extends Component {
           : storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
               "icon_media_url"
             ))
->>>>>>> bff365a2b207fd60113061de37726ad42e2263c5
       ) {
         appIcon = campaignDetails
           ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)

@@ -171,7 +171,6 @@ class AdDesign extends Component {
       swipeUpError = null;
     }
 
-<<<<<<< HEAD
     if (this.rejected && this.selectedCampaign) {
       this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
     } else if (
@@ -181,17 +180,6 @@ class AdDesign extends Component {
           if (this.props.data.hasOwnProperty(key)) return true;
         })
         .includes(true)
-=======
-    if (
-      (this.props.data &&
-        Object.keys(this.state.campaignInfo)
-          .map(key => {
-            if (this.props.data.hasOwnProperty(key)) return true;
-          })
-          .includes(true)) ||
-      this.props.data.hasOwnProperty("media")
-
->>>>>>> bff365a2b207fd60113061de37726ad42e2263c5
     ) {
       let rep = this.state.campaignInfo;
 
@@ -1421,36 +1409,32 @@ class AdDesign extends Component {
     let blankView = <View style={styles.blankView} />;
 
     let videoPlayer = this.state.sourceChanging ? null : (
-          <Video
-                      onLoadStart={() =>
-                        storyAdCards.selectedStoryAd.media &&
-                        this.state.storyAdCards.storyAdSelected &&
-                        this.setState({ videoIsLoading: true })
-                      }
-                      onLoad={() => this.setState({ videoIsLoading: false })}
-                      source={{
-                        uri:
-                          media !== "//" &&
-                          !this.state.storyAdCards.storyAdSelected
-                            ? (this.rejected && media.includes(".com")
-                                ? "https://"
-                                : "") + media
-                            : storyAdCards.selectedStoryAd.media &&
-                              storyAdCards.storyAdSelected
-                            ? (this.rejected &&
-                              storyAdCards.selectedStoryAd.media.includes(
-                                ".com"
-                              )
-                                ? "https://"
-                                : "") + storyAdCards.selectedStoryAd.media
-                            : "//"
-                      }}
-                      shouldPlay
-                      isLooping
-                      isMuted
-                      resizeMode={"stretch"}
-                      style={styles.video}
-                    />
+      <Video
+        onLoadStart={() =>
+          storyAdCards.selectedStoryAd.media &&
+          this.state.storyAdCards.storyAdSelected &&
+          this.setState({ videoIsLoading: true })
+        }
+        onLoad={() => this.setState({ videoIsLoading: false })}
+        source={{
+          uri:
+            media !== "//" && !this.state.storyAdCards.storyAdSelected
+              ? (this.rejected && media.includes(".com") ? "https://" : "") +
+                media
+              : storyAdCards.selectedStoryAd.media &&
+                storyAdCards.storyAdSelected
+              ? (this.rejected &&
+                storyAdCards.selectedStoryAd.media.includes(".com")
+                  ? "https://"
+                  : "") + storyAdCards.selectedStoryAd.media
+              : "//"
+        }}
+        shouldPlay
+        isLooping
+        isMuted
+        resizeMode={"stretch"}
+        style={styles.video}
+      />
     );
 
     let submitButton = () => {
@@ -1537,7 +1521,6 @@ class AdDesign extends Component {
               <View style={styles.buttonN}>
                 {this.state.type === "VIDEO" ? (
                   <View style={styles.placeholder}>
-
                     {videoPlayer}
                     {inputFields}
                     {this.adType === "StoryAd" &&
@@ -1645,7 +1628,6 @@ class AdDesign extends Component {
               </View>
             </Transition>
 
-
             {/* {!this.state.imageError ? null : (
               <Text style={styles.errorMsg}>
                 {!this.state.mediaError.includes("blank")
@@ -1665,7 +1647,6 @@ class AdDesign extends Component {
             (this.state.storyAdCards.storyAdSelected &&
               this.state.storyAdCards.selectedStoryAd.media !== "//" &&
               !this.state.videoIsLoading) ||
-
             validCards.length >= 3 ? (
               <View style={styles.footerButtonsContainer}>
                 {this.adType === "StoryAd" ? (
