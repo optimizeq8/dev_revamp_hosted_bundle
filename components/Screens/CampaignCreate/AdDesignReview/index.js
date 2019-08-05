@@ -87,9 +87,11 @@ class AdDesignReview extends Component {
       "campaignDetails",
       false
     );
-    let storyAdsArray = campaignDetails
-      ? this.props.navigation.getParam("sotryAdsArray", [])
-      : this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let adDesign = this.props.navigation.getParam("adDesign", false);
+    let storyAdsArray =
+      campaignDetails && !adDesign
+        ? this.props.navigation.getParam("storyAdsArray", [])
+        : this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -106,7 +108,9 @@ class AdDesignReview extends Component {
     let media = !storyAds
       ? this.props.navigation.getParam("media", "")
       : campaignDetails
-      ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
+      ? (storyAdsArray[this.state.storyAdIndex]["media"].includes(".com")
+          ? "https://"
+          : "") + storyAdsArray[this.state.storyAdIndex]["media"]
       : storyAdsArray[this.state.storyAdIndex]["media"];
 
     if (storyAds) {
@@ -116,9 +120,11 @@ class AdDesignReview extends Component {
             "icon_media_url"
           )) ||
         (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
-          JSON.parse(
-            storyAdsArray[this.state.storyAdIndex].attachment
-          ).hasOwnProperty("icon_media_url"))
+          (typeof storyAdsArray[this.state.storyAdIndex].attachment ===
+            "object" &&
+            JSON.parse(
+              storyAdsArray[this.state.storyAdIndex].attachment
+            ).hasOwnProperty("icon_media_url")))
       ) {
         appIcon = campaignDetails
           ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
@@ -146,6 +152,8 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
+
+    console.log(call_to_action);
 
     return (
       <SafeAreaView

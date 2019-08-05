@@ -29,12 +29,14 @@ class SnapCard extends Component {
         {...{
           preview,
           uri:
-            rejected ||
-            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-              snapCardInfo.item.uploaded)
-              ? (rejected && snapCardInfo.item.media.includes(".com")
-                  ? "https://"
-                  : "") + snapCardInfo.item["media"]
+            snapCardInfo.item.media !== "//"
+              ? rejected ||
+                (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                  snapCardInfo.item.uploaded)
+                ? (rejected && snapCardInfo.item.media.includes(".com")
+                    ? "https://"
+                    : "") + snapCardInfo.item["media"]
+                : ""
               : ""
         }}
         style={{ height: "100%", width: "100%", position: "absolute" }}

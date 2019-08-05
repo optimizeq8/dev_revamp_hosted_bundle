@@ -487,6 +487,33 @@ const reducer = (state = initialState, action) => {
         ...state,
         weburlAvalible: action.payload.success
       };
+    case actionTypes.SET_REJECTED_STORYADS:
+      let rejAds = action.payload;
+      let oldStoryAdsArray = state.storyAdsArray;
+      oldStoryAdsArray = rejAds.map((ad, i) => ({
+        ...ad,
+        id: ad.story_id,
+        call_to_action: {
+          label: ad.call_to_action.replace("_", ""),
+          value: ad.call_to_action
+        }
+      }));
+      oldStoryAdsArray = [
+        ...oldStoryAdsArray,
+        {
+          id:
+            parseInt(oldStoryAdsArray[oldStoryAdsArray.length - 1].story_id) +
+            1,
+          call_to_action: { label: "BLANK", value: "BLANK" },
+          media: "//",
+          destination: "BLANK",
+          attachment: "BLANK"
+        }
+      ];
+      return {
+        ...state,
+        storyAdsArray: oldStoryAdsArray
+      };
     default:
       return state;
   }

@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Image as RNImage, Animated, BackHandler } from "react-native";
+import {
+  View,
+  Image as RNImage,
+  Animated,
+  BackHandler,
+  FlatList
+} from "react-native";
 import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
 import DateField from "../../MiniComponents/DatePicker/DateFields";
@@ -149,6 +155,17 @@ class CampaignDetails extends Component {
     });
   };
 
+  adCreatives = item => {
+    return (
+      <MediaBox
+        key={item.story_id}
+        name={item.story_id}
+        navigation={this.props.navigation}
+        selectedCampaign={this.props.selectedCampaign}
+        ad={item.item}
+      />
+    );
+  };
   render() {
     let loading = this.props.loading;
 
@@ -176,9 +193,10 @@ class CampaignDetails extends Component {
           let creatives = selectedCampaign.hasOwnProperty("story_creatives")
             ? selectedCampaign.story_creatives
             : selectedCampaign.collection_creatives;
+
           media = creatives.map((ad, i) => (
             <MediaBox
-              key={ad.name}
+              key={ad.story_id}
               name={i}
               navigation={this.props.navigation}
               selectedCampaign={selectedCampaign}
@@ -508,21 +526,22 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 {selectedCampaign &&
-                  (selectedCampaign.review_status === "REJECTED" ? (
+                  (selectedCampaign.review_status !== "REJECTED" ? (
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (
                         <>
                           <Text style={styles.subHeadings}>Media</Text>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignSelf: "center",
-                              justifyContent: "space-between",
-                              marginBottom: 20
+                          <FlatList
+                            contentContainerStyle={{
+                              paddingTop: 20,
+                              paddingBottom: 50,
+                              alignItems: "center"
                             }}
-                          >
-                            {media}
-                          </View>
+                            keyExtractor={item => item.campaign_id}
+                            data={selectedCampaign.story_creatives}
+                            renderItem={this.adCreatives}
+                            numColumns={4}
+                          />
                         </>
                       )}
                       <Text style={styles.subHeadings}>Audience</Text>

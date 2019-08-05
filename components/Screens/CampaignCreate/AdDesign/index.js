@@ -171,6 +171,7 @@ class AdDesign extends Component {
     }
 
     if (this.rejected && this.selectedCampaign) {
+      this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
     } else if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -932,7 +933,14 @@ class AdDesign extends Component {
       let media =
         this.adType !== "StoryAd"
           ? { media: this.state.media }
-          : { cover: this.props.data.cover, logo: this.props.data.logo };
+          : {
+              cover: this.rejected
+                ? this.selectedCampaign.story_preview_media
+                : this.props.data.cover,
+              logo: this.rejected
+                ? this.selectedCampaign.story_logo_media
+                : this.props.data.logo
+            };
       this.props.navigation.push(
         this.adType === "StoryAd" ? "StoryAdDesignReview" : "AdDesignReview",
         {
@@ -943,9 +951,15 @@ class AdDesign extends Component {
           brand_name: this.state.campaignInfo.brand_name,
           destination: this.state.campaignInfo.destination,
           icon_media_url: this.state.campaignInfo.attachment.icon_media_url,
-          coverHeadline: this.props.data.coverHeadline,
-          storyAdsArray: this.props.storyAdsArray,
-          collectionAdMedia: this.props.collectionAdMedia
+          coverHeadline: this.rejected
+            ? this.selectedCampaign.story_headline
+            : this.props.data.coverHeadline,
+          storyAdsArray: this.rejected
+            ? this.selectedCampaign.story_creatives
+            : this.props.storyAdsArray,
+          collectionAdMedia: this.props.collectionAdMedia,
+          campaignDetails: this.rejected,
+          adDesign: true
         }
       );
     }
@@ -1026,16 +1040,14 @@ class AdDesign extends Component {
       this.state.storyAdCards.selectedStoryAd.index
     ];
     if (!this.state.storyAdCards.selectedStoryAd.iosVideoUploaded) {
-      let res = card.media.split(
-        card.media.includes("/ImageManipulator/")
-          ? "/ImageManipulator/"
-          : "/ImagePicker/"
-      );
-      let format = res[1].split(".");
+      let res = card.media.split("/");
+      res = res[res.length - 1];
+
+      let format = res.split(".")[1];
       var photo = {
         uri: card.media,
-        type: card.media_type + "/" + format[1],
-        name: res[1]
+        type: card.media_type + "/" + format,
+        name: res
       };
       storyBody.append("story_media", photo);
       storyBody.append("story_media_type", card.media_type);
@@ -1063,7 +1075,12 @@ class AdDesign extends Component {
       "story_destination",
       card.destination ? card.destination : "BLANK"
     );
-    storyBody.append("campaign_id", this.props.campaign_id);
+    storyBody.append(
+      "campaign_id",
+      this.selectedCampaign
+        ? this.selectedCampaign.campaign_id
+        : this.props.campaign_id
+    );
     storyBody.append("story_order", card.index);
     storyBody.append(
       "story_call_to_action",
@@ -1278,7 +1295,9 @@ class AdDesign extends Component {
 
   render() {
     let { media, storyAdCards } = this.state;
-    let validCards = this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let validCards = this.rejected
+      ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
+      : this.props.storyAdsArray.filter(ad => ad.uploaded);
     let showContinueBtn =
       this.adType === "SnapAd" ||
       (this.adType === "StoryAd" &&
@@ -1308,7 +1327,7 @@ class AdDesign extends Component {
     ));
 
     let swipeUpComp =
-      this.adType === "SnapAd" || this.rejected ? (
+      this.adType === "SnapAd" ? (
         // !this.rejected &&
         "BRAND_AWARENESS" !== this.state.objective && (
           <SwipeUpComponent
@@ -1486,23 +1505,7 @@ class AdDesign extends Component {
                         video={true}
                         openUploadVideo={this.openUploadVideo}
                         selectedStoryAd={storyAdCards.selectedStoryAd}
-                        snapAdsCards={
-                          this.selectedCampaign
-                            ? [
-                                ...this.selectedCampaign.story_creatives,
-                                {
-                                  id: 3,
-                                  call_to_action: {
-                                    label: "BLANK",
-                                    value: "BLANK"
-                                  },
-                                  media: "//",
-                                  destination: "BLANK",
-                                  attachment: "BLANK"
-                                }
-                              ]
-                            : this.props.storyAdsArray
-                        }
+                        snapAdsCards={this.props.storyAdsArray}
                         _handleStoryAdCards={this._handleStoryAdCards}
                       />
                     ) : (
@@ -1534,23 +1537,7 @@ class AdDesign extends Component {
                         openUploadVideo={this.openUploadVideo}
                         selectedStoryAd={storyAdCards.selectedStoryAd}
                         cancelUpload={this.cancelUpload}
-                        snapAdsCards={
-                          this.selectedCampaign
-                            ? [
-                                ...this.selectedCampaign.story_creatives,
-                                {
-                                  id: 3,
-                                  call_to_action: {
-                                    label: "BLANK",
-                                    value: "BLANK"
-                                  },
-                                  media: "//",
-                                  destination: "BLANK",
-                                  attachment: "BLANK"
-                                }
-                              ]
-                            : this.props.storyAdsArray
-                        }
+                        snapAdsCards={this.props.storyAdsArray}
                         _handleStoryAdCards={this._handleStoryAdCards}
                       />
                     ) : (
@@ -1583,15 +1570,6 @@ class AdDesign extends Component {
                                 : "") + storyAdCards.selectedStoryAd.media
                             : ""
                       }}
-                      // source={{
-                      //   uri:
-                      //     media !== "//"
-                      //       ? (this.rejected && media.includes(".com") ? "https://" : "") + media
-                      //       : storyAdCards.selectedStoryAd.media
-                      //       ? (this.rejected && media.includes(".com") ? "https://" : "") +
-                      //         storyAdCards.selectedStoryAd.media
-                      //       : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                      // }}
                       resizeMode="cover"
                     />
 
@@ -1604,23 +1582,7 @@ class AdDesign extends Component {
                         openUploadVideo={this.openUploadVideo}
                         selectedStoryAd={storyAdCards.selectedStoryAd}
                         cancelUpload={this.cancelUpload}
-                        snapAdsCards={
-                          this.selectedCampaign
-                            ? [
-                                ...this.selectedCampaign.story_creatives,
-                                {
-                                  id: 3,
-                                  call_to_action: {
-                                    label: "BLANK",
-                                    value: "BLANK"
-                                  },
-                                  media: "//",
-                                  destination: "BLANK",
-                                  attachment: "BLANK"
-                                }
-                              ]
-                            : this.props.storyAdsArray
-                        }
+                        snapAdsCards={this.props.storyAdsArray}
                         _handleStoryAdCards={this._handleStoryAdCards}
                       />
                     ) : (
@@ -1833,6 +1795,8 @@ const mapDispatchToProps = dispatch => ({
     ),
   getVideoUploadUrl: (campaign_id, openBrowser) =>
     dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser)),
+  setRejectedStoryAds: data =>
+    dispatch(actionCreators.setRejectedStoryAds(data)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
 });
 export default connect(

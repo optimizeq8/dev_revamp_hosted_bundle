@@ -11,8 +11,8 @@ export default class MediaBox extends Component {
       this.props.selectedCampaign.campaign_type === "CollectionAd"
         ? { media: "https://" + this.props.selectedCampaign.media }
         : {
-            cover: "https://" + this.props.selectedCampaign.story_preview_media,
-            logo: "https://" + this.props.selectedCampaign.story_logo_media
+            cover: this.props.selectedCampaign.story_preview_media,
+            logo: this.props.selectedCampaign.story_logo_media
           };
     let icon_media_url =
       this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
