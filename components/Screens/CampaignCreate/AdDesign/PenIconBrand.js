@@ -41,9 +41,9 @@ export default class PenIconBrand extends Component {
             }
             defaultValue={
               this.props.field === "Business Name"
-                ? this.props.mainBusiness.businessname &&
-                  this.props.mainBusiness.businessname.length <= 25
-                  ? this.props.mainBusiness.businessname
+                ? this.props.mainBusiness.brandname &&
+                  this.props.mainBusiness.brandname.length <= 25
+                  ? this.props.mainBusiness.brandname
                   : ""
                 : !this.props.data
                 ? ""

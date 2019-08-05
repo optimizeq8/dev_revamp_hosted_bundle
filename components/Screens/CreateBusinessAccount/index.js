@@ -523,6 +523,7 @@ class CreateBusinessAccount extends Component {
                                 }
                               })
                             }
+                            maxLength={25}
                             onFocus={() => {
                               this.setState({ inputBN: true });
                             }}
