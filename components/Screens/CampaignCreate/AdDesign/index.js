@@ -191,11 +191,8 @@ class AdDesign extends Component {
         swipeUpError
       });
     }
-<<<<<<< HEAD
 
     //----keep for later---//
-=======
->>>>>>> took out callback for webBrowser redirect in componenetDIdmount of adDesign
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
