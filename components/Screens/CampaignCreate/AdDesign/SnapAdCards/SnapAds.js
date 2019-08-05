@@ -39,7 +39,7 @@ export default class SnapAds extends Component {
             paddingBottom: 50,
             alignItems: "center"
           }}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.index}
           data={this.props.snapAdsCards}
           renderItem={this.snapCards}
           style={{}}

@@ -49,8 +49,9 @@ export default class SwipeUpComponent extends Component {
       >
         <View style={styles.swipeUpView}>
           <Text style={styles.swipeUpText}>
-            {(destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
-            (destination === "COLLECTION" && collectionAdLinkForm === 2)
+            {call_to_action_label &&
+            ((destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
+              (destination === "COLLECTION" && collectionAdLinkForm === 2))
               ? call_to_action_label
               : (destination === "REMOTE_WEBPAGE" &&
                   objective !== "WEB_CONVERSION") ||

@@ -48,16 +48,20 @@ class StoryAdDesignReview extends Component {
     this.props.navigation.push("AdDesignReview", {
       storyAds: true,
       campaignDetails: this.props.navigation.getParam("campaignDetails", false),
-      sotryAdsArray: this.props.navigation.getParam("storyAdsArray"),
+      storyAdsArray: this.props.navigation.getParam("storyAdsArray", {}),
       headline: this.props.navigation.getParam("headline", ""),
-      brand_name: this.props.navigation.getParam("brand_name", "")
+      brand_name: this.props.navigation.getParam("brand_name", ""),
+      adDesign: this.props.navigation.getParam("adDesign", false)
     });
   };
   render() {
-    const cover = this.props.navigation.getParam("cover", "");
-    const logo = this.props.navigation.getParam("logo", "");
-    const coverHeadline = this.props.navigation.getParam("coverHeadline", "");
-    const preview = {
+    let cover = this.props.navigation.getParam("cover", "");
+    cover = cover.includes(".com") ? "https://" + cover : cover;
+    let logo = this.props.navigation.getParam("logo", "");
+    logo = logo.includes(".com") ? "https://" + logo : logo;
+
+    let coverHeadline = this.props.navigation.getParam("coverHeadline", "");
+    let preview = {
       uri:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
     };
