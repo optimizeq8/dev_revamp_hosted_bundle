@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: "85%",
     width: "90%",
+    paddingBottom: 40,
     marginTop: hp(3)
   },
   mainSafeArea: {
@@ -166,8 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 16 / PixelRatio.getFontScale(),
     textAlign: "left",
     color: "#fff",
-    marginLeft: 8,
-    elevation: 10
+    marginLeft: 8
   },
 
   placeholder: {
@@ -239,7 +239,6 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   subText: {
-    top: 10,
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",

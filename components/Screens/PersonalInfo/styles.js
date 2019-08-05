@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     paddingHorizontal: 35,
     paddingTop: 20,
-    textAlign: "left"
+    alignItems: "center"
   },
   nameText: {
     color: "#5F5F5F",
@@ -27,10 +27,13 @@ const styles = StyleSheet.create({
   },
   labelMobileNo: {
     // bottom: 5,
+    alignSelf: "center",
+
     fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
     bottom: 5,
+    alignSelf: "center",
     fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14
   },
   mainCard: {
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-regular",
+    textAlign: "center",
     fontSize: 21 / PixelRatio.getFontScale(),
     color: "#4B4B4B"
   },

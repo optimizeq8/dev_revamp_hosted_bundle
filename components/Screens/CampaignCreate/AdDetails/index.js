@@ -5,7 +5,8 @@ import {
   Slider,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
+  Image as RNImage,
+  Platform,
   BackHandler
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
@@ -737,6 +738,41 @@ class AdDetails extends Component {
       this.props.data && this.props.data.media
         ? this.props.data.media
         : this.props.navigation.getParam("media", "");
+
+//     const image =
+//       this.props.data && this.props.data.image
+//         ? this.props.data.image
+//         : this.props.navigation.getParam("image", "");
+
+//     let ImageOrRNImage =
+//       Platform.OS === "ios" ? (
+//         <Image
+//           {...{ preview, uri: image }}
+//           style={[
+//             styles.imageBackgroundViewWrapper,
+//             this.state.sidemenustate
+//               ? {
+//                   borderTopRightRadius: 30
+//                 }
+//               : {}
+//           ]}
+//         />
+//       ) : (
+//         <RNImage
+//           style={[
+//             styles.imageBackgroundViewWrapper,
+//             this.state.sidemenustate
+//               ? {
+//                   borderTopRightRadius: 30
+//                 }
+//               : {}
+//           ]}
+//           source={{
+//             uri: image.includes(".jpg") ? image : "www.go.com"
+//           }}
+//         />
+//       );
+
     return (
       <Sidemenu
         onChange={isOpen => {
@@ -780,10 +816,10 @@ class AdDetails extends Component {
                 }
               : {}
           ]}
-          // source={{
-          //   uri: media.includes(".jpg") ? image : "www.go.com"
-          // }}
         />
+
+//         {ImageOrRNImage}
+
         <SafeAreaView
           style={[
             styles.safeArea
