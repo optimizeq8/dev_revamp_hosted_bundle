@@ -170,9 +170,6 @@ class AdDesign extends Component {
     } else {
       swipeUpError = null;
     }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     if (
       (this.props.data &&
         Object.keys(this.state.campaignInfo)
@@ -181,48 +178,41 @@ class AdDesign extends Component {
           })
           .includes(true)) ||
       this.props.data.hasOwnProperty("media")
+    )
+      if (this.rejected && this.selectedCampaign) {
+        this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
+      } else if (
+        this.props.data &&
+        Object.keys(this.state.campaignInfo)
+          .map(key => {
+            if (this.props.data.hasOwnProperty(key)) return true;
+          })
+          .includes(true)
+      ) {
+        let rep = this.state.campaignInfo;
 
-=======
-=======
->>>>>>> fixed issue
-    if (this.rejected && this.selectedCampaign) {
-      this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
-    } else if (
-      this.props.data &&
-      Object.keys(this.state.campaignInfo)
-        .map(key => {
-          if (this.props.data.hasOwnProperty(key)) return true;
-        })
-        .includes(true)
-<<<<<<< HEAD
->>>>>>> story ad rejection process for stories complete, cover and logo still in progress
-=======
->>>>>>> fixed issue
-    ) {
-      let rep = this.state.campaignInfo;
+        rep = {
+          ...this.state.campaignInfo,
+          call_to_action: this.props.data.call_to_action,
+          attachment: this.props.data.attachment,
+          destination: this.props.data.destination
+        };
 
-      rep = {
-        ...this.state.campaignInfo,
-        call_to_action: this.props.data.call_to_action,
-        attachment: this.props.data.attachment,
-        destination: this.props.data.destination
-      };
-
-      this.setState({
-        ...this.state,
-        campaignInfo: {
-          ...rep
-        },
-        media: this.adType !== "StoryAd" && rep.media ? rep.media : "//",
-        ...this.props.data,
-        campaignInfo: rep,
-        image:
-          this.props.adType !== "StoryAd" && this.props.data.image
-            ? this.props.data.image
-            : "//",
-        swipeUpError
-      });
-    }
+        this.setState({
+          ...this.state,
+          campaignInfo: {
+            ...rep
+          },
+          media: this.adType !== "StoryAd" && rep.media ? rep.media : "//",
+          ...this.props.data,
+          campaignInfo: rep,
+          image:
+            this.props.adType !== "StoryAd" && this.props.data.image
+              ? this.props.data.image
+              : "//",
+          swipeUpError
+        });
+      }
 
     //----keep for later---//
     // if (this.props.navigation.state.params) {
