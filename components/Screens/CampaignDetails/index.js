@@ -252,7 +252,7 @@ class CampaignDetails extends Component {
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
                     uri: !loading
-                      ? "http://" + selectedCampaign.media
+                      ? selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
@@ -268,7 +268,7 @@ class CampaignDetails extends Component {
           <ImageBackground
             source={
               !loading
-                ? { uri: "http://" + selectedCampaign.media }
+                ? { uri: selectedCampaign.media }
                 : require("../../../assets/images/emptyPlaceHolder.png")
             }
             onLoad={() => {
