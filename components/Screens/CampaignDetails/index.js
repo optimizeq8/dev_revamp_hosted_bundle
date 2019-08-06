@@ -270,7 +270,7 @@ class CampaignDetails extends Component {
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
                     uri: !loading
-                      ? "http://" + selectedCampaign.media
+                      ? selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
@@ -285,7 +285,7 @@ class CampaignDetails extends Component {
           <Image
             {...{
               preview,
-              uri: !loading ? "http://" + selectedCampaign.media : ""
+              uri: !loading ? selectedCampaign.media : ""
             }}
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });
@@ -508,7 +508,7 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 {selectedCampaign &&
-                  (selectedCampaign.review_status === "REJECTED" ? (
+                  (selectedCampaign.review_status !== "REJECTED" ? (
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (
                         <>

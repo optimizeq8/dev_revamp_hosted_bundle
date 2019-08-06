@@ -739,39 +739,39 @@ class AdDetails extends Component {
         ? this.props.data.media
         : this.props.navigation.getParam("media", "");
 
-//     const image =
-//       this.props.data && this.props.data.image
-//         ? this.props.data.image
-//         : this.props.navigation.getParam("image", "");
+    //     const image =
+    //       this.props.data && this.props.data.image
+    //         ? this.props.data.image
+    //         : this.props.navigation.getParam("image", "");
 
-//     let ImageOrRNImage =
-//       Platform.OS === "ios" ? (
-//         <Image
-//           {...{ preview, uri: image }}
-//           style={[
-//             styles.imageBackgroundViewWrapper,
-//             this.state.sidemenustate
-//               ? {
-//                   borderTopRightRadius: 30
-//                 }
-//               : {}
-//           ]}
-//         />
-//       ) : (
-//         <RNImage
-//           style={[
-//             styles.imageBackgroundViewWrapper,
-//             this.state.sidemenustate
-//               ? {
-//                   borderTopRightRadius: 30
-//                 }
-//               : {}
-//           ]}
-//           source={{
-//             uri: image.includes(".jpg") ? image : "www.go.com"
-//           }}
-//         />
-//       );
+    //     let ImageOrRNImage =
+    //       Platform.OS === "ios" ? (
+    //         <Image
+    //           {...{ preview, uri: image }}
+    //           style={[
+    //             styles.imageBackgroundViewWrapper,
+    //             this.state.sidemenustate
+    //               ? {
+    //                   borderTopRightRadius: 30
+    //                 }
+    //               : {}
+    //           ]}
+    //         />
+    //       ) : (
+    //         <RNImage
+    //           style={[
+    //             styles.imageBackgroundViewWrapper,
+    //             this.state.sidemenustate
+    //               ? {
+    //                   borderTopRightRadius: 30
+    //                 }
+    //               : {}
+    //           ]}
+    //           source={{
+    //             uri: image.includes(".jpg") ? image : "www.go.com"
+    //           }}
+    //         />
+    //       );
 
     return (
       <Sidemenu
@@ -795,7 +795,7 @@ class AdDetails extends Component {
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? "http://" + campaign.media : media
+                uri: editCampaign ? campaign.media : media
               }}
               shouldPlay
               isLooping
@@ -818,7 +818,7 @@ class AdDetails extends Component {
           ]}
         />
 
-//         {ImageOrRNImage}
+        {/*ImageOrRNImage*/}
 
         <SafeAreaView
           style={[
