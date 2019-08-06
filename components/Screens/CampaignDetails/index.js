@@ -270,7 +270,7 @@ class CampaignDetails extends Component {
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
                     uri: !loading
-                      ? "http://" + selectedCampaign.media
+                      ? selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
@@ -285,7 +285,7 @@ class CampaignDetails extends Component {
           <Image
             {...{
               preview,
-              uri: !loading ? "http://" + selectedCampaign.media : ""
+              uri: !loading ? selectedCampaign.media : ""
             }}
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });

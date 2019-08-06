@@ -1438,14 +1438,10 @@ class AdDesign extends Component {
         source={{
           uri:
             media !== "//" && !this.state.storyAdCards.storyAdSelected
-              ? (this.rejected && media.includes(".com") ? "https://" : "") +
-                media
+              ? media
               : storyAdCards.selectedStoryAd.media &&
                 storyAdCards.storyAdSelected
-              ? (this.rejected &&
-                storyAdCards.selectedStoryAd.media.includes(".com")
-                  ? "https://"
-                  : "") + storyAdCards.selectedStoryAd.media
+              ? storyAdCards.selectedStoryAd.media
               : "//"
         }}
         shouldPlay
@@ -1637,27 +1633,11 @@ class AdDesign extends Component {
                         preview,
                         uri:
                           media !== "//"
-                            ? (this.rejected && media.includes(".com")
-                                ? "https://"
-                                : "") + media
+                            ? media
                             : storyAdCards.selectedStoryAd.media
-                            ? (this.rejected &&
-                              storyAdCards.selectedStoryAd.media.includes(
-                                ".com"
-                              )
-                                ? "https://"
-                                : "") + storyAdCards.selectedStoryAd.media
+                            ? storyAdCards.selectedStoryAd.media
                             : ""
                       }}
-                      // source={{
-                      //   uri:
-                      //     media !== "//"
-                      //       ? (this.rejected && media.includes(".com") ? "https://" : "") + media
-                      //       : storyAdCards.selectedStoryAd.media
-                      //       ? (this.rejected && media.includes(".com") ? "https://" : "") +
-                      //         storyAdCards.selectedStoryAd.media
-                      //       : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-                      // }}
                       resizeMode="cover"
                     />
 

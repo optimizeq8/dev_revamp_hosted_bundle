@@ -9,10 +9,10 @@ export default class MediaBox extends Component {
   perviewHandler = () => {
     let media =
       this.props.selectedCampaign.campaign_type === "CollectionAd"
-        ? { media: "https://" + this.props.selectedCampaign.media }
+        ? { media: this.props.selectedCampaign.media }
         : {
-            cover: "https://" + this.props.selectedCampaign.story_preview_media,
-            logo: "https://" + this.props.selectedCampaign.story_logo_media
+            cover: this.props.selectedCampaign.story_preview_media,
+            logo: this.props.selectedCampaign.story_logo_media
           };
     let icon_media_url =
       this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
@@ -92,7 +92,7 @@ export default class MediaBox extends Component {
               onLoadStart={() => this.setState({ imageLoaded: true })}
               onLoad={() => this.setState({ imageLoaded: false })}
               source={{
-                uri: "https://" + media
+                uri: media
               }}
               isMuted
               resizeMode={"cover"}
@@ -104,7 +104,7 @@ export default class MediaBox extends Component {
               onLoad={() => this.setState({ imageLoaded: true })}
               style={{ width: "100%", height: "100%", alignSelf: "center" }}
               source={{
-                uri: "https://" + media
+                uri: media
               }}
             />
           )}
