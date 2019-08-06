@@ -74,7 +74,6 @@ class AdDesign extends Component {
         attachment: "BLANK"
       },
       storyAdCards: {
-        // snapAdsCards: [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }],
         storyAdSelected: false,
         selectedStoryAd: { media: "//" },
         numOfAds: 0
@@ -170,7 +169,16 @@ class AdDesign extends Component {
     } else {
       swipeUpError = null;
     }
-    if (
+    if (this.rejected && this.selectedCampaign) {
+      this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
+      this.setState({
+        ...this.state,
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          headline: this.selectedCampaign.headline
+        }
+      });
+    } else if (
       (this.props.data &&
         Object.keys(this.state.campaignInfo)
           .map(key => {
@@ -178,41 +186,31 @@ class AdDesign extends Component {
           })
           .includes(true)) ||
       this.props.data.hasOwnProperty("media")
-    )
-      if (this.rejected && this.selectedCampaign) {
-        this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
-      } else if (
-        this.props.data &&
-        Object.keys(this.state.campaignInfo)
-          .map(key => {
-            if (this.props.data.hasOwnProperty(key)) return true;
-          })
-          .includes(true)
-      ) {
-        let rep = this.state.campaignInfo;
+    ) {
+      let rep = this.state.campaignInfo;
 
-        rep = {
-          ...this.state.campaignInfo,
-          call_to_action: this.props.data.call_to_action,
-          attachment: this.props.data.attachment,
-          destination: this.props.data.destination
-        };
+      rep = {
+        ...this.state.campaignInfo,
+        call_to_action: this.props.data.call_to_action,
+        attachment: this.props.data.attachment,
+        destination: this.props.data.destination
+      };
 
-        this.setState({
-          ...this.state,
-          campaignInfo: {
-            ...rep
-          },
-          media: this.adType !== "StoryAd" && rep.media ? rep.media : "//",
-          ...this.props.data,
-          campaignInfo: rep,
-          image:
-            this.props.adType !== "StoryAd" && this.props.data.image
-              ? this.props.data.image
-              : "//",
-          swipeUpError
-        });
-      }
+      this.setState({
+        ...this.state,
+        campaignInfo: {
+          ...rep
+        },
+        media: this.adType !== "StoryAd" && rep.media ? rep.media : "//",
+        ...this.props.data,
+        campaignInfo: rep,
+        image:
+          this.props.adType !== "StoryAd" && this.props.data.image
+            ? this.props.data.image
+            : "//",
+        swipeUpError
+      });
+    }
 
     //----keep for later---//
     // if (this.props.navigation.state.params) {
@@ -1427,14 +1425,10 @@ class AdDesign extends Component {
         source={{
           uri:
             media !== "//" && !this.state.storyAdCards.storyAdSelected
-              ? (this.rejected && media.includes(".com") ? "https://" : "") +
-                media
+              ? media
               : storyAdCards.selectedStoryAd.media &&
                 storyAdCards.storyAdSelected
-              ? (this.rejected &&
-                storyAdCards.selectedStoryAd.media.includes(".com")
-                  ? "https://"
-                  : "") + storyAdCards.selectedStoryAd.media
+              ? storyAdCards.selectedStoryAd.media
               : "//"
         }}
         shouldPlay
@@ -1591,16 +1585,9 @@ class AdDesign extends Component {
                         preview,
                         uri:
                           media !== "//"
-                            ? (this.rejected && media.includes(".com")
-                                ? "https://"
-                                : "") + media
+                            ? media
                             : storyAdCards.selectedStoryAd.media
-                            ? (this.rejected &&
-                              storyAdCards.selectedStoryAd.media.includes(
-                                ".com"
-                              )
-                                ? "https://"
-                                : "") + storyAdCards.selectedStoryAd.media
+                            ? storyAdCards.selectedStoryAd.media
                             : ""
                       }}
                       resizeMode="cover"

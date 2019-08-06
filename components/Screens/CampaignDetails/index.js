@@ -303,7 +303,7 @@ class CampaignDetails extends Component {
           <Image
             {...{
               preview,
-              uri: !loading ? "http://" + selectedCampaign.media : ""
+              uri: !loading ? selectedCampaign.media : ""
             }}
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });
@@ -315,7 +315,7 @@ class CampaignDetails extends Component {
             }}
           />
           <SafeAreaView
-            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.7)" }}
+            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.6)" }}
             forceInset={{ bottom: "never", top: "always" }}
           >
             <NavigationEvents
@@ -662,6 +662,10 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
+                      {/* <RejectedComp
+                        selectedCampaign={selectedCampaign}
+                        navigation={this.props.navigation}
+                      /> */}
                     </Content>
                   ) : (
                     <RejectedComp

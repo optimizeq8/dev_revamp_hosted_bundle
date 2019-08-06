@@ -76,7 +76,7 @@ class AdDesignReview extends Component {
             style={styles.collectionImage}
             {...{
               preview,
-              uri: collections[i].localUri || "https://" + collections[i].media
+              uri: collections[i].localUri
             }}
             // source={{ uri: collections[i].localUri || collections[i].media }}
             resizeMode="cover"
@@ -114,9 +114,7 @@ class AdDesignReview extends Component {
     let media = !storyAds
       ? this.props.navigation.getParam("media", "")
       : campaignDetails
-      ? (storyAdsArray[this.state.storyAdIndex]["media"].includes(".com")
-          ? "https://"
-          : "") + storyAdsArray[this.state.storyAdIndex]["media"]
+      ? storyAdsArray[this.state.storyAdIndex]["media"]
       : storyAdsArray[this.state.storyAdIndex]["media"];
 
     if (storyAds) {

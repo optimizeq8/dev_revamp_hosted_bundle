@@ -33,14 +33,20 @@ export default class RejectedComp extends Component {
         </View>
         <Button
           onPress={() =>
-            this.props.navigation.navigate("AdDesign", {
-              rejected: true,
-              selectedCampaign: selectedCampaign,
-              adType: selectedCampaign.campaign_type,
-              objective: selectedCampaign.objective,
-              headline: selectedCampaign.headline,
-              campaign_id: selectedCampaign.campaign_id
-            })
+            navigation.navigate(
+              selectedCampaign.campaign_type === "SnapAd" ||
+                selectedCampaign.campaign_type === "CollectionAd"
+                ? "AdDesign"
+                : "AdCover",
+              {
+                rejected: true,
+                selectedCampaign: selectedCampaign,
+                adType: selectedCampaign.campaign_type,
+                objective: selectedCampaign.objective,
+                headline: selectedCampaign.headline,
+                campaign_id: selectedCampaign.campaign_id
+              }
+            )
           }
           style={styles.reviewButton}
         >

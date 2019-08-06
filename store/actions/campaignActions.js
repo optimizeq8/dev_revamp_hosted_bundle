@@ -358,7 +358,8 @@ export const uploadStoryAdCover = (
   navigation,
   onToggleModal,
   rejected,
-  cancelUplaod
+  cancelUplaod,
+  selectedCampaign
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -371,7 +372,7 @@ export const uploadStoryAdCover = (
       "Content-Type": "multipart/form-data"
     };
     createBaseUrl()
-      .post(rejected ? `reuploadbrandmedia` : `savestorypreviewmedia`, info, {
+      .post(`savestorypreviewmedia`, info, {
         onUploadProgress: ProgressEvent =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token
@@ -380,12 +381,11 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then(data => {
-        rejected &&
-          showMessage({
-            message: data.message,
-            type: data.success ? "success" : "danger",
-            position: "top"
-          });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
         return dispatch({
           type: actionTypes.SET_COVER_DESIGN,
           payload: data
@@ -396,9 +396,11 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        !rejected
-          ? navigation.push("AdDesign")
-          : navigation.navigate("Dashboard");
+        navigation.push("AdDesign", {
+          rejected,
+          selectedCampaign,
+          adType: selectedCampaign.campaign_type
+        });
       })
       .catch(err => {
         loading(0);

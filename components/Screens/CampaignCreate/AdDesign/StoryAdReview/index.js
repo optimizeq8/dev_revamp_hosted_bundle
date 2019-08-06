@@ -56,9 +56,9 @@ class StoryAdDesignReview extends Component {
   };
   render() {
     let cover = this.props.navigation.getParam("cover", "");
-    cover = cover.includes(".com") ? "https://" + cover : cover;
+    cover = cover;
     let logo = this.props.navigation.getParam("logo", "");
-    logo = logo.includes(".com") ? "https://" + logo : logo;
+    logo = logo;
 
     let coverHeadline = this.props.navigation.getParam("coverHeadline", "");
     let preview = {

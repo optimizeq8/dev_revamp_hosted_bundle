@@ -33,9 +33,7 @@ class SnapCard extends Component {
               ? rejected ||
                 (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                   snapCardInfo.item.uploaded)
-                ? (rejected && snapCardInfo.item.media.includes(".com")
-                    ? "https://"
-                    : "") + snapCardInfo.item["media"]
+                ? snapCardInfo.item["media"]
                 : ""
               : ""
         }}
@@ -47,9 +45,7 @@ class SnapCard extends Component {
           uri:
             !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
             snapCardInfo.item.uploaded
-              ? (rejected && snapCardInfo.item.media.includes(".com")
-                  ? "https://"
-                  : "") + snapCardInfo.item["media"]
+              ? snapCardInfo.item["media"]
               : "snapCardInfo.item"
         }}
         style={{ height: "100%", width: "100%", position: "absolute" }}
@@ -74,9 +70,7 @@ class SnapCard extends Component {
                   rejected ||
                   (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                     snapCardInfo.item.uploaded)
-                    ? (rejected && snapCardInfo.item.media.includes(".com")
-                        ? "https://"
-                        : "") + snapCardInfo.item["media"]
+                    ? snapCardInfo.item["media"]
                     : "snapCardInfo.item"
               }}
               shouldPlay
@@ -88,7 +82,6 @@ class SnapCard extends Component {
           ) : (
             ImageOrRNImage
           )}
-
         </View>
         <View
           style={{

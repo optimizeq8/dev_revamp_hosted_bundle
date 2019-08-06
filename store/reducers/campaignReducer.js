@@ -496,7 +496,11 @@ const reducer = (state = initialState, action) => {
         call_to_action: {
           label: ad.call_to_action.replace("_", ""),
           value: ad.call_to_action
-        }
+        },
+        attachment:
+          typeof ad.attachment === "string"
+            ? JSON.parse(ad.attachment)
+            : ad.attachment
       }));
       oldStoryAdsArray = [
         ...oldStoryAdsArray,
