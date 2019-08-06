@@ -100,7 +100,8 @@ class AdDesign extends Component {
       videoIsLoading: false,
       heightComponent: 0,
       creativeVideoUrl: "",
-      sourceChanging: false
+      sourceChanging: false,
+      rejectionUpload: false
     };
     this.adType =
       this.props.navigation.getParam("adType", "") || this.props.adType;
@@ -459,7 +460,8 @@ class AdDesign extends Component {
                     media: result.uri,
                     uploaded: false,
                     media_type: result.type.toUpperCase(),
-                    iosVideoUploaded: false
+                    iosVideoUploaded: false,
+                    rejectionUpload: true
                   };
 
                   cards[this.state.storyAdCards.selectedStoryAd.index] = card;
@@ -484,7 +486,8 @@ class AdDesign extends Component {
                     type: result.type.toUpperCase(),
                     mediaError: null,
                     result: result.uri,
-                    iosVideoUploaded: false
+                    iosVideoUploaded: false,
+                    rejectionUpload: true
                   });
 
                   this.onToggleModal(false);
@@ -762,10 +765,12 @@ class AdDesign extends Component {
       "campaign_name",
       this.rejected ? this.state.campaignInfo.headline : this.props.data.name
     );
-    // if (!this.rejected) {
+
     body.append("brand_name", this.state.campaignInfo.brand_name);
     body.append("headline", this.state.campaignInfo.headline);
-    // }
+
+    body.append("media_upload", this.state.rejectionUpload ? 1 : 0);
+
     body.append(
       "destination",
       this.adType !== "StoryAd" ? this.state.campaignInfo.destination : "STORY"
@@ -1128,6 +1133,8 @@ class AdDesign extends Component {
       "ios_upload",
       Platform.OS === "ios" && card.iosVideoUploaded ? 1 : 0
     );
+    storyBody.append("media_upload", card.rejectionUpload ? 1 : 0);
+
     await this.handleUpload();
     await this.props.uploadStoryAdCard(
       storyBody,

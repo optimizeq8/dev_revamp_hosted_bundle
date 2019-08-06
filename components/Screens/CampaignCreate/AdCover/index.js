@@ -84,7 +84,7 @@ class AdCover extends Component {
       inputB: false,
       objective: "",
       cover: "//",
-      // loaded: 0,
+      loaded: 0,
       type: "",
       iosVideoUploaded: false,
       formattedCover: null,
@@ -96,7 +96,9 @@ class AdCover extends Component {
       mediaModalVisible: false,
       coverLoading: false,
       videoIsLoading: false,
-      heightComponent: 0
+      heightComponent: 0,
+      coverRejectionUpload: false,
+      logorejectionUpload: false
     };
     this.params = this.props.navigation.state.params;
     this.selectedCampaign = this.props.navigation.getParam(
@@ -236,7 +238,8 @@ class AdCover extends Component {
           ...this.state.campaignInfo,
           logo: correctLogo && logoFormat ? logo.uri : ""
         },
-        logoError: correctLogo || logoFormat
+        logoError: correctLogo || logoFormat,
+        logorejectionUpload: correctLogo && logoFormat
       });
       showMessage({
         message:
@@ -339,7 +342,8 @@ class AdCover extends Component {
                   cover: result.uri,
                   type: result.type.toUpperCase(),
                   coverError: null,
-                  result: result.uri
+                  result: result.uri,
+                  coverRejectionUpload: true
                 });
                 this.onToggleModal(false);
                 showMessage({
@@ -479,6 +483,8 @@ class AdCover extends Component {
     );
 
     body.append("headline", this.state.campaignInfo.coverHeadline);
+    body.append("cover_upload", this.state.coverRejectionUpload ? 1 : 0);
+    body.append("logo_upload", this.state.logorejectionUpload ? 1 : 0);
 
     this.rejected &&
       this.selectedCampaign &&
