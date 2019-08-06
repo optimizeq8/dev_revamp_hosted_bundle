@@ -51,7 +51,7 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {media !== "//" ? "Edit Photo" : "Add Media"}
+            {media !== "//" ? "Edit media" : "Add Media"}
           </Text>
         </Button>
       );
