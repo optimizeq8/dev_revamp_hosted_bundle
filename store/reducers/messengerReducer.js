@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import reverse from "lodash/reverse";
 const initialState = {
   user: null,
-  conversation_id: "",
+  conversation_id: null,
   seen: false,
   last_seen: null,
   loading: false,
@@ -10,7 +10,8 @@ const initialState = {
   loading_con: false,
   failed_msg: [],
   messages: [],
-  subscribed: false
+  subscribed: false,
+  open_conversation: false
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -30,6 +31,11 @@ const reducer = (state = initialState, action) => {
         messages: [...messageArr],
         loading_msg: false
       };
+    case actionTypes.SET_CONVERSATION_AS_OPEN:
+      return {
+        ...state,
+        open_conversation: action.payload
+      };
     case actionTypes.SET_CONVERSATION:
       // console.log("con: ", action.payload);
       const reverseMessages = reverse(action.payload.messages);
@@ -37,7 +43,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         conversation_id: action.payload.conversation_id,
         messages: reverseMessages,
-        loading_con: false
+        loading_con: false,
+        open_conversation: true
       };
     case actionTypes.SET_AS_SEEN:
       return {

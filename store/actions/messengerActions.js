@@ -3,6 +3,7 @@
 
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import isNull from "lodash/isNull";
 
 instance = axios.create({
   baseURL: "https://intercom-react.glitch.me/"
@@ -10,7 +11,7 @@ instance = axios.create({
 
 // send the id of the user
 // will return the user object
-export const connect_user_to_intercom = (user_id, navigation) => {
+export const connect_user_to_intercom = user_id => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSENGER,
@@ -24,12 +25,30 @@ export const connect_user_to_intercom = (user_id, navigation) => {
         return res.data;
       })
       .then(data => {
-        return dispatch({
-          type: actionTypes.SET_CURRENT_MESSENGER,
-          payload: data
-        });
+        if (data.code === "not_found") {
+          var user = getState().auth.userInfo;
+          var bus = getState().account.mainBusiness;
+          var body = {
+            user_id: user.userid,
+            email: user.email,
+            phone: user.mobile,
+            name: `${user.firstname} ${user.lastname}`,
+            companies: [
+              {
+                company_id: bus.businessid,
+                name: bus.businessname
+              }
+            ]
+          };
+          dispatch(create_user_on_intercom(body));
+        } else {
+          dispatch(get_conversation(user_id));
+          return dispatch({
+            type: actionTypes.SET_CURRENT_MESSENGER,
+            payload: data
+          });
+        }
       })
-      .then(() => navigation.push("Chat"))
       .catch(err => {
         console.log("get_user", err.message || err.response);
       });
@@ -50,7 +69,7 @@ export const connect_user_to_intercom = (user_id, navigation) => {
 //         ]
 // }
 
-export const create_user_on_intercom = (user, navigation) => {
+export const create_user_on_intercom = user => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSENGER,
@@ -58,10 +77,13 @@ export const create_user_on_intercom = (user, navigation) => {
     });
     instance
       .post("/create-user", user)
-      .then(response => {
+      .then(res => {
+        console.log("created", res.data);
+        dispatch(get_conversation(res.data.user_id));
+
         return dispatch({
           type: actionTypes.SET_CURRENT_MESSENGER,
-          payload: response.data
+          payload: res.data
         });
       })
       .catch(err => {
@@ -74,9 +96,6 @@ export const create_user_on_intercom = (user, navigation) => {
 
 export const get_conversation = user_id => {
   return (dispatch, getState) => {
-    // set_as_seen();
-
-    // dispatch(() => set_as_seen());
     dispatch({
       type: actionTypes.SET_LOADING_CON,
       payload: true
@@ -84,16 +103,25 @@ export const get_conversation = user_id => {
     instance
       .get(`get-conversation/${user_id}`)
       .then(res => {
+        console.log("convo", res.data);
         return res.data;
       })
       .then(data => {
-        return dispatch({
-          type: actionTypes.SET_CONVERSATION,
-          payload: data
-        });
+        if (isNull(data.conversation_id)) {
+          return dispatch({
+            type: actionTypes.SET_CONVERSATION_AS_OPEN,
+            payload: false
+          });
+        } else {
+          return dispatch({
+            type: actionTypes.SET_CONVERSATION,
+            payload: data
+          });
+        }
       })
       .then(() => {
-        dispatch(set_as_seen());
+        if (!isNull(getState().messenger.conversation_id))
+          dispatch(set_as_seen());
       })
       .catch(err => {
         console.log("get_conversation", err.message || err.response);
@@ -111,17 +139,24 @@ export const get_conversation = user_id => {
 //   },
 //   "body": "Hey"
 // }
-export const start_conversation = (message, navigation) => {
-  return dispatch => {
+export const start_conversation = message => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
       payload: true
     });
+
     instance
-      .post("/start-conversation", message)
+      .post("/start-conversation", {
+        from: {
+          type: "user",
+          user_id: getState().auth.userInfo.userid
+        },
+        body: message
+      })
       .then(response => {
         return dispatch({
-          type: actionTypes.ADD_MESSAGE,
+          type: actionTypes.SET_CONVERSATION,
           payload: response.data
         });
       })
@@ -147,7 +182,7 @@ export const reply = message => {
     });
     instance
       .post("/reply", {
-        user_id: getState().msg.user.user_id,
+        user_id: getState().auth.userInfo.userid,
         body: message,
         message_type: "comment",
         type: "user"
@@ -183,10 +218,10 @@ export const set_as_seen = () => {
   return (dispatch, getState) => {
     console.log("log please???");
 
-    console.log("????", getState().msg.conversation_id);
+    console.log("????", getState().messenger.conversation_id);
 
     instance
-      .get(`read/${getState().msg.conversation_id}`)
+      .get(`read/${getState().messenger.conversation_id}`)
       .then(res => {
         return res.data;
       })
@@ -224,7 +259,7 @@ export const update_last_seen = (user_id, navigation) => {
 
 export const subscribe = socket => {
   return (dispatch, getState) => {
-    socket.emit("subscribe", getState().msg.user.user_id);
+    socket.emit("subscribe", getState().auth.userInfo.userid);
     return dispatch({
       type: actionTypes.SET_AS_SUBSCRIBED
     });
