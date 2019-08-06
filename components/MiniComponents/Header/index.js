@@ -48,7 +48,11 @@ export default class Header extends Component {
                 navigation.push("AdDetails", {
                   editCampaign: true,
                   campaign: selectedCampaign,
+<<<<<<< HEAD
                   media: selectedCampaign.media
+=======
+                  image: selectedCampaign.media
+>>>>>>> took out 'https://' from media uris
                 })
               }
               style={styles.edit}
