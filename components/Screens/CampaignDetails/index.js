@@ -508,7 +508,7 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 {selectedCampaign &&
-                  (selectedCampaign.review_status === "REJECTED" ? (
+                  (selectedCampaign.review_status !== "REJECTED" ? (
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (
                         <>
