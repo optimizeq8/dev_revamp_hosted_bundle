@@ -286,7 +286,7 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Wallet")}
+                    onPress={() => this.props.navigation.navigate("Messenger")}
                     style={[styles.wallet]}
                   >
                     <WalletIcon width={24} height={24} />
