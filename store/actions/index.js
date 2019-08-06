@@ -83,3 +83,15 @@ export {
   resendVerifyMobileCodeByEmail,
   resetRegister
 } from "./registerActions";
+
+export {
+  connect_user_to_intercom,
+  create_user_on_intercom,
+  get_conversation,
+  start_conversation,
+  reply,
+  admin_response,
+  set_as_seen,
+  update_last_seen,
+  subscribe
+} from "./messengerActions";
