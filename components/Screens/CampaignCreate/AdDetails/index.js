@@ -755,7 +755,7 @@ class AdDetails extends Component {
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? "http://" + campaign.media : image
+                uri: editCampaign ? campaign.media : image
               }}
               shouldPlay
               isLooping
