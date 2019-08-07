@@ -101,10 +101,11 @@ class AdDesign extends Component {
       heightComponent: 0,
       creativeVideoUrl: "",
       sourceChanging: false,
-      rejectionUpload: false
+      rejectionUpload: false,
+      tempImage: "",
+      tempImageloading: false
     };
-    this.adType =
-      this.props.navigation.getParam("adType", "") || this.props.adType;
+    this.adType = this.props.adType;
     this.params = this.props.navigation.state.params;
     this.selectedCampaign = this.props.navigation.getParam(
       "selectedCampaign",
@@ -131,17 +132,19 @@ class AdDesign extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         campaign_id: this.rejected
-          ? this.params.campaign_id
+          ? this.selectedCampaign.campaign_id
           : this.props.campaign_id,
-        brand_name: this.props.mainBusiness.businessname,
+        brand_name: this.rejected
+          ? this.selectedCampaign.brand_name
+          : this.props.mainBusiness.businessname,
         headline: this.rejected
-          ? this.params.headline
+          ? this.selectedCampaign.headline
           : this.props.data
           ? this.props.data.name
           : ""
       },
       objective: this.rejected
-        ? this.params.objective
+        ? this.selectedCampaign.objective
         : this.props.data
         ? this.props.data.objective
         : "TRAFFIC"
@@ -173,9 +176,35 @@ class AdDesign extends Component {
     if (this.rejected && this.selectedCampaign) {
       this.adType === "StoryAd"
         ? this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives)
-        : this.props.setRejectedCollectionAds(
+        : this.adType === "CollectionAds"
+        ? this.props.setRejectedCollectionAds(
             this.selectedCampaign.collection_creatives
-          );
+          )
+        : null;
+      if (this.adType === "StoryAd") {
+        this.setState({ tempImageloading: true });
+        FileSystem.downloadAsync(
+          this.selectedCampaign.story_creatives[0].media,
+          FileSystem.cacheDirectory +
+            this.selectedCampaign.story_creatives[0].media.split("/")[
+              this.selectedCampaign.story_creatives[0].media.split("/").length -
+                1
+            ]
+        ).then(media => {
+          FileSystem.getInfoAsync(media.uri, { md5: true }).then(info => {
+            this.setState({
+              ...this.state,
+              tempImage: media.uri,
+              tempImageloading: false,
+              tempType: ["MKV", "AVI", "MP4", "MPEG"].some(el =>
+                media.uri.includes(el.toLowerCase())
+              )
+                ? "VIDEO"
+                : "IMAGE"
+            });
+          });
+        });
+      }
     } else if (
       (this.props.data &&
         Object.keys(this.state.campaignInfo)
@@ -269,7 +298,8 @@ class AdDesign extends Component {
           uploaded: false,
           attachment: { label: "BLANK", value: "BLANK" },
           [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
+          rejectionLongVidUpload: true
         };
       } else
         card = {
@@ -705,93 +735,6 @@ class AdDesign extends Component {
     }
   };
 
-  formatMedia() {
-    var body = new FormData();
-    if (!this.state.iosVideoUploaded || this.adType === "StoryAd") {
-      let storyAd = this.props.storyAdsArray.find(
-        card => card !== undefined && card.media
-      );
-      let res = (this.adType !== "StoryAd"
-        ? this.state.media
-        : storyAd.media
-      ).split("/");
-      res = res[res.length - 1];
-
-      let format = res.split(".")[1];
-
-      var photo = {
-        uri: this.adType !== "StoryAd" ? this.state.media : storyAd.media,
-        type:
-          (this.adType !== "StoryAd" ? this.state.type : storyAd.media_type) +
-          "/" +
-          format,
-        name: res
-      };
-      body.append("media", photo);
-      body.append(
-        "media_type",
-        this.adType !== "StoryAd" ? this.state.type : "IMAGE"
-      );
-    }
-    if (this.state.longformvideo_media) {
-      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
-      let formatVideo = resVideo[1].split(".");
-      var video = {
-        uri: this.state.longformvideo_media,
-        type: this.state.longformvideo_media_type + "/" + formatVideo[1],
-        name: resVideo[1]
-      };
-
-      body.append("longformvideo_media", video);
-      body.append(
-        "longformvideo_media_type",
-        this.state.longformvideo_media_type
-      );
-    }
-
-    if (this.state.campaignInfo.insta_handle) {
-      body.append("insta_handle", this.state.campaignInfo.insta_handle);
-      body.append("weburl", this.state.campaignInfo.weburl);
-      body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
-      body.append("callnumber", this.state.campaignInfo.callnumber);
-    }
-    body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
-    body.append("businessid", this.props.mainBusiness.businessid);
-    body.append("campaign_id", this.state.campaignInfo.campaign_id);
-    body.append(
-      "campaign_name",
-      this.rejected ? this.state.campaignInfo.headline : this.props.data.name
-    );
-
-    body.append("brand_name", this.state.campaignInfo.brand_name);
-    body.append("headline", this.state.campaignInfo.headline);
-
-    body.append("media_upload", this.state.rejectionUpload ? 1 : 0);
-
-    body.append(
-      "destination",
-      this.adType !== "StoryAd" ? this.state.campaignInfo.destination : "STORY"
-    );
-    body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
-    body.append(
-      "attachment",
-      this.state.campaignInfo.attachment === "BLANK"
-        ? this.state.campaignInfo.attachment
-        : JSON.stringify(this.state.campaignInfo.attachment)
-    );
-    body.append(
-      "ios_upload",
-      Platform.OS === "ios" &&
-        this.state.iosVideoUploaded &&
-        this.adType !== "StoryAd"
-        ? 1
-        : 0
-    );
-
-    this.setState({
-      formatted: body
-    });
-  }
   getVideoUploadUrl = () => {
     this.setMediaModalVisible(false);
     if (this.adType === "StoryAd") {
@@ -1073,7 +1016,10 @@ class AdDesign extends Component {
     let card = this.props.storyAdsArray[
       this.state.storyAdCards.selectedStoryAd.index
     ];
-    if (!this.state.storyAdCards.selectedStoryAd.iosVideoUploaded) {
+    if (
+      !this.state.storyAdCards.selectedStoryAd.iosVideoUploaded &&
+      card.rejectionUpload
+    ) {
       let res = card.media.split("/");
       res = res[res.length - 1];
 
@@ -1086,7 +1032,9 @@ class AdDesign extends Component {
       storyBody.append("story_media", photo);
       storyBody.append("story_media_type", card.media_type);
     }
-    if (card.hasOwnProperty("longformvideo_media")) {
+    if (
+      card.hasOwnProperty("longformvideo_media" && card.rejectionLongVidUpload)
+    ) {
       let resVideo = card.longformvideo_media.split("/ImagePicker/");
       let formatVideo = resVideo[1].split(".");
       var video = {
@@ -1102,8 +1050,14 @@ class AdDesign extends Component {
       );
     }
     storyBody.append(
+      "story_longformvideo_media_upload",
+      card.rejectionLongVidUpload ? 1 : 0
+    );
+    storyBody.append(
       "story_name",
-      this.state.campaignInfo.brand_name + " " + card.index
+      this.rejected
+        ? card.name
+        : this.state.campaignInfo.brand_name + " " + card.index
     );
     storyBody.append(
       "story_destination",
@@ -1115,7 +1069,10 @@ class AdDesign extends Component {
         ? this.selectedCampaign.campaign_id
         : this.props.campaign_id
     );
-    storyBody.append("story_order", card.index);
+    storyBody.append(
+      "story_order",
+      this.rejected ? this.state.storyAdCards.selectedStoryAd.index : card.index
+    );
     storyBody.append(
       "story_call_to_action",
       card.call_to_action ? card.call_to_action.value : "BLANK"
@@ -1130,7 +1087,7 @@ class AdDesign extends Component {
       "ios_upload",
       Platform.OS === "ios" && card.iosVideoUploaded ? 1 : 0
     );
-    storyBody.append("media_upload", card.rejectionUpload ? 1 : 0);
+    storyBody.append("story_media_upload", card.rejectionUpload ? 1 : 0);
 
     await this.handleUpload();
     await this.props.uploadStoryAdCard(
@@ -1149,10 +1106,103 @@ class AdDesign extends Component {
     });
     return;
   };
+  formatMedia() {
+    var body = new FormData();
+    if (!this.state.iosVideoUploaded || this.adType === "StoryAd") {
+      let storyAd = this.props.storyAdsArray.find(
+        card =>
+          card !== undefined && card.media && !card.media.includes("https://")
+      );
+      if (storyAd.media === "//") {
+        storyAd.media = this.state.tempImage;
+        storyAd.media_type = this.state.tempType;
+      }
 
+      let res = (this.adType !== "StoryAd"
+        ? this.state.media
+        : storyAd.media
+      ).split("/");
+      res = res[res.length - 1];
+
+      let format = res.split(".")[1];
+
+      var photo = {
+        uri: this.adType !== "StoryAd" ? this.state.media : storyAd.media,
+        type:
+          (this.adType !== "StoryAd" ? this.state.type : storyAd.media_type) +
+          "/" +
+          format,
+        name: res
+      };
+      body.append("media", photo);
+      body.append(
+        "media_type",
+        this.adType !== "StoryAd" ? this.state.type : storyAd.media_type
+      );
+    }
+    if (this.state.longformvideo_media) {
+      let resVideo = this.state.longformvideo_media.split("/ImagePicker/");
+      let formatVideo = resVideo[1].split(".");
+      var video = {
+        uri: this.state.longformvideo_media,
+        type: this.state.longformvideo_media_type + "/" + formatVideo[1],
+        name: resVideo[1]
+      };
+
+      body.append("longformvideo_media", video);
+      body.append(
+        "longformvideo_media_type",
+        this.state.longformvideo_media_type
+      );
+    }
+
+    if (this.state.campaignInfo.insta_handle) {
+      body.append("insta_handle", this.state.campaignInfo.insta_handle);
+      body.append("weburl", this.state.campaignInfo.weburl);
+      body.append("whatsappnumber", this.state.campaignInfo.whatsappnumber);
+      body.append("callnumber", this.state.campaignInfo.callnumber);
+    }
+    body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
+    body.append("businessid", this.props.mainBusiness.businessid);
+    body.append("campaign_id", this.state.campaignInfo.campaign_id);
+    body.append(
+      "campaign_name",
+      this.rejected ? this.state.campaignInfo.headline : this.props.data.name
+    );
+
+    body.append("brand_name", this.state.campaignInfo.brand_name);
+    body.append("headline", this.state.campaignInfo.headline);
+
+    body.append("media_upload", this.state.rejectionUpload ? 1 : 0);
+
+    body.append(
+      "destination",
+      this.adType !== "StoryAd" ? this.state.campaignInfo.destination : "STORY"
+    );
+    body.append("call_to_action", this.state.campaignInfo.call_to_action.value);
+    body.append(
+      "attachment",
+      this.state.campaignInfo.attachment === "BLANK"
+        ? this.state.campaignInfo.attachment
+        : JSON.stringify(this.state.campaignInfo.attachment)
+    );
+    body.append(
+      "ios_upload",
+      Platform.OS === "ios" &&
+        this.state.iosVideoUploaded &&
+        this.adType !== "StoryAd"
+        ? 1
+        : 0
+    );
+
+    this.setState({
+      formatted: body
+    });
+  }
   _handleSubmission = async () => {
     if (this.adType === "StoryAd" && this.state.storyAdCards.storyAdSelected) {
       this.formatStoryAd();
+      return;
     }
     await this.validator();
     if (
@@ -1173,7 +1223,7 @@ class AdDesign extends Component {
       await this.formatMedia();
       await this.handleUpload();
       if (
-        !this.props.data.hasOwnProperty("formatted") ||
+        (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
         JSON.stringify(this.props.data.formatted) !==
           JSON.stringify(this.state.formatted)
       ) {
@@ -1555,7 +1605,6 @@ class AdDesign extends Component {
                             : storyAdCards.selectedStoryAd.media
                         }
                         setMediaModalVisible={this.setMediaModalVisible}
-                        media={this.state.media}
                       />
                     )}
                     {this.state.videoIsLoading ? <CameraLoading /> : null}
@@ -1686,7 +1735,8 @@ class AdDesign extends Component {
                       onPress={this._handleSubmission}
                       style={styles.button}
                     >
-                      {this.props.loadingStoryAdsArray.includes(true) &&
+                      {(this.props.loadingStoryAdsArray.includes(true) ||
+                        this.state.tempImageloading) &&
                       !this.state.storyAdCards.storyAdSelected ? (
                         <Button
                           rounded

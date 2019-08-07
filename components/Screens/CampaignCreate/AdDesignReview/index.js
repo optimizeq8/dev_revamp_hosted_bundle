@@ -88,9 +88,8 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let adType = this.props.navigation.getParam("adType", null)
-      ? this.props.navigation.getParam("adType", null)
-      : this.props.adType;
+    let adType =
+      this.props.navigation.getParam("adType", false) || this.props.adType;
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
       false
@@ -177,9 +176,6 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
-
-    console.log(call_to_action);
-
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}

@@ -961,3 +961,12 @@ export const setRejectedCollectionAds = data => {
     });
   };
 };
+
+export const setRejectedAdType = data => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_REJECTED_ADTYPE,
+      payload: data
+    });
+  };
+};

@@ -54,6 +54,7 @@ class Deep_Link extends Component {
 
   componentDidMount() {
     if (
+      this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.destination !== "REMOTE_WEBPAGE"
     ) {

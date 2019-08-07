@@ -36,13 +36,15 @@ export default class SwipeUpComponent extends Component {
             objective === "TRAFFIC" || adType === "StoryAd"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
-                  objective: objective,
-                  media: media
+                  objective,
+                  adType,
+                  destination,
+                  media
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
-                  objective: objective,
-                  collectionAdLinkForm: collectionAdLinkForm
+                  objective,
+                  collectionAdLinkForm
                 });
           }
         }}
@@ -50,6 +52,7 @@ export default class SwipeUpComponent extends Component {
         <View style={styles.swipeUpView}>
           <Text style={styles.swipeUpText}>
             {call_to_action_label &&
+            call_to_action_label !== "BLANK" &&
             ((destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
               (destination === "COLLECTION" && collectionAdLinkForm === 2))
               ? call_to_action_label

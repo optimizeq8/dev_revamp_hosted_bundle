@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Text, View } from "react-native";
 import { Button } from "native-base";
-
+import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
-export default class RejectedComp extends Component {
+class RejectedComp extends Component {
   render() {
     let { selectedCampaign, navigation } = this.props;
     return (
@@ -32,7 +33,8 @@ export default class RejectedComp extends Component {
           </Text>
         </View>
         <Button
-          onPress={() =>
+          onPress={() => {
+            this.props.setRejectedAdType(selectedCampaign.campaign_type);
             navigation.navigate(
               selectedCampaign.campaign_type === "SnapAd" ||
                 selectedCampaign.campaign_type === "CollectionAd"
@@ -41,13 +43,12 @@ export default class RejectedComp extends Component {
               {
                 rejected: true,
                 selectedCampaign: selectedCampaign,
-                adType: selectedCampaign.campaign_type,
                 objective: selectedCampaign.objective,
                 headline: selectedCampaign.headline,
                 campaign_id: selectedCampaign.campaign_id
               }
-            )
-          }
+            );
+          }}
           style={styles.reviewButton}
         >
           <Text style={styles.subHeadings}>Review Ad and publish</Text>
@@ -56,3 +57,11 @@ export default class RejectedComp extends Component {
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  setRejectedAdType: info => dispatch(actionCreators.setRejectedAdType(info))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(RejectedComp);
