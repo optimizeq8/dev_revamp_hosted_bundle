@@ -518,6 +518,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         storyAdsArray: oldStoryAdsArray
       };
+    case actionTypes.SET_REJECTED_COLLECTIONADS:
+      let rejColAds = action.payload;
+      return {
+        ...state,
+        collectionAdMedia: rejColAds,
+        collectionAdLinkForm:
+          action.payload[0].interaction_type === "WEB_VIEW" ? 1 : 2
+      };
     default:
       return state;
   }

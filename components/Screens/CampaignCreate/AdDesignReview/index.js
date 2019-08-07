@@ -77,6 +77,8 @@ class AdDesignReview extends Component {
             {...{
               preview,
               uri: collections[i].localUri
+                ? collections[i].localUri
+                : collections[i].media
             }}
             // source={{ uri: collections[i].localUri || collections[i].media }}
             resizeMode="cover"

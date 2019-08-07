@@ -47,7 +47,8 @@ export {
   set_collectionAd_link_form,
   save_collection_media,
   verifyBusinessUrl,
-  setRejectedStoryAds
+  setRejectedStoryAds,
+  setRejectedCollectionAds
 } from "./campaignActions";
 
 export {

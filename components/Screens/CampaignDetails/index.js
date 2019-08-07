@@ -288,7 +288,7 @@ class CampaignDetails extends Component {
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
                     uri: !loading
-                      ? "http://" + selectedCampaign.media
+                      ? selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
@@ -538,7 +538,10 @@ class CampaignDetails extends Component {
                               alignItems: "center"
                             }}
                             keyExtractor={item => item.campaign_id}
-                            data={selectedCampaign.story_creatives}
+                            data={
+                              selectedCampaign.story_creatives ||
+                              selectedCampaign.collection_creatives
+                            }
                             renderItem={this.adCreatives}
                             numColumns={4}
                           />
@@ -662,10 +665,10 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
-                      {/* <RejectedComp
+                      <RejectedComp
                         selectedCampaign={selectedCampaign}
                         navigation={this.props.navigation}
-                      /> */}
+                      />
                     </Content>
                   ) : (
                     <RejectedComp

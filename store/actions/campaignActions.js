@@ -952,3 +952,12 @@ export const setRejectedStoryAds = data => {
     });
   };
 };
+
+export const setRejectedCollectionAds = data => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_REJECTED_COLLECTIONADS,
+      payload: data
+    });
+  };
+};

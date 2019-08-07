@@ -171,14 +171,11 @@ class AdDesign extends Component {
       swipeUpError = null;
     }
     if (this.rejected && this.selectedCampaign) {
-      this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
-      this.setState({
-        ...this.state,
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          headline: this.selectedCampaign.headline
-        }
-      });
+      this.adType === "StoryAd"
+        ? this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives)
+        : this.props.setRejectedCollectionAds(
+            this.selectedCampaign.collection_creatives
+          );
     } else if (
       (this.props.data &&
         Object.keys(this.state.campaignInfo)
@@ -1280,7 +1277,8 @@ class AdDesign extends Component {
           }}
           onPress={() => {
             this.props.navigation.push("CollectionMedia", {
-              collection_order: i
+              collection_order: i,
+              rejected: this.rejected
             });
           }}
         >
@@ -1296,7 +1294,11 @@ class AdDesign extends Component {
               }}
               {...{
                 preview,
-                uri: this.props.collectionAdMedia[i].localUri
+                uri: this.props.collectionAdMedia[i][
+                  this.props.collectionAdMedia[i].localUri
+                    ? "localUri"
+                    : "media"
+                ]
               }}
               // source={{ uri: this.props.collectionAdMedia[i].localUri }}
               resizeMode="cover"
@@ -1334,9 +1336,12 @@ class AdDesign extends Component {
 
   render() {
     let { media, storyAdCards } = this.state;
-    let validCards = this.rejected
-      ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
-      : this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let validCards =
+      this.adType === "StoryAd"
+        ? this.rejected
+          ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
+          : this.props.storyAdsArray.filter(ad => ad.uploaded)
+        : 3;
     let showContinueBtn =
       this.adType === "SnapAd" ||
       (this.adType === "StoryAd" &&
@@ -1829,6 +1834,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getVideoUploadUrl(campaign_id, openBrowser)),
   setRejectedStoryAds: data =>
     dispatch(actionCreators.setRejectedStoryAds(data)),
+  setRejectedCollectionAds: data =>
+    dispatch(actionCreators.setRejectedCollectionAds(data)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
 });
 export default connect(

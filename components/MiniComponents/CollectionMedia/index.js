@@ -95,7 +95,9 @@ class CollectionMedia extends Component {
       collection: {
         ...this.state.collection,
         collection_order: order,
-        collection_name: this.props.data.name + "_" + order
+        collection_name: this.props.collectionAdMedia[order]
+          ? this.props.collectionAdMedia[order].name
+          : this.props.data.name + "_" + order
       }
     });
 
@@ -111,65 +113,69 @@ class CollectionMedia extends Component {
         });
       }
     }
+    let collAds = this.props.collectionAdMedia;
     if (
       Object.keys(this.state.collection)
         .map(key => {
-          if (
-            this.props.collectionAdMedia[order] &&
-            this.props.collectionAdMedia[order].hasOwnProperty(key)
-          )
-            return true;
+          if (collAds[order] && collAds[order].hasOwnProperty(key)) return true;
         })
         .includes(true)
     ) {
       if (
         (this.props.collectionAdLinkForm === 1 &&
-          this.props.collectionAdMedia[order].collection_destination ===
-            "REMOTE_WEBPAGE") ||
+          collAds[order].collection_destination === "REMOTE_WEBPAGE") ||
         (this.props.collectionAdLinkForm === 2 &&
-          this.props.collectionAdMedia[order].collection_destination ===
-            "DEEP_LINK")
+          collAds[order].collection_destination === "DEEP_LINK") ||
+        collAds[order].interaction_type
       ) {
-        if (this.props.collectionAdLinkForm === 1) {
+        if (
+          this.props.collectionAdLinkForm === 1 ||
+          collAds[order].interaction_type === "WEB_VIEW"
+        ) {
           const url = split(
             JSON.parse(
-              this.props.collectionAdMedia[order].collection_attachment
+              collAds[order][
+                collAds[order].collection_attachment
+                  ? "collection_attachment"
+                  : "attachment_properties"
+              ]
             ).url,
             "://"
           );
           this.setState({
             collection: {
-              ...this.props.collectionAdMedia[order],
-              collection_attachment: url[1]
+              ...this.state.collection,
+              ...collAds[order],
+              collection_attachment: url[1].includes("?utm_source")
+                ? url[1].split("?utm_source")[0]
+                : url[1],
+              collection_media:
+                collAds[order][collAds[order].localUri ? "localUri" : "media"]
             },
             networkString: url[0] + "://",
-            localUri: this.props.collectionAdMedia[order].localUri
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
           });
         } else {
           const deep_link_uri = JSON.parse(
-            this.props.collectionAdMedia[order].collection_attachment
+            collAds[order][
+              collAds[order].collection_attachment
+                ? "collection_attachment"
+                : "attachment_properties"
+            ]
           ).deep_link_uri;
           this.setState({
             collection: {
-              ...this.props.collectionAdMedia[order],
+              ...this.state.collection,
+
+              ...collAds[order],
               collection_attachment: deep_link_uri
             },
-            localUri: this.props.collectionAdMedia[order].localUri
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
           });
         }
       }
-
-      // this.setState({
-      //   collection: {
-      //     ...this.state.collection
-      //   },
-
-      // });
-
-      // collection = {
-      //   ...this.state.collection,
-      //   ...this.props.collectionAdMedia[order]
-      // };
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -587,21 +593,6 @@ class CollectionMedia extends Component {
   };
 
   render() {
-    // let mediaButton = (
-
-    //   <Button
-    //     style={styles.inputMiddleButton}
-    //     onPress={() => {
-    //       this._pickImage();
-    //     }}
-    //   >
-    //     <Icon style={styles.icon} name="camera" />
-    //     <Text style={styles.mediaButtonMsg}>
-    //       {this.state.collection.collection_media ? "Edit Image" : "Add Image"}
-    //     </Text>
-    //   </Button>
-    // );
-
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -617,11 +608,7 @@ class CollectionMedia extends Component {
             navigation={this.props.navigation}
             title="Compose Collection Ad"
           />
-          <ScrollView
-            contentContainerStyle={styles.contentContainer}
-            // scrollEnabled={false}
-            // padder
-          >
+          <ScrollView contentContainerStyle={styles.contentContainer}>
             <KeyboardShift style={{}}>
               {() => (
                 <View style={styles.mainView}>
@@ -635,7 +622,6 @@ class CollectionMedia extends Component {
                   {isNull(this.state.collection.collection_media) ? (
                     <View style={styles.placeholder}>
                       <View style={styles.blankView} />
-                      {/* {mediaButton} */}
                       {this.renderMediaButton()}
                     </View>
                   ) : (
@@ -646,7 +632,6 @@ class CollectionMedia extends Component {
                         resizeMode="cover"
                       />
                       {this.renderMediaButton()}
-                      {/* {mediaButton} */}
                     </View>
                   )}
                   {!this.state.imageError ? null : (
