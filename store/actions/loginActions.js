@@ -170,6 +170,10 @@ export const login = (userData, navigation) => {
         }
       })
       .catch(err => {
+        dispatch({
+          type: actionTypes.SET_LOADING_USER,
+          payload: false
+        });
         // console.log("login error", err.message || err.response);
         showMessage({
           type: "danger",

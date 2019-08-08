@@ -207,7 +207,7 @@ class AdCover extends Component {
       mediaTypes: mediaTypes,
       base64: false,
       exif: false,
-      quality: 0.1
+      quality: 0.8
     });
 
     // this.onToggleModal(true);

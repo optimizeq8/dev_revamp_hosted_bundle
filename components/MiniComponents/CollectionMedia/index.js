@@ -248,7 +248,7 @@ class CollectionMedia extends Component {
       mediaTypes: "Images",
       base64: false,
       exif: false,
-      quality: 0.5
+      quality: 0.8
     });
 
     return result;
