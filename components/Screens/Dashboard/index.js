@@ -25,7 +25,7 @@ import AdButtions from "./AdButtons";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import WalletIcon from "../../../assets/SVGs/Wallet.svg";
+import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
@@ -289,7 +289,7 @@ class Dashboard extends Component {
                     onPress={() => this.props.navigation.navigate("Messenger")}
                     style={[styles.wallet]}
                   >
-                    <WalletIcon width={24} height={24} />
+                    <IntercomIcon width={24} height={24} />
                   </TouchableOpacity>
                 </>
               ) : (
