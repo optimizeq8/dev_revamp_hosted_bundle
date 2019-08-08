@@ -152,7 +152,7 @@ class CampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
 
-    if (!loading && !this.props.selectedCampaign) {
+    if (!loading && this.props.campaignError) {
       return (
         <ErrorComponent loading={loading} navigation={this.props.navigation} />
       );
@@ -687,7 +687,8 @@ const mapStateToProps = state => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   campaignEnded: state.campaignC.campaignEnded,
   loading: state.dashboard.loadingCampaignDetails,
-  loadingCampaignStats: state.dashboard.loadingCampaignStats
+  loadingCampaignStats: state.dashboard.loadingCampaignStats,
+  campaignError: state.dashboard.campaignError
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
