@@ -56,7 +56,7 @@ export default [
     value: "13"
   },
   {
-    label: "Food & Bevrage: Coffee Shop",
+    label: "Food & Beverage: Coffee Shop",
     value: "14"
   },
   {

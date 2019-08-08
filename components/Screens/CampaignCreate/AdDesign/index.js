@@ -206,6 +206,7 @@ class AdDesign extends Component {
     }
 
     //----keep for later---//
+
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }

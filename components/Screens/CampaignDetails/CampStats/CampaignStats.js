@@ -73,8 +73,7 @@ class CampaignStats extends Component {
             >
               Paid Frequency{" \n"}
               <Text style={globalStyles.numbers}>
-                {selectedCampaign &&
-                  formatNumber(selectedCampaign.paid_frequency, true)}
+                {selectedCampaign && selectedCampaign.paid_frequency}
               </Text>
             </Text>
           ) : (
