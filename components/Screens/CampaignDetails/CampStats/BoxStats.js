@@ -11,7 +11,7 @@ export default class BoxStats extends Component {
         return [
           <Box
             key={"BRAND_AWARENESS 1"}
-            title={"Video Views"}
+            title={"Impressions"}
             info={selectedCampaign.video_views}
           />,
           <Box
