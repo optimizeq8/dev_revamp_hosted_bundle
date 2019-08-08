@@ -795,11 +795,7 @@ class AdDetails extends Component {
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-<<<<<<< HEAD
                 uri: editCampaign ? campaign.media : media
-=======
-                uri: editCampaign ? campaign.media : image
->>>>>>> took out 'https://' from media uris
               }}
               shouldPlay
               isLooping

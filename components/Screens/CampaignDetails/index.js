@@ -282,21 +282,11 @@ class CampaignDetails extends Component {
                 />
               </View>
             )}
-<<<<<<< HEAD
           <Image
             {...{
               preview,
               uri: !loading ? selectedCampaign.media : ""
             }}
-=======
-
-          <ImageBackground
-            source={
-              !loading
-                ? { uri: selectedCampaign.media }
-                : require("../../../assets/images/emptyPlaceHolder.png")
-            }
->>>>>>> took out 'https://' from media uris
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });
             }}
