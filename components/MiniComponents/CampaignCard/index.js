@@ -128,10 +128,12 @@ class CampaignCard extends Component {
               )}
             {!this.review_status.includes("PENDING") && (
               <Text style={[styles.subtext]}>
-                {this.review_status.includes("REJECTED")
-                  ? `${
-                      campaign.review_status_reason
-                    }\n Tap to submit your Ad again`
+                {this.review_status.includes("REJECTED") &&
+                !(
+                  campaign.campaign_end === "1" ||
+                  new Date(campaign.end_time) < new Date()
+                )
+                  ? "Tap to submit your Ad again"
                   : "Tap to view more"}
               </Text>
             )}

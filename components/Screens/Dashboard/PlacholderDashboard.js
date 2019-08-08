@@ -16,7 +16,7 @@ import * as Animatable from "react-native-animatable";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
-import WalletIcon from "../../../assets/SVGs/Wallet.svg";
+import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 // Style
@@ -68,7 +68,7 @@ export default class PlacholderDashboard extends Component {
           </TouchableWithoutFeedback>
           <>
             <TouchableOpacity style={[styles.wallet]}>
-              <WalletIcon width={24} height={24} />
+              <IntercomIcon width={24} height={24} />
             </TouchableOpacity>
           </>
         </View>
