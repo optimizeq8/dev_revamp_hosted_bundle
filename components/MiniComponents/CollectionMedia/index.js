@@ -347,9 +347,11 @@ class CollectionMedia extends Component {
               }
             })
             .catch(error => {
+              console.log(error);
+
               this.onToggleModal(false);
               showMessage({
-                message: "Please choose an image not ",
+                message: "Please choose another image",
                 position: "top",
                 type: "warning"
               });

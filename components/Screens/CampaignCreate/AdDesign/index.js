@@ -27,7 +27,6 @@ import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import MediaModal from "./MediaModal";
 import SnapAds from "./SnapAdCards/SnapAds";
-import { Image } from "react-native-expo-image-cache";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -58,6 +57,7 @@ import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
 import { globalColors } from "../../../../GlobalStyles";
 import isUndefined from "lodash/isUndefined";
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -1294,7 +1294,7 @@ class AdDesign extends Component {
           }}
         >
           {!isUndefined(this.props.collectionAdMedia[i]) ? (
-            <Image
+            <RNImageOrCacheImage
               style={{
                 borderRadius: 20,
                 alignSelf: "center",
@@ -1303,12 +1303,7 @@ class AdDesign extends Component {
                 height: "100%",
                 alignItems: "center"
               }}
-              {...{
-                preview,
-                uri: this.props.collectionAdMedia[i].localUri
-              }}
-              // source={{ uri: this.props.collectionAdMedia[i].localUri }}
-              resizeMode="cover"
+              media={this.props.collectionAdMedia[i].localUri}
             />
           ) : (
             <Button
@@ -1628,18 +1623,15 @@ class AdDesign extends Component {
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
-                    <Image
+                    <RNImageOrCacheImage
+                      media={
+                        media !== "//"
+                          ? media
+                          : storyAdCards.selectedStoryAd.media
+                          ? storyAdCards.selectedStoryAd.media
+                          : ""
+                      }
                       style={styles.placeholder1}
-                      {...{
-                        preview,
-                        uri:
-                          media !== "//"
-                            ? media
-                            : storyAdCards.selectedStoryAd.media
-                            ? storyAdCards.selectedStoryAd.media
-                            : ""
-                      }}
-                      resizeMode="cover"
                     />
 
                     {inputFields}
