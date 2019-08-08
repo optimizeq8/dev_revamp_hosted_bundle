@@ -79,9 +79,9 @@ class CampaignCard extends Component {
               </Text>
             </View>
             {this.review_status.includes("APPROVED") &&
-            (new Date(campaign.start_time).setHours(0, 0, 0, 0) ===
+            (new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
               new Date().setHours(0, 0, 0, 0) &&
-              new Date(campaign.end_time) >
+              new Date(campaign.end_time) >=
                 new Date()) ? null : campaign.campaign_end === "1" ||
               new Date(campaign.end_time) < new Date() ? (
               <View
