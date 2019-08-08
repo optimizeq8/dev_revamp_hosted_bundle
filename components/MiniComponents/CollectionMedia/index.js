@@ -84,7 +84,8 @@ class CollectionMedia extends Component {
       type: "",
       formatted: null,
       localUri: null,
-      deep_link_urlError: ""
+      deep_link_urlError: "",
+      rejectionColUpload: false
     };
   }
 
@@ -342,7 +343,8 @@ class CollectionMedia extends Component {
                     ...this.state.collection,
                     collection_media: result.uri
                   },
-                  localUri: result.uri
+                  localUri: result.uri,
+                  rejectionColUpload: true
                 });
                 this.onToggleModal(false);
                 showMessage({
@@ -501,6 +503,7 @@ class CollectionMedia extends Component {
     if (this.state.collection.collection_id !== "") {
       body.append("collection_id", this.state.collection.collection_id);
     }
+    body.append("collection_media_upload", this.state.rejectionColUpload);
 
     this.setState({
       formatted: body
@@ -508,32 +511,36 @@ class CollectionMedia extends Component {
   }
 
   _handleSubmission = async () => {
-    if (this.props.collectionAdLinkForm === 1) {
-      if (this.validateUrl() && this.validateImage()) {
-        await this.formatMedia();
-        await this.handleUpload();
-        this.props.save_collection_media(
-          this.state.formatted,
-          this.state.localUri,
-          this._getUploadState,
-          this.props.navigation,
-          this.state.signal,
-          this.onToggleModal
-        );
+    if (this.state.rejectionColUpload) {
+      if (this.props.collectionAdLinkForm === 1) {
+        if (this.validateUrl() && this.validateImage()) {
+          await this.formatMedia();
+          await this.handleUpload();
+          this.props.save_collection_media(
+            this.state.formatted,
+            this.state.localUri,
+            this._getUploadState,
+            this.props.navigation,
+            this.state.signal,
+            this.onToggleModal
+          );
+        }
+      } else {
+        if (this.validateDeepLinkUrl() && this.validateImage()) {
+          await this.formatMedia();
+          await this.handleUpload();
+          this.props.save_collection_media(
+            this.state.formatted,
+            this.state.localUri,
+            this._getUploadState,
+            this.props.navigation,
+            this.state.signal,
+            this.onToggleModal
+          );
+        }
       }
     } else {
-      if (this.validateDeepLinkUrl() && this.validateImage()) {
-        await this.formatMedia();
-        await this.handleUpload();
-        this.props.save_collection_media(
-          this.state.formatted,
-          this.state.localUri,
-          this._getUploadState,
-          this.props.navigation,
-          this.state.signal,
-          this.onToggleModal
-        );
-      }
+      this.props.navigation.goBack();
     }
   };
 
@@ -772,7 +779,8 @@ class CollectionMedia extends Component {
                                   collection: {
                                     ...this.state.collection,
                                     collection_attachment: value
-                                  }
+                                  },
+                                  rejectionColUpload: true
                                 })
                               }
                               onBlur={() => this.validateUrl()}

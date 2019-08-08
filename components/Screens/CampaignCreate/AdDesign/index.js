@@ -176,7 +176,7 @@ class AdDesign extends Component {
     if (this.rejected && this.selectedCampaign) {
       this.adType === "StoryAd"
         ? this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives)
-        : this.adType === "CollectionAds"
+        : this.adType === "CollectionAd"
         ? this.props.setRejectedCollectionAds(
             this.selectedCampaign.collection_creatives
           )
