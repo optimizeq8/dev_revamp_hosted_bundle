@@ -81,16 +81,17 @@ class AdDesignReview extends Component {
     );
   };
   render() {
-    let adType = this.props.navigation.getParam("adType", null)
-      ? this.props.navigation.getParam("adType", null)
-      : this.props.adType;
+    let adType =
+      this.props.navigation.getParam("adType", false) || this.props.adType;
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
       false
     );
-    let storyAdsArray = campaignDetails
-      ? this.props.navigation.getParam("sotryAdsArray", [])
-      : this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let adDesign = this.props.navigation.getParam("adDesign", false);
+    let storyAdsArray =
+      campaignDetails && !adDesign
+        ? this.props.navigation.getParam("storyAdsArray", [])
+        : this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -151,7 +152,6 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
-
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -184,6 +184,7 @@ class AdDesignReview extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() =>
+                    storyAdsArray &&
                     this.state.storyAdIndex + 1 !== storyAdsArray.length
                       ? this.setState({
                           storyAdIndex: this.state.storyAdIndex + 1

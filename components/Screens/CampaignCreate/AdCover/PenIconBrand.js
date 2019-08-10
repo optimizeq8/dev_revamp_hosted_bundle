@@ -8,6 +8,7 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
+    let { rejected, coverHeadline } = this.props;
     return (
       <Item style={styles.inputHeadline}>
         <PenIcon
@@ -29,9 +30,7 @@ export default class PenIconBrand extends Component {
           <Text style={[styles.subtitleHeading]}>{this.props.field}</Text>
           <Input
             style={styles.inputText}
-            defaultValue={
-              !this.props.data ? "Headline" : this.props.data.coverHeadline
-            }
+            defaultValue={this.props.coverHeadline}
             maxLength={55}
             placeholder="Enter your cover headline"
             placeholderTextColor="#fff9"

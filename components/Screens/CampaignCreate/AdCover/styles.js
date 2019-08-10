@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
-    opacity: 0.2
+    opacity: 0.5
   },
   transition: {
     height: "100%"
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
-    opacity: 0.4,
+    opacity: 0.5,
     height: "100%",
     width: "100%"
   },
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   placeholder1: {
-    opacity: 0.2,
+    opacity: 0.5,
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",

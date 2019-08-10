@@ -358,7 +358,8 @@ export const uploadStoryAdCover = (
   navigation,
   onToggleModal,
   rejected,
-  cancelUplaod
+  cancelUplaod,
+  selectedCampaign
 ) => {
   onToggleModal(true);
   return dispatch => {
@@ -371,7 +372,7 @@ export const uploadStoryAdCover = (
       "Content-Type": "multipart/form-data"
     };
     createBaseUrl()
-      .post(rejected ? `reuploadbrandmedia` : `savestorypreviewmedia`, info, {
+      .post(`savestorypreviewmedia`, info, {
         onUploadProgress: ProgressEvent =>
           loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUplaod.token
@@ -380,12 +381,11 @@ export const uploadStoryAdCover = (
         return res.data;
       })
       .then(data => {
-        rejected &&
-          showMessage({
-            message: data.message,
-            type: data.success ? "success" : "danger",
-            position: "top"
-          });
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
         return dispatch({
           type: actionTypes.SET_COVER_DESIGN,
           payload: data
@@ -396,9 +396,11 @@ export const uploadStoryAdCover = (
         dispatch(save_campaign_info({ formattedCover: info }));
       })
       .then(() => {
-        !rejected
-          ? navigation.push("AdDesign")
-          : navigation.navigate("Dashboard");
+        navigation.push("AdDesign", {
+          rejected,
+          selectedCampaign,
+          adType: selectedCampaign.campaign_type
+        });
       })
       .catch(err => {
         loading(0);
@@ -448,7 +450,7 @@ export const uploadStoryAdCard = (
       "Content-Type": "multipart/form-data"
     };
     createBaseUrl()
-      .post(rejected ? `reuploadbrandmedia` : `savestorymedia`, info, {
+      .post(`savestorymedia`, info, {
         // onUploadProgress: ProgressEvent =>
         // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
         cancelToken: cancelUpload.token
@@ -458,14 +460,6 @@ export const uploadStoryAdCard = (
       })
       .then(data => {
         console.log(data);
-
-        // dispatch(
-        //   save_campaign_info("adDesign", {
-        //     appChoice,
-        //     longVideo,
-        //     iosUploadVideo
-        //   })
-        // );
         rejected &&
           showMessage({
             message: data.message,
@@ -476,15 +470,6 @@ export const uploadStoryAdCard = (
           type: actionTypes.SET_STORYADMEDIA_DESIGN,
           payload: { data: data.data, card }
         });
-      })
-      .then(() => {
-        // onToggleModal(false);
-        // dispatch(save_campaign_info({ formatted: info }));
-      })
-      .then(() => {
-        // !rejected
-        //   ? navigation.push("AdDetails")
-        //   : navigation.navigate("Dashboard");
       })
       .catch(err => {
         // loading(0);
@@ -956,5 +941,32 @@ export const save_collection_media = (
           type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA
         });
       });
+  };
+};
+
+export const setRejectedStoryAds = data => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_REJECTED_STORYADS,
+      payload: data
+    });
+  };
+};
+
+export const setRejectedCollectionAds = data => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_REJECTED_COLLECTIONADS,
+      payload: data
+    });
+  };
+};
+
+export const setRejectedAdType = data => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_REJECTED_ADTYPE,
+      payload: data
+    });
   };
 };

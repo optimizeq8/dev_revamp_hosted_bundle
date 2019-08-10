@@ -46,7 +46,10 @@ export {
   payment_request_credit_card,
   set_collectionAd_link_form,
   save_collection_media,
-  verifyBusinessUrl
+  verifyBusinessUrl,
+  setRejectedStoryAds,
+  setRejectedCollectionAds,
+  setRejectedAdType
 } from "./campaignActions";
 
 export {

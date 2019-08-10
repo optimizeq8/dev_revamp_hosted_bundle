@@ -739,7 +739,6 @@ class AdDetails extends Component {
       this.props.data && this.props.data.media
         ? this.props.data.media
         : this.props.navigation.getParam("media", "");
-
     return (
       <Sidemenu
         onChange={isOpen => {
