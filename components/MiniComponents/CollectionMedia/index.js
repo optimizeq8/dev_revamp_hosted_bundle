@@ -459,18 +459,14 @@ class CollectionMedia extends Component {
   formatMedia() {
     var body = new FormData();
 
-    let res = this.state.localUri.split(
-      this.state.localUri.includes("/ImageManipulator/")
-        ? "/ImageManipulator/"
-        : this.state.directory
-    );
-
-    let format = res[1].split(".");
+    let res = this.state.localUri.split("/");
+    res = res[res.length - 1];
+    let format = res.split(".");
 
     var photo = {
       uri: this.state.localUri,
       type: "IMAGE" + "/" + format[1],
-      name: res[1]
+      name: res
     };
     body.append("collection_name", this.state.collection.collection_name);
     body.append(
@@ -496,14 +492,27 @@ class CollectionMedia extends Component {
     }
     body.append("collection_order", this.state.collection.collection_order);
     body.append("collection_media", photo);
-    body.append("campaign_id", this.props.campaign_id);
-    body.append("campaign_name", this.props.data.name);
+    body.append(
+      "campaign_id",
+      this.props.navigation.getParam("rejected", false)
+        ? this.props.navigation.getParam("selectedCampaign", {}).campaign_id
+        : this.props.campaign_id
+    );
+    body.append(
+      "campaign_name",
+      this.props.navigation.getParam("rejected", false)
+        ? this.props.navigation.getParam("selectedCampaign", {}).name
+        : this.props.data.name
+    );
     // body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
 
     if (this.state.collection.collection_id !== "") {
       body.append("collection_id", this.state.collection.collection_id);
     }
-    body.append("collection_media_upload", this.state.rejectionColUpload);
+    body.append(
+      "collection_media_upload",
+      this.state.rejectionColUpload ? 1 : 0
+    );
 
     this.setState({
       formatted: body

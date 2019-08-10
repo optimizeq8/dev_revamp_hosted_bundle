@@ -208,6 +208,7 @@ class AdDesignReview extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() =>
+                    storyAdsArray &&
                     this.state.storyAdIndex + 1 !== storyAdsArray.length
                       ? this.setState({
                           storyAdIndex: this.state.storyAdIndex + 1

@@ -174,36 +174,16 @@ class AdDesign extends Component {
       swipeUpError = null;
     }
     if (this.rejected && this.selectedCampaign) {
-      this.adType === "StoryAd"
-        ? this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives)
-        : this.adType === "CollectionAd"
-        ? this.props.setRejectedCollectionAds(
-            this.selectedCampaign.collection_creatives
-          )
-        : null;
       if (this.adType === "StoryAd") {
-        this.setState({ tempImageloading: true });
-        FileSystem.downloadAsync(
-          this.selectedCampaign.story_creatives[0].media,
-          FileSystem.cacheDirectory +
-            this.selectedCampaign.story_creatives[0].media.split("/")[
-              this.selectedCampaign.story_creatives[0].media.split("/").length -
-                1
-            ]
-        ).then(media => {
-          FileSystem.getInfoAsync(media.uri, { md5: true }).then(info => {
-            this.setState({
-              ...this.state,
-              tempImage: media.uri,
-              tempImageloading: false,
-              tempType: ["MKV", "AVI", "MP4", "MPEG"].some(el =>
-                media.uri.includes(el.toLowerCase())
-              )
-                ? "VIDEO"
-                : "IMAGE"
-            });
-          });
-        });
+        this.downloadStoryMedia();
+        this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
+      } else if (this.adType === "CollectionAd") {
+        this.setState({ media: this.selectedCampaign.media });
+        this.props.setRejectedCollectionAds(
+          this.selectedCampaign.collection_creatives
+        );
+      } else {
+        return;
       }
     } else if (
       (this.props.data &&
@@ -259,6 +239,30 @@ class AdDesign extends Component {
       });
     }
   }
+
+  downloadStoryMedia = () => {
+    this.setState({ tempImageloading: true });
+    FileSystem.downloadAsync(
+      this.selectedCampaign.story_creatives[0].media,
+      FileSystem.cacheDirectory +
+        this.selectedCampaign.story_creatives[0].media.split("/")[
+          this.selectedCampaign.story_creatives[0].media.split("/").length - 1
+        ]
+    ).then(media => {
+      FileSystem.getInfoAsync(media.uri, { md5: true }).then(info => {
+        this.setState({
+          ...this.state,
+          tempImage: media.uri,
+          tempImageloading: false,
+          tempType: ["MKV", "AVI", "MP4", "MPEG"].some(el =>
+            media.uri.includes(el.toLowerCase())
+          )
+            ? "VIDEO"
+            : "IMAGE"
+        });
+      });
+    });
+  };
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -1328,7 +1332,8 @@ class AdDesign extends Component {
           onPress={() => {
             this.props.navigation.push("CollectionMedia", {
               collection_order: i,
-              rejected: this.rejected
+              rejected: this.rejected,
+              selectedCampaign: this.selectedCampaign
             });
           }}
         >
@@ -1364,7 +1369,9 @@ class AdDesign extends Component {
               }}
               onPress={() => {
                 this.props.navigation.push("CollectionMedia", {
-                  collection_order: i
+                  collection_order: i,
+                  rejected: this.rejected,
+                  selectedCampaign: this.selectedCampaign
                 });
               }}
             >
