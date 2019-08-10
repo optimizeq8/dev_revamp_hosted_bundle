@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   brandStyle: {
     alignSelf: "center",
     top: 8,
-    width: 200,
+    maxWidth: "80%",
     color: "#5F5F5F",
     textAlign: "center",
     fontFamily: "montserrat-regular",
@@ -128,7 +128,9 @@ const styles = StyleSheet.create({
   nameStyle: {
     top: 2,
     alignSelf: "center",
-    width: "50%",
+    // width: "70%",
+    maxWidth: "75%",
+    minWidth: "50%",
     height: 55,
     color: "#5F5F5F",
     fontFamily: "montserrat-semibold",

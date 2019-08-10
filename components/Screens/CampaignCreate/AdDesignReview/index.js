@@ -25,7 +25,7 @@ import {
   Text
 } from "native-base";
 import { Image } from "react-native-expo-image-cache";
-
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
@@ -72,16 +72,9 @@ class AdDesignReview extends Component {
     return (
       <View style={styles.collectionPlaceholder}>
         {!isUndefined(collections[i]) && (
-          <Image
+          <RNImageOrCacheImage
+            media={collections[i].localUri || collections[i].media}
             style={styles.collectionImage}
-            {...{
-              preview,
-              uri: collections[i].localUri
-                ? collections[i].localUri
-                : collections[i].media
-            }}
-            // source={{ uri: collections[i].localUri || collections[i].media }}
-            resizeMode="cover"
           />
         )}
       </View>
@@ -151,23 +144,6 @@ class AdDesignReview extends Component {
       }
     }
 
-    let ImageOrRNImage =
-      Platform.OS === "ios" ? (
-        <Image
-          resizeMode="stretch"
-          style={styles.placeholder}
-          {...{ preview, uri: media }}
-        />
-      ) : (
-        <RNImage
-          resizeMode="stretch"
-          style={styles.placeholder}
-          source={{
-            uri: media
-          }}
-        />
-      );
-
     let collection = (
       <View style={styles.collectionView}>
         {this.collectionComp(0)}
@@ -236,7 +212,10 @@ class AdDesignReview extends Component {
                       />
                     </>
                   ) : (
-                    ImageOrRNImage
+                    <RNImageOrCacheImage
+                      media={media}
+                      style={styles.placeholder}
+                    />
                   )}
                 </TouchableOpacity>
                 <View

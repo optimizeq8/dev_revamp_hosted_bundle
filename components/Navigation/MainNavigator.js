@@ -32,6 +32,7 @@ import SuccessRedirect from "../Screens/SuccessRedirect";
 import LongFormVideoPreview from "../Screens/CampaignCreate/SwipeUpChoice/LongFormVideoPreview";
 import CollectionMedia from "../MiniComponents/CollectionMedia";
 import Animated, { Easing } from "react-native-reanimated";
+import Messenger from "../Screens/Messenger";
 
 export default FluidNavigator(
   {
@@ -69,6 +70,7 @@ export default FluidNavigator(
       screen: SuccessRedirect,
       path: "success/"
     },
+    Messenger: Messenger,
     WebView: WebView
     //     PaymentForm: {
     //       screen: PaymentForm

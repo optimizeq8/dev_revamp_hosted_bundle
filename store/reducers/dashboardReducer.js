@@ -14,7 +14,8 @@ const initialState = {
   granularity: "DAY",
   campaignEndSearch: "",
   loadingCampaignDetails: false,
-  loadingCampaignStats: false
+  loadingCampaignStats: false,
+  campaignError: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -68,7 +69,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingCampaignDetails: action.payload.loading,
-        loading: action.payload.loading
+        loading: action.payload.loading,
+        campaignError: true
       };
     case actionTypes.SET_CAMPAIGN_STATS:
       return {

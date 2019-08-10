@@ -27,7 +27,6 @@ import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import MediaModal from "./MediaModal";
 import SnapAds from "./SnapAdCards/SnapAds";
-import { Image } from "react-native-expo-image-cache";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -58,6 +57,7 @@ import SwipeUpComponent from "./SwipeUpComponent";
 import MediaButton from "./MediaButton";
 import { globalColors } from "../../../../GlobalStyles";
 import isUndefined from "lodash/isUndefined";
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -220,6 +220,7 @@ class AdDesign extends Component {
     }
 
     //----keep for later---//
+
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
@@ -401,7 +402,7 @@ class AdDesign extends Component {
       //Platform.OS === "ios" ? "Images" : "All",
       base64: false,
       exif: false,
-      quality: 0.7
+      quality: 0.8
     });
 
     this.onToggleModal(true);
@@ -807,92 +808,130 @@ class AdDesign extends Component {
       ];
       let selectedImage = this.state.storyAdCards.selectedStoryAd;
       selectedImage.image = "//";
+      // this.setState({
+      //   videoIsLoading: true,
+      //   media: "//",
+      //   type: "VIDEO",
+      //   storyAdCards: {
+      //     ...this.state.storyAdCards,
+      //     selectedStoryAd: selectedImage
+      //   }
+      // });
+      card = {
+        ...card,
+        index: this.state.storyAdCards.selectedStoryAd.index,
+        story_id: data.queryParams.story_id,
+        media: data.queryParams.media,
+        iosVideoUploaded: true,
+        media_type: "VIDEO",
+        uploaded: true
+      };
+      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
       this.setState({
-        videoIsLoading: true,
-        media: "//",
-        type: "VIDEO",
         storyAdCards: {
           ...this.state.storyAdCards,
-          selectedStoryAd: selectedImage
-        }
+          selectedStoryAd: {
+            ...card
+          }
+        },
+        videoIsLoading: false,
+        iosVideoUploaded: true,
+        type: "VIDEO"
       });
-      FileSystem.downloadAsync(
-        data.queryParams.media,
-        FileSystem.cacheDirectory +
-          data.queryParams.media.split("/")[
-            data.queryParams.media.split("/").length - 1
-          ]
-      )
-        .then(({ uri }) => {
-          card = {
-            ...card,
-            index: this.state.storyAdCards.selectedStoryAd.index,
-            story_id: data.queryParams.story_id,
-            media: uri,
-            iosVideoUploaded: true,
-            media_type: "VIDEO",
-            uploaded: true
-          };
-          cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-          this.setState({
-            storyAdCards: {
-              ...this.state.storyAdCards,
-              // storyAdSelected: false,
-              selectedStoryAd: {
-                ...card
-              }
-            },
-            videoIsLoading: false,
-            iosVideoUploaded: true,
-            type: "VIDEO"
-          });
-          this.props.save_campaign_info({
-            selectedStoryAd: card,
-            iosVideoUploaded: true,
-            type: "VIDEO"
-          });
-        })
-        .catch(error => {
-          this.setState({
-            videoIsLoading: false
-          });
-          // console.error(error);
-          showMessage({
-            message: "Something went wrong!",
-            type: "warning",
-            position: "top",
-            description: "Please try again later. " + error
-          });
-        });
+      this.props.save_campaign_info({
+        selectedStoryAd: card,
+        iosVideoUploaded: true,
+        type: "VIDEO"
+      });
+      // FileSystem.downloadAsync(
+      //   data.queryParams.media,
+      //   FileSystem.cacheDirectory +
+      //     data.queryParams.media.split("/")[
+      //       data.queryParams.media.split("/").length - 1
+      //     ]
+      // )
+      //   .then(({ uri }) => {
+      //     card = {
+      //       ...card,
+      //       index: this.state.storyAdCards.selectedStoryAd.index,
+      //       story_id: data.queryParams.story_id,
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       media_type: "VIDEO",
+      //       uploaded: true
+      //     };
+      //     cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+      //     this.setState({
+      //       storyAdCards: {
+      //         ...this.state.storyAdCards,
+      //         // storyAdSelected: false,
+      //         selectedStoryAd: {
+      //           ...card
+      //         }
+      //       },
+      //       videoIsLoading: false,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //     this.props.save_campaign_info({
+      //       selectedStoryAd: card,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //   })
+      //   .catch(error => {
+      //     this.setState({
+      //       videoIsLoading: false
+      //     });
+      //     // console.error(error);
+      //     showMessage({
+      //       message: "Something went wrong!",
+      //       type: "warning",
+      //       position: "top",
+      //       description: "Please try again later. " + error
+      //     });
+      //   });
     } else {
-      this.setState({ videoIsLoading: true, media: "//", type: "VIDEO" });
-      FileSystem.downloadAsync(
-        data.queryParams.media,
-        FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
-      )
-        .then(({ uri }) => {
-          this.setState({
-            ...this.state,
-            media: uri,
-            iosVideoUploaded: true,
-            type: "VIDEO",
-            videoIsLoading: false
-          });
-          this.props.save_campaign_info({
-            media: uri,
-            iosVideoUploaded: true,
-            type: "VIDEO"
-          });
-        })
-        .catch(error => {
-          console.error(error);
-          showMessage({
-            message: "Something went wrong!",
-            type: "warning",
-            position: "top",
-            description: "Please try again later. " + error
-          });
-        });
+      // this.setState({ videoIsLoading: true, media: "//", type: "VIDEO" });
+      this.setState({
+        ...this.state,
+        media: data.queryParams.media,
+        iosVideoUploaded: true,
+        type: "VIDEO",
+        videoIsLoading: false
+      });
+      this.props.save_campaign_info({
+        media: data.queryParams.media,
+        iosVideoUploaded: true,
+        type: "VIDEO"
+      });
+      // FileSystem.downloadAsync(
+      //   data.queryParams.media,
+      //   FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
+      // )
+      //   .then(({ uri }) => {
+      //     this.setState({
+      //       ...this.state,
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO",
+      //       videoIsLoading: false
+      //     });
+      //     this.props.save_campaign_info({
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.error(error);
+      //     showMessage({
+      //       message: "Something went wrong!",
+      //       type: "warning",
+      //       position: "top",
+      //       description: "Please try again later. " + error
+      //     });
+      //   });
     }
   };
 
@@ -1338,7 +1377,7 @@ class AdDesign extends Component {
           }}
         >
           {!isUndefined(this.props.collectionAdMedia[i]) ? (
-            <Image
+            <RNImageOrCacheImage
               style={{
                 borderRadius: 20,
                 alignSelf: "center",
@@ -1347,16 +1386,7 @@ class AdDesign extends Component {
                 height: "100%",
                 alignItems: "center"
               }}
-              {...{
-                preview,
-                uri: this.props.collectionAdMedia[i][
-                  this.props.collectionAdMedia[i].localUri
-                    ? "localUri"
-                    : "media"
-                ]
-              }}
-              // source={{ uri: this.props.collectionAdMedia[i].localUri }}
-              resizeMode="cover"
+              media={this.props.collectionAdMedia[i].localUri}
             />
           ) : (
             <Button
@@ -1638,7 +1668,11 @@ class AdDesign extends Component {
                     ) : (
                       <MediaButton
                         setMediaModalVisible={this.setMediaModalVisible}
-                        media={this.state.media}
+                        media={
+                          media === "//"
+                            ? media
+                            : storyAdCards.selectedStoryAd.media
+                        }
                       />
                     )}
 
@@ -1647,18 +1681,15 @@ class AdDesign extends Component {
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
-                    <Image
+                    <RNImageOrCacheImage
+                      media={
+                        media !== "//"
+                          ? media
+                          : storyAdCards.selectedStoryAd.media
+                          ? storyAdCards.selectedStoryAd.media
+                          : ""
+                      }
                       style={styles.placeholder1}
-                      {...{
-                        preview,
-                        uri:
-                          media !== "//"
-                            ? media
-                            : storyAdCards.selectedStoryAd.media
-                            ? storyAdCards.selectedStoryAd.media
-                            : ""
-                      }}
-                      resizeMode="cover"
                     />
 
                     {inputFields}

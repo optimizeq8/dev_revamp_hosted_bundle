@@ -1,11 +1,11 @@
-import * as Segment from 'expo-analytics-segment';
-import * as WebBrowser from 'expo-web-browser';
+import * as Segment from "expo-analytics-segment";
+import * as WebBrowser from "expo-web-browser";
 import { showMessage } from "react-native-flash-message";
 export const openTerms = async (closeBrowserLoading = () => {}) => {
   try {
-    await WebBrowser.openBrowserAsync(`https://www.optimizeapp.com/terms`).then(
-      action => action.type === "cancel" && closeBrowserLoading()
-    );
+    await WebBrowser.openBrowserAsync(
+      `https://www.optimizeapp.com/terms_conditions`
+    ).then(action => action.type === "cancel" && closeBrowserLoading());
     Segment.screen("Terms and Conditions");
   } catch (error) {
     if (error)

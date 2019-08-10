@@ -7,7 +7,7 @@ import accountManagementReducer from "./accountManagementReducer";
 import genericReducer from "./genericReducer";
 import loginReducer from "./loginReducer";
 import registerReducer from "./registerReducer";
-
+import messengerReducer from "./messengerReducer";
 const appReducer = combineReducers({
   auth: authReducer,
   campaignC: campaignReducer,
@@ -16,7 +16,8 @@ const appReducer = combineReducers({
   register: registerReducer,
   dashboard: dashboardReducer,
   account: accountManagementReducer,
-  generic: genericReducer
+  generic: genericReducer,
+  messenger: messengerReducer
 });
 
 const rootReducer = (state, action) => {

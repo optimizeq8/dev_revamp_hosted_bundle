@@ -255,7 +255,7 @@ class CollectionMedia extends Component {
       mediaTypes: "Images",
       base64: false,
       exif: false,
-      quality: 0.5
+      quality: 0.8
     });
 
     return result;
@@ -355,9 +355,11 @@ class CollectionMedia extends Component {
               }
             })
             .catch(error => {
+              console.log(error);
+
               this.onToggleModal(false);
               showMessage({
-                message: "Please choose an image not ",
+                message: "Please choose another image",
                 position: "top",
                 type: "warning"
               });

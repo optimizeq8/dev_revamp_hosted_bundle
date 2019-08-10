@@ -169,7 +169,7 @@ class CampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
 
-    if (!loading && !this.props.selectedCampaign) {
+    if (!loading && this.props.campaignError) {
       return (
         <ErrorComponent loading={loading} navigation={this.props.navigation} />
       );
@@ -526,7 +526,10 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 {selectedCampaign &&
-                  (selectedCampaign.review_status !== "REJECTED" ? (
+
+                  ((selectedCampaign.review_status !== "REJECTED" &&
+                    selectedCampaign.selectedCampaign_end === "1") ||
+                  new Date(selectedCampaign.end_time) < new Date() ? (
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (
                         <>
@@ -693,16 +696,18 @@ class CampaignDetails extends Component {
             )}
           </SafeAreaView>
           {selectedCampaign &&
-            selectedCampaign.review_status !== "REJECTED" && (
-              <SlideUpPanel
-                start_time={this.state.start_time}
-                end_time={this.state.end_time}
-                dateField={this.dateField}
-                selectedCampaign={selectedCampaign}
-                hideCharts={this.hideCharts}
-                getCampaignStats={this.props.getCampaignStats}
-              />
-            )}
+            (selectedCampaign.review_status !== "REJECTED" ||
+              ((selectedCampaign.campaign_end === "1" ||
+                new Date(selectedCampaign.end_time) > new Date()) && (
+                <SlideUpPanel
+                  start_time={this.state.start_time}
+                  end_time={this.state.end_time}
+                  dateField={this.dateField}
+                  selectedCampaign={selectedCampaign}
+                  hideCharts={this.hideCharts}
+                  getCampaignStats={this.props.getCampaignStats}
+                />
+              )))}
         </>
       );
     }
@@ -713,7 +718,8 @@ const mapStateToProps = state => ({
   selectedCampaign: state.dashboard.selectedCampaign,
   campaignEnded: state.campaignC.campaignEnded,
   loading: state.dashboard.loadingCampaignDetails,
-  loadingCampaignStats: state.dashboard.loadingCampaignStats
+  loadingCampaignStats: state.dashboard.loadingCampaignStats,
+  campaignError: state.dashboard.campaignError
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>

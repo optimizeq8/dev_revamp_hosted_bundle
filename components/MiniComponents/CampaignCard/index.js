@@ -79,18 +79,10 @@ class CampaignCard extends Component {
               </Text>
             </View>
             {this.review_status.includes("APPROVED") &&
-            new Date(campaign.start_time) > new Date() ? (
-              <View
-                style={[
-                  styles.adStatus,
-                  {
-                    backgroundColor: globalColors.green
-                  }
-                ]}
-              >
-                <Text style={styles.reviewText}>Approved</Text>
-              </View>
-            ) : campaign.campaign_end === "1" ||
+            (new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+              new Date().setHours(0, 0, 0, 0) &&
+              new Date(campaign.end_time) >=
+                new Date()) ? null : campaign.campaign_end === "1" ||
               new Date(campaign.end_time) < new Date() ? (
               <View
                 style={[styles.adStatus, GlobalStyles.orangeBackgroundColor]}
@@ -111,6 +103,8 @@ class CampaignCard extends Component {
                     ? "In Review"
                     : this.review_status.includes("REJECTED")
                     ? "Ad Rejected"
+                    : this.campaign_status === "LIVE"
+                    ? "LIVE"
                     : "Campaign Paused"}
                 </Text>
               </View>
@@ -134,10 +128,12 @@ class CampaignCard extends Component {
               )}
             {!this.review_status.includes("PENDING") && (
               <Text style={[styles.subtext]}>
-                {this.review_status.includes("REJECTED")
-                  ? `${
-                      campaign.review_status_reason
-                    }\n Tap to submit your Ad again`
+                {this.review_status.includes("REJECTED") &&
+                !(
+                  campaign.campaign_end === "1" ||
+                  new Date(campaign.end_time) < new Date()
+                )
+                  ? "Tap to submit your Ad again"
                   : "Tap to view more"}
               </Text>
             )}
