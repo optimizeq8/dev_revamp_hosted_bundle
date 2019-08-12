@@ -45,9 +45,7 @@ export default class PenIconBrand extends Component {
                   this.props.mainBusiness.brandname.length <= 25
                   ? this.props.mainBusiness.brandname
                   : ""
-                : !this.props.data
-                ? ""
-                : this.props.data.name
+                : this.props.headline
             }
             placeholderLabel={styles.inputText}
             placeholderTextColor="#fff9"
