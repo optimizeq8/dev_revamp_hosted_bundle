@@ -1239,7 +1239,7 @@ class AdDesign extends Component {
       attachment,
       call_to_action
     } = this.state.campaignInfo;
-    console.log("ddd", headline);
+
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
