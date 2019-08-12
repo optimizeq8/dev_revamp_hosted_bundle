@@ -53,6 +53,7 @@ export default class PenIconBrand extends Component {
                 : "Enter your Promotional Message"
             }
             defaultValue={
+<<<<<<< HEAD
               field === "Business Name"
                 ? brand_name
                   ? brand_name
@@ -65,6 +66,14 @@ export default class PenIconBrand extends Component {
                 : data
                 ? data.name
                 : ""
+=======
+              this.props.field === "Business Name"
+                ? this.props.mainBusiness.brandname &&
+                  this.props.mainBusiness.brandname.length <= 25
+                  ? this.props.mainBusiness.brandname
+                  : ""
+                : this.props.headline
+>>>>>>> added headline and changed title of screen when ad is rejected
             }
             placeholderLabel={styles.inputText}
             placeholderTextColor="#fff9"
