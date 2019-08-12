@@ -1239,6 +1239,7 @@ class AdDesign extends Component {
       attachment,
       call_to_action
     } = this.state.campaignInfo;
+    console.log("ddd", headline);
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
@@ -1383,7 +1384,7 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title="Compose Ad"
+            title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
           <Content
             contentContainerStyle={styles.contentContainer}
