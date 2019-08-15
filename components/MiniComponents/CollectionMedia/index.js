@@ -170,7 +170,9 @@ class CollectionMedia extends Component {
               ...this.state.collection,
 
               ...collAds[order],
-              collection_attachment: deep_link_uri
+              collection_attachment: deep_link_uri,
+              collection_media:
+                collAds[order][collAds[order].localUri ? "localUri" : "media"]
             },
             localUri:
               collAds[order][collAds[order].localUri ? "localUri" : "media"]

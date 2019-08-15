@@ -526,7 +526,6 @@ class CampaignDetails extends Component {
                   </View>
                 </View>
                 {selectedCampaign &&
-
                   ((selectedCampaign.review_status !== "REJECTED" &&
                     selectedCampaign.selectedCampaign_end === "1") ||
                   new Date(selectedCampaign.end_time) < new Date() ? (
@@ -537,7 +536,7 @@ class CampaignDetails extends Component {
                           <FlatList
                             contentContainerStyle={{
                               paddingTop: 20,
-                              paddingBottom: 50,
+                              paddingBottom: 100,
                               alignItems: "center"
                             }}
                             keyExtractor={item => item.campaign_id}
