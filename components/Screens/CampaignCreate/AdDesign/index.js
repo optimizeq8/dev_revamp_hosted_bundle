@@ -1386,7 +1386,13 @@ class AdDesign extends Component {
                 height: "100%",
                 alignItems: "center"
               }}
-              media={this.props.collectionAdMedia[i].localUri}
+              media={
+                this.props.collectionAdMedia[i][
+                  this.props.collectionAdMedia[i].localUri
+                    ? "localUri"
+                    : "media"
+                ]
+              }
             />
           ) : (
             <Button
