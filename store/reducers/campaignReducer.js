@@ -487,6 +487,58 @@ const reducer = (state = initialState, action) => {
         ...state,
         weburlAvalible: action.payload.success
       };
+    case actionTypes.SET_REJECTED_STORYADS:
+      let rejAds = action.payload;
+      let oldStoryAdsArray = state.storyAdsArray;
+
+      oldStoryAdsArray = rejAds.map((ad, i) => {
+        let atch =
+          ad.attachment !== "BLANK" ? JSON.parse(ad.attachment) : ad.attachment;
+        if (atch.hasOwnProperty("block_preload")) {
+          delete atch.block_preload;
+          if (atch.url.includes("?utm_source")) {
+            atch.url = atch.url.split("?utm_source")[0];
+          }
+        }
+        return {
+          ...ad,
+          id: ad.story_id,
+          call_to_action: {
+            label: ad.call_to_action.replace("_", " "),
+            value: ad.call_to_action
+          },
+          attachment: atch
+        };
+      });
+      oldStoryAdsArray = [
+        ...oldStoryAdsArray,
+        {
+          id:
+            parseInt(oldStoryAdsArray[oldStoryAdsArray.length - 1].story_id) +
+            1,
+          call_to_action: { label: "BLANK", value: "BLANK" },
+          media: "//",
+          destination: "BLANK",
+          attachment: "BLANK"
+        }
+      ];
+      return {
+        ...state,
+        storyAdsArray: oldStoryAdsArray
+      };
+    case actionTypes.SET_REJECTED_COLLECTIONADS:
+      let rejColAds = action.payload;
+      return {
+        ...state,
+        collectionAdMedia: rejColAds,
+        collectionAdLinkForm:
+          action.payload[0].interaction_type === "WEB_VIEW" ? 1 : 2
+      };
+    case actionTypes.SET_REJECTED_ADTYPE:
+      return {
+        ...state,
+        adType: action.payload
+      };
     default:
       return state;
   }

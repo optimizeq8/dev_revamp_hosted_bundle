@@ -25,7 +25,7 @@ import {
   Text
 } from "native-base";
 import { Image } from "react-native-expo-image-cache";
-
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
@@ -72,30 +72,26 @@ class AdDesignReview extends Component {
     return (
       <View style={styles.collectionPlaceholder}>
         {!isUndefined(collections[i]) && (
-          <Image
+          <RNImageOrCacheImage
+            media={collections[i].localUri || collections[i].media}
             style={styles.collectionImage}
-            {...{
-              preview,
-              uri: collections[i].localUri || "https://" + collections[i].media
-            }}
-            // source={{ uri: collections[i].localUri || collections[i].media }}
-            resizeMode="cover"
           />
         )}
       </View>
     );
   };
   render() {
-    let adType = this.props.navigation.getParam("adType", null)
-      ? this.props.navigation.getParam("adType", null)
-      : this.props.adType;
+    let adType =
+      this.props.navigation.getParam("adType", false) || this.props.adType;
     let campaignDetails = this.props.navigation.getParam(
       "campaignDetails",
       false
     );
-    let storyAdsArray = campaignDetails
-      ? this.props.navigation.getParam("sotryAdsArray", [])
-      : this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let adDesign = this.props.navigation.getParam("adDesign", false);
+    let storyAdsArray =
+      campaignDetails && !adDesign
+        ? this.props.navigation.getParam("storyAdsArray", [])
+        : this.props.storyAdsArray.filter(ad => ad.uploaded);
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -112,7 +108,7 @@ class AdDesignReview extends Component {
     let media = !storyAds
       ? this.props.navigation.getParam("media", "")
       : campaignDetails
-      ? "https://" + storyAdsArray[this.state.storyAdIndex]["media"]
+      ? storyAdsArray[this.state.storyAdIndex]["media"]
       : storyAdsArray[this.state.storyAdIndex]["media"];
 
     if (storyAds) {
@@ -148,23 +144,6 @@ class AdDesignReview extends Component {
       }
     }
 
-    let ImageOrRNImage =
-      Platform.OS === "ios" ? (
-        <Image
-          resizeMode="stretch"
-          style={styles.placeholder}
-          {...{ preview, uri: media }}
-        />
-      ) : (
-        <RNImage
-          resizeMode="stretch"
-          style={styles.placeholder}
-          source={{
-            uri: media
-          }}
-        />
-      );
-
     let collection = (
       <View style={styles.collectionView}>
         {this.collectionComp(0)}
@@ -173,7 +152,6 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
-
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -206,6 +184,7 @@ class AdDesignReview extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() =>
+                    storyAdsArray &&
                     this.state.storyAdIndex + 1 !== storyAdsArray.length
                       ? this.setState({
                           storyAdIndex: this.state.storyAdIndex + 1
@@ -233,7 +212,10 @@ class AdDesignReview extends Component {
                       />
                     </>
                   ) : (
-                    ImageOrRNImage
+                    <RNImageOrCacheImage
+                      media={media}
+                      style={styles.placeholder}
+                    />
                   )}
                 </TouchableOpacity>
                 <View

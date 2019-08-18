@@ -14,7 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import {
   View,
   TouchableOpacity,
-  Image,
+  Image as RNImage,
   Platform,
   BackHandler
 } from "react-native";
@@ -28,6 +28,7 @@ import {
   Footer,
   Icon
 } from "native-base";
+import { Image } from "react-native-expo-image-cache";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
@@ -60,7 +61,10 @@ import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
-
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class AdCover extends Component {
   static navigationOptions = {
     header: null
@@ -80,7 +84,7 @@ class AdCover extends Component {
       inputB: false,
       objective: "",
       cover: "//",
-      // loaded: 0,
+      loaded: 0,
       type: "",
       iosVideoUploaded: false,
       formattedCover: null,
@@ -92,12 +96,17 @@ class AdCover extends Component {
       mediaModalVisible: false,
       coverLoading: false,
       videoIsLoading: false,
-      heightComponent: 0
+      heightComponent: 0,
+      coverRejectionUpload: false,
+      logoRejectionUpload: false,
+      headlineRejectionUpload: false
     };
     this.params = this.props.navigation.state.params;
-    this.rejected =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.rejected;
+    this.selectedCampaign = this.props.navigation.getParam(
+      "selectedCampaign",
+      false
+    );
+    this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
   handleBackButton = () => {
@@ -140,8 +149,20 @@ class AdCover extends Component {
         });
       }
     }
+
     let rep = this.state.campaignInfo;
-    if (
+    if (this.rejected) {
+      this.setState({
+        ...this.state,
+        campaignInfo: {
+          logo: this.selectedCampaign.story_logo_media,
+          coverHeadline: this.selectedCampaign.story_headline,
+          story_preview_media: this.selectedCampaign.story_preview_media
+        },
+        cover: this.selectedCampaign.story_preview_media
+      });
+    } else if (
+      this.props.data &&
       Object.keys(this.state.campaignInfo)
         .map(key => {
           if (this.props.data.hasOwnProperty(key)) return true;
@@ -188,7 +209,8 @@ class AdCover extends Component {
           ...this.state.campaignInfo,
           coverHeadline
         },
-        coverHeadlineError: validateWrapper("mandatory", coverHeadline)
+        coverHeadlineError: validateWrapper("mandatory", coverHeadline),
+        headlineRejectionUpload: true
       },
       this.props.save_campaign_info({ coverHeadline })
     );
@@ -218,7 +240,8 @@ class AdCover extends Component {
           ...this.state.campaignInfo,
           logo: correctLogo && logoFormat ? logo.uri : ""
         },
-        logoError: correctLogo || logoFormat
+        logoError: correctLogo || logoFormat,
+        logoRejectionUpload: correctLogo && logoFormat
       });
       showMessage({
         message:
@@ -248,8 +271,6 @@ class AdCover extends Component {
       });
       this.setMediaModalVisible(false);
       this.setState({ directory: "/ImagePicker/" });
-      let newWidth = result.width;
-      let newHeight = result.height;
       if (!result.cancelled) {
         if (result.type === "image") {
           if (result.width > 360 && result.height > 600) {
@@ -321,7 +342,8 @@ class AdCover extends Component {
                   cover: result.uri,
                   type: result.type.toUpperCase(),
                   coverError: null,
-                  result: result.uri
+                  result: result.uri,
+                  coverRejectionUpload: true
                 });
                 this.onToggleModal(false);
                 showMessage({
@@ -364,8 +386,7 @@ class AdCover extends Component {
             result.height < 600
           ) {
             this.setState({
-              cover: ""
-              //          type: ""
+              cover: "//"
             });
             this.props.save_campaign_info({
               cover: "//"
@@ -381,6 +402,7 @@ class AdCover extends Component {
             return;
           } else {
             this.setState({
+              ...this.state,
               cover: result.uri,
               type: result.type.toUpperCase(),
               coverError: null,
@@ -437,36 +459,43 @@ class AdCover extends Component {
 
   formatMedia() {
     var body = new FormData();
-    let res = this.state.cover.split(
-      this.state.cover.includes("/ImageManipulator/")
-        ? "/ImageManipulator/"
-        : "/ImagePicker/"
-    );
-    let format = res[1].split(".");
-    var cover = {
-      uri: this.state.cover,
-      type: "IMAGE" + "/" + format[1],
-      name: res[1]
-    };
-    let logoRes = this.state.campaignInfo.logo.split(
-      this.state.campaignInfo.logo.includes("/ImageManipulator/")
-        ? "/ImageManipulator/"
-        : "/ImagePicker/"
-    );
-    let formatLogo = logoRes[1].split(".");
-    var logo = {
-      uri: this.state.campaignInfo.logo,
-      type: "IMAGE" + "/" + formatLogo[1],
-      name: logoRes[1]
-    };
-    body.append("logo_media", logo);
-    body.append("preview_media", cover);
-    body.append("campaign_id", this.props.campaign_id);
-    if (!this.rejected) {
-      body.append("headline", this.state.campaignInfo.coverHeadline);
+    if (this.state.coverRejectionUpload) {
+      let res = this.state.cover.split("/");
+      res = res[res.length - 1];
+      let format = res.split(".");
+      var cover = {
+        uri: this.state.cover,
+        type: "IMAGE" + "/" + format[1],
+        name: res
+      };
+      body.append("preview_media", cover);
     }
-    this.props.storyAdCover &&
-      body.append("preview_media_id", this.props.storyAdCover.preview_media_id);
+    if (this.state.logoRejectionUpload) {
+      let logoRes = this.state.campaignInfo.logo.split("/");
+      logoRes = logoRes[logoRes.length - 1];
+      let formatLogo = logoRes.split(".");
+      var logo = {
+        uri: this.state.campaignInfo.logo,
+        type: "IMAGE" + "/" + formatLogo[1],
+        name: logoRes
+      };
+      body.append("logo_media", logo);
+    }
+    body.append(
+      "campaign_id",
+      this.props.campaign_id || this.selectedCampaign.campaign_id
+    );
+
+    body.append("headline", this.state.campaignInfo.coverHeadline);
+    body.append(
+      "preview_media_upload",
+      this.state.coverRejectionUpload ? 1 : 0
+    );
+    body.append("logo_media_upload", this.state.logoRejectionUpload ? 1 : 0);
+
+    this.rejected &&
+      this.selectedCampaign &&
+      body.append("preview_media_id", this.selectedCampaign.story_preview_id);
 
     this.setState({
       formattedCover: body
@@ -524,9 +553,15 @@ class AdCover extends Component {
       await this.formatMedia();
       await this.handleUpload();
       if (
-        !this.props.data.hasOwnProperty("formattedCover") ||
-        JSON.stringify(this.props.data.formattedCover) !==
-          JSON.stringify(this.state.formattedCover)
+        (this.rejected &&
+          (this.state.logoRejectionUpload ||
+            this.state.coverRejectionUpload ||
+            this.state.headlineRejectionUpload)) ||
+        (!this.rejected &&
+          this.props.data &&
+          (!this.props.data.hasOwnProperty("formattedCover") ||
+            JSON.stringify(this.props.data.formattedCover) !==
+              JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
           await this.props.uploadStoryAdCover(
@@ -535,11 +570,15 @@ class AdCover extends Component {
             this.props.navigation,
             this.onToggleModal,
             this.rejected,
-            this.state.signal
+            this.state.signal,
+            this.selectedCampaign
           );
         }
       } else {
-        this.props.navigation.push("AdDesign");
+        this.props.navigation.push("AdDesign", {
+          rejected: this.rejected,
+          selectedCampaign: this.selectedCampaign
+        });
       }
     }
   };
@@ -557,16 +596,6 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
-    let inputFields = (
-      <PenIconBrand
-        data={this.props.data}
-        coverHeadlineError={coverHeadlineError}
-        changeHeadline={this.changeHeadline}
-        headline={coverHeadline}
-        field={"Headline"}
-        mainBusiness={this.props.mainBusiness}
-      />
-    );
 
     return (
       <SafeAreaView
@@ -607,10 +636,11 @@ class AdCover extends Component {
                   <View style={styles.buttonN}>
                     <View style={styles.placeholder}>
                       <Image
+                        {...{ preview, uri: cover }}
                         style={styles.placeholder1}
-                        source={
-                          cover !== "" ? { uri: cover } : transparentImage
-                        }
+                        // source={
+                        //   cover !== "" ? { uri: cover } : transparentImage
+                        // }
                         resizeMode="cover"
                       />
 
@@ -620,9 +650,10 @@ class AdCover extends Component {
                           style={styles.changeLogoStyle}
                         >
                           <Image
-                            source={
-                              logo !== "" ? { uri: logo } : transparentImage
-                            }
+                            {...{ preview, uri: logo }}
+                            // source={
+                            //   logo !== "" ? { uri: logo } : transparentImage
+                            // }
                             resizeMode="contain"
                             style={{
                               height: "100%",
@@ -666,7 +697,15 @@ class AdCover extends Component {
                           </View>
                         </TouchableOpacity>
                       )}
-                      {inputFields}
+                      <PenIconBrand
+                        data={this.props.data}
+                        coverHeadlineError={coverHeadlineError}
+                        changeHeadline={this.changeHeadline}
+                        coverHeadline={coverHeadline}
+                        field={"Headline"}
+                        mainBusiness={this.props.mainBusiness}
+                        rejected={this.rejected}
+                      />
                       <MediaButton
                         cover={true}
                         _pickImage={this._pickImage}
@@ -768,7 +807,8 @@ const mapDispatchToProps = dispatch => ({
     navigation,
     onToggleModal,
     rejected,
-    cancelUpload
+    cancelUpload,
+    selectedCampaign
   ) =>
     dispatch(
       actionCreators.uploadStoryAdCover(
@@ -777,7 +817,8 @@ const mapDispatchToProps = dispatch => ({
         navigation,
         onToggleModal,
         rejected,
-        cancelUpload
+        cancelUpload,
+        selectedCampaign
       )
     ),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))

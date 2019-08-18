@@ -39,7 +39,7 @@ class SwipeUpDestination extends Component {
       selected: "",
       attachmentOptions: attachmentOptionData
     };
-    this.toggleSideMenu = this.toggleSideMenu.bind(this);
+    this.adType = this.props.adType;
   }
   handleBackButton = () => {
     this.props.navigation.goBack();
@@ -52,18 +52,23 @@ class SwipeUpDestination extends Component {
     Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
       category: "Campaign Creation"
     });
-    const media = this.props.navigation.getParam("media", "");
+    let media = this.props.navigation.getParam("media", "");
+    let destination = this.props.navigation.getParam("destination", false);
     this.setState({
       media,
-      selected: this.props.data ? this.props.data.destination : ""
+      selected: this.props.data
+        ? this.props.data.destination
+        : destination
+        ? destination
+        : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-  toggleSideMenu() {
+  toggleSideMenu = () => {
     this.setState({
       sidemenustate: false
     });
-  }
+  };
   handleChoice = value => {
     this.setState(
       {
@@ -83,7 +88,7 @@ class SwipeUpDestination extends Component {
   };
 
   render() {
-    let storyAd = this.props.adType === "StoryAd";
+    let storyAd = this.adType === "StoryAd";
     let attachmentOptionsCard = this.state.attachmentOptions
       .slice(0, storyAd ? this.state.attachmentOptions.length : 2)
       .map(opt => (

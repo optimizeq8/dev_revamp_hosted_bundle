@@ -10,6 +10,7 @@ import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
 import { Image } from "react-native-expo-image-cache";
+import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -78,7 +79,20 @@ class SnapCard extends Component {
               style={styles.rejected}
             />
           ) : (
-            ImageOrRNImage
+            <RNImageOrCacheImage
+              media={
+                rejected ||
+                (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+                  snapCardInfo.item.uploaded)
+                  ? snapCardInfo.item["media"]
+                  : ""
+              }
+              style={{
+                height: "100%",
+                width: "100%",
+                position: "absolute"
+              }}
+            />
           )}
         </View>
         <View

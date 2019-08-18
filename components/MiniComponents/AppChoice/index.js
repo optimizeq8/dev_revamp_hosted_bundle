@@ -18,6 +18,7 @@ import Axios from "axios";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import Picker from "../Picker";
+import AppCard from "./AppCard";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
@@ -229,6 +230,8 @@ class AppChoice extends Component {
       });
     }
   };
+
+  handleAppError = () => this.setState({ AppError: null });
   validate = async () => {
     const AppError = validateWrapper(
       "mandatory",
@@ -348,6 +351,8 @@ class AppChoice extends Component {
 
                 <Animatable.View animation={"zoomInUp"}>
                   <Animatable.View
+                    duration={200}
+                    easing={"ease"}
                     onAnimationEnd={() => this.setState({ choiceError: null })}
                     style={styles.animateView1}
                     animation={!this.state.choiceError ? "" : "shake"}
@@ -484,9 +489,10 @@ class AppChoice extends Component {
                   />
                 ) : (
                   <View style={styles.searchView}>
-                    {this.state.showList && this.state.choice === "" && (
+                    {this.state.choice === "" && (
                       <Text style={styles.text}>
-                        Choose the {this.state.appSelection} app
+                        {this.state.appValue ? "Choose" : "Search for"} the{" "}
+                        {this.state.appSelection} app
                       </Text>
                     )}
                     <FlatList
@@ -517,44 +523,16 @@ class AppChoice extends Component {
                       // contentContainerStyle={{ height: heightPercentageToDP(35) }}
                       // contentInset={{ bottom: heightPercentageToDP(15) }}
                       renderItem={({ item }) => (
-                        <TouchableOpacity
-                          onPress={() =>
-                            this.state.choice !== ""
-                              ? this.state.choice === "iOS"
-                                ? this._getIosAppIds(item)
-                                : this._getAndroidAppIds(item)
-                              : this._handleBothOS(item)
-                          }
-                          style={[
-                            styles.campaignButton,
-                            {
-                              backgroundColor:
-                                this.state.attachment.ios_app_id === item.id ||
-                                this.state.attachment.android_app_url ===
-                                  (item.id ? item.id : item.application_id)
-                                  ? "#FF9D00"
-                                  : "transparent"
-                            }
-                          ]}
-                        >
-                          <Animatable.View
-                            animation={!this.state.AppError ? "" : "shake"}
-                            onAnimationEnd={() =>
-                              this.setState({ AppError: null })
-                            }
-                            style={styles.animateView2}
-                          >
-                            <View style={[styles.media, styles.optionsRowView]}>
-                              <Image
-                                style={[styles.media, styles.listImage]}
-                                source={{
-                                  uri: item.icon
-                                }}
-                              />
-                            </View>
-                            <Text style={[styles.listText]}>{item.title}</Text>
-                          </Animatable.View>
-                        </TouchableOpacity>
+                        <AppCard
+                          item={item}
+                          attachment={this.state.attachment}
+                          choice={this.state.choice}
+                          _getIosAppIds={this._getIosAppIds}
+                          _getAndroidAppIds={this._getAndroidAppIds}
+                          _handleBothOS={this._handleBothOS}
+                          AppError={this.state.AppError}
+                          handleAppError={this.handleAppError}
+                        />
                       )}
                       numcolumnns={3}
                       keyExtractor={(item, index) =>

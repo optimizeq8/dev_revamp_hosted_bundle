@@ -37,36 +37,41 @@ export default class PlacholderDashboard extends Component {
 			<SafeAreaView style={styles.safeAreaViewContainer} forceInset={{ bottom: 'never', top: 'always' }}>
 				<BackdropIcon style={styles.backDrop} height={hp('100%')} />
 
-				<View style={[styles.mainView, {}]}>
-					<TouchableWithoutFeedback
-						onPress={() => {
-							if (this.props.open === false) {
-								this.props.startAnimation();
-							} else {
-								this.props.closeAnimation();
-							}
-						}}
-					>
-						<LottieView
-							style={styles.lottieView}
-							resizeMode="contain"
-							source={require('../../../assets/animation/menu-btn.json')}
-							progress={this.props.menu}
-						/>
-					</TouchableWithoutFeedback>
-					<>
-						<TouchableOpacity style={[styles.wallet]}>
-							<IntercomIcon width={24} height={24} />
-						</TouchableOpacity>
-					</>
-				</View>
-				<Animatable.View duration={500} animation={mySlideInUp} style={[styles.animateView]}>
-					<View style={[styles.nameStyle]} />
-					<Container style={styles.container}>
-						<View padder style={[styles.mainCard, { height: '110%' }]}>
-							<View style={styles.sideMenuCard}>
-								<View style={styles.sideMenuTop}>
-									{/* <Button style={[styles.button, { padding: 63 }]}>
+
+        <View style={[styles.mainView, {}]}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (this.props.open === false) {
+                this.props.startAnimation();
+              } else {
+                this.props.closeAnimation();
+              }
+            }}
+          >
+            <LottieView
+              style={styles.lottieView}
+              resizeMode="contain"
+              source={require("../../../assets/animation/menu-btn.json")}
+              progress={this.props.menu}
+            />
+          </TouchableWithoutFeedback>
+          <>
+            <TouchableOpacity style={[styles.wallet]}>
+              <IntercomIcon width={24} height={24} />
+            </TouchableOpacity>
+          </>
+        </View>
+        <Animatable.View
+          duration={500}
+          animation={mySlideInUp}
+          style={[styles.animateView]}
+        >
+          <View style={[styles.nameStyle]} />
+          <Container style={styles.container}>
+            <View padder style={[styles.mainCard, { height: "110%" }]}>
+              <View style={styles.sideMenuCard}>
+                <View style={styles.sideMenuTop}>
+                  {/* <Button style={[styles.button, { padding: 63 }]}>
                     <ActivityIndicator />
                  
                   </Button> */}
