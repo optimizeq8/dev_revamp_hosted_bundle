@@ -320,7 +320,9 @@ class AdObjective extends Component {
                     {
                       borderTopLeftRadius: 150,
                       borderTopRightRadius: 150,
-                      paddingTop: 8,
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius:20,
+                      paddingTop: 10,
                       width: 150,
                       alignSelf: "center",
                       backgroundColor: "rgba(0,0,0,0.2)",
