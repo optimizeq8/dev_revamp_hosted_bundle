@@ -286,7 +286,7 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Messenger")}
+                    onPress={() => this.props.navigation.push("MessengerLoading")}
                     style={[styles.wallet]}
                   >
                     <IntercomIcon width={24} height={24} />
