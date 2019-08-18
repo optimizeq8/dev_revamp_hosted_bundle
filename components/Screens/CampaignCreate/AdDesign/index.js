@@ -363,7 +363,23 @@ class AdDesign extends Component {
 
       if (!result.cancelled) {
         if (result.type === "image") {
-          if (result.width >= 1080 && result.height >= 1920) {
+          if (file.size > 5000000) {
+            this.setState({
+              imageError: "Image must be less than 5 MBs",
+              image: "//"
+            });
+            this.onToggleModal(false);
+            showMessage({
+              message: "Image must be less than 5 MBs",
+              position: "top",
+              type: "warning"
+            });
+            this.props.save_campaign_info({
+              image: "//",
+              type: ""
+            });
+            return;
+          } else if (result.width >= 1080 && result.height >= 1920) {
             if (result.width >= Math.floor((result.height / 16) * 9)) {
               newWidth = Math.floor((result.height / 16) * 9);
             } else if (result.height >= Math.floor((result.width * 16) / 9)) {
@@ -475,30 +491,17 @@ class AdDesign extends Component {
 
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Please choose an image not ",
+                  message:
+                    "The dimensions are too large, please choose a different image.",
                   position: "top",
                   type: "warning"
                 });
               });
             return;
-          } else if (file.size > 5000000) {
-            this.setState({
-              imageError: "Image must be less than 5 MBs",
-              image: "//"
-            });
-            this.onToggleModal(false);
-            showMessage({
-              message: "Image must be less than 5 MBs",
-              position: "top",
-              type: "warning"
-            });
-            this.props.save_campaign_info({
-              image: "//",
-              type: ""
-            });
-            return;
           } else if (
-            Math.floor(result.width / 9) !== Math.floor(result.height / 16)
+            Math.floor(result.width / 9) !== Math.floor(result.height / 16) ||
+            result.width < 1080 ||
+            result.height < 1920
           ) {
             this.setState({
               imageError:
@@ -1239,7 +1242,6 @@ class AdDesign extends Component {
       attachment,
       call_to_action
     } = this.state.campaignInfo;
-
 
     let inputFields = ["Business Name", "Headline"].map(field => (
       <PenIconBrand
