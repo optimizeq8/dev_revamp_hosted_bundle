@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  Text,
   View,
   FlatList,
   TouchableOpacity,
@@ -10,7 +9,7 @@ import {
   ScrollView
 } from "react-native";
 import isEmpty from "lodash/isEmpty";
-import { Item, Icon, Input } from "native-base";
+import { Item, Icon, Input , Text} from "native-base";
 import { showMessage } from "react-native-flash-message";
 import { ActivityIndicator } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
@@ -322,33 +321,39 @@ class AppChoice extends Component {
                   screenName={" App Choice"}
                   closeCategoryModal={this.closeCallToActionModal}
                 />
-                <Item
-                  onPress={() => {
-                    this.setState({
-                      inputCallToAction: true
-                    });
-                  }}
-                  rounded
-                  style={[
-                    styles.input,
-                    this.state.callActionError
-                      ? globalStyles.redBorderColor
-                      : globalStyles.transparentBorderColor,
-                    styles.itemCallToAction
-                  ]}
-                >
-                  <Text style={styles.pickerText}>
-                    {this.state.callactions.find(
-                      c => this.state.callaction.value === c.value
-                    )
-                      ? this.state.callactions.find(
-                          c => this.state.callaction.value === c.value
-                        ).label
-                      : "Call to Action"}
-                  </Text>
-                  <Icon type="AntDesign" name="down" style={styles.iconDown} />
-                </Item>
-
+                <View style={  styles.itemCallToAction}>
+                    <View style={[styles.callToActionLabelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                            call to action
+                        </Text>
+                    </View>
+                    <Item
+                    onPress={() => {
+                        this.setState({
+                        inputCallToAction: true
+                        });
+                    }}
+                    // rounded
+                    style={[
+                        styles.input,
+                        this.state.callActionError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor,
+                      
+                    ]}
+                    >
+                    <Text style={styles.pickerText}>
+                        {this.state.callactions.find(
+                        c => this.state.callaction.value === c.value
+                        )
+                        ? this.state.callactions.find(
+                            c => this.state.callaction.value === c.value
+                            ).label
+                        : "Call to Action"}
+                    </Text>
+                    <Icon type="AntDesign" name="down" style={styles.iconDown} />
+                    </Item>
+                </View>
                 <Animatable.View animation={"zoomInUp"}>
                   <Animatable.View
                     duration={200}
