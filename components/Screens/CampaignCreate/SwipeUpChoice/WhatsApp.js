@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, TouchableOpacity } from "react-native";
+import { View, BackHandler, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -15,7 +15,6 @@ import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -218,9 +217,9 @@ class WhatsApp extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
-        <KeyboardShift>
+        <KeyboardShift style={{flex: 1}}>
           {() => (
-            <View style={[styles.whatsApp, { bottom: "5%", paddingTop: 20 }]}>
+            <View style={[styles.whatsApp]}>
               <WhatsAppIcon
                 width={60}
                 height={60}
@@ -234,157 +233,177 @@ class WhatsApp extends Component {
                   the info below
                 </Text>
               </View>
-              <View style={[styles.whatsApp]}>
+              <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+                <View style={[ styles.whatsAppDetailContainer]}>
                 {!this.props.mainBusiness.weburl && (
-                  <View style={{}}>
-                    <Text style={[styles.subTitle]}>
-                      Pick a domain for your Website
+                <View style={styles.marginVertical}>
+                <Text style={[styles.subTitle]}>
+                Pick a domain for your Website
+                </Text>
+                <View style={[styles.callToActionLabelView]}>
+                    <Text uppercase style={[styles.inputLabel]}>
+                        domain
                     </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-evenly",
-                        alignItems: "center"
-                      }}
-                    >
-                      <Item
+                </View>
+                    <Item
                         rounded
                         style={[
-                          styles.input,
-                          {
+                            styles.input,
+                            {
                             paddingHorizontal: 0,
-                            width: "50%"
-                          },
-                          this.state.weburlError
-                            ? GlobalStyles.redBorderColor
-                            : GlobalStyles.transparentBorderColor
+                            // width: "50%"
+                            },
+                        //   this.state.weburlError
+                        //     ? GlobalStyles.redBorderColor
+                        //     : GlobalStyles.transparentBorderColor
                         ]}
-                      >
+                    >
                         <Input
-                          style={[styles.inputtext]}
-                          placeholder="eg. businessname"
-                          placeholderTextColor="#fff"
-                          value={this.state.campaignInfo.weburl}
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          onChangeText={value => this.changeWebUrl(value)}
-                          onBlur={() => {
+                            style={[styles.businessInputText]}
+                            placeholder="eg. businessname"
+                            placeholderTextColor="#FF9D00"
+                            value={this.state.campaignInfo.weburl}
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            onChangeText={value => this.changeWebUrl(value)}
+                            onBlur={() => {
                             this.validate();
                             if (!this.props.mainBusiness.weburl) {
-                              this.props.verifyBusinessUrl(
+                                this.props.verifyBusinessUrl(
                                 this.state.campaignInfo.weburl
-                              );
+                                );
                             }
-                          }}
+                            }}
                         />
-                      </Item>
-                      <Text style={[styles.url]}>.optimizeapp.com</Text>
-                    </View>
-                  </View>
+                        <Text style={[styles.url]}>.optimizeapp.com</Text>
+                    </Item>
+                </View>
                 )}
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Call to action</Text>
-                  <Picker
-                    searchPlaceholderText={"Search Call To Action"}
-                    data={this.state.callactions}
-                    uniqueKey={"value"}
-                    displayKey={"label"}
-                    open={this.state.inputCallToAction}
-                    onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                    onSelectedItemObjectsChange={
-                      this.onSelectedCallToActionChange
-                    }
-                    selectedItems={[this.state.campaignInfo.callaction.value]}
-                    single={true}
-                    screenName={"Swipe up destination WhatsApp"}
-                    closeCategoryModal={this.closeCallToActionModal}
-                  />
-                  <Item
-                    rounded
-                    style={[styles.input]}
-                    onPress={() => {
-                      this.setState({ inputCallToAction: true });
-                    }}
-                  >
-                    <Text style={styles.callActionLabel}>
-                      {this.state.campaignInfo.callaction.label}
-                    </Text>
-                    <Icon
-                      type="AntDesign"
-                      name="down"
-                      style={{ color: "#fff", fontSize: 20, left: 25 }}
-                    />
-                  </Item>
-                </View>
+                <View style={styles.marginVertical}>
 
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>WhatsApp number</Text>
-                  <Text
-                    style={[
-                      styles.subtext,
-                      { fontFamily: "montserrat-regular" }
-                    ]}
-                  >
-                    Customers would be able to call And text this number
-                  </Text>
-                  <PhoneNoField
-                    whatsApp
-                    phoneNum={this.state.campaignInfo.whatsappnumber}
-                    changeNo={this.changeWhatsAppPhoneNo}
-                    invite={true}
-                  />
-                </View>
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Phone number (optional)</Text>
-                  <PhoneNoField
-                    whatsApp
-                    phoneNum={this.state.campaignInfo.callnumber}
-                    changeNo={this.changeCallNumberPhoneNo}
-                    invite={true}
-                  />
-                </View>
-
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Instagram handle</Text>
-
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      {
-                        paddingHorizontal: 0,
-                        width: "75%"
-                      },
-                      this.state.insta_handleError
-                        ? GlobalStyles.redBorderColor
-                        : GlobalStyles.transparentBorderColor
-                    ]}
-                  >
-                    <Icon
-                      style={{ color: "#FFF", position: "absolute" }}
-                      name="at"
-                      type="MaterialCommunityIcons"
-                    />
-                    <Input
-                      style={styles.inputtext}
-                      placeholder="Enter your Instagram handle"
-                      placeholderTextColor="#fff"
-                      value={this.state.campaignInfo.insta_handle}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value => this.changeInstaHandle(value)}
-                      onBlur={() => this.validate()}
-                    />
-                  </Item>
-                </View>
-              </View>
-              <View style={styles.bottonViewWebsite}>
-                <LowerButton
-                  checkmark={true}
-                  bottom={-5}
-                  function={this._handleSubmission}
+                {/* <Text style={[styles.subTitle]}>Call to action</Text> */}
+                <Picker
+                searchPlaceholderText={"Search Call To Action"}
+                data={this.state.callactions}
+                uniqueKey={"value"}
+                displayKey={"label"}
+                open={this.state.inputCallToAction}
+                onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                onSelectedItemObjectsChange={
+                this.onSelectedCallToActionChange
+                }
+                selectedItems={[this.state.campaignInfo.callaction.value]}
+                single={true}
+                screenName={"Swipe up destination WhatsApp"}
+                closeCategoryModal={this.closeCallToActionModal}
                 />
-              </View>
+                <View style={[styles.callToActionLabelView]}>
+                <Text uppercase style={[styles.inputLabel]}>
+                    call to action
+                </Text>
+                </View>
+                <Item
+                rounded
+                style={[styles.input]}
+                onPress={() => {
+                this.setState({ inputCallToAction: true });
+                }}
+                >
+                <Text style={styles.callActionLabel}>
+                {this.state.campaignInfo.callaction.label}
+                </Text>
+                <Icon
+                type="AntDesign"
+                name="down"
+                style={styles.downArrowIcon}
+                />
+                </Item>
+                </View>
+
+                <View style={styles.marginVertical}>
+                {/* <Text style={[styles.subTitle]}>WhatsApp number</Text> */}
+                <Text
+                style={[
+                styles.subtext,
+                { fontFamily: "montserrat-regular" }
+                ]}
+                >
+                Customers would be able to call And text this number
+                </Text>
+                <View style={[styles.callToActionLabelView]}>
+                <Text uppercase style={[styles.inputLabel]}>
+                    whatsApp
+                </Text>
+                </View>
+                <PhoneNoField
+                whatsApp
+                phoneNum={this.state.campaignInfo.whatsappnumber}
+                changeNo={this.changeWhatsAppPhoneNo}
+                invite={true}
+                />
+                </View>
+                <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                            mobile
+                        </Text>
+                    </View>
+                {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
+                    <PhoneNoField
+                        whatsApp
+                        phoneNum={this.state.campaignInfo.callnumber}
+                        changeNo={this.changeCallNumberPhoneNo}
+                        invite={true}
+                    />
+                </View>
+
+                <View style={styles.marginVertical}>
+                {/* <Text style={[styles.subTitle]}>Instagram handle</Text> */}
+                <View style={[styles.callToActionLabelView]}>
+                <Text uppercase style={[styles.inputLabel]}>
+                    instagram
+                </Text>
+                </View>
+                <Item
+                    rounded
+                    style={[
+                    styles.input,
+                    {
+                    paddingHorizontal: 0,
+                    // width: "75%"
+                    },
+                    //   this.state.insta_handleError
+                    //     ? GlobalStyles.redBorderColor
+                    //     : GlobalStyles.transparentBorderColor
+                    ]}
+                >
+                <Icon
+                    style={{ color: "#FFF", position: "absolute" }}
+                    name="at"
+                    type="MaterialCommunityIcons"
+                />
+                <Input
+                    style={styles.inputtext}
+                    placeholder="Handle"
+                    placeholderTextColor="#fff"
+                    value={this.state.campaignInfo.insta_handle}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={value => this.changeInstaHandle(value)}
+                    onBlur={() => this.validate()}
+                />
+                </Item>
+                </View>
+                </View>
+                <View style={styles.bottonViewWebsite}>
+                    <LowerButton
+                        checkmark={true}
+                        bottom={-5}
+                        function={this._handleSubmission}
+                    />
+                </View>
+              </ScrollView>
+              
             </View>
           )}
         </KeyboardShift>
