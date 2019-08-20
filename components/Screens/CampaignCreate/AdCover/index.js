@@ -83,7 +83,7 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      cover: "//",
+      cover: "",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -325,7 +325,7 @@ class AdCover extends Component {
               .then(() => {
                 if (file.size > 2000000) {
                   this.setState({
-                    cover: "//"
+                    cover: ""
                   });
                   this.onToggleModal(false);
                   showMessage({
@@ -334,7 +334,7 @@ class AdCover extends Component {
                     type: "warning"
                   });
                   this.props.save_campaign_info({
-                    cover: "//"
+                    cover: ""
                   });
                   return;
                 }
@@ -368,7 +368,7 @@ class AdCover extends Component {
             return;
           } else if (file.size > 2000000) {
             this.setState({
-              cover: "//"
+              cover: ""
             });
             this.onToggleModal(false);
             showMessage({
@@ -386,10 +386,10 @@ class AdCover extends Component {
             result.height < 600
           ) {
             this.setState({
-              cover: "//"
+              cover: ""
             });
             this.props.save_campaign_info({
-              cover: "//"
+              cover: ""
             });
             this.onToggleModal(false);
             showMessage({
@@ -427,10 +427,10 @@ class AdCover extends Component {
             type: "warning"
           });
           this.setState({
-            cover: "//"
+            cover: ""
           });
           this.props.save_campaign_info({
-            cover: "//"
+            cover: ""
           });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
@@ -440,10 +440,10 @@ class AdCover extends Component {
           type: "warning"
         });
         this.setState({
-          cover: "//"
+          cover: ""
         });
         this.props.save_campaign_info({
-          cover: "//"
+          cover: ""
         });
         this.onToggleModal(false);
         return;

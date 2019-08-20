@@ -21,7 +21,6 @@ export default class MediaButton extends Component {
 
     if (media && media !== "//") {
       console.log("MediaButton media?? first if", media);
-
       return (
         <Button
           transparent
