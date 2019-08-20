@@ -15,10 +15,13 @@ export default class MediaButton extends Component {
       _pickImage,
       snapCardInfo,
       _handleStoryAdCards,
-      setMediaModalVisible
+      setMediaModalVisible,
+      type
     } = this.props;
 
     if (media && media !== "//") {
+      console.log("MediaButton media?? first if", media);
+
       return (
         <Button
           transparent
@@ -51,11 +54,12 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {media !== "//" ? "Edit media" : "Add Media"}
+            {type === "cover" ? "Edit Cover Image" : "Edit Media"}
           </Text>
         </Button>
       );
-    } else
+    } else {
+      console.log("MediaButton media??", media);
       return (
         <>
           <Button
@@ -84,10 +88,11 @@ export default class MediaButton extends Component {
           >
             <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {media !== "//" ? "Edit Photo" : "Add Media"}
+              {type === "cover" ? "Add Cover Image" : "Add Media"}
             </Text>
           </Button>
         </>
       );
+    }
   }
 }

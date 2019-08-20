@@ -596,6 +596,8 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
+    console.log("cover", cover);
+    console.log("logo", logo);
 
     return (
       <SafeAreaView
@@ -636,10 +638,10 @@ class AdCover extends Component {
                   <View style={styles.buttonN}>
                     <View style={styles.placeholder}>
                       <Image
-                        {...{ preview, uri: cover }}
+                        {...{ uri: cover }}
                         style={styles.placeholder1}
                         // source={
-                        //   cover !== "" ? { uri: cover } : transparentImage
+                        //   cover !== "//" ? { uri: cover } : transparentImage
                         // }
                         resizeMode="cover"
                       />
@@ -697,7 +699,9 @@ class AdCover extends Component {
                           </View>
                         </TouchableOpacity>
                       )}
+
                       <PenIconBrand
+                        style={{ justifyContent: "flex-start" }}
                         data={this.props.data}
                         coverHeadlineError={coverHeadlineError}
                         changeHeadline={this.changeHeadline}
@@ -707,9 +711,11 @@ class AdCover extends Component {
                         rejected={this.rejected}
                       />
                       <MediaButton
+                        type={"cover"}
                         cover={true}
                         _pickImage={this._pickImage}
                         image={this.state.cover}
+                        media={this.state.cover}
                       />
                     </View>
                   </View>
@@ -724,8 +730,8 @@ class AdCover extends Component {
                 }
               ]}
             >
-              The cover shows on the Discover page mong subscriptions and
-              trending content
+              The cover shows on the {"\n"}Discover page among {"\n"}
+              subscriptions and trending content
             </Text>
           </Content>
 
