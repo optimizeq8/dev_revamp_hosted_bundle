@@ -324,18 +324,13 @@ class AdCover extends Component {
               })
               .then(() => {
                 if (file.size > 2000000) {
-                  this.setState({
-                    cover: ""
-                  });
                   this.onToggleModal(false);
                   showMessage({
                     message: "Image must be less than 2 MBs",
                     position: "top",
                     type: "warning"
                   });
-                  this.props.save_campaign_info({
-                    cover: ""
-                  });
+
                   return;
                 }
                 this.setState({
@@ -367,17 +362,11 @@ class AdCover extends Component {
               });
             return;
           } else if (file.size > 2000000) {
-            this.setState({
-              cover: ""
-            });
             this.onToggleModal(false);
             showMessage({
               message: "Image must be less than 2 MBs",
               position: "top",
               type: "warning"
-            });
-            this.props.save_campaign_info({
-              cover: "//"
             });
             return;
           } else if (
@@ -385,12 +374,6 @@ class AdCover extends Component {
             result.width < 360 ||
             result.height < 600
           ) {
-            this.setState({
-              cover: ""
-            });
-            this.props.save_campaign_info({
-              cover: ""
-            });
             this.onToggleModal(false);
             showMessage({
               message:
@@ -398,7 +381,6 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
-
             return;
           } else {
             this.setState({
@@ -414,7 +396,6 @@ class AdCover extends Component {
               position: "top",
               type: "success"
             });
-
             this.props.save_campaign_info({
               cover: result.uri
             });
@@ -426,24 +407,12 @@ class AdCover extends Component {
             position: "top",
             type: "warning"
           });
-          this.setState({
-            cover: ""
-          });
-          this.props.save_campaign_info({
-            cover: ""
-          });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: "Please choose a media file.",
           position: "top",
           type: "warning"
-        });
-        this.setState({
-          cover: ""
-        });
-        this.props.save_campaign_info({
-          cover: ""
         });
         this.onToggleModal(false);
         return;

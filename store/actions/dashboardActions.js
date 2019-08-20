@@ -43,7 +43,7 @@ export const getCampaignDetails = (id, navigation) => {
       })
       .then(data => {
         let endDate = new Date(data.end_time);
-        endDate.setDate(endDate.getDate() + 1);
+        endDate.setDate(endDate.getDate() + 2);
         if (
           data.snap_ad_id &&
           data.campaign_end === "0" &&

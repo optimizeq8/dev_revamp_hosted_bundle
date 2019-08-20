@@ -46,7 +46,7 @@ class CampaignCard extends Component {
   render() {
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
-    endDate.setDate(endDate.getDate() + 1);
+    endDate.setDate(endDate.getDate() + 2);
     let chart = [{ spend: campaign.spends }].map((category, i) => (
       <Chart campaign={campaign} chartCategory={category} key={i} />
     ));
