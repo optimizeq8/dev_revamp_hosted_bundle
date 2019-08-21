@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TextInput } from "react-native";
 import { Item, Input } from "native-base";
 import PenIcon from "../../../../assets/SVGs/Pen.svg";
 
@@ -12,7 +12,9 @@ export default class PenIconBrand extends Component {
     return (
       <Item style={styles.inputHeadline}>
         <PenIcon
-          style={{ bottom: 20 }}
+          width={21}
+          height={21}
+          style={{ alignSelf: "flex-start" }}
           fill={
             this.state.input
               ? "#FF9D00"
@@ -24,14 +26,17 @@ export default class PenIconBrand extends Component {
         <View
           style={{
             flexDirection: "column",
-            bottom: 30
+            paddingBottom: 20,
+            justifyContent: "flex-start"
           }}
         >
           <Text style={[styles.subtitleHeading]}>{this.props.field}</Text>
-          <Input
-            style={styles.inputText}
+          <TextInput
+            style={[styles.inputText]}
             defaultValue={this.props.coverHeadline}
             maxLength={55}
+            numberOfLines={3}
+            multiline={true}
             placeholder="Enter your cover headline"
             placeholderTextColor="#fff9"
             autoCorrect={false}

@@ -1,255 +1,278 @@
-import React, { Component } from 'react';
-import { View, BackHandler, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import Header from '../../MiniComponents/Header';
-import MessageBubble from '../../MiniComponents/MessageBubble';
-import * as Segment from 'expo-analytics-segment';
-import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import socketIOClient from 'socket.io-client';
+import React, { Component } from "react";
+import {
+  View,
+  BackHandler,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  ScrollView
+} from "react-native";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import Header from "../../MiniComponents/Header";
+import MessageBubble from "../../MiniComponents/MessageBubble";
+import * as Segment from "expo-analytics-segment";
+import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
+import socketIOClient from "socket.io-client";
 
-import KeyBoardShift from '../../MiniComponents/KeyboardShift';
+import KeyBoardShift from "../../MiniComponents/KeyboardShift";
 //icons
-import ForwardButton from '../../../assets/SVGs/ForwardButton';
-import Camera from '../../../assets/SVGs/Camera';
-import ChatBot from '../../../assets/SVGs/ChatBot';
+import ForwardButton from "../../../assets/SVGs/ForwardButton";
+import Camera from "../../../assets/SVGs/Camera";
+import ChatBot from "../../../assets/SVGs/ChatBot";
 
 // Style
-import styles from './styles';
-import globalStyles, { globalColors } from '../../../GlobalStyles';
+import styles from "./styles";
+import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Redux
-import * as actionCreators from '../../../store/actions/';
-import { connect } from 'react-redux';
+import * as actionCreators from "../../../store/actions/";
+import { connect } from "react-redux";
 
 //Functions
-import validateWrapper from '../../../ValidationFunctions/ValidateWrapper';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import isNull from 'lodash/isNull';
-import isEmpty from 'lodash/isEmpty';
-import { YellowBox } from 'react-native';
+import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import isNull from "lodash/isNull";
+import isEmpty from "lodash/isEmpty";
+import { YellowBox } from "react-native";
 
 YellowBox.ignoreWarnings([
-	'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
+  "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
 ]);
 
-const socket = socketIOClient('https://intercom-react.glitch.me/', {
-	timeout: 10000,
-	jsonp: false,
-	transports: ['websocket'],
-	autoConnect: false,
-	reconnection: true,
-	// agent: '-',
-	// path: '/', // Whatever your path is
-	// pfx: '-',
-	// key: token, // Using token-based auth.
-	// passphrase: cookie, // Using cookie auth.
-	// cert: '-',
-	// ca: '-',
-	// ciphers: '-',
-	// rejectUnauthorized: '-',
-	// perMessageDeflate: '-',
+const socket = socketIOClient("https://www.optimizeapp.io/", {
+  timeout: 10000,
+  jsonp: false,
+  transports: ["websocket"],
+  autoConnect: false,
+  reconnection: true
+  // agent: '-',
+  // path: '/', // Whatever your path is
+  // pfx: '-',
+  // key: token, // Using token-based auth.
+  // passphrase: cookie, // Using cookie auth.
+  // cert: '-',
+  // ca: '-',
+  // ciphers: '-',
+  // rejectUnauthorized: '-',
+  // perMessageDeflate: '-',
 });
 
 class Messenger extends Component {
-	static navigationOptions = {
-		header: null,
-	};
-	constructor(props) {
-		super(props);
-		this.state = {
-			response: false,
-			text: '',
-			date: '',
-			textValue: '',
-			height: 40,
-		};
-	}
-	componentDidMount() {
-		// this.props.connect_user_to_intercom(this.props.userInfo.userid);
-		socket.connect();
-		this.props.subscribe(socket);
-		socket.on('AdminReply', data => {
-			console.log('data:', data);
-			this.props.admin_response(data);
-		});
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-	}
+  static navigationOptions = {
+    header: null
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      response: false,
+      text: "",
+      date: "",
+      textValue: "",
+      height: 40
+    };
+  }
+  componentDidMount() {
+    // this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    socket.connect();
+    this.props.subscribe(socket);
+    socket.on("AdminReply", data => {
+      console.log("data:", data);
+      this.props.admin_response(data);
+    });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
 
-	componentDidUpdate(prevProps, prevState) {
-		// if (prevProps.messages.length !== this.props.messages.length) {
-		// 	// console.log("scrolling to end");
-		// 	this.flatList.scrollToEnd({ animated: true });
-		// }
-		// if (prevState.text !== this.state.text) {
-		//   socket.emit("unsubscribe", prevState.text);
-		// }
-	}
+  componentDidUpdate(prevProps, prevState) {
+    // if (prevProps.messages.length !== this.props.messages.length) {
+    // 	// console.log("scrolling to end");
+    // 	this.flatList.scrollToEnd({ animated: true });
+    // }
+    // if (prevState.text !== this.state.text) {
+    //   socket.emit("unsubscribe", prevState.text);
+    // }
+  }
 
-	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		socket.removeAllListeners();
-	}
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    socket.removeAllListeners();
+  }
 
-	handleBackPress = () => {
-		// this.props.navigation.goBack();
-		this.props.navigation.navigate('Dashboard');
-		return true;
-	};
-	_handleSubmission = () => {
-		console.log('this.props.open_conversation', this.props.open_conversation);
+  handleBackPress = () => {
+    // this.props.navigation.goBack();
+    this.props.navigation.navigate("Dashboard");
+    return true;
+  };
+  _handleSubmission = () => {
+    console.log("this.props.open_conversation", this.props.open_conversation);
 
-		if (this.state.textValue !== '') {
-			if (this.props.open_conversation) this.props.reply(this.state.textValue);
-			else this.props.start_conversation(this.state.textValue);
-			this._resetTextInput();
-		}
-	};
-	_onChange(event) {
-		this.setState({ textValue: event.nativeEvent.text || '' });
-	}
+    if (this.state.textValue !== "") {
+      if (this.props.open_conversation) this.props.reply(this.state.textValue);
+      else this.props.start_conversation(this.state.textValue);
+      this._resetTextInput();
+    }
+  };
+  _onChange(event) {
+    this.setState({ textValue: event.nativeEvent.text || "" });
+  }
 
-	_resetTextInput() {
-		this._textInput.clear();
-		// this._textInput.resetHeightToMin();
-	}
+  _resetTextInput() {
+    this._textInput.clear();
+    // this._textInput.resetHeightToMin();
+  }
 
-	_keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item.id;
 
-	scrollToIndex = params => {
-		console.log('params', params);
-		return {
-			animated: true,
-			index: 50,
-			viewOffset: 5,
-			viewPosition: 1,
-		};
-	};
+  scrollToIndex = params => {
+    console.log("params", params);
+    return {
+      animated: true,
+      index: 50,
+      viewOffset: 5,
+      viewPosition: 1
+    };
+  };
 
-	getItemLayout = (data, index) => ({ length: 10, offset: 5 * index, index });
-	updateSize = height => {
-		this.setState({
-			height,
-		});
-	};
-	render() {
-		const { height } = this.state;
-		let newStyle = {
-			height,
-		};
-		// if (this.props.loading || this.props.loading_con)
-		// 	return (
-		// 		<LoadingChatScreen
-		// 			loading_con={this.props.loading_con}
-		// 			loading={this.props.loading}
-		// 			navigation={this.props.navigation}
-		// 		/>
-		// 	);
-		// else
-		return (
-			<SafeAreaView style={styles.safeAreaContainer} forceInset={{ bottom: 'never', top: 'always' }}>
-				<NavigationEvents
-					onDidFocus={() => {
-						Segment.screen('Support');
-					}}
-				/>
-				<Header
-					closeButton={true}
-					title={'Support'}
-					actionButton={() => this.props.navigation.navigate('Dashboard')}
-				/>
+  getItemLayout = (data, index) => ({ length: 10, offset: 5 * index, index });
+  updateSize = height => {
+    this.setState({
+      height
+    });
+  };
+  render() {
+    const { height } = this.state;
+    let newStyle = {
+      height
+    };
+    // if (this.props.loading || this.props.loading_con)
+    // 	return (
+    // 		<LoadingChatScreen
+    // 			loading_con={this.props.loading_con}
+    // 			loading={this.props.loading}
+    // 			navigation={this.props.navigation}
+    // 		/>
+    // 	);
+    // else
+    return (
+      <SafeAreaView
+        style={styles.safeAreaContainer}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screen("Support");
+          }}
+        />
+        <Header
+          closeButton={true}
+          title={"Support"}
+          actionButton={() => this.props.navigation.navigate("Dashboard")}
+        />
 
-				<ScrollView
-					contentContainerStyle={styles.contentContainer}
-					scrollEnabled={false}
-					// padder
-				>
-					<KeyBoardShift style={[styles.contentContainer]}>
-						{() => (
-							<>
-								<View style={styles.flexEmptyView} />
-								<FlatList
-									inverted
-									ref={ref => {
-										this.flatList = ref;
-									}}
-									// onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-									data={this.props.messages}
-									keyExtractor={this._keyExtractor}
-									// getItemLayout={this.getItemLayout}
-									// scrollToIndex={params => this.scrollToIndex(params)}
-									// initialScrollIndex={this.props.messages.length - 1}
-									renderItem={(msg, index) => {
-										if (!isNull(msg.item.body))
-											return <MessageBubble key={msg.item.id} message={msg.item} />;
-									}}
-								/>
-								{isEmpty(this.props.messages) && (
-									<View style={styles.chatBotViewSmall}>
-										<ChatBot width={100} height={100} />
-									</View>
-								)}
-								{/* </View> */}
-								<View style={styles.textInputContainer}>
-									{/* <Camera
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          scrollEnabled={false}
+          // padder
+        >
+          <KeyBoardShift style={[styles.contentContainer]}>
+            {() => (
+              <>
+                <View style={styles.flexEmptyView} />
+                <FlatList
+                  inverted
+                  ref={ref => {
+                    this.flatList = ref;
+                  }}
+                  // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
+                  data={this.props.messages}
+                  keyExtractor={this._keyExtractor}
+                  // getItemLayout={this.getItemLayout}
+                  // scrollToIndex={params => this.scrollToIndex(params)}
+                  // initialScrollIndex={this.props.messages.length - 1}
+                  renderItem={(msg, index) => {
+                    if (!isNull(msg.item.body))
+                      return (
+                        <MessageBubble key={msg.item.id} message={msg.item} />
+                      );
+                  }}
+                />
+                {isEmpty(this.props.messages) && (
+                  <View style={styles.chatBotViewSmall}>
+                    <ChatBot width={100} height={100} />
+                  </View>
+                )}
+                {/* </View> */}
+                <View style={styles.textInputContainer}>
+                  {/* <Camera
 										fill={globalColors.orange}
 										style={styles.cameraIcon}
 										width={heightPercentageToDP(4)}
 										height={heightPercentageToDP(4)}
 									/> */}
-									<TextInput
-										editable={true}
-										multiline={true}
-										value={this.state.textValue}
-										onChange={event => this._onChange(event)}
-										style={[styles.textInput, newStyle]}
-										placeholder={'Type Your Message'}
-										placeholderTextColor="#909090"
-										placeholderLineHeight={30}
-										maxHeight={100}
-										minHeight={45}
-										maxWidth={300}
-										enableScrollToCaret
-										ref={r => {
-											this._textInput = r;
-										}}
-										onContentSizeChange={e => this.updateSize(e.nativeEvent.contentSize.height)}
-									/>
-									<TouchableOpacity style={styles.submitButton} onPress={this._handleSubmission}>
-										<ForwardButton
-											width={heightPercentageToDP(5)}
-											height={heightPercentageToDP(5)}
-										/>
-									</TouchableOpacity>
-								</View>
-							</>
-						)}
-					</KeyBoardShift>
-				</ScrollView>
-			</SafeAreaView>
-		);
-	}
+                  <TextInput
+                    editable={true}
+                    multiline={true}
+                    value={this.state.textValue}
+                    onChange={event => this._onChange(event)}
+                    style={[styles.textInput, newStyle]}
+                    placeholder={"Type Your Message"}
+                    placeholderTextColor="#909090"
+                    placeholderLineHeight={30}
+                    maxHeight={100}
+                    minHeight={45}
+                    maxWidth={300}
+                    enableScrollToCaret
+                    ref={r => {
+                      this._textInput = r;
+                    }}
+                    onContentSizeChange={e =>
+                      this.updateSize(e.nativeEvent.contentSize.height)
+                    }
+                  />
+                  <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={this._handleSubmission}
+                  >
+                    <ForwardButton
+                      width={heightPercentageToDP(5)}
+                      height={heightPercentageToDP(5)}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </KeyBoardShift>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 const mapStateToProps = state => ({
-	userInfo: state.auth.userInfo,
-	loading: state.messenger.loading,
-	user: state.messenger.user,
-	messages: state.messenger.messages,
-	loading_con: state.messenger.loading_con,
-	subscribed: state.messenger.subscribed,
-	open_conversation: state.messenger.open_conversation,
+  userInfo: state.auth.userInfo,
+  loading: state.messenger.loading,
+  user: state.messenger.user,
+  messages: state.messenger.messages,
+  loading_con: state.messenger.loading_con,
+  subscribed: state.messenger.subscribed,
+  open_conversation: state.messenger.open_conversation
 });
 
 const mapDispatchToProps = dispatch => ({
-	connect_user_to_intercom: user_id => dispatch(actionCreators.connect_user_to_intercom(user_id)),
-	get_conversation: (user_id, navigation) => dispatch(actionCreators.get_conversation(user_id, navigation)),
-	reply: message => dispatch(actionCreators.reply(message)),
-	admin_response: message => dispatch(actionCreators.admin_response(message)),
-	set_as_seen: () => dispatch(actionCreators.set_as_seen()),
-	subscribe: socket => dispatch(actionCreators.subscribe(socket)),
-	start_conversation: message => dispatch(actionCreators.start_conversation(message)),
+  connect_user_to_intercom: user_id =>
+    dispatch(actionCreators.connect_user_to_intercom(user_id)),
+  get_conversation: (user_id, navigation) =>
+    dispatch(actionCreators.get_conversation(user_id, navigation)),
+  reply: message => dispatch(actionCreators.reply(message)),
+  admin_response: message => dispatch(actionCreators.admin_response(message)),
+  set_as_seen: () => dispatch(actionCreators.set_as_seen()),
+  subscribe: socket => dispatch(actionCreators.subscribe(socket)),
+  start_conversation: message =>
+    dispatch(actionCreators.start_conversation(message))
 });
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Messenger);

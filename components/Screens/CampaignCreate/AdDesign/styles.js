@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: "2%",
+    top: "4%",
     left: "8%",
     borderColor: "transparent",
     transform: [
@@ -346,7 +346,8 @@ const styles = StyleSheet.create({
     minHeight: 90,
     width: "100%",
     bottom: 0,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    paddingVertical: 10
   },
   SnapAdCard: {
     alignItems: "center",

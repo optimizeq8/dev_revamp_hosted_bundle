@@ -83,7 +83,7 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      cover: "//",
+      cover: "",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -324,18 +324,13 @@ class AdCover extends Component {
               })
               .then(() => {
                 if (file.size > 2000000) {
-                  this.setState({
-                    cover: "//"
-                  });
                   this.onToggleModal(false);
                   showMessage({
                     message: "Image must be less than 2 MBs",
                     position: "top",
                     type: "warning"
                   });
-                  this.props.save_campaign_info({
-                    cover: "//"
-                  });
+
                   return;
                 }
                 this.setState({
@@ -367,17 +362,11 @@ class AdCover extends Component {
               });
             return;
           } else if (file.size > 2000000) {
-            this.setState({
-              cover: "//"
-            });
             this.onToggleModal(false);
             showMessage({
               message: "Image must be less than 2 MBs",
               position: "top",
               type: "warning"
-            });
-            this.props.save_campaign_info({
-              cover: "//"
             });
             return;
           } else if (
@@ -385,12 +374,6 @@ class AdCover extends Component {
             result.width < 360 ||
             result.height < 600
           ) {
-            this.setState({
-              cover: "//"
-            });
-            this.props.save_campaign_info({
-              cover: "//"
-            });
             this.onToggleModal(false);
             showMessage({
               message:
@@ -398,7 +381,6 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
-
             return;
           } else {
             this.setState({
@@ -414,7 +396,6 @@ class AdCover extends Component {
               position: "top",
               type: "success"
             });
-
             this.props.save_campaign_info({
               cover: result.uri
             });
@@ -426,24 +407,12 @@ class AdCover extends Component {
             position: "top",
             type: "warning"
           });
-          this.setState({
-            cover: "//"
-          });
-          this.props.save_campaign_info({
-            cover: "//"
-          });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: "Please choose a media file.",
           position: "top",
           type: "warning"
-        });
-        this.setState({
-          cover: "//"
-        });
-        this.props.save_campaign_info({
-          cover: "//"
         });
         this.onToggleModal(false);
         return;
@@ -596,6 +565,8 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
+    console.log("cover", cover);
+    console.log("logo", logo);
 
     return (
       <SafeAreaView
@@ -636,10 +607,10 @@ class AdCover extends Component {
                   <View style={styles.buttonN}>
                     <View style={styles.placeholder}>
                       <Image
-                        {...{ preview, uri: cover }}
+                        {...{ uri: cover }}
                         style={styles.placeholder1}
                         // source={
-                        //   cover !== "" ? { uri: cover } : transparentImage
+                        //   cover !== "//" ? { uri: cover } : transparentImage
                         // }
                         resizeMode="cover"
                       />
@@ -665,10 +636,11 @@ class AdCover extends Component {
                             style={{
                               color: globalColors.orange,
                               fontFamily: "montserrat-medium",
-                              alignSelf: "center"
+                              alignSelf: "center",
+                              marginTop: 10
                             }}
                           >
-                            Change logo
+                            Edit logo
                           </Text>
                         </TouchableOpacity>
                       ) : (
@@ -697,7 +669,9 @@ class AdCover extends Component {
                           </View>
                         </TouchableOpacity>
                       )}
+
                       <PenIconBrand
+                        style={{ justifyContent: "flex-start" }}
                         data={this.props.data}
                         coverHeadlineError={coverHeadlineError}
                         changeHeadline={this.changeHeadline}
@@ -707,9 +681,11 @@ class AdCover extends Component {
                         rejected={this.rejected}
                       />
                       <MediaButton
+                        type={"cover"}
                         cover={true}
                         _pickImage={this._pickImage}
                         image={this.state.cover}
+                        media={this.state.cover}
                       />
                     </View>
                   </View>
@@ -724,8 +700,8 @@ class AdCover extends Component {
                 }
               ]}
             >
-              The cover shows on the Discover page mong subscriptions and
-              trending content
+              The cover shows on the {"\n"}Discover page among {"\n"}
+              subscriptions and trending content
             </Text>
           </Content>
 
