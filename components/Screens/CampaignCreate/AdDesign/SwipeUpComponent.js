@@ -20,8 +20,8 @@ export default class SwipeUpComponent extends Component {
         style={[
           styles.swipeUp,
           {
-            bottom: adType === "CollectionAd" ? 50 : 0,
-            marginBottom: adType === "CollectionAd" ? 30 : 10
+            bottom: 0,
+            marginBottom: adType === "CollectionAd" ? 110 : 10
           }
         ]}
         onPress={() => {

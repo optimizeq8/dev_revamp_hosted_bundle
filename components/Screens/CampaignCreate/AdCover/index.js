@@ -636,10 +636,11 @@ class AdCover extends Component {
                             style={{
                               color: globalColors.orange,
                               fontFamily: "montserrat-medium",
-                              alignSelf: "center"
+                              alignSelf: "center",
+                              marginTop: 10
                             }}
                           >
-                            Change logo
+                            Edit logo
                           </Text>
                         </TouchableOpacity>
                       ) : (

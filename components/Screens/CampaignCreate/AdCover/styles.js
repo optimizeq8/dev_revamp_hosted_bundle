@@ -272,12 +272,16 @@ const styles = StyleSheet.create({
     width: 250
   },
   changeLogoStyle: {
-    width: "95%",
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "#fff",
+    borderStyle: "dashed",
+    width: "90%",
     height: "20%",
     alignSelf: "center",
     paddingVertical: 5,
     position: "absolute",
-    top: 10
+    top: 15
   }
 });
 
