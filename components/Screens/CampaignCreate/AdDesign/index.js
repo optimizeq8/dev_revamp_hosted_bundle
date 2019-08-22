@@ -1382,7 +1382,7 @@ class AdDesign extends Component {
           {!isUndefined(this.props.collectionAdMedia[i]) ? (
             <RNImageOrCacheImage
               style={{
-                borderRadius: 20,
+                borderRadius: 18,
                 alignSelf: "center",
                 position: "absolute",
                 width: "100%",
