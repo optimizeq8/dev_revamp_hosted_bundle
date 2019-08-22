@@ -9,7 +9,7 @@ import {
   ScrollView
 } from "react-native";
 import isEmpty from "lodash/isEmpty";
-import { Item, Icon, Input , Text} from "native-base";
+import { Item, Icon, Input, Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import { ActivityIndicator } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
@@ -70,16 +70,21 @@ class AppChoice extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      callaction:
-        this.props.adType === "CollectionAd"
-          ? list[this.props.adType][0].call_to_action_list[0]
-          : list.SnapAd[this.props.listNum].call_to_action_list[0],
-      callactions:
-        this.props.adType === "CollectionAd"
-          ? list[this.props.adType][0].call_to_action_list
-          : list.SnapAd[this.props.listNum].call_to_action_list
-    });
+    this.setState(
+      {
+        callaction:
+          this.props.adType === "CollectionAd"
+            ? list[this.props.adType][0].call_to_action_list[0]
+            : list.SnapAd[this.props.listNum].call_to_action_list[0],
+        callactions:
+          this.props.adType === "CollectionAd"
+            ? list[this.props.adType][0].call_to_action_list
+            : list.SnapAd[this.props.listNum].call_to_action_list
+      },
+      () => {
+        if (this.props.collectionAdLinkForm === 2) this.handleChoice("iOS");
+      }
+    );
     // if (
     //   this.props.data.hasOwnProperty("attachment") &&
     //   this.props.data.attachment !== "BLANK"
@@ -321,114 +326,120 @@ class AppChoice extends Component {
                   screenName={" App Choice"}
                   closeCategoryModal={this.closeCallToActionModal}
                 />
-                <View style={  styles.itemCallToAction}>
-                    <View style={[styles.callToActionLabelView]}>
-                        <Text uppercase style={[styles.inputLabel]}>
-                            call to action
-                        </Text>
-                    </View>
-                    <Item
+                <View style={styles.itemCallToAction}>
+                  <View style={[styles.callToActionLabelView]}>
+                    <Text uppercase style={[styles.inputLabel]}>
+                      call to action
+                    </Text>
+                  </View>
+                  <Item
                     onPress={() => {
-                        this.setState({
+                      this.setState({
                         inputCallToAction: true
-                        });
+                      });
                     }}
                     // rounded
                     style={[
-                        styles.input,
-                        this.state.callActionError
+                      styles.input,
+                      this.state.callActionError
                         ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
-                      
+                        : globalStyles.transparentBorderColor
                     ]}
-                    >
+                  >
                     <Text style={styles.pickerText}>
-                        {this.state.callactions.find(
+                      {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
-                        )
+                      )
                         ? this.state.callactions.find(
                             c => this.state.callaction.value === c.value
-                            ).label
+                          ).label
                         : "Call to Action"}
                     </Text>
-                    <Icon type="AntDesign" name="down" style={styles.iconDown} />
-                    </Item>
+                    <Icon
+                      type="AntDesign"
+                      name="down"
+                      style={styles.iconDown}
+                    />
+                  </Item>
                 </View>
-                <Animatable.View animation={"zoomInUp"}>
-                  <Animatable.View
-                    duration={200}
-                    easing={"ease"}
-                    onAnimationEnd={() => this.setState({ choiceError: null })}
-                    style={styles.animateView1}
-                    animation={!this.state.choiceError ? "" : "shake"}
-                  >
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === "iOS"
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor
-                      ]}
-                      onPress={() => this.handleChoice("iOS")}
+                {this.props.collectionAdLinkForm !== 2 && (
+                  <Animatable.View animation={"zoomInUp"}>
+                    <Animatable.View
+                      duration={200}
+                      easing={"ease"}
+                      onAnimationEnd={() =>
+                        this.setState({ choiceError: null })
+                      }
+                      style={styles.animateView1}
+                      animation={!this.state.choiceError ? "" : "shake"}
                     >
-                      <Text
+                      <TouchableOpacity
                         style={[
-                          styles.OSText,
+                          styles.OS,
                           this.state.choice === "iOS"
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
+                            ? globalStyles.orangeBackgroundColor
+                            : globalStyles.whiteBackgroundColor
                         ]}
+                        onPress={() => this.handleChoice("iOS")}
                       >
-                        iOS
-                      </Text>
-                    </TouchableOpacity>
+                        <Text
+                          style={[
+                            styles.OSText,
+                            this.state.choice === "iOS"
+                              ? globalStyles.whiteTextColor
+                              : globalStyles.purpleTextColor
+                          ]}
+                        >
+                          iOS
+                        </Text>
+                      </TouchableOpacity>
 
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === "ANDROID"
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor,
-                        styles.buttonAndroid
-                      ]}
-                      onPress={() => this.handleChoice("ANDROID")}
-                    >
-                      <Text
+                      <TouchableOpacity
                         style={[
-                          styles.OSText,
+                          styles.OS,
                           this.state.choice === "ANDROID"
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
+                            ? globalStyles.orangeBackgroundColor
+                            : globalStyles.whiteBackgroundColor,
+                          styles.buttonAndroid
                         ]}
+                        onPress={() => this.handleChoice("ANDROID")}
                       >
-                        Android
-                      </Text>
-                    </TouchableOpacity>
+                        <Text
+                          style={[
+                            styles.OSText,
+                            this.state.choice === "ANDROID"
+                              ? globalStyles.whiteTextColor
+                              : globalStyles.purpleTextColor
+                          ]}
+                        >
+                          Android
+                        </Text>
+                      </TouchableOpacity>
 
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === ""
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor,
-                        styles.buttonBoth
-                      ]}
-                      onPress={() => this.handleChoice("")}
-                    >
-                      <Text
+                      <TouchableOpacity
                         style={[
-                          styles.OSText,
+                          styles.OS,
                           this.state.choice === ""
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
+                            ? globalStyles.orangeBackgroundColor
+                            : globalStyles.whiteBackgroundColor,
+                          styles.buttonBoth
                         ]}
+                        onPress={() => this.handleChoice("")}
                       >
-                        Both
-                      </Text>
-                    </TouchableOpacity>
+                        <Text
+                          style={[
+                            styles.OSText,
+                            this.state.choice === ""
+                              ? globalStyles.whiteTextColor
+                              : globalStyles.purpleTextColor
+                          ]}
+                        >
+                          Both
+                        </Text>
+                      </TouchableOpacity>
+                    </Animatable.View>
                   </Animatable.View>
-                </Animatable.View>
-
+                )}
                 {this.state.choice || this.state.choice === "" ? (
                   <Item
                     rounded
@@ -485,7 +496,6 @@ class AppChoice extends Component {
                     />
                   </Item>
                 ) : null}
-
                 {this.state.loading ? (
                   <ActivityIndicator
                     color="#fff"
