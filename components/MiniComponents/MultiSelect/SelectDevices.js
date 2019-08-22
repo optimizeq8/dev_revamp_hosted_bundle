@@ -24,7 +24,25 @@ class SelectDevices extends Component {
   state = { deviceBrands: null };
 
   componentDidMount() {
-    this.props.get_device_brands();
+    // console.log(
+    //   "this.props.campaignInfo:",
+    //   this.props.OSType
+    // );
+    // this.props.get_device_brands("");
+
+    switch (this.props.OSType) {
+      case "iOS":
+        this.props.get_device_brands("/1");
+        break;
+      case "ANDROID":
+        this.props.get_device_brands("/2");
+        break;
+
+      default:
+        this.props.get_device_brands("");
+
+        break;
+    }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -173,7 +191,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  get_device_brands: () => dispatch(actionCreators.get_device_brands())
+  get_device_brands: os => dispatch(actionCreators.get_device_brands(os))
 });
 export default connect(
   mapStateToProps,
