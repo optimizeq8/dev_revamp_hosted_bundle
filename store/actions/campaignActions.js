@@ -598,10 +598,10 @@ export const get_interests = countryCode => {
   };
 };
 
-export const get_device_brands = () => {
+export const get_device_brands = os => {
   return (dispatch, getState) => {
     createBaseUrl()
-      .get(`deviceBrands`)
+      .get(`deviceBrands${os}`)
       .then(res => {
         return res.data.targeting_dimensions;
       })

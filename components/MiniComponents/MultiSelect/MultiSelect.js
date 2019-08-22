@@ -178,6 +178,7 @@ class MultiSelectList extends Component {
       case "deviceBrands":
         return (
           <SelectDevices
+            OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedDevices}
             _handleSideMenuState={this.props._handleSideMenuState}
