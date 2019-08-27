@@ -565,8 +565,6 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
-    console.log("cover", cover);
-    console.log("logo", logo);
 
     return (
       <SafeAreaView

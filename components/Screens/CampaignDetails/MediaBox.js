@@ -6,7 +6,7 @@ import { Video } from "expo-av";
 
 export default class MediaBox extends Component {
   state = { imageLoaded: false };
-  perviewHandler = () => {
+  previewHandler = () => {
     let media =
       this.props.selectedCampaign.campaign_type === "CollectionAd"
         ? { media: this.props.selectedCampaign.media }
@@ -46,7 +46,7 @@ export default class MediaBox extends Component {
 
     return (
       <TouchableOpacity
-        onPress={this.perviewHandler}
+        onPress={this.previewHandler}
         style={{ height: 80, width: 80, marginHorizontal: 5 }}
       >
         <View

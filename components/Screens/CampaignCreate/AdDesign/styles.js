@@ -379,6 +379,23 @@ const styles = StyleSheet.create({
     height: "85%",
     right: 5,
     justifyContent: "center"
+  },
+  storyAdIndexContainer: {
+    position: "absolute",
+    backgroundColor: globalColors.orange,
+    borderRadius: 50,
+    width: 45,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-end",
+    right: 10,
+    top: 20
+  },
+  storyAdIndexNum: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.white,
+    fontSize: 25
   }
 });
 

@@ -96,7 +96,7 @@ class AdDesignReview extends Component {
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
       ? this.props.navigation.getParam("destination", "")
-      : storyAdsArray[this.state.storyAdIndex].destination;
+      : this.props.storyAdAttachment.destination;
     let appIcon = this.props.navigation.getParam("icon_media_url", "");
     let brand_name = this.props.navigation.getParam("brand_name", "");
     let headline = this.props.navigation.getParam("headline", "");
@@ -113,34 +113,32 @@ class AdDesignReview extends Component {
 
     if (storyAds) {
       if (
-        (storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
-          storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+        (this.props.storyAdAttachment.hasOwnProperty("destination") &&
+          this.props.storyAdAttachment.attachment.hasOwnProperty(
             "icon_media_url"
           )) ||
-        (storyAdsArray[this.state.storyAdIndex].attachment !== "BLANK" &&
-        typeof storyAdsArray[this.state.storyAdIndex].attachment === "string"
-          ? JSON.parse(
-              storyAdsArray[this.state.storyAdIndex].attachment
-            ).hasOwnProperty("icon_media_url")
-          : storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
+        (this.props.storyAdAttachment.attachment !== "BLANK" &&
+        typeof this.props.storyAdAttachment.attachment === "string"
+          ? JSON.parse(this.props.storyAdAttachment.attachment).hasOwnProperty(
+              "icon_media_url"
+            )
+          : this.props.storyAdAttachment.attachment.hasOwnProperty(
               "icon_media_url"
             ))
       ) {
         appIcon = campaignDetails
           ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
               .icon_media_url
-          : storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
+          : this.props.storyAdAttachment.attachment.icon_media_url;
+        //storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
       }
       if (
-        storyAdsArray[this.state.storyAdIndex].hasOwnProperty(
-          "call_to_action"
-        ) &&
-        storyAdsArray[this.state.storyAdIndex].call_to_action !== "BLANK"
+        this.props.storyAdAttachment.hasOwnProperty("call_to_action") &&
+        this.props.storyAdAttachment.call_to_action !== "BLANK"
       ) {
-        call_to_action = storyAdsArray[this.state.storyAdIndex].call_to_action
-          .value
-          ? storyAdsArray[this.state.storyAdIndex].call_to_action.value
-          : storyAdsArray[this.state.storyAdIndex].call_to_action;
+        call_to_action = this.props.storyAdAttachment.call_to_action.value
+          ? this.props.storyAdAttachment.call_to_action.value
+          : this.props.storyAdAttachment.call_to_action;
       }
     }
 
@@ -350,7 +348,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   adType: state.campaignC.adType,
   data: state.campaignC.data,
-  storyAdsArray: state.campaignC.storyAdsArray
+  storyAdsArray: state.campaignC.storyAdsArray,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 export default connect(
   mapStateToProps,

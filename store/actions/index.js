@@ -49,7 +49,8 @@ export {
   verifyBusinessUrl,
   setRejectedStoryAds,
   setRejectedCollectionAds,
-  setRejectedAdType
+  setRejectedAdType,
+  setStoryAdAttechment
 } from "./campaignActions";
 
 export {

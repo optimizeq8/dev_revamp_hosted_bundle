@@ -25,31 +25,6 @@ class SnapCard extends Component {
       rejected
     } = this.props;
 
-    let ImageOrRNImage = rejected ? (
-      <Image
-        {...{
-          preview,
-          uri:
-            rejected ||
-            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-              snapCardInfo.item.uploaded)
-              ? snapCardInfo.item["media"]
-              : ""
-        }}
-        style={{ height: "100%", width: "100%", position: "absolute" }}
-      />
-    ) : (
-      <RNImage
-        source={{
-          uri:
-            !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-            snapCardInfo.item.uploaded
-              ? snapCardInfo.item["media"]
-              : "snapCardInfo.item"
-        }}
-        style={{ height: "100%", width: "100%", position: "absolute" }}
-      />
-    );
     return (
       <View style={styles.SnapAdCard}>
         <View
@@ -85,7 +60,7 @@ class SnapCard extends Component {
                 (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                   snapCardInfo.item.uploaded)
                   ? snapCardInfo.item["media"]
-                  : ""
+                  : "//"
               }
               style={{
                 height: "100%",

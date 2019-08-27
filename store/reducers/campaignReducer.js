@@ -64,7 +64,12 @@ const initialState = {
   collectionAdLinkForm: 0,
   collectionLoader: false,
   collectionAdMedia: [],
-  weburlAvalible: false
+  weburlAvalible: false,
+  storyAdAttachment: {
+    destination: "BLANK",
+    call_to_action: { labe: "BLANK", value: "BLANK" },
+    attachment: "BLANK"
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -538,6 +543,26 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         adType: action.payload
+      };
+    case actionTypes.STORYAD_ATTACHMENT:
+      let sAttachment = {};
+      if (action.payload.attachment.hasOwnProperty("longformvideo_media")) {
+        sAttachment = {
+          ...action.payload,
+          uploaded: false,
+          attachment: { label: "BLANK", value: "BLANK" },
+          [Object.keys(action.payload.attachment)[0]]:
+            action.payload.attachment.longformvideo_media,
+          [Object.keys(action.payload.attachment)[1]]:
+            action.payload.attachment.longformvideo_media_type,
+          rejectionLongVidUpload: true
+        };
+      } else {
+        sAttachment = { ...action.payload };
+      }
+      return {
+        ...state,
+        storyAdAttachment: sAttachment
       };
     default:
       return state;
