@@ -150,24 +150,32 @@ const styles = StyleSheet.create({
     ]
   },
   inputHeadline: {
-    justifyContent: "center",
-    alignSelf: "center",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
     position: "absolute",
-    bottom: -10,
-    width: 250,
-    borderColor: "transparent"
+    bottom: 0,
+    width: 150,
+    borderColor: "transparent",
+    paddingLeft: 15
   },
   container: {
     backgroundColor: "transparent",
     flex: 1
   },
   inputText: {
-    alignSelf: "center",
-    fontFamily: "montserrat-bold",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontFamily: "montserrat-medium",
+    fontSize: 13 / PixelRatio.getFontScale(),
     textAlign: "left",
     color: "#fff",
-    marginLeft: 8
+    marginLeft: 8,
+    // height: 150
+    // textAlignVertical: "top"
+    display: "flex",
+    justifyContent: "flex-start"
+    // lineHeight: 16
   },
 
   placeholder: {
@@ -215,8 +223,8 @@ const styles = StyleSheet.create({
   subtitleHeading: {
     color: "#fff",
     fontSize: 12,
-    top: 5,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
+    marginLeft: 8
   },
   MediaOptionsStyle: {
     width: "80%",
@@ -264,12 +272,16 @@ const styles = StyleSheet.create({
     width: 250
   },
   changeLogoStyle: {
-    width: "95%",
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "#fff",
+    borderStyle: "dashed",
+    width: "90%",
     height: "20%",
     alignSelf: "center",
     paddingVertical: 5,
     position: "absolute",
-    top: 10
+    top: 15
   }
 });
 

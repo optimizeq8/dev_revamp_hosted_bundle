@@ -1,66 +1,68 @@
-import { StyleSheet, Platform, PixelRatio } from 'react-native';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { StyleSheet, Platform, PixelRatio } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
-	black: '#1a1917',
-	gray: '#888888',
-	background1: '#751AFF',
-	background2: '#751AFF',
+  black: "#1a1917",
+  gray: "#888888",
+  background1: "#751AFF",
+  background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: 'transparent',
-		marginTop: 0,
-		// height: '100%',
-		flex: 1,
-	},
-	contentContainer: {
-		flex: 1,
-	},
-	appInstallContent: {
-		flexDirection: 'column',
-		flex: 1,
-		justifyContent: 'space-around',
-		paddingHorizontal: 40,
-	},
+  container: {
+    backgroundColor: "transparent",
+    marginTop: 0,
+    // height: '100%',
+    flex: 1
+  },
+  contentContainer: {
+    flex: 1
+  },
+  appInstallContent: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "space-around",
+    paddingHorizontal: 40
+  },
 
-	titletext: {
-		textAlign: 'left',
-		color: '#fff',
-		paddingTop: 10,
-		fontFamily: 'montserrat-bold',
-		fontSize: 16,
-		paddingVertical: 0,
-	},
-	deepLinkContainer: {
-		flex: 1,
-		padding: 10,
-		width: '100%',
-	},
-	deepLinkHeader: {
-		flexDirection: 'column',
-		width: '100%',
-		justifyContent: 'space-between',
-		paddingTop: Platform.OS === 'android' ? 10 : 0,
-	},
-	longFormVideoContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingHorizontal: 30,
-	},
-	longFormVideoContent: {
-		flexDirection: 'column',
-		paddingTop: 30,
-	},
-	videoSelectButton: {
-		backgroundColor: '#FF9D00',
-		alignSelf: 'center',
-		marginVertical: 10,
-		borderRadius: 30,
-	},
-	subtext: {
-		bottom: 5,
-
+  titletext: {
+    textAlign: "left",
+    color: "#fff",
+    paddingTop: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    paddingVertical: 0
+  },
+  deepLinkContainer: {
+    flex: 1,
+    padding: 10,
+    width: "100%"
+  },
+  deepLinkHeader: {
+    flexDirection: "column",
+    width: "100%",
+    justifyContent: "space-between",
+    paddingTop: Platform.OS === "android" ? 10 : 0
+  },
+  longFormVideoContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 30
+  },
+  longFormVideoContent: {
+    flexDirection: "column",
+    paddingTop: 30
+  },
+  videoSelectButton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    marginVertical: 10,
+    borderRadius: 30
+  },
+  subtext: {
+    bottom: 5,
 		alignSelf: 'center',
 		width: 300,
 		fontFamily: 'montserrat-regular',
@@ -312,53 +314,51 @@ const styles = StyleSheet.create({
 		paddingVertical: 30,
 		// paddingHorizontal: 10,
 		width: widthPercentageToDP(75),
-
-		// width: 300,
-		flexDirection: 'row',
-		alignSelf: 'center',
-		// shadowOffset: { width: 1, height: 1 },
-		// shadowColor: 'black',
-		// shadowOpacity: 0.2,
-	},
-	collectionAdLinkForm2: {
-		borderTopStartRadius: 0,
-		borderBottomStartRadius: 0,
-		borderBottomEndRadius: 40,
-		borderTopEndRadius: 40,
-	},
-	collectionAdLinkForm1: {
-		borderBottomEndRadius: 0,
-		borderTopEndRadius: 0,
-		borderBottomStartRadius: 40,
-		borderTopStartRadius: 40,
-	},
-	activeButton: {
-		backgroundColor: '#FF9D00',
-		height: 50,
-		// width: 150,
-		width: '50%',
-		justifyContent: 'center',
-		flexDirection: 'column',
-	},
-	inactiveText: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 12,
-		color: 'rgba(255,255,255,0.4)',
-		textAlign: 'center',
-		textTransform: 'uppercase',
-	},
-	activeText: {
-		fontFamily: 'montserrat-bold',
-		fontSize: 12,
-		color: '#fff',
-		textAlign: 'center',
-		textTransform: 'uppercase',
-	},
-	button2: {
-		backgroundColor: 'rgba(0,0,0,0.2)',
-		// width: 150,
-		width: '50%',
-
+    // width: 300,
+    flexDirection: "row",
+    alignSelf: "center"
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowColor: 'black',
+    // shadowOpacity: 0.2,
+  },
+  collectionAdLinkForm2: {
+    borderTopStartRadius: 0,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 40,
+    borderTopEndRadius: 40
+  },
+  collectionAdLinkForm1: {
+    borderBottomEndRadius: 0,
+    borderTopEndRadius: 0,
+    borderBottomStartRadius: 40,
+    borderTopStartRadius: 40
+  },
+  activeButton: {
+    backgroundColor: "#FF9D00",
+    height: 50,
+    // width: 150,
+    width: "50%",
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  inactiveText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "rgba(255,255,255,0.4)",
+    textAlign: "center",
+    textTransform: "uppercase"
+  },
+  activeText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#fff",
+    textAlign: "center",
+    textTransform: "uppercase"
+  },
+  button2: {
+    backgroundColor: "rgba(0,0,0,0.2)",
+    // width: 150,
+    width: "50%",
 		height: 50,
 		justifyContent: 'center',
 		flexDirection: 'column',
@@ -465,6 +465,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		width: widthPercentageToDP(85),
 	},
+
 });
 
 export default styles;

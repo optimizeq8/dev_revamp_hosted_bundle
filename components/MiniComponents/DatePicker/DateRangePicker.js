@@ -49,7 +49,7 @@ LocaleConfig.locales["en"] = {
     "Saturday"
   ],
 
-  dayNamesShort: ["Su", "M", "T", "W", "Th", "F", "S"]
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
 };
 
 LocaleConfig.defaultLocale = "en";
@@ -205,7 +205,7 @@ export default class DateRangePicker extends Component<Props> {
           textMonthFontWeight: "bold",
           textDayFontSize: 17,
           textMonthFontSize: 13,
-          textDayHeaderFontSize: 14
+          textDayHeaderFontSize: 12
         }}
       />
     );

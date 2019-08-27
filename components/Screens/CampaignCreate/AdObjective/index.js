@@ -216,6 +216,11 @@ class AdObjective extends Component {
 
       if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
         this.props.reset_collections();
+        this.props.save_campaign_info({
+          destination: "BLANK",
+          call_to_action: { label: "BLANK", value: "BLANK" },
+          attachment: "BLANK"
+        });
       }
       this.props.set_collectionAd_link_form(this.state.collectionAdLinkForm);
 
@@ -321,7 +326,7 @@ class AdObjective extends Component {
                       borderTopLeftRadius: 150,
                       borderTopRightRadius: 150,
                       borderBottomLeftRadius: 20,
-                      borderBottomRightRadius:20,
+                      borderBottomRightRadius: 20,
                       paddingTop: 10,
                       width: 150,
                       alignSelf: "center",
@@ -379,7 +384,10 @@ class AdObjective extends Component {
               </Animatable.View>
               <Animatable.View
                 onAnimationEnd={() =>
-                  this.setState({ start_timeError: null, end_timeError: null })
+                  this.setState({
+                    start_timeError: null,
+                    end_timeError: null
+                  })
                 }
                 duration={200}
                 easing={"ease"}
@@ -579,6 +587,9 @@ class AdObjective extends Component {
                       </Text>
                     </Button>
                   </View>
+                  <Text style={styles.minBudget}>
+                    Collection Ads only work on iOS
+                  </Text>
                 </View>
               )}
 

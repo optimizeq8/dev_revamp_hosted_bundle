@@ -1382,7 +1382,7 @@ class AdDesign extends Component {
           {!isUndefined(this.props.collectionAdMedia[i]) ? (
             <RNImageOrCacheImage
               style={{
-                borderRadius: 20,
+                borderRadius: 18,
                 alignSelf: "center",
                 position: "absolute",
                 width: "100%",
@@ -1645,6 +1645,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        type={"media"}
                         media={
                           media !== "//"
                             ? media
@@ -1677,6 +1678,7 @@ class AdDesign extends Component {
                     ) : (
                       <MediaButton
                         setMediaModalVisible={this.setMediaModalVisible}
+                        type={"media"}
                         media={
                           media === "//"
                             ? media
@@ -1715,6 +1717,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        type={"media"}
                         setMediaModalVisible={this.setMediaModalVisible}
                         media={
                           media !== "//"

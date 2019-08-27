@@ -111,6 +111,7 @@ class SnapCard extends Component {
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
           !snapCardInfo.item.uploaded ? (
             <MediaButton
+              type={"media"}
               media={
                 snapCardInfo.item[snapCardInfo.item.media ? "image" : "media"]
               }
