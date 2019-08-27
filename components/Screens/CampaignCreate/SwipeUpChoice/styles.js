@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
 	safeAreaContainer: {
 		// height: '100%',
 		flex: 1,
+		// backgroundColor: '#FFFF',
 	},
 	warningText: {
 		color: '#fff',
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
 	},
 	whatsApp: {
 		// minHeight: '100%',
-
+		// backgroundColor: 'transparent',
 		// flex: 1,
 		flexDirection: 'column',
 		// justifyContent: 'space-around',
@@ -422,6 +423,47 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
 		alignItems: 'center',
+	},
+	BlurView: {
+		zIndex: 10,
+		height: '100%',
+	},
+	walletPaymentModalContainer: {
+		height: '100%',
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	walletButton: {
+		backgroundColor: '#FF9D00',
+		marginTop: 15,
+		borderRadius: 10,
+		paddingHorizontal: 20,
+		alignSelf: 'center',
+		justifyContent: 'center',
+	},
+	colorWhite: {
+		color: '#fff',
+	},
+	instagramWarningHeadingText: {
+		fontSize: 16,
+		lineHeight: 18,
+		textAlign: 'center',
+		color: '#FFF',
+		fontFamily: 'montserrat-bold',
+		paddingVertical: 20,
+		// paddingHorizontal: 60,
+		width: widthPercentageToDP(50),
+	},
+	instagramWarningDescriptionText: {
+		fontSize: 16,
+		lineHeight: 19,
+		textAlign: 'center',
+		color: '#FFF',
+		fontFamily: 'montserrat-regular',
+		paddingVertical: 20,
+		paddingHorizontal: 20,
+		width: widthPercentageToDP(85),
 	},
 });
 

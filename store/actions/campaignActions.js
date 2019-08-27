@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
+import filter from 'lodash/filter';
 
 createBaseUrl = () =>
   axios.create({
@@ -195,7 +196,8 @@ export const verifyBusinessUrl = weburl => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning",
-          position: "top"
+          position: "top",
+          duration: 1000
         });
 
         return dispatch({
@@ -970,3 +972,277 @@ export const setRejectedAdType = data => {
     });
   };
 };
+export const verifyInstagramHandle = insta_handle => {
+    return async dispatch => {
+        try {
+            dispatch({
+                type: actionTypes.SET_INSTAGRAM_POST_LOADING,
+                payload: false
+            })
+            var response = await axios.get(`https://www.instagram.com/${insta_handle}`);
+            if(response) {
+                var data = response.data 
+                data = data.split('window._sharedData = ');
+                data = data[1].split('</script>');
+                data = data[0];
+                data = data.substr(0, data.length - 1);
+                data = JSON.parse(data);
+                data = data.entry_data.ProfilePage[0].graphql.user;
+                if(data.is_private) {
+                    // showMessage({
+                    //     message: `${insta_handle} is a private account. Try with some other account`,
+                    //     type: 'danger',
+                    //     duration: 5000
+                    // })
+                    return dispatch({
+                        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+                        payload: {
+                            error: true,
+                            errorMessage: `${insta_handle} is a private account. Try with some other account`
+                        }
+                    })
+                } else {
+                    return dispatch({
+                        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+                        payload: {
+                            error: false,
+                            errorMessage: null
+                        }
+                    })
+                }
+            }
+
+        } catch (err) {
+            // console.log('insta error verify account', err.response || err.message);
+            // showMessage({
+            //     message: `${insta_handle} doesn't exist. Try another account name`,
+            //     type: 'danger'
+            // })
+            return dispatch({
+                type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+                payload: {
+                    error: true,
+                    errorMessage: `${insta_handle} doesn't exist. Try another account name`
+              
+                }
+            })	
+        }
+    }
+}
+export const getInstagramPost = insta_handle => {
+
+    return async dispatch => {
+        try{
+            dispatch({
+                type: actionTypes.SET_INSTAGRAM_POST_LOADING,
+                payload: true
+            })
+            // console.log('getInstagramPost insta_handle', insta_handle);
+            var response = await axios.get(`https://www.instagram.com/${insta_handle}`);
+            if(response && response.data) {
+                var data = response.data 
+                data = data.split('window._sharedData = ');
+                data = data[1].split('</script>');
+                data = data[0];
+                data = data.substr(0, data.length - 1);
+                data = JSON.parse(data);
+               
+                data = data.entry_data.ProfilePage[0].graphql.user;
+                        // console.log('data', data);
+						const mediaList = data.edge_owner_to_timeline_media;
+						if (mediaList.edges && mediaList.edges.length > 0) {
+							var imagesList = mediaList.edges.map(media => {
+								// console.log('media', media);
+                                if(!media.node.is_video)
+								return {
+									imageUrl: media.node.display_url,
+									// shortcode: media.node.shortcode,
+									imageId: media.node.id,
+									productDescription: media.node.edge_media_to_caption.edges.length > 0
+                                        ? media.node.edge_media_to_caption.edges[0].node.text
+                                        : '',
+									// isVideo: media.node.is_video,
+								};
+							});
+							// console.log('imageListBeforeSize', imagesList.length);
+
+							// imagesList = filter(imagesList, media => {
+							// 	return !media.isVideo;
+                            // });
+                            // console.log('imageList', imagesList);
+							// console.log('imageListAfterSize', imagesList.length);
+
+                            return dispatch({
+                                type: actionTypes.SET_INSTAGRAM_POST,
+                                payload: imagesList
+                            })	
+							// console.log('imageListAfterSize', imagesList.length);
+                        }  
+                        return dispatch({
+                            type: actionTypes.SET_INSTAGRAM_POST,
+                            payload: []
+                        })
+            }  
+        } catch(error) {
+            console.log('insta error', error.response || error.message);
+            return dispatch({
+                type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+                payload: {
+                    error: true,
+                    errorMessage: null
+
+                }
+            })	
+
+        }
+    }
+}
+
+export const getWebProducts = (campaign_id) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+            payload: true
+        })
+        createBaseUrl()
+            .get(`webProducts/${campaign_id}`)
+            .then(res => {
+                return res.data
+            })
+            .then((data) => {
+                // showMessage({
+                //     message: data.message,
+                //     type: data.success ? 'success': 'warning'
+                // })
+                if(data.success) {
+                    return dispatch({
+                        type: actionTypes.GET_WEB_PRODUCTS,
+                        payload:data.productsinfo
+                    })
+                }
+                return dispatch({
+                    type: actionTypes.GET_WEB_PRODUCTS,
+                    payload: {
+                        id: null,
+                        webproducts: []
+                    }
+                })
+            })
+            .catch(error => {
+                return dispatch({
+                    type: actionTypes.ERROR_GET_WEB_PRODUCTS,
+                    payload:{
+                        id: null,
+                        webproducts: [],
+                        error: true
+                    }
+                })
+            })
+    }
+}
+
+export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation, from) => {
+    return (dispatch , getState) => {
+        dispatch({
+            type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
+            payload: true
+        })
+        // if productInfoId doesn't exist
+        if(!productInfoId) {
+            createBaseUrl()
+            .post('webProducts',{
+                businessid: getState().account.mainBusiness.businessid,
+                webproducts: cartList,
+                campaign_id,
+            })
+            .then(res => {
+                return res.data
+            })
+            .then(data => {
+                // console.log('saveWebProducts data', data);
+                showMessage({
+                    message: data.message,
+                    type: data.success?  'success': 'danger',
+                    duration: 2000
+                })
+                 dispatch({
+                    type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
+                    payload:  {
+                        id: data.id,
+                        webproducts: cartList
+                    }
+                })
+                return data
+            })
+            .then((data) => {
+                
+                if(data.success) {
+                    navigation.navigate('AdDesign')
+                }
+                return data
+               
+            })
+            .then(() => {
+               return dispatch({
+                    type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
+                    payload: false
+                })
+            })
+            .catch(error => {
+                console.log('saveWebProducts error',  error.response || error.message);
+                return dispatch({
+                    type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+                })
+                
+            })
+        } else  {
+            //productExist edit list
+            createBaseUrl()
+            .put('webProducts',{
+                businessid: getState().account.mainBusiness.businessid,
+                webproducts: cartList,
+                campaign_id,
+                id: productInfoId
+            })
+            .then(res => {
+                return res.data
+            })
+            .then(data => {
+                // console.log('updateWebProducts data', data);
+                showMessage({
+                    message: data.message,
+                    type: data.success?  'success': 'danger',
+                    duration: 2000
+                })
+                 dispatch({
+                    type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
+                    payload:   {
+                        id: data.id,
+                        webproducts: cartList
+                    }
+                })
+                return data
+            })
+            .then((data) => {
+                if(data.success && from){
+                    navigation.navigate('AdDesign')
+                }
+               
+            })
+            .then(() => {
+                return dispatch({
+                     type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
+                     payload: false
+                 })
+             })
+            .catch(error => {
+                console.log('updateWebProducts error',  error.response || error.message);
+                return dispatch({
+                    type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+                })
+                
+            })
+        }
+
+    }
+}

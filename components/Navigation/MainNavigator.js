@@ -34,6 +34,9 @@ import CollectionMedia from '../MiniComponents/CollectionMedia';
 import Animated, { Easing } from 'react-native-reanimated';
 import Messenger from '../Screens/Messenger';
 import MessengerLoading from '../Screens/Messenger/LoadingChatScreen';
+import SelectInstagramPost from '../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost';
+import SelectedInstagramProductsList from '../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList';
+import EditProductDetailInstagramPost from '../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail';
 
 export default FluidNavigator(
 	{
@@ -74,6 +77,9 @@ export default FluidNavigator(
 		Messenger: Messenger,
 		MessengerLoading: MessengerLoading,
 		WebView: WebView,
+		SelectInstagramPost: SelectInstagramPost,
+		SelectedInstagramProductsList: SelectedInstagramProductsList,
+		EditProductDetailInstagramPost: EditProductDetailInstagramPost,
 		//     PaymentForm: {
 		//       screen: PaymentForm
 		//     }

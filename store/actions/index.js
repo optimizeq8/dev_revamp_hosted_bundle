@@ -1,100 +1,104 @@
 export {
-  changeBusiness,
-  getBusinessAccounts,
-  createBusinessAccount,
-  updateUserInfo,
-  addressForm,
-  getAddressForm,
-  create_snapchat_ad_account
-} from "./accountManagementActions";
+	changeBusiness,
+	getBusinessAccounts,
+	createBusinessAccount,
+	updateUserInfo,
+	addressForm,
+	getAddressForm,
+	create_snapchat_ad_account,
+} from './accountManagementActions';
 
 export {
-  getCampaignDetails,
-  getCampaignList,
-  getCampaignStats,
-  updateCampaignList,
-  filterCampaigns
-} from "./dashboardActions";
+	getCampaignDetails,
+	getCampaignList,
+	getCampaignStats,
+	updateCampaignList,
+	filterCampaigns,
+} from './dashboardActions';
 
-export { setAuthToken } from "./genericActions";
-
-export {
-  save_campaign_info,
-  resetCampaignInfo,
-  reset_collections,
-  set_adType,
-  ad_objective,
-  getMinimumCash,
-  ad_design,
-  addSnapCard,
-  uploadStoryAdCard,
-  deleteStoryAdCard,
-  uploadStoryAdCover,
-  getVideoUploadUrl,
-  ad_details,
-  updateCampaign,
-  updateStatus,
-  endCampaign,
-  snap_ad_audience_size,
-  get_interests,
-  get_device_brands,
-  get_android_versions,
-  get_ios_versions,
-  get_total_reach,
-  payment_request_knet,
-  get_languages,
-  payment_request_credit_card,
-  set_collectionAd_link_form,
-  save_collection_media,
-  verifyBusinessUrl,
-  setRejectedStoryAds,
-  setRejectedCollectionAds,
-  setRejectedAdType
-} from "./campaignActions";
+export { setAuthToken } from './genericActions';
 
 export {
-  getTransactions,
-  filterTransactions,
-  getWalletAmount,
-  addWalletAmount,
-  getWalletAmountInKwd,
-  useWallet,
-  removeWalletAmount,
-  checkoutwithWallet
-} from "./transactionActions";
+	save_campaign_info,
+	resetCampaignInfo,
+	reset_collections,
+	set_adType,
+	ad_objective,
+	getMinimumCash,
+	ad_design,
+	addSnapCard,
+	uploadStoryAdCard,
+	deleteStoryAdCard,
+	uploadStoryAdCover,
+	getVideoUploadUrl,
+	ad_details,
+	updateCampaign,
+	updateStatus,
+	endCampaign,
+	snap_ad_audience_size,
+	get_interests,
+	get_device_brands,
+	get_android_versions,
+	get_ios_versions,
+	get_total_reach,
+	payment_request_knet,
+	get_languages,
+	payment_request_credit_card,
+	set_collectionAd_link_form,
+	save_collection_media,
+	verifyBusinessUrl,
+	setRejectedStoryAds,
+	setRejectedCollectionAds,
+	setRejectedAdType,
+	verifyInstagramHandle,
+	getInstagramPost,
+	saveWebProducts,
+	getWebProducts,
+} from './campaignActions';
 
 export {
-  checkForExpiredToken,
-  login,
-  logout,
-  forgotPassword,
-  clearPushToken,
-  setCurrentUser,
-  send_push_notification,
-  changePassword
-} from "./loginActions";
+	getTransactions,
+	filterTransactions,
+	getWalletAmount,
+	addWalletAmount,
+	getWalletAmountInKwd,
+	useWallet,
+	removeWalletAmount,
+	checkoutwithWallet,
+} from './transactionActions';
 
 export {
-  verifyBusinessName,
-  verifyEmail,
-  verifyInviteCode,
-  requestInvitationCode,
-  registerUser,
-  sendMobileNo,
-  verifyMobileCode,
-  resendVerifyMobileCode,
-  resendVerifyMobileCodeByEmail,
-  resetRegister
-} from "./registerActions";
+	checkForExpiredToken,
+	login,
+	logout,
+	forgotPassword,
+	clearPushToken,
+	setCurrentUser,
+	send_push_notification,
+	changePassword,
+} from './loginActions';
 
 export {
-  connect_user_to_intercom,
-  create_user_on_intercom,
-  get_conversation,
-  start_conversation,
-  reply,
-  admin_response,
-  set_as_seen,
-  update_last_seen,
-  subscribe
-} from "./messengerActions";
+	verifyBusinessName,
+	verifyEmail,
+	verifyInviteCode,
+	requestInvitationCode,
+	registerUser,
+	sendMobileNo,
+	verifyMobileCode,
+	resendVerifyMobileCode,
+	resendVerifyMobileCodeByEmail,
+	resetRegister,
+} from './registerActions';
+
+export {
+	connect_user_to_intercom,
+	create_user_on_intercom,
+	get_conversation,
+	start_conversation,
+	reply,
+	admin_response,
+	set_as_seen,
+	update_last_seen,
+	subscribe,
+} from './messengerActions';
