@@ -1620,7 +1620,7 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title="Compose Ad"
+            title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
           <Content
             contentContainerStyle={styles.contentContainer}

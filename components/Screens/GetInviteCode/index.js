@@ -25,7 +25,9 @@ class GetInviteCode extends Component {
     mobile: "",
     email: "",
     emailError: "",
-    country_name: ""
+    country_name: "",
+    name_error: "",
+    name: ""
   };
 
   _getMobile = info => {
@@ -44,7 +46,8 @@ class GetInviteCode extends Component {
   _handleGetInviteCode = () => {
     const emailError = validateWrapper("email", this.state.email);
     const mobileError = validateWrapper("mandatory", this.state.mobile);
-    if (emailError || mobileError) {
+    const nameError = validateWrapper("mandatory", this.state.name);
+    if (emailError || mobileError || nameError) {
       showMessage({
         message: "Please enter your valid info!",
         type: "warning",
@@ -55,7 +58,8 @@ class GetInviteCode extends Component {
         country_code: this.state.country_code,
         mobile: this.state.mobile,
         email: this.state.email,
-        country_name: this.state.country_name
+        country_name: this.state.country_name,
+        name: this.state.name
       });
     }
   };
@@ -66,6 +70,29 @@ class GetInviteCode extends Component {
           {() => (
             <View style={styles.keyboardView}>
               <Text style={styles.title}>Get your invite code</Text>
+              <Item rounded style={[styles.input]}>
+                <Input
+                  placeholderTextColor="#fff"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  style={styles.inputText}
+                  onChangeText={name => {
+                    this.setState({
+                      name
+                    });
+                  }}
+                  onBlur={() => {
+                    if (validateWrapper("mandatory", this.state.name)) {
+                      showMessage({
+                        message: "Please enter your name.",
+                        type: "warning",
+                        position: "top"
+                      });
+                    }
+                  }}
+                  placeholder="Enter your name"
+                />
+              </Item>
               <PhoneNo _getMobile={this._getMobile} invite={true} />
               <Item rounded style={[styles.input]}>
                 <Input
