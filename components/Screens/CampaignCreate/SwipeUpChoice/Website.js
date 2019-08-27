@@ -79,7 +79,8 @@ class Website extends Component {
     });
     if (urlError) {
       showMessage({
-        message: "Please enter a vaild url",
+        message:
+          "Please enter a vaild url that does not direct to Instagram, facebook, whatsapp, youtube, whatsapp, or any social media",
         type: "warning",
         position: "top",
         duration: 7000
