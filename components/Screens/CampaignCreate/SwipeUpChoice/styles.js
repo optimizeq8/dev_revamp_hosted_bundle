@@ -63,258 +63,257 @@ const styles = StyleSheet.create({
   },
   subtext: {
     bottom: 5,
+		alignSelf: 'center',
+		width: 300,
+		fontFamily: 'montserrat-regular',
+		fontSize: 14,
+		paddingTop: 5,
+		color: '#fff',
+		paddingHorizontal: 20,
+		textAlign: 'center',
+	},
+	url: {
+		alignSelf: 'center',
+		fontFamily: 'montserrat-light',
+		fontSize: 13,
+		color: '#fff',
+		paddingRight: 20,
+		// textAlign: "left"
+	},
+	subTitle: {
+		bottom: 5,
+		alignSelf: 'center',
+		fontFamily: 'montserrat-bold',
+		fontSize: 14,
+		paddingTop: 5,
+		color: '#fff',
+		paddingHorizontal: 20,
+		textAlign: 'center',
+	},
+	addVideoText: {
+		alignSelf: 'center',
+		fontSize: 14,
+		paddingTop: 5,
+		textAlign: 'center',
+		color: '#FF9D00',
+		position: 'absolute',
+		top: '70%',
+		fontFamily: 'montserrat-bold',
+	},
+	safeAreaContainer: {
+		// height: '100%',
+		flex: 1,
+		// backgroundColor: '#FFFF',
+	},
+	warningText: {
+		color: '#fff',
+		textAlign: 'center',
+		top: 10,
+		fontFamily: 'montserrat-semibold',
+		fontSize: 13,
+	},
+	listText: {
+		fontFamily: 'montserrat-regular',
+		fontSize: 14,
+		color: '#fff',
+		width: 170,
+	},
+	footerText: {
+		color: '#fff',
+		fontSize: 14,
+		fontFamily: 'montserrat-regular',
+		paddingBottom: 0,
+		paddingTop: 30,
+		textDecorationLine: 'underline',
+		textAlign: 'center',
+	},
+	textcontainer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+	},
+	appTexts: {
+		alignSelf: 'center',
+		fontFamily: 'montserrat-medium',
+		fontSize: widthPercentageToDP(3.2),
+		marginBottom: 6,
+		color: '#fff',
+		textAlign: 'center',
+	},
+	video: {
+		borderRadius: 50,
+		alignSelf: 'center',
+		marginBottom: 30,
+		alignItems: 'center',
+	},
+	placeholder: {
+		borderRadius: 13,
+		overflow: 'hidden',
+		alignSelf: 'center',
+		width: '100%',
+		height: 150,
+		zIndex: 0,
+		borderWidth: 2,
+		borderStyle: 'dashed',
+		borderColor: '#fff',
+		justifyContent: 'center',
+	},
+	text: {
+		color: '#fff',
+		paddingBottom: 10,
+		fontFamily: 'montserrat-semibold',
+		fontSize: 14,
+		alignSelf: 'center',
+	},
+	downArrowIcon: {
+		color: '#fff',
+		fontSize: 20,
+		left: 0,
+	},
+	deepLinkError: {
+		color: 'white',
+		fontFamily: 'montserrat-semibold',
+		fontSize: 12,
+		alignSelf: 'center',
+	},
 
-    alignSelf: "center",
-    width: 300,
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    paddingTop: 5,
-    color: "#fff",
-    paddingHorizontal: 20,
-    textAlign: "center"
-  },
-  url: {
-    alignSelf: "center",
-    fontFamily: "montserrat-light",
-    fontSize: 13,
-    color: "#fff",
-    paddingRight: 20
-    // textAlign: "left"
-  },
-  subTitle: {
-    bottom: 5,
-    alignSelf: "center",
-    fontFamily: "montserrat-bold",
-    fontSize: 14,
-    paddingTop: 5,
-    color: "#fff",
-    paddingHorizontal: 20,
-    textAlign: "center"
-  },
-  addVideoText: {
-    alignSelf: "center",
-    fontSize: 14,
-    paddingTop: 5,
-    textAlign: "center",
-    color: "#FF9D00",
-    position: "absolute",
-    top: "70%",
-    fontFamily: "montserrat-bold"
-  },
-  safeAreaContainer: {
-    // height: '100%',
-    flex: 1
-  },
-  warningText: {
-    color: "#fff",
-    textAlign: "center",
-    top: 10,
-    fontFamily: "montserrat-semibold",
-    fontSize: 13
-  },
-  listText: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    color: "#fff",
-    width: 170
-  },
-  footerText: {
-    color: "#fff",
-    fontSize: 14,
-    fontFamily: "montserrat-regular",
-    paddingBottom: 0,
-    paddingTop: 30,
-    textDecorationLine: "underline",
-    textAlign: "center"
-  },
-  textcontainer: {
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  appTexts: {
-    alignSelf: "center",
-    fontFamily: "montserrat-medium",
-    fontSize: widthPercentageToDP(3.2),
-    marginBottom: 6,
-    color: "#fff",
-    textAlign: "center"
-  },
-  video: {
-    borderRadius: 50,
-    alignSelf: "center",
-    marginBottom: 30,
-    alignItems: "center"
-  },
-  placeholder: {
-    borderRadius: 13,
-    overflow: "hidden",
-    alignSelf: "center",
-    width: "100%",
-    height: 150,
-    zIndex: 0,
-    borderWidth: 2,
-    borderStyle: "dashed",
-    borderColor: "#fff",
-    justifyContent: "center"
-  },
-  text: {
-    color: "#fff",
-    paddingBottom: 10,
-    fontFamily: "montserrat-semibold",
-    fontSize: 14,
-    alignSelf: "center"
-  },
-  downArrowIcon: {
-    color: "#fff",
-    fontSize: 20,
-    left: 0
-  },
-  deepLinkError: {
-    color: "white",
-    fontFamily: "montserrat-semibold",
-    fontSize: 12,
-    alignSelf: "center"
-  },
-
-  input: {
-    backgroundColor: "rgba(0,0,0,0.2)",
-    paddingHorizontal: 10,
-    borderRadius: 150,
-    borderColor: "rgba(0,0,0,0)",
-    alignSelf: "center",
-    width: widthPercentageToDP(75),
-    borderWidth: 0,
-    height: 50
-  },
-  inputtext: {
-    fontFamily: "montserrat-light",
-    fontSize: 14 / PixelRatio.getFontScale(),
-    alignSelf: "center",
-    textAlign: "center",
-    color: "#fff"
-  },
-  callActionLabel: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    textAlign: "center",
-    color: "#fff",
-    flex: 1
-  },
-  websiteContent: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  whatsApp: {
-    // minHeight: '100%',
-
-    // flex: 1,
-    flexDirection: "column",
-    // justifyContent: 'space-around',
-    // justifyContent: 'space-evenly',
-    alignItems: "center",
-    bottom: "5%",
-    paddingTop: 20
-  },
-  whatsAppDetailContainer: {
-    paddingTop: 20
-    // minHeight: '100%',
-    // justifyContent: 'space-around',
-    // flex: 1,
-  },
-  marginVertical: {
-    marginVertical: 10
-  },
-  title: {
-    textAlign: "center",
-    color: "white",
-    paddingBottom: 10,
-    fontFamily: "montserrat-bold",
-    fontSize: 16
-  },
-  previewButtonContainer: {
-    paddingVertical: 40
-  },
-  videoPreviewView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  videoStyle: {
-    width: "100%",
-    minHeight: 200,
-    alignSelf: "center"
-    //   flex: 1
-    // marginTop: 30
-    // height: 300
-  },
-  safeAreaViewLongFormVideoPreview: {
-    paddingTop: 10
-  },
-  bottonViewWebsite: {
-    marginBottom: 10
-  },
-  netLocStyle: {
-    backgroundColor: "#5D1CD8",
-    borderRadius: 10,
-    // marginRight: 50,
-    borderColor: "#5D1CD8",
-    // width: "100%",
-    width: widthPercentageToDP(20),
-    height: 40
-  },
-  icon: {
-    fontSize: 35,
-    color: "#fff",
-    paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  inactivetext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    color: "#fff"
-    // paddingLeft: 10
-  },
-  activetext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    color: "#FF9D00"
-  },
-  optionsContainer: {
-    flexDirection: "column",
-    paddingTop: 20
-  },
-  optionsRowContainer: {
-    flexDirection: "row",
-    alignItems: "center"
-    // paddingBottom: 20
-  },
-  optionsIconSize: {
-    fontSize: 25
-  },
-  optionsTextContainer: {
-    textAlign: "center",
-    paddingLeft: 10
-  },
-  inputLabel: {
-    fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    borderRadius: 30,
-    marginBottom: -10
-  },
-  topContainer: {
-    // paddingBottom: 30,
-    // paddingTop: widthPercentageToDP(5) > 10 ? 30 : 0,
-    paddingVertical: 30,
-    // paddingHorizontal: 10,
-    width: widthPercentageToDP(75),
-
+	input: {
+		backgroundColor: 'rgba(0,0,0,0.2)',
+		paddingHorizontal: 10,
+		borderRadius: 150,
+		borderColor: 'rgba(0,0,0,0)',
+		alignSelf: 'center',
+		width: widthPercentageToDP(75),
+		borderWidth: 0,
+		height: 50,
+	},
+	inputtext: {
+		fontFamily: 'montserrat-light',
+		fontSize: 14 / PixelRatio.getFontScale(),
+		alignSelf: 'center',
+		textAlign: 'center',
+		color: '#fff',
+	},
+	callActionLabel: {
+		fontFamily: 'montserrat-light',
+		fontSize: 14,
+		textAlign: 'center',
+		color: '#fff',
+		flex: 1,
+	},
+	websiteContent: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+	},
+	whatsApp: {
+		// minHeight: '100%',
+		// backgroundColor: 'transparent',
+		// flex: 1,
+		flexDirection: 'column',
+		// justifyContent: 'space-around',
+		// justifyContent: 'space-evenly',
+		alignItems: 'center',
+		bottom: '5%',
+		paddingTop: 20,
+	},
+	whatsAppDetailContainer: {
+		paddingTop: 20,
+		// minHeight: '100%',
+		// justifyContent: 'space-around',
+		// flex: 1,
+	},
+	marginVertical: {
+		marginVertical: 10,
+	},
+	title: {
+		textAlign: 'center',
+		color: 'white',
+		paddingBottom: 10,
+		fontFamily: 'montserrat-bold',
+		fontSize: 16,
+	},
+	previewButtonContainer: {
+		paddingVertical: 40,
+	},
+	videoPreviewView: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	videoStyle: {
+		width: '100%',
+		minHeight: 200,
+		alignSelf: 'center',
+		//   flex: 1
+		// marginTop: 30
+		// height: 300
+	},
+	safeAreaViewLongFormVideoPreview: {
+		paddingTop: 10,
+	},
+	bottonViewWebsite: {
+		marginBottom: 10,
+	},
+	netLocStyle: {
+		backgroundColor: '#5D1CD8',
+		borderRadius: 10,
+		// marginRight: 50,
+		borderColor: '#5D1CD8',
+		// width: "100%",
+		width: widthPercentageToDP(20),
+		height: 40,
+	},
+	icon: {
+		fontSize: 35,
+		color: '#fff',
+		paddingLeft: 5,
+		alignSelf: 'center',
+		justifyContent: 'center',
+		textAlign: 'center',
+	},
+	inactivetext: {
+		fontFamily: 'montserrat-bold',
+		fontSize: 16,
+		color: '#fff',
+		// paddingLeft: 10
+	},
+	activetext: {
+		fontFamily: 'montserrat-bold',
+		fontSize: 16,
+		color: '#FF9D00',
+	},
+	optionsContainer: {
+		flexDirection: 'column',
+		paddingTop: 20,
+	},
+	optionsRowContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		// paddingBottom: 20
+	},
+	optionsIconSize: {
+		fontSize: 25,
+	},
+	optionsTextContainer: {
+		textAlign: 'center',
+		paddingLeft: 10,
+	},
+	inputLabel: {
+		fontFamily: 'montserrat-bold',
+		fontSize: 12 / PixelRatio.getFontScale(),
+		color: '#fff',
+		alignSelf: 'center',
+		textAlign: 'center',
+		borderRadius: 30,
+		marginBottom: -10,
+	},
+	topContainer: {
+		// paddingBottom: 30,
+		// paddingTop: widthPercentageToDP(5) > 10 ? 30 : 0,
+		paddingVertical: 30,
+		// paddingHorizontal: 10,
+		width: widthPercentageToDP(75),
     // width: 300,
     flexDirection: "row",
     alignSelf: "center"
@@ -360,74 +359,113 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.2)",
     // width: 150,
     width: "50%",
+		height: 50,
+		justifyContent: 'center',
+		flexDirection: 'column',
+	},
+	inputContainer: {
+		flexDirection: 'row',
+		// width: '100%',
+		width: widthPercentageToDP(75),
+		justifyContent: 'center',
+	},
+	websiteView: {
+		alignItems: 'center',
+		width: '100%',
+	},
+	websiteLabelView: {
+		borderTopLeftRadius: 150,
+		borderTopRightRadius: 150,
+		borderBottomRightRadius: 20,
+		borderBottomLeftRadius: 20,
+		paddingTop: 8,
+		width: 150,
+		alignSelf: 'center',
+		backgroundColor: 'rgba(0,0,0,0.2)',
+		height: 15,
+		zIndex: 1,
+	},
+	networkLabel: {
+		fontFamily: 'montserrat-regular',
+		fontSize: 14,
+		textAlign: 'left',
+		color: '#fff',
+		// flex: 1,
+		paddingLeft: 20,
+		top: 2,
+		// right: 4,
+	},
+	callToActionLabelView: {
+		borderTopLeftRadius: 150,
+		borderTopRightRadius: 150,
+		borderBottomRightRadius: 20,
+		borderBottomLeftRadius: 20,
+		paddingTop: 8,
+		width: 150,
+		alignSelf: 'center',
+		backgroundColor: 'rgba(0,0,0,0.2)',
+		height: 15,
+		zIndex: 1,
+	},
+	businessInputText: {
+		fontFamily: 'montserrat-bold',
+		fontSize: 14 / PixelRatio.getFontScale(),
+		alignSelf: 'center',
+		textAlign: 'center',
+		color: '#FF9D00',
+	},
+	scrollViewContainer: {
+		// paddingLeft: 20,
+		flexGrow: 1,
+		paddingBottom: heightPercentageToDP(35),
+	},
+	businessNameView: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+	},
+	BlurView: {
+		zIndex: 10,
+		height: '100%',
+	},
+	walletPaymentModalContainer: {
+		height: '100%',
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	walletButton: {
+		backgroundColor: '#FF9D00',
+		marginTop: 15,
+		borderRadius: 10,
+		paddingHorizontal: 20,
+		alignSelf: 'center',
+		justifyContent: 'center',
+	},
+	colorWhite: {
+		color: '#fff',
+	},
+	instagramWarningHeadingText: {
+		fontSize: 16,
+		lineHeight: 18,
+		textAlign: 'center',
+		color: '#FFF',
+		fontFamily: 'montserrat-bold',
+		paddingVertical: 20,
+		// paddingHorizontal: 60,
+		width: widthPercentageToDP(50),
+	},
+	instagramWarningDescriptionText: {
+		fontSize: 16,
+		lineHeight: 19,
+		textAlign: 'center',
+		color: '#FFF',
+		fontFamily: 'montserrat-regular',
+		paddingVertical: 20,
+		paddingHorizontal: 20,
+		width: widthPercentageToDP(85),
+	},
 
-    height: 50,
-    justifyContent: "center",
-    flexDirection: "column"
-  },
-  inputContainer: {
-    flexDirection: "row",
-    // width: '100%',
-    width: widthPercentageToDP(75),
-    justifyContent: "center",
-    alignSelf: "center",
-    justifyContent: "center"
-  },
-  websiteView: {
-    alignItems: "center",
-    width: "100%"
-  },
-  websiteLabelView: {
-    borderTopLeftRadius: 150,
-    borderTopRightRadius: 150,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    paddingTop: 8,
-    width: 150,
-    alignSelf: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
-    height: 15,
-    zIndex: 1
-  },
-  networkLabel: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    textAlign: "left",
-    color: "#fff",
-    // flex: 1,
-    paddingLeft: 20,
-    top: 2
-    // right: 4,
-  },
-  callToActionLabelView: {
-    borderTopLeftRadius: 150,
-    borderTopRightRadius: 150,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    paddingTop: 8,
-    width: 150,
-    alignSelf: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
-    height: 15,
-    zIndex: 1
-  },
-  businessInputText: {
-    fontFamily: "montserrat-bold",
-    fontSize: 14 / PixelRatio.getFontScale(),
-    alignSelf: "center",
-    textAlign: "center",
-    color: "#FF9D00"
-  },
-  scrollViewContainer: {
-    // paddingLeft: 20,
-    flexGrow: 1,
-    paddingBottom: heightPercentageToDP(35)
-  },
-  businessNameView: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center"
-  }
 });
 
 export default styles;
