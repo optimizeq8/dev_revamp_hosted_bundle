@@ -42,11 +42,14 @@ class ProductList extends React.Component {
 			});
 		} else {
 			// console.log('cartListWIthProductnameNPrice', this.state.cartList);
+			// console.log('this.props.businessLogo', this.props.businessLogo);
+
 			this.props.saveWebProducts(
 				this.state.cartList,
 				this.props.data.campaign_id,
 				this.props.productInfoId,
 				this.props.navigation,
+				this.props.businessLogo,
 				'fromUpdateProductList'
 			);
 		}
@@ -224,6 +227,8 @@ const mapStateToProps = state => ({
 	data: state.campaignC.data,
 	savingWebProducts: state.campaignC.savingWebProducts,
 	productInfoId: state.campaignC.productInfoId,
+	businessLogo: state.campaignC.businessLogo,
+
 	// weburlAvalible: state.campaignC.weburlAvalible,
 	// mainBusiness: state.account.mainBusiness,
 	// errorInstaHandle: state.campaignC.errorInstaHandle,
@@ -232,8 +237,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	verifyBusinessUrl: weburl => dispatch(actionCreators.verifyBusinessUrl(weburl)),
 	verifyInstagramHandle: insta_handle => dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
-	saveWebProducts: (cartList, campaign_id, productInfoId, navigation, from) =>
-		dispatch(actionCreators.saveWebProducts(cartList, campaign_id, productInfoId, navigation, from)),
+	saveWebProducts: (cartList, campaign_id, productInfoId, navigation, businessLogo, from) =>
+		dispatch(actionCreators.saveWebProducts(cartList, campaign_id, productInfoId, navigation, businessLogo, from)),
 });
 export default connect(
 	mapStateToProps,

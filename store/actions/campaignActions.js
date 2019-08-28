@@ -1030,7 +1030,7 @@ export const verifyInstagramHandle = insta_handle => {
     }
 }
 export const getInstagramPost = insta_handle => {
-
+    
     return async dispatch => {
         try{
             dispatch({
@@ -1049,39 +1049,46 @@ export const getInstagramPost = insta_handle => {
                
                 data = data.entry_data.ProfilePage[0].graphql.user;
                         // console.log('data', data);
-						const mediaList = data.edge_owner_to_timeline_media;
-						if (mediaList.edges && mediaList.edges.length > 0) {
-							var imagesList = mediaList.edges.map(media => {
-								// console.log('media', media);
-                                if(!media.node.is_video)
-								return {
-									imageUrl: media.node.display_url,
-									// shortcode: media.node.shortcode,
-									imageId: media.node.id,
-									productDescription: media.node.edge_media_to_caption.edges.length > 0
-                                        ? media.node.edge_media_to_caption.edges[0].node.text
-                                        : '',
-									// isVideo: media.node.is_video,
-								};
-							});
-							// console.log('imageListBeforeSize', imagesList.length);
+                var businessLogo = data.profile_pic_url
+                const mediaList = data.edge_owner_to_timeline_media;
+                if (mediaList.edges && mediaList.edges.length > 0) {
+                    var imagesList = mediaList.edges.map(media => {
+                        // console.log('media', media);
+                        if(!media.node.is_video)
+                        return {
+                            imageUrl: media.node.display_url,
+                            shortcode: media.node.shortcode,
+                            imageId: media.node.id,
+                            productDescription: media.node.edge_media_to_caption.edges.length > 0
+                                ? media.node.edge_media_to_caption.edges[0].node.text
+                                : '',
+                            // isVideo: media.node.is_video,
+                        };
+                    });
+                    // console.log('imageListBeforeSize', imagesList.length);
 
-							// imagesList = filter(imagesList, media => {
-							// 	return !media.isVideo;
-                            // });
-                            // console.log('imageList', imagesList);
-							// console.log('imageListAfterSize', imagesList.length);
+                    // imagesList = filter(imagesList, media => {
+                    // 	return !media.isVideo;
+                    // });
+                    // console.log('imageList', imagesList);
+                    // console.log('imageListAfterSize', imagesList.length);
+                    // console.log('???', imagesList);
+                    
+                    return dispatch({
+                        type: actionTypes.SET_INSTAGRAM_POST,
+                        payload: {
+                            businessLogo: businessLogo, 
+                            imagesList: imagesList
+                        }
+                    })	
+                    // console.log('imageListAfterSize', imagesList.length);
+                }  
+                // console.log('??? empty');
 
-                            return dispatch({
-                                type: actionTypes.SET_INSTAGRAM_POST,
-                                payload: imagesList
-                            })	
-							// console.log('imageListAfterSize', imagesList.length);
-                        }  
-                        return dispatch({
-                            type: actionTypes.SET_INSTAGRAM_POST,
-                            payload: []
-                        })
+                return dispatch({
+                    type: actionTypes.SET_INSTAGRAM_POST,
+                    payload: {businessLogo: '',imagesList: []}
+                })
             }  
         } catch(error) {
             console.log('insta error', error.response || error.message);
@@ -1141,7 +1148,7 @@ export const getWebProducts = (campaign_id) => {
     }
 }
 
-export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation, from) => {
+export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation,businessLogo, from) => {
     return (dispatch , getState) => {
         dispatch({
             type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
@@ -1154,6 +1161,7 @@ export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation,
                 businessid: getState().account.mainBusiness.businessid,
                 webproducts: cartList,
                 campaign_id,
+                businesslogo: businessLogo
             })
             .then(res => {
                 return res.data
@@ -1202,7 +1210,9 @@ export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation,
                 businessid: getState().account.mainBusiness.businessid,
                 webproducts: cartList,
                 campaign_id,
-                id: productInfoId
+                id: productInfoId,
+                businesslogo: businessLogo
+
             })
             .then(res => {
                 return res.data

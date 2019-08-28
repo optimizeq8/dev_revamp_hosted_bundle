@@ -89,6 +89,7 @@ class SelectInstagramPost extends React.Component {
 	};
 	render() {
 		// console.log('this.state.cartList', this.state.cartList);
+		// console.log('instagramPostList', this.props.instagramPostList);
 
 		return (
 			<SafeAreaView forceInset={{ top: 'always', bottom: 'never' }} style={styles.safeAreaContainer}>
@@ -146,7 +147,7 @@ class SelectInstagramPost extends React.Component {
 						>
 							{this.props.instagramPostLoading && <ActivityIndicator color="#FF9D00" size="large" />}
 							{!this.props.instagramPostLoading &&
-								!this.props.instagramPostLoading &&
+								this.props.instagramPostList &&
 								this.props.instagramPostList.map(item => {
 									// console.log('insta item', item);
 
