@@ -85,7 +85,7 @@ class SnapCard extends Component {
                 (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                   snapCardInfo.item.uploaded)
                   ? snapCardInfo.item["media"]
-                  : ""
+                  : " "
               }
               style={{
                 height: "100%",

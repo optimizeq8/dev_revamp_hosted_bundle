@@ -8,6 +8,7 @@ const preview = {
 export default class RNImageOrCacheImage extends Component {
   render() {
     let { media, style } = this.props;
+    // console.log("media in RNOrCache", media);
 
     return media.includes("https://") ? (
       <Image resizeMode="stretch" style={style} {...{ preview, uri: media }} />

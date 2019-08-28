@@ -10,9 +10,12 @@ export default class SnapAds extends Component {
   snapCards = item => {
     if (item.index === this.props.snapAdsCards.length - 1) {
       return <AddCard addButton={item} addSnapCard={this.props.addSnapCard} />;
-    } else
+    } else {
+      console.log("index:", item.index);
+
       return (
         <SnapCard
+          key={item.index}
           rejected={this.props.rejected}
           video={this.props.video}
           openUploadVideo={this.props.openUploadVideo}
@@ -22,6 +25,7 @@ export default class SnapAds extends Component {
           snapCardInfo={item}
         />
       );
+    }
   };
   render() {
     return (
