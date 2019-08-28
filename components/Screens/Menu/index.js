@@ -192,7 +192,7 @@ class Menu extends Component {
 							<Text style={styles.text}>Logout</Text>
 						</TouchableOpacity>
 						<Text style={styles.version}>
-							Version:{Constants.manifest.version}13/
+							Version:{Constants.manifest.version}14/
 							{Constants.manifest.ios.buildNumber}/{Constants.manifest.android.versionCode}
 						</Text>
 					</ScrollView>

@@ -74,6 +74,7 @@ const initialState = {
 	productInfoId: null,
 	errorGetWebProducts: false,
 	getWebProductsLoading: false,
+	businessLogo: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -549,17 +550,20 @@ const reducer = (state = initialState, action) => {
 				// errorInstaHandle: !action.payload.error,
 				// errorInstaHandleMessage: action.payload.errorMessage,
 				instagramPostList: [],
+				businessLogo: '',
 			};
 		case actionTypes.SET_INSTAGRAM_POST:
 			return {
 				...state,
-				instagramPostList: action.payload,
+				instagramPostList: action.payload.imagesList,
+				businessLogo: action.payload.businessLogo,
 				instagramPostLoading: false,
 			};
 		case actionTypes.ERROR_GET_INSTAGRAM_POST:
 			return {
 				...state,
 				instagramPostList: [],
+				businessLogo: '',
 				// errorInstaHandle: true,
 				errorInstaHandle: action.payload.error,
 				instagramPostLoading: false,
