@@ -222,14 +222,6 @@ class AdDetails extends Component {
         });
       }
     }
-    if (this.props.collectionAdLinkForm === 2) {
-      let rep = this.state.campaignInfo;
-      rep.targeting.devices[0].os_type = "iOS";
-      await this.setState({
-        campaignInfo: rep
-      });
-    }
-    console.log("ostype", this.state.campaignInfo.targeting.devices[0].os_type);
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -1115,47 +1107,47 @@ class AdDetails extends Component {
                       )}
                     </View>
                   </TouchableOpacity>
-                  {this.props.collectionAdLinkForm !== 2 && (
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("OS");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <OperatingSystemIcon
-                          width={25}
-                          height={25}
-                          fill={globalColors.orange}
-                          style={styles.icon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Operating System</Text>
-                          <Text style={styles.menudetails}>
-                            {
-                              OSType.find(r => {
-                                if (
-                                  r.value ===
-                                  this.state.campaignInfo.targeting.devices[0]
-                                    .os_type
-                                )
-                                  return r;
-                              }).label
-                            }
-                          </Text>
-                        </View>
-                      </View>
 
-                      {this.state.campaignInfo.targeting.devices[0].os_type ===
-                        "" ||
-                      this.state.campaignInfo.targeting.devices[0].os_type ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-                  )}
+                  <TouchableOpacity
+                    disabled={this.props.loading}
+                    onPress={() => {
+                      this._renderSideMenu("OS");
+                    }}
+                    style={styles.targetTouchable}
+                  >
+                    <View style={[globalStyles.row, styles.flex]}>
+                      <OperatingSystemIcon
+                        width={25}
+                        height={25}
+                        fill={globalColors.orange}
+                        style={styles.icon}
+                      />
+                      <View style={[globalStyles.column, styles.flex]}>
+                        <Text style={styles.menutext}>Operating System</Text>
+                        <Text style={styles.menudetails}>
+                          {
+                            OSType.find(r => {
+                              if (
+                                r.value ===
+                                this.state.campaignInfo.targeting.devices[0]
+                                  .os_type
+                              )
+                                return r;
+                            }).label
+                          }
+                        </Text>
+                      </View>
+                    </View>
+
+                    {this.state.campaignInfo.targeting.devices[0].os_type ===
+                      "" ||
+                    this.state.campaignInfo.targeting.devices[0].os_type ? (
+                      <GreenCheckmarkIcon width={25} height={25} />
+                    ) : (
+                      <PlusCircleIcon width={25} height={25} />
+                    )}
+                  </TouchableOpacity>
+
                   {this.state.campaignInfo.targeting.devices[0].os_type !==
                     "" && (
                     <TouchableOpacity
