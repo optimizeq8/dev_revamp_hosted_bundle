@@ -20,7 +20,7 @@ export default class MediaButton extends Component {
     } = this.props;
 
     if (media && media !== "//") {
-      console.log("MediaButton media?? first if", media);
+      // console.log("MediaButton media?? first if", media);
       return (
         <Button
           transparent
@@ -58,7 +58,7 @@ export default class MediaButton extends Component {
         </Button>
       );
     } else {
-      console.log("MediaButton media??", media);
+      // console.log("MediaButton media??", media);
       return (
         <>
           <Button

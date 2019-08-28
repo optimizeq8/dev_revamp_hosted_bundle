@@ -358,6 +358,8 @@ const reducer = (state = initialState, action) => {
 				destination: 'BLANK',
 				attachment: 'BLANK',
 			};
+			console.log("id???", newSnapCard.id);
+			
 			let newStoryAdsArray = state.storyAdsArray;
 			newStoryAdsArray.push(newSnapCard);
 			return {
