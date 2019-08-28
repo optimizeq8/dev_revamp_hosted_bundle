@@ -25,7 +25,8 @@ class CampaignCard extends Component {
     this.setState({ paused: !this.state.paused });
   };
   getLeftText = () => {
-    return this.campaign_status === "PAUSED"
+    return this.campaign_status === "PAUSED" ||
+      this.review_status === "REJECTED"
       ? ""
       : this.review_status === "COMPLETED"
       ? "Complete"
@@ -138,9 +139,7 @@ class CampaignCard extends Component {
             {!this.review_status.includes("PENDING") && (
               <Text style={[styles.subtext]}>
                 {this.review_status.includes("REJECTED")
-                  ? `${
-                      campaign.review_status_reason
-                    }\n Tap to submit your Ad again`
+                  ? `${campaign.review_status_reason}\n Tap to submit your Ad again`
                   : "Tap to view more"}
               </Text>
             )}

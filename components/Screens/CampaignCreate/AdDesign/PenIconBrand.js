@@ -37,7 +37,7 @@ export default class PenIconBrand extends Component {
             placeholder={
               this.props.field === "Business Name"
                 ? "Enter your business name"
-                : "Enter your Headline"
+                : "Enter your Promotional Message"
             }
             defaultValue={
               this.props.field === "Business Name"
