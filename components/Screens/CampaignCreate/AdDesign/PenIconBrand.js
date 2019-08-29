@@ -50,7 +50,7 @@ export default class PenIconBrand extends Component {
             placeholder={
               field === "Business Name"
                 ? "Enter your business name"
-                : "Enter your Headline"
+                : "Enter your Promotional Message"
             }
             defaultValue={
               field === "Business Name"

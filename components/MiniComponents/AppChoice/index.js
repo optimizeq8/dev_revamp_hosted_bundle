@@ -362,84 +362,82 @@ class AppChoice extends Component {
                     />
                   </Item>
                 </View>
-                {this.props.collectionAdLinkForm !== 2 && (
-                  <Animatable.View animation={"zoomInUp"}>
-                    <Animatable.View
-                      duration={200}
-                      easing={"ease"}
-                      onAnimationEnd={() =>
-                        this.setState({ choiceError: null })
-                      }
-                      style={styles.animateView1}
-                      animation={!this.state.choiceError ? "" : "shake"}
+
+                <Animatable.View animation={"zoomInUp"}>
+                  <Animatable.View
+                    duration={200}
+                    easing={"ease"}
+                    onAnimationEnd={() => this.setState({ choiceError: null })}
+                    style={styles.animateView1}
+                    animation={!this.state.choiceError ? "" : "shake"}
+                  >
+                    <TouchableOpacity
+                      style={[
+                        styles.OS,
+                        this.state.choice === "iOS"
+                          ? globalStyles.orangeBackgroundColor
+                          : globalStyles.whiteBackgroundColor
+                      ]}
+                      onPress={() => this.handleChoice("iOS")}
                     >
-                      <TouchableOpacity
+                      <Text
                         style={[
-                          styles.OS,
+                          styles.OSText,
                           this.state.choice === "iOS"
-                            ? globalStyles.orangeBackgroundColor
-                            : globalStyles.whiteBackgroundColor
+                            ? globalStyles.whiteTextColor
+                            : globalStyles.purpleTextColor
                         ]}
-                        onPress={() => this.handleChoice("iOS")}
                       >
-                        <Text
-                          style={[
-                            styles.OSText,
-                            this.state.choice === "iOS"
-                              ? globalStyles.whiteTextColor
-                              : globalStyles.purpleTextColor
-                          ]}
-                        >
-                          iOS
-                        </Text>
-                      </TouchableOpacity>
+                        iOS
+                      </Text>
+                    </TouchableOpacity>
 
-                      <TouchableOpacity
+                    <TouchableOpacity
+                      style={[
+                        styles.OS,
+                        this.state.choice === "ANDROID"
+                          ? globalStyles.orangeBackgroundColor
+                          : globalStyles.whiteBackgroundColor,
+                        styles.buttonAndroid
+                      ]}
+                      onPress={() => this.handleChoice("ANDROID")}
+                    >
+                      <Text
                         style={[
-                          styles.OS,
+                          styles.OSText,
                           this.state.choice === "ANDROID"
-                            ? globalStyles.orangeBackgroundColor
-                            : globalStyles.whiteBackgroundColor,
-                          styles.buttonAndroid
+                            ? globalStyles.whiteTextColor
+                            : globalStyles.purpleTextColor
                         ]}
-                        onPress={() => this.handleChoice("ANDROID")}
                       >
-                        <Text
-                          style={[
-                            styles.OSText,
-                            this.state.choice === "ANDROID"
-                              ? globalStyles.whiteTextColor
-                              : globalStyles.purpleTextColor
-                          ]}
-                        >
-                          Android
-                        </Text>
-                      </TouchableOpacity>
+                        Android
+                      </Text>
+                    </TouchableOpacity>
 
-                      <TouchableOpacity
+                    <TouchableOpacity
+                      style={[
+                        styles.OS,
+                        this.state.choice === ""
+                          ? globalStyles.orangeBackgroundColor
+                          : globalStyles.whiteBackgroundColor,
+                        styles.buttonBoth
+                      ]}
+                      onPress={() => this.handleChoice("")}
+                    >
+                      <Text
                         style={[
-                          styles.OS,
+                          styles.OSText,
                           this.state.choice === ""
-                            ? globalStyles.orangeBackgroundColor
-                            : globalStyles.whiteBackgroundColor,
-                          styles.buttonBoth
+                            ? globalStyles.whiteTextColor
+                            : globalStyles.purpleTextColor
                         ]}
-                        onPress={() => this.handleChoice("")}
                       >
-                        <Text
-                          style={[
-                            styles.OSText,
-                            this.state.choice === ""
-                              ? globalStyles.whiteTextColor
-                              : globalStyles.purpleTextColor
-                          ]}
-                        >
-                          Both
-                        </Text>
-                      </TouchableOpacity>
-                    </Animatable.View>
+                        Both
+                      </Text>
+                    </TouchableOpacity>
                   </Animatable.View>
-                )}
+                </Animatable.View>
+
                 {this.state.choice || this.state.choice === "" ? (
                   <Item
                     rounded

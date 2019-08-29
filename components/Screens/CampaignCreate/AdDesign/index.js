@@ -1468,7 +1468,7 @@ class AdDesign extends Component {
       call_to_action
     } = this.state.campaignInfo;
 
-    let inputFields = ["Business Name", "Headline"].map(field => (
+    let inputFields = ["Business Name", "Promotional Message"].map(field => (
       <PenIconBrand
         rejected={this.rejected}
         data={this.props.data}
@@ -1641,7 +1641,7 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title="Compose Ad"
+            title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
           <Content
             contentContainerStyle={styles.contentContainer}

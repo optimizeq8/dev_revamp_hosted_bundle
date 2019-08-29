@@ -25,7 +25,8 @@ class CampaignCard extends Component {
     this.setState({ paused: !this.state.paused });
   };
   getLeftText = () => {
-    return this.campaign_status === "PAUSED"
+    return this.campaign_status === "PAUSED" ||
+      this.review_status === "REJECTED"
       ? ""
       : this.review_status === "COMPLETED"
       ? "Complete"
