@@ -75,7 +75,7 @@ class AdDesign extends Component {
       },
       storyAdCards: {
         storyAdSelected: false,
-        selectedStoryAd: { media: "//" },
+        selectedStoryAd: { media: "//", call_to_action: {} },
         numOfAds: 0
       },
       directory: "/ImagePicker/",
@@ -164,10 +164,12 @@ class AdDesign extends Component {
     }
     let swipeUpError = null;
     if (
-      this.adType !== "StoryAd" &&
-      this.state.objective !== "BRAND_AWARENESS" &&
-      this.state.campaignInfo.attachment === "BLANK" &&
-      this.state.campaignInfo.call_to_action.label === "BLANK"
+      (this.adType === "StoryAd" &&
+        this.props.storyAdAttachment.attachment === "BLANK") ||
+      (!this.adType === "StoryAd" &&
+        this.state.objective !== "BRAND_AWARENESS" &&
+        this.state.campaignInfo.attachment === "BLANK" &&
+        this.state.campaignInfo.call_to_action.label === "BLANK")
     ) {
       swipeUpError = "Choose A Swipe Up Destination";
     } else {
@@ -290,42 +292,41 @@ class AdDesign extends Component {
   ) => {
     let newData = {};
     if (this.adType === "StoryAd") {
-      let cards = this.props.storyAdsArray;
-      let card = this.props.storyAdsArray[
-        this.state.storyAdCards.selectedStoryAd.index
-      ];
-      if (attachment.hasOwnProperty("longformvideo_media")) {
-        card = {
-          ...card,
-          index: this.state.storyAdCards.selectedStoryAd.index,
-          destination,
-          call_to_action,
-          uploaded: false,
-          attachment: { label: "BLANK", value: "BLANK" },
-          [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-          [Object.keys(attachment)[1]]: attachment.longformvideo_media_type,
-          rejectionLongVidUpload: true
-        };
-      } else
-        card = {
-          ...card,
-          index: this.state.storyAdCards.selectedStoryAd.index,
-          destination,
-          call_to_action,
-          attachment
-        };
+      // let cards = this.props.storyAdsArray;
+      // let storyAdAttachment = this.props.storyAdAttachment;
+      // let card = this.props.storyAdsArray[
+      //   this.state.storyAdCards.selectedStoryAd.index
+      // ];
 
-      cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      this.setState({
-        storyAdCards: {
-          ...this.state.storyAdCards,
-          // storyAdSelected: false,
-          selectedStoryAd: {
-            ...card
-          }
-        },
-        swipeUpError: null
+      this.props.setStoryAdAttachment({
+        attachment,
+        call_to_action,
+        destination
       });
+      this.setState({ swipeUpError: null });
+      // if (attachment.hasOwnProperty("longformvideo_media")) {
+      //   card = {
+      //     ...card,
+      //     ...storyAdAttachment
+      //   };
+      // } else
+      //   card = {
+      //     ...card,
+      //     index: this.state.storyAdCards.selectedStoryAd.index,
+      //     ...storyAdAttachment
+      //   };
+
+      // cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+      // this.setState({
+      //   storyAdCards: {
+      //     ...this.state.storyAdCards,
+      //     // storyAdSelected: false,
+      //     selectedStoryAd: {
+      //       ...card
+      //     }
+      //   },
+      //   swipeUpError: null
+      // });
     } else if (attachment.hasOwnProperty("longformvideo_media")) {
       newData = {
         campaignInfo: {
@@ -943,7 +944,7 @@ class AdDesign extends Component {
       loaded: loading
     });
   };
-  perviewHandler = async () => {
+  previewHandler = async () => {
     await this.validator();
     if (
       !this.props.loadingStoryAdsArray.includes(true) &&
@@ -971,7 +972,12 @@ class AdDesign extends Component {
           headline: this.state.campaignInfo.headline,
           brand_name: this.state.campaignInfo.brand_name,
           destination: this.state.campaignInfo.destination,
-          icon_media_url: this.state.campaignInfo.attachment.icon_media_url,
+          icon_media_url:
+            // this.adType === "StoryAd"
+            //   ? this.props.storyAdAttachment.attachment.icon_media_url &&
+            //     this.props.storyAdAttachment.attachment.icon_media_url
+            //   :
+            this.state.campaignInfo.attachment.icon_media_url,
           coverHeadline: this.rejected
             ? this.selectedCampaign.story_headline
             : this.props.data.coverHeadline,
@@ -1062,6 +1068,7 @@ class AdDesign extends Component {
     let card = this.props.storyAdsArray[
       this.state.storyAdCards.selectedStoryAd.index
     ];
+    let storyAdAttachment = this.props.storyAdAttachment;
     if (
       !this.state.storyAdCards.selectedStoryAd.iosVideoUploaded &&
       card.rejectionUpload
@@ -1079,9 +1086,13 @@ class AdDesign extends Component {
       storyBody.append("story_media_type", card.media_type);
     }
     if (
-      card.hasOwnProperty("longformvideo_media" && card.rejectionLongVidUpload)
+      storyAdAttachment.hasOwnProperty(
+        "longformvideo_media" && card.rejectionLongVidUpload
+      )
     ) {
-      let resVideo = card.longformvideo_media.split("/ImagePicker/");
+      let resVideo = storyAdAttachment.longformvideo_media.split(
+        "/ImagePicker/"
+      );
       let formatVideo = resVideo[1].split(".");
       var video = {
         uri: card.longformvideo_media,
@@ -1092,12 +1103,12 @@ class AdDesign extends Component {
       storyBody.append("story_longformvideo_media", video);
       storyBody.append(
         "story_longformvideo_media_type",
-        card.longformvideo_media_type
+        storyAdAttachment.longformvideo_media_type
       );
     }
     storyBody.append(
       "story_longformvideo_media_upload",
-      card.rejectionLongVidUpload ? 1 : 0
+      storyAdAttachment.rejectionLongVidUpload ? 1 : 0
     );
     storyBody.append(
       "story_name",
@@ -1107,7 +1118,7 @@ class AdDesign extends Component {
     );
     storyBody.append(
       "story_destination",
-      card.destination ? card.destination : "BLANK"
+      storyAdAttachment.destination ? storyAdAttachment.destination : "BLANK"
     );
     storyBody.append(
       "campaign_id",
@@ -1121,11 +1132,15 @@ class AdDesign extends Component {
     );
     storyBody.append(
       "story_call_to_action",
-      card.call_to_action ? card.call_to_action.value : "BLANK"
+      storyAdAttachment.call_to_action
+        ? storyAdAttachment.call_to_action.value
+        : "BLANK"
     );
     storyBody.append(
       "story_attachment",
-      card.attachment !== "BLANK" ? JSON.stringify(card.attachment) : "BLANK"
+      storyAdAttachment.attachment !== "BLANK"
+        ? JSON.stringify(storyAdAttachment.attachment)
+        : "BLANK"
     );
 
     card.story_id && storyBody.append("story_id", card.story_id);
@@ -1134,6 +1149,7 @@ class AdDesign extends Component {
       Platform.OS === "ios" && card.iosVideoUploaded ? 1 : 0
     );
     storyBody.append("story_media_upload", card.rejectionUpload ? 1 : 0);
+    console.log(storyBody);
 
     await this.handleUpload();
     await this.props.uploadStoryAdCard(
@@ -1460,6 +1476,7 @@ class AdDesign extends Component {
         changeHeadline={this.changeHeadline}
         brand_name={brand_name}
         headline={headline}
+        storyAdSelected={storyAdCards.storyAdSelected}
         key={field}
         field={field}
         mainBusiness={this.props.mainBusiness}
@@ -1495,17 +1512,21 @@ class AdDesign extends Component {
         />
       ) : (
         this.adType === "StoryAd" &&
-        this.state.storyAdCards.storyAdSelected && (
+        !this.state.storyAdCards.storyAdSelected && (
           <SwipeUpComponent
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
             objective={this.state.objective}
-            destination={storyAdCards.selectedStoryAd.destination}
-            attachment={storyAdCards.selectedStoryAd.attachment}
+            destination={this.props.storyAdAttachment.destination}
+            attachment={this.props.storyAdAttachment.attachment}
             adType={this.adType}
             media={storyAdCards.selectedStoryAd.media}
             call_to_action_label={
-              storyAdCards.selectedStoryAd.call_to_action.label
+              this.props.storyAdAttachment.call_to_action.label
+            }
+            disableSwipeUp={
+              this.props.loadingStoryAdsArray.includes(true) ||
+              this.props.storyAdsArray.some(ad => ad.uploaded)
             }
           />
         )
@@ -1665,8 +1686,35 @@ class AdDesign extends Component {
                     {blankView}
 
                     {inputFields}
-                    {this.adType === "StoryAd" &&
-                    !this.state.storyAdCards.storyAdSelected ? (
+                    {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
+                      <View style={styles.storyAdIndexContainer}>
+                        <Text style={styles.storyAdIndexNum}>
+                          {storyAdCards.selectedStoryAd.index + 1}
+                        </Text>
+                      </View>
+                    )}
+                    {this.adType === "StoryAd" && this.state.swipeUpError ? (
+                      <View
+                        style={{
+                          height: 100,
+                          width: "100%",
+                          position: "absolute",
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.swipeUpText,
+                            {
+                              width: "70%"
+                            }
+                          ]}
+                        >
+                          Please choose a swipe up destination first
+                        </Text>
+                      </View>
+                    ) : !this.state.storyAdCards.storyAdSelected ? (
                       <SnapAds
                         rejected={this.rejected}
                         openUploadVideo={this.openUploadVideo}
@@ -1702,7 +1750,13 @@ class AdDesign extends Component {
                       }
                       style={styles.placeholder1}
                     />
-
+                    {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
+                      <View style={styles.storyAdIndexContainer}>
+                        <Text style={styles.storyAdIndexNum}>
+                          {storyAdCards.selectedStoryAd.index + 1}
+                        </Text>
+                      </View>
+                    )}
                     {inputFields}
                     {this.adType === "StoryAd" &&
                     !this.state.storyAdCards.storyAdSelected ? (
@@ -1759,7 +1813,7 @@ class AdDesign extends Component {
                   !this.state.storyAdCards.storyAdSelected && (
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={() => this.perviewHandler()}
+                      onPress={() => this.previewHandler()}
                     >
                       {this.props.loadingStoryAdsArray.includes(true) ? (
                         <Button rounded style={styles.loadingButtons}>
@@ -1773,7 +1827,7 @@ class AdDesign extends Component {
                 ) : (
                   <TouchableOpacity
                     style={styles.button}
-                    onPress={() => this.perviewHandler()}
+                    onPress={() => this.previewHandler()}
                   >
                     <EyeIcon width={wp(24)} height={hp(8)} />
                   </TouchableOpacity>
@@ -1806,7 +1860,7 @@ class AdDesign extends Component {
                       {this.adType === "StoryAd"
                         ? this.state.videoIsLoading
                           ? "Please wait while the video is downloading"
-                          : "Please add minimum of 3 medias to proceed"
+                          : ""
                         : "Please add media to proceed"}
                     </Text>
                   )
@@ -1819,7 +1873,7 @@ class AdDesign extends Component {
                 {this.adType === "StoryAd"
                   ? this.state.videoIsLoading
                     ? "Please wait while the video is downloading"
-                    : "Please add minimum of 3 medias to proceed"
+                    : ""
                   : "Please add media to proceed"}
               </Text>
             )}
@@ -1892,7 +1946,8 @@ const mapStateToProps = state => ({
   videoUrl: state.campaignC.videoUrl,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
-  collectionAdMedia: state.campaignC.collectionAdMedia
+  collectionAdMedia: state.campaignC.collectionAdMedia,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1936,7 +1991,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.setRejectedStoryAds(data)),
   setRejectedCollectionAds: data =>
     dispatch(actionCreators.setRejectedCollectionAds(data)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  setStoryAdAttachment: info =>
+    dispatch(actionCreators.setStoryAdAttechment(info))
 });
 export default connect(
   mapStateToProps,

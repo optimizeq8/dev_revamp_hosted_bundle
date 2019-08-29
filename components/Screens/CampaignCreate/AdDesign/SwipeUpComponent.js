@@ -12,7 +12,8 @@ export default class SwipeUpComponent extends Component {
       objective,
       media,
       selectedStoryAd,
-      call_to_action_label
+      call_to_action_label,
+      disableSwipeUp
     } = this.props;
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     return (
@@ -21,9 +22,11 @@ export default class SwipeUpComponent extends Component {
           styles.swipeUp,
           {
             bottom: 0,
-            marginBottom: adType === "CollectionAd" ? 110 : 10
+            marginBottom: adType === "CollectionAd" ? 110 : 10,
+            opacity: disableSwipeUp ? 0.7 : 1
           }
         ]}
+        disabled={disableSwipeUp}
         onPress={() => {
           if (adType === "CollectionAd") {
             this.props.navigation.navigate("SwipeUpChoice", {
@@ -32,8 +35,23 @@ export default class SwipeUpComponent extends Component {
               collectionAdLinkForm: collectionAdLinkForm,
               adType: adType
             });
+          } else if (adType === "StoryAd") {
+            objective === "BRAND_AWARENESS"
+              ? this.props.navigation.push("SwipeUpDestination", {
+                  _changeDestination: this.props._changeDestination,
+                  objective,
+                  adType,
+                  destination,
+                  media
+                })
+              : this.props.navigation.navigate("SwipeUpChoice", {
+                  _changeDestination: this.props._changeDestination,
+                  objective,
+                  adType,
+                  collectionAdLinkForm
+                });
           } else {
-            objective === "TRAFFIC" || adType === "StoryAd"
+            objective === "TRAFFIC"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
                   objective,

@@ -431,6 +431,12 @@ export const addSnapCard = () => {
   };
 };
 
+export const setStoryAdAttechment = info => {
+  return dispatch => {
+    dispatch({ type: actionTypes.STORYAD_ATTACHMENT, payload: info });
+  };
+};
+
 export const uploadStoryAdCard = (
   info,
   card,

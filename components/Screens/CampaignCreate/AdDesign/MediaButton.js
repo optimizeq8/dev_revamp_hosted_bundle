@@ -20,7 +20,6 @@ export default class MediaButton extends Component {
     } = this.props;
 
     if (media && media !== "//") {
-      // console.log("MediaButton media?? first if", media);
       return (
         <Button
           transparent
@@ -32,7 +31,7 @@ export default class MediaButton extends Component {
                   ...snapCardInfo.item
                 })
               : cover
-              ? _pickImage()
+              ? _pickImage("Images")
               : setMediaModalVisible(true);
           }}
           style={[
@@ -58,7 +57,6 @@ export default class MediaButton extends Component {
         </Button>
       );
     } else {
-      // console.log("MediaButton media??", media);
       return (
         <>
           <Button

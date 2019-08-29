@@ -54,6 +54,7 @@ export {
 	getInstagramPost,
 	saveWebProducts,
 	getWebProducts,
+  setStoryAdAttechment
 } from './campaignActions';
 
 export {

@@ -75,6 +75,11 @@ const initialState = {
 	errorGetWebProducts: false,
 	getWebProductsLoading: false,
 	businessLogo: '',
+  storyAdAttachment: {
+    destination: "BLANK",
+    call_to_action: { labe: "BLANK", value: "BLANK" },
+    attachment: "BLANK"
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -500,7 +505,6 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.SET_REJECTED_STORYADS:
 			let rejAds = action.payload;
 			let oldStoryAdsArray = state.storyAdsArray;
-
 			oldStoryAdsArray = rejAds.map((ad, i) => {
 				let atch = ad.attachment !== 'BLANK' ? JSON.parse(ad.attachment) : ad.attachment;
 				if (atch.hasOwnProperty('block_preload')) {
@@ -611,6 +615,26 @@ const reducer = (state = initialState, action) => {
 				getWebProductsLoading: action.payload,
 			};
 		}
+   case actionTypes.STORYAD_ATTACHMENT:
+      let sAttachment = {};
+      if (action.payload.attachment.hasOwnProperty("longformvideo_media")) {
+        sAttachment = {
+          ...action.payload,
+          uploaded: false,
+          attachment: { label: "BLANK", value: "BLANK" },
+          [Object.keys(action.payload.attachment)[0]]:
+            action.payload.attachment.longformvideo_media,
+          [Object.keys(action.payload.attachment)[1]]:
+            action.payload.attachment.longformvideo_media_type,
+          rejectionLongVidUpload: true
+        };
+      } else {
+        sAttachment = { ...action.payload };
+      }
+      return {
+        ...state,
+        storyAdAttachment: sAttachment
+      };
 		default:
 			return state;
 	}
