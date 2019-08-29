@@ -1524,6 +1524,10 @@ class AdDesign extends Component {
             call_to_action_label={
               this.props.storyAdAttachment.call_to_action.label
             }
+            disableSwipeUp={
+              this.props.loadingStoryAdsArray.includes(true) ||
+              this.props.storyAdsArray.some(ad => ad.uploaded)
+            }
           />
         )
       );
