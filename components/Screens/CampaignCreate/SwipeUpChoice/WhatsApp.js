@@ -334,7 +334,7 @@ class WhatsApp extends Component {
                   />
                 </View>
                 <View style={{}}>
-                  <Text style={[styles.subTitle]}>Phone number (optional)</Text>
+                  <Text style={[styles.subTitle]}>Phone number</Text>
                   <PhoneNo
                     whatsApp
                     phoneNum={this.state.campaignInfo.callnumber}
