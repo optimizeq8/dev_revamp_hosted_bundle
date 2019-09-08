@@ -287,9 +287,10 @@ class CampaignDetails extends Component {
                 <Video
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
-                    uri: !loading
-                      ? selectedCampaign.media
-                      : "../../../assets/images/emptyPlaceHolder.png"
+                    uri:
+                      !loading && selectedCampaign
+                        ? selectedCampaign.media
+                        : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
                   resizeMode="cover"
@@ -303,7 +304,7 @@ class CampaignDetails extends Component {
           <Image
             {...{
               preview,
-              uri: !loading ? selectedCampaign.media : ""
+              uri: !loading && selectedCampaign ? selectedCampaign.media : ""
             }}
             onLoad={() => {
               if (!loading) this.setState({ imageIsLoading: false });
