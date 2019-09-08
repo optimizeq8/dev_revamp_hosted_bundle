@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
@@ -82,7 +82,7 @@ ${day}/${shortMonths[month]}`;
           domainPadding={{ y: 10 }}
           containerComponent={
             <VictoryVoronoiContainer
-              labels={d => parseFloat(d.y).toFixed(0)}
+              labels={d => parseFloat(d.y).toFixed(2)}
               labelComponent={
                 <CustomLabel
                   category={category}

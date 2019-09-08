@@ -23,6 +23,13 @@ export const interestNames = {
         source: "SNAPCHAT"
       },
       {
+        id: "SLC_181",
+        name: "Frequent International Travelers",
+        path: "/Travel Enthusiasts/Frequent International Travelers",
+        parent_id: "SLC_84",
+        source: "SNAPCHAT"
+      },
+      {
         id: "SLC_101",
         name: "Talk Show Fans",
         path: "/Film & TV Fans/Talk Show Fans",

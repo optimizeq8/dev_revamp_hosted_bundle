@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 const XDate = require("xdate");
 
@@ -162,18 +163,24 @@ export default class DateRangePicker extends Component<Props> {
   };
 
   render() {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate() + 1);
     return (
       <CalendarList
-        pastScrollRange={0}
+        pastScrollRange={this.props.filterMenu ? 50 : 0}
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
               ? new Date(this.props.selectedCampaign.start_time)
-              : Date()
+              : startDate
             : null
         }
-        pastScrollRange={0}
         calendarHeight={300}
+        calendarWidth={
+          this.props.filterMenu
+            ? widthPercentageToDP("90%")
+            : widthPercentageToDP("100%")
+        }
         maxDate={
           this.props.chartRange
             ? new Date(this.props.selectedCampaign.end_time)
