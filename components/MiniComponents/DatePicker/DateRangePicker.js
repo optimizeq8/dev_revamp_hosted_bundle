@@ -162,52 +162,59 @@ export default class DateRangePicker extends Component<Props> {
   };
 
   render() {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate() + 1);
     return (
-      <CalendarList
-        pastScrollRange={0}
-        minDate={
-          !this.props.filterMenu
-            ? this.props.chartRange
-              ? new Date(this.props.selectedCampaign.start_time)
-              : Date()
-            : null
-        }
-        pastScrollRange={0}
-        calendarHeight={300}
-        maxDate={
-          this.props.chartRange
-            ? new Date(this.props.selectedCampaign.end_time)
-            : null
-        }
-        {...this.props}
-        markingType={"period"}
-        current={this.state.fromDate}
-        markedDates={this.state.markedDates}
-        onDayPress={day => {
-          this.onDayPress(day);
+      <View
+        style={{
+          alignSelf: "center"
         }}
-        style={styles.calender}
-        theme={{
-          calendarBackground: "transparent",
-          textSectionTitleColor: "#b6c1cd",
-          selectedDayBackgroundColor: "#00adf5",
-          selectedDayTextColor: "#ffffff",
-          todayTextColor: "#FF9D00",
-          dayTextColor: "#fff",
-          textDisabledColor: "#686d70",
-          dotColor: "#00adf5",
-          selectedDotColor: "#ffffff",
-          arrowColor: "#FF9D00",
-          monthTextColor: "#fff",
-          textDayFontFamily: "montserrat-regular",
-          textMonthFontFamily: "montserrat-regular",
-          textDayHeaderFontFamily: "montserrat-bold",
-          textMonthFontWeight: "bold",
-          textDayFontSize: 17,
-          textMonthFontSize: 13,
-          textDayHeaderFontSize: 12
-        }}
-      />
+      >
+        <CalendarList
+          pastScrollRange={this.props.filterMenu ? 50 : 0}
+          minDate={
+            !this.props.filterMenu
+              ? this.props.chartRange
+                ? new Date(this.props.selectedCampaign.start_time)
+                : startDate
+              : null
+          }
+          calendarHeight={300}
+          maxDate={
+            this.props.chartRange
+              ? new Date(this.props.selectedCampaign.end_time)
+              : null
+          }
+          {...this.props}
+          markingType={"period"}
+          current={this.state.fromDate}
+          markedDates={this.state.markedDates}
+          onDayPress={day => {
+            this.onDayPress(day);
+          }}
+          style={styles.calender}
+          theme={{
+            calendarBackground: "transparent",
+            textSectionTitleColor: "#b6c1cd",
+            selectedDayBackgroundColor: "#00adf5",
+            selectedDayTextColor: "#ffffff",
+            todayTextColor: "#FF9D00",
+            dayTextColor: "#fff",
+            textDisabledColor: "#686d70",
+            dotColor: "#00adf5",
+            selectedDotColor: "#ffffff",
+            arrowColor: "#FF9D00",
+            monthTextColor: "#fff",
+            textDayFontFamily: "montserrat-regular",
+            textMonthFontFamily: "montserrat-regular",
+            textDayHeaderFontFamily: "montserrat-bold",
+            textMonthFontWeight: "bold",
+            textDayFontSize: 17,
+            textMonthFontSize: 13,
+            textDayHeaderFontSize: 12
+          }}
+        />
+      </View>
     );
   }
 }
