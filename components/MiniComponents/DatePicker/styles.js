@@ -6,8 +6,7 @@ import {
 
 const styles = StyleSheet.create({
   calender: {
-    width: "100%",
-    alignSelf: "center"
+    width: wp("100%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 const XDate = require("xdate");
 
@@ -165,56 +166,55 @@ export default class DateRangePicker extends Component<Props> {
     let startDate = new Date();
     startDate.setDate(startDate.getDate() + 1);
     return (
-      <View
-        style={{
-          alignSelf: "center"
+      <CalendarList
+        pastScrollRange={this.props.filterMenu ? 50 : 0}
+        minDate={
+          !this.props.filterMenu
+            ? this.props.chartRange
+              ? new Date(this.props.selectedCampaign.start_time)
+              : startDate
+            : null
+        }
+        calendarHeight={300}
+        calendarWidth={
+          this.props.filterMenu
+            ? widthPercentageToDP("90%")
+            : widthPercentageToDP("100%")
+        }
+        maxDate={
+          this.props.chartRange
+            ? new Date(this.props.selectedCampaign.end_time)
+            : null
+        }
+        {...this.props}
+        markingType={"period"}
+        current={this.state.fromDate}
+        markedDates={this.state.markedDates}
+        onDayPress={day => {
+          this.onDayPress(day);
         }}
-      >
-        <CalendarList
-          pastScrollRange={this.props.filterMenu ? 50 : 0}
-          minDate={
-            !this.props.filterMenu
-              ? this.props.chartRange
-                ? new Date(this.props.selectedCampaign.start_time)
-                : startDate
-              : null
-          }
-          calendarHeight={300}
-          maxDate={
-            this.props.chartRange
-              ? new Date(this.props.selectedCampaign.end_time)
-              : null
-          }
-          {...this.props}
-          markingType={"period"}
-          current={this.state.fromDate}
-          markedDates={this.state.markedDates}
-          onDayPress={day => {
-            this.onDayPress(day);
-          }}
-          style={styles.calender}
-          theme={{
-            calendarBackground: "transparent",
-            textSectionTitleColor: "#b6c1cd",
-            selectedDayBackgroundColor: "#00adf5",
-            selectedDayTextColor: "#ffffff",
-            todayTextColor: "#FF9D00",
-            dayTextColor: "#fff",
-            textDisabledColor: "#686d70",
-            dotColor: "#00adf5",
-            selectedDotColor: "#ffffff",
-            arrowColor: "#FF9D00",
-            monthTextColor: "#fff",
-            textDayFontFamily: "montserrat-regular",
-            textMonthFontFamily: "montserrat-regular",
-            textDayHeaderFontFamily: "montserrat-bold",
-            textMonthFontWeight: "bold",
-            textDayFontSize: 17,
-            textMonthFontSize: 13,
-            textDayHeaderFontSize: 12
-          }}
-        />
-      </View>
+        style={styles.calender}
+        theme={{
+          calendarBackground: "transparent",
+          textSectionTitleColor: "#b6c1cd",
+          selectedDayBackgroundColor: "#00adf5",
+          selectedDayTextColor: "#ffffff",
+          todayTextColor: "#FF9D00",
+          dayTextColor: "#fff",
+          textDisabledColor: "#686d70",
+          dotColor: "#00adf5",
+          selectedDotColor: "#ffffff",
+          arrowColor: "#FF9D00",
+          monthTextColor: "#fff",
+          textDayFontFamily: "montserrat-regular",
+          textMonthFontFamily: "montserrat-regular",
+          textDayHeaderFontFamily: "montserrat-bold",
+          textMonthFontWeight: "bold",
+          textDayFontSize: 17,
+          textMonthFontSize: 13,
+          textDayHeaderFontSize: 12
+        }}
+      />
     );
   }
 }
