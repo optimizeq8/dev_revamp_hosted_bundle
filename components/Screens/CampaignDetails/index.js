@@ -259,6 +259,7 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
+        console.log(selectedCampaign);
       }
 
       return (
@@ -528,7 +529,7 @@ class CampaignDetails extends Component {
                 </View>
                 {selectedCampaign &&
                   ((selectedCampaign.review_status !== "REJECTED" &&
-                    selectedCampaign.selectedCampaign_end === "1") ||
+                    selectedCampaign.campaign_end === "0") ||
                   new Date(selectedCampaign.end_time) < new Date() ? (
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (

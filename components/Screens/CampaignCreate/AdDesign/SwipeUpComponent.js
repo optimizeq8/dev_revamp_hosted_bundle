@@ -12,8 +12,7 @@ export default class SwipeUpComponent extends Component {
       objective,
       media,
       selectedStoryAd,
-      call_to_action_label,
-      disableSwipeUp
+      call_to_action_label
     } = this.props;
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
     return (
@@ -22,11 +21,9 @@ export default class SwipeUpComponent extends Component {
           styles.swipeUp,
           {
             bottom: 0,
-            marginBottom: adType === "CollectionAd" ? 110 : 10,
-            opacity: disableSwipeUp ? 0.7 : 1
+            marginBottom: adType === "CollectionAd" ? 110 : 10
           }
         ]}
-        disabled={disableSwipeUp}
         onPress={() => {
           if (adType === "CollectionAd") {
             this.props.navigation.navigate("SwipeUpChoice", {

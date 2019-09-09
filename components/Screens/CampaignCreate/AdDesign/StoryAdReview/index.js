@@ -51,7 +51,10 @@ class StoryAdDesignReview extends Component {
       storyAdsArray: this.props.navigation.getParam("storyAdsArray", {}),
       headline: this.props.navigation.getParam("headline", ""),
       brand_name: this.props.navigation.getParam("brand_name", ""),
-      adDesign: this.props.navigation.getParam("adDesign", false)
+      adDesign: this.props.navigation.getParam("adDesign", false),
+      adType: this.props.navigation.getParam("adType", false),
+      destination: this.props.navigation.getParam("destination", false),
+      call_to_action: this.props.navigation.getParam("call_to_action", false)
     });
   };
   render() {
