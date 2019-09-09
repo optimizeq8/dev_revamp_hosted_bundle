@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   callToActionContainer: {
     bottom: "12%",
     // marginBottom: -60,
+    height: "5%",
     width: "100%",
     alignItems: "center",
     display: "flex",

@@ -56,9 +56,7 @@ class SnapCard extends Component {
           ) : (
             <RNImageOrCacheImage
               media={
-                rejected ||
-                (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                  snapCardInfo.item.uploaded)
+                rejected || !this.props.loadingStoryAdsArray[snapCardInfo.index]
                   ? snapCardInfo.item["media"]
                   : "//"
               }
@@ -84,7 +82,7 @@ class SnapCard extends Component {
           <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
         </View>
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
-          !snapCardInfo.item.uploaded ? (
+          snapCardInfo.item.media === "//" ? (
             <MediaButton
               type={"media"}
               media={

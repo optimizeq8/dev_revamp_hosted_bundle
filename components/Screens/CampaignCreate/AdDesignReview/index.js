@@ -91,7 +91,7 @@ class AdDesignReview extends Component {
     let storyAdsArray =
       campaignDetails && !adDesign
         ? this.props.navigation.getParam("storyAdsArray", [])
-        : this.props.storyAdsArray.filter(ad => ad.uploaded);
+        : this.props.storyAdsArray.filter(ad => ad.media !== "//");
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
@@ -107,11 +107,9 @@ class AdDesignReview extends Component {
 
     let media = !storyAds
       ? this.props.navigation.getParam("media", "")
-      : campaignDetails
-      ? storyAdsArray[this.state.storyAdIndex]["media"]
       : storyAdsArray[this.state.storyAdIndex]["media"];
 
-    if (storyAds) {
+    if (storyAds && !campaignDetails) {
       if (
         (this.props.storyAdAttachment.hasOwnProperty("destination") &&
           this.props.storyAdAttachment.attachment.hasOwnProperty(
@@ -150,6 +148,8 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
+    console.log(destination);
+
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
