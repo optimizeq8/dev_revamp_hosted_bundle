@@ -151,7 +151,10 @@ class CampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
 
-    if (!loading && this.props.campaignError) {
+    if (
+      (!loading && !this.props.selectedCampaign) ||
+      this.props.campaignError
+    ) {
       return (
         <ErrorComponent loading={loading} navigation={this.props.navigation} />
       );
@@ -245,6 +248,7 @@ class CampaignDetails extends Component {
             </View>
           )}
           {!loading &&
+            selectedCampaign &&
             (!selectedCampaign.media.includes(".jpg") ||
               !selectedCampaign.media.includes(".png")) && (
               <View style={[styles.backgroundViewWrapper]}>
@@ -252,7 +256,7 @@ class CampaignDetails extends Component {
                   onLoadEnd={() => this.setState({ imageIsLoading: false })}
                   source={{
                     uri: !loading
-                      ? selectedCampaign.media
+                      ? selectedCampaign && selectedCampaign.media
                       : "../../../assets/images/emptyPlaceHolder.png"
                   }}
                   isMuted
@@ -268,7 +272,7 @@ class CampaignDetails extends Component {
           <ImageBackground
             source={
               !loading
-                ? { uri: selectedCampaign.media }
+                ? { uri: selectedCampaign && selectedCampaign.media }
                 : require("../../../assets/images/emptyPlaceHolder.png")
             }
             onLoad={() => {
