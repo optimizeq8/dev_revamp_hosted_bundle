@@ -507,6 +507,7 @@ class AdDetails extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const languagesError =
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
@@ -518,13 +519,13 @@ class AdDetails extends Component {
     );
     if (countryError) {
       showMessage({
-        message: "Please choose a country.",
+        message: translate("Please choose a country"),
         type: "warning",
         position: "top"
       });
     } else if (languagesError) {
       showMessage({
-        message: "Please choose a language.",
+        message: translate("Please choose a language"),
         type: "warning",
         position: "top"
       });
