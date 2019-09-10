@@ -373,6 +373,7 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
+                    menuPosition={Localization.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
                     menuPosition={Localization.isRTL ? "left" : "right"}
@@ -465,7 +466,10 @@ class Dashboard extends Component {
                         }}
                       >
                         <View style={{ width: "80%" }}>
-                          <SearchBar renderSearchBar={this.renderSearchBar} />
+                          <SearchBar
+                            screenProps={this.props.screenProps}
+                            renderSearchBar={this.renderSearchBar}
+                          />
                         </View>
                         <Button
                           style={styles.activebutton}
@@ -495,6 +499,7 @@ class Dashboard extends Component {
                                 campaign={item}
                                 navigation={this.props.navigation}
                                 key={item.campaign_id}
+                                screenProps={this.props.screenProps}
                               />
                             )}
                             onRefresh={() => this.reloadData()}

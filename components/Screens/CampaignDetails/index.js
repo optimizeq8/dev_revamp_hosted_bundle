@@ -679,7 +679,7 @@ class CampaignDetails extends Component {
                             ) : (
                               <View style={{ flexDirection: "column" }}>
                                 <Text style={styles.categories}>
-                                  {translate("Location")}(s) {"\n"}
+                                  {translate("Location")} {"\n"}
                                   <Text style={styles.subtext}>
                                     {targeting &&
                                       targeting.geos[0].country_code}

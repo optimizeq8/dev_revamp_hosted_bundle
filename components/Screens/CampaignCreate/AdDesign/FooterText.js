@@ -11,6 +11,8 @@ export default class FooterText extends Component {
       media,
       storyAdCards
     } = this.props;
+    const { translate } = this.props.screenProps;
+
     let errmsg;
     if (
       (adType === "CollectionAd" && this.props.collectionAdMedia.length < 4) ||
@@ -22,7 +24,7 @@ export default class FooterText extends Component {
         <Text style={styles.footerTextStyle}>
           {adType === "StoryAd" && !storyAdCards.storyAdSelected
             ? videoIsLoading
-              ? "Please wait while the video is downloading"
+              ? translate("Please wait while the video is downloading")
               : objective !== "BRAND_AWARENESS" && swipeUpError
               ? ""
               : "Please add minimum of 3 media files"
@@ -31,7 +33,7 @@ export default class FooterText extends Component {
             : objective !== "BRAND_AWARENESS" && ""}
         </Text>
         <Text style={styles.footerTextStyle}>
-          {media === "//" ? "Please add media to proceed" : ""}
+          {media === "//" ? translate("Please add media to proceed") : ""}
         </Text>
       </View>
     );

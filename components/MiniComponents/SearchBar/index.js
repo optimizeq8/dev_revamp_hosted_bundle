@@ -70,7 +70,7 @@ class SearchBar extends Component {
         <Item rounded style={styles.searchBarItem}>
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
-            style={styles.searchBarInput}
+            style={isRTL ? rtlStyles.searchBarInput : styles.searchBarInput}
             placeholder={translate(
               `Search ${businessList ? "businesses" : "ads"}`
             )}

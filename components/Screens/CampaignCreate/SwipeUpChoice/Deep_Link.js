@@ -131,7 +131,6 @@ class Deep_Link extends Component {
                       <Text style={styles.titletext}>
                         {translate("Deep Link")}
                       </Text>
-
                       <Text style={styles.subtext}>
                         {translate(
                           "Send Snapchatters to a specific page in your app"

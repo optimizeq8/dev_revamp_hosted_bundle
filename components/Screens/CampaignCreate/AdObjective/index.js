@@ -612,6 +612,7 @@ class AdObjective extends Component {
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
           navigation={this.props.navigation}
+          screenProps={this.props.screenProps}
         />
         <Modal
           animationType={"slide"}

@@ -803,6 +803,8 @@ class AdDesign extends Component {
       loaded,
       isVisible
     } = this.state;
+    const { translate } = this.props.screenProps;
+
     let validCards =
       this.adType === "StoryAd"
         ? this.rejected
@@ -945,6 +947,7 @@ class AdDesign extends Component {
                     />
                   ) : (
                     <MediaButton
+                      screenProps={this.props.screenProps}
                       type={"media"}
                       setMediaModalVisible={this.setMediaModalVisible}
                       media={
@@ -956,6 +959,7 @@ class AdDesign extends Component {
                   )}
                   {videoIsLoading ? <CameraLoading /> : null}
                   <SwipeCompCondition
+                    screenProps={this.props.screenProps}
                     _changeDestination={(
                       destination,
                       call_to_action,
@@ -1070,11 +1074,13 @@ class AdDesign extends Component {
                         <Text style={styles.footerTextStyle}>
                           {this.adType === "StoryAd"
                             ? videoIsLoading
-                              ? "Please wait while the video is downloading"
+                              ? translate(
+                                  "Please wait while the video is downloading"
+                                )
                               : "Please add minimum of 3 media files"
                             : objective !== "BRAND_AWARENESS"
                             ? ""
-                            : "Please add media to proceed"}
+                            : translate("Please add media to proceed")}
                         </Text>
                       )
                     ) : (
@@ -1117,6 +1123,7 @@ class AdDesign extends Component {
                 objective={objective}
                 swipeUpError={swipeUpError}
                 media={media}
+                screenProps={this.props.screenProps}
               />
             )}
           </Footer>
@@ -1157,6 +1164,7 @@ class AdDesign extends Component {
           onToggleModal={this.onToggleModal}
           cancelUpload={this.cancelUpload}
           loaded={loaded}
+          screenProps={this.props.screenProps}
         />
       </SafeAreaView>
     );

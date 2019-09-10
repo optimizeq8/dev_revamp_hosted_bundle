@@ -29,6 +29,7 @@ export default class MediaModal extends Component {
             setMediaModalVisible={this.props.setMediaModalVisible}
             getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
             setDownloadMediaModal={this.props.setDownloadMediaModal}
+            screenProps={this.props.screenProps}
           />
         );
       });
@@ -46,6 +47,7 @@ export default class MediaModal extends Component {
             setMediaModalVisible={this.props.setMediaModalVisible}
             getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
             setDownloadMediaModal={this.props.setDownloadMediaModal}
+            screenProps={this.props.screenProps}
           />
         );
       });

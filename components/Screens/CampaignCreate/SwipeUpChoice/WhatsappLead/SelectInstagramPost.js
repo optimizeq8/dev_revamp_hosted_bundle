@@ -192,7 +192,6 @@ class SelectInstagramPost extends React.Component {
     // console.log('this.state.cartList', this.state.cartList);
     // console.log('instagramPostList', this.props.instagramPostList);
     const { translate } = this.props.screenProps;
-
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -246,7 +245,6 @@ class SelectInstagramPost extends React.Component {
                 "Select the products you want to promote on your campaign"
               )}
             </Text>
-
             {/* <Content
               contentContainerStyle={{
                 flex: 1,
