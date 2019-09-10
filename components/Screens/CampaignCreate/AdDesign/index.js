@@ -58,6 +58,10 @@ import MediaButton from "./MediaButton";
 import { globalColors } from "../../../../GlobalStyles";
 import isUndefined from "lodash/isUndefined";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import CollectionComp from "./CollectionComp";
+import VideoPlayer from "./VideoPlayer";
+import SubmitButton from "./SubmitButton";
+import SwipeCompCondition from "./SwipeCompCondition";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -93,7 +97,7 @@ class AdDesign extends Component {
       brand_nameError: "",
       headlineError: "",
       orientationError: "",
-      mediaError: "",
+      mediaError: "Add media",
       swipeUpError: "",
       isVisible: false,
       mediaModalVisible: false,
@@ -1388,119 +1392,6 @@ class AdDesign extends Component {
       : this.props.navigation.goBack();
   };
 
-  collectionComp = i => {
-    return (
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "#FF9D00",
-            width: hp(5) < 30 ? 60 : 72,
-            // width: 70,
-            paddingVertical: 5,
-            paddingHorizontal: 5,
-            height: 25,
-            borderRadius: 20,
-            marginBottom: -15,
-            zIndex: 1,
-            alignItems: "center"
-            // flex: 1
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 10,
-              textAlign: "center",
-              width: "100%",
-              fontFamily: "montserrat-bold",
-              color: "#FFF"
-            }}
-          >
-            {`Product ${i + 1}`}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: this.props.collectionAdMedia[i]
-              ? ""
-              : "rgba(0, 0, 0, 0.75)",
-            alignSelf: "center",
-            borderColor: "#FF9D00",
-            borderWidth: 2,
-            // width: 72,
-            width: hp(5) < 30 ? 60 : 72,
-            height: hp(5) < 30 ? 60 : 72,
-            // height: hp(9.5),
-            borderRadius: 20,
-            // paddingVertical: 2,
-            // paddingHorizontal: 2,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-          onPress={() => {
-            this.props.navigation.push("CollectionMedia", {
-              collection_order: i,
-              rejected: this.rejected,
-              selectedCampaign: this.selectedCampaign
-            });
-          }}
-        >
-          {!isUndefined(this.props.collectionAdMedia[i]) ? (
-            <RNImageOrCacheImage
-              style={{
-                borderRadius: 18,
-                alignSelf: "center",
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                alignItems: "center"
-              }}
-              media={
-                this.props.collectionAdMedia[i][
-                  this.props.collectionAdMedia[i].localUri
-                    ? "localUri"
-                    : "media"
-                ]
-              }
-            />
-          ) : (
-            <Button
-              style={{
-                width: hp(5) < 30 ? 20 : 30,
-                height: hp(5) < 30 ? 20 : 30,
-                alignSelf: "center",
-                borderRadius: hp(5) < 30 ? 20 : 30,
-                backgroundColor: "#FF9D00"
-              }}
-              onPress={() => {
-                this.props.navigation.push("CollectionMedia", {
-                  collection_order: i,
-                  rejected: this.rejected,
-                  selectedCampaign: this.selectedCampaign
-                });
-              }}
-            >
-              <PlusCircle
-                width={hp(5) < 30 ? 20 : 30}
-                height={hp(5) < 30 ? 35 : 30}
-              />
-            </Button>
-          )}
-          {!isUndefined(this.props.collectionAdMedia[i]) && (
-            <View style={{ position: "absolute", bottom: 6, right: 6 }}>
-              <PenIcon width={15} height={15} />
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   render() {
     let { media, storyAdCards } = this.state;
     let validCards =
@@ -1538,133 +1429,25 @@ class AdDesign extends Component {
       />
     ));
 
-    let swipeUpComp =
-      this.adType === "SnapAd" ? (
-        // !this.rejected &&
-        "BRAND_AWARENESS" !== this.state.objective && (
-          <SwipeUpComponent
-            _changeDestination={this._changeDestination}
-            navigation={this.props.navigation}
-            objective={this.state.objective}
-            destination={destination}
-            attachment={attachment}
-            collectionAdLinkForm={this.props.collectionAdLinkForm}
-            adType={this.adType}
-            media={media}
-            call_to_action_label={call_to_action.label}
-          />
-        )
-      ) : this.adType === "CollectionAd" ? (
-        <SwipeUpComponent
-          _changeDestination={this._changeDestination}
-          navigation={this.props.navigation}
-          objective={this.state.objective}
-          destination={destination}
-          attachment={attachment}
-          collectionAdLinkForm={this.props.collectionAdLinkForm}
-          adType={this.adType}
-          call_to_action_label={call_to_action.label}
-        />
-      ) : (
-        this.adType === "StoryAd" &&
-        this.state.storyAdCards.storyAdSelected && (
-          <SwipeUpComponent
-            _changeDestination={this._changeDestination}
-            navigation={this.props.navigation}
-            objective={this.state.objective}
-            destination={this.props.storyAdAttachment.destination}
-            attachment={this.props.storyAdAttachment.attachment}
-            adType={this.adType}
-            media={storyAdCards.selectedStoryAd.media}
-            call_to_action_label={
-              this.props.storyAdAttachment.call_to_action.label
-            }
-            disableSwipeUp={
-              this.props.loadingStoryAdsArray.includes(true) ||
-              this.props.storyAdsArray.some(ad => ad.uploaded)
-            }
-          />
-        )
-      );
-
-    let collection = (
-      <View style={styles.collectionView}>
-        {this.collectionComp(0)}
-        {this.collectionComp(1)}
-        {this.collectionComp(2)}
-        {this.collectionComp(3)}
-      </View>
-    );
+    let collection = [0, 1, 2, 3].map(collIdx => (
+      <CollectionComp
+        key={collIdx}
+        navigation={this.props.navigation}
+        collIdx={collIdx}
+      />
+    ));
 
     let blankView = <View style={styles.blankView} />;
 
     let videoPlayer = this.state.sourceChanging ? null : (
-      <Video
-        onLoadStart={() =>
-          storyAdCards.selectedStoryAd.media &&
-          this.state.storyAdCards.storyAdSelected &&
-          this.setState({ videoIsLoading: true })
+      <VideoPlayer
+        storyAdCards={storyAdCards}
+        media={media}
+        videoIsLoading={isLoading =>
+          this.setState({ videoIsLoading: isLoading })
         }
-        onLoad={() => this.setState({ videoIsLoading: false })}
-        source={{
-          uri:
-            media !== "//" && !this.state.storyAdCards.storyAdSelected
-              ? media
-              : storyAdCards.selectedStoryAd.media &&
-                storyAdCards.storyAdSelected
-              ? storyAdCards.selectedStoryAd.media
-              : "//"
-        }}
-        shouldPlay
-        isLooping
-        isMuted
-        resizeMode={"stretch"}
-        style={styles.video}
       />
     );
-
-    let submitButton = () => {
-      if (this.adType === "CollectionAd") {
-        if (
-          this.props.collectionAdMedia.length === 4 &&
-          !this.props.collectionAdMedia.some(c => isUndefined(c))
-        ) {
-          return (
-            <TouchableOpacity
-              onPress={this._handleSubmission}
-              style={styles.button}
-            >
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            </TouchableOpacity>
-          );
-        }
-        return;
-      } else {
-        if (this.state.objective === "BRAND_AWARENESS") {
-          return (
-            <TouchableOpacity
-              onPress={this._handleSubmission}
-              style={styles.button}
-            >
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            </TouchableOpacity>
-          );
-        } else if (
-          this.state.objective !== "BRAND_AWARENESS" &&
-          !this.state.swipeUpError
-        ) {
-          return (
-            <TouchableOpacity
-              onPress={this._handleSubmission}
-              style={styles.button}
-            >
-              <ForwardButton width={wp(24)} height={hp(8)} />
-            </TouchableOpacity>
-          );
-        }
-      }
-      return;
-    };
 
     return (
       <SafeAreaView
@@ -1731,8 +1514,20 @@ class AdDesign extends Component {
                       />
                     )}
                     {this.state.videoIsLoading ? <CameraLoading /> : null}
-                    {swipeUpComp}
-                    {this.adType === "CollectionAd" && collection}
+                    <SwipeCompCondition
+                      _changeDestination={this._changeDestination}
+                      navigation={this.props.navigation}
+                      objective={this.state.objective}
+                      destination={destination}
+                      attachment={attachment}
+                      collectionAdLinkForm={this.props.collectionAdLinkForm}
+                      adType={this.adType}
+                      media={media}
+                      call_to_action={call_to_action}
+                    />
+                    <View style={styles.collectionView}>
+                      {this.adType === "CollectionAd" && collection}
+                    </View>
                   </View>
                 ) : (this.adType !== "StoryAd" && !media) ||
                   (this.adType === "StoryAd" &&
@@ -1767,8 +1562,20 @@ class AdDesign extends Component {
                         }
                       />
                     )}
-                    {swipeUpComp}
-                    {this.adType === "CollectionAd" && collection}
+                    <SwipeCompCondition
+                      _changeDestination={this._changeDestination}
+                      navigation={this.props.navigation}
+                      objective={this.state.objective}
+                      destination={destination}
+                      attachment={attachment}
+                      collectionAdLinkForm={this.props.collectionAdLinkForm}
+                      adType={this.adType}
+                      media={media}
+                      call_to_action={call_to_action}
+                    />
+                    <View style={styles.collectionView}>
+                      {this.adType === "CollectionAd" && collection}
+                    </View>
                   </View>
                 ) : (
                   <View style={styles.placeholder}>
@@ -1812,9 +1619,21 @@ class AdDesign extends Component {
                         }
                       />
                     )}
-                    {swipeUpComp}
+                    <SwipeCompCondition
+                      _changeDestination={this._changeDestination}
+                      navigation={this.props.navigation}
+                      objective={this.state.objective}
+                      destination={destination}
+                      attachment={attachment}
+                      collectionAdLinkForm={this.props.collectionAdLinkForm}
+                      adType={this.adType}
+                      media={media}
+                      call_to_action={call_to_action}
+                    />
 
-                    {this.adType === "CollectionAd" && collection}
+                    <View style={styles.collectionView}>
+                      {this.adType === "CollectionAd" && collection}
+                    </View>
                   </View>
                 )}
               </View>
@@ -1827,7 +1646,7 @@ class AdDesign extends Component {
                   : "Please choose an image or video"}
               </Text>
             )} */}
-            {this.adtype === "StoryAd" &&
+            {this.adType === "StoryAd" &&
             this.state.objective === "BRAND_AWARENESS" &&
             this.state.swipeUpError ? null : (
               <Text style={styles.swipeUpErrorText}>
@@ -1907,7 +1726,10 @@ class AdDesign extends Component {
                     </Text>
                   )
                 ) : (
-                  submitButton()
+                  <SubmitButton
+                    _handleSubmission={this._handleSubmission}
+                    adType={this.adType}
+                  />
                 )}
               </View>
             ) : (
@@ -1921,7 +1743,7 @@ class AdDesign extends Component {
                     : "Please add minimum of 3 media files"
                   : this.state.objective !== "BRAND_AWARENESS"
                   ? ""
-                  : this.state.mediaError
+                  : this.state.media === "//"
                   ? "Please add media to proceed"
                   : ""}
               </Text>
