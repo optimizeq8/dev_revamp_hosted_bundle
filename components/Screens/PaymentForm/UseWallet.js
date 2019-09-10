@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -44,13 +44,14 @@ class UseWallet extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={[styles.walletPaymentModalContainer]}>
         <WalletIcon
           width={heightPercentageToDP(10)}
           height={heightPercentageToDP(10)}
         />
-        <Text style={styles.text}>Wallet Balance</Text>
+        <Text style={styles.text}>{translate("Wallet Balance")}</Text>
         <Text style={[GlobalStyles.numbers, styles.walltetAmountText]}>
           {this.props.walletUsed
             ? this.props.wallet_balance_amount
@@ -58,7 +59,7 @@ class UseWallet extends Component {
           <Text style={styles.text}>$</Text>
         </Text>
         <Text style={styles.errortext}>
-          Use your wallet to activate your Ad
+          {translate("Use your wallet to activate your Ad")}
         </Text>
         {/* {this.props.wallet > 0 && (
           <Button
@@ -75,7 +76,9 @@ class UseWallet extends Component {
             style={styles.walletButton}
             onPress={() => this._handleRemoveAmount()}
           >
-            <Text style={styles.buttontext}>Remove Wallet Amount</Text>
+            <Text style={styles.buttontext}>
+              {translate("Remove Wallet Amount")}
+            </Text>
           </Button>
         )}
         {/* <Modal visible={this.props.loading}>
@@ -96,22 +99,27 @@ class UseWallet extends Component {
                 <>
                   <WalletIcon width={80} height={80} />
                   <Text style={[styles.walletInfo, styles.useWalletText]}>
-                    Use Wallet
+                    {translate("Use Wallet")}
                   </Text>
                   <Text style={styles.walletInfo}>
-                    Amout taken from wallet: {this.props.wallet_amount_applied}
+                    {translate("Amount taken from wallet:")}{" "}
+                    {this.props.wallet_amount_applied}
                   </Text>
                   <Text style={styles.walletInfo}>
-                    New Wallet Balance: {this.props.wallet_balance_amount}
+                    {translate("New Wallet Balance:")}{" "}
+                    {this.props.wallet_balance_amount}
                   </Text>
                   <Text style={styles.walletInfo}>
-                    New Budget Total: {this.props.campaign_balance_amount}
+                    {translate("New Budget Total:")}{" "}
+                    {this.props.campaign_balance_amount}
                   </Text>
                   <Button
                     onPress={() => this._handleConfirm()}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Confirm</Text>
+                    <Text style={styles.colorWhite}>
+                      {translate("Confirm")}
+                    </Text>
                   </Button>
                   <Button
                     onPress={() => {
@@ -120,7 +128,7 @@ class UseWallet extends Component {
                     }}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Cancel</Text>
+                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
                   </Button>
                 </>
               )}

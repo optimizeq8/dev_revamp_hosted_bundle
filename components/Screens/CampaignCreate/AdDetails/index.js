@@ -12,9 +12,11 @@ import {
 import { Text, Container, Icon, Content } from "native-base";
 import { Video } from "expo-av";
 import * as Segment from "expo-analytics-segment";
-import Sidemenu from "react-native-side-menu";
+// import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { isRTL } from "expo-localization";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -293,6 +295,7 @@ class AdDetails extends Component {
   };
 
   onSelectedLangsChange = selectedItem => {
+    const { translate } = this.props.screenProps;
     let replace = this.state.campaignInfo;
     let langs = [];
     if (
@@ -308,7 +311,7 @@ class AdDetails extends Component {
     }
     if (replace.targeting.demographics[0].languages.length === 0) {
       showMessage({
-        message: "Please choose a language.",
+        message: translate("Please choose a language."),
         type: "warning",
         position: "top"
       });
@@ -601,11 +604,13 @@ class AdDetails extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
         menu = (
           <GenderOptions
+            screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedGenderChange={this.onSelectedGenderChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -616,6 +621,7 @@ class AdDetails extends Component {
       case "age": {
         menu = (
           <AgeOption
+            screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
@@ -627,6 +633,7 @@ class AdDetails extends Component {
       case "regions": {
         menu = (
           <SelectRegions
+            screenProps={this.props.screenProps}
             countryName={this.state.countryName}
             filteredRegions={this.state.filteredRegions}
             onSelectedRegionChange={this.onSelectedRegionChange}
@@ -642,6 +649,7 @@ class AdDetails extends Component {
       case "languages": {
         menu = (
           <SelectLanguages
+            screenProps={this.props.screenProps}
             filteredLanguages={this.state.filteredLanguages}
             onSelectedLangsChange={this.onSelectedLangsChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -656,6 +664,7 @@ class AdDetails extends Component {
       case "OS": {
         menu = (
           <SelectOS
+            screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -667,6 +676,7 @@ class AdDetails extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
+            screenProps={this.props.screenProps}
             countries={countries}
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
@@ -749,10 +759,10 @@ class AdDetails extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition="right"
+        menuPosition={isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
-        sty
         isOpen={this.state.sidemenustate}
+        // edgeHitWidth={-60}
       >
         {media.includes(".mp4") ||
         media.includes(".mov") ||
@@ -773,12 +783,16 @@ class AdDetails extends Component {
         ) : (
           <RNImageOrCacheImage
             media={media}
-            blurRadius={20}
             style={[
               styles.imageBackgroundViewWrapper,
-              this.state.sidemenustate
+              this.state.sidemenustate && !isRTL
                 ? {
                     borderTopRightRadius: 30
+                  }
+                : {},
+              this.state.sidemenustate && isRTL
+                ? {
+                    borderTopLeftRadius: 30
                   }
                 : {}
             ]}
@@ -825,7 +839,7 @@ class AdDetails extends Component {
                     : undefined
                 }
                 navigation={editCampaign ? undefined : this.props.navigation}
-                title="Campaign details"
+                title={translate("Campaign details")}
               />
 
               <Content
@@ -834,7 +848,9 @@ class AdDetails extends Component {
               >
                 {!editCampaign ? (
                   <>
-                    <Text style={styles.subHeadings}>Budget</Text>
+                    <Text style={styles.subHeadings}>
+                      {translate("Budget")}
+                    </Text>
                     <View style={styles.moneyInputContainer}>
                       <TextInputMask
                         disableFullscreenUI={this.props.loading}
@@ -857,7 +873,7 @@ class AdDetails extends Component {
                         ref={ref => (this.moneyField = ref)}
                       />
                       <Text style={styles.budgetInstructionText}>
-                        Tap to enter manually
+                        {translate("Tap to enter manually")}
                       </Text>
                     </View>
                     <View style={styles.sliderContainer}>
@@ -895,13 +911,14 @@ class AdDetails extends Component {
                 ) : (
                   <View style={styles.sliderPlaceHolder}>
                     <Text style={styles.subHeadings}>
-                      Editing budget and duration {"\n"} is currently
-                      unavailable.
+                      {translate(
+                        "Editing budget and duration\nis currently unavailable"
+                      )}
                     </Text>
                   </View>
                 )}
                 <Text style={styles.subHeadings}>
-                  Who would you like to reach?
+                  {translate("Who would you like to reach?")}
                 </Text>
                 <ScrollView
                   ref={ref => (this.scrollView = ref)}
@@ -919,7 +936,9 @@ class AdDetails extends Component {
                       <GenderIcon width={25} height={25} style={styles.icon} />
 
                       <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Gender</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Gender")}
+                        </Text>
                         <Text style={styles.menudetails}>
                           {
                             gender.find(r => {
@@ -960,7 +979,7 @@ class AdDetails extends Component {
                         style={styles.icon}
                       />
                       <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Age</Text>
+                        <Text style={styles.menutext}>{translate("Age")}</Text>
                         <Text style={styles.menudetails}>
                           {
                             this.state.campaignInfo.targeting.demographics[0]
@@ -999,7 +1018,9 @@ class AdDetails extends Component {
                       />
 
                       <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>Country</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Country")}
+                        </Text>
                         <Text style={styles.menudetails}>
                           {this.state.countryName}
                         </Text>
@@ -1026,7 +1047,9 @@ class AdDetails extends Component {
                           style={styles.icon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Regions</Text>
+                          <Text style={styles.menutext}>
+                            {translate("Regions")}
+                          </Text>
                           <Text style={styles.menudetails} numberOfLines={1}>
                             {regions_names}
                           </Text>
@@ -1056,7 +1079,9 @@ class AdDetails extends Component {
                         style={styles.icon}
                       />
                       <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Language</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Language")}
+                        </Text>
                         <Text numberOfLines={1} style={styles.menudetails}>
                           {languages_names}
                         </Text>
@@ -1092,7 +1117,9 @@ class AdDetails extends Component {
                         style={styles.icon}
                       />
                       <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Interests</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Interests")}
+                        </Text>
                         <Text numberOfLines={1} style={styles.menudetails}>
                           {interests_names}
                         </Text>
@@ -1123,7 +1150,9 @@ class AdDetails extends Component {
                         style={styles.icon}
                       />
                       <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Operating System</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Operating System")}
+                        </Text>
                         <Text style={styles.menudetails}>
                           {
                             OSType.find(r => {
@@ -1169,7 +1198,9 @@ class AdDetails extends Component {
                           }}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>OS Versions</Text>
+                          <Text style={styles.menutext}>
+                            {translate("OS Versions")}
+                          </Text>
                           <Text style={styles.menudetails}>
                             {this.state.campaignInfo.targeting.devices[0]
                               .os_version_min +
@@ -1204,7 +1235,9 @@ class AdDetails extends Component {
                       />
 
                       <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>Device Make</Text>
+                        <Text style={styles.menutext}>
+                          {translate("Device Make")}
+                        </Text>
                         <Text numberOfLines={1} style={styles.menudetails}>
                           {
                             this.state.campaignInfo.targeting.devices[0]
@@ -1232,7 +1265,7 @@ class AdDetails extends Component {
                     }}
                     style={styles.moreOptionsText}
                   >
-                    Scroll for more options+
+                    {translate("Scroll for more options+")}
                   </Text>
                 )}
 
@@ -1240,6 +1273,7 @@ class AdDetails extends Component {
                   loading={this.props.loading}
                   advance={this.state.advance}
                   _handleSubmission={this._handleSubmission}
+                  screenProps={this.props.screenProps}
                 />
               </Content>
             </Container>

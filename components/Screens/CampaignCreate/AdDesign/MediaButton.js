@@ -18,6 +18,7 @@ export default class MediaButton extends Component {
       setMediaModalVisible,
       type
     } = this.props;
+    const { translate } = this.props.screenProps;
 
     if (media && media !== "//") {
       return (
@@ -52,7 +53,9 @@ export default class MediaButton extends Component {
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {type === "cover" ? "Edit Cover Image" : "Edit Media"}
+            {type === "cover"
+              ? translate("Edit Cover Image")
+              : translate("Edit Media")}
           </Text>
         </Button>
       );
@@ -85,7 +88,9 @@ export default class MediaButton extends Component {
           >
             <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {type === "cover" ? "Add Cover Image" : "Add Media"}
+              {type === "cover"
+                ? translate("Add Cover Image")
+                : translate("Add Media")}
             </Text>
           </Button>
         </>

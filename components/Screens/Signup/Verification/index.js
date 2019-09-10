@@ -4,7 +4,7 @@ import { View, ScrollView } from "react-native";
 import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -101,6 +101,7 @@ class Verification extends Component {
   //   }
   // }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.container}>
         <KeyboardShift style={styles.keyboardContainer}>
@@ -116,12 +117,13 @@ class Verification extends Component {
             >
               {!this.props.invite ? (
                 <Text style={[styles.text]}>
-                  Please enter the {"\n"}
-                  verification code sent to {"\n"}
+                  {translate("Please enter the verification code sent to")}
                   {this.props.mobileNo}
                 </Text>
               ) : (
-                <Text style={[styles.inviteText]}>Invite Code</Text>
+                <Text style={[styles.inviteText]}>
+                  {translate("Invite Code")}
+                </Text>
               )}
               {!this.props.invite &&
                 (this.state.timerStart ? (
@@ -141,7 +143,7 @@ class Verification extends Component {
                     }}
                     style={[styles.link]}
                   >
-                    Resend Code
+                    {translate("Resend Code")}
                   </Text>
                 ))}
 
@@ -165,13 +167,13 @@ class Verification extends Component {
                       onBlur={() => {
                         if (validateWrapper("mandatory", this.state.code)) {
                           showMessage({
-                            message: "Please enter an invite code!",
+                            message: translate("Please enter an invite code!"),
                             type: "warning",
                             position: "top"
                           });
                         }
                       }}
-                      placeholder="Enter your invite code"
+                      placeholder={translate("Enter your invite code")}
                     />
                   </Item>
                   <Button
@@ -180,7 +182,9 @@ class Verification extends Component {
                       this._handleInviteCode();
                     }}
                   >
-                    <Text style={styles.buttonText}>Get Started!</Text>
+                    <Text style={styles.buttonText}>
+                      {translate("Get Started!")}
+                    </Text>
                   </Button>
                 </>
               ) : (
@@ -202,7 +206,7 @@ class Verification extends Component {
                   style={[styles.link, styles.renderInviteCodeLink]}
                   onPress={() => this.props.toggleComps()}
                 >
-                  Get an invitation code now!
+                  {translate("Get an invitation code now!")}
                 </Text>
               )}
               {!this.props.invite && (
@@ -213,7 +217,9 @@ class Verification extends Component {
                     }}
                     style={[styles.link, styles.emailLink]}
                   >
-                    Not receiving the SMS? Try verifying your account by email.
+                    {translate(
+                      "Not receiving the SMS? Try verifying your account by email"
+                    )}
                   </Text>
 
                   {this.state.showEmail && (
@@ -237,7 +243,7 @@ class Verification extends Component {
                               : globalStyles.darkGrayTextColor
                           ]}
                         >
-                          Email
+                          {translate("Email")}
                         </Label>
                         <Input
                           autoCorrect={false}

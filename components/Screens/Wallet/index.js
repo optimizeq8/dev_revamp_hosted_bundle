@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Header from "../../MiniComponents/Header";
-import * as Segment from 'expo-analytics-segment';
-import { BlurView } from 'expo-blur';
+import * as Segment from "expo-analytics-segment";
+import { BlurView } from "expo-blur";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Animatable from "react-native-animatable";
@@ -80,6 +80,8 @@ class Wallet extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
+
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -101,19 +103,23 @@ class Wallet extends Component {
             }
           ]}
         >
-          <Header title={"Wallet"} navigation={this.props.navigation} />
+          <Header
+            title={translate("Wallet")}
+            navigation={this.props.navigation}
+          />
 
           <WalletIcon style={styles.walletIcon} width={85} height={85} />
           <Text style={[globalStyles.numbers, styles.walletAmountText]}>
             {formatNumber(this.props.wallet, true)}
             <Text style={styles.dollar}>$</Text>
           </Text>
-          <Text style={styles.text}>Avalible Balance</Text>
+          <Text style={styles.text}>{translate("Available Balance")}</Text>
           {!this.state.modalVisible && (
             <View style={[styles.mainCard]}>
               <Text style={[styles.mainText]}>
-                Your wallet can be used to {"\n"}purchase ads or to resume
-                paused {"\n"}ads immedeatly.
+                {translate(
+                  "Your wallet can be used to purchase ads or to resume paused ads immediately"
+                )}
               </Text>
 
               <Button
@@ -121,7 +127,9 @@ class Wallet extends Component {
                 style={styles.button}
                 onPress={this.handleModalVisibility}
               >
-                <Text style={styles.buttontext}>Top up wallet </Text>
+                <Text style={styles.buttontext}>
+                  {translate("Top up wallet")}{" "}
+                </Text>
               </Button>
               {/* <Button
                 full
@@ -157,10 +165,14 @@ class Wallet extends Component {
                       width={85}
                       height={85}
                     />
-                    <Text style={styles.title}>Wallet {"\n"}Top Up</Text>
+                    <Text style={styles.title}>
+                      {translate("Wallet")} {"\n"}
+                      {translate("Top Up")}
+                    </Text>
                     <Text style={[styles.subHeading]}>
-                      Please input the amount{"\n"} You’d like to add to your
-                      wallet
+                      {translate(
+                        "Please input the amount You’d like to add to your wallet"
+                      )}
                     </Text>
 
                     <Animatable.View

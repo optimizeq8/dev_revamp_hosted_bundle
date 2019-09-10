@@ -8,6 +8,7 @@ class SwipeCompCondition extends Component {
       // !this.props.rejected &&
       "BRAND_AWARENESS" !== this.props.objective && (
         <SwipeUpComponent
+          screenProps={this.props.screenProps}
           _changeDestination={this.props._changeDestination}
           navigation={this.props.navigation}
           objective={this.props.objective}
@@ -21,6 +22,7 @@ class SwipeCompCondition extends Component {
       )
     ) : this.props.adType === "CollectionAd" ? (
       <SwipeUpComponent
+        screenProps={this.props.screenProps}
         _changeDestination={this.props._changeDestination}
         navigation={this.props.navigation}
         objective={this.props.objective}
@@ -34,6 +36,7 @@ class SwipeCompCondition extends Component {
       this.props.objective !== "WEB_CONVERSION" &&
       this.props.storyAdCards.storyAdSelected ? (
       <SwipeUpComponent
+        screenProps={this.props.screenProps}
         _changeDestination={this.props._changeDestination}
         navigation={this.props.navigation}
         objective={this.props.objective}
@@ -48,6 +51,7 @@ class SwipeCompCondition extends Component {
       this.props.objective === "WEB_CONVERSION" &&
       !this.props.storyAdCards.storyAdSelected && (
         <SwipeUpComponent
+          screenProps={this.props.screenProps}
           _changeDestination={this.props._changeDestination}
           navigation={this.props.navigation}
           objective={this.props.objective}

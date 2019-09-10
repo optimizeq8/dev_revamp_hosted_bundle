@@ -36,15 +36,17 @@ class BusinessList extends Component {
     });
   };
   render() {
+    const { translate } = this.props.screenProps;
+
     const list = this.state.filteredBusinesses.map(business => (
       <BusinessCard business={business} key={business.businessid} />
     ));
     return (
       <Container style={styles.container}>
         <View padder style={[styles.mainCard]}>
-          <Text style={styles.title}>Switch Account</Text>
+          <Text style={styles.title}>{translate("Switch Account")}</Text>
           <Text style={[styles.text, styles.switchAccountText]}>
-            You can switch between businesses here.
+            {translate("You can switch between businesses here")}
           </Text>
           <SearchBar
             filterBusinesses={this.filterBusinesses}
@@ -60,7 +62,9 @@ class BusinessList extends Component {
               this.props.navigation.navigate("CreateBusinessAccount")
             }
           >
-            <Text style={styles.subtext}>+ Add a new Business </Text>
+            <Text style={styles.subtext}>
+              + {translate("Add a new Business")}{" "}
+            </Text>
           </Button>
         </View>
       </Container>

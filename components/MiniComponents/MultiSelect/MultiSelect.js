@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text, Item, Input } from "native-base";
+import { isRTL } from "expo-localization";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
@@ -12,6 +13,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 //Styles
 import styles from "./styles";
+import rtlStyles from "./rtlStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -94,6 +96,7 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
+    const { translate } = this.props.screenProps;
     let countrylist = this.state.filteredCountreis.map(c => (
       <TouchableOpacity
         key={c.value}
@@ -125,13 +128,15 @@ class MultiSelectList extends Component {
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={styles.title}> Select Country </Text>
+            <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Country..."
-                  style={styles.searchInputText}
+                  placeholder={translate("Search Country")}
+                  style={
+                    isRTL ? rtlStyles.searchInputText : styles.searchInputText
+                  }
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>
@@ -167,6 +172,7 @@ class MultiSelectList extends Component {
       case "interests":
         return (
           <SelectInterests
+            screenProps={this.props.screenProps}
             onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedItems}
@@ -178,6 +184,7 @@ class MultiSelectList extends Component {
       case "deviceBrands":
         return (
           <SelectDevices
+            screenProps={this.props.screenProps}
             OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedDevices}
@@ -188,6 +195,7 @@ class MultiSelectList extends Component {
       case "deviceVersions":
         return (
           <SelectVersions
+            screenProps={this.props.screenProps}
             OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedVersions}

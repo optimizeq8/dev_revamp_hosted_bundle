@@ -113,6 +113,7 @@ class PhoneNo extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
@@ -128,8 +129,7 @@ class PhoneNo extends Component {
           >
             {!this.props.invite && (
               <Text style={styles.text}>
-                Please enter your {"\n"}
-                Mobile Number
+                {translate("Please enter your\nMobile Number")}
               </Text>
             )}
             {!this.props.invite && (
@@ -148,6 +148,7 @@ class PhoneNo extends Component {
             )}
             {this.props.invite && (
               <PhoneNoField
+                screenProps={this.props.screenProps}
                 {...this.props}
                 handlePickerData={this.handlePickerData}
                 valid={this.state.valid}

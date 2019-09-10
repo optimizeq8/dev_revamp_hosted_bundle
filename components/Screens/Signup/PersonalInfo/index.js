@@ -8,7 +8,7 @@ import {
   Text
 } from "react-native";
 import { Item, Input, Icon, Label } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -59,7 +59,7 @@ class PersonalInfo extends Component {
       this.state.userInfo.password !== this.state.repassword ||
       this.state.repassword === ""
     ) {
-      this.setState({ repasswordError: "Your Passwords don't match." });
+      this.setState({ repasswordError: "Your Passwords don't match" });
       return false;
     } else if (
       this.state.userInfo.password === this.state.repassword &&
@@ -100,6 +100,7 @@ class PersonalInfo extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView contentContainerStyle={styles.scrollViewStyleContainer}>
@@ -137,7 +138,7 @@ class PersonalInfo extends Component {
                       type="MaterialIcons"
                     />
                     {"  "}
-                    First Name
+                    {translate("First Name")}
                   </Label>
 
                   <Input
@@ -186,7 +187,7 @@ class PersonalInfo extends Component {
                         : globalStyles.darkGrayTextColor
                     ]}
                   >
-                    Last Name
+                    {translate("Last Name")}
                   </Label>
 
                   <Input
@@ -250,7 +251,7 @@ class PersonalInfo extends Component {
                       type="MaterialIcons"
                     />
                     {"  "}
-                    Email
+                    {translate("Email")}
                   </Label>
 
                   <Input
@@ -316,7 +317,7 @@ class PersonalInfo extends Component {
                       type="Entypo"
                     />
                     {"  "}
-                    Password
+                    {translate("Password")}
                   </Label>
                   <Input
                     style={styles.inputText}
@@ -348,7 +349,7 @@ class PersonalInfo extends Component {
                 {this.state.passwordError &&
                 this.state.passwordError.includes("8 characters") ? (
                   <Text style={[styles.text, styles.repasswordErrorText]}>
-                    {this.state.passwordError}
+                    {translate(this.state.passwordError)}
                   </Text>
                 ) : null}
 
@@ -373,7 +374,7 @@ class PersonalInfo extends Component {
                       styles.labelPassword
                     ]}
                   >
-                    Retype Password
+                    {translate("Re-enter Password")}
                   </Label>
 
                   <Input
@@ -395,7 +396,7 @@ class PersonalInfo extends Component {
                 {this.state.repasswordError !== "" &&
                 this.state.userInfo.password !== "" ? (
                   <Text style={[styles.text, styles.repasswordErrorText]}>
-                    {this.state.repasswordError}
+                    {translate(this.state.repasswordError)}
                   </Text>
                 ) : null}
                 <LowerButton function={() => this._handleSubmission()} />

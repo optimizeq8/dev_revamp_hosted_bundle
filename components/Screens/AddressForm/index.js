@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, BackHandler } from "react-native";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
@@ -170,6 +170,7 @@ class AddressForm extends Component {
               />
             ) : (
               <BillingAddressCard
+                screenProps={this.props.screenProps}
                 address={this.state.address}
                 _handleSubmission={this._handleSubmission}
                 _handleAddressChange={this._handleAddressChange}

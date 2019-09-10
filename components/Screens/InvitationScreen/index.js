@@ -7,14 +7,15 @@ import {
   Animated
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 
 import GetInviteCode from "../GetInviteCode";
 import Verification from "../Signup/Verification";
@@ -92,9 +93,12 @@ export default class Invitation extends Component {
     );
   };
   render() {
+    // console.log('invite screen', this.props.screenProps);
+
+    const { translate } = this.props.screenProps;
     const interpolation = this.animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [widthPercentageToDP(-50), widthPercentageToDP(50)]
+      outputRange: [widthPercentageToDP(-75), widthPercentageToDP(75)]
     });
 
     if (this.state.registeredWithInvite == null) {
@@ -109,7 +113,9 @@ export default class Invitation extends Component {
         </>
       );
     } else if (this.state.registeredWithInvite) {
-      return <Signin navigation={this.props.navigation} />;
+      return (
+        <Signin navigation={this.props.navigation} translate={translate} />
+      );
     } else
       return (
         <SafeAreaView
@@ -179,6 +185,7 @@ export default class Invitation extends Component {
                       style={styles.verificationView}
                     >
                       <Verification
+                        screenProps={this.props.screenProps}
                         invite={true}
                         renderInviteCode={this.state.renderInviteCode}
                         toggleComps={this.toggleComps}
@@ -194,13 +201,16 @@ export default class Invitation extends Component {
                       }
                       style={styles.getInviteCodeView}
                     >
-                      <GetInviteCode toggleComps={this.toggleComps} />
+                      <GetInviteCode
+                        toggleComps={this.toggleComps}
+                        screenProps={this.props.screenProps}
+                      />
                     </Animatable.View>
                   </Animated.View>
                 </Content>
                 <Footer style={styles.registered}>
                   <Text style={[styles.registeredText]}>
-                    Already registered?
+                    {translate("Already registered?")}
                   </Text>
                   <Button
                     rounded
@@ -212,7 +222,7 @@ export default class Invitation extends Component {
                     style={styles.bottomView}
                   >
                     <Text style={[styles.buttontext, styles.logInButtonText]}>
-                      Log In!
+                      {translate("Log In!")}
                     </Text>
                   </Button>
                 </Footer>

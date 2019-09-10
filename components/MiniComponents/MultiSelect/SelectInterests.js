@@ -64,6 +64,7 @@ class SelectInterests extends Component {
     this.props._handleSideMenuState(false);
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -72,9 +73,9 @@ class SelectInterests extends Component {
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <InterestsIcon width={100} height={100} fill="#fff" />
-            <Text style={styles.title}> Select Interests</Text>
+            <Text style={styles.title}> {translate("Select Interests")}</Text>
             <Text style={styles.subHeadings}>
-              Choose Interests that best describe your audience
+              {translate("Choose Interests that best describe your audience")}
             </Text>
 
             <View style={styles.slidercontainer}>
@@ -91,7 +92,7 @@ class SelectInterests extends Component {
               </Button>
               <ScrollView style={styles.scrollContainer}>
                 <Picker
-                  searchPlaceholderText={"Search Interests"}
+                  searchPlaceholderText={translate("Search Interests")}
                   data={this.state.interests}
                   uniqueKey={"id"}
                   displayKey={"name"}
