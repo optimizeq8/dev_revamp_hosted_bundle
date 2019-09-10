@@ -316,7 +316,7 @@ class CampaignDetails extends Component {
           <ImageBackground
             source={
               !loading
-                ? { uri: selectedCampaign.media }
+                ? { uri: selectedCampaign && selectedCampaign.media }
                 : require("../../../assets/images/emptyPlaceHolder.png")
             }
 >>>>>>> took out 'https://' from media uris
