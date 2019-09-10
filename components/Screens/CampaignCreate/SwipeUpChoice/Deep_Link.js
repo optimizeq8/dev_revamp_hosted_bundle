@@ -98,6 +98,7 @@ class Deep_Link extends Component {
     this.props.navigation.navigate("AdDesign");
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -127,9 +128,14 @@ class Deep_Link extends Component {
                   <View style={styles.deepLinkHeader}>
                     <AppInstallIcon style={styles.icon} />
                     <View style={styles.textcontainer}>
-                      <Text style={styles.titletext}>Deep Link</Text>
+                      <Text style={styles.titletext}>
+                        {translate("Deep Link")}
+                      </Text>
+
                       <Text style={styles.subtext}>
-                        Send Snapchatters to a specific{"\n"} page in your app
+                        {translate(
+                          "Send Snapchatters to a specific page in your app"
+                        )}
                       </Text>
                     </View>
                   </View>
@@ -142,6 +148,7 @@ class Deep_Link extends Component {
                     toggleSideMenu={this.props.toggleSideMenu}
                     _handleSubmission={this._handleSubmission}
                     deepLink={true}
+                    screenProps={this.props.screenProps}
                   />
                 </>
               )}

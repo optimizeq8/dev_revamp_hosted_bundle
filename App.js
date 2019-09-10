@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
 import {
   StatusBar,
   Platform,
@@ -8,7 +9,8 @@ import {
   View,
   Animated,
   Image,
-  Text as TextReactNative
+  Text as TextReactNative,
+  I18nManager
 } from "react-native";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -92,18 +94,23 @@ const myErrorHandler = (e, isFatal) => {
   // just call the variable we stored in the previous step
   defaultErrorHandler(e, isFatal);
 };
+i18n.fallbacks = true;
+I18nManager.allowRTL(Localization.isRTL);
+I18nManager.forceRTL(Localization.isRTL);
 
+// i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
 class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-    splashAnimation: new Animated.Value(0),
-    splashFadeAnimation: new Animated.Value(0.01),
-    splashAnimationComplete: false,
-    isAppReady: false
-  };
   constructor(props) {
     super(props);
+    this.state = {
+      isLoadingComplete: false,
+      splashAnimation: new Animated.Value(0),
+      splashFadeAnimation: new Animated.Value(0.01),
+      splashAnimationComplete: false,
+      isAppReady: false,
+      locale: Localization.locale.includes("ar") ? "ar" : "en"
+    };
     // Instruct SplashScreen not to hide yet
     SplashScreen.preventAutoHide();
   }
@@ -123,14 +130,33 @@ class App extends React.Component {
       this._handleFinishLoading();
     }
   };
-  componentDidMount() {
+  setLocale = locale => {
+    this.setState({ locale });
+  };
+
+  t = (scope, options) => {
+    return i18n.t(scope, { locale: this.state.locale, ...options });
+  };
+  async componentDidMount() {
     Segment.initialize({
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
     persistor.dispatch({ type: REHYDRATE });
+    const mobileLanguage = Localization.locale;
+    if (mobileLanguage.includes("ar")) {
+      await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+    } else {
+      await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
+      // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
+    }
+    i18n.translations = {
+      [store.getState().language.phoneLanguage]: store.getState().language.terms
+    };
 
+    // i18n.translations = { ...this.props.terms };
     this._loadAsync();
+
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>
     //         console.error(`Unexpected error thrown when loading:
@@ -234,6 +260,11 @@ class App extends React.Component {
                   ref={navigatorRef => {
                     //console.log(navigatorRef);
                     NavigationService.setTopLevelNavigator(navigatorRef);
+                  }}
+                  screenProps={{
+                    translate: this.t,
+                    locale: this.state.locale,
+                    setLocale: this.setLocale
                   }}
                 />
               </Root>
@@ -383,7 +414,18 @@ class App extends React.Component {
   };
 }
 
+// const mapStateToProps = state => ({
+// 	phoneLanguage: state.language.phoneLanguage,
+// });
+
+// const mapDispatchToProps = dispatch => ({
+// 	getLanguageListPOEdit: () => dispatch(actionCreators.getLanguageListPOEdit()),
+// });
 export default App;
+// export default connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(App);
 
 const styles = StyleSheet.create({
   container: {

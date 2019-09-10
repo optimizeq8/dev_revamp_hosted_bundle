@@ -8,7 +8,7 @@ import {
   BackHandler,
   TextInput
 } from "react-native";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { Text, Item, Input, Icon, Label, Container } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
@@ -109,6 +109,7 @@ class ChangePassword extends Component {
   };
   render() {
     const tempPassword = this.props.navigation.getParam("temp_pwd", false);
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -116,7 +117,7 @@ class ChangePassword extends Component {
       >
         <Container style={styles.container}>
           <Header
-            title={"Change Password"}
+            title={translate("Change Password")}
             navigation={this.props.navigation}
           />
           <ChangePassIcon
@@ -157,7 +158,9 @@ class ChangePassword extends Component {
                             styles.newPasswordLabel
                           ]}
                         >
-                          {tempPassword ? "Current Password" : "Old Password"}
+                          {tempPassword
+                            ? translate("Current Password")
+                            : translate("Old Password")}
                         </Label>
                         <Input
                           disabled={this.props.loading}
@@ -210,7 +213,7 @@ class ChangePassword extends Component {
                             styles.newPasswordLabel
                           ]}
                         >
-                          New Password
+                          {translate("New Password")}
                         </Label>
                         <Input
                           disabled={this.props.loading}
@@ -269,7 +272,7 @@ class ChangePassword extends Component {
                             styles.repasswordLabel
                           ]}
                         >
-                          Re-enter Password
+                          {translate("Re-enter Password")}
                         </Label>
 
                         <Input

@@ -319,6 +319,7 @@ class AppChoice extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainCard}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -326,7 +327,7 @@ class AppChoice extends Component {
             {() => (
               <>
                 <Picker
-                  searchPlaceholderText={"Search Call To Action"}
+                  searchPlaceholderText={translate("Search Call To Action")}
                   data={this.state.callactions}
                   uniqueKey={"value"}
                   displayKey={"label"}
@@ -343,7 +344,7 @@ class AppChoice extends Component {
                 <View style={styles.itemCallToAction}>
                   <View style={[styles.callToActionLabelView]}>
                     <Text uppercase style={[styles.inputLabel]}>
-                      call to action
+                      {translate("call to action")}
                     </Text>
                   </View>
                   <Item
@@ -380,6 +381,7 @@ class AppChoice extends Component {
                 <AppBox
                   setModalVisible={this.setModalVisible}
                   attachment={this.state.attachment}
+                  screenProps={this.props.screenProps}
                 />
               </>
             )}
@@ -408,6 +410,7 @@ class AppChoice extends Component {
           callActionError={this.state.callActionError}
           callAction={this.state.callaction}
           validateApp={() => this.validate()}
+          screenProps={this.props.screenProps}
         />
         {this.props.deepLink && (
           <View style={{ bottom: "20%" }}>
@@ -450,7 +453,7 @@ class AppChoice extends Component {
               style={styles.footerText}
               onPress={() => this.props.toggleSideMenu()}
             >
-              Change Swipe-up Destination
+              {translate("Change Swipe-up Destination")}
             </Text>
           )}
 

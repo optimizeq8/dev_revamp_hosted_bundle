@@ -13,12 +13,14 @@ export default class BoxStats extends Component {
             key={"BRAND_AWARENESS 1"}
             title={"Impressions"}
             info={selectedCampaign.video_views}
+            screenProps={this.props.screenProps}
           />,
           <Box
             key={"BRAND_AWARENESS 2"}
             title={"CPM"}
             dollar={true}
             info={selectedCampaign.cpm}
+            screenProps={this.props.screenProps}
           />
         ];
       case "TRAFFIC":
@@ -28,12 +30,14 @@ export default class BoxStats extends Component {
             key={"TRAFFIC 1"}
             title={"Swipe Ups"}
             info={selectedCampaign.swipes}
+            screenProps={this.props.screenProps}
           />,
           <Box
             key={"TRAFFIC 2"}
             title={"Cost Per Swipe Up"}
             dollar={true}
             info={selectedCampaign.eCPSU}
+            screenProps={this.props.screenProps}
           />
         ];
       case "APP_INSTALLS":
@@ -42,12 +46,14 @@ export default class BoxStats extends Component {
             key={"APP_INSTALLS 1"}
             title={"Swipe Ups"}
             info={selectedCampaign.swipes}
+            screenProps={this.props.screenProps}
           />,
           <Box
             key={"APP_INSTALLS 2"}
             title={"Cost Per Swipe Up"}
             info={selectedCampaign.eCPSU}
             dollar={true}
+            screenProps={this.props.screenProps}
           />
           // <Box
           //   key={"APP_INSTALLS 1"}
@@ -66,12 +72,14 @@ export default class BoxStats extends Component {
             key={"VIDEO_VIEWS 1"}
             title={"Video Views"}
             info={selectedCampaign.swipes}
+            screenProps={this.props.screenProps}
           />,
           <Box
             key={"VIDEO_VIEWS 2"}
             title={"Cost per Video View"}
             dollar={true}
             info={selectedCampaign.eCPV}
+            screenProps={this.props.screenProps}
           />
         ];
       default:

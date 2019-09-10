@@ -167,11 +167,13 @@ class BillingAddressCard extends React.Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
       case "countries": {
         menu = (
           <MultiSelect
+            screenProps={this.props.screenProps}
             countries={Countries}
             country_code={this.state.country_code}
             onSelectedCountryChange={this.onSelectedCountryChange}
@@ -192,6 +194,7 @@ class BillingAddressCard extends React.Component {
             onSelectedRegionChange={this.onSelectedRegionChange}
             onSelectedRegionNameChange={this.onSelectedRegionNameChange}
             selectedItems={this.state.selectedItems}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -210,7 +213,7 @@ class BillingAddressCard extends React.Component {
       >
         <View style={styles.headerBlock}>
           <Header
-            title={"Billing Address"}
+            title={translate("Billing Address")}
             navigation={this.props.navigation}
           />
 
@@ -251,7 +254,7 @@ class BillingAddressCard extends React.Component {
                       ]}
                     >
                       {isUndefined(this.props.address.country)
-                        ? "Country"
+                        ? translate("Country")
                         : this.props.address.country}
                     </Label>
                     <DownButton style={styles.flex} />
@@ -270,7 +273,7 @@ class BillingAddressCard extends React.Component {
                     onPress={() => {
                       this.state.country_code === ""
                         ? showMessage({
-                            message: "Please select a country first.",
+                            message: translate("Please select a country first"),
                             type: "warning",
                             position: "top"
                           })
@@ -290,7 +293,7 @@ class BillingAddressCard extends React.Component {
                     >
                       {isUndefined(this.props.address.area) ||
                       this.props.address.area === ""
-                        ? "Area"
+                        ? translate("Area")
                         : this.props.address.area}
                     </Label>
                     <DownButton style={styles.flex} />
@@ -319,7 +322,7 @@ class BillingAddressCard extends React.Component {
                         ]}
                       >
                         <Text style={styles.required}> *</Text>
-                        Block
+                        {translate("Block")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -374,7 +377,7 @@ class BillingAddressCard extends React.Component {
                         ]}
                       >
                         <Text style={styles.required}> *</Text>
-                        Building/House
+                        {translate("Building/House")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -424,7 +427,7 @@ class BillingAddressCard extends React.Component {
                       ]}
                     >
                       <Text style={styles.required}> *</Text>
-                      Street
+                      {translate("Street")}
                     </Label>
                     <Input
                       disabled={this.props.saving}
@@ -471,7 +474,7 @@ class BillingAddressCard extends React.Component {
                           styles.bottom5
                         ]}
                       >
-                        Office No.
+                        {translate("Office No")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -513,7 +516,7 @@ class BillingAddressCard extends React.Component {
                           styles.bottom5
                         ]}
                       >
-                        Avenue
+                        {translate("Avenue")}
                       </Label>
                       <Input
                         disabled={this.props.saving}

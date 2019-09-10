@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Text, Item, Input } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-navigation";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -69,6 +69,7 @@ class ForgotPassword extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
@@ -90,10 +91,10 @@ class ForgotPassword extends Component {
             <KeyboardShift>
               {() => (
                 <>
-                  <Text style={styles.text}>Password Reset</Text>
+                  <Text style={styles.text}>{translate("Password Reset")}</Text>
 
                   <Text style={styles.link}>
-                    Please enter your email address.
+                    {translate("Please enter your email address")}
                   </Text>
 
                   <View style={styles.mainView}>
@@ -124,7 +125,7 @@ class ForgotPassword extends Component {
                             )
                           });
                         }}
-                        placeholder="Email"
+                        placeholder={translate("Email")}
                       />
                     </Item>
                   </View>

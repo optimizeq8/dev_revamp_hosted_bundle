@@ -70,7 +70,7 @@ export default class MediaModal extends Component {
                 actionButton={() => {
                   this.props.setMediaModalVisible(false);
                 }}
-                title="UPLOAD MEDIA"
+                title={this.props.screenProps.translate("UPLOAD MEDIA")}
               />
               <Content
                 padder

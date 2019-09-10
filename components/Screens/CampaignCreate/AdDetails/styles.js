@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   },
   imageBackgroundViewWrapper: {
     position: "absolute",
+    // left: -60,
     width: "100%",
     height: "100%",
-
     overflow: "hidden"
   },
   videoBackgroundViewWrapper: {
@@ -166,13 +166,15 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: 13,
     fontFamily: "montserrat-light",
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   menudetails: {
     paddingLeft: 15,
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 11
+    fontSize: 11,
+    textAlign: "left"
   },
   flex: {
     flex: 1

@@ -164,14 +164,16 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC"
     });
-
+    const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallary to upload media"
+          ),
           position: "top",
           type: "warning"
         });
@@ -376,6 +378,7 @@ class AdDesign extends Component {
       );
   };
   openUploadVideo = async () => {
+    const { translate } = this.props.screenProps;
     try {
       this._addLinkingListener();
       // this.props.navigation.replace("WebView", {
@@ -393,10 +396,10 @@ class AdDesign extends Component {
       this._removeLinkingListener();
     } catch (error) {
       showMessage({
-        message: "Something went wrong!",
+        message: translate("Something went wrong!"),
         type: "warning",
         position: "top",
-        description: "Please try again later."
+        description: translate("Please try again later")
       });
     }
   };
@@ -831,6 +834,7 @@ class AdDesign extends Component {
         key={field}
         field={field}
         mainBusiness={this.props.mainBusiness}
+        screenProps={this.props.screenProps}
       />
     ));
 
@@ -890,7 +894,11 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            title={
+              this.rejected
+                ? translate("Re-upload media")
+                : translate("Compose Ad")
+            }
           />
           <Content
             contentContainerStyle={styles.contentContainer}
@@ -1124,6 +1132,7 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          screenProps={this.props.screenProps}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={

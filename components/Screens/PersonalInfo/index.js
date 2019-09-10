@@ -122,12 +122,16 @@ class PersonalInfo extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Header title={"Personal Info"} navigation={this.props.navigation} />
+        <Header
+          title={translate("Personal Info")}
+          navigation={this.props.navigation}
+        />
 
         <PersonalInfoIcon
           style={styles.personalInfoIcon}
@@ -159,7 +163,7 @@ class PersonalInfo extends Component {
                         ]}
                       >
                         <Label style={[styles.label, styles.labelEmail]}>
-                          First Name
+                          {translate("First Name")}
                         </Label>
                         <Input
                           style={[styles.inputText]}
@@ -190,7 +194,7 @@ class PersonalInfo extends Component {
                         ]}
                       >
                         <Label style={[styles.label, styles.labelEmail]}>
-                          Last Name
+                          {translate("Last Name")}
                         </Label>
                         <Input
                           style={[styles.inputText]}
@@ -224,9 +228,10 @@ class PersonalInfo extends Component {
                           }
                         ]}
                       >
-                        Mobile No.
+                        {translate("Mobile No")}
                       </Label>
                       <PhoneNoField
+                        screenProps={this.props.screenProps}
                         valid
                         disabled={true}
                         changeNo={this.changePersonalNo}
@@ -243,7 +248,7 @@ class PersonalInfo extends Component {
                       ]}
                     >
                       <Label style={[styles.label, styles.labelEmail]}>
-                        E-Mail
+                        {translate("Email")}
                       </Label>
                       <Input
                         disabled

@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { isRTL } from "expo-localization";
 
 import {
   widthPercentageToDP as wp,
@@ -38,7 +39,11 @@ export default styles = StyleSheet.create({
     width: wp(80),
     alignSelf: "center"
   },
-  searchTextInput: { color: "#FFF", fontSize: 17 / PixelRatio.getFontScale() },
+  searchTextInput: {
+    color: "#FFF",
+    fontSize: 17 / PixelRatio.getFontScale(),
+    textAlign: isRTL ? "right" : "left"
+  },
   item: {
     backgroundColor: "rgba(0,0,0,0)",
     color: "#fff"

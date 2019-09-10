@@ -25,8 +25,8 @@ export default class MediaOptions extends Component {
     }
   };
   render() {
-
     let { title } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         onPress={() => this.handleOptionSelect()}

@@ -9,6 +9,7 @@ import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.
 import { globalColors } from "../../../GlobalStyles";
 export default class SelectOS extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -22,8 +23,10 @@ export default class SelectOS extends Component {
               height={100}
               style={styles.icon}
             />
-            <Text style={styles.title}>Operating System</Text>
-            <Text style={styles.subHeadings}>Select your audience's OS </Text>
+            <Text style={styles.title}>{translate("Operating System")}</Text>
+            <Text style={styles.subHeadings}>
+              {translate(`Select your audience's OS`)}{" "}
+            </Text>
             <View style={[styles.optionsContainer]}>
               <TouchableOpacity
                 style={styles.optionsRowContainer}
@@ -46,7 +49,7 @@ export default class SelectOS extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  All
+                  {translate("All")}
                 </Text>
               </TouchableOpacity>
 
@@ -73,7 +76,7 @@ export default class SelectOS extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  iOS
+                  {translate("iOS")}
                 </Text>
               </TouchableOpacity>
 
@@ -100,7 +103,7 @@ export default class SelectOS extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  ANDROID
+                  {translate("ANDROID")}
                 </Text>
               </TouchableOpacity>
             </View>

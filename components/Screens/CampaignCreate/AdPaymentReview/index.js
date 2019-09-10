@@ -40,6 +40,7 @@ class AdPaymentReview extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
+    const { translate } = this.props.screenProps;
     if (
       this.props.loading ||
       !this.props.data ||
@@ -134,7 +135,7 @@ class AdPaymentReview extends Component {
                     }
                   }}
                   navigation={this.props.navigation}
-                  title="Review your Selection"
+                  title={translate("Review your Selection")}
                 />
 
                 <Content
@@ -142,7 +143,7 @@ class AdPaymentReview extends Component {
                   contentContainerStyle={{ flex: 1 }}
                 >
                   <View style={styles.budgetView}>
-                    <Text style={styles.budgetText}>Budget</Text>
+                    <Text style={styles.budgetText}>{translate("Budget")}</Text>
                     <View style={styles.budgetAmountView}>
                       <Text style={styles.budgetDollarText}>$</Text>
                       <Text style={styles.budgetAmountText}>
@@ -155,6 +156,7 @@ class AdPaymentReview extends Component {
                   </View>
                   <Content contentContainerStyle={styles.contentContainerStyle}>
                     <ReviewItemCard
+                      screenProps={this.props.screenProps}
                       title="Duration"
                       subtitles={[
                         { title: "Start", content: start_time },
@@ -169,6 +171,7 @@ class AdPaymentReview extends Component {
                       ]}
                     />
                     <ReviewItemCard
+                      screenProps={this.props.screenProps}
                       title="Media"
                       subtitles={[
                         {
@@ -183,6 +186,7 @@ class AdPaymentReview extends Component {
                     />
 
                     <ReviewItemCard
+                      screenProps={this.props.screenProps}
                       title="Audience"
                       subtitles={[
                         {
@@ -228,7 +232,7 @@ class AdPaymentReview extends Component {
                         },
                         targeting.hasOwnProperty("devices") &&
                           targeting.devices[0].os_version_max !== "" && {
-                            title: "OS Version",
+                            title: "OS Versions",
                             content:
                               targeting.devices[0].hasOwnProperty(
                                 "os_version_min"
@@ -271,7 +275,7 @@ class AdPaymentReview extends Component {
                             10%
                           </Text>
                           <Text style={[styles.money, styles.optimizeFeesText]}>
-                            OptimizeApp fees included
+                            {translate("Optimize App fees included")}
                           </Text>
                         </View>
                       </View>
@@ -311,7 +315,9 @@ class AdPaymentReview extends Component {
                                                     </View> 
                                                 */}
 
-                        <Text style={styles.payNowText}>Payment Info</Text>
+                        <Text style={styles.payNowText}>
+                          {translate("Payment Info")}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </Footer>

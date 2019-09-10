@@ -320,9 +320,10 @@ class AdObjective extends Component {
         selected={this.state.campaignInfo.objective}
         setObjective={this.setObjective}
         key={o.value}
+        screenProps={this.props.screenProps}
       />
     ));
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -358,10 +359,12 @@ class AdObjective extends Component {
               navigation={this.props.navigation}
               title={
                 (adType === "SnapAd"
-                  ? "Snap Ad"
+                  ? translate("Snap Ad")
                   : adType === "StoryAd"
-                  ? "Story Ad"
-                  : "Collection Ad") + " Campaign"
+                  ? translate("Story Ad")
+                  : translate("Collection Ad")) +
+                " " +
+                translate("Campaign")
               }
             />
             <View style={styles.block1}>
@@ -407,7 +410,7 @@ class AdObjective extends Component {
                         : GlobalStyles.whiteTextColor
                     ]}
                   >
-                    Ad Name
+                    {translate("Ad Name")}
                   </Text>
                 </View>
                 <Item style={[styles.input1]}>
@@ -461,10 +464,11 @@ class AdObjective extends Component {
               >
                 <View style={[styles.dateTextLabel]}>
                   <Text uppercase style={[styles.inputLabel]}>
-                    Date
+                    {translate("Date")}
                   </Text>
                 </View>
                 <Duration
+                  screenProps={this.props.screenProps}
                   loading={this.props.loading}
                   dismissKeyboard={Keyboard.dismiss}
                   start_time={this.state.campaignInfo.start_time}
@@ -474,7 +478,9 @@ class AdObjective extends Component {
                   dateField={this.dateField}
                 />
               </Animatable.View>
-              <Text style={styles.minBudget}>Minimum of $25/day</Text>
+              <Text style={styles.minBudget}>
+                {translate("Minimum of $25/day")}
+              </Text>
               <Animatable.View
                 onAnimationEnd={() => this.setState({ objectiveError: null })}
                 duration={200}
@@ -482,7 +488,9 @@ class AdObjective extends Component {
                 animation={!this.state.objectiveError ? "" : "shake"}
               >
                 <View style={[styles.objectiveTextLabel]}>
-                  <Text style={[styles.inputLabel]}>OBJECTIVE</Text>
+                  <Text style={[styles.inputLabel]} uppercase>
+                    {translate("Objective")}
+                  </Text>
                 </View>
                 <Item
                   disabled={this.props.loading}
@@ -493,7 +501,9 @@ class AdObjective extends Component {
                     this.setModalVisible(true);
                   }}
                 >
-                  <Text style={styles.label}>{this.state.objectiveLabel}</Text>
+                  <Text style={styles.label}>
+                    {translate(this.state.objectiveLabel)}
+                  </Text>
                   <Icon type="AntDesign" name="down" style={styles.downicon} />
                 </Item>
               </Animatable.View>
@@ -501,7 +511,7 @@ class AdObjective extends Component {
               {this.props.adType === "CollectionAd" && (
                 <View style={styles.collectionAdView}>
                   <Text uppercase style={styles.collectionAdText}>
-                    Where are you taking the user ?
+                    {translate("Where are you taking the user ?")}
                   </Text>
                   <View style={styles.topContainer}>
                     <Button
@@ -524,7 +534,7 @@ class AdObjective extends Component {
                             : styles.inactiveText
                         ]}
                       >
-                        Website
+                        {translate("Website")}
                       </Text>
                       <Text
                         style={[
@@ -534,7 +544,7 @@ class AdObjective extends Component {
                           styles.buttonSubText
                         ]}
                       >
-                        Links to your site
+                        {translate("Links to your site")}
                       </Text>
                     </Button>
                     <Button
@@ -557,7 +567,7 @@ class AdObjective extends Component {
                             : styles.inactiveText
                         ]}
                       >
-                        App DeepLink
+                        {translate("App DeepLink")}
                       </Text>
                       <Text
                         style={[
@@ -567,7 +577,7 @@ class AdObjective extends Component {
                           styles.buttonSubText
                         ]}
                       >
-                        Links to your App
+                        {translate("Links to your App")}
                       </Text>
                     </Button>
                   </View>
@@ -597,6 +607,7 @@ class AdObjective extends Component {
           handleEndDatePicked={this.handleEndDatePicked}
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
+          screenProps={this.props.screenProps}
         />
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
@@ -619,7 +630,7 @@ class AdObjective extends Component {
                   actionButton={() => {
                     this.setModalVisible(false);
                   }}
-                  title="Campaign Objective"
+                  title={translate("Campaign Objective")}
                 />
                 <Content
                   padder

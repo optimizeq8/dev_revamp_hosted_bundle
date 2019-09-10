@@ -102,6 +102,7 @@ class App_Install extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -115,9 +116,11 @@ class App_Install extends Component {
               style={styles.icon}
             />
             <View style={styles.textcontainer}>
-              <Text style={styles.titletext}>App Install</Text>
+              <Text style={styles.titletext}>{translate("App Install")}</Text>
               <Text style={styles.subtext}>
-                Send Snapchatters to the app store to download your app.
+                {translate(
+                  "Send Snapchatters to the app store to download your app"
+                )}
               </Text>
             </View>
             <AppChoice
@@ -126,6 +129,7 @@ class App_Install extends Component {
               navigation={this.props.navigation}
               deepLink={false}
               _handleSubmission={this._handleSubmission}
+              screenProps={this.props.screenProps}
             />
           </View>
         </Container>

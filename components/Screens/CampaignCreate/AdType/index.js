@@ -129,15 +129,16 @@ class AdType extends Component {
     this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     let MediaIcon = item.icon.type;
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.slide}>
         <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
-        <Text style={styles.iconTitle}>{item.title}</Text>
+        <Text style={styles.iconTitle}>{translate(item.title)}</Text>
       </View>
     );
-  }
+  };
 
   _renderSlides = ({ item }) => {
     return (
@@ -147,6 +148,7 @@ class AdType extends Component {
         mainBusiness={this.props.mainBusiness}
         campaign_type={this.state.campaign_type}
         adType={item}
+        screenProps={this.props.screenProps}
       />
     );
   };
@@ -155,6 +157,7 @@ class AdType extends Component {
     resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -181,7 +184,7 @@ class AdType extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Create a new campaign!"
+            title={translate("Create a new campaign!")}
           />
 
           <View style={{ height: 90 }}>
