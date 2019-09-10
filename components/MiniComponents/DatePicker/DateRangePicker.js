@@ -162,13 +162,15 @@ export default class DateRangePicker extends Component<Props> {
   };
 
   render() {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate() + 1);
     return (
       <CalendarList
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
               ? new Date(this.props.selectedCampaign.start_time)
-              : Date()
+              : startDate
             : null
         }
         pastScrollRange={0}
