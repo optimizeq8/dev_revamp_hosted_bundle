@@ -297,6 +297,8 @@ class PaymentForm extends Component {
     });
   };
   render() {
+    //   console.log('paymentform screenprop', this.props.screenProps);
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -334,7 +336,7 @@ class PaymentForm extends Component {
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
             // paymentForm={true}
-            title="Payment"
+            title={translate("Payment")}
           />
           <Content
             padder
@@ -359,8 +361,9 @@ class PaymentForm extends Component {
                         ? globalStyles.whiteTextColor
                         : globalStyles.purpleTextColor
                     ]}
+                    uppercase
                   >
-                    WALLET
+                    {translate("Wallet")}
                   </Text>
                 </Button>
               )}
@@ -386,7 +389,7 @@ class PaymentForm extends Component {
                       : globalStyles.purpleTextColor
                   ]}
                 >
-                  KNET
+                  {translate("KNET")}
                 </Text>
               </Button>
               <Button
@@ -405,8 +408,9 @@ class PaymentForm extends Component {
                       ? globalStyles.whiteTextColor
                       : globalStyles.purpleTextColor
                   ]}
+                  uppercase
                 >
-                  CREDIT CARD
+                  {translate("Credit Card")}
                 </Text>
               </Button>
             </View>
@@ -417,6 +421,7 @@ class PaymentForm extends Component {
                 setShowWalletModal={this.setShowWalletModal}
                 _changeToKnet={this._changeToKnet}
                 wallet={this.props.wallet}
+                screenProps={this.props.screenProps}
               />
             )}
             {this.state.choice === 2 && (
@@ -427,13 +432,13 @@ class PaymentForm extends Component {
                   resizeMode="contain"
                 />
                 <Text style={styles.errortext}>
-                  You will be redirected to{" "}
+                  {translate("You will be redirected to")}{" "}
                   <Text style={[styles.errortext, styles.errorTextKNET]}>
-                    KNET’s
+                    {translate("KNET")}
                   </Text>{" "}
                   {"\n"}
-                  payment gateway for the {"\n"}
-                  payment process
+                  {translate("payment gateway for the")} {"\n"}
+                  {translate("payment process")}
                 </Text>
               </View>
             )}
@@ -445,9 +450,9 @@ class PaymentForm extends Component {
                   resizeMode="contain"
                 />
                 <Text style={styles.errortext}>
-                  You will be redirected to a {"\n"}
-                  payment gateway for the {"\n"}
-                  payment process
+                  {translate("You will be redirected to")} {"\n"}
+                  {translate("payment gateway for the")} {"\n"}
+                  {translate("payment process")}
                 </Text>
               </View>
             )}
@@ -491,7 +496,7 @@ class PaymentForm extends Component {
                   <View style={styles.optimizeFeesTextContainer}>
                     <Text style={styles.optimizeFeesAmountText}>10%</Text>
                     <Text style={[styles.money, styles.optimizeFeesText]}>
-                      Optimize App fees included
+                      {translate("Optimize App fees included")}
                     </Text>
                   </View>
                 )}
@@ -517,7 +522,7 @@ class PaymentForm extends Component {
               <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
             </View> */}
 
-                <Text style={styles.payNowText}>Pay now</Text>
+                <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
               </TouchableOpacity>
             </View>
 
@@ -529,7 +534,7 @@ class PaymentForm extends Component {
             >
               <>
                 <Text allowFontScaling={false} style={[styles.link]}>
-                  {`By tapping this button you  agree to the `}
+                  {translate(`By tapping this button you  agree to the`)}
                 </Text>
                 <Text
                   allowFontScaling={false}
@@ -539,7 +544,7 @@ class PaymentForm extends Component {
                   }}
                   style={[styles.link, styles.tNcText]}
                 >
-                  Terms & Conditions
+                  {translate("Terms & Conditions")}
                 </Text>
               </>
             </TouchableOpacity>
@@ -558,24 +563,27 @@ class PaymentForm extends Component {
                 <>
                   <WalletIcon width={80} height={80} />
                   <Text style={[styles.walletInfo, styles.reviewPurchaseText]}>
-                    Review Purchase
+                    {translate("Review Purchase")}
                   </Text>
 
                   <Text style={styles.walletInfo}>
-                    Are you sure you want to go back? This will reset your
-                    wallet.
+                    {translate(
+                      "Are you sure you want to go back? This will reset your wallet"
+                    )}
                   </Text>
                   <Button
                     onPress={() => this.removeWalletAmountAndGoBack()}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Confirm</Text>
+                    <Text style={styles.colorWhite}>
+                      {translate("Confirm")}
+                    </Text>
                   </Button>
                   <Button
                     onPress={() => this.showRemoveAmountModal()}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Cancel</Text>
+                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
                   </Button>
                 </>
               )}

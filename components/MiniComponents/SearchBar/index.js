@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import { View, Input, Item } from "native-base";
+import { isRTL } from "expo-localization";
 
 // Redux
 import { connect } from "react-redux";
@@ -8,6 +9,7 @@ import * as actionCreators from "../../../store/actions";
 
 // Styles
 import styles from "./styles";
+import rtlStyles from "./rtlStyles";
 
 // Icons
 import SearchIcon from "../../../assets/SVGs/Search.svg";
@@ -56,13 +58,14 @@ class SearchBar extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View searchBar style={styles.searchBarView}>
         <Item rounded style={styles.searchBarItem}>
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
-            style={styles.searchBarInput}
-            placeholder="Search ads..."
+            style={isRTL ? rtlStyles.searchBarInput : styles.searchBarInput}
+            placeholder={translate("Search ads")}
             value={this.state.value}
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());

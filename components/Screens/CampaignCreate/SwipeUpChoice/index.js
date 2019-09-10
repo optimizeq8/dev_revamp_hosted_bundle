@@ -23,6 +23,7 @@ class SwipeUpChoice extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let objective = this.props.navigation.getParam("objective", "");
     let _changeDestination = this.props.navigation.getParam(
       "_changeDestination",
@@ -38,6 +39,7 @@ class SwipeUpChoice extends Component {
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
+              screenProps={this.props.screenProps}
               //   swipeUpDestination={true}
             />
           );
@@ -50,6 +52,8 @@ class SwipeUpChoice extends Component {
               _changeDestination={_changeDestination}
               navigation={this.props.navigation}
               toggleSideMenu={this.toggleSideMenu}
+              screenProps={this.props.screenProps}
+
               //   swipeUpDestination={true}
             />
           );
@@ -66,6 +70,7 @@ class SwipeUpChoice extends Component {
             collectionAdLinkForm={this.props.navigation.getParam(
               "collectionAdLinkForm"
             )}
+            screenProps={this.props.screenProps}
           />
         );
       else if (objective === "VIDEO_VIEWS") {
@@ -73,6 +78,7 @@ class SwipeUpChoice extends Component {
           <Long_Form_Video
             _changeDestination={_changeDestination}
             navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
           />
         );
       } else if (objective.toLowerCase().includes("app")) {
@@ -80,6 +86,7 @@ class SwipeUpChoice extends Component {
           <App_Install
             _changeDestination={_changeDestination}
             navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
           />
         );
       } else if (objective === "WEB_CONVERSION") {
@@ -87,6 +94,7 @@ class SwipeUpChoice extends Component {
           <WhatsApp
             _changeDestination={_changeDestination}
             navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
           />
         );
       }

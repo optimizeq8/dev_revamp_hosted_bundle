@@ -11,6 +11,7 @@ import { globalColors } from "../../../GlobalStyles";
 import { Icon } from "native-base";
 export default class OptionalTargets extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let targeting = this.props.targeting;
     return (
       <View
@@ -22,7 +23,7 @@ export default class OptionalTargets extends Component {
           <View style={styles.optionalTargets}>
             <View style={{ flexDirection: "row" }}>
               <LocationIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>Regions</Text>
+              <Text style={styles.categories}>{translate("Regions")}</Text>
             </View>
 
             <Text style={[styles.subtext, { textAlign: "left" }]}>
@@ -34,7 +35,7 @@ export default class OptionalTargets extends Component {
           <View style={styles.optionalTargets}>
             <View style={{ flexDirection: "row" }}>
               <InterestIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>Interests</Text>
+              <Text style={styles.categories}>{translate("Interests")}</Text>
             </View>
 
             <Text style={[styles.subtext, { textAlign: "left" }]}>
@@ -54,7 +55,7 @@ export default class OptionalTargets extends Component {
                   fontSize: 23
                 }}
               />
-              <Text style={styles.categories}>Device Makes</Text>
+              <Text style={styles.categories}>{translate("Device Make")}</Text>
             </View>
 
             <Text style={[styles.subtext, { textAlign: "left" }]}>
@@ -71,7 +72,9 @@ export default class OptionalTargets extends Component {
                   width={hp("2.5")}
                   height={hp("2.5")}
                 />
-                <Text style={styles.categories}>Operating System</Text>
+                <Text style={styles.categories}>
+                  {translate("Operating System")}
+                </Text>
               </View>
 
               <Text style={[styles.subtext, { textAlign: "left" }]}>
@@ -93,7 +96,9 @@ export default class OptionalTargets extends Component {
                     paddingLeft: 10
                   }}
                 />
-                <Text style={styles.categories}>OS Versions</Text>
+                <Text style={styles.categories}>
+                  {translate("OS Versions")}
+                </Text>
               </View>
 
               <Text style={[styles.subtext, { textAlign: "left" }]}>

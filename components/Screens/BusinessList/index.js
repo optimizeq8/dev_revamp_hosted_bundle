@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 
 // Style
@@ -22,15 +22,16 @@ class BusinessList extends Component {
   }
 
   render() {
+    const { translate } = this.props.screenProps;
     const list = this.props.businessAccounts.map(business => (
       <BusinessCard business={business} key={business.businessid} />
     ));
     return (
       <Container style={styles.container}>
         <View padder style={[styles.mainCard]}>
-          <Text style={styles.title}>Switch Account</Text>
+          <Text style={styles.title}>{translate("Switch Account")}</Text>
           <Text style={[styles.text, styles.switchAccountText]}>
-            You can switch between businesses here.
+            {translate("You can switch between businesses here")}
           </Text>
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
@@ -41,7 +42,9 @@ class BusinessList extends Component {
               this.props.navigation.navigate("CreateBusinessAccount")
             }
           >
-            <Text style={styles.subtext}>+ Add a new Business </Text>
+            <Text style={styles.subtext}>
+              + {translate("Add a new Business")}{" "}
+            </Text>
           </Button>
         </View>
       </Container>

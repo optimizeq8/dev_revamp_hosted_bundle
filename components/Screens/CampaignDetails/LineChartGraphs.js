@@ -9,7 +9,10 @@ export default class LineChartGraphs extends Component {
           paddingLeft: 25
         }}
       >
-        <LineGraph chartChoice={this.props.chartChoice} />
+        <LineGraph
+          screenProps={this.props.screenProps}
+          chartChoice={this.props.chartChoice}
+        />
       </View>
     );
   }

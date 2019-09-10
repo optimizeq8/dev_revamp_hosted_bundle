@@ -150,6 +150,7 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -276,7 +277,7 @@ class AdDesignReview extends Component {
                       <ArrowUpIcon />
                     </View>
                   )}
-                  <Text style={styles.AD}>Ad</Text>
+                  <Text style={styles.AD}>{translate("Ad")}</Text>
                 </View>
                 {adType === "CollectionAd" && (
                   <Animatable.View

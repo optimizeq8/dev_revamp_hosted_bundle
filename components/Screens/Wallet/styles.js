@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "relative",
-    left: "20%"
+    left: "10%"
   },
   midContainer: { flex: 2, justifyContent: "center" },
   container: {
@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
-    marginTop: 30
+    marginTop: 30,
+    width: widthPercentageToDP(60)
   },
   dollar: {
     color: "#fff",
@@ -134,7 +135,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "montserrat-light",
-    marginVertical: 20
+    marginVertical: 20,
+    width: widthPercentageToDP(50)
   }
 });
 

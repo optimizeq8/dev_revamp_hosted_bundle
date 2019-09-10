@@ -7,10 +7,11 @@ import styles from "./styles";
 class RejectedComp extends Component {
   render() {
     let { selectedCampaign, navigation } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <View>
         <Text style={[styles.subHeadings, { fontSize: 17 }]}>
-          Why was your ad rejected?
+          {translate("Why was your ad rejected?")}
         </Text>
         <View
           style={{
@@ -51,7 +52,9 @@ class RejectedComp extends Component {
           }}
           style={styles.reviewButton}
         >
-          <Text style={styles.subHeadings}>Review Ad and publish</Text>
+          <Text style={styles.subHeadings}>
+            {translate("Review Ad and publish")}
+          </Text>
         </Button>
       </View>
     );

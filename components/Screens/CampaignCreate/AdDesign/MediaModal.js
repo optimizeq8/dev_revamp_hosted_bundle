@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
@@ -16,6 +16,7 @@ export default class MediaModal extends Component {
         _pickImage={this.props._pickImage}
         key={op}
         title={op}
+        screenProps={this.props.screenProps}
       />
     ));
     return (
@@ -37,7 +38,7 @@ export default class MediaModal extends Component {
                 actionButton={() => {
                   this.props.setMediaModalVisible(false);
                 }}
-                title="UPLOAD MEDIA"
+                title={this.props.screenProps.translate("UPLOAD MEDIA")}
               />
               <Content
                 padder

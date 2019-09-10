@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
-    width: "80%",
+    // width: "80%",
     height: "40%",
     flexDirection: "row",
     padding: 20,
@@ -309,12 +309,14 @@ const styles = StyleSheet.create({
   MediaOptionsTitle: {
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
-    fontSize: 16
+    fontSize: 16,
+    textAlign: "left"
   },
   MediaOptionsDescription: {
     fontFamily: "montserrat-light",
     color: "#fff",
     fontSize: 13
+    // textAlign: "left"
   },
   downIcon: {
     // position: 'absolute',

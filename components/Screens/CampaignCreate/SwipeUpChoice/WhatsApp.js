@@ -240,6 +240,7 @@ class WhatsApp extends Component {
 		});
 	};
 	render() {
+		const { translate } = this.props.screenProps;
 		return (
 			<SafeAreaView forceInset={{ top: 'always', bottom: 'never' }} style={[styles.safeAreaContainer]}>
 				<KeyboardShift style={{ flex: 1 }}>
@@ -247,19 +248,23 @@ class WhatsApp extends Component {
 						<View style={[styles.whatsApp]}>
 							<WhatsAppIcon width={60} height={60} fill="#fff" style={[styles.icon]} />
 							<View style={[styles.textcontainer]}>
-								<Text style={styles.titletext}>WhatsApp Leads</Text>
+								<Text style={styles.titletext}>{translate('WhatsApp Leads')}</Text>
 								<Text style={styles.subtext}>
-									We’ll create a mini website for your business. Just fill in the info below
+									{translate(
+										'We’ll create a mini website for your business Just fill in the info below'
+									)}
 								</Text>
 							</View>
 							<ScrollView contentContainerStyle={styles.scrollViewContainer}>
 								<View style={[styles.whatsAppDetailContainer]}>
 									{!this.props.mainBusiness.weburl && (
 										<View style={styles.marginVertical}>
-											<Text style={[styles.subTitle]}>Pick a domain for your Website</Text>
+											<Text style={[styles.subTitle]}>
+												{translate('Pick a domain for your Website')}
+											</Text>
 											<View style={[styles.callToActionLabelView]}>
 												<Text uppercase style={[styles.inputLabel]}>
-													domain
+													{translate('domain')}
 												</Text>
 											</View>
 											<Item
@@ -299,7 +304,7 @@ class WhatsApp extends Component {
 									<View style={styles.marginVertical}>
 										{/* <Text style={[styles.subTitle]}>Call to action</Text> */}
 										<Picker
-											searchPlaceholderText={'Search Call To Action'}
+											searchPlaceholderText={translate('Search Call To Action')}
 											data={this.state.callactions}
 											uniqueKey={'value'}
 											displayKey={'label'}
@@ -313,7 +318,7 @@ class WhatsApp extends Component {
 										/>
 										<View style={[styles.callToActionLabelView]}>
 											<Text uppercase style={[styles.inputLabel]}>
-												call to action
+												{translate('call to action')}
 											</Text>
 										</View>
 										<Item
@@ -333,16 +338,17 @@ class WhatsApp extends Component {
 									<View style={styles.marginVertical}>
 										{/* <Text style={[styles.subTitle]}>WhatsApp number</Text> */}
 										<Text style={[styles.subtext, { fontFamily: 'montserrat-regular' }]}>
-											Customers would be able to call And text this number
+											{translate('Customers would be able to call And text this number')}
 										</Text>
 									</View>
 									<View style={styles.marginVertical}>
 										<View style={[styles.callToActionLabelView]}>
 											<Text uppercase style={[styles.inputLabel]}>
-												whatsApp
+												{translate('whatsApp')}
 											</Text>
 										</View>
 										<PhoneNoField
+											screenProps={this.props.screenProps}
 											whatsApp
 											phoneNum={this.state.campaignInfo.whatsappnumber}
 											changeNo={this.changeWhatsAppPhoneNo}
@@ -352,11 +358,12 @@ class WhatsApp extends Component {
 									<View style={styles.marginVertical}>
 										<View style={[styles.callToActionLabelView]}>
 											<Text uppercase style={[styles.inputLabel]}>
-												mobile
+												{translate('mobile')}
 											</Text>
 										</View>
 										{/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
 										<PhoneNoField
+											screenProps={this.props.screenProps}
 											whatsApp
 											phoneNum={this.state.campaignInfo.callnumber}
 											changeNo={this.changeCallNumberPhoneNo}
@@ -368,7 +375,7 @@ class WhatsApp extends Component {
 										{/* <Text style={[styles.subTitle]}>Instagram handle</Text> */}
 										<View style={[styles.callToActionLabelView]}>
 											<Text uppercase style={[styles.inputLabel]}>
-												instagram
+												{translate('instagram')}
 											</Text>
 										</View>
 										<Item
@@ -472,11 +479,14 @@ class WhatsApp extends Component {
 								>
 									!
 								</Text>
-								<Text style={styles.instagramWarningHeadingText}>Instagram Handle Changed</Text>
+								<Text style={styles.instagramWarningHeadingText}>
+									{translate('Instagram Handle Changed')}
+								</Text>
 
 								<Text style={styles.instagramWarningDescriptionText}>
-									You have changed the Instagram handle, if you continue it will reset your previous
-									products/price selections.
+									{translate(
+										'You have changed the Instagram handle, if you continue it will reset your previous products/price selections'
+									)}
 								</Text>
 								{/* <Button
                     // onPress={() => this.removeWalletAmountAndGoBack()}

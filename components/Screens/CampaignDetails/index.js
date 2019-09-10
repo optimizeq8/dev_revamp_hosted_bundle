@@ -168,6 +168,7 @@ class CampaignDetails extends Component {
   };
   render() {
     let loading = this.props.loading;
+    const { translate } = this.props.screenProps;
 
     if (!loading && this.props.campaignError) {
       return (
@@ -272,6 +273,7 @@ class CampaignDetails extends Component {
             durationChange={this.durationChange}
             selectedCampaign={selectedCampaign}
             chartRange={true}
+            screenProps={this.props.screenProps}
           />
           {this.state.imageIsLoading && (
             <View
@@ -368,7 +370,7 @@ class CampaignDetails extends Component {
                             ]}
                           >
                             <Text style={styles.reviewtext}>
-                              Scheduled for {start_time}
+                              {translate("Scheduled for")} {start_time}
                             </Text>
                           </View>
                         ) : (
@@ -400,16 +402,22 @@ class CampaignDetails extends Component {
                                 />
                               )}
                               <Text style={styles.statusText}>
-                                {this.state.toggle
-                                  ? "Tap to pause AD"
-                                  : "Tap to activate AD"}
+                                {translate(
+                                  `${
+                                    this.state.toggle
+                                      ? "Tap to pause AD"
+                                      : "Tap to activate AD"
+                                  }`
+                                )}
                               </Text>
                             </View>
                           </View>
                         )
                       ) : (
                         <View style={styles.adStatus}>
-                          <Text style={styles.reviewtext}>Campagin Ended</Text>
+                          <Text style={styles.reviewtext}>
+                            {translate("Campaign ended")}
+                          </Text>
                         </View>
                       )
                     ) : (
@@ -425,9 +433,13 @@ class CampaignDetails extends Component {
                         ]}
                       >
                         <Text style={styles.reviewtext}>
-                          {selectedCampaign.review_status === "PENDING"
-                            ? "In Review"
-                            : "Rejected"}
+                          {translate(
+                            `${
+                              selectedCampaign.review_status === "PENDING"
+                                ? "In Review"
+                                : "Rejected"
+                            }`
+                          )}
                         </Text>
                       </View>
                     )}
@@ -439,7 +451,8 @@ class CampaignDetails extends Component {
                   </View>
                 ) : (
                   <Text style={styles.subHeadings}>
-                    Budget{"\n"}
+                    {translate("Budget")}
+                    {"\n"}
                     <Text
                       style={[
                         styles.numbers,
@@ -457,7 +470,7 @@ class CampaignDetails extends Component {
                     <Text style={{ color: "white" }}>$</Text>
                   </Text>
                 )}
-                <Text style={styles.subHeadings}>Duration</Text>
+                <Text style={styles.subHeadings}>{translate("Duration")}</Text>
                 <View style={{ flexDirection: "row", alignSelf: "center" }}>
                   <View
                     style={{
@@ -480,7 +493,7 @@ class CampaignDetails extends Component {
                             }
                           ]}
                         >
-                          Start
+                          {translate("Start")}
                         </Text>
                         <Text style={styles.numbers}>
                           {start_time}{" "}
@@ -512,7 +525,7 @@ class CampaignDetails extends Component {
                             }
                           ]}
                         >
-                          End
+                          {translate("End")}
                         </Text>
 
                         <Text style={styles.numbers}>
@@ -532,7 +545,9 @@ class CampaignDetails extends Component {
                     <Content contentContainerStyle={{ paddingBottom: "60%" }}>
                       {media.length > 0 && (
                         <>
-                          <Text style={styles.subHeadings}>Media</Text>
+                          <Text style={styles.subHeadings}>
+                            {translate("Media")}
+                          </Text>
                           <FlatList
                             contentContainerStyle={{
                               paddingTop: 20,
@@ -549,7 +564,9 @@ class CampaignDetails extends Component {
                           />
                         </>
                       )}
-                      <Text style={styles.subHeadings}>Audience</Text>
+                      <Text style={styles.subHeadings}>
+                        {translate("Audience")}
+                      </Text>
                       <View
                         style={{
                           flexDirection: "row",
@@ -571,7 +588,8 @@ class CampaignDetails extends Component {
                               </View>
                             ) : (
                               <Text style={styles.categories}>
-                                Gender{"\n "}
+                                {translate("Gender")}
+                                {"\n "}
                                 <Text style={styles.subtext}>
                                   {targeting &&
                                   (targeting.gender === "" ||
@@ -600,7 +618,8 @@ class CampaignDetails extends Component {
                               </View>
                             ) : (
                               <Text style={styles.categories}>
-                                Languages{"\n "}
+                                {translate("Language")}
+                                {"\n "}
                                 <Text style={styles.subtext}>
                                   {targeting &&
                                     targeting.demographics[0].languages.join(
@@ -628,7 +647,8 @@ class CampaignDetails extends Component {
                               </View>
                             ) : (
                               <Text style={[styles.categories]}>
-                                Age range{"\n"}
+                                {translate("Age range")}
+                                {"\n"}
                                 <Text style={styles.subtext}>
                                   {targeting &&
                                     targeting.demographics[0].min_age}{" "}
@@ -647,7 +667,7 @@ class CampaignDetails extends Component {
                               </View>
                             ) : (
                               <Text style={styles.categories}>
-                                Location(s) {"\n"}
+                                {translate("Location")}(s) {"\n"}
                                 {targeting && targeting.geos[0].country_code}
                               </Text>
                             )}
@@ -660,6 +680,7 @@ class CampaignDetails extends Component {
                           targeting
                         ) && (
                           <OptionalTargets
+                            screenProps={this.props.screenProps}
                             region_names={region_names}
                             deviceMakes={deviceMakes}
                             interesetNames={interesetNames}
@@ -668,12 +689,14 @@ class CampaignDetails extends Component {
                         )}
                       </View>
                       <RejectedComp
+                        screenProps={this.props.screenProps}
                         selectedCampaign={selectedCampaign}
                         navigation={this.props.navigation}
                       />
                     </Content>
                   ) : (
                     <RejectedComp
+                      screenProps={this.props.screenProps}
                       selectedCampaign={selectedCampaign}
                       navigation={this.props.navigation}
                     />
@@ -686,6 +709,7 @@ class CampaignDetails extends Component {
               </View>
             ) : (
               <StatusModal
+                screenProps={this.props.screenProps}
                 selectedCampaign={selectedCampaign}
                 updateStatus={this.updateStatus}
                 endCampaign={this.endCampaign}
@@ -699,6 +723,7 @@ class CampaignDetails extends Component {
               ((selectedCampaign.campaign_end === "1" ||
                 new Date(selectedCampaign.end_time) > new Date()) && (
                 <SlideUpPanel
+                  screenProps={this.props.screenProps}
                   start_time={this.state.start_time}
                   end_time={this.state.end_time}
                   dateField={this.dateField}

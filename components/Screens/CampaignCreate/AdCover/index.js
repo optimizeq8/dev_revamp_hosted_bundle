@@ -565,7 +565,7 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
@@ -596,7 +596,7 @@ class AdCover extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Compose Ad"
+            title={translate("Compose Ad")}
           />
           <Content contentContainerStyle={styles.contentContainer} padder>
             <KeyboardShift>
@@ -638,7 +638,7 @@ class AdCover extends Component {
                               marginTop: 10
                             }}
                           >
-                            Edit logo
+                            {translate("Edit logo")}
                           </Text>
                         </TouchableOpacity>
                       ) : (
@@ -659,10 +659,12 @@ class AdCover extends Component {
                                 fontFamily: "montserrat-bold"
                               }}
                             >
-                              Your Logo
+                              {translate("Your Logo")}
                             </Text>
                             <Text style={styles.addLogoTextStyle}>
-                              Must be 993px by 284px and transparent
+                              {translate(
+                                "Must be 993px by 284px and transparent"
+                              )}
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -677,6 +679,7 @@ class AdCover extends Component {
                         field={"Headline"}
                         mainBusiness={this.props.mainBusiness}
                         rejected={this.rejected}
+                        screenProps={this.props.screenProps}
                       />
                       <MediaButton
                         type={"cover"}
@@ -684,6 +687,7 @@ class AdCover extends Component {
                         _pickImage={this._pickImage}
                         image={this.state.cover}
                         media={this.state.cover}
+                        screenProps={this.props.screenProps}
                       />
                     </View>
                   </View>
@@ -698,8 +702,9 @@ class AdCover extends Component {
                 }
               ]}
             >
-              The cover shows on the {"\n"}Discover page among {"\n"}
-              subscriptions and trending content
+              {translate(
+                "The cover shows on the\nDiscover page among\nsubscriptions and trending content"
+              )}
             </Text>
           </Content>
 
@@ -715,7 +720,7 @@ class AdCover extends Component {
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
-                Please add media to proceed
+                {translate("Please add media to proceed")}
               </Text>
             )}
           </Footer>
@@ -753,8 +758,9 @@ class AdCover extends Component {
                   </Text>
 
                   <Text style={styles.uplaodText}>
-                    Please make sure not to close {"\n"}the app or lock the
-                    phone while uploading.
+                    {translate(
+                      "Please make sure not to close the app or lock the phone while uploading"
+                    )}
                   </Text>
                 </View>
               )}

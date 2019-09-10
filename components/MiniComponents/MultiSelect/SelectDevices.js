@@ -58,6 +58,7 @@ class SelectDevices extends Component {
     }
   }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -70,9 +71,12 @@ class SelectDevices extends Component {
               type="MaterialCommunityIcons"
               style={styles.icon}
             />
-            <Text style={styles.title}> Select Devices Make</Text>
+            <Text style={styles.title}>
+              {" "}
+              {translate("Select Devices Make")}
+            </Text>
             <Text style={styles.subHeadings}>
-              Choose which phones you want to target
+              {translate("Choose which phones you want to target")}
             </Text>
 
             <View style={styles.slidercontainer}>
@@ -116,7 +120,9 @@ class SelectDevices extends Component {
                     />
                   }
                   noResultsComponent={
-                    <Text style={styles.errorText}>No item found</Text>
+                    <Text style={styles.errorText}>
+                      {translate("No item found")}
+                    </Text>
                   }
                   hideSelect={true}
                   hideConfirm
@@ -154,7 +160,9 @@ class SelectDevices extends Component {
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
-                    <Text>Sorry, no Devices for selected country</Text>
+                    <Text>
+                      {translate("Sorry, no Devices for selected country")}
+                    </Text>
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");

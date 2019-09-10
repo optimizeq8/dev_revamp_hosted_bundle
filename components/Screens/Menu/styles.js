@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
@@ -32,14 +33,10 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 13,
+    fontSize: isRTL ? 18 : 13,
     textAlign: "left",
     flex: 1,
     paddingLeft: 20
-  },
-  buttonText: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14
   },
   button: {
     top: heightPercentageToDP("2"),
@@ -55,7 +52,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "montserrat-bold",
     color: "#fff",
-    fontSize: 12
+    fontSize: isRTL ? 14 : 12
   },
   businessTitle: {
     alignSelf: "center",
@@ -115,7 +112,8 @@ const styles = StyleSheet.create({
   version: {
     color: "#fff",
     fontFamily: "montserrat-extralight",
-    fontSize: 12
+    fontSize: isRTL ? 16 : 12,
+    textAlign: "left"
     // bottom: 10
   }
 });

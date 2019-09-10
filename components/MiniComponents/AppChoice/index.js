@@ -305,6 +305,7 @@ class AppChoice extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainCard}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -312,7 +313,7 @@ class AppChoice extends Component {
             {() => (
               <>
                 <Picker
-                  searchPlaceholderText={"Search Call To Action"}
+                  searchPlaceholderText={translate("Search Call To Action")}
                   data={this.state.callactions}
                   uniqueKey={"value"}
                   displayKey={"label"}
@@ -329,7 +330,7 @@ class AppChoice extends Component {
                 <View style={styles.itemCallToAction}>
                   <View style={[styles.callToActionLabelView]}>
                     <Text uppercase style={[styles.inputLabel]}>
-                      call to action
+                      {translate("call to action")}
                     </Text>
                   </View>
                   <Item
@@ -388,7 +389,7 @@ class AppChoice extends Component {
                             : globalStyles.purpleTextColor
                         ]}
                       >
-                        iOS
+                        {translate("iOS")}
                       </Text>
                     </TouchableOpacity>
 
@@ -410,7 +411,7 @@ class AppChoice extends Component {
                             : globalStyles.purpleTextColor
                         ]}
                       >
-                        Android
+                        {translate("Android")}
                       </Text>
                     </TouchableOpacity>
 
@@ -432,7 +433,7 @@ class AppChoice extends Component {
                             : globalStyles.purpleTextColor
                         ]}
                       >
-                        Both
+                        {translate("Both")}
                       </Text>
                     </TouchableOpacity>
                   </Animatable.View>
@@ -504,8 +505,11 @@ class AppChoice extends Component {
                   <View style={styles.searchView}>
                     {this.state.choice === "" && (
                       <Text style={styles.text}>
-                        {this.state.appValue ? "Choose" : "Search for"} the{" "}
-                        {this.state.appSelection} app
+                        {translate(
+                          `${
+                            this.state.appValue ? "Choose" : "Search for"
+                          } the ${this.state.appSelection} app`
+                        )}
                       </Text>
                     )}
                     <FlatList
@@ -566,7 +570,7 @@ class AppChoice extends Component {
               style={styles.footerText}
               onPress={() => this.props.toggleSideMenu()}
             >
-              Change Swipe-up Destination
+              {translate("Change Swipe-up Destination")}
             </Text>
           )}
 

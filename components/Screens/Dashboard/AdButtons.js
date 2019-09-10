@@ -7,6 +7,7 @@ import styles from "./styles";
 export default class AdButtons extends Component {
   render() {
     let ad = this.props.ad;
+
     return (
       <View
         style={{
@@ -22,7 +23,7 @@ export default class AdButtons extends Component {
           {ad.icon}
         </Button>
         <Text style={[styles.adButtonText, styles.newCampaignTitle]}>
-          {ad.title}
+          {this.props.translate(ad.title)}
         </Text>
       </View>
     );

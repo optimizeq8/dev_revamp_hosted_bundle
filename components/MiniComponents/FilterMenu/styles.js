@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     opacity: 1,
-    elevation: 0
+    elevation: 0,
+    marginLeft: 0,
+    marginRight: 0
   },
   headerContainer: {
     justifyContent: "flex-start",

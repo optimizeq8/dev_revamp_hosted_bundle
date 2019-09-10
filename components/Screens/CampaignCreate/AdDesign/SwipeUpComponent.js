@@ -16,6 +16,7 @@ export default class SwipeUpComponent extends Component {
       disableSwipeUp
     } = this.props;
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         style={[
@@ -82,7 +83,7 @@ export default class SwipeUpComponent extends Component {
                 (destination !== "BLANK" ||
                   selectedStoryAd.destination !== "BLANK")
               ? "WhatsApp Campaign"
-              : "Swipe Up destination"}
+              : translate("Swipe Up destination")}
           </Text>
           {objective !== "WEB_CONVERSION" &&
             ["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(

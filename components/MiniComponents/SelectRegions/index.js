@@ -16,6 +16,7 @@ import LocationIcon from "../../../assets/SVGs/Location";
 
 export default class SelectRegions extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let regionlist = this.props.filteredRegions.map(c => {
       return (
         <TouchableOpacity
@@ -60,13 +61,15 @@ export default class SelectRegions extends Component {
               style={styles.locationIcon}
             />
             <Text style={[styles.title]}>
-              {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
+              {this.props.addressForm
+                ? translate("Select Region")
+                : translate("Select Regions")}{" "}
             </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Region..."
+                  placeholder={translate("Search Region")}
                   style={[
                     styles.searchRegionText,
                     {
@@ -94,7 +97,7 @@ export default class SelectRegions extends Component {
                     fontFamily: "montserrat-regular"
                   }}
                 >
-                  Please select a country to see the regions
+                  {translate("Please select a country to see the regions")}
                 </Text>
               ) : (
                 <ScrollView style={[styles.regionListContainer]}>

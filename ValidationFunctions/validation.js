@@ -12,7 +12,7 @@ const validation = {
     presence: { allowEmpty: false },
     length: {
       minimum: 8,
-      message: "must be at least 8 characters long."
+      message: "must be at least 8 characters long"
     }
   },
   mandatory: {

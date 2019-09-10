@@ -275,6 +275,7 @@ class CreateBusinessAccount extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -285,11 +286,11 @@ class CreateBusinessAccount extends Component {
             <>
               <CustomHeader
                 navigation={this.props.navigation}
-                title={"New Business"}
+                title={translate("New Business")}
                 closeButton={true}
               />
               <Text style={styles.subTitle}>
-                You can create a new Business under you!
+                {translate("You can create a new Business under you!")}
               </Text>
             </>
           )}
@@ -325,7 +326,8 @@ class CreateBusinessAccount extends Component {
                   ]}
                 />
                 {"\n"}
-                SME{"\n"} or Startup
+                {translate("SME")}
+                {"\n"} {translate("or") + " " + translate("Startup")}
               </Text>
             </Button>
 
@@ -359,7 +361,8 @@ class CreateBusinessAccount extends Component {
                     styles.iconButtonStyle2
                   ]}
                 />
-                {"\n"}Agency
+                {"\n"}
+                {translate("Agency")}
               </Text>
             </Button>
 
@@ -392,7 +395,7 @@ class CreateBusinessAccount extends Component {
                     : styles.inactiveText
                 ]}
               >
-                Corporate
+                {translate("Corporate")}
               </Text>
             </Button>
           </View>
@@ -441,11 +444,11 @@ class CreateBusinessAccount extends Component {
                               />
                               {"  "}
                               {this.state.businessAccount.businesstype === "1"
-                                ? "Startup Name"
+                                ? translate("Startup Name")
                                 : this.state.businessAccount.businesstype ===
                                   "2"
-                                ? "Agency Name"
-                                : "Corporate Name"}
+                                ? translate("Agency Name")
+                                : translate("Corporate Name")}
                             </Text>
                           </Label>
                           <Input
@@ -503,12 +506,12 @@ class CreateBusinessAccount extends Component {
                               />
                               {"  "}
                               {this.state.businessAccount.businesstype === "1"
-                                ? "Brand Name"
+                                ? translate("Brand Name")
                                 : this.state.businessAccount.businesstype ===
                                   "2"
-                                ? "Client Name"
-                                : "Brand Name"}{" "}
-                              (optional)
+                                ? translate("Client Name")
+                                : translate("Brand Name")}{" "}
+                              ({translate("optional")})
                             </Text>
                           </Label>
 
@@ -569,7 +572,7 @@ class CreateBusinessAccount extends Component {
                                   name="mail"
                                 />
                                 {"  "}
-                                Email
+                                {translate("Email")}
                               </Text>
                             </Label>
 
@@ -602,7 +605,7 @@ class CreateBusinessAccount extends Component {
                         )}
 
                         <Picker
-                          searchPlaceholderText={"Search Country"}
+                          searchPlaceholderText={translate("Search Country")}
                           data={this.state.countries}
                           uniqueKey={"value"}
                           displayKey={"label"}
@@ -632,7 +635,7 @@ class CreateBusinessAccount extends Component {
                         >
                           <Text style={styles.pickerText}>
                             {this.state.businessAccount.country === ""
-                              ? "Country"
+                              ? translate("Country")
                               : this.state.businessAccount.country}
                           </Text>
                           <Icon
@@ -643,7 +646,9 @@ class CreateBusinessAccount extends Component {
                         </Item>
 
                         <Picker
-                          searchPlaceholderText={"Search Business Category"}
+                          searchPlaceholderText={translate(
+                            "Search Business Category"
+                          )}
                           data={this.state.items}
                           uniqueKey={"value"}
                           displayKey={"label"}
@@ -683,11 +688,11 @@ class CreateBusinessAccount extends Component {
                           >
                             {this.state.businessAccount.businesscategory === ""
                               ? this.state.businessAccount.businesstype === "1"
-                                ? "Industry"
+                                ? translate("Industry")
                                 : this.state.businessAccount.businesstype ===
                                   "2"
-                                ? "Client Industry"
-                                : "Industry"
+                                ? translate("Client Industry")
+                                : translate("Industry")
                               : this.state.items.find(
                                   i =>
                                     i.value ===
@@ -730,7 +735,7 @@ class CreateBusinessAccount extends Component {
                                 }
                               ]}
                             >
-                              {"Other Business Catergory"}
+                              {translate("Other Business Category")}
                             </Label>
 
                             <Input
@@ -762,14 +767,16 @@ class CreateBusinessAccount extends Component {
                     {this.props.registering && (
                       <Text style={styles.textAgreement}>
                         <Text style={[styles.link, styles.buttonLink]}>
-                          {` By tapping the button below you agree to all the`}
+                          {translate(
+                            `By tapping the button below you agree to all the`
+                          )}
                           <Text
                             onPress={() => openTerms()}
                             style={[styles.link, styles.tNcLink]}
                           >
-                            {`  Terms & Conditions`}
+                            {translate(`Terms & Conditions`)}
                           </Text>{" "}
-                          {`mentioned in this `}
+                          {translate(`mentioned in this`)}
                           <Text
                             onPress={() => openPrivacy()}
                             style={[
@@ -778,7 +785,7 @@ class CreateBusinessAccount extends Component {
                               styles.agreementLink
                             ]}
                           >
-                            {`agreement`}
+                            {translate(`agreement`)}
                           </Text>
                         </Text>
                       </Text>
@@ -797,7 +804,9 @@ class CreateBusinessAccount extends Component {
                 this._handleSubmission();
               }}
             >
-              <Text style={styles.buttonText}>CREATE NEW BUSINESS</Text>
+              <Text style={styles.buttonText} uppercase>
+                {translate("Create new business")}
+              </Text>
             </Button>
           </View>
         </Container>

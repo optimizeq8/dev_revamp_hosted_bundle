@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ScrollView, View, Text } from "react-native";
 import CustomLabel from "./CustomLabel";
 import { connect } from "react-redux";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
@@ -21,6 +21,7 @@ class LineGraph extends Component {
       : Math.abs(num);
   };
   render() {
+    const { translate } = this.props.screenProps;
     let data = chartData;
     let category = [];
     if (this.props.campaignStats.length > 0) {
@@ -64,7 +65,7 @@ ${day}/${shortMonths[month]}`;
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
             <Text style={styles.placeHolderChartText}>
-              Not enough data to display.
+              {translate("Not enough data to display")}
             </Text>
           </BlurView>
         ) : (

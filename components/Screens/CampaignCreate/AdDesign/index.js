@@ -149,14 +149,16 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC"
     });
-
+    const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallary to upload media"
+          ),
           position: "top",
           type: "warning"
         });
@@ -268,11 +270,13 @@ class AdDesign extends Component {
   };
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
+    const { translate } = this.props.screenProps;
     if (status !== "granted") {
       this.onToggleModal(false);
       showMessage({
-        message: "Please allow access to the gallary to upload media.",
+        message: translate(
+          "Please allow access to the gallary to upload media"
+        ),
         position: "top",
         type: "warning"
       });
@@ -413,6 +417,7 @@ class AdDesign extends Component {
 
   _pickImage = async (mediaTypes = "All") => {
     try {
+      const { translate } = this.props.screenProps;
       let result = await this.pick(mediaTypes);
       let file = await FileSystem.getInfoAsync(result.uri, {
         size: true
@@ -432,7 +437,9 @@ class AdDesign extends Component {
             });
             this.onToggleModal(false);
             showMessage({
-              message: "Image must be less than 5 MBs",
+              message: translate("Image must be less than {{fileSize}} MBs", {
+                fileSize: 5
+              }),
               position: "top",
               type: "warning"
             });
@@ -541,7 +548,7 @@ class AdDesign extends Component {
 
                   this.onToggleModal(false);
                   showMessage({
-                    message: "Image has been selected successfully ",
+                    message: translate("Image has been selected successfully"),
                     position: "top",
                     type: "success"
                   });
@@ -556,8 +563,9 @@ class AdDesign extends Component {
 
                 this.onToggleModal(false);
                 showMessage({
-                  message:
-                    "The dimensions are too large, please choose a different image.",
+                  message: translate(
+                    "The dimensions are too large, please choose a different image"
+                  ),
                   position: "top",
                   type: "warning"
                 });
@@ -581,8 +589,9 @@ class AdDesign extends Component {
             });
             this.onToggleModal(false);
             showMessage({
-              message:
-                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
+              message: translate(
+                "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
+              ),
               position: "top",
               type: "warning"
             });
@@ -597,7 +606,7 @@ class AdDesign extends Component {
             });
             this.onToggleModal(false);
             showMessage({
-              message: "Image has been selected successfully ",
+              message: translate("Image has been selected successfully"),
               position: "top",
               type: "success"
             });
@@ -618,7 +627,7 @@ class AdDesign extends Component {
               type: ""
             });
             showMessage({
-              message: "Allowed video durations is up to 10 seconds.",
+              message: translate("Allowed video durations is up to 10 seconds"),
               position: "top",
               type: "warning"
             });
@@ -634,7 +643,9 @@ class AdDesign extends Component {
               type: ""
             });
             showMessage({
-              message: "Allowed video size is up to 32 MBs.",
+              message:
+                ("Allowed video size is up to {{fileSize}} MBs",
+                { fileSize: 32 }),
               position: "top",
               type: "warning"
             });
@@ -688,7 +699,7 @@ class AdDesign extends Component {
               });
               this.onToggleModal(false);
               showMessage({
-                message: "Video has been selected successfully ",
+                message: translate("Video has been selected successfully"),
                 position: "top",
                 type: "success"
               });
@@ -710,8 +721,9 @@ class AdDesign extends Component {
             });
             this.onToggleModal(false);
             showMessage({
-              message:
-                "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+              message: translate(
+                "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+              ),
               position: "top",
               type: "warning"
             });
@@ -720,7 +732,7 @@ class AdDesign extends Component {
         }
       } else if (!result.cancelled && isNull(this.state.media)) {
         showMessage({
-          message: "Please choose a media file.",
+          message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
         });
@@ -768,6 +780,7 @@ class AdDesign extends Component {
       );
   };
   openUploadVideo = async () => {
+    const { translate } = this.props.screenProps;
     try {
       this._addLinkingListener();
       // this.props.navigation.replace("WebView", {
@@ -785,10 +798,10 @@ class AdDesign extends Component {
       this._removeLinkingListener();
     } catch (error) {
       showMessage({
-        message: "Something went wrong!",
+        message: translate("Something went wrong!"),
         type: "warning",
         position: "top",
-        description: "Please try again later."
+        description: translate("Please try again later")
       });
     }
   };
@@ -1447,6 +1460,7 @@ class AdDesign extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let { media, storyAdCards } = this.state;
     let validCards =
       this.adType === "StoryAd"
@@ -1480,6 +1494,7 @@ class AdDesign extends Component {
         key={field}
         field={field}
         mainBusiness={this.props.mainBusiness}
+        screenProps={this.props.screenProps}
       />
     ));
 
@@ -1488,6 +1503,7 @@ class AdDesign extends Component {
         // !this.rejected &&
         "BRAND_AWARENESS" !== this.state.objective && (
           <SwipeUpComponent
+            screenProps={this.props.screenProps}
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
             objective={this.state.objective}
@@ -1501,6 +1517,7 @@ class AdDesign extends Component {
         )
       ) : this.adType === "CollectionAd" ? (
         <SwipeUpComponent
+          screenProps={this.props.screenProps}
           _changeDestination={this._changeDestination}
           navigation={this.props.navigation}
           objective={this.state.objective}
@@ -1514,6 +1531,7 @@ class AdDesign extends Component {
         this.adType === "StoryAd" &&
         !this.state.storyAdCards.storyAdSelected && (
           <SwipeUpComponent
+            screenProps={this.props.screenProps}
             _changeDestination={this._changeDestination}
             navigation={this.props.navigation}
             objective={this.state.objective}
@@ -1641,7 +1659,11 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            title={
+              this.rejected
+                ? translate("Re-upload media")
+                : translate("Compose Ad")
+            }
           />
           <Content
             contentContainerStyle={styles.contentContainer}
@@ -1666,6 +1688,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        screenProps={this.props.screenProps}
                         type={"media"}
                         media={
                           media !== "//"
@@ -1711,7 +1734,9 @@ class AdDesign extends Component {
                             }
                           ]}
                         >
-                          Please choose a swipe up destination first
+                          {translate(
+                            "Please choose a swipe up destination first"
+                          )}
                         </Text>
                       </View>
                     ) : !this.state.storyAdCards.storyAdSelected ? (
@@ -1725,6 +1750,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        screenProps={this.props.screenProps}
                         setMediaModalVisible={this.setMediaModalVisible}
                         type={"media"}
                         media={
@@ -1771,6 +1797,7 @@ class AdDesign extends Component {
                       />
                     ) : (
                       <MediaButton
+                        screenProps={this.props.screenProps}
                         type={"media"}
                         setMediaModalVisible={this.setMediaModalVisible}
                         media={
@@ -1859,9 +1886,11 @@ class AdDesign extends Component {
                     <Text style={styles.footerTextStyle}>
                       {this.adType === "StoryAd"
                         ? this.state.videoIsLoading
-                          ? "Please wait while the video is downloading"
+                          ? translate(
+                              "Please wait while the video is downloading"
+                            )
                           : ""
-                        : "Please add media to proceed"}
+                        : translate("Please add media to proceed")}
                     </Text>
                   )
                 ) : (
@@ -1872,9 +1901,9 @@ class AdDesign extends Component {
               <Text style={styles.footerTextStyle}>
                 {this.adType === "StoryAd"
                   ? this.state.videoIsLoading
-                    ? "Please wait while the video is downloading"
+                    ? translate("Please wait while the video is downloading")
                     : ""
-                  : "Please add media to proceed"}
+                  : translate("Please add media to proceed")}
               </Text>
             )}
           </Footer>
@@ -1884,6 +1913,7 @@ class AdDesign extends Component {
           _pickImage={this._pickImage}
           mediaModalVisible={this.state.mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
+          screenProps={this.props.screenProps}
         />
         <Modal
           visible={
@@ -1903,7 +1933,7 @@ class AdDesign extends Component {
                 <CustomHeader
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title="Uploading Image"
+                  title={translate("Uploading Image")}
                 />
               )}
               {!this.props.loading && (
@@ -1921,8 +1951,10 @@ class AdDesign extends Component {
                   </Text>
 
                   <Text style={styles.uplaodText}>
-                    Please make sure not to close {"\n"}the app or lock the
-                    phone while uploading.
+                    {translate(
+                      "Please make sure not to close the app or lock the phone while uploading"
+                    )}
+                    .
                   </Text>
                 </View>
               )}

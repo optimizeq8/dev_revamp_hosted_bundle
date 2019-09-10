@@ -11,6 +11,7 @@ import styles from "./styles";
 export default class MediaOptions extends Component {
   render() {
     let { title } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         onPress={() =>
@@ -26,10 +27,9 @@ export default class MediaOptions extends Component {
           <VideoIcon width={30} height={30} fill={globalColors.orange} />
         )}
         <View style={{ flexDirection: "column" }}>
-          <Text style={styles.MediaOptionsTitle}>{title}</Text>
+          <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={styles.MediaOptionsDescription}>
-            Dimensions 1080x1920
-            {"\n"}Aspect Ratio 9:16
+            {translate("Dimensions 1080x1920 Aspect Ratio 9:16")}
           </Text>
         </View>
       </TouchableOpacity>
