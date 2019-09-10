@@ -18,7 +18,7 @@ export default class PenIconBrand extends Component {
       changeHeadline,
       storyAdSelected
     } = this.props;
-
+    const { translate } = this.props.screenProps;
     return (
       <Item
         style={[
@@ -41,7 +41,7 @@ export default class PenIconBrand extends Component {
           ]}
         >
           <Text style={[styles.inputText, styles.subtitleHeading]}>
-            {field}
+            {translate(field)}
           </Text>
           <Input
             disabled={storyAdSelected}
@@ -49,8 +49,8 @@ export default class PenIconBrand extends Component {
             maxLength={field === "Business Name" ? 25 : 34}
             placeholder={
               field === "Business Name"
-                ? "Enter your business name"
-                : "Enter your Promotional Message"
+                ? translate("Enter your business name")
+                : translate("Enter your Promotional Message")
             }
             defaultValue={
               field === "Business Name"

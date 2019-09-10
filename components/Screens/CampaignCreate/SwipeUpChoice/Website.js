@@ -139,6 +139,7 @@ class Website extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -166,9 +167,9 @@ class Website extends Component {
             >
               <WebsiteIcon style={styles.icon} />
               <View style={[styles.textcontainer]}>
-                <Text style={styles.titletext}>Website</Text>
+                <Text style={styles.titletext}>{translate("Website")}</Text>
                 <Text style={styles.subtext}>
-                  The user will be taken to your website
+                  {translate("The user will be taken to your website")}
                 </Text>
               </View>
               <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -190,7 +191,7 @@ class Website extends Component {
                 <View>
                   <View style={[styles.callToActionLabelView]}>
                     <Text uppercase style={[styles.inputLabel]}>
-                      call to action
+                      {translate("call to action")}
                     </Text>
                   </View>
                   <Item
@@ -268,7 +269,7 @@ class Website extends Component {
                     <View style={styles.websiteView}>
                       <View style={[styles.websiteLabelView]}>
                         <Text uppercase style={[styles.inputLabel]}>
-                          url
+                          {translate("url")}
                         </Text>
                       </View>
                       <Item
@@ -284,7 +285,7 @@ class Website extends Component {
                         </Text>
                         <Input
                           style={[styles.inputtext, { textAlign: "left" }]}
-                          placeholder="Enter your website's URL"
+                          placeholder={translate(`Enter your website's URL`)}
                           placeholderTextColor={globalColors.white}
                           value={this.state.campaignInfo.attachment}
                           autoCorrect={false}
@@ -304,8 +305,9 @@ class Website extends Component {
                   </View>
                 </View>
                 <Text style={styles.warningText}>
-                  Please make sure not include social media sites such as
-                  Facbook, Instagram, Youtube, SnapChat, etc.
+                  {translate(
+                    "Please make sure not include social media sites such as Facebook, Instagram, Youtube, SnapChat, etc"
+                  )}
                 </Text>
                 <View />
                 <View style={styles.bottonViewWebsite}>
@@ -314,7 +316,7 @@ class Website extends Component {
                       style={styles.footerText}
                       onPress={() => this.props.toggleSideMenu()}
                     >
-                      Change Swipe-up Destination
+                      {translate("Change Swipe-up Destination")}
                     </Text>
                   )}
                   <LowerButton

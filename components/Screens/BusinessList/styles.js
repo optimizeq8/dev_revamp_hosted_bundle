@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
 
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: isRTL ? 20 : 14
   },
   bottomCard: {
     backgroundColor: "#FF9D00",

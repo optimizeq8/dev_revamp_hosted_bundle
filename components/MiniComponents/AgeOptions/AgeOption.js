@@ -34,6 +34,7 @@ export default class AgeOption extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -42,9 +43,9 @@ export default class AgeOption extends Component {
         <Container style={styles.container}>
           <View style={styles.dataContainer}>
             <AgeIcon fill="#fff" style={styles.icon} />
-            <Text style={styles.title}>Age</Text>
+            <Text style={styles.title}>{translate("Age")}</Text>
             <Text style={styles.subtitle}>
-              Select your audience's Age Range
+              {translate(`Select your audience's Age Range`)}
             </Text>
             <View style={styles.multiSliderContainer}>
               <MultiSlider

@@ -8,6 +8,7 @@ import {
   ScrollView
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { isRTL } from "expo-localization";
 import Header from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
@@ -22,6 +23,7 @@ import ChatBot from "../../../assets/SVGs/ChatBot";
 
 // Style
 import styles from "./styles";
+import rtlStyles from "./rtlStyles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 
 //Redux
@@ -138,6 +140,7 @@ class Messenger extends Component {
     });
   };
   render() {
+    const { translate } = this.props.screenProps;
     const { height } = this.state;
     let newStyle = {
       height
@@ -163,7 +166,7 @@ class Messenger extends Component {
         />
         <Header
           closeButton={true}
-          title={"Support"}
+          title={translate("Support")}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
 
@@ -212,8 +215,11 @@ class Messenger extends Component {
                     multiline={true}
                     value={this.state.textValue}
                     onChange={event => this._onChange(event)}
-                    style={[styles.textInput, newStyle]}
-                    placeholder={"Type Your Message"}
+                    style={[
+                      isRTL ? rtlStyles.textInput : styles.textInput,
+                      newStyle
+                    ]}
+                    placeholder={translate("Type Your Message")}
                     placeholderTextColor="#909090"
                     placeholderLineHeight={30}
                     maxHeight={100}

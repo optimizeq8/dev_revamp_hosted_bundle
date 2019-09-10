@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { isRTL } from "expo-localization";
 import { Dimensions } from "react-native";
 import {
   widthPercentageToDP,
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     width: "70%",
-    left: 5
+    left: 5,
+    textAlign: "left"
   },
 
   subtext: {
@@ -67,6 +69,8 @@ const styles = StyleSheet.create({
   containerStyle: {
     position: "absolute",
     left: "80%",
+    // left: isRTL ? 0 : '80%',
+    // right: isRTL ? '0%' : 0,
     top: "87%",
     backgroundColor: "transparent",
     borderRadius: 20

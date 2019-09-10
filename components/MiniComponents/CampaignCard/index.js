@@ -5,10 +5,12 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import Toggle from "react-native-switch-toggle";
+// import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import Toggle from "../Toggle";
+import { isRTL } from "expo-localization";
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
@@ -40,17 +42,25 @@ class CampaignCard extends Component {
       : this.review_status === "APPROVED"
       ? ""
       : this.campaign_status === "PAUSED"
-      ? " Paused"
+      ? "Paused"
       : "";
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
-    let chart = [{ spend: campaign.spends }].map((category, i) => (
-      <Chart campaign={campaign} chartCategory={category} key={i} />
-    ));
+    let chart = [{ spend: campaign.spends }].map((category, i) => {
+      return (
+        <Chart
+          campaign={campaign}
+          chartCategory={category}
+          key={i}
+          screenProps={this.props.screenProps}
+        />
+      );
+    });
     return (
       <LinearGradient
         colors={[colors.background1, colors.background2]}
@@ -88,7 +98,9 @@ class CampaignCard extends Component {
               <View
                 style={[styles.adStatus, GlobalStyles.orangeBackgroundColor]}
               >
-                <Text style={styles.reviewText}>Campaign ended</Text>
+                <Text style={styles.reviewText}>
+                  {translate("Campaign ended")}
+                </Text>
               </View>
             ) : (
               <View
@@ -100,13 +112,17 @@ class CampaignCard extends Component {
                 ]}
               >
                 <Text style={styles.reviewText}>
-                  {this.review_status.includes("PENDING")
-                    ? "In Review"
-                    : this.review_status.includes("REJECTED")
-                    ? "Ad Rejected"
-                    : this.campaign_status === "LIVE"
-                    ? "LIVE"
-                    : "Campaign Paused"}
+                  {translate(
+                    `${
+                      this.review_status.includes("PENDING")
+                        ? "In Review"
+                        : this.review_status.includes("REJECTED")
+                        ? "Ad Rejected"
+                        : this.campaign_status === "LIVE"
+                        ? "LIVE"
+                        : "Campaign Paused"
+                    }`
+                  )}
                 </Text>
               </View>
             )}
@@ -129,13 +145,17 @@ class CampaignCard extends Component {
               )}
             {!this.review_status.includes("PENDING") && (
               <Text style={[styles.subtext]}>
-                {this.review_status.includes("REJECTED") &&
-                !(
-                  campaign.campaign_end === "1" ||
-                  new Date(campaign.end_time) < new Date()
-                )
-                  ? "Tap to submit your Ad again"
-                  : "Tap to view more"}
+                {translate(
+                  `${
+                    this.review_status.includes("REJECTED") &&
+                    !(
+                      campaign.campaign_end === "1" ||
+                      new Date(campaign.end_time) < new Date()
+                    )
+                      ? "Tap to submit your Ad again"
+                      : "Tap to view more"
+                  }`
+                )}
               </Text>
             )}
 
@@ -152,7 +172,9 @@ class CampaignCard extends Component {
                     >
                       {formatNumber(campaign.impressions, true)}
                     </Text>
-                    <Text style={[styles.subtext]}>Impressions</Text>
+                    <Text style={[styles.subtext]}>
+                      {translate("Impressions")}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.campaignIcons}>
@@ -174,9 +196,13 @@ class CampaignCard extends Component {
                         : 0}
                     </Text>
                     <Text style={[styles.subtext]}>
-                      {campaign.objective !== "BRAND_AWARENESS"
-                        ? "Swipe Ups"
-                        : "CPM"}
+                      {translate(
+                        `${
+                          campaign.objective !== "BRAND_AWARENESS"
+                            ? "Swipe Ups"
+                            : "CPM"
+                        }`
+                      )}
                     </Text>
                   </View>
                 </View>
@@ -185,8 +211,16 @@ class CampaignCard extends Component {
 
             <View pointerEvents="none" style={styles.containerStyle}>
               <Toggle
-                backTextLeft={this.getLeftText()}
-                backTextRight={this.getRightText()}
+                backTextLeft={
+                  this.getLeftText().length > 0
+                    ? translate(this.getLeftText())
+                    : this.getLeftText()
+                }
+                backTextRight={
+                  this.getRightText().length > 0
+                    ? translate(this.getRightText())
+                    : this.getRightText()
+                }
                 containerStyle={styles.toggleStyle}
                 switchOn={
                   campaign.status !== "PAUSED" ||

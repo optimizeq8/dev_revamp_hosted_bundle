@@ -9,6 +9,7 @@ import {
   ScrollView
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
+import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
@@ -195,6 +196,8 @@ class Dashboard extends Component {
     );
   };
   render() {
+    //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
+    const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
         top: hp(100)
@@ -219,11 +222,13 @@ class Dashboard extends Component {
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
+        screenProps={this.props.screenProps}
       />
     ) : null;
 
     let adButtons = snapAds.map(adType => (
       <AdButtions
+        translate={this.props.screenProps.translate}
         key={adType.id}
         navigationHandler={this.navigationHandler}
         ad={adType}
@@ -246,6 +251,7 @@ class Dashboard extends Component {
     } else if (this.props.businessLoadError) {
       return (
         <ErrorComponent
+          screenProps={this.props.screenProps}
           dashboard={true}
           loading={this.props.loading}
           navigation={this.props.navigation}
@@ -346,6 +352,7 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
+                    menuPosition={Localization.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
                     menuPosition="right"
@@ -420,7 +427,7 @@ class Dashboard extends Component {
                               styles.newCampaignTitle
                             ]}
                           >
-                            New Ad
+                            {translate("New Ad")}
                           </Text>
                         </View>
                         <ScrollView style={{ height: 90, top: 10 }} horizontal>
@@ -438,7 +445,10 @@ class Dashboard extends Component {
                         }}
                       >
                         <View style={{ width: "80%" }}>
-                          <SearchBar renderSearchBar={this.renderSearchBar} />
+                          <SearchBar
+                            screenProps={this.props.screenProps}
+                            renderSearchBar={this.renderSearchBar}
+                          />
                         </View>
                         <Button
                           style={styles.activebutton}
@@ -468,6 +478,7 @@ class Dashboard extends Component {
                                 campaign={item}
                                 navigation={this.props.navigation}
                                 key={item.campaign_id}
+                                screenProps={this.props.screenProps}
                               />
                             )}
                             onRefresh={() => this.reloadData()}
@@ -504,6 +515,7 @@ class Dashboard extends Component {
               <Menu
                 closeAnimation={this.closeAnimation}
                 navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
               />
             </Animatable.View>
           </>

@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
+    marginLeft: 0
   },
   dataContainer: {
     paddingTop: 30

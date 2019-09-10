@@ -67,6 +67,7 @@ export default class SlideUpPanel extends Component {
     ]).start();
   };
   render() {
+    const { translate } = this.props.screenProps;
     let selectedCampaign = this.props.selectedCampaign;
     this._draggedValue.addListener(({ value }) => {
       this.hideCharts(value);
@@ -149,6 +150,7 @@ export default class SlideUpPanel extends Component {
                 ]}
               >
                 <ChartChoices
+                  screenProps={this.props.screenProps}
                   changeChart={this.changeChart}
                   selectedCampaign={selectedCampaign}
                 />
@@ -160,7 +162,9 @@ export default class SlideUpPanel extends Component {
                     style={styles.tab}
                   >
                     <BarIcon style={styles.handlerIcon} />
-                    <Text style={styles.handlerText}>Dashboard</Text>
+                    <Text style={styles.handlerText}>
+                      {translate("Dashboard")}
+                    </Text>
                   </LinearGradient>
                 </View>
                 <LinearGradient
@@ -202,6 +206,7 @@ export default class SlideUpPanel extends Component {
                     <View style={{ top: 10, marginBottom: 10 }}>
                       {selectedCampaign ? (
                         <Duration
+                          screenProps={this.props.screenProps}
                           slidePanel={true}
                           start_time={this.props.start_time}
                           end_time={this.props.end_time}
@@ -225,10 +230,14 @@ export default class SlideUpPanel extends Component {
                       }}
                     >
                       <LineChartGraphs
+                        screenProps={this.props.screenProps}
                         chartChoice={this.state.chartChoice}
                         campaign={selectedCampaign}
                       />
-                      <CampaginStats selectedCampaign={selectedCampaign} />
+                      <CampaginStats
+                        selectedCampaign={selectedCampaign}
+                        screenProps={this.props.screenProps}
+                      />
                     </ScrollView>
                   </Animated.View>
                 </LinearGradient>

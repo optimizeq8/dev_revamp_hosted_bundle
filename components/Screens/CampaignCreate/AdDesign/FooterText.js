@@ -11,18 +11,19 @@ export default class FooterText extends Component {
       media,
       storyAdCards
     } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <Text style={styles.footerTextStyle}>
         {adType === "StoryAd" && !storyAdCards.storyAdSelected
           ? videoIsLoading
-            ? "Please wait while the video is downloading"
+            ? translate("Please wait while the video is downloading")
             : objective !== "BRAND_AWARENESS" && swipeUpError
             ? ""
             : "Please add minimum of 3 media files"
           : objective !== "BRAND_AWARENESS"
           ? ""
           : media === "//"
-          ? "Please add media to proceed"
+          ? translate("Please add media to proceed")
           : ""}
       </Text>
     );

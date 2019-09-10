@@ -6,6 +6,7 @@ import styles from "./styles";
 export default class AttachmentCard extends Component {
   render() {
     let { value, label, icon, info } = this.props.opt;
+    const { translate } = this.props.screenProps;
     let CardIcon = icon;
     return (
       <TouchableOpacity
@@ -24,8 +25,8 @@ export default class AttachmentCard extends Component {
           style={styles.icon}
         />
         <View style={styles.textcontainer}>
-          <Text style={styles.titletext}>{label}</Text>
-          <Text style={styles.subtext}>{info}</Text>
+          <Text style={styles.titletext}>{translate(label)}</Text>
+          <Text style={styles.subtext}>{translate(info)}</Text>
         </View>
       </TouchableOpacity>
     );

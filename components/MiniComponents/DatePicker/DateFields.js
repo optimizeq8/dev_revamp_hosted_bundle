@@ -8,6 +8,7 @@ import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import { SafeAreaView } from "react-navigation";
 import dateFormat from "dateformat";
+import { isRTL } from "expo-localization";
 
 // Style
 import styles from "./styles";
@@ -131,15 +132,24 @@ export default class DateFields extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View
         style={[
           styles.dateModal,
           this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 },
-          this.props.filterMenu && {
-            marginLeft: -80,
-            marginTop: -hp(6)
-          }
+          this.props.filterMenu &&
+            !isRTL && {
+              marginLeft: -80,
+              marginTop: -hp(6)
+            },
+          this.props.filterMenu &&
+            isRTL && {
+              // marginLeft: 0,
+              marginTop: -hp(6),
+              marginRight: -80,
+              marginLeft: -30
+            }
         ]}
       >
         <Modal
@@ -156,10 +166,17 @@ export default class DateFields extends Component {
             intensity={95}
             style={[
               styles.BlurView,
-              this.props.filterMenu && {
-                paddingLeft: wp("20"),
-                paddingTop: hp(6)
-              }
+              this.props.filterMenu &&
+                !isRTL && {
+                  paddingLeft: wp("20"),
+                  paddingTop: hp(6)
+                },
+              this.props.filterMenu &&
+                isRTL && {
+                  paddingLeft: wp("5"),
+                  paddingRight: wp("8"),
+                  paddingTop: hp(6)
+                }
             ]}
           >
             <SafeAreaView
@@ -177,13 +194,13 @@ export default class DateFields extends Component {
                   showTopRightButton={
                     this.state.start_date || this.props.chartRange
                   }
-                  title="Duration"
+                  title={translate("Duration")}
                 />
               </View>
               <Text style={styles.textModal}>
                 {this.props.filterMenu
-                  ? "Select a date range to filter from"
-                  : "Please select your ad launch and end dates"}
+                  ? translate("Select a date range to filter from")
+                  : translate("Please select your ad launch and end dates")}
               </Text>
               <CalenderkIcon
                 width={hp(5) < 30 ? 30 : 60}
@@ -191,8 +208,11 @@ export default class DateFields extends Component {
                 style={styles.icon}
               />
               <Text style={styles.textModalOrange}>
-                Select the{" "}
-                {!this.state.start_choice ? "Start Date" : "End Date"}
+                {translate(
+                  `Select the ${
+                    !this.state.start_choice ? "Start Date" : "End Date"
+                  }`
+                )}
               </Text>
               <View
                 style={{

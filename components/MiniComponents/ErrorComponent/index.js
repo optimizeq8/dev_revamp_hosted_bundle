@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
@@ -43,6 +43,7 @@ class ErrorComponent extends Component {
   //   return true;
   // }
   render() {
+    const { translate } = this.props.screenProps;
     if (this.props.loading) {
       return (
         <>
@@ -66,10 +67,12 @@ class ErrorComponent extends Component {
         <View style={styles.view}>
           <ErrorIcon width={80} height={80} />
 
-          <Text style={styles.title}> Sorry </Text>
+          <Text style={styles.title}> {translate("Sorry")} </Text>
           <Text style={styles.errortext}>
-            Oops ! There seems to be a problem . {"\n"}
-            Try again in sometime.
+            {translate(
+              "Oops ! There seems to be a problem\nTry again in sometime"
+            )}
+            .
           </Text>
           <Button
             style={styles.button}
@@ -83,7 +86,9 @@ class ErrorComponent extends Component {
             }}
           >
             <Text style={styles.buttontext}>
-              {this.props.dashboard ? "Signin" : "Go Back"}
+              {this.props.dashboard
+                ? translate("Sign in")
+                : translate("Go Back")}
             </Text>
           </Button>
           <Button
@@ -95,7 +100,7 @@ class ErrorComponent extends Component {
             }}
           >
             <Text style={styles.whitebuttontext}>
-              {this.props.dashboard ? "Reload" : "Home"}
+              {this.props.dashboard ? translate("Reload") : translate("Home")}
             </Text>
           </Button>
         </View>

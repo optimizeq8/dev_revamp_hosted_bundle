@@ -191,7 +191,7 @@ class SelectInstagramPost extends React.Component {
   render() {
     // console.log('this.state.cartList', this.state.cartList);
     // console.log('instagramPostList', this.props.instagramPostList);
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -219,7 +219,7 @@ class SelectInstagramPost extends React.Component {
 				/> */}
         <Container style={styles.container}>
           <CustomeHeader
-            title={"Whatsapp Campaign"}
+            title={translate("WhatsApp Campaign")}
             closeButton={false}
             navigation={this.props.navigation}
           />
@@ -241,9 +241,10 @@ class SelectInstagramPost extends React.Component {
                 paddingHorizontal: 60
               }}
             >
-              Select the products you want to promote on your campaign
+              {translate(
+                "Select the products you want to promote on your campaign"
+              )}
             </Text>
-
             {/* <Content
               contentContainerStyle={{
                 flex: 1,
