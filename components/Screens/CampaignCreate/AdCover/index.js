@@ -596,6 +596,7 @@ class AdCover extends Component {
                               width: "100%",
                               alignSelf: "center"
                             }}
+                            resizeMode="contain"
                           />
                           <Text
                             style={{
