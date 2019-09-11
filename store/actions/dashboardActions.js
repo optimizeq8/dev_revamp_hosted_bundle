@@ -35,6 +35,12 @@ export const getCampaignDetails = (id, navigation) => {
         return res.data;
       })
       .then(data => {
+        if (
+          typeof data === "string" &&
+          data.toLoweCase() === "connection-failure"
+        ) {
+          throw TypeError("Connection-Failure, Please try again later");
+        }
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
           payload: { loading: false, data: data.data }
