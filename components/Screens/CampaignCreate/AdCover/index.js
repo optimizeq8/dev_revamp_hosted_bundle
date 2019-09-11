@@ -1,52 +1,28 @@
 //Components
 import React, { Component } from "react";
 import { Linking } from "expo";
-import * as MediaLibrary from "expo-media-library";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import * as WebBrowser from "expo-web-browser";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
-import { Video } from "expo-av";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import {
-  View,
-  TouchableOpacity,
-  Image as RNImage,
-  Platform,
-  BackHandler
-} from "react-native";
-import {
-  Button,
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Footer,
-  Icon
-} from "native-base";
-import { Image } from "react-native-expo-image-cache";
+import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
+import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-import MediaModal from "../AdDesign/MediaModal";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd.svg";
-import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
-const transparentImage = require("../../../../assets/images/emptyPlaceHolder.png");
 // Style
 import styles from "./styles";
 
@@ -61,10 +37,8 @@ import PenIconBrand from "./PenIconBrand";
 import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
-const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-};
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+
 class AdCover extends Component {
   static navigationOptions = {
     header: null
@@ -73,7 +47,7 @@ class AdCover extends Component {
     super(props);
     this.state = {
       campaignInfo: {
-        logo: "",
+        logo: "//",
         coverHeadline: ""
       },
       directory: "/ImagePicker/",
@@ -83,7 +57,7 @@ class AdCover extends Component {
       inputH: false,
       inputB: false,
       objective: "",
-      cover: "",
+      cover: "//",
       loaded: 0,
       type: "",
       iosVideoUploaded: false,
@@ -604,12 +578,9 @@ class AdCover extends Component {
                 <>
                   <View style={styles.buttonN}>
                     <View style={styles.placeholder}>
-                      <Image
-                        {...{ uri: cover }}
+                      <RNImageOrCacheImage
+                        media={cover}
                         style={styles.placeholder1}
-                        // source={
-                        //   cover !== "//" ? { uri: cover } : transparentImage
-                        // }
                         resizeMode="cover"
                       />
 
@@ -618,12 +589,8 @@ class AdCover extends Component {
                           onPress={() => this._pickLogo()}
                           style={styles.changeLogoStyle}
                         >
-                          <Image
-                            {...{ preview, uri: logo }}
-                            // source={
-                            //   logo !== "" ? { uri: logo } : transparentImage
-                            // }
-                            resizeMode="contain"
+                          <RNImageOrCacheImage
+                            media={logo}
                             style={{
                               height: "100%",
                               width: "100%",
