@@ -10,13 +10,14 @@ import styles from "./styles";
 
 export default class MediaOptions extends Component {
   render() {
-    let { title } = this.props;
+    let { title, _pickImage } = this.props;
+
     return (
       <TouchableOpacity
         onPress={() =>
           Platform.OS === "ios" && title === "Video"
             ? this.props.getVideoUploadUrl()
-            : this.props._pickImage(title === "Image" ? "Images" : "Videos")
+            : _pickImage(title === "Image" ? "Images" : "Videos")
         }
         style={styles.MediaOptionsStyle}
       >

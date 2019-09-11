@@ -4,15 +4,16 @@ import { Video } from "expo-av";
 import styles from "./styles";
 export default class VideoPlayer extends Component {
   render() {
-    let { storyAdCards, media } = this.props;
+    let { storyAdCards, media, videoIsLoading } = this.props;
     return (
       <Video
         onLoadStart={() =>
-          storyAdCards.selectedStoryAd.media &&
-          storyAdCards.storyAdSelected &&
-          this.setState({ videoIsLoading: true })
+          ((storyAdCards.selectedStoryAd.media &&
+            storyAdCards.storyAdSelected) ||
+            media) &&
+          videoIsLoading(true)
         }
-        onLoad={() => this.setState({ videoIsLoading: false })}
+        onLoad={() => videoIsLoading(false)}
         source={{
           uri:
             media !== "//" && !storyAdCards.storyAdSelected
