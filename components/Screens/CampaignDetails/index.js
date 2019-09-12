@@ -497,11 +497,15 @@ class CampaignDetails extends Component {
                     <View style={{ flexDirection: "column" }}>
                       <View
                         style={{
-                          flexDirection: "column",
+                          flexDirection: "row",
                           alignSelf: "center"
                         }}
                       >
-                        <GenderIcon width={hp("2")} height={hp("2")} />
+                        <GenderIcon
+                          width={hp("2")}
+                          height={hp("2")}
+                          style={{ right: 10 }}
+                        />
                         {loading ? (
                           <View style={{ margin: 5 }}>
                             <PlaceholderLine />
@@ -546,7 +550,7 @@ class CampaignDetails extends Component {
                       </View>
                       <View
                         style={{
-                          flexDirection: "column",
+                          flexDirection: "row",
                           alignSelf: "center"
                         }}
                       >
