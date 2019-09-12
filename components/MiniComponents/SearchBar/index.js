@@ -37,7 +37,15 @@ class SearchBar extends Component {
   }
 
   _handleSubmit = (reset = false) => {
-    if (!this.props.transactionSearch) {
+    if (this.props.transactionSearch) {
+      if (reset) this.setState({ value: "" });
+      this.props.filterTransactions({
+        value: reset ? "" : this.state.value,
+        dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
+      });
+    } else if (this.props.businessList) {
+      this.props.filterBusinesses(this.state.value);
+    } else {
       if (reset) this.setState({ value: "" });
       this.props.onSearch({
         value: reset ? "" : this.state.value,
@@ -47,22 +55,20 @@ class SearchBar extends Component {
           this.props.campaignEndSearch
         ]
       });
-    } else {
-      if (reset) this.setState({ value: "" });
-      this.props.filterTransactions({
-        value: reset ? "" : this.state.value,
-        dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
-      });
     }
   };
   render() {
+    let { height, businessList } = this.props;
     return (
-      <View searchBar style={styles.searchBarView}>
+      <View
+        searchBar
+        style={[styles.searchBarView, { height: height ? height : "70%" }]}
+      >
         <Item rounded style={styles.searchBarItem}>
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
             style={styles.searchBarInput}
-            placeholder="Search ads..."
+            placeholder={`Search ${businessList ? "businesses..." : "ads..."}`}
             value={this.state.value}
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());
@@ -72,7 +78,7 @@ class SearchBar extends Component {
             <TouchableOpacity
               onPress={() => {
                 this._handleSubmit(true);
-                this.props.renderSearchBar();
+                !businessList && this.props.renderSearchBar();
               }}
             >
               <CloseIcon width={18} height={18} stroke="#C6C6C6" />
