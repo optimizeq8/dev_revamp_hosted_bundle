@@ -2,7 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-import filter from 'lodash/filter';
+import filter from "lodash/filter";
 
 createBaseUrl = () =>
   axios.create({
@@ -338,7 +338,7 @@ export const ad_design = (
       .catch(err => {
         loading(0);
         onToggleModal(false);
-        // console.log("ad_design", err.message || err.response);
+        console.log("ad_design error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -979,286 +979,377 @@ export const setRejectedAdType = data => {
   };
 };
 export const verifyInstagramHandle = insta_handle => {
-    return async dispatch => {
-        try {
-            dispatch({
-                type: actionTypes.SET_INSTAGRAM_POST_LOADING,
-                payload: false
-            })
-            var response = await axios.get(`https://www.instagram.com/${insta_handle}`);
-            if(response) {
-                var data = response.data 
-                data = data.split('window._sharedData = ');
-                data = data[1].split('</script>');
-                data = data[0];
-                data = data.substr(0, data.length - 1);
-                data = JSON.parse(data);
-                data = data.entry_data.ProfilePage[0].graphql.user;
-                if(data.is_private) {
-                    // showMessage({
-                    //     message: `${insta_handle} is a private account. Try with some other account`,
-                    //     type: 'danger',
-                    //     duration: 5000
-                    // })
-                    return dispatch({
-                        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
-                        payload: {
-                            error: true,
-                            errorMessage: `${insta_handle} is a private account. Try with some other account`
-                        }
-                    })
-                } else {
-                    return dispatch({
-                        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
-                        payload: {
-                            error: false,
-                            errorMessage: null
-                        }
-                    })
-                }
+  return async dispatch => {
+    try {
+      dispatch({
+        type: actionTypes.SET_INSTAGRAM_POST_LOADING,
+        payload: false
+      });
+      var response = await axios.get(
+        `https://www.instagram.com/${insta_handle}`
+      );
+      if (response) {
+        var data = response.data;
+        data = data.split("window._sharedData = ");
+        data = data[1].split("</script>");
+        data = data[0];
+        data = data.substr(0, data.length - 1);
+        data = JSON.parse(data);
+        data = data.entry_data.ProfilePage[0].graphql.user;
+        if (data.is_private) {
+          // showMessage({
+          //     message: `${insta_handle} is a private account. Try with some other account`,
+          //     type: 'danger',
+          //     duration: 5000
+          // })
+          return dispatch({
+            type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+            payload: {
+              error: true,
+              errorMessage: `${insta_handle} is a private account. Try with some other account`
             }
-
-        } catch (err) {
-            // console.log('insta error verify account', err.response || err.message);
-            // showMessage({
-            //     message: `${insta_handle} doesn't exist. Try another account name`,
-            //     type: 'danger'
-            // })
-            return dispatch({
-                type: actionTypes.ERROR_GET_INSTAGRAM_POST,
-                payload: {
-                    error: true,
-                    errorMessage: `${insta_handle} doesn't exist. Try another account name`
-              
-                }
-            })	
+          });
+        } else {
+          return dispatch({
+            type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+            payload: {
+              error: false,
+              errorMessage: null
+            }
+          });
         }
+      }
+    } catch (err) {
+      // console.log('insta error verify account', err.response || err.message);
+      // showMessage({
+      //     message: `${insta_handle} doesn't exist. Try another account name`,
+      //     type: 'danger'
+      // })
+      return dispatch({
+        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+        payload: {
+          error: true,
+          errorMessage: `${insta_handle} doesn't exist. Try another account name`
+        }
+      });
     }
-}
+  };
+};
 export const getInstagramPost = insta_handle => {
-    
-    return async dispatch => {
-        try{
-            dispatch({
-                type: actionTypes.SET_INSTAGRAM_POST_LOADING,
-                payload: true
-            })
-            // console.log('getInstagramPost insta_handle', insta_handle);
-            var response = await axios.get(`https://www.instagram.com/${insta_handle}`);
-            if(response && response.data) {
-                var data = response.data 
-                data = data.split('window._sharedData = ');
-                data = data[1].split('</script>');
-                data = data[0];
-                data = data.substr(0, data.length - 1);
-                data = JSON.parse(data);
-               
-                data = data.entry_data.ProfilePage[0].graphql.user;
-                        // console.log('data', data);
-                var businessLogo = data.profile_pic_url
-                const mediaList = data.edge_owner_to_timeline_media;
-                if (mediaList.edges && mediaList.edges.length > 0) {
-                    var imagesList = mediaList.edges.map(media => {
-                        // console.log('media', media);
-                        if(!media.node.is_video)
-                        return {
-                            imageUrl: media.node.display_url,
-                            shortcode: media.node.shortcode,
-                            imageId: media.node.id,
-                            productDescription: media.node.edge_media_to_caption.edges.length > 0
-                                ? media.node.edge_media_to_caption.edges[0].node.text
-                                : '',
-                            // isVideo: media.node.is_video,
-                        };
-                    });
-                    // console.log('imageListBeforeSize', imagesList.length);
+  console.log("insta_handle", insta_handle);
 
-                    // imagesList = filter(imagesList, media => {
-                    // 	return !media.isVideo;
-                    // });
-                    // console.log('imageList', imagesList);
-                    // console.log('imageListAfterSize', imagesList.length);
-                    // console.log('???', imagesList);
-                    
-                    return dispatch({
-                        type: actionTypes.SET_INSTAGRAM_POST,
-                        payload: {
-                            businessLogo: businessLogo, 
-                            imagesList: imagesList
-                        }
-                    })	
-                    // console.log('imageListAfterSize', imagesList.length);
-                }  
-                // console.log('??? empty');
+  return async dispatch => {
+    try {
+      dispatch({
+        type: actionTypes.SET_INSTAGRAM_POST_LOADING,
+        payload: true
+      });
+      // console.log('getInstagramPost insta_handle', insta_handle);
+      var response = await axios.get(
+        `https://www.instagram.com/${insta_handle}`
+      );
+      if (response && response.data) {
+        var data = response.data;
+        data = data.split("window._sharedData = ");
+        data = data[1].split("</script>");
+        data = data[0];
+        data = data.substr(0, data.length - 1);
+        data = JSON.parse(data);
 
-                return dispatch({
-                    type: actionTypes.SET_INSTAGRAM_POST,
-                    payload: {businessLogo: '',imagesList: []}
-                })
-            }  
-        } catch(error) {
-            console.log('insta error', error.response || error.message);
-            return dispatch({
-                type: actionTypes.ERROR_GET_INSTAGRAM_POST,
-                payload: {
-                    error: true,
-                    errorMessage: null
+        data = data.entry_data.ProfilePage[0].graphql.user;
+        // console.log('data', data);
+        var businessLogo = data.profile_pic_url;
+        const mediaList = data.edge_owner_to_timeline_media;
+        if (mediaList.edges && mediaList.edges.length > 0) {
+          var imagesList = mediaList.edges.map(media => {
+            // console.log('media', media);
+            if (!media.node.is_video)
+              return {
+                imageUrl: media.node.display_url,
+                shortcode: media.node.shortcode,
+                imageId: media.node.id,
+                productDescription:
+                  media.node.edge_media_to_caption.edges.length > 0
+                    ? media.node.edge_media_to_caption.edges[0].node.text
+                    : ""
+                // isVideo: media.node.is_video,
+              };
+          });
+          // console.log('imageListBeforeSize', imagesList.length);
 
-                }
-            })	
+          // imagesList = filter(imagesList, media => {
+          // 	return !media.isVideo;
+          // });
+          // console.log('imageList', imagesList);
+          // console.log('imageListAfterSize', imagesList.length);
+          // console.log('???', imagesList);
 
+          return dispatch({
+            type: actionTypes.SET_INSTAGRAM_POST,
+            payload: {
+              businessLogo: businessLogo,
+              imagesList: imagesList
+            }
+          });
+          // console.log('imageListAfterSize', imagesList.length);
         }
-    }
-}
+        // console.log('??? empty');
 
-export const getWebProducts = (campaign_id) => {
-    return (dispatch, getState) => {
-        dispatch({
-            type: actionTypes.GET_WEB_PRODUCTS_LOADING,
-            payload: true
+        return dispatch({
+          type: actionTypes.SET_INSTAGRAM_POST,
+          payload: { businessLogo: "", imagesList: [] }
+        });
+      }
+    } catch (error) {
+      console.log("insta error", error.response || error.message);
+      return dispatch({
+        type: actionTypes.ERROR_GET_INSTAGRAM_POST,
+        payload: {
+          error: true,
+          errorMessage: null
+        }
+      });
+    }
+  };
+};
+
+export const getWebProducts = campaign_id => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.GET_WEB_PRODUCTS_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .get(`webProducts/${campaign_id}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        // showMessage({
+        //     message: data.message,
+        //     type: data.success ? 'success': 'warning'
+        // })
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_WEB_PRODUCTS,
+            payload: data.productsinfo
+          });
+        }
+        return dispatch({
+          type: actionTypes.GET_WEB_PRODUCTS,
+          payload: {
+            id: null,
+            webproducts: []
+          }
+        });
+      })
+      .catch(error => {
+        return dispatch({
+          type: actionTypes.ERROR_GET_WEB_PRODUCTS,
+          payload: {
+            id: null,
+            webproducts: [],
+            error: true
+          }
+        });
+      });
+  };
+};
+
+export const saveWebProducts = (
+  cartList,
+  campaign_id,
+  productInfoId,
+  navigation,
+  businessLogo,
+  from
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
+      payload: true
+    });
+    // if productInfoId doesn't exist
+    if (!productInfoId) {
+      createBaseUrl()
+        .post("webProducts", {
+          businessid: getState().account.mainBusiness.businessid,
+          webproducts: cartList,
+          campaign_id,
+          businesslogo: businessLogo
         })
-        createBaseUrl()
-            .get(`webProducts/${campaign_id}`)
-            .then(res => {
-                return res.data
-            })
-            .then((data) => {
-                // showMessage({
-                //     message: data.message,
-                //     type: data.success ? 'success': 'warning'
-                // })
-                if(data.success) {
-                    return dispatch({
-                        type: actionTypes.GET_WEB_PRODUCTS,
-                        payload:data.productsinfo
-                    })
-                }
-                return dispatch({
-                    type: actionTypes.GET_WEB_PRODUCTS,
-                    payload: {
-                        id: null,
-                        webproducts: []
-                    }
-                })
-            })
-            .catch(error => {
-                return dispatch({
-                    type: actionTypes.ERROR_GET_WEB_PRODUCTS,
-                    payload:{
-                        id: null,
-                        webproducts: [],
-                        error: true
-                    }
-                })
-            })
-    }
-}
-
-export const saveWebProducts = (cartList, campaign_id,productInfoId, navigation,businessLogo, from) => {
-    return (dispatch , getState) => {
-        dispatch({
+        .then(res => {
+          return res.data;
+        })
+        .then(data => {
+          // console.log('saveWebProducts data', data);
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            duration: 2000
+          });
+          dispatch({
+            type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
+            payload: {
+              id: data.id,
+              webproducts: cartList
+            }
+          });
+          return data;
+        })
+        .then(data => {
+          if (data.success) {
+            navigation.navigate("AdDesign");
+          }
+          return data;
+        })
+        .then(() => {
+          return dispatch({
             type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-            payload: true
+            payload: false
+          });
         })
-        // if productInfoId doesn't exist
-        if(!productInfoId) {
-            createBaseUrl()
-            .post('webProducts',{
-                businessid: getState().account.mainBusiness.businessid,
-                webproducts: cartList,
-                campaign_id,
-                businesslogo: businessLogo
-            })
-            .then(res => {
-                return res.data
-            })
-            .then(data => {
-                // console.log('saveWebProducts data', data);
-                showMessage({
-                    message: data.message,
-                    type: data.success?  'success': 'danger',
-                    duration: 2000
-                })
-                 dispatch({
-                    type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
-                    payload:  {
-                        id: data.id,
-                        webproducts: cartList
-                    }
-                })
-                return data
-            })
-            .then((data) => {
-                
-                if(data.success) {
-                    navigation.navigate('AdDesign')
-                }
-                return data
-               
-            })
-            .then(() => {
-               return dispatch({
-                    type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-                    payload: false
-                })
-            })
-            .catch(error => {
-                console.log('saveWebProducts error',  error.response || error.message);
-                return dispatch({
-                    type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
-                })
-                
-            })
-        } else  {
-            //productExist edit list
-            createBaseUrl()
-            .put('webProducts',{
-                businessid: getState().account.mainBusiness.businessid,
-                webproducts: cartList,
-                campaign_id,
-                id: productInfoId,
-                businesslogo: businessLogo
-
-            })
-            .then(res => {
-                return res.data
-            })
-            .then(data => {
-                // console.log('updateWebProducts data', data);
-                showMessage({
-                    message: data.message,
-                    type: data.success?  'success': 'danger',
-                    duration: 2000
-                })
-                 dispatch({
-                    type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
-                    payload:   {
-                        id: data.id,
-                        webproducts: cartList
-                    }
-                })
-                return data
-            })
-            .then((data) => {
-                if(data.success && from){
-                    navigation.navigate('AdDesign')
-                }
-               
-            })
-            .then(() => {
-                return dispatch({
-                     type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
-                     payload: false
-                 })
-             })
-            .catch(error => {
-                console.log('updateWebProducts error',  error.response || error.message);
-                return dispatch({
-                    type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
-                })
-                
-            })
-        }
-
+        .catch(error => {
+          console.log("saveWebProducts error", error.response || error.message);
+          return dispatch({
+            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+          });
+        });
+    } else {
+      //productExist edit list
+      createBaseUrl()
+        .put("webProducts", {
+          businessid: getState().account.mainBusiness.businessid,
+          webproducts: cartList,
+          campaign_id,
+          id: productInfoId,
+          businesslogo: businessLogo
+        })
+        .then(res => {
+          return res.data;
+        })
+        .then(data => {
+          // console.log('updateWebProducts data', data);
+          showMessage({
+            message: data.message,
+            type: data.success ? "success" : "danger",
+            duration: 2000
+          });
+          dispatch({
+            type: actionTypes.SUCCESS_SAVE_WEB_PRODUCTS,
+            payload: {
+              id: data.id,
+              webproducts: cartList
+            }
+          });
+          return data;
+        })
+        .then(data => {
+          if (data.success && from) {
+            navigation.navigate("AdDesign");
+          }
+        })
+        .then(() => {
+          return dispatch({
+            type: actionTypes.SAVE_WEB_PRODUCTS_LOADING,
+            payload: false
+          });
+        })
+        .catch(error => {
+          console.log(
+            "updateWebProducts error",
+            error.response || error.message
+          );
+          return dispatch({
+            type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
+          });
+        });
     }
-}
+  };
+};
+
+export const getMediaUploadUrl = campaign_id => {
+  return dispatch => {
+    createBaseUrl()
+      .get(`/webuploadlink/${campaign_id}`)
+      .then(res => {
+        // console.log("webuploadlink", res.data);
+        return res.data;
+      })
+      .then(data => {
+        // console.log("webuploadlink", data);
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+            payload: {
+              weblink: data.weblink,
+              accessCode: data.accessCode
+            }
+          });
+        }
+        showMessage({
+          message: data.message,
+          type: "danger"
+        });
+        return dispatch({
+          type:
+            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          payload: {
+            weblink: "",
+            accessCode: "",
+            error: data.message
+          }
+        });
+      })
+      .catch(error => {
+        console.log("getMediaUploadUrl error", error.response || error.message);
+        return dispatch({
+          type:
+            actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
+          payload: {
+            weblink: "",
+            accessCode: "",
+            error: error.response || error.message
+          }
+        });
+      });
+  };
+};
+
+export const getWebUploadLinkMedia = campaign_id => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .get(`/webuploadlinkmedia/${campaign_id}`)
+      .then(res => res.data)
+      .then(data => {
+        // console.log("data", data);
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        });
+        dispatch({
+          type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
+          payload: false
+        });
+        if (data.success) {
+          return dispatch({
+            type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
+            payload: {
+              mediaWebLink: data.media,
+              mediaTypeWebLink: data.media_type
+            }
+          });
+        }
+      })
+      .catch(error => {
+        console.log("getWebUploadLinkMedia", error.response || error.message);
+        return dispatch({
+          type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA
+        });
+      });
+  };
+};
