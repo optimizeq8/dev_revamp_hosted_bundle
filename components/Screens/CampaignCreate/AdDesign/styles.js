@@ -249,6 +249,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center"
   },
+  placeholderDownloadMedia: {
+    borderRadius: 30,
+    // overflow: "hidden",
+    // alignSelf: "center",
+    width: "100%",
+    // width: "94%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center"
+  },
   placeholder1: {
     opacity: 0.55,
     borderRadius: 30,
@@ -297,13 +307,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
-    width: "80%",
-    height: "40%",
+    // width: "80%",
+    // height: "40%",
     flexDirection: "row",
-    padding: 20,
-    justifyContent: "space-evenly",
+    paddingHorizontal: 20,
+    // justifyContent: "space-evenly",
     alignItems: "center",
-    marginVertical: 10
+    marginVertical: 20
   },
 
   MediaOptionsTitle: {
@@ -396,6 +406,95 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: globalColors.white,
     fontSize: 25
+  },
+  uploadDifferentDeviceHeader: {
+    textAlign: "center",
+    color: "#FFF"
+  },
+  uploadDifferentDeviceContentContainer: {
+    marginTop: 15,
+    paddingTop: 15,
+    marginBottom: 15
+  },
+  uploadDifferentDeviceRowView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20
+  },
+  uploadDifferentDeviceIndex: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    //   padding: 50,
+    backgroundColor: "#FF9D00",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  uploadDifferentDeviceIndexText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#fff",
+    textAlign: "center",
+    alignSelf: "center"
+  },
+  uploadDifferentDeviceColView: {
+    display: "flex",
+    flexDirection: "column",
+    marginRight: 80,
+    paddingHorizontal: 20
+  },
+  uploadDifferentDeviceTitleText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#fff",
+    textAlign: "left",
+    paddingVertical: 5
+
+    // alignSelf: "center"
+  },
+  uploadMediaFromDifferentDeviceSubtitleText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#FF9D00",
+    textAlign: "left"
+    // alignSelf: "center"
+  },
+  downloadMediaBottomContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 20
+  },
+  marginH20: {
+    marginHorizontal: 20
+  },
+  downloadMediaHeaderView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20
+  },
+  downloadMediaHeaderText: {
+    textAlign: "center",
+    color: "#FFF",
+    fontFamily: "montserrat-semibold",
+    fontSize: 18,
+    lineHeight: 22,
+    paddingTop: 10,
+    paddingHorizontal: 20
+  },
+  downloadMediaTopView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20
   }
 });
 
