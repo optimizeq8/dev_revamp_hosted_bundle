@@ -336,7 +336,9 @@ class Dashboard extends Component {
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
                   navigation={this.props.navigation}
-                  mainBusiness={this.props.mainBusiness}
+                  mainBusiness={
+                    this.props.mainBusiness ? this.props.mainBusiness : {}
+                  }
                 />
               ) : (
                 <Container style={styles.container}>
