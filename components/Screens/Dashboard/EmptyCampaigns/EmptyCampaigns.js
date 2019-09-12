@@ -4,6 +4,7 @@ import Logo from "../../../../assets/SVGs/Optimize";
 import Background from "../../../../assets/SVGs/Background";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import * as Animatable from "react-native-animatable";
+import * as Segment from "expo-analytics-segment";
 
 import styles from "./styles";
 import {
@@ -42,7 +43,25 @@ export default class EmptyCampaigns extends Component {
             iterationDelay={1000}
             iterationCount="infinite"
           >
-            <Button style={styles.campaignButton}>
+            <Button
+              onPress={() => {
+                if (!this.props.mainBusiness.snap_ad_account_id) {
+                  Segment.trackWithProperties("Create SnapAd Acount", {
+                    category: "Ad Account",
+                    label: "New SnapAd Account",
+                    business_name: this.props.mainBusiness.businessname,
+                    business_id: this.props.mainBusiness.businessid
+                  });
+                  this.props.navigation.navigate("SnapchatCreateAdAcc");
+                } else {
+                  Segment.trackWithProperties("Create Campaign", {
+                    category: "Campaign Creation"
+                  });
+                  this.props.navigation.navigate("AdType");
+                }
+              }}
+              style={styles.campaignButton}
+            >
               <Text style={styles.campaignButtonText}>New{"\n"} Campaign</Text>
             </Button>
           </Animatable.View>
