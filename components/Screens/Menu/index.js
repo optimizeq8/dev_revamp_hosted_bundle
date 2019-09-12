@@ -17,9 +17,6 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
-//browser
-import { openPrivacy, openTerms } from "../../Terms&Conditions";
-
 // Style
 import styles from "./styles";
 
@@ -68,10 +65,6 @@ class Menu extends Component {
   closePanel = () => {
     this._panel.hide();
     this.setState({ slidePanel: false });
-    // this.draggableRange = {
-    //   top: heightPercentageToDP("50"),
-    //   bottom: -heightPercentageToDP("100")
-    // };
   };
   slidePanelShow() {
     if (this.state.slidePanel) {
@@ -91,17 +84,6 @@ class Menu extends Component {
           width={widthPercentageToDP(85)}
           height={hp(61)}
         />
-        {/* <TouchableOpacity
-          onPress={() => {
-            this.props.clearPushToken(
-              this.props.navigation,
-              this.props.userInfo.userid
-            );
-          }}
-          style={styles.logoutIcon}
-        >
-          <Icons.LogoutIcon style={styles.icons} />
-        </TouchableOpacity> */}
 
         <View style={styles.menuContainer}>
           <Text style={styles.menutext}> Menu </Text>
@@ -113,16 +95,7 @@ class Menu extends Component {
               ? ""
               : this.props.mainBusiness.businessname}
           </Text>
-          <Button
-            style={[
-              styles.button,
-              {
-                // elevation: this.state.slidePanel ? -1 : 1
-                //zIndex: this.state.slidePanel ? -1 : 1
-              }
-            ]}
-            onPress={() => this.slidePanelShow()}
-          >
+          <Button style={[styles.button]} onPress={() => this.slidePanelShow()}>
             <Text style={styles.buttonText}>Switch Account</Text>
             <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
           </Button>
@@ -215,7 +188,7 @@ class Menu extends Component {
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
             <Text style={styles.version}>
-              Version:{Constants.manifest.version}16/
+              Version:{Constants.manifest.version}17/
               {Constants.manifest.ios.buildNumber}/
               {Constants.manifest.android.versionCode}
             </Text>
