@@ -332,7 +332,10 @@ class Dashboard extends Component {
               {!this.props.loading &&
               !this.props.loadingAccountMgmt &&
               this.props.campaignList.length === 0 ? (
-                <EmptyCampaigns mainBusiness={this.props.mainBusiness} />
+                <EmptyCampaigns
+                  navigation={this.props.navigation}
+                  mainBusiness={this.props.mainBusiness}
+                />
               ) : (
                 <Container style={styles.container}>
                   <Sidemenu
