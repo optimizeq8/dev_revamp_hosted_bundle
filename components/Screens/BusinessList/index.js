@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 
 // Style
@@ -18,11 +18,27 @@ class BusinessList extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { filteredBusinesses: this.props.businessAccounts };
   }
-
+  filterBusinesses = value => {
+    this.setState({
+      filteredBusinesses: this.props.businessAccounts.filter(
+        bus =>
+          bus.businessname
+            .trim()
+            .toLowerCase()
+            .includes(value.trim().toLowerCase()) ||
+          bus.brandname
+            .trim()
+            .toLowerCase()
+            .includes(value.trim().toLowerCase())
+      )
+    });
+  };
   render() {
-    const list = this.props.businessAccounts.map(business => (
+    console.log(this.props.businessAccounts);
+
+    const list = this.state.filteredBusinesses.map(business => (
       <BusinessCard business={business} key={business.businessid} />
     ));
     return (
@@ -32,6 +48,11 @@ class BusinessList extends Component {
           <Text style={[styles.text, styles.switchAccountText]}>
             You can switch between businesses here.
           </Text>
+          <SearchBar
+            filterBusinesses={this.filterBusinesses}
+            businessList={true}
+            height={"10%"}
+          />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
           </ScrollView>
