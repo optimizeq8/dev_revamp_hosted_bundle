@@ -26,19 +26,17 @@ export default class OptionalTargets extends Component {
               <Text style={styles.categories}>Regions</Text>
             </View>
 
-            <Text style={[styles.subtext, { textAlign: "left" }]}>
-              {this.props.region_names}
-            </Text>
+            <Text style={[styles.subtext]}>{this.props.region_names}</Text>
           </View>
         )}
         {this.props.interesetNames.length > 0 && (
           <View style={styles.optionalTargets}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
               <InterestIcon width={hp("2")} height={hp("2")} />
               <Text style={styles.categories}>Interests</Text>
             </View>
 
-            <Text style={[styles.subtext, { textAlign: "left" }]}>
+            <Text style={[styles.subtext]}>
               {this.props.interesetNames.join(",\n")}
             </Text>
           </View>
@@ -58,9 +56,7 @@ export default class OptionalTargets extends Component {
               <Text style={styles.categories}>Device Makes</Text>
             </View>
 
-            <Text style={[styles.subtext, { textAlign: "left" }]}>
-              {this.props.deviceMakes}
-            </Text>
+            <Text style={[styles.subtext]}>{this.props.deviceMakes}</Text>
           </View>
         )}
         {targeting.hasOwnProperty("devices") &&
@@ -75,7 +71,7 @@ export default class OptionalTargets extends Component {
                 <Text style={styles.categories}>Operating System</Text>
               </View>
 
-              <Text style={[styles.subtext, { textAlign: "left" }]}>
+              <Text style={[styles.subtext]}>
                 {targeting.devices[0].os_type}
               </Text>
             </View>
@@ -97,7 +93,7 @@ export default class OptionalTargets extends Component {
                 <Text style={styles.categories}>OS Versions</Text>
               </View>
 
-              <Text style={[styles.subtext, { textAlign: "left" }]}>
+              <Text style={[styles.subtext]}>
                 {targeting.devices[0].os_version_min + ", "}
                 {targeting.devices[0].os_version_max}
               </Text>
