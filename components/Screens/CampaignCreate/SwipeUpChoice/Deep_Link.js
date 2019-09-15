@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-navigation";
 import { Content, Text, Container } from "native-base";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
+import CustomHeader from "../../../MiniComponents/Header";
+import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 //Icons
 import AppInstallIcon from "../../../../assets/SVGs/SwipeUps/AppInstalls";
@@ -99,44 +101,60 @@ class Deep_Link extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={styles.safeAreaContainer}>
+      <SafeAreaView
+        style={styles.safeAreaContainer}
+        forceInset={{ top: "always" }}
+      >
         <Container style={[styles.container]}>
+          {this.props.adType === "CollectionAd" && (
+            <CustomHeader
+              closeButton={false}
+              title={"Swipe up Destination"}
+              navigation={this.props.navigation}
+            />
+          )}
           <Content
             style={styles.container}
             scrollEnabled={true}
             contentContainerStyle={styles.deepLinkContainer}
           >
-            <View style={styles.deepLinkHeader}>
-              <AppInstallIcon style={styles.icon} />
-              <View style={styles.textcontainer}>
-                <Text style={styles.titletext}>Deep Link</Text>
-                <Text style={styles.subtext}>
-                  Send Snapchatters to a specific{"\n"} page in your app
-                </Text>
-              </View>
-            </View>
-            {!this.state.firstStepDone ? (
-              <AppChoice
-                navigation={this.props.navigation}
-                toggleSideMenu={this.props.toggleSideMenu}
-                renderNextStep={this.renderNextStep}
-                listNum={3}
-                swipeUpDestination={this.props.swipeUpDestination}
-              />
-            ) : (
-              <AppConfirm
-                icon_media_url={this.state.attachment.icon_media_url}
-                app_name={this.state.attachment.app_name}
-                ios_app_id={this.state.attachment.ios_app_id}
-                android_app_url={this.state.attachment.android_app_url}
-                _handleSubmission={this._handleSubmission}
-                renderPreviousStep={this.renderPreviousStep}
-                deep_link_url={this.state.attachment.deep_link_uri}
-                deepLink={true}
-                toggleSideMenu={this.props.toggleSideMenu}
-                swipeUpDestination={this.props.swipeUpDestination}
-              />
-            )}
+            <KeyboardShift style={styles.keyboardContainer}>
+              {() => (
+                <>
+                  <View style={styles.deepLinkHeader}>
+                    <AppInstallIcon style={styles.icon} />
+                    <View style={styles.textcontainer}>
+                      <Text style={styles.titletext}>Deep Link</Text>
+                      <Text style={styles.subtext}>
+                        Send Snapchatters to a specific{"\n"} page in your app
+                      </Text>
+                    </View>
+                  </View>
+                  {!this.state.firstStepDone ? (
+                    <AppChoice
+                      navigation={this.props.navigation}
+                      toggleSideMenu={this.props.toggleSideMenu}
+                      renderNextStep={this.renderNextStep}
+                      listNum={3}
+                      swipeUpDestination={this.props.swipeUpDestination}
+                    />
+                  ) : (
+                    <AppConfirm
+                      icon_media_url={this.state.attachment.icon_media_url}
+                      app_name={this.state.attachment.app_name}
+                      ios_app_id={this.state.attachment.ios_app_id}
+                      android_app_url={this.state.attachment.android_app_url}
+                      _handleSubmission={this._handleSubmission}
+                      renderPreviousStep={this.renderPreviousStep}
+                      deep_link_url={this.state.attachment.deep_link_uri}
+                      deepLink={true}
+                      toggleSideMenu={this.props.toggleSideMenu}
+                      swipeUpDestination={this.props.swipeUpDestination}
+                    />
+                  )}
+                </>
+              )}
+            </KeyboardShift>
           </Content>
         </Container>
       </SafeAreaView>

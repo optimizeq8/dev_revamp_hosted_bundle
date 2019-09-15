@@ -92,61 +92,63 @@ class SwipeUpChoice extends Component {
       }
     }
 
-    return (
-      <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
-        <NavigationEvents
-          onDidFocus={() => {
-            switch (this.props.navigation.getParam("objective")) {
-              case "LEAD_GENERATION":
-                Segment.screenWithProperties("Snap Ad Website SwipeUp", {
-                  category: "Campaign Creation",
-                  label: "Lead Generation Objective"
-                });
-                // Segment.trackWithProperties(
-                //   "Selected Lead Generation Website Swipeup",
-                //   {
-                //     category: "Campaign Creation"
-                //   }
-                // );
-                break;
-              case "VIDEO_VIEWS":
-                Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
-                  category: "Campaign Creation",
-                  label: "Video Views Objective"
-                });
-                break;
-              case "WEB_CONVERSION":
-                Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
-                  category: "Campaign Creation",
-                  label: "Whatsapp Campaign Objective"
-                });
-                break;
-              default:
-                Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
-                  category: "Campaign Creation",
-                  label: "App Install Objective"
-                });
-            }
-          }}
-        />
-
-        <Container style={styles.container}>
-          <CustomeHeader
-            closeButton={false}
-            navigation={this.props.navigation}
+    if (this.props.adType === "CollectionAd") return menu;
+    else
+      return (
+        <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+          <NavigationEvents
+            onDidFocus={() => {
+              switch (this.props.navigation.getParam("objective")) {
+                case "LEAD_GENERATION":
+                  Segment.screenWithProperties("Snap Ad Website SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Lead Generation Objective"
+                  });
+                  // Segment.trackWithProperties(
+                  //   "Selected Lead Generation Website Swipeup",
+                  //   {
+                  //     category: "Campaign Creation"
+                  //   }
+                  // );
+                  break;
+                case "VIDEO_VIEWS":
+                  Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Video Views Objective"
+                  });
+                  break;
+                case "WEB_CONVERSION":
+                  Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Whatsapp Campaign Objective"
+                  });
+                  break;
+                default:
+                  Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "App Install Objective"
+                  });
+              }
+            }}
           />
-          <Content contentContainerStyle={styles.contentContainer}>
-            <KeyboardAwareScrollView
-              resetScrollToCoords={{ x: 0, y: 0 }}
-              scrollEnabled={false}
-              contentContainerStyle={styles.contentContainer}
-            >
-              {menu}
-            </KeyboardAwareScrollView>
-          </Content>
-        </Container>
-      </SafeAreaView>
-    );
+
+          <Container style={styles.container}>
+            <CustomeHeader
+              closeButton={false}
+              navigation={this.props.navigation}
+            />
+            <Content contentContainerStyle={styles.contentContainer}>
+              <KeyboardAwareScrollView
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                scrollEnabled={false}
+                contentContainerStyle={styles.contentContainer}
+              >
+                {menu}
+              </KeyboardAwareScrollView>
+            </Content>
+          </Container>
+        </SafeAreaView>
+      );
   }
 }
 
