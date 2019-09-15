@@ -28,7 +28,8 @@
       "supportsTablet": false
     },
     "packagerOpts": {
-      "config": "metro.config.js"
+      "config": "metro.config.js",
+      "sourceExts": ["js", "jsx", "svg"]
     },
 
     "android": {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Platform } from "react-native";
 import { Content } from "native-base";
 import { Modal } from "react-native-paper";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import MediaOptions from "./MediaOptions";
@@ -10,14 +10,47 @@ import styles from "./styles";
 
 export default class MediaModal extends Component {
   render() {
-    let options = ["Image", "Video"].map(op => (
-      <MediaOptions
-        getVideoUploadUrl={this.props.getVideoUploadUrl}
-        _pickImage={this.props._pickImage}
-        key={op}
-        title={op}
-      />
-    ));
+    if (this.props.adType === "SnapAd") {
+      var options = [
+        "Image",
+        "Video",
+        "Upload media from a different device",
+        "Download media from a different device"
+      ].map(op => {
+        return (
+          <MediaOptions
+            getVideoUploadUrl={this.props.getVideoUploadUrl}
+            _pickImage={this.props._pickImage}
+            key={op}
+            title={op}
+            setUploadFromDifferentDeviceModal={
+              this.props.setUploadFromDifferentDeviceModal
+            }
+            setMediaModalVisible={this.props.setMediaModalVisible}
+            getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
+            setDownloadMediaModal={this.props.setDownloadMediaModal}
+          />
+        );
+      });
+    } else {
+      var options = ["Image", "Video"].map(op => {
+        return (
+          <MediaOptions
+            getVideoUploadUrl={this.props.getVideoUploadUrl}
+            _pickImage={this.props._pickImage}
+            key={op}
+            title={op}
+            setUploadFromDifferentDeviceModal={
+              this.props.setUploadFromDifferentDeviceModal
+            }
+            setMediaModalVisible={this.props.setMediaModalVisible}
+            getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
+            setDownloadMediaModal={this.props.setDownloadMediaModal}
+          />
+        );
+      });
+    }
+
     return (
       <Modal
         animationType={"fade"}

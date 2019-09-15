@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { Linking } from "expo";
+import { Linking, Notifications } from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import * as WebBrowser from "expo-web-browser";
@@ -10,6 +10,7 @@ import * as FileSystem from "expo-file-system";
 import { Video } from "expo-av";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import isEmpty from "lodash/isEmpty";
 import {
   View,
   TouchableOpacity,
@@ -26,6 +27,8 @@ import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
 import MediaModal from "./MediaModal";
+import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
+import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
 import SnapAds from "./SnapAdCards/SnapAds";
 const preview = {
   uri:
@@ -104,7 +107,10 @@ class AdDesign extends Component {
       rejectionUpload: false,
       tempImage: "",
       tempImageloading: false,
-      storyAdAttachChanged: false
+      storyAdAttachChanged: false,
+      uploadMediaDifferentDeviceModal: false,
+      uploadMediaNotification: {},
+      downloadMediaModal: false
     };
     this.adType = this.props.adType;
     this.params = this.props.navigation.state.params;
@@ -129,6 +135,10 @@ class AdDesign extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -233,7 +243,28 @@ class AdDesign extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
+  _handleNotification = async uploadMediaNotification => {
+    // console.log("uploadMediaNotification", uploadMediaNotification);
+    if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
+      this.setState({
+        uploadMediaDifferentDeviceModal: false,
+        uploadMediaNotification: uploadMediaNotification,
+        downloadMediaModal: true
+        // media: uploadMediaNotification.data.media,
+        // type: uploadMediaNotification.data.media_type.includes("video")
+        //   ? "VIDEO"
+        //   : "IMAGE"
+      });
+      this.props.getWebUploadLinkMedia(this.props.campaign_id);
+    }
+  };
+
   componentDidUpdate(prevProps, prevState) {
+    // if (this.props.mediaWebLink && !prevState.downloadMediaModal) {
+    //   this.setState({
+    //     downloadMediaModal: true
+    //   });
+    // }
     if (
       this.state.objective !== "BRAND_AWARENESS" &&
       ((prevState.campaignInfo.attachment === "BLANK" &&
@@ -1500,7 +1531,31 @@ class AdDesign extends Component {
       </View>
     );
   };
-
+  setUploadFromDifferentDeviceModal = val => {
+    this.setState({
+      uploadMediaDifferentDeviceModal: val
+    });
+  };
+  getWebUploadLinkMediaURL = () => {
+    this.props.getWebUploadLinkMedia(this.props.campaign_id);
+    this.setMediaModalVisible(false);
+  };
+  setDownloadMediaModal = val => {
+    this.setState({
+      downloadMediaModal: val
+    });
+  };
+  handleDownloadMedia = (mediaWebLink, mediaTypeWebLink) => {
+    this.setState({
+      media: mediaWebLink,
+      type: mediaTypeWebLink,
+      downloadMediaModal: false
+    });
+    this.props.save_campaign_info({
+      media: mediaWebLink,
+      type: mediaTypeWebLink
+    });
+  };
   render() {
     let { media, storyAdCards } = this.state;
     let validCards =
@@ -1933,6 +1988,28 @@ class AdDesign extends Component {
           _pickImage={this._pickImage}
           mediaModalVisible={this.state.mediaModalVisible}
           setMediaModalVisible={this.setMediaModalVisible}
+          adType={this.props.adType}
+          setUploadFromDifferentDeviceModal={
+            this.setUploadFromDifferentDeviceModal
+          }
+          getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
+          setDownloadMediaModal={this.setDownloadMediaModal}
+        />
+        <UploadMediaFromDifferentDevice
+          setUploadFromDifferentDeviceModal={
+            this.setUploadFromDifferentDeviceModal
+          }
+          uploadMediaDifferentDeviceModal={
+            this.state.uploadMediaDifferentDeviceModal
+          }
+        />
+        <DownloadMediaFromDifferentDevice
+          downloadMediaModal={this.state.downloadMediaModal}
+          mediaTypeWebLink={this.props.mediaTypeWebLink}
+          mediaWebLink={this.props.mediaWebLink}
+          setDownloadMediaModal={this.setDownloadMediaModal}
+          handleDownloadMedia={this.handleDownloadMedia}
+          webUploadLinkMediaLoading={this.props.webUploadLinkMediaLoading}
         />
         <Modal
           visible={
@@ -1996,7 +2073,10 @@ const mapStateToProps = state => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
   collectionAdMedia: state.campaignC.collectionAdMedia,
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
+  mediaTypeWebLink: state.campaignC.mediaTypeWebLink,
+  mediaWebLink: state.campaignC.mediaWebLink,
+  webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -2042,7 +2122,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.setRejectedCollectionAds(data)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   setStoryAdAttachment: info =>
-    dispatch(actionCreators.setStoryAdAttechment(info))
+    dispatch(actionCreators.setStoryAdAttechment(info)),
+  getWebUploadLinkMedia: campaign_id =>
+    dispatch(actionCreators.getWebUploadLinkMedia(campaign_id))
 });
 export default connect(
   mapStateToProps,
