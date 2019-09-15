@@ -25,155 +25,155 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 40
   },
-	titletext: {
-		textAlign: 'left',
-		color: '#fff',
-		paddingTop: 10,
-		fontFamily: 'montserrat-bold',
-		fontSize: 16,
-		paddingVertical: 0,
-	},
-	deepLinkContainer: {
-		flex: 1,
-		padding: 10,
-		width: '100%',
-	},
-	deepLinkHeader: {
-		flexDirection: 'column',
-		width: '100%',
-		justifyContent: 'space-between',
-		paddingTop: Platform.OS === 'android' ? 10 : 0,
-	},
-	longFormVideoContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingHorizontal: 30,
-	},
-	longFormVideoContent: {
-		flexDirection: 'column',
-		paddingTop: 30,
-	},
-	videoSelectButton: {
-		backgroundColor: '#FF9D00',
-		alignSelf: 'center',
-		marginVertical: 10,
-		borderRadius: 30,
-	},
-	subtext: {
-		bottom: 5,
-		alignSelf: 'center',
-		width: 300,
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		paddingTop: 5,
-		color: '#fff',
-		paddingHorizontal: 20,
-		textAlign: 'center',
-	},
-	url: {
-		alignSelf: 'center',
-		fontFamily: 'montserrat-light',
-		fontSize: 13,
-		color: '#fff',
-		paddingRight: 20,
-		// textAlign: "left"
-	},
-	subTitle: {
-		bottom: 5,
-		alignSelf: 'center',
-		fontFamily: 'montserrat-bold',
-		fontSize: 14,
-		paddingTop: 5,
-		color: '#fff',
-		paddingHorizontal: 20,
-		textAlign: 'center',
-	},
-	addVideoText: {
-		alignSelf: 'center',
-		fontSize: 14,
-		paddingTop: 5,
-		textAlign: 'center',
-		color: '#FF9D00',
-		position: 'absolute',
-		top: '70%',
-		fontFamily: 'montserrat-bold',
-	},
-	safeAreaContainer: {
-		// height: '100%',
-		flex: 1,
-		// backgroundColor: '#FFFF',
-	},
-	warningText: {
-		color: '#fff',
-		textAlign: 'center',
-		top: 10,
-		fontFamily: 'montserrat-bold',
-		fontSize: 13,
-	},
-	listText: {
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		color: '#fff',
-		width: 170,
-	},
-	footerText: {
-		color: '#fff',
-		fontSize: 14,
-		fontFamily: 'montserrat-regular',
-		paddingBottom: 0,
-		paddingTop: 30,
-		textDecorationLine: 'underline',
-		textAlign: 'center',
-	},
-	textcontainer: {
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	appTexts: {
-		alignSelf: 'center',
-		fontFamily: 'montserrat-medium',
-		fontSize: widthPercentageToDP(3.2),
-		marginBottom: 6,
-		color: '#fff',
-		textAlign: 'center',
-	},
-	video: {
-		borderRadius: 50,
-		alignSelf: 'center',
-		marginBottom: 30,
-		alignItems: 'center',
-	},
-	placeholder: {
-		borderRadius: 13,
-		overflow: 'hidden',
-		alignSelf: 'center',
-		width: '100%',
-		height: 150,
-		zIndex: 0,
-		borderWidth: 2,
-		borderStyle: 'dashed',
-		borderColor: '#fff',
-		justifyContent: 'center',
-	},
-	text: {
-		color: '#fff',
-		paddingBottom: 10,
-		fontFamily: 'montserrat-bold',
-		fontSize: 14,
-		alignSelf: 'center',
-	},
-	downArrowIcon: {
-		color: '#fff',
-		fontSize: 20,
-		left: 0,
-	},
-	deepLinkError: {
-		color: 'white',
-		fontFamily: 'montserrat-bold',
-		fontSize: 12,
-		alignSelf: 'center',
-	}
+  titletext: {
+    textAlign: "left",
+    color: "#fff",
+    paddingTop: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    paddingVertical: 0
+  },
+  deepLinkContainer: {
+    flex: 1,
+    padding: 10,
+    width: "100%"
+  },
+  deepLinkHeader: {
+    flexDirection: "column",
+    width: "100%",
+    justifyContent: "space-between",
+    paddingTop: Platform.OS === "android" ? 10 : 0
+  },
+  longFormVideoContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 30
+  },
+  longFormVideoContent: {
+    flexDirection: "column",
+    paddingTop: 30
+  },
+  videoSelectButton: {
+    backgroundColor: "#FF9D00",
+    alignSelf: "center",
+    marginVertical: 10,
+    borderRadius: 30
+  },
+  subtext: {
+    bottom: 5,
+    alignSelf: "center",
+    width: 300,
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center"
+  },
+  url: {
+    alignSelf: "center",
+    fontFamily: "montserrat-light",
+    fontSize: 13,
+    color: "#fff",
+    paddingRight: 20
+    // textAlign: "left"
+  },
+  subTitle: {
+    bottom: 5,
+    alignSelf: "center",
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center"
+  },
+  addVideoText: {
+    alignSelf: "center",
+    fontSize: 14,
+    paddingTop: 5,
+    textAlign: "center",
+    color: "#FF9D00",
+    position: "absolute",
+    top: "70%",
+    fontFamily: "montserrat-bold"
+  },
+  safeAreaContainer: {
+    // height: '100%',
+    flex: 1
+    // backgroundColor: '#FFFF',
+  },
+  warningText: {
+    color: "#fff",
+    textAlign: "center",
+    top: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: 13
+  },
+  listText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff",
+    width: 170
+  },
+  footerText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    paddingBottom: 0,
+    paddingTop: 30,
+    textDecorationLine: "underline",
+    textAlign: "center"
+  },
+  textcontainer: {
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  appTexts: {
+    alignSelf: "center",
+    fontFamily: "montserrat-medium",
+    fontSize: widthPercentageToDP(3.2),
+    marginBottom: 6,
+    color: "#fff",
+    textAlign: "center"
+  },
+  video: {
+    borderRadius: 50,
+    alignSelf: "center",
+    marginBottom: 30,
+    alignItems: "center"
+  },
+  placeholder: {
+    borderRadius: 13,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: "100%",
+    height: 150,
+    zIndex: 0,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: "#fff",
+    justifyContent: "center"
+  },
+  text: {
+    color: "#fff",
+    paddingBottom: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    alignSelf: "center"
+  },
+  downArrowIcon: {
+    color: "#fff",
+    fontSize: 20,
+    left: 0
+  },
+  deepLinkError: {
+    color: "white",
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    alignSelf: "center"
+  },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
     paddingHorizontal: 10,
