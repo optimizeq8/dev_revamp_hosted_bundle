@@ -587,9 +587,9 @@ class AdObjective extends Component {
                       </Text>
                     </Button>
                   </View>
-                  <Text style={styles.minBudget}>
+                  {/* <Text style={styles.minBudget}>
                     Collection Ads only work on iOS
-                  </Text>
+                  </Text> */}
                 </View>
               )}
 
