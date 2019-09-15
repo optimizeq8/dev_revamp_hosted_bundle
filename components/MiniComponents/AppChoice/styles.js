@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 	text: {
 		color: '#fff',
 		paddingBottom: 10,
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		fontSize: 14,
 		alignSelf: 'center',
 	},
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
 	},
 	OSText: {
 		fontSize: widthPercentageToDP(2.9),
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		alignSelf: 'center',
 	},
 	callToActionLabelView: {

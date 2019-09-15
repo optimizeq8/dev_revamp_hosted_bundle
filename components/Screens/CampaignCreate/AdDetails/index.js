@@ -772,6 +772,7 @@ class AdDetails extends Component {
         ) : (
           <RNImageOrCacheImage
             media={media}
+            blurRadius={30}
             style={[
               styles.imageBackgroundViewWrapper,
               this.state.sidemenustate
@@ -782,6 +783,7 @@ class AdDetails extends Component {
             ]}
           />
         )}
+
         <SafeAreaView
           style={[
             styles.safeArea
@@ -1241,9 +1243,6 @@ class AdDetails extends Component {
               </Content>
             </Container>
           </Container>
-          {/* <Modal isVisible={this.props.loading}>
-            <LoadingScreen top={50} />
-            </Modal> */}
         </SafeAreaView>
       </Sidemenu>
     );

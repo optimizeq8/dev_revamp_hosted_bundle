@@ -36,8 +36,6 @@ class BusinessList extends Component {
     });
   };
   render() {
-    console.log(this.props.businessAccounts);
-
     const list = this.state.filteredBusinesses.map(business => (
       <BusinessCard business={business} key={business.businessid} />
     ));

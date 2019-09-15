@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: "#fff",
     fontSize: 41,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   lottieViewContainer: {
     // zIndex: 10,

@@ -7,11 +7,12 @@ const preview = {
 };
 export default class RNImageOrCacheImage extends Component {
   render() {
-    let { media, style, resizeMode } = this.props;
+    let { media, style, resizeMode, blurRadius } = this.props;
     return media.includes("https://") ? (
-      <Image resizeMode="stretch" style={style} {...{ preview, uri: media }} />
+      <Image style={style} {...{ preview, uri: media }} />
     ) : (
       <RNImage
+        blurRadius={blurRadius}
         resizeMode={resizeMode}
         style={style}
         source={{

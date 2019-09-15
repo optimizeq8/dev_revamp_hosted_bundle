@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   subHeadings: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 14,
     paddingVertical: 10
   },
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   chartTextNum: {
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     textAlign: "center"
   },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   menudetails: {
     paddingLeft: 15,
     color: "#fff",
-    fontFamily: "montserrat-extralight",
+    fontFamily: "montserrat-light",
     fontSize: 11
   },
   flex: {

@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		textAlign: 'center',
 		top: 10,
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		fontSize: 13,
 	},
 	listText: {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 	text: {
 		color: '#fff',
 		paddingBottom: 10,
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		fontSize: 14,
 		alignSelf: 'center',
 	},
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
 	},
 	deepLinkError: {
 		color: 'white',
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		fontSize: 12,
 		alignSelf: 'center',
 	},

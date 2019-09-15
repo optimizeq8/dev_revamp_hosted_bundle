@@ -52,7 +52,6 @@ export default class Picker extends Component {
         hideConfirm
         subKey="children"
         styles={SectionStyle}
-        confirmText={"\u2714"}
         stickyFooterComponent={
           <Button
             style={styles.stickyFooterButton}

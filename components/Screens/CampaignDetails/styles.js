@@ -72,12 +72,16 @@ const styles = StyleSheet.create({
   },
 
   categories: {
-    textAlign: "center",
+    textAlign: "left",
     color: "#fff",
     flexDirection: "column",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 13,
     paddingHorizontal: 10
+  },
+  categoryView: {
+    flexDirection: "row",
+    alignSelf: "flex-start"
   },
   subHeadings: {
     textAlign: "center",
@@ -101,11 +105,11 @@ const styles = StyleSheet.create({
     width: 150
   },
   subtext: {
-    fontFamily: "montserrat-extralight",
+    fontFamily: "montserrat-light",
     fontSize: 14,
     paddingTop: 5,
     color: "#fff",
-    textAlign: "center"
+    textAlign: "left"
   },
   numbers: {
     textAlign: "center",
@@ -281,7 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   choiceText: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     color: "#fff",
     textAlign: "center"
   },

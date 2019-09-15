@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     bottom: 1.5,
     textAlign: "center",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   safeAreaView: {
     flex: 1,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 17,
     paddingVertical: 10,
     bottom: 5
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 15,
     textAlign: "center",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   placeholder: {
     backgroundColor: "#fff",

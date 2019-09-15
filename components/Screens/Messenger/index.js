@@ -79,7 +79,6 @@ class Messenger extends Component {
     socket.connect();
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
-      console.log("data:", data);
       this.props.admin_response(data);
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -106,8 +105,6 @@ class Messenger extends Component {
     return true;
   };
   _handleSubmission = () => {
-    console.log("this.props.open_conversation", this.props.open_conversation);
-
     if (this.state.textValue !== "") {
       if (this.props.open_conversation) this.props.reply(this.state.textValue);
       else this.props.start_conversation(this.state.textValue);
@@ -126,7 +123,6 @@ class Messenger extends Component {
   _keyExtractor = (item, index) => item.id;
 
   scrollToIndex = params => {
-    console.log("params", params);
     return {
       animated: true,
       index: 50,

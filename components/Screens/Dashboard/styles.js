@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   text: {
     alignSelf: "center",
     color: "#5F5F5F",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 18
   },
   brandStyle: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     minWidth: "50%",
     height: 55,
     color: "#5F5F5F",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 21,
     backgroundColor: "#F4F4F4",
     borderRadius: 30,

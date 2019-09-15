@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: '#fff',
 		textAlign: 'center',
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		paddingTop: 30,
 	},
 	input2: {

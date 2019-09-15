@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
   subtext: {
     paddingTop: 5,
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 10,
     color: "#fff"
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   containerStyle: {
     position: "absolute",

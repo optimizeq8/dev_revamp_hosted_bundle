@@ -51,7 +51,7 @@ export default class StatusModal extends Component {
             <Text
               style={[
                 {
-                  fontFamily: "montserrat-semibold",
+                  fontFamily: "montserrat-bold",
                   color: "#fff",
                   fontSize: 14
                 }
@@ -64,7 +64,7 @@ export default class StatusModal extends Component {
           <Text
             style={[
               styles.numbers,
-              { fontSize: 37, fontFamily: "montserrat-semibold" }
+              { fontSize: 37, fontFamily: "montserrat-bold" }
             ]}
           >
             {formatNumber(

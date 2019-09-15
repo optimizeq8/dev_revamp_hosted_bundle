@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 		paddingTop: 12,
 	},
 	budgetText: {
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 		fontSize: 18,
 		color: '#FFFFFF',
 	},

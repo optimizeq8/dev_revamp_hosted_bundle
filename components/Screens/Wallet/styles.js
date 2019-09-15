@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
 
   inputtext: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 31 / PixelRatio.getFontScale(),
     color: "#FF9D00",
     alignSelf: "center"

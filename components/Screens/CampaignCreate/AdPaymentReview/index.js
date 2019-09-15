@@ -92,6 +92,7 @@ class AdPaymentReview extends Component {
             </View>
           )}
           <ImageBackground
+            blurRadius={30}
             // imageStyle={{ opacity: 0.2 }}
             style={styles.imageBackground}
             source={{

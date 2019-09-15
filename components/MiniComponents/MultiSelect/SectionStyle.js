@@ -12,7 +12,7 @@ export const colors = {
   searchPlaceholderTextColor: "#fff",
   searchSelectionColor: "#fff"
 };
-export default (styles = StyleSheet.create({
+export default styles = StyleSheet.create({
   selectToggle: {
     marginBottom: 30,
     borderBottomWidth: 0.5,
@@ -28,7 +28,7 @@ export default (styles = StyleSheet.create({
     // marginTop: hp(5),
     marginVertical: 0,
     marginLeft: 0,
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "rgba(0,0,0,0.9)",
     width: wp(100)
   },
   searchBar: {
@@ -62,4 +62,4 @@ export default (styles = StyleSheet.create({
     alignSelf: "center"
   },
   confirmText: { color: "#fff" }
-}));
+});
