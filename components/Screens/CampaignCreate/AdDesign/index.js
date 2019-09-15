@@ -54,8 +54,13 @@ import SwipeCompCondition from "./SwipeCompCondition";
 import CircleLoader from "../../../MiniComponents/CircleLoader/CircleLoader";
 import FooterText from "./FooterText";
 import LoadingModal from "./LoadingModal";
-import { _handleSubmission, formatMedia } from "./Functions/index";
-import { _pickImage, pick } from "./Functions/PickImage";
+import {
+  _handleSubmission,
+  formatMedia,
+  _changeDestination
+} from "./Functions/index";
+import { _pickImage } from "./Functions/PickImage";
+import { formatStoryAd } from "./Functions/formatStoryAd";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -277,117 +282,9 @@ class AdDesign extends Component {
       });
     });
   };
-  askForPermssion = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-    if (status !== "granted") {
-      this.onToggleModal(false);
-      showMessage({
-        message: "Please allow access to the gallary to upload media.",
-        position: "top",
-        type: "warning"
-      });
-      Platform.OS === "ios" && Linking.openURL("app-settings:");
-    }
-  };
 
   setMediaModalVisible = visible => {
     this.setState({ mediaModalVisible: visible });
-  };
-  _changeDestination = (
-    destination,
-    call_to_action,
-    attachment,
-    appChoice = null,
-    whatsAppCampaign = null
-  ) => {
-    let newData = {};
-    if (this.adType === "StoryAd") {
-      // let cards = this.props.storyAdsArray;
-      // let storyAdAttachment = this.props.storyAdAttachment;
-      // let card = this.props.storyAdsArray[
-      //   this.state.storyAdCards.selectedStoryAd.index
-      // ];
-
-      this.props.setStoryAdAttachment({
-        attachment,
-        call_to_action,
-        destination
-      });
-      this.setState({ swipeUpError: null, storyAdAttachChanged: true });
-      // if (attachment.hasOwnProperty("longformvideo_media")) {
-      //   card = {
-      //     ...card,
-      //     ...storyAdAttachment
-      //   };
-      // } else
-      //   card = {
-      //     ...card,
-      //     index: this.state.storyAdCards.selectedStoryAd.index,
-      //     ...storyAdAttachment
-      //   };
-
-      // cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-      // this.setState({
-      //   storyAdCards: {
-      //     ...this.state.storyAdCards,
-      //     // storyAdSelected: false,
-      //     selectedStoryAd: {
-      //       ...card
-      //     }
-      //   },
-      //   swipeUpError: null
-      // });
-    } else if (attachment.hasOwnProperty("longformvideo_media")) {
-      newData = {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          destination,
-          call_to_action: call_to_action
-        },
-
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-      };
-      this.setState(newData);
-
-      this.props.save_campaign_info({
-        ...newData.campaignInfo,
-        [Object.keys(attachment)[0]]: attachment.longformvideo_media,
-        [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
-      });
-    } else {
-      newData = {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          destination,
-          call_to_action,
-          attachment
-        },
-        appChoice,
-        swipeUpError: null
-      };
-      if (whatsAppCampaign) {
-        newData = {
-          ...newData,
-          campaignInfo: {
-            ...newData.campaignInfo,
-            insta_handle: whatsAppCampaign.insta_handle,
-            whatsappnumber: whatsAppCampaign.whatsappnumber,
-            weburl: whatsAppCampaign.weburl,
-            callnumber: whatsAppCampaign.callnumber
-          }
-        };
-        this.props.save_campaign_info({
-          insta_handle: whatsAppCampaign.insta_handle,
-          whatsappnumber: whatsAppCampaign.whatsappnumber,
-          weburl: whatsAppCampaign.weburl,
-          callnumber: whatsAppCampaign.callnumber
-        });
-      }
-      this.setState(newData);
-      this.props.save_campaign_info({ ...newData.campaignInfo, appChoice });
-    }
   };
 
   changeBusinessName = brand_name => {
@@ -741,110 +638,6 @@ class AdDesign extends Component {
     });
   };
 
-  formatStoryAd = async ad => {
-    var storyBody = new FormData();
-    let card = this.props.storyAdsArray[ad.index];
-    let storyAdAttachment = this.props.storyAdAttachment;
-    if (
-      !this.state.storyAdCards.selectedStoryAd.iosVideoUploaded &&
-      card.rejectionUpload
-    ) {
-      let res = card.media.split("/");
-      res = res[res.length - 1];
-
-      let format = res.split(".")[1];
-      var photo = {
-        uri: card.media,
-        type: card.media_type + "/" + format,
-        name: res
-      };
-      storyBody.append("story_media", photo);
-      storyBody.append("story_media_type", card.media_type);
-    }
-    if (
-      storyAdAttachment.hasOwnProperty(
-        "longformvideo_media" && card.rejectionLongVidUpload
-      )
-    ) {
-      let resVideo = storyAdAttachment.longformvideo_media.split(
-        "/ImagePicker/"
-      );
-      let formatVideo = resVideo[1].split(".");
-      var video = {
-        uri: card.longformvideo_media,
-        type: card.longformvideo_media_type + "/" + formatVideo[1],
-        name: resVideo[1]
-      };
-
-      storyBody.append("story_longformvideo_media", video);
-      storyBody.append(
-        "story_longformvideo_media_type",
-        storyAdAttachment.longformvideo_media_type
-      );
-    }
-    storyBody.append(
-      "story_longformvideo_media_upload",
-      storyAdAttachment.rejectionLongVidUpload ? 1 : 0
-    );
-    storyBody.append(
-      "story_name",
-      this.rejected
-        ? card.name
-        : this.state.campaignInfo.brand_name + " " + card.index
-    );
-    storyBody.append(
-      "story_destination",
-      storyAdAttachment.destination ? storyAdAttachment.destination : "BLANK"
-    );
-    storyBody.append(
-      "campaign_id",
-      this.selectedCampaign
-        ? this.selectedCampaign.campaign_id
-        : this.props.campaign_id
-    );
-    storyBody.append(
-      "story_order",
-      this.rejected ? this.state.storyAdCards.selectedStoryAd.index : card.index
-    );
-    storyBody.append(
-      "story_call_to_action",
-      storyAdAttachment.call_to_action
-        ? storyAdAttachment.call_to_action.value
-        : "BLANK"
-    );
-    storyBody.append(
-      "story_attachment",
-      storyAdAttachment.attachment !== "BLANK"
-        ? JSON.stringify(storyAdAttachment.attachment)
-        : "BLANK"
-    );
-
-    card.story_id && storyBody.append("story_id", card.story_id);
-    storyBody.append(
-      "ios_upload",
-      Platform.OS === "ios" && card.iosVideoUploaded ? 1 : 0
-    );
-    storyBody.append("story_media_upload", card.rejectionUpload ? 1 : 0);
-    console.log(storyBody);
-
-    await this.handleUpload();
-    await this.props.uploadStoryAdCard(
-      storyBody,
-      card,
-      this.state.signal,
-      this.rejected
-    );
-    this.setState({
-      storyAdCards: {
-        ...this.state.storyAdCards,
-        storyAdSelected: false
-
-        // numOfAds: this.state.storyAdCards.numOfAds + 1
-      }
-    });
-    return;
-  };
-
   setTheState = state => {
     this.setState({ ...state });
   };
@@ -1088,7 +881,26 @@ class AdDesign extends Component {
                   )}
                   {videoIsLoading ? <CameraLoading /> : null}
                   <SwipeCompCondition
-                    _changeDestination={this._changeDestination}
+                    _changeDestination={(
+                      destination,
+                      call_to_action,
+                      attachment,
+                      appChoice = null,
+                      whatsAppCampaign
+                    ) =>
+                      _changeDestination(
+                        destination,
+                        call_to_action,
+                        attachment,
+                        appChoice,
+                        whatsAppCampaign,
+                        this.adType,
+                        this.props.setStoryAdAttachment,
+                        this.state.campaignInfo,
+                        this.props.save_campaign_info,
+                        this.setTheState
+                      )
+                    }
                     navigation={this.props.navigation}
                     objective={objective}
                     destination={destination}
@@ -1158,10 +970,21 @@ class AdDesign extends Component {
                               this.props.storyAdsArray,
                               storyAdCards,
                               storyAdAttachChanged,
-                              this.formatStoryAd,
+                              formatStoryAd,
                               this.validator,
                               this.finalSubmission,
-                              this.setTheState
+                              this.setTheState,
+                              {
+                                //for formatStoryAd
+                                storyAdAttachment: this.props.storyAdAttachment,
+                                campaignInfo: this.state.campaignInfo,
+                                selectedCampaign: this.selectedCampaign,
+                                campaign_id: this.props.campaign_id,
+                                rejected: this.rejected,
+                                handleUpload: this.handleUpload,
+                                signal: this.state.signal,
+                                uploadStoryAdCard: this.props.uploadStoryAdCard
+                              }
                             )
                           }
                           style={styles.button}
@@ -1187,10 +1010,21 @@ class AdDesign extends Component {
                             this.props.storyAdsArray,
                             storyAdCards,
                             storyAdAttachChanged,
-                            this.formatStoryAd,
+                            formatStoryAd,
                             this.validator,
                             this.finalSubmission,
-                            this.setTheState
+                            this.setTheState,
+                            {
+                              //for formatStoryAd
+                              storyAdAttachment: this.props.storyAdAttachment,
+                              campaignInfo: this.state.campaignInfo,
+                              selectedCampaign: this.selectedCampaign,
+                              campaign_id: this.props.campaign_id,
+                              rejected: this.rejected,
+                              handleUpload: this.handleUpload,
+                              signal: this.state.signal,
+                              uploadStoryAdCard: this.props.uploadStoryAdCard
+                            }
                           )
                         }
                         adType={this.adType}

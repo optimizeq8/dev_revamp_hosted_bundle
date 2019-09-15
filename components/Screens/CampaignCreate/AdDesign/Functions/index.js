@@ -7,7 +7,8 @@ export const _handleSubmission = async (
   formatStoryAd,
   validator,
   finalSubmission,
-  setTheState
+  setTheState,
+  formatStoryAdParams
 ) => {
   let validStoryAds = [false];
   if (adType === "StoryAd") {
@@ -18,7 +19,6 @@ export const _handleSubmission = async (
       storyAdAttachChanged
     ) {
       if (storyAdCards.storyAdSelected) {
-        // formatStoryAd();
         setTheState({
           storyAdCards: {
             ...storyAdCards,
@@ -36,7 +36,22 @@ export const _handleSubmission = async (
         !validStoryAds.every(ad => ad.uploaded)
       ) {
         await validStoryAds.forEach(
-          ad => (!ad.uploaded || storyAdAttachChanged) && formatStoryAd(ad)
+          ad =>
+            (!ad.uploaded || storyAdAttachChanged) &&
+            formatStoryAd(
+              ad,
+              storyAdsArray,
+              formatStoryAdParams.storyAdAttachment,
+              storyAdCards,
+              formatStoryAdParams.campaignInfo,
+              formatStoryAdParams.selectedCampaign,
+              formatStoryAdParams.campaign_id,
+              formatStoryAdParams.rejected,
+              formatStoryAdParams.handleUpload,
+              formatStoryAdParams.signal,
+              formatStoryAdParams.uploadStoryAdCard,
+              setTheState
+            )
         );
         setTheState({ storyAdAttachChanged: false });
       }
@@ -142,4 +157,79 @@ export const formatMedia = (
   setTheState({
     formatted: body
   });
+};
+
+export const _changeDestination = (
+  destination,
+  call_to_action,
+  attachment,
+  appChoice = null,
+  whatsAppCampaign = null,
+  adType,
+  setStoryAdAttachment,
+  campaignInfo,
+  save_campaign_info,
+  setTheState
+) => {
+  let newData = {};
+  if (adType === "StoryAd") {
+    setStoryAdAttachment({
+      attachment,
+      call_to_action,
+      destination
+    });
+    setTheState({ swipeUpError: null, storyAdAttachChanged: true });
+  } else if (attachment.hasOwnProperty("longformvideo_media")) {
+    newData = {
+      campaignInfo: {
+        ...campaignInfo,
+        destination,
+        call_to_action: call_to_action
+      },
+
+      [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+      [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+    };
+    setTheState(newData);
+
+    save_campaign_info({
+      ...newData.campaignInfo,
+      [Object.keys(attachment)[0]]: attachment.longformvideo_media,
+      [Object.keys(attachment)[1]]: attachment.longformvideo_media_type
+    });
+  } else {
+    newData = {
+      campaignInfo: {
+        ...campaignInfo,
+        destination,
+        call_to_action,
+        attachment
+      },
+      appChoice,
+      swipeUpError: null
+    };
+    if (whatsAppCampaign) {
+      newData = {
+        ...newData,
+        campaignInfo: {
+          ...newData.campaignInfo,
+          insta_handle: whatsAppCampaign.insta_handle,
+          whatsappnumber: whatsAppCampaign.whatsappnumber,
+          weburl: whatsAppCampaign.weburl,
+          callnumber: whatsAppCampaign.callnumber
+        }
+      };
+      save_campaign_info({
+        insta_handle: whatsAppCampaign.insta_handle,
+        whatsappnumber: whatsAppCampaign.whatsappnumber,
+        weburl: whatsAppCampaign.weburl,
+        callnumber: whatsAppCampaign.callnumber
+      });
+    }
+    setTheState(newData);
+    save_campaign_info({
+      ...newData.campaignInfo,
+      appChoice
+    });
+  }
 };
