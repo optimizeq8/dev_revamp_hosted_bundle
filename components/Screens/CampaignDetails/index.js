@@ -230,7 +230,7 @@ class CampaignDetails extends Component {
                   )
                   .regions.find(reg => reg.id === id).name
             )
-            .join(",\n");
+            .join(", ");
 
         interesetNames =
           targeting && targeting.hasOwnProperty("interests")
@@ -262,6 +262,12 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
+        console.log(
+          selectedCampaign &&
+            selectedCampaign.campaign_end === "0" &&
+            new Date(selectedCampaign.end_time) > new Date() &&
+            !this.props.campaignEnded
+        );
       }
 
       return (
@@ -306,6 +312,7 @@ class CampaignDetails extends Component {
               </View>
             )}
           <Image
+            blurRadius={40}
             {...{
               preview,
               uri: !loading && selectedCampaign ? selectedCampaign.media : ""
@@ -338,6 +345,20 @@ class CampaignDetails extends Component {
                 closeButton={true}
                 navigation={this.props.navigation}
                 selectedCampaign={selectedCampaign}
+                topRightButtonText={"Edit"}
+                topRightButtonFunction={() =>
+                  this.props.navigation.push("AdDetails", {
+                    editCampaign: true,
+                    campaign: selectedCampaign,
+                    media: selectedCampaign.media
+                  })
+                }
+                showTopRightButton={
+                  selectedCampaign &&
+                  selectedCampaign.campaign_end === "0" &&
+                  new Date(selectedCampaign.end_time) > new Date() &&
+                  !this.props.campaignEnded
+                }
               />
               <Card style={styles.mainCard}>
                 <RNImage
@@ -450,7 +471,7 @@ class CampaignDetails extends Component {
                         styles.numbers,
                         {
                           fontSize: 25,
-                          fontFamily: "montserrat-semibold"
+                          fontFamily: "montserrat-bold"
                         }
                       ]}
                     >
@@ -557,23 +578,14 @@ class CampaignDetails extends Component {
                       <Text style={styles.subHeadings}>Audience</Text>
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "center",
+                          flexDirection: "column",
+                          // justifyContent: "center",
                           marginHorizontal: 40
                         }}
                       >
                         <View style={{ flexDirection: "column" }}>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignSelf: "center"
-                            }}
-                          >
-                            <GenderIcon
-                              width={hp("2")}
-                              height={hp("2")}
-                              style={{ right: 10 }}
-                            />
+                          <View style={styles.categoryView}>
+                            <GenderIcon width={hp("2")} height={hp("2")} />
                             {loading ? (
                               <View style={{ margin: 5 }}>
                                 <PlaceholderLine />
@@ -592,12 +604,7 @@ class CampaignDetails extends Component {
                               </Text>
                             )}
                           </View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignSelf: "center"
-                            }}
-                          >
+                          <View style={styles.categoryView}>
                             <Icon
                               style={styles.icon}
                               type="FontAwesome"
@@ -619,12 +626,7 @@ class CampaignDetails extends Component {
                               </Text>
                             )}
                           </View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignSelf: "center"
-                            }}
-                          >
+                          <View style={styles.categoryView}>
                             <Icon
                               style={styles.icon}
                               type="MaterialCommunityIcons"
@@ -655,10 +657,15 @@ class CampaignDetails extends Component {
                                 <PlaceholderLine />
                               </View>
                             ) : (
-                              <Text style={styles.categories}>
-                                Location(s) {"\n"}
-                                {targeting && targeting.geos[0].country_code}
-                              </Text>
+                              <View style={{ flexDirection: "column" }}>
+                                <Text style={styles.categories}>
+                                  Location{"\n"}
+                                  <Text style={styles.subtext}>
+                                    {targeting &&
+                                      targeting.geos[0].country_code}
+                                  </Text>
+                                </Text>
+                              </View>
                             )}
                           </View>
                         </View>

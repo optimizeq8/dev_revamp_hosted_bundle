@@ -129,7 +129,7 @@ export default class SlideUpPanel extends Component {
           }}
           onDragEnd={value => {
             if (!this.state.gotStats) this.setState({ gotStats: true });
-            if (value > hp("50%")) {
+            if (value > hp("30%")) {
               this._panel.show();
             } else {
               this._panel.hide();

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   menutext: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     alignSelf: "center",
     color: "#fff"
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 
   version: {
     color: "#fff",
-    fontFamily: "montserrat-extralight",
+    fontFamily: "montserrat-light",
     fontSize: 12
     // bottom: 10
   }

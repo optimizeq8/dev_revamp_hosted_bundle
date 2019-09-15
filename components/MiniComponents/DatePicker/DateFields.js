@@ -101,6 +101,35 @@ export default class DateFields extends Component {
     });
   };
 
+  handleReset = () => {
+    if (this.props.chartRange) {
+      this.setState({
+        start_choice: false,
+        end_choice: false,
+        start_timeError: "",
+        modalVisible: false,
+        start_date: "",
+        end_date: ""
+      });
+      this.setState({ modalVisible: false });
+      this.props.durationChange(
+        this.props.selectedCampaign.start_time,
+        this.props.selectedCampaign.end_time
+        // "2019-05-09",
+        // "2019-05-25"
+      );
+    } else {
+      this.setState({
+        start_choice: false,
+        end_choice: false,
+        start_timeError: "",
+        start_date: "",
+        end_date: "",
+        reset: true
+      });
+    }
+  };
+
   render() {
     return (
       <View
@@ -137,14 +166,20 @@ export default class DateFields extends Component {
               style={styles.safeArea}
               forceInset={{ bottom: "never", top: "always" }}
             >
-              <CustomHeader
-                closeButton={true}
-                actionButton={() => {
-                  this.setState({ modalVisible: false });
-                }}
-                title="Duration"
-              />
-
+              <View style={{ alignItems: "center" }}>
+                <CustomHeader
+                  closeButton={true}
+                  actionButton={() => {
+                    this.setState({ modalVisible: false });
+                  }}
+                  topRightButtonText={"Reset"}
+                  topRightButtonFunction={this.handleReset}
+                  showTopRightButton={
+                    this.state.start_date || this.props.chartRange
+                  }
+                  title="Duration"
+                />
+              </View>
               <Text style={styles.textModal}>
                 {this.props.filterMenu
                   ? "Select a date range to filter from"
@@ -189,44 +224,6 @@ export default class DateFields extends Component {
                 />
               </View>
 
-              {this.state.start_date || this.props.chartRange ? (
-                <Text
-                  onPress={() => {
-                    if (this.props.chartRange) {
-                      this.setState({
-                        start_choice: false,
-                        end_choice: false,
-                        start_timeError: "",
-                        modalVisible: false,
-                        start_date: "",
-                        end_date: ""
-                      });
-                      this.setState({ modalVisible: false });
-                      this.props.durationChange(
-                        this.props.selectedCampaign.start_time,
-                        this.props.selectedCampaign.end_time
-                        // "2019-05-09",
-                        // "2019-05-25"
-                      );
-                    } else {
-                      this.setState({
-                        start_choice: false,
-                        end_choice: false,
-                        start_timeError: "",
-                        start_date: "",
-                        end_date: "",
-                        reset: true
-                      });
-                    }
-                  }}
-                  style={[
-                    styles.resetStyle,
-                    { textDecorationLine: "underline" }
-                  ]}
-                >
-                  Reset
-                </Text>
-              ) : null}
               {this.state.end_choice ||
               (this.props.start_time && !this.state.reset) ? (
                 <Button style={styles.button} onPress={() => this.handleDate()}>

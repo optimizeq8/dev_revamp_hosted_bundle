@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { ActivityIndicator } from "react-native-paper";
 
 //styles
@@ -28,7 +28,7 @@ export default class AdTypeCard extends Component {
                 <ActivityIndicator color={globalColors.white} />
               }
               style={styles.media}
-              resizeMode={adType.media !== "snapchat" ? "center" : "stretch"}
+              resizeMode={"stretch"}
               source={adType.media}
             />
           </View>

@@ -79,7 +79,6 @@ class SelectInterests extends Component {
 
             <View style={styles.slidercontainer}>
               <Button
-                disabled={this.props.country_code === ""}
                 style={[
                   styles.toggleSelectorButton,
                   {
@@ -106,90 +105,6 @@ class SelectInterests extends Component {
                   screenName={"Select Interests"}
                   closeCategoryModal={() => this.setState({ open: false })}
                 />
-                {/* <SectionedMultiSelect
-                  readOnlyHeadings
-                  ref={ref => (this.Section = ref)}
-                  loading={isNull(this.state.interests) ? true : false}
-                  modalWithSafeAreaView={true}
-                  items={this.state.interests}
-                  uniqueKey="id"
-                  selectToggleIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="menu-down"
-                      style={styles.indicator}
-                    />
-                  }
-                  selectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle"
-                      style={styles.itemCircles}
-                    />
-                  }
-                  searchPlaceholderText={"Search Interests"}
-                  unselectedIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="circle-outline"
-                      style={styles.itemCircles}
-                    />
-                  }
-                  noResultsComponent={
-                    <Text style={styles.errorText}>No item found</Text>
-                  }
-                  hideSelect
-                  hideConfirm
-                  subKey="children"
-                  styles={SectionStyle}
-                  stickyFooterComponent={
-                    <Button
-                      style={styles.stickyFooterButton}
-                      onPress={() => this.Section._submitSelection()}
-                    >
-                      <CheckmarkIcon width={53} height={53} />
-                    </Button>
-                  }
-                  headerComponent={
-                    <View style={styles.headerComponent}>
-                      <BackButton
-                        style={{ top: 0, left: 0 }}
-                        screenname="Select Interests"
-                        businessname={this.props.mainBusiness.businessname}
-                        navigation={() => this.Section._cancelSelection()}
-                      />
-                    </View>
-                  }
-                  colors={colors}
-                  searchIconComponent={
-                    <Icon
-                      type="MaterialCommunityIcons"
-                      name="magnify"
-                      style={styles.indicator}
-                    />
-                  }
-                  iconKey="icon"
-                  // selectText={"Select All"}
-                  showDropDowns={false}
-                  showRemoveAll={true}
-                  noItemsComponent={
-                    <Text style={styles.errorText}>
-                      Sorry, no interests for selected country
-                    </Text>
-                  }
-                  onCancel={() => {
-                    this.props.onSelectedItemsChange([]);
-                    this.props.onSelectedItemObjectsChange([]);
-                  }}
-                  // highlightChildren
-                  // selectChildren
-                  modalAnimationType="fade"
-                  onSelectedItemsChange={this.props.onSelectedItemsChange}
-                  onSelectedItemObjectsChange={
-                    this.props.onSelectedItemObjectsChange
-                  }
-                  selectedItems={this.props.selectedItems}
-                /> */}
                 {isNull(this.state.interests) && (
                   <ActivityIndicator color="#FFFF" size="large" />
                 )}

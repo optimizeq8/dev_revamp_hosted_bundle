@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   callToActionText: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 20,
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 0, height: 0.5 },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   headlineBottomText: {
     fontSize: 12,
     paddingTop: 2,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   brandNameBottomText: {
     color: "black",

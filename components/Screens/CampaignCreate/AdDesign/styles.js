@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   uplaodText: {
     justifyContent: "center",
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     position: "absolute",
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     color: "white",
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     width: "100%"
   },
@@ -343,7 +343,8 @@ const styles = StyleSheet.create({
   },
   swipeUpSubText: {
     fontSize: 12,
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "montserrat-medium"
   },
   collectionView: {
     alignContent: "center",
@@ -382,7 +383,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: globalColors.orange,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   loadingButtons: {
     backgroundColor: "#fff",
@@ -485,7 +486,7 @@ const styles = StyleSheet.create({
   downloadMediaHeaderText: {
     textAlign: "center",
     color: "#FFF",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 18,
     lineHeight: 22,
     paddingTop: 10,

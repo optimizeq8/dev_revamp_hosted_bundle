@@ -165,7 +165,7 @@ class ProductList extends React.Component {
 										</View>
 										<Text
 											style={{
-												fontFamily: 'montserrat-semibold',
+												fontFamily: 'montserrat-bold',
 												color: '#fff',
 												fontSize: 14,
 												lineHeight: 17,

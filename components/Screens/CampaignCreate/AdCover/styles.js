@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     justifyContent: "flex-end",
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     position: "absolute",

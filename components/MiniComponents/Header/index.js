@@ -16,7 +16,10 @@ export default class Header extends Component {
       closeButton,
       selectedCampaign,
       actionButton,
-      campaignEnded
+      campaignEnded,
+      topRightButtonFunction,
+      topRightButtonText,
+      showTopRightButton
     } = this.props;
     return (
       <View style={styles.container}>
@@ -38,22 +41,10 @@ export default class Header extends Component {
         <Text uppercase style={styles.title}>
           {title}
         </Text>
-        <View style={[styles.right, selectedCampaign ? {} : { width: 24 }]}>
-          {selectedCampaign &&
-          (selectedCampaign.campaign_end === "0") &
-            (new Date(selectedCampaign.end_time) > new Date()) &
-            !campaignEnded ? (
-            <Text
-              onPress={() =>
-                navigation.push("AdDetails", {
-                  editCampaign: true,
-                  campaign: selectedCampaign,
-                  image: selectedCampaign.media
-                })
-              }
-              style={styles.edit}
-            >
-              Edit
+        <View style={[styles.right]}>
+          {showTopRightButton ? (
+            <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
+              {topRightButtonText}
             </Text>
           ) : null}
         </View>

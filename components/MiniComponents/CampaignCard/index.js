@@ -73,7 +73,7 @@ class CampaignCard extends Component {
             <View style={styles.header}>
               <Text
                 ellipsizeMode="tail"
-                numberOfLines={1}
+                numberOfLines={3}
                 style={[styles.titleText]}
               >
                 {this.props.campaign.name}

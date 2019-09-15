@@ -214,9 +214,8 @@ export default class DateRangePicker extends Component<Props> {
           arrowColor: "#FF9D00",
           monthTextColor: "#fff",
           textDayFontFamily: "montserrat-regular",
-          textMonthFontFamily: "montserrat-regular",
+          textMonthFontFamily: "montserrat-bold",
           textDayHeaderFontFamily: "montserrat-bold",
-          textMonthFontWeight: "bold",
           textDayFontSize: 17,
           textMonthFontSize: 13,
           textDayHeaderFontSize: 12

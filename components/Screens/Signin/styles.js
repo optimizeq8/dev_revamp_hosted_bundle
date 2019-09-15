@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	bottomInviteViewContainer: { bottom: '5%' },
-	textInviteCode: { fontFamily: 'montserrat-semibold' },
+	textInviteCode: { fontFamily: 'montserrat-bold' },
 	logoContainer: { alignSelf: 'center' },
 	dontHaveAccountText: { paddingBottom: 7 },
 

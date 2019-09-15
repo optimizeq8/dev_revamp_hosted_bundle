@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
 		width: 250,
 	},
 	errorTextKNET: {
-		fontFamily: 'montserrat-semibold',
+		fontFamily: 'montserrat-bold',
 	},
 	walletPaymentModalContainer: {
 		height: '100%',

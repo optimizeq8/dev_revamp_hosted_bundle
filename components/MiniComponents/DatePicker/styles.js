@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    top: heightPercentageToDP(5) < 30 ? -5 : 30
+    top: heightPercentageToDP(5) < 30 ? -5 : 50
   },
   icon: {
     fontSize: 70,
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
   },
   resetStyle: {
     color: "#fff",
-    alignSelf: "center"
+    fontSize: 15,
+    alignSelf: "flex-end"
   }
 });
 

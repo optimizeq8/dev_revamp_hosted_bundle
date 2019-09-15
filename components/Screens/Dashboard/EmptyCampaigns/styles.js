@@ -27,7 +27,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 30,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   backDrop: {
     position: "absolute",
@@ -52,7 +52,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 12,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   mainText: {
     textAlign: "center",

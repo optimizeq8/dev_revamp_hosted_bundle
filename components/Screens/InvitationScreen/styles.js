@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   logInButtonText: {
     color: "#fff",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   container: {
     // paddingTop: heightPercentageToDP(10),
