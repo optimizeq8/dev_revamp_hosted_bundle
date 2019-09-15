@@ -210,11 +210,10 @@ class AdDetails extends Component {
           }
         );
       }
-      if (
-        this.props.navigation.state.params &&
-        this.props.navigation.state.params.appChoice
-      ) {
-        let navAppChoice = this.props.navigation.state.params.appChoice;
+      console.log(this.props.data.appChoice);
+
+      if (this.props.data.appChoice) {
+        let navAppChoice = this.props.data.appChoice;
         let rep = this.state.campaignInfo;
         rep.targeting.devices[0].os_type = navAppChoice;
         await this.setState({

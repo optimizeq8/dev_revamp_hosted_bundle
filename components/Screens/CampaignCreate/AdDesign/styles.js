@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 2,
     paddingHorizontal: 20,
+    zIndex: 10,
     transform: [
       {
         translateX: 0
