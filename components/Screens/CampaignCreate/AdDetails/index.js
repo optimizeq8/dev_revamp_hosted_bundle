@@ -210,7 +210,6 @@ class AdDetails extends Component {
           }
         );
       }
-      console.log(this.props.data.appChoice);
 
       if (this.props.data.appChoice) {
         let navAppChoice = this.props.data.appChoice;
