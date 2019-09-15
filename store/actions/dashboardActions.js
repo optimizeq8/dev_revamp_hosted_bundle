@@ -35,6 +35,12 @@ export const getCampaignDetails = (id, navigation) => {
         return res.data;
       })
       .then(data => {
+        if (
+          typeof data === "string" &&
+          data.toLoweCase() === "connection-failure"
+        ) {
+          throw TypeError("Connection-Failure, Please try again later");
+        }
         dispatch({
           type: actionTypes.SET_CAMPAIGN,
           payload: { loading: false, data: data.data }
@@ -93,7 +99,7 @@ export const getCampaignStats = (campaign, duration) => {
       payload: true
     });
     createBaseUrl()
-      .post(`getcampaignStats`, {
+      .post(`getcampaignStatsNew`, {
         //testing
         // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
         // start_time: "2019-05-09",

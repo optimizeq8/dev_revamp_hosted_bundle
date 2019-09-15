@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler } from "react-native";
+import { View, ScrollView, BackHandler, Text } from "react-native";
 import { Button, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Sidemenu from "react-native-side-menu";
@@ -99,6 +99,11 @@ class Transactions extends Component {
                     <FilterIcon width={23} height={23} fill="#575757" />
                   </Button>
                 </View>
+                {transList.length === 0 && (
+                  <Text style={styles.noTranText}>
+                    No transactions available
+                  </Text>
+                )}
                 <ScrollView contentContainerStyle={styles.contentContainer}>
                   {transList}
                 </ScrollView>

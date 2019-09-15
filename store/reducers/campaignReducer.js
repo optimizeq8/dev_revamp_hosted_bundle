@@ -79,7 +79,13 @@ const initialState = {
     destination: "BLANK",
     call_to_action: { labe: "BLANK", value: "BLANK" },
     attachment: "BLANK"
-  }
+  },
+  uploadMediaDifferentDeviceURL: "",
+  uploadMediaDifferentDeviceAccessCode: "",
+  errorUploadMediaDiffernetDevice: "",
+  mediaWebLink: "",
+  mediaTypeWebLink: "",
+  webUploadLinkMediaLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -644,6 +650,42 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         storyAdAttachment: sAttachment
+      };
+    case actionTypes.GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
+      return {
+        ...state,
+        uploadMediaDifferentDeviceURL: action.payload.weblink,
+        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode
+      };
+    case actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
+      return {
+        ...state,
+        uploadMediaDifferentDeviceURL: action.payload.weblink,
+        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode,
+        errorUploadMediaDiffernetDevice: action.payload.error
+      };
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA:
+      return {
+        ...state,
+        // data: {
+        //   ...state.data,
+        //   media: action.payload.mediaWebLink,
+        //   type: action.payload.mediaTypeWebLink
+        // },
+        mediaWebLink: action.payload.mediaWebLink,
+        mediaTypeWebLink: action.payload.mediaTypeWebLink
+      };
+    case actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA:
+      return {
+        ...state,
+        mediaWebLink: "",
+        mediaTypeWebLink: "",
+        webUploadLinkMediaLoading: false
+      };
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING:
+      return {
+        ...state,
+        webUploadLinkMediaLoading: action.payload
       };
     default:
       return state;

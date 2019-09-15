@@ -2,7 +2,6 @@ import { StyleSheet, PixelRatio } from "react-native";
 
 const styles = StyleSheet.create({
   searchBarView: {
-    height: "70%",
     width: "100%",
     alignItems: "center"
   },

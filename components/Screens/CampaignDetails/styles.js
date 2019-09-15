@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-extralight",
     fontSize: 14,
     paddingTop: 5,
-    color: "#fff"
-    // textAlign: "left"
+    color: "#fff",
+    textAlign: "center"
   },
   numbers: {
     textAlign: "center",
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 25,
+    fontSize: 20,
     bottom: 5
   },
   gender: {

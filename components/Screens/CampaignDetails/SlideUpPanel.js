@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import Duration from "../../Screens/CampaignCreate/AdObjective/Duration";
 import LineChartGraphs from "./LineChartGraphs";
@@ -43,7 +43,10 @@ export default class SlideUpPanel extends Component {
       // start_time: "2019-05-09",
       // end_time: "2019-05-25"
       start_time: selectedCampaign.start_time,
-      end_time: selectedCampaign.end_time
+      end_time:
+        new Date(selectedCampaign.end_time) < new Date()
+          ? selectedCampaign.end_time
+          : new Date()
     });
     this.setState({ refreshing: false });
   };
@@ -183,7 +186,10 @@ export default class SlideUpPanel extends Component {
                               // start_time: "2019-05-09",
                               // end_time: "2019-05-25"
                               start_time: selectedCampaign.start_time,
-                              end_time: selectedCampaign.end_time
+                              end_time:
+                                new Date(selectedCampaign.end_time) < new Date()
+                                  ? selectedCampaign.end_time
+                                  : new Date()
                             });
                           this._panel.show();
                         }

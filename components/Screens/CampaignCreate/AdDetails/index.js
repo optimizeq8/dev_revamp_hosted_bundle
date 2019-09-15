@@ -754,10 +754,10 @@ class AdDetails extends Component {
         sty
         isOpen={this.state.sidemenustate}
       >
-        {(!media.includes(".jpg") ||
-          !media.includes(".png") ||
-          (campaign.media && !campaign.media.includes(".jpg")) ||
-          (campaign.media && !campaign.media.includes(".png"))) && (
+        {media.includes(".mp4") ||
+        media.includes(".mov") ||
+        (campaign.media && campaign.media.includes(".mp4")) ||
+        (campaign.media && campaign.media.includes(".mov")) ? (
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
@@ -770,20 +770,19 @@ class AdDetails extends Component {
               style={styles.videoBackgroundViewWrapper}
             />
           </View>
+        ) : (
+          <RNImageOrCacheImage
+            media={media}
+            style={[
+              styles.imageBackgroundViewWrapper,
+              this.state.sidemenustate
+                ? {
+                    borderTopRightRadius: 30
+                  }
+                : {}
+            ]}
+          />
         )}
-
-        <RNImageOrCacheImage
-          media={media}
-          style={[
-            styles.imageBackgroundViewWrapper,
-            this.state.sidemenustate
-              ? {
-                  borderTopRightRadius: 30
-                }
-              : {}
-          ]}
-        />
-
         <SafeAreaView
           style={[
             styles.safeArea

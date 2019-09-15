@@ -31,7 +31,6 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 
 // Style
 import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
 
 //data
 import { snapAds } from "../../Data/adTypes.data";
@@ -46,6 +45,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
+import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -229,7 +229,10 @@ class Dashboard extends Component {
         ad={adType}
       />
     ));
-    if (!this.props.mainBusiness && this.props.loadingAccountMgmt) {
+    if (
+      (!this.props.mainBusiness && this.props.loadingAccountMgmt) ||
+      (!this.props.mainBusiness && this.props.loading)
+    ) {
       return (
         <PlacholderDashboard
           placeHolderCards={placeHolderCards}
@@ -257,7 +260,6 @@ class Dashboard extends Component {
           {this.state.anim && (
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />
           )}
-
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -286,7 +288,9 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.push("MessengerLoading")}
+                    onPress={() =>
+                      this.props.navigation.push("MessengerLoading")
+                    }
                     style={[styles.wallet]}
                   >
                     <IntercomIcon width={24} height={24} />
@@ -307,191 +311,202 @@ class Dashboard extends Component {
               )}
             </View>
           )}
-          <Animatable.View
-            duration={500}
-            onAnimationStart={() =>
-              this.state.open && this.setState({ anim: true })
-            }
-            animation={
-              !this.props.loadingAccountMgmt
-                ? this.state.anim
-                  ? mySlideOutDown
-                  : mySlideInUp
-                : ""
-            }
-            style={[
-              styles.animateView,
-              {
-                display: this.state.open ? "none" : "flex"
+          <>
+            <Animatable.View
+              duration={500}
+              onAnimationStart={() =>
+                this.state.open && this.setState({ anim: true })
               }
-            ]}
-          >
-            <Container style={styles.container}>
-              <Sidemenu
-                onChange={isOpen => {
-                  if (isOpen === false) this._handleSideMenuState(isOpen);
-                }}
-                disableGestures={true}
-                menu={menu}
-                menuPosition="right"
-                openMenuOffset={wp("85%")}
-                isOpen={this.state.sidemenustate}
-              >
-                <View style={[styles.nameStyle]}>
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={[styles.text]}
+              animation={
+                !this.props.loadingAccountMgmt
+                  ? this.state.anim
+                    ? mySlideOutDown
+                    : mySlideInUp
+                  : ""
+              }
+              style={[
+                styles.animateView,
+                {
+                  display: this.state.open ? "none" : "flex"
+                }
+              ]}
+            >
+              {!this.props.loading &&
+              !this.props.loadingAccountMgmt &&
+              this.props.campaignList.length === 0 ? (
+                <EmptyCampaigns
+                  navigation={this.props.navigation}
+                  mainBusiness={
+                    this.props.mainBusiness ? this.props.mainBusiness : {}
+                  }
+                />
+              ) : (
+                <Container style={styles.container}>
+                  <Sidemenu
+                    onChange={isOpen => {
+                      if (isOpen === false) this._handleSideMenuState(isOpen);
+                    }}
+                    disableGestures={true}
+                    menu={menu}
+                    menuPosition="right"
+                    openMenuOffset={wp("85%")}
+                    isOpen={this.state.sidemenustate}
                   >
-                    {this.props.mainBusiness
-                      ? this.props.mainBusiness.businessname
-                      : ""}
-                  </Text>
-                </View>
-
-                <View
-                  padder
-                  style={[
-                    styles.mainCard
-                    // { top: this.state.sidemenustate ? 40 : 0 }
-                  ]}
-                >
-                  <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={[styles.brandStyle]}
-                  >
-                    {this.props.mainBusiness
-                      ? this.props.mainBusiness.brandname
-                      : ""}
-                  </Text>
-                  <View style={styles.sideMenuCard}>
-                    <View
-                      style={{
-                        flexDirection: "column"
-                      }}
-                    >
-                      <Button
-                        style={styles.button}
-                        onPress={() => {
-                          if (!this.props.mainBusiness.snap_ad_account_id) {
-                            Segment.trackWithProperties(
-                              "Create SnapAd Acount",
-                              {
-                                category: "Ad Account",
-                                label: "New SnapAd Account"
-                                // business_name: this.props.mainBusiness
-                                //   .businessname,
-                                // business_id: this.props.mainBusiness.businessid
-                              }
-                            );
-                            this.props.navigation.navigate(
-                              "SnapchatCreateAdAcc"
-                            );
-                          } else {
-                            Segment.trackWithProperties("Create Campaign", {
-                              category: "Campaign Creation"
-                            });
-                            this.props.navigation.navigate("AdType");
-                          }
-                        }}
-                      >
-                        <Icon name="plus" type="MaterialCommunityIcons" />
-                      </Button>
+                    <View style={[styles.nameStyle]}>
                       <Text
-                        style={[
-                          styles.campaignButtonText,
-                          styles.newCampaignTitle
-                        ]}
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={[styles.text]}
                       >
-                        New Ad
+                        {this.props.mainBusiness
+                          ? this.props.mainBusiness.businessname
+                          : ""}
                       </Text>
                     </View>
-                    <ScrollView style={{ height: 90, top: 10 }} horizontal>
-                      {adButtons}
-                    </ScrollView>
-                  </View>
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      height: 50,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 10
-                    }}
-                  >
-                    <View style={{ width: "80%" }}>
-                      <SearchBar renderSearchBar={this.renderSearchBar} />
-                    </View>
-                    <Button
-                      style={styles.activebutton}
-                      onPress={() => {
-                        this._handleSideMenuState(true);
-                      }}
+                    <View
+                      padder
+                      style={[
+                        styles.mainCard
+                        // { top: this.state.sidemenustate ? 40 : 0 }
+                      ]}
                     >
-                      <FilterIcon width={23} height={23} fill="#575757" />
-                    </Button>
-                  </View>
+                      <Text
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={[styles.brandStyle]}
+                      >
+                        {this.props.mainBusiness
+                          ? this.props.mainBusiness.brandname
+                          : ""}
+                      </Text>
+                      <View style={styles.sideMenuCard}>
+                        <View
+                          style={{
+                            flexDirection: "column"
+                          }}
+                        >
+                          <Button
+                            style={styles.button}
+                            onPress={() => {
+                              if (!this.props.mainBusiness.snap_ad_account_id) {
+                                Segment.trackWithProperties(
+                                  "Create SnapAd Acount",
+                                  {
+                                    category: "Ad Account",
+                                    label: "New SnapAd Account",
+                                    business_name: this.props.mainBusiness
+                                      .businessname,
+                                    business_id: this.props.mainBusiness
+                                      .businessid
+                                  }
+                                );
+                                this.props.navigation.navigate(
+                                  "SnapchatCreateAdAcc"
+                                );
+                              } else {
+                                Segment.trackWithProperties("Create Campaign", {
+                                  category: "Campaign Creation"
+                                });
+                                this.props.navigation.navigate("AdType");
+                              }
+                            }}
+                          >
+                            <Icon name="plus" type="MaterialCommunityIcons" />
+                          </Button>
+                          <Text
+                            style={[
+                              styles.campaignButtonText,
+                              styles.newCampaignTitle
+                            ]}
+                          >
+                            New Ad
+                          </Text>
+                        </View>
+                        <ScrollView style={{ height: 90, top: 10 }} horizontal>
+                          {adButtons}
+                        </ScrollView>
+                      </View>
 
-                  {this.props.loading ? (
-                    placeHolderCards
-                  ) : (
-                    // <ActivityIndicator size="large" />
-                    <Animatable.View
-                      useNativeDriver
-                      duration={1000}
-                      animation="fadeIn"
-                    >
-                      <FlatList
-                        contentContainerStyle={styles.flatlistContainerStyle}
-                        keyExtractor={item => item.campaign_id}
-                        data={this.props.filteredCampaigns}
-                        onEndReached={() => this.loadMoreData()}
-                        onEndReachedThreshold={0.3}
-                        renderItem={({ item, index }) => (
-                          <CampaignCard
-                            campaign={item}
-                            navigation={this.props.navigation}
-                            key={item.campaign_id}
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          height: 50,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 10
+                        }}
+                      >
+                        <View style={{ width: "80%" }}>
+                          <SearchBar renderSearchBar={this.renderSearchBar} />
+                        </View>
+                        <Button
+                          style={styles.activebutton}
+                          onPress={() => {
+                            this._handleSideMenuState(true);
+                          }}
+                        >
+                          <FilterIcon width={23} height={23} fill="#575757" />
+                        </Button>
+                      </View>
+
+                      {this.props.loading ? (
+                        placeHolderCards
+                      ) : (
+                        // <ActivityIndicator size="large" />
+                        <Animatable.View duration={1000} animation="fadeIn">
+                          <FlatList
+                            contentContainerStyle={
+                              styles.flatlistContainerStyle
+                            }
+                            keyExtractor={item => item.campaign_id}
+                            data={this.props.filteredCampaigns}
+                            onEndReached={() => this.loadMoreData()}
+                            onEndReachedThreshold={0.3}
+                            renderItem={({ item, index }) => (
+                              <CampaignCard
+                                campaign={item}
+                                navigation={this.props.navigation}
+                                key={item.campaign_id}
+                              />
+                            )}
+                            onRefresh={() => this.reloadData()}
+                            refreshing={this.state.fetching_from_server}
+                            ListFooterComponent={() => this.renderFooter()}
                           />
-                        )}
-                        onRefresh={() => this.reloadData()}
-                        refreshing={this.state.fetching_from_server}
-                        ListFooterComponent={() => this.renderFooter()}
-                      />
-                    </Animatable.View>
-                  )}
-                </View>
-              </Sidemenu>
-            </Container>
-            <NavigationEvents
-              onDidFocus={() => {
-                Segment.screen("Dashboard");
-              }}
-            />
-          </Animatable.View>
+                        </Animatable.View>
+                      )}
+                    </View>
+                  </Sidemenu>
+                </Container>
+              )}
+              <NavigationEvents
+                onDidFocus={() => {
+                  Segment.screen("Dashboard");
+                }}
+              />
+            </Animatable.View>
 
-          <Animatable.View
-            useNativeDriver
-            onAnimationEnd={() => {
-              if (this.state.anim) {
-                Segment.screenWithProperties("Home Menu", {
-                  category: "User Menu"
-                });
-              } else {
-                Segment.screen("Dashboard");
-              }
-            }}
-            duration={800}
-            animation={this.state.anim ? "fadeIn" : "fadeOut"}
-            style={styles.menuContainer}
-          >
-            <Menu
-              closeAnimation={this.closeAnimation}
-              navigation={this.props.navigation}
-            />
-          </Animatable.View>
+            <Animatable.View
+              onAnimationEnd={() => {
+                if (this.state.anim) {
+                  Segment.screenWithProperties("Home Menu", {
+                    category: "User Menu"
+                  });
+                } else {
+                  Segment.screen("Dashboard");
+                }
+              }}
+              duration={800}
+              animation={this.state.anim ? "fadeIn" : "fadeOut"}
+              style={styles.menuContainer}
+            >
+              <Menu
+                closeAnimation={this.closeAnimation}
+                navigation={this.props.navigation}
+              />
+            </Animatable.View>
+          </>
         </SafeAreaView>
       );
     }

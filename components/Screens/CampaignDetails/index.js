@@ -169,7 +169,10 @@ class CampaignDetails extends Component {
   render() {
     let loading = this.props.loading;
 
-    if (!loading && this.props.campaignError) {
+    if (
+      (!loading && !this.props.selectedCampaign) ||
+      this.props.campaignError
+    ) {
       return (
         <ErrorComponent loading={loading} navigation={this.props.navigation} />
       );
@@ -259,7 +262,6 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
-        console.log(selectedCampaign);
       }
 
       return (
@@ -282,6 +284,7 @@ class CampaignDetails extends Component {
             </View>
           )}
           {!loading &&
+            selectedCampaign &&
             (!selectedCampaign.media.includes(".jpg") ||
               !selectedCampaign.media.includes(".png")) && (
               <View style={[styles.backgroundViewWrapper]}>
@@ -562,11 +565,15 @@ class CampaignDetails extends Component {
                         <View style={{ flexDirection: "column" }}>
                           <View
                             style={{
-                              flexDirection: "column",
+                              flexDirection: "row",
                               alignSelf: "center"
                             }}
                           >
-                            <GenderIcon width={hp("2")} height={hp("2")} />
+                            <GenderIcon
+                              width={hp("2")}
+                              height={hp("2")}
+                              style={{ right: 10 }}
+                            />
                             {loading ? (
                               <View style={{ margin: 5 }}>
                                 <PlaceholderLine />
@@ -614,7 +621,7 @@ class CampaignDetails extends Component {
                           </View>
                           <View
                             style={{
-                              flexDirection: "column",
+                              flexDirection: "row",
                               alignSelf: "center"
                             }}
                           >

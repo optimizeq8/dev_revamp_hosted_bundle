@@ -77,6 +77,9 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedCampaign: {
           ...state.selectedCampaign,
+          swipes: action.payload.data.swipes,
+          spends: action.payload.data.spend,
+          impressions: action.payload.data.impressions,
 
           total_installs: action.payload.data.total_installs,
           video_views: action.payload.data.video_views,

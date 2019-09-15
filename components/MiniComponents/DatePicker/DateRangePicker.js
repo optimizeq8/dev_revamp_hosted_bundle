@@ -175,6 +175,9 @@ export default class DateRangePicker extends Component<Props> {
               : startDate
             : null
         }
+        pastScrollRange={
+          this.props.filterMenu || this.props.chartRange ? 50 : 0
+        }
         calendarHeight={300}
         calendarWidth={
           this.props.filterMenu
@@ -188,7 +191,11 @@ export default class DateRangePicker extends Component<Props> {
         }
         {...this.props}
         markingType={"period"}
-        current={this.state.fromDate}
+        current={
+          this.props.chartRange
+            ? this.props.selectedCampaign.start_time
+            : this.state.fromDate
+        }
         markedDates={this.state.markedDates}
         onDayPress={day => {
           this.onDayPress(day);

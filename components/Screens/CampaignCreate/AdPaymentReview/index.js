@@ -77,7 +77,7 @@ class AdPaymentReview extends Component {
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
         <>
-          {!media.includes(".jpg") && (
+          {(media.includes(".mp4") || media.includes(".mov")) && (
             <View style={[styles.backgroundViewWrapper, styles.videoView]}>
               <Video
                 source={{
@@ -95,7 +95,15 @@ class AdPaymentReview extends Component {
             // imageStyle={{ opacity: 0.2 }}
             style={styles.imageBackground}
             source={{
-              uri: media.includes(".jpg") ? media : "www.go.com"
+              uri:
+                media.includes(".jpg") ||
+                media.includes(".jpeg") ||
+                media.includes(".png") ||
+                media.includes(".JPG") ||
+                media.includes(".JPEG") ||
+                media.includes(".PNG")
+                  ? media
+                  : "www.go.com"
             }}
           >
             <SafeAreaView

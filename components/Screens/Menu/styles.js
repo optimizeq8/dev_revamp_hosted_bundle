@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
   background: {
     position: "absolute",
-    opacity: 0.2,
+    opacity: 0.4,
     top: 230,
     alignSelf: "center"
   },
