@@ -1,101 +1,103 @@
-import { StyleSheet, Platform, PixelRatio } from 'react-native';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { StyleSheet, Platform, PixelRatio } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
-	black: '#1a1917',
-	gray: '#888888',
-	background1: '#751AFF',
-	background2: '#751AFF',
+  black: "#1a1917",
+  gray: "#888888",
+  background1: "#751AFF",
+  background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-	scrollViewContainer: {
-		width: '100%',
-		flex: 1,
-	},
-	keyboardContainer: {
-		flex: 1,
-		height: '100%',
-	},
-	bottomView: {
-		justifyContent: 'flex-end',
-	},
-	animateView1: {
-		flexDirection: 'row',
-		alignSelf: 'center',
-		marginVertical: 10,
-	},
-	buttonAndroid: {
-		paddingHorizontal: 0,
-	},
-	buttonBoth: {
-		paddingHorizontal: 0,
-	},
-	searchContainer: {
-		borderRadius: 30,
-		// marginBottom: 10,
-		marginTop: 0,
-	},
-	listImage: {
-		marginHorizontal: 0,
-	},
-	flatListStyle: {
-		flex: 1,
-		width: '100%',
-	},
-	flatListContentContainerStyle: {
-		paddingBottom: 30,
-	},
-	itemCallToAction: {
-		marginTop: 20,
-	},
-	itemCallToActionText: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		color: '#fff',
-	},
-	activityIndicator: {
-		height: 150,
-	},
-	searchView: {
-		height: heightPercentageToDP(30),
-		width: '100%',
-	},
-	animateView2: {
-		display: 'flex',
-		flexDirection: 'row',
-		alignItems: 'center',
-		// justifyContent: "space-around",
-		flex: 1,
-		// width: "100%"
-	},
-	optionsRowView: {
-		backgroundColor: 'rgba(0,0,0,0.4)',
-	},
-	iconDown: {
-		color: '#fff',
-		fontSize: 20,
-		// left: 25
-	},
-	listText: {
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		color: '#fff',
-		// flex: 1,
-		width: 170,
-	},
-	footerText: {
-		color: '#fff',
-		fontSize: 14,
-		fontFamily: 'montserrat-regular',
-		paddingBottom: 16,
-		textDecorationLine: 'underline',
-		textAlign: 'center',
-	},
-	icon: {
-		alignSelf: 'center',
-		paddingHorizontal: 7,
-	},
-
+  scrollViewContainer: {
+    width: "100%",
+    flex: 1
+  },
+  keyboardContainer: {
+    flex: 1,
+    height: "100%"
+  },
+  bottomView: {
+    justifyContent: "flex-end"
+  },
+  animateView1: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginVertical: 10
+  },
+  buttonAndroid: {
+    paddingHorizontal: 0
+  },
+  buttonBoth: {
+    paddingHorizontal: 0
+  },
+  searchContainer: {
+    borderRadius: 30,
+    // marginBottom: 10,
+    marginTop: 0
+  },
+  listImage: {
+    marginHorizontal: 0
+  },
+  flatListStyle: {
+    flex: 1,
+    width: "100%"
+  },
+  flatListContentContainerStyle: {
+    paddingBottom: 30
+  },
+  itemCallToAction: {
+    marginTop: 20
+  },
+  itemCallToActionText: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    color: "#fff"
+  },
+  activityIndicator: {
+    height: 150
+  },
+  searchView: {
+    height: heightPercentageToDP(30),
+    width: "100%"
+  },
+  animateView2: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "space-around",
+    flex: 1
+    // width: "100%"
+  },
+  optionsRowView: {
+    backgroundColor: "rgba(0,0,0,0.4)"
+  },
+  iconDown: {
+    color: "#fff",
+    fontSize: 20
+    // left: 25
+  },
+  listText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff",
+    // flex: 1,
+    width: 170
+  },
+  footerText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    paddingBottom: 16,
+    textDecorationLine: "underline",
+    textAlign: "center"
+  },
+  icon: {
+    alignSelf: "center",
+    paddingHorizontal: 7
+  },
 	mainCard: {
 		flex: 1,
 	},

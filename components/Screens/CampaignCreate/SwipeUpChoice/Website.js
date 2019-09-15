@@ -9,13 +9,14 @@ import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import CustomHeader from "../../../MiniComponents/Header";
 
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, {globalColors} from "../../../../GlobalStyles";
+import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -143,6 +144,15 @@ class Website extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.adType === "CollectionAd" && (
+          <View style={{ paddingBottom: 10 }}>
+            <CustomHeader
+              closeButton={false}
+              title={"Swipe up Destination"}
+              navigation={this.props.navigation}
+            />
+          </View>
+        )}
         <KeyboardShift>
           {() => (
             <View
@@ -161,158 +171,158 @@ class Website extends Component {
                   The user will be taken to your website
                 </Text>
               </View>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+              <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 <Picker
-                    searchPlaceholderText={"Search Call To Action"}
-                    data={this.state.callactions}
-                    uniqueKey={"value"}
-                    displayKey={"label"}
-                    open={this.state.inputCallToAction}
-                    onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                    onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
-                    selectedItems={[this.state.campaignInfo.callaction.value]}
-                    single={true}
-                    screenName={"Swipe up destination Website"}
-                    closeCategoryModal={this.closeCallToActionModal}
+                  searchPlaceholderText={"Search Call To Action"}
+                  data={this.state.callactions}
+                  uniqueKey={"value"}
+                  displayKey={"label"}
+                  open={this.state.inputCallToAction}
+                  onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                  onSelectedItemObjectsChange={
+                    this.onSelectedCallToActionChange
+                  }
+                  selectedItems={[this.state.campaignInfo.callaction.value]}
+                  single={true}
+                  screenName={"Swipe up destination Website"}
+                  closeCategoryModal={this.closeCallToActionModal}
                 />
                 <View>
-                    <View style={[styles.callToActionLabelView]}>
-                        <Text uppercase style={[styles.inputLabel]}>
-                            call to action
-                        </Text>
-                    </View>
-                    <Item
-                        // rounded
-                        style={[styles.input, {paddingHorizontal: 30}]}
-                        onPress={() => {
-                            this.setState({ inputCallToAction: true });
-                        }}
-                    >
+                  <View style={[styles.callToActionLabelView]}>
+                    <Text uppercase style={[styles.inputLabel]}>
+                      call to action
+                    </Text>
+                  </View>
+                  <Item
+                    // rounded
+                    style={[styles.input, { paddingHorizontal: 30 }]}
+                    onPress={() => {
+                      this.setState({ inputCallToAction: true });
+                    }}
+                  >
                     <Text style={styles.callActionLabel}>
-                        {this.state.campaignInfo.callaction.label}
+                      {this.state.campaignInfo.callaction.label}
                     </Text>
                     <Icon
-                        type="AntDesign"
-                        name="down"
-                        style={{ color: "#fff", fontSize: 20, left: 25 }}
+                      type="AntDesign"
+                      name="down"
+                      style={{ color: "#fff", fontSize: 20, left: 25 }}
                     />
-                    </Item>
+                  </Item>
                 </View>
 
                 <View>
-                        <View style={styles.topContainer}>
-                        <Button
-                            // block
-                            // dark
-                            style={[
-                            this.state.networkString === "http://"
-                                ? styles.activeButton
-                                : styles.button2,
-                            styles.collectionAdLinkForm1
-                            ]}
-                            onPress={() => {
+                  <View style={styles.topContainer}>
+                    <Button
+                      // block
+                      // dark
+                      style={[
+                        this.state.networkString === "http://"
+                          ? styles.activeButton
+                          : styles.button2,
+                        styles.collectionAdLinkForm1
+                      ]}
+                      onPress={() => {
+                        this.setState({
+                          networkString: "http://"
+                        });
+                      }}
+                    >
+                      <Text
+                        style={[
+                          this.state.networkString === "http://"
+                            ? styles.activeText
+                            : styles.inactiveText
+                        ]}
+                      >
+                        http://
+                      </Text>
+                    </Button>
+                    <Button
+                      // block
+                      // dark
+                      style={[
+                        this.state.networkString === "https://"
+                          ? styles.activeButton
+                          : styles.button2,
+                        styles.collectionAdLinkForm2
+                      ]}
+                      onPress={() => {
+                        this.setState({
+                          networkString: "https://"
+                        });
+                      }}
+                    >
+                      <Text
+                        style={[
+                          this.state.networkString === "https://"
+                            ? styles.activeText
+                            : styles.inactiveText
+                        ]}
+                      >
+                        https://
+                      </Text>
+                    </Button>
+                  </View>
+                  <View style={styles.inputContainer}>
+                    <View style={styles.websiteView}>
+                      <View style={[styles.websiteLabelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                          url
+                        </Text>
+                      </View>
+                      <Item
+                        style={[
+                          styles.input
+                          // this.state.urlError
+                          //     ? GlobalStyles.redBorderColor
+                          //     : GlobalStyles.transparentBorderColor
+                        ]}
+                      >
+                        <Text style={styles.networkLabel}>
+                          {this.state.networkString}
+                        </Text>
+                        <Input
+                          style={[styles.inputtext, { textAlign: "left" }]}
+                          placeholder="Enter your website's URL"
+                          placeholderTextColor={globalColors.white}
+                          value={this.state.campaignInfo.attachment}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
                             this.setState({
-                                networkString: "http://"
-                            });
-                            }}
-                        >
-                            <Text
-                            style={[
-                                this.state.networkString === "http://"
-                                ? styles.activeText
-                                : styles.inactiveText
-                            ]}
-                            >
-                            http://
-                            </Text>
-                        </Button>
-                        <Button
-                            // block
-                            // dark
-                            style={[
-                            this.state.networkString === "https://"
-                                ? styles.activeButton
-                                : styles.button2,
-                            styles.collectionAdLinkForm2
-                            ]}
-                            onPress={() => {
-                            this.setState({
-                                networkString: "https://"
-                            });
-                            }}
-                        >
-                            <Text
-                            style={[
-                                this.state.networkString === "https://"
-                                ? styles.activeText
-                                : styles.inactiveText
-                            ]}
-                            >
-                            https://
-                            </Text>
-                        </Button>
-                        </View>
-                        <View style={styles.inputContainer}>
-                        <View style={styles.websiteView}>
-                            <View style={[styles.websiteLabelView]}>
-                            <Text uppercase style={[styles.inputLabel]}>
-                                url
-                            </Text>
-                            </View>
-                            <Item
-                            style={[
-                                styles.input
-                                // this.state.urlError
-                                //     ? GlobalStyles.redBorderColor
-                                //     : GlobalStyles.transparentBorderColor
-                            ]}
-                            >
-                            <Text style={styles.networkLabel}>
-                                {this.state.networkString}
-                            </Text>
-                            <Input
-                                style={[styles.inputtext, { textAlign: "left" }]}
-                                placeholder="Enter your website's URL"
-                                placeholderTextColor={globalColors.white}
-                                value={
-                                this.state.campaignInfo.attachment
-                                }
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                onChangeText={value =>
-                                this.setState({
-                                    campaignInfo: {
-                                        ...this.state.campaignInfo,
-                                        attachment: value
-                                    }
-                                    })
-                                }
-                                onBlur={() => this.validateUrl()}
-                            />
-                            </Item>
-                        </View>
-                        </View>
+                              campaignInfo: {
+                                ...this.state.campaignInfo,
+                                attachment: value
+                              }
+                            })
+                          }
+                          onBlur={() => this.validateUrl()}
+                        />
+                      </Item>
+                    </View>
+                  </View>
                 </View>
                 <Text style={styles.warningText}>
-                Please make sure not include social media sites such as Facbook,
-                Instagram, Youtube, SnapChat, etc.
+                  Please make sure not include social media sites such as
+                  Facbook, Instagram, Youtube, SnapChat, etc.
                 </Text>
                 <View />
                 <View style={styles.bottonViewWebsite}>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
-                  </Text>
-                )}
-                <LowerButton
-                  checkmark={true}
-                  bottom={-5}
-                  function={this._handleSubmission}
-                />
-              </View>
+                  {this.props.swipeUpDestination && (
+                    <Text
+                      style={styles.footerText}
+                      onPress={() => this.props.toggleSideMenu()}
+                    >
+                      Change Swipe-up Destination
+                    </Text>
+                  )}
+                  <LowerButton
+                    checkmark={true}
+                    bottom={-5}
+                    function={this._handleSubmission}
+                  />
+                </View>
               </ScrollView>
             </View>
           )}

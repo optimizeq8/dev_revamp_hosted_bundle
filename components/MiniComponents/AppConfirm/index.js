@@ -6,6 +6,7 @@ import {
   BackHandler,
   ScrollView
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Item, Input, Text } from "native-base";
 import {
   heightPercentageToDP,
@@ -18,6 +19,7 @@ import Toggle from "react-native-switch-toggle";
 //styles
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
+import { colors } from "../../GradiantColors/colors";
 
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
@@ -77,57 +79,61 @@ class index extends Component {
   };
   render() {
     return (
-      <KeyboardShift style={styles.keyboardContainer}>
-        {() => (
-          <>
-            <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-              <View style={styles.mainView}>
-                <Image
-                  style={styles.imageApp}
-                  source={{
-                    uri: this.props.icon_media_url || "place.co"
-                  }}
-                />
-                <View style={styles.appDetailsContainer}>
-                  <Text style={[styles.title]}>{this.props.app_name}</Text>
-                  {this.props.ios_app_id !== "" && (
-                    <Text style={[styles.appTexts, globalStyles.column]}>
-                      iOS App ID{" "}
-                      <Text style={globalStyles.orangeTextColor}>
-                        {" "}
-                        {this.props.ios_app_id}
-                      </Text>
-                    </Text>
-                  )}
-                  {this.props.android_app_url !== "" && (
-                    <Text style={[styles.appTexts, globalStyles.column]}>
-                      Android URL{" "}
-                      <Text style={globalStyles.orangeTextColor}>
-                        {this.props.android_app_url}
-                      </Text>
-                    </Text>
-                  )}
-                </View>
-              </View>
-              <View>
-                <View style={[styles.appStoreLabelView]}>
-                  <Text uppercase style={[styles.inputLabel]}>
-                    app stores
+      <>
+        {/* <KeyboardShift style={styles.keyboardContainer}>
+          {() => ( */}
+        {/* <> */}
+        {/* <LinearGradient
+                colors={[colors.background1, colors.background2]}
+                locations={[0.7, 1]}
+                style={styles.gradient}
+              /> */}
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+          <View style={styles.mainView}>
+            <Image
+              style={styles.imageApp}
+              source={{
+                uri: this.props.icon_media_url || "place.co"
+              }}
+            />
+            <View style={styles.appDetailsContainer}>
+              <Text style={[styles.title]}>{this.props.app_name}</Text>
+              {this.props.ios_app_id !== "" && (
+                <Text style={[styles.appTexts, globalStyles.column]}>
+                  iOS App ID{" "}
+                  <Text style={globalStyles.orangeTextColor}>
+                    {" "}
+                    {this.props.ios_app_id}
                   </Text>
-                </View>
-                <View style={styles.advertiseOSView}>
-                  <Text style={[styles.text]}>
-                    Your app will be advertised for
+                </Text>
+              )}
+              {this.props.android_app_url !== "" && (
+                <Text style={[styles.appTexts, globalStyles.column]}>
+                  Android URL{" "}
+                  <Text style={globalStyles.orangeTextColor}>
+                    {this.props.android_app_url}
                   </Text>
-                  <View style={styles.advertiseOSButtonView}>
-                    <View
-                      style={[
-                        globalStyles.column,
-                        styles.appStoreButtons,
-                        this.props.ios_app_id === "" ? { opacity: 0.5 } : {}
-                      ]}
-                    >
-                      {/* <TouchableOpacity
+                </Text>
+              )}
+            </View>
+          </View>
+          <View>
+            <View style={[styles.appStoreLabelView]}>
+              <Text uppercase style={[styles.inputLabel]}>
+                app stores
+              </Text>
+            </View>
+            <View style={styles.advertiseOSView}>
+              <Text style={[styles.text]}>Your app will be advertised for</Text>
+              <View style={styles.advertiseOSButtonView}>
+                <View
+                  style={[
+                    globalStyles.column,
+                    styles.appStoreButtons,
+                    this.props.ios_app_id === "" ? { opacity: 0.5 } : {}
+                  ]}
+                >
+                  {/* <TouchableOpacity
 												style={[
 													styles.OS,
 													this.props.ios_app_id !== ''
@@ -137,31 +143,29 @@ class index extends Component {
 											>
 												<Text style={styles.OSText}>iOS</Text>
                                             </TouchableOpacity> */}
-                      <AppStoreIcon />
-                      <Text uppercase style={styles.appStoreButtonsText}>
-                        {`apple\n app store`}
-                      </Text>
-                      <Toggle
-                        switchOn={this.props.ios_app_id !== ""}
-                        backgroundColorOff="rgba(255,255,255,0.1)"
-                        backgroundColorOn="rgba(255,255,255,0.1)"
-                        circleColorOff="#FFf"
-                        circleColorOn="#66D072"
-                        duration={500}
-                        circleStyle={styles.toggleCircle}
-                        containerStyle={styles.toggleStyle}
-                      />
-                    </View>
-                    <View
-                      style={[
-                        globalStyles.column,
-                        styles.appStoreButtons,
-                        this.props.android_app_url === ""
-                          ? { opacity: 0.5 }
-                          : {}
-                      ]}
-                    >
-                      {/* <TouchableOpacity
+                  <AppStoreIcon />
+                  <Text uppercase style={styles.appStoreButtonsText}>
+                    {`apple\n app store`}
+                  </Text>
+                  <Toggle
+                    switchOn={this.props.ios_app_id !== ""}
+                    backgroundColorOff="rgba(255,255,255,0.1)"
+                    backgroundColorOn="rgba(255,255,255,0.1)"
+                    circleColorOff="#FFf"
+                    circleColorOn="#66D072"
+                    duration={500}
+                    circleStyle={styles.toggleCircle}
+                    containerStyle={styles.toggleStyle}
+                  />
+                </View>
+                <View
+                  style={[
+                    globalStyles.column,
+                    styles.appStoreButtons,
+                    this.props.android_app_url === "" ? { opacity: 0.5 } : {}
+                  ]}
+                >
+                  {/* <TouchableOpacity
 												style={[
 													styles.OS,
 													this.props.android_app_url !== ''
@@ -172,89 +176,90 @@ class index extends Component {
 											>
 												<Text style={[styles.OSText]}>Android</Text>
                                             </TouchableOpacity> */}
-                      <PlayStoreIcon />
-                      <Text uppercase style={styles.appStoreButtonsText}>
-                        {`google \n play store`}
-                      </Text>
-
-                      <Toggle
-                        switchOn={this.props.android_app_url !== ""}
-                        backgroundColorOff="rgba(255,255,255,0.1)"
-                        backgroundColorOn="rgba(255,255,255,0.1)"
-                        circleColorOff="#FFf"
-                        circleColorOn="#66D072"
-                        duration={500}
-                        circleStyle={styles.toggleCircle}
-                        containerStyle={styles.toggleStyle}
-                      />
-                    </View>
-                  </View>
-                </View>
-              </View>
-              {this.props.deepLink && (
-                <View>
-                  <View style={[styles.callToActionLabelView]}>
-                    <Text uppercase style={[styles.inputLabel]}>
-                      url
-                    </Text>
-                  </View>
-                  <Item
-                    // rounded
-                    style={[
-                      styles.input,
-                      this.state.deep_link_urlError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
-                      styles.deepLinkItem
-                    ]}
-                  >
-                    <Input
-                      value={this.state.deep_link_url}
-                      style={styles.inputtext}
-                      placeholder="Deep Link URL"
-                      placeholderTextColor="white"
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({
-                          deep_link_url: value
-                        })
-                      }
-                      onBlur={() => {
-                        this.validateUrl();
-                      }}
-                    />
-                  </Item>
-                </View>
-              )}
-
-              <Text
-                style={[styles.subtext, styles.changeAppText]}
-                onPress={() => this.props.renderPreviousStep()}
-              >
-                Change app
-              </Text>
-
-              <View>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
+                  <PlayStoreIcon />
+                  <Text uppercase style={styles.appStoreButtonsText}>
+                    {`google \n play store`}
                   </Text>
-                )}
 
-                <LowerButton
-                  checkmark={true}
-                  function={() => this._submitDeepLink()}
-                  bottom={0}
-                />
+                  <Toggle
+                    switchOn={this.props.android_app_url !== ""}
+                    backgroundColorOff="rgba(255,255,255,0.1)"
+                    backgroundColorOn="rgba(255,255,255,0.1)"
+                    circleColorOff="#FFf"
+                    circleColorOn="#66D072"
+                    duration={500}
+                    circleStyle={styles.toggleCircle}
+                    containerStyle={styles.toggleStyle}
+                  />
+                </View>
               </View>
-            </ScrollView>
-          </>
-        )}
-      </KeyboardShift>
+            </View>
+          </View>
+          {this.props.deepLink && (
+            <View>
+              <View style={[styles.callToActionLabelView]}>
+                <Text uppercase style={[styles.inputLabel]}>
+                  url
+                </Text>
+              </View>
+              <Item
+                // rounded
+                style={[
+                  styles.input,
+                  this.state.deep_link_urlError
+                    ? globalStyles.redBorderColor
+                    : globalStyles.transparentBorderColor,
+                  styles.deepLinkItem
+                ]}
+              >
+                <Input
+                  value={this.state.deep_link_url}
+                  style={styles.inputtext}
+                  placeholder="Deep Link URL"
+                  placeholderTextColor="white"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={value =>
+                    this.setState({
+                      deep_link_url: value
+                    })
+                  }
+                  onBlur={() => {
+                    this.validateUrl();
+                  }}
+                />
+              </Item>
+            </View>
+          )}
+
+          <Text
+            style={[styles.subtext, styles.changeAppText]}
+            onPress={() => this.props.renderPreviousStep()}
+          >
+            Change app
+          </Text>
+
+          <View>
+            {this.props.swipeUpDestination && (
+              <Text
+                style={styles.footerText}
+                onPress={() => this.props.toggleSideMenu()}
+              >
+                Change Swipe-up Destination
+              </Text>
+            )}
+
+            <LowerButton
+              checkmark={true}
+              function={() => this._submitDeepLink()}
+              bottom={0}
+            />
+          </View>
+        </ScrollView>
+        {/* </>
+          )}
+        </KeyboardShift> */}
+      </>
     );
   }
 }

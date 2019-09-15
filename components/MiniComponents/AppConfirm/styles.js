@@ -1,135 +1,140 @@
-import { StyleSheet, Platform, PixelRatio } from 'react-native';
-import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { StyleSheet, Platform, PixelRatio } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
 export const colors = {
-	black: '#1a1917',
-	gray: '#888888',
-	background1: '#751AFF',
-	background2: '#751AFF',
+  black: "#1a1917",
+  gray: "#888888",
+  background1: "#751AFF",
+  background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-	contentContainerStyle: {
-		alignSelf: 'center',
-		width: '100%',
-		// minHeight: '100%',
-		flexGrow: 1,
-		marginBottom: heightPercentageToDP(35),
-		// justifyContent: 'space-around',
-		//   height: heightPercentageToDP(80),
-		//   overflow: "hidden"
-	},
-	keyboardContainer: {
-		// alignSelf: 'center',
-		// width: '100%',
-		flex: 1,
-		// justifyContent: 'space-around',
-	},
-	mainView: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		paddingTop: 20,
-	},
-	imageApp: {
-		height: heightPercentageToDP(8.3),
-		width: heightPercentageToDP(8.3),
-		alignSelf: 'center',
-		borderRadius: 18,
-	},
-	appDetailsContainer: {
-		flexDirection: 'column',
-		paddingTop: 10,
-	},
-	advertiseOSView: {
-		flexDirection: 'column',
-		paddingVertical: 20,
-		borderRadius: 35,
-		backgroundColor: 'rgba(0,0,0,0.2)',
-	},
-	changeAppText: {
-		paddingTop: 20,
-		paddingBottom: 20,
-		// top: heightPercentageToDP(17),
-		textDecorationLine: 'underline',
-		fontFamily: 'montserrat-bold',
-		fontSize: heightPercentageToDP(2),
-	},
-	advertiseOSButtonView: {
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
-	},
-	androidButton: {
-		paddingHorizontal: 0,
-	},
-	deepLinkItem: {
-		marginBottom: 0,
-		//   top: heightPercentageToDP(4)
-	},
-	listText: {
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		color: '#fff',
-		// flex: 1,
-		width: 170,
-	},
-	footerText: {
-		color: '#fff',
-		fontSize: 14,
-		fontFamily: 'montserrat-regular',
-		paddingBottom: 16,
-		textDecorationLine: 'underline',
-		textAlign: 'center',
-	},
-	slide: { alignItems: 'center', flex: 1, justifyContent: 'center' },
-	container: {
-		backgroundColor: 'transparent',
-		marginTop: 0,
-		height: '100%',
-		// marginTop: heightPercentageToDP(3)
-	},
-	textcontainer: {
-		// flex: 1,
-		flexDirection: 'column',
-		alignItems: 'center',
-		// paddingHorizontal: 7
-		// marginBottom: 20
-	},
-	titletext: {
-		textAlign: 'left',
-		color: '#fff',
-		paddingTop: 10,
-		fontFamily: 'montserrat-bold',
-		fontSize: 16,
-		paddingVertical: 0,
-	},
-	subtext: {
-		alignSelf: 'center',
-		fontFamily: 'montserrat-regular',
-		fontSize: 14,
-		paddingTop: 5,
-		// marginBottom: 10,
-		color: '#fff',
-		textAlign: 'center',
-	},
-	appTexts: {
-		alignSelf: 'center',
-		fontFamily: 'montserrat-medium',
-		fontSize: widthPercentageToDP(3.2),
-		paddingTop: 5,
-		marginBottom: 20,
-		// width: widthPercentageToDP(50),
-		color: '#fff',
-		textAlign: 'center',
-	},
-	icon: {
-		alignSelf: 'center',
-		paddingHorizontal: 7,
-	},
-	content: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-
+  gradient: {
+    ...StyleSheet.absoluteFillObject
+  },
+  contentContainerStyle: {
+    alignSelf: "center",
+    width: "100%",
+    // minHeight: '100%',
+    flexGrow: 1,
+    marginBottom: heightPercentageToDP(35)
+    // justifyContent: 'space-around',
+    //   height: heightPercentageToDP(80),
+    //   overflow: "hidden"
+  },
+  keyboardContainer: {
+    // alignSelf: 'center',
+    // width: '100%',
+    flex: 1
+    // justifyContent: 'space-around',
+  },
+  mainView: {
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 20
+  },
+  imageApp: {
+    height: heightPercentageToDP(8.3),
+    width: heightPercentageToDP(8.3),
+    alignSelf: "center",
+    borderRadius: 18
+  },
+  appDetailsContainer: {
+    flexDirection: "column",
+    paddingTop: 10
+  },
+  advertiseOSView: {
+    flexDirection: "column",
+    paddingVertical: 20,
+    borderRadius: 35,
+    backgroundColor: "rgba(0,0,0,0.2)"
+  },
+  changeAppText: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    // top: heightPercentageToDP(17),
+    textDecorationLine: "underline",
+    fontFamily: "montserrat-bold",
+    fontSize: heightPercentageToDP(2)
+  },
+  advertiseOSButtonView: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  },
+  androidButton: {
+    paddingHorizontal: 0
+  },
+  deepLinkItem: {
+    marginBottom: 0
+    //   top: heightPercentageToDP(4)
+  },
+  listText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff",
+    // flex: 1,
+    width: 170
+  },
+  footerText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    paddingBottom: 16,
+    textDecorationLine: "underline",
+    textAlign: "center"
+  },
+  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
+  container: {
+    backgroundColor: "transparent",
+    marginTop: 0,
+    height: "100%"
+    // marginTop: heightPercentageToDP(3)
+  },
+  textcontainer: {
+    // flex: 1,
+    flexDirection: "column",
+    alignItems: "center"
+    // paddingHorizontal: 7
+    // marginBottom: 20
+  },
+  titletext: {
+    textAlign: "left",
+    color: "#fff",
+    paddingTop: 10,
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    paddingVertical: 0
+  },
+  subtext: {
+    alignSelf: "center",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    paddingTop: 5,
+    // marginBottom: 10,
+    color: "#fff",
+    textAlign: "center"
+  },
+  appTexts: {
+    alignSelf: "center",
+    fontFamily: "montserrat-medium",
+    fontSize: widthPercentageToDP(3.2),
+    paddingTop: 5,
+    marginBottom: 20,
+    // width: widthPercentageToDP(50),
+    color: "#fff",
+    textAlign: "center"
+  },
+  icon: {
+    alignSelf: "center",
+    paddingHorizontal: 7
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
+  },
 	video: {
 		// height: 95,
 		// width: 95,
