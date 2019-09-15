@@ -51,11 +51,12 @@ export default class PenIconBrand extends Component {
             placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={value =>
+            onChangeText={value => {
+              value = value.replace("@", "");
               this.props.field === "Business Name"
                 ? this.props.changeBusinessName(value)
-                : this.props.changeHeadline(value)
-            }
+                : this.props.changeHeadline(value);
+            }}
             onFocus={() => {
               //   this.props.focus(businessNameComp ? "inputB" : "inputH");
               this.setState({ input: true });

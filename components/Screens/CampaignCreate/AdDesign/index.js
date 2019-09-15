@@ -320,19 +320,19 @@ class AdDesign extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        brand_name
+        brand_name: brand_name.replace("@", "")
       }
     });
-    this.props.save_campaign_info({ brand_name });
+    this.props.save_campaign_info({ brand_name: brand_name.replace("@", "") });
   };
   changeHeadline = headline => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        headline
+        headline: headline.replace("@", "")
       }
     });
-    this.props.save_campaign_info({ headline });
+    this.props.save_campaign_info({ headline: headline.replace("@", "") });
   };
   pick = async mediaTypes => {
     await this.askForPermssion();
