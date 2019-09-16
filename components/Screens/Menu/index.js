@@ -188,7 +188,7 @@ class Menu extends Component {
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
             <Text style={styles.version}>
-              Version:{Constants.manifest.version}17/
+              Version:{Constants.manifest.version}18/
               {Constants.manifest.ios.buildNumber}/
               {Constants.manifest.android.versionCode}
             </Text>
