@@ -44,7 +44,6 @@ class MainForm extends Component {
           navigation={this.props.navigation}
         />
       );
-      //  <BusinessInfo navigation={this.props.navigation} />;
       title = "Business Info";
     }
 

@@ -275,7 +275,7 @@ class CreateBusinessAccount extends Component {
   };
 
   render() {
-    console.log(this.state.businessAccount.businessname);
+    console.log(this.state.businessAccount.businessemail);
 
     return (
       <SafeAreaView
@@ -587,11 +587,12 @@ class CreateBusinessAccount extends Component {
                               style={styles.inputText}
                               autoCorrect={false}
                               autoCapitalize="none"
+                              value={this.state.businessAccount.businessemail}
                               onChangeText={value =>
                                 this.setState({
                                   businessAccount: {
                                     ...this.state.businessAccount,
-                                    businessemail: value
+                                    businessemail: value.replace(/[\s]/gi, "")
                                   }
                                 })
                               }
