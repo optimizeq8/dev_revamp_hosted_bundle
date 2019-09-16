@@ -275,6 +275,8 @@ class CreateBusinessAccount extends Component {
   };
 
   render() {
+    console.log(this.state.businessAccount.businessname);
+
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -450,11 +452,15 @@ class CreateBusinessAccount extends Component {
                           </Label>
                           <Input
                             style={[styles.inputText]}
+                            value={this.state.businessAccount.businessname}
                             onChangeText={value => {
                               this.setState({
                                 businessAccount: {
                                   ...this.state.businessAccount,
-                                  businessname: value
+                                  businessname: value.replace(
+                                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                                    ""
+                                  )
                                 }
                               });
                             }}
@@ -515,11 +521,15 @@ class CreateBusinessAccount extends Component {
                           <Input
                             style={styles.inputText}
                             autoCorrect={false}
+                            value={this.state.businessAccount.brandname}
                             onChangeText={value =>
                               this.setState({
                                 businessAccount: {
                                   ...this.state.businessAccount,
-                                  brandname: value
+                                  brandname: value.replace(
+                                    /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                                    ""
+                                  )
                                 }
                               })
                             }

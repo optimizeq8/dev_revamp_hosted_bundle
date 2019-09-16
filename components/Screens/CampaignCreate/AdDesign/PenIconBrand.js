@@ -38,7 +38,7 @@ export default class PenIconBrand extends Component {
                 ? "Enter your business name"
                 : "Enter your Promotional Message"
             }
-            defaultValue={
+            value={
               this.props.field === "Business Name"
                 ? this.props.mainBusiness.brandname &&
                   this.props.mainBusiness.brandname.length <= 25
