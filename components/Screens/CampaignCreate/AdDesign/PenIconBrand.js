@@ -31,7 +31,6 @@ export default class PenIconBrand extends Component {
             {this.props.field}
           </Text>
           <Input
-            disabled={this.props.rejected}
             style={styles.inputText}
             maxLength={this.props.field === "Business Name" ? 25 : 34}
             placeholder={

@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     marginLeft: 8,
-    elevation: 10
+    elevation: 3
   },
   swipeUp: {
     backgroundColor: globalColors.orange,
