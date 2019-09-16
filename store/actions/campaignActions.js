@@ -1036,7 +1036,7 @@ export const verifyInstagramHandle = insta_handle => {
   };
 };
 export const getInstagramPost = insta_handle => {
-  console.log("insta_handle", insta_handle);
+  // console.log("insta_handle", insta_handle);
 
   return async dispatch => {
     try {
@@ -1101,7 +1101,7 @@ export const getInstagramPost = insta_handle => {
         });
       }
     } catch (error) {
-      console.log("insta error", error.response || error.message);
+      // console.log("insta error", error.response || error.message);
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POST,
         payload: {
