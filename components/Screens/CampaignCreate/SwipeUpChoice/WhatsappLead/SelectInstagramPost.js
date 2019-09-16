@@ -183,11 +183,11 @@ class SelectInstagramPost extends React.Component {
                           flexDirection: "column",
                           alignItems: "center",
                           justifyContent: "center",
-                          paddingVertical: 12
+                          paddingVertical: 4
                         }}
                         onPress={() => this.addToList(item)}
                       >
-                        {itemFound + 1 >= 1 && (
+                        {itemFound + 1 >= 1 ? (
                           <View
                             style={{
                               width: 40,
@@ -211,6 +211,20 @@ class SelectInstagramPost extends React.Component {
                               {itemFound + 1}
                             </Text>
                           </View>
+                        ) : (
+                          <View
+                            style={{
+                              width: 40,
+                              //   backgroundColor: "#FF9D00",
+                              borderRadius: 40,
+                              height: 40,
+                              marginBottom: -25,
+                              zIndex: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          ></View>
                         )}
                         <Image
                           source={{
