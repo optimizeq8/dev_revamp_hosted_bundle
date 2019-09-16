@@ -8,7 +8,7 @@ import {
   Text
 } from "react-native";
 import { Item, Input, Icon, Label } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 
 import LowerButton from "../../../MiniComponents/LowerButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
@@ -257,9 +257,13 @@ class PersonalInfo extends Component {
                     style={styles.inputText}
                     autoCorrect={false}
                     autoCapitalize="none"
+                    value={this.state.userInfo.email}
                     onChangeText={value =>
                       this.setState({
-                        userInfo: { ...this.state.userInfo, email: value }
+                        userInfo: {
+                          ...this.state.userInfo,
+                          email: value.replace(/[\s]/gi, "")
+                        }
                       })
                     }
                     onFocus={() => {
