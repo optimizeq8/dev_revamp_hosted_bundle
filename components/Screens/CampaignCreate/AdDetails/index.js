@@ -772,7 +772,7 @@ class AdDetails extends Component {
         ) : (
           <RNImageOrCacheImage
             media={media}
-            blurRadius={30}
+            blurRadius={20}
             style={[
               styles.imageBackgroundViewWrapper,
               this.state.sidemenustate

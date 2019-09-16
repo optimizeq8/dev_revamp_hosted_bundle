@@ -224,7 +224,7 @@ class SwipeUpDestination extends Component {
                       style={styles.media}
                       media={this.state.media}
                       resizeMode="cover"
-                      blurRadius={30}
+                      blurRadius={20}
                     />
                   </View>
                 )}

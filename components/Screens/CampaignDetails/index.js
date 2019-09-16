@@ -312,7 +312,7 @@ class CampaignDetails extends Component {
               </View>
             )}
           <Image
-            blurRadius={40}
+            blurRadius={25}
             {...{
               preview,
               uri: !loading && selectedCampaign ? selectedCampaign.media : ""
