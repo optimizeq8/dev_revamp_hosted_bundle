@@ -110,14 +110,17 @@ class AdObjective extends Component {
         .includes(true)
     ) {
       rep = {
-        ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        ...this.props.data
+        name: this.props.data.name,
+        objective: this.props.data.objective,
+        start_time: this.props.data.start_time,
+        end_time: this.props.data.end_time
       };
+
       this.setState({
-        campaignInfo: { ...rep },
-        ...this.props.data
+        ...this.props.data,
+        campaignInfo: { ...rep }
       });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
