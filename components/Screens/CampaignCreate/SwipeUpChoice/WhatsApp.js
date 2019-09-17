@@ -61,14 +61,15 @@ class WhatsApp extends Component {
 			this.props.mainBusiness.whatsappnumber !== ''
 		) {
 			// console.log('capmaignDetail', this.props.data);
+			// console.log('mainBusinessInstaHandle', this.props.mainBusiness);
 
 			this.setState({
 				campaignInfo: {
 					...this.state.campaignInfo,
 					weburl: this.props.mainBusiness.weburl ? this.props.mainBusiness.weburl : this.props.data.weburl,
-					insta_handle: this.props.mainBusiness.insta_handle
-						? this.props.mainBusiness.insta_handle
-						: this.props.data.insta_handle,
+					insta_handle: this.props.data.insta_handle? this.props.data.insta_handle: this.props.mainBusiness.insta_handle
+						? this.props.mainBusiness.insta_handle: ''
+						,
 					whatsappnumber: this.props.mainBusiness.whatsappnumber
 						? this.props.mainBusiness.whatsappnumber
 						: this.props.data.whatsappnumber,
@@ -119,13 +120,26 @@ class WhatsApp extends Component {
 	};
 
 	checkInstaAccountChange = async () => {
-		if (this.props.data.insta_handle !== this.state.campaignInfo.insta_handle && this.props.productInfoId) {
-			this.setState({
-				showChangeInstaHandle: true,
-			});
-		} else {
-			await this._handleSubmission();
-		}
+		// console.log("data", this.props.data);
+		
+		if (
+      ((this.props.data.insta_handle &&
+        this.props.data.insta_handle !==
+		  this.state.campaignInfo.insta_handle)
+		//    || (this.props.mainBusiness.insta_handle &&
+        //   this.props.mainBusiness.insta_handle !==
+			// this.state.campaignInfo.insta_handle
+			// )
+			)
+			 &&
+      this.props.productInfoId
+    ) {
+      this.setState({
+        showChangeInstaHandle: true
+      });
+    } else {
+      await this._handleSubmission();
+    }
 	};
 	_handleSubmission = async () => {
 		// if (!this.props.mainBusiness.weburl) {
@@ -162,7 +176,8 @@ class WhatsApp extends Component {
 			// 		this.props.navigation
 			// 	);
 			// }
-			this.props._changeDestination(
+
+			await this.props._changeDestination(
 				'REMOTE_WEBPAGE',
 				this.state.campaignInfo.callaction,
 				{
@@ -510,7 +525,8 @@ class WhatsApp extends Component {
 												[],
 												this.props.data.campaign_id,
 												this.props.productInfoId,
-												this.props.navigation
+												this.props.navigation,
+												this.props.businessLogo
 											);
 											this._handleSubmission();
 										}}
@@ -528,12 +544,13 @@ class WhatsApp extends Component {
 }
 
 const mapStateToProps = state => ({
-	data: state.campaignC.data,
-	weburlAvalible: state.campaignC.weburlAvalible,
-	mainBusiness: state.account.mainBusiness,
-	errorInstaHandle: state.campaignC.errorInstaHandle,
-	errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
-	productInfoId: state.campaignC.productInfoId,
+  data: state.campaignC.data,
+  weburlAvalible: state.campaignC.weburlAvalible,
+  mainBusiness: state.account.mainBusiness,
+  errorInstaHandle: state.campaignC.errorInstaHandle,
+  errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
+  productInfoId: state.campaignC.productInfoId,
+  businessLogo: state.campaignC.businessLogo
 });
 
 const mapDispatchToProps = dispatch => ({

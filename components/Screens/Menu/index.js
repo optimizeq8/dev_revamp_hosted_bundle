@@ -159,7 +159,7 @@ class Menu extends Component {
               style={styles.options}
               onPress={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: "https://www.optimizeapp.com/terms",
+                  url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions"
                 })
               }
