@@ -1059,22 +1059,59 @@ export const getInstagramPost = insta_handle => {
         data = data.entry_data.ProfilePage[0].graphql.user;
         // console.log('data', data);
         var businessLogo = data.profile_pic_url;
+        const mediaArray = [];
+
         const mediaList = data.edge_owner_to_timeline_media;
-        if (mediaList.edges && mediaList.edges.length > 0) {
-          var imagesList = mediaList.edges.map(media => {
+        // console.log("mediaList", mediaList);
+        mediaArray.push(...mediaList.edges);
+        let hasNextPage = mediaList.page_info.has_next_page;
+        let end_cursor = mediaList.page_info.end_cursor;
+        while (hasNextPage) {
+          // console.log("hasNextPage", hasNextPage);
+
+          // (async () => {
+          const responseMedia = await axios.get(
+            `https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${
+              data.id
+            }","first":${50},"after":"${end_cursor}"}`
+          );
+          // console.log(
+          //   "responseMedia data",
+          //   responseMedia.data.data.user.edge_owner_to_timeline_media
+          // );
+          mediaArray.push(
+            ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges
+          );
+          hasNextPage =
+            responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
+              .has_next_page;
+          end_cursor =
+            responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
+              .end_cursor;
+          // }, 10000);
+        }
+        // console.log("mediaArrayLength", mediaArray.length);
+
+        if (mediaArray && mediaArray.length > 0) {
+          var imagesList = mediaArray.map(media => {
             // console.log('media', media);
-            if (!media.node.is_video)
-              return {
-                imageUrl: media.node.display_url,
-                shortcode: media.node.shortcode,
-                imageId: media.node.id,
-                productDescription:
-                  media.node.edge_media_to_caption.edges.length > 0
-                    ? media.node.edge_media_to_caption.edges[0].node.text
-                    : ""
-                // isVideo: media.node.is_video,
-              };
+            // if (!media.node.is_video)
+            return {
+              imageUrl: media.node.display_url,
+              shortcode: media.node.shortcode,
+              imageId: media.node.id,
+              productDescription:
+                media.node.edge_media_to_caption.edges.length > 0
+                  ? media.node.edge_media_to_caption.edges[0].node.text
+                  : "",
+              isVideo: media.node.is_video
+            };
           });
+
+          imagesList = imagesList.filter(item => {
+            return !item.isVideo;
+          });
+
           // console.log('imageListBeforeSize', imagesList.length);
 
           // imagesList = filter(imagesList, media => {
@@ -1129,6 +1166,8 @@ export const getWebProducts = campaign_id => {
         //     message: data.message,
         //     type: data.success ? 'success': 'warning'
         // })
+        // console.log("getWebProducts", data);
+
         if (data.success) {
           return dispatch({
             type: actionTypes.GET_WEB_PRODUCTS,
@@ -1144,6 +1183,8 @@ export const getWebProducts = campaign_id => {
         });
       })
       .catch(error => {
+        // console.log("error getWebProduct", error.response || error.message);
+
         return dispatch({
           type: actionTypes.ERROR_GET_WEB_PRODUCTS,
           payload: {
@@ -1256,10 +1297,10 @@ export const saveWebProducts = (
           });
         })
         .catch(error => {
-          console.log(
-            "updateWebProducts error",
-            error.response || error.message
-          );
+          // console.log(
+          //   "updateWebProducts error",
+          //   error.response || error.message
+          // );
           return dispatch({
             type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
           });
@@ -1302,7 +1343,7 @@ export const getMediaUploadUrl = campaign_id => {
         });
       })
       .catch(error => {
-        console.log("getMediaUploadUrl error", error.response || error.message);
+        // console.log("getMediaUploadUrl error", error.response || error.message);
         return dispatch({
           type:
             actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE,
@@ -1346,7 +1387,7 @@ export const getWebUploadLinkMedia = campaign_id => {
         }
       })
       .catch(error => {
-        console.log("getWebUploadLinkMedia", error.response || error.message);
+        // console.log("getWebUploadLinkMedia", error.response || error.message);
         return dispatch({
           type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA
         });
