@@ -293,7 +293,6 @@ class AdObjective extends Component {
 
   render() {
     let adType = this.props.adType;
-    console.log("ad", ObjectiveData[this.props.adType]);
 
     const list = ObjectiveData[this.props.adType].map(o => (
       <ObjectivesCard

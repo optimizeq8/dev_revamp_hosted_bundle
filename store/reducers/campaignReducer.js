@@ -472,7 +472,7 @@ const reducer = (state = initialState, action) => {
       let currentCampaignSteps = [];
       console.log("sdc", state.adType);
       if (resetAdType) {
-        currentCampaignSteps = state.currentCampaignSteps;
+        // currentCampaignSteps = state.currentCampaignSteps;
         campaignProcessStarted = state.campaignProcessStarted;
         adType = state.adType;
         campaign_id = state.campaign_id;
@@ -487,25 +487,26 @@ const reducer = (state = initialState, action) => {
         delete data.media_upload;
         delete data.ios_upload;
         delete data.formatted;
-      } else {
-        currentCampaignSteps = state.currentCampaignSteps;
-        campaignProcessStarted = state.campaignProcessStarted;
-        adType = state.adType;
-        campaign_id = state.campaign_id;
-        data = state.data;
-        minValueBudget = state.minValueBudget;
-        maxValueBudget = state.maxValueBudget;
-        countryName = state.countryName;
-        interestNames = state.interestNames;
-        regionNames = state.regionNames;
-        delete data.media;
-        delete data.media_type;
-        delete data.media_upload;
-        delete data.ios_upload;
-        delete data.formatted;
-        delete data.objective;
-        delete data.objectiveLabel;
       }
+      if (!resetAdType) {
+        // currentCampaignSteps = state.currentCampaignSteps;
+        // campaignProcessStarted = state.campaignProcessStarted;
+        // adType = state.adType;
+        // campaign_id = state.campaign_id;
+        // data = state.data;
+        // minValueBudget = state.minValueBudget;
+        // maxValueBudget = state.maxValueBudget;
+        // countryName = state.countryName;
+        // interestNames = state.interestNames;
+        // regionNames = state.regionNames;
+        // delete data.media;
+        // delete data.media_type;
+        // delete data.media_upload;
+        // delete data.ios_upload;
+        // delete data.formatted;
+      }
+      delete data.objective;
+      delete data.objectiveLabel;
 
       return {
         ...state,

@@ -18,9 +18,7 @@ export default class LowerButton extends Component {
           shadowOpacity: 0.2,
           bottom: heightPercentageToDP(bottom)
         }}
-        onPress={() =>
-          this.props.function(false, this.props.cross ? true : false)
-        }
+        onPress={() => this.props.function(false)}
       >
         {this.props.checkmark ? (
           <CheckmarkIcon width={53} height={53} />

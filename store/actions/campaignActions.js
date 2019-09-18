@@ -67,8 +67,6 @@ export const payment_request_credit_card = (
   };
 };
 export const resetCampaignInfo = (resetAdType = false) => {
-  console.log(resetAdType);
-
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
   };

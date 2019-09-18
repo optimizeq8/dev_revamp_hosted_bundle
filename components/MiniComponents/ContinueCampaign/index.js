@@ -103,7 +103,7 @@ class ContinueCampaign extends Component {
                 <LowerButton
                   cross={true}
                   bottom={4}
-                  function={this.setModalVisible}
+                  function={() => this.setModalVisible(false, true)}
                 />
                 <LowerButton
                   bottom={4}
