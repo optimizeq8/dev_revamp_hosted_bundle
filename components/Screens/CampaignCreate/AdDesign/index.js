@@ -1093,6 +1093,7 @@ class AdDesign extends Component {
               </View>
             ) : (
               <FooterText
+                collectionAdMedia={this.props.collectionAdMedia}
                 storyAdCards={storyAdCards}
                 adType={this.adType}
                 videoIsLoading={videoIsLoading}
