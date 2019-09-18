@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
@@ -64,7 +64,7 @@ class ErrorComponent extends Component {
         />
         <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
-          <ErrorIcon width={80} height={80} />
+          <ErrorIcon fill="#E26A65" width={80} height={80} />
 
           <Text style={styles.title}> Sorry </Text>
           <Text style={styles.errortext}>

@@ -19,7 +19,11 @@ import {
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import {
+  SafeAreaView,
+  NavigationEvents,
+  NavigationActions
+} from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -51,6 +55,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -93,7 +98,6 @@ class AdObjective extends Component {
     } else {
       this._handleCollectionAdLinkForm(0);
     }
-
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -101,6 +105,27 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    this.setCampaignInfo();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.adType !== this.props.adType) {
+  //     this.setState({
+  //       campaignInfo: {
+  //         ad_account_id: "",
+  //         name: "",
+  //         objective: "",
+  //         start_time: "",
+  //         end_time: ""
+  //       },
+  //       collectionAdLinkForm: 0,
+  //       playback_type: "LOOPING",
+  //       objectiveLabel: "Select Objective"
+  //     });
+  //   }
+  // }
+  setCampaignInfo = () => {
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -110,6 +135,7 @@ class AdObjective extends Component {
         .includes(true)
     ) {
       rep = {
+        ...this.state,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
         name: this.props.data.name,
@@ -120,12 +146,23 @@ class AdObjective extends Component {
 
       this.setState({
         ...this.props.data,
+        collectionAdLinkForm: this.props.data,
+        playback_type: this.props.data.playback_type,
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget,
+        modalVisible: this.props.data.modalVisible,
+        objectiveLabel: this.props.data.objectiveLabel
+          ? this.props.data.objectiveLabel
+          : "Select Objective",
+        inputN: this.props.data.inputN,
+        nameError: this.props.data.nameError,
+        objectiveError: this.props.data.objectiveError,
+        start_timeError: this.props.data.start_timeError,
+        end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep }
       });
     }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
-
+  };
   setObjective = choice => {
     this.setState({
       campaignInfo: {
@@ -253,9 +290,12 @@ class AdObjective extends Component {
         );
     }
   };
+
   render() {
     let adType = this.props.adType;
-    const list = this.state.objectives.map(o => (
+    console.log("ad", ObjectiveData[this.props.adType]);
+
+    const list = ObjectiveData[this.props.adType].map(o => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -617,6 +657,10 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
         />
+        <ContinueCampaign
+          tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
+          navigation={this.props.navigation}
+        />
         <Modal
           animationType={"slide"}
           transparent={true}
@@ -660,7 +704,8 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
 });
 
 const mapDispatchToProps = dispatch => ({

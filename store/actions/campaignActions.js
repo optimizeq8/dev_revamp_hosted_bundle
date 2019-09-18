@@ -66,9 +66,11 @@ export const payment_request_credit_card = (
       });
   };
 };
-export const resetCampaignInfo = () => {
+export const resetCampaignInfo = (resetAdType = false) => {
+  console.log(resetAdType);
+
   return dispatch => {
-    dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+    dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
   };
 };
 
@@ -461,7 +463,7 @@ export const uploadStoryAdCard = (
       .post(`savestorymedia`, info, {
         // onUploadProgress: ProgressEvent =>
         // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUpload.token
+        // cancelToken: cancelUpload.token
       })
       .then(res => {
         return res.data;
@@ -1351,5 +1353,14 @@ export const getWebUploadLinkMedia = campaign_id => {
           type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA
         });
       });
+  };
+};
+
+export const saveCampaignSteps = step => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SAVE_CAMPAIGN_STEP,
+      payload: step
+    });
   };
 };

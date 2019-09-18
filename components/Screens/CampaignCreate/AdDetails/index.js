@@ -793,6 +793,18 @@ class AdDetails extends Component {
         >
           <NavigationEvents
             onDidFocus={() => {
+              this.props.saveCampaignSteps(
+                this.props.adType === "StoryAd"
+                  ? [
+                      "Dashboard",
+                      "AdObjective",
+                      "AdCover",
+                      "AdDesign",
+                      "AdDetails"
+                    ]
+                  : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
+              );
+
               if (this.props.navigation.getParam("editCampaign", false)) {
                 Segment.screenWithProperties("Snap Ad Targetting Update", {
                   category: "Campaign Update"
@@ -1253,12 +1265,14 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   minValueBudget: state.campaignC.minValueBudget,
   maxValueBudget: state.campaignC.maxValueBudget,
+  adType: state.campaignC.adType,
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,
   mainBusiness: state.account.mainBusiness,
   languages: state.campaignC.languagesList,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1269,7 +1283,8 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
-  get_languages: () => dispatch(actionCreators.get_languages())
+  get_languages: () => dispatch(actionCreators.get_languages()),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 export default connect(
   mapStateToProps,

@@ -46,6 +46,7 @@ import {
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
+import Modal from "react-native-modal";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -61,7 +62,8 @@ class Dashboard extends Component {
       showSearchBar: false,
       menu: new Animated.Value(0),
       open: false,
-      anim: false
+      anim: false,
+      componentMounting: true
     };
     this.page = 1;
   }
@@ -101,16 +103,21 @@ class Dashboard extends Component {
       if (
         this.props.mainBusiness &&
         !this.props.mainBusiness.snap_ad_account_id
-      )
+      ) {
         this.props.navigation.navigate("SnapchatCreateAdAcc", {
           closeAnimation: this.closeAnimation
         });
-      // this.props.getWalletAmount();
+      }
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
         this.signal.token
       );
+    }
+    if (this.props.adType !== prevProps.adType) {
+      this.setState({
+        adTypeChanged: true
+      });
     }
   }
 
@@ -155,9 +162,13 @@ class Dashboard extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: adType.title
     });
-    this.props.resetCampaignInfo();
-    this.props.set_adType(adType.value);
-    this.props.navigation.navigate(adType.rout);
+    if (this.state.adTypeChanged) {
+      this.props.resetCampaignInfo(true);
+    }
+    if (!this.props.campaignProcessStarted) {
+      this.props.set_adType(adType.value);
+    }
+    this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
   };
 
   increasePage = (reset = false) => {
@@ -193,6 +204,14 @@ class Dashboard extends Component {
       this.increasePage,
       this.signal.token
     );
+  };
+
+  continueCampaign = () => {
+    let ctnModal = {};
+    if (this.state.componentMounting && this.props.campaignProcessStarted) {
+      this.setState({ componentMounting: false });
+    }
+    return ctnModal;
   };
   render() {
     const mySlideInUp = {
@@ -324,6 +343,7 @@ class Dashboard extends Component {
                     : mySlideInUp
                   : ""
               }
+              // onAnimationEnd={() => this.continueCampaign()}
               style={[
                 styles.animateView,
                 {
@@ -525,7 +545,8 @@ const mapStateToProps = state => ({
   fetching_from_server: state.dashboard.fetching_from_server,
   isListEnd: state.dashboard.isListEnd,
   filteredCampaigns: state.dashboard.filteredCampaigns,
-  exponentPushToken: state.login.exponentPushToken
+  exponentPushToken: state.login.exponentPushToken,
+  campaignProcessStarted: state.campaignC.campaignProcessStarted
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -540,7 +561,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken)),
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType))
 });
 export default connect(
   mapStateToProps,

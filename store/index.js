@@ -10,7 +10,8 @@ const middleware = [thunk];
 
 const persistConfig = {
   key: "root",
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  whitelist: ["campaignC"]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

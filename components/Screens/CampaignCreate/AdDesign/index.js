@@ -849,6 +849,7 @@ class AdDesign extends Component {
         }
       />
     );
+    console.log(this.props.data.objective);
 
     return (
       <SafeAreaView
@@ -857,6 +858,13 @@ class AdDesign extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
+            if (!this.props.currentCampaignSteps.includes("AdDetails")) {
+              this.props.saveCampaignSteps(
+                this.adType === "StoryAd"
+                  ? ["Dashboard", "AdObjective", "AdCover", "AdDesign"]
+                  : ["Dashboard", "AdObjective", "AdDesign"]
+              );
+            }
             Segment.screenWithProperties("Snap Ad Design", {
               category: "Campaign Creation"
             });
@@ -1021,7 +1029,8 @@ class AdDesign extends Component {
                     {this.adType === "StoryAd" ? (
                       showContinueBtn ? (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            this.handleUpload();
                             _handleSubmission(
                               this.adType,
                               this.props.storyAdsArray,
@@ -1042,8 +1051,8 @@ class AdDesign extends Component {
                                 signal: this.state.signal,
                                 uploadStoryAdCard: this.props.uploadStoryAdCard
                               }
-                            )
-                          }
+                            );
+                          }}
                           style={styles.button}
                         >
                           <ForwardButton width={wp(24)} height={hp(8)} />
@@ -1159,7 +1168,8 @@ const mapStateToProps = state => ({
   storyAdAttachment: state.campaignC.storyAdAttachment,
   mediaTypeWebLink: state.campaignC.mediaTypeWebLink,
   mediaWebLink: state.campaignC.mediaWebLink,
-  webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading
+  webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1207,7 +1217,8 @@ const mapDispatchToProps = dispatch => ({
   setStoryAdAttachment: info =>
     dispatch(actionCreators.setStoryAdAttechment(info)),
   getWebUploadLinkMedia: campaign_id =>
-    dispatch(actionCreators.getWebUploadLinkMedia(campaign_id))
+    dispatch(actionCreators.getWebUploadLinkMedia(campaign_id)),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 export default connect(
   mapStateToProps,

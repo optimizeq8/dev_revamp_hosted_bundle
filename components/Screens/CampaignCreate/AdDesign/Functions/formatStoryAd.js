@@ -16,6 +16,7 @@ export const formatStoryAd = async (
 ) => {
   var storyBody = new FormData();
   let card = storyAdsArray[ad.index];
+  console.log("siiignalsdc", signal);
 
   if (!storyAdCards.selectedStoryAd.iosVideoUploaded && card.rejectionUpload) {
     let res = card.media.split("/");
@@ -90,7 +91,7 @@ export const formatStoryAd = async (
   storyBody.append("story_media_upload", card.rejectionUpload ? 1 : 0);
 
   await handleUpload();
-  await uploadStoryAdCard(storyBody, card, signal, rejected);
+  await uploadStoryAdCard(storyBody, card, signal, null, rejected);
   setTheState({
     storyAdCards: {
       ...storyAdCards,
