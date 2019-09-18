@@ -19,7 +19,6 @@ class AddCard extends Component {
           style={styles.addButtonStyle}
           onPress={() => this.props.addSnapCard()}
         >
-          {/* <Text style={{ color: "#fff" }}>{addButton.item.id}</Text> */}
           <Icon
             style={{ alignSelf: "center", right: 2 }}
             name="plus"

@@ -23,7 +23,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
-import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
+import { StoryAdCards, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
@@ -33,7 +33,7 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
-    media_type: snapAds,
+    media_type: StoryAdCards,
     campaign_type: "SnapAd",
     route: "AdObjective"
   };
@@ -88,7 +88,7 @@ class AdType extends Component {
     switch (index) {
       case 0:
         route = "AdObjective";
-        media_type = snapAds;
+        media_type = StoryAdCards;
         break;
       case 1:
         media_type = twittwerAds;
