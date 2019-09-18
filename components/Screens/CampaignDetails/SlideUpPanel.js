@@ -199,7 +199,10 @@ export default class SlideUpPanel extends Component {
                         }
                       }}
                     >
-                      <Chart campaign={selectedCampaign} />
+                      <Chart
+                        screenProps={this.props.screenProps}
+                        campaign={selectedCampaign}
+                      />
                     </TouchableOpacity>
                   </Animated.View>
                   <Animated.View style={[lineAnimatedStyles]}>

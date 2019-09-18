@@ -49,6 +49,7 @@ class BusinessList extends Component {
             {translate("You can switch between businesses here")}
           </Text>
           <SearchBar
+            screenProps={this.props.screenProps}
             filterBusinesses={this.filterBusinesses}
             businessList={true}
             height={"10%"}

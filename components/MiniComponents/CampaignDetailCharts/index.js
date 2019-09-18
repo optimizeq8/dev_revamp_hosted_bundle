@@ -16,6 +16,7 @@ class CampaignCard extends Component {
       // { swipes: campaign.swipes }
     ].map((category, i) => (
       <Chart
+        screenProps={this.props.screenProps}
         campaign={campaign}
         detail={true}
         chartCategory={category}
