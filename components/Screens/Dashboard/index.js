@@ -33,7 +33,7 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import styles from "./styles";
 
 //data
-import { snapAds } from "../../Data/adTypes.data";
+import { StoryAdCards } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -222,7 +222,7 @@ class Dashboard extends Component {
       />
     ) : null;
 
-    let adButtons = snapAds.map(adType => (
+    let adButtons = StoryAdCards.map(adType => (
       <AdButtions
         key={adType.id}
         navigationHandler={this.navigationHandler}

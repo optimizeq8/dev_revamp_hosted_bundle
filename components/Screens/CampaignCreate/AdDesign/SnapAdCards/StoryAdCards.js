@@ -6,17 +6,16 @@ import { Button, Icon } from "native-base";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import AddCard from "./AddCard";
 import SnapCard from "./SnapCard";
-export default class SnapAds extends Component {
+export default class StoryAdCards extends Component {
   snapCards = item => {
-    if (item.index === this.props.snapAdsCards.length - 1) {
-      return <AddCard addButton={item} addSnapCard={this.props.addSnapCard} />;
+    if (item.index === this.props.StoryAdCardsCards.length - 1) {
+      return <AddCard addSnapCard={this.props.addSnapCard} />;
     } else
       return (
         <SnapCard
           rejected={this.props.rejected}
           video={this.props.video}
-          openUploadVideo={this.props.openUploadVideo}
-          cancelUpload={this.props.cancelUpload}
+          // cancelUpload={this.props.cancelUpload}
           _handleStoryAdCards={this.props._handleStoryAdCards}
           removeSnapCard={this.props.removeSnapCard}
           snapCardInfo={item}
@@ -40,7 +39,7 @@ export default class SnapAds extends Component {
             alignItems: "center"
           }}
           keyExtractor={item => item.id}
-          data={this.props.snapAdsCards}
+          data={this.props.StoryAdCardsCards}
           renderItem={this.snapCards}
           style={{}}
           numColumns={3}

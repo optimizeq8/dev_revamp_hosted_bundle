@@ -12,6 +12,7 @@ export const _handleSubmission = async (
 ) => {
   let validStoryAds = [false];
   if (adType === "StoryAd") {
+    //Break down to different functions
     validStoryAds = storyAdsArray.filter(ad => ad.media !== "//");
     if (
       !validStoryAds.every(ad => ad.uploaded) ||
@@ -19,12 +20,13 @@ export const _handleSubmission = async (
       storyAdAttachChanged
     ) {
       if (storyAdCards.storyAdSelected) {
+        //seperate the buttons
         setTheState({
           storyAdCards: {
             ...storyAdCards,
             storyAdSelected: false,
 
-            numOfAds: storyAdCards.numOfAds + 1
+            numOfAds: storyAdCards.numOfAds + 1 //???
           },
           type: "",
           videoIsLoading: false
