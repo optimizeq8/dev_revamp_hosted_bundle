@@ -173,6 +173,14 @@ export const _changeDestination = (
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
+    if (whatsAppCampaign) {
+      save_campaign_info({
+        insta_handle: whatsAppCampaign.insta_handle,
+        whatsappnumber: whatsAppCampaign.whatsappnumber,
+        weburl: whatsAppCampaign.weburl,
+        callnumber: whatsAppCampaign.callnumber
+      });
+    }
     setStoryAdAttachment({
       attachment,
       call_to_action,
