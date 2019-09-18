@@ -13,7 +13,7 @@ class SubmitButton extends Component {
     if (this.props.adType === "CollectionAd") {
       if (
         this.props.collectionAdMedia.length === 4 &&
-        !this.props.collectionAdMedia.some(c => c)
+        !this.props.collectionAdMedia.includes(undefined)
       ) {
         return (
           <TouchableOpacity
