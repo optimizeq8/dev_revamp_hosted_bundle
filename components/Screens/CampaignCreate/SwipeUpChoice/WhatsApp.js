@@ -120,8 +120,7 @@ class WhatsApp extends Component {
 	};
 
 	checkInstaAccountChange = async () => {
-		// console.log("data", this.props.data);
-		
+		// console.log("data", this.props.data);		
 		if (
       ((this.props.data.insta_handle &&
         this.props.data.insta_handle !==

@@ -461,7 +461,7 @@ export const uploadStoryAdCard = (
       .post(`savestorymedia`, info, {
         // onUploadProgress: ProgressEvent =>
         // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
-        cancelToken: cancelUpload.token
+        // cancelToken: cancelUpload.token
       })
       .then(res => {
         return res.data;
