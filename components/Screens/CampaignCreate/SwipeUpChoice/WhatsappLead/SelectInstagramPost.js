@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList
+} from "react-native";
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
@@ -14,6 +20,7 @@ import * as actionCreators from "../../../../../store/actions";
 import CustomeHeader from "../../../../MiniComponents/Header";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
+import filter from "lodash/filter";
 
 class SelectInstagramPost extends React.Component {
   constructor(props) {
@@ -21,13 +28,16 @@ class SelectInstagramPost extends React.Component {
     this.state = {
       counter: 1,
       cartList: [],
-      errorImage: false
+      errorImage: false,
+      page: 0,
+      posts: 0
     };
   }
   componentDidMount() {
     // console.log("campaignData", this.props.data);
     const insta_handle = this.props.navigation.getParam("insta_handle", "");
     this.props.getInstagramPost(insta_handle);
+    // console.log("campaign_id", this.props.data.campaign_id);
     this.props.getWebProducts(this.props.data.campaign_id);
   }
 
@@ -40,6 +50,59 @@ class SelectInstagramPost extends React.Component {
       this.setState({
         cartList: this.props.selectedInstagramProducts,
         counter: this.props.selectedInstagramProducts.length + 1
+      });
+    }
+
+    if (
+      isEmpty(this.props.selectedInstagramProducts) &&
+      isEmpty(prevState.posts) &&
+      !isEmpty(this.props.instagramPostList) &&
+      prevState.posts !== this.props.instagramPostList
+    ) {
+      const newRecords = [];
+      for (
+        var i = this.state.page * 12, il = this.state.page + 12;
+        i < il && i < this.props.instagramPostList.length;
+        i++
+      ) {
+        newRecords.push(this.props.instagramPostList[i]);
+      }
+
+      this.setState({
+        posts: [...newRecords]
+      });
+    } else if (
+      !isEmpty(this.props.selectedInstagramProducts) &&
+      isEmpty(prevState.posts) &&
+      !isEmpty(this.props.instagramPostList) &&
+      prevState.posts !== this.props.instagramPostList
+    ) {
+      const newRecords = [];
+      for (
+        var i = this.state.page * 12, il = this.state.page + 12;
+        i < il && i < this.props.selectedInstagramProducts.length;
+        i++
+      ) {
+        newRecords.push(this.props.selectedInstagramProducts[i]);
+      }
+
+      for (
+        var i = this.state.page * 12, il = this.state.page + 12;
+        i < il && i < this.props.instagramPostList.length;
+        i++
+      ) {
+        if (
+          newRecords.findIndex(
+            img => img.imageId === this.props.instagramPostList[i].imageId
+          ) === -1
+        ) {
+          newRecords.push(this.props.instagramPostList[i]);
+        }
+      }
+      // console.log("newRecorde selectedInstagramProducts", newRecords.length);
+
+      this.setState({
+        posts: [...newRecords]
       });
     }
   }
@@ -94,6 +157,36 @@ class SelectInstagramPost extends React.Component {
         errorImage: false
       });
     }
+  };
+  addRecords = page => {
+    // assuming this.state.dataPosts hold all the records
+    const newRecords = this.state.posts;
+    for (
+      var i = page * 12, il = i + 12;
+      i < il && i < this.props.instagramPostList.length;
+      i++
+    ) {
+      const itemFound = findIndex(
+        newRecords,
+        it => it.imageId === this.props.instagramPostList[i].imageId
+      );
+      if (itemFound === -1) {
+        newRecords.push(this.props.instagramPostList[i]);
+      }
+    }
+    this.setState({
+      posts: [...newRecords]
+    });
+  };
+  onScrollHandler = () => {
+    this.setState(
+      {
+        page: this.state.page + 1
+      },
+      () => {
+        this.addRecords(this.state.page);
+      }
+    );
   };
   render() {
     // console.log('this.state.cartList', this.state.cartList);
@@ -150,7 +243,8 @@ class SelectInstagramPost extends React.Component {
             >
               Select the products you want to promote on your campaign
             </Text>
-            <Content
+
+            {/* <Content
               contentContainerStyle={{
                 flex: 1,
                 paddingTop: 20,
@@ -159,21 +253,53 @@ class SelectInstagramPost extends React.Component {
                 flexGrow: 1,
                 justifyContent: "space-around"
               }}
-            >
-              {this.props.instagramPostLoading && (
-                <ActivityIndicator color="#FF9D00" size="large" />
-              )}
-              {!this.props.instagramPostLoading &&
-                this.props.instagramPostList &&
-                this.props.instagramPostList.map(item => {
-                  // console.log('insta item', item);
-
+            > */}
+            {this.props.instagramPostLoading && (
+              <ActivityIndicator color="#FF9D00" size="large" />
+            )}
+            {!this.props.instagramPostLoading && this.props.instagramPostList && (
+              <FlatList
+                // style={{
+                //   flex: 1,
+                //   paddingTop: 20
+                //   // flexDirection: "row",
+                //   // flexWrap: "wrap",
+                //   // flexGrow: 1,
+                //   // justifyContent: "space-between",
+                //   // alignItems: "center"
+                // }}
+                contentContainerStyle={{
+                  flex: 1,
+                  paddingTop: 20,
+                  display: "flex",
+                  // flexDirection: "row",
+                  // flexWrap: "wrap",
+                  flexGrow: 1,
+                  justifyContent: "space-around",
+                  // justifyItems: "space-around",
+                  alignItems: "center"
+                }}
+                initialNumToRender={12}
+                numColumns={3}
+                // numRows={3}
+                horizontal={false}
+                // onEndReached={this.onScrollHandler}
+                // onEndThreshold={0}
+                data={this.state.posts}
+                keyExtractor={(item, index) => {
+                  // console.log("item", item);
+                  if (item) {
+                    return item.imageId;
+                  }
+                  return index;
+                }}
+                renderItem={({ item }) => {
                   if (item) {
                     const itemFound = findIndex(
                       this.state.cartList,
                       it => it.imageId === item.imageId
                     );
-                    // console.log('itemFound', itemFound);
+                    // console.log("itemFound", itemFound);
 
                     return (
                       <TouchableOpacity
@@ -183,11 +309,14 @@ class SelectInstagramPost extends React.Component {
                           flexDirection: "column",
                           alignItems: "center",
                           justifyContent: "center",
-                          paddingVertical: 12
+                          paddingVertical: 4,
+                          // marginHorizontal: "auto",
+                          paddingHorizontal: 8,
+                          alignSelf: "flex-start"
                         }}
                         onPress={() => this.addToList(item)}
                       >
-                        {itemFound + 1 >= 1 && (
+                        {itemFound + 1 >= 1 ? (
                           <View
                             style={{
                               width: 40,
@@ -211,6 +340,20 @@ class SelectInstagramPost extends React.Component {
                               {itemFound + 1}
                             </Text>
                           </View>
+                        ) : (
+                          <View
+                            style={{
+                              width: 40,
+                              //   backgroundColor: "#FF9D00",
+                              borderRadius: 40,
+                              height: 40,
+                              marginBottom: -25,
+                              zIndex: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          ></View>
                         )}
                         <Image
                           source={{
@@ -231,8 +374,94 @@ class SelectInstagramPost extends React.Component {
                       </TouchableOpacity>
                     );
                   }
-                })}
-            </Content>
+                }}
+              />
+            )}
+            {/* {!this.props.instagramPostLoading &&
+                this.props.instagramPostList &&
+                this.props.instagramPostList.map(item => {
+                  // console.log('insta item', item);
+
+                  if (item) {
+                    const itemFound = findIndex(
+                      this.state.cartList,
+                      it => it.imageId === item.imageId
+                    );
+                    // console.log('itemFound', itemFound);
+
+                    return (
+                      <TouchableOpacity
+                        key={item.imageId}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          paddingVertical: 4
+                        }}
+                        onPress={() => this.addToList(item)}
+                      >
+                        {itemFound + 1 >= 1 ? (
+                          <View
+                            style={{
+                              width: 40,
+                              backgroundColor: "#FF9D00",
+                              borderRadius: 40,
+                              height: 40,
+                              marginBottom: -25,
+                              zIndex: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            <Text
+                              style={{
+                                textAlign: "center",
+
+                                color: "#FFF"
+                              }}
+                            >
+                              {itemFound + 1}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={{
+                              width: 40,
+                              //   backgroundColor: "#FF9D00",
+                              borderRadius: 40,
+                              height: 40,
+                              marginBottom: -25,
+                              zIndex: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          ></View>
+                        )}
+                        <Image
+                          source={{
+                            uri: item.imageUrl
+                          }}
+                          width={95}
+                          height={95}
+                          style={[
+                            { width: 95, height: 95, borderRadius: 20 },
+                            itemFound + 1 >= 1
+                              ? {
+                                  borderWidth: 4,
+                                  borderColor: "#FF9D00"
+                                }
+                              : {}
+                          ]}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }
+                })} */}
+            {/* </Content> */}
+
             {!this.props.instagramPostLoading &&
               !isEmpty(this.props.instagramPostList) && (
                 <Text
@@ -241,11 +470,34 @@ class SelectInstagramPost extends React.Component {
                     color: "#FFF",
                     fontSize: 14,
                     lineHeight: 18,
-                    paddingVertical: 25,
+                    paddingVertical: 10,
                     textAlign: "center"
                   }}
                 >
-                  Select 3-6 Products
+                  (Select 3-6 Products)
+                </Text>
+              )}
+            {!this.props.instagramPostLoading &&
+              !isEmpty(this.props.instagramPostList) &&
+              this.state.posts.length !==
+                this.props.instagramPostList.length && (
+                <Text
+                  style={{
+                    fontFamily: "montserrat-bold",
+                    color: "#FFF",
+                    fontSize: 14,
+                    lineHeight: 18,
+                    paddingVertical: 10,
+                    textAlign: "center",
+                    borderWidth: 1,
+                    borderColor: "#FFF",
+                    borderRadius: 20,
+                    marginHorizontal: 60,
+                    marginBottom: 20
+                  }}
+                  onPress={this.onScrollHandler}
+                >
+                  VIEW MORE
                 </Text>
               )}
             {!this.props.instagramPostLoading &&

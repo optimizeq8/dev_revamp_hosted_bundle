@@ -32,6 +32,7 @@ class BusinessCard extends Component {
       <TouchableOpacity
         onPress={() => {
           this.props.changeBusiness(this.props.business);
+          this.props.resetCampaignInfo();
         }}
         style={[
           styles.campaignButton,
@@ -59,7 +60,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness
 });
 const mapDispatchToProps = dispatch => ({
-  changeBusiness: business => dispatch(actionCreators.changeBusiness(business))
+  changeBusiness: business => dispatch(actionCreators.changeBusiness(business)),
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(
   mapStateToProps,

@@ -159,7 +159,7 @@ class Menu extends Component {
               style={styles.options}
               onPress={() =>
                 this.props.navigation.navigate("WebView", {
-                  url: "https://www.optimizeapp.com/terms",
+                  url: "https://www.optimizeapp.com/terms_conditions",
                   title: "Terms & Conditions"
                 })
               }
@@ -188,7 +188,7 @@ class Menu extends Component {
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
             <Text style={styles.version}>
-              Version:{Constants.manifest.version}19/
+              Version:{Constants.manifest.version}20/
               {Constants.manifest.ios.buildNumber}/
               {Constants.manifest.android.versionCode}
             </Text>

@@ -12,6 +12,7 @@ export const _handleSubmission = async (
 ) => {
   let validStoryAds = [false];
   if (adType === "StoryAd") {
+    //Break down to different functions
     validStoryAds = storyAdsArray.filter(ad => ad.media !== "//");
     if (
       !validStoryAds.every(ad => ad.uploaded) ||
@@ -19,12 +20,13 @@ export const _handleSubmission = async (
       storyAdAttachChanged
     ) {
       if (storyAdCards.storyAdSelected) {
+        //seperate the buttons
         setTheState({
           storyAdCards: {
             ...storyAdCards,
             storyAdSelected: false,
 
-            numOfAds: storyAdCards.numOfAds + 1
+            numOfAds: storyAdCards.numOfAds + 1 //???
           },
           type: "",
           videoIsLoading: false
@@ -175,6 +177,14 @@ export const _changeDestination = (
 ) => {
   let newData = {};
   if (adType === "StoryAd") {
+    if (whatsAppCampaign) {
+      save_campaign_info({
+        insta_handle: whatsAppCampaign.insta_handle,
+        whatsappnumber: whatsAppCampaign.whatsappnumber,
+        weburl: whatsAppCampaign.weburl,
+        callnumber: whatsAppCampaign.callnumber
+      });
+    }
     setStoryAdAttachment({
       attachment,
       call_to_action,

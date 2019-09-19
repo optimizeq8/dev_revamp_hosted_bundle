@@ -25,7 +25,7 @@ import CameraLoading from "../../../MiniComponents/CameraLoading";
 import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
-import SnapAds from "./SnapAdCards/SnapAds";
+import StoryAdCards from "./SnapAdCards/StoryAdCards";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -82,8 +82,8 @@ class AdDesign extends Component {
       },
       storyAdCards: {
         storyAdSelected: false,
-        selectedStoryAd: { media: "//", call_to_action: {} },
-        numOfAds: 0
+        selectedStoryAd: { media: "//", call_to_action: {} }
+        // numOfAds: 0
       },
       directory: "/ImagePicker/",
       result: "",
@@ -842,6 +842,7 @@ class AdDesign extends Component {
       />
     ));
 
+    //Workaround changing the source, it wasn't updating the video instantly
     let videoPlayer = sourceChanging ? null : (
       <VideoPlayer
         storyAdCards={storyAdCards}
@@ -924,14 +925,14 @@ class AdDesign extends Component {
                   {inputFields}
                   {this.adType === "StoryAd" &&
                   !storyAdCards.storyAdSelected ? (
-                    <SnapAds
+                    <StoryAdCards
                       rejected={this.rejected}
                       video={type === "VIDEO"}
-                      numOfAds={storyAdCards.numOfAds}
-                      openUploadVideo={this.openUploadVideo}
+                      // numOfAds={storyAdCards.numOfAds}
+                      // openUploadVideo={this.openUploadVideo}
                       selectedStoryAd={storyAdCards.selectedStoryAd}
-                      cancelUpload={this.cancelUpload}
-                      snapAdsCards={this.props.storyAdsArray}
+                      cancelUpload={this.cancelUpload} //one signal to cancel all requests
+                      StoryAdCardsCards={this.props.storyAdsArray}
                       _handleStoryAdCards={this._handleStoryAdCards}
                     />
                   ) : (
@@ -1101,6 +1102,7 @@ class AdDesign extends Component {
               </View>
             ) : (
               <FooterText
+                collectionAdMedia={this.props.collectionAdMedia}
                 storyAdCards={storyAdCards}
                 adType={this.adType}
                 videoIsLoading={videoIsLoading}

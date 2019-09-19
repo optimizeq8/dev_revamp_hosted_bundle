@@ -30,9 +30,23 @@ class SwipeCompCondition extends Component {
         adType={this.props.adType}
         call_to_action_label={this.props.call_to_action.label}
       />
+    ) : this.props.adType === "StoryAd" &&
+      this.props.objective !== "WEB_CONVERSION" &&
+      this.props.storyAdCards.storyAdSelected ? (
+      <SwipeUpComponent
+        _changeDestination={this.props._changeDestination}
+        navigation={this.props.navigation}
+        objective={this.props.objective}
+        destination={this.props.storyAdAttachment.destination}
+        attachment={this.props.storyAdAttachment.attachment}
+        adType={this.props.adType}
+        media={this.props.storyAdCards.selectedStoryAd.media}
+        call_to_action_label={this.props.storyAdAttachment.call_to_action.label}
+      />
     ) : (
       this.props.adType === "StoryAd" &&
-      this.props.storyAdCards.storyAdSelected && (
+      this.props.objective === "WEB_CONVERSION" &&
+      !this.props.storyAdCards.storyAdSelected && (
         <SwipeUpComponent
           _changeDestination={this.props._changeDestination}
           navigation={this.props.navigation}

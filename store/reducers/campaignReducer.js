@@ -55,7 +55,7 @@ const initialState = {
       media: "//",
       destination: "BLANK",
       attachment: "BLANK"
-    }
+    } //Last object is an add button to add more story snap cards
   ],
   loadingStoryAdsArray: [],
   coverLoading: false,
@@ -374,7 +374,6 @@ const reducer = (state = initialState, action) => {
         destination: "BLANK",
         attachment: "BLANK"
       };
-      console.log("id???", newSnapCard.id);
 
       let newStoryAdsArray = state.storyAdsArray;
       newStoryAdsArray.push(newSnapCard);
