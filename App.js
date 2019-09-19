@@ -30,13 +30,15 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 
 import { AppLoading, Linking, SplashScreen, Notifications } from "expo";
-import { LinearGradient } from 'expo-linear-gradient';
-import * as Permissions from 'expo-permissions';
-import * as Segment from 'expo-analytics-segment';
-import * as Icon from '@expo/vector-icons';
-import * as Font from 'expo-font';
-import { Asset } from 'expo-asset';
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
+import * as Segment from "expo-analytics-segment";
+import * as Icon from "@expo/vector-icons";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 import NavigationService from "./NavigationService";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./store";
 
 import * as actionCreators from "./store/actions";
 
@@ -56,6 +58,8 @@ import {
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
+import { ActivityIndicator } from "react-native-paper";
+import { REHYDRATE } from "redux-persist";
 
 // Sentry.enableInExpoDevelopment = true;
 Sentry.config(
@@ -124,6 +128,7 @@ class App extends React.Component {
       androidWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi",
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
+    persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
@@ -142,7 +147,11 @@ class App extends React.Component {
       );
     }
   };
-
+  renderLoading = () => (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
   render() {
     if (!this.state.isLoadingComplete) {
       return (
@@ -196,40 +205,41 @@ class App extends React.Component {
 
       return (
         <Provider store={store}>
-          <StatusBar
-            barStyle="light-content"
-            translucent={true}
-            style={{
-              backgroundColor: "transparent",
-              marginTop: 0,
-              paddingTop: 0
-            }}
-          />
-          <LinearGradient
-            colors={["#751AFF", "#6268FF"]}
-            locations={[0.3, 1]}
-            style={styles.gradient}
-          />
-          <View
-            style={{
-              backgroundColor: "transparent",
-              marginTop: 0,
-              paddingTop: 0
-            }}
-          />
-          <View style={styles.container}>
-            <Root>
-              <AppNavigator
-                uriPrefix={prefix}
-                ref={navigatorRef => {
-                  //console.log(navigatorRef);
-                  NavigationService.setTopLevelNavigator(navigatorRef);
-                }}
-              />
-            </Root>
-          </View>
-          <FlashMessage icon="auto" duration={4000} position="top" />
-
+          <PersistGate persistor={persistor} loading={this.renderLoading()}>
+            <StatusBar
+              barStyle="light-content"
+              translucent={true}
+              style={{
+                backgroundColor: "transparent",
+                marginTop: 0,
+                paddingTop: 0
+              }}
+            />
+            <LinearGradient
+              colors={["#751AFF", "#6268FF"]}
+              locations={[0.3, 1]}
+              style={styles.gradient}
+            />
+            <View
+              style={{
+                backgroundColor: "transparent",
+                marginTop: 0,
+                paddingTop: 0
+              }}
+            />
+            <View style={styles.container}>
+              <Root>
+                <AppNavigator
+                  uriPrefix={prefix}
+                  ref={navigatorRef => {
+                    //console.log(navigatorRef);
+                    NavigationService.setTopLevelNavigator(navigatorRef);
+                  }}
+                />
+              </Root>
+            </View>
+            <FlashMessage icon="auto" duration={4000} position="top" />
+          </PersistGate>
           {/* {this._maybeRenderLoadingImage()} */}
         </Provider>
       );

@@ -66,7 +66,8 @@ class SwipeCompCondition extends Component {
   }
 }
 const mapStateToProps = state => ({
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
 const mapDispatchToProps = dispatch => ({});

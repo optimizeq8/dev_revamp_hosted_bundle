@@ -2,16 +2,19 @@
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { View, BackHandler } from "react-native";
-import { Text, Container } from "native-base";
+import { Text, Container, Content } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
+import CustomHeader from "../../../MiniComponents/Header";
+import { StackActions, NavigationActions } from "react-navigation";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
+import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
 
 //Style
 import styles from "./styles";
@@ -27,6 +30,10 @@ import { StoryAdCards, twittwerAds, instagramAds } from "../../../Data/adTypes.d
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
+import { BlurView } from "expo-blur";
+import Modal from "react-native-modal";
+import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
+
 class AdType extends Component {
   static navigationOptions = {
     header: null
@@ -35,7 +42,8 @@ class AdType extends Component {
     activeSlide: 0,
     media_type: StoryAdCards,
     campaign_type: "SnapAd",
-    route: "AdObjective"
+    route: "AdObjective",
+    isVisible: false
   };
 
   componentDidMount() {
@@ -115,7 +123,9 @@ class AdType extends Component {
       this.props.resetCampaignInfo();
     }
     this.props.set_adType(this.state.campaign_type);
-    this.props.navigation.navigate(this.state.route);
+    this.props.navigation.navigate(this.state.route, {
+      tempAdType: this.state.campaign_type
+    });
     this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
@@ -139,6 +149,10 @@ class AdType extends Component {
         adType={item}
       />
     );
+  };
+  setModalVisible = (isVisible, resetCampaign) => {
+    this.setState({ isVisible });
+    resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
   };
   render() {
     return (
@@ -218,6 +232,12 @@ class AdType extends Component {
               <LowerButton function={this.navigationHandler} bottom={1} />
             </Animatable.View>
           </View>
+          <View>
+            <ContinueCampaign
+              tempAdType={this.props.adType}
+              navigation={this.props.navigation}
+            />
+          </View>
         </Container>
       </SafeAreaView>
     );
@@ -227,14 +247,16 @@ class AdType extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
   mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType))
 });
 export default connect(
   mapStateToProps,

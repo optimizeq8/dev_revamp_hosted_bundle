@@ -547,6 +547,13 @@ class AdCover extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
+            if (!this.props.currentCampaignSteps.includes("AdDesign")) {
+              this.props.saveCampaignSteps([
+                "Dashboard",
+                "AdObjective",
+                "AdCover"
+              ]);
+            }
             Segment.screenWithProperties("Snap Ad Design", {
               category: "Campaign Creation"
             });
@@ -739,7 +746,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   data: state.campaignC.data,
   storyAdCover: state.campaignC.storyAdCover,
-  coverLoading: state.campaignC.coverLoading
+  coverLoading: state.campaignC.coverLoading,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -763,7 +771,8 @@ const mapDispatchToProps = dispatch => ({
         selectedCampaign
       )
     ),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 export default connect(
   mapStateToProps,

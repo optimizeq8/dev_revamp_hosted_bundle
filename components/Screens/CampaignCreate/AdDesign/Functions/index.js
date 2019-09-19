@@ -37,9 +37,11 @@ export const _handleSubmission = async (
         storyAdAttachChanged ||
         !validStoryAds.every(ad => ad.uploaded)
       ) {
-        await validStoryAds.forEach(
-          ad =>
-            (!ad.uploaded || storyAdAttachChanged) &&
+        console.log("kmsdockm", formatStoryAdParams);
+
+        await validStoryAds.forEach(ad => {
+          formatStoryAdParams.handleUpload();
+          if (!ad.uploaded || storyAdAttachChanged)
             formatStoryAd(
               ad,
               storyAdsArray,
@@ -53,8 +55,8 @@ export const _handleSubmission = async (
               formatStoryAdParams.signal,
               formatStoryAdParams.uploadStoryAdCard,
               setTheState
-            )
-        );
+            );
+        });
         setTheState({ storyAdAttachChanged: false });
       }
     } else {

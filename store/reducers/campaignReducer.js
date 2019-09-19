@@ -4,7 +4,7 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
-  adType: "",
+
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -85,7 +85,10 @@ const initialState = {
   errorUploadMediaDiffernetDevice: "",
   mediaWebLink: "",
   mediaTypeWebLink: "",
-  webUploadLinkMediaLoading: false
+  webUploadLinkMediaLoading: false,
+  incompleteCampaign: false,
+  campaignProgressStarted: false,
+  currentCampaignSteps: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -106,7 +109,8 @@ const reducer = (state = initialState, action) => {
         campaign_id: action.payload.campaign_id,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
-        loadingObj: false
+        loadingObj: false,
+        incompleteCampaign: true
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -453,19 +457,50 @@ const reducer = (state = initialState, action) => {
         collectionAdMedia: []
       };
     case actionTypes.RESET_CAMPAING_INFO:
+      let resetAdType = action.payload;
+      let adType = "";
+      let data = {};
+      let campaign_id = "";
+      let countryName = "";
+      let interestNames = [];
+      let regionNames = [];
+      let minValueBudget = 0;
+      let maxValueBudget = 0;
+      let incompleteCampaign = false;
+      let currentCampaignSteps = [];
+      if (resetAdType) {
+        currentCampaignSteps = state.currentCampaignSteps;
+        incompleteCampaign = state.incompleteCampaign;
+        adType = state.adType;
+        campaign_id = state.campaign_id;
+        data = state.data ? state.data : {};
+        minValueBudget = state.minValueBudget;
+        maxValueBudget = state.maxValueBudget;
+        countryName = state.countryName;
+        interestNames = state.interestNames;
+        regionNames = state.regionNames;
+        delete data.media;
+        delete data.media_type;
+        delete data.media_upload;
+        delete data.ios_upload;
+        delete data.formatted;
+        delete data.objective;
+        delete data.objectiveLabel;
+      }
+
       return {
         ...state,
-        campaign_id: "",
-        data: null,
+        campaign_id: campaign_id,
+        data: data,
         average_reach: 0,
         total_reach: 0,
         media: "",
-        minValueBudget: 0,
-        adType: "",
-        maxValueBudget: 0,
-        countryName: "",
-        interestNames: [],
-        regionNames: [],
+        minValueBudget: minValueBudget,
+        adType: adType,
+        maxValueBudget: maxValueBudget,
+        countryName: countryName,
+        interestNames: interestNames,
+        regionNames: regionNames,
         storyAdsArray: [
           {
             id: 0,
@@ -506,7 +541,9 @@ const reducer = (state = initialState, action) => {
           destination: "BLANK",
           call_to_action: { labe: "BLANK", value: "BLANK" },
           attachment: "BLANK"
-        }
+        },
+        incompleteCampaign: incompleteCampaign,
+        currentCampaignSteps: currentCampaignSteps
       };
     case actionTypes.VERIFY_BUSINESSURL:
       return {
@@ -685,6 +722,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         webUploadLinkMediaLoading: action.payload
+      };
+    case actionTypes.SAVE_CAMPAIGN_STEP:
+      return {
+        ...state,
+        currentCampaignSteps: action.payload
+      };
+    case actionTypes.SET_CAMPAIGN_IN_PROGRESS:
+      return {
+        ...state,
+        campaignProgressStarted: action.payload
       };
     default:
       return state;
