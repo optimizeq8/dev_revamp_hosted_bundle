@@ -26,7 +26,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
-import { StoryAdCards, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
+import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
@@ -40,7 +40,7 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
-    media_type: StoryAdCards,
+    media_type: snapAds,
     campaign_type: "SnapAd",
     route: "AdObjective",
     isVisible: false
