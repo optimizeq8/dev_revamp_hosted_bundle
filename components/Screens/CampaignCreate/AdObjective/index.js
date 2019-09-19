@@ -89,6 +89,7 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    this.setCampaignInfo();
     if (this.props.adType === "CollectionAd") {
       if (this.props.collectionAdLinkForm !== 0) {
         this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
@@ -105,26 +106,29 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
-    this.setCampaignInfo();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.adType !== this.props.adType) {
-  //     this.setState({
-  //       campaignInfo: {
-  //         ad_account_id: "",
-  //         name: "",
-  //         objective: "",
-  //         start_time: "",
-  //         end_time: ""
-  //       },
-  //       collectionAdLinkForm: 0,
-  //       playback_type: "LOOPING",
-  //       objectiveLabel: "Select Objective"
-  //     });
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
+      this.setCampaignInfo();
+    }
+    if (
+      prevProps.adType !== this.props.adType &&
+      this.props.adType === "CollectionAd"
+    ) {
+      if (
+        prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
+        this.props.collectionAdLinkForm !== 0
+      ) {
+        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
+      } else {
+        this._handleCollectionAdLinkForm(1);
+      }
+    } else if (prevProps.adType !== this.props.adType) {
+      this._handleCollectionAdLinkForm(0);
+    }
+  }
   setCampaignInfo = () => {
     if (
       this.props.data &&
@@ -135,18 +139,19 @@ class AdObjective extends Component {
         .includes(true)
     ) {
       rep = {
-        ...this.state,
+        ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
         name: this.props.data.name,
-        objective: this.props.data.objective,
-        start_time: this.props.data.start_time,
-        end_time: this.props.data.end_time
+        objective: this.props.data.objective ? this.props.data.objective : "",
+        start_time: this.props.data.start_time
+          ? this.props.data.start_time
+          : "",
+        end_time: this.props.data.end_time ? this.props.data.end_time : ""
       };
-
       this.setState({
-        ...this.props.data,
-        collectionAdLinkForm: this.props.data,
+        // ...this.props.data,
+        collectionAdLinkForm: this.props.data.collectionAdLinkForm,
         playback_type: this.props.data.playback_type,
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
@@ -160,6 +165,29 @@ class AdObjective extends Component {
         start_timeError: this.props.data.start_timeError,
         end_timeError: this.props.data.end_timeError,
         campaignInfo: { ...rep }
+      });
+    } else {
+      this.setState({
+        campaignInfo: {
+          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: "",
+          objective: "",
+          start_time: "",
+          end_time: ""
+        },
+        collectionAdLinkForm: 0,
+        playback_type: "LOOPING",
+        minValueBudget: 0,
+        maxValueBudget: 0,
+        modalVisible: false,
+        objectiveLabel: "Select Objective",
+        inputN: false,
+        objectives: ObjectiveData[this.props.adType],
+        nameError: "",
+        objectiveError: "",
+        start_timeError: "",
+        end_timeError: ""
       });
     }
   };
@@ -698,6 +726,7 @@ class AdObjective extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
+  campaignProcessSteps: state.campaignC.campaignProcessSteps,
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
   campaign_id: state.campaignC.campaign_id,

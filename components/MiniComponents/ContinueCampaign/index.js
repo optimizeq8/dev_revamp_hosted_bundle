@@ -12,6 +12,7 @@ import {
 import CustomHeader from "../Header";
 import ExclamationIcon from "../../../assets/SVGs/ExclamationMark";
 import LowerButton from "../LowerButton";
+import { persistor } from "../../../store/";
 import styles from "./styles";
 class ContinueCampaign extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class ContinueCampaign extends Component {
     this.state = { isVisible: false };
   }
   componentDidMount() {
-    this.continueCampaign();
+    if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
+      this.continueCampaign();
   }
   navigateToContinue = () => {
     let tempAdType = this.props.navigation.getParam("tempAdType");
@@ -45,10 +47,11 @@ class ContinueCampaign extends Component {
     if (resetCampaign) {
       this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType(tempAdType);
+      persistor.purge();
     }
   };
   continueCampaign = () => {
-    if (this.props.campaignProcessStarted) {
+    if (this.props.incompleteCampaign) {
       setTimeout(() => {
         this.setState({ isVisible: true });
       }, 1200);
@@ -110,7 +113,8 @@ class ContinueCampaign extends Component {
                   // function={() => this.props.navigation.push("AdDesign")}
                   function={() => {
                     this.navigateToContinue();
-                    this.setModalVisible(false);
+                    this.setModalVisible(false, false);
+                    this.props.setCampaignInProgress(true);
                   }}
                 />
               </View>
@@ -124,7 +128,8 @@ class ContinueCampaign extends Component {
 const mapStateToProps = state => ({
   adType: state.campaignC.adType,
   data: state.campaignC.data,
-  campaignProcessStarted: state.campaignC.campaignProcessStarted,
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  campaignProgressStarted: state.campaignC.campaignProgressStarted,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   mainBusiness: state.account.mainBusiness
 });
@@ -132,6 +137,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value)),
 
   set_adType: value => dispatch(actionCreators.set_adType(value))
 });

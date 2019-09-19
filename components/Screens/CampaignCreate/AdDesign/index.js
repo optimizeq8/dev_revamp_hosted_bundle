@@ -218,7 +218,9 @@ class AdDesign extends Component {
 
       rep = {
         ...this.state.campaignInfo,
-        call_to_action: this.props.data.call_to_action,
+        call_to_action: this.props.data.call_to_action
+          ? this.props.data.call_to_action
+          : "BLANK",
         attachment: this.props.data.attachment,
         destination: this.props.data.destination
       };
@@ -849,7 +851,6 @@ class AdDesign extends Component {
         }
       />
     );
-    console.log(this.props.data.objective);
 
     return (
       <SafeAreaView
@@ -971,7 +972,6 @@ class AdDesign extends Component {
                     destination={destination}
                     attachment={attachment}
                     storyAdCards={storyAdCards}
-                    collectionAdLinkForm={this.props.collectionAdLinkForm}
                     adType={this.adType}
                     media={media}
                     call_to_action={call_to_action}

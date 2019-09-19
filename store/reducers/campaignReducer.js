@@ -86,7 +86,8 @@ const initialState = {
   mediaWebLink: "",
   mediaTypeWebLink: "",
   webUploadLinkMediaLoading: false,
-  campaignProcessStarted: false,
+  incompleteCampaign: false,
+  campaignProgressStarted: false,
   currentCampaignSteps: ""
 };
 
@@ -109,7 +110,7 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
         loadingObj: false,
-        campaignProcessStarted: true
+        incompleteCampaign: true
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -458,8 +459,6 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.RESET_CAMPAING_INFO:
       let resetAdType = action.payload;
-      console.log("resetAdType", resetAdType);
-
       let adType = "";
       let data = {};
       let campaign_id = "";
@@ -468,15 +467,14 @@ const reducer = (state = initialState, action) => {
       let regionNames = [];
       let minValueBudget = 0;
       let maxValueBudget = 0;
-      let campaignProcessStarted = false;
+      let incompleteCampaign = false;
       let currentCampaignSteps = [];
-      console.log("sdc", state.adType);
       if (resetAdType) {
-        // currentCampaignSteps = state.currentCampaignSteps;
-        campaignProcessStarted = state.campaignProcessStarted;
+        currentCampaignSteps = state.currentCampaignSteps;
+        incompleteCampaign = state.incompleteCampaign;
         adType = state.adType;
         campaign_id = state.campaign_id;
-        data = state.data;
+        data = state.data ? state.data : {};
         minValueBudget = state.minValueBudget;
         maxValueBudget = state.maxValueBudget;
         countryName = state.countryName;
@@ -487,26 +485,9 @@ const reducer = (state = initialState, action) => {
         delete data.media_upload;
         delete data.ios_upload;
         delete data.formatted;
+        delete data.objective;
+        delete data.objectiveLabel;
       }
-      if (!resetAdType) {
-        // currentCampaignSteps = state.currentCampaignSteps;
-        // campaignProcessStarted = state.campaignProcessStarted;
-        // adType = state.adType;
-        // campaign_id = state.campaign_id;
-        // data = state.data;
-        // minValueBudget = state.minValueBudget;
-        // maxValueBudget = state.maxValueBudget;
-        // countryName = state.countryName;
-        // interestNames = state.interestNames;
-        // regionNames = state.regionNames;
-        // delete data.media;
-        // delete data.media_type;
-        // delete data.media_upload;
-        // delete data.ios_upload;
-        // delete data.formatted;
-      }
-      delete data.objective;
-      delete data.objectiveLabel;
 
       return {
         ...state,
@@ -562,7 +543,7 @@ const reducer = (state = initialState, action) => {
           call_to_action: { labe: "BLANK", value: "BLANK" },
           attachment: "BLANK"
         },
-        campaignProcessStarted: campaignProcessStarted,
+        incompleteCampaign: incompleteCampaign,
         currentCampaignSteps: currentCampaignSteps
       };
     case actionTypes.VERIFY_BUSINESSURL:
@@ -747,6 +728,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentCampaignSteps: action.payload
+      };
+    case actionTypes.SET_CAMPAIGN_IN_PROGRESS:
+      return {
+        ...state,
+        campaignProgressStarted: action.payload
       };
     default:
       return state;

@@ -57,7 +57,8 @@ export {
   setStoryAdAttechment,
   getMediaUploadUrl,
   getWebUploadLinkMedia,
-  saveCampaignSteps
+  saveCampaignSteps,
+  setCampaignInProgress
 } from "./campaignActions";
 
 export {

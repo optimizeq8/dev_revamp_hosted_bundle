@@ -9,7 +9,7 @@ const initialState = {};
 const middleware = [thunk];
 
 const persistConfig = {
-  key: "roott",
+  key: "root",
   storage: AsyncStorage,
   whitelist: ["campaignC"]
 };
@@ -23,5 +23,4 @@ const store = createStore(
 );
 
 export const persistor = persistStore(store);
-
 export default store;

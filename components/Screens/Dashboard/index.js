@@ -162,10 +162,10 @@ class Dashboard extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: adType.title
     });
-    if (this.state.adTypeChanged) {
+    if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
       this.props.resetCampaignInfo(true);
     }
-    if (!this.props.campaignProcessStarted) {
+    if (!this.props.incompleteCampaign) {
       this.props.set_adType(adType.value);
     }
     this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
@@ -208,7 +208,7 @@ class Dashboard extends Component {
 
   continueCampaign = () => {
     let ctnModal = {};
-    if (this.state.componentMounting && this.props.campaignProcessStarted) {
+    if (this.state.componentMounting && this.props.incompleteCampaign) {
       this.setState({ componentMounting: false });
     }
     return ctnModal;
@@ -503,6 +503,7 @@ class Dashboard extends Component {
               <NavigationEvents
                 onDidFocus={() => {
                   Segment.screen("Dashboard");
+                  this.props.setCampaignInProgress(false);
                 }}
               />
             </Animatable.View>
@@ -546,7 +547,7 @@ const mapStateToProps = state => ({
   isListEnd: state.dashboard.isListEnd,
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
-  campaignProcessStarted: state.campaignC.campaignProcessStarted
+  incompleteCampaign: state.campaignC.incompleteCampaign
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -562,7 +563,9 @@ const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   resetCampaignInfo: resetAdType =>
-    dispatch(actionCreators.resetCampaignInfo(resetAdType))
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value))
 });
 export default connect(
   mapStateToProps,

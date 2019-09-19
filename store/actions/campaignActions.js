@@ -1362,3 +1362,12 @@ export const saveCampaignSteps = step => {
     });
   };
 };
+
+export const setCampaignInProgress = value => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_CAMPAIGN_IN_PROGRESS,
+      payload: value
+    });
+  };
+};
