@@ -77,7 +77,7 @@ class ErrorRedirect extends Component {
             resizeMode="contain"
           />
           <View style={styles.view}>
-            <ErrorIcon width={80} height={80} />
+            <ErrorIcon fill="#E26A65" width={80} height={80} />
 
             <Text style={styles.title}> Sorry </Text>
             <Text style={styles.errorText}>

@@ -19,7 +19,11 @@ import {
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import {
+  SafeAreaView,
+  NavigationEvents,
+  NavigationActions
+} from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -51,6 +55,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -84,6 +89,7 @@ class AdObjective extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    this.setCampaignInfo();
     if (this.props.adType === "CollectionAd") {
       if (this.props.collectionAdLinkForm !== 0) {
         this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
@@ -93,7 +99,6 @@ class AdObjective extends Component {
     } else {
       this._handleCollectionAdLinkForm(0);
     }
-
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -101,6 +106,30 @@ class AdObjective extends Component {
         businessid: this.props.mainBusiness.businessid
       }
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.currentCampaignSteps !== this.props.currentCampaignSteps) {
+      this.setCampaignInfo();
+    }
+    if (
+      prevProps.adType !== this.props.adType &&
+      this.props.adType === "CollectionAd"
+    ) {
+      if (
+        prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
+        this.props.collectionAdLinkForm !== 0
+      ) {
+        this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
+      } else {
+        this._handleCollectionAdLinkForm(1);
+      }
+    } else if (prevProps.adType !== this.props.adType) {
+      this._handleCollectionAdLinkForm(0);
+    }
+  }
+  setCampaignInfo = () => {
     if (
       this.props.data &&
       Object.keys(this.state.campaignInfo)
@@ -113,16 +142,55 @@ class AdObjective extends Component {
         ...this.state.campaignInfo,
         ad_account_id: this.props.mainBusiness.snap_ad_account_id,
         businessid: this.props.mainBusiness.businessid,
-        ...this.props.data
+        name: this.props.data.name,
+        objective: this.props.data.objective ? this.props.data.objective : "",
+        start_time: this.props.data.start_time
+          ? this.props.data.start_time
+          : "",
+        end_time: this.props.data.end_time ? this.props.data.end_time : ""
       };
       this.setState({
-        campaignInfo: { ...rep },
-        ...this.props.data
+        // ...this.props.data,
+        collectionAdLinkForm: this.props.data.collectionAdLinkForm,
+        playback_type: this.props.data.playback_type,
+        minValueBudget: this.props.data.minValueBudget,
+        maxValueBudget: this.props.data.maxValueBudget,
+        modalVisible: this.props.data.modalVisible,
+        objectiveLabel: this.props.data.objectiveLabel
+          ? this.props.data.objectiveLabel
+          : "Select Objective",
+        inputN: this.props.data.inputN,
+        nameError: this.props.data.nameError,
+        objectiveError: this.props.data.objectiveError,
+        start_timeError: this.props.data.start_timeError,
+        end_timeError: this.props.data.end_timeError,
+        campaignInfo: { ...rep }
+      });
+    } else {
+      this.setState({
+        campaignInfo: {
+          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: "",
+          objective: "",
+          start_time: "",
+          end_time: ""
+        },
+        collectionAdLinkForm: 0,
+        playback_type: "LOOPING",
+        minValueBudget: 0,
+        maxValueBudget: 0,
+        modalVisible: false,
+        objectiveLabel: "Select Objective",
+        inputN: false,
+        objectives: ObjectiveData[this.props.adType],
+        nameError: "",
+        objectiveError: "",
+        start_timeError: "",
+        end_timeError: ""
       });
     }
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
-
+  };
   setObjective = choice => {
     this.setState({
       campaignInfo: {
@@ -250,9 +318,11 @@ class AdObjective extends Component {
         );
     }
   };
+
   render() {
     let adType = this.props.adType;
-    const list = this.state.objectives.map(o => (
+
+    const list = ObjectiveData[this.props.adType].map(o => (
       <ObjectivesCard
         choice={o}
         selected={this.state.campaignInfo.objective}
@@ -614,6 +684,10 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
         />
+        <ContinueCampaign
+          tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
+          navigation={this.props.navigation}
+        />
         <Modal
           animationType={"slide"}
           transparent={true}
@@ -652,12 +726,14 @@ class AdObjective extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
+  campaignProcessSteps: state.campaignC.campaignProcessSteps,
   mainBusiness: state.account.mainBusiness,
   loading: state.campaignC.loadingObj,
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
 });
 
 const mapDispatchToProps = dispatch => ({

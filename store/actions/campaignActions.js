@@ -66,9 +66,9 @@ export const payment_request_credit_card = (
       });
   };
 };
-export const resetCampaignInfo = () => {
+export const resetCampaignInfo = (resetAdType = false) => {
   return dispatch => {
-    dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+    dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
   };
 };
 
@@ -1392,5 +1392,23 @@ export const getWebUploadLinkMedia = campaign_id => {
           type: actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA
         });
       });
+  };
+};
+
+export const saveCampaignSteps = step => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SAVE_CAMPAIGN_STEP,
+      payload: step
+    });
+  };
+};
+
+export const setCampaignInProgress = value => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_CAMPAIGN_IN_PROGRESS,
+      payload: value
+    });
   };
 };
