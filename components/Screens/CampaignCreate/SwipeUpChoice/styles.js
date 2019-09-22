@@ -176,13 +176,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
     width: widthPercentageToDP(75),
     borderWidth: 0,
-    height: 50
+    height: 54
   },
   inputtext: {
     fontFamily: "montserrat-light",
@@ -385,12 +385,12 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   networkLabel: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    textAlign: "left",
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    textAlign: "center",
     color: "#fff",
     // flex: 1,
-    paddingLeft: 20,
+    // paddingLeft: 20,
     top: 2
     // right: 4,
   },
