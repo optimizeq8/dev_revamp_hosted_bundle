@@ -34,7 +34,7 @@ class App_Install extends Component {
         icon_media_url: ""
       },
       firstStepDone: false,
-      choice: "",
+      appChoice: "",
       data: [],
       nameError: "",
       callaction: "",
@@ -66,13 +66,13 @@ class App_Install extends Component {
     callActionError,
     attachment,
     callaction,
-    choice
+    appChoice
   ) => {
     if (!nameError && !callActionError) {
       this.setState({
         attachment,
         callaction,
-        choice
+        appChoice
       });
     }
   };
@@ -96,7 +96,7 @@ class App_Install extends Component {
         "APP_INSTALL",
         this.state.callaction,
         this.state.attachment,
-        this.state.choice
+        this.state.appChoice
       );
       this.props.navigation.navigate("AdDesign");
     }

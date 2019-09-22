@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "transparent",
     marginTop: 0,
-    // height: '100%',
     flex: 1
+    // width: "96%"
   },
   contentContainer: {
     flex: 1
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   deepLinkContainer: {
     flex: 1,
     padding: 10,
-    width: "100%"
+    alignSelf: "center"
   },
   deepLinkHeader: {
     flexDirection: "column",

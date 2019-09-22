@@ -114,7 +114,12 @@ class Deep_Link extends Component {
           <Content
             style={styles.container}
             scrollEnabled={true}
-            contentContainerStyle={styles.deepLinkContainer}
+            contentContainerStyle={[
+              styles.deepLinkContainer,
+              {
+                width: this.props.toggleSideMenu ? "100%" : "90%"
+              }
+            ]}
           >
             <KeyboardShift style={styles.keyboardContainer}>
               {() => (
@@ -130,7 +135,6 @@ class Deep_Link extends Component {
                   </View>
                   <AppChoice
                     navigation={this.props.navigation}
-                    toggleSideMenu={this.props.toggleSideMenu}
                     renderNextStep={this.renderNextStep}
                     listNum={3}
                     swipeUpDestination={this.props.swipeUpDestination}

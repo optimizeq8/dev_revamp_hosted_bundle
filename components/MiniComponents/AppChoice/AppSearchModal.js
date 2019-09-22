@@ -186,10 +186,9 @@ export default class AppSearchModal extends Component {
                           item={item}
                           showConfirmBtn={this.showConfirmBtn}
                           attachment={attachment}
-                          choice={appSelection}
+                          appChoice={appSelection}
                           _getIosAppIds={_getIosAppIds}
                           _getAndroidAppIds={_getAndroidAppIds}
-                          // _handleBothOS={_handleBothOS}
                           AppError={AppError}
                           handleAppError={handleAppError}
                         />
