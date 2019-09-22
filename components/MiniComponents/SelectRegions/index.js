@@ -6,15 +6,25 @@ import {
   ScrollView,
   PixelRatio
 } from "react-native";
+import { connect } from "react-redux";
 import { Input, Button, Item, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
-
+import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import LocationIcon from "../../../assets/SVGs/Location";
 
-export default class SelectRegions extends Component {
+class SelectRegions extends Component {
+  state = { selectedAll: false };
+
+  selectAll = () => {
+    this.setState({ selectedAll: !this.state.selectedAll });
+    this.props.regions.forEach(region =>
+      this.props.onSelectedRegionChange(region.id, region.name)
+    );
+  };
+
   render() {
     let regionlist = this.props.filteredRegions.map(c => {
       return (
@@ -84,23 +94,29 @@ export default class SelectRegions extends Component {
                   }}
                 />
               </Item>
-              {this.props.countryName === "" ? (
-                <Text
-                  style={{
-                    paddingVertical: 20,
-                    color: "#FFFF",
-                    fontSize: 16,
-                    textAlign: "center",
-                    fontFamily: "montserrat-regular"
-                  }}
-                >
-                  Please select a country to see the regions
-                </Text>
-              ) : (
-                <ScrollView style={[styles.regionListContainer]}>
-                  {regionlist}
-                </ScrollView>
-              )}
+
+              <ScrollView style={[styles.regionListContainer]}>
+                {!this.props.addressForm && (
+                  <TouchableOpacity
+                    style={[
+                      styles.languageRowConatiner,
+                      { alignSelf: "center" }
+                    ]}
+                    onPress={this.selectAll}
+                  >
+                    <Text
+                      style={[
+                        styles.optionsTextContainer,
+                        { paddingLeft: 0, textDecorationLine: "underline" }
+                      ]}
+                    >
+                      Select all
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {regionlist}
+              </ScrollView>
             </View>
           </View>
 
@@ -115,3 +131,15 @@ export default class SelectRegions extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  data: state.campaignC.data
+});
+const mapDispatchToProps = dispatch => ({
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectRegions);
