@@ -72,7 +72,7 @@ class AdObjective extends Component {
         end_time: ""
       },
       collectionAdLinkForm: 0,
-      playback_type: "LOOPING",
+      // playback_type: "LOOPING",
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
@@ -303,9 +303,7 @@ class AdObjective extends Component {
         campaign_type: this.props.adType,
         ...this.state.campaignInfo
       };
-      if (this.props.adType === "StoryAd") {
-        info["playback_type"] = this.state.playback_type;
-      }
+
       if (this.props.campaign_id !== "") {
         this.props.ad_objective(
           { ...info, campaign_id: this.props.campaign_id },
@@ -505,84 +503,6 @@ class AdObjective extends Component {
                   <Icon type="AntDesign" name="down" style={styles.downicon} />
                 </Item>
               </Animatable.View>
-
-              {adType === "StoryAd" && (
-                <View style={styles.topContainer}>
-                  <Button
-                    block
-                    style={[
-                      this.state.playback_type === "LOOPING"
-                        ? styles.activeButton
-                        : styles.button,
-                      styles.collectionAdLinkForm1
-                    ]}
-                    onPress={() => {
-                      this.handleStoryOption("LOOPING");
-                    }}
-                  >
-                    <LoopStoryIcon
-                      width={30}
-                      height={30}
-                      fill={
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText.color
-                          : styles.inactiveText.color
-                      }
-                    />
-                    <Text
-                      style={[
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText
-                          : styles.inactiveText
-                      ]}
-                    >
-                      Loop story
-                    </Text>
-                    <Text
-                      style={[
-                        this.state.playback_type === "LOOPING"
-                          ? styles.activeText
-                          : styles.inactiveText,
-                        { fontFamily: "montserrat-regular" }
-                      ]}
-                    >
-                      Advance with tap
-                    </Text>
-                  </Button>
-
-                  <Button
-                    block
-                    style={[
-                      this.state.playback_type === "AUTO_ADVANCING"
-                        ? styles.activeButton
-                        : styles.button,
-                      styles.collectionAdLinkForm2
-                    ]}
-                    onPress={() => {
-                      this.handleStoryOption("AUTO_ADVANCING");
-                    }}
-                  >
-                    <AutoAdvanceIcon
-                      width={40}
-                      height={40}
-                      fill={
-                        this.state.playback_type === "AUTO_ADVANCING"
-                          ? styles.activeText.color
-                          : styles.inactiveText.color
-                      }
-                    />
-                    <Text
-                      style={[
-                        this.state.playback_type === "AUTO_ADVANCING"
-                          ? styles.activeText
-                          : styles.inactiveText
-                      ]}
-                    >
-                      Auto Advance
-                    </Text>
-                  </Button>
-                </View>
-              )}
 
               {this.props.adType === "CollectionAd" && (
                 <View style={styles.collectionAdView}>
