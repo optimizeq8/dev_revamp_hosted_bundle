@@ -54,14 +54,19 @@ class ContinueCampaign extends Component {
     if (this.props.incompleteCampaign) {
       setTimeout(() => {
         this.setState({ isVisible: true });
-      }, 1200);
+      }, 800);
     }
   };
   render() {
     // console.log("this.props.navigation", this.props.data);
 
     return (
-      <Modal style={{ margin: 0 }} isVisible={this.state.isVisible}>
+      <Modal
+        style={{ margin: 0 }}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        isVisible={this.state.isVisible}
+      >
         <BlurView intensity={95} tint="dark">
           <SafeAreaView
             style={styles.safeAreaView}
