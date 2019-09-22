@@ -157,7 +157,6 @@ export const formatMedia = (
     "ios_upload",
     Platform.OS === "ios" && iosVideoUploaded && adType !== "StoryAd" ? 1 : 0
   );
-
   setTheState({
     formatted: body
   });

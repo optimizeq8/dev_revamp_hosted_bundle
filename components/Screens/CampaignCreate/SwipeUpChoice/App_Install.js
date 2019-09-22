@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
+import { connect } from "react-redux";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import AppConfirm from "../../../MiniComponents/AppConfirm";
@@ -18,7 +19,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 
-export default class App_Install extends Component {
+class App_Install extends Component {
   static navigationOptions = {
     header: null
   };
@@ -36,11 +37,28 @@ export default class App_Install extends Component {
       choice: "",
       data: [],
       nameError: "",
+      callaction: "",
       callActionError: "",
       appError: "",
       android_app_urlError: "",
       showList: false
     };
+  }
+
+  componentDidMount() {
+    if (
+      this.props.data &&
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.attachment === "APP_INSTALL"
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.data.attachment
+        },
+        callaction: this.props.data.call_to_action
+      });
+    }
   }
 
   renderNextStep = (
@@ -54,8 +72,7 @@ export default class App_Install extends Component {
       this.setState({
         attachment,
         callaction,
-        choice,
-        firstStepDone: true
+        choice
       });
     }
   };
@@ -103,26 +120,27 @@ export default class App_Install extends Component {
                 Send Snapchatters to the app store to download your app.
               </Text>
             </View>
-            {!this.state.firstStepDone ? (
-              <AppChoice
-                listNum={1}
-                renderNextStep={this.renderNextStep}
-                navigation={this.props.navigation}
-              />
-            ) : (
-              <AppConfirm
-                icon_media_url={this.state.attachment.icon_media_url}
-                app_name={this.state.attachment.app_name}
-                ios_app_id={this.state.attachment.ios_app_id}
-                android_app_url={this.state.attachment.android_app_url}
-                _handleSubmission={this._handleSubmission}
-                renderPreviousStep={this.renderPreviousStep}
-                deepLink={false}
-              />
-            )}
+            <AppChoice
+              listNum={1}
+              renderNextStep={this.renderNextStep}
+              navigation={this.props.navigation}
+              deepLink={false}
+              _handleSubmission={this._handleSubmission}
+            />
           </View>
         </Container>
       </SafeAreaView>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  campaign_id: state.campaignC.campaign_id,
+  data: state.campaignC.data
+});
+
+const mapDispatchToProps = dispatch => ({});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App_Install);

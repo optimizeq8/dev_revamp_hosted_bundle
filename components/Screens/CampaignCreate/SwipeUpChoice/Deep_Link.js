@@ -58,18 +58,14 @@ class Deep_Link extends Component {
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&
-      this.props.data.destination !== "REMOTE_WEBPAGE"
+      this.props.data.destination === "DEEP_LINK"
     ) {
-      this.props.data.attachment !== "BLANK"
-        ? this.setState({
-            attachment: {
-              ...this.props.data.attachment
-            },
-            firstStepDone: true
-          })
-        : this.setState({
-            firstStepDone: false
-          });
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.data.attachment
+        }
+      });
     }
   }
 
@@ -93,7 +89,9 @@ class Deep_Link extends Component {
     });
 
     this.props._changeDestination(
-      this.props.collectionAdLinkForm === 0 ? "DEEP_LINK" : "COLLECTION",
+      this.props.collectionAdLinkForm === 0 || !this.props.collectionAdLinkForm
+        ? "DEEP_LINK"
+        : "COLLECTION",
       this.state.callaction,
       this.state.attachment
     );
@@ -130,28 +128,17 @@ class Deep_Link extends Component {
                       </Text>
                     </View>
                   </View>
-                  {!this.state.firstStepDone ? (
-                    <AppChoice
-                      navigation={this.props.navigation}
-                      toggleSideMenu={this.props.toggleSideMenu}
-                      renderNextStep={this.renderNextStep}
-                      listNum={3}
-                      swipeUpDestination={this.props.swipeUpDestination}
-                    />
-                  ) : (
-                    <AppConfirm
-                      icon_media_url={this.state.attachment.icon_media_url}
-                      app_name={this.state.attachment.app_name}
-                      ios_app_id={this.state.attachment.ios_app_id}
-                      android_app_url={this.state.attachment.android_app_url}
-                      _handleSubmission={this._handleSubmission}
-                      renderPreviousStep={this.renderPreviousStep}
-                      deep_link_url={this.state.attachment.deep_link_uri}
-                      deepLink={true}
-                      toggleSideMenu={this.props.toggleSideMenu}
-                      swipeUpDestination={this.props.swipeUpDestination}
-                    />
-                  )}
+                  <AppChoice
+                    navigation={this.props.navigation}
+                    toggleSideMenu={this.props.toggleSideMenu}
+                    renderNextStep={this.renderNextStep}
+                    listNum={3}
+                    swipeUpDestination={this.props.swipeUpDestination}
+                    deep_link_url={this.state.attachment.deep_link_uri}
+                    toggleSideMenu={this.props.toggleSideMenu}
+                    _handleSubmission={this._handleSubmission}
+                    deepLink={true}
+                  />
                 </>
               )}
             </KeyboardShift>

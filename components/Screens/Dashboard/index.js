@@ -83,6 +83,7 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
+    this.props.setCampaignInProgress(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
