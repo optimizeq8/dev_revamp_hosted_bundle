@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView } from "react-native";
+import { View, BackHandler, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -211,59 +211,7 @@ class Website extends Component {
                   </Item>
                 </View>
 
-                <View>
-                  <View style={styles.topContainer}>
-                    <Button
-                      // block
-                      // dark
-                      style={[
-                        this.state.networkString === "http://"
-                          ? styles.activeButton
-                          : styles.button2,
-                        styles.collectionAdLinkForm1
-                      ]}
-                      onPress={() => {
-                        this.setState({
-                          networkString: "http://"
-                        });
-                      }}
-                    >
-                      <Text
-                        style={[
-                          this.state.networkString === "http://"
-                            ? styles.activeText
-                            : styles.inactiveText
-                        ]}
-                      >
-                        http://
-                      </Text>
-                    </Button>
-                    <Button
-                      // block
-                      // dark
-                      style={[
-                        this.state.networkString === "https://"
-                          ? styles.activeButton
-                          : styles.button2,
-                        styles.collectionAdLinkForm2
-                      ]}
-                      onPress={() => {
-                        this.setState({
-                          networkString: "https://"
-                        });
-                      }}
-                    >
-                      <Text
-                        style={[
-                          this.state.networkString === "https://"
-                            ? styles.activeText
-                            : styles.inactiveText
-                        ]}
-                      >
-                        https://
-                      </Text>
-                    </Button>
-                  </View>
+                <View style={styles.topContainer}>
                   <View style={styles.inputContainer}>
                     <View style={styles.websiteView}>
                       <View style={[styles.websiteLabelView]}>
@@ -279,9 +227,38 @@ class Website extends Component {
                           //     : GlobalStyles.transparentBorderColor
                         ]}
                       >
-                        <Text style={styles.networkLabel}>
-                          {this.state.networkString}
-                        </Text>
+                        <TouchableOpacity
+                          style={[
+                            GlobalStyles.orangeBackgroundColor,
+                            {
+                              borderRadius: 30,
+                              width: 54,
+                              height: 54,
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }
+                          ]}
+                          onPress={() => {
+                            if (this.state.networkString === "https://") {
+                              this.setState({
+                                networkString: "http://"
+                              });
+                            } else {
+                              this.setState({
+                                networkString: "https://"
+                              });
+                            }
+                          }}
+                        >
+                          <Text uppercase style={styles.networkLabel}>
+                            {this.state.networkString === "https://"
+                              ? "https"
+                              : "http"}
+                          </Text>
+                          <Text uppercase style={styles.networkLabel}>
+                            {`< >`}
+                          </Text>
+                        </TouchableOpacity>
                         <Input
                           style={[styles.inputtext, { textAlign: "left" }]}
                           placeholder="Enter your website's URL"

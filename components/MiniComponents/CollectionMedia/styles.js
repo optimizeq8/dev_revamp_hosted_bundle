@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
     height: 50
   },
   networkLabel: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    textAlign: "left",
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    textAlign: "center",
     color: "#fff",
     // flex: 1,
-    paddingLeft: 20,
+    // paddingLeft: 20,
     top: 2
     // right: 4,
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderColor: "transparent",
     alignSelf: "center",
-    height: 50,
+    height: 54,
     paddingHorizontal: 0,
     width: 300
   },
