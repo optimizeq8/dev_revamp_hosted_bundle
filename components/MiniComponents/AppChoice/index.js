@@ -1,47 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  BackHandler,
-  ScrollView
-} from "react-native";
+import { View, BackHandler, ScrollView } from "react-native";
 import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
-import { ActivityIndicator } from "react-native-paper";
-import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import Picker from "../Picker";
-import AppCard from "./AppCard";
-
-//Icons
-import SearchIcon from "../../../assets/SVGs/Search";
 
 //Data
 import list from "../../Data/callactions.data";
 
 //Styles
 import styles from "./styles";
+import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import AppSearchModal from "./AppSearchModal";
+import AppBox from "./AppBox";
 
 class AppChoice extends Component {
   constructor(props) {
     super(props);
     this.state = {
       attachment: {
-        app_name: "",
+        iosApp_name: "",
+        androidApp_name: "",
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
         icon_media_url: ""
       },
+      deep_link_url: "",
+      deep_link_urlError: "",
       appValue: "",
       choice: null,
       appSelection: "iOS",
@@ -56,7 +49,8 @@ class AppChoice extends Component {
       AppError: "",
       loading: false,
       appLoading: false,
-      inputCallToAction: false
+      inputCallToAction: false,
+      isVisible: false
     };
   }
 
@@ -85,21 +79,25 @@ class AppChoice extends Component {
         if (this.props.collectionAdLinkForm === 2) this.handleChoice("iOS");
       }
     );
-    // if (
-    //   this.props.data.hasOwnProperty("attachment") &&
-    //   this.props.data.attachment !== "BLANK"
-    // ) {
-    //   this.setState({
-    //     attachment: {
-    //       ...this.state.attachment,
-    //       ...this.props.data.attachment
-    //     },
-    //     callaction: this.props.data.call_to_action
-    //   });
-    // }
+    if (
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.attachment !== "BLANK"
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.data.attachment
+        },
+        callaction: this.props.data.call_to_action
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.deep_link_url !== this.props.deep_link_url) {
+      this.setState({ deep_link_url: this.props.deep_link_url });
+    }
+  }
   _searchIosApps = () => {
     this.setState({ loading: true });
     const instance = Axios.create({
@@ -191,9 +189,10 @@ class AppChoice extends Component {
 
   _getIosAppIds = app => {
     this.setState({
+      ...this.state,
       attachment: {
         ...this.state.attachment,
-        app_name: app.title,
+        iosApp_name: app.title,
         ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
         icon_media_url: app.icon
       }
@@ -202,10 +201,10 @@ class AppChoice extends Component {
 
   _getAndroidAppIds = app => {
     this.setState({
+      ...this.state,
       attachment: {
         ...this.state.attachment,
-        app_name: app.title,
-        ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
+        androidApp_name: app.title,
         icon_media_url: app.icon,
         android_app_url: app.id ? app.id : app.application_id
       }
@@ -217,7 +216,7 @@ class AppChoice extends Component {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          app_name: app.title,
+          iosApp_name: app.title,
           ios_app_id: app.id,
           icon_media_url: app.icon
         },
@@ -235,6 +234,15 @@ class AppChoice extends Component {
     }
   };
 
+  setModalVisible = (isVisible, os) => {
+    this.setState({ isVisible, appSelection: os });
+  };
+
+  setTheState = state => {
+    this.setState({
+      ...state
+    });
+  };
   handleAppError = () => this.setState({ AppError: null });
   validate = async () => {
     const AppError = validateWrapper(
@@ -243,41 +251,47 @@ class AppChoice extends Component {
     );
     const nameError = validateWrapper(
       "mandatory",
-      this.state.attachment.app_name
+      this.state.attachment.iosApp_name || this.state.attachment.androidApp_name
     );
     const callActionError = validateWrapper(
       "mandatory",
       this.state.callaction.value
     );
-    let choiceError = validateWrapper(
-      "mandatory",
-      this.state.choice === "" ? "x" : this.state.choice
-    );
-    this.setState({ nameError, callActionError, choiceError, AppError });
 
-    if (!AppError && !nameError && !callActionError && !choiceError) {
-      this.props.renderNextStep(
-        this.state.nameError,
-        this.state.callActionError,
-        this.state.attachment,
-        this.state.callaction,
-        this.state.choice
-      );
+    this.setState({ nameError, callActionError, AppError });
+    if (AppError) {
+      showMessage({
+        message: "Please choose an application to promote.",
+        type: "warning",
+        position: "top"
+      });
+    }
+    if (!AppError && !nameError && !callActionError) {
+      this._submitDeepLink();
     }
   };
 
-  handleChoice = choice => {
+  validateUrl = () => {
+    const deep_link_urlError = validateWrapper(
+      "deepLink",
+      this.state.deep_link_url
+    );
     this.setState({
-      choice,
-      attachment: {
-        app_name: "",
-        ios_app_id: "",
-        android_app_url: "",
-        icon_media_id: "",
-        icon_media_url: ""
-      },
-      showList: false
+      deep_link_urlError
     });
+    if (deep_link_urlError) {
+      showMessage({
+        message: "Invalid deep link url.",
+        description:
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
   };
   onSelectedCallToActionIdChange = value => {
     // NOTE: compulsory to pass this function
@@ -302,6 +316,13 @@ class AppChoice extends Component {
           this.closeCallToActionModal();
         }
       );
+    }
+  };
+  _submitDeepLink = () => {
+    if (!this.props.deepLink) {
+      this.props._handleSubmission();
+    } else if (this.validateUrl()) {
+      this.props._handleSubmission(this.state.deep_link_url);
     }
   };
   render() {
@@ -363,203 +384,74 @@ class AppChoice extends Component {
                   </Item>
                 </View>
 
-                <Animatable.View animation={"zoomInUp"}>
-                  <Animatable.View
-                    duration={200}
-                    easing={"ease"}
-                    onAnimationEnd={() => this.setState({ choiceError: null })}
-                    style={styles.animateView1}
-                    animation={!this.state.choiceError ? "" : "shake"}
-                  >
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === "iOS"
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor
-                      ]}
-                      onPress={() => this.handleChoice("iOS")}
-                    >
-                      <Text
-                        style={[
-                          styles.OSText,
-                          this.state.choice === "iOS"
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
-                        ]}
-                      >
-                        iOS
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === "ANDROID"
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor,
-                        styles.buttonAndroid
-                      ]}
-                      onPress={() => this.handleChoice("ANDROID")}
-                    >
-                      <Text
-                        style={[
-                          styles.OSText,
-                          this.state.choice === "ANDROID"
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
-                        ]}
-                      >
-                        Android
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[
-                        styles.OS,
-                        this.state.choice === ""
-                          ? globalStyles.orangeBackgroundColor
-                          : globalStyles.whiteBackgroundColor,
-                        styles.buttonBoth
-                      ]}
-                      onPress={() => this.handleChoice("")}
-                    >
-                      <Text
-                        style={[
-                          styles.OSText,
-                          this.state.choice === ""
-                            ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
-                        ]}
-                      >
-                        Both
-                      </Text>
-                    </TouchableOpacity>
-                  </Animatable.View>
-                </Animatable.View>
-
-                {this.state.choice || this.state.choice === "" ? (
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      this.state.nameError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
-
-                      styles.searchContainer
-                    ]}
-                  >
-                    <SearchIcon stroke="white" />
-                    <Input
-                      style={styles.inputText}
-                      placeholder={`Search for ${this.state.choice} name or id`}
-                      defaultValue={this.state.appValue + ""}
-                      placeholderTextColor="white"
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value =>
-                        this.setState({
-                          // attachment: {
-                          //   ...this.state.attachment,
-                          //   app_name: value
-                          // }
-                          appValue: value
-                        })
-                      }
-                      onBlur={() => {
-                        if (this.state.appValue !== "") {
-                          switch (this.state.choice) {
-                            case "iOS":
-                              this._searchIosApps();
-                              break;
-                            case "ANDROID":
-                              this._searchAndroidApps();
-                              break;
-                            case "":
-                              this.state.appSelection === "iOS"
-                                ? this._searchIosApps()
-                                : this._searchAndroidApps();
-                              break;
-                          }
-                        }
-                        this.setState({
-                          nameError: validateWrapper(
-                            "mandatory",
-                            this.state.appValue
-                          ),
-                          showList: this.state.appValue !== ""
-                        });
-                      }}
-                    />
-                  </Item>
-                ) : null}
-                {this.state.loading ? (
-                  <ActivityIndicator
-                    color="#fff"
-                    size="large"
-                    style={styles.activityIndicator}
-                  />
-                ) : (
-                  <View style={styles.searchView}>
-                    {this.state.choice === "" && (
-                      <Text style={styles.text}>
-                        {this.state.appValue ? "Choose" : "Search for"} the{" "}
-                        {this.state.appSelection} app
-                      </Text>
-                    )}
-                    <FlatList
-                      style={{ flex: 1, width: "100%" }}
-                      contentContainerStyle={
-                        styles.flatListContentContainerStyle
-                      }
-                      //-----------This is for actual app data searches-----------
-                      data={
-                        this.state.showList
-                          ? this.state.choice !== ""
-                            ? this.state.choice !== "ANDROID"
-                              ? this.state.data
-                              : this.state.androidData
-                            : this.state.appSelection === "iOS"
-                            ? this.state.data
-                            : this.state.androidData
-                          : []
-                      }
-                      //-----------This is for dummy app data searches-----------
-                      // data={
-                      //   this.state.showList
-                      //     ? this.state.choice !== "ANDROID"
-                      //       ? data
-                      //       : androidDataTest
-                      //     : []
-                      // }
-                      // contentContainerStyle={{ height: heightPercentageToDP(35) }}
-                      // contentInset={{ bottom: heightPercentageToDP(15) }}
-                      renderItem={({ item }) => (
-                        <AppCard
-                          item={item}
-                          attachment={this.state.attachment}
-                          choice={this.state.choice}
-                          _getIosAppIds={this._getIosAppIds}
-                          _getAndroidAppIds={this._getAndroidAppIds}
-                          _handleBothOS={this._handleBothOS}
-                          AppError={this.state.AppError}
-                          handleAppError={this.handleAppError}
-                        />
-                      )}
-                      numcolumnns={3}
-                      keyExtractor={(item, index) =>
-                        item.id
-                          ? item.id.toString()
-                          : item.application_id.toString()
-                      }
-                    />
-                  </View>
-                )}
+                <AppBox
+                  setModalVisible={this.setModalVisible}
+                  attachment={this.state.attachment}
+                />
               </>
             )}
           </KeyboradShift>
         </ScrollView>
+        <AppSearchModal
+          AppError={this.state.AppError}
+          renderNextStep={this.props.renderNextStep}
+          loading={this.state.loading}
+          setModalVisible={this.setModalVisible}
+          isVisible={this.state.isVisible}
+          appSelection={this.state.appSelection}
+          setTheState={this.setTheState}
+          _searchAndroidApps={this._searchAndroidApps}
+          _searchIosApps={this._searchIosApps}
+          appValue={this.state.appValue}
+          showList={this.state.showList}
+          data={this.state.data}
+          androidData={this.state.androidData}
+          attachment={this.state.attachment}
+          _getIosAppIds={this._getIosAppIds}
+          _getAndroidAppIds={this._getAndroidAppIds}
+          AppError={this.state.AppError}
+          handleAppError={this.handleAppError}
+          nameError={this.state.nameError}
+          callActionError={this.state.callActionError}
+          callAction={this.state.callaction}
+          validateApp={() => this.validate()}
+        />
+        {this.props.deepLink && (
+          <View style={{ bottom: "10%" }}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text uppercase style={[styles.inputLabel]}>
+                url
+              </Text>
+            </View>
+            <Item
+              // rounded
+              style={[
+                appConfirmStyles.input,
+                this.state.deep_link_urlError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+                appConfirmStyles.deepLinkItem
+              ]}
+            >
+              <Input
+                value={this.state.deep_link_url}
+                style={appConfirmStyles.inputtext}
+                placeholder="Deep Link URL"
+                placeholderTextColor="white"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value =>
+                  this.setState({
+                    deep_link_url: value
+                  })
+                }
+                onBlur={() => {
+                  this.validateUrl();
+                }}
+              />
+            </Item>
+          </View>
+        )}
         <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text
