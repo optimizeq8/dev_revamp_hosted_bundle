@@ -281,7 +281,7 @@ class Website extends Component {
                   </View>
                 </View>
                 <Text style={styles.warningText}>
-                  Please make sure not include social media sites such as
+                  Please make sure not to include social media sites such as
                   Facbook, Instagram, Youtube, SnapChat, etc.
                 </Text>
                 <View />
