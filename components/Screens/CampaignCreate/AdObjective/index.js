@@ -72,7 +72,6 @@ class AdObjective extends Component {
         end_time: ""
       },
       collectionAdLinkForm: 0,
-      // playback_type: "LOOPING",
       minValueBudget: 0,
       maxValueBudget: 0,
       modalVisible: false,
@@ -151,8 +150,7 @@ class AdObjective extends Component {
       };
       this.setState({
         // ...this.props.data,
-        collectionAdLinkForm: this.props.data.collectionAdLinkForm,
-        playback_type: this.props.data.playback_type,
+        collectionAdLinkForm: this.props.collectionAdLinkForm,
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
         modalVisible: this.props.data.modalVisible,
@@ -177,7 +175,6 @@ class AdObjective extends Component {
           end_time: ""
         },
         collectionAdLinkForm: 0,
-        playback_type: "LOOPING",
         minValueBudget: 0,
         maxValueBudget: 0,
         modalVisible: false,
@@ -244,10 +241,6 @@ class AdObjective extends Component {
     this.setState({ collectionAdLinkForm: val });
   };
 
-  handleStoryOption = playback_type => {
-    this.setState({ playback_type });
-    this.props.save_campaign_info({ playback_type });
-  };
   _handleSubmission = async () => {
     const nameError = validateWrapper(
       "mandatory",
@@ -295,7 +288,6 @@ class AdObjective extends Component {
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
         ...this.state.campaignInfo,
-        playback_type: this.state.playback_type,
         minValueBudget: this.state.minValueBudget,
         maxValueBudget: this.state.maxValueBudget
       });
@@ -318,6 +310,8 @@ class AdObjective extends Component {
   };
 
   render() {
+    console.log(this.props.collectionAdLinkForm);
+
     let adType = this.props.adType;
 
     const list = ObjectiveData[this.props.adType].map(o => (

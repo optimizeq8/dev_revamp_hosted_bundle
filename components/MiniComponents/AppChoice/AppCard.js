@@ -8,7 +8,7 @@ export default class AppCard extends Component {
     let {
       item,
       attachment,
-      choice,
+      appChoice,
       _getIosAppIds,
       _getAndroidAppIds,
       _handleBothOS,
@@ -21,8 +21,8 @@ export default class AppCard extends Component {
       <TouchableOpacity
         onPress={() => {
           showConfirmBtn(true);
-          choice !== ""
-            ? choice === "iOS"
+          appChoice !== ""
+            ? appChoice === "iOS"
               ? _getIosAppIds(item)
               : _getAndroidAppIds(item)
             : _handleBothOS(item);

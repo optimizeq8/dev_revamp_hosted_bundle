@@ -36,7 +36,6 @@ class AppChoice extends Component {
       deep_link_url: "",
       deep_link_urlError: "",
       appValue: "",
-      choice: null,
       appSelection: "iOS",
       showList: false,
       data: [],
@@ -45,7 +44,6 @@ class AppChoice extends Component {
       callactions: list.SnapAd[1].call_to_action_list,
       nameError: "",
       callActionError: "",
-      choiceError: "",
       AppError: "",
       loading: false,
       appLoading: false,
@@ -64,21 +62,16 @@ class AppChoice extends Component {
   };
 
   componentDidMount() {
-    this.setState(
-      {
-        callaction:
-          this.props.adType === "CollectionAd"
-            ? list[this.props.adType][0].call_to_action_list[0]
-            : list.SnapAd[this.props.listNum].call_to_action_list[0],
-        callactions:
-          this.props.adType === "CollectionAd"
-            ? list[this.props.adType][0].call_to_action_list
-            : list.SnapAd[this.props.listNum].call_to_action_list
-      },
-      () => {
-        if (this.props.collectionAdLinkForm === 2) this.handleChoice("iOS");
-      }
-    );
+    this.setState({
+      callaction:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list[0]
+          : list.SnapAd[this.props.listNum].call_to_action_list[0],
+      callactions:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list
+          : list.SnapAd[this.props.listNum].call_to_action_list
+    });
     if (
       this.props.data.hasOwnProperty("attachment") &&
       this.props.data.attachment !== "BLANK"
@@ -193,7 +186,7 @@ class AppChoice extends Component {
       attachment: {
         ...this.state.attachment,
         iosApp_name: app.title,
-        ios_app_id: this.state.choice !== "ANDROID" ? app.id : "",
+        ios_app_id: app.id,
         icon_media_url: app.icon
       }
     });
@@ -417,14 +410,13 @@ class AppChoice extends Component {
           validateApp={() => this.validate()}
         />
         {this.props.deepLink && (
-          <View style={{ bottom: "10%" }}>
+          <View style={{ bottom: "20%" }}>
             <View style={[styles.callToActionLabelView]}>
               <Text uppercase style={[styles.inputLabel]}>
                 url
               </Text>
             </View>
             <Item
-              // rounded
               style={[
                 appConfirmStyles.input,
                 this.state.deep_link_urlError
