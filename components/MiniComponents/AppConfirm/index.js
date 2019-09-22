@@ -133,16 +133,6 @@ class index extends Component {
                     this.props.ios_app_id === "" ? { opacity: 0.5 } : {}
                   ]}
                 >
-                  {/* <TouchableOpacity
-												style={[
-													styles.OS,
-													this.props.ios_app_id !== ''
-														? globalStyles.whiteBackgroundColor
-														: { backgroundColor: 'rgba(255,255,255,0.3)' },
-												]}
-											>
-												<Text style={styles.OSText}>iOS</Text>
-                                            </TouchableOpacity> */}
                   <AppStoreIcon />
                   <Text uppercase style={styles.appStoreButtonsText}>
                     {`apple\n app store`}
@@ -165,17 +155,6 @@ class index extends Component {
                     this.props.android_app_url === "" ? { opacity: 0.5 } : {}
                   ]}
                 >
-                  {/* <TouchableOpacity
-												style={[
-													styles.OS,
-													this.props.android_app_url !== ''
-														? globalStyles.whiteBackgroundColor
-														: { backgroundColor: 'rgba(255,255,255,0.3)' },
-													styles.androidButton,
-												]}
-											>
-												<Text style={[styles.OSText]}>Android</Text>
-                                            </TouchableOpacity> */}
                   <PlayStoreIcon />
                   <Text uppercase style={styles.appStoreButtonsText}>
                     {`google \n play store`}

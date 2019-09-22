@@ -13,17 +13,20 @@ export default class AppCard extends Component {
       _getAndroidAppIds,
       _handleBothOS,
       AppError,
-      handleAppError
+      handleAppError,
+      showConfirmBtn
     } = this.props;
+
     return (
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {
+          showConfirmBtn(true);
           choice !== ""
             ? choice === "iOS"
               ? _getIosAppIds(item)
               : _getAndroidAppIds(item)
-            : _handleBothOS(item)
-        }
+            : _handleBothOS(item);
+        }}
         style={[
           styles.campaignButton,
           {
