@@ -1,9 +1,10 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Platform } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
+import { isRTL } from "expo-localization";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-bold",
     fontSize: 16 / PixelRatio.getFontScale(),
-    textAlign: "left",
+    textAlign: isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8
   },
@@ -303,6 +304,7 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   subtitleHeading: {
+    textAlign: "left",
     fontSize: 12,
     marginBottom: -10,
     fontFamily: "montserrat-regular"
@@ -326,8 +328,8 @@ const styles = StyleSheet.create({
   MediaOptionsDescription: {
     fontFamily: "montserrat-light",
     color: "#fff",
-    fontSize: 13
-    // textAlign: "left"
+    fontSize: 13,
+    textAlign: "left"
   },
   downIcon: {
     // position: 'absolute',

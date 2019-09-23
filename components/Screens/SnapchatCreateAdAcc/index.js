@@ -111,7 +111,7 @@ class SnapchatCreateAdAcc extends Component {
                   );
                 }}
               >
-                <Text style={styles.buttontext}>Accept</Text>
+                <Text style={styles.buttontext}>{translate("Accept")}</Text>
               </Button>
             )}
           </View>

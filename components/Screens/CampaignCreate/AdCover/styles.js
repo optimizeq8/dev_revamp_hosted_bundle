@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     fontFamily: "montserrat-regular",
-    marginLeft: 8
+    marginLeft: 8,
+    textAlign: "left"
   },
   MediaOptionsStyle: {
     width: "80%",

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import { isRTL } from "expo-localization";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.svg";
 import { globalColors } from "../../../GlobalStyles";
+import isStringArabic from "../../isStringArabic";
 export default class SelectOS extends Component {
   render() {
     const { translate } = this.props.screenProps;
@@ -74,7 +76,16 @@ export default class SelectOS extends Component {
                   ]}
                 />
                 <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                  style={[
+                    styles.inactivetext,
+                    styles.optionsTextContainer,
+                    isRTL && !isStringArabic(translate("iOS"))
+                      ? {
+                          marginTop: 0,
+                          marginBottom: 15
+                        }
+                      : {}
+                  ]}
                 >
                   {translate("iOS")}
                 </Text>
@@ -101,7 +112,15 @@ export default class SelectOS extends Component {
                   ]}
                 />
                 <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                  style={[
+                    styles.inactivetext,
+                    styles.optionsTextContainer,
+                    isRTL && !isStringArabic(translate("ANDROID"))
+                      ? {
+                          marginBottom: 20
+                        }
+                      : {}
+                  ]}
                 >
                   {translate("ANDROID")}
                 </Text>

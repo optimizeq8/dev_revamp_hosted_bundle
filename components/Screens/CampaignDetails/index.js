@@ -13,13 +13,12 @@ import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
-import Toggle from "react-native-switch-toggle";
 import SlideUpPanel from "./SlideUpPanel";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import StatusModal from "./StatusModal";
 import OptionalTargets from "./OptionalTargets";
 import { Image } from "react-native-expo-image-cache";
-
+import Toggle from "../../MiniComponents/Toggle";
 //Icons
 import LocationIcon from "../../../assets/SVGs/Location.svg";
 import GenderIcon from "../../../assets/SVGs/Gender.svg";

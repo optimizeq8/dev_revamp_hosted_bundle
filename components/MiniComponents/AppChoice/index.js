@@ -18,6 +18,7 @@ import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import Picker from "../Picker";
 import AppCard from "./AppCard";
+import isStringArabic from "../../isStringArabic";
 
 //Icons
 import SearchIcon from "../../../assets/SVGs/Search";
@@ -30,6 +31,7 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import { isRTL } from "expo-localization";
 
 class AppChoice extends Component {
   constructor(props) {
@@ -102,6 +104,7 @@ class AppChoice extends Component {
 
   _searchIosApps = () => {
     this.setState({ loading: true });
+    const { translate } = this.props.screenProps;
     const instance = Axios.create({
       baseURL: "https://api.apptweak.com/ios",
       headers: {
@@ -137,14 +140,15 @@ class AppChoice extends Component {
           position: "top",
           duration: 4500,
           description: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later."
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
         });
         // console.log(err.response)
       });
   };
   _searchAndroidApps = () => {
     this.setState({ loading: true });
+    const { translate } = this.props.screenProps;
     const instance = Axios.create({
       baseURL: "https://api.apptweak.com/android",
       headers: {
@@ -182,8 +186,8 @@ class AppChoice extends Component {
           position: "top",
           duration: 4500,
           description: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later."
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
         });
         // console.log(err.response.data);
       });
@@ -313,6 +317,7 @@ class AppChoice extends Component {
             {() => (
               <>
                 <Picker
+                  screenProps={this.props.screenProps}
                   searchPlaceholderText={translate("Search Call To Action")}
                   data={this.state.callactions}
                   uniqueKey={"value"}
@@ -351,10 +356,12 @@ class AppChoice extends Component {
                       {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
                       )
-                        ? this.state.callactions.find(
-                            c => this.state.callaction.value === c.value
-                          ).label
-                        : "Call to Action"}
+                        ? translate(
+                            this.state.callactions.find(
+                              c => this.state.callaction.value === c.value
+                            ).label
+                          )
+                        : translate("call to action")}
                     </Text>
                     <Icon
                       type="AntDesign"
@@ -386,7 +393,12 @@ class AppChoice extends Component {
                           styles.OSText,
                           this.state.choice === "iOS"
                             ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
+                            : globalStyles.purpleTextColor,
+                          isRTL && !isStringArabic(translate("iOS"))
+                            ? {
+                                marginBottom: 10
+                              }
+                            : {}
                         ]}
                       >
                         {translate("iOS")}
@@ -408,7 +420,12 @@ class AppChoice extends Component {
                           styles.OSText,
                           this.state.choice === "ANDROID"
                             ? globalStyles.whiteTextColor
-                            : globalStyles.purpleTextColor
+                            : globalStyles.purpleTextColor,
+                          isRTL && !isStringArabic(translate("Android"))
+                            ? {
+                                marginBottom: 10
+                              }
+                            : {}
                         ]}
                       >
                         {translate("Android")}

@@ -90,7 +90,7 @@ class GetInviteCode extends Component {
                   onBlur={() => {
                     if (validateWrapper("mandatory", this.state.name)) {
                       showMessage({
-                        message: translate("Please enter your name."),
+                        message: translate("Please enter your name"),
                         type: "warning",
                         position: "top"
                       });

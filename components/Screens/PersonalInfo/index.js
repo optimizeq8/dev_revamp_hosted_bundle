@@ -86,23 +86,27 @@ class PersonalInfo extends Component {
       lastnameError,
       emailError
     });
+    const { translate } = this.props.screenProps;
 
     if (firstnameError || lastnameError) {
       showMessage({
         type: "warning",
-        message: `Please provide a ${
-          firstnameError
-            ? "first name"
-            : lastnameError
-            ? "last name"
-            : emailError && "email"
-        }`
+        message: translate(
+          `Please provide a ${
+            firstnameError
+              ? "first name"
+              : lastnameError
+              ? "last name"
+              : emailError && "email"
+          }`
+        )
       });
       return false;
     } else return true;
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     if (this.validator()) {
       const changedInfo =
         this.state.firstname !== this.props.userInfo.firstname ||
@@ -116,7 +120,7 @@ class PersonalInfo extends Component {
       else
         showMessage({
           type: "warning",
-          message: "No changes to update",
+          message: translate("No changes to update"),
           position: "top"
         });
     }

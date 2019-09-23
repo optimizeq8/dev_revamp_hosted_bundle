@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
-import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
@@ -11,6 +10,7 @@ import App_Install from "../SwipeUpChoice/App_Install";
 import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
 import WhatsApp from "../SwipeUpChoice/WhatsApp";
 import AttachmentCard from "./AttachmentCard";
+import Sidemenu from "../../../MiniComponents/SideMenu";
 
 //data
 import attachmentOptionData from "../../../Data/attachmentOptions.data";

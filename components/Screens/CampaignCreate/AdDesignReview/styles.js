@@ -137,13 +137,15 @@ const styles = StyleSheet.create({
   headlineBottomText: {
     fontSize: 12,
     paddingTop: 2,
-    fontFamily: "montserrat-bold"
+    fontFamily: "montserrat-bold",
+    textAlign: "left"
   },
   brandNameBottomText: {
     color: "black",
     fontFamily: "montserrat-bold",
     //   fontSize: 16
-    fontSize: heightPercentageToDP(2.4)
+    fontSize: heightPercentageToDP(2.4),
+    textAlign: "left"
   },
   appIconBottom: {
     width: widthPercentageToDP(14),

@@ -17,6 +17,7 @@ export default class Picker extends Component {
     }
   }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SectionedMultiSelect
         ref={ref => (this.Section = ref)}
@@ -47,7 +48,9 @@ export default class Picker extends Component {
             style={styles.itemCircles}
           />
         }
-        noResultsComponent={<Text style={styles.errorText}>No item found</Text>}
+        noResultsComponent={
+          <Text style={styles.errorText}>{translate("No item found")}</Text>
+        }
         hideSelect
         hideConfirm
         subKey="children"
@@ -89,7 +92,9 @@ export default class Picker extends Component {
         showDropDowns={false}
         showRemoveAll={true}
         noItemsComponent={
-          <Text style={styles.errorText}>Sorry, No data available</Text>
+          <Text style={styles.errorText}>
+            {translate("Sorry, No data available")}
+          </Text>
         }
         onCancel={() => {
           this.props.onSelectedItemsChange([]);

@@ -1,13 +1,13 @@
 import React from "react";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
-import Sidemenu from "react-native-side-menu";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
 import { showMessage } from "react-native-flash-message";
+import { isRTL } from "expo-localization";
 
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
@@ -15,6 +15,7 @@ import KeyboardShift from "../KeyboardShift";
 import Header from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
+import Sidemenu from "../SideMenu";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -28,6 +29,7 @@ import globalStyles from "../../../GlobalStyles";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Address from "../../../assets/SVGs/Location";
+import { from } from "rxjs";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -207,7 +209,7 @@ class BillingAddressCard extends React.Component {
         }}
         disableGestures={true}
         menu={this.props.sidemenustate && menu}
-        menuPosition="right"
+        menuPosition={isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.props.sidemenustate}
       >

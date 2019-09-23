@@ -355,7 +355,6 @@ class Dashboard extends Component {
                     menuPosition={Localization.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
-                    menuPosition="right"
                     openMenuOffset={wp("85%")}
                     isOpen={this.state.sidemenustate}
                   >
@@ -430,7 +429,17 @@ class Dashboard extends Component {
                             {translate("New Ad")}
                           </Text>
                         </View>
-                        <ScrollView style={{ height: 90, top: 10 }} horizontal>
+                        <ScrollView
+                          style={{
+                            height: 90,
+                            top: 10
+                          }}
+                          contentContainerStyle={{
+                            flex: 1,
+                            alignItems: "flex-start"
+                          }}
+                          horizontal
+                        >
                           {adButtons}
                         </ScrollView>
                       </View>

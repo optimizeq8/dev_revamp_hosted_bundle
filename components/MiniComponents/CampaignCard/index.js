@@ -5,7 +5,6 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-// import Toggle from "react-native-switch-toggle";
 import Chart from "./Charts";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";

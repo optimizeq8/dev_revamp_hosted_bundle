@@ -3,6 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
     opacity: 1,
     transform: [
       {
-        translateX: -35
+        translateX: isRTL ? 35 : -35
       },
       {
         translateY: -40
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     transform: [
       {
-        translateX: -35
+        translateX: isRTL ? 35 : -35
       },
       {
         translateY: -40

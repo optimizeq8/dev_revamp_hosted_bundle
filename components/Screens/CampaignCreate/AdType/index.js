@@ -1,11 +1,12 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler } from "react-native";
+import { View, BackHandler, Platform } from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import { isRTL } from "expo-localization";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
@@ -26,6 +27,7 @@ import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
 import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { from } from "rxjs";
 
 class AdType extends Component {
   static navigationOptions = {
@@ -34,7 +36,8 @@ class AdType extends Component {
   state = {
     activeSlide: 0,
     media_type: snapAds,
-    campaign_type: "SnapAd",
+    campaign_type:
+      Platform.OS === "android" && isRTL ? "CollectionAd" : "SnapAd",
     route: "AdObjective"
   };
 
@@ -60,25 +63,17 @@ class AdType extends Component {
   };
 
   navigationRouteHandler = index => {
-    let route = "";
-    let campaign_type = "";
     let activeSlide = index;
-    switch (index) {
-      case 0:
-        route = "AdObjective";
-        campaign_type = "SnapAd";
-        break;
-
-      case 1:
-        route = "AdObjective";
-        campaign_type = "StoryAd";
-        break;
-      case 2:
-        route = "AdObjective";
-        campaign_type = "CollectionAd";
-        break;
+    if (Platform.OS === "android" && isRTL) {
+      const reversedSnapAds = snapAds.reverse();
+      let campaign_type = reversedSnapAds[index].value;
+      let route = reversedSnapAds[index].rout;
+      this.setState({ route, campaign_type, activeSlide });
+    } else {
+      let campaign_type = snapAds[index].value;
+      let route = snapAds[index].rout;
+      this.setState({ route, campaign_type, activeSlide });
     }
-    this.setState({ route, campaign_type, activeSlide });
   };
 
   handleMediaChange = index => {
@@ -193,7 +188,11 @@ class AdType extends Component {
               this._carousel = c;
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={this.state.media_type}
+            data={
+              Platform.OS === "android" && isRTL
+                ? this.state.media_type.reverse()
+                : this.state.media_type
+            }
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={250}
