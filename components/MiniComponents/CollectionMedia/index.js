@@ -57,6 +57,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -191,6 +192,7 @@ class CollectionMedia extends Component {
     return true;
   };
   validateImage = () => {
+    const { translate } = this.props.screenProps;
     const imageError = validateWrapper(
       "mandatory",
       this.state.collection.collection_media
@@ -200,7 +202,7 @@ class CollectionMedia extends Component {
     });
     if (imageError) {
       showMessage({
-        message: "Please choose an image",
+        message: translate("Please choose an image"),
         type: "warning",
         position: "top",
         duration: 7000
@@ -770,7 +772,12 @@ class CollectionMedia extends Component {
                               </Text>
                             </TouchableOpacity>
                             <Input
-                              style={[styles.inputtext, { textAlign: "left" }]}
+                              style={[
+                                styles.inputtext,
+                                isRTL
+                                  ? { textAlign: "right" }
+                                  : { textAlign: "left" }
+                              ]}
                               placeholder={translate(
                                 "Enter your website's URL"
                               )}

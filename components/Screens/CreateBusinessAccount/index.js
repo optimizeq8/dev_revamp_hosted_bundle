@@ -605,6 +605,7 @@ class CreateBusinessAccount extends Component {
                         )}
 
                         <Picker
+                          screenProps={this.props.screenProps}
                           searchPlaceholderText={translate("Search Country")}
                           data={this.state.countries}
                           uniqueKey={"value"}
@@ -646,6 +647,7 @@ class CreateBusinessAccount extends Component {
                         </Item>
 
                         <Picker
+                          screenProps={this.props.screenProps}
                           searchPlaceholderText={translate(
                             "Search Business Category"
                           )}

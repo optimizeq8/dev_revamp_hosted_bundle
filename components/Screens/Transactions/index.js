@@ -116,7 +116,7 @@ class Transactions extends Component {
                 </View>
                 {transList.length === 0 && (
                   <Text style={styles.noTranText}>
-                    No transactions available
+                    {translate("No transactions available")}
                   </Text>
                 )}
                 <ScrollView contentContainerStyle={styles.contentContainer}>

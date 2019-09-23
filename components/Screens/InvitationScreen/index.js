@@ -114,7 +114,10 @@ export default class Invitation extends Component {
       );
     } else if (this.state.registeredWithInvite) {
       return (
-        <Signin navigation={this.props.navigation} translate={translate} />
+        <Signin
+          navigation={this.props.navigation}
+          screenProps={this.props.screenProps}
+        />
       );
     } else
       return (

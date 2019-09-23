@@ -115,7 +115,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 150,
     borderColor: "#5D1CD8",
+<<<<<<< HEAD
     borderWidth: 1,
+=======
+>>>>>>> Added screen changes for screenprops
     alignSelf: "center",
     width: "100%",
     height: 50,
@@ -157,6 +160,7 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(7.3)
   },
   OS: {
+<<<<<<< HEAD
     padding: widthPercentageToDP(4),
     marginHorizontal: widthPercentageToDP(2),
     borderRadius: 90,
@@ -168,6 +172,24 @@ const styles = StyleSheet.create({
     fontSize: widthPercentageToDP(2.9),
     fontFamily: "montserrat-bold",
     alignSelf: "center"
+=======
+    // padding: widthPercentageToDP(4),
+    marginHorizontal: widthPercentageToDP(2),
+    borderRadius: 90,
+    height: parseInt(heightPercentageToDP(7.2)),
+    height: 54,
+    // width: parseInt(widthPercentageToDP(16)),
+    width: 70,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  OSText: {
+    // fontSize: widthPercentageToDP(2.9),
+    textAlign: "left",
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textAlignVertical: "top"
+>>>>>>> Added screen changes for screenprops
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -189,6 +211,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 30,
     marginBottom: -10
+<<<<<<< HEAD
   },
   searchContainer: {
     backgroundColor: "rgba(0,0,0,0.3)",
@@ -203,6 +226,8 @@ const styles = StyleSheet.create({
     top: 5,
     width: 120,
     textAlign: "center"
+=======
+>>>>>>> Added screen changes for screenprops
   }
 });
 

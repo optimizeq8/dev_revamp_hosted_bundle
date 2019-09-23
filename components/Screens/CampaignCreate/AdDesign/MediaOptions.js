@@ -41,7 +41,9 @@ export default class MediaOptions extends Component {
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={styles.MediaOptionsDescription}>
             {title === "Upload media from a different device"
-              ? "Use any device to upload your media\n Aspect Ratio 9:16"
+              ? translate(
+                  "Use any device to upload your media Aspect Ratio 9:16"
+                )
               : translate("Dimensions 1080x1920 Aspect Ratio 9:16")}
           </Text>
         </View>

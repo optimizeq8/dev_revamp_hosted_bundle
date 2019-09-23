@@ -148,6 +148,7 @@ class SelectDevices extends Component {
                     </View>
                   }
                   colors={colors}
+                  searchPlaceholderText={translate("Search Devices")}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

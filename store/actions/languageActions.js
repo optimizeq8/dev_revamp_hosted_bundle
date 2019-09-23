@@ -5,7 +5,6 @@ import { showMessage } from "react-native-flash-message";
 import store from "../index";
 
 export const getLanguageListPOEdit = language => {
-  console.log("language", language);
   return async dispatch => {
     const response = await axios.post(
       "https://api.poeditor.com/v2/terms/list",

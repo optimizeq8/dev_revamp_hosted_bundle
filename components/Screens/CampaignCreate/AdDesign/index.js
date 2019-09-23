@@ -351,7 +351,8 @@ class AdDesign extends Component {
       this.props.save_campaign_info,
       this.onToggleModal,
       this.adType,
-      this.setTheState
+      this.setTheState,
+      this.props.screenProps
     );
 
   getVideoUploadUrl = () => {
@@ -845,6 +846,7 @@ class AdDesign extends Component {
         key={collIdx}
         navigation={this.props.navigation}
         collIdx={collIdx}
+        screenProps={this.props.screenProps}
       />
     ));
 
@@ -936,13 +938,14 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" &&
                   !storyAdCards.storyAdSelected ? (
                     <StoryAdCards
+                      screenProps={this.props.screenProps}
                       rejected={this.rejected}
                       video={type === "VIDEO"}
                       // numOfAds={storyAdCards.numOfAds}
                       // openUploadVideo={this.openUploadVideo}
                       selectedStoryAd={storyAdCards.selectedStoryAd}
                       cancelUpload={this.cancelUpload} //one signal to cancel all requests
-                      StoryAdCardsCards={this.props.storyAdsArray}
+                      StoryAdCards={this.props.storyAdsArray}
                       _handleStoryAdCards={this._handleStoryAdCards}
                     />
                   ) : (
@@ -1000,7 +1003,9 @@ class AdDesign extends Component {
             {this.adType === "StoryAd" &&
             objective === "BRAND_AWARENESS" &&
             swipeUpError ? null : (
-              <Text style={styles.swipeUpErrorText}>{swipeUpError}</Text>
+              <Text style={styles.swipeUpErrorText}>
+                {swipeUpError && translate(swipeUpError)}
+              </Text>
             )}
           </Content>
 
@@ -1077,7 +1082,7 @@ class AdDesign extends Component {
                               ? translate(
                                   "Please wait while the video is downloading"
                                 )
-                              : "Please add minimum of 3 media files"
+                              : translate("Please add minimum of 3 media files")
                             : objective !== "BRAND_AWARENESS"
                             ? ""
                             : translate("Please add media to proceed")}
@@ -1148,6 +1153,7 @@ class AdDesign extends Component {
           uploadMediaDifferentDeviceModal={
             this.state.uploadMediaDifferentDeviceModal
           }
+          screenProps={this.props.screenProps}
         />
         <DownloadMediaFromDifferentDevice
           downloadMediaModal={this.state.downloadMediaModal}
@@ -1156,6 +1162,7 @@ class AdDesign extends Component {
           setDownloadMediaModal={this.setDownloadMediaModal}
           handleDownloadMedia={this.handleDownloadMedia}
           webUploadLinkMediaLoading={this.props.webUploadLinkMediaLoading}
+          screenProps={this.props.screenProps}
         />
         <LoadingModal
           videoUrlLoading={videoUrlLoading}

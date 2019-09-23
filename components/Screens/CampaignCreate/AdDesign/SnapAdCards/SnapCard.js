@@ -24,7 +24,7 @@ class SnapCard extends Component {
       _handleStoryAdCards,
       rejected
     } = this.props;
-
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.SnapAdCard}>
         <View
@@ -91,6 +91,7 @@ class SnapCard extends Component {
               _handleStoryAdCards={_handleStoryAdCards}
               snapAdCard={true}
               snapCardInfo={snapCardInfo}
+              screenProps={this.props.screenProps}
             />
           ) : (
             <TouchableOpacity
@@ -115,7 +116,7 @@ class SnapCard extends Component {
                   { fontSize: 11, width: 65, textAlign: "left", top: 0 }
                 ]}
               >
-                Edit Media
+                {translate("Edit Media")}
               </Text>
               <PenIcon width={15} height={15} />
             </TouchableOpacity>
