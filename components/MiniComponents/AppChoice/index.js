@@ -97,6 +97,7 @@ class AppChoice extends Component {
       this.setState({ deep_link_url: this.props.deep_link_url });
     }
   }
+
   _searchIosApps = () => {
     this.setState({ loading: true });
     const { translate } = this.props.screenProps;
@@ -406,8 +407,6 @@ class AppChoice extends Component {
           isVisible={this.state.isVisible}
           appSelection={this.state.appSelection}
           setTheState={this.setTheState}
-          _searchAndroidApps={this._searchAndroidApps}
-          _searchIosApps={this._searchIosApps}
           appValue={this.state.appValue}
           showList={this.state.showList}
           data={this.state.data}
@@ -424,7 +423,7 @@ class AppChoice extends Component {
           screenProps={this.props.screenProps}
         />
         {this.props.deepLink && (
-          <View style={{ bottom: "20%" }}>
+          <View style={{ bottom: "15%" }}>
             <View style={[styles.callToActionLabelView]}>
               <Text uppercase style={[styles.inputLabel]}>
                 url
