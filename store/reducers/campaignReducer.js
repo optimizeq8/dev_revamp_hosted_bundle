@@ -458,8 +458,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.RESET_CAMPAING_INFO:
       let resetAdType = action.payload;
-      let adType = "";
-      let data = {};
+      let adType = "SnapAd";
+      let data = null;
       let campaign_id = "";
       let countryName = "";
       let interestNames = [];
@@ -479,13 +479,15 @@ const reducer = (state = initialState, action) => {
         countryName = state.countryName;
         interestNames = state.interestNames;
         regionNames = state.regionNames;
-        delete data.media;
-        delete data.media_type;
-        delete data.media_upload;
-        delete data.ios_upload;
-        delete data.formatted;
-        delete data.objective;
-        delete data.objectiveLabel;
+        if (data) {
+          delete data.media;
+          delete data.media_type;
+          delete data.media_upload;
+          delete data.ios_upload;
+          delete data.formatted;
+          delete data.objective;
+          delete data.objectiveLabel;
+        }
       }
 
       return {
