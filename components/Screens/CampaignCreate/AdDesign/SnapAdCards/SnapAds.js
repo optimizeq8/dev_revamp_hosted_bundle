@@ -9,10 +9,17 @@ import SnapCard from "./SnapCard";
 export default class SnapAds extends Component {
   snapCards = item => {
     if (item.index === this.props.snapAdsCards.length - 1) {
-      return <AddCard addButton={item} addSnapCard={this.props.addSnapCard} />;
+      return (
+        <AddCard
+          addButton={item}
+          addSnapCard={this.props.addSnapCard}
+          screenProps={this.props.screenProps}
+        />
+      );
     } else
       return (
         <SnapCard
+          screenProps={this.props.screenProps}
           rejected={this.props.rejected}
           video={this.props.video}
           openUploadVideo={this.props.openUploadVideo}

@@ -5,9 +5,9 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 // ADD TRANSLATE PROP
-export const askForPermssion = async () => {
+export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
+  const { translate } = screenProps;
   if (status !== "granted") {
     showMessage({
       message: "Please allow access to the gallary to upload media.",
@@ -19,8 +19,8 @@ export const askForPermssion = async () => {
   }
 };
 
-export const pick = async mediaTypes => {
-  await askForPermssion();
+export const pick = async (mediaTypes, screenProps) => {
+  await askForPermssion(screenProps);
   let result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: mediaTypes,
     //Platform.OS === "ios" ? "Images" : "All",
@@ -41,15 +41,16 @@ export const _pickImage = async (
   save_campaign_info,
   onToggleModal,
   adType,
-  setTheState
+  setTheState,
+  screenProps
 ) => {
   try {
-    let result = await pick(mediaTypes);
+    let result = await pick(mediaTypes, screenProps);
 
     let file = await FileSystem.getInfoAsync(result.uri, {
       size: true
     });
-
+    const { translate } = screenProps;
     setMediaModalVisible(false);
     setTheState({ directory: "/ImagePicker/" });
     if (!result.cancelled) {
@@ -104,16 +105,16 @@ export const _pickImage = async (
                   image: "//",
                   type: ""
                 });
-                //  showMessage({
-                //    message: translate(
-                //      "Image must be less than {{fileSize}} MBs",
-                //      {
-                //        fileSize: 5
-                //      }
-                //    ),
-                //    position: "top",
-                //    type: "warning"
-                //  });
+                showMessage({
+                  message: translate(
+                    "Image must be less than {{fileSize}} MBs",
+                    {
+                      fileSize: 5
+                    }
+                  ),
+                  position: "top",
+                  type: "warning"
+                });
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
@@ -167,9 +168,7 @@ export const _pickImage = async (
 
                 onToggleModal(false);
                 showMessage({
-                  message: "Image has been selected successfully ",
-                  // message: translate("Image has been selected successfully"),
-
+                  message: translate("Image has been selected successfully"),
                   position: "top",
                   type: "success"
                 });
@@ -184,12 +183,14 @@ export const _pickImage = async (
 
               onToggleModal(false);
               showMessage({
-                // message: translate(
-                //   "The dimensions are too large, please choose a different image"
-                // ),
                 message:
                   error ||
-                  "The dimensions are too large, please choose a different image.",
+                  translate(
+                    "The dimensions are too large, please choose a different image"
+                  ),
+                // message:
+                //   error ||
+                //   "The dimensions are too large, please choose a different image.",
                 position: "top",
                 type: "warning"
               });
@@ -213,11 +214,11 @@ export const _pickImage = async (
           });
           onToggleModal(false);
           showMessage({
-            // message: translate(
-            //   "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
-            // ),
-            message:
-              "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
+            message: translate(
+              "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
+            ),
+            // message:
+            //   "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px.",
             position: "top",
             type: "warning"
           });
@@ -232,9 +233,7 @@ export const _pickImage = async (
           });
           onToggleModal(false);
           showMessage({
-            // message: translate("Image has been selected successfully"),
-
-            message: "Image has been selected successfully ",
+            message: translate("Image has been selected successfully"),
             position: "top",
             type: "success"
           });
@@ -255,9 +254,7 @@ export const _pickImage = async (
             type: ""
           });
           showMessage({
-            // message: translate("Allowed video duration is up to 10 seconds"),
-
-            message: "Allowed video durations is up to 10 seconds.",
+            message: translate("Allowed video duration is up to 10 seconds"),
             position: "top",
             type: "warning"
           });
@@ -273,10 +270,9 @@ export const _pickImage = async (
             type: ""
           });
           showMessage({
-            // message:
-            //   translate("Allowed video size is up to {{fileSize}} MBs",
-            //   { fileSize: 32 }),
-            message: "Allowed video size is up to 32 MBs.",
+            message: translate("Allowed video size is up to {{fileSize}} MBs", {
+              fileSize: 32
+            }),
             position: "top",
             type: "warning"
           });
@@ -325,9 +321,7 @@ export const _pickImage = async (
             });
             onToggleModal(false);
             showMessage({
-              // message: translate("Video has been selected successfully"),
-
-              message: "Video has been selected successfully ",
+              message: translate("Video has been selected successfully"),
               position: "top",
               type: "success"
             });
@@ -349,11 +343,11 @@ export const _pickImage = async (
           });
           onToggleModal(false);
           showMessage({
-            // message: translate(
-            //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
-            // ),
-            message:
-              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
+            message: translate(
+              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+            ),
+            // message:
+            //   "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
             position: "top",
             type: "warning"
           });
@@ -362,9 +356,7 @@ export const _pickImage = async (
       }
     } else if (!result.cancelled && isNull(media)) {
       showMessage({
-        // message: translate("Please choose a media file"),
-
-        message: "Please choose a media file.",
+        message: translate("Please choose a media file"),
         position: "top",
         type: "warning"
       });

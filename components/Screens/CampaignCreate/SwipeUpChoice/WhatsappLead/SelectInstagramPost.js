@@ -378,90 +378,6 @@ class SelectInstagramPost extends React.Component {
                 }}
               />
             )}
-            {/* {!this.props.instagramPostLoading &&
-                this.props.instagramPostList &&
-                this.props.instagramPostList.map(item => {
-                  // console.log('insta item', item);
-
-                  if (item) {
-                    const itemFound = findIndex(
-                      this.state.cartList,
-                      it => it.imageId === item.imageId
-                    );
-                    // console.log('itemFound', itemFound);
-
-                    return (
-                      <TouchableOpacity
-                        key={item.imageId}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingVertical: 4
-                        }}
-                        onPress={() => this.addToList(item)}
-                      >
-                        {itemFound + 1 >= 1 ? (
-                          <View
-                            style={{
-                              width: 40,
-                              backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <Text
-                              style={{
-                                textAlign: "center",
-
-                                color: "#FFF"
-                              }}
-                            >
-                              {itemFound + 1}
-                            </Text>
-                          </View>
-                        ) : (
-                          <View
-                            style={{
-                              width: 40,
-                              //   backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          ></View>
-                        )}
-                        <Image
-                          source={{
-                            uri: item.imageUrl
-                          }}
-                          width={95}
-                          height={95}
-                          style={[
-                            { width: 95, height: 95, borderRadius: 20 },
-                            itemFound + 1 >= 1
-                              ? {
-                                  borderWidth: 4,
-                                  borderColor: "#FF9D00"
-                                }
-                              : {}
-                          ]}
-                        />
-                      </TouchableOpacity>
-                    );
-                  }
-                })} */}
-            {/* </Content> */}
 
             {!this.props.instagramPostLoading &&
               !isEmpty(this.props.instagramPostList) && (
@@ -475,7 +391,7 @@ class SelectInstagramPost extends React.Component {
                     textAlign: "center"
                   }}
                 >
-                  (Select 3-6 Products)
+                  {translate("(Select 3-6 Products)")}
                 </Text>
               )}
             {!this.props.instagramPostLoading &&
@@ -498,7 +414,7 @@ class SelectInstagramPost extends React.Component {
                   }}
                   onPress={this.onScrollHandler}
                 >
-                  VIEW MORE
+                  {translate("VIEW MORE")}
                 </Text>
               )}
             {!this.props.instagramPostLoading &&

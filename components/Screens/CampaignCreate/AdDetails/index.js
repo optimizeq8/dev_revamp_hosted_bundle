@@ -2,12 +2,12 @@
 import React, { Component } from "react";
 import {
   View,
-  Slider,
   TouchableOpacity,
   ScrollView,
   Image as RNImage,
   Platform,
-  BackHandler
+  BackHandler,
+  Slider
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import { Video } from "expo-av";
@@ -379,6 +379,7 @@ class AdDetails extends Component {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
   _handleBudget = (value, rawValue) => {
+    const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
       rawValue >= this.state.minValueBudget &&
@@ -402,7 +403,7 @@ class AdDetails extends Component {
       showMessage({
         message: validateWrapper("Budget", rawValue)
           ? validateWrapper("Budget", rawValue)
-          : "Budget can't be less than the minimum",
+          : translate("Budget can't be less than the minimum"),
         type: "warning",
         position: "top"
       });
@@ -1102,7 +1103,7 @@ class AdDetails extends Component {
                       this.state.campaignInfo.targeting.geos[0].country_code ===
                       ""
                         ? showMessage({
-                            message: "Please select a country first",
+                            message: translate("Please select a country first"),
                             position: "top",
                             type: "warning"
                           })
@@ -1265,7 +1266,7 @@ class AdDetails extends Component {
                     }}
                     style={styles.moreOptionsText}
                   >
-                    {translate("Scroll for more options+")}
+                    {translate("Scroll for more options")}
                   </Text>
                 )}
 

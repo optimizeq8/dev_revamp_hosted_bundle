@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Platform } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: "left",
     flex: 1,
-    paddingLeft: 20
+    paddingLeft: 20,
+    paddingRight: Platform.OS === "android" ? 20 : 0
   },
   button: {
     top: heightPercentageToDP("2"),

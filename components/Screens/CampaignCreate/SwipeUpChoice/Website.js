@@ -24,6 +24,7 @@ import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import { isRTL } from "expo-localization";
 
 class Website extends Component {
   static navigationOptions = {
@@ -71,6 +72,7 @@ class Website extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   validateUrl = () => {
+    const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
       this.state.networkString + this.state.campaignInfo.attachment
@@ -80,8 +82,9 @@ class Website extends Component {
     });
     if (urlError) {
       showMessage({
-        message:
-          "Please enter a vaild url that does not direct to Instagram, facebook, whatsapp, youtube, whatsapp, or any social media",
+        message: translate(
+          "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -149,7 +152,7 @@ class Website extends Component {
           <View style={{ paddingBottom: 10 }}>
             <CustomHeader
               closeButton={false}
-              title={"Swipe up Destination"}
+              title={translate("Swipe Up destination")}
               navigation={this.props.navigation}
             />
           </View>
@@ -174,6 +177,7 @@ class Website extends Component {
               </View>
               <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 <Picker
+                  screenProps={this.props.screenProps}
                   searchPlaceholderText={"Search Call To Action"}
                   data={this.state.callactions}
                   uniqueKey={"value"}
@@ -284,7 +288,12 @@ class Website extends Component {
                           {this.state.networkString}
                         </Text>
                         <Input
-                          style={[styles.inputtext, { textAlign: "left" }]}
+                          style={[
+                            styles.inputtext,
+                            isRTL
+                              ? { textAlign: "right" }
+                              : { textAlign: "left" }
+                          ]}
                           placeholder={translate(`Enter your website's URL`)}
                           placeholderTextColor={globalColors.white}
                           value={this.state.campaignInfo.attachment}

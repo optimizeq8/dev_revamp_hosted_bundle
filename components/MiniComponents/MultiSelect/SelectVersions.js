@@ -78,16 +78,18 @@ class SelectVersions extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     if (this.state.selectedItems.length === 2)
       this.props._handleSideMenuState(false);
     else
       showMessage({
-        message: "Please choose at least two versions",
+        message: translate("Please choose at least two versions"),
         type: "warning",
         position: "top"
       });
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -100,9 +102,12 @@ class SelectVersions extends Component {
               type="Octicons"
               style={styles.selectVersionIcon}
             />
-            <Text style={styles.title}> Select OS Versions</Text>
+            <Text style={styles.title}> {translate("Select OS Versions")}</Text>
             <Text style={styles.subHeadings}>
-              Choose which {this.props.OSType} versions you want to taregt
+              {translate(
+                `Choose which {{osType}} versions you want to target`,
+                { osType: this.props.OSType }
+              )}
             </Text>
 
             <View style={styles.slidercontainer}>
@@ -114,7 +119,7 @@ class SelectVersions extends Component {
                   <PlusCircle width={53} height={53} />
                 </Button>
                 <Text style={styles.inputtext}>
-                  Choose Minimum and Maximum versions
+                  {translate("Choose Minimum and Maximum versions")}
                 </Text>
               </View>
               <ScrollView style={styles.scrollContainer}>
@@ -168,6 +173,7 @@ class SelectVersions extends Component {
                     </View>
                   }
                   colors={colors}
+                  searchPlaceholderText={translate("Search Versions")}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
@@ -177,10 +183,10 @@ class SelectVersions extends Component {
                   }
                   iconKey="icon"
                   showRemoveAll
-                  selectText="Select Interests"
+                  selectText="Select Versions"
                   showDropDowns={false}
                   noItemsComponent={
-                    <Text>Sorry, no interests for selected country</Text>
+                    <Text>{translate("Sorry, No Versions Available")}</Text>
                   }
                   onCancel={() => {
                     this.onSelectedItemsChange([], "version");

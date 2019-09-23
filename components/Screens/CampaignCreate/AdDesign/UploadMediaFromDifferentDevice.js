@@ -24,6 +24,7 @@ class UploadMediaFromDifferentDevice extends Component {
     }
   }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <Modal
         animationType={"fade"}
@@ -45,10 +46,10 @@ class UploadMediaFromDifferentDevice extends Component {
                 actionButton={() => {
                   this.props.setUploadFromDifferentDeviceModal(false);
                 }}
-                title="UPLOAD MEDIA"
+                title={translate("UPLOAD MEDIA")}
               />
               <Text style={styles.uploadDifferentDeviceHeader}>
-                from a different device
+                {translate("from a different device")}
               </Text>
 
               <Content
@@ -64,7 +65,9 @@ class UploadMediaFromDifferentDevice extends Component {
                   </View>
                   <View style={styles.uploadDifferentDeviceColView}>
                     <Text style={styles.uploadDifferentDeviceTitleText}>
-                      Please access the link below on your Other device
+                      {translate(
+                        "Please access the link below on your Other device"
+                      )}
                     </Text>
                     <Text
                       selectable={true}
@@ -81,7 +84,7 @@ class UploadMediaFromDifferentDevice extends Component {
                   </View>
                   <View style={styles.uploadDifferentDeviceColView}>
                     <Text style={styles.uploadDifferentDeviceTitleText}>
-                      Enter your Access code
+                      {translate("Enter your Access code")}
                     </Text>
                     <Text
                       selectable={true}
@@ -98,8 +101,9 @@ class UploadMediaFromDifferentDevice extends Component {
                   </View>
                   <View style={styles.uploadDifferentDeviceColView}>
                     <Text style={styles.uploadDifferentDeviceTitleText}>
-                      Keep this page open until your media is Uploaded on the
-                      other device.
+                      {translate(
+                        "Keep this page open until your media is Uploaded on the other device"
+                      )}
                     </Text>
                   </View>
                 </View>

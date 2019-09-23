@@ -71,7 +71,9 @@ class SearchBar extends Component {
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
             style={isRTL ? rtlStyles.searchBarInput : styles.searchBarInput}
-            placeholder={`Search ${businessList ? "businesses..." : "ads..."}`}
+            placeholder={translate(
+              `Search ${businessList ? "businesses" : "ads"}`
+            )}
             // placeholder={translate("Search ads")}
             value={this.state.value}
             onChangeText={value => {

@@ -14,7 +14,7 @@ import {
 } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
-import Toggle from "react-native-switch-toggle";
+import Toggle from "../Toggle";
 
 //styles
 import styles from "./styles";

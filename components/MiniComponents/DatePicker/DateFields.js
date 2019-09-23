@@ -189,7 +189,7 @@ export default class DateFields extends Component {
                   actionButton={() => {
                     this.setState({ modalVisible: false });
                   }}
-                  topRightButtonText={"Reset"}
+                  topRightButtonText={translate("Reset")}
                   topRightButtonFunction={this.handleReset}
                   showTopRightButton={
                     this.state.start_date || this.props.chartRange

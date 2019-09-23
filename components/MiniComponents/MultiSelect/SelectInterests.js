@@ -92,6 +92,7 @@ class SelectInterests extends Component {
               </Button>
               <ScrollView style={styles.scrollContainer}>
                 <Picker
+                  screenProps={this.props.screenProps}
                   searchPlaceholderText={translate("Search Interests")}
                   data={this.state.interests}
                   uniqueKey={"id"}

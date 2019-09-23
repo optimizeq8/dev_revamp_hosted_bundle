@@ -58,6 +58,7 @@ class StoryAdDesignReview extends Component {
     });
   };
   render() {
+    const { translate } = this.props.screenProps;
     let cover = this.props.navigation.getParam("cover", "");
     cover = cover;
     let logo = this.props.navigation.getParam("logo", "");
@@ -90,7 +91,7 @@ class StoryAdDesignReview extends Component {
           </View>
           <View style={styles.headlineStyle}>
             <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
-            <Text style={styles.sponsoredText}>Sponsored</Text>
+            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
           </View>
         </TouchableOpacity>
       ) : (
@@ -111,7 +112,7 @@ class StoryAdDesignReview extends Component {
           </View>
           <View style={styles.headlineStyle}>
             <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
-            <Text style={styles.sponsoredText}>Sponsored</Text>
+            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
           </View>
         </TouchableOpacity>
       );
@@ -129,7 +130,7 @@ class StoryAdDesignReview extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.props.navigation.goBack}
-            title={campaignDetails ? "Cover Review" : "Compose Ad"}
+            title={translate(campaignDetails ? "Cover Review" : "Compose Ad")}
           />
           <Content
             padder
@@ -155,11 +156,11 @@ class StoryAdDesignReview extends Component {
                         height: "70%"
                       }}
                     >
-                      <Text style={styles.heading}>Friends</Text>
+                      <Text style={styles.heading}>{translate("Friends")}</Text>
                       <Circles height="80%" width="100%" />
                     </View>
                   </View>
-                  <Text style={styles.heading}>For You</Text>
+                  <Text style={styles.heading}>{translate("For You")}</Text>
 
                   <View style={styles.tilesGrid}>
                     {ImageOrRNImage}
