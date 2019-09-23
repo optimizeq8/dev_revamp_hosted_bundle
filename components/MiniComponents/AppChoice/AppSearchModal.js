@@ -30,6 +30,7 @@ export default class AppSearchModal extends Component {
     this.setState({ showBtn: value });
   };
   _searchAndroidApps = () => {
+    const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     const instance = Axios.create({
       baseURL: "https://api.apptweak.com/android",
@@ -68,14 +69,15 @@ export default class AppSearchModal extends Component {
           position: "top",
           duration: 4500,
           description: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later."
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
         });
         // console.log(err.response.data);
       });
   };
 
   _searchIosApps = () => {
+    const { translate } = this.props.screenProps;
     this.props.setTheState({ loading: true });
     const instance = Axios.create({
       baseURL: "https://api.apptweak.com/ios",
@@ -112,8 +114,8 @@ export default class AppSearchModal extends Component {
           position: "top",
           duration: 4500,
           description: err.response.data
-            ? "Please make sure the app id is correct"
-            : "Please try again later."
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
         });
         // console.log(err.response)
       });
