@@ -24,7 +24,7 @@ export const getLanguageListPOEdit = language => {
         terms.map(term => {
           modifierJson[term.term] = term.translation.content;
         });
-        console.log("modiferJson", modifierJson);
+        // console.log("modiferJson", modifierJson);
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
           payload: {
