@@ -611,6 +611,7 @@ class AdDesign extends Component {
   };
 
   validator = () => {
+    const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.brand_name
@@ -644,7 +645,7 @@ class AdDesign extends Component {
       this.state.campaignInfo.call_to_action.label === "BLANK"
     ) {
       showMessage({
-        message: "Choose A Swipe Up Destination",
+        message: translate("Choose A Swipe Up Destination"),
         position: "top",
         type: "warning"
       });
@@ -660,7 +661,7 @@ class AdDesign extends Component {
         ))
     ) {
       showMessage({
-        message: "Choose A Swipe Up Destination",
+        message: translate("Choose A Swipe Up Destination"),
         position: "top",
         type: "warning"
       });
@@ -671,7 +672,7 @@ class AdDesign extends Component {
       this.props.storyAdAttachment.attachment === "BLANK"
     ) {
       showMessage({
-        message: "Choose A Swipe Up Destination",
+        message: translate("Choose A Swipe Up Destination"),
         position: "top",
         type: "warning"
       });
@@ -681,21 +682,21 @@ class AdDesign extends Component {
     }
     if (collectionError) {
       showMessage({
-        message: "Please add more products",
+        message: translate("Please add more products to proceed."),
         position: "top",
         type: "warning"
       });
     }
     if (mediaError) {
       showMessage({
-        message: "Please add media to proceed.",
+        message: translate("Please add media to proceed."),
         position: "top",
         type: "warning"
       });
     }
     if (validCards.length < 3) {
       showMessage({
-        message: "Please add minimum of 3 medias to proceed",
+        message: translate("Please add minimum of 3 medias to proceed"),
         position: "top",
         type: "warning"
       });
@@ -863,7 +864,6 @@ class AdDesign extends Component {
     } = this.state;
 
     const { translate } = this.props.screenProps;
-
 
     let validCards =
       this.adType === "StoryAd"
