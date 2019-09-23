@@ -310,8 +310,6 @@ class AdObjective extends Component {
   };
 
   render() {
-    console.log(this.props.collectionAdLinkForm);
-
     let adType = this.props.adType;
 
     const list = ObjectiveData[this.props.adType].map(o => (
