@@ -110,14 +110,16 @@ class AdCover extends Component {
         ? this.params.objective
         : ""
     });
-
+    const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallery to upload media"
+          ),
           position: "top",
           type: "warning"
         });
@@ -160,11 +162,13 @@ class AdCover extends Component {
 
   askForPermssion = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
+    const { translate } = this.props.screenProps;
     if (status !== "granted") {
       this.onToggleModal(false);
       showMessage({
-        message: "Please allow access to the gallary to upload media.",
+        message: translate(
+          "Please allow access to the gallery to upload media"
+        ),
         position: "top",
         type: "warning"
       });
@@ -204,7 +208,7 @@ class AdCover extends Component {
 
   _pickLogo = async () => {
     let logo = await this.pick("Images");
-
+    const { translate } = this.props.screenProps;
     if (!logo.cancelled) {
       let correctLogo = logo.width === 993 && logo.height === 284;
       let logoFormat =
@@ -220,12 +224,12 @@ class AdCover extends Component {
       showMessage({
         message:
           correctLogo && logoFormat
-            ? "Logo selected successfully"
-            : "Logo must be exactly 993px by 284px",
+            ? translate("Logo selected successfully")
+            : translate("Logo must be exactly 993px by 284px"),
         description:
           correctLogo && logoFormat
             ? ""
-            : "In .png format and transparent background.",
+            : translate("In png format and transparent background"),
         position: "top",
         duration: correctLogo ? 2000 : 10000,
         type: correctLogo ? "success" : "warning"
@@ -239,6 +243,7 @@ class AdCover extends Component {
 
   _pickImage = async (mediaTypes = "All") => {
     try {
+      const { translate } = this.props.screenProps;
       let result = await this.pick(mediaTypes);
       let file = await FileSystem.getInfoAsync(result.uri, {
         size: true
@@ -300,7 +305,10 @@ class AdCover extends Component {
                 if (file.size > 2000000) {
                   this.onToggleModal(false);
                   showMessage({
-                    message: "Image must be less than 2 MBs",
+                    message: translate(
+                      "Image must be less than {{fileSize}} MBs",
+                      { fileSize: 2 }
+                    ),
                     position: "top",
                     type: "warning"
                   });
@@ -316,7 +324,7 @@ class AdCover extends Component {
                 });
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Image has been selected successfully ",
+                  message: translate("Image has been selected successfully"),
                   position: "top",
                   type: "success"
                 });
@@ -327,7 +335,7 @@ class AdCover extends Component {
               .catch(error => {
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Please choose an image",
+                  message: translate("Please choose an image"),
                   position: "top",
                   type: "warning"
                 });
@@ -338,7 +346,9 @@ class AdCover extends Component {
           } else if (file.size > 2000000) {
             this.onToggleModal(false);
             showMessage({
-              message: "Image must be less than 2 MBs",
+              message: translate("Image must be less than {{fileSize}} MBs", {
+                fileSize: 2
+              }),
               position: "top",
               type: "warning"
             });
@@ -350,8 +360,9 @@ class AdCover extends Component {
           ) {
             this.onToggleModal(false);
             showMessage({
-              message:
-                "Image's aspect ratio must be 3:5\nwith a minimum size of 360px by 600px.",
+              message: translate(
+                "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
+              ),
               position: "top",
               type: "warning"
             });
@@ -366,7 +377,7 @@ class AdCover extends Component {
             });
             this.onToggleModal(false);
             showMessage({
-              message: "Image has been selected successfully ",
+              message: translate("Image has been selected successfully"),
               position: "top",
               type: "success"
             });
@@ -377,14 +388,14 @@ class AdCover extends Component {
           }
         } else {
           showMessage({
-            message: "Please make sure the image is in .png format.",
+            message: translate("Please make sure the image is in png format"),
             position: "top",
             type: "warning"
           });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
-          message: "Please choose a media file.",
+          message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
         });
@@ -455,13 +466,13 @@ class AdCover extends Component {
       "mandatory",
       this.state.campaignInfo.logo
     );
-
+    const { translate } = this.props.screenProps;
     (coverError || logoError) &&
       showMessage({
         message: coverError
-          ? "Please add a cover image"
+          ? translate("Please add a cover image")
           : logoError
-          ? "Please add a logo"
+          ? translate("Please add a logo")
           : "",
         type: coverError || logoError ? "warning" : "",
         position: "top"
@@ -539,7 +550,7 @@ class AdCover extends Component {
   render() {
     let { cover, coverHeadlineError, logoError } = this.state;
     let { coverHeadline, logo } = this.state.campaignInfo;
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.mainSafeArea}
@@ -577,7 +588,7 @@ class AdCover extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Compose Ad"
+            title={translate("Compose Ad")}
           />
           <Content contentContainerStyle={styles.contentContainer} padder>
             <KeyboardShift>
@@ -613,7 +624,7 @@ class AdCover extends Component {
                               marginTop: 10
                             }}
                           >
-                            Edit logo
+                            {translate("Edit logo")}
                           </Text>
                         </TouchableOpacity>
                       ) : (
@@ -634,10 +645,12 @@ class AdCover extends Component {
                                 fontFamily: "montserrat-bold"
                               }}
                             >
-                              Your Logo
+                              {translate("Your Logo")}
                             </Text>
                             <Text style={styles.addLogoTextStyle}>
-                              Must be 993px by 284px and transparent
+                              {translate(
+                                "Must be 993px by 284px and transparent"
+                              )}
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -652,6 +665,7 @@ class AdCover extends Component {
                         field={"Headline"}
                         mainBusiness={this.props.mainBusiness}
                         rejected={this.rejected}
+                        screenProps={this.props.screenProps}
                       />
                       <MediaButton
                         type={"cover"}
@@ -659,6 +673,7 @@ class AdCover extends Component {
                         _pickImage={this._pickImage}
                         image={this.state.cover}
                         media={this.state.cover}
+                        screenProps={this.props.screenProps}
                       />
                     </View>
                   </View>
@@ -673,8 +688,9 @@ class AdCover extends Component {
                 }
               ]}
             >
-              The cover shows on the {"\n"}Discover page among {"\n"}
-              subscriptions and trending content
+              {translate(
+                "The cover shows on the\nDiscover page among\nsubscriptions and trending content"
+              )}
             </Text>
           </Content>
 
@@ -690,7 +706,7 @@ class AdCover extends Component {
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
-                Please add media to proceed
+                {translate("Please add media to proceed")}
               </Text>
             )}
           </Footer>
@@ -710,7 +726,7 @@ class AdCover extends Component {
                 <CustomHeader
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title="Uploading Image"
+                  title={translate("Uploading Image")}
                 />
               )}
               {!this.props.coverLoading && (
@@ -728,8 +744,9 @@ class AdCover extends Component {
                   </Text>
 
                   <Text style={styles.uplaodText}>
-                    Please make sure not to close {"\n"}the app or lock the
-                    phone while uploading.
+                    {translate(
+                      "Please make sure not to close the app or lock the phone while uploading"
+                    )}
                   </Text>
                 </View>
               )}

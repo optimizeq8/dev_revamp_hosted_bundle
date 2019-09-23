@@ -167,7 +167,24 @@ const styles = StyleSheet.create({
   OSText: {
     fontSize: widthPercentageToDP(2.9),
     fontFamily: "montserrat-bold",
-    alignSelf: "center"
+    alignSelf: "center",
+
+    // padding: widthPercentageToDP(4),
+    marginHorizontal: widthPercentageToDP(2),
+    borderRadius: 90,
+    height: parseInt(heightPercentageToDP(7.2)),
+    height: 54,
+    // width: parseInt(widthPercentageToDP(16)),
+    width: 70,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  OSText: {
+    // fontSize: widthPercentageToDP(2.9),
+    textAlign: "left",
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textAlignVertical: "top"
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, TouchableHighlight } from "react-native";
+import { View, TouchableHighlight } from "react-native";
+import { Text } from "native-base";
 import dateFormat from "dateformat";
 
 //styles
@@ -7,6 +8,7 @@ import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
 export default class Duration extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let currentDay =
       dateFormat(new Date(), "d mmm").toUpperCase() +
       " " +
@@ -54,7 +56,7 @@ export default class Duration extends Component {
                 {start_time} {start_year}
               </Text>
             ) : (
-              <Text style={styles.dateLabel}>Start</Text>
+              <Text style={styles.dateLabel}>{translate("Start")}</Text>
             )}
           </View>
 
@@ -68,7 +70,7 @@ export default class Duration extends Component {
               }
             ]}
           >
-            to
+            {translate("To")}
           </Text>
 
           {!this.props.slidePanel ||
@@ -79,7 +81,7 @@ export default class Duration extends Component {
                   {end_time} {end_year}
                 </Text>
               ) : (
-                <Text style={styles.dateLabel}>End</Text>
+                <Text style={styles.dateLabel}>{translate("End")}</Text>
               )}
             </View>
           ) : (

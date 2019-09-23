@@ -88,18 +88,19 @@ class Long_Form_Video extends Component {
   };
   _pickImage = async () => {
     let result = await this.pick();
+    const { translate } = this.props.screenProps;
 
     if (!result.cancelled) {
       if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (file.size > 524288000) {
             showMessage({
-              message: "Video must be less than 500 Megabytes",
+              message: translate("Video must be less than 500 Megabytes"),
               type: "warning",
               position: "top"
             });
             this.setState({
-              videoError: "Video must be less than 500 Megabytes",
+              videoError: translate("Video must be less than 500 Megabytes"),
               longformvideo_media: null,
               videoLoading: false
             });
@@ -116,10 +117,9 @@ class Long_Form_Video extends Component {
           }
         });
       } else {
-        this.setState({ duration: result.duration });
-        validateWrapper("duration", result.duration) &&
+        validateWrapper("duration", this.state.duration) &&
           showMessage({
-            message: validateWrapper("duration", result.duration),
+            message: validateWrapper("duration", this.state.duration),
             type: "warning",
             position: "top"
           });
@@ -131,12 +131,12 @@ class Long_Form_Video extends Component {
       }
     } else {
       showMessage({
-        message: "Please choose a video",
+        message: translate("Please choose a video"),
         type: "warning",
         position: "top"
       });
       this.setState({
-        videoError: "Please choose a video",
+        videoError: translate("Please choose a video"),
         longformvideo_media: null,
         videoLoading: false
       });
@@ -183,14 +183,17 @@ class Long_Form_Video extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.longFormVideoContainer}>
         <View style={styles.longFormVideoContent}>
           <VideoIcon fill="#fff" style={styles.icon} />
           <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
-            <Text style={styles.titletext}>LongForm Video</Text>
+            <Text style={styles.titletext}>{translate("LongForm Video")}</Text>
             <Text style={styles.subtext}>
-              Promote your brand or product to{"\n"}Snapchatters through video.
+              {translate(
+                "Promote your brand or product to\nSnapchatters through video"
+              )}
             </Text>
           </View>
           {this.state.longformvideo_media && (
@@ -216,7 +219,7 @@ class Long_Form_Video extends Component {
                 }}
                 style={styles.videoSelectButton}
               >
-                <Text> Preview Video</Text>
+                <Text> {translate("Preview Video")}</Text>
               </Button>
               <Button
                 onPress={() => {
@@ -224,7 +227,7 @@ class Long_Form_Video extends Component {
                 }}
                 style={styles.videoSelectButton}
               >
-                <Text> Change Video</Text>
+                <Text> {translate("Change Video")}</Text>
               </Button>
             </View>
           )}
@@ -237,7 +240,7 @@ class Long_Form_Video extends Component {
               style={[styles.video]}
             >
               <AddVidIcon style={[styles.icon, { fontSize: 70 }]} />
-              <Text style={styles.addVideoText}>Add Video</Text>
+              <Text style={styles.addVideoText}>{translate("Add Video")}</Text>
             </TouchableOpacity>
           )}
           {/* {this.state.durationError ? (
@@ -260,7 +263,8 @@ class Long_Form_Video extends Component {
             </Text>
           ) : null} */}
           <Picker
-            searchPlaceholderText={"Search Call To Action"}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
             uniqueKey={"value"}
             displayKey={"label"}
@@ -274,7 +278,7 @@ class Long_Form_Video extends Component {
           />
           <View style={[styles.callToActionLabelView]}>
             <Text uppercase style={[styles.inputLabel]}>
-              call to action
+              {translate("call to action")}
             </Text>
           </View>
           <Item

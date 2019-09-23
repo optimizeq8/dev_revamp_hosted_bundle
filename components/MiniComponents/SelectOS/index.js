@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import { isRTL } from "expo-localization";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.svg";
 import { globalColors } from "../../../GlobalStyles";
+import isStringArabic from "../../isStringArabic";
 export default class SelectOS extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -22,8 +25,10 @@ export default class SelectOS extends Component {
               height={100}
               style={styles.icon}
             />
-            <Text style={styles.title}>Operating System</Text>
-            <Text style={styles.subHeadings}>Select your audience's OS </Text>
+            <Text style={styles.title}>{translate("Operating System")}</Text>
+            <Text style={styles.subHeadings}>
+              {translate(`Select your audience's OS`)}{" "}
+            </Text>
             <View style={[styles.optionsContainer]}>
               <TouchableOpacity
                 style={styles.optionsRowContainer}
@@ -46,7 +51,7 @@ export default class SelectOS extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  All
+                  {translate("All")}
                 </Text>
               </TouchableOpacity>
 
@@ -71,9 +76,18 @@ export default class SelectOS extends Component {
                   ]}
                 />
                 <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                  style={[
+                    styles.inactivetext,
+                    styles.optionsTextContainer,
+                    isRTL && !isStringArabic(translate("iOS"))
+                      ? {
+                          marginTop: 0,
+                          marginBottom: 15
+                        }
+                      : {}
+                  ]}
                 >
-                  iOS
+                  {translate("iOS")}
                 </Text>
               </TouchableOpacity>
 
@@ -98,9 +112,17 @@ export default class SelectOS extends Component {
                   ]}
                 />
                 <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
+                  style={[
+                    styles.inactivetext,
+                    styles.optionsTextContainer,
+                    isRTL && !isStringArabic(translate("ANDROID"))
+                      ? {
+                          marginBottom: 20
+                        }
+                      : {}
+                  ]}
                 >
-                  ANDROID
+                  {translate("ANDROID")}
                 </Text>
               </TouchableOpacity>
             </View>

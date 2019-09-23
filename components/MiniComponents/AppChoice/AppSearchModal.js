@@ -50,7 +50,7 @@ export default class AppSearchModal extends Component {
       callAction,
       renderNextStep
     } = this.props;
-
+    const { translate } = this.props.screenProps;
     return (
       <Modal style={{ margin: 0 }} isVisible={isVisible}>
         <BlurView intensity={95} tint="dark">
@@ -82,7 +82,7 @@ export default class AppSearchModal extends Component {
                         { fontSize: 14, maxWidth: 100 }
                       ]}
                     >
-                      {`apple \n app store`}
+                      {translate(`apple \n app store`)}
                     </Text>
                   </>
                 ) : (
@@ -95,7 +95,7 @@ export default class AppSearchModal extends Component {
                         { fontSize: 14, maxWidth: 100 }
                       ]}
                     >
-                      {`google \n play store`}
+                      {translate(`google \n play store`)}
                     </Text>
                   </>
                 )}
@@ -113,7 +113,9 @@ export default class AppSearchModal extends Component {
                   <SearchIcon stroke="#fff" />
                   <Input
                     style={styles.inputText}
-                    placeholder={`Search for ${appSelection} name or id`}
+                    placeholder={translate(
+                      `Search for ${appSelection} name or id`
+                    )}
                     defaultValue={appValue + ""}
                     placeholderTextColor="white"
                     autoCorrect={false}

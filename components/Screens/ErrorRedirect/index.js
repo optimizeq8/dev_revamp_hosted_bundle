@@ -56,6 +56,7 @@ class ErrorRedirect extends Component {
     return true;
   };
   render() {
+    const { translate } = this.props.screenProps;
     if (!this.props.navigation.state.params) {
       return (
         <>
@@ -81,24 +82,28 @@ class ErrorRedirect extends Component {
 
             <Text style={styles.title}> Sorry </Text>
             <Text style={styles.errorText}>
-              There seems to be a problem with {"\n"}
-              your payment method.
+              {"There seems to be a problem with\nyour payment method"}.
             </Text>
             <View style={styles.details}>
               <Text style={styles.text}>
-                Payment ID: {this.props.navigation.getParam("paymentId", "")}
+                {translate("Payment ID:")}{" "}
+                {this.props.navigation.getParam("paymentId", "")}
               </Text>
               <Text style={styles.text}>
-                Track ID: {this.props.navigation.getParam("trackID", "")}
+                {translate("Track ID:")}{" "}
+                {this.props.navigation.getParam("trackID", "")}
               </Text>
               <Text style={styles.text}>
-                Amount: {this.props.navigation.getParam("kdamount", 0)} KWD
+                {translate("Amount:")}
+                {this.props.navigation.getParam("kdamount", 0)} KWD
               </Text>
               <Text style={styles.text}>
-                Date: {this.props.navigation.getParam("date", "")}
+                {translate("Date:")}{" "}
+                {this.props.navigation.getParam("date", "")}
               </Text>
               <Text style={styles.text}>
-                Status: {this.props.navigation.getParam("status", "")}
+                {translate("Status:")}{" "}
+                {this.props.navigation.getParam("status", "")}
               </Text>
             </View>
             <Button
@@ -117,7 +122,7 @@ class ErrorRedirect extends Component {
                 }
               }}
             >
-              <Text style={styles.buttonText}> Retry </Text>
+              <Text style={styles.buttonText}> {translate("Retry")} </Text>
             </Button>
             <Button
               style={styles.whitebutton}
@@ -131,7 +136,7 @@ class ErrorRedirect extends Component {
               style={styles.whiteButton}
               onPress={() => this.props.navigation.navigate("Dashboard")}
             >
-              <Text style={styles.whiteButtonText}> Home </Text>
+              <Text style={styles.whiteButtonText}> {translate("Home")} </Text>
             </Button>
           </View>
         </ScrollView>

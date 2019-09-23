@@ -6,7 +6,8 @@ import {
 } from "react-native-responsive-screen";
 import KeyboardShift from "../KeyboardShift";
 
-import Toggle from "react-native-switch-toggle";
+import Toggle from "../Toggle";
+
 //styles
 import styles from "./styles";
 import LowerButton from "../LowerButton";

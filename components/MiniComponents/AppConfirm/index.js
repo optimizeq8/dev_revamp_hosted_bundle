@@ -14,7 +14,7 @@ import {
 } from "react-native-responsive-screen";
 import { showMessage } from "react-native-flash-message";
 import { connect } from "react-redux";
-import Toggle from "react-native-switch-toggle";
+import Toggle from "../Toggle";
 
 //styles
 import styles from "./styles";
@@ -53,14 +53,16 @@ class index extends Component {
       "deepLink",
       this.state.deep_link_url
     );
+    const { translate } = this.props.screenProps;
     this.setState({
       deep_link_urlError
     });
     if (deep_link_urlError) {
       showMessage({
-        message: "Invalid deep link url.",
-        description:
-          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        message: translate("Invalid deep link URL"),
+        description: translate(
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -78,6 +80,7 @@ class index extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <>
         {/* <KeyboardShift style={styles.keyboardContainer}>
@@ -100,7 +103,7 @@ class index extends Component {
               <Text style={[styles.title]}>{this.props.app_name}</Text>
               {this.props.ios_app_id !== "" && (
                 <Text style={[styles.appTexts, globalStyles.column]}>
-                  iOS App ID{" "}
+                  {translate("iOS App ID")}{" "}
                   <Text style={globalStyles.orangeTextColor}>
                     {" "}
                     {this.props.ios_app_id}
@@ -109,7 +112,7 @@ class index extends Component {
               )}
               {this.props.android_app_url !== "" && (
                 <Text style={[styles.appTexts, globalStyles.column]}>
-                  Android URL{" "}
+                  {translate("Android URL")}{" "}
                   <Text style={globalStyles.orangeTextColor}>
                     {this.props.android_app_url}
                   </Text>
@@ -120,11 +123,13 @@ class index extends Component {
           <View>
             <View style={[styles.appStoreLabelView]}>
               <Text uppercase style={[styles.inputLabel]}>
-                app stores
+                {translate("app stores")}
               </Text>
             </View>
             <View style={styles.advertiseOSView}>
-              <Text style={[styles.text]}>Your app will be advertised for</Text>
+              <Text style={[styles.text]}>
+                {translate("Your app will be advertised for")}
+              </Text>
               <View style={styles.advertiseOSButtonView}>
                 <View
                   style={[
@@ -133,9 +138,19 @@ class index extends Component {
                     this.props.ios_app_id === "" ? { opacity: 0.5 } : {}
                   ]}
                 >
+                  {/* <TouchableOpacity
+												style={[
+													styles.OS,
+													this.props.ios_app_id !== ''
+														? globalStyles.whiteBackgroundColor
+														: { backgroundColor: 'rgba(255,255,255,0.3)' },
+												]}
+											>
+												<Text style={styles.OSText}>iOS</Text>
+                                            </TouchableOpacity> */}
                   <AppStoreIcon />
                   <Text uppercase style={styles.appStoreButtonsText}>
-                    {`apple\n app store`}
+                    {translate(`apple\napp store`)}
                   </Text>
                   <Toggle
                     switchOn={this.props.ios_app_id !== ""}
@@ -155,9 +170,20 @@ class index extends Component {
                     this.props.android_app_url === "" ? { opacity: 0.5 } : {}
                   ]}
                 >
+                  {/* <TouchableOpacity
+												style={[
+													styles.OS,
+													this.props.android_app_url !== ''
+														? globalStyles.whiteBackgroundColor
+														: { backgroundColor: 'rgba(255,255,255,0.3)' },
+													styles.androidButton,
+												]}
+											>
+												<Text style={[styles.OSText]}>Android</Text>
+                                            </TouchableOpacity> */}
                   <PlayStoreIcon />
                   <Text uppercase style={styles.appStoreButtonsText}>
-                    {`google \n play store`}
+                    {translate(`google\nplay store`)}
                   </Text>
 
                   <Toggle
@@ -178,7 +204,7 @@ class index extends Component {
             <View>
               <View style={[styles.callToActionLabelView]}>
                 <Text uppercase style={[styles.inputLabel]}>
-                  url
+                  {translate("url")}
                 </Text>
               </View>
               <Item
@@ -194,7 +220,7 @@ class index extends Component {
                 <Input
                   value={this.state.deep_link_url}
                   style={styles.inputtext}
-                  placeholder="Deep Link URL"
+                  placeholder={translate("Deep Link URL")}
                   placeholderTextColor="white"
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -215,24 +241,26 @@ class index extends Component {
             style={[styles.subtext, styles.changeAppText]}
             onPress={() => this.props.renderPreviousStep()}
           >
-            Change app
+            {translate("Change app")}
           </Text>
 
           <View>
-            {this.props.swipeUpDestination && (
-              <Text
-                style={styles.footerText}
-                onPress={() => this.props.toggleSideMenu()}
-              >
-                Change Swipe-up Destination
-              </Text>
-            )}
+            <View>
+              {this.props.swipeUpDestination && (
+                <Text
+                  style={styles.footerText}
+                  onPress={() => this.props.toggleSideMenu()}
+                >
+                  {translate("Change Swipe-up Destination")}
+                </Text>
+              )}
 
-            <LowerButton
-              checkmark={true}
-              function={() => this._submitDeepLink()}
-              bottom={0}
-            />
+              <LowerButton
+                checkmark={true}
+                function={() => this._submitDeepLink()}
+                bottom={0}
+              />
+            </View>
           </View>
         </ScrollView>
         {/* </>

@@ -39,7 +39,7 @@ class DownloadMediaFromDifferentDevice extends Component {
   //   }
   render() {
     // console.log("media", this.props.mediaWebLink);
-
+    const { translate } = this.props.screenProps;
     return (
       <Modal
         animationType={"fade"}
@@ -59,7 +59,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                 actionButton={() => {
                   this.props.setDownloadMediaModal(false);
                 }}
-                title="DOWNLOAD MEDIA"
+                title={translate("DOWNLOAD MEDIA")}
               />
               {this.props.webUploadLinkMediaLoading ? (
                 <LoadingScreen top={50} />
@@ -76,8 +76,12 @@ class DownloadMediaFromDifferentDevice extends Component {
                     <CameraIcon height={60} width={60} fill={"#FFF"} />
                     <Text style={styles.downloadMediaHeaderText}>
                       {this.props.mediaWebLink !== ""
-                        ? "Media has been uploaded from a different device"
-                        : "No Media has been uploaded from diiferent Device"}
+                        ? translate(
+                            "Media has been uploaded from a different device"
+                          )
+                        : translate(
+                            "No Media has been uploaded from different Device"
+                          )}
                     </Text>
                   </View>
                   {this.props.mediaWebLink !== "" && (

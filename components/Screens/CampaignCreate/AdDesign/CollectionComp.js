@@ -17,6 +17,7 @@ class CollectionComp extends Component {
       selectedCampaign,
       navigation
     } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <View
         style={{
@@ -49,7 +50,7 @@ class CollectionComp extends Component {
               color: "#FFF"
             }}
           >
-            {`Product ${collIdx + 1}`}
+            {`${translate("Product")} ${collIdx + 1}`}
           </Text>
         </View>
         <TouchableOpacity

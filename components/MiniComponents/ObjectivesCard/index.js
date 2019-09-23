@@ -16,6 +16,7 @@ class ObjectiveCard extends Component {
     this.props.setObjective(this.props.choice);
   };
   render() {
+    const { translate } = this.props.screenProps;
     let obj = this.props.choice;
     let IconName = obj.icon;
     let changeState = { backgroundColor: "transparent", color: "#fff" };
@@ -34,10 +35,10 @@ class ObjectiveCard extends Component {
         <IconName width={30} height={30} fill="#fff" style={[styles.icon]} />
         <View style={styles.textcontainer}>
           <Text style={[styles.titletext, { color: changeState.color }]}>
-            {obj.label}
+            {translate(obj.label)}
           </Text>
           <Text style={[styles.subtext, { color: changeState.color }]}>
-            {obj.info}
+            {translate(obj.info)}
           </Text>
         </View>
       </TouchableOpacity>

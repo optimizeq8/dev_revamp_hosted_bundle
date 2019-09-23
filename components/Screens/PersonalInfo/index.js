@@ -86,23 +86,27 @@ class PersonalInfo extends Component {
       lastnameError,
       emailError
     });
+    const { translate } = this.props.screenProps;
 
     if (firstnameError || lastnameError) {
       showMessage({
         type: "warning",
-        message: `Please provide a ${
-          firstnameError
-            ? "first name"
-            : lastnameError
-            ? "last name"
-            : emailError && "email"
-        }`
+        message: translate(
+          `Please provide a ${
+            firstnameError
+              ? "first name"
+              : lastnameError
+              ? "last name"
+              : emailError && "email"
+          }`
+        )
       });
       return false;
     } else return true;
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     if (this.validator()) {
       const changedInfo =
         this.state.firstname !== this.props.userInfo.firstname ||
@@ -116,18 +120,22 @@ class PersonalInfo extends Component {
       else
         showMessage({
           type: "warning",
-          message: "No changes to update",
+          message: translate("No changes to update"),
           position: "top"
         });
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Header title={"Personal Info"} navigation={this.props.navigation} />
+        <Header
+          title={translate("Personal Info")}
+          navigation={this.props.navigation}
+        />
 
         <PersonalInfoIcon
           style={styles.personalInfoIcon}
@@ -159,7 +167,7 @@ class PersonalInfo extends Component {
                         ]}
                       >
                         <Label style={[styles.label, styles.labelEmail]}>
-                          First Name
+                          {translate("First Name")}
                         </Label>
                         <Input
                           style={[styles.inputText]}
@@ -190,7 +198,7 @@ class PersonalInfo extends Component {
                         ]}
                       >
                         <Label style={[styles.label, styles.labelEmail]}>
-                          Last Name
+                          {translate("Last Name")}
                         </Label>
                         <Input
                           style={[styles.inputText]}
@@ -224,9 +232,10 @@ class PersonalInfo extends Component {
                           }
                         ]}
                       >
-                        Mobile No.
+                        {translate("Mobile No")}
                       </Label>
                       <PhoneNoField
+                        screenProps={this.props.screenProps}
                         valid
                         disabled={true}
                         changeNo={this.changePersonalNo}
@@ -243,7 +252,7 @@ class PersonalInfo extends Component {
                       ]}
                     >
                       <Label style={[styles.label, styles.labelEmail]}>
-                        E-Mail
+                        {translate("Email")}
                       </Label>
                       <Input
                         disabled

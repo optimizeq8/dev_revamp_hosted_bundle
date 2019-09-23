@@ -4,6 +4,7 @@ import { Button, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import Sidemenu from "react-native-side-menu";
 import * as Segment from "expo-analytics-segment";
+import { isRTL } from "expo-localization";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -44,19 +45,30 @@ class Transactions extends Component {
     this.setState({ sidemenustate: status }, () => {});
   };
   render() {
+    const { translate } = this.props.screenProps;
     if (this.props.errorTransactionList) {
-      return <ErrorComponent navigation={this.props.navigation} />;
+      return (
+        <ErrorComponent
+          navigation={this.props.navigation}
+          screenProps={this.props.screenProps}
+        />
+      );
     } else if (this.props.loading) return <LoadingScreen dash={true} top={0} />;
     else {
       let menu = (
         <FilterMenu
+          screenProps={this.props.screenProps}
           transactionFilter={true}
           _handleSideMenuState={this._handleSideMenuState}
           open={this.state.sidemenustate}
         />
       );
       let transList = this.props.filteredTransactions.map(transaction => (
-        <TransactionCard key={transaction.id} transaction={transaction} />
+        <TransactionCard
+          key={transaction.id}
+          transaction={transaction}
+          screenProps={this.props.screenProps}
+        />
       ));
       return (
         <SafeAreaView
@@ -77,18 +89,21 @@ class Transactions extends Component {
               }}
               disableGestures={true}
               menu={this.state.sidemenustate ? menu : null}
-              menuPosition="right"
+              menuPosition={isRTL ? "left" : "right"}
               openMenuOffset={widthPercentageToDP("85%")}
               isOpen={this.state.sidemenustate}
             >
               <Header
-                title={"Transactions"}
+                title={translate("Transactions")}
                 navigation={this.props.navigation}
               />
               <View style={styles.mainContainer}>
                 <View style={styles.headerBlock}>
                   <View style={styles.searchContainer}>
-                    <SearchBar transactionSearch={true} />
+                    <SearchBar
+                      screenProps={this.props.screenProps}
+                      transactionSearch={true}
+                    />
                   </View>
                   <Button
                     style={styles.activebutton}
@@ -101,7 +116,7 @@ class Transactions extends Component {
                 </View>
                 {transList.length === 0 && (
                   <Text style={styles.noTranText}>
-                    No transactions available
+                    {translate("No transactions available")}
                   </Text>
                 )}
                 <ScrollView contentContainerStyle={styles.contentContainer}>

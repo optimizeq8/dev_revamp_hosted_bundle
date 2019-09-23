@@ -42,7 +42,9 @@ class ProductList extends React.Component {
   _handleSubmission = () => {
     if (this.state.disable) {
       showMessage({
-        message: "Enter product names and price for all the selected products",
+        message: this.props.screenProps.translate(
+          "Enter product names and price for all the selected products"
+        ),
         duration: 2000,
         type: "warning"
       });
@@ -61,6 +63,7 @@ class ProductList extends React.Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -83,7 +86,7 @@ class ProductList extends React.Component {
         />
         <Container style={styles.container}>
           <CustomeHeader
-            title={"Whatsapp Campaign"}
+            title={translate("WhatsApp Campaign")}
             closeButton={false}
             navigation={this.props.navigation}
           />
@@ -105,7 +108,7 @@ class ProductList extends React.Component {
                 paddingHorizontal: 40
               }}
             >
-              Add product names and prices for each product
+              {translate("Add product names and prices for each product")}
             </Text>
             <Content
               contentContainerStyle={{
@@ -195,7 +198,9 @@ class ProductList extends React.Component {
                         paddingVertical: 5
                       }}
                     >
-                      {item.productName ? item.productName : "Product Name"}
+                      {item.productName
+                        ? item.productName
+                        : translate("Product Name")}
                     </Text>
                     <Text
                       style={{

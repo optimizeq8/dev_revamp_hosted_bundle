@@ -164,14 +164,16 @@ class AdDesign extends Component {
         ? this.props.data.objective
         : "TRAFFIC"
     });
-
+    const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallary to upload media"
+          ),
           position: "top",
           type: "warning"
         });
@@ -349,7 +351,8 @@ class AdDesign extends Component {
       this.props.save_campaign_info,
       this.onToggleModal,
       this.adType,
-      this.setTheState
+      this.setTheState,
+      this.props.screenProps
     );
 
   getVideoUploadUrl = () => {
@@ -376,6 +379,7 @@ class AdDesign extends Component {
       );
   };
   openUploadVideo = async () => {
+    const { translate } = this.props.screenProps;
     try {
       this._addLinkingListener();
       // this.props.navigation.replace("WebView", {
@@ -393,10 +397,10 @@ class AdDesign extends Component {
       this._removeLinkingListener();
     } catch (error) {
       showMessage({
-        message: "Something went wrong!",
+        message: translate("Something went wrong!"),
         type: "warning",
         position: "top",
-        description: "Please try again later."
+        description: translate("Please try again later")
       });
     }
   };
@@ -800,6 +804,8 @@ class AdDesign extends Component {
       loaded,
       isVisible
     } = this.state;
+    const { translate } = this.props.screenProps;
+
     let validCards =
       this.adType === "StoryAd"
         ? this.rejected
@@ -831,6 +837,7 @@ class AdDesign extends Component {
         key={field}
         field={field}
         mainBusiness={this.props.mainBusiness}
+        screenProps={this.props.screenProps}
       />
     ));
 
@@ -839,6 +846,7 @@ class AdDesign extends Component {
         key={collIdx}
         navigation={this.props.navigation}
         collIdx={collIdx}
+        screenProps={this.props.screenProps}
       />
     ));
 
@@ -890,7 +898,11 @@ class AdDesign extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title={this.rejected ? "Re-upload media" : "Compose Ad"}
+            title={
+              this.rejected
+                ? translate("Re-upload media")
+                : translate("Compose Ad")
+            }
           />
           <Content
             contentContainerStyle={styles.contentContainer}
@@ -926,17 +938,19 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" &&
                   !storyAdCards.storyAdSelected ? (
                     <StoryAdCards
+                      screenProps={this.props.screenProps}
                       rejected={this.rejected}
                       video={type === "VIDEO"}
                       // numOfAds={storyAdCards.numOfAds}
                       // openUploadVideo={this.openUploadVideo}
                       selectedStoryAd={storyAdCards.selectedStoryAd}
                       cancelUpload={this.cancelUpload} //one signal to cancel all requests
-                      StoryAdCardsCards={this.props.storyAdsArray}
+                      StoryAdCards={this.props.storyAdsArray}
                       _handleStoryAdCards={this._handleStoryAdCards}
                     />
                   ) : (
                     <MediaButton
+                      screenProps={this.props.screenProps}
                       type={"media"}
                       setMediaModalVisible={this.setMediaModalVisible}
                       media={
@@ -948,6 +962,7 @@ class AdDesign extends Component {
                   )}
                   {videoIsLoading ? <CameraLoading /> : null}
                   <SwipeCompCondition
+                    screenProps={this.props.screenProps}
                     _changeDestination={(
                       destination,
                       call_to_action,
@@ -988,7 +1003,9 @@ class AdDesign extends Component {
             {this.adType === "StoryAd" &&
             objective === "BRAND_AWARENESS" &&
             swipeUpError ? null : (
-              <Text style={styles.swipeUpErrorText}>{swipeUpError}</Text>
+              <Text style={styles.swipeUpErrorText}>
+                {swipeUpError && translate(swipeUpError)}
+              </Text>
             )}
           </Content>
 
@@ -1062,11 +1079,13 @@ class AdDesign extends Component {
                         <Text style={styles.footerTextStyle}>
                           {this.adType === "StoryAd"
                             ? videoIsLoading
-                              ? "Please wait while the video is downloading"
-                              : "Please add minimum of 3 media files"
+                              ? translate(
+                                  "Please wait while the video is downloading"
+                                )
+                              : translate("Please add minimum of 3 media files")
                             : objective !== "BRAND_AWARENESS"
                             ? ""
-                            : "Please add media to proceed"}
+                            : translate("Please add media to proceed")}
                         </Text>
                       )
                     ) : (
@@ -1109,6 +1128,7 @@ class AdDesign extends Component {
                 objective={objective}
                 swipeUpError={swipeUpError}
                 media={media}
+                screenProps={this.props.screenProps}
               />
             )}
           </Footer>
@@ -1124,6 +1144,7 @@ class AdDesign extends Component {
           }
           getWebUploadLinkMedia={this.getWebUploadLinkMediaURL}
           setDownloadMediaModal={this.setDownloadMediaModal}
+          screenProps={this.props.screenProps}
         />
         <UploadMediaFromDifferentDevice
           setUploadFromDifferentDeviceModal={
@@ -1132,6 +1153,7 @@ class AdDesign extends Component {
           uploadMediaDifferentDeviceModal={
             this.state.uploadMediaDifferentDeviceModal
           }
+          screenProps={this.props.screenProps}
         />
         <DownloadMediaFromDifferentDevice
           downloadMediaModal={this.state.downloadMediaModal}
@@ -1140,6 +1162,7 @@ class AdDesign extends Component {
           setDownloadMediaModal={this.setDownloadMediaModal}
           handleDownloadMedia={this.handleDownloadMedia}
           webUploadLinkMediaLoading={this.props.webUploadLinkMediaLoading}
+          screenProps={this.props.screenProps}
         />
         <LoadingModal
           videoUrlLoading={videoUrlLoading}
@@ -1148,6 +1171,7 @@ class AdDesign extends Component {
           onToggleModal={this.onToggleModal}
           cancelUpload={this.cancelUpload}
           loaded={loaded}
+          screenProps={this.props.screenProps}
         />
       </SafeAreaView>
     );

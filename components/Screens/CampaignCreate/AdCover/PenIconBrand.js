@@ -9,6 +9,7 @@ export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
     let { rejected, coverHeadline } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <Item style={styles.inputHeadline}>
         <PenIcon
@@ -30,14 +31,16 @@ export default class PenIconBrand extends Component {
             justifyContent: "flex-start"
           }}
         >
-          <Text style={[styles.subtitleHeading]}>{this.props.field}</Text>
+          <Text style={[styles.subtitleHeading]}>
+            {translate(this.props.field)}
+          </Text>
           <TextInput
             style={[styles.inputText]}
             defaultValue={this.props.coverHeadline}
             maxLength={55}
             numberOfLines={3}
             multiline={true}
-            placeholder="Enter your cover headline"
+            placeholder={translate("Enter your cover headline")}
             placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"

@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
-import Sidemenu from "react-native-side-menu";
 import CustomHeader from "../../../MiniComponents/Header";
 import Website from "../SwipeUpChoice/Website";
 import Deep_Link from "../SwipeUpChoice/Deep_Link";
@@ -11,6 +10,7 @@ import App_Install from "../SwipeUpChoice/App_Install";
 import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
 import WhatsApp from "../SwipeUpChoice/WhatsApp";
 import AttachmentCard from "./AttachmentCard";
+import Sidemenu from "../../../MiniComponents/SideMenu";
 
 //data
 import attachmentOptionData from "../../../Data/attachmentOptions.data";
@@ -27,6 +27,7 @@ import isUndefined from "lodash/isUndefined";
 //Redux
 import { connect } from "react-redux";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { isRTL } from "expo-localization";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -89,6 +90,7 @@ class SwipeUpDestination extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let storyAd = this.adType === "StoryAd";
     let attachmentOptionsCard = this.state.attachmentOptions
       .slice(0, storyAd ? this.state.attachmentOptions.length : 2)
@@ -98,6 +100,7 @@ class SwipeUpDestination extends Component {
           handleChoice={this.handleChoice}
           selected={this.state.selected}
           opt={opt}
+          screenProps={this.props.screenProps}
         />
       ));
     let menu;
@@ -112,6 +115,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -126,6 +130,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -140,6 +145,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -154,6 +160,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -168,6 +175,7 @@ class SwipeUpDestination extends Component {
             navigation={this.props.navigation}
             toggleSideMenu={this.toggleSideMenu}
             swipeUpDestination={true}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -203,7 +211,7 @@ class SwipeUpDestination extends Component {
                   });
               }
             }}
-            menuPosition="right"
+            menuPosition={isRTL ? "left" : "right"}
             disableGestures={true}
             isOpen={this.state.sidemenustate}
             menu={this.state.sidemenustate && menu}
@@ -211,7 +219,7 @@ class SwipeUpDestination extends Component {
           >
             <CustomHeader
               closeButton={false}
-              title={"Swipe up Destination"}
+              title={translate("Swipe Up destination")}
               navigation={this.props.navigation}
             />
 

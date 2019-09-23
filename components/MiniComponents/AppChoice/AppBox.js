@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
-import Toggle from "react-native-switch-toggle";
+// import Toggle from "react-native-switch-toggle";
+import Toggle from "../Toggle";
 
 import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
 
@@ -12,6 +13,7 @@ import styles from "./styles";
 export default class AppBox extends Component {
   render() {
     let { setModalVisible, attachment } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <View>
         <View style={[appConfirmStyles.appStoreLabelView]}>
@@ -27,7 +29,7 @@ export default class AppBox extends Component {
             >
               <AppStoreIcon />
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
-                {`apple\n app store`}
+                {translate(`apple\n app store`)}
               </Text>
               <Text style={styles.appStyle}>{attachment.iosApp_name}</Text>
               <Toggle
@@ -47,7 +49,7 @@ export default class AppBox extends Component {
             >
               <PlayStoreIcon />
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
-                {`google \n play store`}
+                {translate(`google \n play store`)}
               </Text>
               <Text style={styles.appStyle}>{attachment.androidApp_name}</Text>
 

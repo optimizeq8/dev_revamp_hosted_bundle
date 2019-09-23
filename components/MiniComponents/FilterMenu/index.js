@@ -19,6 +19,7 @@ import FilterIcon from "../../../assets/SVGs/Filter.svg";
 // Style
 import globalStyles from "../../../GlobalStyles";
 import styles from "./styles";
+import { isRTL } from "expo-localization";
 
 class FilterMenu extends Component {
   constructor(props) {
@@ -72,10 +73,13 @@ class FilterMenu extends Component {
       end_time = dateFormat(end_time, "d mmm");
       start_time = dateFormat(start_time, "d mmm");
     }
-
+    const { translate } = this.props.screenProps;
     return (
-      <>
+      <View
+        style={[{ flex: 1 }, isRTL ? { marginLeft: 85, marginRight: 0 } : {}]}
+      >
         <DateFields
+          screenProps={this.props.screenProps}
           open={this.props.open}
           filterMenu={true}
           onRef={ref => (this.dateField = ref)}
@@ -85,22 +89,30 @@ class FilterMenu extends Component {
           end_time={this.state.end_time}
         />
 
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            isRTL ? { marginLeft: 30, marginRight: 0 } : {}
+          ]}
+        >
           <View style={styles.headerContainer}>
             <FilterIcon width={hp(7)} height={hp(7)} fill="#fff" />
-            <Text style={styles.title}> Filter </Text>
+            <Text style={styles.title}> {translate("Filter")} </Text>
           </View>
           <Text style={styles.subtext}>
             {this.props.transactionFilter
-              ? "Filter transactions by date"
-              : "Select which campaigns you’d like to see"}
+              ? translate("Filter transactions by date")
+              : translate("Select which campaigns you’d like to see")}
           </Text>
 
           <View style={styles.transactionFilterContainer}>
             {!this.props.transactionFilter && (
               <>
-                <Text style={styles.titleStatus}>Campaign Status</Text>
+                <Text style={styles.titleStatus}>
+                  {translate("Campaign Status")}
+                </Text>
                 <FilterStatus
+                  screenProps={this.props.screenProps}
                   selected={
                     this.props.filterStatus
                       ? this.props.filterStatus
@@ -110,7 +122,7 @@ class FilterMenu extends Component {
                 />
               </>
             )}
-            <Text style={styles.titleDate}> Date </Text>
+            <Text style={styles.titleDate}> {translate("Date")} </Text>
             <TouchableHighlight
               underlayColor="rgba(0,0,0,0.2)"
               style={[
@@ -126,7 +138,7 @@ class FilterMenu extends Component {
               <View style={styles.dateContainer}>
                 <View style={styles.startColumn}>
                   {this.state.start_time === "" && (
-                    <Text style={styles.categories}>Start</Text>
+                    <Text style={styles.categories}>{translate("Start")}</Text>
                   )}
                   {this.state.start_time !== "" && (
                     <Text style={styles.numbers}>
@@ -139,11 +151,11 @@ class FilterMenu extends Component {
                   )}
                 </View>
                 <View style={styles.middleColumn}>
-                  <Text style={styles.categories}>To</Text>
+                  <Text style={styles.categories}>{translate("To")}</Text>
                 </View>
                 <View style={styles.endColumn}>
                   {this.state.end_time === "" && (
-                    <Text style={styles.categories}>End</Text>
+                    <Text style={styles.categories}>{translate("End")}</Text>
                   )}
 
                   {this.state.end_time !== "" && (
@@ -166,7 +178,7 @@ class FilterMenu extends Component {
             onPress={() => this._resetFilter()}
             style={styles.clearFilterText}
           >
-            Clear filters
+            {translate("Clear filters")}
           </Text>
           <LowerButton
             checkmark={true}
@@ -174,7 +186,7 @@ class FilterMenu extends Component {
             function={() => this._handleSubmission(this.state.selected)}
           />
         </View>
-      </>
+      </View>
     );
   }
 }

@@ -18,6 +18,7 @@ import {
 
 class ReachBar extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress
@@ -35,7 +36,7 @@ class ReachBar extends Component {
           <Text style={styles.chartTextNum}>
             {this.props.average_reach}
             {"\n"}
-            <Text style={styles.chartText}>Potential Reach</Text>
+            <Text style={styles.chartText}>{translate("Potential Reach")}</Text>
           </Text>
           {this.props.loading ? (
             <ForwardLoading

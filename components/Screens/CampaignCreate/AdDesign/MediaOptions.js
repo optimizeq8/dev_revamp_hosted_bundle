@@ -25,8 +25,8 @@ export default class MediaOptions extends Component {
     }
   };
   render() {
-
     let { title } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         onPress={() => this.handleOptionSelect()}
@@ -38,11 +38,13 @@ export default class MediaOptions extends Component {
           <VideoIcon width={30} height={30} fill={globalColors.orange} />
         )}
         <View style={{ flexDirection: "column", marginLeft: 30 }}>
-          <Text style={styles.MediaOptionsTitle}>{title}</Text>
+          <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
           <Text style={styles.MediaOptionsDescription}>
             {title === "Upload media from a different device"
-              ? "Use any device to upload your media\n Aspect Ratio 9:16"
-              : "Dimensions 1080x1920\nAspect Ratio 9:16"}
+              ? translate(
+                  "Use any device to upload your media Aspect Ratio 9:16"
+                )
+              : translate("Dimensions 1080x1920 Aspect Ratio 9:16")}
           </Text>
         </View>
       </TouchableOpacity>

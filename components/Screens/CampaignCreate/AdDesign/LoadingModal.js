@@ -17,6 +17,7 @@ export default class LoadingModal extends Component {
       cancelUpload,
       loaded
     } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <Modal
         visible={videoUrlLoading || loading || isVisible}
@@ -32,7 +33,8 @@ export default class LoadingModal extends Component {
               <CustomHeader
                 closeButton={true}
                 actionButton={() => cancelUpload()}
-                title="Uploading Image"
+                title={translate("Uploading Image")}
+                // title="Uploading Image"
               />
             )}
             {!loading && (
@@ -50,8 +52,9 @@ export default class LoadingModal extends Component {
                 </Text>
 
                 <Text style={styles.uplaodText}>
-                  Please make sure not to close {"\n"}the app or lock the phone
-                  while uploading.
+                  {translate(
+                    "Please make sure not to close the app or lock the phone while uploading"
+                  )}
                 </Text>
               </View>
             )}

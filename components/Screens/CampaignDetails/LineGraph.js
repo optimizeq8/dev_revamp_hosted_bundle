@@ -21,6 +21,7 @@ class LineGraph extends Component {
       : Math.abs(num.toFixed(2));
   };
   render() {
+    const { translate } = this.props.screenProps;
     let data = chartData;
     let category = [];
     if (this.props.campaignStats.length > 0) {
@@ -64,7 +65,7 @@ ${day}/${shortMonths[month]}`;
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
             <Text style={styles.placeHolderChartText}>
-              Not enough data to display.
+              {translate("Not enough data to display")}
             </Text>
           </BlurView>
         ) : (

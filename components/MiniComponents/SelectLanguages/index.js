@@ -7,6 +7,7 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class SelectLanguages extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let languagelist = this.props.filteredLanguages.map(c => (
       <TouchableOpacity
         key={c.id}
@@ -40,11 +41,11 @@ export default class SelectLanguages extends Component {
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon name="language" type="MaterialIcons" style={styles.icon} />
-            <Text style={[styles.title]}>Select Languages</Text>
+            <Text style={[styles.title]}>{translate("Select Languages")}</Text>
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Language..."
+                  placeholder={translate("Search Language")}
                   style={styles.inputtext}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
