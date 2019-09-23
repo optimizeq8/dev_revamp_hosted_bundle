@@ -1,11 +1,12 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler } from "react-native";
-import { Text, Container, Content } from "native-base";
+import { View, BackHandler, Platform } from "react-native";
+import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import { isRTL } from "expo-localization";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
@@ -29,6 +30,7 @@ import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
 import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { from } from "rxjs";
 
 import { BlurView } from "expo-blur";
 import Modal from "react-native-modal";
@@ -41,9 +43,11 @@ class AdType extends Component {
   state = {
     activeSlide: 0,
     media_type: snapAds,
-    campaign_type: "SnapAd",
-    route: "AdObjective",
-    isVisible: false
+    isVisible: false,
+
+    campaign_type:
+      Platform.OS === "android" && isRTL ? "CollectionAd" : "SnapAd",
+    route: "AdObjective"
   };
 
   componentDidMount() {
@@ -68,25 +72,17 @@ class AdType extends Component {
   };
 
   navigationRouteHandler = index => {
-    let route = "";
-    let campaign_type = "";
     let activeSlide = index;
-    switch (index) {
-      case 0:
-        route = "AdObjective";
-        campaign_type = "SnapAd";
-        break;
-
-      case 1:
-        route = "AdObjective";
-        campaign_type = "StoryAd";
-        break;
-      case 2:
-        route = "AdObjective";
-        campaign_type = "CollectionAd";
-        break;
+    if (Platform.OS === "android" && isRTL) {
+      const reversedSnapAds = snapAds.reverse();
+      let campaign_type = reversedSnapAds[index].value;
+      let route = reversedSnapAds[index].rout;
+      this.setState({ route, campaign_type, activeSlide });
+    } else {
+      let campaign_type = snapAds[index].value;
+      let route = snapAds[index].rout;
+      this.setState({ route, campaign_type, activeSlide });
     }
-    this.setState({ route, campaign_type, activeSlide });
   };
 
   handleMediaChange = index => {
@@ -129,15 +125,16 @@ class AdType extends Component {
     this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     let MediaIcon = item.icon.type;
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.slide}>
         <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
-        <Text style={styles.iconTitle}>{item.title}</Text>
+        <Text style={styles.iconTitle}>{translate(item.title)}</Text>
       </View>
     );
-  }
+  };
 
   _renderSlides = ({ item }) => {
     return (
@@ -147,6 +144,7 @@ class AdType extends Component {
         mainBusiness={this.props.mainBusiness}
         campaign_type={this.state.campaign_type}
         adType={item}
+        screenProps={this.props.screenProps}
       />
     );
   };
@@ -155,6 +153,7 @@ class AdType extends Component {
     resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -181,7 +180,7 @@ class AdType extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Create a new campaign!"
+            title={translate("Create a new campaign!")}
           />
 
           <View style={{ height: 90 }}>
@@ -204,7 +203,11 @@ class AdType extends Component {
               this._carousel = c;
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={this.state.media_type}
+            data={
+              Platform.OS === "android" && isRTL
+                ? this.state.media_type.reverse()
+                : this.state.media_type
+            }
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={250}

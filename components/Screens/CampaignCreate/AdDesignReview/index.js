@@ -148,8 +148,7 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
-    console.log(destination);
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -258,7 +257,7 @@ class AdDesignReview extends Component {
                       ]}
                     >
                       {call_to_action !== "BLANK"
-                        ? startCase(toLower(call_to_action))
+                        ? startCase(toLower(translate(call_to_action)))
                         : ""}
                     </Text>
                   </View>
@@ -276,7 +275,7 @@ class AdDesignReview extends Component {
                       <ArrowUpIcon />
                     </View>
                   )}
-                  <Text style={styles.AD}>Ad</Text>
+                  <Text style={styles.AD}>{translate("Ad")}</Text>
                 </View>
                 {adType === "CollectionAd" && (
                   <Animatable.View
@@ -331,7 +330,9 @@ class AdDesignReview extends Component {
                         globalStyles.darkGrayBackgroundColor
                       ]}
                     >
-                      <Text style={styles.getButtonText}>GET</Text>
+                      <Text style={styles.getButtonText}>
+                        {translate("GET")}
+                      </Text>
                     </Button>
                   </Animatable.View>
                 )}

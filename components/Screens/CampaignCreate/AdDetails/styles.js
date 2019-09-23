@@ -5,6 +5,7 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
+import { isRTL } from "expo-localization";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -37,9 +38,9 @@ const styles = StyleSheet.create({
   },
   imageBackgroundViewWrapper: {
     position: "absolute",
+    // left: -60,
     width: "100%",
     height: "100%",
-
     overflow: "hidden"
   },
   videoBackgroundViewWrapper: {
@@ -163,16 +164,21 @@ const styles = StyleSheet.create({
     paddingVertical: Platform.OS === "android" ? 0 : 10
   },
   menutext: {
-    paddingLeft: 15,
+    paddingLeft: Platform.OS === "android" && isRTL ? 0 : 15,
+    paddingRight: Platform.OS === "android" && isRTL ? 15 : 0,
+
     fontSize: 13,
     fontFamily: "montserrat-light",
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   menudetails: {
-    paddingLeft: 15,
+    paddingLeft: Platform.OS === "android" && isRTL ? 0 : 15,
+    paddingRight: Platform.OS === "android" && isRTL ? 15 : 0,
     color: "#fff",
     fontFamily: "montserrat-light",
-    fontSize: 11
+    fontSize: 11,
+    textAlign: "left"
   },
   flex: {
     flex: 1

@@ -26,6 +26,7 @@ class SelectRegions extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let regionlist = this.props.filteredRegions.map(c => {
       return (
         <TouchableOpacity
@@ -70,13 +71,15 @@ class SelectRegions extends Component {
               style={styles.locationIcon}
             />
             <Text style={[styles.title]}>
-              {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
+              {this.props.addressForm
+                ? translate("Select Region")
+                : translate("Select Regions")}{" "}
             </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Region..."
+                  placeholder={translate("Search Region")}
                   style={[
                     styles.searchRegionText,
                     {
@@ -110,7 +113,7 @@ class SelectRegions extends Component {
                         { paddingLeft: 0, textDecorationLine: "underline" }
                       ]}
                     >
-                      Select all
+                      {translate("Select all")}
                     </Text>
                   </TouchableOpacity>
                 )}

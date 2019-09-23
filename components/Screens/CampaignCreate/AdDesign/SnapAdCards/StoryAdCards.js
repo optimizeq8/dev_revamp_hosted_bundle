@@ -8,11 +8,17 @@ import AddCard from "./AddCard";
 import SnapCard from "./SnapCard";
 export default class StoryAdCards extends Component {
   snapCards = item => {
-    if (item.index === this.props.StoryAdCardsCards.length - 1) {
-      return <AddCard addSnapCard={this.props.addSnapCard} />;
+    if (item.index === this.props.StoryAdCards.length - 1) {
+      return (
+        <AddCard
+          addSnapCard={this.props.addSnapCard}
+          screenProps={this.props.screenProps}
+        />
+      );
     } else
       return (
         <SnapCard
+          screenProps={this.props.screenProps}
           rejected={this.props.rejected}
           video={this.props.video}
           // cancelUpload={this.props.cancelUpload}
@@ -39,7 +45,7 @@ export default class StoryAdCards extends Component {
             alignItems: "center"
           }}
           keyExtractor={item => item.id}
-          data={this.props.StoryAdCardsCards}
+          data={this.props.StoryAdCards}
           renderItem={this.snapCards}
           style={{}}
           numColumns={3}

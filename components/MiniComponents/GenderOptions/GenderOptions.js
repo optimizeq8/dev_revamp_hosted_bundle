@@ -8,16 +8,19 @@ import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 
 export default class GenderOptions extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
+        style={[styles.safeAreaContainer]}
       >
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <GenderIcon width={110} height={110} fill="#fff" />
-            <Text style={styles.title}>Gender</Text>
-            <Text style={[styles.subTitle]}>Select your audience's Gender</Text>
+            <Text style={styles.title}>{translate("Gender")}</Text>
+            <Text style={[styles.subTitle]}>
+              {translate(`Select your audience's Gender`)}
+            </Text>
 
             <View style={styles.optionsContainer}>
               <TouchableOpacity
@@ -43,7 +46,7 @@ export default class GenderOptions extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  Male
+                  {translate("Male")}
                 </Text>
               </TouchableOpacity>
 
@@ -70,7 +73,7 @@ export default class GenderOptions extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  Female
+                  {translate("Female")}
                 </Text>
               </TouchableOpacity>
 
@@ -97,7 +100,7 @@ export default class GenderOptions extends Component {
                 <Text
                   style={[styles.inactivetext, styles.optionsTextContainer]}
                 >
-                  All
+                  {translate("All")}
                 </Text>
               </TouchableOpacity>
             </View>

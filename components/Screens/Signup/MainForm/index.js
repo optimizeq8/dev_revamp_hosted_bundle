@@ -23,18 +23,24 @@ class MainForm extends Component {
   };
   state = { verified: false };
   render() {
+    const { translate } = this.props.screenProps;
     let invite =
       this.props.navigation.state.params &&
       this.props.navigation.state.params.invite;
     let title = "Phone Number";
-    let content = <PhoneNo navigation={this.props.navigation} />;
+    let content = (
+      <PhoneNo
+        navigation={this.props.navigation}
+        screenProps={this.props.screenProps}
+      />
+    );
 
     if (this.props.verificationCode) {
-      content = <Verification />;
+      content = <Verification screenProps={this.props.screenProps} />;
       title = "Verification";
     }
     if (!this.props.registered && this.props.verified) {
-      content = <PersonalInfo />;
+      content = <PersonalInfo screenProps={this.props.screenProps} />;
       title = "Personal Info";
     }
     if (this.props.successEmail) {
@@ -42,6 +48,7 @@ class MainForm extends Component {
         <CreateBusinessAccount
           registering={true}
           navigation={this.props.navigation}
+          screenProps={this.props.screenProps}
         />
       );
       //  <BusinessInfo navigation={this.props.navigation} />;
@@ -61,7 +68,7 @@ class MainForm extends Component {
               this.props.resetRegister();
             }}
             // navigation={this.props.navigation}
-            title="Registration"
+            title={translate("Registration")}
           />
           {/* <CloseButton
             navigation={() => {
@@ -146,7 +153,7 @@ class MainForm extends Component {
               </Text>
             </Badge>
           </View>
-          <Text style={styles.subtitle}>{title}</Text>
+          <Text style={styles.subtitle}>{translate(title)}</Text>
 
           <View style={[styles.mainCard]}>{content}</View>
         </Container>

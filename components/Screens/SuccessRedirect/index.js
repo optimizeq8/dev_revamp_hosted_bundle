@@ -90,6 +90,7 @@ class SuccessRedirect extends Component {
     // this.animation.play();
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.container}
@@ -125,18 +126,28 @@ class SuccessRedirect extends Component {
             />
           </View> */}
           <SuccessIcon width={80} height={80} />
-          <Text style={styles.title}> Success! </Text>
+          <Text style={styles.title}> {translate("Success!")} </Text>
           <Text style={styles.errortext}>
             {this.state.isWallet !== "1"
-              ? "Your Ad is now being processed"
-              : "Your wallet has been topped up!"}
+              ? translate("Your Ad is now being processed")
+              : translate("Your wallet has been topped up!")}
           </Text>
           <View style={styles.details}>
-            <Text style={styles.text}>Payment ID: {this.state.paymentId}</Text>
-            <Text style={styles.text}>Track ID: {this.state.trackID}</Text>
-            <Text style={styles.text}>Amount: {this.state.kdamount} KWD</Text>
-            <Text style={styles.text}>Date: {this.state.date}</Text>
-            <Text style={styles.text}>Status: {this.state.status}</Text>
+            <Text style={styles.text}>
+              {translate("Payment ID:")} {this.state.paymentId}
+            </Text>
+            <Text style={styles.text}>
+              {translate("Track ID:")} {this.state.trackID}
+            </Text>
+            <Text style={styles.text}>
+              {translate("Amount:")} {this.state.kdamount} KWD
+            </Text>
+            <Text style={styles.text}>
+              {translate("Date:")} {this.state.date}
+            </Text>
+            <Text style={styles.text}>
+              {translate("Status:")} {this.state.status}
+            </Text>
           </View>
           <Button
             style={styles.button}
@@ -148,7 +159,7 @@ class SuccessRedirect extends Component {
               );
             }}
           >
-            <Text style={styles.buttontext}> Home </Text>
+            <Text style={styles.buttontext}> {translate("Home")} </Text>
           </Button>
         </View>
       </SafeAreaView>

@@ -41,8 +41,14 @@ class AppUpdateChecker extends Component {
   }
 
   render() {
+    const { translate } = this.props.screenProps;
     if (this.state.updateDownloaded) {
-      return <Tutorial navigation={this.props.navigation} />;
+      return (
+        <Tutorial
+          screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+        />
+      );
     } else
       return (
         <View style={{ height: "100%" }}>
@@ -102,7 +108,7 @@ class AppUpdateChecker extends Component {
                 fontSize: 16
               }}
             >
-              UPDATE AVAILABLE
+              {translate("Update Available")}
             </Text>
             <Text
               style={{
@@ -112,8 +118,9 @@ class AppUpdateChecker extends Component {
                 fontSize: 16
               }}
             >
-              You appear to be using an outdated version of OptimizeApp, please
-              update to the latest version to enjoy all our features!
+              {translate(
+                "You appear to be using an outdated version of OptimizeApp, please update to the latest version to enjoy all our features!"
+              )}
             </Text>
           </Animatable.View>
           <Button
@@ -141,7 +148,7 @@ class AppUpdateChecker extends Component {
                 fontSize: 16
               }}
             >
-              UPDATE NOW
+              {translate("Update Now")}
             </Text>
           </Button>
           {/* <LottieView

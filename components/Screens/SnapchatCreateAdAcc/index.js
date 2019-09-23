@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, Image, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { NavigationEvents } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";
@@ -58,6 +58,7 @@ class SnapchatCreateAdAcc extends Component {
     );
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <Container style={styles.container}>
         <NavigationEvents
@@ -78,7 +79,7 @@ class SnapchatCreateAdAcc extends Component {
           resizeMode="contain"
         />
         <Card padder style={styles.mainCard}>
-          <Text style={styles.text}>Terms And Conditions</Text>
+          <Text style={styles.text}>{translate("Terms & Conditions")}</Text>
           <ScrollView
             onScroll={({ nativeEvent }) => {
               if (this.isCloseToBottom(nativeEvent)) {
@@ -110,7 +111,7 @@ class SnapchatCreateAdAcc extends Component {
                   );
                 }}
               >
-                <Text style={styles.buttontext}>Accept</Text>
+                <Text style={styles.buttontext}>{translate("Accept")}</Text>
               </Button>
             )}
           </View>

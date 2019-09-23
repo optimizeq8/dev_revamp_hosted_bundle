@@ -1,13 +1,13 @@
 import React from "react";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
-import Sidemenu from "react-native-side-menu";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
 import { showMessage } from "react-native-flash-message";
+import { isRTL } from "expo-localization";
 
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
@@ -15,6 +15,7 @@ import KeyboardShift from "../KeyboardShift";
 import Header from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
+import Sidemenu from "../SideMenu";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -28,6 +29,7 @@ import globalStyles from "../../../GlobalStyles";
 import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import Address from "../../../assets/SVGs/Location";
+import { from } from "rxjs";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
@@ -167,11 +169,13 @@ class BillingAddressCard extends React.Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
       case "countries": {
         menu = (
           <MultiSelect
+            screenProps={this.props.screenProps}
             countries={Countries}
             country_code={this.state.country_code}
             onSelectedCountryChange={this.onSelectedCountryChange}
@@ -192,6 +196,7 @@ class BillingAddressCard extends React.Component {
             onSelectedRegionChange={this.onSelectedRegionChange}
             onSelectedRegionNameChange={this.onSelectedRegionNameChange}
             selectedItems={this.state.selectedItems}
+            screenProps={this.props.screenProps}
           />
         );
         break;
@@ -204,13 +209,13 @@ class BillingAddressCard extends React.Component {
         }}
         disableGestures={true}
         menu={this.props.sidemenustate && menu}
-        menuPosition="right"
+        menuPosition={isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.props.sidemenustate}
       >
         <View style={styles.headerBlock}>
           <Header
-            title={"Billing Address"}
+            title={translate("Billing Address")}
             navigation={this.props.navigation}
           />
 
@@ -251,7 +256,7 @@ class BillingAddressCard extends React.Component {
                       ]}
                     >
                       {isUndefined(this.props.address.country)
-                        ? "Country"
+                        ? translate("Country")
                         : this.props.address.country}
                     </Label>
                     <DownButton style={styles.flex} />
@@ -270,7 +275,7 @@ class BillingAddressCard extends React.Component {
                     onPress={() => {
                       this.state.country_code === ""
                         ? showMessage({
-                            message: "Please select a country first.",
+                            message: translate("Please select a country first"),
                             type: "warning",
                             position: "top"
                           })
@@ -290,7 +295,7 @@ class BillingAddressCard extends React.Component {
                     >
                       {isUndefined(this.props.address.area) ||
                       this.props.address.area === ""
-                        ? "Area"
+                        ? translate("Area")
                         : this.props.address.area}
                     </Label>
                     <DownButton style={styles.flex} />
@@ -319,7 +324,7 @@ class BillingAddressCard extends React.Component {
                         ]}
                       >
                         <Text style={styles.required}> *</Text>
-                        Block
+                        {translate("Block")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -374,7 +379,7 @@ class BillingAddressCard extends React.Component {
                         ]}
                       >
                         <Text style={styles.required}> *</Text>
-                        Building/House
+                        {translate("Building/House")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -424,7 +429,7 @@ class BillingAddressCard extends React.Component {
                       ]}
                     >
                       <Text style={styles.required}> *</Text>
-                      Street
+                      {translate("Street")}
                     </Label>
                     <Input
                       disabled={this.props.saving}
@@ -471,7 +476,7 @@ class BillingAddressCard extends React.Component {
                           styles.bottom5
                         ]}
                       >
-                        Office No.
+                        {translate("Office No")}
                       </Label>
                       <Input
                         disabled={this.props.saving}
@@ -513,7 +518,7 @@ class BillingAddressCard extends React.Component {
                           styles.bottom5
                         ]}
                       >
-                        Avenue
+                        {translate("Avenue")}
                       </Label>
                       <Input
                         disabled={this.props.saving}

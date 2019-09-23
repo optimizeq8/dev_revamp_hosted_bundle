@@ -8,6 +8,11 @@ import Axios from "axios";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import Picker from "../Picker";
+import AppCard from "./AppCard";
+import isStringArabic from "../../isStringArabic";
+
+//Icons
+import SearchIcon from "../../../assets/SVGs/Search";
 
 //Data
 import list from "../../Data/callactions.data";
@@ -20,6 +25,7 @@ import globalStyles from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
+import { isRTL } from "expo-localization";
 
 class AppChoice extends Component {
   constructor(props) {
@@ -91,6 +97,97 @@ class AppChoice extends Component {
       this.setState({ deep_link_url: this.props.deep_link_url });
     }
   }
+
+  _searchIosApps = () => {
+    this.setState({ loading: true });
+    const { translate } = this.props.screenProps;
+    const instance = Axios.create({
+      baseURL: "https://api.apptweak.com/ios",
+      headers: {
+        common: {
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
+        }
+      }
+    });
+    let appIdorName = /^\d+$/.test(this.state.appValue);
+    instance
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.state.appValue
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
+      )
+      .then(res => {
+        return !appIdorName ? res.data.content : [res.data.content];
+      })
+      .then(data =>
+        this.setState({
+          data: data,
+          showList: true,
+          loading: false
+        })
+      )
+      .catch(err => {
+        this.setState({ loading: false });
+        showMessage({
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
+          type: "warning",
+          position: "top",
+          duration: 4500,
+          description: err.response.data
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
+        });
+        // console.log(err.response)
+      });
+  };
+  _searchAndroidApps = () => {
+    this.setState({ loading: true });
+    const { translate } = this.props.screenProps;
+    const instance = Axios.create({
+      baseURL: "https://api.apptweak.com/android",
+      headers: {
+        common: {
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
+        }
+      }
+    });
+    let appIdorName = this.state.appValue.includes(".");
+    instance
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.state.appValue
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
+        // `/applications/com.espn.score_center/metadata.json`
+      )
+      .then(res => {
+        // console.log(res);
+        return !appIdorName ? res.data.content : [res.data.content];
+      })
+      .then(data =>
+        this.setState({
+          androidData: data,
+          showList: true,
+          loading: false
+        })
+      )
+      .catch(err => {
+        this.setState({ loading: false });
+        showMessage({
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
+          type: "warning",
+          position: "top",
+          duration: 4500,
+          description: err.response.data
+            ? translate("Please make sure the app id is correct")
+            : translate("Please try again later")
+        });
+        // console.log(err.response.data);
+      });
+  };
 
   _getIosAppIds = app => {
     this.setState({
@@ -231,6 +328,7 @@ class AppChoice extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainCard}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -238,7 +336,8 @@ class AppChoice extends Component {
             {() => (
               <>
                 <Picker
-                  searchPlaceholderText={"Search Call To Action"}
+                  screenProps={this.props.screenProps}
+                  searchPlaceholderText={translate("Search Call To Action")}
                   data={this.state.callactions}
                   uniqueKey={"value"}
                   displayKey={"label"}
@@ -255,7 +354,7 @@ class AppChoice extends Component {
                 <View style={styles.itemCallToAction}>
                   <View style={[styles.callToActionLabelView]}>
                     <Text uppercase style={[styles.inputLabel]}>
-                      call to action
+                      {translate("call to action")}
                     </Text>
                   </View>
                   <Item
@@ -276,10 +375,12 @@ class AppChoice extends Component {
                       {this.state.callactions.find(
                         c => this.state.callaction.value === c.value
                       )
-                        ? this.state.callactions.find(
-                            c => this.state.callaction.value === c.value
-                          ).label
-                        : "Call to Action"}
+                        ? translate(
+                            this.state.callactions.find(
+                              c => this.state.callaction.value === c.value
+                            ).label
+                          )
+                        : translate("call to action")}
                     </Text>
                     <Icon
                       type="AntDesign"
@@ -292,6 +393,7 @@ class AppChoice extends Component {
                 <AppBox
                   setModalVisible={this.setModalVisible}
                   attachment={this.state.attachment}
+                  screenProps={this.props.screenProps}
                 />
               </>
             )}
@@ -318,6 +420,7 @@ class AppChoice extends Component {
           callActionError={this.state.callActionError}
           callAction={this.state.callaction}
           validateApp={() => this.validate()}
+          screenProps={this.props.screenProps}
         />
         {this.props.deepLink && (
           <View style={{ bottom: "15%" }}>
@@ -360,7 +463,7 @@ class AppChoice extends Component {
               style={styles.footerText}
               onPress={() => this.props.toggleSideMenu()}
             >
-              Change Swipe-up Destination
+              {translate("Change Swipe-up Destination")}
             </Text>
           )}
 

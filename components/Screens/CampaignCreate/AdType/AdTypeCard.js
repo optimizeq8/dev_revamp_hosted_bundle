@@ -9,7 +9,7 @@ import { globalColors } from "../../../../GlobalStyles";
 export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
-
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -21,7 +21,7 @@ export default class AdTypeCard extends Component {
         }}
       >
         <View style={styles.typeCardContainer}>
-          <Text style={styles.slidTitle}>{adType.title} </Text>
+          <Text style={styles.slidTitle}>{translate(adType.title)} </Text>
           <View style={styles.placeholder}>
             <Image
               loadingIndicatorSource={

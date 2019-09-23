@@ -8,13 +8,13 @@ export default class ChartChoices extends Component {
   state = { selectedChoice: "Spend" };
   render() {
     let selectedCampaign = this.props.selectedCampaign;
-
+    const { translate } = this.props.screenProps;
     let choices = [
       "Spend",
       "Impressions",
       selectedCampaign && selectedCampaign.objective === "BRAND_AWARENESS"
         ? "CPM"
-        : "Swipe-Ups"
+        : "Swipe Ups"
     ].map(choice => (
       <Button
         key={choice}
@@ -32,7 +32,7 @@ export default class ChartChoices extends Component {
           }
         ]}
       >
-        <Text style={styles.choiceText}>{choice}</Text>
+        <Text style={styles.choiceText}>{translate(choice)}</Text>
       </Button>
     ));
     return <View style={styles.choicesStyles}>{choices}</View>;

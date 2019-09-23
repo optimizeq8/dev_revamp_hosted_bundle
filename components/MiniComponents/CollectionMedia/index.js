@@ -57,6 +57,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -191,6 +192,7 @@ class CollectionMedia extends Component {
     return true;
   };
   validateImage = () => {
+    const { translate } = this.props.screenProps;
     const imageError = validateWrapper(
       "mandatory",
       this.state.collection.collection_media
@@ -200,7 +202,7 @@ class CollectionMedia extends Component {
     });
     if (imageError) {
       showMessage({
-        message: "Please choose an image",
+        message: translate("Please choose an image"),
         type: "warning",
         position: "top",
         duration: 7000
@@ -212,6 +214,7 @@ class CollectionMedia extends Component {
   };
 
   validateUrl = () => {
+    const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
       this.state.networkString + this.state.collection.collection_attachment
@@ -221,7 +224,7 @@ class CollectionMedia extends Component {
     });
     if (urlError) {
       showMessage({
-        message: "Please enter a vaild url",
+        message: translate("Please enter a valid URL"),
         type: "warning",
         position: "top",
         duration: 7000
@@ -265,6 +268,7 @@ class CollectionMedia extends Component {
 
   _pickImage = async () => {
     try {
+      const { translate } = this.props.screenProps;
       let result = await this.pick();
 
       let file = await FileSystem.getInfoAsync(result.uri, {
@@ -331,7 +335,10 @@ class CollectionMedia extends Component {
                 });
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Image must be less than 2 MBs.",
+                  message: translate(
+                    "Image must be less than {{fileSize}} MBs",
+                    { fileSize: 2 }
+                  ),
                   position: "top",
                   type: "warning"
                 });
@@ -350,7 +357,7 @@ class CollectionMedia extends Component {
                 });
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Image has been selected successfully ",
+                  message: translate("Image has been selected successfully"),
                   position: "top",
                   type: "success"
                 });
@@ -361,7 +368,7 @@ class CollectionMedia extends Component {
 
               this.onToggleModal(false);
               showMessage({
-                message: "Please choose another image",
+                message: translate("Please choose another image"),
                 position: "top",
                 type: "warning"
               });
@@ -379,8 +386,9 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message:
-              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px.",
+            message: translate(
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+            ),
             position: "top",
             type: "warning"
           });
@@ -395,7 +403,9 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message: "Image must be less than 2 MBs.",
+            message: translate("Image must be less than {{fileSize}} MBs", {
+              fileSize: 2
+            }),
             position: "top",
             type: "warning"
           });
@@ -412,7 +422,7 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message: "Image has been selected successfully ",
+            message: translate("Image has been selected successfully"),
             position: "top",
             type: "success"
           });
@@ -423,7 +433,7 @@ class CollectionMedia extends Component {
         isNull(this.state.collection.collection_media)
       ) {
         showMessage({
-          message: "Please choose a media file.",
+          message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
         });
@@ -447,12 +457,14 @@ class CollectionMedia extends Component {
   };
 
   askForPermssion = async () => {
+    const { translate } = this.props.screenProps;
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
     if (status !== "granted") {
       this.onToggleModal(false);
       showMessage({
-        message: "Please allow access to the gallary to upload media.",
+        message: translate(
+          "Please allow access to the gallary to upload media"
+        ),
         position: "top",
         type: "warning"
       });
@@ -558,6 +570,7 @@ class CollectionMedia extends Component {
   };
 
   validateDeepLinkUrl = () => {
+    const { translate } = this.props.screenProps;
     const deep_link_urlError = validateWrapper(
       "deepLink",
       this.state.collection.collection_attachment
@@ -567,9 +580,10 @@ class CollectionMedia extends Component {
     });
     if (deep_link_urlError) {
       showMessage({
-        message: "Invalid deep link url.",
-        description:
-          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        message: translate("Invalid deep link URL"),
+        description: translate(
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -581,6 +595,7 @@ class CollectionMedia extends Component {
   };
 
   renderMediaButton = () => {
+    const { translate } = this.props.screenProps;
     if (this.state.collection.collection_media) {
       return (
         <TouchableOpacity
@@ -590,7 +605,7 @@ class CollectionMedia extends Component {
           }}
         >
           <CameraEdit width={70} height={70} />
-          <Text style={styles.mediaButtonMsg1}>{"Edit Image"}</Text>
+          <Text style={styles.mediaButtonMsg1}>{translate("Edit Image")}</Text>
         </TouchableOpacity>
       );
     } else {
@@ -604,8 +619,8 @@ class CollectionMedia extends Component {
           <Icon style={styles.icon} name="camera" />
           <Text style={styles.mediaButtonMsg}>
             {this.state.collection.collection_media
-              ? "Edit Image"
-              : "Add Image"}
+              ? translate("Edit Image")
+              : translate("Add Image")}
           </Text>
         </Button>
       );
@@ -613,8 +628,7 @@ class CollectionMedia extends Component {
   };
 
   render() {
-    console.log("state col:", this.state);
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -628,7 +642,7 @@ class CollectionMedia extends Component {
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Compose Collection Ad"
+            title={translate("Compose Collection Ad")}
           />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <KeyboardShift style={{}}>
@@ -636,7 +650,7 @@ class CollectionMedia extends Component {
                 <View style={styles.mainView}>
                   <View style={styles.imageView}>
                     <Text style={styles.productText}>
-                      {`Product ${parseInt(
+                      {`${translate("Product")} ${parseInt(
                         this.state.collection.collection_order
                       ) + 1}`}
                     </Text>
@@ -660,7 +674,7 @@ class CollectionMedia extends Component {
                     <Text style={styles.errorMsg}>
                       {!this.state.imageError.includes("blank")
                         ? this.state.imageError
-                        : "Please choose an image or video"}
+                        : translate("Please choose an image or video")}
                     </Text>
                   )}
 
@@ -676,7 +690,7 @@ class CollectionMedia extends Component {
                     >
                       <View style={styles.deepLinkLabelView}>
                         <Text uppercase style={styles.inputLabel}>
-                          deeplink url
+                          {translate("Deep Link URL")}
                         </Text>
                       </View>
                       <Item
@@ -690,7 +704,7 @@ class CollectionMedia extends Component {
                         <Input
                           value={this.state.collection.collection_attachment}
                           style={styles.inputtext}
-                          placeholder="Enter Deeplink URL"
+                          placeholder={translate("Enter Deep Link URL")}
                           placeholderTextColor="white"
                           autoCorrect={false}
                           autoCapitalize="none"
@@ -714,7 +728,7 @@ class CollectionMedia extends Component {
                         <View style={styles.websiteView}>
                           <View style={[styles.websiteLabelView]}>
                             <Text uppercase style={[styles.inputLabel]}>
-                              website
+                              {translate("Website")}
                             </Text>
                           </View>
                           <Item
@@ -758,8 +772,15 @@ class CollectionMedia extends Component {
                               </Text>
                             </TouchableOpacity>
                             <Input
-                              style={[styles.inputtext, { textAlign: "left" }]}
-                              placeholder="Enter your website's URL"
+                              style={[
+                                styles.inputtext,
+                                isRTL
+                                  ? { textAlign: "right" }
+                                  : { textAlign: "left" }
+                              ]}
+                              placeholder={translate(
+                                "Enter your website's URL"
+                              )}
                               placeholderTextColor={globalColors.white}
                               value={
                                 this.state.collection.collection_attachment
@@ -798,7 +819,7 @@ class CollectionMedia extends Component {
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
-                Please add media and link to proceed
+                {translate("Please add media and link to proceed")}
               </Text>
             )}
           </View>
@@ -817,7 +838,7 @@ class CollectionMedia extends Component {
                 <CustomHeader
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title="Uploading Image"
+                  title={translate("Uploading Image")}
                 />
               )}
               {!this.props.loading && (
@@ -835,8 +856,9 @@ class CollectionMedia extends Component {
                   </Text>
 
                   <Text style={styles.uplaodText}>
-                    Please make sure not to close {"\n"}the app or lock the
-                    phone while uploading.
+                    {translate(
+                      "Please make sure not to close the app or lock the phone while uploading"
+                    )}
                   </Text>
                 </View>
               )}

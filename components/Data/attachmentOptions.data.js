@@ -19,9 +19,9 @@ export default [
   //   icon: AttachmentIcons.AppInstallIcon
   // },
   {
-    label: "Longform Video",
+    label: "LongForm Video",
     value: "LONGFORM_VIDEO",
-    info: "Promote your brand or product to Snapchatters through video.",
+    info: "Promote your brand or product to Snapchatters through video",
     icon: AttachmentIcons.LongVideoIcon
   }
   // {

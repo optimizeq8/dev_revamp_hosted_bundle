@@ -11,15 +11,19 @@ import { Button, Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList";
 import Constants from "expo-constants";
+import { isRTL } from "expo-localization";
 
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
+//browser
+import { openPrivacy, openTerms } from "../../Terms&Conditions";
+
 // Style
 import styles from "./styles";
-
+import rtlStyles from "./rtlStyles";
 // Redux
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -77,6 +81,7 @@ class Menu extends Component {
   }
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <Container style={[styles.menuModal]}>
         <Background
@@ -84,9 +89,8 @@ class Menu extends Component {
           width={widthPercentageToDP(85)}
           height={hp(61)}
         />
-
         <View style={styles.menuContainer}>
-          <Text style={styles.menutext}> Menu </Text>
+          <Text style={styles.menutext}> {translate("Menu")} </Text>
           <Text style={styles.businessTitle}>
             {!this.props.mainBusiness ? "" : this.props.mainBusiness.brandname}
           </Text>
@@ -96,7 +100,7 @@ class Menu extends Component {
               : this.props.mainBusiness.businessname}
           </Text>
           <Button style={[styles.button]} onPress={() => this.slidePanelShow()}>
-            <Text style={styles.buttonText}>Switch Account</Text>
+            <Text style={styles.buttonText}>{translate("Switch Account")}</Text>
             <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
           </Button>
 
@@ -106,28 +110,36 @@ class Menu extends Component {
               onPress={() => this.props.navigation.navigate("PersonalInfo")}
             >
               <Icons.PersonalInfo style={styles.icons} />
-              <Text style={styles.text}>Personal Info</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Personal Info")}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.options}
               onPress={() => this.props.navigation.navigate("Wallet")}
             >
               <Icons.Wallet style={styles.icons} />
-              <Text style={styles.text}>Wallet</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Wallet")}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.options}
               onPress={() => this.props.navigation.navigate("TransactionList")}
             >
               <Icons.TransactionIcon style={styles.icons} />
-              <Text style={styles.text}>Transactions</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Transactions")}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("ChangePassword")}
               style={styles.options}
             >
               <Icons.ChangePassIcon style={styles.icons} />
-              <Text style={[styles.text]}>Change Password</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Change Password")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -135,7 +147,9 @@ class Menu extends Component {
               style={styles.options}
             >
               <Icons.AddressIcon style={styles.icons} />
-              <Text style={styles.text}>Address</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Address")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -143,7 +157,7 @@ class Menu extends Component {
               onPress={() =>
                 this.props.navigation.navigate("WebView", {
                   url: "https://www.optimizeapp.com/privacy",
-                  title: "Privacy policy"
+                  title: translate("Privacy Policy")
                 })
               }
             >
@@ -152,7 +166,9 @@ class Menu extends Component {
                 type="MaterialIcons"
                 style={[styles.icons]}
               />
-              <Text style={styles.text}>Privacy policy</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Privacy Policy")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -160,7 +176,7 @@ class Menu extends Component {
               onPress={() =>
                 this.props.navigation.navigate("WebView", {
                   url: "https://www.optimizeapp.com/terms_conditions",
-                  title: "Terms & Conditions"
+                  title: translate("Terms & Conditions")
                 })
               }
             >
@@ -172,7 +188,9 @@ class Menu extends Component {
                   // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                 ]}
               />
-              <Text style={styles.text}>Terms & Conditions</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Terms & Conditions")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -185,10 +203,13 @@ class Menu extends Component {
               style={styles.options}
             >
               <Icons.LogoutIcon style={[styles.icons]} />
-              <Text style={styles.text}>Logout</Text>
+              <Text style={isRTL ? rtlStyles.text : styles.text}>
+                {translate("Logout")}
+              </Text>
             </TouchableOpacity>
             <Text style={styles.version}>
-              Version:{Constants.manifest.version}26/
+              {translate("Version:")}
+              {Constants.manifest.version}27/
               {Constants.manifest.ios.buildNumber}/
               {Constants.manifest.android.versionCode}
             </Text>
@@ -209,7 +230,10 @@ class Menu extends Component {
             >
               <Icons.CloseListIcon />
             </TouchableOpacity>
-            <BusinessList navigation={this.props.navigation} />
+            <BusinessList
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
           </>
         </SlidingUpPanel>
       </Container>

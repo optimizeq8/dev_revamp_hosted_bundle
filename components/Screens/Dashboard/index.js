@@ -9,13 +9,14 @@ import {
   ScrollView
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
+import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
-import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
@@ -215,6 +216,8 @@ class Dashboard extends Component {
     return ctnModal;
   };
   render() {
+    //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
+    const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
         top: hp(100)
@@ -239,11 +242,13 @@ class Dashboard extends Component {
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
+        screenProps={this.props.screenProps}
       />
     ) : null;
 
     let adButtons = snapAds.map(adType => (
       <AdButtions
+        translate={this.props.screenProps.translate}
         key={adType.id}
         navigationHandler={this.navigationHandler}
         ad={adType}
@@ -266,6 +271,7 @@ class Dashboard extends Component {
     } else if (this.props.businessLoadError) {
       return (
         <ErrorComponent
+          screenProps={this.props.screenProps}
           dashboard={true}
           loading={this.props.loading}
           navigation={this.props.navigation}
@@ -367,9 +373,9 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
+                    menuPosition={Localization.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
-                    menuPosition="right"
                     openMenuOffset={wp("85%")}
                     isOpen={this.state.sidemenustate}
                   >
@@ -441,10 +447,20 @@ class Dashboard extends Component {
                               styles.newCampaignTitle
                             ]}
                           >
-                            New Ad
+                            {translate("New Ad")}
                           </Text>
                         </View>
-                        <ScrollView style={{ height: 90, top: 10 }} horizontal>
+                        <ScrollView
+                          style={{
+                            height: 90,
+                            top: 10
+                          }}
+                          contentContainerStyle={{
+                            flex: 1,
+                            alignItems: "flex-start"
+                          }}
+                          horizontal
+                        >
                           {adButtons}
                         </ScrollView>
                       </View>
@@ -459,7 +475,10 @@ class Dashboard extends Component {
                         }}
                       >
                         <View style={{ width: "80%" }}>
-                          <SearchBar renderSearchBar={this.renderSearchBar} />
+                          <SearchBar
+                            screenProps={this.props.screenProps}
+                            renderSearchBar={this.renderSearchBar}
+                          />
                         </View>
                         <Button
                           style={styles.activebutton}
@@ -489,6 +508,7 @@ class Dashboard extends Component {
                                 campaign={item}
                                 navigation={this.props.navigation}
                                 key={item.campaign_id}
+                                screenProps={this.props.screenProps}
                               />
                             )}
                             onRefresh={() => this.reloadData()}
@@ -510,6 +530,7 @@ class Dashboard extends Component {
             </Animatable.View>
 
             <Animatable.View
+              useNativeDriver
               onAnimationEnd={() => {
                 if (this.state.anim) {
                   Segment.screenWithProperties("Home Menu", {
@@ -526,6 +547,7 @@ class Dashboard extends Component {
               <Menu
                 closeAnimation={this.closeAnimation}
                 navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
               />
             </Animatable.View>
           </>
