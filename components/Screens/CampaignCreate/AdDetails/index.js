@@ -340,6 +340,13 @@ class AdDetails extends Component {
     });
   };
   onSelectedBudgetChange = budget => {
+    if (budget === this.state.maxValueBudget) {
+      showMessage({
+        message: "You can also enter your budget manually.",
+        type: "success",
+        position: "top"
+      });
+    }
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
     this.setState({
