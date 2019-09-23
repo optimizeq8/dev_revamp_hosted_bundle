@@ -27,7 +27,7 @@ export default class FooterText extends Component {
               ? translate("Please wait while the video is downloading")
               : objective !== "BRAND_AWARENESS" && swipeUpError
               ? ""
-              : "Please add minimum of 3 media files"
+              : translate("Please add minimum of 3 media files")
             : adType === "CollectionAd"
             ? errmsg
             : objective !== "BRAND_AWARENESS" && ""}
