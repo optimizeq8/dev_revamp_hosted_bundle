@@ -177,6 +177,9 @@ class AdDesign extends Component {
         });
       }
     }
+    if (this.props.storyAdAttachment.hasOwnProperty("reset")) {
+      this.setState({ storyAdAttachChanged: true });
+    }
     let swipeUpError = null;
     if (
       (this.adType === "CollectionAd" &&
@@ -614,7 +617,7 @@ class AdDesign extends Component {
     );
     const mediaError =
       this.adType === "StoryAd"
-        ? null // this.state.storyAdCards.selectedStoryAd.media === "//"
+        ? false // this.state.storyAdCards.selectedStoryAd.media === "//"
         : this.state.media === "//";
 
     const validCards =
@@ -622,11 +625,12 @@ class AdDesign extends Component {
         ? this.rejected
           ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
           : this.props.storyAdsArray.filter(ad => ad.media !== "//")
-        : 3;
+        : [1, 2, 3];
     const collectionError =
-      this.adType === "CollectionAd" &&
-      (this.props.collectionAdMedia.includes(undefined) ||
-        this.props.collectionAdMedia.length < 4);
+      this.adType === "CollectionAd"
+        ? this.props.collectionAdMedia.includes(undefined) ||
+          this.props.collectionAdMedia.length < 4
+        : false;
 
     let swipeUpError = null;
     if (
@@ -659,7 +663,8 @@ class AdDesign extends Component {
       swipeUpError = "Choose A Swipe Up Destination";
     } else if (
       this.adType === "StoryAd" &&
-      this.state.objective !== "BRAND_AWARENESS"
+      this.state.objective !== "BRAND_AWARENESS" &&
+      this.props.storyAdAttachment.attachment === "BLANK"
     ) {
       showMessage({
         message: "Choose A Swipe Up Destination",
@@ -679,7 +684,7 @@ class AdDesign extends Component {
     }
     if (mediaError) {
       showMessage({
-        message: "Please add media to proceed",
+        message: "Please add media to proceed.",
         position: "top",
         type: "warning"
       });

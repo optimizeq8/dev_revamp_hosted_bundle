@@ -36,7 +36,7 @@ export const _handleSubmission = async (
           videoIsLoading: false
         });
         return;
-      } else {
+      } else if (storyAdCards.storyAdSelected) {
         showMessage({
           message: "Please add media to proceed.",
           position: "top",
@@ -73,8 +73,7 @@ export const _handleSubmission = async (
       if (validator()) finalSubmission();
     }
   } else {
-    // if (validator())
-    finalSubmission();
+    if (validator()) finalSubmission();
   }
 };
 

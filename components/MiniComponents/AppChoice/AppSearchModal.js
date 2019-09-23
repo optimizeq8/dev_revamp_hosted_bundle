@@ -18,6 +18,8 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
+import Axios from "axios";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 export default class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
@@ -27,6 +29,95 @@ export default class AppSearchModal extends Component {
   showConfirmBtn = value => {
     this.setState({ showBtn: value });
   };
+  _searchAndroidApps = () => {
+    this.props.setTheState({ loading: true });
+    const instance = Axios.create({
+      baseURL: "https://api.apptweak.com/android",
+      headers: {
+        common: {
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
+        }
+      }
+    });
+    let appIdorName = this.props.appValue.includes(".");
+    instance
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.props.appValue
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
+        // `/applications/com.espn.score_center/metadata.json`
+      )
+      .then(res => {
+        // console.log(res);
+        return !appIdorName ? res.data.content : [res.data.content];
+      })
+      .then(data =>
+        this.props.setTheState({
+          androidData: data,
+          showList: true,
+          loading: false
+        })
+      )
+      .catch(err => {
+        this.props.setTheState({ loading: false });
+        this.refs.modalFlash.showMessage({
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
+          type: "warning",
+          position: "top",
+          duration: 4500,
+          description: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later."
+        });
+        // console.log(err.response.data);
+      });
+  };
+
+  _searchIosApps = () => {
+    this.props.setTheState({ loading: true });
+    const instance = Axios.create({
+      baseURL: "https://api.apptweak.com/ios",
+      headers: {
+        common: {
+          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
+        }
+      }
+    });
+    let appIdorName = /^\d+$/.test(this.props.appValue);
+    instance
+      .get(
+        `/${appIdorName ? "applications/" : "searches.json?term="}${
+          this.props.appValue
+        }${appIdorName ? "/metadata.json" : "&num=20"}`
+      )
+      .then(res => {
+        return !appIdorName ? res.data.content : [res.data.content];
+      })
+      .then(data =>
+        this.props.setTheState({
+          data: data,
+          showList: true,
+          loading: false
+        })
+      )
+      .catch(err => {
+        this.props.setTheState({ loading: false });
+        this.refs.modalFlash.showMessage({
+          message: err.response.data
+            ? err.response.data.error
+            : "Something went wrong!",
+          type: "warning",
+          position: "top",
+          duration: 4500,
+          description: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later."
+        });
+        // console.log(err.response)
+      });
+  };
   render() {
     let {
       isVisible,
@@ -34,8 +125,7 @@ export default class AppSearchModal extends Component {
       appSelection,
       appValue,
       setTheState,
-      _searchIosApps,
-      _searchAndroidApps,
+
       showList,
       loading,
       data,
@@ -127,10 +217,10 @@ export default class AppSearchModal extends Component {
                       if (appValue !== "") {
                         switch (appSelection) {
                           case "iOS":
-                            _searchIosApps();
+                            this._searchIosApps();
                             break;
                           case "ANDROID":
-                            _searchAndroidApps();
+                            this._searchAndroidApps();
                             break;
                           // case "":
                           //   appSelection === "iOS"
@@ -173,8 +263,8 @@ export default class AppSearchModal extends Component {
                       }
                       //-----------This is for dummy app data searches-----------
                       // data={
-                      //   this.state.showList
-                      //     ? this.state.choice !== "ANDROID"
+                      //   this.props.showList
+                      //     ? this.props.choice !== "ANDROID"
                       //       ? data
                       //       : androidDataTest
                       //     : []
@@ -203,7 +293,7 @@ export default class AppSearchModal extends Component {
                   </View>
                 )}
               </View>
-
+              <FlashMessage ref="modalFlash" position="top" />
               {this.state.showBtn && (
                 <LowerButton
                   bottom={4}
