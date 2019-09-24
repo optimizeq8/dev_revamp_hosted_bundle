@@ -82,7 +82,7 @@ export default class AppSearchModal extends Component {
                         { fontSize: 14, maxWidth: 100 }
                       ]}
                     >
-                      {translate(`apple \n app store`)}
+                      {translate(`apple\napp store`)}
                     </Text>
                   </>
                 ) : (
@@ -95,7 +95,7 @@ export default class AppSearchModal extends Component {
                         { fontSize: 14, maxWidth: 100 }
                       ]}
                     >
-                      {translate(`google \n play store`)}
+                      {translate(`google\nplay store`)}
                     </Text>
                   </>
                 )}

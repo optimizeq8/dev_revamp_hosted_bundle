@@ -394,6 +394,41 @@ class AppChoice extends Component {
                   attachment={this.state.attachment}
                   screenProps={this.props.screenProps}
                 />
+                {this.props.deepLink && (
+                  <View style={{ marginTop: 20 }}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        url
+                      </Text>
+                    </View>
+                    <Item
+                      style={[
+                        appConfirmStyles.input,
+                        this.state.deep_link_urlError
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor,
+                        appConfirmStyles.deepLinkItem
+                      ]}
+                    >
+                      <Input
+                        value={this.state.deep_link_url}
+                        style={appConfirmStyles.inputtext}
+                        placeholder="Deep Link URL"
+                        placeholderTextColor="white"
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={value =>
+                          this.setState({
+                            deep_link_url: value
+                          })
+                        }
+                        onBlur={() => {
+                          this.validateUrl();
+                        }}
+                      />
+                    </Item>
+                  </View>
+                )}
               </>
             )}
           </KeyboradShift>
@@ -423,41 +458,7 @@ class AppChoice extends Component {
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
         />
-        {this.props.deepLink && (
-          <View style={{ bottom: "20%" }}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text uppercase style={[styles.inputLabel]}>
-                url
-              </Text>
-            </View>
-            <Item
-              style={[
-                appConfirmStyles.input,
-                this.state.deep_link_urlError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                appConfirmStyles.deepLinkItem
-              ]}
-            >
-              <Input
-                value={this.state.deep_link_url}
-                style={appConfirmStyles.inputtext}
-                placeholder="Deep Link URL"
-                placeholderTextColor="white"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={value =>
-                  this.setState({
-                    deep_link_url: value
-                  })
-                }
-                onBlur={() => {
-                  this.validateUrl();
-                }}
-              />
-            </Item>
-          </View>
-        )}
+
         <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text

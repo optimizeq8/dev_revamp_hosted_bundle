@@ -143,16 +143,6 @@ class App extends React.Component {
       iosWriteKey: "A2VWqYBwmIPRr02L6Sqrw9zDwV0YYrOi"
     });
     persistor.dispatch({ type: REHYDRATE });
-    const mobileLanguage = Localization.locale;
-    if (mobileLanguage.includes("ar")) {
-      await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
-    } else {
-      await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
-      // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
-    }
-    i18n.translations = {
-      [store.getState().language.phoneLanguage]: store.getState().language.terms
-    };
 
     // i18n.translations = { ...this.props.terms };
     this._loadAsync();
@@ -366,6 +356,17 @@ class App extends React.Component {
   };
 
   _loadResourcesAsync = async () => {
+    const mobileLanguage = Localization.locale;
+    if (mobileLanguage.includes("ar")) {
+      await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+    } else {
+      await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
+      // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
+    }
+    i18n.translations = {
+      [store.getState().language.phoneLanguage]: store.getState().language.terms
+    };
+
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map(image =>
       Asset.fromModule(image).downloadAsync()

@@ -118,7 +118,8 @@ class Deep_Link extends Component {
             contentContainerStyle={[
               styles.deepLinkContainer,
               {
-                width: this.props.toggleSideMenu ? "100%" : "90%"
+                // width: !this.props.toggleSideMenu ? "100%" : "100%",
+                paddingHorizontal: !this.props.toggleSideMenu ? 10 : 30
               }
             ]}
           >

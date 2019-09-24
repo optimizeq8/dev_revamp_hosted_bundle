@@ -998,7 +998,7 @@ export const verifyInstagramHandle = insta_handle => {
         data = data.entry_data.ProfilePage[0].graphql.user;
         if (data.is_private) {
           // showMessage({
-          //     message: `${insta_handle} is a private account. Try with some other account`,
+          //     message: `${insta_handle} is a private account Try with some other account`,
           //     type: 'danger',
           //     duration: 5000
           // })
@@ -1006,7 +1006,7 @@ export const verifyInstagramHandle = insta_handle => {
             type: actionTypes.ERROR_GET_INSTAGRAM_POST,
             payload: {
               error: true,
-              errorMessage: `${insta_handle} is a private account. Try with some other account`
+              errorMessage: `${insta_handle} is a private account Try with some other account`
             }
           });
         } else {
@@ -1029,7 +1029,7 @@ export const verifyInstagramHandle = insta_handle => {
         type: actionTypes.ERROR_GET_INSTAGRAM_POST,
         payload: {
           error: true,
-          errorMessage: `${insta_handle} doesn't exist. Try another account name`
+          errorMessage: `${insta_handle} doesn't exist Try another account name`
         }
       });
     }

@@ -239,6 +239,7 @@ class AdType extends Component {
             <ContinueCampaign
               tempAdType={this.props.adType}
               navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
             />
           </View>
         </Container>

@@ -76,7 +76,12 @@ class FilterMenu extends Component {
     const { translate } = this.props.screenProps;
     return (
       <View
-        style={[{ flex: 1 }, isRTL ? { marginLeft: 85, marginRight: 0 } : {}]}
+        style={[
+          { flex: 1 },
+          isRTL && this.props.transactionFilter
+            ? { marginLeft: 85, marginRight: 0 }
+            : {}
+        ]}
       >
         <DateFields
           screenProps={this.props.screenProps}
@@ -92,7 +97,9 @@ class FilterMenu extends Component {
         <View
           style={[
             styles.container,
-            isRTL ? { marginLeft: 30, marginRight: 0 } : {}
+            isRTL && this.props.transactionFilter
+              ? { marginLeft: 40, marginRight: 0 }
+              : {}
           ]}
         >
           <View style={styles.headerContainer}>

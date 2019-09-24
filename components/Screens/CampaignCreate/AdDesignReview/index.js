@@ -42,6 +42,7 @@ import globalStyles from "../../../../GlobalStyles";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
+import upperCase from "lodash/upperCase";
 
 const preview = {
   uri:
@@ -257,7 +258,9 @@ class AdDesignReview extends Component {
                       ]}
                     >
                       {call_to_action !== "BLANK"
-                        ? startCase(toLower(translate(call_to_action)))
+                        ? startCase(
+                            toLower(translate(upperCase(call_to_action)))
+                          )
                         : ""}
                     </Text>
                   </View>

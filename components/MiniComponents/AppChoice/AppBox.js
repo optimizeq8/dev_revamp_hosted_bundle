@@ -18,7 +18,7 @@ export default class AppBox extends Component {
       <View>
         <View style={[appConfirmStyles.appStoreLabelView]}>
           <Text uppercase style={[appConfirmStyles.inputLabel]}>
-            Your app
+            {translate("Your app")}
           </Text>
         </View>
         <View style={appConfirmStyles.advertiseOSView}>
@@ -29,7 +29,7 @@ export default class AppBox extends Component {
             >
               <AppStoreIcon />
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
-                {translate(`apple\n app store`)}
+                {translate(`apple\napp store`)}
               </Text>
               <Text style={styles.appStyle}>{attachment.iosApp_name}</Text>
               <Toggle
@@ -49,7 +49,7 @@ export default class AppBox extends Component {
             >
               <PlayStoreIcon />
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
-                {translate(`google \n play store`)}
+                {translate(`google\nplay store`)}
               </Text>
               <Text style={styles.appStyle}>{attachment.androidApp_name}</Text>
 

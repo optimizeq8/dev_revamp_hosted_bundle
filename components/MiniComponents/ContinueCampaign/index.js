@@ -59,7 +59,7 @@ class ContinueCampaign extends Component {
   };
   render() {
     // console.log("this.props.navigation", this.props.data);
-
+    const { translate } = this.props.screenProps;
     return (
       <Modal
         style={{ margin: 0 }}
@@ -78,7 +78,7 @@ class ContinueCampaign extends Component {
                 actionButton={() => {
                   this.setModalVisible(false, false);
                 }}
-                title="Continue campaign"
+                title={translate("Continue campaign")}
               />
               <View
                 style={{
@@ -97,8 +97,9 @@ class ContinueCampaign extends Component {
                     }
                   ]}
                 >
-                  A campaign creation process was in progress, would you like to
-                  continue?
+                  {translate(
+                    "A campaign creation process was in progress, would you like to continue?"
+                  )}
                 </Text>
               </View>
               <View
