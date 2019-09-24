@@ -40,12 +40,12 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   input: {
-    // backgroundColor: '#5D1CD8',
+    alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     borderRadius: 40,
     borderColor: "transparent",
     alignSelf: "center",
-    // width: wp(75),
+    justifyContent: "center",
     height: 50,
     paddingHorizontal: 0,
     width: 270
