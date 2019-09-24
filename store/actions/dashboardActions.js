@@ -128,6 +128,10 @@ export const getCampaignStats = (campaign, duration) => {
       })
       .catch(err => {
         // console.log("getCampaignStats error", err.message || err.response);
+        dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: {}, err }
+        });
         showMessage({
           message:
             err.message ||
