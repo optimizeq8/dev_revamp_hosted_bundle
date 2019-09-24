@@ -689,14 +689,14 @@ class AdDesign extends Component {
     }
     if (mediaError) {
       showMessage({
-        message: translate("Please add media to proceed."),
+        message: translate("Please add media to proceed"),
         position: "top",
         type: "warning"
       });
     }
     if (validCards.length < 3) {
       showMessage({
-        message: translate("Please add minimum of 3 medias to proceed"),
+        message: translate("Please add minimum of 3 media files to proceed"),
         position: "top",
         type: "warning"
       });
@@ -871,9 +871,7 @@ class AdDesign extends Component {
           ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
           : this.props.storyAdsArray.filter(ad => ad.media !== "//")
         : 3;
-    let showContinueBtn =
-      this.adType === "SnapAd" ||
-      (this.adType === "StoryAd" && !storyAdCards.storyAdSelected);
+
     let {
       brand_name,
       headline,

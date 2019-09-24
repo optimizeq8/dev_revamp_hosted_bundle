@@ -51,7 +51,7 @@ class ProductList extends React.Component {
     } else {
       // console.log('cartListWIthProductnameNPrice', this.state.cartList);
       // console.log('this.props.businessLogo', this.props.businessLogo);
-
+      this.props.navigation.getParam("_changeDestination")();
       this.props.saveWebProducts(
         this.state.cartList,
         this.props.data.campaign_id,
