@@ -108,9 +108,10 @@ class SelectInstagramPost extends React.Component {
   }
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     if (this.state.counter <= 3) {
       showMessage({
-        message: "Select minimum 3 post",
+        message: translate("Select minimum 3 post"),
         duration: 2000,
         type: "warning"
       });
@@ -134,7 +135,7 @@ class SelectInstagramPost extends React.Component {
     // console.log('checkifALreadyExist', checkifALreadyExist);
     if (this.state.counter >= 7 && !checkifALreadyExist) {
       showMessage({
-        message: "Maximum 6 Selected",
+        message: translate("Maximum 6 Selected"),
         duration: 2000,
         type: "warning"
       });
@@ -193,34 +194,12 @@ class SelectInstagramPost extends React.Component {
     );
   };
   render() {
-    // console.log('this.state.cartList', this.state.cartList);
-    // console.log('instagramPostList', this.props.instagramPostList);
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
-        {/* <NavigationEvents
-					onDidFocus={() => {
-						// if (
-						// 	// !isEqual(prevProps.selectedInstagramProducts, this.props.selectedInstagramProducts) &&
-						// 	// isEmpty(this.state.cartList) &&
-						// 	isEmpty(this.props.selectedInstagramProducts)
-						// ) {
-						// console.log('prevProps', prevProps.selectedInstagramProducts);
-						// this.setState(
-						// 	{
-						// 		cartList: this.props.selectedInstagramProducts,
-						// 		counter: this.props.selectedInstagramProducts.length + 1,
-						// 	},
-						// 	() => {
-						// 		console.log('update to ondidfocus', this.state.cartList.length);
-						// 	}
-						// );
-						// }
-					}}
-				/> */}
         <Container style={styles.container}>
           <CustomeHeader
             title={translate("WhatsApp Campaign")}
@@ -230,7 +209,7 @@ class SelectInstagramPost extends React.Component {
           <Content
             style={{
               paddingTop: 20,
-              paddingHorizontal: 20,
+              // paddingHorizontal: 20,
               flexGrow: 1
               // marginBottom: heightPercentageToDP(30),
             }}
@@ -249,30 +228,12 @@ class SelectInstagramPost extends React.Component {
                 "Select the products you want to promote on your campaign"
               )}
             </Text>
-            {/* <Content
-              contentContainerStyle={{
-                flex: 1,
-                paddingTop: 20,
-                flexDirection: "row",
-                flexWrap: "wrap",
-                flexGrow: 1,
-                justifyContent: "space-around"
-              }}
-            > */}
+
             {this.props.instagramPostLoading && (
               <ActivityIndicator color="#FF9D00" size="large" />
             )}
             {!this.props.instagramPostLoading && this.props.instagramPostList && (
               <FlatList
-                // style={{
-                //   flex: 1,
-                //   paddingTop: 20
-                //   // flexDirection: "row",
-                //   // flexWrap: "wrap",
-                //   // flexGrow: 1,
-                //   // justifyContent: "space-between",
-                //   // alignItems: "center"
-                // }}
                 contentContainerStyle={{
                   flex: 1,
                   paddingTop: 20,
@@ -281,18 +242,13 @@ class SelectInstagramPost extends React.Component {
                   // flexWrap: "wrap",
                   flexGrow: 1,
                   justifyContent: "space-around",
-                  // justifyItems: "space-around",
                   alignItems: "center"
                 }}
                 initialNumToRender={12}
                 numColumns={3}
-                // numRows={3}
                 horizontal={false}
-                // onEndReached={this.onScrollHandler}
-                // onEndThreshold={0}
                 data={this.state.posts}
                 keyExtractor={(item, index) => {
-                  // console.log("item", item);
                   if (item) {
                     return item.imageId;
                   }

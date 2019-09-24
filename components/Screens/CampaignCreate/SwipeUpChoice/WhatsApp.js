@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button, Container } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import isEmpty from "lodash/isEmpty";
+import upperCase from "lodash/upperCase";
 // import { Modal } from 'react-native-paper';
 import { BlurView } from "expo-blur";
 
@@ -26,6 +27,7 @@ import ErrorIcon from "../../../../assets/SVGs/Error";
 import WalletIcon from "../../../../assets/SVGs/Wallet";
 import CloseCircleIcon from "../../../../assets/SVGs/CloseCircle";
 import ForwardIcon from "../../../../assets/SVGs/ForwardButton";
+import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
 
 // Style
 import styles from "./styles";
@@ -103,6 +105,7 @@ class WhatsApp extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   validate = () => {
+    const { translate } = this.props.screenProps;
     const insta_handleError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.insta_handle
@@ -122,11 +125,11 @@ class WhatsApp extends Component {
     if (insta_handleError || weburlError || whatsappnumberError) {
       showMessage({
         message: insta_handleError
-          ? "Please provide an instagram handle"
+          ? translate("Please provide an instagram handle")
           : weburlError
-          ? "Please provide domain name"
+          ? translate("Please provide domain name")
           : whatsappnumberError
-          ? "Please provide a valid whatsapp number"
+          ? translate("Please provide a valid WhatsApp number")
           : "",
         type: "warning",
         position: "top",
@@ -140,9 +143,13 @@ class WhatsApp extends Component {
 
   checkInstaAccountChange = async () => {
     // console.log("data", this.props.data);
+    await this.props.verifyInstagramHandle(
+      this.state.campaignInfo.insta_handle
+    );
     if (
       this.props.data.insta_handle &&
       this.props.data.insta_handle !== this.state.campaignInfo.insta_handle &&
+      !this.props.errorInstaHandle &&
       //    || (this.props.mainBusiness.insta_handle &&
       //   this.props.mainBusiness.insta_handle !==
       // this.state.campaignInfo.insta_handle
@@ -157,6 +164,7 @@ class WhatsApp extends Component {
     }
   };
   _handleSubmission = async () => {
+    const { translate } = this.props.screenProps;
     // if (!this.props.mainBusiness.weburl) {
     await this.props.verifyInstagramHandle(
       this.state.campaignInfo.insta_handle
@@ -164,9 +172,14 @@ class WhatsApp extends Component {
     if (!this.props.errorInstaHandle && !this.props.mainBusiness.weburl) {
       await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
     }
-    if (this.props.errorInstaHandle) {
+    if (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) {
       showMessage({
-        message: this.props.errorInstaHandleMessage,
+        message: translate(
+          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+          )}`,
+          { insta_handle: this.state.campaignInfo.insta_handle }
+        ),
         type: "danger",
         duration: 2000
       });
@@ -276,6 +289,11 @@ class WhatsApp extends Component {
         ...this.state.campaignInfo,
         weburl: value.replace(/[^0-9a-z]/gi, "")
       }
+    });
+  };
+  setModalInstagramChangedVisible = value => {
+    this.setState({
+      showChangeInstaHandle: value
     });
   };
   render() {
@@ -503,7 +521,13 @@ class WhatsApp extends Component {
                         textAlign: "center"
                       }}
                     >
-                      {this.props.errorInstaHandleMessage}
+                      {this.props.errorInstaHandleMessage &&
+                        translate(
+                          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+                            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+                          )}`,
+                          { insta_handle: this.state.campaignInfo.insta_handle }
+                        )}
                     </Text>
                   </View>
                 </View>
@@ -524,30 +548,12 @@ class WhatsApp extends Component {
           dismissable
           onRequestClose={() => this.setState({ showChangeInstaHandle: false })}
           visible={this.state.showChangeInstaHandle}
-          // style={{
-          // 	position: 'absolute',
-          // 	top: 0,
-          // 	// height: '100%',
-          // 	left: 0,
-          // 	right: 0,
-          // 	bottom: 0,
-          // }}
-          // contentContainerStyle={{
-          // 	// flex: 1,
-          // 	// marginTop: 0,
-          // 	position: 'absolute',
-          // 	top: -100,
-          // 	height: '100%',
-          // 	left: 0,
-          // 	right: 0,
-          // 	bottom: 0,
-          // }}
         >
           <BlurView tint="dark" intensity={100} style={styles.BlurView}>
             <View style={styles.walletPaymentModalContainer}>
               <>
                 {/* <WalletIcon width={80} height={80} /> */}
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 160,
                     color: "#ff9d00",
@@ -555,9 +561,11 @@ class WhatsApp extends Component {
                   }}
                 >
                   !
-                </Text>
+                </Text> */}
+                <ExclamationIcon style={{ alignSelf: "center" }} />
+
                 <Text style={styles.instagramWarningHeadingText}>
-                  {translate("Instagram Handle Changed")}
+                  {upperCase(translate("Instagram Handle Changed"))}
                 </Text>
 
                 <Text style={styles.instagramWarningDescriptionText}>
@@ -565,18 +573,6 @@ class WhatsApp extends Component {
                     "You have changed the Instagram handle, if you continue it will reset your previous products/price selections"
                   )}
                 </Text>
-                {/* <Button
-                    // onPress={() => this.removeWalletAmountAndGoBack()}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>Confirm</Text>
-                  </Button>
-                  <Button
-                    // onPress={() => this.showRemoveAmountModal()}
-                    style={styles.walletButton}
-                  >
-                    <Text style={styles.colorWhite}>Cancel</Text>
-                  </Button> */}
                 <View
                   style={{
                     display: "flex",
@@ -588,13 +584,18 @@ class WhatsApp extends Component {
                     paddingTop: 60
                   }}
                 >
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() =>
                       this.setState({ showChangeInstaHandle: false })
                     }
                   >
                     <CloseCircleIcon width={53} height={53} />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
+                  <LowerButton
+                    cross={true}
+                    bottom={0}
+                    function={() => this.setModalInstagramChangedVisible(false)}
+                  />
                   <TouchableOpacity
                     onPress={() => {
                       this.props.saveWebProducts(
@@ -607,7 +608,7 @@ class WhatsApp extends Component {
                       this._handleSubmission();
                     }}
                   >
-                    <ForwardIcon width={65} height={65} />
+                    <ForwardIcon width={80} height={80} />
                   </TouchableOpacity>
                 </View>
               </>

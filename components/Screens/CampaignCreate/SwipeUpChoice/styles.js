@@ -36,11 +36,14 @@ const styles = StyleSheet.create({
   deepLinkContainer: {
     flex: 1,
     padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
     alignSelf: "center"
   },
   deepLinkHeader: {
     flexDirection: "column",
     width: "100%",
+    alignItems: "center",
     justifyContent: "space-between",
     paddingTop: Platform.OS === "android" ? 10 : 0
   },

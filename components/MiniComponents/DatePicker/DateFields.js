@@ -173,7 +173,7 @@ export default class DateFields extends Component {
                 },
               this.props.filterMenu &&
                 isRTL && {
-                  paddingLeft: wp("5"),
+                  paddingLeft: wp("2"),
                   paddingRight: wp("8"),
                   paddingTop: hp(6)
                 }

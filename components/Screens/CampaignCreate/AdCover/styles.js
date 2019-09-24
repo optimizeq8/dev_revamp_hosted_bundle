@@ -70,9 +70,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignSelf: "center",
     height: "85%",
-    width: "90%",
+    width: "100%",
+    paddingHorizontal: 30,
     paddingBottom: 40,
-    marginTop: hp(3)
+    marginTop: hp(3),
+    alignItems: "center"
   },
   mainSafeArea: {
     height: "100%",

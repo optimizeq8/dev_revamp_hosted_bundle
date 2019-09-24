@@ -3,6 +3,7 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import { isRTL } from "expo-localization";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     // backgroundColor: "black",
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
     color: "#9E58CD",
     fontSize: 15,
     left: "5%",
-    marginVertical: 5
+    marginVertical: 5,
+    textAlign: "left"
   },
   discoverArea: {
     height: "95%",
@@ -90,12 +92,14 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     color: "#fff",
     fontSize: 16,
-    width: "90%"
+    width: "90%",
+    textAlign: "left"
   },
   sponsoredText: {
     fontFamily: "montserrat-regular",
     color: "#fff",
-    fontSize: 14
+    fontSize: 14,
+    textAlign: "left"
   }
 });
 

@@ -77,7 +77,7 @@ export default class EditProductDetail extends React.Component {
           <Content
             style={{
               paddingTop: 20,
-              paddingHorizontal: 20,
+              // paddingHorizontal: 20,
               flexGrow: 1
               // marginBottom: heightPercentageToDP(30),
             }}
