@@ -12,7 +12,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-
+import * as actionCreators from "../../../../store/actions";
 // Style
 import styles from "./styles";
 
@@ -114,6 +114,24 @@ class AdPaymentReview extends Component {
             >
               <NavigationEvents
                 onDidFocus={() => {
+                  this.props.saveCampaignSteps(
+                    this.props.adType === "StoryAd"
+                      ? [
+                          "Dashboard",
+                          "AdObjective",
+                          "AdCover",
+                          "AdDesign",
+                          "AdDetails",
+                          "AdPaymentReview"
+                        ]
+                      : [
+                          "Dashboard",
+                          "AdObjective",
+                          "AdDesign",
+                          "AdDetails",
+                          "AdPaymentReview"
+                        ]
+                  );
                   Segment.screenWithProperties("Snap Ad Payment Review", {
                     category: "Campaign Creation"
                   });
@@ -341,10 +359,15 @@ const mapStateToProps = state => ({
   regionNames: state.campaignC.regionNames,
   loading: state.campaignC.loadingDetail,
   kdamount: state.campaignC.kdamount,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
+  adType: state.campaignC.adType
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AdPaymentReview);
