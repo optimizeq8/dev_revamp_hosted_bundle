@@ -97,96 +97,6 @@ class AppChoice extends Component {
       this.setState({ deep_link_url: this.props.deep_link_url });
     }
   }
-  _searchIosApps = () => {
-    this.setState({ loading: true });
-    const { translate } = this.props.screenProps;
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/ios",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
-        }
-      }
-    });
-    let appIdorName = /^\d+$/.test(this.state.appValue);
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.state.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-      )
-      .then(res => {
-        return !appIdorName ? res.data.content : [res.data.content];
-      })
-      .then(data =>
-        this.setState({
-          data: data,
-          showList: true,
-          loading: false
-        })
-      )
-      .catch(err => {
-        this.setState({ loading: false });
-        showMessage({
-          message: err.response.data
-            ? err.response.data.error
-            : "Something went wrong!",
-          type: "warning",
-          position: "top",
-          duration: 4500,
-          description: err.response.data
-            ? translate("Please make sure the app id is correct")
-            : translate("Please try again later")
-        });
-        // console.log(err.response)
-      });
-  };
-  _searchAndroidApps = () => {
-    this.setState({ loading: true });
-    const { translate } = this.props.screenProps;
-    const instance = Axios.create({
-      baseURL: "https://api.apptweak.com/android",
-      headers: {
-        common: {
-          "X-Apptweak-Key": "2WikpoMepgo90kjKHbNvkP2GKlM"
-        }
-      }
-    });
-    let appIdorName = this.state.appValue.includes(".");
-    instance
-      .get(
-        `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.state.appValue
-        }${appIdorName ? "/metadata.json" : "&num=20"}`
-        // `/applications/com.espn.score_center/metadata.json`
-      )
-      .then(res => {
-        // console.log(res);
-        return !appIdorName ? res.data.content : [res.data.content];
-      })
-      .then(data =>
-        this.setState({
-          androidData: data,
-          showList: true,
-          loading: false
-        })
-      )
-      .catch(err => {
-        this.setState({ loading: false });
-        showMessage({
-          message: err.response.data
-            ? err.response.data.error
-            : "Something went wrong!",
-          type: "warning",
-          position: "top",
-          duration: 4500,
-          description: err.response.data
-            ? translate("Please make sure the app id is correct")
-            : translate("Please try again later")
-        });
-        // console.log(err.response.data);
-      });
-  };
 
   _getIosAppIds = app => {
     this.setState({
@@ -441,8 +351,6 @@ class AppChoice extends Component {
           isVisible={this.state.isVisible}
           appSelection={this.state.appSelection}
           setTheState={this.setTheState}
-          _searchAndroidApps={this._searchAndroidApps}
-          _searchIosApps={this._searchIosApps}
           appValue={this.state.appValue}
           showList={this.state.showList}
           data={this.state.data}
@@ -458,8 +366,7 @@ class AppChoice extends Component {
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
         />
-
-        <View style={styles.bottomView}>
+       <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}

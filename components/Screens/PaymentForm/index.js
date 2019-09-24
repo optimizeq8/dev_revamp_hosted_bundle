@@ -43,11 +43,12 @@ class PaymentForm extends Component {
 
   constructor(props) {
     super(props);
+    this.showKnet = this.props.mainBusiness.country.toLowerCase() === "kuwait";
     this.state = {
       addingCredits: this.props.navigation.getParam("addingCredits", false),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: 1,
-      choice: 2,
+      choice: this.showKnet ? 2 : 3,
       showModal: false,
       browserLoading: false,
       showWalletModal: false,
@@ -368,30 +369,32 @@ class PaymentForm extends Component {
                 </Button>
               )}
 
-              <Button
-                style={[
-                  styles.whitebutton2,
-                  this.state.choice === 2
-                    ? globalStyles.orangeBackgroundColor
-                    : globalStyles.whiteBackgroundColor,
-                  {
-                    borderTopStartRadius: this.state.addingCredits ? 15 : 0,
-                    borderBottomStartRadius: this.state.addingCredits ? 15 : 0
-                  }
-                ]}
-                onPress={() => this._handleChoice(2)}
-              >
-                <Text
+              {this.showKnet && (
+                <Button
                   style={[
-                    styles.whitebuttontext,
+                    styles.whitebutton2,
                     this.state.choice === 2
-                      ? globalStyles.whiteTextColor
-                      : globalStyles.purpleTextColor
+                      ? globalStyles.orangeBackgroundColor
+                      : globalStyles.whiteBackgroundColor,
+                    {
+                      borderTopStartRadius: this.state.addingCredits ? 15 : 0,
+                      borderBottomStartRadius: this.state.addingCredits ? 15 : 0
+                    }
                   ]}
+                  onPress={() => this._handleChoice(2)}
                 >
-                  {translate("KNET")}
-                </Text>
-              </Button>
+                  <Text
+                    style={[
+                      styles.whitebuttontext,
+                      this.state.choice === 2
+                        ? globalStyles.whiteTextColor
+                        : globalStyles.purpleTextColor
+                    ]}
+                  >
+                    {translate("KNET")}
+                  </Text>
+                </Button>
+              )}
               <Button
                 style={[
                   styles.whitebutton3,

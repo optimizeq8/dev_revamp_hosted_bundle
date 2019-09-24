@@ -180,7 +180,11 @@ const reducer = (state = initialState, action) => {
           ...state.data,
           ...action.payload,
           ...resetSwipeUps
-        }
+        },
+        storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
+        currentCampaignSteps: action.payload.reset
+          ? ""
+          : state.currentCampaignSteps
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {

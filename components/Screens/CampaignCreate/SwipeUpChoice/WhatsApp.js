@@ -209,24 +209,26 @@ class WhatsApp extends Component {
       // 	);
       // }
 
-      await this.props._changeDestination(
-        "REMOTE_WEBPAGE",
-        this.state.campaignInfo.callaction,
-        {
-          url: `https://${this.state.campaignInfo.weburl.replace(
-            /[^0-9a-z]/gi,
-            ""
-          )}.optimizeapp.com`
-        },
-        null,
-        whatsAppCampaign
-      );
+      let _changeDestination = () =>
+        this.props._changeDestination(
+          "REMOTE_WEBPAGE",
+          this.state.campaignInfo.callaction,
+          {
+            url: `https://${this.state.campaignInfo.weburl.replace(
+              /[^0-9a-z]/gi,
+              ""
+            )}.optimizeapp.com`
+          },
+          null,
+          whatsAppCampaign
+        );
       if (this.state.showChangeInstaHandle) {
         this.setState({ showChangeInstaHandle: false });
       }
 
       this.props.navigation.navigate("SelectInstagramPost", {
-        insta_handle: this.state.campaignInfo.insta_handle
+        insta_handle: this.state.campaignInfo.insta_handle,
+        _changeDestination
       });
     }
   };

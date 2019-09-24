@@ -118,7 +118,11 @@ class SelectInstagramPost extends React.Component {
     } else {
       // console.log('cartList', this.state.cartList);
       this.props.navigation.navigate("SelectedInstagramProductsList", {
-        selectetedItems: this.state.cartList
+        selectetedItems: this.state.cartList,
+        _changeDestination: this.props.navigation.getParam(
+          "_changeDestination",
+          () => {}
+        )
       });
     }
   };

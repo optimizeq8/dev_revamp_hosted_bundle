@@ -179,9 +179,14 @@ class AdDesign extends Component {
         });
       }
     }
+    if (this.props.storyAdAttachment.hasOwnProperty("reset")) {
+      this.setState({ storyAdAttachChanged: true });
+    }
     let swipeUpError = null;
     if (
-      (this.adType === "CollectionAd" && !this.props.data.attachment) ||
+      (this.adType === "CollectionAd" &&
+        (!this.props.data.attachment ||
+          this.props.data.objective === "BRAND_AWARENESS")) ||
       (this.adType === "StoryAd" &&
         this.props.storyAdAttachment.attachment === "BLANK") ||
       (this.adType === "SnapAd" &&
@@ -606,6 +611,7 @@ class AdDesign extends Component {
   };
 
   validator = () => {
+    const { translate } = this.props.screenProps;
     const brand_nameError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.brand_name
@@ -614,12 +620,22 @@ class AdDesign extends Component {
       "mandatory",
       this.state.campaignInfo.headline
     );
-    const mediaError = validateWrapper(
-      "mandatory",
+    const mediaError =
       this.adType === "StoryAd"
-        ? this.state.storyAdCards.selectedStoryAd.media
-        : this.state.media
-    );
+        ? false // this.state.storyAdCards.selectedStoryAd.media === "//"
+        : this.state.media === "//";
+
+    const validCards =
+      this.adType === "StoryAd"
+        ? this.rejected
+          ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
+          : this.props.storyAdsArray.filter(ad => ad.media !== "//")
+        : [1, 2, 3];
+    const collectionError =
+      this.adType === "CollectionAd"
+        ? this.props.collectionAdMedia.includes(undefined) ||
+          this.props.collectionAdMedia.length < 4
+        : false;
 
     let swipeUpError = null;
     if (
@@ -629,7 +645,7 @@ class AdDesign extends Component {
       this.state.campaignInfo.call_to_action.label === "BLANK"
     ) {
       showMessage({
-        message: "Choose A Swipe Up Destination",
+        message: translate("Choose A Swipe Up Destination"),
         position: "top",
         type: "warning"
       });
@@ -645,7 +661,18 @@ class AdDesign extends Component {
         ))
     ) {
       showMessage({
-        message: "Choose A Swipe Up Destination",
+        message: translate("Choose A Swipe Up Destination"),
+        position: "top",
+        type: "warning"
+      });
+      swipeUpError = "Choose A Swipe Up Destination";
+    } else if (
+      this.adType === "StoryAd" &&
+      this.state.objective !== "BRAND_AWARENESS" &&
+      this.props.storyAdAttachment.attachment === "BLANK"
+    ) {
+      showMessage({
+        message: translate("Choose A Swipe Up Destination"),
         position: "top",
         type: "warning"
       });
@@ -653,13 +680,44 @@ class AdDesign extends Component {
     } else {
       swipeUpError = null;
     }
+    if (collectionError) {
+      showMessage({
+        message: translate("Please add more products to proceed."),
+        position: "top",
+        type: "warning"
+      });
+    }
+    if (mediaError) {
+      showMessage({
+        message: translate("Please add media to proceed"),
+        position: "top",
+        type: "warning"
+      });
+    }
+    if (validCards.length < 3) {
+      showMessage({
+        message: translate("Please add minimum of 3 media files to proceed"),
+        position: "top",
+        type: "warning"
+      });
+    }
 
     this.setState({
       brand_nameError,
       headlineError,
       mediaError,
-      swipeUpError
+      swipeUpError,
+      collectionError
     });
+
+    return (
+      !brand_nameError &&
+      !headlineError &&
+      !mediaError &&
+      !swipeUpError &&
+      !collectionError &&
+      validCards.length >= 3
+    );
   };
 
   _handleStoryAdCards = card => {
@@ -804,6 +862,7 @@ class AdDesign extends Component {
       loaded,
       isVisible
     } = this.state;
+
     const { translate } = this.props.screenProps;
 
     let validCards =
@@ -812,12 +871,7 @@ class AdDesign extends Component {
           ? this.selectedCampaign.story_creatives.filter(ad => ad.story_id)
           : this.props.storyAdsArray.filter(ad => ad.media !== "//")
         : 3;
-    let showContinueBtn =
-      this.adType === "SnapAd" ||
-      (this.adType === "StoryAd" &&
-        ((!storyAdCards.storyAdSelected && validCards.length >= 3) ||
-          (storyAdCards.storyAdSelected &&
-            storyAdCards.selectedStoryAd.media !== "//")));
+
     let {
       brand_name,
       headline,
@@ -922,7 +976,7 @@ class AdDesign extends Component {
                           : storyAdCards.selectedStoryAd.media &&
                             storyAdCards.storyAdSelected
                           ? storyAdCards.selectedStoryAd.media
-                          : preview.uri
+                          : "//"
                       }
                       style={styles.placeholder1}
                     />
@@ -999,24 +1053,20 @@ class AdDesign extends Component {
                 </View>
               </View>
             </Transition>
-
-            {this.adType === "StoryAd" &&
-            objective === "BRAND_AWARENESS" &&
-            swipeUpError ? null : (
-              <Text style={styles.swipeUpErrorText}>
-                {swipeUpError && translate(swipeUpError)}
-              </Text>
-            )}
           </Content>
 
           <Footer style={styles.footerStyle}>
-            {(this.adType !== "StoryAd" && media !== "//" && !swipeUpError) ||
-            (this.adType === "StoryAd" &&
-              ((storyAdCards.storyAdSelected &&
-                storyAdCards.selectedStoryAd.media !== "//" &&
-                !videoIsLoading) ||
-                ((objective !== "BRAND_AWARENESS" ? !swipeUpError : true) &&
-                  validCards.length >= 3))) ? (
+            {(media !== "//" && !swipeUpError) || true ? (
+              // true ||
+              //---For Story ads---//
+              // (this.adType === "StoryAd" && //---
+              //   ((storyAdCards.storyAdSelected && //---
+              //   storyAdCards.selectedStoryAd.media !== "//" && //---
+              //     !videoIsLoading) || //---
+              //     ((objective !== "BRAND_AWARENESS" ? !swipeUpError : true) && //---
+              //       validCards.length >= 3)))
+              //---
+              //---For Story ads---//
               <View style={styles.footerButtonsContainer}>
                 {this.props.loadingStoryAdsArray.includes(true) ? (
                   <CircleLoader
@@ -1028,7 +1078,8 @@ class AdDesign extends Component {
                 ) : (
                   <>
                     {this.adType === "StoryAd" ? (
-                      !storyAdCards.storyAdSelected && (
+                      !storyAdCards.storyAdSelected &&
+                      validCards.length >= 3 && (
                         <TouchableOpacity
                           style={styles.button}
                           onPress={() => this.previewHandler()}
@@ -1045,7 +1096,7 @@ class AdDesign extends Component {
                       </TouchableOpacity>
                     )}
                     {this.adType === "StoryAd" ? (
-                      showContinueBtn ? (
+                      true ? (
                         <TouchableOpacity
                           onPress={() => {
                             this.handleUpload();

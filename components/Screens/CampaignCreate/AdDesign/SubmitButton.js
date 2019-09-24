@@ -12,12 +12,13 @@ class SubmitButton extends Component {
   submitButton = () => {
     if (this.props.adType === "CollectionAd") {
       if (
-        this.props.collectionAdMedia.length === 4 &&
-        !this.props.collectionAdMedia.includes(undefined)
+        (this.props.collectionAdMedia.length === 4 &&
+          !this.props.collectionAdMedia.includes(undefined)) ||
+        true
       ) {
         return (
           <TouchableOpacity
-            onPress={this.props_handleSubmission}
+            onPress={this.props._handleSubmission}
             style={styles.button}
           >
             <ForwardButton width={wp(24)} height={hp(8)} />

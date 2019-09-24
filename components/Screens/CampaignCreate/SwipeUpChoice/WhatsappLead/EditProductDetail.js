@@ -8,6 +8,8 @@ import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
 import { globalColors } from "../../../../../GlobalStyles";
 import findIndex from "lodash/findIndex";
+import formatNumber from "../../../../formatNumber";
+import { showMessage } from "react-native-flash-message";
 
 export default class EditProductDetail extends React.Component {
   constructor(props) {
@@ -33,17 +35,31 @@ export default class EditProductDetail extends React.Component {
     });
   }
   _handleSubmission = () => {
-    const newList = [...this.state.cartList];
-    const index = findIndex(
-      newList,
-      item => item.imageId === this.state.item.imageId
-    );
-    newList[index] = this.state.item;
-    // console.log('newList', newList);
+    const { translate } = this.props.screenProps;
+    if (
+      /^([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9]{3})?$/.test(
+        this.state.item.price
+      )
+    ) {
+      const newList = [...this.state.cartList];
+      const index = findIndex(
+        newList,
+        item => item.imageId === this.state.item.imageId
+      );
+      newList[index] = this.state.item;
+      // console.log('newList', newList);
 
-    this.props.navigation.navigate("SelectedInstagramProductsList", {
-      selectetedItems: newList
-    });
+      this.props.navigation.navigate("SelectedInstagramProductsList", {
+        selectetedItems: newList
+      });
+    } else {
+      showMessage({
+        message: translate("Please enter a valid price"),
+        position: "top",
+        description: translate("eg 1 1500  1000 10000500"),
+        type: "warning"
+      });
+    }
   };
   render() {
     const { translate } = this.props.screenProps;

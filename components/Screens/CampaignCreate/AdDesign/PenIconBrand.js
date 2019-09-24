@@ -52,7 +52,7 @@ export default class PenIconBrand extends Component {
                 ? translate("Enter your business name")
                 : translate("Enter your Promotional Message")
             }
-            defaultValue={
+            value={
               field === "Business Name"
                 ? brand_name
                   ? brand_name
@@ -62,21 +62,22 @@ export default class PenIconBrand extends Component {
                     ""
                 : headline
                 ? headline
-                : data
-                ? data.name
                 : ""
             }
             placeholderLabel={styles.inputText}
             placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
-            onChangeText={value =>
+            onChangeText={value => {
+              value = value.replace(
+                /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                ""
+              );
               field === "Business Name"
                 ? changeBusinessName(value)
-                : changeHeadline(value)
-            }
+                : changeHeadline(value);
+            }}
             onFocus={() => {
-              //   focus(businessNameComp ? "inputB" : "inputH");
               this.setState({ input: true });
             }}
             onBlur={() => {

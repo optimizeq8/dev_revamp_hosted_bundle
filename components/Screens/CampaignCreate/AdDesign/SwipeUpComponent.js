@@ -77,6 +77,7 @@ export default class SwipeUpComponent extends Component {
                 (destination === "COLLECTION" && collectionAdLinkForm === 1)
               ? translate(call_to_action_label)
               : objective === "WEB_CONVERSION" &&
+                call_to_action_label !== "BLANK" &&
                 (destination !== "BLANK" ||
                   selectedStoryAd.destination !== "BLANK")
               ? translate("WhatsApp Campaign")

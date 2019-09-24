@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import { showMessage } from "react-native-flash-message";
 export const _handleSubmission = async (
   adType,
   storyAdsArray,
@@ -19,7 +20,10 @@ export const _handleSubmission = async (
       storyAdCards.storyAdSelected ||
       storyAdAttachChanged
     ) {
-      if (storyAdCards.storyAdSelected) {
+      if (
+        storyAdCards.storyAdSelected &&
+        storyAdCards.selectedStoryAd.media !== "//"
+      ) {
         //seperate the buttons
         setTheState({
           storyAdCards: {
@@ -32,13 +36,19 @@ export const _handleSubmission = async (
           videoIsLoading: false
         });
         return;
-      } else if (
-        validStoryAds.length >= 3 ||
-        storyAdAttachChanged ||
-        !validStoryAds.every(ad => ad.uploaded)
+      } else if (storyAdCards.storyAdSelected) {
+        showMessage({
+          message: "Please add media to proceed.",
+          position: "top",
+          type: "warning"
+        });
+      }
+      if (
+        validator() &&
+        (validStoryAds.length >= 3 ||
+          storyAdAttachChanged ||
+          !validStoryAds.every(ad => ad.uploaded))
       ) {
-        console.log("kmsdockm", formatStoryAdParams);
-
         await validStoryAds.forEach(ad => {
           formatStoryAdParams.handleUpload();
           if (!ad.uploaded || storyAdAttachChanged)
@@ -60,12 +70,10 @@ export const _handleSubmission = async (
         setTheState({ storyAdAttachChanged: false });
       }
     } else {
-      await validator();
-      finalSubmission();
+      if (validator()) finalSubmission();
     }
   } else {
-    await validator();
-    finalSubmission();
+    if (validator()) finalSubmission();
   }
 };
 
