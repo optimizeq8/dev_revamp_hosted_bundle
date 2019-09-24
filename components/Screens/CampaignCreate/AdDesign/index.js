@@ -978,7 +978,7 @@ class AdDesign extends Component {
                           : storyAdCards.selectedStoryAd.media &&
                             storyAdCards.storyAdSelected
                           ? storyAdCards.selectedStoryAd.media
-                          : preview.uri
+                          : "//"
                       }
                       style={styles.placeholder1}
                     />
