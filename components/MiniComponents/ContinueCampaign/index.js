@@ -58,7 +58,6 @@ class ContinueCampaign extends Component {
     }
   };
   render() {
-    // console.log("this.props.navigation", this.props.data);
     const { translate } = this.props.screenProps;
     return (
       <Modal

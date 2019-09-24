@@ -88,7 +88,7 @@ const initialState = {
   webUploadLinkMediaLoading: false,
   incompleteCampaign: false,
   campaignProgressStarted: false,
-  currentCampaignSteps: ""
+  currentCampaignSteps: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -183,7 +183,12 @@ const reducer = (state = initialState, action) => {
         },
         storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
         currentCampaignSteps: action.payload.reset
-          ? ""
+          ? state.currentCampaignSteps.length > 0
+            ? state.currentCampaignSteps.splice(
+                0,
+                state.currentCampaignSteps.length - 1
+              )
+            : []
           : state.currentCampaignSteps
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
