@@ -177,6 +177,7 @@ class Wallet extends Component {
 
                     <Animatable.View
                       animation={!this.state.amountError ? "" : "shake"}
+                      duration={200}
                       style={styles.inputAnimatableView}
                       onAnimationEnd={() =>
                         this.setState({ amountError: null })
