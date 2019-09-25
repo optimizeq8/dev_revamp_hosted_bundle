@@ -209,7 +209,7 @@ class Menu extends Component {
             </TouchableOpacity>
             <Text style={styles.version}>
               {translate("Version:")}
-              {Constants.manifest.version}30/
+              {Constants.manifest.version}31/
               {Constants.manifest.ios.buildNumber}/
               {Constants.manifest.android.versionCode}
             </Text>
