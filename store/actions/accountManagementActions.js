@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
-import store from "../index";
+import store, { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
 import { setAuthToken } from "./genericActions";
 
@@ -23,6 +23,7 @@ export const changeBusiness = business => {
       type: "success",
       position: "top"
     });
+    persistor.purge();
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { business: business }
