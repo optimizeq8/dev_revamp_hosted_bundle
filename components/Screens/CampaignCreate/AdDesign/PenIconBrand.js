@@ -51,7 +51,9 @@ export default class PenIconBrand extends Component {
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={value => {
-              value = value.replace("@", "");
+              value = value.replace( 
+                /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+                "");
               this.props.field === "Business Name"
                 ? this.props.changeBusinessName(value)
                 : this.props.changeHeadline(value);
