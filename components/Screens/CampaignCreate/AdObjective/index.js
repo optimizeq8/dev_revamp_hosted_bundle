@@ -236,6 +236,10 @@ class AdObjective extends Component {
       minValueBudget,
       maxValueBudget
     });
+    this.props.save_campaign_info({
+      minValueBudget,
+      maxValueBudget
+    });
   };
 
   _handleCollectionAdLinkForm = val => {
@@ -288,9 +292,9 @@ class AdObjective extends Component {
 
       this.props.save_campaign_info({
         campaign_id: this.props.campaign_id,
-        ...this.state.campaignInfo,
-        minValueBudget: this.state.minValueBudget,
-        maxValueBudget: this.state.maxValueBudget
+        ...this.state.campaignInfo
+        // minValueBudget: this.state.minValueBudget,
+        // maxValueBudget: this.state.maxValueBudget
       });
       let info = {
         campaign_type: this.props.adType,

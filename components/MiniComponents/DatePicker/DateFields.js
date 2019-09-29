@@ -86,7 +86,7 @@ export default class DateFields extends Component {
       )
     );
     if (!this.props.filterMenu && !this.props.chartRange) {
-      this.props.getMinimumCash(timeDiff + 1);
+      await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
     } else if (this.props.filterMenu) {

@@ -9,8 +9,10 @@ export const _handleSubmission = async (
   validator,
   finalSubmission,
   setTheState,
-  formatStoryAdParams
+  formatStoryAdParams,
+  screenProps
 ) => {
+  const { translate } = screenProps;
   let validStoryAds = [false];
   if (adType === "StoryAd") {
     //Break down to different functions
@@ -38,7 +40,7 @@ export const _handleSubmission = async (
         return;
       } else if (storyAdCards.storyAdSelected) {
         showMessage({
-          message: "Please add media to proceed.",
+          message: translate("Please add media to proceed"),
           position: "top",
           type: "warning"
         });
@@ -133,11 +135,16 @@ export const formatMedia = (
     body.append("longformvideo_media", video);
     body.append("longformvideo_media_type", longformvideo_media_type);
   }
-
-  if (campaignInfo.insta_handle) {
+  if (campaignInfo.whatsappnumber) {
     body.append("insta_handle", campaignInfo.insta_handle);
     body.append("weburl", campaignInfo.weburl);
     body.append("whatsappnumber", campaignInfo.whatsappnumber);
+    body.append("callnumber", campaignInfo.callnumber);
+  }
+  if (campaignInfo.googlemaplink) {
+    body.append("insta_handle", campaignInfo.insta_handle);
+    body.append("weburl", campaignInfo.weburl);
+    body.append("googlemaplink", campaignInfo.googlemaplink);
     body.append("callnumber", campaignInfo.callnumber);
   }
   body.append("ad_account_id", mainBusiness.snap_ad_account_id);
@@ -176,6 +183,7 @@ export const _changeDestination = (
   attachment,
   appChoice = null,
   whatsAppCampaign = null,
+  instagramTrafficCampaign = null,
   adType,
   setStoryAdAttachment,
   campaignInfo,
@@ -190,6 +198,14 @@ export const _changeDestination = (
         whatsappnumber: whatsAppCampaign.whatsappnumber,
         weburl: whatsAppCampaign.weburl,
         callnumber: whatsAppCampaign.callnumber
+      });
+    }
+    if (instagramTrafficCampaign) {
+      save_campaign_info({
+        insta_handle: instagramTrafficCampaign.insta_handle,
+        googlemaplink: instagramTrafficCampaign.googlemaplink,
+        weburl: instagramTrafficCampaign.weburl,
+        callnumber: instagramTrafficCampaign.callnumber
       });
     }
     setStoryAdAttachment({
@@ -243,6 +259,24 @@ export const _changeDestination = (
         whatsappnumber: whatsAppCampaign.whatsappnumber,
         weburl: whatsAppCampaign.weburl,
         callnumber: whatsAppCampaign.callnumber
+      });
+    }
+    if (instagramTrafficCampaign) {
+      newData = {
+        ...newData,
+        campaignInfo: {
+          ...newData.campaignInfo,
+          insta_handle: instagramTrafficCampaign.insta_handle,
+          googlemaplink: instagramTrafficCampaign.googlemaplink,
+          weburl: instagramTrafficCampaign.weburl,
+          callnumber: instagramTrafficCampaign.callnumber
+        }
+      };
+      save_campaign_info({
+        insta_handle: instagramTrafficCampaign.insta_handle,
+        googlemaplink: instagramTrafficCampaign.googlemaplink,
+        weburl: instagramTrafficCampaign.weburl,
+        callnumber: instagramTrafficCampaign.callnumber
       });
     }
     setTheState(newData);

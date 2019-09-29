@@ -168,11 +168,11 @@ class AppChoice extends Component {
       "mandatory",
       this.state.callaction.value
     );
-
+    const { translate } = this.props.screenProps;
     this.setState({ nameError, callActionError, AppError });
     if (AppError) {
       showMessage({
-        message: "Please choose an application to promote.",
+        message: translate("Please choose an application to promote"),
         type: "warning",
         position: "top"
       });
@@ -190,11 +190,13 @@ class AppChoice extends Component {
     this.setState({
       deep_link_urlError
     });
+    const { translate } = this.props.screenProps;
     if (deep_link_urlError) {
       showMessage({
-        message: "Invalid deep link url.",
-        description:
-          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        message: translate("Invalid deep link URL"),
+        description: translate(
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -366,7 +368,7 @@ class AppChoice extends Component {
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
         />
-       <View style={styles.bottomView}>
+        <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}
