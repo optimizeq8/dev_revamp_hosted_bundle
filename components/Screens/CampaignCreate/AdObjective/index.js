@@ -113,8 +113,9 @@ class AdObjective extends Component {
       this.setCampaignInfo();
     }
     if (
-      prevProps.adType !== this.props.adType &&
-      this.props.adType === "CollectionAd"
+      (prevProps.adType !== this.props.adType &&
+        this.props.adType === "CollectionAd") ||
+      prevProps.currentCampaignSteps !== this.props.currentCampaignSteps
     ) {
       if (
         prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
@@ -311,6 +312,7 @@ class AdObjective extends Component {
 
   render() {
     let adType = this.props.adType;
+    console.log(this.props.collectionAdLinkForm);
 
     const list = ObjectiveData[this.props.adType].map(o => (
       <ObjectivesCard
