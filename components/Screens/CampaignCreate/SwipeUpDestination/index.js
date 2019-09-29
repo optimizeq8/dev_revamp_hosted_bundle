@@ -10,6 +10,7 @@ import App_Install from "../SwipeUpChoice/App_Install";
 import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
 import WhatsApp from "../SwipeUpChoice/WhatsApp";
 import AttachmentCard from "./AttachmentCard";
+import Instagram from "../SwipeUpChoice/Instagram";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 
 //data
@@ -168,6 +169,21 @@ class SwipeUpDestination extends Component {
       case "WEB_CONVERSION": {
         menu = (
           <WhatsApp
+            objective={this.props.navigation.getParam("objective")}
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+            screenProps={this.props.screenProps}
+          />
+        );
+        break;
+      }
+      case "WEB_CONVERSION_INSTAGRAM": {
+        menu = (
+          <Instagram
             objective={this.props.navigation.getParam("objective")}
             _changeDestination={
               this.props.navigation.state.params._changeDestination

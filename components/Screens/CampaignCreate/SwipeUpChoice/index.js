@@ -8,6 +8,7 @@ import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
 import Deep_Link from "./Deep_Link";
+import Instagram from "./Instagram";
 
 // Style
 import styles from "./styles";
@@ -97,6 +98,14 @@ class SwipeUpChoice extends Component {
             screenProps={this.props.screenProps}
           />
         );
+      } else if (objective === "WEB_CONVERSION_INSTAGRAM") {
+        menu = (
+          <Instagram
+            _changeDestination={_changeDestination}
+            navigation={this.props.navigation}
+            screenProps={this.props.screenProps}
+          />
+        );
       }
     }
 
@@ -129,6 +138,12 @@ class SwipeUpChoice extends Component {
                   Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
                     category: "Campaign Creation",
                     label: "Whatsapp Campaign Objective"
+                  });
+                  break;
+                case "WEB_CONVERSION_INSTAGRAM":
+                  Segment.screenWithProperties("Snap Ad Instagram SwipeUp", {
+                    category: "Campaign Creation",
+                    label: "Instagram Traffic Objective"
                   });
                   break;
                 default:
