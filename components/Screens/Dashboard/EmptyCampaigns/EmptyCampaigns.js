@@ -14,7 +14,7 @@ import {
 import { Button } from "native-base";
 export default class EmptyCampaigns extends Component {
   render() {
-    let { mainBusiness } = this.props;
+    let { mainBusiness, translate } = this.props;
     const B = props => (
       <Text style={{ fontFamily: "montserrat-bold" }}>{props.children}</Text>
     );
@@ -35,7 +35,8 @@ export default class EmptyCampaigns extends Component {
         </Text>
         <View style={styles.mainButtonView}>
           <Text style={styles.mainText}>
-            Tap the button below to <B>launch</B> Your first Campaign!
+            {translate("Tap the button below to")} <B>{translate("launch")} </B>
+            {translate("Your first Campaign")}
           </Text>
           <Animatable.View
             animation="swing"
@@ -62,7 +63,9 @@ export default class EmptyCampaigns extends Component {
               }}
               style={styles.campaignButton}
             >
-              <Text style={styles.campaignButtonText}>New{"\n"} Campaign</Text>
+              <Text style={styles.campaignButtonText}>
+                {translate(`New\nCampaign`)}
+              </Text>
             </Button>
           </Animatable.View>
         </View>

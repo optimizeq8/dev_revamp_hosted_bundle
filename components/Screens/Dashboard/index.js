@@ -362,6 +362,7 @@ class Dashboard extends Component {
               !this.props.loadingAccountMgmt &&
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
+                  translate={translate}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
