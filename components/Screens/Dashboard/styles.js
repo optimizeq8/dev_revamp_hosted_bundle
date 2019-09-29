@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   menuContainer: {
-    left: 0,
-    top: 0,
-    flexGrow: 1
+    alignSelf: "center",
+    width: "100%",
+    position: "absolute"
   },
   flatlistContainerStyle: {
     paddingBottom: heightPercentageToDP(35)

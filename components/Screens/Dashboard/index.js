@@ -283,9 +283,9 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          {this.state.anim && (
-            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-          )}
+          {/* {this.state.anim && ( */}
+          <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+          {/* )} */}
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -541,8 +541,8 @@ class Dashboard extends Component {
                   Segment.screen("Dashboard");
                 }
               }}
-              duration={800}
-              animation={this.state.anim ? "fadeIn" : "fadeOut"}
+              duration={50}
+              animation={!this.state.sidemenustate ? "fadeIn" : "fadeOut"}
               style={styles.menuContainer}
             >
               <Menu

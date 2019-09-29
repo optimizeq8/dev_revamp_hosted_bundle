@@ -33,12 +33,13 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { SafeAreaView } from "react-navigation";
 
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
 
   draggableRange = {
-    top: hp("90"),
+    top: hp("95"),
     bottom: -hp("120")
   };
   constructor(props) {
@@ -83,160 +84,174 @@ class Menu extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <Container style={[styles.menuModal]}>
-        <Background
-          style={[styles.background]}
-          width={widthPercentageToDP(85)}
-          height={hp(61)}
-        />
-        <View style={styles.menuContainer}>
-          <Text style={styles.menutext}> {translate("Menu")} </Text>
-          <Text style={styles.businessTitle}>
-            {!this.props.mainBusiness ? "" : this.props.mainBusiness.brandname}
-          </Text>
-          <Text style={styles.businessname}>
-            {!this.props.mainBusiness
-              ? ""
-              : this.props.mainBusiness.businessname}
-          </Text>
-          <Button style={[styles.button]} onPress={() => this.slidePanelShow()}>
-            <Text style={styles.buttonText}>{translate("Switch Account")}</Text>
-            <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
-          </Button>
-
-          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <TouchableOpacity
-              style={styles.options}
-              onPress={() => this.props.navigation.navigate("PersonalInfo")}
-            >
-              <Icons.PersonalInfo style={styles.icons} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Personal Info")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.options}
-              onPress={() => this.props.navigation.navigate("Wallet")}
-            >
-              <Icons.Wallet style={styles.icons} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Wallet")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.options}
-              onPress={() => this.props.navigation.navigate("TransactionList")}
-            >
-              <Icons.TransactionIcon style={styles.icons} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Transactions")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("ChangePassword")}
-              style={styles.options}
-            >
-              <Icons.ChangePassIcon style={styles.icons} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Change Password")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("AddressForm")}
-              style={styles.options}
-            >
-              <Icons.AddressIcon style={styles.icons} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Address")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.options}
-              onPress={() =>
-                this.props.navigation.navigate("WebView", {
-                  url: "https://www.optimizeapp.com/privacy",
-                  title: translate("Privacy Policy")
-                })
-              }
-            >
-              <Icon
-                name="security"
-                type="MaterialIcons"
-                style={[styles.icons]}
-              />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Privacy Policy")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.options}
-              onPress={() =>
-                this.props.navigation.navigate("WebView", {
-                  url: "https://www.optimizeapp.com/terms_conditions",
-                  title: translate("Terms & Conditions")
-                })
-              }
-            >
-              <Icon
-                name="file-document-box"
-                type="MaterialCommunityIcons"
-                style={[
-                  styles.icons
-                  // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
-                ]}
-              />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Terms & Conditions")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                this.props.clearPushToken(
-                  this.props.navigation,
-                  this.props.userInfo.userid
-                );
-              }}
-              style={styles.options}
-            >
-              <Icons.LogoutIcon style={[styles.icons]} />
-              <Text style={isRTL ? rtlStyles.text : styles.text}>
-                {translate("Logout")}
-              </Text>
-            </TouchableOpacity>
-            <Text style={styles.version}>
-              {translate("Version:")}
-              {Constants.manifest.version}31/
-              {Constants.manifest.ios.buildNumber}/
-              {Constants.manifest.android.versionCode}
+      <SafeAreaView
+        forceInset={{ top: "always", bottom: "never" }}
+        style={{ top: "5%" }}
+      >
+        <Container style={[styles.menuModal]}>
+          <Background
+            style={[styles.background]}
+            width={widthPercentageToDP(85)}
+            height={hp(61)}
+          />
+          <View style={styles.menuContainer}>
+            <Text style={styles.menutext}> {translate("Menu")} </Text>
+            <Text style={styles.businessTitle}>
+              {!this.props.mainBusiness
+                ? ""
+                : this.props.mainBusiness.brandname}
             </Text>
-          </ScrollView>
-        </View>
-
-        <SlidingUpPanel
-          showBackdrop={false}
-          ref={c => (this._panel = c)}
-          draggableRange={this.draggableRange}
-          allowDragging={false}
-          animatedValue={this._draggedValue}
-        >
-          <>
-            <TouchableOpacity
-              style={styles.CloseIcon}
-              onPress={() => this.closePanel()}
+            <Text style={styles.businessname}>
+              {!this.props.mainBusiness
+                ? ""
+                : this.props.mainBusiness.businessname}
+            </Text>
+            <Button
+              style={[styles.button]}
+              onPress={() => this.slidePanelShow()}
             >
-              <Icons.CloseListIcon />
-            </TouchableOpacity>
-            <BusinessList
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-            />
-          </>
-        </SlidingUpPanel>
-      </Container>
+              <Text style={styles.buttonText}>
+                {translate("Switch Account")}
+              </Text>
+              <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
+            </Button>
+
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() => this.props.navigation.navigate("PersonalInfo")}
+              >
+                <Icons.PersonalInfo style={styles.icons} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Personal Info")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() => this.props.navigation.navigate("Wallet")}
+              >
+                <Icons.Wallet style={styles.icons} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Wallet")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() =>
+                  this.props.navigation.navigate("TransactionList")
+                }
+              >
+                <Icons.TransactionIcon style={styles.icons} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Transactions")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("ChangePassword")}
+                style={styles.options}
+              >
+                <Icons.ChangePassIcon style={styles.icons} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Change Password")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("AddressForm")}
+                style={styles.options}
+              >
+                <Icons.AddressIcon style={styles.icons} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Address")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() =>
+                  this.props.navigation.navigate("WebView", {
+                    url: "https://www.optimizeapp.com/privacy",
+                    title: translate("Privacy Policy")
+                  })
+                }
+              >
+                <Icon
+                  name="security"
+                  type="MaterialIcons"
+                  style={[styles.icons]}
+                />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Privacy Policy")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() =>
+                  this.props.navigation.navigate("WebView", {
+                    url: "https://www.optimizeapp.com/terms_conditions",
+                    title: translate("Terms & Conditions")
+                  })
+                }
+              >
+                <Icon
+                  name="file-document-box"
+                  type="MaterialCommunityIcons"
+                  style={[
+                    styles.icons
+                    // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
+                  ]}
+                />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Terms & Conditions")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.clearPushToken(
+                    this.props.navigation,
+                    this.props.userInfo.userid
+                  );
+                }}
+                style={styles.options}
+              >
+                <Icons.LogoutIcon style={[styles.icons]} />
+                <Text style={isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Logout")}
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.version}>
+                {translate("Version:")}
+                {Constants.manifest.version}31/
+                {Constants.manifest.ios.buildNumber}/
+                {Constants.manifest.android.versionCode}
+              </Text>
+            </ScrollView>
+          </View>
+
+          <SlidingUpPanel
+            showBackdrop={false}
+            ref={c => (this._panel = c)}
+            draggableRange={this.draggableRange}
+            allowDragging={false}
+            animatedValue={this._draggedValue}
+          >
+            <>
+              <TouchableOpacity
+                style={styles.CloseIcon}
+                onPress={() => this.closePanel()}
+              >
+                <Icons.CloseListIcon />
+              </TouchableOpacity>
+              <BusinessList
+                navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
+              />
+            </>
+          </SlidingUpPanel>
+        </Container>
+      </SafeAreaView>
     );
   }
 }
