@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   submitButton: {
     position: "absolute",
     flex: 0,
-
+    zIndex: 0,
     // right: widthPercentageToDP(2),
     // bottom: heightPercentageToDP(1),
 
