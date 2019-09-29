@@ -113,15 +113,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   connect_user_to_intercom: user_id =>
-    dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  get_conversation: (user_id, navigation) =>
-    dispatch(actionCreators.get_conversation(user_id, navigation)),
-  reply: message => dispatch(actionCreators.reply(message)),
-  admin_response: message => dispatch(actionCreators.admin_response(message)),
-  set_as_seen: () => dispatch(actionCreators.set_as_seen()),
-  subscribe: socket => dispatch(actionCreators.subscribe(socket)),
-  start_conversation: message =>
-    dispatch(actionCreators.start_conversation(message))
+    dispatch(actionCreators.connect_user_to_intercom(user_id))
 });
 
 export default connect(

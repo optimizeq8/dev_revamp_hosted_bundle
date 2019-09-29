@@ -11,7 +11,8 @@ const initialState = {
   failed_msg: [],
   messages: [],
   subscribed: false,
-  open_conversation: false
+  open_conversation: false,
+  read: true
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -44,12 +45,14 @@ const reducer = (state = initialState, action) => {
         conversation_id: action.payload.conversation_id,
         messages: reverseMessages,
         loading_con: false,
-        open_conversation: true
+        open_conversation: true,
+        read: action.payload.read
       };
     case actionTypes.SET_AS_SEEN:
       return {
         ...state,
-        seen: true
+        seen: action.payload,
+        read: action.payload
       };
     case actionTypes.SET_LAST_SEEN:
       return {

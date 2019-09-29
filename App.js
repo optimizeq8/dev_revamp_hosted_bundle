@@ -10,7 +10,8 @@ import {
   Animated,
   Image,
   Text as TextReactNative,
-  I18nManager
+  I18nManager,
+  AppState
 } from "react-native";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -147,6 +148,10 @@ class App extends React.Component {
     // i18n.translations = { ...this.props.terms };
     this._loadAsync();
 
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>
     //         console.error(`Unexpected error thrown when loading:
@@ -154,6 +159,31 @@ class App extends React.Component {
     //       );
   }
 
+  _handleNotification = async handleScreen => {
+    console.log("handleScreen app", AppState.currentState);
+
+    if (handleScreen.data) {
+      if (handleScreen.data.screenName === "MessengerLoading") {
+        if (AppState.currentState !== "active")
+          NavigationService.navigate(handleScreen.data.screenName);
+        else {
+          store.dispatch(actionCreators.set_as_seen(false));
+        }
+      }
+    }
+
+    //   this.setState({
+    //     uploadMediaDifferentDeviceModal: false,
+    //     uploadMediaNotification: uploadMediaNotification,
+    //     downloadMediaModal: true
+    //     // media: uploadMediaNotification.data.media,
+    //     // type: uploadMediaNotification.data.media_type.includes("video")
+    //     //   ? "VIDEO"
+    //     //   : "IMAGE"
+    //   });
+    //   this.props.getWebUploadLinkMedia(this.props.campaign_id);
+    // }
+  };
   _registerForPushNotificationsAsync = async () => {
     const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
 

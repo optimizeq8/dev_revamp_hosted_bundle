@@ -7,6 +7,7 @@ import isNull from "lodash/isNull";
 
 instance = axios.create({
   baseURL: "https://www.optimizeapp.io/"
+  // baseURL: "https://intercom-react.glitch.me/"
 });
 
 // send the id of the user
@@ -120,8 +121,8 @@ export const get_conversation = user_id => {
         }
       })
       .then(() => {
-        if (!isNull(getState().messenger.conversation_id))
-          dispatch(set_as_seen());
+        // if (!isNull(getState().messenger.conversation_id))
+        //   dispatch(set_as_seen());
       })
       .catch(err => {
         console.log("get_conversation", err.message || err.response);
@@ -202,7 +203,7 @@ export const reply = message => {
 //recived admin response
 export const admin_response = message => {
   return (dispatch, getState) => {
-    dispatch(set_as_seen());
+    dispatch(set_as_seen(true));
 
     return dispatch({
       type: actionTypes.ADD_MESSAGE,
@@ -212,28 +213,34 @@ export const admin_response = message => {
 };
 
 // export const set_as_seen
-export const set_as_seen = () => {
+export const set_as_seen = check => {
   //   console.log("set_as_seen log");
 
   return (dispatch, getState) => {
     // console.log("log please???");
 
     // console.log("????", getState().messenger.conversation_id);
-
-    instance
-      .get(`read/${getState().messenger.conversation_id}`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        return dispatch({
-          type: actionTypes.SET_AS_SEEN,
-          payload: data
+    if (check)
+      instance
+        .get(`read/${getState().messenger.conversation_id}`)
+        .then(res => {
+          return res.data;
+        })
+        .then(data => {
+          return dispatch({
+            type: actionTypes.SET_AS_SEEN,
+            payload: true
+          });
+        })
+        .catch(err => {
+          console.log("set_as_seen err", err.message || err.response);
         });
-      })
-      .catch(err => {
-        console.log("set_as_seen err", err.message || err.response);
+    else {
+      return dispatch({
+        type: actionTypes.SET_AS_SEEN,
+        payload: false
       });
+    }
   };
 };
 

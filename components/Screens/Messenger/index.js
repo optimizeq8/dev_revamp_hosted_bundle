@@ -83,6 +83,8 @@ class Messenger extends Component {
     socket.on("AdminReply", data => {
       this.props.admin_response(data);
     });
+    this.props.set_as_seen(true);
+
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -259,17 +261,16 @@ const mapStateToProps = state => ({
   messages: state.messenger.messages,
   loading_con: state.messenger.loading_con,
   subscribed: state.messenger.subscribed,
-  open_conversation: state.messenger.open_conversation
+  open_conversation: state.messenger.open_conversation,
+  conversation_id: state.messenger.conversation_id
 });
 
 const mapDispatchToProps = dispatch => ({
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  get_conversation: (user_id, navigation) =>
-    dispatch(actionCreators.get_conversation(user_id, navigation)),
   reply: message => dispatch(actionCreators.reply(message)),
   admin_response: message => dispatch(actionCreators.admin_response(message)),
-  set_as_seen: () => dispatch(actionCreators.set_as_seen()),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
   start_conversation: message =>
     dispatch(actionCreators.start_conversation(message))
