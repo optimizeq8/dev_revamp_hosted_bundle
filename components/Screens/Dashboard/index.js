@@ -32,6 +32,7 @@ import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
+import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
@@ -289,6 +290,11 @@ class Dashboard extends Component {
           {/* {this.state.anim && ( */}
           <BackdropIcon style={styles.backDrop} height={hp("100%")} />
           {/* )} */}
+          <Background
+            style={[styles.background]}
+            width={wp(85)}
+            height={hp(61)}
+          />
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -558,8 +564,14 @@ class Dashboard extends Component {
                   Segment.screen("Dashboard");
                 }
               }}
-              duration={50}
-              animation={!this.state.sidemenustate ? "fadeIn" : "fadeOut"}
+              duration={100}
+              animation={
+                (this.props.campaignList.length === 0 && this.state.anim) ||
+                (!this.state.sidemenustate &&
+                  this.props.campaignList.length !== 0)
+                  ? "fadeIn"
+                  : "fadeOut"
+              }
               style={styles.menuContainer}
             >
               <Menu

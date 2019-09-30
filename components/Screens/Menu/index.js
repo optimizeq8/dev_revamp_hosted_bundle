@@ -89,11 +89,6 @@ class Menu extends Component {
         style={{ top: "5%" }}
       >
         <Container style={[styles.menuModal]}>
-          <Background
-            style={[styles.background]}
-            width={widthPercentageToDP(85)}
-            height={hp(61)}
-          />
           <View style={styles.menuContainer}>
             <Text style={styles.menutext}> {translate("Menu")} </Text>
             <Text style={styles.businessTitle}>
@@ -223,7 +218,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}32/
+                {Constants.manifest.version}33/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}
               </Text>

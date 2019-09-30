@@ -19,23 +19,26 @@ export default class OptionalTargets extends Component {
           <View style={styles.optionalTargets}>
             <View style={styles.categoryView}>
               <LocationIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>{translate("Regions")}</Text>
+              <Text style={styles.categories}>
+                {translate("Regions") + "\n"}
+                <Text numberOfLines={1} style={[styles.subtext]}>
+                  {this.props.region_names}
+                </Text>
+              </Text>
             </View>
-            <Text numberOfLines={1} style={[styles.subtext]}>
-              {this.props.region_names}
-            </Text>
           </View>
         )}
         {this.props.interesetNames.length > 0 && (
           <View style={styles.optionalTargets}>
             <View style={styles.categoryView}>
               <InterestIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>{translate("Interests")}</Text>
+              <Text numberOfLines={4} style={styles.categories}>
+                {translate("Interests") + "\n"}
+                <Text numberOfLines={1} style={[styles.subtext]}>
+                  {this.props.interesetNames.join(", ")}
+                </Text>
+              </Text>
             </View>
-
-            <Text numberOfLines={1} style={[styles.subtext]}>
-              {this.props.interesetNames.join(", ")}
-            </Text>
           </View>
         )}
         {this.props.deviceMakes.length > 0 && (
@@ -50,12 +53,11 @@ export default class OptionalTargets extends Component {
                   fontSize: 23
                 }}
               />
-              <Text style={styles.categories}>{translate("Device Make")}</Text>
+              <Text numberOfLines={4} style={styles.categories}>
+                {translate("Device Make") + "\n"}{" "}
+                <Text style={[styles.subtext]}>{this.props.deviceMakes}</Text>
+              </Text>
             </View>
-
-            <Text numberOfLines={1} style={[styles.subtext]}>
-              {this.props.deviceMakes}
-            </Text>
           </View>
         )}
         {targeting.hasOwnProperty("devices") &&
@@ -68,13 +70,12 @@ export default class OptionalTargets extends Component {
                   height={hp("2.5")}
                 />
                 <Text style={styles.categories}>
-                  {translate("Operating System")}
+                  {translate("Operating System") + "\n"}
+                  <Text numberOfLines={1} style={[styles.subtext]}>
+                    {targeting.devices[0].os_type}
+                  </Text>
                 </Text>
               </View>
-
-              <Text numberOfLines={1} style={[styles.subtext]}>
-                {targeting.devices[0].os_type}
-              </Text>
             </View>
           )}
         {targeting.hasOwnProperty("devices") &&
@@ -92,14 +93,13 @@ export default class OptionalTargets extends Component {
                   }}
                 />
                 <Text style={styles.categories}>
-                  {translate("OS Versions")}
+                  {translate("OS Versions") + "\n"}
+                  <Text numberOfLines={1} style={[styles.subtext]}>
+                    {targeting.devices[0].os_version_min + ", "}
+                    {targeting.devices[0].os_version_max}
+                  </Text>
                 </Text>
               </View>
-
-              <Text numberOfLines={1} style={[styles.subtext]}>
-                {targeting.devices[0].os_version_min + ", "}
-                {targeting.devices[0].os_version_max}
-              </Text>
             </View>
           )}
       </View>
