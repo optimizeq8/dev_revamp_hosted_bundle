@@ -21,8 +21,8 @@ export default class EmptyCampaigns extends Component {
 
     return (
       <View>
-        <BackdropIcon style={styles.backDrop} />
-        <Background style={styles.background} />
+        {/* <BackdropIcon style={styles.backDrop} /> */}
+        {/* <Background style={styles.background} /> */}
         <Logo
           style={{ alignSelf: "center" }}
           width={heightPercentageToDP(10)}

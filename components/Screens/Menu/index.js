@@ -89,11 +89,6 @@ class Menu extends Component {
         style={{ top: "5%" }}
       >
         <Container style={[styles.menuModal]}>
-          <Background
-            style={[styles.background]}
-            width={widthPercentageToDP(85)}
-            height={hp(61)}
-          />
           <View style={styles.menuContainer}>
             <Text style={styles.menutext}> {translate("Menu")} </Text>
             <Text style={styles.businessTitle}>

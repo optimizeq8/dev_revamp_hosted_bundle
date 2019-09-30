@@ -330,6 +330,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.3,
     shadowOffset: { width: 3, height: 3 }
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.4,
+    top: 230,
+    alignSelf: "center"
   }
 });
 
