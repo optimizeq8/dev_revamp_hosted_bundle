@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     opacity: 1,
     transform: [
       {
-        translateX: isRTL ? 35 : -35
+        translateX: I18nManager.isRTL ? 35 : -35
       },
       {
         translateY: -40
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     transform: [
       {
-        translateX: isRTL ? 35 : -35
+        translateX: I18nManager.isRTL ? 35 : -35
       },
       {
         translateY: -40

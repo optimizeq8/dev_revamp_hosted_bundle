@@ -316,8 +316,6 @@ class AdObjective extends Component {
 
   render() {
     let adType = this.props.adType;
-    console.log(this.props.collectionAdLinkForm);
-
     const list = ObjectiveData[this.props.adType].map(o => (
       <ObjectivesCard
         choice={o}

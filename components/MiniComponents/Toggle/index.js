@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 
-import { Animated, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { isRTL } from "expo-localization";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  I18nManager
+} from "react-native";
 
 import PropTypes from "prop-types";
 
@@ -77,14 +82,14 @@ class Item extends Component {
   runAnimation = () => {
     // this.state.anim.setValue(0);
     const animValue = {
-      fromValue: isRTL
+      fromValue: I18nManager.isRTL
         ? this.props.switchOn
           ? -1
           : 0
         : this.props.switchOn
         ? 1
         : 0,
-      toValue: isRTL
+      toValue: I18nManager.isRTL
         ? this.props.switchOn
           ? 0
           : -1
@@ -106,7 +111,13 @@ class Item extends Component {
       circlePosXStart: this.getStart(),
       circlePosXEnd: endPos,
       animXValue: new Animated.Value(
-        isRTL ? (this.props.switchOn ? -1 : 0) : this.props.switchOn ? 1 : 0
+        I18nManager.isRTL
+          ? this.props.switchOn
+            ? -1
+            : 0
+          : this.props.switchOn
+          ? 1
+          : 0
       )
     };
   }
@@ -126,8 +137,8 @@ class Item extends Component {
             this.props.containerStyle,
             {
               backgroundColor: this.state.animXValue.interpolate({
-                inputRange: isRTL ? [-1, 0] : [0, 1],
-                outputRange: isRTL
+                inputRange: I18nManager.isRTL ? [-1, 0] : [0, 1],
+                outputRange: I18nManager.isRTL
                   ? [
                       this.props.backgroundColorOn,
                       this.props.backgroundColorOff
@@ -146,8 +157,8 @@ class Item extends Component {
               this.props.circleStyle,
               {
                 backgroundColor: this.state.animXValue.interpolate({
-                  inputRange: isRTL ? [-1, 0] : [0, 1],
-                  outputRange: isRTL
+                  inputRange: I18nManager.isRTL ? [-1, 0] : [0, 1],
+                  outputRange: I18nManager.isRTL
                     ? [this.props.circleColorOn, this.props.circleColorOff]
                     : [this.props.circleColorOff, this.props.circleColorOn]
                 })

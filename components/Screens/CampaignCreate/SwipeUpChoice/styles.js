@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "transparent",
     marginTop: 0,
-    flex: 1
+    flex: 1,
+    width: "100%"
     // width: "96%"
   },
   contentContainer: {

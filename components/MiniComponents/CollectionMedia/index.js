@@ -12,7 +12,8 @@ import {
   Image,
   Platform,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 import {
   Button,
@@ -57,7 +58,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { isRTL } from "expo-localization";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -776,7 +776,7 @@ class CollectionMedia extends Component {
                             <Input
                               style={[
                                 styles.inputtext,
-                                isRTL
+                                I18nManager.isRTL
                                   ? { textAlign: "right" }
                                   : { textAlign: "left" }
                               ]}

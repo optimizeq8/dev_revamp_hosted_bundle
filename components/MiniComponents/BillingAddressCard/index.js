@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView } from "react-native";
+import { View, TouchableOpacity, ScrollView, I18nManager } from "react-native";
 import { Text, Item, Input, Label } from "native-base";
 import {
   heightPercentageToDP as hp,
@@ -7,7 +7,6 @@ import {
 } from "react-native-responsive-screen";
 import isUndefined from "lodash/isUndefined";
 import { showMessage } from "react-native-flash-message";
-import { isRTL } from "expo-localization";
 
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
@@ -209,9 +208,10 @@ class BillingAddressCard extends React.Component {
         }}
         disableGestures={true}
         menu={this.props.sidemenustate && menu}
-        menuPosition={isRTL ? "left" : "right"}
+        menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.props.sidemenustate}
+        screenProps={this.props.screenProps}
       >
         <View style={styles.headerBlock}>
           <Header

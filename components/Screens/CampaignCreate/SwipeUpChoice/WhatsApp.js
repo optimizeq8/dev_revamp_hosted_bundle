@@ -298,7 +298,6 @@ class WhatsApp extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    console.log("whatsapp data", this.props.data);
 
     return (
       <SafeAreaView

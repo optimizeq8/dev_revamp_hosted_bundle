@@ -7,7 +7,8 @@ import {
   Image as RNImage,
   Platform,
   BackHandler,
-  Slider
+  Slider,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import { Video } from "expo-av";
@@ -16,7 +17,6 @@ import * as Segment from "expo-analytics-segment";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { isRTL } from "expo-localization";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -612,6 +612,8 @@ class AdDetails extends Component {
   };
 
   render() {
+    console.log("data", this.props.data);
+
     const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
@@ -767,7 +769,7 @@ class AdDetails extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition={isRTL ? "left" : "right"}
+        menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
@@ -793,12 +795,12 @@ class AdDetails extends Component {
             media={media}
             style={[
               styles.imageBackgroundViewWrapper,
-              this.state.sidemenustate && !isRTL
+              this.state.sidemenustate && !I18nManager.isRTL
                 ? {
                     borderTopRightRadius: 30
                   }
                 : {},
-              this.state.sidemenustate && isRTL
+              this.state.sidemenustate && I18nManager.isRTL
                 ? {
                     borderTopLeftRadius: 30
                   }
@@ -1067,7 +1069,21 @@ class AdDetails extends Component {
                           style={styles.icon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>
+                          <Text
+                            style={[
+                              styles.menutext,
+                              {
+                                paddingLeft:
+                                  Platform.OS === "android" && I18nManager.isRTL
+                                    ? 0
+                                    : 15,
+                                paddingRight:
+                                  Platform.OS === "android" && I18nManager.isRTL
+                                    ? 15
+                                    : 0
+                              }
+                            ]}
+                          >
                             {translate("Regions")}
                           </Text>
                           <Text style={styles.menudetails} numberOfLines={1}>

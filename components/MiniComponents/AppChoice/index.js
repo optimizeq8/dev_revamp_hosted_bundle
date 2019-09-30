@@ -25,7 +25,6 @@ import globalStyles from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
-import { isRTL } from "expo-localization";
 
 class AppChoice extends Component {
   constructor(props) {
