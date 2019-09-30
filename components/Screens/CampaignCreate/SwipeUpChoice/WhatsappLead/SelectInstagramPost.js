@@ -127,6 +127,7 @@ class SelectInstagramPost extends React.Component {
     }
   };
   addToList = item => {
+    const { translate } = this.props.screenProps;
     const newCartList = [...this.state.cartList];
     const checkifALreadyExist = find(
       this.state.cartList,
