@@ -6,8 +6,11 @@ import {
   Animated,
   TouchableWithoutFeedback,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
+import { Updates } from "expo";
+import i18n from "i18n-js";
 import { Button, Text, Container, Icon } from "native-base";
 import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
@@ -329,17 +332,30 @@ class Dashboard extends Component {
                   </TouchableOpacity>
                 </>
               ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.clearPushToken(
-                      this.props.navigation,
-                      this.props.userInfo.userid
+                <Text
+                  onPress={async () => {
+                    await this.props.getLanguageListPOEdit(
+                      this.props.appLanguage === "en" ? "ar" : "en"
                     );
+                    await this.props.screenProps.setLocale(
+                      this.props.appLanguage
+                    );
+                    // RNRestart.Restart();
+                    Updates.reload();
+                    // i18n.translations = {
+                    //   [this.props.appLanguage]: this.props.terms
+                    // };
                   }}
-                  style={styles.logoutIcon}
+                  style={{
+                    color: "#FFF",
+                    fontSize: 14,
+                    right: "5%",
+                    position: "absolute",
+                    textAlign: "left"
+                  }}
                 >
-                  <Icons.LogoutIcon style={styles.icons} />
-                </TouchableOpacity>
+                  {this.props.appLanguage === "en" ? "العربية" : "English"}
+                </Text>
               )}
             </View>
           )}
@@ -380,11 +396,12 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
-                    menuPosition={Localization.isRTL ? "left" : "right"}
+                    menuPosition={I18nManager.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
                     openMenuOffset={wp("85%")}
                     isOpen={this.state.sidemenustate}
+                    screenProps={this.props.screenProps}
                   >
                     <View style={[styles.nameStyle]}>
                       <Text
@@ -583,7 +600,9 @@ const mapStateToProps = state => ({
   isListEnd: state.dashboard.isListEnd,
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
-  incompleteCampaign: state.campaignC.incompleteCampaign
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  appLanguage: state.language.phoneLanguage,
+  terms: state.language.terms
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -601,7 +620,9 @@ const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
-    dispatch(actionCreators.setCampaignInProgress(value))
+    dispatch(actionCreators.setCampaignInProgress(value)),
+  getLanguageListPOEdit: language =>
+    dispatch(actionCreators.getLanguageListPOEdit(language))
 });
 export default connect(
   mapStateToProps,

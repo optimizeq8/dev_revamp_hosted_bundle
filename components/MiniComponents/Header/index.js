@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, I18nManager } from "react-native";
 import { Text } from "native-base";
 import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
-import { isRTL } from "expo-localization";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 
 export default class Header extends Component {
@@ -36,7 +35,7 @@ export default class Header extends Component {
         >
           {closeButton ? (
             <CloseIcon width={17} height={17} />
-          ) : isRTL ? (
+          ) : I18nManager.isRTL ? (
             <Image source={forwardICon} style={{ width: 24, height: 24 }} />
           ) : (
             <BackIcon width={24} height={24} />

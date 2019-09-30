@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler, Text } from "react-native";
+import { View, ScrollView, BackHandler, Text, I18nManager } from "react-native";
 import { Button, Container } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../MiniComponents/SideMenu";
 import * as Segment from "expo-analytics-segment";
-import { isRTL } from "expo-localization";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
@@ -89,7 +88,7 @@ class Transactions extends Component {
               }}
               disableGestures={true}
               menu={this.state.sidemenustate ? menu : null}
-              menuPosition={isRTL ? "left" : "right"}
+              menuPosition={I18nManager.isRTL ? "left" : "right"}
               openMenuOffset={widthPercentageToDP("85%")}
               isOpen={this.state.sidemenustate}
             >

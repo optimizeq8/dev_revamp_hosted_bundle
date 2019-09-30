@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight } from "react-native";
+import { View, TouchableHighlight, I18nManager } from "react-native";
 import { Text } from "native-base";
 import dateFormat from "dateformat";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -19,7 +19,6 @@ import FilterIcon from "../../../assets/SVGs/Filter.svg";
 // Style
 import globalStyles from "../../../GlobalStyles";
 import styles from "./styles";
-import { isRTL } from "expo-localization";
 
 class FilterMenu extends Component {
   constructor(props) {
@@ -78,8 +77,8 @@ class FilterMenu extends Component {
       <View
         style={[
           { flex: 1 },
-          isRTL && this.props.transactionFilter
-            ? { marginLeft: 85, marginRight: 0 }
+          I18nManager.isRTL && this.props.transactionFilter
+            ? { marginLeft: -25, marginRight: 0 }
             : {}
         ]}
       >
@@ -97,7 +96,7 @@ class FilterMenu extends Component {
         <View
           style={[
             styles.container,
-            isRTL && this.props.transactionFilter
+            I18nManager.isRTL && this.props.transactionFilter
               ? { marginLeft: 40, marginRight: 0 }
               : {}
           ]}

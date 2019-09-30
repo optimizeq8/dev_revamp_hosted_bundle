@@ -1,10 +1,9 @@
-import { StyleSheet, PixelRatio, Platform } from "react-native";
+import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { globalColors } from "../../../../GlobalStyles";
-import { isRTL } from "expo-localization";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-bold",
     fontSize: 16 / PixelRatio.getFontScale(),
-    textAlign: isRTL ? "right" : "left",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8
   },

@@ -10,7 +10,8 @@ import {
   Animated,
   Image,
   Text as TextReactNative,
-  I18nManager
+  I18nManager,
+  AsyncStorage
 } from "react-native";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -47,6 +48,7 @@ import * as actionCreators from "./store/actions";
 import AppNavigator from "./components/Navigation";
 import { Provider } from "react-redux";
 import { Icon as BIcon, Root } from "native-base";
+import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
 import Sentry from "sentry-expo";
@@ -94,10 +96,7 @@ const myErrorHandler = (e, isFatal) => {
   // just call the variable we stored in the previous step
   defaultErrorHandler(e, isFatal);
 };
-i18n.fallbacks = true;
-I18nManager.allowRTL(Localization.isRTL);
-I18nManager.forceRTL(Localization.isRTL);
-
+// i18n.fallbacks = true;
 // i18n.translations = { ar, en };
 ErrorUtils.setGlobalHandler(myErrorHandler);
 class App extends React.Component {
@@ -108,8 +107,8 @@ class App extends React.Component {
       splashAnimation: new Animated.Value(0),
       splashFadeAnimation: new Animated.Value(0.01),
       splashAnimationComplete: false,
-      isAppReady: false,
-      locale: Localization.locale.includes("ar") ? "ar" : "en"
+      isAppReady: false
+      // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
     SplashScreen.preventAutoHide();
@@ -118,7 +117,6 @@ class App extends React.Component {
   _loadAsync = async () => {
     try {
       await this._loadResourcesAsync();
-
       // this.setState({ isLoadingComplete: true }, () => {
       this._registerForPushNotificationsAsync();
       // this._animateOut();
@@ -144,7 +142,6 @@ class App extends React.Component {
     });
     persistor.dispatch({ type: REHYDRATE });
 
-    // i18n.translations = { ...this.props.terms };
     this._loadAsync();
 
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
@@ -354,19 +351,39 @@ class App extends React.Component {
       this.setState({ splashAnimationComplete: true });
     });
   };
-
-  _loadResourcesAsync = async () => {
+  _loadAppLanguage = async () => {
     const mobileLanguage = Localization.locale;
-    if (mobileLanguage.includes("ar")) {
-      await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+    const appLanguage = await AsyncStorage.getItem("appLanguage");
+    if (isNull(appLanguage)) {
+      if (mobileLanguage.includes("ar")) {
+        await store.dispatch(actionCreators.getLanguageListPOEdit("ar"));
+        this.setState({
+          locale: "ar"
+        });
+      } else {
+        await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
+        this.setState({
+          locale: "en"
+        });
+        // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
+      }
     } else {
-      await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
-      // i18n.translations = { [store.getState().language.phoneLanguage]: store.getState().language.terms };
+      await store.dispatch(actionCreators.getLanguageListPOEdit(appLanguage));
+      this.setState({
+        locale: appLanguage
+      });
     }
-    i18n.translations = {
-      [store.getState().language.phoneLanguage]: store.getState().language.terms
-    };
+    // console.log(
+    //   "store.getState().language.phoneLanguage",
+    //   store.getState().language.phoneLanguage
+    // );
 
+    // i18n.translations = {
+    //   [store.getState().language.phoneLanguage]: store.getState().language.terms
+    // };
+  };
+  _loadResourcesAsync = async () => {
+    await this._loadAppLanguage();
     const images = [require("./assets/images/splash.png")];
     const cacheImages = images.map(image =>
       Asset.fromModule(image).downloadAsync()
@@ -415,18 +432,7 @@ class App extends React.Component {
   };
 }
 
-// const mapStateToProps = state => ({
-// 	phoneLanguage: state.language.phoneLanguage,
-// });
-
-// const mapDispatchToProps = dispatch => ({
-// 	getLanguageListPOEdit: () => dispatch(actionCreators.getLanguageListPOEdit()),
-// });
 export default App;
-// export default connect(
-// 	mapStateToProps,
-// 	mapDispatchToProps
-// )(App);
 
 const styles = StyleSheet.create({
   container: {

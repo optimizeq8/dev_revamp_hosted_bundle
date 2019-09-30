@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, I18nManager } from "react-native";
 import dateFormat from "dateformat";
-import { isRTL } from "expo-localization";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
@@ -49,11 +48,11 @@ class MessageBubble extends Component {
           {this.props.message.author.type === "admin" && (
             <View
               style={[
-                isRTL
+                I18nManager.isRTL
                   ? rtlStyles.transparentTriangleView
                   : styles.transparentTriangleView,
                 {
-                  left: isRTL
+                  left: I18nManager.isRTL
                     ? this.state.height > 50
                       ? -5
                       : -6
@@ -96,7 +95,7 @@ class MessageBubble extends Component {
           {this.props.message.author.type === "user" && (
             <View
               style={[
-                isRTL
+                I18nManager.isRTL
                   ? rtlStyles.orangeTriangleView
                   : styles.orangeTriangleView,
                 {
