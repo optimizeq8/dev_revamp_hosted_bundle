@@ -172,19 +172,28 @@ class AdDetails extends Component {
           .name;
         this.onSelectedRegionChange(id, name);
       });
-      await this.setState({
+      this.setState({
         campaignInfo: editedCampaign
       });
     } else {
-      await this.setState({
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let defaultBudget = duration * 75;
+      this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: this.props.data.minValueBudget
+          lifetime_budget_micro: defaultBudget
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(this.props.data.minValueBudget)
+        value: this.formatNumber(defaultBudget)
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -197,7 +206,9 @@ class AdDetails extends Component {
               ...rep
             },
             ...this.props.data,
-            value: this.props.data.campaignInfo.lifetime_budget_micro,
+            value: this.formatNumber(
+              this.props.data.campaignInfo.lifetime_budget_micro
+            ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages
           },
@@ -217,7 +228,7 @@ class AdDetails extends Component {
         let navAppChoice = this.props.data.appChoice;
         let rep = this.state.campaignInfo;
         rep.targeting.devices[0].os_type = navAppChoice;
-        await this.setState({
+        this.setState({
           campaignInfo: rep
         });
       }
@@ -411,6 +422,7 @@ class AdDetails extends Component {
         message: validateWrapper("Budget", rawValue)
           ? validateWrapper("Budget", rawValue)
           : translate("Budget can't be less than the minimum"),
+        description: "$" + this.state.minValueBudget,
         type: "warning",
         position: "top"
       });
@@ -896,7 +908,7 @@ class AdDetails extends Component {
                         {translate("Tap to enter manually")}
                       </Text>
                     </View>
-                    <View style={styles.sliderContainer}>
+                    {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
@@ -927,6 +939,7 @@ class AdDetails extends Component {
                         minimumTrackTintColor={globalColors.purple}
                       />
                     </View>
+                  */}
                   </>
                 ) : (
                   <View style={styles.sliderPlaceHolder}>
