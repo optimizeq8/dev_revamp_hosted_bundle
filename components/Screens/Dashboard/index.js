@@ -70,6 +70,8 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
+    console.log("did mount");
+
     if (this.props.mainBusiness) {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
@@ -101,6 +103,8 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log("did update");
+
     if (
       this.props.mainBusiness &&
       prevProps.mainBusiness !== this.props.mainBusiness
@@ -114,13 +118,14 @@ class Dashboard extends Component {
         });
       }
       this.props.connect_user_to_intercom(this.props.userInfo.userid);
-
+      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
         this.signal.token
       );
     }
+
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true
@@ -207,6 +212,8 @@ class Dashboard extends Component {
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.set_as_seen(false);
+
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -325,7 +332,7 @@ class Dashboard extends Component {
                     }
                     style={[styles.wallet]}
                   >
-                    {this.props.read ? (
+                    {this.props.conversation_status ? (
                       <IntercomIcon width={24} height={24} />
                     ) : (
                       <IntercomNotificationIcon
@@ -585,7 +592,7 @@ const mapStateToProps = state => ({
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  read: state.messenger.read
+  conversation_status: state.messenger.conversation_status
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -605,7 +612,8 @@ const mapDispatchToProps = dispatch => ({
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
   connect_user_to_intercom: user_id =>
-    dispatch(actionCreators.connect_user_to_intercom(user_id))
+    dispatch(actionCreators.connect_user_to_intercom(user_id)),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check))
 });
 export default connect(
   mapStateToProps,

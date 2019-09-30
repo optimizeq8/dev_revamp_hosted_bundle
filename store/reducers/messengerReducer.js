@@ -12,7 +12,8 @@ const initialState = {
   messages: [],
   subscribed: false,
   open_conversation: false,
-  read: true
+  read: true,
+  conversation_status: true
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -52,7 +53,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         seen: action.payload,
-        read: action.payload
+        read: action.payload,
+        conversation_status: action.payload
       };
     case actionTypes.SET_LAST_SEEN:
       return {
@@ -83,6 +85,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         subscribed: true
+      };
+    case actionTypes.SET_CONVERSATION_STATUS:
+      return {
+        ...state,
+        conversation_status: action.payload
       };
     default:
       return state;

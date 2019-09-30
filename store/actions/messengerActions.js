@@ -104,7 +104,7 @@ export const get_conversation = user_id => {
     instance
       .get(`get-conversation/${user_id}`)
       .then(res => {
-        console.log("convo", res.data);
+        console.log("convo", res.data.read);
         return res.data;
       })
       .then(data => {
@@ -121,6 +121,7 @@ export const get_conversation = user_id => {
         }
       })
       .then(() => {
+        dispatch(get_conversatusion_read_status());
         // if (!isNull(getState().messenger.conversation_id))
         //   dispatch(set_as_seen());
       })
@@ -203,7 +204,7 @@ export const reply = message => {
 //recived admin response
 export const admin_response = message => {
   return (dispatch, getState) => {
-    dispatch(set_as_seen(true));
+    // dispatch(set_as_seen(true));
 
     return dispatch({
       type: actionTypes.ADD_MESSAGE,
@@ -212,13 +213,69 @@ export const admin_response = message => {
   };
 };
 
+//get status if conversation was seen
+
+export const get_conversatusion_read_status = () => {
+  return (dispatch, getState) => {
+    axios
+      .get("https://optimizekwtestingserver.com/optimize/public/chatLink")
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("data", data.intercom_chat_link);
+        console.log(
+          "an",
+          getState().messenger.messages.length === data.intercom_chat_link
+        );
+
+        return dispatch({
+          type: actionTypes.SET_CONVERSATION_STATUS,
+          payload:
+            getState().messenger.messages.length === data.intercom_chat_link
+        });
+      })
+      .catch(err => {
+        console.log(
+          "get_conversatusion_read_status err",
+          err.message || err.response
+        );
+      });
+  };
+};
+
+export const update_conversatusion_read_status = () => {
+  return (dispatch, getState) => {
+    axios
+      .post("https://optimizekwtestingserver.com/optimize/public/chatLink", {
+        intercom_chat_link: getState().messenger.messages.length
+      })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("data", data);
+
+        return dispatch({
+          type: actionTypes.SET_CONVERSATION_STATUS,
+          payload: true
+          // getState().messenger.messages.length === data.intercom_chat_link
+        });
+      })
+      .catch(err => {
+        console.log(
+          "update_conversatusion_read_status err",
+          err.message || err.response
+        );
+      });
+  };
+};
+
 // export const set_as_seen
 export const set_as_seen = check => {
   //   console.log("set_as_seen log");
-
   return (dispatch, getState) => {
     // console.log("log please???");
-
     // console.log("????", getState().messenger.conversation_id);
     if (check)
       instance
@@ -229,7 +286,7 @@ export const set_as_seen = check => {
         .then(data => {
           return dispatch({
             type: actionTypes.SET_AS_SEEN,
-            payload: true
+            payload: check
           });
         })
         .catch(err => {
@@ -245,14 +302,16 @@ export const set_as_seen = check => {
 };
 
 // call when the user closes the msg screen ?
-export const update_last_seen = (user_id, navigation) => {
-  return dispatch => {
+export const update_last_seen = () => {
+  return (dispatch, getState) => {
     instance
-      .get(`update-last-seen/${user_id}`)
+      .get(`update-last-seen/${getState().auth.userInfo.userid}`)
       .then(res => {
         return res.data;
       })
       .then(data => {
+        console.log("last seen", data);
+
         return dispatch({
           type: actionTypes.UPDATE_LAST_SEEN,
           payload: data

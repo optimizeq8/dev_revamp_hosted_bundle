@@ -64,7 +64,8 @@ const socket = socketIOClient("https://www.optimizeapp.io/", {
 
 class Messenger extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
   constructor(props) {
     super(props);
@@ -82,9 +83,10 @@ class Messenger extends Component {
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
       this.props.admin_response(data);
+      // this.props.set_as_seen(true);
     });
     this.props.set_as_seen(true);
-
+    this.props.update_conversatusion_read_status();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -101,6 +103,7 @@ class Messenger extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     socket.removeAllListeners();
+    this.props.update_last_seen();
   }
 
   handleBackPress = () => {
@@ -273,7 +276,10 @@ const mapDispatchToProps = dispatch => ({
   set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
   start_conversation: message =>
-    dispatch(actionCreators.start_conversation(message))
+    dispatch(actionCreators.start_conversation(message)),
+  update_last_seen: () => dispatch(actionCreators.update_last_seen()),
+  update_conversatusion_read_status: () =>
+    dispatch(actionCreators.update_conversatusion_read_status())
 });
 
 export default connect(
