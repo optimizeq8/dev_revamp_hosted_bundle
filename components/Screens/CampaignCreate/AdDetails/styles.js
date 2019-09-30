@@ -1,11 +1,4 @@
-import { StyleSheet, Platform, PixelRatio } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../../GlobalStyles";
-import { isRTL } from "expo-localization";
+import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -164,17 +157,16 @@ const styles = StyleSheet.create({
     paddingVertical: Platform.OS === "android" ? 0 : 10
   },
   menutext: {
-    paddingLeft: Platform.OS === "android" && isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && isRTL ? 15 : 0,
-
+    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
+    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
     fontFamily: "montserrat-light",
     color: "#fff",
     textAlign: "left"
   },
   menudetails: {
-    paddingLeft: Platform.OS === "android" && isRTL ? 0 : 15,
-    paddingRight: Platform.OS === "android" && isRTL ? 15 : 0,
+    paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
+    paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: 11,

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, I18nManager } from "react-native";
 import { View, Input, Item } from "native-base";
-import { isRTL } from "expo-localization";
-
 // Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -70,7 +68,11 @@ class SearchBar extends Component {
         <Item rounded style={styles.searchBarItem}>
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
-            style={isRTL ? rtlStyles.searchBarInput : styles.searchBarInput}
+            style={
+              I18nManager.isRTL
+                ? rtlStyles.searchBarInput
+                : styles.searchBarInput
+            }
             placeholder={translate(
               `Search ${businessList ? "businesses" : "ads"}`
             )}

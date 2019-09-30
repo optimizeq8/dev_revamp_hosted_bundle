@@ -3,7 +3,6 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import { isRTL } from "expo-localization";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     // backgroundColor: "black",

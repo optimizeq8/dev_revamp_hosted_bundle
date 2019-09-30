@@ -15,7 +15,6 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-import { isRTL } from "expo-localization";
 
 import GetInviteCode from "../GetInviteCode";
 import Verification from "../Signup/Verification";
