@@ -3,15 +3,34 @@ import { AsyncStorage } from "react-native";
 
 import rootReducer from "./reducers";
 import thunk from "redux-thunk";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, createTransform } from "redux-persist";
+import omit from "lodash/omit";
 
 const initialState = {};
 const middleware = [thunk];
 
+let blacklistTransform = createTransform((inboundState, key) => {
+  if (key === "campaignC") {
+    return omit(inboundState, [
+      "loadingObj",
+      "loadingDesign",
+      "loadingDetail",
+      "loading",
+      "videoUrlLoading",
+      "coverLoading",
+      "instagramPostLoading",
+      "getWebProductsLoading",
+      "webUploadLinkMediaLoading"
+    ]);
+  } else {
+    return inboundState;
+  }
+});
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["campaignC"]
+  whitelist: ["campaignC"],
+  transforms: [blacklistTransform]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
