@@ -3,7 +3,6 @@ import reverse from "lodash/reverse";
 const initialState = {
   user: null,
   conversation_id: null,
-  seen: false,
   last_seen: null,
   loading: false,
   loading_msg: false,
@@ -52,7 +51,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_AS_SEEN:
       return {
         ...state,
-        seen: action.payload,
         read: action.payload,
         conversation_status: action.payload
       };
@@ -75,11 +73,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading_con: action.payload
-      };
-    case actionTypes.SET_UNSEEN_YET:
-      return {
-        ...state,
-        seen: false
       };
     case actionTypes.SET_AS_SUBSCRIBED:
       return {

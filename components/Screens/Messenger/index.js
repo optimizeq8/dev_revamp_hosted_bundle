@@ -176,11 +176,11 @@ class Messenger extends Component {
         />
         <View style={styles.contentContainer}>
           <Content
-            contentContainerStyle={styles.contentContainer}
-            scrollEnabled={false}
+            contentContainerStyle={{ flex: 1 }}
+            // scrollEnabled={false}
             // padder
           >
-            <KeyBoardShift style={[styles.contentContainer]}>
+            <KeyBoardShift style={{ flex: 1 }}>
               {() => (
                 <>
                   <View style={styles.flexEmptyView} />

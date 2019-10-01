@@ -7,7 +7,6 @@ import isNull from "lodash/isNull";
 
 instance = axios.create({
   baseURL: "https://www.optimizeapp.io/"
-  // baseURL: "https://intercom-react.glitch.me/"
 });
 
 // send the id of the user
@@ -104,7 +103,6 @@ export const get_conversation = user_id => {
     instance
       .get(`get-conversation/${user_id}`)
       .then(res => {
-        console.log("convo", res.data.read);
         return res.data;
       })
       .then(data => {
