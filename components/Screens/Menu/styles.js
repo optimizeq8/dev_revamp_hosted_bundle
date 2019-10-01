@@ -6,6 +6,15 @@ import {
 import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
+  media: {
+    // position: "absolute",
+    alignSelf: "center",
+    height: 120,
+    width: "100%",
+    margin: 10,
+    marginTop: 0,
+    justifyContent: "flex-start"
+  },
   menuContainer: {
     backgroundColor: "#0000",
     flexGrow: 1
@@ -18,7 +27,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     paddingLeft: 20,
     flexGrow: 1,
-    paddingBottom: heightPercentageToDP(35)
+    paddingBottom: heightPercentageToDP(45)
 
     //   bottom: heightPercentageToDP(5) < 30 ? 10 : 0
   },
@@ -56,10 +65,10 @@ const styles = StyleSheet.create({
   businessTitle: {
     alignSelf: "center",
     textAlign: "center",
-    top: 0,
+    // top: 0,
     color: "#fff",
     fontFamily: "montserrat-medium",
-    fontSize: 20
+    fontSize: 31
   },
   menutext: {
     fontFamily: "montserrat-bold",
