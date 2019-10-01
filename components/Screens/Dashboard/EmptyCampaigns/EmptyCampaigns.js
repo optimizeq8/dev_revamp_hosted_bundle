@@ -5,7 +5,7 @@ import Background from "../../../../assets/SVGs/Background";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import * as Animatable from "react-native-animatable";
 import * as Segment from "expo-analytics-segment";
-
+import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
 import {
   widthPercentageToDP,
@@ -29,8 +29,30 @@ export default class EmptyCampaigns extends Component {
           height={heightPercentageToDP(10)}
         />
         <Text style={styles.logoText}>Optimize</Text>
-        <Text style={styles.brandNameStyle}>{mainBusiness.brandname}</Text>
-        <Text style={styles.businessNameStyle}>
+        <Text
+          style={[
+            styles.brandNameStyle,
+            this.props.mainBusiness &&
+            !isStringArabic(this.props.mainBusiness.brandname)
+              ? {
+                  fontFamily: "montserrat-bold-english"
+                }
+              : {}
+          ]}
+        >
+          {mainBusiness.brandname}
+        </Text>
+        <Text
+          style={[
+            styles.businessNameStyle,
+            this.props.mainBusiness &&
+            !isStringArabic(this.props.mainBusiness.businessname)
+              ? {
+                  fontFamily: "montserrat-medium-english"
+                }
+              : {}
+          ]}
+        >
           {mainBusiness.businessname}
         </Text>
         <View style={styles.mainButtonView}>

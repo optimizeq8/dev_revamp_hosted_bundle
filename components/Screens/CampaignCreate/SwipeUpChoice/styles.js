@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   url: {
     alignSelf: "center",
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 13,
     color: "#fff",
     paddingRight: 20
@@ -189,14 +189,14 @@ const styles = StyleSheet.create({
     height: 54
   },
   inputtext: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
     textAlign: "center",
     color: "#fff"
   },
   callActionLabel: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14,
     textAlign: "center",
     color: "#fff",

@@ -63,8 +63,8 @@ class Instagram extends Component {
         this.props.data.attachment !== "BLANK") ||
       this.props.mainBusiness.googlemaplink !== ""
     ) {
-      // console.log('capmaignDetail', this.props.data);
-      // console.log('mainBusinessInstaHandle', this.props.mainBusiness);
+      // console.log("capmaignDetail", this.props.data);
+      // console.log("mainBusinessInstaHandle", this.props.mainBusiness);
 
       this.setState({
         campaignInfo: {
@@ -72,19 +72,24 @@ class Instagram extends Component {
           weburl: this.props.mainBusiness.weburl
             ? this.props.mainBusiness.weburl
             : this.props.data.weburl,
-          insta_handle: this.props.data.insta_handle
-            ? this.props.data.insta_handle
-            : this.props.mainBusiness.insta_handle
-            ? this.props.mainBusiness.insta_handle
-            : "",
+          insta_handle:
+            this.props.data && this.props.data.insta_handle
+              ? this.props.data.insta_handle
+              : this.props.mainBusiness.insta_handle
+              ? this.props.mainBusiness.insta_handle
+              : "",
           googlemaplink: this.props.mainBusiness.googlemaplink
             ? this.props.mainBusiness.googlemaplink
-            : this.props.data.googlemaplink,
+            : this.props.data && this.props.data.googlemaplink
+            ? this.props.data.googlemaplink
+            : "",
           callnumber: this.props.mainBusiness.callnumber
             ? this.props.mainBusiness.callnumber
             : this.props.data.callnumber,
           callaction:
-            this.props.data && this.props.data.call_to_action.value !== "BLANK"
+            this.props.data &&
+            this.props.data.call_to_action &&
+            this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
               : list.SnapAd[4].call_to_action_list[0]
         }

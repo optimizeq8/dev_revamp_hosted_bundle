@@ -51,7 +51,7 @@ import {
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
-import Modal from "react-native-modal";
+import isStringArabic from "../../isStringArabic";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -407,7 +407,15 @@ class Dashboard extends Component {
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.text]}
+                        style={[
+                          styles.text,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.businessname)
+                            ? {
+                                fontFamily: "montserrat-bold-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.businessname
@@ -425,7 +433,15 @@ class Dashboard extends Component {
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.brandStyle]}
+                        style={[
+                          styles.brandStyle,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.brandname)
+                            ? {
+                                fontFamily: "montserrat-regular-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.brandname

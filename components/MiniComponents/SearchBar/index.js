@@ -12,6 +12,7 @@ import rtlStyles from "./rtlStyles";
 // Icons
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
+import isStringArabic from "../../isStringArabic";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -68,11 +69,19 @@ class SearchBar extends Component {
         <Item rounded style={styles.searchBarItem}>
           <SearchIcon width={18} height={18} stroke="#575757" />
           <Input
-            style={
+            style={[
               I18nManager.isRTL
                 ? rtlStyles.searchBarInput
-                : styles.searchBarInput
-            }
+                : styles.searchBarInput,
+              businessList &&
+                !isStringArabic(
+                  translate(`Search ads`)
+                    ? {
+                        fontFamily: "montserrat-light-english"
+                      }
+                    : {}
+                )
+            ]}
             placeholder={translate(
               `Search ${businessList ? "businesses" : "ads"}`
             )}

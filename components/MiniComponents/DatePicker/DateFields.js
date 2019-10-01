@@ -146,7 +146,7 @@ export default class DateFields extends Component {
             I18nManager.isRTL && {
               // marginLeft: 0,
               marginTop: -hp(6),
-              marginLeft: -90,
+              marginLeft: 0,
               marginRight: -10
             }
         ]}

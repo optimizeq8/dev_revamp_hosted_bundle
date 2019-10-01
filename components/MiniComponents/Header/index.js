@@ -6,6 +6,7 @@ import BackIcon from "../../../assets/SVGs/BackButton.svg";
 import CloseIcon from "../../../assets/SVGs/Close.svg";
 import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
+import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
 
 export default class Header extends Component {
@@ -41,7 +42,18 @@ export default class Header extends Component {
             <BackIcon width={24} height={24} />
           )}
         </TouchableOpacity>
-        <Text uppercase style={styles.title}>
+        <Text
+          uppercase
+          style={[
+            styles.title,
+            title &&
+            (title.includes("Snap Ad") ||
+              title.includes("Story Ad") ||
+              title.includes("Collection Ad"))
+              ? { fontFamily: "montserrat-bold-english" }
+              : {}
+          ]}
+        >
           {title}
         </Text>
         <View style={[styles.right]}>

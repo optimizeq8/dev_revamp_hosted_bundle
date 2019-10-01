@@ -110,7 +110,7 @@ class MultiSelectList extends Component {
       >
         <Text
           style={{
-            fontFamily: "montserrat-bold",
+            fontFamily: "montserrat-bold-english",
             color: this.props.country_code === c.value ? "#FF9D00" : "#fff",
             fontSize: 14
           }}

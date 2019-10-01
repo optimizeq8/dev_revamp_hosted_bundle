@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   adButtonText: {
     textAlign: "center",
     color: "#C6C6C6",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 16,
     top: 20
   },

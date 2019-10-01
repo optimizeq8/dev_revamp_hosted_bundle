@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   inputText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     textAlign: "center",
     fontSize: 21 / PixelRatio.getFontScale(),
     color: "#4B4B4B"
