@@ -409,12 +409,29 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
 
       Font.loadAsync({
-        "montserrat-regular": require("./assets/fonts/Montserrat-Regular.ttf"),
-        "montserrat-light": require("./assets/fonts/Montserrat-Light.ttf"),
-        "montserrat-medium": require("./assets/fonts/Montserrat-Medium.ttf"),
-        "montserrat-semibold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
-        "montserrat-extralight": require("./assets/fonts/Montserrat-ExtraLight.ttf"),
-        "montserrat-bold": require("./assets/fonts/Montserrat-Bold.ttf"),
+        "montserrat-regular-english": require("./assets/fonts/Montserrat-Regular.ttf"),
+        "montserrat-medium-english": require("./assets/fonts/Montserrat-Medium.ttf"),
+        "montserrat-bold-english": require("./assets/fonts/Montserrat-Bold.ttf"),
+        "montserrat-light-english": require("./assets/fonts/Montserrat-Light.ttf"),
+        "montserrat-regular": I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-Regular.ttf")
+          : require("./assets/fonts/Montserrat-Regular.ttf"),
+        "montserrat-light": I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-Light.ttf")
+          : require("./assets/fonts/Montserrat-Light.ttf"),
+        "montserrat-medium": I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-Medium.ttf")
+            ? require("./assets/fonts/Montserrat-Medium.ttf")
+            : "montserrat-semibold"
+          : I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-SemiBold.ttf")
+          : require("./assets/fonts/Montserrat-SemiBold.ttf"),
+        "montserrat-extralight": I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-ExtraLight.ttf")
+          : require("./assets/fonts/Montserrat-ExtraLight.ttf"),
+        "montserrat-bold": I18nManager.isRTL
+          ? require("./assets/fonts/Arabic/Changa-Bold.ttf")
+          : require("./assets/fonts/Montserrat-Bold.ttf"),
         Roboto: require("native-base/Fonts/Roboto.ttf"),
         Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
       })

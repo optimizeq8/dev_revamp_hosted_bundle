@@ -9,6 +9,7 @@ import globalStyles from "../../../GlobalStyles";
 // icons
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
 import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border.svg";
+import isStringArabic from "../../isStringArabic";
 class TransactionCard extends Component {
   state = {
     paused: false,
@@ -25,7 +26,18 @@ class TransactionCard extends Component {
         <View style={styles.transactionButton}>
           <View style={styles.textcontainer}>
             <View style={styles.header}>
-              <Text numberOfLines={2} style={[styles.titleText]}>
+              <Text
+                numberOfLines={2}
+                style={[
+                  styles.titleText,
+                  transaction.campaign_name !== "Wallet Topup" &&
+                  !isStringArabic(transaction.campaign_name)
+                    ? {
+                        fontFamily: "montserrat-bold-english"
+                      }
+                    : {}
+                ]}
+              >
                 {transaction.campaign_name === "Wallet Topup"
                   ? translate("Wallet") + "\t" + translate("Top Up")
                   : transaction.campaign_name}

@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   MediaOptionsDescription: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     color: "#fff",
     fontSize: 13,
     textAlign: "left"

@@ -13,7 +13,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 15,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-medium-english",
     marginBottom: "5%"
   },
   businessNameStyle: {

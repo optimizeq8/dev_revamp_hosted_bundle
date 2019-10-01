@@ -309,7 +309,7 @@ class AppChoice extends Component {
                   <View style={{ marginTop: 20 }}>
                     <View style={[styles.callToActionLabelView]}>
                       <Text uppercase style={[styles.inputLabel]}>
-                        url
+                        {translate("url")}
                       </Text>
                     </View>
                     <Item
@@ -324,7 +324,7 @@ class AppChoice extends Component {
                       <Input
                         value={this.state.deep_link_url}
                         style={appConfirmStyles.inputtext}
-                        placeholder="Deep Link URL"
+                        placeholder={translate("Deep Link URL")}
                         placeholderTextColor="white"
                         autoCorrect={false}
                         autoCapitalize="none"

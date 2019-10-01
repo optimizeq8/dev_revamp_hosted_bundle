@@ -6,6 +6,7 @@ import { ActivityIndicator } from "react-native-paper";
 //styles
 import styles from "./styles";
 import { globalColors } from "../../../../GlobalStyles";
+import isStringArabic from "../../../isStringArabic";
 export default class AdTypeCard extends Component {
   render() {
     let adType = this.props.adType;
@@ -21,7 +22,18 @@ export default class AdTypeCard extends Component {
         }}
       >
         <View style={styles.typeCardContainer}>
-          <Text style={styles.slidTitle}>{translate(adType.title)} </Text>
+          <Text
+            style={[
+              styles.slidTitle,
+              !isStringArabic(translate(adType.title))
+                ? {
+                    fontFamily: "montserrat-bold-english"
+                  }
+                : {}
+            ]}
+          >
+            {translate(adType.title)}{" "}
+          </Text>
           <View style={styles.placeholder}>
             <Image
               loadingIndicatorSource={

@@ -29,6 +29,7 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 
 //Functions
+import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP
@@ -91,12 +92,34 @@ class Menu extends Component {
         <Container style={[styles.menuModal]}>
           <View style={styles.menuContainer}>
             <Text style={styles.menutext}> {translate("Menu")} </Text>
-            <Text style={styles.businessTitle}>
+            <Text
+              style={[
+                styles.businessTitle,
+                this.props.mainBusiness &&
+                this.props.mainBusiness.brandname &&
+                !isStringArabic(this.props.mainBusiness.brandname)
+                  ? {
+                      fontFamily: "montserrat-medium-english"
+                    }
+                  : {}
+              ]}
+            >
               {!this.props.mainBusiness
                 ? ""
                 : this.props.mainBusiness.brandname}
             </Text>
-            <Text style={styles.businessname}>
+            <Text
+              style={[
+                styles.businessname,
+                this.props.mainBusiness &&
+                this.props.mainBusiness.businessname &&
+                !isStringArabic(this.props.mainBusiness.businessname)
+                  ? {
+                      fontFamily: "montserrat-regular-english"
+                    }
+                  : {}
+              ]}
+            >
               {!this.props.mainBusiness
                 ? ""
                 : this.props.mainBusiness.businessname}

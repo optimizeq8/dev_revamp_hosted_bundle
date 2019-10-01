@@ -6,6 +6,7 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import businessList from "../../Data/businessCategoriesList.data";
 import find from "lodash/find";
+import isStringArabic from "../../isStringArabic";
 
 class BusinessCard extends Component {
   constructor(props) {
@@ -45,7 +46,17 @@ class BusinessCard extends Component {
           style={[styles.icon, { color: changeState.color }]}
         />
         <View style={styles.textcontainer}>
-          <Text style={[styles.titletext, { color: changeState.color }]}>
+          <Text
+            style={[
+              styles.titletext,
+              { color: changeState.color },
+              !isStringArabic(this.props.business.businessname)
+                ? {
+                    fontFamily: "montserrat-medium-english"
+                  }
+                : {}
+            ]}
+          >
             {this.props.business.businessname}
           </Text>
           <Text style={[styles.subtext, { color: changeState.color }]}>

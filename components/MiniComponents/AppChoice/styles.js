@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   pickerText: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center",
