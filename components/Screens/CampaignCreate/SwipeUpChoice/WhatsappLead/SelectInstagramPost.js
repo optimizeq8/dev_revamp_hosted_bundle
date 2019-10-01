@@ -4,7 +4,8 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  BackHandler
 } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -12,7 +13,6 @@ import { showMessage } from "react-native-flash-message";
 import findIndex from "lodash/findIndex";
 import find from "lodash/find";
 import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
 import { connect } from "react-redux";
 
 import * as actionCreators from "../../../../../store/actions";
@@ -39,7 +39,16 @@ class SelectInstagramPost extends React.Component {
     this.props.getInstagramPost(insta_handle);
     // console.log("campaign_id", this.props.data.campaign_id);
     this.props.getWebProducts(this.props.data.campaign_id);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (

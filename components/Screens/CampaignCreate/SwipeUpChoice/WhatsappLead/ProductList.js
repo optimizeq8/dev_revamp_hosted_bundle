@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, BackHandler } from "react-native";
 import { Text, Container, Content } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
@@ -32,7 +32,17 @@ class ProductList extends React.Component {
       cartList: list
     });
     // console.log('data', this.props.data);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+
   editItem = item => {
     this.props.navigation.navigate("EditProductDetailInstagramPost", {
       cartList: this.state.cartList,

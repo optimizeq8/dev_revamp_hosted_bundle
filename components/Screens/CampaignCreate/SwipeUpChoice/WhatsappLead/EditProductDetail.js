@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, BackHandler } from "react-native";
 import { Text, Container, Content, Item, Input } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import KeyBoardShift from "../../../../MiniComponents/KeyboardShift";
@@ -33,7 +33,17 @@ export default class EditProductDetail extends React.Component {
         (item.productName && item.productName.length === 0),
       priceError: !item.price || (item.price && item.price.length === 0)
     });
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     if (
