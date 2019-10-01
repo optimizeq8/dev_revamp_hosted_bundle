@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
+  Image
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -35,6 +36,7 @@ import {
   widthPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
+const imageLogo = require("../../../assets/images/logo01.png");
 
 class Menu extends Component {
   _draggedValue = new Animated.Value(0);
@@ -84,14 +86,28 @@ class Menu extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        style={{ top: "5%" }}
+        // style={[!this.props.open ? { top: "5%" } : {}]}
       >
         <Container style={[styles.menuModal]}>
-          <View style={styles.menuContainer}>
-            <Text style={styles.menutext}> {translate("Menu")} </Text>
+          <View
+            style={[
+              styles.menuContainer,
+              !this.props.open && {
+                top: "2%"
+              }
+            ]}
+          >
+            {/* <Text style={styles.menutext}> {translate("Menu")} </Text> */}
+            <Image
+              style={[styles.media]}
+              source={imageLogo}
+              resizeMode="contain"
+            />
+
             <Text
               style={[
                 styles.businessTitle,
