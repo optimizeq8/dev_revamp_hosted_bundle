@@ -5,7 +5,7 @@ import Background from "../../../../assets/SVGs/Background";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import * as Animatable from "react-native-animatable";
 import * as Segment from "expo-analytics-segment";
-
+import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
 import {
   widthPercentageToDP,
@@ -14,28 +14,51 @@ import {
 import { Button } from "native-base";
 export default class EmptyCampaigns extends Component {
   render() {
-    let { mainBusiness } = this.props;
+    let { mainBusiness, translate } = this.props;
     const B = props => (
       <Text style={{ fontFamily: "montserrat-bold" }}>{props.children}</Text>
     );
 
     return (
       <View>
-        <BackdropIcon style={styles.backDrop} />
-        <Background style={styles.background} />
+        {/* <BackdropIcon style={styles.backDrop} /> */}
+        {/* <Background style={styles.background} /> */}
         <Logo
           style={{ alignSelf: "center" }}
           width={heightPercentageToDP(10)}
           height={heightPercentageToDP(10)}
         />
         <Text style={styles.logoText}>Optimize</Text>
-        <Text style={styles.brandNameStyle}>{mainBusiness.brandname}</Text>
-        <Text style={styles.businessNameStyle}>
+        <Text
+          style={[
+            styles.brandNameStyle,
+            this.props.mainBusiness &&
+            !isStringArabic(this.props.mainBusiness.brandname)
+              ? {
+                  fontFamily: "montserrat-bold-english"
+                }
+              : {}
+          ]}
+        >
+          {mainBusiness.brandname}
+        </Text>
+        <Text
+          style={[
+            styles.businessNameStyle,
+            this.props.mainBusiness &&
+            !isStringArabic(this.props.mainBusiness.businessname)
+              ? {
+                  fontFamily: "montserrat-medium-english"
+                }
+              : {}
+          ]}
+        >
           {mainBusiness.businessname}
         </Text>
         <View style={styles.mainButtonView}>
           <Text style={styles.mainText}>
-            Tap the button below to <B>launch</B> Your first Campaign!
+            {translate("Tap the button below to")} <B>{translate("launch")} </B>
+            {translate("Your first Campaign")}
           </Text>
           <Animatable.View
             animation="swing"
@@ -62,7 +85,9 @@ export default class EmptyCampaigns extends Component {
               }}
               style={styles.campaignButton}
             >
-              <Text style={styles.campaignButtonText}>New{"\n"} Campaign</Text>
+              <Text style={styles.campaignButtonText}>
+                {translate(`New\nCampaign`)}
+              </Text>
             </Button>
           </Animatable.View>
         </View>

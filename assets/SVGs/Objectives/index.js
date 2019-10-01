@@ -5,3 +5,4 @@ export { default as Download } from "../Download.svg";
 export { default as Video } from "../Video.svg";
 export { default as Group } from "../Group.svg";
 export { default as WhatsApp } from "../SwipeUps/WhatsApp";
+export { default as Instagram } from "../InstagramIcon.svg";

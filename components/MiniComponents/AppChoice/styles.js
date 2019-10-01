@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   bottomView: {
-    justifyContent: "flex-end"
+    // justifyContent: "flex-end"
   },
   animateView1: {
     flexDirection: "row",
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7
   },
   mainCard: {
-    flex: 1
+    flex: 1,
+    width: "100%"
   },
   text: {
     color: "#fff",
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   pickerText: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14,
     alignSelf: "center",
     textAlign: "center",

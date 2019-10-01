@@ -7,7 +7,8 @@ import {
   Image as RNImage,
   Platform,
   BackHandler,
-  Slider
+  Slider,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import { Video } from "expo-av";
@@ -16,7 +17,6 @@ import * as Segment from "expo-analytics-segment";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { isRTL } from "expo-localization";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
 import SelectLanguages from "../../../MiniComponents/SelectLanguages";
@@ -172,19 +172,28 @@ class AdDetails extends Component {
           .name;
         this.onSelectedRegionChange(id, name);
       });
-      await this.setState({
+      this.setState({
         campaignInfo: editedCampaign
       });
     } else {
-      await this.setState({
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let defaultBudget = duration * 75;
+      this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: this.props.data.minValueBudget
+          lifetime_budget_micro: defaultBudget
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(this.props.data.minValueBudget)
+        value: this.formatNumber(defaultBudget)
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -197,7 +206,9 @@ class AdDetails extends Component {
               ...rep
             },
             ...this.props.data,
-            value: this.props.data.campaignInfo.lifetime_budget_micro,
+            value: this.formatNumber(
+              this.props.data.campaignInfo.lifetime_budget_micro
+            ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages
           },
@@ -217,7 +228,7 @@ class AdDetails extends Component {
         let navAppChoice = this.props.data.appChoice;
         let rep = this.state.campaignInfo;
         rep.targeting.devices[0].os_type = navAppChoice;
-        await this.setState({
+        this.setState({
           campaignInfo: rep
         });
       }
@@ -411,6 +422,7 @@ class AdDetails extends Component {
         message: validateWrapper("Budget", rawValue)
           ? validateWrapper("Budget", rawValue)
           : translate("Budget can't be less than the minimum"),
+        description: "$" + this.state.minValueBudget,
         type: "warning",
         position: "top"
       });
@@ -612,6 +624,8 @@ class AdDetails extends Component {
   };
 
   render() {
+    console.log("data", this.props.data);
+
     const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
@@ -767,7 +781,7 @@ class AdDetails extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition={isRTL ? "left" : "right"}
+        menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
@@ -793,12 +807,12 @@ class AdDetails extends Component {
             media={media}
             style={[
               styles.imageBackgroundViewWrapper,
-              this.state.sidemenustate && !isRTL
+              this.state.sidemenustate && !I18nManager.isRTL
                 ? {
                     borderTopRightRadius: 30
                   }
                 : {},
-              this.state.sidemenustate && isRTL
+              this.state.sidemenustate && I18nManager.isRTL
                 ? {
                     borderTopLeftRadius: 30
                   }
@@ -896,7 +910,7 @@ class AdDetails extends Component {
                         {translate("Tap to enter manually")}
                       </Text>
                     </View>
-                    <View style={styles.sliderContainer}>
+                    {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
                           ${this.state.minValueBudget}
@@ -927,6 +941,7 @@ class AdDetails extends Component {
                         minimumTrackTintColor={globalColors.purple}
                       />
                     </View>
+                  */}
                   </>
                 ) : (
                   <View style={styles.sliderPlaceHolder}>
@@ -1067,7 +1082,21 @@ class AdDetails extends Component {
                           style={styles.icon}
                         />
                         <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>
+                          <Text
+                            style={[
+                              styles.menutext,
+                              {
+                                paddingLeft:
+                                  Platform.OS === "android" && I18nManager.isRTL
+                                    ? 0
+                                    : 15,
+                                paddingRight:
+                                  Platform.OS === "android" && I18nManager.isRTL
+                                    ? 15
+                                    : 0
+                              }
+                            ]}
+                          >
                             {translate("Regions")}
                           </Text>
                           <Text style={styles.menudetails} numberOfLines={1}>

@@ -9,12 +9,12 @@ import Chart from "./Charts";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Toggle from "../Toggle";
-import { isRTL } from "expo-localization";
 
 import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
 import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
+import isStringArabic from "../../isStringArabic";
 class CampaignCard extends Component {
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
@@ -83,7 +83,14 @@ class CampaignCard extends Component {
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={3}
-                style={[styles.titleText]}
+                style={[
+                  styles.titleText,
+                  !isStringArabic(this.props.campaign.name)
+                    ? {
+                        fontFamily: "montserrat-bold-english"
+                      }
+                    : {}
+                ]}
               >
                 {this.props.campaign.name}
               </Text>

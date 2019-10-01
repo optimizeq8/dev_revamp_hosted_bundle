@@ -105,11 +105,10 @@ const styles = StyleSheet.create({
     width: 150
   },
   subtext: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 14,
     paddingTop: 5,
-    color: "#fff",
-    textAlign: "left"
+    color: "#fff"
   },
   numbers: {
     textAlign: "center",

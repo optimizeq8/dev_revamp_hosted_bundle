@@ -38,6 +38,7 @@ export default class AppBox extends Component {
                 backgroundColorOn="rgba(255,255,255,0.1)"
                 circleColorOff="#FFf"
                 circleColorOn="#66D072"
+                onPress={() => setModalVisible(true, "iOS")}
                 duration={500}
                 circleStyle={appConfirmStyles.toggleCircle}
                 containerStyle={appConfirmStyles.toggleStyle}
@@ -60,6 +61,7 @@ export default class AppBox extends Component {
                 circleColorOff="#FFf"
                 circleColorOn="#66D072"
                 duration={500}
+                onPress={() => setModalVisible(true, "ANDROID")}
                 circleStyle={appConfirmStyles.toggleCircle}
                 containerStyle={appConfirmStyles.toggleStyle}
               />

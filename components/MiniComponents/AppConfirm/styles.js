@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   appStoreButtonsText: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 10,
     color: "#fff",
     paddingTop: 5,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, I18nManager } from "react-native";
 import { Button, Text } from "native-base";
 import { BlurView } from "expo-blur";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
@@ -8,7 +8,6 @@ import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
 import { SafeAreaView } from "react-navigation";
 import dateFormat from "dateformat";
-import { isRTL } from "expo-localization";
 
 // Style
 import styles from "./styles";
@@ -86,7 +85,7 @@ export default class DateFields extends Component {
       )
     );
     if (!this.props.filterMenu && !this.props.chartRange) {
-      this.props.getMinimumCash(timeDiff + 1);
+      await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
     } else if (this.props.filterMenu) {
@@ -139,16 +138,16 @@ export default class DateFields extends Component {
           styles.dateModal,
           this.state.modalVisible ? { zIndex: 100 } : { zIndex: -1 },
           this.props.filterMenu &&
-            !isRTL && {
+            !I18nManager.isRTL && {
               marginLeft: -80,
               marginTop: -hp(6)
             },
           this.props.filterMenu &&
-            isRTL && {
+            I18nManager.isRTL && {
               // marginLeft: 0,
               marginTop: -hp(6),
-              marginRight: -80,
-              marginLeft: -30
+              marginLeft: 0,
+              marginRight: -10
             }
         ]}
       >
@@ -167,12 +166,12 @@ export default class DateFields extends Component {
             style={[
               styles.BlurView,
               this.props.filterMenu &&
-                !isRTL && {
+                !I18nManager.isRTL && {
                   paddingLeft: wp("20"),
                   paddingTop: hp(6)
                 },
               this.props.filterMenu &&
-                isRTL && {
+                I18nManager.isRTL && {
                   paddingLeft: wp("2"),
                   paddingRight: wp("8"),
                   paddingTop: hp(6)

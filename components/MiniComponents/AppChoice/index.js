@@ -25,7 +25,6 @@ import globalStyles from "../../../GlobalStyles";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
-import { isRTL } from "expo-localization";
 
 class AppChoice extends Component {
   constructor(props) {
@@ -168,11 +167,11 @@ class AppChoice extends Component {
       "mandatory",
       this.state.callaction.value
     );
-
+    const { translate } = this.props.screenProps;
     this.setState({ nameError, callActionError, AppError });
     if (AppError) {
       showMessage({
-        message: "Please choose an application to promote.",
+        message: translate("Please choose an application to promote"),
         type: "warning",
         position: "top"
       });
@@ -190,11 +189,13 @@ class AppChoice extends Component {
     this.setState({
       deep_link_urlError
     });
+    const { translate } = this.props.screenProps;
     if (deep_link_urlError) {
       showMessage({
-        message: "Invalid deep link url.",
-        description:
-          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        message: translate("Invalid deep link URL"),
+        description: translate(
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -308,7 +309,7 @@ class AppChoice extends Component {
                   <View style={{ marginTop: 20 }}>
                     <View style={[styles.callToActionLabelView]}>
                       <Text uppercase style={[styles.inputLabel]}>
-                        url
+                        {translate("url")}
                       </Text>
                     </View>
                     <Item
@@ -323,7 +324,7 @@ class AppChoice extends Component {
                       <Input
                         value={this.state.deep_link_url}
                         style={appConfirmStyles.inputtext}
-                        placeholder="Deep Link URL"
+                        placeholder={translate("Deep Link URL")}
                         placeholderTextColor="white"
                         autoCorrect={false}
                         autoCapitalize="none"
@@ -366,7 +367,7 @@ class AppChoice extends Component {
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
         />
-       <View style={styles.bottomView}>
+        <View style={styles.bottomView}>
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}

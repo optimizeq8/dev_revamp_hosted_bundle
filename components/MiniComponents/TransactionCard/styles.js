@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   subText: {
     paddingTop: heightPercentageToDP(0.25),
     paddingBottom: heightPercentageToDP(0.5),
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 14,
     color: "#a0a0a0",
     textAlign: "left"

@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   terms: {},
-  phoneLanguage: "en"
+  phoneLanguage: ""
 };
 
 const reducer = (state = initialState, action) => {

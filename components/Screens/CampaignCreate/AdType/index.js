@@ -1,12 +1,11 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler, Platform } from "react-native";
+import { View, BackHandler, Platform, I18nManager } from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { isRTL } from "expo-localization";
 import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
@@ -46,7 +45,9 @@ class AdType extends Component {
     isVisible: false,
 
     campaign_type:
-      Platform.OS === "android" && isRTL ? "CollectionAd" : "SnapAd",
+      Platform.OS === "android" && I18nManager.isRTL
+        ? "CollectionAd"
+        : "SnapAd",
     route: "AdObjective"
   };
 
@@ -73,7 +74,7 @@ class AdType extends Component {
 
   navigationRouteHandler = index => {
     let activeSlide = index;
-    if (Platform.OS === "android" && isRTL) {
+    if (Platform.OS === "android" && I18nManager.isRTL) {
       const reversedSnapAds = snapAds.reverse();
       let campaign_type = reversedSnapAds[index].value;
       let route = reversedSnapAds[index].rout;
@@ -204,7 +205,7 @@ class AdType extends Component {
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
             data={
-              Platform.OS === "android" && isRTL
+              Platform.OS === "android" && I18nManager.isRTL
                 ? this.state.media_type.reverse()
                 : this.state.media_type
             }

@@ -172,7 +172,7 @@ class AdDesign extends Component {
         // this.onToggleModal();
         showMessage({
           message: translate(
-            "Please allow access to the gallary to upload media"
+            "Please allow access to the gallery to upload media"
           ),
           position: "top",
           type: "warning"
@@ -1022,7 +1022,8 @@ class AdDesign extends Component {
                       call_to_action,
                       attachment,
                       appChoice = null,
-                      whatsAppCampaign
+                      whatsAppCampaign,
+                      instagramTrafficCampaign
                     ) =>
                       _changeDestination(
                         destination,
@@ -1030,6 +1031,7 @@ class AdDesign extends Component {
                         attachment,
                         appChoice,
                         whatsAppCampaign,
+                        instagramTrafficCampaign,
                         this.adType,
                         this.props.setStoryAdAttachment,
                         this.state.campaignInfo,
@@ -1119,7 +1121,8 @@ class AdDesign extends Component {
                                 handleUpload: this.handleUpload,
                                 signal: this.state.signal,
                                 uploadStoryAdCard: this.props.uploadStoryAdCard
-                              }
+                              },
+                              this.props.screenProps
                             );
                           }}
                           style={styles.button}
@@ -1161,7 +1164,8 @@ class AdDesign extends Component {
                               handleUpload: this.handleUpload,
                               signal: this.state.signal,
                               uploadStoryAdCard: this.props.uploadStoryAdCard
-                            }
+                            },
+                            this.props.screenProps
                           )
                         }
                         adType={this.adType}

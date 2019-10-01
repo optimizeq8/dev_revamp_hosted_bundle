@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   menuContainer: {
-    left: 0,
-    top: 0,
-    flexGrow: 1
+    alignSelf: "center",
+    width: "100%",
+    position: "absolute"
   },
   flatlistContainerStyle: {
     paddingBottom: heightPercentageToDP(35)
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   adButtonText: {
     textAlign: "center",
     color: "#C6C6C6",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 16,
     top: 20
   },
@@ -330,6 +330,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.3,
     shadowOffset: { width: 3, height: 3 }
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.4,
+    top: 230,
+    alignSelf: "center"
   }
 });
 

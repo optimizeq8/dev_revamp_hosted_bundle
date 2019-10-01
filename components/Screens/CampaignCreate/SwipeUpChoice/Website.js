@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  BackHandler,
+  ScrollView,
+  TouchableOpacity,
+  I18nManager
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -24,7 +30,6 @@ import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-import { isRTL } from "expo-localization";
 
 class Website extends Component {
   static navigationOptions = {
@@ -267,7 +272,7 @@ class Website extends Component {
                         <Input
                           style={[
                             styles.inputtext,
-                            isRTL
+                            I18nManager.isRTL
                               ? { textAlign: "right" }
                               : { textAlign: "left" }
                           ]}

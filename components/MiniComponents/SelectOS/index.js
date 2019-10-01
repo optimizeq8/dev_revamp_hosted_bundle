@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { isRTL } from "expo-localization";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
@@ -79,7 +78,7 @@ export default class SelectOS extends Component {
                   style={[
                     styles.inactivetext,
                     styles.optionsTextContainer,
-                    isRTL && !isStringArabic(translate("iOS"))
+                    I18nManager.isRTL && !isStringArabic(translate("iOS"))
                       ? {
                           marginTop: 0,
                           marginBottom: 15
@@ -115,7 +114,7 @@ export default class SelectOS extends Component {
                   style={[
                     styles.inactivetext,
                     styles.optionsTextContainer,
-                    isRTL && !isStringArabic(translate("ANDROID"))
+                    I18nManager.isRTL && !isStringArabic(translate("ANDROID"))
                       ? {
                           marginBottom: 20
                         }

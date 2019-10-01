@@ -1,11 +1,11 @@
 import axios from "axios";
 import qs from "qs";
+import { AsyncStorage, I18nManager } from "react-native";
+import i18n from "i18n-js";
 import * as actionTypes from "./actionTypes";
-import { showMessage } from "react-native-flash-message";
-import store from "../index";
 
 export const getLanguageListPOEdit = language => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     const response = await axios.post(
       "https://api.poeditor.com/v2/terms/list",
       qs.stringify({
@@ -14,17 +14,24 @@ export const getLanguageListPOEdit = language => {
         language
       })
     );
-    // console.log('data', response.data);
 
     if (response.data.response.status === "success") {
+      await AsyncStorage.setItem("appLanguage", language);
       const terms = response.data.result.terms;
       if (terms.length > 0) {
-        // console.log('terms', terms);
         var modifierJson = {};
         terms.map(term => {
           modifierJson[term.term] = term.translation.content;
         });
+
+        I18nManager.allowRTL(language === "ar");
+        I18nManager.forceRTL(language === "ar");
+        // console.log("language getLanguageListPOEdit", language);
         // console.log("modiferJson", modifierJson);
+        i18n.translations = {
+          [language]: modifierJson
+        };
+
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
           payload: {

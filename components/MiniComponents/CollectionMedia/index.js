@@ -12,7 +12,8 @@ import {
   Image,
   Platform,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 import {
   Button,
@@ -57,7 +58,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { isRTL } from "expo-localization";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ class CollectionMedia extends Component {
 
   async componentDidMount() {
     let order = this.props.navigation.getParam("collection_order");
-
+    const { translate } = this.props.screenProps;
     await this.setState({
       collection: {
         ...this.state.collection,
@@ -109,7 +109,9 @@ class CollectionMedia extends Component {
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallery to upload media"
+          ),
           position: "top",
           type: "warning"
         });
@@ -463,7 +465,7 @@ class CollectionMedia extends Component {
       this.onToggleModal(false);
       showMessage({
         message: translate(
-          "Please allow access to the gallary to upload media"
+          "Please allow access to the gallery to upload media"
         ),
         position: "top",
         type: "warning"
@@ -774,7 +776,7 @@ class CollectionMedia extends Component {
                             <Input
                               style={[
                                 styles.inputtext,
-                                isRTL
+                                I18nManager.isRTL
                                   ? { textAlign: "right" }
                                   : { textAlign: "left" }
                               ]}

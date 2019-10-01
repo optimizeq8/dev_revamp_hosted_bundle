@@ -45,6 +45,12 @@ export default {
       value: "WEB_CONVERSION",
       info: "Send customers directly to your business's whatsapp",
       icon: ObjIcons.WhatsApp
+    },
+    {
+      label: "Instagram Traffic",
+      value: "WEB_CONVERSION_INSTAGRAM",
+      info: "Send customers directly to your business's Instagram",
+      icon: ObjIcons.Instagram
     }
   ],
   SnapAd: [
@@ -83,6 +89,12 @@ export default {
       value: "WEB_CONVERSION",
       info: "Send customers directly to your business's whatsapp",
       icon: ObjIcons.WhatsApp
+    },
+    {
+      label: "Instagram Traffic",
+      value: "WEB_CONVERSION_INSTAGRAM",
+      info: "Send customers directly to your business's Instagram",
+      icon: ObjIcons.Instagram
     }
   ]
 };

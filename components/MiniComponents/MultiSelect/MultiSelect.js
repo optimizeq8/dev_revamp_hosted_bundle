@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, I18nManager } from "react-native";
 import { Button, Text, Item, Input } from "native-base";
-import { isRTL } from "expo-localization";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
@@ -111,7 +110,7 @@ class MultiSelectList extends Component {
       >
         <Text
           style={{
-            fontFamily: "montserrat-bold",
+            fontFamily: "montserrat-bold-english",
             color: this.props.country_code === c.value ? "#FF9D00" : "#fff",
             fontSize: 14
           }}
@@ -135,7 +134,9 @@ class MultiSelectList extends Component {
                 <Input
                   placeholder={translate("Search Country")}
                   style={
-                    isRTL ? rtlStyles.searchInputText : styles.searchInputText
+                    I18nManager.isRTL
+                      ? rtlStyles.searchInputText
+                      : styles.searchInputText
                   }
                   placeholderTextColor="#fff"
                   onChangeText={value => {

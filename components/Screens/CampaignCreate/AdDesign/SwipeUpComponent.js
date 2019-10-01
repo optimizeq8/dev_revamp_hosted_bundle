@@ -73,7 +73,8 @@ export default class SwipeUpComponent extends Component {
               (destination === "COLLECTION" && collectionAdLinkForm === 2))
               ? translate(call_to_action_label)
               : (destination === "REMOTE_WEBPAGE" &&
-                  objective !== "WEB_CONVERSION") ||
+                  objective !== "WEB_CONVERSION" &&
+                  objective !== "WEB_CONVERSION_INSTAGRAM") ||
                 (destination === "COLLECTION" && collectionAdLinkForm === 1)
               ? translate(call_to_action_label)
               : objective === "WEB_CONVERSION" &&
@@ -81,6 +82,11 @@ export default class SwipeUpComponent extends Component {
                 (destination !== "BLANK" ||
                   selectedStoryAd.destination !== "BLANK")
               ? translate("WhatsApp Campaign")
+              : objective === "WEB_CONVERSION_INSTAGRAM" &&
+                call_to_action_label !== "BLANK" &&
+                (destination !== "BLANK" ||
+                  selectedStoryAd.destination !== "BLANK")
+              ? translate("Instagram Traffic")
               : translate("Swipe Up destination")}
           </Text>
           {objective !== "WEB_CONVERSION" &&

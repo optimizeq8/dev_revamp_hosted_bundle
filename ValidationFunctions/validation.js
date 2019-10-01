@@ -47,6 +47,9 @@ const validation = {
     },
     presence: { allowEmpty: false }
   },
+  googleMapLink: {
+    format: /^((https):\/\/)\b[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*$/i
+  },
   Budget: {
     numericality: {
       lessThanOrEqualTo: 9999999

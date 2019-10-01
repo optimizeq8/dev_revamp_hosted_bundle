@@ -10,8 +10,7 @@ export const askForPermssion = async screenProps => {
   const { translate } = screenProps;
   if (status !== "granted") {
     showMessage({
-      message: "Please allow access to the gallary to upload media.",
-      // message: translate("Please allow access to the gallary to upload media"),
+      message: translate("Please allow access to the gallery to upload media"),
       position: "top",
       type: "warning"
     });

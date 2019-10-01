@@ -106,7 +106,7 @@ const globalStyles = StyleSheet.create({
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 16 / PixelRatio.getFontScale(),
     paddingHorizontal: 10
   },

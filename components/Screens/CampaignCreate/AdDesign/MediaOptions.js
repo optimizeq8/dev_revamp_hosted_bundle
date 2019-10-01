@@ -39,7 +39,7 @@ export default class MediaOptions extends Component {
         )}
         <View style={{ flexDirection: "column", marginLeft: 30 }}>
           <Text style={styles.MediaOptionsTitle}>{translate(title)}</Text>
-          <Text style={styles.MediaOptionsDescription}>
+          <Text style={[styles.MediaOptionsDescription]}>
             {title === "Upload media from a different device"
               ? translate(
                   "Use any device to upload your media Aspect Ratio 9:16"

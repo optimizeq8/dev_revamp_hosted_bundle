@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  I18nManager
+} from "react-native";
 import { Content, Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
@@ -10,6 +16,7 @@ import App_Install from "../SwipeUpChoice/App_Install";
 import Long_Form_Video from "../SwipeUpChoice/Long_Form_Video";
 import WhatsApp from "../SwipeUpChoice/WhatsApp";
 import AttachmentCard from "./AttachmentCard";
+import Instagram from "../SwipeUpChoice/Instagram";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 
 //data
@@ -27,7 +34,6 @@ import isUndefined from "lodash/isUndefined";
 //Redux
 import { connect } from "react-redux";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
-import { isRTL } from "expo-localization";
 
 class SwipeUpDestination extends Component {
   static navigationOptions = {
@@ -180,6 +186,21 @@ class SwipeUpDestination extends Component {
         );
         break;
       }
+      case "WEB_CONVERSION_INSTAGRAM": {
+        menu = (
+          <Instagram
+            objective={this.props.navigation.getParam("objective")}
+            _changeDestination={
+              this.props.navigation.state.params._changeDestination
+            }
+            navigation={this.props.navigation}
+            toggleSideMenu={this.toggleSideMenu}
+            swipeUpDestination={true}
+            screenProps={this.props.screenProps}
+          />
+        );
+        break;
+      }
     }
     return (
       <SafeAreaView
@@ -211,11 +232,12 @@ class SwipeUpDestination extends Component {
                   });
               }
             }}
-            menuPosition={isRTL ? "left" : "right"}
+            menuPosition={I18nManager.isRTL ? "left" : "right"}
             disableGestures={true}
             isOpen={this.state.sidemenustate}
             menu={this.state.sidemenustate && menu}
             openMenuOffset={wp(85)}
+            screenProps={this.props.screenProps}
           >
             <CustomHeader
               closeButton={false}

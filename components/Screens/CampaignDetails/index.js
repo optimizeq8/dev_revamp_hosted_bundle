@@ -44,6 +44,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import MediaBox from "./MediaBox";
 import RejectedComp from "./RejectedComp";
+import isStringArabic from "../../isStringArabic";
 
 const preview = {
   uri:
@@ -346,7 +347,7 @@ class CampaignDetails extends Component {
                 closeButton={true}
                 navigation={this.props.navigation}
                 selectedCampaign={selectedCampaign}
-                topRightButtonText={"Edit"}
+                topRightButtonText={translate("Edit")}
                 topRightButtonFunction={() =>
                   this.props.navigation.push("AdDetails", {
                     editCampaign: true,
@@ -372,7 +373,15 @@ class CampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : (
-                  <Text style={[styles.title, { width: 150 }]}>
+                  <Text
+                    style={[
+                      styles.title,
+                      { width: 150 },
+                      !isStringArabic(selectedCampaign.name)
+                        ? { fontFamily: "montserrat-bold-english" }
+                        : {}
+                    ]}
+                  >
                     {selectedCampaign.name}
                   </Text>
                 )}

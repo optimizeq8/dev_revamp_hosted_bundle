@@ -6,8 +6,11 @@ import {
   Animated,
   TouchableWithoutFeedback,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
+import { Updates } from "expo";
+import i18n from "i18n-js";
 import { Button, Text, Container, Icon } from "native-base";
 import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
@@ -30,6 +33,7 @@ import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
 import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
+import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
@@ -48,7 +52,7 @@ import {
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
-import Modal from "react-native-modal";
+import isStringArabic from "../../isStringArabic";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -296,9 +300,14 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          {this.state.anim && (
-            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-          )}
+          {/* {this.state.anim && ( */}
+          <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+          {/* )} */}
+          <Background
+            style={[styles.background]}
+            width={wp(85)}
+            height={hp(61)}
+          />
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -344,17 +353,30 @@ class Dashboard extends Component {
                   </TouchableOpacity>
                 </>
               ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.clearPushToken(
-                      this.props.navigation,
-                      this.props.userInfo.userid
+                <Text
+                  onPress={async () => {
+                    await this.props.getLanguageListPOEdit(
+                      this.props.appLanguage === "en" ? "ar" : "en"
                     );
+                    await this.props.screenProps.setLocale(
+                      this.props.appLanguage
+                    );
+                    // RNRestart.Restart();
+                    Updates.reload();
+                    // i18n.translations = {
+                    //   [this.props.appLanguage]: this.props.terms
+                    // };
                   }}
-                  style={styles.logoutIcon}
+                  style={{
+                    color: "#FFF",
+                    fontSize: 14,
+                    right: "5%",
+                    position: "absolute",
+                    textAlign: "left"
+                  }}
                 >
-                  <Icons.LogoutIcon style={styles.icons} />
-                </TouchableOpacity>
+                  {this.props.appLanguage === "en" ? "العربية" : "English"}
+                </Text>
               )}
             </View>
           )}
@@ -383,6 +405,7 @@ class Dashboard extends Component {
               !this.props.loadingAccountMgmt &&
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
+                  translate={translate}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
@@ -394,17 +417,26 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
-                    menuPosition={Localization.isRTL ? "left" : "right"}
+                    menuPosition={I18nManager.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
                     openMenuOffset={wp("85%")}
                     isOpen={this.state.sidemenustate}
+                    screenProps={this.props.screenProps}
                   >
                     <View style={[styles.nameStyle]}>
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.text]}
+                        style={[
+                          styles.text,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.businessname)
+                            ? {
+                                fontFamily: "montserrat-bold-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.businessname
@@ -422,7 +454,15 @@ class Dashboard extends Component {
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.brandStyle]}
+                        style={[
+                          styles.brandStyle,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.brandname)
+                            ? {
+                                fontFamily: "montserrat-regular-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.brandname
@@ -561,8 +601,14 @@ class Dashboard extends Component {
                   Segment.screen("Dashboard");
                 }
               }}
-              duration={800}
-              animation={this.state.anim ? "fadeIn" : "fadeOut"}
+              duration={100}
+              animation={
+                (this.props.campaignList.length === 0 && this.state.anim) ||
+                (!this.state.sidemenustate &&
+                  this.props.campaignList.length !== 0)
+                  ? "fadeIn"
+                  : "fadeOut"
+              }
               style={styles.menuContainer}
             >
               <Menu
@@ -592,7 +638,9 @@ const mapStateToProps = state => ({
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
   incompleteCampaign: state.campaignC.incompleteCampaign,
-  conversation_status: state.messenger.conversation_status
+  conversation_status: state.messenger.conversation_status,
+  appLanguage: state.language.phoneLanguage,
+  terms: state.language.terms
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -613,7 +661,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.setCampaignInProgress(value)),
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  set_as_seen: check => dispatch(actionCreators.set_as_seen(check))
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
+  getLanguageListPOEdit: language =>
+    dispatch(actionCreators.getLanguageListPOEdit(language))
 });
 export default connect(
   mapStateToProps,
