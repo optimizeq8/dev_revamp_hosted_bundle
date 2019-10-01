@@ -3,7 +3,6 @@ import reverse from "lodash/reverse";
 const initialState = {
   user: null,
   conversation_id: null,
-  seen: false,
   last_seen: null,
   loading: false,
   loading_msg: false,
@@ -11,7 +10,9 @@ const initialState = {
   failed_msg: [],
   messages: [],
   subscribed: false,
-  open_conversation: false
+  open_conversation: false,
+  read: true,
+  conversation_status: true
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -44,12 +45,14 @@ const reducer = (state = initialState, action) => {
         conversation_id: action.payload.conversation_id,
         messages: reverseMessages,
         loading_con: false,
-        open_conversation: true
+        open_conversation: true,
+        read: action.payload.read
       };
     case actionTypes.SET_AS_SEEN:
       return {
         ...state,
-        seen: true
+        read: action.payload,
+        conversation_status: action.payload
       };
     case actionTypes.SET_LAST_SEEN:
       return {
@@ -71,15 +74,15 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading_con: action.payload
       };
-    case actionTypes.SET_UNSEEN_YET:
-      return {
-        ...state,
-        seen: false
-      };
     case actionTypes.SET_AS_SUBSCRIBED:
       return {
         ...state,
         subscribed: true
+      };
+    case actionTypes.SET_CONVERSATION_STATUS:
+      return {
+        ...state,
+        conversation_status: action.payload
       };
     default:
       return state;

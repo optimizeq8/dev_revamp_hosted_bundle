@@ -14,7 +14,7 @@ import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import socketIOClient from "socket.io-client";
-
+import { Content } from "native-base";
 import KeyBoardShift from "../../MiniComponents/KeyboardShift";
 //icons
 import ForwardButton from "../../../assets/SVGs/ForwardButton";
@@ -64,7 +64,8 @@ const socket = socketIOClient("https://www.optimizeapp.io/", {
 
 class Messenger extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
+    gesturesEnabled: false
   };
   constructor(props) {
     super(props);
@@ -82,7 +83,10 @@ class Messenger extends Component {
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
       this.props.admin_response(data);
+      // this.props.set_as_seen(true);
     });
+    this.props.set_as_seen(true);
+    this.props.update_conversatusion_read_status();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -99,6 +103,7 @@ class Messenger extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     socket.removeAllListeners();
+    this.props.update_last_seen();
   }
 
   handleBackPress = () => {
@@ -169,86 +174,88 @@ class Messenger extends Component {
           title={translate("Support")}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
-
-        <ScrollView
-          contentContainerStyle={styles.contentContainer}
-          scrollEnabled={false}
-          // padder
-        >
-          <KeyBoardShift style={[styles.contentContainer]}>
-            {() => (
-              <>
-                <View style={styles.flexEmptyView} />
-                <FlatList
-                  inverted
-                  ref={ref => {
-                    this.flatList = ref;
-                  }}
-                  // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-                  data={this.props.messages}
-                  keyExtractor={this._keyExtractor}
-                  // getItemLayout={this.getItemLayout}
-                  // scrollToIndex={params => this.scrollToIndex(params)}
-                  // initialScrollIndex={this.props.messages.length - 1}
-                  renderItem={(msg, index) => {
-                    if (!isNull(msg.item.body))
-                      return (
-                        <MessageBubble key={msg.item.id} message={msg.item} />
-                      );
-                  }}
-                />
-                {isEmpty(this.props.messages) && (
-                  <View style={styles.chatBotViewSmall}>
-                    <ChatBot width={100} height={100} />
-                  </View>
-                )}
-                {/* </View> */}
-                <View style={styles.textInputContainer}>
-                  {/* <Camera
+        <View style={styles.contentContainer}>
+          <Content
+            contentContainerStyle={{ flex: 1 }}
+            // scrollEnabled={false}
+            // padder
+          >
+            <KeyBoardShift style={{ flex: 1 }}>
+              {() => (
+                <>
+                  <View style={styles.flexEmptyView} />
+                  <FlatList
+                    inverted
+                    ref={ref => {
+                      this.flatList = ref;
+                    }}
+                    // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
+                    data={this.props.messages}
+                    keyExtractor={this._keyExtractor}
+                    // getItemLayout={this.getItemLayout}
+                    // scrollToIndex={params => this.scrollToIndex(params)}
+                    // initialScrollIndex={this.props.messages.length - 1}
+                    renderItem={(msg, index) => {
+                      if (!isNull(msg.item.body))
+                        return (
+                          <MessageBubble key={msg.item.id} message={msg.item} />
+                        );
+                    }}
+                  />
+                  {isEmpty(this.props.messages) && (
+                    <View style={styles.chatBotViewSmall}>
+                      <ChatBot width={100} height={100} />
+                    </View>
+                  )}
+                  {/* </View> */}
+                  <View style={styles.textInputContainer}>
+                    {/* <Camera
 										fill={globalColors.orange}
 										style={styles.cameraIcon}
 										width={heightPercentageToDP(4)}
 										height={heightPercentageToDP(4)}
 									/> */}
-                  <TextInput
-                    editable={true}
-                    multiline={true}
-                    value={this.state.textValue}
-                    onChange={event => this._onChange(event)}
-                    style={[
-                      I18nManager.isRTL
+                    <TextInput
+                      editable={true}
+                      multiline={true}
+                      value={this.state.textValue}
+                      onChange={event => this._onChange(event)}
+                      style={[
+                         I18nManager.isRTL
                         ? rtlStyles.textInput
                         : styles.textInput,
                       newStyle
-                    ]}
-                    placeholder={translate("Type Your Message")}
-                    placeholderTextColor="#909090"
-                    placeholderLineHeight={30}
-                    maxHeight={100}
-                    minHeight={45}
-                    maxWidth={300}
-                    enableScrollToCaret
-                    ref={r => {
-                      this._textInput = r;
-                    }}
-                    onContentSizeChange={e =>
-                      this.updateSize(e.nativeEvent.contentSize.height)
-                    }
-                  />
-                  <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={this._handleSubmission}
-                  >
-                    <ForwardButton
-                      width={heightPercentageToDP(5)}
-                      height={heightPercentageToDP(5)}
+                      ]}
+                      placeholder={translate("Type Your Message")}
+                      placeholderTextColor="#909090"
+                      placeholderLineHeight={30}
+                      maxHeight={100}
+                      minHeight={45}
+                      maxWidth={300}
+                      enableScrollToCaret
+                      ref={r => {
+                        this._textInput = r;
+                      }}
+                      onContentSizeChange={e =>
+                        this.updateSize(e.nativeEvent.contentSize.height)
+                      }
+
                     />
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-          </KeyBoardShift>
-        </ScrollView>
+                    <TouchableOpacity
+                      style={styles.submitButton}
+                      onPress={this._handleSubmission}
+                    >
+                      <ForwardButton
+                        width={heightPercentageToDP(5)}
+                        height={heightPercentageToDP(5)}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </KeyBoardShift>
+          </Content>
+        </View>
       </SafeAreaView>
     );
   }
@@ -260,20 +267,22 @@ const mapStateToProps = state => ({
   messages: state.messenger.messages,
   loading_con: state.messenger.loading_con,
   subscribed: state.messenger.subscribed,
-  open_conversation: state.messenger.open_conversation
+  open_conversation: state.messenger.open_conversation,
+  conversation_id: state.messenger.conversation_id
 });
 
 const mapDispatchToProps = dispatch => ({
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  get_conversation: (user_id, navigation) =>
-    dispatch(actionCreators.get_conversation(user_id, navigation)),
   reply: message => dispatch(actionCreators.reply(message)),
   admin_response: message => dispatch(actionCreators.admin_response(message)),
-  set_as_seen: () => dispatch(actionCreators.set_as_seen()),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
   start_conversation: message =>
-    dispatch(actionCreators.start_conversation(message))
+    dispatch(actionCreators.start_conversation(message)),
+  update_last_seen: () => dispatch(actionCreators.update_last_seen()),
+  update_conversatusion_read_status: () =>
+    dispatch(actionCreators.update_conversatusion_read_status())
 });
 
 export default connect(

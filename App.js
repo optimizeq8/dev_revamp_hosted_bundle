@@ -11,6 +11,7 @@ import {
   Image,
   Text as TextReactNative,
   I18nManager,
+  AppState,
   AsyncStorage
 } from "react-native";
 
@@ -31,6 +32,7 @@ import { TextInputMask } from "react-native-masked-text";
 
 TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
+import { showMessage } from "react-native-flash-message";
 
 import { AppLoading, Linking, SplashScreen, Notifications } from "expo";
 import { LinearGradient } from "expo-linear-gradient";
@@ -107,7 +109,9 @@ class App extends React.Component {
       splashAnimation: new Animated.Value(0),
       splashFadeAnimation: new Animated.Value(0.01),
       splashAnimationComplete: false,
-      isAppReady: false
+      isAppReady: false,
+      currentScreen: "",
+      appState: AppState.currentState,
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
@@ -144,13 +148,81 @@ class App extends React.Component {
 
     this._loadAsync();
 
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+    AppState.addEventListener("change", this._handleAppStateChange);
+
     //       .then(() => this.setState({ isLoadingComplete: true })) // mark reasources as loaded
     //       .catch(error =>
     //         console.error(`Unexpected error thrown when loading:
     // ${error.stack}`)
     //       );
   }
+  _handleAppStateChange = nextAppState => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      console.log("App has come to the foreground!");
+      if (
+        store.getState().auth.userInfo &&
+        store.getState().messenger.conversation_status
+      )
+        store.dispatch(
+          actionCreators.connect_user_to_intercom(
+            store.getState().auth.userInfo.userid
+          )
+        );
+    }
+    this.setState({ appState: nextAppState });
+  };
 
+  _handleNotification = async handleScreen => {
+    console.log("handleScreen app", handleScreen);
+
+    if (handleScreen.data) {
+      if (handleScreen.data.screenName === "MessengerLoading") {
+        console.log("iniodsfj");
+
+        store.dispatch(actionCreators.set_as_seen(false));
+
+        if (AppState.currentState !== "active")
+          NavigationService.navigate(handleScreen.data.screenName);
+        else if (
+          // this.state.currentScreen !== "MessengerLoading" ||
+          this.state.currentScreen !== "Messenger"
+        ) {
+          console.log("currentScreen", this.state.currentScreen);
+
+          store.dispatch(actionCreators.set_as_seen(false));
+          showMessage({
+            message: "Support Chat",
+            description: handleScreen.data.message,
+            type: "default",
+            backgroundColor: "#FF9D00",
+            color: "#fff",
+            position: "top"
+            // onPress: () => {
+            //   NavigationService.navigate(handleScreen.data.screenName);
+            // }
+          });
+        }
+      }
+    }
+
+    //   this.setState({
+    //     uploadMediaDifferentDeviceModal: false,
+    //     uploadMediaNotification: uploadMediaNotification,
+    //     downloadMediaModal: true
+    //     // media: uploadMediaNotification.data.media,
+    //     // type: uploadMediaNotification.data.media_type.includes("video")
+    //     //   ? "VIDEO"
+    //     //   : "IMAGE"
+    //   });
+    //   this.props.getWebUploadLinkMedia(this.props.campaign_id);
+    // }
+  };
   _registerForPushNotificationsAsync = async () => {
     const permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
 
@@ -160,6 +232,27 @@ class App extends React.Component {
       );
     }
   };
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+
+  getCurrentRouteName = navigationState => {
+    if (!navigationState) {
+      return null;
+    }
+    if (navigationState.index === -1) return null;
+
+    const route = navigationState.routes[navigationState.index];
+    // dive into nested navigators
+    // console.log("routes", route.routes);
+    // console.log("routes", route);
+    if (route.routes) {
+      return this.getCurrentRouteName(route);
+    }
+    return route.routeName;
+  };
+
   renderLoading = () => (
     <View style={styles.container}>
       <ActivityIndicator size="large" />
@@ -243,6 +336,13 @@ class App extends React.Component {
             <View style={styles.container}>
               <Root>
                 <AppNavigator
+                  onNavigationStateChange={(prevState, currentState) => {
+                    const currentScreen = this.getCurrentRouteName(
+                      currentState
+                    );
+                    this.setState({ currentScreen });
+                    // console.log("screeen name", currentScreen);
+                  }}
                   uriPrefix={prefix}
                   ref={navigatorRef => {
                     //console.log(navigatorRef);

@@ -30,6 +30,7 @@ import AdButtions from "./AdButtons";
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter.svg";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
+import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon.svg";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
@@ -73,6 +74,8 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
+    console.log("did mount");
+
     if (this.props.mainBusiness) {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
@@ -83,6 +86,8 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+
       this.props.getBusinessAccounts();
       Segment.screen("Dashboard");
     }
@@ -102,6 +107,8 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log("did update");
+
     if (
       this.props.mainBusiness &&
       prevProps.mainBusiness !== this.props.mainBusiness
@@ -114,12 +121,15 @@ class Dashboard extends Component {
           closeAnimation: this.closeAnimation
         });
       }
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
         this.signal.token
       );
     }
+
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true
@@ -205,6 +215,9 @@ class Dashboard extends Component {
   }
 
   reloadData = () => {
+    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.set_as_seen(false);
+
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -328,7 +341,15 @@ class Dashboard extends Component {
                     }
                     style={[styles.wallet]}
                   >
-                    <IntercomIcon width={24} height={24} />
+                    {this.props.conversation_status ? (
+                      <IntercomIcon width={24} height={24} />
+                    ) : (
+                      <IntercomNotificationIcon
+                        width={33}
+                        height={33}
+                        style={{ marginBottom: 6, marginLeft: 3 }}
+                      />
+                    )}
                   </TouchableOpacity>
                 </>
               ) : (
@@ -617,6 +638,7 @@ const mapStateToProps = state => ({
   filteredCampaigns: state.dashboard.filteredCampaigns,
   exponentPushToken: state.login.exponentPushToken,
   incompleteCampaign: state.campaignC.incompleteCampaign,
+  conversation_status: state.messenger.conversation_status,
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms
 });
@@ -637,6 +659,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
+  connect_user_to_intercom: user_id =>
+    dispatch(actionCreators.connect_user_to_intercom(user_id)),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   getLanguageListPOEdit: language =>
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
