@@ -301,7 +301,7 @@ class Dashboard extends Component {
           forceInset={{ bottom: "never", top: "always" }}
         >
           {/* {this.state.anim && ( */}
-          <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+          <BackdropIcon style={styles.backDrop} />
           {/* )} */}
           <Background
             style={[styles.background]}
@@ -367,15 +367,20 @@ class Dashboard extends Component {
                     //   [this.props.appLanguage]: this.props.terms
                     // };
                   }}
-                  style={{
-                    color: "#FFF",
-                    fontSize: 14,
-                    right: "5%",
-                    position: "absolute",
-                    textAlign: "left"
-                  }}
+                  style={[
+                    {
+                      color: "#FFF",
+                      fontSize: 19,
+                      right: "5%",
+                      position: "absolute",
+                      textAlign: "left",
+                      fontFamily: !I18nManager.isRTL
+                        ? "montserrat-regular-arabic"
+                        : "montserrat-regular-english"
+                    }
+                  ]}
                 >
-                  {this.props.appLanguage === "en" ? "العربية" : "English"}
+                  {!I18nManager.isRTL ? "العربية" : "English"}
                 </Text>
               )}
             </View>
@@ -615,6 +620,7 @@ class Dashboard extends Component {
                 closeAnimation={this.closeAnimation}
                 navigation={this.props.navigation}
                 screenProps={this.props.screenProps}
+                open={this.state.open}
               />
             </Animatable.View>
           </>

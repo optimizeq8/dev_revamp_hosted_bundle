@@ -111,7 +111,7 @@ class App extends React.Component {
       splashAnimationComplete: false,
       isAppReady: false,
       currentScreen: "",
-      appState: AppState.currentState,
+      appState: AppState.currentState
       // locale: Localization.locale.includes("ar") ? "ar" : "en"
     };
     // Instruct SplashScreen not to hide yet
@@ -509,6 +509,7 @@ class App extends React.Component {
       Asset.loadAsync([require("./assets/images/AdTypes/CollectionAd.gif")]),
 
       Font.loadAsync({
+        "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),
         "montserrat-regular-english": require("./assets/fonts/Montserrat-Regular.ttf"),
         "montserrat-medium-english": require("./assets/fonts/Montserrat-Medium.ttf"),
         "montserrat-bold-english": require("./assets/fonts/Montserrat-Bold.ttf"),

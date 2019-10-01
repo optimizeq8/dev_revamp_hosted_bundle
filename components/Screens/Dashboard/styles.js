@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
   },
   backDrop: {
     position: "absolute",
-    top: -heightPercentageToDP("45%"),
+    // top: -heightPercentageToDP("45%"),
+    top: heightPercentageToDP(5) < 40 ? -240 : -210,
     alignSelf: "center",
     zIndex: -1,
-    elevation: 0
+    elevation: -2
   },
   logoutIcon: {
     zIndex: 20,
