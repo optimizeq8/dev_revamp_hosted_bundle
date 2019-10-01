@@ -180,7 +180,10 @@ class Website extends Component {
                   {translate("The user will be taken to your website")}
                 </Text>
               </View>
-              <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+              >
                 <Picker
                   screenProps={this.props.screenProps}
                   searchPlaceholderText={"Search Call To Action"}

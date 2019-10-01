@@ -323,7 +323,10 @@ class WhatsApp extends Component {
                   )}
                 </Text>
               </View>
-              <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+              >
                 <View style={[styles.whatsAppDetailContainer]}>
                   {!this.props.mainBusiness.weburl && (
                     <View style={styles.marginVertical}>

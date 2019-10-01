@@ -303,7 +303,10 @@ class Instagram extends Component {
                   )}
                 </Text>
               </View>
-              <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+              >
                 <View style={[styles.whatsAppDetailContainer]}>
                   <View style={styles.marginVertical}>
                     {/* <Text style={[styles.subTitle]}>Instagram handle</Text> */}
