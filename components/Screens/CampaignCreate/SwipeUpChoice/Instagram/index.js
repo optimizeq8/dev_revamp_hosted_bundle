@@ -51,7 +51,7 @@ class Instagram extends Component {
         callaction: list.SnapAd[4].call_to_action_list[0]
       },
       callactions: list.SnapAd[4].call_to_action_list,
-
+      googleMapLinkError: "",
       insta_handleError: "",
       inputCallToAction: false
     };
@@ -104,6 +104,27 @@ class Instagram extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
+  validateUrl = () => {
+    const { translate } = this.props.screenProps;
+    const googleMapLinkError = validateWrapper(
+      "googleMapLink",
+      this.state.campaignInfo.googlemaplink
+    );
+    this.setState({
+      googleMapLinkError
+    });
+    if (googleMapLinkError) {
+      showMessage({
+        message: translate("Please provide a valid location link"),
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
   validate = () => {
     const { translate } = this.props.screenProps;
     const insta_handleError = validateWrapper(
@@ -114,21 +135,26 @@ class Instagram extends Component {
       "mandatory",
       this.state.campaignInfo.weburl
     );
-    const googlemaplinkError = validateWrapper(
+    const googleMapLinkEmptyError = validateWrapper(
       "mandatory",
+      this.state.campaignInfo.googlemaplink
+    );
+    const googleMapLinkError = validateWrapper(
+      "googleMapLink",
       this.state.campaignInfo.googlemaplink
     );
     this.setState({
       insta_handleError,
-      weburlError
+      weburlError,
+      googleMapLinkError
     });
-    if (insta_handleError || weburlError || googlemaplinkError) {
+    if (insta_handleError || weburlError || googleMapLinkError) {
       showMessage({
         message: insta_handleError
           ? translate("Please provide an instagram handle")
           : weburlError
           ? translate("Please provide domain name")
-          : googlemaplinkError
+          : googleMapLinkError
           ? translate("Please provide a valid location link")
           : "",
         type: "warning",
@@ -492,6 +518,9 @@ class Instagram extends Component {
                         onChangeText={value =>
                           this.changeGoogleMapLocation(value)
                         }
+                        onBlur={() => {
+                          this.validateUrl();
+                        }}
                         // onBlur={() => {
                         //   this.validate();
                         //   // if (!this.props.errorInstaHandle) {
