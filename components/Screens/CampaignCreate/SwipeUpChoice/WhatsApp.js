@@ -599,6 +599,37 @@ class WhatsApp extends Component {
                   />
                   <TouchableOpacity
                     onPress={() => {
+                      let whatsAppCampaign = {
+                        weburl: this.state.campaignInfo.weburl,
+                        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace(
+                          "+",
+                          ""
+                        ),
+                        insta_handle: this.state.campaignInfo.insta_handle,
+                        callnumber:
+                          this.state.campaignInfo.callnumber ||
+                          this.state.campaignInfo.callnumber !== ""
+                            ? this.state.campaignInfo.callnumber.replace(
+                                "+",
+                                ""
+                              )
+                            : this.state.campaignInfo.whatsappnumber.replace(
+                                "+",
+                                ""
+                              )
+                      };
+                      this.props._changeDestination(
+                        "REMOTE_WEBPAGE",
+                        this.state.campaignInfo.callaction,
+                        {
+                          url: `https://${this.state.campaignInfo.weburl.replace(
+                            /[^0-9a-z]/gi,
+                            ""
+                          )}.optimizeapp.com`
+                        },
+                        null,
+                        whatsAppCampaign
+                      );
                       this.props.saveWebProducts(
                         [],
                         this.props.data.campaign_id,

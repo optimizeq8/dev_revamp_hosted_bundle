@@ -43,13 +43,14 @@ export default {
     {
       label: "WhatsApp Campaign",
       value: "WEB_CONVERSION",
-      info: "Send customers directly to your business's whatsapp",
+      info: "Get a free website that pushes users to your business's WhatsApp",
       icon: ObjIcons.WhatsApp
     },
     {
       label: "Instagram Traffic",
       value: "WEB_CONVERSION_INSTAGRAM",
-      info: "Send customers directly to your business's Instagram",
+      info:
+        "Get a free website that pushes users to your business's Instagram page",
       icon: ObjIcons.Instagram
     }
   ],
@@ -87,13 +88,14 @@ export default {
     {
       label: "WhatsApp Leads",
       value: "WEB_CONVERSION",
-      info: "Send customers directly to your business's whatsapp",
+      info: "Get a free website that pushes users to your business's WhatsApp",
       icon: ObjIcons.WhatsApp
     },
     {
       label: "Instagram Traffic",
       value: "WEB_CONVERSION_INSTAGRAM",
-      info: "Send customers directly to your business's Instagram",
+      info:
+        "Get a free website that pushes users to your business's Instagram page",
       icon: ObjIcons.Instagram
     }
   ]
