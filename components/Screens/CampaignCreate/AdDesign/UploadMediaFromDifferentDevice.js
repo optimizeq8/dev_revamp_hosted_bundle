@@ -20,7 +20,11 @@ class UploadMediaFromDifferentDevice extends Component {
       !prevProps.uploadMediaDifferentDeviceModal &&
       this.props.uploadMediaDifferentDeviceModal
     ) {
-      this.props.getMediaUploadUrl(this.props.campaign_id);
+      this.props.getMediaUploadUrl(
+        this.props.campaign_id,
+        this.props.brand_name,
+        this.props.headline
+      );
     }
   }
   render() {
@@ -117,8 +121,10 @@ class UploadMediaFromDifferentDevice extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getMediaUploadUrl: campaign_id =>
-    dispatch(actionCreators.getMediaUploadUrl(campaign_id))
+  getMediaUploadUrl: (campaign_id, brand_name, headline) =>
+    dispatch(
+      actionCreators.getMediaUploadUrl(campaign_id, brand_name, headline)
+    )
 });
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,

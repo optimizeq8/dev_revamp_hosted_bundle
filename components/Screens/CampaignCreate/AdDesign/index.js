@@ -1209,6 +1209,8 @@ class AdDesign extends Component {
             this.state.uploadMediaDifferentDeviceModal
           }
           screenProps={this.props.screenProps}
+          brand_name={this.state.campaignInfo.brand_name}
+          headline={this.state.campaignInfo.headline}
         />
         <DownloadMediaFromDifferentDevice
           downloadMediaModal={this.state.downloadMediaModal}
