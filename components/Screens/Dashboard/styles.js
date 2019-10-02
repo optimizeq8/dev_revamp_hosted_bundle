@@ -115,21 +115,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "#5F5F5F",
     fontFamily: "montserrat-bold",
-    fontSize: 18
+    fontSize: 14
+    // top: 4
   },
   brandStyle: {
     alignSelf: "center",
-    top: 8,
     maxWidth: "80%",
     color: "#5F5F5F",
     textAlign: "center",
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: 12
   },
   nameStyle: {
-    top: 2,
+    top: 5,
     alignSelf: "center",
-    // width: "70%",
     maxWidth: "75%",
     minWidth: "50%",
     height: 55,
@@ -326,11 +325,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     width: 50,
     height: 50,
-    borderRadius: 50,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 }
+    borderRadius: 50
   },
   background: {
     position: "absolute",

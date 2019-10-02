@@ -52,7 +52,7 @@ class BusinessList extends Component {
             screenProps={this.props.screenProps}
             filterBusinesses={this.filterBusinesses}
             businessList={true}
-            height={"10%"}
+            height={"6%"}
           />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             {list}
