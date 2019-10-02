@@ -92,15 +92,18 @@ class Menu extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         // style={[!this.props.open ? { top: "5%" } : {}]}
       >
-        <Container style={[styles.menuModal]}>
-          <View
-            style={[
-              styles.menuContainer,
-              !this.props.open && {
-                top: "2%"
-              }
-            ]}
-          >
+        <Container
+          style={[
+            styles.menuModal,
+            !this.props.open && {
+              top: "2%"
+            },
+            this.state.slidePanel && {
+              top: "5%"
+            }
+          ]}
+        >
+          <View style={styles.menuContainer}>
             {/* <Text style={styles.menutext}> {translate("Menu")} </Text> */}
             <Image
               style={[styles.media]}
