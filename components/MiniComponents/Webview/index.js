@@ -30,7 +30,7 @@ export default class index extends Component {
           >
             <WebView
               startInLoadingState
-              renderLoading={() => <Loading dash={true} />}
+              renderLoading={() => <Loading top={40} />}
               style={{ backgroundColor: "#0000" }}
               ref={ref => (this.webview = ref)}
               source={{ uri: url }}

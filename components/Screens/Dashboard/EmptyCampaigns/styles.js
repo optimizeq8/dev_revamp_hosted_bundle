@@ -26,7 +26,7 @@ export default StyleSheet.create({
   brandNameStyle: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 30,
+    fontSize: 31,
     fontFamily: "montserrat-bold"
   },
   backDrop: {

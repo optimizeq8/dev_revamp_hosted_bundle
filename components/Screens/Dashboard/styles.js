@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     top: 20
   },
-  container: { backgroundColor: "#0000" },
+  container: { backgroundColor: "#0000", bottom: 5 },
   media: {
     alignSelf: "center",
     height: heightPercentageToDP(10),
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   },
   wallet: {
     // top: "50%",
-    right: "2%",
+    right: "5%",
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",

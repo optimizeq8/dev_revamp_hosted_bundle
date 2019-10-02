@@ -35,7 +35,7 @@ export default class EmptyCampaigns extends Component {
             this.props.mainBusiness &&
             !isStringArabic(this.props.mainBusiness.brandname)
               ? {
-                  fontFamily: "montserrat-bold-english"
+                  fontFamily: "montserrat-regular-english"
                 }
               : {}
           ]}

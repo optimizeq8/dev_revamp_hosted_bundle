@@ -143,23 +143,17 @@ class Dashboard extends Component {
       toValue: 1,
       duration: 350
     }).start(() => {
-      // this.props.navigation.navigate("Menu", {
-      //   open: true,
-      //   closeAnimation: this.closeAnimation,
-      //   menu: this.state.menu
-      // });
       this.setState({ open: true });
     });
   };
   closeAnimation = () => {
     this.setState({ anim: false });
+    this.setState({ open: false });
 
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350
-    }).start(() => {
-      this.setState({ open: false });
-    });
+    }).start(() => {});
   };
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
@@ -225,13 +219,6 @@ class Dashboard extends Component {
     );
   };
 
-  continueCampaign = () => {
-    let ctnModal = {};
-    if (this.state.componentMounting && this.props.incompleteCampaign) {
-      this.setState({ componentMounting: false });
-    }
-    return ctnModal;
-  };
   render() {
     //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
     const { translate } = this.props.screenProps;
@@ -394,11 +381,14 @@ class Dashboard extends Component {
               animation={
                 !this.props.loadingAccountMgmt
                   ? this.state.anim
-                    ? mySlideOutDown
+                    ? this.props.campaignList.length === 0
+                      ? "fadeOut"
+                      : mySlideOutDown
+                    : this.props.campaignList.length === 0
+                    ? ""
                     : mySlideInUp
                   : ""
               }
-              // onAnimationEnd={() => this.continueCampaign()}
               style={[
                 styles.animateView,
                 {
