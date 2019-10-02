@@ -106,6 +106,7 @@ class Instagram extends Component {
   }
   validateUrl = () => {
     const { translate } = this.props.screenProps;
+
     const googleMapLinkError = validateWrapper(
       "googleMapLink",
       this.state.campaignInfo.googlemaplink
@@ -269,10 +270,13 @@ class Instagram extends Component {
     });
   };
   changeGoogleMapLocation = value => {
+    // truncate before https: everything
+    const link = value.substring(value.indexOf("https:") + 1);
+    // console.log("link", "h" + link);
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        googlemaplink: value
+        googlemaplink: value === "" ? "" : "h" + link
       }
     });
   };

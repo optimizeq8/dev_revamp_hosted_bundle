@@ -624,8 +624,6 @@ class AdDetails extends Component {
   };
 
   render() {
-    console.log("data", this.props.data);
-
     const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {

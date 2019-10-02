@@ -1309,10 +1309,14 @@ export const saveWebProducts = (
   };
 };
 
-export const getMediaUploadUrl = campaign_id => {
+export const getMediaUploadUrl = (campaign_id, brand_name, headline) => {
   return dispatch => {
     createBaseUrl()
-      .get(`/webuploadlink/${campaign_id}`)
+      .post(`/webuploadlink`, {
+        campaign_id,
+        brand_name,
+        headline
+      })
       .then(res => {
         // console.log("webuploadlink", res.data);
         return res.data;
