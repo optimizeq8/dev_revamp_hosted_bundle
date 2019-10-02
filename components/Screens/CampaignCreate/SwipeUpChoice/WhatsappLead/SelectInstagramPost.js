@@ -349,23 +349,24 @@ class SelectInstagramPost extends React.Component {
               />
             )}
 
+            {!this.props.instagramPostLoading && this.props.instagramPostList && (
+              // !isEmpty(this.props.instagramPostList) &&
+              <Text
+                style={{
+                  fontFamily: "montserrat-regular",
+                  color: "#FFF",
+                  fontSize: 14,
+                  lineHeight: 18,
+                  paddingVertical: 10,
+                  textAlign: "center"
+                }}
+              >
+                {translate("(Select 3-6 Products)")}
+              </Text>
+            )}
             {!this.props.instagramPostLoading &&
-              !isEmpty(this.props.instagramPostList) && (
-                <Text
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#FFF",
-                    fontSize: 14,
-                    lineHeight: 18,
-                    paddingVertical: 10,
-                    textAlign: "center"
-                  }}
-                >
-                  {translate("(Select 3-6 Products)")}
-                </Text>
-              )}
-            {!this.props.instagramPostLoading &&
-              !isEmpty(this.props.instagramPostList) &&
+              this.props.instagramPostList &&
+              // !isEmpty(this.props.instagramPostList) &&
               this.state.posts.length !==
                 this.props.instagramPostList.length && (
                 <Text
@@ -387,16 +388,16 @@ class SelectInstagramPost extends React.Component {
                   {translate("VIEW MORE")}
                 </Text>
               )}
-            {!this.props.instagramPostLoading &&
-              !isEmpty(this.props.instagramPostList) && (
-                <View style={styles.bottonViewWebsite}>
-                  <LowerButton
-                    checkmark={true}
-                    bottom={0}
-                    function={this._handleSubmission}
-                  />
-                </View>
-              )}
+            {!this.props.instagramPostLoading && this.props.instagramPostList && (
+              // !isEmpty(this.props.instagramPostList) &&
+              <View style={styles.bottonViewWebsite}>
+                <LowerButton
+                  checkmark={true}
+                  bottom={0}
+                  function={this._handleSubmission}
+                />
+              </View>
+            )}
           </Content>
         </Container>
       </SafeAreaView>

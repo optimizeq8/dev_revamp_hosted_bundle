@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, PixelRatio } from "react-native";
+import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -308,7 +308,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: -10,
+    marginTop: I18nManager.isRTL ? -5 : 0
   },
   topContainer: {
     // paddingBottom: 30,

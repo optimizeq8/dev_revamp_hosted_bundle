@@ -16,6 +16,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
+import isStringArabic from "../../../../isStringArabic";
 
 class ProductList extends React.Component {
   constructor(props) {
@@ -201,7 +202,13 @@ class ProductList extends React.Component {
                     </View>
                     <Text
                       style={{
-                        fontFamily: "montserrat-bold",
+                        fontFamily: isStringArabic(
+                          item.productName
+                            ? item.productName
+                            : translate("Product Name")
+                        )
+                          ? "montserrat-bold"
+                          : "montserrat-bold-english",
                         color: "#fff",
                         fontSize: 14,
                         lineHeight: 17,
@@ -212,28 +219,37 @@ class ProductList extends React.Component {
                         ? item.productName
                         : translate("Product Name")}
                     </Text>
-                    <Text
+                    <View
                       style={{
-                        fontFamily: "montserrat-bold",
-                        color: "#FF9D00",
-                        fontSize: 17,
-                        lineHeight: 17,
-                        paddingBottom: 5
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "flex-end"
                       }}
                     >
                       <Text
                         style={{
-                          fontFamily: "montserrat-bold",
+                          fontFamily: "montserrat-bold-english",
                           color: "#FF9D00",
                           fontSize: 12,
-                          lineHeight: 17,
-                          paddingVertical: 5
+                          lineHeight: 22,
+                          paddingBottom: 5
                         }}
                       >
                         KD
-                      </Text>{" "}
-                      {item.price ? item.price : "0"}
-                    </Text>
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: "montserrat-bold-english",
+                          color: "#FF9D00",
+                          fontSize: 17,
+                          lineHeight: 22,
+                          paddingBottom: 5
+                        }}
+                      >
+                        {" "}
+                        {item.price ? item.price : "0"}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 );
               })}

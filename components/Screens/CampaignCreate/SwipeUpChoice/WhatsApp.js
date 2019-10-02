@@ -39,6 +39,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import isStringArabic from "../../../isStringArabic";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -430,7 +431,16 @@ class WhatsApp extends Component {
                   </View>
                   <View style={styles.marginVertical}>
                     <View style={[styles.callToActionLabelView]}>
-                      <Text uppercase style={[styles.inputLabel]}>
+                      <Text
+                        uppercase
+                        style={[
+                          styles.inputLabel,
+                          {
+                            fontFamily: "montserrat-bold-english",
+                            marginTop: 0
+                          }
+                        ]}
+                      >
                         {translate("whatsApp")}
                       </Text>
                     </View>
@@ -662,7 +672,8 @@ const mapStateToProps = state => ({
   errorInstaHandle: state.campaignC.errorInstaHandle,
   errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
   productInfoId: state.campaignC.productInfoId,
-  businessLogo: state.campaignC.businessLogo
+  businessLogo: state.campaignC.businessLogo,
+  selectedInstagramProducts: state.campaignC.selectedInstagramProducts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -678,7 +689,9 @@ const mapDispatchToProps = dispatch => ({
         productInfoId,
         navigation
       )
-    )
+    ),
+  getWebProducts: campaign_id =>
+    dispatch(actionCreators.getWebProducts(campaign_id))
 });
 export default connect(
   mapStateToProps,
