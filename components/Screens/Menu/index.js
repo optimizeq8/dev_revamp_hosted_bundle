@@ -17,6 +17,7 @@ import Constants from "expo-constants";
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
+import Logo from "../../../assets/SVGs/Optimize";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 
 //browser
@@ -33,7 +34,8 @@ import { connect } from "react-redux";
 import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP
+  widthPercentageToDP,
+  heightPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 const imageLogo = require("../../../assets/images/logo01.png");
@@ -42,7 +44,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
 
   draggableRange = {
-    top: hp("95"),
+    top: hp("84"),
     bottom: -hp("120")
   };
   constructor(props) {
@@ -90,27 +92,16 @@ class Menu extends Component {
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        // style={[!this.props.open ? { top: "5%" } : {}]}
+        style={[{ top: 10 }]}
       >
-        <Container
-          style={[
-            styles.menuModal,
-            !this.props.open && {
-              top: "2%"
-            },
-            this.state.slidePanel && {
-              top: "5%"
-            }
-          ]}
-        >
+        <Container style={[styles.menuModal]}>
           <View style={styles.menuContainer}>
-            {/* <Text style={styles.menutext}> {translate("Menu")} </Text> */}
-            <Image
-              style={[styles.media]}
-              source={imageLogo}
-              resizeMode="contain"
+            <Logo
+              style={{ alignSelf: "center" }}
+              width={heightPercentageToDP(10)}
+              height={heightPercentageToDP(10)}
             />
-
+            <Text style={styles.logoText}>Optimize</Text>
             <Text
               style={[
                 styles.businessTitle,
@@ -118,7 +109,7 @@ class Menu extends Component {
                 this.props.mainBusiness.brandname &&
                 !isStringArabic(this.props.mainBusiness.brandname)
                   ? {
-                      fontFamily: "montserrat-medium-english"
+                      fontFamily: "montserrat-regular-english"
                     }
                   : {}
               ]}

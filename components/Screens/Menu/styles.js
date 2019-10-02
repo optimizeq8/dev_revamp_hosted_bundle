@@ -123,6 +123,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "left"
     // bottom: 10
+  },
+  logoText: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 15,
+    fontFamily: "montserrat-medium-english",
+    marginBottom: "5%"
   }
 });
 

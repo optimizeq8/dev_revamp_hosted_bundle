@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 30,
     height: hp("14"),
     position: "absolute",
-    bottom: "12%",
+    bottom: "20%",
     width: "100%",
     justifyContent: "center"
   },
