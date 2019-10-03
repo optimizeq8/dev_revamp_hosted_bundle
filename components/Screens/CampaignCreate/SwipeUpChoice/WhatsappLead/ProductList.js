@@ -124,11 +124,12 @@ class ProductList extends React.Component {
             <Content
               contentContainerStyle={{
                 flex: 1,
+                paddingHorizontal: 40,
                 paddingTop: 20,
                 flexDirection: "row",
                 flexWrap: "wrap",
-                flexGrow: 1,
-                justifyContent: "space-around"
+                flexGrow: 1
+                // justifyContent: "space-around"
               }}
             >
               {this.state.cartList.map(item => {
