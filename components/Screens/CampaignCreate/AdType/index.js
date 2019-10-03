@@ -41,17 +41,18 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
-    media_type: snapAds,
-    isVisible: false,
-
-    campaign_type:
+    media_type:
       Platform.OS === "android" && I18nManager.isRTL
-        ? "CollectionAd"
-        : "SnapAd",
-    route: "AdObjective"
+        ? snapAds.reverse()
+        : snapAds,
+    isVisible: false,
+    campaign_type: "SnapAd",
+    route: "AdObjective",
+    inverted: Platform.OS === "android" && I18nManager.isRTL
   };
 
   componentDidMount() {
+    // console.log("this.props.data", this.props.data);
     if (this.props.data && this.props.data.hasOwnProperty("index")) {
       this.navigationRouteHandler(this.props.data.index);
     }
@@ -74,15 +75,23 @@ class AdType extends Component {
 
   navigationRouteHandler = index => {
     let activeSlide = index;
-    if (Platform.OS === "android" && I18nManager.isRTL) {
-      const reversedSnapAds = snapAds.reverse();
+    if (this.state.inverted) {
+      const reversedSnapAds = this.state.media_type.reverse();
+      // console.log("reversedSnapAds", reversedSnapAds);
       let campaign_type = reversedSnapAds[index].value;
+      // console.log("index", index);
+      // console.log("campaign_type reverse", campaign_type);
       let route = reversedSnapAds[index].rout;
       this.setState({ route, campaign_type, activeSlide });
     } else {
-      let campaign_type = snapAds[index].value;
-      let route = snapAds[index].rout;
-      this.setState({ route, campaign_type, activeSlide });
+      let campaign_type = this.state.media_type[index].value;
+      // console.log("campaign_type", campaign_type);
+      let route = this.state.media_type[index].rout;
+      this.setState({
+        route,
+        campaign_type,
+        activeSlide
+      });
     }
   };
 
@@ -140,7 +149,7 @@ class AdType extends Component {
   _renderSlides = ({ item }) => {
     return (
       <AdTypeCard
-        key={item.id}
+        key={item.value}
         navigationHandler={this.navigationHandler}
         mainBusiness={this.props.mainBusiness}
         campaign_type={this.state.campaign_type}
@@ -205,7 +214,7 @@ class AdType extends Component {
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
             data={
-              Platform.OS === "android" && I18nManager.isRTL
+              this.state.inverted
                 ? this.state.media_type.reverse()
                 : this.state.media_type
             }
@@ -213,6 +222,7 @@ class AdType extends Component {
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={250}
             inactiveSlideScale={0.8}
+            inverted={this.state.inverted}
           />
           <Pagination
             containerStyle={{
