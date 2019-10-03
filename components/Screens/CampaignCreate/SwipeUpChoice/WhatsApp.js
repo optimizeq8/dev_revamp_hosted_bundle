@@ -151,6 +151,7 @@ class WhatsApp extends Component {
       this.props.data.insta_handle &&
       this.props.data.insta_handle !== this.state.campaignInfo.insta_handle &&
       !this.props.errorInstaHandle &&
+      this.props.selectedInstagramProducts.length > 0 &&
       //    || (this.props.mainBusiness.insta_handle &&
       //   this.props.mainBusiness.insta_handle !==
       // this.state.campaignInfo.insta_handle
