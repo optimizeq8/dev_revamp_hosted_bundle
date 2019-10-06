@@ -4,7 +4,8 @@ import {
   AsyncStorage,
   TouchableWithoutFeedback,
   Keyboard,
-  Animated
+  Animated,
+  TouchableOpacity
 } from "react-native";
 import { Button, Text, Container, Footer, Content } from "native-base";
 import * as Segment from "expo-analytics-segment";
@@ -153,11 +154,11 @@ export default class Invitation extends Component {
               accessible={false}
             >
               <View style={[styles.mainCard]}>
-                <View>
+                <View style={styles.logoView}>
                   <Logo
                     style={styles.logo}
-                    width={heightPercentageToDP(15)}
-                    height={heightPercentageToDP(15)}
+                    width={heightPercentageToDP(12)}
+                    height={heightPercentageToDP(12)}
                   />
                   <Text style={styles.logoText}>Optimize</Text>
                 </View>
@@ -214,7 +215,16 @@ export default class Invitation extends Component {
                   <Text style={[styles.registeredText]}>
                     {translate("Already registered?")}
                   </Text>
-                  <Button
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("Signin", {
+                        invite: true
+                      });
+                    }}
+                  >
+                    <Text style={styles.loginText}>{translate("Log In!")}</Text>
+                  </TouchableOpacity>
+                  {/* <Button
                     rounded
                     onPress={() => {
                       this.props.navigation.navigate("Signin", {
@@ -226,7 +236,7 @@ export default class Invitation extends Component {
                     <Text style={[styles.buttontext, styles.logInButtonText]}>
                       {translate("Log In!")}
                     </Text>
-                  </Button>
+                  </Button> */}
                 </Footer>
               </View>
             </TouchableWithoutFeedback>

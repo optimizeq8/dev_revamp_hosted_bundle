@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.16)",
     paddingHorizontal: 50,
-    borderRadius: 15,
+    borderRadius: 30,
     alignSelf: "center",
-    width: 250,
+    width: 275,
     height: 50
   },
   link: {
