@@ -8,13 +8,13 @@ import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   keyboardContainer: {
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     flex: 1
   },
   keyboardView: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
+    // justifyContent: "center"
   },
   title: {
     // position: "relative",
@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   container: {
+    paddingTop: 20,
     backgroundColor: "transparent",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
+    // justifyContent: "flex-start"
     // paddingTop: 50
   },
   content: {
@@ -44,8 +45,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     // position: "relative",
     marginBottom: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 15,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    borderRadius: 30,
     borderColor: "transparent",
     alignSelf: "center",
     width: widthPercentageToDP(75),

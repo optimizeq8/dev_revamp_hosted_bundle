@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
   input: {
     top: 10,
     marginBottom: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 15,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    borderRadius: 30,
     borderColor: "transparent",
     alignSelf: "center",
-    width: 250,
+    width: 275,
     height: 50
   },
   inputText: {

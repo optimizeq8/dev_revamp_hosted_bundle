@@ -33,7 +33,7 @@ export default class PhoneNoField extends Component {
             this.props.invite
               ? this.props.whatsApp
                 ? { backgroundColor: "rgba(0,0,0,0.35)" }
-                : globalStyles.blackBackgroundColor
+                : { backgroundColor: "rgba(0,0,0,0.5)" }
               : globalStyles.transparentBackgroundColor,
             this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
           ]}

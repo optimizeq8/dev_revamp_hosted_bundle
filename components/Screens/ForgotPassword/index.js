@@ -83,8 +83,8 @@ class ForgotPassword extends Component {
             <View>
               <Logo
                 style={styles.logo}
-                width={heightPercentageToDP(15)}
-                height={heightPercentageToDP(15)}
+                width={heightPercentageToDP(12)}
+                height={heightPercentageToDP(12)}
               />
               <Text style={styles.logoText}>Optimize</Text>
             </View>

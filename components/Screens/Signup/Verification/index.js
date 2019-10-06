@@ -16,7 +16,7 @@ import globalStyles from "../../../../GlobalStyles";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
+import LowerButton from "../../../MiniComponents/LowerButton";
 Input.defaultProps = Input.defaultProps || {};
 Input.defaultProps.allowFontScaling = false;
 
@@ -110,21 +110,24 @@ class Verification extends Component {
               contentContainerStyle={[
                 styles.scrollViewContentContainer,
                 {
-                  paddingTop: !this.props.invite ? 30 : 0,
-                  justifyContent: this.props.invite ? "center" : "flex-start"
+                  paddingTop: !this.props.invite ? 30 : 30,
+                  justifyContent: "flex-start"
+                  // justifyContent: this.props.invite ? "center" : "flex-start"
                 }
               ]}
             >
-              {!this.props.invite ? (
+              {!this.props.invite && (
                 <Text style={[styles.text]}>
                   {translate("Please enter the verification code sent to")}
                   {this.props.mobileNo}
                 </Text>
-              ) : (
-                <Text style={[styles.inviteText]}>
-                  {translate("Invite Code")}
-                </Text>
-              )}
+              )
+              // : (
+              //   <Text style={[styles.inviteText]}>
+              //     {translate("Invite Code")}
+              //   </Text>
+              // )
+              }
               {!this.props.invite &&
                 (this.state.timerStart ? (
                   <Text style={[styles.link]}>
@@ -176,7 +179,12 @@ class Verification extends Component {
                       placeholder={translate("Enter your invite code")}
                     />
                   </Item>
-                  <Button
+                  <LowerButton
+                    function={() => {
+                      this._handleInviteCode();
+                    }}
+                  />
+                  {/* <Button
                     style={[styles.button]}
                     onPress={() => {
                       this._handleInviteCode();
@@ -185,7 +193,7 @@ class Verification extends Component {
                     <Text style={styles.buttonText}>
                       {translate("Get Started!")}
                     </Text>
-                  </Button>
+                  </Button> */}
                 </>
               ) : (
                 <View style={styles.codeInputContainer}>

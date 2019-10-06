@@ -73,9 +73,9 @@ class GetInviteCode extends Component {
         <KeyboardShift style={styles.keyboardContainer}>
           {() => (
             <View style={styles.keyboardView}>
-              <Text style={styles.title}>
+              {/* <Text style={styles.title}>
                 {translate("Get your invite code")}
-              </Text>
+              </Text> */}
               <Item rounded style={[styles.input]}>
                 <Input
                   placeholderTextColor="#fff"
