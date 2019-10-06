@@ -77,89 +77,106 @@ class AdPaymentReview extends Component {
         : [];
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
-        <>
-          {(media.includes(".mp4") || media.includes(".mov")) && (
-            <View style={[styles.backgroundViewWrapper, styles.videoView]}>
-              <Video
-                source={{
-                  uri: media
-                }}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode="cover"
-                style={styles.video}
-              />
-            </View>
-          )}
-          <ImageBackground
-            blurRadius={20}
-            // imageStyle={{ opacity: 0.2 }}
-            style={styles.imageBackground}
-            source={{
-              uri:
-                media.includes(".jpg") ||
-                media.includes(".jpeg") ||
-                media.includes(".png") ||
-                media.includes(".JPG") ||
-                media.includes(".JPEG") ||
-                media.includes(".PNG")
-                  ? media
-                  : "www.go.com"
+        <SafeAreaView
+          style={[styles.safeAreaView]}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
+          <NavigationEvents
+            onDidFocus={() => {
+              this.props.saveCampaignSteps(
+                this.props.adType === "StoryAd"
+                  ? [
+                      "Dashboard",
+                      "AdObjective",
+                      "AdCover",
+                      "AdDesign",
+                      "AdDetails",
+                      "AdPaymentReview"
+                    ]
+                  : [
+                      "Dashboard",
+                      "AdObjective",
+                      "AdDesign",
+                      "AdDetails",
+                      "AdPaymentReview"
+                    ]
+              );
+              Segment.screenWithProperties("Snap Ad Payment Review", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                step: 5,
+                business_name: this.props.mainBusiness.businessname,
+                checkout_id: this.props.campaign_ids
+              });
             }}
-          >
-            <SafeAreaView
-              style={[styles.safeAreaView]}
-              forceInset={{ bottom: "never", top: "always" }}
+          />
+
+          <Container style={[styles.container]}>
+            <CustomHeader
+              closeButton={false}
+              segment={{
+                str: "Ad Payment Review Back Button",
+                obj: {
+                  businessname: this.props.mainBusiness.businessname
+                }
+              }}
+              navigation={this.props.navigation}
+              title={translate("Review your Selection")}
+            />
+
+            <Content
+              scrollEnabled={false}
+              contentContainerStyle={{
+                flex: 1,
+                marginHorizontal: 20,
+                marginVertical: 20
+                // borderRadius: 30,
+                // background: "rgba(0,0,0,.75)",
+                // backgroundColor: "rgba(0,0,0,0.75)"
+              }}
+              style={
+                {
+                  // borderRadius: 30,
+                  // backgroundColor: "rgba(0,0,0,0.75)"
+                  // background: "rgba(0,0,0,.75)"
+                }
+              }
             >
-              <NavigationEvents
-                onDidFocus={() => {
-                  this.props.saveCampaignSteps(
-                    this.props.adType === "StoryAd"
-                      ? [
-                          "Dashboard",
-                          "AdObjective",
-                          "AdCover",
-                          "AdDesign",
-                          "AdDetails",
-                          "AdPaymentReview"
-                        ]
-                      : [
-                          "Dashboard",
-                          "AdObjective",
-                          "AdDesign",
-                          "AdDetails",
-                          "AdPaymentReview"
-                        ]
-                  );
-                  Segment.screenWithProperties("Snap Ad Payment Review", {
-                    category: "Campaign Creation"
-                  });
-                  Segment.trackWithProperties("Viewed Checkout Step", {
-                    step: 5,
-                    business_name: this.props.mainBusiness.businessname,
-                    checkout_id: this.props.campaign_ids
-                  });
+              {(media.includes(".mp4") ||
+                media.includes(".mov") ||
+                media.includes(".MP4") ||
+                media.includes(".MOV")) && (
+                <View style={[styles.backgroundViewWrapper, styles.videoView]}>
+                  <Video
+                    source={{
+                      uri: media
+                    }}
+                    shouldPlay
+                    isLooping
+                    isMuted
+                    resizeMode="cover"
+                    style={styles.video}
+                  />
+                </View>
+              )}
+              <ImageBackground
+                // blurRadius={20}
+                // imageStyle={{ opacity: 0.2 }}
+                style={[styles.backgroundViewWrapper, styles.imageBackground]}
+                source={{
+                  uri:
+                    media.includes(".jpg") ||
+                    media.includes(".jpeg") ||
+                    media.includes(".png") ||
+                    media.includes(".JPG") ||
+                    media.includes(".JPEG") ||
+                    media.includes(".PNG")
+                      ? media
+                      : "www.go.com"
                 }}
-              />
-
-              <Container style={[styles.container]}>
-                <CustomHeader
-                  closeButton={false}
-                  segment={{
-                    str: "Ad Payment Review Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname
-                    }
-                  }}
-                  navigation={this.props.navigation}
-                  title={translate("Review your Selection")}
-                />
-
-                <Content
-                  scrollEnabled={false}
-                  contentContainerStyle={{ flex: 1 }}
-                >
+              >
+                <Content contentContainerStyle={styles.contentContainerStyle1}>
                   <View style={styles.budgetView}>
                     <Text style={styles.budgetText}>{translate("Budget")}</Text>
                     <View style={styles.budgetAmountView}>
@@ -262,67 +279,59 @@ class AdPaymentReview extends Component {
                       ]}
                     />
                   </Content>
+                </Content>
+              </ImageBackground>
+            </Content>
 
-                  <Footer style={styles.footerBlock}>
-                    <View style={styles.bottomCardBlock1}>
-                      <View>
-                        <View style={styles.dollarAmountContainer}>
-                          <Text style={[styles.money, styles.dollarAmountText]}>
-                            $
-                          </Text>
+            <Footer style={styles.footerBlock}>
+              <View style={styles.bottomCardBlock1}>
+                <View>
+                  <View style={styles.dollarAmountContainer}>
+                    <Text style={[styles.money, styles.dollarAmountText]}>
+                      $
+                    </Text>
 
-                          <Text style={[styles.money, { paddingLeft: 3 }]}>
-                            {formatNumber(
-                              this.props.data.campaignInfo
-                                .lifetime_budget_micro,
-                              true
-                            )}
-                          </Text>
-                        </View>
-                        <View style={styles.kdAmountContainer}>
-                          <Text style={[styles.money, styles.kdText]}>
-                            KD{}
-                          </Text>
-                          <Text style={[styles.money, styles.kdAmountText]}>
-                            {this.props.kdamount}
-                          </Text>
-                        </View>
+                    <Text style={[styles.money, { paddingLeft: 3 }]}>
+                      {formatNumber(
+                        this.props.data.campaignInfo.lifetime_budget_micro,
+                        true
+                      )}
+                    </Text>
+                  </View>
+                  <View style={styles.kdAmountContainer}>
+                    <Text style={[styles.money, styles.kdText]}>KD{}</Text>
+                    <Text style={[styles.money, styles.kdAmountText]}>
+                      {this.props.kdamount}
+                    </Text>
+                  </View>
 
-                        <View style={styles.optimizeFeesTextContainer}>
-                          <Text style={styles.optimizeFeesPercentange}>
-                            10%
-                          </Text>
-                          <Text style={[styles.money, styles.optimizeFeesText]}>
-                            {translate("Optimize App fees included")}
-                          </Text>
-                        </View>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          Segment.trackWithProperties(
-                            "Select Ad Payment Review Button",
-                            {
-                              business_name: this.props.mainBusiness
-                                .businessname,
-                              campaign_budget: this.props.data
-                                .lifetime_budget_micro
-                            }
-                          );
-                          Segment.trackWithProperties(
-                            "Completed Checkout Step",
-                            {
-                              step: 5,
-                              business_name: this.props.mainBusiness
-                                .businessname,
-                              checkout_id: this.props.campaign_id
-                            }
-                          );
+                  <View style={styles.optimizeFeesTextContainer}>
+                    <Text style={styles.optimizeFeesPercentange}>10%</Text>
+                    <Text style={[styles.money, styles.optimizeFeesText]}>
+                      {translate("Optimize App fees included")}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    Segment.trackWithProperties(
+                      "Select Ad Payment Review Button",
+                      {
+                        business_name: this.props.mainBusiness.businessname,
+                        campaign_budget: this.props.data.lifetime_budget_micro
+                      }
+                    );
+                    Segment.trackWithProperties("Completed Checkout Step", {
+                      step: 5,
+                      business_name: this.props.mainBusiness.businessname,
+                      checkout_id: this.props.campaign_id
+                    });
 
-                          this.props.navigation.navigate("PaymentForm");
-                        }}
-                        style={[styles.mainCard]}
-                      >
-                        {/*
+                    this.props.navigation.navigate("PaymentForm");
+                  }}
+                  style={[styles.mainCard]}
+                >
+                  {/*
                                                     ----------For future maybe----------
                                                     <Text style={styles.text}>Agency Fee</Text>
                                                     <View style={{ flexDirection: "column", alignSelf: "center" }}>
@@ -333,17 +342,14 @@ class AdPaymentReview extends Component {
                                                     </View> 
                                                 */}
 
-                        <Text style={styles.payNowText}>
-                          {translate("Payment Info")}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </Footer>
-                </Content>
-              </Container>
-            </SafeAreaView>
-          </ImageBackground>
-        </>
+                  <Text style={styles.payNowText}>
+                    {translate("Payment Info")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Footer>
+          </Container>
+        </SafeAreaView>
       );
     }
   }

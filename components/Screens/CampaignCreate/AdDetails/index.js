@@ -214,7 +214,8 @@ class AdDetails extends Component {
           },
           () => {
             this._calcReach();
-            rep.targeting.geos[0].country_code &&
+            rep.targeting &&
+              rep.targeting.geos[0].country_code &&
               this.onSelectedCountryChange(
                 rep.targeting.geos[0].country_code,
                 true,
@@ -786,8 +787,14 @@ class AdDetails extends Component {
       >
         {media.includes(".mp4") ||
         media.includes(".mov") ||
-        (campaign.media && campaign.media.includes(".mp4")) ||
-        (campaign.media && campaign.media.includes(".mov")) ? (
+        media.includes(".MP4") ||
+        media.includes(".MOV") ||
+        (campaign.media &&
+          (campaign.media.includes(".mp4") ||
+            campaign.media.includes(".MP4"))) ||
+        (campaign.media &&
+          (campaign.media.includes(".mov") ||
+            campaign.media.includes(".MOV"))) ? (
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
