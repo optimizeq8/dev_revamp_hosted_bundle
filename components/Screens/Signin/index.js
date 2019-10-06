@@ -128,13 +128,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
-                        <UserProfile
-                          style={{
-                            marginLeft: 12,
-                            flex: 0,
-                            position: "absolute"
-                          }}
-                        />
+                        <UserProfile style={styles.inputIcon} />
                         <Input
                           placeholderTextColor="#fff"
                           autoCorrect={false}
@@ -166,13 +160,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
-                        <PasswordIcon
-                          style={{
-                            marginLeft: 12,
-                            flex: 0,
-                            position: "absolute"
-                          }}
-                        />
+                        <PasswordIcon style={styles.inputIcon} />
                         <Input
                           placeholderTextColor="#fff"
                           secureTextEntry={true}

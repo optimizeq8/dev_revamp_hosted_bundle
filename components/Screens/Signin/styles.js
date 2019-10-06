@@ -142,6 +142,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: globalColors.orange,
     textAlign: "center"
+  },
+  inputIcon: {
+    marginLeft: 12,
+    flex: 0,
+    position: "absolute"
   }
 });
 
