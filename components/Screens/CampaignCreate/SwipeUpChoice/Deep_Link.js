@@ -120,7 +120,7 @@ class Deep_Link extends Component {
               {
                 alignItems: "center",
                 // width: !this.props.toggleSideMenu ? "100%" : "100%",
-                paddingHorizontal: !this.props.toggleSideMenu ? 10 : 30
+                paddingHorizontal: !this.props.toggleSideMenu ? 30 : 20
               }
             ]}
           >
