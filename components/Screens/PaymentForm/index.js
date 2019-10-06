@@ -464,11 +464,17 @@ class PaymentForm extends Component {
             <View style={styles.bottomCardBlock1}>
               <View>
                 <View style={styles.dollarAmountContainer}>
-                  <Text style={[styles.money, styles.dollarAmountText]}>
+                  <Text
+                    style={[
+                      styles.money,
+                      styles.dollarAmountText,
+                      styles.colorOrange
+                    ]}
+                  >
                     ${/* {"\t "} */}
                   </Text>
 
-                  <Text style={[styles.money, {}]}>
+                  <Text style={[styles.money, styles.colorOrange, {}]}>
                     {this.state.addingCredits
                       ? formatNumber(this.state.amount, true)
                       : this.props.walletUsed
