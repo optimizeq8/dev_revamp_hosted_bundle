@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text, Container, Badge } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
@@ -14,6 +14,9 @@ import PhoneNo from "../PhoneNo";
 import Verification from "../Verification";
 import CreateBusinessAccount from "../../CreateBusinessAccount";
 
+// icons
+import BackIcon from "../../../../assets/SVGs/BackButtonPurple";
+import RegisterIcon from "../../../../assets/SVGs/RegisterIcon";
 // Style
 import styles from "./styles";
 
@@ -34,7 +37,6 @@ class MainForm extends Component {
         screenProps={this.props.screenProps}
       />
     );
-
     if (this.props.verificationCode) {
       content = <Verification screenProps={this.props.screenProps} />;
       title = "Verification";
@@ -61,100 +63,173 @@ class MainForm extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
-          <CustomHeader
-            closeButton={true}
-            actionButton={() => {
-              this.props.navigation.navigate("Invitation");
-              this.props.resetRegister();
+          <View
+            style={{
+              // marginTop: -20,
+              display: "flex",
+              alignItems: "center",
+              backgroundColor: "#FFF",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              paddingVertical: 30,
+              borderBottomLeftRadius: 30,
+              borderBottomRightRadius: 30
             }}
-            // navigation={this.props.navigation}
-            title={translate("Registration")}
-          />
-          {/* <CloseButton
-            navigation={() => {
-              this.props.navigation.navigate("Invitation");
-              this.props.resetRegister();
-            }}
-          />
-          <Text style={styles.title}>Registration</Text> */}
-          <View style={styles.content}>
-            <Badge
-              style={
-                !this.props.successNo && !this.props.verificationCode
-                  ? styles.activeBadege
-                  : styles.badge
-              }
+          >
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Invitation");
+                this.props.resetRegister();
+              }}
             >
-              <Text
-                style={
-                  !this.props.successNo && !this.props.verificationCode
-                    ? styles.activeBadegeText
-                    : styles.badgeText
-                }
-              >
-                1
-              </Text>
-            </Badge>
-            <View style={styles.dash} />
+              <BackIcon fill={"#C6C6C6"} />
+            </TouchableOpacity>
 
-            <Badge
-              style={
-                this.props.verificationCode && !this.props.verified
-                  ? styles.activeBadege
-                  : styles.badge
-              }
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center"
+                // flex: 1
+              }}
             >
+              <RegisterIcon />
               <Text
-                style={
-                  this.props.verificationCode && !this.props.verified
-                    ? styles.activeBadegeText
-                    : styles.badgeText
-                }
+                style={{
+                  fontSize: 14,
+                  color: "#6C63FF",
+                  textTransform: "uppercase",
+                  fontFamily: "montserrat-bold",
+                  letterSpacing: 0,
+                  lineHeight: 18
+                }}
               >
-                2
+                {translate("Registration")}
               </Text>
-            </Badge>
-            <View style={styles.dash} />
-            <Badge
-              style={
-                this.props.verified &&
-                !this.props.successEmail &&
-                !this.props.registered
-                  ? styles.activeBadege
-                  : styles.badge
-              }
-            >
-              <Text
-                style={
-                  this.props.verified &&
-                  !this.props.successEmail &&
-                  !this.props.registered
-                    ? styles.activeBadegeText
-                    : styles.badgeText
-                }
-              >
-                3
-              </Text>
-            </Badge>
-            <View style={styles.dash} />
-            <Badge
-              style={
-                this.props.successEmail ? styles.activeBadege : styles.badge
-              }
-            >
-              <Text
-                style={
-                  this.props.successEmail
-                    ? styles.activeBadegeText
-                    : styles.badgeText
-                }
-              >
-                4
-              </Text>
-            </Badge>
+            </View>
+            <View style={styles.content}>
+              <View style={styles.badgeView}>
+                <Badge
+                  style={
+                    !this.props.successNo && !this.props.verificationCode
+                      ? styles.activeBadege
+                      : styles.badge
+                  }
+                >
+                  <Text
+                    style={
+                      !this.props.successNo && !this.props.verificationCode
+                        ? styles.activeBadegeText
+                        : styles.badgeText
+                    }
+                  >
+                    1
+                  </Text>
+                </Badge>
+                <Text
+                  style={
+                    !this.props.successNo && !this.props.verificationCode
+                      ? styles.activeTitleText
+                      : styles.titleText
+                  }
+                >
+                  {translate("Number")}
+                </Text>
+              </View>
+              <View style={[styles.dash, styles.dashActive]} />
+              <View style={styles.badgeView}>
+                <Badge
+                  style={
+                    this.props.verificationCode && !this.props.verified
+                      ? styles.activeBadege
+                      : styles.badge
+                  }
+                >
+                  <Text
+                    style={
+                      this.props.verificationCode && !this.props.verified
+                        ? styles.activeBadegeText
+                        : styles.badgeText
+                    }
+                  >
+                    2
+                  </Text>
+                </Badge>
+                <Text
+                  style={
+                    this.props.verificationCode && !this.props.verified
+                      ? styles.activeTitleText
+                      : styles.titleText
+                  }
+                >
+                  {translate("Verify")}
+                </Text>
+              </View>
+              <View style={styles.dash} />
+              <View style={styles.badgeView}>
+                <Badge
+                  style={
+                    this.props.verified &&
+                    !this.props.successEmail &&
+                    !this.props.registered
+                      ? styles.activeBadege
+                      : styles.badge
+                  }
+                >
+                  <Text
+                    style={
+                      this.props.verified &&
+                      !this.props.successEmail &&
+                      !this.props.registered
+                        ? styles.activeBadegeText
+                        : styles.badgeText
+                    }
+                  >
+                    3
+                  </Text>
+                </Badge>
+                <Text
+                  style={
+                    this.props.verified &&
+                    !this.props.successEmail &&
+                    !this.props.registered
+                      ? styles.activeTitleText
+                      : styles.titleText
+                  }
+                >
+                  {translate("Personal")}
+                </Text>
+              </View>
+              <View
+                style={[styles.dash, { marginRight: -3, marginLeft: -2 }]}
+              />
+              <View style={styles.badgeView}>
+                <Badge
+                  style={
+                    this.props.successEmail ? styles.activeBadege : styles.badge
+                  }
+                >
+                  <Text
+                    style={
+                      this.props.successEmail
+                        ? styles.activeBadegeText
+                        : styles.badgeText
+                    }
+                  >
+                    4
+                  </Text>
+                </Badge>
+                <Text
+                  style={
+                    this.props.successEmail
+                      ? styles.activeTitleText
+                      : styles.titleText
+                  }
+                >
+                  {translate("Business")}
+                </Text>
+              </View>
+            </View>
           </View>
-          <Text style={styles.subtitle}>{translate(title)}</Text>
-
           <View style={[styles.mainCard]}>{content}</View>
         </Container>
       </SafeAreaView>
@@ -163,11 +238,11 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  verificationCode: state.register.verificationCode,
-  successNo: state.register.successNo,
+  verificationCode: true,
+  successNo: true,
   successEmail: state.register.successEmail,
-  verified: state.register.verified,
-  registered: state.register.registered
+  verified: true,
+  registered: false
 });
 
 const mapDispatchToProps = dispatch => ({

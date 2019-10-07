@@ -5,12 +5,10 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  TouchableWithoutFeedback,
-  Text
+  TouchableWithoutFeedback
 } from "react-native";
 import * as Segment from "expo-analytics-segment";
-import { Icon, Item } from "native-base";
-import { showMessage } from "react-native-flash-message";
+import { Icon, Item, Text } from "native-base";
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import PhoneNoField from "./PhoneNoField";
@@ -128,21 +126,32 @@ class PhoneNo extends Component {
             style={[styles.container, { flex: !this.props.invite ? 1 : 0 }]}
           >
             {!this.props.invite && (
-              <Text style={styles.text}>
-                {translate("Please enter your\nMobile Number")}
-              </Text>
-            )}
-            {!this.props.invite && (
               <KeyboardShift style={styles.keyboardArea}>
                 {() => (
-                  <PhoneNoField
-                    {...this.props}
-                    handlePickerData={this.handlePickerData}
-                    valid={this.state.valid}
-                    type={this.state.type}
-                    onPressFlag={this.onPressFlag}
-                    changeNo={this.changeNo}
-                  />
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.labelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("mobile")}
+                      </Text>
+                    </View>
+                    <PhoneNoField
+                      {...this.props}
+                      handlePickerData={this.handlePickerData}
+                      valid={this.state.valid}
+                      type={this.state.type}
+                      onPressFlag={this.onPressFlag}
+                      changeNo={this.changeNo}
+                    />
+                    <Text style={styles.text}>
+                      {translate("An SMS will be sent for verification")}
+                    </Text>
+                    {!this.props.invite && !this.props.info && (
+                      <LowerButton
+                        function={() => this._handleSubmission()}
+                        bottom={-heightPercentageToDP(1)}
+                      />
+                    )}
+                  </View>
                 )}
               </KeyboardShift>
             )}
@@ -164,12 +173,6 @@ class PhoneNo extends Component {
             <Icon style={styles.icon} name="arrow-forward" />
           </Button> */}
           </View>
-          {!this.props.invite && !this.props.info && (
-            <LowerButton
-              function={() => this._handleSubmission()}
-              bottom={heightPercentageToDP(0.2)}
-            />
-          )}
         </View>
       </TouchableWithoutFeedback>
     );

@@ -63,6 +63,7 @@ class Verification extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const emailError = validateWrapper("email", this.state.email);
     this.setState({ emailError });
     if (!emailError) {
@@ -74,7 +75,7 @@ class Verification extends Component {
       });
     } else {
       showMessage({
-        message: "Please enter a valid email.",
+        message: translate("Please enter a valid email address"),
         type: "warning",
         position: "top"
       });
@@ -110,16 +111,16 @@ class Verification extends Component {
               contentContainerStyle={[
                 styles.scrollViewContentContainer,
                 {
-                  paddingTop: !this.props.invite ? 30 : 30,
-                  justifyContent: "flex-start"
-                  // justifyContent: this.props.invite ? "center" : "flex-start"
+                  paddingTop: !this.props.invite ? 0 : 30,
+                  // justifyContent: "flex-start"
+                  justifyContent: this.props.invite ? "flex-start" : "center"
                 }
               ]}
             >
               {!this.props.invite && (
                 <Text style={[styles.text]}>
-                  {translate("Please enter the verification code sent to")}
-                  {this.props.mobileNo}
+                  {translate("Please enter the verification code sent to")}{" "}
+                  <Text style={styles.mobileNo}>{this.props.mobileNo}</Text>
                 </Text>
               )
               // : (
@@ -128,31 +129,7 @@ class Verification extends Component {
               //   </Text>
               // )
               }
-              {!this.props.invite &&
-                (this.state.timerStart ? (
-                  <Text style={[styles.link]}>
-                    {new Date(this.state.timer * 1000)
-                      .toISOString()
-                      .substr(14, 5)}
-                  </Text>
-                ) : (
-                  <Text
-                    onPress={() => {
-                      this.startTimer();
-                      this.props.resendVerifyMobileCode({
-                        mobile: this.props.mobileNo,
-                        country_code: this.props.countryCode
-                      });
-                    }}
-                    style={[styles.link]}
-                  >
-                    {translate("Resend Code")}
-                  </Text>
-                ))}
 
-              {/* {this.state.codeError !== "" && !this.props.invite && (
-          <Text style={[styles.errorText]}>{this.state.codeError}</Text>
-        )} */}
               {this.props.invite ? (
                 <>
                   <Item rounded style={[styles.input]}>
@@ -198,12 +175,29 @@ class Verification extends Component {
               ) : (
                 <View style={styles.codeInputContainer}>
                   <CodeInput
-                    inactiveColor="black"
-                    activeColor="purple"
-                    variant="border-b"
+                    // inactiveColor="transparent"
+                    // activeColor="purple"
+                    cellProps={{
+                      style: {
+                        backgroundColor: "rgba(0,0,0,0.16)",
+                        borderRadius: 12,
+                        color: "#FF9D00",
+                        fontFamily: "montserrat-regular",
+                        // padding: 10,
+                        borderColor: "rgba(0,0,0,0)",
+                        width: 50,
+                        height: 50
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        backgroundColor: "rgba(0,0,0,0)"
+                      }
+                    }}
+                    // variant="border-box"
                     autoFocus
                     keyboardType="numeric"
-                    space={20}
+                    space={10}
                     onFulfill={code => this._handleSentCode(code)}
                     ref={this.inputRef}
                   />
@@ -217,6 +211,27 @@ class Verification extends Component {
                   {translate("Get an invitation code now!")}
                 </Text>
               )}
+              {!this.props.invite &&
+                (this.state.timerStart ? (
+                  <Text style={[styles.link]}>
+                    {new Date(this.state.timer * 1000)
+                      .toISOString()
+                      .substr(14, 5)}
+                  </Text>
+                ) : (
+                  <Text
+                    onPress={() => {
+                      this.startTimer();
+                      this.props.resendVerifyMobileCode({
+                        mobile: this.props.mobileNo,
+                        country_code: this.props.countryCode
+                      });
+                    }}
+                    style={[styles.link]}
+                  >
+                    {translate("Resend Code")}
+                  </Text>
+                ))}
               {!this.props.invite && (
                 <View style={styles.emailLinkContainer}>
                   <Text
@@ -248,7 +263,7 @@ class Verification extends Component {
                             styles.emailLabel,
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor
+                              : globalStyles.whiteTextColor
                           ]}
                         >
                           {translate("Email")}
@@ -287,7 +302,7 @@ class Verification extends Component {
                           style={[
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor
+                              : globalStyles.whiteTextColor
                           ]}
                         />
                       </Button>

@@ -107,66 +107,83 @@ class PersonalInfo extends Component {
           <KeyboardShift>
             {() => (
               <View style={styles.contentContainer}>
-                <Item
-                  floatingLabel
-                  style={[
-                    styles.input,
-                    this.state.inputF
-                      ? globalStyles.purpleBorderColor
-                      : this.state.firstnameError
-                      ? globalStyles.redBorderColor
-                      : globalStyles.lightGrayBorderColor
-                  ]}
-                >
-                  <Label
-                    style={[
-                      styles.inputText,
-                      styles.labelInputText,
-                      this.state.inputF
-                        ? globalStyles.orangeTextColor
-                        : globalStyles.darkGrayTextColor
-                    ]}
-                  >
-                    <Icon
+                <View style={styles.marginVertical}>
+                  <View style={[styles.callToActionLabelView]}>
+                    <Text
+                      uppercase
                       style={[
-                        styles.iconSize,
+                        styles.inputLabel,
+                        styles.inputText,
+                        styles.labelInputText,
                         this.state.inputF
                           ? globalStyles.orangeTextColor
                           : globalStyles.darkGrayTextColor
                       ]}
-                      name="person"
-                      type="MaterialIcons"
-                    />
-                    {"  "}
-                    {translate("First Name")}
-                  </Label>
+                    >
+                      {translate("First Name")}
+                    </Text>
+                  </View>
+                  <Item
+                    floatingLabel
+                    style={[
+                      styles.input,
+                      this.state.inputF
+                        ? globalStyles.purpleBorderColor
+                        : this.state.firstnameError
+                        ? globalStyles.redBorderColor
+                        : globalStyles.lightGrayBorderColor
+                    ]}
+                  >
+                    <Label
+                      style={[
+                        styles.inputText,
+                        styles.labelInputText,
+                        this.state.inputF
+                          ? globalStyles.orangeTextColor
+                          : globalStyles.darkGrayTextColor
+                      ]}
+                    >
+                      <Icon
+                        style={[
+                          styles.iconSize,
+                          this.state.inputF
+                            ? globalStyles.orangeTextColor
+                            : globalStyles.darkGrayTextColor
+                        ]}
+                        name="person"
+                        type="MaterialIcons"
+                      />
+                      {"  "}
+                      {translate("First Name")}
+                    </Label>
 
-                  <Input
-                    style={styles.inputText}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value => {
-                      this.setState({
-                        userInfo: {
-                          ...this.state.userInfo,
-                          firstname: value
-                        }
-                      });
-                    }}
-                    onFocus={() => {
-                      this.setState({ inputF: true });
-                    }}
-                    onBlur={() => {
-                      this.setState({ inputF: false });
-                      this.setState({
-                        firstnameError: validateWrapper(
-                          "mandatory",
-                          this.state.userInfo.firstname
-                        )
-                      });
-                    }}
-                  />
-                </Item>
+                    <Input
+                      style={styles.inputText}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      onChangeText={value => {
+                        this.setState({
+                          userInfo: {
+                            ...this.state.userInfo,
+                            firstname: value
+                          }
+                        });
+                      }}
+                      onFocus={() => {
+                        this.setState({ inputF: true });
+                      }}
+                      onBlur={() => {
+                        this.setState({ inputF: false });
+                        this.setState({
+                          firstnameError: validateWrapper(
+                            "mandatory",
+                            this.state.userInfo.firstname
+                          )
+                        });
+                      }}
+                    />
+                  </Item>
+                </View>
                 <Item
                   floatingLabel
                   style={[

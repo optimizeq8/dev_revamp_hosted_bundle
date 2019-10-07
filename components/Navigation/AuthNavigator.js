@@ -22,7 +22,7 @@ export default createStackNavigator(
     Invitation: Invitation
   },
   {
-    initialRouteName: "AppUpdateChecker",
+    initialRouteName: "MainForm",
     mode: "card",
     navigationOptions: {
       header: null,
