@@ -397,7 +397,7 @@ class AdDetails extends Component {
   formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
-  _handleBudget = (value, rawValue) => {
+  _handleBudget = (value, rawValue, onBlur) => {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
@@ -419,14 +419,16 @@ class AdDetails extends Component {
       });
       return true;
     } else {
-      showMessage({
-        message: validateWrapper("Budget", rawValue)
-          ? validateWrapper("Budget", rawValue)
-          : translate("Budget can't be less than the minimum"),
-        description: "$" + this.state.minValueBudget,
-        type: "warning",
-        position: "top"
-      });
+      if (onBlur) {
+        showMessage({
+          message: validateWrapper("Budget", rawValue)
+            ? validateWrapper("Budget", rawValue)
+            : translate("Budget can't be less than the minimum"),
+          description: "$" + this.state.minValueBudget,
+          type: "warning",
+          position: "top"
+        });
+      }
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -548,7 +550,8 @@ class AdDetails extends Component {
     if (
       this._handleBudget(
         this.state.value,
-        this.state.campaignInfo.lifetime_budget_micro
+        this.state.campaignInfo.lifetime_budget_micro,
+        true
       ) &&
       !languagesError &&
       !countryError
@@ -906,8 +909,16 @@ class AdDetails extends Component {
                         // defaultValue={this.state.value + ""}
                         value={this.state.value + ""}
                         onChangeText={(value, rawText) => {
-                          if (!editCampaign) this._handleBudget(value, rawText);
+                          if (!editCampaign)
+                            this._handleBudget(value, rawText, false);
                         }}
+                        onBlur={() =>
+                          this._handleBudget(
+                            this.state.value,
+                            this.state.campaignInfo.lifetime_budget_micro,
+                            true
+                          )
+                        }
                         style={styles.budget}
                         ref={ref => (this.moneyField = ref)}
                       />

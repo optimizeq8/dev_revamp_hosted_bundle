@@ -223,7 +223,9 @@ class AdObjective extends Component {
         end_time: date
       }
     });
-    this.props.save_campaign_info({ end_time: date });
+    this.props.save_campaign_info({
+      end_time: date
+    });
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
@@ -642,7 +644,7 @@ class AdObjective extends Component {
                 >
                   {list}
                 </Content>
-                <LowerButton bottom={4} function={this.setModalVisible} />
+                {/* <LowerButton bottom={4} function={this.setModalVisible} /> */}
               </View>
             </SafeAreaView>
           </BlurView>

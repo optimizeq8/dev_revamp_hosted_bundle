@@ -107,8 +107,6 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("did update");
-
     if (
       this.props.mainBusiness &&
       prevProps.mainBusiness !== this.props.mainBusiness
