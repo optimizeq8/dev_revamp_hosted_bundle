@@ -20,8 +20,6 @@ export const connect_user_to_intercom = user_id => {
     instance
       .get(`get-user/${user_id}`)
       .then(res => {
-        console.log("get_user", res.data);
-
         return res.data;
       })
       .then(data => {

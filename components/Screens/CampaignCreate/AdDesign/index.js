@@ -151,12 +151,14 @@ class AdDesign extends Component {
           : this.props.campaign_id,
         brand_name: this.rejected
           ? this.selectedCampaign.brand_name
+          : this.props.data && this.props.data.brand_name
+          ? this.props.data.brand_name
           : this.props.mainBusiness.businessname,
         headline: this.rejected
           ? this.selectedCampaign.headline
-          : this.props.data
-          ? this.props.data.name
-          : ""
+          : this.props.data && this.props.data.headline
+          ? this.props.data.headline
+          : this.props.data.name
       },
       objective: this.rejected
         ? this.selectedCampaign.objective

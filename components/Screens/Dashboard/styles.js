@@ -13,6 +13,7 @@ export const colors = {
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
+    top: 5,
     backgroundColor: "#0000"
   },
   mainView: {
