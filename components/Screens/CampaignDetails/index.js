@@ -263,12 +263,6 @@ class CampaignDetails extends Component {
           end_time = dateFormat(end_time, "d mmm");
           start_time = dateFormat(start_time, "d mmm");
         }
-        console.log(
-          selectedCampaign &&
-            selectedCampaign.campaign_end === "0" &&
-            new Date(selectedCampaign.end_time) > new Date() &&
-            !this.props.campaignEnded
-        );
       }
 
       return (
