@@ -185,10 +185,15 @@ class AdDesign extends Component {
       this.setState({ storyAdAttachChanged: true });
     }
     let swipeUpError = null;
+    let attch =
+      (this.rejected && this.selectedCampaign.attachment) ||
+      (!this.rejected && this.props.data && this.props.data.attachment);
+    let obj =
+      (this.rejected && this.selectedCampaign.objective) ||
+      (!this.rejected && this.props.data && this.props.data.objective);
     if (
       (this.adType === "CollectionAd" &&
-        (!this.props.data.attachment ||
-          this.props.data.objective === "BRAND_AWARENESS")) ||
+        (!attch || obj === "BRAND_AWARENESS")) ||
       (this.adType === "StoryAd" &&
         this.props.storyAdAttachment.attachment === "BLANK") ||
       (this.adType === "SnapAd" &&
@@ -774,6 +779,7 @@ class AdDesign extends Component {
       );
       await this.handleUpload();
       if (
+        this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
         JSON.stringify(this.props.data.formatted) !==
           JSON.stringify(this.state.formatted)
@@ -901,6 +907,8 @@ class AdDesign extends Component {
       <CollectionComp
         key={collIdx}
         navigation={this.props.navigation}
+        rejected={this.rejected}
+        selectedCampaign={this.selectedCampaign}
         collIdx={collIdx}
         screenProps={this.props.screenProps}
       />

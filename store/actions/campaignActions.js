@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import store from "../index";
+import store, { persistor } from "../index";
 import filter from "lodash/filter";
 
 createBaseUrl = () =>
@@ -912,8 +912,6 @@ export const save_collection_media = (
         cancelToken: cancelUplaod.token
       })
       .then(res => {
-        // console.log("data:", res.data);
-
         return res.data;
       })
       .then(data => {
