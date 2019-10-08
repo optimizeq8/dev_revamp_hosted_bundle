@@ -67,6 +67,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { BudgetCards } from "./BudgetCards";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -118,7 +119,9 @@ class AdDetails extends Component {
       modalVisible: false,
       totalReach: 0,
       selectionOption: "",
-      showRegions: false
+      showRegions: false,
+      recBudget: 0,
+      budgetOption: 1
     };
   }
 
@@ -184,16 +187,19 @@ class AdDetails extends Component {
         ) + 1
       );
 
-      let defaultBudget = duration * 75;
+      let recBudget = duration * 75;
+      console.log("recBudget", recBudget, duration);
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: defaultBudget
+          lifetime_budget_micro: recBudget
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(defaultBudget)
+        value: this.formatNumber(recBudget),
+        recBudget: recBudget
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -210,7 +216,8 @@ class AdDetails extends Component {
               this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
-            filteredLanguages: this.props.languages
+            filteredLanguages: this.props.languages,
+            recBudget
           },
           () => {
             this._calcReach();
@@ -397,7 +404,7 @@ class AdDetails extends Component {
   formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
-  _handleBudget = (value, rawValue, onBlur) => {
+  _handleBudget = (value, rawValue, onBlur, budgetOption) => {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
@@ -409,7 +416,8 @@ class AdDetails extends Component {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption: budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -434,7 +442,8 @@ class AdDetails extends Component {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption: budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -551,7 +560,8 @@ class AdDetails extends Component {
       this._handleBudget(
         this.state.value,
         this.state.campaignInfo.lifetime_budget_micro,
-        true
+        true,
+        this.state.budgetOption
       ) &&
       !languagesError &&
       !countryError
@@ -890,9 +900,19 @@ class AdDetails extends Component {
               >
                 {!editCampaign ? (
                   <>
-                    <Text style={styles.subHeadings}>
+                    <Text uppercase style={styles.subHeadings}>
                       {translate("Budget")}
                     </Text>
+                    <BudgetCards
+                      value={this.state.value}
+                      recBudget={this.state.recBudget}
+                      lifetime_budget_micro={
+                        this.state.campaignInfo.lifetime_budget_micro
+                      }
+                      budgetOption={this.state.budgetOption}
+                      _handleBudget={this._handleBudget}
+                    />
+                    {/* 
                     <View style={styles.moneyInputContainer}>
                       <TextInputMask
                         disableFullscreenUI={this.props.loading}
@@ -926,6 +946,8 @@ class AdDetails extends Component {
                         {translate("Tap to enter manually")}
                       </Text>
                     </View>
+                    */}
+
                     {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
@@ -968,7 +990,7 @@ class AdDetails extends Component {
                     </Text>
                   </View>
                 )}
-                <Text style={styles.subHeadings}>
+                <Text uppercase style={styles.subHeadings}>
                   {translate("Who would you like to reach?")}
                 </Text>
                 <ScrollView
