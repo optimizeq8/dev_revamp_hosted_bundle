@@ -126,7 +126,7 @@ class AdCover extends Component {
       }
     }
 
-    let rep = this.state.campaignInfo;
+    // let rep = this.state.campaignInfo;
     if (this.rejected) {
       this.setState({
         ...this.state,
@@ -145,7 +145,7 @@ class AdCover extends Component {
         })
         .includes(true)
     ) {
-      rep = { ...this.state.campaignInfo, ...this.props.data };
+      let rep = { ...this.state.campaignInfo, ...this.props.data };
 
       this.setState({
         ...this.state,
@@ -190,7 +190,10 @@ class AdCover extends Component {
         coverHeadlineError: validateWrapper("mandatory", coverHeadline),
         headlineRejectionUpload: true
       },
-      this.props.save_campaign_info({ coverHeadline })
+      this.props.save_campaign_info({
+        coverHeadline,
+        headlineRejectionUpload: true
+      })
     );
   };
   pick = async mediaTypes => {
@@ -236,7 +239,8 @@ class AdCover extends Component {
       });
 
       this.props.save_campaign_info({
-        logo: correctLogo && logoFormat ? logo.uri : ""
+        logo: correctLogo && logoFormat ? logo.uri : "",
+        logoRejectionUpload: correctLogo && logoFormat
       });
     }
   };
@@ -329,7 +333,8 @@ class AdCover extends Component {
                   type: "success"
                 });
                 this.props.save_campaign_info({
-                  cover: result.uri
+                  cover: result.uri,
+                  coverRejectionUpload: true
                 });
               })
               .catch(error => {
@@ -490,7 +495,7 @@ class AdCover extends Component {
     });
   };
   _handleSubmission = async () => {
-    await this.validator();
+    this.validator();
     if (
       !this.state.coverHeadlineError &&
       !this.state.logoError &&
@@ -504,8 +509,8 @@ class AdCover extends Component {
         step: 2,
         business_name: this.props.mainBusiness.businessname
       });
-      await this.formatMedia();
       await this.handleUpload();
+      await this.formatMedia();
       if (
         (this.rejected &&
           (this.state.logoRejectionUpload ||
@@ -548,7 +553,8 @@ class AdCover extends Component {
     }
   };
   render() {
-    let { cover, coverHeadlineError, logoError } = this.state;
+    let { cover, coverHeadlineError, formattedCover } = this.state;
+
     let { coverHeadline, logo } = this.state.campaignInfo;
     const { translate } = this.props.screenProps;
     return (
