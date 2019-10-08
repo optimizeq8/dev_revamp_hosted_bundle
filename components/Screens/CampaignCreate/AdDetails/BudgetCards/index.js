@@ -35,7 +35,7 @@ export class BudgetCards extends Component {
           maskElement={
             <LinearGradient
               colors={["black", "transparent"]}
-              start={[0.8, 0]}
+              start={[0.85, 0]}
               end={[1, 0]}
               style={{ height: "100%", width: "95%" }}
             />
