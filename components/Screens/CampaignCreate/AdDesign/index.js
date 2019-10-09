@@ -396,7 +396,6 @@ class AdDesign extends Component {
   };
   openUploadVideo = async () => {
     const { translate } = this.props.screenProps;
-    console.log(this.state.creativeVideoUrl);
 
     try {
       this._addLinkingListener();
