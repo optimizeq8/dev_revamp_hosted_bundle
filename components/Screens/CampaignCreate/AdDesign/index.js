@@ -376,10 +376,13 @@ class AdDesign extends Component {
       )
         ? "&" + this.state.storyAdCards.selectedStoryAd.story_id
         : "";
+      let testingOrLiveServer = this.props.admin
+        ? "https://www.optimizekwtestingserver.com/optimize/"
+        : "https://www.optimizeapp.com/optimize/";
       this.setState(
         {
           creativeVideoUrl:
-            "https://www.optimizekwtestingserver.com/optimize/fileupload/uploadCreative?" +
+            `${testingOrLiveServer}fileupload/uploadCreative?` +
             this.props.campaign_id +
             story_id
         },
@@ -393,6 +396,8 @@ class AdDesign extends Component {
   };
   openUploadVideo = async () => {
     const { translate } = this.props.screenProps;
+    console.log(this.state.creativeVideoUrl);
+
     try {
       this._addLinkingListener();
       // this.props.navigation.replace("WebView", {
@@ -1263,7 +1268,8 @@ const mapStateToProps = state => ({
   mediaTypeWebLink: state.campaignC.mediaTypeWebLink,
   mediaWebLink: state.campaignC.mediaWebLink,
   webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading,
-  currentCampaignSteps: state.campaignC.currentCampaignSteps
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  admin: state.login.admin
 });
 
 const mapDispatchToProps = dispatch => ({

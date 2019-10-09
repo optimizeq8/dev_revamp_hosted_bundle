@@ -25,6 +25,7 @@ import PlusAddIcon from "../../../../assets/SVGs/PlusAdd.svg";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 // Style
 import styles from "./styles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
