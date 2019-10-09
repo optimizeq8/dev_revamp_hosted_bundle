@@ -442,9 +442,10 @@ export const uploadStoryAdCard = (
   card,
   cancelUpload,
   iosUploadVideo,
-  rejected
+  rejected,
+  finalSubmision
 ) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
       payload: { uploading: true, index: card.index }
@@ -467,13 +468,22 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         rejected &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
             position: "top"
           });
+        if (
+          getState().campaignC.loadingStoryAdsArray.length > 1 &&
+          getState().campaignC.loadingStoryAdsArray.reduce(
+            (n, x) => n + (x === true),
+            0
+          ) === 1
+        ) {
+          finalSubmision();
+        }
         return dispatch({
           type: actionTypes.SET_STORYADMEDIA_DESIGN,
           payload: { data: data.data, card }
