@@ -30,12 +30,13 @@ export default class PhoneNoField extends Component {
           rounded
           style={[
             styles.phoneInput,
-            this.props.invite
-              ? this.props.whatsApp
-                ? { backgroundColor: "rgba(0,0,0,0.35)" }
-                : { backgroundColor: "rgba(0,0,0,0.5)" }
-              : globalStyles.transparentBackgroundColor,
-            this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
+            // this.props.invite
+            //   ? this.props.whatsApp
+            // ?
+            { backgroundColor: "rgba(0,0,0,0.16)" }
+            //   : { backgroundColor: "rgba(0,0,0,0.5)" }
+            // : globalStyles.transparentBackgroundColor,
+            // this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
           ]}
         >
           <TouchableOpacity
@@ -47,9 +48,10 @@ export default class PhoneNoField extends Component {
             type="MaterialIcons"
             style={[
               styles.flagIcon,
-              this.props.invite
-                ? globalStyles.whiteTextColor
-                : globalStyles.transparentTextColor
+              // this.props.invite
+              //   ? globalStyles.whiteTextColor
+              // :
+              globalStyles.transparentTextColor
             ]}
           />
           <PhoneInput
@@ -57,15 +59,18 @@ export default class PhoneNoField extends Component {
             textStyle={{
               //   backgroundColor: this.props.invite ? "#000000" : "#0000",
 
-              color: this.props.invite ? "#FFFF" : "#000",
+              color:
+                //  this.props.invite ?
+                "#FFFF",
+              // : "#000",
               ...styles.phoneInputTextStyle,
               ...styles.input,
 
-              borderBottomColor: this.props.invite
-                ? "#0000"
-                : this.props.valid
-                ? "#5F5F5F"
-                : "red",
+              borderBottomColor:
+                // this.props.invite
+                //   ? "#0000"
+                // :
+                this.props.valid ? "transparent" : "red",
               opacity: this.props.disabled ? 0.5 : 1
             }}
             disabled={this.props.disabled}

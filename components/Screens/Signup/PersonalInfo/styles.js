@@ -1,4 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -6,6 +7,17 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  marginVertical: {
+    marginVertical: 5
+  },
+  inputLabel: {
+    marginBottom: -10,
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    lineHeight: 18,
+    color: "#FFF",
+    textAlign: "center"
+  },
   labelEmail: {
     flexDirection: "row"
   },
@@ -24,10 +36,12 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   labelInputText: {
-    bottom: 5,
+    // bottom: 5,
     flexDirection: "column"
   },
   iconSize: {
+    position: "absolute",
+    marginLeft: 15,
     fontSize: 16 / PixelRatio.getFontScale()
   },
   emailerrorText: {
@@ -71,7 +85,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2
   },
   contentContainer: {
-    paddingVertical: 40,
+    // paddingVertical: 40,
     flex: 1,
     justifyContent: "space-around"
   },
@@ -85,8 +99,8 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "#717171",
-    // paddingTop: 40,
+    color: "#FFF",
+    paddingTop: 5,
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10
@@ -97,20 +111,43 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light-english",
     fontSize: 14 / PixelRatio.getFontScale(),
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
+    color: "#FFF"
   },
+  // input: {
+  //   // bottom: 25,
+  //   marginBottom: 20,
+  //   paddingHorizontal: 50,
+  //   borderRadius: 15,
+  //   alignSelf: "center",
+  //   width: 300,
+  //   height: 45,
+  //   borderColor: "#7039FF"
+  // },
   input: {
-    // bottom: 25,
-    marginBottom: 20,
-    paddingHorizontal: 50,
-    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    // paddingHorizontal: 10,
+    borderRadius: 150,
+    borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: 300,
-    height: 45,
-    borderColor: "#7039FF"
+    width: widthPercentageToDP(75),
+    borderWidth: 0,
+    height: 54
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  labelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    zIndex: 1
   }
 });
 

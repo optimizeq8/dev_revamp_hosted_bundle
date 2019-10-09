@@ -89,7 +89,7 @@ class MainForm extends Component {
       >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <Container style={styles.container}>
@@ -128,7 +128,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
-                        <UserProfile style={styles.inputIcon} />
+                        <UserProfile style={styles.inputIcon} fill={"#fff"} />
                         <Input
                           placeholderTextColor="#fff"
                           autoCorrect={false}
@@ -160,7 +160,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
-                        <PasswordIcon style={styles.inputIcon} />
+                        <PasswordIcon style={styles.inputIcon} fill={"#FFF"} />
                         <Input
                           placeholderTextColor="#fff"
                           secureTextEntry={true}

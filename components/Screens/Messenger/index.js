@@ -184,7 +184,7 @@ class Messenger extends Component {
               {() => (
                 <>
                   <View style={styles.flexEmptyView} />
-                  <FlatList
+                  {/* <FlatList
                     inverted
                     ref={ref => {
                       this.flatList = ref;
@@ -201,7 +201,7 @@ class Messenger extends Component {
                           <MessageBubble key={msg.item.id} message={msg.item} />
                         );
                     }}
-                  />
+                  /> */}
                   {isEmpty(this.props.messages) && (
                     <View style={styles.chatBotViewSmall}>
                       <ChatBot width={100} height={100} />
@@ -221,10 +221,10 @@ class Messenger extends Component {
                       value={this.state.textValue}
                       onChange={event => this._onChange(event)}
                       style={[
-                         I18nManager.isRTL
-                        ? rtlStyles.textInput
-                        : styles.textInput,
-                      newStyle
+                        I18nManager.isRTL
+                          ? rtlStyles.textInput
+                          : styles.textInput,
+                        newStyle
                       ]}
                       placeholder={translate("Type Your Message")}
                       placeholderTextColor="#909090"
@@ -239,7 +239,6 @@ class Messenger extends Component {
                       onContentSizeChange={e =>
                         this.updateSize(e.nativeEvent.contentSize.height)
                       }
-
                     />
                     <TouchableOpacity
                       style={styles.submitButton}

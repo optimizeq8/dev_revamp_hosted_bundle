@@ -62,8 +62,10 @@ class CampaignCard extends Component {
     });
     return (
       <LinearGradient
-        colors={[colors.background1, colors.background2]}
-        locations={[0.7, 1]}
+        colors={[colors.background2, colors.background1]}
+        locations={[0.3, 1]}
+        start={{ x: 0, y: 0.75 }}
+        end={{ x: 1, y: 0.25 }}
         style={styles.cardStyle}
       >
         <TouchableOpacity

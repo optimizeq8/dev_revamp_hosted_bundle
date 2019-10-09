@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    position: "absolute"
+    position: "absolute",
+    color: "#FFF"
   }
 });
 
