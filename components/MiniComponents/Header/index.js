@@ -32,12 +32,13 @@ export default class Header extends Component {
             if (!isUndefined(navigation)) navigation.goBack();
             else actionButton();
           }}
-          style={styles.left}
+          style={[
+            styles.left,
+            I18nManager.isRTL ? { position: "absolute", right: 15 } : {}
+          ]}
         >
           {closeButton ? (
             <CloseIcon width={17} height={17} />
-          ) : I18nManager.isRTL ? (
-            <Image source={forwardICon} style={{ width: 24, height: 24 }} />
           ) : (
             <BackIcon width={24} height={24} />
           )}

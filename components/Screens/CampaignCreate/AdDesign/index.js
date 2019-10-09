@@ -58,6 +58,7 @@ import SwipeCompCondition from "./SwipeCompCondition";
 import CircleLoader from "../../../MiniComponents/CircleLoader/CircleLoader";
 import FooterText from "./FooterText";
 import LoadingModal from "./LoadingModal";
+import { colors } from "../../../GradiantColors/colors";
 import {
   _handleSubmission,
   formatMedia,
