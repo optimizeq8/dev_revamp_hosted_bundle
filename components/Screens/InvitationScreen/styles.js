@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   background: {
     position: "absolute",
     top: heightPercentageToDP(20),
-    opacity: 0.3,
+    opacity: 0.4,
     alignSelf: "center",
     zIndex: 0
   },

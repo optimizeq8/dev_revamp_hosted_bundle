@@ -25,8 +25,8 @@ export default class StatusModal extends Component {
         visible={this.props.modalVisible}
       >
         <LinearGradient
-          colors={["#751AFF", "#6268FF"]}
-          locations={[0.3, 1]}
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <BlurView tint="dark" intensity={100} style={styles.BlurView}>

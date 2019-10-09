@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 35,
-    borderColor: "#6C63FF",
-    borderWidth: 2,
+    // borderColor: "#6C63FF",
+    // borderWidth: 2,
     alignSelf: "center",
     paddingVertical: 0
   },
@@ -62,13 +62,16 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   activeBadegeText: {
+    marginTop: I18nManager.isRTL ? 10 : 0,
+    alignSelf: "center",
+    textAlignVertical: "center",
     color: "#FFF",
     fontSize: 14,
     fontFamily: "montserrat-bold"
   },
   dash: {
     alignSelf: "center",
-    width: 25,
+    width: 30,
 
     marginBottom: 10,
     // marginHorizontal: 5,
@@ -98,6 +101,16 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between"
+  },
+  progressCardView: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30
   }
 });
 

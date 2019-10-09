@@ -322,8 +322,8 @@ class App extends React.Component {
               }}
             />
             <LinearGradient
-              colors={["#751AFF", "#6268FF"]}
-              locations={[0.3, 1]}
+              colors={["#6200FF", "#8900FF"]}
+              locations={[1, 0.3]}
               style={styles.gradient}
             />
             <View

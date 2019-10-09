@@ -98,7 +98,7 @@ class SuccessRedirect extends Component {
       >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
 

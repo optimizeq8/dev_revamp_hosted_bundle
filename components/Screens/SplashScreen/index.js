@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { Image, Animated } from "react-native";
 import { Container } from "native-base";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
 // Style
 import styles from "./styles";
@@ -37,7 +37,7 @@ class SplashScreen extends Component {
       <Container style={styles.contentContainer}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
 

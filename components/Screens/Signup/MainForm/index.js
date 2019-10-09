@@ -63,19 +63,7 @@ class MainForm extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
-          <View
-            style={{
-              // marginTop: -20,
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: "#FFF",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              paddingVertical: 30,
-              borderBottomLeftRadius: 30,
-              borderBottomRightRadius: 30
-            }}
-          >
+          <View style={styles.progressCardView}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Invitation");
@@ -100,7 +88,8 @@ class MainForm extends Component {
                   textTransform: "uppercase",
                   fontFamily: "montserrat-bold",
                   letterSpacing: 0,
-                  lineHeight: 18
+                  lineHeight: 18,
+                  marginTop: 10
                 }}
               >
                 {translate("Registration")}
@@ -122,7 +111,7 @@ class MainForm extends Component {
                         : styles.badgeText
                     }
                   >
-                    1
+                    {translate("1")}
                   </Text>
                 </Badge>
                 <Text
@@ -135,7 +124,14 @@ class MainForm extends Component {
                   {translate("Number")}
                 </Text>
               </View>
-              <View style={[styles.dash, styles.dashActive]} />
+              <View
+                style={[
+                  styles.dash,
+                  !this.props.successNo &&
+                    !this.props.verificationCode &&
+                    styles.dashActive
+                ]}
+              />
               <View style={styles.badgeView}>
                 <Badge
                   style={
@@ -151,7 +147,7 @@ class MainForm extends Component {
                         : styles.badgeText
                     }
                   >
-                    2
+                    {translate("2")}
                   </Text>
                 </Badge>
                 <Text
@@ -164,7 +160,17 @@ class MainForm extends Component {
                   {translate("Verify")}
                 </Text>
               </View>
-              <View style={styles.dash} />
+              <View
+                style={[
+                  styles.dash,
+
+                  this.props.verified &&
+                  !this.props.successEmail &&
+                  !this.props.registered
+                    ? { marginLeft: -4, marginRight: -8 }
+                    : { marginRight: -4 }
+                ]}
+              />
               <View style={styles.badgeView}>
                 <Badge
                   style={
@@ -184,7 +190,7 @@ class MainForm extends Component {
                         : styles.badgeText
                     }
                   >
-                    3
+                    {translate("3")}
                   </Text>
                 </Badge>
                 <Text
@@ -200,7 +206,16 @@ class MainForm extends Component {
                 </Text>
               </View>
               <View
-                style={[styles.dash, { marginRight: -3, marginLeft: -2 }]}
+                style={[
+                  styles.dash,
+                  // { width: 30 },
+                  this.props.successEmail
+                    ? { marginRight: -8 }
+                    : {
+                        marginRight: -4,
+                        marginLeft: -4
+                      }
+                ]}
               />
               <View style={styles.badgeView}>
                 <Badge
@@ -215,7 +230,7 @@ class MainForm extends Component {
                         : styles.badgeText
                     }
                   >
-                    4
+                    {translate("4")}
                   </Text>
                 </Badge>
                 <Text
@@ -238,11 +253,11 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  verificationCode: true,
-  successNo: true,
+  verificationCode: state.register.verificationCode,
+  successNo: state.register.successNo,
   successEmail: state.register.successEmail,
-  verified: true,
-  registered: false
+  verified: state.register.verified,
+  registered: state.register.registered
 });
 
 const mapDispatchToProps = dispatch => ({

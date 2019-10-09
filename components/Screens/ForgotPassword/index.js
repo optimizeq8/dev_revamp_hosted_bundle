@@ -74,7 +74,7 @@ class ForgotPassword extends Component {
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <CustomHeader navigation={this.props.navigation} closeButton={true} />

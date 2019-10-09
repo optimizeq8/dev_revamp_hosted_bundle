@@ -158,7 +158,8 @@ export default class SlideUpPanel extends Component {
               <View style={styles.bottomContainer}>
                 <View style={styles.dragHandler} {...dragHandler}>
                   <LinearGradient
-                    colors={["#751AFF", "#751AFF"]}
+                    colors={[colors.background1, colors.background2]}
+                    locations={[1, 0.3]}
                     style={styles.tab}
                   >
                     <BarIcon style={styles.handlerIcon} />
