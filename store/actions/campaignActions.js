@@ -995,11 +995,6 @@ export const verifyInstagramHandle = insta_handle => {
         data = JSON.parse(data);
         data = data.entry_data.ProfilePage[0].graphql.user;
         if (data.is_private) {
-          // showMessage({
-          //     message: `${insta_handle} is a private account Try with some other account`,
-          //     type: 'danger',
-          //     duration: 5000
-          // })
           return dispatch({
             type: actionTypes.ERROR_GET_INSTAGRAM_POST,
             payload: {
@@ -1019,10 +1014,6 @@ export const verifyInstagramHandle = insta_handle => {
       }
     } catch (err) {
       // console.log('insta error verify account', err.response || err.message);
-      // showMessage({
-      //     message: `${insta_handle} doesn't exist. Try another account name`,
-      //     type: 'danger'
-      // })
       return dispatch({
         type: actionTypes.ERROR_GET_INSTAGRAM_POST,
         payload: {
@@ -1033,7 +1024,7 @@ export const verifyInstagramHandle = insta_handle => {
     }
   };
 };
-export const getInstagramPost = insta_handle => {
+export const getInstagramPostInitial = insta_handle => {
   // console.log("insta_handle", insta_handle);
 
   return async dispatch => {
@@ -1064,30 +1055,6 @@ export const getInstagramPost = insta_handle => {
         mediaArray.push(...mediaList.edges);
         let hasNextPage = mediaList.page_info.has_next_page;
         let end_cursor = mediaList.page_info.end_cursor;
-        while (hasNextPage) {
-          // console.log("hasNextPage", hasNextPage);
-
-          // (async () => {
-          const responseMedia = await axios.get(
-            `https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${
-              data.id
-            }","first":${50},"after":"${end_cursor}"}`
-          );
-          // console.log(
-          //   "responseMedia data",
-          //   responseMedia.data.data.user.edge_owner_to_timeline_media
-          // );
-          mediaArray.push(
-            ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges
-          );
-          hasNextPage =
-            responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
-              .has_next_page;
-          end_cursor =
-            responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
-              .end_cursor;
-          // }, 10000);
-        }
         // console.log("mediaArrayLength", mediaArray.length);
 
         if (mediaArray && mediaArray.length > 0) {
@@ -1110,29 +1077,28 @@ export const getInstagramPost = insta_handle => {
             return !item.isVideo;
           });
 
-          // console.log('imageListBeforeSize', imagesList.length);
-
-          // imagesList = filter(imagesList, media => {
-          // 	return !media.isVideo;
-          // });
-          // console.log('imageList', imagesList);
-          // console.log('imageListAfterSize', imagesList.length);
-          // console.log('???', imagesList);
-
           return dispatch({
             type: actionTypes.SET_INSTAGRAM_POST,
             payload: {
               businessLogo: businessLogo,
-              imagesList: imagesList
+              imagesList: imagesList,
+              instaHandleId: data.id,
+              instaHasNextPage: hasNextPage,
+              instaEndCursor: end_cursor
             }
           });
           // console.log('imageListAfterSize', imagesList.length);
         }
-        // console.log('??? empty');
 
         return dispatch({
           type: actionTypes.SET_INSTAGRAM_POST,
-          payload: { businessLogo: "", imagesList: [] }
+          payload: {
+            businessLogo: "",
+            imagesList: [],
+            instaHandleId: null,
+            instaHasNextPage: null,
+            instaEndCursor: null
+          }
         });
       }
     } catch (error) {
@@ -1412,5 +1378,70 @@ export const setCampaignInProgress = value => {
       type: actionTypes.SET_CAMPAIGN_IN_PROGRESS,
       payload: value
     });
+  };
+};
+
+export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: actionTypes.LOADING_MORE_INSTAGRAM_POST,
+        payload: true
+      });
+      const responseMedia = await axios.get(
+        `https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${instaHandleId}","first":12,"after":"${instaEndCursor}"}`
+      );
+      // console.log("responseMediA", responseMedia.data);
+
+      let mediaArray = [
+        ...responseMedia.data.data.user.edge_owner_to_timeline_media.edges
+      ];
+
+      let hasNextPage =
+        responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
+          .has_next_page;
+      let end_cursor =
+        responseMedia.data.data.user.edge_owner_to_timeline_media.page_info
+          .end_cursor;
+
+      if (mediaArray && mediaArray.length > 0) {
+        var imagesList = mediaArray.map(media => {
+          return {
+            imageUrl: media.node.display_url,
+            shortcode: media.node.shortcode,
+            imageId: media.node.id,
+            productDescription:
+              media.node.edge_media_to_caption.edges.length > 0
+                ? media.node.edge_media_to_caption.edges[0].node.text
+                : "",
+            isVideo: media.node.is_video
+          };
+        });
+
+        imagesList = imagesList.filter(item => {
+          return !item.isVideo;
+        });
+        return dispatch({
+          type: actionTypes.GET_MORE_INSTAGRAM_POST,
+          payload: {
+            imagesList: imagesList,
+            instaHasNextPage: hasNextPage,
+            instaEndCursor: end_cursor
+          }
+        });
+      }
+    } catch (error) {
+      console.log("ERROR LOADING MORE", error.message || error.response);
+
+      return dispatch({
+        type: actionTypes.ERROR_GET_MORE_INSTAGRAM_POST,
+        payload: {
+          imagesList: [],
+          instaHasNextPage: null,
+          instaEndCursor: null
+        }
+      });
+    }
+    // console.log('imageListAfterSize', imagesList.length);
   };
 };

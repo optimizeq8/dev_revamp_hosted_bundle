@@ -88,7 +88,11 @@ const initialState = {
   webUploadLinkMediaLoading: false,
   incompleteCampaign: false,
   campaignProgressStarted: false,
-  currentCampaignSteps: []
+  currentCampaignSteps: [],
+  instaHandleId: null,
+  instaHasNextPage: null,
+  instaEndCursor: null,
+  loadingMoreInstaPost: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -619,20 +623,29 @@ const reducer = (state = initialState, action) => {
         // errorInstaHandle: !action.payload.error,
         // errorInstaHandleMessage: action.payload.errorMessage,
         instagramPostList: [],
-        businessLogo: ""
+        businessLogo: "",
+        instaHandleId: null,
+        instaHasNextPage: null,
+        instaEndCursor: null
       };
     case actionTypes.SET_INSTAGRAM_POST:
       return {
         ...state,
         instagramPostList: action.payload.imagesList,
         businessLogo: action.payload.businessLogo,
-        instagramPostLoading: false
+        instagramPostLoading: false,
+        instaHandleId: action.payload.instaHandleId,
+        instaHasNextPage: action.payload.instaHasNextPage,
+        instaEndCursor: action.payload.instaEndCursor
       };
     case actionTypes.ERROR_GET_INSTAGRAM_POST:
       return {
         ...state,
         instagramPostList: [],
         businessLogo: "",
+        instaHandleId: null,
+        instaHasNextPage: null,
+        instaEndCursor: null,
         // errorInstaHandle: true,
         errorInstaHandle: action.payload.error,
         instagramPostLoading: false,
@@ -744,6 +757,29 @@ const reducer = (state = initialState, action) => {
         ...state,
         campaignProgressStarted: action.payload
       };
+    case actionTypes.GET_MORE_INSTAGRAM_POST:
+      const list = [...state.instagramPostList, ...action.payload.imagesList];
+      // console.log("list", list);
+      return {
+        ...state,
+        instaHasNextPage: action.payload.instaHasNextPage,
+        instaEndCursor: action.payload.instaEndCursor,
+        instagramPostList: list,
+        loadingMoreInstaPost: false
+      };
+    case actionTypes.ERROR_GET_MORE_INSTAGRAM_POST:
+      return {
+        ...state,
+        instaHasNextPage: null,
+        instaEndCursor: null,
+        loadingMoreInstaPost: false
+      };
+    case actionTypes.LOADING_MORE_INSTAGRAM_POST: {
+      return {
+        ...state,
+        loadingMoreInstaPost: action.payload
+      };
+    }
     default:
       return state;
   }
