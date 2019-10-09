@@ -56,7 +56,8 @@ class WhatsApp extends Component {
         callaction: list.SnapAd[4].call_to_action_list[0]
       },
       callactions: list.SnapAd[4].call_to_action_list,
-
+      validCallNumber: false,
+      validWhatsAppNumber: false,
       insta_handleError: "",
       showChangeInstaHandle: false,
       inputCallToAction: false
@@ -265,7 +266,8 @@ class WhatsApp extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        whatsappnumber: validNumber ? value : ""
+        whatsappnumber: validNumber ? value : "",
+        validWhatsAppNumber: validNumber
       }
     });
   };
@@ -273,7 +275,8 @@ class WhatsApp extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        callnumber: validNumber ? value : ""
+        callnumber: validNumber ? value : "",
+        validCallNumber: validNumber
       }
     });
   };
@@ -446,6 +449,7 @@ class WhatsApp extends Component {
                       </Text>
                     </View>
                     <PhoneNoField
+                      valid={this.state.validWhatsAppNumber}
                       screenProps={this.props.screenProps}
                       whatsApp
                       phoneNum={this.state.campaignInfo.whatsappnumber}
@@ -461,6 +465,7 @@ class WhatsApp extends Component {
                     </View>
                     {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
                     <PhoneNoField
+                      valid={this.state.validCallNumber}
                       screenProps={this.props.screenProps}
                       whatsApp
                       phoneNum={this.state.campaignInfo.callnumber}

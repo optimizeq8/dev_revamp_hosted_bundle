@@ -57,7 +57,12 @@ export default class Header extends Component {
         >
           {title}
         </Text>
-        <View style={[styles.right]}>
+        <View
+          style={[
+            styles.right,
+            I18nManager.isRTL ? { position: "absolute", left: 15 } : {}
+          ]}
+        >
           {showTopRightButton ? (
             <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
               {topRightButtonText}
