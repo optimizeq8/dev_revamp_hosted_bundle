@@ -6,7 +6,11 @@ import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
 import { LinearGradient } from "expo-linear-gradient";
 export class BudgetCards extends Component {
-  state = { placeholder: false };
+  state = { placeholder: false, scrollX: 1 };
+  handleFading = event => {
+    let x = event.nativeEvent.contentOffset.x;
+    this.setState({ scrollX: x > 20 ? x / 20 : 1 });
+  };
   render() {
     let {
       _handleBudget,
@@ -36,12 +40,14 @@ export class BudgetCards extends Component {
             <LinearGradient
               colors={["black", "transparent"]}
               start={[0.85, 0]}
-              end={[1, 0]}
+              end={[this.state.scrollX, 0]}
               style={{ height: "100%", width: "95%" }}
             />
           }
         >
           <ScrollView
+            onScroll={this.handleFading}
+            scrollEventThrottle={100}
             horizontal
             style={styles.budgetCardsStyle}
             contentContainerStyle={styles.scrollContainerStyle}
