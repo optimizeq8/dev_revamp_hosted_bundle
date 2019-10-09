@@ -12,6 +12,7 @@ import CloseIcon from "../../../assets/SVGs/Close.svg";
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import { globalColors } from "../../../GlobalStyles";
+import { colors } from "../../GradiantColors/colors";
 export default class StatusModal extends Component {
   render() {
     const { translate } = this.props.screenProps;

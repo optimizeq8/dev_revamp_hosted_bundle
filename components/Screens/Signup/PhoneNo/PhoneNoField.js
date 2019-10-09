@@ -66,11 +66,11 @@ export default class PhoneNoField extends Component {
               ...styles.phoneInputTextStyle,
               ...styles.input,
 
-              borderBottomColor:
-                // this.props.invite
-                //   ? "#0000"
-                // :
-                this.props.valid ? "transparent" : "red",
+              borderBottomColor: this.props.invite
+                ? "#0000"
+                : this.props.valid
+                ? "transparent"
+                : "red",
               opacity: this.props.disabled ? 0.5 : 1
             }}
             disabled={this.props.disabled}
