@@ -184,7 +184,7 @@ class Messenger extends Component {
               {() => (
                 <>
                   <View style={styles.flexEmptyView} />
-                  {/* <FlatList
+                  <FlatList
                     inverted
                     ref={ref => {
                       this.flatList = ref;
@@ -201,7 +201,7 @@ class Messenger extends Component {
                           <MessageBubble key={msg.item.id} message={msg.item} />
                         );
                     }}
-                  /> */}
+                  />
                   {isEmpty(this.props.messages) && (
                     <View style={styles.chatBotViewSmall}>
                       <ChatBot width={100} height={100} />

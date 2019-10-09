@@ -12,6 +12,7 @@ export const colors = {
 const styles = StyleSheet.create({
   contentContainerStyle1: {
     backgroundColor: "rgba(0,0,0,0.6)"
+    // marginHorizontal: 20
   },
   videoView: {
     height: "100%"

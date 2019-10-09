@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     // alignSelf: "center"
   },
   uploadMediaFromDifferentDeviceSubtitleText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 13,
     lineHeight: 17,
     color: "#FF9D00",
