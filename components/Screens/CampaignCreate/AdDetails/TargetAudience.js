@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
-  MaskedViewIOS
+  MaskedViewIOS,
+  I18nManager
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -60,7 +61,7 @@ export class TargetAudience extends Component {
           onScroll={this.handleFading}
           ref={ref => (this.scrollView = ref)}
           indicatorStyle="white"
-          contentContainerStyle={{ paddingBottom: 200 }}
+          contentContainerStyle={{ paddingBottom: 100 }}
           style={styles.targetList}
         >
           <TouchableOpacity

@@ -393,6 +393,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_STORYADMEDIA_DESIGN:
       let storyAds = state.storyAdsArray;
       storyAds[action.payload.data.story_order] = {
+        ...storyAds[action.payload.data.story_order],
         ...action.payload.data,
         ...action.payload.card,
         uploaded: true
@@ -426,10 +427,8 @@ const reducer = (state = initialState, action) => {
         )
           return ad;
       });
-
       let deletedLoadingAr = state.loadingStoryAdsArray;
       deletedLoadingAr[action.payload.card.index] = false;
-
       return {
         ...state,
         loadingStoryAdsArray: [...deletedLoadingAr],

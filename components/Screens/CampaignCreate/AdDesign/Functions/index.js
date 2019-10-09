@@ -66,7 +66,8 @@ export const _handleSubmission = async (
               formatStoryAdParams.handleUpload,
               formatStoryAdParams.signal,
               formatStoryAdParams.uploadStoryAdCard,
-              setTheState
+              setTheState,
+              finalSubmission
             );
         });
         setTheState({ storyAdAttachChanged: false });

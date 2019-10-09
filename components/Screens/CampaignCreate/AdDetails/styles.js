@@ -1,4 +1,5 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -110,7 +111,8 @@ const styles = StyleSheet.create({
   },
   targetList: {
     flexDirection: "column",
-    height: "60%",
+    paddingBottom: 40,
+    height: "50%",
     marginHorizontal: 40
   },
   targetTouchable: {
@@ -132,10 +134,13 @@ const styles = StyleSheet.create({
     right: 0
   },
   bottom: {
-    display: "flex",
-    alignItems: "center",
+    // display: "flex",
+    // alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row"
+    position: "absolute",
+    bottom: 0,
+    alignSelf: "center"
+    // flexDirection: "row"
   },
   chartText: {
     color: "#fff",

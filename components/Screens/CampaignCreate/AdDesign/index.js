@@ -296,13 +296,6 @@ class AdDesign extends Component {
       });
     }
 
-    if (
-      prevProps.storyAdsArray.length === this.props.storyAdsArray.length &&
-      prevProps.loadingStoryAdsArray !== this.props.loadingStoryAdsArray &&
-      !this.props.loadingStoryAdsArray.includes(true)
-    ) {
-      this.finalSubmission();
-    }
     if (prevProps.storyAdAttachment !== this.props.storyAdAttachment) {
       this.setState({ storyAdAttachChanged: true });
     }
@@ -751,8 +744,8 @@ class AdDesign extends Component {
   };
   finalSubmission = async () => {
     if (
-      (!this.props.loadingStoryAdsArray.includes(true) &&
-        !this.state.brand_nameError &&
+      // !this.props.loadingStoryAdsArray.includes(true) &&
+      (!this.state.brand_nameError &&
         !this.state.headlineError &&
         !this.state.mediaError) ||
       (this.state.objective !== "BRAND_AWARENESS" && !this.state.swipeUpError)
@@ -991,7 +984,7 @@ class AdDesign extends Component {
                           : storyAdCards.selectedStoryAd.media &&
                             storyAdCards.storyAdSelected
                           ? storyAdCards.selectedStoryAd.media
-                          : "//"
+                          : preview.uri
                       }
                       style={styles.placeholder1}
                     />
@@ -1088,7 +1081,7 @@ class AdDesign extends Component {
                 {this.props.loadingStoryAdsArray.includes(true) ? (
                   <CircleLoader
                     mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={0}
+                    bottom={-0.2}
                     loop={true}
                     style={{ width: wp(8), height: hp(8) }}
                   />
@@ -1272,14 +1265,22 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  uploadStoryAdCard: (info, card, cancelUpload, iosUploadVideo, rejected) =>
+  uploadStoryAdCard: (
+    info,
+    card,
+    cancelUpload,
+    iosUploadVideo,
+    rejected,
+    finalSubmission
+  ) =>
     dispatch(
       actionCreators.uploadStoryAdCard(
         info,
         card,
         cancelUpload,
         iosUploadVideo,
-        rejected
+        rejected,
+        finalSubmission
       )
     ),
   ad_design: (
