@@ -67,6 +67,8 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { BudgetCards } from "./BudgetCards";
+import { TargetAudience } from "./TargetAudience";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -118,7 +120,9 @@ class AdDetails extends Component {
       modalVisible: false,
       totalReach: 0,
       selectionOption: "",
-      showRegions: false
+      showRegions: false,
+      recBudget: 0,
+      budgetOption: 1
     };
   }
 
@@ -184,16 +188,19 @@ class AdDetails extends Component {
         ) + 1
       );
 
-      let defaultBudget = duration * 75;
+      let recBudget = duration * 75;
+      console.log("recBudget", recBudget, duration);
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: defaultBudget
+          lifetime_budget_micro: recBudget
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(defaultBudget)
+        value: this.formatNumber(recBudget),
+        recBudget: recBudget
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
@@ -210,7 +217,8 @@ class AdDetails extends Component {
               this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
-            filteredLanguages: this.props.languages
+            filteredLanguages: this.props.languages,
+            recBudget
           },
           () => {
             this._calcReach();
@@ -397,7 +405,7 @@ class AdDetails extends Component {
   formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
-  _handleBudget = (value, rawValue, onBlur) => {
+  _handleBudget = (value, rawValue, onBlur, budgetOption) => {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
@@ -409,7 +417,8 @@ class AdDetails extends Component {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption: budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -434,7 +443,8 @@ class AdDetails extends Component {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption: budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
@@ -551,7 +561,8 @@ class AdDetails extends Component {
       this._handleBudget(
         this.state.value,
         this.state.campaignInfo.lifetime_budget_micro,
-        true
+        true,
+        this.state.budgetOption
       ) &&
       !languagesError &&
       !countryError
@@ -890,42 +901,20 @@ class AdDetails extends Component {
               >
                 {!editCampaign ? (
                   <>
-                    <Text style={styles.subHeadings}>
+                    <Text uppercase style={styles.subHeadings}>
                       {translate("Budget")}
                     </Text>
-                    <View style={styles.moneyInputContainer}>
-                      <TextInputMask
-                        disableFullscreenUI={this.props.loading}
-                        // disableFullscreenUI={this.props.loading}
-                        includeRawValueInChangeText
-                        type={"money"}
-                        options={{
-                          precision: 0,
-                          delimiter: ",",
-                          unit: "$"
-                        }}
-                        // disabled={editCampaign || this.props.loading}
-                        maxLength={8}
-                        // defaultValue={this.state.value + ""}
-                        value={this.state.value + ""}
-                        onChangeText={(value, rawText) => {
-                          if (!editCampaign)
-                            this._handleBudget(value, rawText, false);
-                        }}
-                        onBlur={() =>
-                          this._handleBudget(
-                            this.state.value,
-                            this.state.campaignInfo.lifetime_budget_micro,
-                            true
-                          )
-                        }
-                        style={styles.budget}
-                        ref={ref => (this.moneyField = ref)}
-                      />
-                      <Text style={styles.budgetInstructionText}>
-                        {translate("Tap to enter manually")}
-                      </Text>
-                    </View>
+                    <BudgetCards
+                      value={this.state.value}
+                      recBudget={this.state.recBudget}
+                      lifetime_budget_micro={
+                        this.state.campaignInfo.lifetime_budget_micro
+                      }
+                      budgetOption={this.state.budgetOption}
+                      _handleBudget={this._handleBudget}
+                    />
+
+                    {/*---------leave if in case we want to use it again---------*/}
                     {/* <View style={styles.sliderContainer}>
                       <View style={styles.budgetSliderText}>
                         <Text style={globalStyles.whiteTextColor}>
@@ -968,359 +957,21 @@ class AdDetails extends Component {
                     </Text>
                   </View>
                 )}
-                <Text style={styles.subHeadings}>
+                <Text uppercase style={styles.subHeadings}>
                   {translate("Who would you like to reach?")}
                 </Text>
-                <ScrollView
-                  ref={ref => (this.scrollView = ref)}
-                  indicatorStyle="white"
-                  style={styles.targetList}
-                >
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("gender");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <GenderIcon width={25} height={25} style={styles.icon} />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>
-                          {translate("Gender")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            gender.find(r => {
-                              if (
-                                r.value ===
-                                this.state.campaignInfo.targeting
-                                  .demographics[0].gender
-                              )
-                                return r;
-                            }).label
-                          }
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={globalStyles.column}>
-                      {this.state.campaignInfo.targeting.demographics[0]
-                        .gender === "" ||
-                      this.state.campaignInfo.targeting.demographics[0]
-                        .gender ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("age");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <AgeIcon
-                        fill={globalColors.orange}
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>{translate("Age")}</Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            this.state.campaignInfo.targeting.demographics[0]
-                              .min_age
-                          }{" "}
-                          -{" "}
-                          {this.state.campaignInfo.targeting.demographics[0]
-                            .max_age === 35
-                            ? "35+"
-                            : this.state.campaignInfo.targeting.demographics[0]
-                                .max_age}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.demographics[0]
-                      .max_age ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("selectors", "countries");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={globalStyles.row}>
-                      <LocationIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-
-                      <View style={globalStyles.column}>
-                        <Text style={styles.menutext}>
-                          {translate("Country")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {this.state.countryName}
-                        </Text>
-                      </View>
-                    </View>
-                    {this.state.campaignInfo.targeting.geos[0].country_code ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  {this.state.showRegions && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        this._renderSideMenu("regions");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <LocationIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text
-                            style={[
-                              styles.menutext,
-                              {
-                                paddingLeft:
-                                  Platform.OS === "android" && I18nManager.isRTL
-                                    ? 0
-                                    : 15,
-                                paddingRight:
-                                  Platform.OS === "android" && I18nManager.isRTL
-                                    ? 15
-                                    : 0
-                              }
-                            ]}
-                          >
-                            {translate("Regions")}
-                          </Text>
-                          <Text style={styles.menudetails} numberOfLines={1}>
-                            {regions_names}
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.geos[0].region_id
-                        .length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-                  )}
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("languages");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <LanguageIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Language")}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {languages_names}
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.demographics[0].languages
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this.state.campaignInfo.targeting.geos[0].country_code ===
-                      ""
-                        ? showMessage({
-                            message: translate("Please select a country first"),
-                            position: "top",
-                            type: "warning"
-                          })
-                        : this._renderSideMenu("selectors", "interests");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <InterestsIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Interests")}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {interests_names}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={globalStyles.column}>
-                      {this.state.campaignInfo.targeting.interests[0]
-                        .category_id.length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("OS");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <OperatingSystemIcon
-                        width={25}
-                        height={25}
-                        fill={globalColors.orange}
-                        style={styles.icon}
-                      />
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Operating System")}
-                        </Text>
-                        <Text style={styles.menudetails}>
-                          {
-                            OSType.find(r => {
-                              if (
-                                r.value ===
-                                this.state.campaignInfo.targeting.devices[0]
-                                  .os_type
-                              )
-                                return r;
-                            }).label
-                          }
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.devices[0].os_type ===
-                      "" ||
-                    this.state.campaignInfo.targeting.devices[0].os_type ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-
-                  {this.state.campaignInfo.targeting.devices[0].os_type !==
-                    "" && (
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "deviceVersions");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <Icon
-                          name="versions"
-                          type="Octicons"
-                          width={25}
-                          height={25}
-                          style={{
-                            color: globalColors.orange,
-                            right: 2
-                          }}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>
-                            {translate("OS Versions")}
-                          </Text>
-                          <Text style={styles.menudetails}>
-                            {this.state.campaignInfo.targeting.devices[0]
-                              .os_version_min +
-                              ", " +
-                              this.state.campaignInfo.targeting.devices[0]
-                                .os_version_max}
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.devices[0]
-                        .os_version_min !== "" ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-                  )}
-                  <TouchableOpacity
-                    disabled={this.props.loading}
-                    onPress={() => {
-                      this._renderSideMenu("selectors", "deviceBrands");
-                    }}
-                    style={styles.targetTouchable}
-                  >
-                    <View style={[globalStyles.row, styles.flex]}>
-                      <DeviceMakeIcon
-                        width={25}
-                        height={25}
-                        style={styles.icon}
-                        fill={globalColors.orange}
-                      />
-
-                      <View style={[globalStyles.column, styles.flex]}>
-                        <Text style={styles.menutext}>
-                          {translate("Device Make")}
-                        </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
-                          {
-                            this.state.campaignInfo.targeting.devices[0]
-                              .marketing_name
-                          }
-                        </Text>
-                      </View>
-                    </View>
-
-                    {this.state.campaignInfo.targeting.devices[0].marketing_name
-                      .length !== 0 ? (
-                      <GreenCheckmarkIcon width={25} height={25} />
-                    ) : (
-                      <PlusCircleIcon width={25} height={25} />
-                    )}
-                  </TouchableOpacity>
-                </ScrollView>
-
+                <TargetAudience
+                  _renderSideMenu={this._renderSideMenu}
+                  loading={this.props.loading}
+                  gender={gender}
+                  targeting={this.state.campaignInfo.targeting}
+                  regions_names={regions_names}
+                  languages_names={languages_names}
+                  interests_names={interests_names}
+                  OSType={OSType}
+                  mainState={this.state}
+                  translate={translate}
+                />
                 {!editCampaign && hp(100) < 800 && (
                   <Text
                     onPress={() => {
