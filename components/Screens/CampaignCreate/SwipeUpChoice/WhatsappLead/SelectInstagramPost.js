@@ -29,14 +29,13 @@ class SelectInstagramPost extends React.Component {
       counter: 1,
       cartList: [],
       errorImage: false,
-      page: 0,
-      posts: 0
+      posts: []
     };
   }
   componentDidMount() {
     // console.log("campaignData", this.props.data);
     const insta_handle = this.props.navigation.getParam("insta_handle", "");
-    this.props.getInstagramPost(insta_handle);
+    this.props.getInstagramPostInitial(insta_handle);
     // console.log("campaign_id", this.props.data.campaign_id);
     this.props.getWebProducts(this.props.data.campaign_id);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -62,57 +61,39 @@ class SelectInstagramPost extends React.Component {
       });
     }
 
+    // set updating new list
     if (
-      isEmpty(this.props.selectedInstagramProducts) &&
-      isEmpty(prevState.posts) &&
-      !isEmpty(this.props.instagramPostList) &&
-      prevState.posts !== this.props.instagramPostList
+      prevProps.instagramPostList.length !== this.props.instagramPostList.length
     ) {
-      const newRecords = [];
-      for (
-        var i = this.state.page * 12, il = this.state.page + 12;
-        i < il && i < this.props.instagramPostList.length;
-        i++
-      ) {
-        newRecords.push(this.props.instagramPostList[i]);
-      }
+      // check if selectedInstagramProducts empty
 
-      this.setState({
-        posts: [...newRecords]
-      });
-    } else if (
-      !isEmpty(this.props.selectedInstagramProducts) &&
-      isEmpty(prevState.posts) &&
-      !isEmpty(this.props.instagramPostList) &&
-      prevState.posts !== this.props.instagramPostList
-    ) {
-      const newRecords = [];
-      for (
-        var i = this.state.page * 12, il = this.state.page + 12;
-        i < il && i < this.props.selectedInstagramProducts.length;
-        i++
-      ) {
-        newRecords.push(this.props.selectedInstagramProducts[i]);
-      }
-
-      for (
-        var i = this.state.page * 12, il = this.state.page + 12;
-        i < il && i < this.props.instagramPostList.length;
-        i++
-      ) {
-        if (
-          newRecords.findIndex(
-            img => img.imageId === this.props.instagramPostList[i].imageId
-          ) === -1
-        ) {
-          newRecords.push(this.props.instagramPostList[i]);
+      if (this.props.selectedInstagramProducts.length === 0) {
+        const list = this.props.instagramPostList;
+        this.setState({
+          posts: list
+        });
+      } else {
+        const newRecords = [];
+        for (var i = 0; i < this.props.selectedInstagramProducts.length; i++) {
+          newRecords.push(this.props.selectedInstagramProducts[i]);
         }
-      }
-      // console.log("newRecorde selectedInstagramProducts", newRecords.length);
 
-      this.setState({
-        posts: [...newRecords]
-      });
+        // check if already in post
+
+        for (var i = 0; i < this.props.instagramPostList.length; i++) {
+          if (
+            newRecords.findIndex(
+              img => img.imageId === this.props.instagramPostList[i].imageId
+            ) === -1
+          ) {
+            newRecords.push(this.props.instagramPostList[i]);
+          }
+        }
+
+        this.setState({
+          posts: [...newRecords]
+        });
+      }
     }
   }
 
@@ -173,34 +154,11 @@ class SelectInstagramPost extends React.Component {
       });
     }
   };
-  addRecords = page => {
-    // assuming this.state.dataPosts hold all the records
-    const newRecords = this.state.posts;
-    for (
-      var i = page * 12, il = i + 12;
-      i < il && i < this.props.instagramPostList.length;
-      i++
-    ) {
-      const itemFound = findIndex(
-        newRecords,
-        it => it.imageId === this.props.instagramPostList[i].imageId
-      );
-      if (itemFound === -1) {
-        newRecords.push(this.props.instagramPostList[i]);
-      }
-    }
-    this.setState({
-      posts: [...newRecords]
-    });
-  };
+
   onScrollHandler = () => {
-    this.setState(
-      {
-        page: this.state.page + 1
-      },
-      () => {
-        this.addRecords(this.state.page);
-      }
+    this.props.loadMoreInstagramPost(
+      this.props.instaHandleId,
+      this.props.instaEndCursor
     );
   };
   render() {
@@ -348,27 +306,31 @@ class SelectInstagramPost extends React.Component {
                 }}
               />
             )}
-
-            {!this.props.instagramPostLoading && this.props.instagramPostList && (
-              // !isEmpty(this.props.instagramPostList) &&
-              <Text
-                style={{
-                  fontFamily: "montserrat-regular",
-                  color: "#FFF",
-                  fontSize: 14,
-                  lineHeight: 18,
-                  paddingVertical: 10,
-                  textAlign: "center"
-                }}
-              >
-                {translate("(Select 3-6 Products)")}
-              </Text>
+            {this.props.loadingMoreInstaPost && (
+              <ActivityIndicator color="#FF9D00" size="large" />
             )}
             {!this.props.instagramPostLoading &&
+              !this.props.loadingMoreInstaPost &&
+              this.props.instagramPostList && (
+                // !isEmpty(this.props.instagramPostList) &&
+                <Text
+                  style={{
+                    fontFamily: "montserrat-regular",
+                    color: "#FFF",
+                    fontSize: 14,
+                    lineHeight: 18,
+                    paddingVertical: 10,
+                    textAlign: "center"
+                  }}
+                >
+                  {translate("(Select 3-6 Products)")}
+                </Text>
+              )}
+            {!this.props.instagramPostLoading &&
+              !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList &&
               // !isEmpty(this.props.instagramPostList) &&
-              this.state.posts.length !==
-                this.props.instagramPostList.length && (
+              this.props.instaHasNextPage && (
                 <Text
                   style={{
                     fontFamily: "montserrat-bold",
@@ -388,16 +350,18 @@ class SelectInstagramPost extends React.Component {
                   {translate("VIEW MORE")}
                 </Text>
               )}
-            {!this.props.instagramPostLoading && this.props.instagramPostList && (
-              // !isEmpty(this.props.instagramPostList) &&
-              <View style={styles.bottonViewWebsite}>
-                <LowerButton
-                  checkmark={true}
-                  bottom={0}
-                  function={this._handleSubmission}
-                />
-              </View>
-            )}
+            {!this.props.instagramPostLoading &&
+              !this.props.loadingMoreInstaPost &&
+              this.props.instagramPostList && (
+                // !isEmpty(this.props.instagramPostList) &&
+                <View style={styles.bottonViewWebsite}>
+                  <LowerButton
+                    checkmark={true}
+                    bottom={0}
+                    function={this._handleSubmission}
+                  />
+                </View>
+              )}
           </Content>
         </Container>
       </SafeAreaView>
@@ -413,7 +377,11 @@ const mapStateToProps = state => ({
   instagramPostLoading: state.campaignC.instagramPostLoading,
   selectedInstagramProducts: state.campaignC.selectedInstagramProducts,
   getWebProductsLoading: state.campaignC.getWebProductsLoading,
-  savingWebProducts: state.campaignC.savingWebProducts
+  savingWebProducts: state.campaignC.savingWebProducts,
+  instaHandleId: state.campaignC.instaHandleId,
+  instaEndCursor: state.campaignC.instaEndCursor,
+  instaHasNextPage: state.campaignC.instaHasNextPage,
+  loadingMoreInstaPost: state.campaignC.loadingMoreInstaPost
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -421,8 +389,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.verifyBusinessUrl(weburl)),
   getWebProducts: campaign_id =>
     dispatch(actionCreators.getWebProducts(campaign_id)),
-  getInstagramPost: insta_handle =>
-    dispatch(actionCreators.getInstagramPost(insta_handle))
+  getInstagramPostInitial: insta_handle =>
+    dispatch(actionCreators.getInstagramPostInitial(insta_handle)),
+  loadMoreInstagramPost: (instaHandleId, instaEndCursor) =>
+    dispatch(
+      actionCreators.loadMoreInstagramPost(instaHandleId, instaEndCursor)
+    )
 });
 export default connect(
   mapStateToProps,

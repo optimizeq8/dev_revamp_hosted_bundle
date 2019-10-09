@@ -51,14 +51,15 @@ export {
   setRejectedCollectionAds,
   setRejectedAdType,
   verifyInstagramHandle,
-  getInstagramPost,
+  getInstagramPostInitial,
   saveWebProducts,
   getWebProducts,
   setStoryAdAttechment,
   getMediaUploadUrl,
   getWebUploadLinkMedia,
   saveCampaignSteps,
-  setCampaignInProgress
+  setCampaignInProgress,
+  loadMoreInstagramPost
 } from "./campaignActions";
 
 export {
