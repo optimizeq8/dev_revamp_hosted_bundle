@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableHighlight } from "react-native";
+import { View, TouchableHighlight, I18nManager } from "react-native";
 import { Text } from "native-base";
 import dateFormat from "dateformat";
 
@@ -56,7 +56,17 @@ export default class Duration extends Component {
                 {start_time} {start_year}
               </Text>
             ) : (
-              <Text style={styles.dateLabel}>{translate("Start")}</Text>
+              <Text
+                style={[
+                  styles.dateLabel,
+
+                  I18nManager.isRTL
+                    ? { marginHorizontal: -15 }
+                    : { marginHorizontal: 0 }
+                ]}
+              >
+                {translate("Start")}
+              </Text>
             )}
           </View>
 
@@ -65,8 +75,9 @@ export default class Duration extends Component {
               styles.dateLabel,
               GlobalStyles.whiteTextColor,
               {
+                alignSelf: "center"
                 // top: this.props.start_time === '' ? 0 : 10,
-                marginHorizontal: 5
+                // marginHorizontal: -25
               }
             ]}
           >
@@ -81,7 +92,7 @@ export default class Duration extends Component {
                   {end_time} {end_year}
                 </Text>
               ) : (
-                <Text style={styles.dateLabel}>{translate("End")}</Text>
+                <Text style={[styles.dateLabel]}>{translate("End")}</Text>
               )}
             </View>
           ) : (

@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: I18nManager.isRTL ? -12 : -10
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
     color: globalColors.orange,
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: 16
+    // paddingHorizontal: 10
   },
   date: {
     fontFamily: "montserrat-bold",
@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   dateColumn: {
     flexDirection: "column",
