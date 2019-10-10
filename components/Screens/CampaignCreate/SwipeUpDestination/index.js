@@ -62,12 +62,16 @@ class SwipeUpDestination extends Component {
     });
     let media = this.props.navigation.getParam("media", "");
     let destination = this.props.navigation.getParam("destination", false);
+    let storyAdAttachment = this.props.storyAdAttachment;
     this.setState({
       media,
       selected: this.props.data
-        ? this.props.data.destination
-        : destination
-        ? destination
+        ? this.props.data.destination !== "BLANK" &&
+          this.props.data.destination !== "STORY"
+          ? "destination"
+          : storyAdAttachment.destination !== "BLANK"
+          ? storyAdAttachment.destination
+          : destination
         : ""
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -269,7 +273,8 @@ class SwipeUpDestination extends Component {
 
 const mapStateToProps = state => ({
   data: state.campaignC.data,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

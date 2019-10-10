@@ -11,6 +11,7 @@ const middleware = [thunk];
 
 let blacklistTransform = createTransform((inboundState, key) => {
   if (key === "campaignC") {
+    inboundState = { ...inboundState, loadingStoryAdsArray: [] };
     return omit(inboundState, [
       "loadingObj",
       "loadingDesign",

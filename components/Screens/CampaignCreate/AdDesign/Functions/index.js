@@ -16,7 +16,8 @@ export const _handleSubmission = async (
   let validStoryAds = [false];
   if (adType === "StoryAd") {
     //Break down to different functions
-    validStoryAds = storyAdsArray.filter(ad => ad.media !== "//");
+
+    validStoryAds = storyAdsArray.filter(ad => ad.media !== "//" && ad.media);
     if (
       !validStoryAds.every(ad => ad.uploaded) ||
       storyAdCards.storyAdSelected ||
@@ -98,31 +99,49 @@ export const formatMedia = (
   setTheState
 ) => {
   var body = new FormData();
+  let storyAd = {};
+  allIosVideos = false;
+  let cardMedia = "";
+  let cardUrl = "";
   if (!iosVideoUploaded || adType === "StoryAd") {
-    let storyAd = {};
     if (adType === "StoryAd") {
-      storyAd = storyAdsArray.find(
-        card =>
-          card !== undefined && card.media && !card.media.includes("https://")
-      );
-      if (storyAd.media === "//") {
+      storyAd = storyAdsArray.find(card => {
+        cardMedia =
+          card !== undefined &&
+          card.media &&
+          !card.media.includes("https://") &&
+          card.media;
+        cardUrl =
+          card !== undefined &&
+          card.media &&
+          card.media.includes("https://") &&
+          card.media;
+
+        allIosVideos = !cardMedia && cardUrl && Platform.OS === "ios";
+        return cardMedia || cardUrl;
+      });
+      if (storyAd.media === "//" && !allIosVideos) {
         storyAd.media = tempImage;
         storyAd.media_type = tempType;
       }
     }
+    if (!allIosVideos) {
+      let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
+      res = res[res.length - 1];
 
-    let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
-    res = res[res.length - 1];
+      let format = res.split(".")[1];
 
-    let format = res.split(".")[1];
-
-    var photo = {
-      uri: adType !== "StoryAd" ? media : storyAd.media,
-      type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
-      name: res
-    };
-    body.append("media", photo);
-    body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
+      var photo = {
+        uri: adType !== "StoryAd" ? media : storyAd.media,
+        type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
+        name: res
+      };
+      body.append("media", photo);
+      body.append(
+        "media_type",
+        adType !== "StoryAd" ? type : storyAd.media_type
+      );
+    }
   }
   if (longformvideo_media) {
     let resVideo = longformvideo_media.split("/ImagePicker/");
@@ -171,8 +190,17 @@ export const formatMedia = (
   );
   body.append(
     "ios_upload",
-    Platform.OS === "ios" && iosVideoUploaded && adType !== "StoryAd" ? 1 : 0
+    (Platform.OS === "ios" && iosVideoUploaded && adType !== "StoryAd") ||
+      (adType === "StoryAd" && allIosVideos)
+      ? 1
+      : 0
   );
+
+  if (allIosVideos && Platform.OS === "ios" && adType === "StoryAd") {
+    let mediaLink = cardUrl.split("/");
+    mediaLink = mediaLink[mediaLink.length - 1];
+    body.append("media_link", mediaLink);
+  }
   setTheState({
     formatted: body
   });

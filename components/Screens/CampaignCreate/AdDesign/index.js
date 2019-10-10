@@ -42,6 +42,7 @@ import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 import styles from "./styles";
 
 //Functions
+import isEqual from "lodash/isEqual";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
@@ -296,7 +297,7 @@ class AdDesign extends Component {
       });
     }
 
-    if (prevProps.storyAdAttachment !== this.props.storyAdAttachment) {
+    if (!isEqual(prevProps.storyAdAttachment, this.props.storyAdAttachment)) {
       this.setState({ storyAdAttachChanged: true });
     }
   }
@@ -1078,7 +1079,8 @@ class AdDesign extends Component {
               //---
               //---For Story ads---//
               <View style={styles.footerButtonsContainer}>
-                {this.props.loadingStoryAdsArray.includes(true) ? (
+                {this.props.loadingStoryAdsArray.length > 0 &&
+                this.props.loadingStoryAdsArray.includes(true) ? (
                   <CircleLoader
                     mainViewStyle={{ width: wp(8), height: hp(8) }}
                     bottom={-0.2}
