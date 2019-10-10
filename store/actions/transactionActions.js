@@ -103,7 +103,7 @@ export const addWalletAmount = (info, openBrowser) => {
       })
       .then(() => openBrowser())
       .catch(err => {
-        console.log("addWalletAmount Error: ", err.message || err.response);
+        // console.log("addWalletAmount Error: ", err.message || err.response);
 
         showMessage({
           message:
