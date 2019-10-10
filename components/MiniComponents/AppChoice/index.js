@@ -88,6 +88,14 @@ class AppChoice extends Component {
         },
         callaction: this.props.data.call_to_action
       });
+    } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.storyAdAttachment.attachment
+        },
+        callaction: this.props.storyAdAttachment.call_to_action
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -386,7 +394,8 @@ class AppChoice extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});
