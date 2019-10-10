@@ -435,10 +435,7 @@ class PaymentForm extends Component {
                   resizeMode="contain"
                 />
                 <Text style={styles.errortext}>
-                  {translate("You will be redirected to")}{" "}
-                  <Text style={[styles.errortext, styles.errorTextKNET]}>
-                    {translate("KNET")}
-                  </Text>{" "}
+                  {translate("You will be redirected to")}
                   {"\n"}
                   {translate("payment gateway for the")} {"\n"}
                   {translate("payment process")}
