@@ -48,8 +48,8 @@ class App_Install extends Component {
   componentDidMount() {
     if (
       this.props.data &&
-      this.props.data.hasOwnProperty("attachment") &&
-      this.props.data.attachment === "APP_INSTALL"
+      (this.props.data.hasOwnProperty("attachment") &&
+        this.props.data.objective === "APP_INSTALL")
     ) {
       this.setState({
         attachment: {
@@ -57,6 +57,14 @@ class App_Install extends Component {
           ...this.props.data.attachment
         },
         callaction: this.props.data.call_to_action
+      });
+    } else if (this.props.storyAdAttachment.destination === "APP_INSTALL") {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.storyAdAttachment.attachment
+        },
+        callaction: this.props.storyAdAttachment.call_to_action
       });
     }
   }
@@ -140,7 +148,8 @@ class App_Install extends Component {
 
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

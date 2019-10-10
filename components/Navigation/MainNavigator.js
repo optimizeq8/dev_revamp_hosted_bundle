@@ -37,7 +37,6 @@ import MessengerLoading from "../Screens/Messenger/LoadingChatScreen";
 import SelectInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost";
 import SelectedInstagramProductsList from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList";
 import EditProductDetailInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail";
-import LocationMap from "../Screens/CampaignCreate/SwipeUpChoice/Instagram/LocationMap";
 
 export default FluidNavigator(
   {
@@ -80,8 +79,7 @@ export default FluidNavigator(
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
     SelectedInstagramProductsList: SelectedInstagramProductsList,
-    EditProductDetailInstagramPost: EditProductDetailInstagramPost,
-    LocationMap: LocationMap // To be used in future inside Instagram Traffic to get location
+    EditProductDetailInstagramPost: EditProductDetailInstagramPost
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
