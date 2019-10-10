@@ -66,6 +66,15 @@ class Website extends Component {
         },
         networkString: url[0] + "://"
       });
+    } else if (this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE") {
+      const url = split(this.props.storyAdAttachment.attachment.url, "://");
+      this.setState({
+        campaignInfo: {
+          attachment: url[1],
+          callaction: this.props.storyAdAttachment.call_to_action
+        },
+        networkString: url[0] + "://"
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -100,12 +109,16 @@ class Website extends Component {
     }
   };
   _handleSubmission = () => {
+    let objective = this.props.data
+      ? this.props.data.objective
+      : this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE"
+      ? this.props.storyAdAttachment.destination
+      : this.props.objective;
     if (this.validateUrl()) {
       this.props._changeDestination(
-        this.props.collectionAdLinkForm === 0
-          ? (this.props.data
-              ? this.props.data.objective
-              : this.props.objective) !== "LEAD_GENERATION"
+        this.props.adType !== "CollectionAd"
+          ? // this.props.collectionAdLinkForm === 0
+            objective !== "LEAD_GENERATION"
             ? "REMOTE_WEBPAGE"
             : "LEAD_GENERATION"
           : "COLLECTION",
@@ -331,7 +344,8 @@ class Website extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

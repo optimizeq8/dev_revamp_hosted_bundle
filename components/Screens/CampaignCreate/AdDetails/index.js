@@ -189,7 +189,6 @@ class AdDetails extends Component {
       );
 
       let recBudget = duration * 75;
-      console.log("recBudget", recBudget, duration);
 
       this.setState({
         campaignInfo: {
@@ -783,7 +782,7 @@ class AdDetails extends Component {
     const media =
       this.props.data && this.props.data.media
         ? this.props.data.media
-        : this.props.navigation.getParam("media", "");
+        : this.props.navigation.getParam("media", "//");
     return (
       <Sidemenu
         onChange={isOpen => {
