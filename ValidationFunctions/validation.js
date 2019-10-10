@@ -1,4 +1,16 @@
 const validation = {
+  firstName: {
+    length: {
+      minimum: 3,
+      message: "must be at least 3 characters long"
+    }
+  },
+  lastName: {
+    length: {
+      minimum: 3,
+      message: "must be at least 3 characters long"
+    }
+  },
   email: {
     presence: {
       allowEmpty: false,
