@@ -36,7 +36,10 @@ class UseWallet extends Component {
     // });
   };
   _handleWallet = async () => {
-    await this.props.useWallet(this.props.campaign_id);
+    await this.props.useWallet(
+      this.props.campaign_id,
+      this.props.setShowWalletModal
+    );
     // this.props.setShowWalletModal(true);
     // this.setState({
     //   showModal: true
@@ -61,15 +64,6 @@ class UseWallet extends Component {
         <Text style={styles.errortext}>
           {translate("Use your wallet to activate your Ad")}
         </Text>
-        {/* {this.props.wallet > 0 && (
-          <Button
-            full
-            style={styles.walletButton}
-            onPress={() => this._handleWallet()}
-          >
-            <Text style={styles.buttontext}>Use Wallet</Text>
-          </Button>
-        )} */}
         {this.props.walletUsed && (
           <Button
             full
@@ -89,7 +83,7 @@ class UseWallet extends Component {
           transparent={Platform.OS === "ios"}
           //   onDismiss={() => this.setState({ showModal: false })}
           onRequestClose={() => this.props.setShowWalletModal(false)}
-          visible={this.props.showWalletModal}
+          visible={this.props.showWalletModal || this.props.loading}
         >
           <BlurView tint="dark" intensity={100} style={styles.BlurView}>
             <View style={styles.walletPaymentModalContainer}>
@@ -151,7 +145,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  useWallet: info => dispatch(actionCreators.useWallet(info)),
+  useWallet: (info, setShowWalletModal) =>
+    dispatch(actionCreators.useWallet(info, setShowWalletModal)),
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
 });
