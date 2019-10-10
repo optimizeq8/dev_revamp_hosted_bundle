@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
+import Axios from "axios";
 
 createBaseUrl = () =>
   axios.create({
@@ -155,14 +156,24 @@ export const getWalletAmountInKwd = amount => {
       });
   };
 };
-export const useWallet = campaign_id => {
+export const useWallet = (campaign_id, setWalletModal) => {
+  let cancelToken = Axios.CancelToken.source();
+  setTimeout(() => {
+    cancelToken.cancel("Request took too long, please try again.");
+  }, 10000);
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .post(`useWallet`, { campaign_id })
+      .post(
+        `useWallet`,
+        { campaign_id },
+        {
+          cancelToken: cancelToken.token
+        }
+      )
       .then(res => {
         return res.data;
       })
@@ -188,6 +199,7 @@ export const useWallet = campaign_id => {
           type: "danger",
           position: "top"
         });
+        setWalletModal(false);
         return dispatch({
           type: actionTypes.ERROR_USE_WALLET_AMOUNT
         });

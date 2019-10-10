@@ -298,7 +298,6 @@ class PaymentForm extends Component {
     });
   };
   render() {
-    //   console.log('paymentform screenprop', this.props.screenProps);
     const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
@@ -521,16 +520,6 @@ class PaymentForm extends Component {
                   this.props.loadingTrans
                 }
               >
-                {/*
-              ----------For future maybe----------
-              <Text style={styles.text}>Agency Fee</Text>
-              <View style={{ flexDirection: "column", alignSelf: "center" }}>
-              <Text style={styles.text}>
-                {2500 - this._handleAgencyFee()} $
-              </Text>
-              <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
-            </View> */}
-
                 <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
               </TouchableOpacity>
             </View>
