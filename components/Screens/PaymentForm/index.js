@@ -396,7 +396,9 @@ class PaymentForm extends Component {
               )}
               <Button
                 style={[
-                  styles.whitebutton3,
+                  this.showKnet
+                    ? styles.whitebutton3
+                    : (styles.whitebutton2, { borderRadius: 13 }),
                   this.state.choice === 3
                     ? globalStyles.orangeBackgroundColor
                     : globalStyles.whiteBackgroundColor
