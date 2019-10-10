@@ -158,14 +158,25 @@ class PersonalInfo extends Component {
                     onBlur={() => {
                       this.setState({ inputF: false });
                       this.setState({
-                        firstnameError: validateWrapper(
-                          "mandatory",
-                          this.state.userInfo.firstname
-                        )
+                        firstnameError:
+                          validateWrapper(
+                            "mandatory",
+                            this.state.userInfo.firstname
+                          ) ||
+                          validateWrapper(
+                            "firstName",
+                            this.state.userInfo.firstname
+                          )
                       });
                     }}
                   />
                 </Item>
+                {this.state.firstnameError &&
+                this.state.firstnameError.includes("3 characters") ? (
+                  <Text style={[styles.text, styles.repasswordErrorText]}>
+                    {this.state.firstnameError}
+                  </Text>
+                ) : null}
                 <Item
                   floatingLabel
                   style={[
@@ -207,14 +218,25 @@ class PersonalInfo extends Component {
                     onBlur={() => {
                       this.setState({ inputL: false });
                       this.setState({
-                        lastnameError: validateWrapper(
-                          "mandatory",
-                          this.state.userInfo.lastname
-                        )
+                        lastnameError:
+                          validateWrapper(
+                            "mandatory",
+                            this.state.userInfo.lastname
+                          ) ||
+                          validateWrapper(
+                            "lastName",
+                            this.state.userInfo.lastname
+                          )
                       });
                     }}
                   />
                 </Item>
+                {this.state.lastnameError &&
+                this.state.lastnameError.includes("3 characters") ? (
+                  <Text style={[styles.text, styles.repasswordErrorText]}>
+                    {this.state.lastnameError}
+                  </Text>
+                ) : null}
                 <Item
                   ref={r => {
                     this._textInputRef = r;
