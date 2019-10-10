@@ -5,7 +5,7 @@ import CustomHeader from "../Header";
 import { Container, Content } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
-import { colors } from "../../GradiantColors";
+import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
 export default class index extends Component {
