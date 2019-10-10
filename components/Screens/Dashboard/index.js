@@ -507,7 +507,7 @@ class Dashboard extends Component {
                         <ScrollView
                           style={{
                             height: 90,
-                            top: 10
+                            top: I18nManager.isRTL ? 5 : 10
                           }}
                           contentContainerStyle={{
                             flex: 1,

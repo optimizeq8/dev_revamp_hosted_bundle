@@ -47,11 +47,10 @@ export default class Header extends Component {
           uppercase
           style={[
             styles.title,
-            title &&
-            (title.includes("Snap Ad") ||
-              title.includes("Story Ad") ||
-              title.includes("Collection Ad"))
-              ? { fontFamily: "montserrat-bold-english" }
+            !isStringArabic(title)
+              ? {
+                  fontFamily: "montserrat-bold-english"
+                }
               : {}
           ]}
         >

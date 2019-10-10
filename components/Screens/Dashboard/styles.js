@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    top: 5
+    top: I18nManager.isRTL ? 3 : 5
   },
   adButtonText: {
     textAlign: "center",

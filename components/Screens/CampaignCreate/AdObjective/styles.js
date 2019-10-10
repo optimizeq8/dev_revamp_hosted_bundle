@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
   minBudget: {
     color: "#fff",
     alignSelf: "center",
-    fontSize: 11
+    fontSize: 11,
+    fontFamily: "montserrat-regular"
   },
   title: {
     fontSize: 16,

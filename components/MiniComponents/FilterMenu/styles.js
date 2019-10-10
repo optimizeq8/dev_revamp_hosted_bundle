@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
   },
   startColumn: {
     flexDirection: "column",
+    // alignItems: "center",
+    justifyContent: "center",
     textAlign: "center"
   },
   middleColumn: {
@@ -103,7 +105,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   endColumn: {
-    flexDirection: "column"
+    flexDirection: "column",
+    justifyContent: "center"
   },
   bottomView: {
     bottom: "10%"
