@@ -41,6 +41,9 @@ export default class Picker extends Component {
           />
         }
         searchPlaceholderText={this.props.searchPlaceholderText}
+        searchTextFontFamily={{
+          fontFamily: "montserrat-regular"
+        }}
         unselectedIconComponent={
           <Icon
             type="MaterialCommunityIcons"

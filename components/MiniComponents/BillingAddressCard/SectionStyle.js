@@ -28,7 +28,11 @@ export default sectionStyle = StyleSheet.create({
     width: wp(80),
     alignSelf: "center"
   },
-  searchTextInput: { color: "#FFF", fontFamily: "montserrat-regular" },
+  searchTextInput: {
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    textAlign: "center"
+  },
   item: {
     backgroundColor: "rgba(0,0,0,0)"
   },

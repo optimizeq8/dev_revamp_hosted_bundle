@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -23,7 +23,10 @@ const styles = StyleSheet.create({
   },
   addIconButton: { elevation: -1 },
   areaText: { marginTop: 30 },
-  headerComponent: { height: 20, marginBottom: "5%", bottom: "10%" },
+  headerComponent: {
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
+    paddingHorizontal: 30
+  },
   topView: {
     //   marginTop: 40,
     alignItems: "center"

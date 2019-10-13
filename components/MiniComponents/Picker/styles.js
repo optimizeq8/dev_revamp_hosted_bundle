@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   headerComponent: {
     // height: 70,
-    alignSelf: "flex-start",
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
     // marginBottom: hp(5),
     top: hp(0),
     paddingHorizontal: wp(4),

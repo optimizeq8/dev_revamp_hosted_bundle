@@ -47,9 +47,7 @@ export default class SelectOS extends Component {
                     styles.optionsIconSize
                   ]}
                 />
-                <Text
-                  style={[styles.inactivetext, styles.optionsTextContainer]}
-                >
+                <Text style={[styles.inactivetext, { fontSize: 14 }]}>
                   {translate("All")}
                 </Text>
               </TouchableOpacity>
