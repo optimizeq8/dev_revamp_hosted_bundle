@@ -69,6 +69,7 @@ class Dashboard extends Component {
       menu: new Animated.Value(0),
       open: false,
       anim: false,
+      play: false,
       componentMounting: true
     };
     this.page = 1;
@@ -373,8 +374,8 @@ class Dashboard extends Component {
           <>
             <Animatable.View
               duration={500}
-              onAnimationStart={() =>
-                this.state.open && this.setState({ anim: true })
+              onAnimationEnd={() =>
+                this.state.open && this.setState({ play: true })
               }
               animation={
                 !this.props.loadingAccountMgmt
@@ -384,7 +385,9 @@ class Dashboard extends Component {
                       : mySlideOutDown
                     : this.props.campaignList.length === 0
                     ? ""
-                    : mySlideInUp
+                    : this.state.play
+                    ? mySlideInUp
+                    : ""
                   : ""
               }
               style={[
