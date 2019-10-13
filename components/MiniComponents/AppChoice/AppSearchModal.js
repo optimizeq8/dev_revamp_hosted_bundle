@@ -152,6 +152,7 @@ export default class AppSearchModal extends Component {
           >
             <View style={modalStyles.popupOverlay}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
                   setModalVisible(false, false);

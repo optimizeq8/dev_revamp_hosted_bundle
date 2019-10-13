@@ -9,7 +9,7 @@ import {
   I18nManager
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
@@ -169,9 +169,10 @@ class Messenger extends Component {
             Segment.screen("Support");
           }}
         />
-        <Header
+        <CustomHeader
+          screenProps={this.props.screenProps}
           closeButton={true}
-          title={translate("Support")}
+          title={"Support"}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>

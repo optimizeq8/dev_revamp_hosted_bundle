@@ -355,21 +355,22 @@ class AdObjective extends Component {
           <Container style={styles.container}>
             <BackdropIcon style={styles.backDrop} height={hp("100%")} />
             <CustomHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
                 str: "Ad Objective Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname }
               }}
               navigation={this.props.navigation}
-              title={
-                (adType === "SnapAd"
-                  ? translate("Snap Ad")
+              title={[
+                adType === "SnapAd"
+                  ? "Snap Ad"
                   : adType === "StoryAd"
-                  ? translate("Story Ad")
-                  : translate("Collection Ad")) +
-                " " +
-                translate("Campaign")
-              }
+                  ? "Story Ad"
+                  : "Collection Ad",
+
+                "Campaign"
+              ]}
             />
             <View style={styles.block1}>
               <PhoneIcon
@@ -631,11 +632,12 @@ class AdObjective extends Component {
             >
               <View style={styles.popupOverlay}>
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={false}
                   actionButton={() => {
                     this.setModalVisible(false);
                   }}
-                  title={translate("Campaign Objective")}
+                  title={"Campaign Objective"}
                 />
                 <Content
                   padder

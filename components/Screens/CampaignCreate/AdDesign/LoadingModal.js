@@ -31,14 +31,16 @@ export default class LoadingModal extends Component {
           >
             {loading && (
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => cancelUpload()}
-                title={translate("Uploading Image")}
+                title={"Uploading Image"}
                 // title="Uploading Image"
               />
             )}
             {!loading && (
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => onToggleModal(false)}
               />

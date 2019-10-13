@@ -8,7 +8,7 @@ import {
   BackHandler
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
@@ -103,8 +103,9 @@ class Wallet extends Component {
             }
           ]}
         >
-          <Header
-            title={translate("Wallet")}
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            title={"Wallet"}
             navigation={this.props.navigation}
           />
 

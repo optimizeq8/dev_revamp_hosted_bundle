@@ -23,6 +23,15 @@ export default class Header extends Component {
       topRightButtonText,
       showTopRightButton
     } = this.props;
+    const { translate } = this.props.screenProps;
+    if (title && typeof title === "object") {
+      title = title.map(text => translate(text));
+      if (I18nManager.isRTL) {
+        title = title.reverse();
+      }
+    } else if (title && typeof title === "string") {
+      title = translate(title);
+    }
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -34,7 +43,7 @@ export default class Header extends Component {
           }}
           style={[
             styles.left,
-            I18nManager.isRTL ? { position: "absolute", right: 15 } : {}
+            I18nManager.isRTL ? { position: "absolute", right: 0, top: 5 } : {}
           ]}
         >
           {closeButton ? (
@@ -43,23 +52,57 @@ export default class Header extends Component {
             <BackIcon width={24} height={24} />
           )}
         </TouchableOpacity>
-        <Text
-          uppercase
-          style={[
-            styles.title,
-            !isStringArabic(title)
-              ? {
-                  fontFamily: "montserrat-bold-english"
-                }
-              : {}
-          ]}
-        >
-          {title}
-        </Text>
+        {title && typeof title === "object" ? (
+          <View
+            style={[
+              styles.titleView,
+              I18nManager.isRTL
+                ? {
+                    // left: 15
+                    bottom: 0
+                  }
+                : {
+                    left: 15,
+                    bottom: 12
+                  }
+            ]}
+          >
+            {title.map(text => (
+              <Text
+                key={text}
+                uppercase
+                style={[
+                  styles.titleText,
+                  !isStringArabic(text)
+                    ? {
+                        fontFamily: "montserrat-bold-english"
+                      }
+                    : {}
+                ]}
+              >
+                {text}
+              </Text>
+            ))}
+          </View>
+        ) : (
+          <Text
+            uppercase
+            style={[
+              styles.title,
+              !isStringArabic(title)
+                ? {
+                    fontFamily: "montserrat-bold-english"
+                  }
+                : {}
+            ]}
+          >
+            {title}
+          </Text>
+        )}
         <View
           style={[
             styles.right,
-            I18nManager.isRTL ? { position: "absolute", left: 15 } : {}
+            I18nManager.isRTL ? { position: "absolute" } : {}
           ]}
         >
           {showTopRightButton ? (

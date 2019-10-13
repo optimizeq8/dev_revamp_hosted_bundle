@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginHorizontal: 30
     // width: widthPercentageToDP(85)
   },
   subTitle: {
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     backgroundColor: "#0000",
     flex: 1
+    // marginHorizontal: 30
   },
   mainCard: {
     flex: 1,
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     height: 70,
     justifyContent: "center",
     flexDirection: "column",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10
   },
   inactiveText: {

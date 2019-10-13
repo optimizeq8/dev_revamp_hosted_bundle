@@ -39,7 +39,8 @@ export default class LongFormVideoPreview extends Component {
 					styles.safeAreaViewLongFormVideoPreview,
 				]}
 			>
-				<CustomHeader actionButton={this.actionButton} closeButton={true} />
+				<CustomHeader
+screenProps={this.props.screenProps} actionButton={this.actionButton} closeButton={true} />
 				<View style={styles.videoPreviewView}>
 					<Video
 						ref={ref => {

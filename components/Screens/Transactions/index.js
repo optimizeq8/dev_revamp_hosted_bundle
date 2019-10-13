@@ -7,7 +7,7 @@ import * as Segment from "expo-analytics-segment";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
@@ -92,8 +92,9 @@ class Transactions extends Component {
               openMenuOffset={widthPercentageToDP("85%")}
               isOpen={this.state.sidemenustate}
             >
-              <Header
-                title={translate("Transactions")}
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                title={"Transactions"}
                 navigation={this.props.navigation}
               />
               <View style={styles.mainContainer}>

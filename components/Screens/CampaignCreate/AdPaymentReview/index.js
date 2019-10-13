@@ -114,6 +114,7 @@ class AdPaymentReview extends Component {
 
           <Container style={[styles.container]}>
             <CustomHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
               segment={{
                 str: "Ad Payment Review Back Button",
@@ -122,7 +123,7 @@ class AdPaymentReview extends Component {
                 }
               }}
               navigation={this.props.navigation}
-              title={translate("Review your Selection")}
+              title={"Review your Selection"}
             />
 
             <Content

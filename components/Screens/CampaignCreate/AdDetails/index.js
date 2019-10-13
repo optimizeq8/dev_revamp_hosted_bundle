@@ -878,6 +878,7 @@ class AdDetails extends Component {
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={false}
                 segment={{
                   str: "Ad Details Back Button",
@@ -891,7 +892,7 @@ class AdDetails extends Component {
                     : undefined
                 }
                 navigation={editCampaign ? undefined : this.props.navigation}
-                title={translate("Campaign details")}
+                title={"Campaign details"}
               />
 
               <Content

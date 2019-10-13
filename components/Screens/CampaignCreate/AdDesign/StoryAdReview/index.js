@@ -124,13 +124,14 @@ class StoryAdDesignReview extends Component {
       >
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Stroy Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.props.navigation.goBack}
-            title={translate(campaignDetails ? "Cover Review" : "Compose Ad")}
+            title={campaignDetails ? "Cover Review" : "Compose Ad"}
           />
           <Content
             padder

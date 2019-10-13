@@ -158,7 +158,7 @@ class SwipeUpChoice extends Component {
           <Container style={styles.container}>
             <CustomeHeader
               closeButton={false}
-              title={translate("Swipe Up destination")}
+              title={"Swipe Up destination"}
               navigation={this.props.navigation}
             />
             <Content contentContainerStyle={styles.contentContainer}>

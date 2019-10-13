@@ -14,7 +14,7 @@ import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 
 //icons
@@ -132,8 +132,9 @@ class PersonalInfo extends Component {
         style={styles.safeAreaViewContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Header
-          title={translate("Personal Info")}
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          title={"Personal Info"}
           navigation={this.props.navigation}
         />
 

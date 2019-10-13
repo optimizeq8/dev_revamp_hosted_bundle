@@ -73,11 +73,12 @@ class ContinueCampaign extends Component {
           >
             <View style={styles.popupOverlay}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
                   this.setModalVisible(false, false);
                 }}
-                title={translate("Continue campaign")}
+                title={"Continue campaign"}
               />
               <View
                 style={{
