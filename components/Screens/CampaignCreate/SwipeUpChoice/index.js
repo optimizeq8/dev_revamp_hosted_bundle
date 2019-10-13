@@ -158,6 +158,7 @@ class SwipeUpChoice extends Component {
           <Container style={styles.container}>
             <CustomeHeader
               closeButton={false}
+              screenProps={this.props.screenProps}
               title={"Swipe Up destination"}
               navigation={this.props.navigation}
             />
