@@ -23,7 +23,11 @@ export default class index extends Component {
           style={styles.gradient}
         />
         <Container style={styles.container}>
-          <CustomHeader navigation={this.props.navigation} title={title} />
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            title={title}
+          />
           <Content
             contentContainerStyle={styles.contentContainer}
             scrollEnabled={false}

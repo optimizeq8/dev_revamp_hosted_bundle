@@ -638,13 +638,14 @@ class CollectionMedia extends Component {
       >
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title={translate("Compose Collection Ad")}
+            title={"Compose Collection Ad"}
           />
           <ScrollView contentContainerStyle={styles.contentContainer}>
             <KeyboardShift style={{}}>
@@ -838,13 +839,15 @@ class CollectionMedia extends Component {
             >
               {this.props.loading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title={translate("Uploading Image")}
+                  title={"Uploading Image"}
                 />
               )}
               {!this.props.loading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
                 />

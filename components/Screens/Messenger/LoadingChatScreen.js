@@ -7,7 +7,7 @@ import LottieView from "lottie-react-native";
 import { showMessage } from "react-native-flash-message";
 
 import ChatBot from "../../../assets/SVGs/ChatBot";
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 
 import styles from "./styles";
 
@@ -59,9 +59,10 @@ class LoadingChatScreen extends React.Component {
           }}
         />
         <Container style={[styles.container]}>
-          <Header
+          <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={true}
-            title={translate("Support")}
+            title={"Support"}
             navigation={this.props.navigation}
           />
           <View style={styles.flexView}>

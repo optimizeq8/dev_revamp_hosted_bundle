@@ -6,7 +6,6 @@ import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -183,14 +182,15 @@ class AdType extends Component {
         />
         <Container style={styles.container}>
           <BackDrop />
-          <Header
+          <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={true}
             segment={{
               str: "Ad Type Close",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title={translate("Create a new campaign!")}
+            title={"Create a new campaign!"}
           />
 
           <View style={{ height: 90 }}>

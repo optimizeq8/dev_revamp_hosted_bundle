@@ -77,7 +77,11 @@ class ForgotPassword extends Component {
           locations={[1, 0.3]}
           style={styles.gradient}
         />
-        <CustomHeader navigation={this.props.navigation} closeButton={true} />
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+          closeButton={true}
+        />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
           <View style={styles.mainCard}>
             <View>

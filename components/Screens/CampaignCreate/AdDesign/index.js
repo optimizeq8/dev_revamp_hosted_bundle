@@ -955,17 +955,14 @@ class AdDesign extends Component {
         />
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.toggleAdSelection}
-            title={
-              this.rejected
-                ? translate("Re-upload media")
-                : translate("Compose Ad")
-            }
+            title={this.rejected ? "Re-upload media" : "Compose Ad"}
           />
           <Content
             contentContainerStyle={styles.contentContainer}

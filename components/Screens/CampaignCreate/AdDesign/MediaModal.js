@@ -68,11 +68,12 @@ export default class MediaModal extends Component {
           >
             <View style={styles.popupOverlay}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
                   this.props.setMediaModalVisible(false);
                 }}
-                title={this.props.screenProps.translate("UPLOAD MEDIA")}
+                title={"UPLOAD MEDIA"}
               />
               <Content
                 padder

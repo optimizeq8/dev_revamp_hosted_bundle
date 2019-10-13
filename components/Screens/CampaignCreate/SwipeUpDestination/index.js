@@ -244,8 +244,9 @@ class SwipeUpDestination extends Component {
             screenProps={this.props.screenProps}
           >
             <CustomHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
-              title={translate("Swipe Up destination")}
+              title={"Swipe Up destination"}
               navigation={this.props.navigation}
             />
 

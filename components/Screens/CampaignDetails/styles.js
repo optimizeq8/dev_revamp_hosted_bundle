@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -213,11 +213,12 @@ const styles = StyleSheet.create({
   handlerText: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 25,
-    paddingBottom: 20,
+    paddingTop: I18nManager.isRTL ? 0 : 25,
+    paddingBottom: I18nManager.isRTL ? 0 : 20,
     fontFamily: "montserrat-medium",
     fontSize: 18,
-    bottom: 5
+    bottom: I18nManager.isRTL ? -12 : 5
+    // zIndex: 1
   },
   boxStats: {
     top: 30,

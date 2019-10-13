@@ -107,8 +107,9 @@ class Deep_Link extends Component {
         <Container style={[styles.container]}>
           {this.props.adType === "CollectionAd" && (
             <CustomHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
-              title={translate("Swipe Up destination")}
+              title={"Swipe Up destination"}
               navigation={this.props.navigation}
             />
           )}

@@ -589,13 +589,14 @@ class AdCover extends Component {
         />
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title={translate("Compose Ad")}
+            title={"Compose Ad"}
           />
           <Content contentContainerStyle={styles.contentContainer} padder>
             <KeyboardShift>
@@ -731,13 +732,15 @@ class AdCover extends Component {
             >
               {this.props.coverLoading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title={translate("Uploading Image")}
+                  title={"Uploading Image"}
                 />
               )}
               {!this.props.coverLoading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
                 />

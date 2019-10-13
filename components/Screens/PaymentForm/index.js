@@ -328,6 +328,7 @@ class PaymentForm extends Component {
         <Container style={[styles.container]}>
           <BackDrop style={styles.backDrop} />
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Payment Method Screen Back Button",
@@ -336,7 +337,7 @@ class PaymentForm extends Component {
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
             // paymentForm={true}
-            title={translate("Payment")}
+            title={"Payment"}
           />
           <Content
             padder

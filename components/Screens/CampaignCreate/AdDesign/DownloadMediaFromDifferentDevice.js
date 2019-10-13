@@ -55,11 +55,12 @@ class DownloadMediaFromDifferentDevice extends Component {
           >
             <View style={styles.popupOverlay}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
                   this.props.setDownloadMediaModal(false);
                 }}
-                title={translate("DOWNLOAD MEDIA")}
+                title={"DOWNLOAD MEDIA"}
               />
               {this.props.webUploadLinkMediaLoading ? (
                 <LoadingScreen top={50} />

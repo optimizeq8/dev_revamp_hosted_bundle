@@ -46,11 +46,12 @@ class UploadMediaFromDifferentDevice extends Component {
           >
             <View style={styles.popupOverlay}>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 closeButton={true}
                 actionButton={() => {
                   this.props.setUploadFromDifferentDeviceModal(false);
                 }}
-                title={translate("UPLOAD MEDIA")}
+                title={"UPLOAD MEDIA"}
               />
               <Text style={styles.uploadDifferentDeviceHeader}>
                 {translate("from a different device")}

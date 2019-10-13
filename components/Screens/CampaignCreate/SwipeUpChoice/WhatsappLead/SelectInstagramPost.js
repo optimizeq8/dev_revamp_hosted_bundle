@@ -170,7 +170,7 @@ class SelectInstagramPost extends React.Component {
       >
         <Container style={styles.container}>
           <CustomeHeader
-            title={translate("WhatsApp Campaign")}
+            title={"WhatsApp Campaign"}
             closeButton={false}
             navigation={this.props.navigation}
           />

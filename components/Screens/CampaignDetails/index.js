@@ -337,6 +337,7 @@ class CampaignDetails extends Component {
             />
             <Container style={styles.container}>
               <Header
+                screenProps={this.props.screenProps}
                 campaignEnded={this.props.campaignEnded}
                 closeButton={true}
                 navigation={this.props.navigation}

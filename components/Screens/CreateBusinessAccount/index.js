@@ -292,8 +292,9 @@ class CreateBusinessAccount extends Component {
           {!this.props.registering && (
             <>
               <CustomHeader
+                screenProps={this.props.screenProps}
                 navigation={this.props.navigation}
-                title={translate("New Business")}
+                title={"New Business"}
                 closeButton={true}
               />
               <Text style={styles.subTitle}>

@@ -169,8 +169,9 @@ class Website extends Component {
         {this.props.adType === "CollectionAd" && (
           <View style={{ paddingBottom: 10 }}>
             <CustomHeader
+              screenProps={this.props.screenProps}
               closeButton={false}
-              title={translate("Swipe Up destination")}
+              title={"Swipe Up destination"}
               navigation={this.props.navigation}
             />
           </View>

@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     elevation: 2
   },
+  buttontext: {
+    fontFamily: "montserrat-medium"
+  },
   link: {
     textAlign: "center",
     color: "#fff",

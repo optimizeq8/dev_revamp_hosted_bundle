@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-medium-english"
     // bottom: "21%"
   },
 

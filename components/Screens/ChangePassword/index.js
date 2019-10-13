@@ -12,7 +12,7 @@ import * as Segment from "expo-analytics-segment";
 import { Text, Item, Input, Icon, Label, Container } from "native-base";
 import KeyboardShift from "../..//MiniComponents/KeyboardShift";
 import { SafeAreaView } from "react-navigation";
-import Header from "../../MiniComponents/Header";
+import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 
 //icons
@@ -116,8 +116,9 @@ class ChangePassword extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <Container style={styles.container}>
-          <Header
-            title={translate("Change Password")}
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            title={"Change Password"}
             navigation={this.props.navigation}
           />
           <ChangePassIcon

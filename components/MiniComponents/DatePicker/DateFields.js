@@ -184,6 +184,7 @@ export default class DateFields extends Component {
             >
               <View style={{ alignItems: "center" }}>
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });
@@ -193,7 +194,7 @@ export default class DateFields extends Component {
                   showTopRightButton={
                     this.state.start_date || this.props.chartRange
                   }
-                  title={translate("Duration")}
+                  title={"Duration"}
                 />
               </View>
               <Text style={styles.textModal}>

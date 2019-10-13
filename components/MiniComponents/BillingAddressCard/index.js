@@ -11,7 +11,7 @@ import { showMessage } from "react-native-flash-message";
 import RegionsAndAreas from "./RegionAndAreas";
 import MultiSelect from "../MultiSelect/MultiSelect";
 import KeyboardShift from "../KeyboardShift";
-import Header from "../Header";
+import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
 import Sidemenu from "../SideMenu";
@@ -214,8 +214,9 @@ class BillingAddressCard extends React.Component {
         screenProps={this.props.screenProps}
       >
         <View style={styles.headerBlock}>
-          <Header
-            title={translate("Billing Address")}
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            title={"Billing Address"}
             navigation={this.props.navigation}
           />
 
