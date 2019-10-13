@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     width: "150%",
     height: 45,
     color: "#fff",

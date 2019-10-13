@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { View, ScrollView, ActivityIndicator } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";

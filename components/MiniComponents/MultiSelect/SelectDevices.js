@@ -149,6 +149,9 @@ class SelectDevices extends Component {
                   }
                   colors={colors}
                   searchPlaceholderText={translate("Search Devices")}
+                  searchTextFontFamily={{
+                    fontFamily: "montserrat-regular"
+                  }}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

@@ -174,6 +174,9 @@ class SelectVersions extends Component {
                   }
                   colors={colors}
                   searchPlaceholderText={translate("Search Versions")}
+                  searchTextFontFamily={{
+                    fontFamily: "montserrat-regular"
+                  }}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"

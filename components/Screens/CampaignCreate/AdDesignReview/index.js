@@ -156,7 +156,7 @@ class AdDesignReview extends Component {
         forceInset={{ top: "always" }}
       >
         <Container style={styles.container}>
-          <CustomHeader
+          <Header
             screenProps={this.props.screenProps}
             iosBarStyle={"light-content"}
             style={styles.header}
@@ -175,7 +175,7 @@ class AdDesignReview extends Component {
                 <CloseIcon />
               </TouchableOpacity>
             </Right>
-          </CustomHeader>
+          </Header>
           <Content
             padder
             scrollEnabled={false}

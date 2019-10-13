@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   footerButtonsContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
   },
   errorMsg: {
     textAlign: "center",

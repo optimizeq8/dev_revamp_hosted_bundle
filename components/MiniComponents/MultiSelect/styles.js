@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, StatusBar } from "react-native";
+import { StyleSheet, PixelRatio, StatusBar, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
   headerComponent: {
     // height: 70,
     // marginBottom: hp(5),
-    // top: hp(3)
+    // top: hp(3),
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
     paddingHorizontal: wp(5),
     marginTop: hp(1)
   },

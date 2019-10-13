@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
+import { Text } from "native-base";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as actionCreators from "../../../store/actions";
@@ -104,7 +105,7 @@ class ContinueCampaign extends Component {
               </View>
               <View
                 style={{
-                  flexDirection: "row",
+                  flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
                   alignSelf: "center",
                   justifyContent: "center"
                 }}

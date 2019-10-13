@@ -46,6 +46,9 @@ export default class RegionAndAreas extends Component {
             items={this.props.areas}
             uniqueKey="id"
             searchPlaceholderText={translate("Search Area")}
+            searchTextFontFamily={{
+              fontFamily: "montserrat-regular"
+            }}
             stickyFooterComponent={
               <Button
                 style={[styles.button, styles.submitButton]}
@@ -57,6 +60,10 @@ export default class RegionAndAreas extends Component {
             headerComponent={
               <View style={styles.headerComponent}>
                 <BackButton
+                  style={{
+                    top: 0,
+                    left: 0
+                  }}
                   screenname="Select Area"
                   navigation={() =>
                     this.SectionedMultiSelect._cancelSelection()
