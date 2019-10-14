@@ -39,20 +39,20 @@ export default {
       value: "LEAD_GENERATION",
       info: "Generate leads for your business",
       icon: ObjIcons.Group
-    },
-    {
-      label: "WhatsApp Campaign",
-      value: "WEB_CONVERSION",
-      info: "Get a free website that pushes users to your business's WhatsApp",
-      icon: ObjIcons.WhatsApp
-    },
-    {
-      label: "Instagram Traffic",
-      value: "WEB_CONVERSION_INSTAGRAM",
-      info:
-        "Get a free website that pushes users to your business's Instagram page",
-      icon: ObjIcons.Instagram
     }
+    // {
+    //   label: "WhatsApp Campaign",
+    //   value: "WEB_CONVERSION",
+    //   info: "Get a free website that pushes users to your business's WhatsApp",
+    //   icon: ObjIcons.WhatsApp
+    // },
+    // {
+    //   label: "Instagram Traffic",
+    //   value: "WEB_CONVERSION_INSTAGRAM",
+    //   info:
+    //     "Get a free website that pushes users to your business's Instagram page",
+    //   icon: ObjIcons.Instagram
+    // }
   ],
   SnapAd: [
     {

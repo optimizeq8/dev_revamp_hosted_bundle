@@ -118,11 +118,12 @@ class AdObjective extends Component {
       prevProps.currentCampaignSteps !== this.props.currentCampaignSteps
     ) {
       if (
-        prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
+        this.props.adType === "CollectionAd" &&
+        // prevProps.collectionAdLinkForm !== this.props.collectionAdLinkForm &&
         this.props.collectionAdLinkForm !== 0
       ) {
         this._handleCollectionAdLinkForm(this.props.collectionAdLinkForm);
-      } else {
+      } else if (this.props.adType === "CollectionAd") {
         this._handleCollectionAdLinkForm(1);
       }
     } else if (prevProps.adType !== this.props.adType) {
@@ -191,6 +192,7 @@ class AdObjective extends Component {
   };
   setObjective = choice => {
     this.setState({
+      ...this.state,
       campaignInfo: {
         ...this.state.campaignInfo,
         objective: choice.value

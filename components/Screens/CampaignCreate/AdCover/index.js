@@ -496,7 +496,8 @@ class AdCover extends Component {
     });
   };
   _handleSubmission = async () => {
-    this.validator();
+    await this.validator();
+
     if (
       !this.state.coverHeadlineError &&
       !this.state.logoError &&

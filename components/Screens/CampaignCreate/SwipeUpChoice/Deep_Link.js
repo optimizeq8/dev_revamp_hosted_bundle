@@ -31,7 +31,7 @@ class Deep_Link extends Component {
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
-        deep_link_url: "",
+        deep_link_uri: "",
         icon_media_url: ""
       },
       firstStepDone: false,
@@ -49,22 +49,31 @@ class Deep_Link extends Component {
       nameError: "",
       appError: "",
       android_app_urlError: "",
-      deep_link_urlError: "",
+      deep_link_uriError: "",
       showList: false
     };
   }
 
   componentDidMount() {
     if (
-      this.props.data &&
-      this.props.data.hasOwnProperty("attachment") &&
-      this.props.data.destination === "DEEP_LINK"
+      (this.props.data &&
+        this.props.data.hasOwnProperty("attachment") &&
+        this.props.data.destination === "DEEP_LINK") ||
+      this.props.data.destination === "COLLECTION"
     ) {
       this.setState({
         attachment: {
           ...this.state.attachment,
           ...this.props.data.attachment
         }
+      });
+    } else if (this.props.storyAdAttachment.destination === "DEEP_LINK") {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.storyAdAttachment.attachment
+        },
+        callaction: this.props.storyAdAttachment.call_to_action
       });
     }
   }
@@ -79,13 +88,9 @@ class Deep_Link extends Component {
     }
   };
 
-  renderPreviousStep = () => {
-    this.setState({ firstStepDone: !this.state.firstStepDone });
-  };
-
-  _handleSubmission = async deep_link_url => {
+  _handleSubmission = async deep_link_uri => {
     await this.setState({
-      attachment: { ...this.state.attachment, deep_link_uri: deep_link_url }
+      attachment: { ...this.state.attachment, deep_link_uri: deep_link_uri }
     });
 
     this.props._changeDestination(
@@ -146,7 +151,7 @@ class Deep_Link extends Component {
                     renderNextStep={this.renderNextStep}
                     listNum={3}
                     swipeUpDestination={this.props.swipeUpDestination}
-                    deep_link_url={this.state.attachment.deep_link_uri}
+                    deep_link_uri={this.state.attachment.deep_link_uri}
                     toggleSideMenu={this.props.toggleSideMenu}
                     _handleSubmission={this._handleSubmission}
                     deepLink={true}
@@ -165,7 +170,8 @@ class Deep_Link extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});
