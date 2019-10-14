@@ -971,23 +971,11 @@ class AdDetails extends Component {
                   OSType={OSType}
                   mainState={this.state}
                   translate={translate}
+                  editCampaign={editCampaign}
                 />
-                {!editCampaign && hp(100) < 800 && (
-                  <Text
-                    onPress={() => {
-                      this.scrollView.scrollToEnd({ animated: true });
-
-                      this.setState({ advance: !this.state.advance });
-                    }}
-                    style={styles.moreOptionsText}
-                  >
-                    {translate("Scroll for more options")}
-                  </Text>
-                )}
 
                 <ReachBar
                   loading={this.props.loading}
-                  advance={this.state.advance}
                   _handleSubmission={this._handleSubmission}
                   screenProps={this.props.screenProps}
                 />

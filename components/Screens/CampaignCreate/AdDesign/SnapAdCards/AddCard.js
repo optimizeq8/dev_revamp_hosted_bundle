@@ -10,25 +10,32 @@ class AddCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     return (
-      <View
-        style={{
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <Button
-          style={styles.addButtonStyle}
-          onPress={() => this.props.addSnapCard()}
-        >
-          <Icon
-            style={{ alignSelf: "center", right: I18nManager.isRTL ? -2 : 2 }}
-            name="plus"
-            type="MaterialCommunityIcons"
-          />
-        </Button>
-        <Text style={styles.addButtonText}>{translate("Add More")}</Text>
-      </View>
+      <>
+        {this.props.arrayLen <= 20 && (
+          <View
+            style={{
+              alignSelf: "center",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Button
+              style={styles.addButtonStyle}
+              onPress={() => this.props.addSnapCard()}
+            >
+              <Icon
+                style={{
+                  alignSelf: "center",
+                  right: I18nManager.isRTL ? -2 : 2
+                }}
+                name="plus"
+                type="MaterialCommunityIcons"
+              />
+            </Button>
+            <Text style={styles.addButtonText}>{translate("Add More")}</Text>
+          </View>
+        )}
+      </>
     );
   }
 }
