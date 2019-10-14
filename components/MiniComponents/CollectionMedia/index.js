@@ -85,7 +85,7 @@ class CollectionMedia extends Component {
       type: "",
       formatted: null,
       localUri: null,
-      deep_link_urlError: "",
+      deep_link_uriError: "",
       rejectionColUpload: false
     };
   }
@@ -573,14 +573,14 @@ class CollectionMedia extends Component {
 
   validateDeepLinkUrl = () => {
     const { translate } = this.props.screenProps;
-    const deep_link_urlError = validateWrapper(
+    const deep_link_uriError = validateWrapper(
       "deepLink",
       this.state.collection.collection_attachment
     );
     this.setState({
-      deep_link_urlError
+      deep_link_uriError
     });
-    if (deep_link_urlError) {
+    if (deep_link_uriError) {
       showMessage({
         message: translate("Invalid deep link URL"),
         description: translate(
@@ -684,11 +684,11 @@ class CollectionMedia extends Component {
                   {this.props.collectionAdLinkForm === 2 ? (
                     <Animatable.View
                       onAnimationEnd={() =>
-                        this.setState({ deep_link_urlError: null })
+                        this.setState({ deep_link_uriError: null })
                       }
                       duration={200}
                       easing={"ease"}
-                      animation={!this.state.deep_link_urlError ? "" : "shake"}
+                      animation={!this.state.deep_link_uriError ? "" : "shake"}
                       style={{ marginVertical: 30 }}
                     >
                       <View style={styles.deepLinkLabelView}>
@@ -699,7 +699,7 @@ class CollectionMedia extends Component {
                       <Item
                         style={[
                           styles.input
-                          // this.state.deep_link_urlError
+                          // this.state.deep_link_uriError
                           //   ? GlobalStyles.redBorderColor
                           //   : GlobalStyles.transparentBorderColor
                         ]}

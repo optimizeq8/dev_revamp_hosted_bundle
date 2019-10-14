@@ -64,6 +64,13 @@ class Long_Form_Video extends Component {
         longformvideo_media: this.props.data.longformvideo_media,
         longformvideo_media_type: this.props.longformvideo_media_type
       });
+    } else if (this.props.storyAdAttachment.destination === "LONGFORM_VIDEO") {
+      this.setState({
+        longformvideo_media: this.props.storyAdAttachment.longformvideo_media,
+        longformvideo_media_type: this.props.storyAdAttachment
+          .longformvideo_media_type,
+        callaction: this.props.storyAdAttachment.call_to_action
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -74,23 +81,24 @@ class Long_Form_Video extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   pick = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    return ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
       base64: false,
       exif: false,
       quality: 1,
       aspect: [9, 16]
-    });
-
-    this.setState({ videoLoading: true });
-
-    return result;
+    })
+      .then(res => {
+        this.setState({ videoLoading: true });
+        return res;
+      })
+      .catch(err => console.log(err));
   };
   _pickImage = async () => {
     let result = await this.pick();
     const { translate } = this.props.screenProps;
 
-    if (!result.cancelled) {
+    if (result && !result.cancelled) {
       if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (file.size > 524288000) {
@@ -308,7 +316,8 @@ class Long_Form_Video extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

@@ -23,6 +23,47 @@ class SwipeUpChoice extends Component {
     header: null
   };
 
+  segment = () => {
+    {
+      switch (this.props.navigation.getParam("objective")) {
+        case "LEAD_GENERATION":
+          Segment.screenWithProperties("Snap Ad Website SwipeUp", {
+            category: "Campaign Creation",
+            label: "Lead Generation Objective"
+          });
+          // Segment.trackWithProperties(
+          //   "Selected Lead Generation Website Swipeup",
+          //   {
+          //     category: "Campaign Creation"
+          //   }
+          // );
+          break;
+        case "VIDEO_VIEWS":
+          Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
+            category: "Campaign Creation",
+            label: "Video Views Objective"
+          });
+          break;
+        case "WEB_CONVERSION":
+          Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
+            category: "Campaign Creation",
+            label: "Whatsapp Campaign Objective"
+          });
+          break;
+        case "WEB_CONVERSION_INSTAGRAM":
+          Segment.screenWithProperties("Snap Ad Instagram SwipeUp", {
+            category: "Campaign Creation",
+            label: "Instagram Traffic Objective"
+          });
+          break;
+        default:
+          Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
+            category: "Campaign Creation",
+            label: "App Install Objective"
+          });
+      }
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     let objective = this.props.navigation.getParam("objective", "");
@@ -113,47 +154,7 @@ class SwipeUpChoice extends Component {
     else
       return (
         <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
-          <NavigationEvents
-            onDidFocus={() => {
-              switch (this.props.navigation.getParam("objective")) {
-                case "LEAD_GENERATION":
-                  Segment.screenWithProperties("Snap Ad Website SwipeUp", {
-                    category: "Campaign Creation",
-                    label: "Lead Generation Objective"
-                  });
-                  // Segment.trackWithProperties(
-                  //   "Selected Lead Generation Website Swipeup",
-                  //   {
-                  //     category: "Campaign Creation"
-                  //   }
-                  // );
-                  break;
-                case "VIDEO_VIEWS":
-                  Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
-                    category: "Campaign Creation",
-                    label: "Video Views Objective"
-                  });
-                  break;
-                case "WEB_CONVERSION":
-                  Segment.screenWithProperties("Snap Ad Whatsapp SwipeUp", {
-                    category: "Campaign Creation",
-                    label: "Whatsapp Campaign Objective"
-                  });
-                  break;
-                case "WEB_CONVERSION_INSTAGRAM":
-                  Segment.screenWithProperties("Snap Ad Instagram SwipeUp", {
-                    category: "Campaign Creation",
-                    label: "Instagram Traffic Objective"
-                  });
-                  break;
-                default:
-                  Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
-                    category: "Campaign Creation",
-                    label: "App Install Objective"
-                  });
-              }
-            }}
-          />
+          <NavigationEvents onDidFocus={() => this.segment()} />
 
           <Container style={styles.container}>
             <CustomeHeader
