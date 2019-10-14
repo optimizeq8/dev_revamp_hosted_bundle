@@ -23,6 +23,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd.svg";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 // Style
 import styles from "./styles";
 import { colors } from "../../../GradiantColors/colors";
@@ -554,6 +555,13 @@ class AdCover extends Component {
       this.state.signal.cancel("Upload Cancelled");
     }
   };
+  handleSupportPage = () => {
+    const { translate } = this.props.screenProps;
+    this.props.navigation.push("WebView", {
+      url: "https://www.optimizeapp.com/support",
+      title: translate("Support")
+    });
+  };
   render() {
     let { cover, coverHeadlineError, formattedCover } = this.state;
 
@@ -664,18 +672,29 @@ class AdCover extends Component {
                           </View>
                         </TouchableOpacity>
                       )}
-
-                      <PenIconBrand
-                        style={{ justifyContent: "flex-start" }}
-                        data={this.props.data}
-                        coverHeadlineError={coverHeadlineError}
-                        changeHeadline={this.changeHeadline}
-                        coverHeadline={coverHeadline}
-                        field={"Headline"}
-                        mainBusiness={this.props.mainBusiness}
-                        rejected={this.rejected}
-                        screenProps={this.props.screenProps}
-                      />
+                      <View style={{ flexDirection: "row" }}>
+                        <TouchableOpacity
+                          onPress={this.handleSupportPage}
+                          style={{
+                            position: "absolute",
+                            right: "5%",
+                            bottom: 15
+                          }}
+                        >
+                          <InfoIcon />
+                        </TouchableOpacity>
+                        <PenIconBrand
+                          style={{ justifyContent: "flex-start" }}
+                          data={this.props.data}
+                          coverHeadlineError={coverHeadlineError}
+                          changeHeadline={this.changeHeadline}
+                          coverHeadline={coverHeadline}
+                          field={"Headline"}
+                          mainBusiness={this.props.mainBusiness}
+                          rejected={this.rejected}
+                          screenProps={this.props.screenProps}
+                        />
+                      </View>
                       <MediaButton
                         type={"cover"}
                         cover={true}

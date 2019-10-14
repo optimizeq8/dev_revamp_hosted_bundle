@@ -26,6 +26,8 @@ export default class index extends Component {
           <CustomHeader
             screenProps={this.props.screenProps}
             navigation={this.props.navigation}
+            containerStyle={{ height: "3%" }}
+            titelStyle={{ top: 5, left: 0 }}
             title={title}
           />
           <Content
