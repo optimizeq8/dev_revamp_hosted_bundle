@@ -106,19 +106,12 @@ export const formatMedia = (
   if (!iosVideoUploaded || adType === "StoryAd") {
     if (adType === "StoryAd") {
       storyAd = storyAdsArray.find(card => {
-        cardMedia =
-          card !== undefined &&
-          card.media &&
-          !card.media.includes("https://") &&
-          card.media;
-        cardUrl =
-          card !== undefined &&
-          card.media &&
-          card.media.includes("https://") &&
-          card.media;
-
+        if (card && card.media !== "//" && !card.media.includes("https://"))
+          cardMedia = card.media;
+        if (card && card.media !== "//" && card.media.includes("https://"))
+          cardUrl = card.media;
         allIosVideos = !cardMedia && cardUrl && Platform.OS === "ios";
-        return cardMedia || cardUrl;
+        return !allIosVideos ? cardMedia : cardUrl;
       });
       if (storyAd.media === "//" && !allIosVideos) {
         storyAd.media = tempImage;

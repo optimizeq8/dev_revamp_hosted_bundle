@@ -1067,7 +1067,7 @@ class AdDesign extends Component {
                     style={{
                       position: "absolute",
                       right: "4%",
-                      top: storyAdCards.storyAdSelected ? "12%" : "4%"
+                      top: storyAdCards.storyAdSelected ? "14%" : "4%"
                     }}
                   >
                     <InfoIcon />

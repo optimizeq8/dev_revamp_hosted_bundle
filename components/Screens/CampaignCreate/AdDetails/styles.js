@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     textAlign: "center",
     width: "100%",
-    paddingBottom: 30
+    bottom: 20
   },
   budgetInstructionText: {
     color: "#fff",
