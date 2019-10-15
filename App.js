@@ -53,7 +53,7 @@ import { Icon as BIcon, Root } from "native-base";
 import isNull from "lodash/isNull";
 
 // console.disableYellowBox = true;
-import Sentry from "sentry-expo";
+import * as Sentry from "sentry-expo";
 import store from "./store";
 import FlashMessage from "react-native-flash-message";
 import {
@@ -67,11 +67,11 @@ import { colors } from "./components/GradiantColors/colors";
 import { ActivityIndicator } from "react-native-paper";
 import { REHYDRATE } from "redux-persist";
 
-// Sentry.enableInExpoDevelopment = true;
-Sentry.config(
-  "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635"
-).install();
-
+Sentry.init({
+  dsn: "https://e05e68f510cd48068b314589fa032992@sentry.io/1444635",
+  enableInExpoDevelopment: false,
+  debug: true
+});
 // Sentry.captureException(new Error("Oops!"));
 // crash;
 
