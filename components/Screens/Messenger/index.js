@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  ScrollView,
+  KeyboardAvoidingView,
   I18nManager
 } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -150,15 +150,6 @@ class Messenger extends Component {
     let newStyle = {
       height
     };
-    // if (this.props.loading || this.props.loading_con)
-    // 	return (
-    // 		<LoadingChatScreen
-    // 			loading_con={this.props.loading_con}
-    // 			loading={this.props.loading}
-    // 			navigation={this.props.navigation}
-    // 		/>
-    // 	);
-    // else
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
@@ -176,84 +167,83 @@ class Messenger extends Component {
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>
-          <Content
-            contentContainerStyle={{ flex: 1 }}
-            // scrollEnabled={false}
-            // padder
-          >
-            <KeyBoardShift style={{ flex: 1 }}>
-              {() => (
-                <>
-                  <View style={styles.flexEmptyView} />
-                  <FlatList
-                    inverted
-                    ref={ref => {
-                      this.flatList = ref;
-                    }}
-                    // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-                    data={this.props.messages}
-                    keyExtractor={this._keyExtractor}
-                    // getItemLayout={this.getItemLayout}
-                    // scrollToIndex={params => this.scrollToIndex(params)}
-                    // initialScrollIndex={this.props.messages.length - 1}
-                    renderItem={(msg, index) => {
-                      if (!isNull(msg.item.body))
-                        return (
-                          <MessageBubble key={msg.item.id} message={msg.item} />
-                        );
-                    }}
-                  />
-                  {isEmpty(this.props.messages) && (
-                    <View style={styles.chatBotViewSmall}>
-                      <ChatBot width={100} height={100} />
-                    </View>
-                  )}
-                  {/* </View> */}
-                  <View style={styles.textInputContainer}>
-                    {/* <Camera
+          <Content contentContainerStyle={{ flex: 1 }}>
+            <KeyboardAvoidingView
+              keyboardVerticalOffset={60}
+              style={styles.container}
+              behavior="padding"
+            >
+              <>
+                <View style={styles.flexEmptyView} />
+                <FlatList
+                  inverted
+                  ref={ref => {
+                    this.flatList = ref;
+                  }}
+                  // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
+                  data={this.props.messages}
+                  keyExtractor={this._keyExtractor}
+                  // getItemLayout={this.getItemLayout}
+                  // scrollToIndex={params => this.scrollToIndex(params)}
+                  // initialScrollIndex={this.props.messages.length - 1}
+                  renderItem={(msg, index) => {
+                    if (!isNull(msg.item.body))
+                      return (
+                        <MessageBubble key={msg.item.id} message={msg.item} />
+                      );
+                  }}
+                />
+                {isEmpty(this.props.messages) && (
+                  <View style={styles.chatBotViewSmall}>
+                    <ChatBot width={100} height={100} />
+                  </View>
+                )}
+                {/* </View> */}
+                <View style={styles.textInputContainer}>
+                  {/* <Camera
 										fill={globalColors.orange}
 										style={styles.cameraIcon}
 										width={heightPercentageToDP(4)}
 										height={heightPercentageToDP(4)}
 									/> */}
-                    <TextInput
-                      editable={true}
-                      multiline={true}
-                      value={this.state.textValue}
-                      onChange={event => this._onChange(event)}
-                      style={[
-                        I18nManager.isRTL
-                          ? rtlStyles.textInput
-                          : styles.textInput,
-                        newStyle
-                      ]}
-                      placeholder={translate("Type Your Message")}
-                      placeholderTextColor="#909090"
-                      placeholderLineHeight={30}
-                      maxHeight={100}
-                      minHeight={45}
-                      maxWidth={300}
-                      enableScrollToCaret
-                      ref={r => {
-                        this._textInput = r;
-                      }}
-                      onContentSizeChange={e =>
-                        this.updateSize(e.nativeEvent.contentSize.height)
-                      }
+                  <TextInput
+                    editable={true}
+                    multiline={true}
+                    value={this.state.textValue}
+                    onChange={event => this._onChange(event)}
+                    style={[
+                      I18nManager.isRTL
+                        ? rtlStyles.textInput
+                        : styles.textInput,
+                      newStyle
+                    ]}
+                    placeholder={translate("Type Your Message")}
+                    placeholderTextColor="#909090"
+                    placeholderLineHeight={30}
+                    maxHeight={100}
+                    minHeight={45}
+                    maxWidth={300}
+                    enableScrollToCaret
+                    ref={r => {
+                      this._textInput = r;
+                    }}
+                    onContentSizeChange={e =>
+                      this.updateSize(e.nativeEvent.contentSize.height)
+                    }
+                  />
+                  <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={this._handleSubmission}
+                  >
+                    <ForwardButton
+                      width={heightPercentageToDP(7)}
+                      height={heightPercentageToDP(7)}
+                      bottom={-10}
                     />
-                    <TouchableOpacity
-                      style={styles.submitButton}
-                      onPress={this._handleSubmission}
-                    >
-                      <ForwardButton
-                        width={heightPercentageToDP(5)}
-                        height={heightPercentageToDP(5)}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </>
-              )}
-            </KeyBoardShift>
+                  </TouchableOpacity>
+                </View>
+              </>
+            </KeyboardAvoidingView>
           </Content>
         </View>
       </SafeAreaView>

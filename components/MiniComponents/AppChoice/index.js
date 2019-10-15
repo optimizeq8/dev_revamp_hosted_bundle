@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, ScrollView } from "react-native";
+import {
+  View,
+  BackHandler,
+  ScrollView,
+  KeyboardAvoidingView
+} from "react-native";
 import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
@@ -231,107 +236,103 @@ class AppChoice extends Component {
     return (
       <View style={styles.mainCard}>
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          <KeyboradShift style={styles.keyboardContainer}>
-            {() => (
-              <>
-                <Picker
-                  screenProps={this.props.screenProps}
-                  searchPlaceholderText={translate("Search Call To Action")}
-                  data={this.state.callactions}
-                  uniqueKey={"value"}
-                  displayKey={"label"}
-                  open={this.state.inputCallToAction}
-                  onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                  onSelectedItemObjectsChange={
-                    this.onSelectedCallToActionChange
-                  }
-                  selectedItems={[this.state.callaction.value]}
-                  single={true}
-                  screenName={" App Choice"}
-                  closeCategoryModal={this.closeCallToActionModal}
-                />
-                <View style={styles.itemCallToAction}>
+          <KeyboardAvoidingView
+            keyboardVerticalOffset={60}
+            style={styles.container}
+            behavior="padding"
+          >
+            <>
+              <Picker
+                screenProps={this.props.screenProps}
+                searchPlaceholderText={translate("Search Call To Action")}
+                data={this.state.callactions}
+                uniqueKey={"value"}
+                displayKey={"label"}
+                open={this.state.inputCallToAction}
+                onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
+                selectedItems={[this.state.callaction.value]}
+                single={true}
+                screenName={" App Choice"}
+                closeCategoryModal={this.closeCallToActionModal}
+              />
+              <View style={styles.itemCallToAction}>
+                <View style={[styles.callToActionLabelView]}>
+                  <Text uppercase style={[styles.inputLabel]}>
+                    {translate("call to action")}
+                  </Text>
+                </View>
+                <Item
+                  onPress={() => {
+                    this.setState({
+                      inputCallToAction: true
+                    });
+                  }}
+                  // rounded
+                  style={[
+                    styles.input,
+                    this.state.callActionError
+                      ? globalStyles.redBorderColor
+                      : globalStyles.transparentBorderColor
+                  ]}
+                >
+                  <Text style={styles.pickerText}>
+                    {this.state.callactions.find(
+                      c => this.state.callaction.value === c.value
+                    )
+                      ? translate(
+                          this.state.callactions.find(
+                            c => this.state.callaction.value === c.value
+                          ).label
+                        )
+                      : translate("call to action")}
+                  </Text>
+                  <Icon type="AntDesign" name="down" style={styles.iconDown} />
+                </Item>
+              </View>
+
+              <AppBox
+                setModalVisible={this.setModalVisible}
+                attachment={this.state.attachment}
+                screenProps={this.props.screenProps}
+              />
+              {this.props.deepLink && (
+                <View style={{ marginTop: 20 }}>
                   <View style={[styles.callToActionLabelView]}>
                     <Text uppercase style={[styles.inputLabel]}>
-                      {translate("call to action")}
+                      {translate("url")}
                     </Text>
                   </View>
                   <Item
-                    onPress={() => {
-                      this.setState({
-                        inputCallToAction: true
-                      });
-                    }}
-                    // rounded
                     style={[
-                      styles.input,
-                      this.state.callActionError
+                      appConfirmStyles.input,
+                      this.state.deep_link_uriError
                         ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor
+                        : globalStyles.transparentBorderColor,
+                      appConfirmStyles.deepLinkItem
                     ]}
                   >
-                    <Text style={styles.pickerText}>
-                      {this.state.callactions.find(
-                        c => this.state.callaction.value === c.value
-                      )
-                        ? translate(
-                            this.state.callactions.find(
-                              c => this.state.callaction.value === c.value
-                            ).label
-                          )
-                        : translate("call to action")}
-                    </Text>
-                    <Icon
-                      type="AntDesign"
-                      name="down"
-                      style={styles.iconDown}
+                    <Input
+                      value={this.state.deep_link_uri}
+                      style={appConfirmStyles.inputtext}
+                      placeholder={translate("Deep Link URL")}
+                      placeholderTextColor="white"
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      onChangeText={value =>
+                        this.setState({
+                          deep_link_uri: value
+                        })
+                      }
+                      onBlur={() => {
+                        this.validateUrl();
+                      }}
                     />
                   </Item>
                 </View>
-
-                <AppBox
-                  setModalVisible={this.setModalVisible}
-                  attachment={this.state.attachment}
-                  screenProps={this.props.screenProps}
-                />
-                {this.props.deepLink && (
-                  <View style={{ marginTop: 20 }}>
-                    <View style={[styles.callToActionLabelView]}>
-                      <Text uppercase style={[styles.inputLabel]}>
-                        {translate("url")}
-                      </Text>
-                    </View>
-                    <Item
-                      style={[
-                        appConfirmStyles.input,
-                        this.state.deep_link_uriError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor,
-                        appConfirmStyles.deepLinkItem
-                      ]}
-                    >
-                      <Input
-                        value={this.state.deep_link_uri}
-                        style={appConfirmStyles.inputtext}
-                        placeholder={translate("Deep Link URL")}
-                        placeholderTextColor="white"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={value =>
-                          this.setState({
-                            deep_link_uri: value
-                          })
-                        }
-                        onBlur={() => {
-                          this.validateUrl();
-                        }}
-                      />
-                    </Item>
-                  </View>
-                )}
-              </>
-            )}
-          </KeyboradShift>
+              )}
+            </>
+          </KeyboardAvoidingView>
         </ScrollView>
         <AppSearchModal
           AppError={this.state.AppError}
