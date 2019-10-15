@@ -2,7 +2,6 @@ import React from "react";
 import { Platform } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
-import { createStackNavigator } from "react-navigation";
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
