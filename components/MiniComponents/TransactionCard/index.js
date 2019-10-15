@@ -7,8 +7,8 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 // icons
-import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
-import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border.svg";
+import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
+import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border";
 import isStringArabic from "../../isStringArabic";
 class TransactionCard extends Component {
   state = {

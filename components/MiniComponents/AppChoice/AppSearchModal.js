@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { View, FlatList } from "react-native";
 
 import Modal from "react-native-modal";
-import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
-import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
+import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
+import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
+import SearchIcon from "../../../assets/SVGs/Search";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";

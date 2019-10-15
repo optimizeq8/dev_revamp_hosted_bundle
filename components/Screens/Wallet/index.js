@@ -17,7 +17,7 @@ import * as Animatable from "react-native-animatable";
 
 //icons
 import WalletIcon from "../../../assets/SVGs/Wallet";
-import CloseIcon from "../../../assets/SVGs/Close.svg";
+import CloseIcon from "../../../assets/SVGs/Close";
 
 // Style
 import styles from "./styles";

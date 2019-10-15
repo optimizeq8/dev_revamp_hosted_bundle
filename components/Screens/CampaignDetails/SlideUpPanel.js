@@ -15,7 +15,7 @@ import LineChartGraphs from "./LineChartGraphs";
 import CampaginStats from "./CampStats/CampaignStats";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import BarIcon from "../../../assets/SVGs/Bar.svg";
+import BarIcon from "../../../assets/SVGs/Bar";
 
 import { colors } from "../../GradiantColors/colors";
 

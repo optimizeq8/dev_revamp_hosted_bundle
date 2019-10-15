@@ -20,8 +20,8 @@ import OptionalTargets from "./OptionalTargets";
 import { Image } from "react-native-expo-image-cache";
 import Toggle from "../../MiniComponents/Toggle";
 //Icons
-import LocationIcon from "../../../assets/SVGs/Location.svg";
-import GenderIcon from "../../../assets/SVGs/Gender.svg";
+import LocationIcon from "../../../assets/SVGs/Location";
+import GenderIcon from "../../../assets/SVGs/Gender";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 // Style

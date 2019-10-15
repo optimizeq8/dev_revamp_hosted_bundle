@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import LocationIcon from "../../../assets/SVGs/Location.svg";
-import InterestIcon from "../../../assets/SVGs/Interests.svg";
+import LocationIcon from "../../../assets/SVGs/Location";
+import InterestIcon from "../../../assets/SVGs/Interests";
 import OperatingSystem from "../../../assets/SVGs/AdDetails/OperatingSystem";
 
 import styles from "./styles";

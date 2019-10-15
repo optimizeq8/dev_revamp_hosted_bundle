@@ -11,11 +11,11 @@ import {
 import { connect } from "react-redux";
 
 //icons
-import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
-import LocationIcon from "../../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
-import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
+import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
+import LocationIcon from "../../../../assets/SVGs/Location";
+import InterestsIcon from "../../../../assets/SVGs/Interests";
+import GenderIcon from "../../../../assets/SVGs/Gender";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";

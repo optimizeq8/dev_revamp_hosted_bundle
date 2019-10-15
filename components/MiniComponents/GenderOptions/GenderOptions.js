@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Button, Text, Icon } from "native-base";
-import GenderIcon from "../../../assets/SVGs/Gender.svg";
+import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class GenderOptions extends Component {
   render() {

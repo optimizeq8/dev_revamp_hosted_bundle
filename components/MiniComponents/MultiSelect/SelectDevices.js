@@ -13,8 +13,8 @@ import * as actionCreators from "../../../store/actions";
 import BackButton from "../../MiniComponents/BackButton";
 
 //Icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 
 //Styles
 import SectionStyle, { colors } from "./SectionStyle";

@@ -16,8 +16,8 @@ import CustomHeader from "../../MiniComponents/Header";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 
 //icons
-import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import ChangePassIcon from "../../../assets/SVGs/ChangePassIcon";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 // Style
 import styles from "./styles";

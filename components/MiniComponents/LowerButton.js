@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import ForwardButton from "../../assets/SVGs/ForwardButton";
-import CheckmarkIcon from "../../assets/SVGs/Checkmark.svg";
-import CrossIcon from "../../assets/SVGs/CrossButton.svg";
+import CheckmarkIcon from "../../assets/SVGs/Checkmark";
+import CrossIcon from "../../assets/SVGs/CrossButton";
 
 export default class LowerButton extends Component {
   render() {

@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class SelectLanguages extends Component {
   render() {

@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //icons
-import PlusAddIcon from "../../../../assets/SVGs/PlusAdd.svg";
+import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 // Style

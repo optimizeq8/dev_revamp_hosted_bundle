@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
 import { Item, Input } from "native-base";
-import PenIcon from "../../../../assets/SVGs/Pen.svg";
+import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";

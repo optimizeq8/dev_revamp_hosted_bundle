@@ -12,7 +12,7 @@ import styles from "./styles";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 //Icon
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
 
 export default class AgeOption extends Component {

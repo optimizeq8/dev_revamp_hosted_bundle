@@ -7,8 +7,8 @@ import { showMessage } from "react-native-flash-message";
 import { SafeAreaView } from "react-navigation";
 
 //Icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import BackButton from "../../MiniComponents/BackButton";
 
 //Styles

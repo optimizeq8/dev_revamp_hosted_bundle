@@ -13,7 +13,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 
 //icons
-import UserProfile from "../../../../assets/SVGs/UserProfile.svg";
+import UserProfile from "../../../../assets/SVGs/UserProfile";
 import EmailIcon from "../../../../assets/SVGs/EmailOutline";
 import PasswordIcon from "../../../../assets/SVGs/PasswordOutline";
 

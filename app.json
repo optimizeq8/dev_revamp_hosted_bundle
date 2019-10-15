@@ -5,8 +5,11 @@
     "description": "Digital Marketing made easy.",
     "slug": "optimize_app",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
-    "platforms": ["ios", "android"],
+    "sdkVersion": "34.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "0.1.60",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,7 +24,9 @@
     "updates": {
       "fallbackToCacheTimeout": 10000
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
       "buildNumber": "14",
@@ -29,9 +34,12 @@
     },
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "svg"]
+      "sourceExts": [
+        "js",
+        "jsx",
+        "svg"
+      ]
     },
-
     "android": {
       "package": "com.optimizeapp.optimizeapp",
       "versionCode": 14

@@ -18,7 +18,7 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 // Icons
-import ErrorIcon from "../../../assets/SVGs/Error.svg";
+import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 

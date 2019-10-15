@@ -34,7 +34,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import PhoneIcon from "../../../../assets/SVGs/Phone";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
 import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";

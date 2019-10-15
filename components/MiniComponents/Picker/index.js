@@ -5,7 +5,7 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
 import BackButton from "../../MiniComponents/BackButton";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 import styles from "./styles";
 import SectionStyle, { colors } from "../MultiSelect/SectionStyle";

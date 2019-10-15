@@ -21,8 +21,8 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 import { colors } from "../../GradiantColors/colors";
 
-import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
-import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
+import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
+import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import LowerButton from "../LowerButton";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";

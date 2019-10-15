@@ -13,7 +13,7 @@ import * as actionCreators from "../../../store/actions";
 import styles, { colors } from "./styles";
 
 // Icons
-import ErrorIcon from "../../../assets/SVGs/Error.svg";
+import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../LoadingScreen";
 
