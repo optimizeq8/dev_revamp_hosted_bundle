@@ -15,6 +15,10 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1
   },
+  container: {
+    backgroundColor: "#0000",
+    flex: 1
+  },
   keyboardContainer: {
     flex: 1,
     height: "100%"

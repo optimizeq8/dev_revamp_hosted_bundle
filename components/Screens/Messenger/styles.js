@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
   textInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: 'space-around',
-    // justifyContent: 'center',
-    // flex: 1,
     paddingLeft: 8,
     paddingRight: 8,
     backgroundColor: "#F4F4F4",
