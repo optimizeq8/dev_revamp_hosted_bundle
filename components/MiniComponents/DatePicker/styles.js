@@ -28,11 +28,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     borderWidth: 1,
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    top: heightPercentageToDP(5) < 30 ? -5 : 50
+
+    top: heightPercentageToDP(5) < 30 ? -5 : 20
   },
   icon: {
     fontSize: 70,
