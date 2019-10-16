@@ -307,8 +307,6 @@ class CreateBusinessAccount extends Component {
           </Text>
           <View style={styles.topContainer}>
             <Button
-              block
-              dark
               style={[
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activeButton
@@ -339,8 +337,6 @@ class CreateBusinessAccount extends Component {
             </Button>
 
             <Button
-              block
-              dark
               style={[
                 this.state.businessAccount.businesstype === "2"
                   ? styles.activeButton
@@ -369,7 +365,6 @@ class CreateBusinessAccount extends Component {
             </Button>
 
             <Button
-              dark
               style={[
                 this.state.businessAccount.businesstype === "3"
                   ? styles.activeButton

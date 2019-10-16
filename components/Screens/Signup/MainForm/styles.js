@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   content: {
     // paddingTop: heightPercentageToDP("2%"),
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center"
     // flex: 1
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     backgroundColor: "#FFF",
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     justifyContent: "space-around",
     paddingVertical: 30,
     borderBottomLeftRadius: 30,

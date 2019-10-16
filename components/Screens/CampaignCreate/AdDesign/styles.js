@@ -414,7 +414,8 @@ const styles = StyleSheet.create({
   },
   uploadDifferentDeviceHeader: {
     textAlign: "center",
-    color: "#FFF"
+    color: "#FFF",
+    fontFamily: "montserrat-regular"
   },
   uploadDifferentDeviceContentContainer: {
     marginTop: 15,
