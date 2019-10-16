@@ -256,7 +256,8 @@ export const _pickImage = async (
             message: translate("Maximum video duration is 10 seconds"),
             description:
               translate("Selected video duration") +
-              (result.duration / 1000).toFixed(2),
+              (result.duration / 1000).toFixed(2) +
+              translate("seconds"),
             position: "top",
             type: "warning"
           });
@@ -276,7 +277,7 @@ export const _pickImage = async (
             description:
               translate("Selected video duration") +
               (result.duration / 1000).toFixed(2) +
-              "s",
+              translate("seconds"),
 
             position: "top",
             type: "warning"
