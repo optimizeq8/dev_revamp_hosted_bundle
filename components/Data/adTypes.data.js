@@ -12,7 +12,7 @@ export const snapAds = [
     title: "Snap Ad",
     value: "SnapAd",
     media: require("../../assets/images/AdTypes/SnapAd.gif"),
-    icon: <AdIcons.SnapAd />
+    icon: AdIcons.SnapAd
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ export const snapAds = [
     title: "Story Ad",
     value: "StoryAd",
     media: require("../../assets/images/AdTypes/StoryAd.gif"),
-    icon: <AdIcons.StoryAd />
+    icon: AdIcons.StoryAd
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const snapAds = [
     title: "Collection Ad",
     value: "CollectionAd",
     media: require("../../assets/images/AdTypes/CollectionAd.gif"),
-    icon: <AdIcons.CollectionAd />
+    icon: AdIcons.CollectionAd
   }
 ];
 

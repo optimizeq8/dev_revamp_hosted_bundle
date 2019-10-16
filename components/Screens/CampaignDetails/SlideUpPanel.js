@@ -229,8 +229,10 @@ export default class SlideUpPanel extends Component {
                           onRefresh={() => this._onRefresh(selectedCampaign)}
                         />
                       }
+                      style={{ zIndex: 2 }}
                       contentContainerStyle={{
-                        paddingBottom: 130000 / (hp(100) / 3)
+                        paddingBottom: 130000 / (hp(100) / 3),
+                        zIndex: 2
                       }}
                     >
                       <LineChartGraphs

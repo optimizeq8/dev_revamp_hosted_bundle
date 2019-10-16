@@ -374,13 +374,12 @@ class AdObjective extends Component {
                 "Campaign"
               ]}
             />
-            <View style={styles.block1}>
-              <PhoneIcon
-                style={styles.phoneicon}
-                width={hp(5) < 30 ? 50 : 70}
-                height={hp(5) < 30 ? 50 : 70}
-              />
-            </View>
+            <PhoneIcon
+              style={styles.phoneicon}
+              width={hp(5) < 30 ? 50 : 70}
+              height={hp(5) < 30 ? 50 : 70}
+            />
+            <View style={styles.block1}></View>
             <ScrollView
               contentContainerStyle={styles.mainContent}
               scrollEnabled={true}

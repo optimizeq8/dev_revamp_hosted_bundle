@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 },
-    elevation: 5
+    shadowOffset: { height: 6, width: 0 }
   },
   header: {
     flex: 1,
