@@ -69,6 +69,7 @@ import {
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import { BudgetCards } from "./BudgetCards";
 import { TargetAudience } from "./TargetAudience";
+import find from "lodash/find";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -204,7 +205,10 @@ class AdDetails extends Component {
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
-
+        let countryRegions = find(
+          country_regions,
+          country => country.country_code === rep.targeting.geos[0].country_code
+        );
         this.setState(
           {
             ...this.state,
@@ -217,17 +221,18 @@ class AdDetails extends Component {
             ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
-            recBudget
+            recBudget,
+            regions: countryRegions.regions
           },
           () => {
             this._calcReach();
-            rep.targeting &&
-              rep.targeting.geos[0].country_code &&
-              this.onSelectedCountryChange(
-                rep.targeting.geos[0].country_code,
-                true,
-                this.props.data.countryName
-              );
+            // this.state.campaignInfo &&
+            //   this.state.campaignInfo.targeting.geos[0].country_code &&
+            //   this.onSelectedCountryChange(
+            //     this.state.campaignInfo.targeting.geos[0].country_code,
+            //     true,
+            //     this.props.data.countryName
+            //   );
           }
         );
       }
@@ -269,20 +274,25 @@ class AdDetails extends Component {
   ) => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
-
-    if (typeof newCountry !== "undefined") {
+    if (
+      typeof newCountry !== "undefined" &&
+      newCountry !== replace.targeting.geos[0].country_code
+    ) {
       replace.targeting.geos[0].country_code = newCountry;
-      replace.targeting.geos[0].region_id = mounting
-        ? this.props.data.campaignInfo.targeting.geos[0].region_id
-        : [];
+
+      replace.targeting.geos[0].region_id = [];
+
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
+      replace.targeting.interests[0].category_id = [];
+
       await this.setState({
         campaignInfo: replace,
         regions: reg.regions,
         filteredRegions: reg.regions,
         regionNames: [],
+        interestNames: [],
         countryName,
         showRegions: reg.regions.length > 3
       });
@@ -348,6 +358,8 @@ class AdDetails extends Component {
   onSelectedOSChange = selectedItem => {
     let replace = this.state.campaignInfo;
     replace.targeting.devices[0].os_type = selectedItem;
+    replace.targeting.devices[0].os_version_min = "";
+    replace.targeting.devices[0].os_version_max = "";
     this.setState({ campaignInfo: { ...replace } });
     this.props.save_campaign_info({ campaignInfo: { ...replace } });
   };
@@ -380,25 +392,54 @@ class AdDetails extends Component {
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
+    let rIds = replace.targeting.geos[0].region_id;
+    let rNamesSelected = this.state.regionNames;
 
-    let names = this.state.regionNames;
-    if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
-      replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
-        r => r !== selectedItem
-      );
+    if (selectedItem === -1) {
+      if (this.state.regions.length === this.state.regionNames.length) {
+        replace.targeting.geos[0].region_id = [];
+        this.setState({
+          regionNames: [],
+          campaignInfo: replace
+        });
+      } else {
+        rNamesSelected = this.state.regions.map(r => r.name);
+        rIds = this.state.regions.map(r => r.id);
+        replace.targeting.geos[0].region_id = rIds;
+        this.setState({
+          regionNames: rNamesSelected,
+          campaignInfo: replace
+        });
+      }
+
+      this.props.save_campaign_info({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
+      return;
     } else {
-      replace.targeting.geos[0].region_id.push(selectedItem);
+      // logic change
+
+      // campignInfo region
+      if (rIds.find(r => r === selectedItem)) {
+        replace.targeting.geos[0].region_id = rIds.filter(
+          r => r !== selectedItem
+        );
+        rNamesSelected = rNamesSelected.filter(r => r !== regionName);
+      } else {
+        replace.targeting.geos[0].region_id.push(selectedItem);
+        rNamesSelected.push(regionName);
+      }
+
+      this.setState({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
+      this.props.save_campaign_info({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
     }
-    if (names.find(r => r === regionName)) {
-      names = names.filter(r => r !== regionName);
-    } else {
-      names.push(regionName);
-    }
-    this.setState({ campaignInfo: replace, regionNames: names });
-    this.props.save_campaign_info({
-      campaignInfo: replace,
-      regionNames: names
-    });
   };
 
   formatNumber = num => {
@@ -752,7 +793,7 @@ class AdDetails extends Component {
           i => i === r.id
         )
       ) {
-        regions_names.push(r.name);
+        regions_names.push(translate(r.name));
       }
     });
     regions_names = regions_names.join(", ");
@@ -764,15 +805,23 @@ class AdDetails extends Component {
           i => i === r.id
         )
       ) {
-        languages_names.push(r.name);
+        languages_names.push(translate(r.name));
       }
     });
     languages_names = languages_names.join(", ");
 
     let interests_names = [];
-    this.state.interestNames.forEach(r => {
-      interests_names.push(r.name);
-    });
+    if (this.state.campaignInfo.targeting.interests[0].category_id.length > 0) {
+      interests_names = this.state.campaignInfo.targeting.interests[0].category_id.map(
+        interest => {
+          const nameItem = find(
+            this.props.interests,
+            intrst => interest === intrst.id
+          );
+          if (nameItem) return translate(nameItem.name);
+        }
+      );
+    }
     interests_names = interests_names.join(", ");
 
     let editCampaign = this.props.navigation.getParam("editCampaign", false);
@@ -961,6 +1010,7 @@ class AdDetails extends Component {
                   {translate("Who would you like to reach?")}
                 </Text>
                 <TargetAudience
+                  screenProps={this.props.screenProps}
                   _renderSideMenu={this._renderSideMenu}
                   loading={this.props.loading}
                   gender={gender}
@@ -1011,7 +1061,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   languages: state.campaignC.languagesList,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  currentCampaignSteps: state.campaignC.currentCampaignSteps
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  interests: state.campaignC.interests
 });
 
 const mapDispatchToProps = dispatch => ({

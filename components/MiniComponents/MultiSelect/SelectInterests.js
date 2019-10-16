@@ -31,26 +31,27 @@ class SelectInterests extends Component {
     });
   }
   componentDidUpdate(prevProps) {
+    const { translate } = this.props.screenProps;
     if (
       prevProps.interests !== this.props.interests &&
       !this.props.addressForm
     ) {
       let interests = [];
-      let lenOfLists = 0;
-
-      this.props.interests &&
-        Object.keys(this.props.interests).forEach((key, i) => {
-          if (this.props.interests[key].length > 0) {
-            interests = this.props.interests[key].filter(
-              obj => obj.hasChild === 0
-            );
-          }
-          lenOfLists += this.props.interests[key].length;
-        });
-
-      if (lenOfLists === 0) {
+      if (this.props.interests.length === 0) {
         this.setState({ interests: [] });
-      } else this.setState({ interests });
+      } else {
+        interests = this.props.interests.map(interest => {
+          return {
+            hasChild: interest.hasChild,
+            id: interest.id,
+            name: translate(interest.name),
+            parentId: interest.parentId,
+            path: interest.path,
+            source: interest.source
+          };
+        });
+        this.setState({ interests });
+      }
     }
     if (
       prevProps.country_code !== this.props.country_code &&

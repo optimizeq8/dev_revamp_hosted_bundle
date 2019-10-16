@@ -79,8 +79,7 @@ const styles = StyleSheet.create({
     paddingRight: 2
   },
   safeAreaView: {
-    height: "100%",
-    width: "100%"
+    flex: 1
     // backgroundColor: "rgba(0,0,0,0.75)"
   },
   slide: { alignItems: "center", flex: 1, justifyContent: "center" },

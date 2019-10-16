@@ -18,12 +18,12 @@ import LocationIcon from "../../../assets/SVGs/Location";
 class SelectRegions extends Component {
   state = { selectedAll: false };
 
-  selectAll = () => {
-    this.setState({ selectedAll: !this.state.selectedAll });
-    this.props.regions.forEach(region =>
-      this.props.onSelectedRegionChange(region.id, region.name)
-    );
-  };
+  // selectAll = () => {
+  //   this.setState({ selectedAll: !this.state.selectedAll });
+  //   this.props.regions.forEach(region =>
+  //     this.props.onSelectedRegionChange(region.id, region.name)
+  //   );
+  // };
 
   render() {
     const { translate } = this.props.screenProps;
@@ -53,7 +53,7 @@ class SelectRegions extends Component {
               styles.optionsIconSize
             ]}
           />
-          <Text style={styles.optionsTextContainer}>{c.name}</Text>
+          <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
         </TouchableOpacity>
       );
     });
@@ -91,7 +91,9 @@ class SelectRegions extends Component {
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredR = this.props.regions.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
+                      translate(c.name)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.props.filterRegions(filteredR);
                   }}
@@ -105,7 +107,7 @@ class SelectRegions extends Component {
                       styles.languageRowConatiner,
                       { alignSelf: "center" }
                     ]}
-                    onPress={this.selectAll}
+                    onPress={() => this.props.onSelectedRegionChange(-1, "all")}
                   >
                     <Text
                       style={[

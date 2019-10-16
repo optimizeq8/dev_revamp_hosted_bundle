@@ -594,9 +594,15 @@ export const get_interests = countryCode => {
         return res.data.interests;
       })
       .then(data => {
+        let interests = [];
+        Object.keys(data).forEach((key, i) => {
+          if (data[key].length > 0) {
+            interests = data[key].filter(obj => obj.hasChild === 0);
+          }
+        });
         return dispatch({
           type: actionTypes.SET_INTERESTS,
-          payload: data
+          payload: interests
         });
       })
       .catch(err => {

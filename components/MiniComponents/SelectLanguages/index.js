@@ -30,7 +30,7 @@ export default class SelectLanguages extends Component {
             styles.optionsIconSize
           ]}
         />
-        <Text style={styles.optionsTextContainer}>{c.name}</Text>
+        <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
       </TouchableOpacity>
     ));
     return (
@@ -50,7 +50,9 @@ export default class SelectLanguages extends Component {
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.languages.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
+                      translate(c.name)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.props.filterLanguages(filteredC);
                   }}

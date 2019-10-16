@@ -42,9 +42,9 @@ export class TargetAudience extends Component {
       languages_names,
       interests_names,
       OSType,
-      mainState,
-      translate
+      mainState
     } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <MaskedViewIOS
         maskElement={
@@ -76,12 +76,12 @@ export class TargetAudience extends Component {
               <View style={globalStyles.column}>
                 <Text style={styles.menutext}>{translate("Gender")}</Text>
                 <Text style={styles.menudetails}>
-                  {
+                  {translate(
                     gender.find(r => {
                       if (r.value === targeting.demographics[0].gender)
                         return r;
                     }).label
-                  }
+                  )}
                 </Text>
               </View>
             </View>
@@ -138,7 +138,11 @@ export class TargetAudience extends Component {
 
               <View style={globalStyles.column}>
                 <Text style={styles.menutext}>{translate("Country")}</Text>
-                <Text style={styles.menudetails}>{mainState.countryName}</Text>
+                <Text style={styles.menudetails}>
+                  {mainState.countryName !== ""
+                    ? translate(mainState.countryName)
+                    : ""}
+                </Text>
               </View>
             </View>
             {targeting.geos[0].country_code ? (
@@ -263,11 +267,11 @@ export class TargetAudience extends Component {
                   {translate("Operating System")}
                 </Text>
                 <Text style={styles.menudetails}>
-                  {
+                  {translate(
                     OSType.find(r => {
                       if (r.value === targeting.devices[0].os_type) return r;
                     }).label
-                  }
+                  )}
                 </Text>
               </View>
             </View>

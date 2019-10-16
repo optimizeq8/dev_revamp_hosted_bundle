@@ -9,6 +9,8 @@ import { Content, Text, Container, Footer } from "native-base";
 import { Video } from "expo-av";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import startCase from "lodash/startCase";
+import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
@@ -58,10 +60,15 @@ class AdPaymentReview extends Component {
       end_time = dateFormat(end_time, "d mmm yyyy");
       start_time = dateFormat(start_time, "d mmm yyyy");
       let gender = targeting.demographics[0].gender
-        ? targeting.demographics[0].gender
+        ? startCase(lowerCase(targeting.demographics[0].gender))
         : "All";
       let countryName = this.props.countryName;
-      let regionNames = this.props.regionNames;
+      if (this.props.regionNames) {
+        var regionNames = this.props.regionNames.map(region =>
+          translate(region)
+        );
+      } else regionNames = [""];
+
       // if (
       //   targeting.geos[0].hasOwnProperty("region_id") &&
       //   this.props.regionNames.length > 0
@@ -198,10 +205,7 @@ class AdPaymentReview extends Component {
                         { title: "End", content: end_time },
                         {
                           title: "Objective",
-                          content: this.props.data.objective.replace(
-                            /BRAND_/i,
-                            ""
-                          )
+                          content: translate(this.props.data.objectiveLabel)
                         }
                       ]}
                     />
@@ -226,14 +230,14 @@ class AdPaymentReview extends Component {
                       subtitles={[
                         {
                           title: "Gender",
-                          content: gender
+                          content: translate(gender)
                         },
                         {
                           title: "Location",
                           content:
                             regionNames.length > 0
-                              ? countryName + ": " + regionNames
-                              : countryName
+                              ? translate(countryName) + ": " + regionNames
+                              : translate(countryName)
                         },
                         {
                           title: "Language",
@@ -259,11 +263,12 @@ class AdPaymentReview extends Component {
                         },
                         targeting.hasOwnProperty("devices") && {
                           title: "OS Type",
-                          content:
+                          content: translate(
                             targeting.devices[0].hasOwnProperty("os_type") &&
-                            targeting.devices[0].os_type !== ""
+                              targeting.devices[0].os_type !== ""
                               ? targeting.devices[0].os_type
                               : "All"
+                          )
                         },
                         targeting.hasOwnProperty("devices") &&
                           targeting.devices[0].os_version_max !== "" && {

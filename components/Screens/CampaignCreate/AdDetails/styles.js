@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     color: "#fff",
-    fontFamily: "montserrat-light-english",
+    fontFamily: "montserrat-light",
     fontSize: 11,
     textAlign: "left"
   },

@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "relative",
-    left: "10%"
+    // left: "10%"
+    left: 5
   },
   midContainer: { flex: 2, justifyContent: "center" },
   container: {
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignSelf: "center",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-    width: "150%",
+    width: 300,
     height: 45,
     color: "#fff",
     borderColor: "#7039FF",

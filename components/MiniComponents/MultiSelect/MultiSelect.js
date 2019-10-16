@@ -110,12 +110,12 @@ class MultiSelectList extends Component {
       >
         <Text
           style={{
-            fontFamily: "montserrat-bold-english",
+            fontFamily: "montserrat-bold",
             color: this.props.country_code === c.value ? "#FF9D00" : "#fff",
             fontSize: 14
           }}
         >
-          {c.label}
+          {translate(c.label)}
         </Text>
       </TouchableOpacity>
     ));
@@ -141,7 +141,9 @@ class MultiSelectList extends Component {
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>
-                      c.label.toLowerCase().includes(value.toLowerCase())
+                      translate(c.label)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.setState({ filteredCountreis: filteredC });
                   }}

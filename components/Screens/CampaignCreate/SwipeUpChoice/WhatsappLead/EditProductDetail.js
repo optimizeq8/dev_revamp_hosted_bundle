@@ -80,6 +80,7 @@ export default class EditProductDetail extends React.Component {
       >
         <Container style={styles.container}>
           <CustomeHeader
+            screenProps={this.props.screenProps}
             title={"WhatsApp Campaign"}
             closeButton={false}
             navigation={this.props.navigation}

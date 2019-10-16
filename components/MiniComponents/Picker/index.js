@@ -26,6 +26,10 @@ export default class Picker extends Component {
         single={this.props.single}
         uniqueKey={this.props.uniqueKey}
         displayKey={this.props.displayKey}
+        renderSelectText={() => {
+          console.log("item : ");
+          return "test";
+        }}
         selectToggleIconComponent={
           <Icon
             type="MaterialCommunityIcons"
@@ -108,6 +112,7 @@ export default class Picker extends Component {
         onSelectedItemsChange={this.props.onSelectedItemsChange}
         onSelectedItemObjectsChange={this.props.onSelectedItemObjectsChange}
         selectedItems={this.props.selectedItems}
+        removeAllText={translate("Remove all")}
       />
     );
   }
