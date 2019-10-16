@@ -8,9 +8,9 @@ export default class VideoPlayer extends Component {
     return (
       <Video
         onLoadStart={() =>
-          ((storyAdCards.selectedStoryAd.media &&
+          ((storyAdCards.selectedStoryAd.media !== "//" &&
             storyAdCards.storyAdSelected) ||
-            media) &&
+            media !== "//") &&
           videoIsLoading(true)
         }
         onLoad={() => videoIsLoading(false)}
