@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   optionsTextContainer: {
-    fontFamily: "montserrat-bold-english",
+    fontFamily: "montserrat-bold",
     color: "#fff",
     fontSize: 14,
     paddingLeft: 20

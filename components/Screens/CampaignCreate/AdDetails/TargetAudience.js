@@ -43,10 +43,10 @@ export class TargetAudience extends Component {
       languages_names,
       interests_names,
       OSType,
-      mainState,
-      translate,
+mainState
       editCampaign
     } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <>
         <MaskedViewIOS
@@ -79,16 +79,17 @@ export class TargetAudience extends Component {
                 <View style={globalStyles.column}>
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
-                    {
-                      gender.find(r => {
-                        if (r.value === targeting.demographics[0].gender)
-                          return r;
-                      }).label
-                    }
+                    {translate(
+                    gender.find(r => {
+                      if (r.value === targeting.demographics[0].gender)
+                        return r;
+                    }).label
+                  )}
                   </Text>
                 </View>
               </View>
               <View style={globalStyles.column}>
+
                 {targeting.demographics[0].gender === "" ||
                 targeting.demographics[0].gender ? (
                   <GreenCheckmarkIcon width={25} height={25} />
@@ -139,11 +140,13 @@ export class TargetAudience extends Component {
               <View style={globalStyles.row}>
                 <LocationIcon width={25} height={25} style={styles.icon} />
 
-                <View style={globalStyles.column}>
-                  <Text style={styles.menutext}>{translate("Country")}</Text>
-                  <Text style={styles.menudetails}>
-                    {mainState.countryName}
-                  </Text>
+              <View style={globalStyles.column}>
+                <Text style={styles.menutext}>{translate("Country")}</Text>
+                <Text style={styles.menudetails}>
+                  {mainState.countryName !== ""
+                    ? translate(mainState.countryName)
+                    : ""}
+                </Text>
                 </View>
               </View>
               {targeting.geos[0].country_code ? (
@@ -268,11 +271,11 @@ export class TargetAudience extends Component {
                     {translate("Operating System")}
                   </Text>
                   <Text style={styles.menudetails}>
-                    {
-                      OSType.find(r => {
-                        if (r.value === targeting.devices[0].os_type) return r;
-                      }).label
-                    }
+                    {translate(
+                    OSType.find(r => {
+                      if (r.value === targeting.devices[0].os_type) return r;
+                    }).label
+                  )}
                   </Text>
                 </View>
               </View>
@@ -284,6 +287,7 @@ export class TargetAudience extends Component {
                 <PlusCircleIcon width={25} height={25} />
               )}
             </TouchableOpacity>
+
 
             {targeting.devices[0].os_type !== "" && (
               <TouchableOpacity

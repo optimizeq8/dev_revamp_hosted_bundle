@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: I18nManager.isRTL ? -12 : -10
+    marginBottom: I18nManager.isRTL ? -16 : -10
   },
   inputText: {
     fontFamily: "montserrat-regular",
