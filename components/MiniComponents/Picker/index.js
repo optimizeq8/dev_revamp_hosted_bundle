@@ -113,6 +113,9 @@ export default class Picker extends Component {
         onSelectedItemObjectsChange={this.props.onSelectedItemObjectsChange}
         selectedItems={this.props.selectedItems}
         removeAllText={translate("Remove all")}
+        itemFontFamily={{
+          fontFamily: "montserrat-regular"
+        }}
       />
     );
   }

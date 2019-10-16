@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-bold",
     left: 15,
+    height: I18nManager.isRTL ? 40 : null,
     bottom: I18nManager.isRTL ? 0 : 12
   },
   right: {
