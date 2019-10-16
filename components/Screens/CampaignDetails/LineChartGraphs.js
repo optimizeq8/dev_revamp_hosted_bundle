@@ -6,7 +6,8 @@ export default class LineChartGraphs extends Component {
     return (
       <View
         style={{
-          paddingLeft: 25
+          paddingLeft: 25,
+          zIndex: 3
         }}
       >
         <LineGraph
