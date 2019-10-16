@@ -175,7 +175,11 @@ class CampaignDetails extends Component {
       this.props.campaignError
     ) {
       return (
-        <ErrorComponent loading={loading} navigation={this.props.navigation} />
+        <ErrorComponent
+          loading={loading}
+          navigation={this.props.navigation}
+          screenProps={this.props.screenProps}
+        />
       );
     } else {
       let selectedCampaign = null;

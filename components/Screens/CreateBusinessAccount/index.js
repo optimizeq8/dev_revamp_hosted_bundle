@@ -854,8 +854,6 @@ class CreateBusinessAccount extends Component {
             </Text>
           )}
           <Button
-            block
-            dark
             style={[styles.bottomCard]}
             onPress={() => {
               this._handleSubmission();

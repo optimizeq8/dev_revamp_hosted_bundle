@@ -49,13 +49,7 @@ class TransactionCard extends Component {
                 style={[styles.icon, styles.iconWallet]}
               />
             ) : (
-              <SnapGhostIcon
-                // type="MaterialCommunityIcons"
-                // name="snapchat"
-
-                width={40}
-                style={[styles.icon]}
-              />
+              <SnapGhostIcon width={40} style={[styles.icon]} />
             )}
 
             <Text style={[styles.text]}>{translate("Card Type")}</Text>

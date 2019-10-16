@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   },
   placeHolderChart: {
     position: "absolute",
-    zIndex: 100,
+    zIndex: 10,
     width: wp(90),
     height: "100%",
     alignItems: "center",
