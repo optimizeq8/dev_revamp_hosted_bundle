@@ -29,15 +29,15 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import KeyboardShift from "../KeyboardShift";
 
 class index extends Component {
-  state = { deep_link_url: "", deep_link_urlError: "" };
+  state = { deep_link_uri: "", deep_link_uriError: "" };
   componentDidMount() {
-    this.setState({ deep_link_url: this.props.deep_link_url });
+    this.setState({ deep_link_uri: this.props.deep_link_uri });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.deep_link_url !== this.props.deep_link_url) {
-      this.setState({ deep_link_url: this.props.deep_link_url });
+    if (prevProps.deep_link_uri !== this.props.deep_link_uri) {
+      this.setState({ deep_link_uri: this.props.deep_link_uri });
     }
   }
   componentWillUnmount() {
@@ -49,15 +49,15 @@ class index extends Component {
     return true;
   };
   validateUrl = () => {
-    const deep_link_urlError = validateWrapper(
+    const deep_link_uriError = validateWrapper(
       "deepLink",
-      this.state.deep_link_url
+      this.state.deep_link_uri
     );
     const { translate } = this.props.screenProps;
     this.setState({
-      deep_link_urlError
+      deep_link_uriError
     });
-    if (deep_link_urlError) {
+    if (deep_link_uriError) {
       showMessage({
         message: translate("Invalid deep link URL"),
         description: translate(
@@ -76,7 +76,7 @@ class index extends Component {
     if (!this.props.deepLink) {
       this.props._handleSubmission();
     } else if (this.validateUrl()) {
-      this.props._handleSubmission(this.state.deep_link_url);
+      this.props._handleSubmission(this.state.deep_link_uri);
     }
   };
   render() {
@@ -211,14 +211,14 @@ class index extends Component {
                 // rounded
                 style={[
                   styles.input,
-                  this.state.deep_link_urlError
+                  this.state.deep_link_uriError
                     ? globalStyles.redBorderColor
                     : globalStyles.transparentBorderColor,
                   styles.deepLinkItem
                 ]}
               >
                 <Input
-                  value={this.state.deep_link_url}
+                  value={this.state.deep_link_uri}
                   style={styles.inputtext}
                   placeholder={translate("Deep Link URL")}
                   placeholderTextColor="white"
@@ -226,7 +226,7 @@ class index extends Component {
                   autoCapitalize="none"
                   onChangeText={value =>
                     this.setState({
-                      deep_link_url: value
+                      deep_link_uri: value
                     })
                   }
                   onBlur={() => {

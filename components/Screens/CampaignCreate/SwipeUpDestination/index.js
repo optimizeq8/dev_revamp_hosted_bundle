@@ -68,7 +68,7 @@ class SwipeUpDestination extends Component {
       selected: this.props.data
         ? this.props.data.destination !== "BLANK" &&
           this.props.data.destination !== "STORY"
-          ? "destination"
+          ? destination
           : storyAdAttachment.destination !== "BLANK"
           ? storyAdAttachment.destination
           : destination

@@ -157,23 +157,13 @@ export const getWalletAmountInKwd = amount => {
   };
 };
 export const useWallet = (campaign_id, setWalletModal) => {
-  let cancelToken = Axios.CancelToken.source();
-  setTimeout(() => {
-    cancelToken.cancel("Request took too long, please try again.");
-  }, 10000);
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .post(
-        `useWallet`,
-        { campaign_id },
-        {
-          cancelToken: cancelToken.token
-        }
-      )
+      .post(`useWallet`, { campaign_id }, { timeout: 10000 })
       .then(res => {
         return res.data;
       })
@@ -190,9 +180,12 @@ export const useWallet = (campaign_id, setWalletModal) => {
       })
 
       .catch(err => {
-        // console.log("useWallet Error: ", err.message || err.response);
+        // console.log("useWallet Error: ", err.message);
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              "Request took too long, please try again.") ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",

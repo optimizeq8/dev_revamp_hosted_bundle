@@ -21,7 +21,9 @@ export default class Header extends Component {
       campaignEnded,
       topRightButtonFunction,
       topRightButtonText,
-      showTopRightButton
+      showTopRightButton,
+      containerStyle,
+      titelStyle
     } = this.props;
     const { translate } = this.props.screenProps;
     if (title && typeof title === "object") {
@@ -33,7 +35,7 @@ export default class Header extends Component {
       title = translate(title);
     }
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         <TouchableOpacity
           onPress={() => {
             if (!isUndefined(segment))
@@ -93,7 +95,8 @@ export default class Header extends Component {
                 ? {
                     fontFamily: "montserrat-bold-english"
                   }
-                : {}
+                : {},
+              titelStyle
             ]}
           >
             {title}

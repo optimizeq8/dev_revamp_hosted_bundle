@@ -37,6 +37,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 
 // Style
 import styles from "./styles";
@@ -854,6 +855,13 @@ class AdDesign extends Component {
       type: mediaTypeWebLink
     });
   };
+  handleSupportPage = () => {
+    const { translate } = this.props.screenProps;
+    this.props.navigation.push("WebView", {
+      url: "https://www.optimizeapp.com/support",
+      title: translate("Support")
+    });
+  };
   render() {
     let {
       media,
@@ -1054,10 +1062,19 @@ class AdDesign extends Component {
                     media={media}
                     call_to_action={call_to_action}
                   />
-
-                  <View style={styles.collectionView}>
-                    {this.adType === "CollectionAd" && collection}
-                  </View>
+                  <TouchableOpacity
+                    onPress={this.handleSupportPage}
+                    style={{
+                      position: "absolute",
+                      right: "4%",
+                      top: storyAdCards.storyAdSelected ? "14%" : "4%"
+                    }}
+                  >
+                    <InfoIcon />
+                  </TouchableOpacity>
+                  {this.adType === "CollectionAd" && (
+                    <View style={styles.collectionView}>{collection}</View>
+                  )}
                 </View>
               </View>
             </Transition>

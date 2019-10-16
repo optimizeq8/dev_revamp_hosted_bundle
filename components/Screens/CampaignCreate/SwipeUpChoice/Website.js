@@ -66,7 +66,10 @@ class Website extends Component {
         },
         networkString: url[0] + "://"
       });
-    } else if (this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE") {
+    } else if (
+      this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE" ||
+      this.props.storyAdAttachment.destination === "LEAD_GENERATION"
+    ) {
       const url = split(this.props.storyAdAttachment.attachment.url, "://");
       this.setState({
         campaignInfo: {
@@ -116,9 +119,10 @@ class Website extends Component {
       : this.props.objective;
     if (this.validateUrl()) {
       this.props._changeDestination(
-        this.props.adType !== "CollectionAd"
-          ? // this.props.collectionAdLinkForm === 0
-            objective !== "LEAD_GENERATION"
+        // this.props.adType !== "CollectionAd"
+        //   ?
+        this.props.collectionAdLinkForm === 0
+          ? objective !== "LEAD_GENERATION"
             ? "REMOTE_WEBPAGE"
             : "LEAD_GENERATION"
           : "COLLECTION",

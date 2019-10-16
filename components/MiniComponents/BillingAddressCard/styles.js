@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   container: {
-    // paddingTop: 20
+    flex: 1
   },
 
   headerBlock: {

@@ -11,7 +11,7 @@ export default class StoryAdCards extends Component {
     if (item.index === this.props.StoryAdCards.length - 1) {
       return (
         <AddCard
-          addSnapCard={this.props.addSnapCard}
+          arrayLen={this.props.StoryAdCards.length}
           screenProps={this.props.screenProps}
         />
       );
