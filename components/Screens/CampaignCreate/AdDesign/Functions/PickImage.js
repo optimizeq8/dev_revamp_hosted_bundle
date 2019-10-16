@@ -245,7 +245,7 @@ export const _pickImage = async (
       } else if (result.type === "video") {
         if (result.duration > 10999) {
           setTheState({
-            mediaError: "Allowed video durations is up to 10 seconds.",
+            mediaError: "Maximum video duration  is 10 seconds.",
             media: "//"
           });
           save_campaign_info({
@@ -253,7 +253,31 @@ export const _pickImage = async (
             type: ""
           });
           showMessage({
-            message: translate("Allowed video duration is up to 10 seconds"),
+            message: translate("Maximum video duration is 10 seconds"),
+            description:
+              translate("Selected video duration") +
+              (result.duration / 1000).toFixed(2),
+            position: "top",
+            type: "warning"
+          });
+          onToggleModal(false);
+          return;
+        } else if (result.duration < 3000) {
+          setTheState({
+            mediaError: "Minimum video duration  is 3 seconds.",
+            media: "//"
+          });
+          save_campaign_info({
+            media: "//",
+            type: ""
+          });
+          showMessage({
+            message: translate("Minimum video duration is 3 seconds"),
+            description:
+              translate("Selected video duration") +
+              (result.duration / 1000).toFixed(2) +
+              "s",
+
             position: "top",
             type: "warning"
           });
