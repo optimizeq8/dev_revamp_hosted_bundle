@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 30
+    marginHorizontal: 30,
+    height: 80
     // width: widthPercentageToDP(85)
   },
   subTitle: {
@@ -53,21 +54,29 @@ const styles = StyleSheet.create({
   button: {
     // marginHorizontal: 30,
     paddingVertical: 10,
-    // backgroundColor: "#fff",
-    backgroundColor: "transparent",
-    height: 70,
-    justifyContent: "center",
-    flexDirection: "column",
-    paddingHorizontal: 10
-  },
-  activeButton: {
-    backgroundColor: "#FF9D00",
     borderRadius: 50,
-    height: 70,
+    borderStartWidth: 0,
+    borderWidth: 0,
+    // backgroundColor: "#fff",
+    backgroundColor: "rgba(0,0,0,0)",
+    height: 80,
     justifyContent: "center",
     flexDirection: "column",
     paddingHorizontal: 10,
-    paddingVertical: 10
+    width: "34%",
+    borderColor: "transparent"
+  },
+  activeButton: {
+    borderColor: "transparent",
+    width: "34%",
+    backgroundColor: "#FF9D00",
+    borderRadius: 50,
+    height: 80,
+    justifyContent: "center",
+    flexDirection: "column",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderColor: "transparent"
   },
   inactiveText: {
     fontFamily: "montserrat-medium",
