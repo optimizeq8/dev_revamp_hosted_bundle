@@ -57,10 +57,10 @@ ${day}/${shortMonths[month]}`;
     }
 
     return (
-      <View
+      <ScrollView
         scrollEnabled={this.props.campaignStats.length > 1}
         horizontal
-        style={{ height: 200, zIndex: 3 }}
+        style={{ height: 200 }}
       >
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
@@ -79,8 +79,7 @@ ${day}/${shortMonths[month]}`;
             ]}
           />
         )}
-
-        {/* <VictoryChart
+        <VictoryChart
           domainPadding={{ y: 10 }}
           containerComponent={
             <VictoryVoronoiContainer
@@ -122,8 +121,7 @@ ${day}/${shortMonths[month]}`;
             style={tickLabelStyles}
           />
         </VictoryChart>
-      */}
-      </View>
+      </ScrollView>
     );
   }
 }
