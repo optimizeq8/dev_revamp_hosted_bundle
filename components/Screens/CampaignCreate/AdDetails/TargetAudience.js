@@ -43,7 +43,7 @@ export class TargetAudience extends Component {
       languages_names,
       interests_names,
       OSType,
-mainState
+      mainState,
       editCampaign
     } = this.props;
     const { translate } = this.props.screenProps;
@@ -80,16 +80,15 @@ mainState
                   <Text style={styles.menutext}>{translate("Gender")}</Text>
                   <Text style={styles.menudetails}>
                     {translate(
-                    gender.find(r => {
-                      if (r.value === targeting.demographics[0].gender)
-                        return r;
-                    }).label
-                  )}
+                      gender.find(r => {
+                        if (r.value === targeting.demographics[0].gender)
+                          return r;
+                      }).label
+                    )}
                   </Text>
                 </View>
               </View>
               <View style={globalStyles.column}>
-
                 {targeting.demographics[0].gender === "" ||
                 targeting.demographics[0].gender ? (
                   <GreenCheckmarkIcon width={25} height={25} />
@@ -140,13 +139,13 @@ mainState
               <View style={globalStyles.row}>
                 <LocationIcon width={25} height={25} style={styles.icon} />
 
-              <View style={globalStyles.column}>
-                <Text style={styles.menutext}>{translate("Country")}</Text>
-                <Text style={styles.menudetails}>
-                  {mainState.countryName !== ""
-                    ? translate(mainState.countryName)
-                    : ""}
-                </Text>
+                <View style={globalStyles.column}>
+                  <Text style={styles.menutext}>{translate("Country")}</Text>
+                  <Text style={styles.menudetails}>
+                    {mainState.countryName !== ""
+                      ? translate(mainState.countryName)
+                      : ""}
+                  </Text>
                 </View>
               </View>
               {targeting.geos[0].country_code ? (
@@ -272,10 +271,10 @@ mainState
                   </Text>
                   <Text style={styles.menudetails}>
                     {translate(
-                    OSType.find(r => {
-                      if (r.value === targeting.devices[0].os_type) return r;
-                    }).label
-                  )}
+                      OSType.find(r => {
+                        if (r.value === targeting.devices[0].os_type) return r;
+                      }).label
+                    )}
                   </Text>
                 </View>
               </View>
@@ -287,7 +286,6 @@ mainState
                 <PlusCircleIcon width={25} height={25} />
               )}
             </TouchableOpacity>
-
 
             {targeting.devices[0].os_type !== "" && (
               <TouchableOpacity
