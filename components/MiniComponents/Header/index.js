@@ -105,7 +105,7 @@ export default class Header extends Component {
         <View
           style={[
             styles.right,
-            I18nManager.isRTL ? { position: "absolute" } : {}
+            I18nManager.isRTL ? { position: "absolute", left: 5 } : {}
           ]}
         >
           {showTopRightButton ? (
