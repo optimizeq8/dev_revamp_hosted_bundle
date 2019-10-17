@@ -167,9 +167,9 @@ class Messenger extends Component {
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>
-          <Content contentContainerStyle={{ flex: 1 }}>
+          <Content scrollEnabled={false} contentContainerStyle={{ flex: 1 }}>
             <KeyboardAvoidingView
-              keyboardVerticalOffset={60}
+              keyboardVerticalOffset={heightPercentageToDP("10%")}
               style={styles.container}
               behavior="padding"
             >
