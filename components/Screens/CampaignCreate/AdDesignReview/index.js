@@ -207,8 +207,8 @@ class AdDesignReview extends Component {
                         source={{
                           uri: media
                         }}
-                        isLooping
-                        shouldPlay
+                        isLooping={true}
+                        shouldPlay={true}
                         resizeMode="stretch"
                         style={styles.video}
                       />

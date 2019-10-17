@@ -21,9 +21,9 @@ export default class VideoPlayer extends Component {
               : storyAdCards.selectedStoryAd.media &&
                 storyAdCards.storyAdSelected
               ? storyAdCards.selectedStoryAd.media
-              : "//"
+              : "dfv.dfv"
         }}
-        shouldPlay
+        shouldPlay={false}
         isLooping
         isMuted
         resizeMode={"stretch"}

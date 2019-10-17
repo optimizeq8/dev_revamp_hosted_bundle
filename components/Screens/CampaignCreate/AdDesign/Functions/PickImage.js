@@ -245,7 +245,8 @@ export const _pickImage = async (
         if (result.duration > 10999) {
           setTheState({
             mediaError: "Maximum video duration  is 10 seconds.",
-            media: "//"
+            media: "//",
+            sourceChanging: true
           });
           save_campaign_info({
             media: "//",
@@ -261,11 +262,15 @@ export const _pickImage = async (
             type: "warning"
           });
           onToggleModal(false);
+          setTheState({
+            sourceChanging: false
+          });
           return;
         } else if (result.duration < 3000) {
           setTheState({
             mediaError: "Minimum video duration  is 3 seconds.",
-            media: "//"
+            media: "//",
+            sourceChanging: true
           });
           save_campaign_info({
             media: "//",
@@ -282,6 +287,7 @@ export const _pickImage = async (
             type: "warning"
           });
           onToggleModal(false);
+          setTheState({ sourceChanging: false });
           return;
         } else if (file.size > 32000000) {
           setTheState({
@@ -342,7 +348,8 @@ export const _pickImage = async (
               type: result.type.toUpperCase(),
               mediaError: null,
               result: result.uri,
-              iosVideoUploaded: false
+              iosVideoUploaded: false,
+              sourceChanging: true
             });
             onToggleModal(false);
             showMessage({
@@ -355,12 +362,15 @@ export const _pickImage = async (
             media: result.uri,
             type: result.type.toUpperCase()
           });
+          setTheState({ sourceChanging: false });
           return;
         } else {
           setTheState({
             mediaError:
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920.",
-            media: "//"
+            media: "//",
+
+            sourceChanging: true
           });
           save_campaign_info({
             media: "//",
@@ -376,6 +386,7 @@ export const _pickImage = async (
             position: "top",
             type: "warning"
           });
+          setTheState({ sourceChanging: false });
           return;
         }
       }

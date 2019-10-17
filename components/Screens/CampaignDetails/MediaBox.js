@@ -24,7 +24,8 @@ export default class MediaBox extends Component {
         : "StoryAdDesignReview",
       {
         ...media,
-        type: this.props.ad.media_type,
+        type:
+          this.props.ad.media_type || this.props.selectedCampaign.media_type,
         call_to_action: this.props.ad.call_to_action
           ? this.props.ad.call_to_action
           : this.props.selectedCampaign.call_to_action,
