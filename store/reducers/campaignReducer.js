@@ -440,10 +440,16 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
+      let storyPro = state.storyAdsArray;
+      storyPro[action.payload.index] = {
+        ...storyPro[action.payload.index],
+        progress: action.payload.progress
+      };
       ar[action.payload.index] = action.payload.uploading;
       return {
         ...state,
-        loadingStoryAdsArray: [...ar]
+        loadingStoryAdsArray: [...ar],
+        storyAdsArray: [...storyPro]
       };
     case actionTypes.SET_DELETE_CARD_LOADING:
       let deleteLoadAr = state.loadingStoryAdsArray;
