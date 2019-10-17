@@ -448,7 +448,7 @@ export const uploadStoryAdCard = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
-      payload: { uploading: true, index: card.index, progress: 0 }
+      payload: { uploading: true, index: card.index, progress: 0.0 }
     });
     dispatch({
       type: actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED,
