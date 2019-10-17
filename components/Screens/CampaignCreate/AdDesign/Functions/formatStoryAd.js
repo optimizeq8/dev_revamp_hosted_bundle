@@ -18,7 +18,7 @@ export const formatStoryAd = async (
   var storyBody = new FormData();
   let card = storyAdsArray[ad.index];
 
-  if (!storyAdCards.selectedStoryAd.iosVideoUploaded && card.rejectionUpload) {
+  if (!card.iosVideoUploaded && card.rejectionUpload) {
     let res = card.media.split("/");
     res = res[res.length - 1];
 

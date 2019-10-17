@@ -33,7 +33,6 @@ export const pick = async (mediaTypes, screenProps) => {
 
 export const _pickImage = async (
   mediaTypes = "All",
-  aaaa,
   setMediaModalVisible,
   storyAdCards,
   storyAdsArray,
@@ -316,7 +315,9 @@ export const _pickImage = async (
               uploaded: false,
               index: storyAdCards.selectedStoryAd.index,
               media: result.uri,
-              media_type: result.type.toUpperCase()
+              media_type: result.type.toUpperCase(),
+              iosVideoUploaded: false,
+              rejectionUpload: true
             };
 
             cards[storyAdCards.selectedStoryAd.index] = card;

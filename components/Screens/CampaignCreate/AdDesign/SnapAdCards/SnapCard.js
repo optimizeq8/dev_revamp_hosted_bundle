@@ -9,12 +9,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
-import { Image } from "react-native-expo-image-cache";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
-const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-};
 class SnapCard extends Component {
   state = { uploading: false };
   render() {
@@ -25,6 +20,25 @@ class SnapCard extends Component {
       rejected
     } = this.props;
     const { translate } = this.props.screenProps;
+    let videoPlayer = this.props.loadingStoryAdsArray[
+      snapCardInfo.index
+    ] ? null : (
+      <Video
+        source={{
+          uri:
+            rejected ||
+            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+              snapCardInfo.item.uploaded)
+              ? snapCardInfo.item["media"]
+              : "//"
+        }}
+        shouldPlay={false}
+        isMuted
+        resizeMode={"stretch"}
+        style={styles.rejected}
+      />
+    );
+
     return (
       <View style={styles.SnapAdCard}>
         <View
@@ -38,21 +52,7 @@ class SnapCard extends Component {
           }}
         >
           {snapCardInfo.item.media_type === "VIDEO" ? (
-            <Video
-              source={{
-                uri:
-                  rejected ||
-                  (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                    snapCardInfo.item.uploaded)
-                    ? snapCardInfo.item["media"]
-                    : "snapCardInfo.item"
-              }}
-              shouldPlay
-              isLooping
-              isMuted
-              resizeMode={"stretch"}
-              style={styles.rejected}
-            />
+            videoPlayer
           ) : (
             <RNImageOrCacheImage
               media={
@@ -122,7 +122,12 @@ class SnapCard extends Component {
             </TouchableOpacity>
           )
         ) : (
-          <ActivityIndicator color={globalColors.orange} />
+          <>
+            <ActivityIndicator color={globalColors.orange} />
+            <Text style={{ color: "#fff" }}>
+              {Math.round(snapCardInfo.item.progress, 2)}%
+            </Text>
+          </>
         )}
         {snapCardInfo.index > 2 && (
           <Icon

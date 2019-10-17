@@ -352,7 +352,6 @@ class AdDesign extends Component {
   adDesignPickImage = mediaTypes =>
     _pickImage(
       mediaTypes,
-      this.pick,
       this.setMediaModalVisible,
       this.state.storyAdCards,
       this.props.storyAdsArray,

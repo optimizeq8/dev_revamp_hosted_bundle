@@ -448,7 +448,7 @@ export const uploadStoryAdCard = (
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
-      payload: { uploading: true, index: card.index }
+      payload: { uploading: true, index: card.index, progress: 0 }
     });
     dispatch({
       type: actionTypes.SET_STORYADMEDIA_DESIGN_UPLOADED,
@@ -460,21 +460,30 @@ export const uploadStoryAdCard = (
     };
     createBaseUrl()
       .post(`savestorymedia`, info, {
-        // onUploadProgress: ProgressEvent =>
-        // loading((ProgressEvent.loaded / ProgressEvent.total) * 100),
+        onUploadProgress: ProgressEvent => {
+          dispatch({
+            type: actionTypes.SET_STORYADCARD_LOADING_DESIGN,
+            payload: {
+              uploading: true,
+              index: card.index,
+              progress: (ProgressEvent.loaded / ProgressEvent.total) * 100
+            }
+          });
+        }
+
         // cancelToken: cancelUpload.token
       })
       .then(res => {
         return res.data;
       })
       .then(data => {
-        // console.log(data);
         rejected &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
             position: "top"
           });
+        //This is to call the final upload process once all cards are done uploading
         if (
           getState().campaignC.loadingStoryAdsArray.length > 1 &&
           getState().campaignC.loadingStoryAdsArray.reduce(
