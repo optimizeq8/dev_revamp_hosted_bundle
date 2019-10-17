@@ -57,6 +57,7 @@ class Deep_Link extends Component {
   componentDidMount() {
     if (
       (this.props.data &&
+        this.props.adType !== "StoryAd" &&
         this.props.data.hasOwnProperty("attachment") &&
         this.props.data.destination === "DEEP_LINK") ||
       this.props.data.destination === "COLLECTION"
@@ -65,7 +66,8 @@ class Deep_Link extends Component {
         attachment: {
           ...this.state.attachment,
           ...this.props.data.attachment
-        }
+        },
+        callaction: this.props.data.call_to_action
       });
     } else if (this.props.storyAdAttachment.destination === "DEEP_LINK") {
       this.setState({
@@ -78,6 +80,11 @@ class Deep_Link extends Component {
     }
   }
 
+  handleCallaction = callaction => {
+    this.setState({
+      callaction
+    });
+  };
   renderNextStep = (nameError, callActionError, attachment, callaction) => {
     if (!nameError && !callActionError) {
       this.setState({
@@ -147,6 +154,7 @@ class Deep_Link extends Component {
                     </View>
                   </View>
                   <AppChoice
+                    handleCallaction={this.handleCallaction}
                     navigation={this.props.navigation}
                     renderNextStep={this.renderNextStep}
                     listNum={3}
