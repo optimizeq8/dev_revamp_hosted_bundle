@@ -220,6 +220,10 @@ class AppChoice extends Component {
         },
         () => {
           this.closeCallToActionModal();
+          this.props.handleCallaction({
+            label: value[0].label,
+            value: value[0].value
+          });
         }
       );
     }

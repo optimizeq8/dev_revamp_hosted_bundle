@@ -48,8 +48,10 @@ class App_Install extends Component {
   componentDidMount() {
     if (
       this.props.data &&
-      (this.props.data.hasOwnProperty("attachment") &&
-        this.props.data.objective === "APP_INSTALL")
+      this.props.adType !== "StoryAd" &&
+      ((this.props.data.hasOwnProperty("attachment") &&
+        this.props.data.objective === "APP_INSTALLS") ||
+        this.props.data.destination === "APP_INSTALL")
     ) {
       this.setState({
         attachment: {
@@ -89,6 +91,11 @@ class App_Install extends Component {
     this.setState({ firstStepDone: false });
   };
 
+  handleCallaction = callaction => {
+    this.setState({
+      callaction
+    });
+  };
   _handleSubmission = () => {
     const appError = validateWrapper(
       "mandatory",
@@ -111,6 +118,8 @@ class App_Install extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
+    console.log(this.state.attachment);
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -132,6 +141,7 @@ class App_Install extends Component {
               </Text>
             </View>
             <AppChoice
+              handleCallaction={this.handleCallaction}
               listNum={1}
               renderNextStep={this.renderNextStep}
               navigation={this.props.navigation}
@@ -149,6 +159,7 @@ class App_Install extends Component {
 const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
+  adType: state.campaignC.adType,
   storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
