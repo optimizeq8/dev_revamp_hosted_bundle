@@ -18,6 +18,7 @@ import list from "../../../Data/callactions.data";
 
 //redux
 import { connect } from "react-redux";
+import * as actionsCreators from "../../../../store/actions";
 
 class Deep_Link extends Component {
   static navigationOptions = {
@@ -85,13 +86,22 @@ class Deep_Link extends Component {
       callaction
     });
   };
-  renderNextStep = (nameError, callActionError, attachment, callaction) => {
+  selectApp = (
+    nameError,
+    callActionError,
+    attachment,
+    callaction,
+    appChoice = null,
+    iosApp_name,
+    androidApp_name
+  ) => {
     if (!nameError && !callActionError) {
       this.setState({
         attachment,
         callaction,
         firstStepDone: true
       });
+      this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
   };
 
@@ -156,7 +166,7 @@ class Deep_Link extends Component {
                   <AppChoice
                     handleCallaction={this.handleCallaction}
                     navigation={this.props.navigation}
-                    renderNextStep={this.renderNextStep}
+                    selectApp={this.selectApp}
                     listNum={3}
                     swipeUpDestination={this.props.swipeUpDestination}
                     deep_link_uri={this.state.attachment.deep_link_uri}
@@ -182,7 +192,9 @@ const mapStateToProps = state => ({
   storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

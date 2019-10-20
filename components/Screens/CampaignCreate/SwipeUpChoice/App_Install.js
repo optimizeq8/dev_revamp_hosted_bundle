@@ -18,6 +18,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import * as actionsCreators from "../../../../store/actions";
 
 class App_Install extends Component {
   static navigationOptions = {
@@ -49,8 +50,9 @@ class App_Install extends Component {
     if (
       this.props.data &&
       this.props.adType !== "StoryAd" &&
-      ((this.props.data.hasOwnProperty("attachment") &&
-        this.props.data.objective === "APP_INSTALLS") ||
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.attachment !== "BLANK" &&
+      (this.props.data.objective === "APP_INSTALLS" ||
         this.props.data.destination === "APP_INSTALL")
     ) {
       this.setState({
@@ -71,12 +73,14 @@ class App_Install extends Component {
     }
   }
 
-  renderNextStep = (
+  selectApp = (
     nameError,
     callActionError,
     attachment,
     callaction,
-    appChoice
+    appChoice,
+    iosApp_name,
+    androidApp_name
   ) => {
     if (!nameError && !callActionError) {
       this.setState({
@@ -84,11 +88,8 @@ class App_Install extends Component {
         callaction,
         appChoice
       });
+      this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
-  };
-
-  renderPreviousStep = () => {
-    this.setState({ firstStepDone: false });
   };
 
   handleCallaction = callaction => {
@@ -118,7 +119,6 @@ class App_Install extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    console.log(this.state.attachment);
 
     return (
       <SafeAreaView
@@ -143,7 +143,7 @@ class App_Install extends Component {
             <AppChoice
               handleCallaction={this.handleCallaction}
               listNum={1}
-              renderNextStep={this.renderNextStep}
+              selectApp={this.selectApp}
               navigation={this.props.navigation}
               deepLink={false}
               _handleSubmission={this._handleSubmission}
@@ -163,7 +163,9 @@ const mapStateToProps = state => ({
   storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps

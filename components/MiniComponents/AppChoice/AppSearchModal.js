@@ -40,16 +40,16 @@ export default class AppSearchModal extends Component {
         }
       }
     });
-    let appIdorName = this.props.appValue.includes(".");
+    let appIdorName = this.props.mainState.appValue.includes(".");
     instance
       .get(
         `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.appValue
+          this.props.mainState.appValue
         }${appIdorName ? "/metadata.json" : "&num=20"}`
         // `/applications/com.espn.score_center/metadata.json`
       )
       .then(res => {
-        // console.log(res);
+        console.log(res);
         return !appIdorName ? res.data.content : [res.data.content];
       })
       .then(data =>
@@ -91,7 +91,7 @@ export default class AppSearchModal extends Component {
     instance
       .get(
         `/${appIdorName ? "applications/" : "searches.json?term="}${
-          this.props.appValue
+          this.props.mainState.appValue
         }${appIdorName ? "/metadata.json" : "&num=20"}`
       )
       .then(res => {
@@ -122,26 +122,30 @@ export default class AppSearchModal extends Component {
   };
   render() {
     let {
-      isVisible,
-      setModalVisible,
-      appSelection,
-      appValue,
+      mainState,
       setTheState,
-
-      showList,
-      loading,
-      data,
-      androidData,
-      attachment,
       _getIosAppIds,
       _getAndroidAppIds,
-      AppError,
       handleAppError,
-      nameError,
-      callActionError,
-      callAction,
-      renderNextStep
+      selectApp,
+      setModalVisible
     } = this.props;
+    let {
+      isVisible,
+      appSelection,
+      appValue,
+      showList,
+      loading,
+      nameError,
+      attachment,
+      AppError,
+      callactionError,
+      data,
+      androidData,
+      iosApp_name,
+      androidApp_name,
+      callaction
+    } = mainState;
     const { translate } = this.props.screenProps;
     return (
       <Modal style={{ margin: 0 }} isVisible={isVisible}>
@@ -282,6 +286,8 @@ export default class AppSearchModal extends Component {
                           showConfirmBtn={this.showConfirmBtn}
                           attachment={attachment}
                           appChoice={appSelection}
+                          iosApp_name={iosApp_name}
+                          androidApp_name={androidApp_name}
                           _getIosAppIds={_getIosAppIds}
                           _getAndroidAppIds={_getAndroidAppIds}
                           AppError={AppError}
@@ -305,12 +311,14 @@ export default class AppSearchModal extends Component {
                   // function={() => navigation.push("AdDesign")}
                   function={() => {
                     !nameError && setModalVisible(false);
-                    renderNextStep(
+                    selectApp(
                       nameError,
-                      callActionError,
+                      callactionError,
                       attachment,
-                      callAction,
-                      appSelection
+                      callaction,
+                      appSelection,
+                      iosApp_name,
+                      androidApp_name
                     );
                   }}
                 />

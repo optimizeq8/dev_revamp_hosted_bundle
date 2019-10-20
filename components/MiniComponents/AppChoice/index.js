@@ -36,13 +36,14 @@ class AppChoice extends Component {
     super(props);
     this.state = {
       attachment: {
-        iosApp_name: "",
-        androidApp_name: "",
+        app_name: "",
         ios_app_id: "",
         android_app_url: "",
         icon_media_id: "",
         icon_media_url: ""
       },
+      iosApp_name: "",
+      androidApp_name: "",
       deep_link_uri: "",
       deep_link_uriError: "",
       appValue: "",
@@ -91,6 +92,8 @@ class AppChoice extends Component {
           ...this.state.attachment,
           ...this.props.data.attachment
         },
+        iosApp_name: this.props.data.iosApp_name,
+        androidApp_name: this.props.data.androidApp_name,
         deep_link_uri: this.props.data.attachment.deep_link_uri,
         callaction: this.props.data.call_to_action
       });
@@ -119,10 +122,11 @@ class AppChoice extends Component {
       ...this.state,
       attachment: {
         ...this.state.attachment,
-        iosApp_name: app.title,
+        app_name: app.title,
         ios_app_id: app.id,
         icon_media_url: app.icon
-      }
+      },
+      iosApp_name: app.title
     });
   };
 
@@ -131,10 +135,11 @@ class AppChoice extends Component {
       ...this.state,
       attachment: {
         ...this.state.attachment,
-        androidApp_name: app.title,
+        app_name: app.title,
         icon_media_url: app.icon,
         android_app_url: app.id ? app.id : app.application_id
-      }
+      },
+      androidApp_name: app.title
     });
   };
 
@@ -155,7 +160,7 @@ class AppChoice extends Component {
     );
     const nameError = validateWrapper(
       "mandatory",
-      this.state.attachment.iosApp_name || this.state.attachment.androidApp_name
+      this.state.iosApp_name || this.state.androidApp_name
     );
     const callActionError = validateWrapper(
       "mandatory",
@@ -281,14 +286,8 @@ class AppChoice extends Component {
                   ]}
                 >
                   <Text style={styles.pickerText}>
-                    {this.state.callactions.find(
-                      c => this.state.callaction.value === c.value
-                    )
-                      ? translate(
-                          this.state.callactions.find(
-                            c => this.state.callaction.value === c.value
-                          ).label
-                        )
+                    {this.state.callaction.label
+                      ? this.state.callaction.label
                       : translate("call to action")}
                   </Text>
                   <Icon type="AntDesign" name="down" style={styles.iconDown} />
@@ -298,6 +297,8 @@ class AppChoice extends Component {
               <AppBox
                 setModalVisible={this.setModalVisible}
                 attachment={this.state.attachment}
+                iosApp_name={this.state.iosApp_name}
+                androidApp_name={this.state.androidApp_name}
                 screenProps={this.props.screenProps}
               />
               {this.props.deepLink && (
@@ -339,25 +340,13 @@ class AppChoice extends Component {
           </KeyboardAvoidingView>
         </ScrollView>
         <AppSearchModal
-          AppError={this.state.AppError}
-          renderNextStep={this.props.renderNextStep}
-          loading={this.state.loading}
+          mainState={this.state}
+          selectApp={this.props.selectApp}
           setModalVisible={this.setModalVisible}
-          isVisible={this.state.isVisible}
-          appSelection={this.state.appSelection}
           setTheState={this.setTheState}
-          appValue={this.state.appValue}
-          showList={this.state.showList}
-          data={this.state.data}
-          androidData={this.state.androidData}
-          attachment={this.state.attachment}
           _getIosAppIds={this._getIosAppIds}
           _getAndroidAppIds={this._getAndroidAppIds}
-          AppError={this.state.AppError}
           handleAppError={this.handleAppError}
-          nameError={this.state.nameError}
-          callActionError={this.state.callActionError}
-          callAction={this.state.callaction}
           validateApp={() => this.validate()}
           screenProps={this.props.screenProps}
         />

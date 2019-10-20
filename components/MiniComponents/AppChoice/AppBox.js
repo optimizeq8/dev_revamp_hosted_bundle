@@ -12,7 +12,12 @@ import { Text } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
   render() {
-    let { setModalVisible, attachment } = this.props;
+    let {
+      setModalVisible,
+      attachment,
+      iosApp_name,
+      androidApp_name
+    } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View>
@@ -31,7 +36,7 @@ export default class AppBox extends Component {
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
                 {translate(`apple\napp store`)}
               </Text>
-              <Text style={styles.appStyle}>{attachment.iosApp_name}</Text>
+              <Text style={styles.appStyle}>{iosApp_name}</Text>
               <Toggle
                 switchOn={attachment.ios_app_id !== ""}
                 backgroundColorOff="rgba(255,255,255,0.1)"
@@ -52,7 +57,7 @@ export default class AppBox extends Component {
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
                 {translate(`google\nplay store`)}
               </Text>
-              <Text style={styles.appStyle}>{attachment.androidApp_name}</Text>
+              <Text style={styles.appStyle}>{androidApp_name}</Text>
 
               <Toggle
                 switchOn={attachment.android_app_url !== ""}
