@@ -148,21 +148,13 @@ export const formatMedia = (
     body.append("longformvideo_media", video);
     body.append("longformvideo_media_type", longformvideo_media_type);
   }
-  if (campaignInfo.whatsappnumber) {
+  if (campaignInfo.source) {
     body.append("insta_handle", campaignInfo.insta_handle);
     body.append("weburl", campaignInfo.weburl);
     body.append("whatsappnumber", campaignInfo.whatsappnumber);
     body.append("callnumber", campaignInfo.callnumber);
     body.append("source", campaignInfo.source);
     body.append("googlemaplink", campaignInfo.googlemaplink);
-  }
-  if (campaignInfo.googlemaplink) {
-    body.append("insta_handle", campaignInfo.insta_handle);
-    body.append("weburl", campaignInfo.weburl);
-    body.append("googlemaplink", campaignInfo.googlemaplink);
-    body.append("callnumber", campaignInfo.callnumber);
-    body.append("source", campaignInfo.source);
-    body.append("whatsappnumber", campaignInfo.whatsappnumber);
   }
   body.append("ad_account_id", mainBusiness.snap_ad_account_id);
   body.append("businessid", mainBusiness.businessid);
@@ -306,6 +298,8 @@ export const _changeDestination = (
           source: instagramTrafficCampaign.source
         }
       };
+      console.log("newDAta", newData);
+
       save_campaign_info({
         whatsappnumber: instagramTrafficCampaign.whatsappnumber,
         insta_handle: instagramTrafficCampaign.insta_handle,
