@@ -76,6 +76,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: "center"
   },
+  subtextReach: {
+    bottom: 5,
+    alignSelf: "center",
+    width: 300,
+    fontFamily: "montserrat-bold",
+    fontSize: 18,
+    lineHeight: 22,
+    paddingTop: 5,
+    color: "#fff",
+    paddingHorizontal: 20,
+    textAlign: "center"
+  },
   url: {
     alignSelf: "center",
     fontFamily: "montserrat-light-english",

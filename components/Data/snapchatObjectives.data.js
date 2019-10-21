@@ -86,17 +86,10 @@ export default {
       icon: ObjIcons.Group
     },
     {
-      label: "WhatsApp Leads",
+      label: "SME Growth",
       value: "WEB_CONVERSION",
       info: "Get a free website that pushes users to your business's WhatsApp",
       icon: ObjIcons.WhatsApp
-    },
-    {
-      label: "Instagram Traffic",
-      value: "WEB_CONVERSION_INSTAGRAM",
-      info:
-        "Get a free website that pushes users to your business's Instagram page",
-      icon: ObjIcons.Instagram
     }
   ]
 };

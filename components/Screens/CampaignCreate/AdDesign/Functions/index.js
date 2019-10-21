@@ -153,12 +153,16 @@ export const formatMedia = (
     body.append("weburl", campaignInfo.weburl);
     body.append("whatsappnumber", campaignInfo.whatsappnumber);
     body.append("callnumber", campaignInfo.callnumber);
+    body.append("source", campaignInfo.source);
+    body.append("googlemaplink", campaignInfo.googlemaplink);
   }
   if (campaignInfo.googlemaplink) {
     body.append("insta_handle", campaignInfo.insta_handle);
     body.append("weburl", campaignInfo.weburl);
     body.append("googlemaplink", campaignInfo.googlemaplink);
     body.append("callnumber", campaignInfo.callnumber);
+    body.append("source", campaignInfo.source);
+    body.append("whatsappnumber", campaignInfo.whatsappnumber);
   }
   body.append("ad_account_id", mainBusiness.snap_ad_account_id);
   body.append("businessid", mainBusiness.businessid);
@@ -219,7 +223,8 @@ export const _changeDestination = (
         insta_handle: whatsAppCampaign.insta_handle,
         whatsappnumber: whatsAppCampaign.whatsappnumber,
         weburl: whatsAppCampaign.weburl,
-        callnumber: whatsAppCampaign.callnumber
+        callnumber: whatsAppCampaign.callnumber,
+        source: whatsAppCampaign.source
       });
     }
     if (instagramTrafficCampaign) {
@@ -227,7 +232,8 @@ export const _changeDestination = (
         insta_handle: instagramTrafficCampaign.insta_handle,
         googlemaplink: instagramTrafficCampaign.googlemaplink,
         weburl: instagramTrafficCampaign.weburl,
-        callnumber: instagramTrafficCampaign.callnumber
+        callnumber: instagramTrafficCampaign.callnumber,
+        source: instagramTrafficCampaign.source
       });
     }
     setStoryAdAttachment({
@@ -273,14 +279,18 @@ export const _changeDestination = (
           insta_handle: whatsAppCampaign.insta_handle,
           whatsappnumber: whatsAppCampaign.whatsappnumber,
           weburl: whatsAppCampaign.weburl,
-          callnumber: whatsAppCampaign.callnumber
+          callnumber: whatsAppCampaign.callnumber,
+          source: whatsAppCampaign.source,
+          googlemaplink: whatsAppCampaign.googlemaplink
         }
       };
       save_campaign_info({
         insta_handle: whatsAppCampaign.insta_handle,
         whatsappnumber: whatsAppCampaign.whatsappnumber,
         weburl: whatsAppCampaign.weburl,
-        callnumber: whatsAppCampaign.callnumber
+        callnumber: whatsAppCampaign.callnumber,
+        source: whatsAppCampaign.source,
+        googlemaplink: whatsAppCampaign.googlemaplink
       });
     }
     if (instagramTrafficCampaign) {
@@ -288,17 +298,21 @@ export const _changeDestination = (
         ...newData,
         campaignInfo: {
           ...newData.campaignInfo,
+          whatsappnumber: instagramTrafficCampaign.whatsappnumber,
           insta_handle: instagramTrafficCampaign.insta_handle,
           googlemaplink: instagramTrafficCampaign.googlemaplink,
           weburl: instagramTrafficCampaign.weburl,
-          callnumber: instagramTrafficCampaign.callnumber
+          callnumber: instagramTrafficCampaign.callnumber,
+          source: instagramTrafficCampaign.source
         }
       };
       save_campaign_info({
+        whatsappnumber: instagramTrafficCampaign.whatsappnumber,
         insta_handle: instagramTrafficCampaign.insta_handle,
         googlemaplink: instagramTrafficCampaign.googlemaplink,
         weburl: instagramTrafficCampaign.weburl,
-        callnumber: instagramTrafficCampaign.callnumber
+        callnumber: instagramTrafficCampaign.callnumber,
+        source: instagramTrafficCampaign.source
       });
     }
     setTheState(newData);

@@ -110,13 +110,19 @@ export default class PhoneNoField extends Component {
               this.phone = ref;
             }}
             onChangePhoneNumber={number =>
-              this.phone.isValidNumber() &&
-              this.props.changeNo(
-                number,
-                this.phone.getCountryCode(),
-                this.phone.getNumberType(),
-                this.phone.isValidNumber()
-              )
+              this.phone.isValidNumber()
+                ? this.props.changeNo(
+                    number,
+                    this.phone.getCountryCode(),
+                    this.phone.getNumberType(),
+                    this.phone.isValidNumber()
+                  )
+                : this.props.changeNo(
+                    number,
+                    null,
+                    null,
+                    this.phone.isValidNumber()
+                  )
             }
             onPressFlag={this.props.onPressFlag}
             initialCountry="kw"
