@@ -106,6 +106,12 @@ class AppChoice extends Component {
           ...this.state.attachment,
           ...this.props.storyAdAttachment.attachment
         },
+        iosApp_name: this.props.data.iosApp_name
+          ? this.props.data.iosApp_name
+          : "",
+        androidApp_name: this.props.data.androidApp_name
+          ? this.props.data.androidApp_name
+          : "",
         callaction: this.props.storyAdAttachment.call_to_action
       });
     }
