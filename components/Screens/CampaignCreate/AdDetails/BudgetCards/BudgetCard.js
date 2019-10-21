@@ -15,8 +15,7 @@ export default class BudgetCard extends Component {
               "$" + bud.recBudget,
               parseInt(bud.recBudget),
               false,
-              bud.id,
-              true
+              bud.id
             )
           }
           style={[

@@ -461,13 +461,14 @@ class AdDetails extends Component {
           lifetime_budget_micro: rawValue
         },
         value: value,
-        budgetOption: budgetOption
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
-        }
+        },
+        budgetOption
       });
       return true;
     } else {
@@ -487,13 +488,14 @@ class AdDetails extends Component {
           lifetime_budget_micro: rawValue
         },
         value: value,
-        budgetOption: budgetOption
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: this.state.minValueBudget
-        }
+        },
+        budgetOption
       });
 
       return false;
