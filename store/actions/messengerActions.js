@@ -118,6 +118,7 @@ export const get_conversation = user_id => {
       })
       .then(() => {
         dispatch(get_conversatusion_read_status());
+        dispatch(update_app_status_chat_notification(true));
         // if (!isNull(getState().messenger.conversation_id))
         //   dispatch(set_as_seen());
       })
@@ -214,7 +215,11 @@ export const admin_response = message => {
 export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
-      .get("https://optimizekwtestingserver.com/optimize/public/chatLink")
+      .get(
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
+          : "https://www.optimizeapp.com/optimize/public/chatLink"
+      )
       .then(res => {
         return res.data;
       })
@@ -243,9 +248,15 @@ export const get_conversatusion_read_status = () => {
 export const update_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
-      .post("https://optimizekwtestingserver.com/optimize/public/chatLink", {
-        intercom_chat_link: getState().messenger.messages.length
-      })
+      .post(
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/chatLink"
+          : "https://www.optimizeapp.com/optimize/public/chatLink",
+
+        {
+          intercom_chat_link: getState().messenger.messages.length
+        }
+      )
       .then(res => {
         return res.data;
       })
@@ -261,6 +272,40 @@ export const update_conversatusion_read_status = () => {
       .catch(err => {
         console.log(
           "update_conversatusion_read_status err",
+          err.message || err.response
+        );
+      });
+  };
+};
+
+export const update_app_status_chat_notification = app_state => {
+  return (dispatch, getState) => {
+    axios
+      .post(
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS"
+          : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS",
+
+        {
+          app_state: app_state,
+          userid: getState().auth.userInfo.userid
+        }
+      )
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("data", data);
+
+        return dispatch({
+          type: actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS,
+          payload: app_state
+          // getState().messenger.messages.length === data.intercom_chat_link
+        });
+      })
+      .catch(err => {
+        console.log(
+          "sendChatNotificationbySMS err",
           err.message || err.response
         );
       });
