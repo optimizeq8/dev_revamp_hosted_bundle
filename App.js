@@ -514,6 +514,7 @@ class App extends React.Component {
         "montserrat-medium-english": require("./assets/fonts/Montserrat-Medium.ttf"),
         "montserrat-bold-english": require("./assets/fonts/Montserrat-Bold.ttf"),
         "montserrat-light-english": require("./assets/fonts/Montserrat-Light.ttf"),
+        "montserrat-semibold-english": require("./assets/fonts/Montserrat-SemiBold.ttf"),
         "montserrat-regular": I18nManager.isRTL
           ? require("./assets/fonts/Arabic/Changa-Regular.ttf")
           : require("./assets/fonts/Montserrat-Regular.ttf"),

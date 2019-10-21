@@ -28,6 +28,7 @@ import WalletIcon from "../../../../assets/SVGs/Wallet";
 import CloseCircleIcon from "../../../../assets/SVGs/CloseCircle";
 import ForwardIcon from "../../../../assets/SVGs/ForwardButton";
 import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
+import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
@@ -65,10 +66,12 @@ class WhatsApp extends Component {
   }
   componentDidMount() {
     if (
-      (this.props.data &&
-        this.props.data.hasOwnProperty("attachment") &&
-        this.props.data.attachment !== "BLANK") ||
-      this.props.mainBusiness.whatsappnumber !== ""
+      this.props.data &&
+      this.props.data.hasOwnProperty("attachment")
+      // &&
+      // this.props.data.attachment !== "BLANK"
+      // ||
+      // this.props.mainBusiness.whatsappnumber !== ""
     ) {
       // console.log('capmaignDetail', this.props.data);
       // console.log('mainBusinessInstaHandle', this.props.mainBusiness);
@@ -76,26 +79,70 @@ class WhatsApp extends Component {
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          weburl: this.props.mainBusiness.weburl
-            ? this.props.mainBusiness.weburl
-            : this.props.data.weburl,
-          insta_handle: this.props.data.insta_handle
-            ? this.props.data.insta_handle
-            : this.props.mainBusiness.insta_handle
-            ? this.props.mainBusiness.insta_handle
-            : "",
-          whatsappnumber: this.props.mainBusiness.whatsappnumber
-            ? this.props.mainBusiness.whatsappnumber
-            : this.props.data.whatsappnumber,
-          callnumber: this.props.mainBusiness.callnumber
+          weburl:
+            this.props.data && this.props.data.weburl
+              ? this.props.data.weburl
+              : this.props.mainBusiness.weburl
+              ? this.props.mainBusiness.weburl
+              : "",
+          insta_handle:
+            this.props.data && this.props.data.insta_handle
+              ? this.props.data.insta_handle
+              : this.props.mainBusiness.insta_handle
+              ? this.props.mainBusiness.insta_handle
+              : "",
+          whatsappnumber:
+            this.props.data && this.props.data.whatsappnumber
+              ? this.props.data.whatsappnumber
+              : this.props.mainBusiness.whatsappnumber
+              ? this.props.mainBusiness.whatsappnumber
+              : "",
+          callnumber: this.props.data.callnumber
+            ? this.props.data.callnumber
+            : this.props.mainBusiness.callnumber
             ? this.props.mainBusiness.callnumber
-            : this.props.data.callnumber,
+            : "",
+          googlemaplink:
+            this.props.data && this.props.data.googlemaplink
+              ? this.props.data.googlemaplink
+              : this.props.mainBusiness.googlemaplink
+              ? this.props.mainBusiness.googlemaplink
+              : "",
           callaction:
             this.props.data && this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
               : list.SnapAd[4].call_to_action_list[0]
         }
       });
+
+      // this.setState({
+      //   campaignInfo: {
+      //     ...this.state.campaignInfo,
+      //     weburl: this.props.mainBusiness.weburl
+      //       ? this.props.mainBusiness.weburl
+      //       : this.props.data.weburl,
+      //     insta_handle: this.props.data.insta_handle
+      //       ? this.props.data.insta_handle
+      //       : this.props.mainBusiness.insta_handle
+      //       ? this.props.mainBusiness.insta_handle
+      //       : "",
+      //     whatsappnumber: this.props.mainBusiness.whatsappnumber
+      //       ? this.props.mainBusiness.whatsappnumber
+      //       : this.props.data.whatsappnumber,
+      //     callnumber: this.props.mainBusiness.callnumber
+      //       ? this.props.mainBusiness.callnumber
+      //       : this.props.data.callnumber,
+      //     googlemaplink: this.props.mainBusiness.googlemaplink
+      //       ? this.props.mainBusiness.googlemaplink
+      //       : this.props.data && this.props.data.googlemaplink
+      //       ? this.props.data.googlemaplink
+      //       : "",
+      //     callaction:
+      //       this.props.data && this.props.data.call_to_action.value !== "BLANK"
+      //         ? this.props.data.call_to_action
+      //         : list.SnapAd[4].call_to_action_list[0]
+      //   }
+      // });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -116,22 +163,37 @@ class WhatsApp extends Component {
       "mandatory",
       this.state.campaignInfo.weburl
     );
-    const whatsappnumberError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.whatsappnumber
-    );
+    // const whatsappnumberError = validateWrapper(
+    //   "mandatory",
+    //   this.state.campaignInfo.whatsappnumber
+    // );
+    if (this.state.campaignInfo.googlemaplink.length > 0) {
+      var googleMapLinkError = validateWrapper(
+        "googleMapLink",
+        this.state.campaignInfo.googlemaplink
+      );
+    }
+
     this.setState({
       insta_handleError,
-      weburlError
+      weburlError,
+      googleMapLinkError
     });
-    if (insta_handleError || weburlError || whatsappnumberError) {
+    if (
+      insta_handleError ||
+      weburlError ||
+      // whatsappnumberError ||
+      googleMapLinkError
+    ) {
       showMessage({
         message: insta_handleError
           ? translate("Please provide an instagram handle")
           : weburlError
           ? translate("Please provide domain name")
-          : whatsappnumberError
-          ? translate("Please provide a valid WhatsApp number")
+          : // : whatsappnumberError
+          // ? translate("Please provide a valid WhatsApp number")
+          googleMapLinkError
+          ? translate("Please provide a valid location link")
           : "",
         type: "warning",
         position: "top",
@@ -140,6 +202,18 @@ class WhatsApp extends Component {
       return false;
     } else {
       return true;
+    }
+  };
+
+  // decide if its an whatsapp or insta traffic
+
+  checkTypeOfTraffic = () => {
+    if (this.state.campaignInfo.whatsappnumber !== "") {
+      // whatsapp traffic
+      this.checkInstaAccountChange();
+    } else {
+      // instagram traffic
+      this._handleSubmissionInstaTraffic();
     }
   };
 
@@ -166,6 +240,61 @@ class WhatsApp extends Component {
       await this._handleSubmission();
     }
   };
+  // handle submission instagram traffic
+
+  _handleSubmissionInstaTraffic = async () => {
+    const { translate } = this.props.screenProps;
+    // if (!this.props.mainBusiness.weburl) {
+    await this.props.verifyInstagramHandle(
+      this.state.campaignInfo.insta_handle
+    );
+    if (!this.props.errorInstaHandle && !this.props.mainBusiness.weburl) {
+      await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
+    }
+    if (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) {
+      showMessage({
+        message: translate(
+          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+          )}`,
+          { insta_handle: this.state.campaignInfo.insta_handle }
+        ),
+        type: "danger",
+        duration: 2000
+      });
+    }
+    let weburlAvalible =
+      this.props.mainBusiness.weburl || this.props.weburlAvalible;
+
+    if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
+      let instagramTrafficCampaign = {
+        weburl: this.state.campaignInfo.weburl,
+        insta_handle: this.state.campaignInfo.insta_handle,
+        callnumber: this.state.campaignInfo.callnumber.replace("+", ""),
+        googlemaplink: this.state.campaignInfo.googlemaplink,
+        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
+        source: "INSTAGRAM TRAFFIC"
+      };
+
+      this.props._changeDestination(
+        "REMOTE_WEBPAGE",
+        this.state.campaignInfo.callaction,
+        {
+          url: `https://${this.state.campaignInfo.weburl.replace(
+            /[^0-9a-z]/gi,
+            ""
+          )}.optimizeapp.com`
+        },
+        null,
+        null,
+        instagramTrafficCampaign
+      );
+
+      this.props.navigation.navigate("AdDesign");
+    }
+  };
+
+  // handle submission whatsapp lead
   _handleSubmission = async () => {
     const { translate } = this.props.screenProps;
     // if (!this.props.mainBusiness.weburl) {
@@ -195,11 +324,14 @@ class WhatsApp extends Component {
         weburl: this.state.campaignInfo.weburl,
         whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
         insta_handle: this.state.campaignInfo.insta_handle,
+        googlemaplink: this.state.campaignInfo.googlemaplink,
         callnumber:
           this.state.campaignInfo.callnumber ||
           this.state.campaignInfo.callnumber !== ""
             ? this.state.campaignInfo.callnumber.replace("+", "")
-            : this.state.campaignInfo.whatsappnumber.replace("+", "")
+            : this.state.campaignInfo.whatsappnumber.replace("+", ""),
+
+        source: "WHATSAPP LEADS"
       };
       // check here for insta handle change then update the selectedItemList to []
       // if (this.props.data.insta_handle !== this.state.campaignInfo.insta_handle && this.props.productInfoId) {
@@ -262,7 +394,7 @@ class WhatsApp extends Component {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
-  changeWhatsAppPhoneNo = (value, validNumber) => {
+  changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -271,7 +403,7 @@ class WhatsApp extends Component {
       }
     });
   };
-  changeCallNumberPhoneNo = (value, validNumber) => {
+  changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -296,6 +428,49 @@ class WhatsApp extends Component {
       }
     });
   };
+  changeGoogleMapLocation = value => {
+    // truncate before https: everything
+    if (value.includes("https:")) {
+      const link = value.substring(value.indexOf("https:") + 1);
+      // console.log("link", "h" + link);
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          googlemaplink: value === "" ? "" : "h" + link
+        }
+      });
+    } else {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          googlemaplink: value
+        }
+      });
+    }
+  };
+
+  validateUrl = () => {
+    const { translate } = this.props.screenProps;
+
+    const googleMapLinkError = validateWrapper(
+      "googleMapLink",
+      this.state.campaignInfo.googlemaplink
+    );
+    this.setState({
+      googleMapLinkError
+    });
+    if (googleMapLinkError) {
+      showMessage({
+        message: translate("Please provide a valid location link"),
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
   setModalInstagramChangedVisible = value => {
     this.setState({
       showChangeInstaHandle: value
@@ -319,8 +494,8 @@ class WhatsApp extends Component {
                 style={[styles.icon]}
               />
               <View style={[styles.textcontainer]}>
-                <Text style={styles.titletext}>
-                  {translate("WhatsApp Leads")}
+                <Text uppercase style={styles.titletext}>
+                  {translate("SME Growth")}
                 </Text>
                 <Text style={styles.subtext}>
                   {translate(
@@ -340,7 +515,7 @@ class WhatsApp extends Component {
                       </Text>
                       <View style={[styles.callToActionLabelView]}>
                         <Text uppercase style={[styles.inputLabel]}>
-                          {translate("domain")}
+                          {translate("domain")}*
                         </Text>
                       </View>
                       <Item
@@ -399,7 +574,7 @@ class WhatsApp extends Component {
                     />
                     <View style={[styles.callToActionLabelView]}>
                       <Text uppercase style={[styles.inputLabel]}>
-                        {translate("call to action")}
+                        {translate("call to action")}*
                       </Text>
                     </View>
                     <Item
@@ -422,63 +597,15 @@ class WhatsApp extends Component {
 
                   <View style={styles.marginVertical}>
                     {/* <Text style={[styles.subTitle]}>WhatsApp number</Text> */}
-                    <Text
-                      style={[
-                        styles.subtext,
-                        { fontFamily: "montserrat-regular" }
-                      ]}
-                    >
-                      {translate(
-                        "Customers would be able to call And text this number"
-                      )}
+                    <Text style={[styles.subtextReach]} uppercase>
+                      {translate("Where would you like people to reach you?")}
                     </Text>
                   </View>
-                  <View style={styles.marginVertical}>
-                    <View style={[styles.callToActionLabelView]}>
-                      <Text
-                        uppercase
-                        style={[
-                          styles.inputLabel,
-                          {
-                            fontFamily: "montserrat-bold-english",
-                            marginTop: 0
-                          }
-                        ]}
-                      >
-                        {translate("whatsApp")}
-                      </Text>
-                    </View>
-                    <PhoneNoField
-                      valid={this.state.validWhatsAppNumber}
-                      screenProps={this.props.screenProps}
-                      whatsApp
-                      phoneNum={this.state.campaignInfo.whatsappnumber}
-                      changeNo={this.changeWhatsAppPhoneNo}
-                      invite={true}
-                    />
-                  </View>
-                  <View style={styles.marginVertical}>
-                    <View style={[styles.callToActionLabelView]}>
-                      <Text uppercase style={[styles.inputLabel]}>
-                        {translate("mobile")}
-                      </Text>
-                    </View>
-                    {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
-                    <PhoneNoField
-                      valid={this.state.validCallNumber}
-                      screenProps={this.props.screenProps}
-                      whatsApp
-                      phoneNum={this.state.campaignInfo.callnumber}
-                      changeNo={this.changeCallNumberPhoneNo}
-                      invite={true}
-                    />
-                  </View>
-
                   <View style={styles.marginVertical}>
                     {/* <Text style={[styles.subTitle]}>Instagram handle</Text> */}
                     <View style={[styles.callToActionLabelView]}>
                       <Text uppercase style={[styles.inputLabel]}>
-                        {translate("instagram")}
+                        {translate("instagram")}*
                       </Text>
                     </View>
                     <Item
@@ -550,12 +677,101 @@ class WhatsApp extends Component {
                         )}
                     </Text>
                   </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text
+                        uppercase
+                        style={[
+                          styles.inputLabel,
+                          {
+                            fontFamily: "montserrat-bold-english",
+                            marginTop: 0
+                          }
+                        ]}
+                      >
+                        {translate("whatsApp")}
+                      </Text>
+                    </View>
+                    <PhoneNoField
+                      valid={this.state.validWhatsAppNumber}
+                      screenProps={this.props.screenProps}
+                      whatsApp
+                      phoneNum={this.state.campaignInfo.whatsappnumber}
+                      changeNo={this.changeWhatsAppPhoneNo}
+                      invite={true}
+                    />
+                  </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("mobile")}
+                      </Text>
+                    </View>
+                    {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
+                    <PhoneNoField
+                      valid={this.state.validCallNumber}
+                      screenProps={this.props.screenProps}
+                      whatsApp
+                      phoneNum={this.state.campaignInfo.callnumber}
+                      changeNo={this.changeCallNumberPhoneNo}
+                      invite={true}
+                    />
+                  </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("LOCATION URL")}
+                      </Text>
+                    </View>
+                    <Item
+                      rounded
+                      style={[
+                        styles.input,
+                        {
+                          paddingHorizontal: 0
+                          // width: "75%"
+                        }
+                        //   this.state.insta_handleError
+                        //     ? GlobalStyles.redBorderColor
+                        //     : GlobalStyles.transparentBorderColor
+                      ]}
+                    >
+                      <LocationIcon
+                        // width={50}
+                        // height={50}
+                        style={{ marginLeft: 12 }}
+                        stroke={"#FFF"}
+                      />
+                      <Input
+                        style={styles.inputtext}
+                        placeholder={translate("Add Location URL")}
+                        placeholderTextColor="#fff"
+                        value={this.state.campaignInfo.googlemaplink}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={value =>
+                          this.changeGoogleMapLocation(value)
+                        }
+                        onBlur={() => {
+                          this.validateUrl();
+                        }}
+                        // onBlur={() => {
+                        //   this.validate();
+                        //   // if (!this.props.errorInstaHandle) {
+                        //   this.props.verifyInstagramHandle(
+                        //     this.state.campaignInfo.insta_handle
+                        //   );
+                        //   // }
+                        // }}
+                      />
+                    </Item>
+                  </View>
                 </View>
                 <View style={styles.bottonViewWebsite}>
                   <LowerButton
                     checkmark={true}
                     bottom={-5}
-                    function={this.checkInstaAccountChange}
+                    function={this.checkTypeOfTraffic}
                   />
                 </View>
               </ScrollView>

@@ -49,8 +49,7 @@ class SwipeCompCondition extends Component {
       />
     ) : (
       this.props.adType === "StoryAd" &&
-      (this.props.objective === "WEB_CONVERSION" ||
-        this.props.objective === "WEB_CONVERSION_INSTAGRAM") &&
+      this.props.objective === "WEB_CONVERSION" &&
       !this.props.storyAdCards.storyAdSelected && (
         <SwipeUpComponent
           screenProps={this.props.screenProps}

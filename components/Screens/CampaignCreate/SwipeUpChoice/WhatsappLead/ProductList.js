@@ -138,17 +138,20 @@ class ProductList extends React.Component {
                 // console.log('itemFound', itemFound);
 
                 return (
-                  <TouchableOpacity
+                  <View
                     key={item.imageId}
                     style={{
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
-                      paddingVertical: 12,
-                      width: "50%"
+                      // paddingVertical: 12,
+                      marginVertical: 5,
+                      width: "43%",
+                      borderRadius: 20,
+                      marginHorizontal: 10,
+                      backgroundColor: "rgba(0,0,0,0.3)"
                     }}
-                    onPress={() => this.editItem(item)}
                   >
                     <View
                       style={{
@@ -161,60 +164,36 @@ class ProductList extends React.Component {
                         source={{
                           uri: item.imageUrl
                         }}
-                        width={95}
-                        height={95}
+                        width={"100%"}
+                        height={"100%"}
                         style={[
                           {
-                            width: 95,
-                            height: 95,
+                            width: 144,
+                            height: 135,
                             borderRadius: 20,
-                            backgroundColor: "rgba(0,0,0,0.2)",
+                            // backgroundColor: "rgba(0,0,0,0.2)",
                             opacity: 0.9
                           }
-                          // itemFound + 1 >= 1
-                          // 	? {
-                          // 			borderWidth: 4,
-                          // 			borderColor: '#FF9D00',
-                          // 	  }
-                          // 	: {},
                         ]}
                       />
-                      <View
-                        style={{
-                          // alignSelf: 'center',
-                          position: "absolute",
-                          top: "35%",
-                          left: "20%",
-                          transform: [
-                            {
-                              translateX: 0
-                            },
-                            {
-                              translateY: 0
-                            }
-                          ]
-                        }}
-                      >
-                        <PenIcon
-                          style={{ width: 30, height: 30 }}
-                          width={30}
-                          height={30}
-                        />
-                      </View>
                     </View>
                     <Text
+                      uppercase
                       style={{
                         fontFamily: isStringArabic(
                           item.productName
                             ? item.productName
                             : translate("Product Name")
                         )
-                          ? "montserrat-bold"
+                          ? "montserrat-semibold"
                           : "montserrat-bold-english",
                         color: "#fff",
                         fontSize: 14,
                         lineHeight: 17,
-                        paddingVertical: 5
+                        paddingTop: 15,
+                        textAlign: "left",
+                        alignSelf: "flex-start",
+                        marginLeft: 12
                       }}
                     >
                       {item.productName
@@ -225,7 +204,9 @@ class ProductList extends React.Component {
                       style={{
                         display: "flex",
                         flexDirection: "row",
-                        alignItems: "flex-end"
+                        alignItems: "flex-end",
+                        alignSelf: "flex-start",
+                        marginLeft: 12
                       }}
                     >
                       <Text
@@ -252,7 +233,26 @@ class ProductList extends React.Component {
                         {item.price ? item.price : "0"}
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: 20,
+                        height: 20,
+                        alignSelf: "flex-end",
+                        marginRight: 10,
+                        marginBottom: 10
+                      }}
+                      onPress={() => this.editItem(item)}
+                    >
+                      <PenIcon
+                        style={{
+                          width: 20,
+                          height: 20
+                        }}
+                        width={20}
+                        height={20}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 );
               })}
             </Content>

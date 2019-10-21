@@ -81,12 +81,7 @@ export default class SwipeUpComponent extends Component {
                 call_to_action_label !== "BLANK" &&
                 (destination !== "BLANK" ||
                   selectedStoryAd.destination !== "BLANK")
-              ? translate("WhatsApp Campaign")
-              : objective === "WEB_CONVERSION_INSTAGRAM" &&
-                call_to_action_label !== "BLANK" &&
-                (destination !== "BLANK" ||
-                  selectedStoryAd.destination !== "BLANK")
-              ? translate("Instagram Traffic")
+              ? translate("SME Growth")
               : translate("Swipe Up destination")}
           </Text>
           {objective !== "WEB_CONVERSION" &&
