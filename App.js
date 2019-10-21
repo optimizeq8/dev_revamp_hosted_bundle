@@ -168,12 +168,20 @@ class App extends React.Component {
       if (
         store.getState().auth.userInfo &&
         store.getState().messenger.conversation_status
-      )
+      ) {
         store.dispatch(
           actionCreators.connect_user_to_intercom(
             store.getState().auth.userInfo.userid
           )
         );
+        store.dispatch(
+          actionCreators.update_app_status_chat_notification(true)
+        );
+      }
+    } else {
+      console.log("App has come to the background!");
+
+      store.dispatch(actionCreators.update_app_status_chat_notification(false));
     }
     this.setState({ appState: nextAppState });
   };

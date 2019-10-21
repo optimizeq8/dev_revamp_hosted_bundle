@@ -12,7 +12,8 @@ const initialState = {
   subscribed: false,
   open_conversation: false,
   read: true,
-  conversation_status: true
+  conversation_status: true,
+  chat_sms_state: false
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -83,6 +84,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         conversation_status: action.payload
+      };
+    case actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS:
+      return {
+        ...state,
+        chat_sms_state: action.payload
       };
     default:
       return state;

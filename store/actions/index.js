@@ -107,7 +107,8 @@ export {
   set_as_seen,
   update_last_seen,
   subscribe,
-  update_conversatusion_read_status
+  update_conversatusion_read_status,
+  update_app_status_chat_notification
 } from "./messengerActions";
 
 export { getLanguageListPOEdit } from "./languageActions";

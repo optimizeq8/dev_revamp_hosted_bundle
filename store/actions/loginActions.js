@@ -9,6 +9,7 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
+import { update_app_status_chat_notification } from "./messengerActions";
 
 createBaseUrl = () =>
   axios.create({
@@ -246,6 +247,7 @@ export const clearPushToken = (navigation, userid) => {
         });
       })
       .then(() => {
+        dispatch(update_app_status_chat_notification(false));
         dispatch(logout(navigation));
       })
       .catch(err => {
