@@ -131,7 +131,6 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontFamily: "montserrat-light",
     fontSize: 8,
     padding: 4
   },
