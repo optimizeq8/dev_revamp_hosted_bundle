@@ -29,24 +29,16 @@ class AppUpdateChecker extends Component {
     };
   }
   async componentDidMount() {
-    // if (Constants.manifest.version === "0.1.6")
-    //   this.setState({ updateDownloaded: true });
+    this.props.checkForUpdate();
+  }
 
-    let actualVersion = await this.props.checkForUpdate();
-    if (actualVersion === Constants.manifest.version) {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.actualVersion !== this.props.actualVersion &&
+      this.props.actualVersion === Constants.manifest.version
+    ) {
+      this.setState({ updateDownloaded: true });
     }
-    this.setState({ updateDownloaded: true });
-
-    // try {
-    //   const update = await Updates.checkForUpdateAsync();
-    //   if (update.isAvailable) {
-    //     await Updates.fetchUpdateAsync();
-    //     this.setState({ updateDownloaded: true });
-    //     Updates.reloadFromCache();
-    //   }
-    // } catch (e) {
-    //   console.log("error", e);
-    // }
   }
 
   render() {

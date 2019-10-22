@@ -5,6 +5,7 @@ import * as Segment from "expo-analytics-segment";
 import { AsyncStorage } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
+import store from "../index";
 createBaseUrl = () =>
   axios.create({
     baseURL: store.getState().login.admin
@@ -48,10 +49,13 @@ export const checkForUpdate = (retries = 3) => {
   return dispatch => {
     dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: true });
     createBaseUrl()
-      .get(`checkVersion/`)
+      .get(`appVersion`)
       .then(res => res.data)
       .then(data =>
-        dispatch({ type: actionTypes.SET_ACTUAL_VERSION, payload: data })
+        dispatch({
+          type: actionTypes.SET_ACTUAL_VERSION,
+          payload: data.app_version
+        })
       )
       .catch(err => {
         if (retries > 0) {
@@ -59,7 +63,6 @@ export const checkForUpdate = (retries = 3) => {
           return;
         }
         dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: false });
-
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",
