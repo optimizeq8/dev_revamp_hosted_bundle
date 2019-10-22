@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "relative",
-    bottom: "2%",
-    alignSelf: "flex-end"
+    bottom: "2%"
   },
 
   container: {

@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -123,7 +124,8 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    textAlign: "center"
+    textAlign: "center",
+    color: globalColors.white
     // marginBottom: 130
   },
   pickerText: {

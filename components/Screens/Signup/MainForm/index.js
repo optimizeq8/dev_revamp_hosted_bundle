@@ -53,7 +53,6 @@ class MainForm extends Component {
           screenProps={this.props.screenProps}
         />
       );
-      //  <BusinessInfo navigation={this.props.navigation} />;
       title = "Business Info";
     }
 
