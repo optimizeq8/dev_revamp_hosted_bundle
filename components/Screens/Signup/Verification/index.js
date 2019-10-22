@@ -1,6 +1,6 @@
 //Components
 import React, { Component, createRef } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, I18nManager } from "react-native";
 import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
@@ -293,7 +293,14 @@ class Verification extends Component {
                       </Item>
                       <Button
                         transparent
-                        style={styles.sendButton}
+                        style={[
+                          styles.sendButton,
+                          I18nManager.isRTL
+                            ? { alignSelf: "flex-start" }
+                            : {
+                                alignSelf: "flex-end"
+                              }
+                        ]}
                         onPress={() => this._handleSubmission()}
                       >
                         <Icon
