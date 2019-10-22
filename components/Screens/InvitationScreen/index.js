@@ -98,7 +98,7 @@ export default class Invitation extends Component {
     const { translate } = this.props.screenProps;
     const interpolation = this.animation.interpolate({
       inputRange: [0, 1],
-      outputRange: [widthPercentageToDP(-75), widthPercentageToDP(75)]
+      outputRange: [widthPercentageToDP(-100), widthPercentageToDP(100)]
     });
 
     if (this.state.registeredWithInvite == null) {

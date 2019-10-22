@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   slidingContainer: {
-    width: widthPercentageToDP(300),
+    width: widthPercentageToDP(400),
     flexDirection: "row",
     flex: 1,
     alignItems: "center",
