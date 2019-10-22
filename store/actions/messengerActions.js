@@ -288,7 +288,7 @@ export const update_app_status_chat_notification = app_state => {
 
         {
           app_state: app_state,
-          userid: getState().auth.userInfo.userid
+          userid: getState().auth.userInfo && getState().auth.userInfo.userid
         }
       )
       .then(res => {
