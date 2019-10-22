@@ -14,7 +14,7 @@ import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import LowerButton from "../LowerButton";
 
 // Icons
-import FilterIcon from "../../../assets/SVGs/Filter.svg";
+import FilterIcon from "../../../assets/SVGs/Filter";
 
 // Style
 import globalStyles from "../../../GlobalStyles";

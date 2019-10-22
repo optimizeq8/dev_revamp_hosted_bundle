@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import { View, FlatList } from "react-native";
 
 import Modal from "react-native-modal";
-import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
-import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
+import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
+import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 import CustomHeader from "../Header";
 import appConfirmStyles from "../AppConfirm/styles";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
+import SearchIcon from "../../../assets/SVGs/Search";
 
 import styles from "./styles";
 import modalStyles from "./ModalStyle";
 import { SafeAreaView } from "react-navigation";
 import { BlurView } from "expo-blur";
 import LowerButton from "../LowerButton";
-import { Text, Input, Item } from "native-base";
+import { Text, Input, Item, Icon } from "native-base";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { ActivityIndicator } from "react-native-paper";
 import AppCard from "./AppCard";
@@ -60,11 +60,14 @@ export default class AppSearchModal extends Component {
         })
       )
       .catch(err => {
+        console.log(err);
+
         this.props.setTheState({ loading: false });
         this.refs.modalFlash.showMessage({
-          message: err.response.data
-            ? err.response.data.error
-            : "Something went wrong!",
+          message:
+            err.response && err.response.data
+              ? err.response.data.error
+              : "Something went wrong!",
           type: "warning",
           position: "top",
           duration: 4500,
@@ -105,17 +108,21 @@ export default class AppSearchModal extends Component {
         })
       )
       .catch(err => {
+        console.log(err);
+
         this.props.setTheState({ loading: false });
         this.refs.modalFlash.showMessage({
-          message: err.response.data
-            ? err.response.data.error
-            : "Something went wrong!",
+          message:
+            err.response && err.response.data
+              ? err.response.data.error
+              : "Something went wrong!",
           type: "warning",
           position: "top",
           duration: 4500,
-          description: err.response.data
-            ? translate("Please make sure the app id is correct")
-            : translate("Please try again later")
+          description:
+            err.response && err.response.data
+              ? translate("Please make sure the app id is correct")
+              : translate("Please try again later")
         });
         // console.log(err.response)
       });
@@ -184,7 +191,11 @@ export default class AppSearchModal extends Component {
                   </>
                 ) : (
                   <>
-                    <PlayStoreIcon width={50} height={50} />
+                    <Icon
+                      name="google-play"
+                      type="MaterialCommunityIcons"
+                      style={{ color: "#fff" }}
+                    />
                     <Text
                       uppercase
                       style={[

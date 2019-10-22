@@ -13,8 +13,8 @@ import dateFormat from "dateformat";
 import styles from "./styles";
 
 //icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import CalenderkIcon from "../../../assets/SVGs/Calender.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import CalenderkIcon from "../../../assets/SVGs/Calender";
 
 import {
   widthPercentageToDP as wp,

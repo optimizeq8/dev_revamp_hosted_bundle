@@ -15,7 +15,7 @@ import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
 
 // Icons
-import SuccessIcon from "../../../assets/SVGs/Success.svg";
+import SuccessIcon from "../../../assets/SVGs/Success";
 import {
   widthPercentageToDP,
   heightPercentageToDP

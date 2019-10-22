@@ -7,7 +7,7 @@ import styles from "./styles";
 export default class AdButtons extends Component {
   render() {
     let ad = this.props.ad;
-
+    let SnapIcon = ad.icon;
     return (
       <View
         style={{
@@ -20,7 +20,7 @@ export default class AdButtons extends Component {
             this.props.navigationHandler(ad);
           }}
         >
-          {ad.icon}
+          <SnapIcon style={{}} />
         </Button>
         <Text style={[styles.adButtonText, styles.newCampaignTitle]}>
           {this.props.translate(ad.title)}

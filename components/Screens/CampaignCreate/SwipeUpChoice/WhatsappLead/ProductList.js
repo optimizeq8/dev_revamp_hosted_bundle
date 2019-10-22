@@ -15,7 +15,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import PenIcon from "../../../../../assets/SVGs/Pen.svg";
+import PenIcon from "../../../../../assets/SVGs/Pen";
 import isStringArabic from "../../../../isStringArabic";
 
 class ProductList extends React.Component {

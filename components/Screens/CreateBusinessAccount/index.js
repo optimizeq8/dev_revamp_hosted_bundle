@@ -38,6 +38,7 @@ import BusinessIcon from "../../../assets/SVGs/Briefcase";
 import EmailIcon from "../../../assets/SVGs/EmailOutline";
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import isStringArabic from "../../isStringArabic";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
@@ -310,7 +311,8 @@ class CreateBusinessAccount extends Component {
               style={[
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activeButton
-                  : styles.button
+                  : styles.button,
+                isStringArabic(translate("Startup")) ? { width: "40%" } : {}
               ]}
               onPress={() => {
                 this._handleBusinessCategories("1");
@@ -332,7 +334,8 @@ class CreateBusinessAccount extends Component {
                 ]}
               >
                 {translate("SME")}
-                {"\n"} {translate("or") + " " + translate("Startup")}
+                {!isStringArabic(translate("Startup")) &&
+                  "\n" + translate("or") + " " + translate("Startup")}
               </Text>
             </Button>
 
@@ -854,8 +857,6 @@ class CreateBusinessAccount extends Component {
             </Text>
           )}
           <Button
-            block
-            dark
             style={[styles.bottomCard]}
             onPress={() => {
               this._handleSubmission();

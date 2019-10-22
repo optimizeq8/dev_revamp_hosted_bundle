@@ -36,9 +36,14 @@ export default class index extends Component {
             padder
           >
             <WebView
-              startInLoadingState
-              renderLoading={() => <Loading top={40} />}
-              style={{ backgroundColor: "#0000" }}
+              startInLoadingState={true}
+              renderLoading={() => (
+                <View style={{ height: "100%", backgroundColor: "#0000" }}>
+                  <Loading top={40} />
+                </View>
+              )}
+              style={{ backgroundColor: "transparent" }}
+              contentContainerStyle={{ backgroundColor: "transparent" }}
               ref={ref => (this.webview = ref)}
               source={{ uri: url }}
             />

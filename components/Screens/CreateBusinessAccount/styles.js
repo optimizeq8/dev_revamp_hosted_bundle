@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   },
   button: {
     // marginHorizontal: 30,
+    elevation: 0,
     paddingVertical: 10,
     borderRadius: 50,
     borderStartWidth: 0,
@@ -63,12 +64,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
     paddingHorizontal: 10,
-    width: "34%",
+    // width: "34%",
     borderColor: "transparent"
   },
   activeButton: {
     borderColor: "transparent",
-    width: "34%",
+    // width: "34%",
     backgroundColor: "#FF9D00",
     borderRadius: 50,
     height: 80,

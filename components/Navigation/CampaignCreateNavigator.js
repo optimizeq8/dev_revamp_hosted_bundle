@@ -1,8 +1,6 @@
 import React from "react";
 import { Platform, Animated, Easing } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
-
-import { createStackNavigator } from "react-navigation";
 import AdType from "../Screens/CampaignCreate/AdType";
 import AdObjective from "../Screens/CampaignCreate/AdObjective";
 import AdDesign from "../Screens/CampaignCreate/AdDesign";

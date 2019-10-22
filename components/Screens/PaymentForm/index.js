@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Modal } from "react-native-paper";
+import { Modal, ActivityIndicator } from "react-native-paper";
 import { Linking } from "expo";
 
 import { BlurView } from "expo-blur";
@@ -520,7 +520,21 @@ class PaymentForm extends Component {
                   this.props.loadingTrans
                 }
               >
-                <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
+                  {this.props.loadingTrans && (
+                    <ActivityIndicator
+                      color={globalColors.red}
+                      style={{ right: 10, position: "absolute" }}
+                    />
+                  )}
+                </View>
               </TouchableOpacity>
             </View>
 

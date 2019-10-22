@@ -22,7 +22,8 @@ class CampaignStats extends Component {
             top: 35,
             borderBottomWidth: 1,
             borderBottomColor: "rgba(255,255,255,0.4)",
-            alignSelf: "center"
+            alignSelf: "center",
+            zIndex: 3
           }}
         />
 

@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     // position: "absolute",
-    // backgroundColor: "red",
+    backgroundColor: "#000",
     top: 15,
     alignSelf: "center",
     width: wp("63%"),
@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
   handlerIcon: {
     ...StyleSheet.absoluteFillObject,
     left: wp("26%"),
-    top: hp("1.7%")
+    top: hp("1.7%"),
+    zIndex: 2
   },
   handlerText: {
     textAlign: "center",
@@ -321,7 +322,7 @@ const styles = StyleSheet.create({
   },
   placeHolderChart: {
     position: "absolute",
-    zIndex: 100,
+    zIndex: 10,
     width: wp(90),
     height: "100%",
     alignItems: "center",

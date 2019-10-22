@@ -25,7 +25,7 @@ class AppUpdateChecker extends Component {
     };
   }
   async componentDidMount() {
-    if (Constants.manifest.version === "0.1.60")
+    if (Constants.manifest.version === "0.1.61")
       this.setState({ updateDownloaded: true });
 
     // try {

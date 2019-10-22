@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
-import AppStoreIcon from "../../../assets/SVGs/AppleIcon.svg";
+import AppStoreIcon from "../../../assets/SVGs/AppleIcon";
 // import Toggle from "react-native-switch-toggle";
 import Toggle from "../Toggle";
 
-import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon.svg";
+import PlayStoreIcon from "../../../assets/SVGs/PlayStoreIcon";
 
 import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles from "../../../GlobalStyles";
-import { Text } from "native-base";
+import { Text, Icon } from "native-base";
 import styles from "./styles";
 export default class AppBox extends Component {
   render() {
@@ -53,7 +53,11 @@ export default class AppBox extends Component {
               onPress={() => setModalVisible(true, "ANDROID")}
               style={[globalStyles.column, appConfirmStyles.appStoreButtons]}
             >
-              <PlayStoreIcon />
+              <Icon
+                name="google-play"
+                type="MaterialCommunityIcons"
+                style={{ color: "#fff" }}
+              />
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
                 {translate(`google\nplay store`)}
               </Text>

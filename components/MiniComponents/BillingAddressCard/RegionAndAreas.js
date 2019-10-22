@@ -6,12 +6,12 @@ import LowerButton from "../LowerButton";
 
 import styles from "./styles";
 import LocationIcon from "../../../assets/SVGs/Location";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 import SectionStyle, { colors } from "./SectionStyle";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class RegionAndAreas extends Component {
   render() {

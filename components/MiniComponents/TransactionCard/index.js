@@ -7,8 +7,8 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 // icons
-import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet.svg";
-import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border.svg";
+import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
+import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border";
 import isStringArabic from "../../isStringArabic";
 class TransactionCard extends Component {
   state = {
@@ -49,13 +49,7 @@ class TransactionCard extends Component {
                 style={[styles.icon, styles.iconWallet]}
               />
             ) : (
-              <SnapGhostIcon
-                // type="MaterialCommunityIcons"
-                // name="snapchat"
-
-                width={40}
-                style={[styles.icon]}
-              />
+              <SnapGhostIcon width={40} style={[styles.icon]} />
             )}
 
             <Text style={[styles.text]}>{translate("Card Type")}</Text>

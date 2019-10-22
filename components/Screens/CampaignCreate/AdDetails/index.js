@@ -33,11 +33,11 @@ import { Image } from "react-native-expo-image-cache";
 import countries, { gender, OSType, country_regions } from "./data";
 
 //Icons
-import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
-import LocationIcon from "../../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
-import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
+import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
+import LocationIcon from "../../../../assets/SVGs/Location";
+import InterestsIcon from "../../../../assets/SVGs/Interests";
+import GenderIcon from "../../../../assets/SVGs/Gender";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
@@ -461,13 +461,14 @@ class AdDetails extends Component {
           lifetime_budget_micro: rawValue
         },
         value: value,
-        budgetOption: budgetOption
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
-        }
+        },
+        budgetOption
       });
       return true;
     } else {
@@ -487,13 +488,14 @@ class AdDetails extends Component {
           lifetime_budget_micro: rawValue
         },
         value: value,
-        budgetOption: budgetOption
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: this.state.minValueBudget
-        }
+        },
+        budgetOption
       });
 
       return false;

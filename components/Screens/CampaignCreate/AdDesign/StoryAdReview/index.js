@@ -17,8 +17,8 @@ import CustomHeader from "../../../../MiniComponents/Header";
 import { Image } from "react-native-expo-image-cache";
 
 //icons
-import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles.svg";
-import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar.svg";
+import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles";
+import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar";
 // Style
 import styles from "./styles";
 

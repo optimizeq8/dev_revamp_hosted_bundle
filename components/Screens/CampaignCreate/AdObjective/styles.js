@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     display: "flex",
     justifyContent: "space-between"
+    // zIndex: 5
   },
   backDrop: {
     position: "absolute",
@@ -30,11 +31,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: wp(100),
-    paddingTop: 10
+    paddingTop: 10,
+    zIndex: 1
   },
   phoneicon: {
-    alignSelf: "center",
-    marginTop: 20
+    alignSelf: "center"
+    // marginTop: 20
   },
   mainContent: {
     // flex: 1,

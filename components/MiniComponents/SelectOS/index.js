@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-navigation";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem";
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 export default class SelectOS extends Component {

@@ -5,8 +5,8 @@ import { BlurView } from "expo-blur";
 import { Button } from "native-base";
 
 //Icons
-import PauseIcon from "../../../assets/SVGs/Pause.svg";
-import CloseIcon from "../../../assets/SVGs/Close.svg";
+import PauseIcon from "../../../assets/SVGs/Pause";
+import CloseIcon from "../../../assets/SVGs/Close";
 
 //styles
 import styles from "./styles";

@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-navigation";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import LocationIcon from "../../../assets/SVGs/Location";
 
 class SelectRegions extends Component {

@@ -26,7 +26,7 @@ import globalStyles from "../../../GlobalStyles";
 
 //Icons
 import DownButton from "../../../assets/SVGs/DownButton";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import Address from "../../../assets/SVGs/Location";
 import { from } from "rxjs";
 

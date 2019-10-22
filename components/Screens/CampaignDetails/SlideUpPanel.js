@@ -15,7 +15,7 @@ import LineChartGraphs from "./LineChartGraphs";
 import CampaginStats from "./CampStats/CampaignStats";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import BarIcon from "../../../assets/SVGs/Bar.svg";
+import BarIcon from "../../../assets/SVGs/Bar";
 
 import { colors } from "../../GradiantColors/colors";
 
@@ -229,8 +229,10 @@ export default class SlideUpPanel extends Component {
                           onRefresh={() => this._onRefresh(selectedCampaign)}
                         />
                       }
+                      style={{ zIndex: 2 }}
                       contentContainerStyle={{
-                        paddingBottom: 130000 / (hp(100) / 3)
+                        paddingBottom: 130000 / (hp(100) / 3),
+                        zIndex: 2
                       }}
                     >
                       <LineChartGraphs

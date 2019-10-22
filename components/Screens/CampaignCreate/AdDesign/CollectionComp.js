@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Button } from "native-base";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
-import PenIcon from "../../../../assets/SVGs/Pen.svg";
-import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+import PenIcon from "../../../../assets/SVGs/Pen";
+import PlusCircle from "../../../../assets/SVGs/PlusCircle";
 
 import styles from "./styles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";

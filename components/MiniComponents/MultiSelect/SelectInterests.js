@@ -6,9 +6,9 @@ import isNull from "lodash/isNull";
 
 //Icons
 import BackButton from "../../MiniComponents/BackButton";
-import InterestsIcon from "../../../assets/SVGs/Interests.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import InterestsIcon from "../../../assets/SVGs/Interests";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 
 //Styles
 import styles from "./styles";

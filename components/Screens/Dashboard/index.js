@@ -28,9 +28,9 @@ import * as Animatable from "react-native-animatable";
 import AdButtions from "./AdButtons";
 
 //icons
-import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import IntercomIcon from "../../../assets/SVGs/IntercomIcon.svg";
-import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon.svg";
+import FilterIcon from "../../../assets/SVGs/Filter";
+import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
+import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";

@@ -10,8 +10,8 @@ import styles from "./styles";
 import rtlStyles from "./rtlStyles";
 
 // Icons
-import SearchIcon from "../../../assets/SVGs/Search.svg";
-import CloseIcon from "../../../assets/SVGs/Close.svg";
+import SearchIcon from "../../../assets/SVGs/Search";
+import CloseIcon from "../../../assets/SVGs/Close";
 import isStringArabic from "../../isStringArabic";
 
 class SearchBar extends Component {

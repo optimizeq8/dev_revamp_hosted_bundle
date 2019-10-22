@@ -34,7 +34,7 @@ import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
+import PhoneIcon from "../../../../assets/SVGs/Phone";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
 import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";
@@ -374,13 +374,12 @@ class AdObjective extends Component {
                 "Campaign"
               ]}
             />
-            <View style={styles.block1}>
-              <PhoneIcon
-                style={styles.phoneicon}
-                width={hp(5) < 30 ? 50 : 70}
-                height={hp(5) < 30 ? 50 : 70}
-              />
-            </View>
+            <PhoneIcon
+              style={styles.phoneicon}
+              width={hp(5) < 30 ? 50 : 70}
+              height={hp(5) < 30 ? 50 : 70}
+            />
+            <View style={styles.block1}></View>
             <ScrollView
               contentContainerStyle={styles.mainContent}
               scrollEnabled={true}

@@ -54,19 +54,21 @@ class BusinessList extends Component {
             businessList={true}
             height={"6%"}
           />
-          <ScrollView contentContainerStyle={styles.contentContainer}>
-            {list}
-          </ScrollView>
-          <Button
-            style={[styles.bottomCard]}
-            onPress={() =>
-              this.props.navigation.navigate("CreateBusinessAccount")
-            }
-          >
-            <Text style={styles.subtext}>
-              + {translate("Add a new Business")}{" "}
-            </Text>
-          </Button>
+          <View style={{ height: "60%" }}>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+              {list}
+            </ScrollView>
+            <Button
+              style={[styles.bottomCard]}
+              onPress={() =>
+                this.props.navigation.navigate("CreateBusinessAccount")
+              }
+            >
+              <Text style={styles.subtext}>
+                + {translate("Add a new Business")}{" "}
+              </Text>
+            </Button>
+          </View>
         </View>
       </Container>
     );

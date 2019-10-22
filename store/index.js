@@ -21,7 +21,9 @@ let blacklistTransform = createTransform((inboundState, key) => {
       "coverLoading",
       "instagramPostLoading",
       "getWebProductsLoading",
-      "webUploadLinkMediaLoading"
+      "webUploadLinkMediaLoading",
+      "collectionLoader",
+      "loadingMoreInstaPost"
     ]);
   } else {
     return inboundState;
