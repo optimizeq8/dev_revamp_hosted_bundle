@@ -30,6 +30,7 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import formatNumber from "../../formatNumber";
+import { ActivityIndicator } from "react-native-paper";
 
 class Wallet extends Component {
   static navigationOptions = {
@@ -46,7 +47,7 @@ class Wallet extends Component {
     };
   }
   componentDidMount() {
-    this.props.getWalletAmount();
+    this.props.wallet === 0 && this.props.getWalletAmount();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   componentWillUnmount() {
@@ -110,10 +111,35 @@ class Wallet extends Component {
           />
 
           <WalletIcon style={styles.walletIcon} width={85} height={85} />
-          <Text style={[globalStyles.numbers, styles.walletAmountText]}>
-            {formatNumber(this.props.wallet, true)}
-            <Text style={styles.dollar}>$</Text>
-          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Text style={[globalStyles.numbers, styles.walletAmountText]}>
+              {formatNumber(this.props.wallet, true)}
+              <Text style={styles.dollar}>$</Text>
+            </Text>
+            {this.props.loading ? (
+              <ActivityIndicator
+                color={globalColors.orange}
+                style={{ position: "absolute", right: "35%" }}
+              />
+            ) : (
+              <Icon
+                onPress={this.props.getWalletAmount}
+                style={{
+                  position: "absolute",
+                  right: "35%",
+                  color: globalColors.orange
+                }}
+                name="refresh"
+                type="MaterialCommunityIcons"
+              />
+            )}
+          </View>
           <Text style={styles.text}>{translate("Available Balance")}</Text>
           {!this.state.modalVisible && (
             <View style={[styles.mainCard]}>
@@ -247,7 +273,8 @@ class Wallet extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  wallet: state.transA.wallet
+  wallet: state.transA.wallet,
+  loading: state.transA.loading
 });
 
 const mapDispatchToProps = dispatch => ({
