@@ -17,6 +17,7 @@ import { globalColors } from "../../../GlobalStyles";
 import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
+import styles from "./styles";
 
 class AppUpdateChecker extends Component {
   static navigationOptions = {
@@ -134,28 +135,8 @@ class AppUpdateChecker extends Component {
             resizeMode="contain"
           />
 
-          <Animatable.View
-            animation={"slideInUp"}
-            style={{
-              alignSelf: "center",
-              top: "20%",
-              // backgroundColor: "#0009",
-              width: "80%",
-              height: "20%",
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 10
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "montserrat-bold",
-                color: globalColors.white,
-                textAlign: "center",
-                fontSize: 16
-              }}
-            >
+          <Animatable.View animation={"slideInUp"} style={styles.textContainer}>
+            <Text style={styles.textUpdate}>
               {this.props.loadingChecker
                 ? translate("checking for updates")
                 : this.state.statusLoading
@@ -164,12 +145,7 @@ class AppUpdateChecker extends Component {
             </Text>
 
             <Text
-              style={{
-                fontFamily: "montserrat-light",
-                color: globalColors.white,
-                textAlign: "center",
-                fontSize: 16
-              }}
+              style={[styles.textUpdate, { fontFamily: "montserrat-light" }]}
             >
               {this.props.loadingChecker
                 ? translate("Please wait while we check for updates")
@@ -182,15 +158,7 @@ class AppUpdateChecker extends Component {
 
             {this.state.statusLoading && (
               <>
-                <Text
-                  style={{
-                    fontFamily: "montserrat-bold",
-                    color: globalColors.white,
-                    textAlign: "center",
-                    fontSize: 16,
-                    top: 10
-                  }}
-                >
+                <Text style={[styles.textUpdate, { top: 10 }]}>
                   {this.state.status + "\n"}
                   {this.state.status2}
                 </Text>
@@ -202,16 +170,7 @@ class AppUpdateChecker extends Component {
               ref={animation => {
                 this.animation = animation;
               }}
-              style={{
-                zIndex: 10,
-                alignSelf: "center",
-                // position: "absolute",
-                width: widthPercentageToDP(20),
-                height: widthPercentageToDP(20),
-                top: "30%"
-                // bottom: 20
-                // position: "absolute"
-              }}
+              style={styles.loadingStyle}
               resizeMode="contain"
               source={require("../../../assets/animation/update_loader.json")}
               loop
@@ -227,24 +186,9 @@ class AppUpdateChecker extends Component {
                     : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
                 )
               }
-              style={{
-                backgroundColor: globalColors.orange,
-                width: "70%",
-                alignSelf: "center",
-                top: "40%",
-                borderRadius: 15
-              }}
+              style={styles.updateButton}
             >
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  color: globalColors.white,
-                  textAlign: "center",
-                  fontSize: 16
-                }}
-              >
-                {translate("Update Now")}
-              </Text>
+              <Text style={styles.textUpdate}>{translate("Update Now")}</Text>
             </Button>
           )}
         </View>
