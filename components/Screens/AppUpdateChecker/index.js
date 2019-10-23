@@ -1,11 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { Linking } from "expo";
+import { Linking, Updates } from "expo";
 import Constants from "expo-constants";
 import * as Animatable from "react-native-animatable";
 const imageLogo = require("../../../assets/images/logo01.png");
+import LottieView from "lottie-react-native";
 
-import { Image, View, Text, Platform } from "react-native";
+import { Image, View, Text, Platform, Alert } from "react-native";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import {
   widthPercentageToDP,
@@ -14,6 +15,10 @@ import {
 import Tutorial from "../Tutorial";
 import { globalColors } from "../../../GlobalStyles";
 import { Button } from "native-base";
+import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions";
+import styles from "./styles";
+
 class AppUpdateChecker extends Component {
   static navigationOptions = {
     header: null
@@ -21,25 +26,81 @@ class AppUpdateChecker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      updateDownloaded: false
+      updateDownloaded: false,
+      status: "",
+      status2: "",
+      statusLoading: false
     };
   }
   async componentDidMount() {
-    if (Constants.manifest.version === "0.1.61")
-      this.setState({ updateDownloaded: true });
-
-    // try {
-    //   const update = await Updates.checkForUpdateAsync();
-    //   if (update.isAvailable) {
-    //     await Updates.fetchUpdateAsync();
-    //     this.setState({ updateDownloaded: true });
-    //     Updates.reloadFromCache();
-    //   }
-    // } catch (e) {
-    //   console.log("error", e);
-    // }
+    this.props.checkForUpdate();
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.actualVersion !== this.props.actualVersion &&
+      this.props.actualVersion === "0.1.6"
+    ) {
+      this.handleUpdates();
+    }
+  }
+
+  handleUpdates = async () => {
+    const { translate } = this.props.screenProps;
+    try {
+      this.setState({
+        status: translate("Checking for OTA updates"),
+        statusLoading: true
+      });
+      const update = await Updates.checkForUpdateAsync();
+      if (update.isAvailable) {
+        this.setState({
+          status: translate(
+            "There is an OTA update available Please wait while it downloads"
+          )
+        });
+        await Updates.fetchUpdateAsync({
+          eventListener: this.handleOTAListener
+        });
+        // ... notify user of update ...
+        Updates.reloadFromCache();
+      } else {
+        this.setState({ updateDownloaded: true });
+      }
+    } catch (e) {
+      this.setState({ status: "", statusLoading: false });
+
+      Alert.alert(
+        e.message || e.response || translate("Something went wrong!"),
+        "",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              this.setState({
+                updateDownloaded: true
+              });
+            }
+          },
+          ,
+          {
+            text: "Reload",
+            onPress: () => Updates.reload()
+          }
+        ]
+      );
+
+      // handle or log error
+    }
+  };
+
+  handleOTAListener = event => {
+    if (event.type === Updates.EventType.DOWNLOAD_STARTED) {
+      this.setState({
+        status2: translate("downloading")
+      });
+    }
+  };
   render() {
     const { translate } = this.props.screenProps;
     if (this.state.updateDownloaded) {
@@ -74,104 +135,76 @@ class AppUpdateChecker extends Component {
             resizeMode="contain"
           />
 
-          {/* <Image
-            style={{
-              width: "100%",
-              height: "100%",
-              // top: 0,
-              // left: 0,
-              // bottom: 0,
-              // right: 0,
-              resizeMode: "cover"
-            }}
-            source={require("../../../assets/splash.png")}
-          /> */}
-          <Animatable.View
-            animation={"slideInUp"}
-            style={{
-              alignSelf: "center",
-              top: "20%",
-              // backgroundColor: "#0009",
-              width: "80%",
-              height: "20%",
-              borderRadius: 15,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 10
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "montserrat-bold",
-                color: globalColors.white,
-                textAlign: "center",
-                fontSize: 16
-              }}
-            >
-              {translate("Update Available")}
+          <Animatable.View animation={"slideInUp"} style={styles.textContainer}>
+            <Text style={styles.textUpdate}>
+              {this.props.loadingChecker
+                ? translate("checking for updates")
+                : this.state.statusLoading
+                ? ""
+                : translate("Update Available")}
             </Text>
+
             <Text
-              style={{
-                fontFamily: "montserrat-light",
-                color: globalColors.white,
-                textAlign: "center",
-                fontSize: 16
-              }}
+              style={[styles.textUpdate, { fontFamily: "montserrat-light" }]}
             >
-              {translate(
-                "You appear to be using an outdated version of OptimizeApp, please update to the latest version to enjoy all our features!"
-              )}
+              {this.props.loadingChecker
+                ? translate("Please wait while we check for updates")
+                : !this.state.statusLoading
+                ? translate(
+                    "You appear to be using an outdated version of OptimizeApp, please update to the latest version to enjoy all our features!"
+                  )
+                : ""}
             </Text>
+
+            {this.state.statusLoading && (
+              <>
+                <Text style={[styles.textUpdate, { top: 10 }]}>
+                  {this.state.status + "\n"}
+                  {this.state.status2}
+                </Text>
+              </>
+            )}
           </Animatable.View>
-          <Button
-            block
-            onPress={() =>
-              Linking.openURL(
-                Platform.OS === "ios"
-                  ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
-                  : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
-              )
-            }
-            style={{
-              backgroundColor: globalColors.orange,
-              width: "70%",
-              alignSelf: "center",
-              top: "40%",
-              borderRadius: 15
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "montserrat-bold",
-                color: globalColors.white,
-                textAlign: "center",
-                fontSize: 16
+          {this.props.loadingChecker || this.state.statusLoading ? (
+            <LottieView
+              ref={animation => {
+                this.animation = animation;
               }}
+              style={styles.loadingStyle}
+              resizeMode="contain"
+              source={require("../../../assets/animation/update_loader.json")}
+              loop
+              autoPlay
+            />
+          ) : (
+            <Button
+              block
+              onPress={() =>
+                Linking.openURL(
+                  Platform.OS === "ios"
+                    ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
+                    : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
+                )
+              }
+              style={styles.updateButton}
             >
-              {translate("Update Now")}
-            </Text>
-          </Button>
-          {/* <LottieView
-            ref={animation => {
-              this.animation = animation;
-            }}
-            style={{
-              zIndex: 10,
-              alignSelf: "center",
-              position: "absolute",
-              width: widthPercentageToDP(20),
-              height: widthPercentageToDP(20),
-              bottom: 20
-              // position: "absolute"
-            }}
-            resizeMode="contain"
-            source={require("../../../assets/animation/update_loader.json")}
-            loop
-            autoPlay
-          /> */}
+              <Text style={styles.textUpdate}>{translate("Update Now")}</Text>
+            </Button>
+          )}
         </View>
       );
   }
 }
 
-export default AppUpdateChecker;
+const mapStateToProps = state => ({
+  actualVersion: state.generic.actualVersion,
+  loadingChecker: state.generic.loadingChecker
+});
+
+const mapDispatchToProps = dispatch => ({
+  checkForUpdate: () => dispatch(actionCreators.checkForUpdate())
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppUpdateChecker);

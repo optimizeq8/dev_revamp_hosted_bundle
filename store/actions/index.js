@@ -16,7 +16,7 @@ export {
   filterCampaigns
 } from "./dashboardActions";
 
-export { setAuthToken } from "./genericActions";
+export { setAuthToken, checkForUpdate } from "./genericActions";
 
 export {
   save_campaign_info,
