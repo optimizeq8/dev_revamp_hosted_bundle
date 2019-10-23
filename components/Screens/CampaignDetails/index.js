@@ -92,7 +92,8 @@ class CampaignDetails extends Component {
   shouldComponentUpdate(nextProps) {
     return (
       this.props.selectedCampaign.campaign_id !==
-      nextProps.selectedCampaign.campaign_id
+        nextProps.selectedCampaign.campaign_id ||
+      this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU
     );
   }
 
