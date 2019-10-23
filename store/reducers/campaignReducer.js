@@ -573,6 +573,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_REJECTED_STORYADS:
       let rejAds = action.payload;
       let oldStoryAdsArray = state.storyAdsArray;
+      let oldStoryAdAttachment = state.storyAdAttachment;
       oldStoryAdsArray = rejAds.map((ad, i) => {
         let atch =
           ad.attachment !== "BLANK" ? JSON.parse(ad.attachment) : ad.attachment;
@@ -582,8 +583,17 @@ const reducer = (state = initialState, action) => {
             atch.url = atch.url.split("?utm_source")[0];
           }
         }
+        oldStoryAdAttachment = {
+          attachment: atch,
+          call_to_action: {
+            label: ad.call_to_action.replace("_", " "),
+            value: ad.call_to_action
+          },
+          destination: ad.destination
+        };
         return {
           ...ad,
+          index: ad.story_order,
           id: ad.story_id,
           call_to_action: {
             label: ad.call_to_action.replace("_", " "),
@@ -606,15 +616,38 @@ const reducer = (state = initialState, action) => {
       ];
       return {
         ...state,
-        storyAdsArray: oldStoryAdsArray
+        storyAdsArray: oldStoryAdsArray,
+        storyAdAttachment: oldStoryAdAttachment
       };
     case actionTypes.SET_REJECTED_COLLECTIONADS:
-      let rejColAds = action.payload;
+      let rejColAds = action.payload.collectionAdMedia;
+      let rejColCalltoAction = action.payload.call_to_action;
+      let atch = rejColAds[0].attachment_properties
+        ? JSON.parse(rejColAds[0].attachment_properties)
+        : rejColAds[0].attachment_properties;
+      if (atch.hasOwnProperty("block_preload")) {
+        delete atch.block_preload;
+        if (atch.url.includes("?utm_source")) {
+          atch.url = atch.url.split("?utm_source")[0];
+        }
+      }
+      let oldData = state.data;
+      let collCall_to_action = {
+        label: rejColCalltoAction.replace("_", " "),
+        value: rejColCalltoAction
+      };
+
+      oldData = {
+        ...oldData,
+        attachment: atch,
+        call_to_action: collCall_to_action
+      };
       return {
         ...state,
         collectionAdMedia: rejColAds,
         collectionAdLinkForm:
-          action.payload[0].interaction_type === "WEB_VIEW" ? 1 : 2
+          rejColAds[0].interaction_type === "WEB_VIEW" ? 1 : 2,
+        data: oldData
       };
     case actionTypes.SET_REJECTED_ADTYPE:
       return {
