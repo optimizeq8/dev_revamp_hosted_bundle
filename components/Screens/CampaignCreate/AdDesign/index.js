@@ -335,19 +335,25 @@ class AdDesign extends Component {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        brand_name
+        brand_name: brand_name.replace(
+          /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+          ""
+        )
       }
     });
-    this.props.save_campaign_info({ brand_name });
+    this.props.save_campaign_info({ brand_name: brand_name.replace("@", "") });
   };
   changeHeadline = headline => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        headline
+        headline: headline.replace(
+          /[^ a-zA-Z0-9\u0621-\u064A\u0660-\u0669]/gi,
+          ""
+        )
       }
     });
-    this.props.save_campaign_info({ headline });
+    this.props.save_campaign_info({ headline: headline.replace("@", "") });
   };
   adDesignPickImage = mediaTypes =>
     _pickImage(

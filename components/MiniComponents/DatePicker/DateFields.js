@@ -214,11 +214,7 @@ export default class DateFields extends Component {
                   }`
                 )}
               </Text>
-              <View
-                style={{
-                  height: "55%"
-                }}
-              >
+              <View style={{ height: "55%" }}>
                 <DateRangePicker
                   initialRange={
                     this.props.start_time

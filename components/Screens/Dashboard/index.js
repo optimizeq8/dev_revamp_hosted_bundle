@@ -286,9 +286,7 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          {/* {this.state.anim && ( */}
           <BackdropIcon style={styles.backDrop} />
-          {/* )} */}
           <Background
             style={[styles.background]}
             width={wp(85)}

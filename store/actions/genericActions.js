@@ -6,14 +6,12 @@ import { AsyncStorage } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-
 createBaseUrl = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "https://optimizekwtestingserver.com/optimize/public/"
       : "https://www.optimizeapp.com/optimize/public/"
   });
-
 export const setAuthToken = token => {
   if (token) {
     return SecureStore.setItemAsync("token", token)
@@ -65,7 +63,6 @@ export const checkForUpdate = (retries = 3) => {
           return;
         }
         dispatch({ type: actionTypes.SET_UPDATE_LOADING, payload: false });
-
         showMessage({
           message: "Oops! Something went wrong! Please try again later.",
           type: "warning",

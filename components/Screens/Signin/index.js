@@ -231,17 +231,6 @@ class MainForm extends Component {
                   <Text style={[styles.link, styles.dontHaveAccountText]}>
                     {translate("Don’t Have an Account?")}
                   </Text>
-                  {/* <Button
-                    rounded
-                    onPress={() => {
-                      this.props.navigation.goBack();
-                    }}
-                    style={styles.bottomView}
-                  >
-                    <Text style={[styles.buttonText, styles.textInviteCode]}>
-                      {translate("Enter Invite Code!")}
-                    </Text>
-                  </Button> */}
                   <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.goBack();
@@ -256,9 +245,6 @@ class MainForm extends Component {
             </View>
           </TouchableWithoutFeedback>
         </Container>
-        {/* <Modal visible={this.props.loading}>
-          <LoadingScreen top={0} />
-        </Modal> */}
       </SafeAreaView>
     );
   }

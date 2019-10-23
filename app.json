@@ -29,7 +29,8 @@
       "supportsTablet": false
     },
     "packagerOpts": {
-      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"]
+      "sourceExts": ["js", "jsx", "ts", "tsx", "svg"],
+      "config": "metro.config.js"
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",

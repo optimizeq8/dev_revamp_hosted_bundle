@@ -136,7 +136,11 @@ const styles = StyleSheet.create({
 
     transform: [{ rotate: "-45deg" }]
   },
-  optionalTargets: { flexDirection: "column", marginBottom: 10 },
+  optionalTargets: {
+    flexDirection: "column",
+    marginBottom: 10,
+    alignSelf: "center"
+  },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
