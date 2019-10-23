@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { globalColors } from "../../../GlobalStyles";
 import { Video } from "expo-av";
+import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";
 
 export default class MediaBox extends Component {
   state = { imageLoaded: false };
@@ -86,7 +87,12 @@ export default class MediaBox extends Component {
             borderColor: globalColors.orange
           }}
         >
-          {/* {!this.state.imageLoaded && <ActivityIndicator />} */}
+          {!this.state.imageLoaded && (
+            <ActivityIndicator
+              color={"white"}
+              style={{ position: "absolute", alignSelf: "center", top: "30%" }}
+            />
+          )}
 
           {media_type === "VIDEO" ? (
             <Video
@@ -100,13 +106,10 @@ export default class MediaBox extends Component {
               style={{ width: "100%", height: "100%" }}
             />
           ) : (
-            <Image
+            <RNImageOrCacheImage
               resizeMode="cover"
-              onLoad={() => this.setState({ imageLoaded: true })}
               style={{ width: "100%", height: "100%", alignSelf: "center" }}
-              source={{
-                uri: media
-              }}
+              media={media}
             />
           )}
         </View>
