@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, I18nManager } from "react-native";
 import { Button, Text, Item, Input } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
@@ -7,11 +7,12 @@ import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
 
 //Icon
-import LocationIcon from "../../../assets/SVGs/Location.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import LocationIcon from "../../../assets/SVGs/Location";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 //Styles
 import styles from "./styles";
+import rtlStyles from "./rtlStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -94,6 +95,7 @@ class MultiSelectList extends Component {
   };
 
   selectCountry = () => {
+    const { translate } = this.props.screenProps;
     let countrylist = this.state.filteredCountreis.map(c => (
       <TouchableOpacity
         key={c.value}
@@ -113,7 +115,7 @@ class MultiSelectList extends Component {
             fontSize: 14
           }}
         >
-          {c.label}
+          {translate(c.label)}
         </Text>
       </TouchableOpacity>
     ));
@@ -125,17 +127,23 @@ class MultiSelectList extends Component {
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={styles.title}> Select Country </Text>
+            <Text style={styles.title}> {translate("Select Country")} </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Country..."
-                  style={styles.searchInputText}
+                  placeholder={translate("Search Country")}
+                  style={
+                    I18nManager.isRTL
+                      ? rtlStyles.searchInputText
+                      : styles.searchInputText
+                  }
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.countries.filter(c =>
-                      c.label.toLowerCase().includes(value.toLowerCase())
+                      translate(c.label)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.setState({ filteredCountreis: filteredC });
                   }}
@@ -167,6 +175,7 @@ class MultiSelectList extends Component {
       case "interests":
         return (
           <SelectInterests
+            screenProps={this.props.screenProps}
             onSelectedItemObjectsChange={this.onSelectedItemObjectsChange}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedItems}
@@ -178,6 +187,8 @@ class MultiSelectList extends Component {
       case "deviceBrands":
         return (
           <SelectDevices
+            screenProps={this.props.screenProps}
+            OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedDevices}
             _handleSideMenuState={this.props._handleSideMenuState}
@@ -187,6 +198,7 @@ class MultiSelectList extends Component {
       case "deviceVersions":
         return (
           <SelectVersions
+            screenProps={this.props.screenProps}
             OSType={this.props.OSType}
             onSelectedItemsChange={this.onSelectedItemsChange}
             selectedItems={this.state.selectedVersions}

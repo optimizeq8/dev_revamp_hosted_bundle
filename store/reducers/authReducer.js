@@ -1,9 +1,10 @@
 import * as actionTypes from "../actions/actionTypes";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 const initialState = {
   userid: null,
   userInfo: null,
-  loading: false
+  loading: false,
+  loadingUpdateInfo: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,10 +20,22 @@ const reducer = (state = initialState, action) => {
         userInfo: action.payload.user,
         loading: false
       };
+
+    case actionTypes.UPDATE_USERINFO:
+      return {
+        ...state,
+        loadingUpdateInfo: false,
+        userInfo: { ...state.userInfo, ...action.payload }
+      };
     case actionTypes.SET_LOADING_USER:
       return {
         ...state,
         loading: action.payload
+      };
+    case actionTypes.SET_LOADING_ACCOUNT_UPDATE:
+      return {
+        ...state,
+        loadingUpdateInfo: action.payload
       };
     default:
       return state;

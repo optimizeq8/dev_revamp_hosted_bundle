@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 
 import {
   widthPercentageToDP as wp,
@@ -12,7 +12,7 @@ export const colors = {
   searchPlaceholderTextColor: "#fff",
   searchSelectionColor: "#fff"
 };
-export default (styles = StyleSheet.create({
+export default styles = StyleSheet.create({
   selectToggle: {
     marginBottom: 30,
     borderBottomWidth: 0.5,
@@ -28,7 +28,7 @@ export default (styles = StyleSheet.create({
     // marginTop: hp(5),
     marginVertical: 0,
     marginLeft: 0,
-    backgroundColor: "rgba(0,0,0,0.8)",
+    backgroundColor: "rgba(0,0,0,0.9)",
     width: wp(100)
   },
   searchBar: {
@@ -38,7 +38,11 @@ export default (styles = StyleSheet.create({
     width: wp(80),
     alignSelf: "center"
   },
-  searchTextInput: { color: "#FFF", fontSize: 17 / PixelRatio.getFontScale() },
+  searchTextInput: {
+    color: "#FFF",
+    fontSize: 17 / PixelRatio.getFontScale(),
+    textAlign: I18nManager.isRTL ? "right" : "left"
+  },
   item: {
     backgroundColor: "rgba(0,0,0,0)",
     color: "#fff"
@@ -62,4 +66,4 @@ export default (styles = StyleSheet.create({
     alignSelf: "center"
   },
   confirmText: { color: "#fff" }
-}));
+});

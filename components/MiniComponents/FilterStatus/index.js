@@ -36,10 +36,11 @@ class FilterStatus extends Component {
   //   });
   // };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.mainViewFilterStatus}>
         <View style={styles.flexDirectionCol}>
-          <Text style={styles.text}> Active </Text>
+          <Text style={styles.text}> {translate("Active")} </Text>
 
           <Button
             onPress={() =>
@@ -55,7 +56,7 @@ class FilterStatus extends Component {
           />
         </View>
         <View style={[styles.flexDirectionCol, styles.middleBlock]}>
-          <Text style={styles.text}> Inactive </Text>
+          <Text style={styles.text}> {translate("Inactive")} </Text>
           <Button
             onPress={() =>
               this.setState({ selected: "PAUSED" }, () =>
@@ -70,7 +71,7 @@ class FilterStatus extends Component {
           />
         </View>
         <View style={styles.flexDirectionCol}>
-          <Text style={styles.text}> All </Text>
+          <Text style={styles.text}> {translate("All")} </Text>
           <Button
             onPress={() =>
               this.setState({ selected: "A" }, () =>

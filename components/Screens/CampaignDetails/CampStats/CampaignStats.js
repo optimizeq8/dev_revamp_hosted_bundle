@@ -13,7 +13,7 @@ import formatNumber from "../../../formatNumber";
 class CampaignStats extends Component {
   render() {
     let selectedCampaign = this.props.selectedCampaign;
-
+    const { translate } = this.props.screenProps;
     return (
       <>
         <View
@@ -22,7 +22,8 @@ class CampaignStats extends Component {
             top: 35,
             borderBottomWidth: 1,
             borderBottomColor: "rgba(255,255,255,0.4)",
-            alignSelf: "center"
+            alignSelf: "center",
+            zIndex: 3
           }}
         />
 
@@ -36,7 +37,8 @@ class CampaignStats extends Component {
                 }
               ]}
             >
-              Impressions{"\n "}
+              {translate("Impressions")}
+              {"\n "}
               <Text style={globalStyles.numbers}>
                 {selectedCampaign &&
                   formatNumber(selectedCampaign.impressions, true)}
@@ -54,7 +56,8 @@ class CampaignStats extends Component {
                 }
               ]}
             >
-              Reach{" \n"}
+              {translate("Reach")}
+              {" \n"}
               <Text style={globalStyles.numbers}>
                 {selectedCampaign && formatNumber(selectedCampaign.reach, true)}
               </Text>
@@ -71,7 +74,8 @@ class CampaignStats extends Component {
                 }
               ]}
             >
-              Paid Frequency{" \n"}
+              {translate("Paid Frequency")}
+              {" \n"}
               <Text style={globalStyles.numbers}>
                 {selectedCampaign && selectedCampaign.paid_frequency}
               </Text>
@@ -80,9 +84,14 @@ class CampaignStats extends Component {
             <PlaceholderLine width={70} />
           )}
         </View>
-        <BoxStats selectedCampaign={selectedCampaign} />
+        <BoxStats
+          screenProps={this.props.screenProps}
+          selectedCampaign={selectedCampaign}
+        />
         <View style={[styles.boxStats, styles.wideBoxStat]}>
-          <Text style={[styles.stats, { width: 130 }]}>Total Spend</Text>
+          <Text style={[styles.stats, { width: 130 }]}>
+            {translate("Total Spend")}
+          </Text>
 
           {this.props.loadingCampaignStats ? (
             <PlaceholderLine />

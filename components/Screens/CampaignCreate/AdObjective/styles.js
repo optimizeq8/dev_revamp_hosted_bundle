@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000",
     display: "flex",
     justifyContent: "space-between"
+    // zIndex: 5
   },
   backDrop: {
     position: "absolute",
@@ -30,20 +31,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: wp(100),
-    paddingTop: 10
+    paddingTop: 10,
+    zIndex: 1
   },
   phoneicon: {
-    alignSelf: "center",
-    marginTop: 20
+    alignSelf: "center"
+    // marginTop: 20
   },
   mainContent: {
     // flex: 1,
     // justifyContent: 'flex-start',
-    paddingBottom: hp(35),
+    paddingBottom: hp(14),
     paddingTop: 20
   },
   scrollViewStyle: {
-    marginTop: 15
+    marginTop: 15,
+    zIndex: 2
   },
   input1: {
     marginBottom: 30,
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     borderRadius: 30,
-    marginBottom: -10
+    marginBottom: I18nManager.isRTL ? -16 : -10
   },
   inputText: {
     fontFamily: "montserrat-regular",
@@ -79,13 +82,14 @@ const styles = StyleSheet.create({
   minBudget: {
     color: "#fff",
     alignSelf: "center",
-    fontSize: 11
+    fontSize: 11,
+    fontFamily: "montserrat-regular"
   },
   title: {
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     paddingTop: 30
   },
   input2: {
@@ -134,8 +138,8 @@ const styles = StyleSheet.create({
     color: globalColors.orange,
     flexDirection: "column",
     fontFamily: "montserrat-regular",
-    fontSize: 16,
-    paddingHorizontal: 10
+    fontSize: 16
+    // paddingHorizontal: 10
   },
   date: {
     fontFamily: "montserrat-bold",
@@ -153,7 +157,8 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "space-around",
+    alignItems: "center"
   },
   dateColumn: {
     flexDirection: "column",
@@ -215,6 +220,8 @@ const styles = StyleSheet.create({
   dateTextLabel: {
     borderTopLeftRadius: 150,
     borderTopRightRadius: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     paddingTop: 8,
     width: 150,
     alignSelf: "center",
@@ -226,6 +233,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderTopLeftRadius: 150,
     borderTopRightRadius: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     paddingTop: 8,
     width: 150,
     alignSelf: "center",

@@ -6,8 +6,7 @@ import {
 
 const styles = StyleSheet.create({
   calender: {
-    width: wp("100%"),
-    alignSelf: "center"
+    width: wp("100%")
   },
   dateModal: {
     ...StyleSheet.absoluteFillObject,
@@ -29,11 +28,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     borderWidth: 1,
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    top: heightPercentageToDP(5) < 30 ? -5 : 30
+
+    top: heightPercentageToDP(5) < 30 ? -5 : 20
   },
   icon: {
     fontSize: 70,
@@ -66,7 +62,8 @@ const styles = StyleSheet.create({
   },
   resetStyle: {
     color: "#fff",
-    alignSelf: "center"
+    fontSize: 15,
+    alignSelf: "flex-end"
   }
 });
 

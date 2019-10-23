@@ -1,10 +1,11 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
-import store from "../index";
+import store, { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
+import { setAuthToken } from "./genericActions";
 
 createBaseUrl = () =>
   axios.create({
@@ -22,6 +23,7 @@ export const changeBusiness = business => {
       type: "success",
       position: "top"
     });
+    persistor.purge();
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { business: business }
@@ -335,6 +337,62 @@ export const create_snapchat_ad_account = (id, navigation) => {
           payload: {
             loading: false
           }
+        });
+      });
+  };
+};
+
+export const updateUserInfo = info => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
+      payload: true
+    });
+    createBaseUrl()
+      .put("profile", { ...info })
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.success) {
+          setAuthToken(data.accessToken);
+          Segment.track("Profile updated Successfully");
+          showMessage({
+            message: data.message,
+            type: "success",
+            position: "top"
+          });
+          return dispatch({
+            type: actionTypes.UPDATE_USERINFO,
+            payload: { ...info }
+          });
+        } else {
+          showMessage({
+            message: data.message,
+            type: "info",
+            position: "top"
+          });
+        }
+        dispatch({
+          type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
+          payload: false
+        });
+      })
+
+      .catch(err => {
+        // console.log(
+        //   "create_snapchat_ad_account_ERROR",
+        //   err.message || err.response
+        // );
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
+        dispatch({
+          type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
+          payload: false
         });
       });
   };

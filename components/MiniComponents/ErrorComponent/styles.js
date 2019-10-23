@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 120,
     width: "100%",
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: "#fff",
     fontSize: 41,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   }
 });
 

@@ -4,7 +4,7 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
-  adType: "",
+
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -22,7 +22,7 @@ const initialState = {
   languagesList: [],
   videoUrl: "",
   videoUrlLoading: "",
-  image: "",
+  media: "",
   countryName: "",
   interestNames: [],
   regionNames: [],
@@ -31,31 +31,31 @@ const initialState = {
     {
       id: 0,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 1,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 2,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
     },
     {
       id: 3,
       call_to_action: { label: "BLANK", value: "BLANK" },
-      image: "//",
+      media: "//",
       destination: "BLANK",
       attachment: "BLANK"
-    }
+    } //Last object is an add button to add more story snap cards
   ],
   loadingStoryAdsArray: [],
   coverLoading: false,
@@ -64,7 +64,35 @@ const initialState = {
   collectionAdLinkForm: 0,
   collectionLoader: false,
   collectionAdMedia: [],
-  weburlAvalible: false
+  weburlAvalible: false,
+  instagramPostLoading: false,
+  instagramPostList: [],
+  errorInstaHandle: true,
+  errorInstaHandleMessage: null,
+  savingWebProducts: false,
+  selectedInstagramProducts: [],
+  productInfoId: null,
+  errorGetWebProducts: false,
+  getWebProductsLoading: false,
+  businessLogo: "",
+  storyAdAttachment: {
+    destination: "BLANK",
+    call_to_action: { labe: "BLANK", value: "BLANK" },
+    attachment: "BLANK"
+  },
+  uploadMediaDifferentDeviceURL: "",
+  uploadMediaDifferentDeviceAccessCode: "",
+  errorUploadMediaDiffernetDevice: "",
+  mediaWebLink: "",
+  mediaTypeWebLink: "",
+  webUploadLinkMediaLoading: false,
+  incompleteCampaign: false,
+  campaignProgressStarted: false,
+  currentCampaignSteps: [],
+  instaHandleId: null,
+  instaHasNextPage: null,
+  instaEndCursor: null,
+  loadingMoreInstaPost: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -85,7 +113,8 @@ const reducer = (state = initialState, action) => {
         campaign_id: action.payload.campaign_id,
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
-        loadingObj: false
+        loadingObj: false,
+        incompleteCampaign: true
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -129,7 +158,8 @@ const reducer = (state = initialState, action) => {
           attachment:
             action.payload.data.attachment !== "BLANK"
               ? JSON.parse(action.payload.data.attachment)
-              : action.payload.data.attachment
+              : action.payload.data.attachment,
+          media: state.data.media
         },
         message: action.payload.message,
 
@@ -154,7 +184,16 @@ const reducer = (state = initialState, action) => {
           ...state.data,
           ...action.payload,
           ...resetSwipeUps
-        }
+        },
+        storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
+        currentCampaignSteps: action.payload.reset
+          ? state.currentCampaignSteps.length > 0
+            ? state.currentCampaignSteps.splice(
+                0,
+                state.currentCampaignSteps.length - 1
+              )
+            : []
+          : state.currentCampaignSteps
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {
@@ -168,25 +207,25 @@ const reducer = (state = initialState, action) => {
         videoUrl: action.payload.media_upload_url,
         videoUrlLoading: !action.payload.success
       };
-    case actionTypes.HANDLE_STORY_VIDEO:
-      let videoStoryAds = state.storyAdsArray;
-      let ad = videoStoryAds.find(
-        storyAd => action.payload.card.story_id === storyAd.story_id
-      );
-      ad = { ...ad, ...action.payload.card };
-      videoStoryAds[action.payload.card.story_order] = {
-        ...action.payload.data,
-        ...action.payload.card,
-        uploaded: true
-      };
-      // let loadingAr = state.loadingStoryAdsArray;
-      // loadingAr[action.payload.data.story_order] = false;
+    // case actionTypes.HANDLE_STORY_VIDEO:
+    //   let videoStoryAds = state.storyAdsArray;
+    //   let ad = videoStoryAds.find(
+    //     storyAd => action.payload.card.story_id === storyAd.story_id
+    //   );
+    //   ad = { ...ad, ...action.payload.card };
+    //   videoStoryAds[action.payload.card.story_order] = {
+    //     ...action.payload.data,
+    //     ...action.payload.card,
+    //     uploaded: true
+    //   };
+    //   // let loadingAr = state.loadingStoryAdsArray;
+    //   // loadingAr[action.payload.data.story_order] = false;
 
-      return {
-        ...state,
-        // loadingStoryAdsArray: [...loadingAr],
-        storyAdsArray: [...videoStoryAds]
-      };
+    //   return {
+    //     ...state,
+    //     // loadingStoryAdsArray: [...loadingAr],
+    //     storyAdsArray: [...videoStoryAds]
+    //   };
     case actionTypes.GET_VIDEO_URL_LOADING:
       return {
         ...state,
@@ -196,7 +235,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: { ...state.data, ...action.payload.data.data },
-        image: action.payload.image,
+        media: action.payload.media,
         countryName: action.payload.names.countryName,
         interestNames: action.payload.names.interestNames,
         regionNames: action.payload.names.regionNames,
@@ -344,10 +383,11 @@ const reducer = (state = initialState, action) => {
       let newSnapCard = {
         id: state.storyAdsArray[state.storyAdsArray.length - 1].id + 1,
         call_to_action: { label: "BLANK", value: "BLANK" },
-        image: "//",
+        media: "//",
         destination: "BLANK",
         attachment: "BLANK"
       };
+
       let newStoryAdsArray = state.storyAdsArray;
       newStoryAdsArray.push(newSnapCard);
       return {
@@ -357,6 +397,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_STORYADMEDIA_DESIGN:
       let storyAds = state.storyAdsArray;
       storyAds[action.payload.data.story_order] = {
+        ...storyAds[action.payload.data.story_order],
         ...action.payload.data,
         ...action.payload.card,
         uploaded: true
@@ -381,7 +422,6 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.DELETE_STORY_AD_CARD:
       let deleteStoryAds = state.storyAdsArray;
-
       deleteStoryAds = deleteStoryAds.filter(ad => {
         if (
           (action.payload.card.hasOwnProperty("item") &&
@@ -391,10 +431,8 @@ const reducer = (state = initialState, action) => {
         )
           return ad;
       });
-
       let deletedLoadingAr = state.loadingStoryAdsArray;
       deletedLoadingAr[action.payload.card.index] = false;
-
       return {
         ...state,
         loadingStoryAdsArray: [...deletedLoadingAr],
@@ -402,10 +440,16 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_STORYADCARD_LOADING_DESIGN:
       let ar = state.loadingStoryAdsArray;
+      let storyPro = state.storyAdsArray;
+      storyPro[action.payload.index] = {
+        ...storyPro[action.payload.index],
+        progress: action.payload.progress
+      };
       ar[action.payload.index] = action.payload.uploading;
       return {
         ...state,
-        loadingStoryAdsArray: [...ar]
+        loadingStoryAdsArray: [...ar],
+        storyAdsArray: [...storyPro]
       };
     case actionTypes.SET_DELETE_CARD_LOADING:
       let deleteLoadAr = state.loadingStoryAdsArray;
@@ -431,45 +475,78 @@ const reducer = (state = initialState, action) => {
         collectionAdMedia: []
       };
     case actionTypes.RESET_CAMPAING_INFO:
+      let resetAdType = action.payload;
+      let adType = "SnapAd";
+      let data = null;
+      let campaign_id = "";
+      let countryName = "";
+      let interestNames = [];
+      let regionNames = [];
+      let minValueBudget = 0;
+      let maxValueBudget = 0;
+      let incompleteCampaign = false;
+      let currentCampaignSteps = [];
+      if (resetAdType) {
+        currentCampaignSteps = state.currentCampaignSteps;
+        incompleteCampaign = state.incompleteCampaign;
+        adType = state.adType;
+        campaign_id = state.campaign_id;
+        data = state.data ? state.data : {};
+        minValueBudget = state.minValueBudget;
+        maxValueBudget = state.maxValueBudget;
+        countryName = state.countryName;
+        interestNames = state.interestNames;
+        regionNames = state.regionNames;
+        if (data) {
+          delete data.media;
+          delete data.media_type;
+          delete data.media_upload;
+          delete data.ios_upload;
+          delete data.formatted;
+          delete data.objective;
+          delete data.objectiveLabel;
+        }
+      }
+
       return {
         ...state,
-        campaign_id: "",
-        data: null,
+        campaign_id: campaign_id,
+        data: data,
         average_reach: 0,
         total_reach: 0,
-        image: "",
-        minValueBudget: 0,
-        adType: "",
-        maxValueBudget: 0,
-        countryName: "",
-        interestNames: [],
-        regionNames: [],
+        media: "",
+        minValueBudget: minValueBudget,
+        adType: adType,
+        maxValueBudget: maxValueBudget,
+        countryName: countryName,
+        interestNames: interestNames,
+        regionNames: regionNames,
         storyAdsArray: [
           {
             id: 0,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 1,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 2,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           },
           {
             id: 3,
             call_to_action: { label: "BLANK", value: "BLANK" },
-            image: "//",
+            media: "//",
             destination: "BLANK",
             attachment: "BLANK"
           }
@@ -479,13 +556,235 @@ const reducer = (state = initialState, action) => {
         storyAdCover: null,
         collectionAdLinkForm: 0,
         collectionLoader: false,
-        collectionAdMedia: []
+        collectionAdMedia: [],
+        storyAdAttachment: {
+          destination: "BLANK",
+          call_to_action: { labe: "BLANK", value: "BLANK" },
+          attachment: "BLANK"
+        },
+        incompleteCampaign: incompleteCampaign,
+        currentCampaignSteps: currentCampaignSteps
       };
     case actionTypes.VERIFY_BUSINESSURL:
       return {
         ...state,
         weburlAvalible: action.payload.success
       };
+    case actionTypes.SET_REJECTED_STORYADS:
+      let rejAds = action.payload;
+      let oldStoryAdsArray = state.storyAdsArray;
+      oldStoryAdsArray = rejAds.map((ad, i) => {
+        let atch =
+          ad.attachment !== "BLANK" ? JSON.parse(ad.attachment) : ad.attachment;
+        if (atch.hasOwnProperty("block_preload")) {
+          delete atch.block_preload;
+          if (atch.url.includes("?utm_source")) {
+            atch.url = atch.url.split("?utm_source")[0];
+          }
+        }
+        return {
+          ...ad,
+          id: ad.story_id,
+          call_to_action: {
+            label: ad.call_to_action.replace("_", " "),
+            value: ad.call_to_action
+          },
+          attachment: atch
+        };
+      });
+      oldStoryAdsArray = [
+        ...oldStoryAdsArray,
+        {
+          id:
+            parseInt(oldStoryAdsArray[oldStoryAdsArray.length - 1].story_id) +
+            1,
+          call_to_action: { label: "BLANK", value: "BLANK" },
+          media: "//",
+          destination: "BLANK",
+          attachment: "BLANK"
+        }
+      ];
+      return {
+        ...state,
+        storyAdsArray: oldStoryAdsArray
+      };
+    case actionTypes.SET_REJECTED_COLLECTIONADS:
+      let rejColAds = action.payload;
+      return {
+        ...state,
+        collectionAdMedia: rejColAds,
+        collectionAdLinkForm:
+          action.payload[0].interaction_type === "WEB_VIEW" ? 1 : 2
+      };
+    case actionTypes.SET_REJECTED_ADTYPE:
+      return {
+        ...state,
+        adType: action.payload
+      };
+    case actionTypes.SET_INSTAGRAM_POST_LOADING:
+      return {
+        ...state,
+        instagramPostLoading: action.payload,
+        // errorInstaHandle: !action.payload.error,
+        // errorInstaHandleMessage: action.payload.errorMessage,
+        instagramPostList: [],
+        businessLogo: "",
+        instaHandleId: null,
+        instaHasNextPage: null,
+        instaEndCursor: null
+      };
+    case actionTypes.SET_INSTAGRAM_POST:
+      return {
+        ...state,
+        instagramPostList: action.payload.imagesList,
+        businessLogo: action.payload.businessLogo,
+        instagramPostLoading: false,
+        instaHandleId: action.payload.instaHandleId,
+        instaHasNextPage: action.payload.instaHasNextPage,
+        instaEndCursor: action.payload.instaEndCursor
+      };
+    case actionTypes.ERROR_GET_INSTAGRAM_POST:
+      return {
+        ...state,
+        instagramPostList: [],
+        businessLogo: "",
+        instaHandleId: null,
+        instaHasNextPage: null,
+        instaEndCursor: null,
+        // errorInstaHandle: true,
+        errorInstaHandle: action.payload.error,
+        instagramPostLoading: false,
+        errorInstaHandleMessage: action.payload.errorMessage
+      };
+    case actionTypes.SAVE_WEB_PRODUCTS_LOADING:
+      return {
+        ...state,
+        savingWebProducts: action.payload
+      };
+    case actionTypes.SUCCESS_SAVE_WEB_PRODUCTS:
+      return {
+        ...state,
+        // savingWebProducts: false,
+        productInfoId: action.payload.id,
+        selectedInstagramProducts: action.payload.webproducts
+      };
+    case actionTypes.ERROR_SAVE_WEB_PRODUCTS:
+      return {
+        ...state,
+        savingWebProducts: false
+      };
+    case actionTypes.GET_WEB_PRODUCTS:
+      return {
+        ...state,
+        getWebProductsLoading: false,
+        selectedInstagramProducts: JSON.parse(action.payload.webproducts),
+        productInfoId: action.payload.id,
+        errorGetWebProducts: false
+      };
+    case actionTypes.ERROR_GET_WEB_PRODUCTS:
+      return {
+        ...state,
+        selectedInstagramProducts: action.payload.webproducts,
+        productInfoId: action.payload.id,
+        errorGetWebProducts: action.payload.error,
+        getWebProductsLoading: false
+      };
+
+    case actionTypes.GET_WEB_PRODUCTS_LOADING: {
+      return {
+        ...state,
+        getWebProductsLoading: action.payload
+      };
+    }
+    case actionTypes.STORYAD_ATTACHMENT:
+      let sAttachment = {};
+      if (action.payload.attachment.hasOwnProperty("longformvideo_media")) {
+        sAttachment = {
+          ...action.payload,
+          uploaded: false,
+          attachment: { label: "BLANK", value: "BLANK" },
+          [Object.keys(action.payload.attachment)[0]]:
+            action.payload.attachment.longformvideo_media,
+          [Object.keys(action.payload.attachment)[1]]:
+            action.payload.attachment.longformvideo_media_type,
+          rejectionLongVidUpload: true
+        };
+      } else {
+        sAttachment = { ...action.payload };
+      }
+      return {
+        ...state,
+        storyAdAttachment: sAttachment
+      };
+    case actionTypes.GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
+      return {
+        ...state,
+        uploadMediaDifferentDeviceURL: action.payload.weblink,
+        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode
+      };
+    case actionTypes.ERROR_GET_UPLOAD_MEDIA_DIFFERENT_DEVICE_URL_ACCESS_CODE:
+      return {
+        ...state,
+        uploadMediaDifferentDeviceURL: action.payload.weblink,
+        uploadMediaDifferentDeviceAccessCode: action.payload.accessCode,
+        errorUploadMediaDiffernetDevice: action.payload.error
+      };
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA:
+      return {
+        ...state,
+        // data: {
+        //   ...state.data,
+        //   media: action.payload.mediaWebLink,
+        //   type: action.payload.mediaTypeWebLink
+        // },
+        mediaWebLink: action.payload.mediaWebLink,
+        mediaTypeWebLink: action.payload.mediaTypeWebLink
+      };
+    case actionTypes.ERROR_GET_WEB_UPLOAD_LINK_MEDIA:
+      return {
+        ...state,
+        mediaWebLink: "",
+        mediaTypeWebLink: "",
+        webUploadLinkMediaLoading: false
+      };
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING:
+      return {
+        ...state,
+        webUploadLinkMediaLoading: action.payload
+      };
+    case actionTypes.SAVE_CAMPAIGN_STEP:
+      return {
+        ...state,
+        currentCampaignSteps: action.payload
+      };
+    case actionTypes.SET_CAMPAIGN_IN_PROGRESS:
+      return {
+        ...state,
+        campaignProgressStarted: action.payload
+      };
+    case actionTypes.GET_MORE_INSTAGRAM_POST:
+      const list = [...state.instagramPostList, ...action.payload.imagesList];
+      // console.log("list", list);
+      return {
+        ...state,
+        instaHasNextPage: action.payload.instaHasNextPage,
+        instaEndCursor: action.payload.instaEndCursor,
+        instagramPostList: list,
+        loadingMoreInstaPost: false
+      };
+    case actionTypes.ERROR_GET_MORE_INSTAGRAM_POST:
+      return {
+        ...state,
+        instaHasNextPage: null,
+        instaEndCursor: null,
+        loadingMoreInstaPost: false
+      };
+    case actionTypes.LOADING_MORE_INSTAGRAM_POST: {
+      return {
+        ...state,
+        loadingMoreInstaPost: action.payload
+      };
+    }
     default:
       return state;
   }

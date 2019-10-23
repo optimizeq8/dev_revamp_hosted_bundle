@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, BackHandler } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { Button, Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
@@ -13,7 +13,7 @@ import * as actionCreators from "../../../store/actions";
 import styles, { colors } from "./styles";
 
 // Icons
-import ErrorIcon from "../../../assets/SVGs/Error.svg";
+import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../LoadingScreen";
 
@@ -43,12 +43,13 @@ class ErrorComponent extends Component {
   //   return true;
   // }
   render() {
+    const { translate } = this.props.screenProps;
     if (this.props.loading) {
       return (
         <>
           <LinearGradient
             colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
+            locations={[1, 0.3]}
             style={styles.gradient}
           />
           <LoadingScreen dash={true} top={0} />
@@ -59,17 +60,19 @@ class ErrorComponent extends Component {
       <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
-        <Image style={styles.image} source={imageLogo} resizeMode="contain" />
+        <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
-          <ErrorIcon width={80} height={80} />
+          <ErrorIcon fill="#E26A65" width={80} height={80} />
 
-          <Text style={styles.title}> Sorry </Text>
+          <Text style={styles.title}> {translate("Sorry")} </Text>
           <Text style={styles.errortext}>
-            Oops ! There seems to be a problem . {"\n"}
-            Try again in sometime.
+            {translate(
+              "Oops ! There seems to be a problem\nTry again in sometime"
+            )}
+            .
           </Text>
           <Button
             style={styles.button}
@@ -83,7 +86,9 @@ class ErrorComponent extends Component {
             }}
           >
             <Text style={styles.buttontext}>
-              {this.props.dashboard ? "Signin" : "Go Back"}
+              {this.props.dashboard
+                ? translate("Sign in")
+                : translate("Go Back")}
             </Text>
           </Button>
           <Button
@@ -95,7 +100,7 @@ class ErrorComponent extends Component {
             }}
           >
             <Text style={styles.whitebuttontext}>
-              {this.props.dashboard ? "Reload" : "Home"}
+              {this.props.dashboard ? translate("Reload") : translate("Home")}
             </Text>
           </Button>
         </View>

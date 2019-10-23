@@ -13,7 +13,7 @@ export const colors = {
   searchPlaceholderTextColor: "#fff",
   searchSelectionColor: "#fff"
 };
-export default (sectionStyle = StyleSheet.create({
+export default sectionStyle = StyleSheet.create({
   container: {
     paddingTop: "20%",
     marginVertical: 0,
@@ -28,20 +28,24 @@ export default (sectionStyle = StyleSheet.create({
     width: wp(80),
     alignSelf: "center"
   },
-  searchTextInput: { color: "#FFF", fontFamily: "montserrat-regular" },
+  searchTextInput: {
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    textAlign: "center"
+  },
   item: {
     backgroundColor: "rgba(0,0,0,0)"
   },
   itemText: {
     color: globalColors.orange,
     fontSize: 20,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-medium-english"
   },
   selectedItemText: { color: "#fff" },
   subItemText: {
     color: "#fff",
     fontSize: 14,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular-english"
   },
   scrollView: {
     width: wp(80),
@@ -55,4 +59,4 @@ export default (sectionStyle = StyleSheet.create({
     alignSelf: "center"
   },
   confirmText: { color: "#fff" }
-}));
+});

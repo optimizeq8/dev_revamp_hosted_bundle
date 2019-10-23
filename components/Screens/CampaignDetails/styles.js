@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -10,20 +10,19 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#0000"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: hp("5"),
     width: hp("5")
   },
   reviewtext: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-medium",
     fontSize: 13,
     padding: 3,
     color: "#fff",
     textAlign: "center"
   },
   adStatus: {
-    backgroundColor: globalColors.orange,
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
@@ -73,17 +72,21 @@ const styles = StyleSheet.create({
   },
 
   categories: {
-    textAlign: "center",
+    textAlign: "left",
     color: "#fff",
     flexDirection: "column",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 13,
     paddingHorizontal: 10
+  },
+  categoryView: {
+    flexDirection: "row",
+    alignSelf: "flex-start"
   },
   subHeadings: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 15,
     paddingVertical: hp("1")
   },
@@ -102,11 +105,10 @@ const styles = StyleSheet.create({
     width: 150
   },
   subtext: {
-    fontFamily: "montserrat-extralight",
+    fontFamily: "montserrat-light-english",
     fontSize: 14,
     paddingTop: 5,
-    color: "#fff",
-    textAlign: "center"
+    color: "#fff"
   },
   numbers: {
     textAlign: "center",
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     // position: "absolute",
-    // backgroundColor: "red",
+    backgroundColor: "#000",
     top: 15,
     alignSelf: "center",
     width: wp("63%"),
@@ -210,16 +212,18 @@ const styles = StyleSheet.create({
   handlerIcon: {
     ...StyleSheet.absoluteFillObject,
     left: wp("26%"),
-    top: hp("1.7%")
+    top: hp("1.7%"),
+    zIndex: 2
   },
   handlerText: {
     textAlign: "center",
     color: "#fff",
-    paddingTop: 25,
-    paddingBottom: 20,
+    paddingTop: I18nManager.isRTL ? 0 : 25,
+    paddingBottom: I18nManager.isRTL ? 0 : 20,
     fontFamily: "montserrat-medium",
     fontSize: 18,
-    bottom: 5
+    bottom: I18nManager.isRTL ? -12 : 5
+    // zIndex: 1
   },
   boxStats: {
     top: 30,
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   choiceText: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     color: "#fff",
     textAlign: "center"
   },
@@ -322,7 +326,7 @@ const styles = StyleSheet.create({
   },
   placeHolderChart: {
     position: "absolute",
-    zIndex: 100,
+    zIndex: 10,
     width: wp(90),
     height: "100%",
     alignItems: "center",
@@ -335,7 +339,22 @@ const styles = StyleSheet.create({
     borderTopColor: "rgba(255,255,255,0.4)",
     height: 35
   },
-  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" }
+  placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
+  dot: {
+    top: 10,
+    width: 10,
+    height: 10,
+    marginHorizontal: 10,
+    borderRadius: 50,
+    backgroundColor: globalColors.orange
+  },
+  reviewButton: {
+    alignSelf: "center",
+    borderRadius: 12,
+    top: "10%",
+    padding: 20,
+    backgroundColor: globalColors.orange
+  }
 });
 
 export default styles;

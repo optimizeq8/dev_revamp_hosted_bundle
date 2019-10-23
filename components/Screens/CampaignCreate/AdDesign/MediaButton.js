@@ -9,16 +9,18 @@ import MediaButtonIcon from "../../../../assets/SVGs/MediaButtonIcon";
 export default class MediaButton extends Component {
   render() {
     let {
-      image,
+      media,
       cover,
       snapAdCard,
       _pickImage,
       snapCardInfo,
       _handleStoryAdCards,
-      setMediaModalVisible
+      setMediaModalVisible,
+      type
     } = this.props;
+    const { translate } = this.props.screenProps;
 
-    if (image && image !== "//") {
+    if (media && media !== "//") {
       return (
         <Button
           transparent
@@ -30,33 +32,34 @@ export default class MediaButton extends Component {
                   ...snapCardInfo.item
                 })
               : cover
-              ? _pickImage()
+              ? _pickImage("Images")
               : setMediaModalVisible(true);
           }}
           style={[
             styles.inputMiddleButton2,
             snapAdCard
               ? {
-                  width: 40,
+                  width: "100%",
                   height: 40,
-                  top: "65%",
-                  left: "82%"
+                  top: "30%"
                 }
               : {}
           ]}
         >
-          <EditCameraIcon />
+          <EditCameraIcon width={"100%"} height={"100%"} />
           <Text
             style={[
               styles.mediaButtonMsgEdit,
               snapAdCard ? {} : { width: 150 }
             ]}
           >
-            {image !== "//" ? "Edit Photo" : "Add Media"}
+            {type === "cover"
+              ? translate("Edit Cover Image")
+              : translate("Edit Media")}
           </Text>
         </Button>
       );
-    } else
+    } else {
       return (
         <>
           <Button
@@ -66,8 +69,8 @@ export default class MediaButton extends Component {
                 ? {
                     width: 40,
                     height: 40,
-                    top: "65%",
-                    left: "85%"
+                    top: "30%"
+                    // left: "85%"
                   }
                 : {}
             ]}
@@ -85,10 +88,13 @@ export default class MediaButton extends Component {
           >
             <MediaButtonIcon width={"100%"} height={"100%"} name="camera" />
             <Text style={[styles.mediaButtonMsg]}>
-              {image !== "//" ? "Edit Photo" : "Add Media"}
+              {type === "cover"
+                ? translate("Add Cover Image")
+                : translate("Add Media")}
             </Text>
           </Button>
         </>
       );
+    }
   }
 }

@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   noTranText: {
-    fontFamily: "montserrat-light",
     alignSelf: "center",
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: "montserrat-light"
   }
 });
 

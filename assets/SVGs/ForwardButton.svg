@@ -1,13 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="73.34" height="73.34" viewBox="0 0 73.34 73.34">
-  <defs>
-    <filter id="Ellipse_6" x="0" y="0" width="73.34" height="73.34" filterUnits="userSpaceOnUse">
-      <feOffset dy="3" input="SourceAlpha"/>
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feFlood flood-opacity="0.161"/>
-      <feComposite operator="in" in2="blur"/>
-      <feComposite in="SourceGraphic"/>
-    </filter>
-  </defs>
+
   <g id="Group_141" data-name="Group 141" transform="translate(-158.914 -733.914)">
     <g id="Group_17" data-name="Group 17" transform="translate(167.914 739.914)">
       <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Ellipse_6)">

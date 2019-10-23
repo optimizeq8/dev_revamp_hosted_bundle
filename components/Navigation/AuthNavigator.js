@@ -1,6 +1,5 @@
 import React from "react";
 import { Platform, AsyncStorage } from "react-native";
-import { createStackNavigator } from "react-navigation";
 import Tutorial from "../Screens/Tutorial";
 import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
@@ -11,7 +10,7 @@ import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import ForgotPassword from "../Screens/ForgotPassword";
 
-export default createStackNavigator(
+export default FluidNavigator(
   {
     Tutorial: Tutorial,
     MainForm: MainForm,

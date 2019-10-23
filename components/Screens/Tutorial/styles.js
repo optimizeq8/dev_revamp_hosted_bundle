@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     zIndex: 0
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 100,
     width: 100,

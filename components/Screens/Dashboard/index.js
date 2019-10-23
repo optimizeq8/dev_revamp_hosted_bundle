@@ -6,16 +6,20 @@ import {
   Animated,
   TouchableWithoutFeedback,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
+import { Updates } from "expo";
+import i18n from "i18n-js";
 import { Button, Text, Container, Icon } from "native-base";
+import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
-import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
@@ -24,10 +28,12 @@ import * as Animatable from "react-native-animatable";
 import AdButtions from "./AdButtons";
 
 //icons
-import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import WalletIcon from "../../../assets/SVGs/Wallet.svg";
+import FilterIcon from "../../../assets/SVGs/Filter";
+import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
+import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
+import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
@@ -46,6 +52,7 @@ import {
 } from "react-native-responsive-screen";
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
+import isStringArabic from "../../isStringArabic";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -61,11 +68,15 @@ class Dashboard extends Component {
       showSearchBar: false,
       menu: new Animated.Value(0),
       open: false,
-      anim: false
+      anim: false,
+      play: false,
+      componentMounting: true
     };
     this.page = 1;
   }
   componentDidMount() {
+    console.log("did mount");
+
     if (this.props.mainBusiness) {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
@@ -76,11 +87,14 @@ class Dashboard extends Component {
         this.increasePage,
         this.signal.token
       );
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+
       this.props.getBusinessAccounts();
       Segment.screen("Dashboard");
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
+    this.props.setCampaignInProgress(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -101,16 +115,24 @@ class Dashboard extends Component {
       if (
         this.props.mainBusiness &&
         !this.props.mainBusiness.snap_ad_account_id
-      )
+      ) {
         this.props.navigation.navigate("SnapchatCreateAdAcc", {
           closeAnimation: this.closeAnimation
         });
-      // this.props.getWalletAmount();
+      }
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
         this.signal.token
       );
+    }
+
+    if (this.props.adType !== prevProps.adType) {
+      this.setState({
+        adTypeChanged: true
+      });
     }
   }
 
@@ -120,23 +142,17 @@ class Dashboard extends Component {
       toValue: 1,
       duration: 350
     }).start(() => {
-      // this.props.navigation.navigate("Menu", {
-      //   open: true,
-      //   closeAnimation: this.closeAnimation,
-      //   menu: this.state.menu
-      // });
       this.setState({ open: true });
     });
   };
   closeAnimation = () => {
     this.setState({ anim: false });
+    this.setState({ open: false });
 
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350
-    }).start(() => {
-      this.setState({ open: false });
-    });
+    }).start(() => {});
   };
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
@@ -155,9 +171,13 @@ class Dashboard extends Component {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: adType.title
     });
-    this.props.resetCampaignInfo();
-    this.props.set_adType(adType.value);
-    this.props.navigation.navigate(adType.rout);
+    if (this.state.adTypeChanged && !this.props.incompleteCampaign) {
+      this.props.resetCampaignInfo(true);
+    }
+    if (!this.props.incompleteCampaign) {
+      this.props.set_adType(adType.value);
+    }
+    this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
   };
 
   increasePage = (reset = false) => {
@@ -188,13 +208,19 @@ class Dashboard extends Component {
   }
 
   reloadData = () => {
+    this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // this.props.set_as_seen(false);
+
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
       this.signal.token
     );
   };
+
   render() {
+    //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
+    const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
         top: hp(100)
@@ -219,11 +245,13 @@ class Dashboard extends Component {
       <FilterMenu
         _handleSideMenuState={this._handleSideMenuState}
         open={this.state.sidemenustate}
+        screenProps={this.props.screenProps}
       />
     ) : null;
 
     let adButtons = snapAds.map(adType => (
       <AdButtions
+        translate={this.props.screenProps.translate}
         key={adType.id}
         navigationHandler={this.navigationHandler}
         ad={adType}
@@ -246,6 +274,7 @@ class Dashboard extends Component {
     } else if (this.props.businessLoadError) {
       return (
         <ErrorComponent
+          screenProps={this.props.screenProps}
           dashboard={true}
           loading={this.props.loading}
           navigation={this.props.navigation}
@@ -257,9 +286,12 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          {this.state.anim && (
-            <BackdropIcon style={styles.backDrop} height={hp("100%")} />
-          )}
+          <BackdropIcon style={styles.backDrop} />
+          <Background
+            style={[styles.background]}
+            width={wp(85)}
+            height={hp(61)}
+          />
           {!this.state.sidemenustate && (
             <View
               style={[
@@ -288,38 +320,72 @@ class Dashboard extends Component {
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Wallet")}
+                    onPress={() =>
+                      this.props.navigation.push("MessengerLoading")
+                    }
                     style={[styles.wallet]}
                   >
-                    <WalletIcon width={24} height={24} />
+                    {this.props.conversation_status ? (
+                      <IntercomIcon width={24} height={24} />
+                    ) : (
+                      <IntercomNotificationIcon
+                        width={33}
+                        height={33}
+                        style={{ marginBottom: 6, marginLeft: 3 }}
+                      />
+                    )}
                   </TouchableOpacity>
                 </>
               ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.clearPushToken(
-                      this.props.navigation,
-                      this.props.userInfo.userid
+                <Text
+                  onPress={async () => {
+                    await this.props.getLanguageListPOEdit(
+                      this.props.appLanguage === "en" ? "ar" : "en"
                     );
+                    await this.props.screenProps.setLocale(
+                      this.props.appLanguage
+                    );
+                    // RNRestart.Restart();
+                    Updates.reload();
+                    // i18n.translations = {
+                    //   [this.props.appLanguage]: this.props.terms
+                    // };
                   }}
-                  style={styles.logoutIcon}
+                  style={[
+                    {
+                      color: "#FFF",
+                      fontSize: 19,
+                      right: "5%",
+                      position: "absolute",
+                      textAlign: "left",
+                      fontFamily: !I18nManager.isRTL
+                        ? "montserrat-regular-arabic"
+                        : "montserrat-regular-english"
+                    }
+                  ]}
                 >
-                  <Icons.LogoutIcon style={styles.icons} />
-                </TouchableOpacity>
+                  {!I18nManager.isRTL ? "العربية" : "English"}
+                </Text>
               )}
             </View>
           )}
           <>
             <Animatable.View
               duration={500}
-              onAnimationStart={() =>
-                this.state.open && this.setState({ anim: true })
+              onAnimationEnd={() =>
+                this.state.open && this.setState({ play: true })
               }
               animation={
                 !this.props.loadingAccountMgmt
                   ? this.state.anim
-                    ? mySlideOutDown
-                    : mySlideInUp
+                    ? this.props.campaignList.length === 0
+                      ? "fadeOut"
+                      : mySlideOutDown
+                    : this.props.campaignList.length === 0
+                    ? ""
+                    : this.state.play
+                    ? mySlideInUp
+                    : ""
                   : ""
               }
               style={[
@@ -333,6 +399,7 @@ class Dashboard extends Component {
               !this.props.loadingAccountMgmt &&
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
+                  translate={translate}
                   navigation={this.props.navigation}
                   mainBusiness={
                     this.props.mainBusiness ? this.props.mainBusiness : {}
@@ -344,17 +411,26 @@ class Dashboard extends Component {
                     onChange={isOpen => {
                       if (isOpen === false) this._handleSideMenuState(isOpen);
                     }}
+                    menuPosition={I18nManager.isRTL ? "left" : "right"}
                     disableGestures={true}
                     menu={menu}
-                    menuPosition="right"
                     openMenuOffset={wp("85%")}
                     isOpen={this.state.sidemenustate}
+                    screenProps={this.props.screenProps}
                   >
                     <View style={[styles.nameStyle]}>
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.text]}
+                        style={[
+                          styles.text,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.businessname)
+                            ? {
+                                fontFamily: "montserrat-bold-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.businessname
@@ -372,7 +448,15 @@ class Dashboard extends Component {
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={1}
-                        style={[styles.brandStyle]}
+                        style={[
+                          styles.brandStyle,
+                          this.props.mainBusiness &&
+                          !isStringArabic(this.props.mainBusiness.brandname)
+                            ? {
+                                fontFamily: "montserrat-regular-english"
+                              }
+                            : {}
+                        ]}
                       >
                         {this.props.mainBusiness
                           ? this.props.mainBusiness.brandname
@@ -418,10 +502,20 @@ class Dashboard extends Component {
                               styles.newCampaignTitle
                             ]}
                           >
-                            New Ad
+                            {translate("New Ad")}
                           </Text>
                         </View>
-                        <ScrollView style={{ height: 90, top: 10 }} horizontal>
+                        <ScrollView
+                          style={{
+                            height: 90,
+                            top: I18nManager.isRTL ? 5 : 10
+                          }}
+                          contentContainerStyle={{
+                            flex: 1,
+                            alignItems: "flex-start"
+                          }}
+                          horizontal
+                        >
                           {adButtons}
                         </ScrollView>
                       </View>
@@ -436,7 +530,10 @@ class Dashboard extends Component {
                         }}
                       >
                         <View style={{ width: "80%" }}>
-                          <SearchBar renderSearchBar={this.renderSearchBar} />
+                          <SearchBar
+                            screenProps={this.props.screenProps}
+                            renderSearchBar={this.renderSearchBar}
+                          />
                         </View>
                         <Button
                           style={styles.activebutton}
@@ -466,6 +563,7 @@ class Dashboard extends Component {
                                 campaign={item}
                                 navigation={this.props.navigation}
                                 key={item.campaign_id}
+                                screenProps={this.props.screenProps}
                               />
                             )}
                             onRefresh={() => this.reloadData()}
@@ -481,11 +579,13 @@ class Dashboard extends Component {
               <NavigationEvents
                 onDidFocus={() => {
                   Segment.screen("Dashboard");
+                  this.props.setCampaignInProgress(false);
                 }}
               />
             </Animatable.View>
 
             <Animatable.View
+              useNativeDriver
               onAnimationEnd={() => {
                 if (this.state.anim) {
                   Segment.screenWithProperties("Home Menu", {
@@ -495,13 +595,21 @@ class Dashboard extends Component {
                   Segment.screen("Dashboard");
                 }
               }}
-              duration={800}
-              animation={this.state.anim ? "fadeIn" : "fadeOut"}
+              duration={100}
+              animation={
+                (this.props.campaignList.length === 0 && this.state.anim) ||
+                (!this.state.sidemenustate &&
+                  this.props.campaignList.length !== 0)
+                  ? "fadeIn"
+                  : "fadeOut"
+              }
               style={styles.menuContainer}
             >
               <Menu
                 closeAnimation={this.closeAnimation}
                 navigation={this.props.navigation}
+                screenProps={this.props.screenProps}
+                open={this.state.open}
               />
             </Animatable.View>
           </>
@@ -523,7 +631,11 @@ const mapStateToProps = state => ({
   fetching_from_server: state.dashboard.fetching_from_server,
   isListEnd: state.dashboard.isListEnd,
   filteredCampaigns: state.dashboard.filteredCampaigns,
-  exponentPushToken: state.login.exponentPushToken
+  exponentPushToken: state.login.exponentPushToken,
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  conversation_status: state.messenger.conversation_status,
+  appLanguage: state.language.phoneLanguage,
+  terms: state.language.terms
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -538,7 +650,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignList(id, increasePage, cancelToken)),
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value)),
+  connect_user_to_intercom: user_id =>
+    dispatch(actionCreators.connect_user_to_intercom(user_id)),
+  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
+  getLanguageListPOEdit: language =>
+    dispatch(actionCreators.getLanguageListPOEdit(language))
 });
 export default connect(
   mapStateToProps,

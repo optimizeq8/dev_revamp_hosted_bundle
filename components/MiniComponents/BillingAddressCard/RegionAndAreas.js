@@ -6,15 +6,16 @@ import LowerButton from "../LowerButton";
 
 import styles from "./styles";
 import LocationIcon from "../../../assets/SVGs/Location";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 
 import SectionStyle, { colors } from "./SectionStyle";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class RegionAndAreas extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ bottom: "never", top: "always" }}
@@ -23,7 +24,7 @@ export default class RegionAndAreas extends Component {
         <View>
           <View style={styles.topView}>
             <LocationIcon width={110} height={110} fill="#fff" />
-            <Text style={[styles.title]}>Select Region</Text>
+            <Text style={[styles.title]}>{translate("Select Region")}</Text>
           </View>
           <Button
             style={[styles.interestButton, styles.addIconButton]}
@@ -36,7 +37,7 @@ export default class RegionAndAreas extends Component {
               ? this.props.selectedObjectets[0].name
               : this.props.area
               ? this.props.area
-              : "Please select your area."}
+              : translate("Please select your area")}
           </Text>
           <SectionedMultiSelect
             ref={SectionedMultiSelect =>
@@ -44,7 +45,10 @@ export default class RegionAndAreas extends Component {
             }
             items={this.props.areas}
             uniqueKey="id"
-            searchPlaceholderText={"Search Area"}
+            searchPlaceholderText={translate("Search Area")}
+            searchTextFontFamily={{
+              fontFamily: "montserrat-regular"
+            }}
             stickyFooterComponent={
               <Button
                 style={[styles.button, styles.submitButton]}
@@ -56,6 +60,10 @@ export default class RegionAndAreas extends Component {
             headerComponent={
               <View style={styles.headerComponent}>
                 <BackButton
+                  style={{
+                    top: 0,
+                    left: 0
+                  }}
                   screenname="Select Area"
                   navigation={() =>
                     this.SectionedMultiSelect._cancelSelection()
@@ -81,7 +89,7 @@ export default class RegionAndAreas extends Component {
             iconKey="icon"
             noItemsComponent={
               <Text style={styles.text}>
-                Sorry, no areas for selected country
+                {translate("Sorry, no areas for selected country")}
               </Text>
             }
             modalAnimationType="fade"

@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
@@ -7,6 +7,35 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  marginVertical: {
+    // marginTop: 40,
+    // marginVertical: 30,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  labelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.16)",
+    height: 15,
+    zIndex: 1
+  },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center",
+    borderRadius: 30,
+    marginBottom: -10,
+    marginTop: I18nManager.isRTL ? -5 : 0
+  },
   button: {
     backgroundColor: "#FF9D00",
     alignSelf: "center",
@@ -64,14 +93,15 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "#717171",
-    fontFamily: "montserrat-light",
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
     fontSize: 14,
-    marginTop: 20
+    marginTop: 10,
+    lineHeight: 18
     // marginBottom: 60
   },
   input: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     fontSize: 21 / PixelRatio.getFontScale(),
     alignSelf: "center",
     borderBottomColor: "#f0f0f0",
@@ -80,7 +110,7 @@ const styles = StyleSheet.create({
     height: 30
   },
   phoneInput: {
-    borderRadius: 15,
+    borderRadius: 50,
     borderColor: "transparent",
     alignSelf: "center",
     width: widthPercentageToDP(75),
@@ -111,9 +141,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   },
   keyboardArea: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    // flex: 1,
+    // alignItems: "center",
+    // justifyContent: "center"
   },
   phoneViewContainer: {
     justifyContent: "space-around"

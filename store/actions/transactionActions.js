@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
+import Axios from "axios";
 
 createBaseUrl = () =>
   axios.create({
@@ -47,18 +48,26 @@ export const getTransactions = () => {
   };
 };
 
-export const getWalletAmount = () => {
+export const getWalletAmount = (retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+
     createBaseUrl()
-      .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`)
+      .get(`mybusinesswallet/${getState().account.mainBusiness.businessid}`, {
+        timeout: 3000
+      })
       .then(res => {
         return res.data;
       })
       .then(data => {
+        data.success &&
+          showMessage({
+            message: "Wallet retrieved",
+            type: "success"
+          });
         return dispatch({
           type: actionTypes.SET_WALLET_AMOUNT,
           payload: data
@@ -68,12 +77,21 @@ export const getWalletAmount = () => {
         // console.log("getWalletAmount Error: ", err.response || err.message); // => prints: Api is being canceled
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
+        if (retries > 0) {
+          dispatch(getWalletAmount(retries - 1));
+          return;
+        }
         return dispatch({
           type: actionTypes.ERROR_SET_WALLET_AMOUNT
         });
@@ -155,14 +173,14 @@ export const getWalletAmountInKwd = amount => {
       });
   };
 };
-export const useWallet = campaign_id => {
+export const useWallet = (campaign_id, setWalletModal) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .post(`useWallet`, { campaign_id })
+      .post(`useWallet`, { campaign_id }, { timeout: 10000 })
       .then(res => {
         return res.data;
       })
@@ -179,15 +197,19 @@ export const useWallet = campaign_id => {
       })
 
       .catch(err => {
-        // console.log("useWallet Error: ", err.message || err.response);
+        // console.log("useWallet Error: ", err.message);
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              "Request took too long, please try again.") ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
           type: "danger",
           position: "top"
         });
+        setWalletModal(false);
         return dispatch({
           type: actionTypes.ERROR_USE_WALLET_AMOUNT
         });

@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#fff",
     // paddingTop: 10,
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 18,
-    paddingVertical: 0
+    paddingVertical: 0,
+    textTransform: "uppercase"
   },
   subText: {
     fontFamily: "montserrat-regular",

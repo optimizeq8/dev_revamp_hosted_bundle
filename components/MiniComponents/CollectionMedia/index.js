@@ -12,7 +12,8 @@ import {
   Image,
   Platform,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 import {
   Button,
@@ -84,18 +85,21 @@ class CollectionMedia extends Component {
       type: "",
       formatted: null,
       localUri: null,
-      deep_link_urlError: ""
+      deep_link_uriError: "",
+      rejectionColUpload: false
     };
   }
 
   async componentDidMount() {
     let order = this.props.navigation.getParam("collection_order");
-
+    const { translate } = this.props.screenProps;
     await this.setState({
       collection: {
         ...this.state.collection,
         collection_order: order,
-        collection_name: this.props.data.name + "_" + order
+        collection_name: this.props.collectionAdMedia[order]
+          ? this.props.collectionAdMedia[order].name
+          : this.props.data.name + "_" + order
       }
     });
 
@@ -105,71 +109,79 @@ class CollectionMedia extends Component {
       if (status !== "granted") {
         // this.onToggleModal();
         showMessage({
-          message: "Please allow access to the gallary to upload media.",
+          message: translate(
+            "Please allow access to the gallery to upload media"
+          ),
           position: "top",
           type: "warning"
         });
       }
     }
+    let collAds = this.props.collectionAdMedia;
     if (
       Object.keys(this.state.collection)
         .map(key => {
-          if (
-            this.props.collectionAdMedia[order] &&
-            this.props.collectionAdMedia[order].hasOwnProperty(key)
-          )
-            return true;
+          if (collAds[order] && collAds[order].hasOwnProperty(key)) return true;
         })
         .includes(true)
     ) {
       if (
         (this.props.collectionAdLinkForm === 1 &&
-          this.props.collectionAdMedia[order].collection_destination ===
-            "REMOTE_WEBPAGE") ||
+          collAds[order].collection_destination === "REMOTE_WEBPAGE") ||
         (this.props.collectionAdLinkForm === 2 &&
-          this.props.collectionAdMedia[order].collection_destination ===
-            "DEEP_LINK")
+          collAds[order].collection_destination === "DEEP_LINK") ||
+        collAds[order].interaction_type
       ) {
-        if (this.props.collectionAdLinkForm === 1) {
+        if (
+          this.props.collectionAdLinkForm === 1 ||
+          collAds[order].interaction_type === "WEB_VIEW"
+        ) {
           const url = split(
             JSON.parse(
-              this.props.collectionAdMedia[order].collection_attachment
+              collAds[order][
+                collAds[order].collection_attachment
+                  ? "collection_attachment"
+                  : "attachment_properties"
+              ]
             ).url,
             "://"
           );
           this.setState({
             collection: {
-              ...this.props.collectionAdMedia[order],
-              collection_attachment: url[1]
+              ...this.state.collection,
+              ...collAds[order],
+              collection_attachment: url[1].includes("?utm_source")
+                ? url[1].split("?utm_source")[0]
+                : url[1],
+              collection_media:
+                collAds[order][collAds[order].localUri ? "localUri" : "media"]
             },
             networkString: url[0] + "://",
-            localUri: this.props.collectionAdMedia[order].localUri
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
           });
         } else {
           const deep_link_uri = JSON.parse(
-            this.props.collectionAdMedia[order].collection_attachment
+            collAds[order][
+              collAds[order].collection_attachment
+                ? "collection_attachment"
+                : "attachment_properties"
+            ]
           ).deep_link_uri;
           this.setState({
             collection: {
-              ...this.props.collectionAdMedia[order],
-              collection_attachment: deep_link_uri
+              ...this.state.collection,
+
+              ...collAds[order],
+              collection_attachment: deep_link_uri,
+              collection_media:
+                collAds[order][collAds[order].localUri ? "localUri" : "media"]
             },
-            localUri: this.props.collectionAdMedia[order].localUri
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
           });
         }
       }
-
-      // this.setState({
-      //   collection: {
-      //     ...this.state.collection
-      //   },
-
-      // });
-
-      // collection = {
-      //   ...this.state.collection,
-      //   ...this.props.collectionAdMedia[order]
-      // };
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -182,6 +194,7 @@ class CollectionMedia extends Component {
     return true;
   };
   validateImage = () => {
+    const { translate } = this.props.screenProps;
     const imageError = validateWrapper(
       "mandatory",
       this.state.collection.collection_media
@@ -191,7 +204,7 @@ class CollectionMedia extends Component {
     });
     if (imageError) {
       showMessage({
-        message: "Please choose an image",
+        message: translate("Please choose an image"),
         type: "warning",
         position: "top",
         duration: 7000
@@ -203,6 +216,7 @@ class CollectionMedia extends Component {
   };
 
   validateUrl = () => {
+    const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
       this.state.networkString + this.state.collection.collection_attachment
@@ -212,7 +226,7 @@ class CollectionMedia extends Component {
     });
     if (urlError) {
       showMessage({
-        message: "Please enter a vaild url",
+        message: translate("Please enter a valid URL"),
         type: "warning",
         position: "top",
         duration: 7000
@@ -256,6 +270,7 @@ class CollectionMedia extends Component {
 
   _pickImage = async () => {
     try {
+      const { translate } = this.props.screenProps;
       let result = await this.pick();
 
       let file = await FileSystem.getInfoAsync(result.uri, {
@@ -322,7 +337,10 @@ class CollectionMedia extends Component {
                 });
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Image must be less than 2 MBs.",
+                  message: translate(
+                    "Image must be less than {{fileSize}} MBs",
+                    { fileSize: 2 }
+                  ),
                   position: "top",
                   type: "warning"
                 });
@@ -336,20 +354,23 @@ class CollectionMedia extends Component {
                     ...this.state.collection,
                     collection_media: result.uri
                   },
-                  localUri: result.uri
+                  localUri: result.uri,
+                  rejectionColUpload: true
                 });
                 this.onToggleModal(false);
                 showMessage({
-                  message: "Image has been selected successfully ",
+                  message: translate("Image has been selected successfully"),
                   position: "top",
                   type: "success"
                 });
               }
             })
             .catch(error => {
+              console.log(error);
+
               this.onToggleModal(false);
               showMessage({
-                message: "Please choose an image not ",
+                message: translate("Please choose another image"),
                 position: "top",
                 type: "warning"
               });
@@ -367,8 +388,9 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message:
-              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px.",
+            message: translate(
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+            ),
             position: "top",
             type: "warning"
           });
@@ -383,7 +405,9 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message: "Image must be less than 2 MBs.",
+            message: translate("Image must be less than {{fileSize}} MBs", {
+              fileSize: 2
+            }),
             position: "top",
             type: "warning"
           });
@@ -400,7 +424,7 @@ class CollectionMedia extends Component {
           });
           this.onToggleModal(false);
           showMessage({
-            message: "Image has been selected successfully ",
+            message: translate("Image has been selected successfully"),
             position: "top",
             type: "success"
           });
@@ -411,7 +435,7 @@ class CollectionMedia extends Component {
         isNull(this.state.collection.collection_media)
       ) {
         showMessage({
-          message: "Please choose a media file.",
+          message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
         });
@@ -435,12 +459,14 @@ class CollectionMedia extends Component {
   };
 
   askForPermssion = async () => {
+    const { translate } = this.props.screenProps;
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
     if (status !== "granted") {
       this.onToggleModal(false);
       showMessage({
-        message: "Please allow access to the gallary to upload media.",
+        message: translate(
+          "Please allow access to the gallery to upload media"
+        ),
         position: "top",
         type: "warning"
       });
@@ -451,18 +477,14 @@ class CollectionMedia extends Component {
   formatMedia() {
     var body = new FormData();
 
-    let res = this.state.localUri.split(
-      this.state.localUri.includes("/ImageManipulator/")
-        ? "/ImageManipulator/"
-        : this.state.directory
-    );
-
-    let format = res[1].split(".");
+    let res = this.state.localUri.split("/");
+    res = res[res.length - 1];
+    let format = res.split(".");
 
     var photo = {
       uri: this.state.localUri,
       type: "IMAGE" + "/" + format[1],
-      name: res[1]
+      name: res
     };
     body.append("collection_name", this.state.collection.collection_name);
     body.append(
@@ -488,13 +510,27 @@ class CollectionMedia extends Component {
     }
     body.append("collection_order", this.state.collection.collection_order);
     body.append("collection_media", photo);
-    body.append("campaign_id", this.props.campaign_id);
-    body.append("campaign_name", this.props.data.name);
+    body.append(
+      "campaign_id",
+      this.props.navigation.getParam("rejected", false)
+        ? this.props.navigation.getParam("selectedCampaign", {}).campaign_id
+        : this.props.campaign_id
+    );
+    body.append(
+      "campaign_name",
+      this.props.navigation.getParam("rejected", false)
+        ? this.props.navigation.getParam("selectedCampaign", {}).name
+        : this.props.data.name
+    );
     // body.append("ad_account_id", this.props.mainBusiness.snap_ad_account_id);
 
     if (this.state.collection.collection_id !== "") {
       body.append("collection_id", this.state.collection.collection_id);
     }
+    body.append(
+      "collection_media_upload",
+      this.state.rejectionColUpload ? 1 : 0
+    );
 
     this.setState({
       formatted: body
@@ -502,48 +538,54 @@ class CollectionMedia extends Component {
   }
 
   _handleSubmission = async () => {
-    if (this.props.collectionAdLinkForm === 1) {
-      if (this.validateUrl() && this.validateImage()) {
-        await this.formatMedia();
-        await this.handleUpload();
-        this.props.save_collection_media(
-          this.state.formatted,
-          this.state.localUri,
-          this._getUploadState,
-          this.props.navigation,
-          this.state.signal,
-          this.onToggleModal
-        );
+    if (this.state.rejectionColUpload) {
+      if (this.props.collectionAdLinkForm === 1) {
+        if (this.validateUrl() && this.validateImage()) {
+          await this.formatMedia();
+          await this.handleUpload();
+          this.props.save_collection_media(
+            this.state.formatted,
+            this.state.localUri,
+            this._getUploadState,
+            this.props.navigation,
+            this.state.signal,
+            this.onToggleModal
+          );
+        }
+      } else {
+        if (this.validateDeepLinkUrl() && this.validateImage()) {
+          await this.formatMedia();
+          await this.handleUpload();
+          this.props.save_collection_media(
+            this.state.formatted,
+            this.state.localUri,
+            this._getUploadState,
+            this.props.navigation,
+            this.state.signal,
+            this.onToggleModal
+          );
+        }
       }
     } else {
-      if (this.validateDeepLinkUrl() && this.validateImage()) {
-        await this.formatMedia();
-        await this.handleUpload();
-        this.props.save_collection_media(
-          this.state.formatted,
-          this.state.localUri,
-          this._getUploadState,
-          this.props.navigation,
-          this.state.signal,
-          this.onToggleModal
-        );
-      }
+      this.props.navigation.goBack();
     }
   };
 
   validateDeepLinkUrl = () => {
-    const deep_link_urlError = validateWrapper(
+    const { translate } = this.props.screenProps;
+    const deep_link_uriError = validateWrapper(
       "deepLink",
       this.state.collection.collection_attachment
     );
     this.setState({
-      deep_link_urlError
+      deep_link_uriError
     });
-    if (deep_link_urlError) {
+    if (deep_link_uriError) {
       showMessage({
-        message: "Invalid deep link url.",
-        description:
-          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'",
+        message: translate("Invalid deep link URL"),
+        description: translate(
+          "A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://urlcom'"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -555,6 +597,7 @@ class CollectionMedia extends Component {
   };
 
   renderMediaButton = () => {
+    const { translate } = this.props.screenProps;
     if (this.state.collection.collection_media) {
       return (
         <TouchableOpacity
@@ -564,7 +607,7 @@ class CollectionMedia extends Component {
           }}
         >
           <CameraEdit width={70} height={70} />
-          <Text style={styles.mediaButtonMsg1}>{"Edit Image"}</Text>
+          <Text style={styles.mediaButtonMsg1}>{translate("Edit Image")}</Text>
         </TouchableOpacity>
       );
     } else {
@@ -578,8 +621,8 @@ class CollectionMedia extends Component {
           <Icon style={styles.icon} name="camera" />
           <Text style={styles.mediaButtonMsg}>
             {this.state.collection.collection_media
-              ? "Edit Image"
-              : "Add Image"}
+              ? translate("Edit Image")
+              : translate("Add Image")}
           </Text>
         </Button>
       );
@@ -587,21 +630,7 @@ class CollectionMedia extends Component {
   };
 
   render() {
-    // let mediaButton = (
-
-    //   <Button
-    //     style={styles.inputMiddleButton}
-    //     onPress={() => {
-    //       this._pickImage();
-    //     }}
-    //   >
-    //     <Icon style={styles.icon} name="camera" />
-    //     <Text style={styles.mediaButtonMsg}>
-    //       {this.state.collection.collection_media ? "Edit Image" : "Add Image"}
-    //     </Text>
-    //   </Button>
-    // );
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -609,25 +638,22 @@ class CollectionMedia extends Component {
       >
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Go Back from Collection Media Upload",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Compose Collection Ad"
+            title={"Compose Collection Ad"}
           />
-          <ScrollView
-            contentContainerStyle={styles.contentContainer}
-            // scrollEnabled={false}
-            // padder
-          >
+          <ScrollView contentContainerStyle={styles.contentContainer}>
             <KeyboardShift style={{}}>
               {() => (
                 <View style={styles.mainView}>
                   <View style={styles.imageView}>
                     <Text style={styles.productText}>
-                      {`Product ${parseInt(
+                      {`${translate("Product")} ${parseInt(
                         this.state.collection.collection_order
                       ) + 1}`}
                     </Text>
@@ -635,7 +661,6 @@ class CollectionMedia extends Component {
                   {isNull(this.state.collection.collection_media) ? (
                     <View style={styles.placeholder}>
                       <View style={styles.blankView} />
-                      {/* {mediaButton} */}
                       {this.renderMediaButton()}
                     </View>
                   ) : (
@@ -646,36 +671,35 @@ class CollectionMedia extends Component {
                         resizeMode="cover"
                       />
                       {this.renderMediaButton()}
-                      {/* {mediaButton} */}
                     </View>
                   )}
                   {!this.state.imageError ? null : (
                     <Text style={styles.errorMsg}>
                       {!this.state.imageError.includes("blank")
                         ? this.state.imageError
-                        : "Please choose an image or video"}
+                        : translate("Please choose an image or video")}
                     </Text>
                   )}
 
                   {this.props.collectionAdLinkForm === 2 ? (
                     <Animatable.View
                       onAnimationEnd={() =>
-                        this.setState({ deep_link_urlError: null })
+                        this.setState({ deep_link_uriError: null })
                       }
                       duration={200}
                       easing={"ease"}
-                      animation={!this.state.deep_link_urlError ? "" : "shake"}
+                      animation={!this.state.deep_link_uriError ? "" : "shake"}
                       style={{ marginVertical: 30 }}
                     >
                       <View style={styles.deepLinkLabelView}>
                         <Text uppercase style={styles.inputLabel}>
-                          deeplink url
+                          {translate("Deep Link URL")}
                         </Text>
                       </View>
                       <Item
                         style={[
                           styles.input
-                          // this.state.deep_link_urlError
+                          // this.state.deep_link_uriError
                           //   ? GlobalStyles.redBorderColor
                           //   : GlobalStyles.transparentBorderColor
                         ]}
@@ -683,7 +707,7 @@ class CollectionMedia extends Component {
                         <Input
                           value={this.state.collection.collection_attachment}
                           style={styles.inputtext}
-                          placeholder="Enter Deeplink URL"
+                          placeholder={translate("Enter Deep Link URL")}
                           placeholderTextColor="white"
                           autoCorrect={false}
                           autoCapitalize="none"
@@ -702,64 +726,12 @@ class CollectionMedia extends Component {
                       </Item>
                     </Animatable.View>
                   ) : (
-                    <View>
-                      <View style={styles.topContainer}>
-                        <Button
-                          // block
-                          // dark
-                          style={[
-                            this.state.networkString === "http://"
-                              ? styles.activeButton
-                              : styles.button2,
-                            styles.collectionAdLinkForm1
-                          ]}
-                          onPress={() => {
-                            this.setState({
-                              networkString: "http://"
-                            });
-                          }}
-                        >
-                          <Text
-                            style={[
-                              this.state.networkString === "http://"
-                                ? styles.activeText
-                                : styles.inactiveText
-                            ]}
-                          >
-                            http://
-                          </Text>
-                        </Button>
-                        <Button
-                          // block
-                          // dark
-                          style={[
-                            this.state.networkString === "https://"
-                              ? styles.activeButton
-                              : styles.button2,
-                            styles.collectionAdLinkForm2
-                          ]}
-                          onPress={() => {
-                            this.setState({
-                              networkString: "https://"
-                            });
-                          }}
-                        >
-                          <Text
-                            style={[
-                              this.state.networkString === "https://"
-                                ? styles.activeText
-                                : styles.inactiveText
-                            ]}
-                          >
-                            https://
-                          </Text>
-                        </Button>
-                      </View>
+                    <View style={styles.topContainer}>
                       <View style={styles.inputContainer}>
                         <View style={styles.websiteView}>
                           <View style={[styles.websiteLabelView]}>
                             <Text uppercase style={[styles.inputLabel]}>
-                              website
+                              {translate("Website")}
                             </Text>
                           </View>
                           <Item
@@ -770,12 +742,48 @@ class CollectionMedia extends Component {
                               //     : GlobalStyles.transparentBorderColor
                             ]}
                           >
-                            <Text style={styles.networkLabel}>
-                              {this.state.networkString}
-                            </Text>
+                            <TouchableOpacity
+                              style={[
+                                GlobalStyles.orangeBackgroundColor,
+                                {
+                                  borderRadius: 30,
+                                  width: 54,
+                                  height: 54,
+                                  alignItems: "center",
+                                  justifyContent: "center"
+                                }
+                              ]}
+                              onPress={() => {
+                                if (this.state.networkString === "https://") {
+                                  this.setState({
+                                    networkString: "http://"
+                                  });
+                                } else {
+                                  this.setState({
+                                    networkString: "https://"
+                                  });
+                                }
+                              }}
+                            >
+                              <Text uppercase style={styles.networkLabel}>
+                                {this.state.networkString === "https://"
+                                  ? "https"
+                                  : "http"}
+                              </Text>
+                              <Text uppercase style={styles.networkLabel}>
+                                {`< >`}
+                              </Text>
+                            </TouchableOpacity>
                             <Input
-                              style={[styles.inputtext, { textAlign: "left" }]}
-                              placeholder="Enter your website's URL"
+                              style={[
+                                styles.inputtext,
+                                I18nManager.isRTL
+                                  ? { textAlign: "right" }
+                                  : { textAlign: "left" }
+                              ]}
+                              placeholder={translate(
+                                "Enter your website's URL"
+                              )}
                               placeholderTextColor={globalColors.white}
                               value={
                                 this.state.collection.collection_attachment
@@ -787,7 +795,8 @@ class CollectionMedia extends Component {
                                   collection: {
                                     ...this.state.collection,
                                     collection_attachment: value
-                                  }
+                                  },
+                                  rejectionColUpload: true
                                 })
                               }
                               onBlur={() => this.validateUrl()}
@@ -813,7 +822,7 @@ class CollectionMedia extends Component {
               </View>
             ) : (
               <Text style={styles.footerTextStyle}>
-                Please add media and link to proceed
+                {translate("Please add media and link to proceed")}
               </Text>
             )}
           </View>
@@ -830,19 +839,21 @@ class CollectionMedia extends Component {
             >
               {this.props.loading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.cancelUpload()}
-                  title="Uploading Image"
+                  title={"Uploading Image"}
                 />
               )}
               {!this.props.loading && (
                 <CustomHeader
+                  screenProps={this.props.screenProps}
                   closeButton={true}
                   actionButton={() => this.onToggleModal(false)}
                 />
               )}
 
-              <CameraLoading style={{ width: 110, height: 110 }} />
+              <CameraLoading center={true} />
               {this.props.loading && (
                 <View style={styles.loadingContainer}>
                   <Text style={styles.uplaodPercentage}>
@@ -850,8 +861,9 @@ class CollectionMedia extends Component {
                   </Text>
 
                   <Text style={styles.uplaodText}>
-                    Please make sure not to close {"\n"}the app or lock the
-                    phone while uploading.
+                    {translate(
+                      "Please make sure not to close the app or lock the phone while uploading"
+                    )}
                   </Text>
                 </View>
               )}

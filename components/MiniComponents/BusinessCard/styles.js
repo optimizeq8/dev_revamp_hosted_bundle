@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#751AFF"
   },
-  image: {
+  media: {
     alignSelf: "center",
     height: 120,
     width: 120,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   subtext: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 12,
     paddingTop: 5,
     color: "#fff",

@@ -6,16 +6,27 @@ import {
   ScrollView,
   PixelRatio
 } from "react-native";
+import { connect } from "react-redux";
 import { Input, Button, Item, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
-
+import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 import LocationIcon from "../../../assets/SVGs/Location";
 
-export default class SelectRegions extends Component {
+class SelectRegions extends Component {
+  state = { selectedAll: false };
+
+  // selectAll = () => {
+  //   this.setState({ selectedAll: !this.state.selectedAll });
+  //   this.props.regions.forEach(region =>
+  //     this.props.onSelectedRegionChange(region.id, region.name)
+  //   );
+  // };
+
   render() {
+    const { translate } = this.props.screenProps;
     let regionlist = this.props.filteredRegions.map(c => {
       return (
         <TouchableOpacity
@@ -42,7 +53,7 @@ export default class SelectRegions extends Component {
               styles.optionsIconSize
             ]}
           />
-          <Text style={styles.optionsTextContainer}>{c.name}</Text>
+          <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
         </TouchableOpacity>
       );
     });
@@ -60,13 +71,15 @@ export default class SelectRegions extends Component {
               style={styles.locationIcon}
             />
             <Text style={[styles.title]}>
-              {this.props.addressForm ? "Select Region" : "Select Regions"}{" "}
+              {this.props.addressForm
+                ? translate("Select Region")
+                : translate("Select Regions")}{" "}
             </Text>
 
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Region..."
+                  placeholder={translate("Search Region")}
                   style={[
                     styles.searchRegionText,
                     {
@@ -78,29 +91,37 @@ export default class SelectRegions extends Component {
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredR = this.props.regions.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
+                      translate(c.name)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.props.filterRegions(filteredR);
                   }}
                 />
               </Item>
-              {this.props.countryName === "" ? (
-                <Text
-                  style={{
-                    paddingVertical: 20,
-                    color: "#FFFF",
-                    fontSize: 16,
-                    textAlign: "center",
-                    fontFamily: "montserrat-regular"
-                  }}
-                >
-                  Please select a country to see the regions
-                </Text>
-              ) : (
-                <ScrollView style={[styles.regionListContainer]}>
-                  {regionlist}
-                </ScrollView>
-              )}
+
+              <ScrollView style={[styles.regionListContainer]}>
+                {!this.props.addressForm && (
+                  <TouchableOpacity
+                    style={[
+                      styles.languageRowConatiner,
+                      { alignSelf: "center" }
+                    ]}
+                    onPress={() => this.props.onSelectedRegionChange(-1, "all")}
+                  >
+                    <Text
+                      style={[
+                        styles.optionsTextContainer,
+                        { paddingLeft: 0, textDecorationLine: "underline" }
+                      ]}
+                    >
+                      {translate("Select all")}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {regionlist}
+              </ScrollView>
             </View>
           </View>
 
@@ -115,3 +136,15 @@ export default class SelectRegions extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  data: state.campaignC.data
+});
+const mapDispatchToProps = dispatch => ({
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectRegions);

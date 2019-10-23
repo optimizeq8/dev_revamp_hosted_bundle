@@ -58,8 +58,9 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
     height: hp("14"),
-    position: "absolute",
-    bottom: "12%",
+    top: 10,
+    // position: "absolute",
+    // bottom: 100,
     width: "100%",
     justifyContent: "center"
   },

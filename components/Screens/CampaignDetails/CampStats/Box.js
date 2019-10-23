@@ -7,10 +7,11 @@ import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import formatNumber from "../../../formatNumber";
 class Box extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let { info, title, dollar } = this.props;
     return (
       <View style={styles.boxStats}>
-        <Text style={styles.stats}>{title}</Text>
+        <Text style={styles.stats}>{translate(title)}</Text>
         {this.props.loadingCampaignStats || (!info && info !== 0) ? (
           <PlaceholderLine />
         ) : (

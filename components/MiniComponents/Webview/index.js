@@ -5,6 +5,7 @@ import CustomHeader from "../Header";
 import { Container, Content } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import { LinearGradient } from "expo-linear-gradient";
+import { colors } from "../../GradiantColors/colors";
 import styles from "./styles";
 import Loading from "../LoadingScreen";
 export default class index extends Component {
@@ -17,21 +18,32 @@ export default class index extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <LinearGradient
-          colors={["#751AFF", "#6268FF"]}
-          locations={[0.3, 1]}
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <Container style={styles.container}>
-          <CustomHeader navigation={this.props.navigation} title={title} />
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+            containerStyle={{ height: "3%" }}
+            titelStyle={{ top: 5, left: 0 }}
+            title={title}
+          />
           <Content
             contentContainerStyle={styles.contentContainer}
             scrollEnabled={false}
             padder
           >
             <WebView
-              startInLoadingState
-              renderLoading={() => <Loading dash={true} />}
-              style={{ backgroundColor: "#0000" }}
+              startInLoadingState={true}
+              renderLoading={() => (
+                <View style={{ height: "100%", backgroundColor: "#0000" }}>
+                  <Loading top={40} />
+                </View>
+              )}
+              style={{ backgroundColor: "transparent" }}
+              contentContainerStyle={{ backgroundColor: "transparent" }}
               ref={ref => (this.webview = ref)}
               source={{ uri: url }}
             />

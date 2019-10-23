@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Text, Item, Input } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-navigation";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -69,31 +69,36 @@ class ForgotPassword extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
-        <CustomHeader navigation={this.props.navigation} closeButton={true} />
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+          closeButton={true}
+        />
         <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
           <View style={styles.mainCard}>
             <View>
               <Logo
                 style={styles.logo}
-                width={heightPercentageToDP(15)}
-                height={heightPercentageToDP(15)}
+                width={heightPercentageToDP(12)}
+                height={heightPercentageToDP(12)}
               />
               <Text style={styles.logoText}>Optimize</Text>
             </View>
             <KeyboardShift>
               {() => (
                 <>
-                  <Text style={styles.text}>Password Reset</Text>
+                  <Text style={styles.text}>{translate("Password Reset")}</Text>
 
                   <Text style={styles.link}>
-                    Please enter your email address.
+                    {translate("Please enter your email address")}
                   </Text>
 
                   <View style={styles.mainView}>
@@ -124,7 +129,7 @@ class ForgotPassword extends Component {
                             )
                           });
                         }}
-                        placeholder="Email"
+                        placeholder={translate("Email")}
                       />
                     </Item>
                   </View>

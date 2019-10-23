@@ -7,31 +7,20 @@ import {
 
 export default StyleSheet.create({
   lottieViewContainer: {
-    // zIndex: 10,
-    alignSelf: "center",
-    width: 90,
-    height: 90,
-    alignContent: "center",
-    alignItems: "center"
+    width: 100,
+    height: 100
   },
   mainView: {
-    // position: "absolute",
-
     alignSelf: "center",
-    display: "flex",
-    alignItems: "center",
-    position: "absolute",
+    position: "absolute"
 
-    justifyContent: "center",
-    top: "52%",
-    left: "48%",
-    transform: [
-      {
-        translateX: -50
-      },
-      {
-        translateY: -50
-      }
-    ]
+    // transform: [
+    //   {
+    //     translateX: -50
+    //   },
+    //   {
+    //     translateY: -50
+    //   }
+    // ]
   }
 });

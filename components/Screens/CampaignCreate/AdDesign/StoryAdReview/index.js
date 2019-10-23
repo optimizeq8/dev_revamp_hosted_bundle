@@ -1,6 +1,12 @@
 //Components
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  BackHandler,
+  Image as RNImage,
+  Platform
+} from "react-native";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { Container, Content, Text } from "native-base";
@@ -8,10 +14,11 @@ import { Container, Content, Text } from "native-base";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
 import CustomHeader from "../../../../MiniComponents/Header";
+import { Image } from "react-native-expo-image-cache";
 
 //icons
-import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles.svg";
-import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar.svg";
+import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles";
+import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar";
 // Style
 import styles from "./styles";
 
@@ -40,14 +47,75 @@ class StoryAdDesignReview extends Component {
   perviewStoryAds = () => {
     this.props.navigation.push("AdDesignReview", {
       storyAds: true,
+      campaignDetails: this.props.navigation.getParam("campaignDetails", false),
+      storyAdsArray: this.props.navigation.getParam("storyAdsArray", {}),
       headline: this.props.navigation.getParam("headline", ""),
-      brand_name: this.props.navigation.getParam("brand_name", "")
+      brand_name: this.props.navigation.getParam("brand_name", ""),
+      adDesign: this.props.navigation.getParam("adDesign", false),
+      adType: this.props.navigation.getParam("adType", false),
+      destination: this.props.navigation.getParam("destination", false),
+      call_to_action: this.props.navigation.getParam("call_to_action", false)
     });
   };
   render() {
-    const cover = this.props.navigation.getParam("cover", "");
-    const logo = this.props.navigation.getParam("logo", "");
-    const coverHeadline = this.props.navigation.getParam("coverHeadline", "");
+    const { translate } = this.props.screenProps;
+    let cover = this.props.navigation.getParam("cover", "");
+    cover = cover;
+    let logo = this.props.navigation.getParam("logo", "");
+    logo = logo;
+
+    let coverHeadline = this.props.navigation.getParam("coverHeadline", "");
+    let preview = {
+      uri:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    };
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let ImageOrRNImage =
+      Platform.OS === "ios" ? (
+        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
+          <Image
+            {...{ preview, uri: cover }}
+            // source={{ uri: cover }}
+            style={styles.cover}
+            resizeMode="cover"
+          />
+          <View style={styles.logoStyle}>
+            <Image
+              {...{ preview, uri: logo }}
+              resizeMode="contain"
+              style={styles.logo}
+            />
+          </View>
+          <View style={styles.headlineStyle}>
+            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
+            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
+          <RNImage
+            source={{ uri: cover }}
+            style={styles.cover}
+            resizeMode="cover"
+          />
+          <View style={styles.logoStyle}>
+            <RNImage
+              resizeMode="contain"
+              style={styles.logo}
+              source={{
+                uri: logo
+              }}
+            />
+          </View>
+          <View style={styles.headlineStyle}>
+            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
+            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
+          </View>
+        </TouchableOpacity>
+      );
 
     return (
       <SafeAreaView
@@ -56,13 +124,14 @@ class StoryAdDesignReview extends Component {
       >
         <Container style={styles.container}>
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Stroy Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             actionButton={this.props.navigation.goBack}
-            title="Compose Ad"
+            title={campaignDetails ? "Cover Review" : "Compose Ad"}
           />
           <Content
             padder
@@ -88,69 +157,14 @@ class StoryAdDesignReview extends Component {
                         height: "70%"
                       }}
                     >
-                      <Text style={styles.heading}>Friends</Text>
+                      <Text style={styles.heading}>{translate("Friends")}</Text>
                       <Circles height="80%" width="100%" />
                     </View>
                   </View>
-                  <Text style={styles.heading}>For You</Text>
+                  <Text style={styles.heading}>{translate("For You")}</Text>
 
                   <View style={styles.tilesGrid}>
-                    <TouchableOpacity
-                      onPress={this.perviewStoryAds}
-                      style={styles.tiles}
-                    >
-                      <Image
-                        source={{ uri: cover }}
-                        style={styles.cover}
-                        resizeMode="cover"
-                      />
-                      <View
-                        style={{
-                          width: "100%",
-                          height: "30%",
-                          justifyContent: "flex-start",
-                          top: 10
-                        }}
-                      >
-                        <Image
-                          resizeMode="contain"
-                          style={styles.logo}
-                          source={{
-                            uri: logo
-                          }}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          // top: "65%",
-                          left: 10,
-                          position: "absolute",
-                          width: "100%",
-                          bottom: 0
-                        }}
-                      >
-                        <Text
-                          numberOfLines={4}
-                          style={{
-                            fontFamily: "montserrat-bold",
-                            color: "#fff",
-                            fontSize: 16,
-                            width: "90%"
-                          }}
-                        >
-                          {coverHeadline}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: "montserrat-regular",
-                            color: "#fff",
-                            fontSize: 14
-                          }}
-                        >
-                          Sponsored
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
+                    {ImageOrRNImage}
                     <View style={styles.tiles} />
                   </View>
 

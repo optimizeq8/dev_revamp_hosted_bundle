@@ -8,14 +8,14 @@ import {
   TouchableOpacity
 } from "react-native";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import Chart from "../../MiniComponents/CampaignDetailCharts";
 import Duration from "../../Screens/CampaignCreate/AdObjective/Duration";
 import LineChartGraphs from "./LineChartGraphs";
 import CampaginStats from "./CampStats/CampaignStats";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import BarIcon from "../../../assets/SVGs/Bar.svg";
+import BarIcon from "../../../assets/SVGs/Bar";
 
 import { colors } from "../../GradiantColors/colors";
 
@@ -43,7 +43,10 @@ export default class SlideUpPanel extends Component {
       // start_time: "2019-05-09",
       // end_time: "2019-05-25"
       start_time: selectedCampaign.start_time,
-      end_time: selectedCampaign.end_time
+      end_time:
+        new Date(selectedCampaign.end_time) < new Date()
+          ? selectedCampaign.end_time
+          : new Date()
     });
     this.setState({ refreshing: false });
   };
@@ -64,6 +67,7 @@ export default class SlideUpPanel extends Component {
     ]).start();
   };
   render() {
+    const { translate } = this.props.screenProps;
     let selectedCampaign = this.props.selectedCampaign;
     this._draggedValue.addListener(({ value }) => {
       this.hideCharts(value);
@@ -126,7 +130,7 @@ export default class SlideUpPanel extends Component {
           }}
           onDragEnd={value => {
             if (!this.state.gotStats) this.setState({ gotStats: true });
-            if (value > hp("50%")) {
+            if (value > hp("30%")) {
               this._panel.show();
             } else {
               this._panel.hide();
@@ -146,6 +150,7 @@ export default class SlideUpPanel extends Component {
                 ]}
               >
                 <ChartChoices
+                  screenProps={this.props.screenProps}
                   changeChart={this.changeChart}
                   selectedCampaign={selectedCampaign}
                 />
@@ -153,11 +158,14 @@ export default class SlideUpPanel extends Component {
               <View style={styles.bottomContainer}>
                 <View style={styles.dragHandler} {...dragHandler}>
                   <LinearGradient
-                    colors={["#751AFF", "#751AFF"]}
+                    colors={[colors.background1, colors.background2]}
+                    locations={[1, 0.3]}
                     style={styles.tab}
                   >
                     <BarIcon style={styles.handlerIcon} />
-                    <Text style={styles.handlerText}>Dashboard</Text>
+                    <Text style={styles.handlerText}>
+                      {translate("Dashboard")}
+                    </Text>
                   </LinearGradient>
                 </View>
                 <LinearGradient
@@ -183,19 +191,26 @@ export default class SlideUpPanel extends Component {
                               // start_time: "2019-05-09",
                               // end_time: "2019-05-25"
                               start_time: selectedCampaign.start_time,
-                              end_time: selectedCampaign.end_time
+                              end_time:
+                                new Date(selectedCampaign.end_time) < new Date()
+                                  ? selectedCampaign.end_time
+                                  : new Date()
                             });
                           this._panel.show();
                         }
                       }}
                     >
-                      <Chart campaign={selectedCampaign} />
+                      <Chart
+                        screenProps={this.props.screenProps}
+                        campaign={selectedCampaign}
+                      />
                     </TouchableOpacity>
                   </Animated.View>
                   <Animated.View style={[lineAnimatedStyles]}>
                     <View style={{ top: 10, marginBottom: 10 }}>
                       {selectedCampaign ? (
                         <Duration
+                          screenProps={this.props.screenProps}
                           slidePanel={true}
                           start_time={this.props.start_time}
                           end_time={this.props.end_time}
@@ -214,15 +229,21 @@ export default class SlideUpPanel extends Component {
                           onRefresh={() => this._onRefresh(selectedCampaign)}
                         />
                       }
+                      style={{ zIndex: 2 }}
                       contentContainerStyle={{
-                        paddingBottom: 130000 / (hp(100) / 3)
+                        paddingBottom: 130000 / (hp(100) / 3),
+                        zIndex: 2
                       }}
                     >
                       <LineChartGraphs
+                        screenProps={this.props.screenProps}
                         chartChoice={this.state.chartChoice}
                         campaign={selectedCampaign}
                       />
-                      <CampaginStats selectedCampaign={selectedCampaign} />
+                      <CampaginStats
+                        selectedCampaign={selectedCampaign}
+                        screenProps={this.props.screenProps}
+                      />
                     </ScrollView>
                   </Animated.View>
                 </LinearGradient>

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import LocationIcon from "../../../assets/SVGs/Location.svg";
-import InterestIcon from "../../../assets/SVGs/Interests.svg";
+import LocationIcon from "../../../assets/SVGs/Location";
+import InterestIcon from "../../../assets/SVGs/Interests";
 import OperatingSystem from "../../../assets/SVGs/AdDetails/OperatingSystem";
 
 import styles from "./styles";
@@ -11,34 +11,34 @@ import { globalColors } from "../../../GlobalStyles";
 import { Icon } from "native-base";
 export default class OptionalTargets extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let targeting = this.props.targeting;
     return (
-      <ScrollView
-        contentContainerStyle={{
-          paddingBottom: hp(80),
-          width: "100%"
-        }}
-      >
+      <View>
         {this.props.region_names.length > 0 && (
           <View style={styles.optionalTargets}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={styles.categoryView}>
               <LocationIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>Regions</Text>
+              <Text style={styles.categories}>
+                {translate("Regions") + "\n"}
+                <Text numberOfLines={1} style={[styles.subtext]}>
+                  {this.props.region_names}
+                </Text>
+              </Text>
             </View>
-
-            <Text style={[styles.subtext]}>{this.props.region_names}</Text>
           </View>
         )}
         {this.props.interesetNames.length > 0 && (
           <View style={styles.optionalTargets}>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <View style={styles.categoryView}>
               <InterestIcon width={hp("2")} height={hp("2")} />
-              <Text style={styles.categories}>Interests</Text>
+              <Text numberOfLines={4} style={styles.categories}>
+                {translate("Interests") + "\n"}
+                <Text numberOfLines={1} style={[styles.subtext]}>
+                  {this.props.interesetNames.join(", ")}
+                </Text>
+              </Text>
             </View>
-
-            <Text style={[styles.subtext]}>
-              {this.props.interesetNames.join(",\n")}
-            </Text>
           </View>
         )}
         {this.props.deviceMakes.length > 0 && (
@@ -53,10 +53,11 @@ export default class OptionalTargets extends Component {
                   fontSize: 23
                 }}
               />
-              <Text style={styles.categories}>Device Makes</Text>
+              <Text numberOfLines={4} style={styles.categories}>
+                {translate("Device Make") + "\n"}{" "}
+                <Text style={[styles.subtext]}>{this.props.deviceMakes}</Text>
+              </Text>
             </View>
-
-            <Text style={[styles.subtext]}>{this.props.deviceMakes}</Text>
           </View>
         )}
         {targeting.hasOwnProperty("devices") &&
@@ -68,12 +69,13 @@ export default class OptionalTargets extends Component {
                   width={hp("2.5")}
                   height={hp("2.5")}
                 />
-                <Text style={styles.categories}>Operating System</Text>
+                <Text style={styles.categories}>
+                  {translate("Operating System") + "\n"}
+                  <Text numberOfLines={1} style={[styles.subtext]}>
+                    {targeting.devices[0].os_type}
+                  </Text>
+                </Text>
               </View>
-
-              <Text style={[styles.subtext]}>
-                {targeting.devices[0].os_type}
-              </Text>
             </View>
           )}
         {targeting.hasOwnProperty("devices") &&
@@ -90,16 +92,17 @@ export default class OptionalTargets extends Component {
                     paddingLeft: 10
                   }}
                 />
-                <Text style={styles.categories}>OS Versions</Text>
+                <Text style={styles.categories}>
+                  {translate("OS Versions") + "\n"}
+                  <Text numberOfLines={1} style={[styles.subtext]}>
+                    {targeting.devices[0].os_version_min + ", "}
+                    {targeting.devices[0].os_version_max}
+                  </Text>
+                </Text>
               </View>
-
-              <Text style={[styles.subtext]}>
-                {targeting.devices[0].os_version_min + ", "}
-                {targeting.devices[0].os_version_max}
-              </Text>
             </View>
           )}
-      </ScrollView>
+      </View>
     );
   }
 }

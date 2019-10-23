@@ -1,6 +1,11 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity
+} from "react-native";
 import { Button, Text, Item, Input, Container } from "native-base";
 import {
   heightPercentageToDP,
@@ -17,6 +22,8 @@ import * as actionCreators from "../../../store/actions";
 
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import KeyboardShift from "../../MiniComponents/KeyboardShift";
+import LowerButton from "../../MiniComponents/LowerButton";
+import ForwardLoading from "../../MiniComponents/ForwardLoading";
 
 // Validation
 import validateWrapper from "./ValidateWrapper";
@@ -24,6 +31,8 @@ import validateWrapper from "./ValidateWrapper";
 // Icons
 import Logo from "../../../assets/SVGs/Optimize";
 import Background from "../../../assets/SVGs/Background";
+import UserProfile from "../../../assets/SVGs/UserProfile";
+import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 
 // Style
 import styles from "./styles";
@@ -71,6 +80,7 @@ class MainForm extends Component {
   }
   render() {
     let invite = this.props.navigation.getParam("invite", false);
+    const { translate } = this.props.screenProps;
 
     return (
       <SafeAreaView
@@ -79,7 +89,7 @@ class MainForm extends Component {
       >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
-          locations={[0.7, 1]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <Container style={styles.container}>
@@ -98,8 +108,8 @@ class MainForm extends Component {
               <View style={styles.logoContainer}>
                 <Logo
                   style={styles.logo}
-                  width={heightPercentageToDP(15)}
-                  height={heightPercentageToDP(15)}
+                  width={heightPercentageToDP(12)}
+                  height={heightPercentageToDP(12)}
                 />
                 <Text style={styles.logoText}>Optimize</Text>
               </View>
@@ -118,6 +128,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
+                        <UserProfile style={styles.inputIcon} fill={"#fff"} />
                         <Input
                           placeholderTextColor="#fff"
                           autoCorrect={false}
@@ -125,7 +136,7 @@ class MainForm extends Component {
                           style={styles.inputText}
                           onChangeText={value => {
                             this.setState({
-                              email: value.replace(/[\s]/gi, "")
+                              email: value.trim()
                             });
                           }}
                           onBlur={() => {
@@ -136,7 +147,7 @@ class MainForm extends Component {
                               )
                             });
                           }}
-                          placeholder="Email"
+                          placeholder={translate("Email")}
                         />
                       </Item>
 
@@ -149,6 +160,7 @@ class MainForm extends Component {
                             : globalStyles.transparentBorderColor
                         ]}
                       >
+                        <PasswordIcon style={styles.inputIcon} fill={"#FFF"} />
                         <Input
                           placeholderTextColor="#fff"
                           secureTextEntry={true}
@@ -169,19 +181,37 @@ class MainForm extends Component {
                               )
                             });
                           }}
-                          placeholder="Password"
+                          placeholder={translate("Password")}
                         />
                       </Item>
-
-                      <Button
+                      {this.props.loading ? (
+                        <ForwardLoading
+                          mainViewStyle={{
+                            width: widthPercentageToDP(9),
+                            height: heightPercentageToDP(9)
+                          }}
+                          bottom={5}
+                          style={{
+                            width: widthPercentageToDP(7),
+                            height: heightPercentageToDP(7)
+                          }}
+                        />
+                      ) : (
+                        <LowerButton
+                          function={() => this._handleSubmission()}
+                        />
+                      )}
+                      {/* <Button
                         block
                         style={styles.button}
                         onPress={() => {
                           this._handleSubmission();
                         }}
                       >
-                        <Text style={styles.buttonText}>Sign in</Text>
-                      </Button>
+                        <Text style={styles.buttonText}>
+                          {translate("Sign in")}
+                        </Text>
+                      </Button> */}
                       <Text
                         onPress={() => {
                           Segment.track("Forgot Password Button");
@@ -189,7 +219,7 @@ class MainForm extends Component {
                         }}
                         style={[styles.link, styles.forgotPasswordLink]}
                       >
-                        Forgot Password?
+                        {translate("Forgot Password?")}
                       </Text>
                     </View>
                   </View>
@@ -199,27 +229,22 @@ class MainForm extends Component {
               {invite && (
                 <View style={styles.bottomInviteViewContainer}>
                   <Text style={[styles.link, styles.dontHaveAccountText]}>
-                    Don’t Have an Account?
+                    {translate("Don’t Have an Account?")}
                   </Text>
-                  <Button
-                    rounded
+                  <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.goBack();
                     }}
-                    style={styles.bottomView}
                   >
-                    <Text style={[styles.buttonText, styles.textInviteCode]}>
-                      Enter Invite Code!
+                    <Text style={styles.createOneText}>
+                      {translate("Create One!")}
                     </Text>
-                  </Button>
+                  </TouchableOpacity>
                 </View>
               )}
             </View>
           </TouchableWithoutFeedback>
         </Container>
-        <Modal visible={this.props.loading}>
-          <LoadingScreen top={0} />
-        </Modal>
       </SafeAreaView>
     );
   }

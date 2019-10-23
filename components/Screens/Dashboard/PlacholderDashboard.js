@@ -1,53 +1,42 @@
-import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-  TouchableWithoutFeedback
-} from "react-native";
-import { Button, Text, Container } from "native-base";
-import LottieView from "lottie-react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
-import * as Segment from "expo-analytics-segment";
-import { ActivityIndicator } from "react-native-paper";
-import * as Animatable from "react-native-animatable";
+import React, { Component } from 'react';
+import { View, TouchableOpacity, ScrollView, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Button, Text, Container } from 'native-base';
+import LottieView from 'lottie-react-native';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import * as Segment from 'expo-analytics-segment';
+import { ActivityIndicator } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
 
 //icons
-import FilterIcon from "../../../assets/SVGs/Filter.svg";
-import SearchIcon from "../../../assets/SVGs/Search.svg";
-import WalletIcon from "../../../assets/SVGs/Wallet.svg";
-import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
+import FilterIcon from '../../../assets/SVGs/Filter.svg';
+import SearchIcon from '../../../assets/SVGs/Search.svg';
+import IntercomIcon from '../../../assets/SVGs/IntercomIcon.svg';
+import BackdropIcon from '../../../assets/SVGs/BackDropIcon';
 
 // Style
-import styles from "./styles";
-import globalStyles from "../../../GlobalStyles";
+import styles from './styles';
+import globalStyles from '../../../GlobalStyles';
 
 //Redux
 
 //Functions
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class PlacholderDashboard extends Component {
-  render() {
-    const mySlideInUp = {
-      from: {
-        top: hp(100)
-      },
-      to: {
-        top: 0
-      }
-    };
-    let placeHolderCards = this.props.placeHolderCards;
-    return (
-      <SafeAreaView
-        style={styles.safeAreaViewContainer}
-        forceInset={{ bottom: "never", top: "always" }}
-      >
-        <BackdropIcon style={styles.backDrop} height={hp("100%")} />
+	render() {
+		const mySlideInUp = {
+			from: {
+				top: hp(100),
+			},
+			to: {
+				top: 0,
+			},
+		};
+		let placeHolderCards = this.props.placeHolderCards;
+		return (
+			<SafeAreaView style={styles.safeAreaViewContainer} forceInset={{ bottom: 'never', top: 'always' }}>
+				<BackdropIcon style={styles.backDrop} height={hp('100%')} />
+
 
         <View style={[styles.mainView, {}]}>
           <TouchableWithoutFeedback
@@ -68,7 +57,7 @@ export default class PlacholderDashboard extends Component {
           </TouchableWithoutFeedback>
           <>
             <TouchableOpacity style={[styles.wallet]}>
-              <WalletIcon width={24} height={24} />
+              <IntercomIcon width={24} height={24} />
             </TouchableOpacity>
           </>
         </View>
@@ -86,28 +75,28 @@ export default class PlacholderDashboard extends Component {
                     <ActivityIndicator />
                  
                   </Button> */}
-                  <View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
-                    <Button style={styles.button}>
-                      <ActivityIndicator />
-                    </Button>
-                  </View>
-                </View>
-              </View>
+									<View style={[styles.sideMenuCard, { top: 10, left: -5 }]}>
+										<Button style={styles.button}>
+											<ActivityIndicator />
+										</Button>
+									</View>
+								</View>
+							</View>
 
-              <ScrollView>{placeHolderCards}</ScrollView>
-              {/* {this.props.loading ? (
+							<ScrollView>{placeHolderCards}</ScrollView>
+							{/* {this.props.loading ? (
               <ActivityIndicator size="large" />
             ) : (
             )} */}
-            </View>
-          </Container>
-          {/* <NavigationEvents
+						</View>
+					</Container>
+					{/* <NavigationEvents
             onDidFocus={() => {
               Segment.screen("Dashboard");
             }}
           /> */}
-        </Animatable.View>
-      </SafeAreaView>
-    );
-  }
+				</Animatable.View>
+			</SafeAreaView>
+		);
+	}
 }

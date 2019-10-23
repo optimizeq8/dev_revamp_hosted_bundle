@@ -5,15 +5,17 @@ import { BlurView } from "expo-blur";
 import { Button } from "native-base";
 
 //Icons
-import PauseIcon from "../../../assets/SVGs/Pause.svg";
-import CloseIcon from "../../../assets/SVGs/Close.svg";
+import PauseIcon from "../../../assets/SVGs/Pause";
+import CloseIcon from "../../../assets/SVGs/Close";
 
 //styles
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
 import { globalColors } from "../../../GlobalStyles";
+import { colors } from "../../GradiantColors/colors";
 export default class StatusModal extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let selectedCampaign = this.props.selectedCampaign;
     return (
       <Modal
@@ -24,8 +26,8 @@ export default class StatusModal extends Component {
         visible={this.props.modalVisible}
       >
         <LinearGradient
-          colors={["#751AFF", "#6268FF"]}
-          locations={[0.3, 1]}
+          colors={[colors.background1, colors.background2]}
+          locations={[1, 0.3]}
           style={styles.gradient}
         />
         <BlurView tint="dark" intensity={100} style={styles.BlurView}>
@@ -44,27 +46,28 @@ export default class StatusModal extends Component {
             height={58}
             style={{ alignSelf: "center", marginBottom: 20 }}
           />
-          <Text style={styles.title}>Ad Pause</Text>
+          <Text style={styles.title}>{translate("Ad Pause")}</Text>
           <Text style={[styles.subHeadings, styles.pauseDes]}>
-            Your ad will be Paused.{"\n"} You will receive the amount remaining
-            from your budget in your
+            {translate(
+              "Your ad will be Paused\nYou will receive the amount remaining from your budget in your"
+            )}
             <Text
               style={[
                 {
-                  fontFamily: "montserrat-semibold",
+                  fontFamily: "montserrat-bold",
                   color: "#fff",
                   fontSize: 14
                 }
               ]}
             >
               {" "}
-              wallet
+              {translate("Wallet")}
             </Text>
           </Text>
           <Text
             style={[
               styles.numbers,
-              { fontSize: 37, fontFamily: "montserrat-semibold" }
+              { fontSize: 37, fontFamily: "montserrat-bold" }
             ]}
           >
             {formatNumber(
@@ -79,7 +82,9 @@ export default class StatusModal extends Component {
               style={styles.statusButtons}
               transparent
             >
-              <Text style={styles.statusButtonsText}>Pause Campaign</Text>
+              <Text style={styles.statusButtonsText}>
+                {translate("Pause Campaign")}
+              </Text>
             </Button>
 
             <Button
@@ -87,7 +92,9 @@ export default class StatusModal extends Component {
               style={styles.statusButtons}
               transparent
             >
-              <Text style={styles.statusButtonsText}>End campaign</Text>
+              <Text style={styles.statusButtonsText}>
+                {translate("End Campaign")}
+              </Text>
             </Button>
             <Text
               style={[
@@ -95,7 +102,7 @@ export default class StatusModal extends Component {
                 { fontFamily: "montserrat-regular", fontSize: 11 }
               ]}
             >
-              The remaining budget will be added to your wallet.
+              {translate("The remaining budget will be added to your wallet")}
             </Text>
           </View>
           {/* <Button

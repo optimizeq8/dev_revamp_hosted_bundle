@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 },
-    elevation: 5
+    shadowOffset: { height: 6, width: 0 }
   },
   header: {
     flex: 1,
@@ -32,12 +31,13 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 16,
     width: "70%",
-    left: 5
+    left: 5,
+    textAlign: "left"
   },
 
   subtext: {
     paddingTop: 5,
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 10,
     color: "#fff"
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   containerStyle: {
     position: "absolute",

@@ -1,9 +1,9 @@
-import { createStackNavigator } from "react-navigation";
 import ErrorRedirect from "../Screens/ErrorRedirect";
 import SuccessRedirect from "../Screens/SuccessRedirect";
 import PaymentForm from "../Screens/PaymentForm";
+import { FluidNavigator } from "react-navigation-fluid-transitions";
 
-export default createStackNavigator(
+export default FluidNavigator(
   {
     ErrorRedirect: {
       screen: ErrorRedirect,

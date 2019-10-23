@@ -1,17 +1,19 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler } from "react-native";
+import { View, BackHandler, Platform, I18nManager } from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import Header from "../../../MiniComponents/Header";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
+import CustomHeader from "../../../MiniComponents/Header";
+import { StackActions, NavigationActions } from "react-navigation";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
+import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
 
 //Style
 import styles from "./styles";
@@ -26,6 +28,11 @@ import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
 import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { from } from "rxjs";
+
+import { BlurView } from "expo-blur";
+import Modal from "react-native-modal";
+import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
 class AdType extends Component {
   static navigationOptions = {
@@ -33,12 +40,18 @@ class AdType extends Component {
   };
   state = {
     activeSlide: 0,
-    media_type: snapAds,
+    media_type:
+      Platform.OS === "android" && I18nManager.isRTL
+        ? snapAds.reverse()
+        : snapAds,
+    isVisible: false,
     campaign_type: "SnapAd",
-    route: "AdObjective"
+    route: "AdObjective",
+    inverted: Platform.OS === "android" && I18nManager.isRTL
   };
 
   componentDidMount() {
+    // console.log("this.props.data", this.props.data);
     if (this.props.data && this.props.data.hasOwnProperty("index")) {
       this.navigationRouteHandler(this.props.data.index);
     }
@@ -60,25 +73,25 @@ class AdType extends Component {
   };
 
   navigationRouteHandler = index => {
-    let route = "";
-    let campaign_type = "";
     let activeSlide = index;
-    switch (index) {
-      case 0:
-        route = "AdObjective";
-        campaign_type = "SnapAd";
-        break;
-
-      case 1:
-        route = "AdObjective";
-        campaign_type = "StoryAd";
-        break;
-      case 2:
-        route = "AdObjective";
-        campaign_type = "CollectionAd";
-        break;
+    if (this.state.inverted) {
+      const reversedSnapAds = this.state.media_type.reverse();
+      // console.log("reversedSnapAds", reversedSnapAds);
+      let campaign_type = reversedSnapAds[index].value;
+      // console.log("index", index);
+      // console.log("campaign_type reverse", campaign_type);
+      let route = reversedSnapAds[index].rout;
+      this.setState({ route, campaign_type, activeSlide });
+    } else {
+      let campaign_type = this.state.media_type[index].value;
+      // console.log("campaign_type", campaign_type);
+      let route = this.state.media_type[index].rout;
+      this.setState({
+        route,
+        campaign_type,
+        activeSlide
+      });
     }
-    this.setState({ route, campaign_type, activeSlide });
   };
 
   handleMediaChange = index => {
@@ -88,7 +101,7 @@ class AdType extends Component {
     switch (index) {
       case 0:
         route = "AdObjective";
-        media_type = snapAds;
+        media_type = StoryAdCards;
         break;
       case 1:
         media_type = twittwerAds;
@@ -115,32 +128,41 @@ class AdType extends Component {
       this.props.resetCampaignInfo();
     }
     this.props.set_adType(this.state.campaign_type);
-    this.props.navigation.navigate(this.state.route);
+    this.props.navigation.navigate(this.state.route, {
+      tempAdType: this.state.campaign_type
+    });
     this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     let MediaIcon = item.icon.type;
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.slide}>
         <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
-        <Text style={styles.iconTitle}>{item.title}</Text>
+        <Text style={styles.iconTitle}>{translate(item.title)}</Text>
       </View>
     );
-  }
+  };
 
   _renderSlides = ({ item }) => {
     return (
       <AdTypeCard
-        key={item.id}
+        key={item.value}
         navigationHandler={this.navigationHandler}
         mainBusiness={this.props.mainBusiness}
         campaign_type={this.state.campaign_type}
         adType={item}
+        screenProps={this.props.screenProps}
       />
     );
   };
+  setModalVisible = (isVisible, resetCampaign) => {
+    this.setState({ isVisible });
+    resetCampaign && this.props.resetCampaignInfo(!resetCampaign);
+  };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -160,14 +182,15 @@ class AdType extends Component {
         />
         <Container style={styles.container}>
           <BackDrop />
-          <Header
+          <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={true}
             segment={{
               str: "Ad Type Close",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
             navigation={this.props.navigation}
-            title="Create a new campaign!"
+            title={"Create a new campaign!"}
           />
 
           <View style={{ height: 90 }}>
@@ -190,11 +213,16 @@ class AdType extends Component {
               this._carousel = c;
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={this.state.media_type}
+            data={
+              this.state.inverted
+                ? this.state.media_type.reverse()
+                : this.state.media_type
+            }
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={250}
             inactiveSlideScale={0.8}
+            inverted={this.state.inverted}
           />
           <Pagination
             containerStyle={{
@@ -218,6 +246,13 @@ class AdType extends Component {
               <LowerButton function={this.navigationHandler} bottom={1} />
             </Animatable.View>
           </View>
+          <View>
+            <ContinueCampaign
+              tempAdType={this.props.adType}
+              navigation={this.props.navigation}
+              screenProps={this.props.screenProps}
+            />
+          </View>
         </Container>
       </SafeAreaView>
     );
@@ -227,14 +262,16 @@ class AdType extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
   mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType))
 });
 export default connect(
   mapStateToProps,

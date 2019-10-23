@@ -10,18 +10,19 @@ export default class SwipeUpComponent extends Component {
       collectionAdLinkForm,
       adType,
       objective,
-      image,
+      media,
       selectedStoryAd,
       call_to_action_label
     } = this.props;
     selectedStoryAd = selectedStoryAd ? selectedStoryAd : {};
+    const { translate } = this.props.screenProps;
     return (
       <TouchableOpacity
         style={[
           styles.swipeUp,
           {
-            bottom: adType === "CollectionAd" ? 50 : 0,
-            marginBottom: adType === "CollectionAd" ? 30 : 10
+            bottom: 0,
+            marginBottom: adType === "CollectionAd" ? 110 : 10
           }
         ]}
         onPress={() => {
@@ -32,34 +33,56 @@ export default class SwipeUpComponent extends Component {
               collectionAdLinkForm: collectionAdLinkForm,
               adType: adType
             });
-          } else {
-            objective === "TRAFFIC" || adType === "StoryAd"
+          } else if (adType === "StoryAd") {
+            objective === "BRAND_AWARENESS"
               ? this.props.navigation.push("SwipeUpDestination", {
                   _changeDestination: this.props._changeDestination,
-                  image: image
+                  objective,
+                  adType,
+                  destination,
+                  media
                 })
               : this.props.navigation.navigate("SwipeUpChoice", {
                   _changeDestination: this.props._changeDestination,
-                  objective: objective,
-                  collectionAdLinkForm: collectionAdLinkForm
+                  objective,
+                  adType,
+                  collectionAdLinkForm
+                });
+          } else {
+            objective === "TRAFFIC"
+              ? this.props.navigation.push("SwipeUpDestination", {
+                  _changeDestination: this.props._changeDestination,
+                  objective,
+                  adType,
+                  destination,
+                  media
+                })
+              : this.props.navigation.navigate("SwipeUpChoice", {
+                  _changeDestination: this.props._changeDestination,
+                  objective,
+                  collectionAdLinkForm
                 });
           }
         }}
       >
         <View style={styles.swipeUpView}>
           <Text style={styles.swipeUpText}>
-            {(destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
-            (destination === "COLLECTION" && collectionAdLinkForm === 2)
-              ? call_to_action_label
+            {call_to_action_label &&
+            call_to_action_label !== "BLANK" &&
+            ((destination !== "BLANK" && destination !== "REMOTE_WEBPAGE") ||
+              (destination === "COLLECTION" && collectionAdLinkForm === 2))
+              ? translate(call_to_action_label)
               : (destination === "REMOTE_WEBPAGE" &&
-                  objective !== "WEB_CONVERSION") ||
+                  objective !== "WEB_CONVERSION" &&
+                  objective !== "WEB_CONVERSION_INSTAGRAM") ||
                 (destination === "COLLECTION" && collectionAdLinkForm === 1)
-              ? call_to_action_label
+              ? translate(call_to_action_label)
               : objective === "WEB_CONVERSION" &&
+                call_to_action_label !== "BLANK" &&
                 (destination !== "BLANK" ||
                   selectedStoryAd.destination !== "BLANK")
-              ? "WhatsApp Campaign"
-              : "Swipe Up destination"}
+              ? translate("SME Growth")
+              : translate("Swipe Up destination")}
           </Text>
           {objective !== "WEB_CONVERSION" &&
             ["REMOTE_WEBPAGE", "DEEP_LINK", "LEAD_GENERATION"].includes(

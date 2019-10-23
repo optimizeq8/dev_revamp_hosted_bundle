@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Image, AsyncStorage } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Button, Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as Segment from "expo-analytics-segment";
+import { LinearGradient } from "expo-linear-gradient";
 import Swiper from "../../MiniComponents/Swiper";
 import Invitation from "../InvitationScreen";
 
@@ -60,6 +60,9 @@ class Tutorial extends Component {
   }
 
   render() {
+    const { translate } = this.props.screenProps;
+    // console.log('trasnslate', translate);
+
     const Slide = ({ url, i }) => {
       return (
         <>
@@ -88,7 +91,9 @@ class Tutorial extends Component {
                   .catch(err => console.log(err));
               }}
             >
-              <Text style={styles.getStartedText}>Get Started!</Text>
+              <Text style={styles.getStartedText}>
+                {translate("Get Started!")}
+              </Text>
             </Button>
           )}
         </>
@@ -105,7 +110,12 @@ class Tutorial extends Component {
         </Container>
       );
     } else if (this.state.tutorialOpened) {
-      return <Invitation navigation={this.props.navigation} />;
+      return (
+        <Invitation
+          screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+        />
+      );
     } else {
       Segment.screen("Tutorial");
       return (
@@ -120,7 +130,7 @@ class Tutorial extends Component {
           /> */}
           <LinearGradient
             colors={[colors.background1, colors.background2]}
-            locations={[0.7, 1]}
+            locations={[1, 0.3]}
             style={styles.gradient}
           />
           <Container style={styles.container}>

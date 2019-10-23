@@ -1,5 +1,9 @@
-import { StyleSheet, PixelRatio } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -12,50 +16,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   topContainer: {
-    paddingVertical: 10,
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 40,
     flexDirection: "row",
     alignSelf: "center",
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "black",
-    shadowOpacity: 0.2
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 30,
+    height: 80
+    // width: widthPercentageToDP(85)
   },
-  businessTypeButton1: {
-    borderBottomEndRadius: 0,
-    borderTopEndRadius: 0,
-    borderBottomStartRadius: 15,
-    borderTopStartRadius: 15
-  },
-  businessTypeButton2: {
-    borderBottomEndRadius: 0,
-    borderTopEndRadius: 0,
-    borderBottomStartRadius: 0,
-    borderTopStartRadius: 0
-  },
-  businessTypeButton3: {
-    borderTopStartRadius: 0,
-    borderBottomStartRadius: 0,
-    borderBottomEndRadius: 15,
-    borderTopEndRadius: 15
-  },
-  iconButtonStyleLeft: {
-    left: 25,
-    fontSize: 25 / PixelRatio.getFontScale()
-  },
-  iconButtonStyle2: {
-    alignSelf: "center",
-    fontSize: 25 / PixelRatio.getFontScale()
-  },
-  iconButtonStyle3: {
-    fontSize: 25 / PixelRatio.getFontScale(),
-    bottom: 5
-  },
-
   subTitle: {
     fontSize: 18,
     color: "#fff",
     textAlign: "center",
     textAlign: "center",
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     paddingHorizontal: 40,
     paddingVertical: 10
   },
@@ -64,54 +40,63 @@ const styles = StyleSheet.create({
     marginTop: 0,
     backgroundColor: "#0000",
     flex: 1
+    // marginHorizontal: 30
   },
   mainCard: {
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRadius: 30,
-    borderBottomStartRadius: 0,
-    borderBottomEndRadius: 0,
-    backgroundColor: "#fff",
-    borderColor: "#0000",
     flex: 1,
     marginLeft: 0,
-    marginRight: 0,
-    shadowColor: "#0000",
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    shadowOffset: { width: 0, height: 0 },
-    paddingTop: 15
+    marginRight: 0
+
+    // paddingTop: 15÷ß
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
   button: {
-    backgroundColor: "#fff",
-    height: 70,
+    // marginHorizontal: 30,
+    elevation: 0,
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderStartWidth: 0,
+    borderWidth: 0,
+    // backgroundColor: "#fff",
+    backgroundColor: "rgba(0,0,0,0)",
+    height: 80,
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    paddingHorizontal: 10,
+    // width: "34%",
+    borderColor: "transparent"
   },
   activeButton: {
+    borderColor: "transparent",
+    // width: "34%",
     backgroundColor: "#FF9D00",
-    height: 70,
+    borderRadius: 50,
+    height: 80,
     justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderColor: "transparent"
   },
   inactiveText: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    color: "#7039FF",
-    textAlign: "center"
+    color: "rgba(255,255,255,0.6)",
+    textAlign: "center",
+    paddingTop: 5
   },
   activeText: {
     fontFamily: "montserrat-medium",
     fontSize: 12,
-    color: "#fff",
-    textAlign: "center"
+    color: "#FFF",
+    textAlign: "center",
+    paddingTop: 5
   },
   container: {
     justifyContent: "center",
-    paddingTop: 10,
+    // paddingTop: 10,
     flex: 1
   },
   text: {
@@ -139,26 +124,25 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-light",
     fontSize: 14 / PixelRatio.getFontScale(),
-    textAlign: "center"
+    textAlign: "center",
+    color: globalColors.white
     // marginBottom: 130
   },
   pickerText: {
-    fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontFamily: "montserrat-regular-english",
+    color: "#FFFFFF",
     textAlign: "center",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    color: "rgb(113,113,113)"
+    fontSize: 12
   },
   input: {
-    marginBottom: 30,
-    paddingHorizontal: 50,
-    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    // paddingHorizontal: 10,
+    borderRadius: 150,
+    borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: 300,
-    height: 60,
-    borderColor: "#7039FF"
+    width: widthPercentageToDP(85),
+    borderWidth: 0,
+    height: 54
   },
   bottomCard: {
     justifyContent: "center",
@@ -175,23 +159,24 @@ const styles = StyleSheet.create({
   },
   link: {
     textAlign: "center",
-    color: "#707070",
+    color: "#FFF",
     paddingTop: 40,
     paddingBottom: 10,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     fontSize: 12 / PixelRatio.getFontScale(),
     paddingHorizontal: 10,
     paddingVertical: 10
   },
   tNcLink: {
-    textDecorationLine: "underline",
-    color: "blue"
+    textDecorationLine: "underline"
+    // color: "blue"
   },
   buttonLink: {
     lineHeight: 20
   },
   textAgreement: {
-    bottom: 10,
+    // bottom: 10,
+    paddingHorizontal: 70,
     alignSelf: "center",
     justifyContent: "center",
     textAlign: "center"
@@ -210,13 +195,48 @@ const styles = StyleSheet.create({
     fontSize: 20 / PixelRatio.getFontScale()
   },
   iconDown: {
-    color: "#5F5F5F",
+    // position: "absolute",
+    color: "#FFF",
     fontSize: 20,
-    left: 25
+    right: 15
+    // left: 25
   },
   labelEmail: {
     bottom: 5,
     flexDirection: "row"
+  },
+  whatAreYouText: {
+    fontSize: 12,
+    lineHeight: 18,
+    fontFamily: "montserrat-bold",
+    color: "#FFF",
+    textAlign: "center",
+    marginBottom: 20
+  },
+  marginVertical: {
+    marginVertical: 10
+  },
+  callToActionLabelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    zIndex: 1
+  },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center",
+    borderRadius: 30,
+    marginBottom: -10,
+    marginTop: I18nManager.isRTL ? -5 : 0
   }
 });
 

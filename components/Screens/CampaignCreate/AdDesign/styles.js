@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -21,11 +21,7 @@ const styles = StyleSheet.create({
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
-    textAlign: "center",
-    alignSelf: "center",
-    justifyContent: "flex-end",
-    alignItems: "flex-end"
+    fontFamily: "montserrat-bold"
   },
   uplaodText: {
     justifyContent: "center",
@@ -41,7 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    marginTop: hp(25)
+    top: "15%"
   },
   loadingSafeArea: {
     width: "100%",
@@ -50,7 +46,7 @@ const styles = StyleSheet.create({
   },
   footerButtonsContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
   },
   errorMsg: {
     textAlign: "center",
@@ -61,7 +57,7 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
-    opacity: 0.2
+    opacity: 0.5
   },
   transition: {
     height: "100%"
@@ -83,7 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     position: "absolute",
@@ -123,46 +119,46 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     borderColor: "transparent",
-    top: "50%",
-    left: "50%",
+    // top: "50%",
+    // left: "50%",
     flexDirection: "column",
-    opacity: 1,
-    transform: [
-      {
-        translateX: -50
-      },
-      {
-        translateY: -50
-      }
-    ]
+    opacity: 1
+    // transform: [
+    //   {
+    //     translateX: -50
+    //   },
+    //   {
+    //     translateY: -50
+    //   }
+    // ]
   },
   inputMiddleButton2: {
     position: "absolute",
     // backgroundColor: '#FF9D00',
     alignSelf: "center",
-    width: 90,
-    height: 90,
+    width: 100,
+    height: 100,
     borderRadius: 45,
     borderColor: "transparent",
-    top: "50%",
-    left: "50%",
+    // top: "50%",
+    // left: "50%",
     flexDirection: "column",
-    opacity: 1,
-    transform: [
-      {
-        translateX: -40
-      },
-      {
-        translateY: -50
-      }
-    ]
+    opacity: 1
+    // transform: [
+    //   {
+    //     translateX: -40
+    //   },
+    //   {
+    //     translateY: -50
+    //   }
+    // ]
   },
   inputBrand: {
     position: "absolute",
     alignSelf: "center",
     width: 250,
     height: 50,
-    top: "2%",
+    top: "4%",
     left: "8%",
     borderColor: "transparent",
     transform: [
@@ -199,7 +195,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: "montserrat-bold",
     fontSize: 16 / PixelRatio.getFontScale(),
-    textAlign: "left",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     color: "#fff",
     marginLeft: 8
   },
@@ -216,6 +212,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 2,
     paddingHorizontal: 20,
+    zIndex: 10,
     transform: [
       {
         translateX: 0
@@ -236,7 +233,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     color: "white",
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-bold",
     fontSize: 16,
     width: "100%"
   },
@@ -249,6 +246,16 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignSelf: "center",
     width: "94%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center"
+  },
+  placeholderDownloadMedia: {
+    borderRadius: 30,
+    // overflow: "hidden",
+    // alignSelf: "center",
+    width: "100%",
+    // width: "94%",
     height: "100%",
     backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center"
@@ -296,29 +303,32 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   subtitleHeading: {
+    textAlign: "left",
     fontSize: 12,
     marginBottom: -10,
     fontFamily: "montserrat-regular"
   },
   MediaOptionsStyle: {
-    width: "80%",
-    height: "40%",
+    // width: "80%",
+    // height: "40%",
     flexDirection: "row",
-    padding: 20,
-    justifyContent: "space-evenly",
+    paddingHorizontal: 20,
+    // justifyContent: "space-evenly",
     alignItems: "center",
-    marginVertical: 10
+    marginVertical: 20
   },
 
   MediaOptionsTitle: {
     fontFamily: "montserrat-bold",
     color: globalColors.orange,
-    fontSize: 16
+    fontSize: 16,
+    textAlign: "left"
   },
   MediaOptionsDescription: {
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-light-english",
     color: "#fff",
-    fontSize: 13
+    fontSize: 13,
+    textAlign: "left"
   },
   downIcon: {
     // position: 'absolute',
@@ -336,7 +346,8 @@ const styles = StyleSheet.create({
   },
   swipeUpSubText: {
     fontSize: 12,
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "montserrat-medium"
   },
   collectionView: {
     alignContent: "center",
@@ -350,7 +361,8 @@ const styles = StyleSheet.create({
     minHeight: 90,
     width: "100%",
     bottom: 0,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    paddingVertical: 10
   },
   SnapAdCard: {
     alignItems: "center",
@@ -374,7 +386,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: globalColors.orange,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   loadingButtons: {
     backgroundColor: "#fff",
@@ -382,6 +394,113 @@ const styles = StyleSheet.create({
     height: "85%",
     right: 5,
     justifyContent: "center"
+  },
+  storyAdIndexContainer: {
+    position: "absolute",
+    backgroundColor: globalColors.orange,
+    borderRadius: 50,
+    width: 45,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-end",
+    right: 10,
+    top: 20
+  },
+  storyAdIndexNum: {
+    fontFamily: "montserrat-bold",
+    color: globalColors.white,
+    fontSize: 25
+  },
+  uploadDifferentDeviceHeader: {
+    textAlign: "center",
+    color: "#FFF",
+    fontFamily: "montserrat-regular"
+  },
+  uploadDifferentDeviceContentContainer: {
+    marginTop: 15,
+    paddingTop: 15,
+    marginBottom: 15
+  },
+  uploadDifferentDeviceRowView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20
+  },
+  uploadDifferentDeviceIndex: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    //   padding: 50,
+    backgroundColor: "#FF9D00",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  uploadDifferentDeviceIndexText: {
+    fontFamily: "montserrat-bold",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#fff",
+    textAlign: "center",
+    alignSelf: "center"
+  },
+  uploadDifferentDeviceColView: {
+    display: "flex",
+    flexDirection: "column",
+    marginRight: 80,
+    paddingHorizontal: 20
+  },
+  uploadDifferentDeviceTitleText: {
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#fff",
+    textAlign: "left",
+    paddingVertical: 5
+
+    // alignSelf: "center"
+  },
+  uploadMediaFromDifferentDeviceSubtitleText: {
+    fontFamily: "montserrat-regular-english",
+    fontSize: 13,
+    lineHeight: 17,
+    color: "#FF9D00",
+    textAlign: "left"
+    // alignSelf: "center"
+  },
+  downloadMediaBottomContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 20
+  },
+  marginH20: {
+    marginHorizontal: 20
+  },
+  downloadMediaHeaderView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20
+  },
+  downloadMediaHeaderText: {
+    textAlign: "center",
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    fontSize: 18,
+    lineHeight: 22,
+    paddingTop: 10,
+    paddingHorizontal: 20
+  },
+  downloadMediaTopView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20
   }
 });
 

@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   contentContainerView: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    height: "100%"
+    justifyContent: "flex-start"
+    // height: "100%"
   },
   verificationView: {
     flexDirection: "column",
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   slidingContainer: {
-    width: widthPercentageToDP(200),
+    width: widthPercentageToDP(400),
     flexDirection: "row",
     flex: 1,
     alignItems: "center",
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   logInButtonText: {
     color: "#fff",
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   container: {
     // paddingTop: heightPercentageToDP(10),
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-medium-english"
     // bottom: "5%"
   },
   mainCard: {
@@ -68,11 +68,11 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   registeredText: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "montserrat-regular",
     textAlign: "center",
     color: "#fff",
-    marginBottom: 10
+    marginBottom: 5
   },
 
   bottomView: {
@@ -95,13 +95,21 @@ const styles = StyleSheet.create({
   },
   background: {
     position: "absolute",
-    top: heightPercentageToDP(5),
-    opacity: 0.45,
+    top: heightPercentageToDP(20),
+    opacity: 0.4,
     alignSelf: "center",
     zIndex: 0
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  loginText: {
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    color: globalColors.orange
+  },
+  logoView: {
+    marginTop: 40
   }
 });
 

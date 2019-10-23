@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -13,6 +13,7 @@ export const colors = {
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
+    top: 5,
     backgroundColor: "#0000"
   },
   mainView: {
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   menuContainer: {
-    left: 0,
-    top: 0,
-    flexGrow: 1
+    alignSelf: "center",
+    width: "100%",
+    position: "absolute"
   },
   flatlistContainerStyle: {
     paddingBottom: heightPercentageToDP(35)
@@ -64,17 +65,17 @@ const styles = StyleSheet.create({
     color: "#C6C6C6",
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    top: 5
+    top: I18nManager.isRTL ? 3 : 5
   },
   adButtonText: {
     textAlign: "center",
     color: "#C6C6C6",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-regular-english",
     fontSize: 16,
     top: 20
   },
-  container: { backgroundColor: "#0000" },
-  image: {
+  container: { backgroundColor: "#0000", bottom: 5 },
+  media: {
     alignSelf: "center",
     height: heightPercentageToDP(10),
     width: heightPercentageToDP(15),
@@ -95,10 +96,11 @@ const styles = StyleSheet.create({
   },
   backDrop: {
     position: "absolute",
-    top: -heightPercentageToDP("45%"),
+    // top: -heightPercentageToDP("45%"),
+    top: heightPercentageToDP(5) < 40 ? -240 : -210,
     alignSelf: "center",
     zIndex: -1,
-    elevation: 0
+    elevation: -2
   },
   logoutIcon: {
     zIndex: 20,
@@ -113,25 +115,26 @@ const styles = StyleSheet.create({
   text: {
     alignSelf: "center",
     color: "#5F5F5F",
-    fontFamily: "montserrat-semibold",
-    fontSize: 18
+    fontFamily: "montserrat-bold",
+    fontSize: 14
+    // top: 4
   },
   brandStyle: {
     alignSelf: "center",
-    top: 8,
-    width: 200,
+    maxWidth: "80%",
     color: "#5F5F5F",
     textAlign: "center",
     fontFamily: "montserrat-regular",
-    fontSize: 14
+    fontSize: 12
   },
   nameStyle: {
-    top: 2,
+    top: 5,
     alignSelf: "center",
-    width: "50%",
+    maxWidth: "75%",
+    minWidth: "50%",
     height: 55,
     color: "#5F5F5F",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 21,
     backgroundColor: "#F4F4F4",
     borderRadius: 30,
@@ -296,7 +299,7 @@ const styles = StyleSheet.create({
   },
   wallet: {
     // top: "50%",
-    right: "2%",
+    right: "5%",
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
@@ -313,8 +316,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowColor: "#6268FF",
-    shadowOffset: { height: 6, width: 0 },
-    elevation: 5
+    shadowOffset: { height: 6, width: 0 }
+    // elevation: 1
   },
   snapAd: {
     top: 10,
@@ -323,11 +326,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     width: 50,
     height: 50,
-    borderRadius: 50,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 }
+    borderRadius: 50
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.4,
+    top: 230,
+    alignSelf: "center"
   }
 });
 

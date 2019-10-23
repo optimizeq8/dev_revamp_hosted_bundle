@@ -8,6 +8,11 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  mobileNo: {
+    color: globalColors.orange,
+    fontFamily: "montserrat-bold",
+    fontSize: 12
+  },
   keyboardContainer: {
     height: "100%",
     alignItems: "center",
@@ -21,7 +26,14 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20
   },
-  codeInputContainer: { height: "10%" },
+  codeInputContainer: {
+    height: "10%",
+    // flex: 1,
+    marginTop: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   renderInviteCodeLink: { color: "#FFFF" },
   emailLink: {
     paddingVertical: 0
@@ -36,8 +48,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "relative",
-    bottom: "2%",
-    alignSelf: "flex-end"
+    bottom: "2%"
   },
 
   container: {
@@ -48,10 +59,11 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "#717171",
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    lineHeight: 20
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    lineHeight: 18,
+    width: 220
   },
   inviteText: {
     textAlign: "center",
@@ -73,10 +85,10 @@ const styles = StyleSheet.create({
   },
   link: {
     textAlign: "center",
-    color: "#717171",
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    fontSize: 13,
+    lineHeight: 17,
     paddingVertical: 20,
     textDecorationLine: "underline"
   },
@@ -97,11 +109,11 @@ const styles = StyleSheet.create({
   input: {
     top: 10,
     marginBottom: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 15,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    borderRadius: 30,
     borderColor: "transparent",
     alignSelf: "center",
-    width: 250,
+    width: 275,
     height: 50
   },
   inputText: {

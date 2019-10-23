@@ -9,7 +9,7 @@ export const SocialPlatforms = [
     rout: "AdObjective",
     icon: <Snapchat />,
     title: "Snapchat",
-    image: require("../../assets/images/AdTypes/SnapAd.gif")
+    media: require("../../assets/images/AdTypes/SnapAd.gif")
   }
   // {
   //   id: 2,
@@ -17,7 +17,7 @@ export const SocialPlatforms = [
   //   rout: "AdObjective",
   //   icon: <Twitter />,
   //   title: "",
-  //   image: require("../../assets/images/AdTypes/StoryAd.gif")
+  //   media: require("../../assets/images/AdTypes/StoryAd.gif")
   // },
   // {
   //   id: 3,
@@ -25,6 +25,6 @@ export const SocialPlatforms = [
   //   rout: "AdObjective",
   //   icon: <Instagram />,
   //   title: "",
-  //   image: require("../../assets/images/AdTypes/CollectionAd.gif")
+  //   media: require("../../assets/images/AdTypes/CollectionAd.gif")
   // }
 ];

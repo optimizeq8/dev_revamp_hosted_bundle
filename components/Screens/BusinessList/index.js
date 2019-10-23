@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
-import * as Segment from 'expo-analytics-segment';
+import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
 
 // Style
@@ -18,31 +18,57 @@ class BusinessList extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { filteredBusinesses: this.props.businessAccounts };
   }
-
+  filterBusinesses = value => {
+    this.setState({
+      filteredBusinesses: this.props.businessAccounts.filter(
+        bus =>
+          bus.businessname
+            .trim()
+            .toLowerCase()
+            .includes(value.trim().toLowerCase()) ||
+          bus.brandname
+            .trim()
+            .toLowerCase()
+            .includes(value.trim().toLowerCase())
+      )
+    });
+  };
   render() {
-    const list = this.props.businessAccounts.map(business => (
+    const { translate } = this.props.screenProps;
+
+    const list = this.state.filteredBusinesses.map(business => (
       <BusinessCard business={business} key={business.businessid} />
     ));
     return (
       <Container style={styles.container}>
         <View padder style={[styles.mainCard]}>
-          <Text style={styles.title}>Switch Account</Text>
+          <Text style={styles.title}>{translate("Switch Account")}</Text>
           <Text style={[styles.text, styles.switchAccountText]}>
-            You can switch between businesses here.
+            {translate("You can switch between businesses here")}
           </Text>
-          <ScrollView contentContainerStyle={styles.contentContainer}>
-            {list}
-          </ScrollView>
-          <Button
-            style={[styles.bottomCard]}
-            onPress={() =>
-              this.props.navigation.navigate("CreateBusinessAccount")
-            }
-          >
-            <Text style={styles.subtext}>+ Add a new Business </Text>
-          </Button>
+          <SearchBar
+            screenProps={this.props.screenProps}
+            filterBusinesses={this.filterBusinesses}
+            businessList={true}
+            height={"6%"}
+          />
+          <View style={{ height: "60%" }}>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+              {list}
+            </ScrollView>
+            <Button
+              style={[styles.bottomCard]}
+              onPress={() =>
+                this.props.navigation.navigate("CreateBusinessAccount")
+              }
+            >
+              <Text style={styles.subtext}>
+                + {translate("Add a new Business")}{" "}
+              </Text>
+            </Button>
+          </View>
         </View>
       </Container>
     );

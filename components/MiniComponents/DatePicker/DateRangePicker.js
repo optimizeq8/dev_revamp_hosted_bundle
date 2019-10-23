@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 import styles from "./styles";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 const XDate = require("xdate");
 
@@ -49,7 +50,7 @@ LocaleConfig.locales["en"] = {
     "Saturday"
   ],
 
-  dayNamesShort: ["Su", "M", "T", "W", "Th", "F", "S"]
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
 };
 
 LocaleConfig.defaultLocale = "en";
@@ -166,6 +167,7 @@ export default class DateRangePicker extends Component<Props> {
     startDate.setDate(startDate.getDate() + 1);
     return (
       <CalendarList
+        pastScrollRange={this.props.filterMenu ? 50 : 0}
         minDate={
           !this.props.filterMenu
             ? this.props.chartRange
@@ -177,6 +179,11 @@ export default class DateRangePicker extends Component<Props> {
           this.props.filterMenu || this.props.chartRange ? 50 : 0
         }
         calendarHeight={300}
+        calendarWidth={
+          this.props.filterMenu
+            ? widthPercentageToDP("90%")
+            : widthPercentageToDP("100%")
+        }
         maxDate={
           this.props.chartRange
             ? new Date(this.props.selectedCampaign.end_time)
@@ -206,13 +213,12 @@ export default class DateRangePicker extends Component<Props> {
           selectedDotColor: "#ffffff",
           arrowColor: "#FF9D00",
           monthTextColor: "#fff",
-          textDayFontFamily: "montserrat-regular",
-          textMonthFontFamily: "montserrat-regular",
-          textDayHeaderFontFamily: "montserrat-bold",
-          textMonthFontWeight: "bold",
+          textDayFontFamily: "montserrat-regular-english",
+          textMonthFontFamily: "montserrat-bold-english",
+          textDayHeaderFontFamily: "montserrat-bold-english",
           textDayFontSize: 17,
           textMonthFontSize: 13,
-          textDayHeaderFontSize: 14
+          textDayHeaderFontSize: 12
         }}
       />
     );

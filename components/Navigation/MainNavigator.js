@@ -2,7 +2,6 @@ import React from "react";
 import { Platform } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
-import { createStackNavigator } from "react-navigation";
 import Menu from "../Screens/Menu";
 import Dashboard from "../Screens/Dashboard";
 import SnapchatCreateAdAcc from "../Screens/SnapchatCreateAdAcc";
@@ -32,6 +31,11 @@ import SuccessRedirect from "../Screens/SuccessRedirect";
 import LongFormVideoPreview from "../Screens/CampaignCreate/SwipeUpChoice/LongFormVideoPreview";
 import CollectionMedia from "../MiniComponents/CollectionMedia";
 import Animated, { Easing } from "react-native-reanimated";
+import Messenger from "../Screens/Messenger";
+import MessengerLoading from "../Screens/Messenger/LoadingChatScreen";
+import SelectInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost";
+import SelectedInstagramProductsList from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList";
+import EditProductDetailInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail";
 
 export default FluidNavigator(
   {
@@ -69,7 +73,12 @@ export default FluidNavigator(
       screen: SuccessRedirect,
       path: "success/"
     },
-    WebView: WebView
+    Messenger: Messenger,
+    MessengerLoading: MessengerLoading,
+    WebView: WebView,
+    SelectInstagramPost: SelectInstagramPost,
+    SelectedInstagramProductsList: SelectedInstagramProductsList,
+    EditProductDetailInstagramPost: EditProductDetailInstagramPost
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

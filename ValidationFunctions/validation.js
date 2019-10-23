@@ -24,7 +24,7 @@ const validation = {
     presence: { allowEmpty: false },
     length: {
       minimum: 8,
-      message: "must be at least 8 characters long."
+      message: "must be at least 8 characters long"
     }
   },
   mandatory: {
@@ -58,6 +58,9 @@ const validation = {
         "^Invalid deep link url. A few format examples: 'my-app://your_url_here', 'my-app://?content=' or 'https://url.com'"
     },
     presence: { allowEmpty: false }
+  },
+  googleMapLink: {
+    format: /^((https):\/\/)\b[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*$/i
   },
   Budget: {
     numericality: {

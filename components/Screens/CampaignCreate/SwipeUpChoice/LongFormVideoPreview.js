@@ -10,7 +10,9 @@ import globalStyles from "../../../../GlobalStyles";
 
 export default class LongFormVideoPreview extends Component {
   componentDidMount() {
-    ScreenOrientation.allowAsync("ALL_BUT_UPSIDE_DOWN");
+    ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.ALL_BUT_UPSIDE_DOWN
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   componentWillUnmount() {
@@ -19,13 +21,13 @@ export default class LongFormVideoPreview extends Component {
 
   handleBackPress = () => {
     this.videoRef.dismissFullscreenPlayer();
-    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
     this.props.navigation.goBack();
     return true;
   };
   actionButton = () => {
-    ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     this.props.navigation.goBack();
   };
   render() {
@@ -39,7 +41,11 @@ export default class LongFormVideoPreview extends Component {
           styles.safeAreaViewLongFormVideoPreview
         ]}
       >
-        <CustomHeader actionButton={this.actionButton} closeButton={true} />
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          actionButton={this.actionButton}
+          closeButton={true}
+        />
         <View style={styles.videoPreviewView}>
           <Video
             ref={ref => {

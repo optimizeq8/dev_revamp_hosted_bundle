@@ -1,10 +1,10 @@
 //Components
 import React, { Component, createRef } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, I18nManager } from "react-native";
 import { Text, Icon, Input, Label, Item, Button } from "native-base";
 import CodeInput from "react-native-confirmation-code-field";
 import { showMessage } from "react-native-flash-message";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -16,7 +16,7 @@ import globalStyles from "../../../../GlobalStyles";
 
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
+import LowerButton from "../../../MiniComponents/LowerButton";
 Input.defaultProps = Input.defaultProps || {};
 Input.defaultProps.allowFontScaling = false;
 
@@ -63,6 +63,7 @@ class Verification extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const emailError = validateWrapper("email", this.state.email);
     this.setState({ emailError });
     if (!emailError) {
@@ -74,7 +75,7 @@ class Verification extends Component {
       });
     } else {
       showMessage({
-        message: "Please enter a valid email.",
+        message: translate("Please enter a valid email address"),
         type: "warning",
         position: "top"
       });
@@ -101,6 +102,7 @@ class Verification extends Component {
   //   }
   // }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.container}>
         <KeyboardShift style={styles.keyboardContainer}>
@@ -109,19 +111,105 @@ class Verification extends Component {
               contentContainerStyle={[
                 styles.scrollViewContentContainer,
                 {
-                  paddingTop: !this.props.invite ? 30 : 0,
-                  justifyContent: this.props.invite ? "center" : "flex-start"
+                  paddingTop: !this.props.invite ? 0 : 30,
+                  // justifyContent: "flex-start"
+                  justifyContent: this.props.invite ? "flex-start" : "center"
                 }
               ]}
             >
-              {!this.props.invite ? (
+              {!this.props.invite && (
                 <Text style={[styles.text]}>
-                  Please enter the {"\n"}
-                  verification code sent to {"\n"}
-                  {this.props.mobileNo}
+                  {translate("Please enter the verification code sent to")}{" "}
+                  <Text style={styles.mobileNo}>{this.props.mobileNo}</Text>
                 </Text>
+              )
+              // : (
+              //   <Text style={[styles.inviteText]}>
+              //     {translate("Invite Code")}
+              //   </Text>
+              // )
+              }
+
+              {this.props.invite ? (
+                <>
+                  <Item rounded style={[styles.input]}>
+                    <Input
+                      placeholderTextColor="#fff"
+                      autoCorrect={false}
+                      maxLength={5}
+                      autoCapitalize="none"
+                      style={styles.inputText}
+                      onChangeText={value => {
+                        this.setState({
+                          code: value
+                        });
+                      }}
+                      onBlur={() => {
+                        if (validateWrapper("mandatory", this.state.code)) {
+                          showMessage({
+                            message: translate("Please enter an invite code!"),
+                            type: "warning",
+                            position: "top"
+                          });
+                        }
+                      }}
+                      placeholder={translate("Enter your invite code")}
+                    />
+                  </Item>
+                  <LowerButton
+                    function={() => {
+                      this._handleInviteCode();
+                    }}
+                  />
+                  {/* <Button
+                    style={[styles.button]}
+                    onPress={() => {
+                      this._handleInviteCode();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>
+                      {translate("Get Started!")}
+                    </Text>
+                  </Button> */}
+                </>
               ) : (
-                <Text style={[styles.inviteText]}>Invite Code</Text>
+                <View style={styles.codeInputContainer}>
+                  <CodeInput
+                    // inactiveColor="transparent"
+                    // activeColor="purple"
+                    cellProps={{
+                      style: {
+                        backgroundColor: "rgba(0,0,0,0.16)",
+                        borderRadius: 12,
+                        color: "#FF9D00",
+                        fontFamily: "montserrat-regular",
+                        // padding: 10,
+                        borderColor: "rgba(0,0,0,0)",
+                        width: 50,
+                        height: 50
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        backgroundColor: "rgba(0,0,0,0)"
+                      }
+                    }}
+                    // variant="border-box"
+                    autoFocus
+                    keyboardType="numeric"
+                    space={10}
+                    onFulfill={code => this._handleSentCode(code)}
+                    ref={this.inputRef}
+                  />
+                </View>
+              )}
+              {this.props.renderInviteCode && (
+                <Text
+                  style={[styles.link, styles.renderInviteCodeLink]}
+                  onPress={() => this.props.toggleComps()}
+                >
+                  {translate("Get an invitation code now!")}
+                </Text>
               )}
               {!this.props.invite &&
                 (this.state.timerStart ? (
@@ -141,70 +229,9 @@ class Verification extends Component {
                     }}
                     style={[styles.link]}
                   >
-                    Resend Code
+                    {translate("Resend Code")}
                   </Text>
                 ))}
-
-              {/* {this.state.codeError !== "" && !this.props.invite && (
-          <Text style={[styles.errorText]}>{this.state.codeError}</Text>
-        )} */}
-              {this.props.invite ? (
-                <>
-                  <Item rounded style={[styles.input]}>
-                    <Input
-                      placeholderTextColor="#fff"
-                      autoCorrect={false}
-                      maxLength={5}
-                      autoCapitalize="none"
-                      style={styles.inputText}
-                      onChangeText={value => {
-                        this.setState({
-                          code: value
-                        });
-                      }}
-                      onBlur={() => {
-                        if (validateWrapper("mandatory", this.state.code)) {
-                          showMessage({
-                            message: "Please enter an invite code!",
-                            type: "warning",
-                            position: "top"
-                          });
-                        }
-                      }}
-                      placeholder="Enter your invite code"
-                    />
-                  </Item>
-                  <Button
-                    style={[styles.button]}
-                    onPress={() => {
-                      this._handleInviteCode();
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Get Started!</Text>
-                  </Button>
-                </>
-              ) : (
-                <View style={styles.codeInputContainer}>
-                  <CodeInput
-                    inactiveColor="black"
-                    activeColor="purple"
-                    variant="border-b"
-                    autoFocus
-                    keyboardType="numeric"
-                    space={20}
-                    onFulfill={code => this._handleSentCode(code)}
-                    ref={this.inputRef}
-                  />
-                </View>
-              )}
-              {this.props.renderInviteCode && (
-                <Text
-                  style={[styles.link, styles.renderInviteCodeLink]}
-                  onPress={() => this.props.toggleComps()}
-                >
-                  Get an invitation code now!
-                </Text>
-              )}
               {!this.props.invite && (
                 <View style={styles.emailLinkContainer}>
                   <Text
@@ -213,7 +240,9 @@ class Verification extends Component {
                     }}
                     style={[styles.link, styles.emailLink]}
                   >
-                    Not receiving the SMS? Try verifying your account by email.
+                    {translate(
+                      "Not receiving the SMS? Try verifying your account by email"
+                    )}
                   </Text>
 
                   {this.state.showEmail && (
@@ -234,10 +263,10 @@ class Verification extends Component {
                             styles.emailLabel,
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor
+                              : globalStyles.whiteTextColor
                           ]}
                         >
-                          Email
+                          {translate("Email")}
                         </Label>
                         <Input
                           autoCorrect={false}
@@ -264,7 +293,14 @@ class Verification extends Component {
                       </Item>
                       <Button
                         transparent
-                        style={styles.sendButton}
+                        style={[
+                          styles.sendButton,
+                          I18nManager.isRTL
+                            ? { alignSelf: "flex-start" }
+                            : {
+                                alignSelf: "flex-end"
+                              }
+                        ]}
                         onPress={() => this._handleSubmission()}
                       >
                         <Icon
@@ -273,7 +309,7 @@ class Verification extends Component {
                           style={[
                             this.state.InputE
                               ? globalStyles.orangeTextColor
-                              : globalStyles.darkGrayTextColor
+                              : globalStyles.whiteTextColor
                           ]}
                         />
                       </Button>

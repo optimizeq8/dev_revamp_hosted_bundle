@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
     color: "#9E58CD",
     fontSize: 15,
     left: "5%",
-    marginVertical: 5
+    marginVertical: 5,
+    textAlign: "left"
   },
   discoverArea: {
     height: "95%",
@@ -73,6 +74,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 15,
     backgroundColor: "#9E4CDD"
+  },
+  logoStyle: {
+    width: "100%",
+    height: "30%",
+    justifyContent: "flex-start",
+    top: 10
+  },
+  headlineStyle: {
+    left: 10,
+    position: "absolute",
+    width: "100%",
+    bottom: 0
+  },
+  headlineTextStyle: {
+    fontFamily: "montserrat-bold",
+    color: "#fff",
+    fontSize: 16,
+    width: "90%",
+    textAlign: "left"
+  },
+  sponsoredText: {
+    fontFamily: "montserrat-regular",
+    color: "#fff",
+    fontSize: 14,
+    textAlign: "left"
   }
 });
 

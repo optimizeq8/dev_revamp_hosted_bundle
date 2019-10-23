@@ -5,6 +5,7 @@ import styles from "./styles";
 
 export default class Charts extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let spends = this.props.chartCategory.spend;
     let x = this.props.campaign
       ? (spends / this.props.campaign.lifetime_budget_micro) * 100
@@ -31,7 +32,7 @@ export default class Charts extends Component {
             </Text>
           )}
         </AnimatedCircularProgress>
-        <Text style={[styles.chartSubtext]}>Spend</Text>
+        <Text style={[styles.chartSubtext]}>{translate("Spend")}</Text>
       </View>
     );
   }

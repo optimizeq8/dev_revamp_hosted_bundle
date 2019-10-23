@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   callToActionContainer: {
     bottom: "12%",
     // marginBottom: -60,
+    height: "5%",
     width: "100%",
     alignItems: "center",
     display: "flex",
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   callToActionText: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 20,
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 0, height: 0.5 },
@@ -136,13 +137,15 @@ const styles = StyleSheet.create({
   headlineBottomText: {
     fontSize: 12,
     paddingTop: 2,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold",
+    textAlign: "left"
   },
   brandNameBottomText: {
     color: "black",
     fontFamily: "montserrat-bold",
     //   fontSize: 16
-    fontSize: heightPercentageToDP(2.4)
+    fontSize: heightPercentageToDP(2.4),
+    textAlign: "left"
   },
   appIconBottom: {
     width: widthPercentageToDP(14),

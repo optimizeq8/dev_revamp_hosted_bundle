@@ -5,15 +5,13 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  TouchableWithoutFeedback,
-  Text
+  TouchableWithoutFeedback
 } from "react-native";
-import * as Segment from 'expo-analytics-segment';
-import { Icon, Item } from "native-base";
-import { showMessage } from "react-native-flash-message";
+import * as Segment from "expo-analytics-segment";
+import { Icon, Item, Text } from "native-base";
 import CountryModal from "./CountryModal";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
-
+import PhoneNoField from "./PhoneNoField";
 //Data
 import countriesMobileData from "../../../Data/countries.mobilephone";
 
@@ -41,7 +39,7 @@ class PhoneNo extends Component {
     this.state = {
       valid: true,
       type: "",
-
+      countryCode: "",
       value: "",
       numExists: "",
       pickerData: null
@@ -52,23 +50,18 @@ class PhoneNo extends Component {
     Segment.screenWithProperties("Phone No. Registration", {
       category: "Sign Up"
     });
-
-    this.setState({
-      pickerData: this.phone.getPickerData()
-    });
   }
 
-  _handleSubmission = () => {
+  handlePickerData = data => {
     this.setState({
-      valid: this.phone.isValidNumber(),
-      type: this.phone.getNumberType(),
-      //   value: this.phone.getValue(),
-      numExists: !this.phone.isValidNumber() && ""
+      pickerData: data
     });
+  };
 
-    if (this.phone.isValidNumber() && this.phone.getNumberType() === "MOBILE") {
+  _handleSubmission = () => {
+    if (this.state.valid && this.state.type === "MOBILE") {
       this.props.sendMobileNo({
-        country_code: this.phone.getCountryCode(),
+        country_code: this.state.countryCode,
         mobile: this.state.value.trim()
       });
     }
@@ -81,18 +74,6 @@ class PhoneNo extends Component {
   selectCountry = country => {
     this.phone.selectCountry(country.iso2);
   };
-
-  // onChangePhoneNumber = newNumber => {
-  //   console.log(newNumber);
-
-  //   // let value =
-  //   //   this.phone.getCountryCode() +
-  //   //   " " +
-  //   //   newNumber.split(this.phone.getCountryCode())[1];
-  //   this.setState({
-  //     value
-  //   });
-  // };
 
   renderInfo = () => {
     return (
@@ -116,100 +97,21 @@ class PhoneNo extends Component {
       </View>
     );
   };
-  phoneInputRender = () => (
-    <Item
-      rounded
-      style={[
-        styles.phoneInput,
-        this.props.invite
-          ? this.props.whatsApp
-            ? { backgroundColor: "rgba(0,0,0,0.3)" }
-            : globalStyles.blackBackgroundColor
-          : globalStyles.transparentBackgroundColor,
-        this.props.invite ? { opacity: 0.6 } : { opacity: 1 }
-      ]}
-    >
-      <TouchableOpacity
-        style={styles.flagTouchableArea}
-        onPress={this.onPressFlag}
-      />
-      <Icon
-        name="arrow-drop-down"
-        type="MaterialIcons"
-        style={[
-          styles.flagIcon,
-          this.props.invite
-            ? globalStyles.whiteTextColor
-            : globalStyles.transparentTextColor
-        ]}
-      />
-      <PhoneInput
-        style={styles.phoneInputStyle}
-        textStyle={{
-          //   backgroundColor: this.props.invite ? "#000000" : "#0000",
 
-          color: this.props.invite ? "#FFFF" : "#000",
-          ...styles.phoneInputTextStyle,
-          ...styles.input,
+  changeNo = (number, countryCode, type, valid) => {
+    if (number.toString().length > 3 && valid) {
+      this.setState({
+        value: number.split(countryCode)[1],
+        countryCode: countryCode,
+        valid,
+        type
+      });
+    }
+    this.props.changeFunction && this.props.changeFunction(number, valid);
+  };
 
-          borderBottomColor: this.props.invite
-            ? "#0000"
-            : this.state.valid
-            ? "#5F5F5F"
-            : "red"
-          //   opacity: this.props.invite ? 0.5 : 0
-        }}
-        flagStyle={styles.flagStyle}
-        textProps={{
-          autoFocus: false,
-          maxLength: 14,
-          onBlur: () => {
-            let country_name = "";
-
-            if (!this.phone.isValidNumber()) {
-              showMessage({
-                message: "Please enter a valid number!",
-                type: "warning",
-                position: "top"
-              });
-            }
-            if (this.props.invite && this.phone.isValidNumber()) {
-              country_name = find(
-                this.phone.getAllCountries(),
-                country => country.dialCode === this.phone.getCountryCode()
-              ).name;
-
-              this.props._getMobile &&
-                this.props._getMobile({
-                  country_code: this.phone.getCountryCode(),
-                  mobile: this.state.value,
-                  valid: this.phone.isValidNumber(),
-                  country_name
-                });
-            }
-          }
-        }}
-        ref={ref => {
-          this.phone = ref;
-        }}
-        onChangePhoneNumber={number => {
-          //   console.log('mobile value', number.split(this.phone.getCountryCode())[1])
-          if (number.toString().length > 3 && this.phone.isValidNumber()) {
-            this.setState({
-              value: number.split(this.phone.getCountryCode())[1]
-            });
-          }
-          this.props.changeFunction && this.props.changeFunction(number, this.phone.isValidNumber());
-        }}
-        onPressFlag={this.onPressFlag}
-        initialCountry="kw"
-        countriesList={countriesMobileData}
-        value={this.props.phoneNum ? this.props.phoneNum : "+965"}
-        offset={10}
-      />
-    </Item>
-  );
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View
@@ -224,40 +126,53 @@ class PhoneNo extends Component {
             style={[styles.container, { flex: !this.props.invite ? 1 : 0 }]}
           >
             {!this.props.invite && (
-              <Text style={styles.text}>
-                Please enter your {"\n"}
-                Mobile Number
-              </Text>
-            )}
-            {!this.props.invite && (
               <KeyboardShift style={styles.keyboardArea}>
-                {() => this.phoneInputRender()}
+                {() => (
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.labelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("mobile")}
+                      </Text>
+                    </View>
+                    <PhoneNoField
+                      {...this.props}
+                      handlePickerData={this.handlePickerData}
+                      valid={this.state.valid}
+                      type={this.state.type}
+                      onPressFlag={this.onPressFlag}
+                      changeNo={this.changeNo}
+                    />
+                    <Text style={styles.text}>
+                      {translate("An SMS will be sent for verification")}
+                    </Text>
+                    {!this.props.invite && !this.props.info && (
+                      <LowerButton
+                        function={() => this._handleSubmission()}
+                        bottom={-heightPercentageToDP(1)}
+                      />
+                    )}
+                  </View>
+                )}
               </KeyboardShift>
             )}
-            {this.props.invite && this.phoneInputRender()}
-            <CountryModal
-              ref={ref => {
-                this.myCountryPicker = ref;
-              }}
-              optionTextStyle={styles.optionTextStyle}
-              data={this.state.pickerData}
-              onChange={country => {
-                this.selectCountry(country);
-              }}
-              cancelText="Cancel"
-            />
+            {this.props.invite && (
+              <PhoneNoField
+                screenProps={this.props.screenProps}
+                {...this.props}
+                handlePickerData={this.handlePickerData}
+                valid={this.state.valid}
+                type={this.state.type}
+                onPressFlag={this.onPressFlag}
+                changeNo={this.changeNo}
+              />
+            )}
+
             {this.renderInfo()}
 
             {/* <Button onPress={this.updateInfo} style={styles.button}>
             <Icon style={styles.icon} name="arrow-forward" />
           </Button> */}
           </View>
-          {!this.props.invite && (
-            <LowerButton
-              function={() => this._handleSubmission()}
-              bottom={heightPercentageToDP(0.2)}
-            />
-          )}
         </View>
       </TouchableWithoutFeedback>
     );

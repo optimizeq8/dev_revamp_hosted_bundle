@@ -10,23 +10,29 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
+  gradient: {
+    ...StyleSheet.absoluteFillObject
+  },
   contentContainerStyle: {
     alignSelf: "center",
     width: "100%",
-    flex: 1,
-    justifyContent: "space-around"
+    // minHeight: '100%',
+    flexGrow: 1,
+    marginBottom: heightPercentageToDP(35)
+    // justifyContent: 'space-around',
     //   height: heightPercentageToDP(80),
     //   overflow: "hidden"
   },
   keyboardContainer: {
-    alignSelf: "center",
-    width: "100%",
-    flex: 1,
-    justifyContent: "space-around"
+    // alignSelf: 'center',
+    // width: '100%',
+    flex: 1
+    // justifyContent: 'space-around',
   },
   mainView: {
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    paddingTop: 20
   },
   imageApp: {
     height: heightPercentageToDP(8.3),
@@ -40,10 +46,13 @@ const styles = StyleSheet.create({
   },
   advertiseOSView: {
     flexDirection: "column",
-    paddingTop: 10
+    paddingVertical: 20,
+    borderRadius: 35,
+    backgroundColor: "rgba(0,0,0,0.2)"
   },
   changeAppText: {
-    marginBottom: 0,
+    paddingTop: 20,
+    paddingBottom: 20,
     // top: heightPercentageToDP(17),
     textDecorationLine: "underline",
     fontFamily: "montserrat-bold",
@@ -111,7 +120,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "montserrat-medium",
     fontSize: widthPercentageToDP(3.2),
-    marginBottom: 6,
+    paddingTop: 5,
+    marginBottom: 20,
     // width: widthPercentageToDP(50),
     color: "#fff",
     textAlign: "center"
@@ -125,7 +135,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-
   video: {
     // height: 95,
     // width: 95,
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     paddingBottom: 10,
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 14,
     alignSelf: "center"
   },
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
   deepLinkError: {
     color: "white",
     // paddingBottom: 10,
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 12,
     alignSelf: "center"
     // width: widthPercentageToDP(75),
@@ -193,9 +202,9 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP(105)
   },
   input: {
-    backgroundColor: "#5D1CD8",
+    backgroundColor: "rgba(0,0,0,0.2)",
     paddingHorizontal: 50,
-    borderRadius: 10,
+    borderRadius: 50,
     borderColor: "#5D1CD8",
     alignSelf: "center",
     width: "100%",
@@ -259,7 +268,7 @@ const styles = StyleSheet.create({
   },
   OSText: {
     fontSize: widthPercentageToDP(2.9),
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     alignSelf: "center"
   },
   toggleStyle: {
@@ -274,6 +283,57 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("5"),
     height: heightPercentageToDP("2.4"),
     borderRadius: 50
+  },
+  callToActionLabelView: {
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    paddingTop: 8,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 15,
+    zIndex: 1,
+    borderWidth: 0,
+    marginTop: 20
+  },
+  appStoreLabelView: {
+    borderTopLeftRadius: 160,
+    borderTopRightRadius: 130,
+    // // borderTopRightRadius: 200,
+    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 20,
+    // borderRadius: 150 0 0 20,
+    paddingTop: 10,
+    width: 150,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    height: 25,
+    zIndex: 1
+  },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12 / PixelRatio.getFontScale(),
+    color: "#fff",
+    alignSelf: "center",
+    textAlign: "center",
+    // borderRadius: 30,
+    marginBottom: -10
+  },
+  appStoreButtons: {
+    // display: 'flex',
+    // flexDirection: 'column',
+    alignItems: "center"
+    // justifyContent: 'center',
+  },
+  appStoreButtonsText: {
+    fontFamily: "montserrat-bold-english",
+    fontSize: 10,
+    color: "#fff",
+    paddingTop: 5,
+    maxWidth: 80,
+    textAlign: "center"
   }
 });
 

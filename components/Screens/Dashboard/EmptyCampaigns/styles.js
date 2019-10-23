@@ -13,7 +13,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 15,
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-medium-english",
     marginBottom: "5%"
   },
   businessNameStyle: {
@@ -26,8 +26,8 @@ export default StyleSheet.create({
   brandNameStyle: {
     textAlign: "center",
     color: "#fff",
-    fontSize: 30,
-    fontFamily: "montserrat-semibold"
+    fontSize: 31,
+    fontFamily: "montserrat-bold"
   },
   backDrop: {
     position: "absolute",
@@ -52,7 +52,7 @@ export default StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 12,
-    fontFamily: "montserrat-semibold"
+    fontFamily: "montserrat-bold"
   },
   mainText: {
     textAlign: "center",

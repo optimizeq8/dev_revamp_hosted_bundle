@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
-    fontFamily: "montserrat-medium"
+    fontFamily: "montserrat-medium-english"
     // bottom: "24%"
   },
   mainView: {
@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.16)",
     paddingHorizontal: 50,
-    borderRadius: 15,
+    borderRadius: 30,
     alignSelf: "center",
-    width: 250,
+    width: 275,
     height: 50
   },
   link: {

@@ -3,10 +3,11 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 export default class SelectLanguages extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let languagelist = this.props.filteredLanguages.map(c => (
       <TouchableOpacity
         key={c.id}
@@ -29,7 +30,7 @@ export default class SelectLanguages extends Component {
             styles.optionsIconSize
           ]}
         />
-        <Text style={styles.optionsTextContainer}>{c.name}</Text>
+        <Text style={styles.optionsTextContainer}>{translate(c.name)}</Text>
       </TouchableOpacity>
     ));
     return (
@@ -40,16 +41,18 @@ export default class SelectLanguages extends Component {
         <View style={styles.container}>
           <View style={[styles.dataContainer]}>
             <Icon name="language" type="MaterialIcons" style={styles.icon} />
-            <Text style={[styles.title]}>Select Languages</Text>
+            <Text style={[styles.title]}>{translate("Select Languages")}</Text>
             <View style={styles.slidercontainer}>
               <Item>
                 <Input
-                  placeholder="Search Language..."
+                  placeholder={translate("Search Language")}
                   style={styles.inputtext}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
                     let filteredC = this.props.languages.filter(c =>
-                      c.name.toLowerCase().includes(value.toLowerCase())
+                      translate(c.name)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.props.filterLanguages(filteredC);
                   }}

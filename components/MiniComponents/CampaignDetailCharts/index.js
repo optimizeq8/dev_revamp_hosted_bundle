@@ -9,6 +9,7 @@ import formatNumber from "../../formatNumber";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 class CampaignCard extends Component {
   render() {
+    const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
     let charts = [
       { spend: campaign ? campaign.spends : 0 }
@@ -16,6 +17,7 @@ class CampaignCard extends Component {
       // { swipes: campaign.swipes }
     ].map((category, i) => (
       <Chart
+        screenProps={this.props.screenProps}
         campaign={campaign}
         detail={true}
         chartCategory={category}
@@ -46,7 +48,7 @@ class CampaignCard extends Component {
               >
                 {formatNumber(campaign ? campaign.impressions : 0, true)}
               </Text>
-              <Text style={[styles.subtext]}>Impressions</Text>
+              <Text style={[styles.subtext]}>{translate("Impressions")}</Text>
             </View>
           </View>
           <View style={styles.campaignIcons}>
@@ -68,8 +70,8 @@ class CampaignCard extends Component {
               </Text>
               <Text style={[styles.subtext]}>
                 {campaign && campaign.objective !== "BRAND_AWARENESS"
-                  ? "Swipe Ups"
-                  : "CPM"}
+                  ? translate("Swipe Ups")
+                  : translate("CPM")}
               </Text>
             </View>
           </View>

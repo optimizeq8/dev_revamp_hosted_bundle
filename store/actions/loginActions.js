@@ -9,6 +9,7 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
+import { update_app_status_chat_notification } from "./messengerActions";
 
 createBaseUrl = () =>
   axios.create({
@@ -79,6 +80,7 @@ export const checkForExpiredToken = navigation => {
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           if (
             [
+              "nouf@optimizeapp.com",
               "sam.omran@hotmail.com",
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
@@ -114,6 +116,7 @@ export const login = (userData, navigation) => {
   return (dispatch, getState) => {
     if (
       [
+        "nouf@optimizeapp.com",
         "sam.omran@hotmail.com",
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
@@ -244,6 +247,7 @@ export const clearPushToken = (navigation, userid) => {
         });
       })
       .then(() => {
+        dispatch(update_app_status_chat_notification(false));
         dispatch(logout(navigation));
       })
       .catch(err => {

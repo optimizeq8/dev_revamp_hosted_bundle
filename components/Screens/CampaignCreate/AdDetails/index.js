@@ -2,16 +2,19 @@
 import React, { Component } from "react";
 import {
   View,
-  Slider,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
-  BackHandler
+  Image as RNImage,
+  Platform,
+  BackHandler,
+  Slider,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import { Video } from "expo-av";
 import * as Segment from "expo-analytics-segment";
-import Sidemenu from "react-native-side-menu";
+// import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
@@ -24,16 +27,17 @@ import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
+import { Image } from "react-native-expo-image-cache";
 
 //Data
 import countries, { gender, OSType, country_regions } from "./data";
 
 //Icons
-import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
-import LocationIcon from "../../../../assets/SVGs/Location.svg";
-import InterestsIcon from "../../../../assets/SVGs/Interests.svg";
-import GenderIcon from "../../../../assets/SVGs/Gender.svg";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
+import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
+import LocationIcon from "../../../../assets/SVGs/Location";
+import InterestsIcon from "../../../../assets/SVGs/Interests";
+import GenderIcon from "../../../../assets/SVGs/Gender";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
 import LanguageIcon from "../../../../assets/SVGs/Language";
@@ -42,7 +46,10 @@ import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
-
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 //Redux Axios
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
@@ -59,6 +66,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import { BudgetCards } from "./BudgetCards";
+import { TargetAudience } from "./TargetAudience";
+import find from "lodash/find";
 
 class AdDetails extends Component {
   static navigationOptions = {
@@ -110,7 +121,9 @@ class AdDetails extends Component {
       modalVisible: false,
       totalReach: 0,
       selectionOption: "",
-      showRegions: false
+      showRegions: false,
+      recBudget: 0,
+      budgetOption: 1
     };
   }
 
@@ -135,7 +148,6 @@ class AdDetails extends Component {
     return true;
   };
   async componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     this.props.get_languages();
     if (this.props.navigation.getParam("editCampaign", false)) {
       let editedCampaign = deepmerge(
@@ -165,24 +177,38 @@ class AdDetails extends Component {
           .name;
         this.onSelectedRegionChange(id, name);
       });
-      await this.setState({
+      this.setState({
         campaignInfo: editedCampaign
       });
     } else {
-      await this.setState({
+      let duration = Math.round(
+        Math.abs(
+          (new Date(this.props.data.start_time).getTime() -
+            new Date(this.props.data.end_time).getTime()) /
+            86400000
+        ) + 1
+      );
+
+      let recBudget = duration * 75;
+
+      this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           campaign_id: this.props.campaign_id,
-          lifetime_budget_micro: this.props.data.minValueBudget
+          lifetime_budget_micro: recBudget
         },
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
-        value: this.formatNumber(this.props.data.minValueBudget)
+        value: this.formatNumber(recBudget),
+        recBudget: recBudget
       });
 
       if (this.props.data.hasOwnProperty("campaignInfo")) {
         rep = { ...this.state.campaignInfo, ...this.props.data.campaignInfo };
-
+        let countryRegions = find(
+          country_regions,
+          country => country.country_code === rep.targeting.geos[0].country_code
+        );
         this.setState(
           {
             ...this.state,
@@ -190,33 +216,41 @@ class AdDetails extends Component {
               ...rep
             },
             ...this.props.data,
-            value: this.props.data.campaignInfo.lifetime_budget_micro,
+            value: this.formatNumber(
+              this.props.data.campaignInfo.lifetime_budget_micro
+            ),
             showRegions: this.props.data.showRegions,
-            filteredLanguages: this.props.languages
+            filteredLanguages: this.props.languages,
+            recBudget,
+            regions: countryRegions.regions
           },
           () => {
             this._calcReach();
-            rep.targeting.geos[0].country_code &&
-              this.onSelectedCountryChange(
-                rep.targeting.geos[0].country_code,
-                true,
-                this.props.data.countryName
-              );
+            // this.state.campaignInfo &&
+            //   this.state.campaignInfo.targeting.geos[0].country_code &&
+            //   this.onSelectedCountryChange(
+            //     this.state.campaignInfo.targeting.geos[0].country_code,
+            //     true,
+            //     this.props.data.countryName
+            //   );
           }
         );
       }
-      if (
-        this.props.navigation.state.params &&
-        this.props.navigation.state.params.appChoice
-      ) {
-        let navAppChoice = this.props.navigation.state.params.appChoice;
+
+      if (this.props.data.appChoice) {
+        let navAppChoice =
+          this.props.data.iosApp_name && this.props.data.androidApp_name
+            ? ""
+            : this.props.data.appChoice;
         let rep = this.state.campaignInfo;
         rep.targeting.devices[0].os_type = navAppChoice;
-        await this.setState({
+        this.setState({
           campaignInfo: rep
         });
       }
     }
+
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   _handleMaxAge = value => {
@@ -243,20 +277,25 @@ class AdDetails extends Component {
   ) => {
     let replace = this.state.campaignInfo;
     let newCountry = selectedItem;
-
-    if (typeof newCountry !== "undefined") {
+    if (
+      typeof newCountry !== "undefined" &&
+      newCountry !== replace.targeting.geos[0].country_code
+    ) {
       replace.targeting.geos[0].country_code = newCountry;
-      replace.targeting.geos[0].region_id = mounting
-        ? this.props.data.campaignInfo.targeting.geos[0].region_id
-        : [];
+
+      replace.targeting.geos[0].region_id = [];
+
       let reg = country_regions.find(
         c => c.country_code === replace.targeting.geos[0].country_code
       );
+      replace.targeting.interests[0].category_id = [];
+
       await this.setState({
         campaignInfo: replace,
         regions: reg.regions,
         filteredRegions: reg.regions,
         regionNames: [],
+        interestNames: [],
         countryName,
         showRegions: reg.regions.length > 3
       });
@@ -288,6 +327,7 @@ class AdDetails extends Component {
   };
 
   onSelectedLangsChange = selectedItem => {
+    const { translate } = this.props.screenProps;
     let replace = this.state.campaignInfo;
     let langs = [];
     if (
@@ -303,7 +343,7 @@ class AdDetails extends Component {
     }
     if (replace.targeting.demographics[0].languages.length === 0) {
       showMessage({
-        message: "Please choose a language.",
+        message: translate("Please choose a language."),
         type: "warning",
         position: "top"
       });
@@ -321,6 +361,8 @@ class AdDetails extends Component {
   onSelectedOSChange = selectedItem => {
     let replace = this.state.campaignInfo;
     replace.targeting.devices[0].os_type = selectedItem;
+    replace.targeting.devices[0].os_version_min = "";
+    replace.targeting.devices[0].os_version_max = "";
     this.setState({ campaignInfo: { ...replace } });
     this.props.save_campaign_info({ campaignInfo: { ...replace } });
   };
@@ -335,6 +377,13 @@ class AdDetails extends Component {
     });
   };
   onSelectedBudgetChange = budget => {
+    if (budget === this.state.maxValueBudget) {
+      showMessage({
+        message: "You can also enter your budget manually.",
+        type: "success",
+        position: "top"
+      });
+    }
     let replace = this.state.campaignInfo;
     replace.lifetime_budget_micro = budget;
     this.setState({
@@ -346,31 +395,61 @@ class AdDetails extends Component {
 
   onSelectedRegionChange = (selectedItem, regionName) => {
     let replace = this.state.campaignInfo;
+    let rIds = replace.targeting.geos[0].region_id;
+    let rNamesSelected = this.state.regionNames;
 
-    let names = this.state.regionNames;
-    if (replace.targeting.geos[0].region_id.find(r => r === selectedItem)) {
-      replace.targeting.geos[0].region_id = replace.targeting.geos[0].region_id.filter(
-        r => r !== selectedItem
-      );
+    if (selectedItem === -1) {
+      if (this.state.regions.length === this.state.regionNames.length) {
+        replace.targeting.geos[0].region_id = [];
+        this.setState({
+          regionNames: [],
+          campaignInfo: replace
+        });
+      } else {
+        rNamesSelected = this.state.regions.map(r => r.name);
+        rIds = this.state.regions.map(r => r.id);
+        replace.targeting.geos[0].region_id = rIds;
+        this.setState({
+          regionNames: rNamesSelected,
+          campaignInfo: replace
+        });
+      }
+
+      this.props.save_campaign_info({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
+      return;
     } else {
-      replace.targeting.geos[0].region_id.push(selectedItem);
+      // logic change
+
+      // campignInfo region
+      if (rIds.find(r => r === selectedItem)) {
+        replace.targeting.geos[0].region_id = rIds.filter(
+          r => r !== selectedItem
+        );
+        rNamesSelected = rNamesSelected.filter(r => r !== regionName);
+      } else {
+        replace.targeting.geos[0].region_id.push(selectedItem);
+        rNamesSelected.push(regionName);
+      }
+
+      this.setState({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
+      this.props.save_campaign_info({
+        campaignInfo: replace,
+        regionNames: rNamesSelected
+      });
     }
-    if (names.find(r => r === regionName)) {
-      names = names.filter(r => r !== regionName);
-    } else {
-      names.push(regionName);
-    }
-    this.setState({ campaignInfo: replace, regionNames: names });
-    this.props.save_campaign_info({
-      campaignInfo: replace,
-      regionNames: names
-    });
   };
 
   formatNumber = num => {
     return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   };
-  _handleBudget = (value, rawValue) => {
+  _handleBudget = (value, rawValue, onBlur, budgetOption) => {
+    const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
       rawValue >= this.state.minValueBudget &&
@@ -381,35 +460,42 @@ class AdDetails extends Component {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
-        }
+        },
+        budgetOption
       });
       return true;
     } else {
-      showMessage({
-        message: validateWrapper("Budget", rawValue)
-          ? validateWrapper("Budget", rawValue)
-          : "Budget can't be less than the minimum",
-        type: "warning",
-        position: "top"
-      });
+      if (onBlur) {
+        showMessage({
+          message: validateWrapper("Budget", rawValue)
+            ? validateWrapper("Budget", rawValue)
+            : translate("Budget can't be less than the minimum"),
+          description: "$" + this.state.minValueBudget,
+          type: "warning",
+          position: "top"
+        });
+      }
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: rawValue
         },
-        value: value
+        value: value,
+        budgetOption
       });
       this.props.save_campaign_info({
         campaignInfo: {
           ...this.state.campaignInfo,
           lifetime_budget_micro: this.state.minValueBudget
-        }
+        },
+        budgetOption
       });
 
       return false;
@@ -492,6 +578,7 @@ class AdDetails extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const languagesError =
       this.state.campaignInfo.targeting.demographics[0].languages.length === 0
         ? "Please choose a language."
@@ -503,13 +590,13 @@ class AdDetails extends Component {
     );
     if (countryError) {
       showMessage({
-        message: "Please choose a country.",
+        message: translate("Please choose a country"),
         type: "warning",
         position: "top"
       });
     } else if (languagesError) {
       showMessage({
-        message: "Please choose a language.",
+        message: translate("Please choose a language"),
         type: "warning",
         position: "top"
       });
@@ -518,7 +605,9 @@ class AdDetails extends Component {
     if (
       this._handleBudget(
         this.state.value,
-        this.state.campaignInfo.lifetime_budget_micro
+        this.state.campaignInfo.lifetime_budget_micro,
+        true,
+        this.state.budgetOption
       ) &&
       !languagesError &&
       !countryError
@@ -595,11 +684,13 @@ class AdDetails extends Component {
   };
 
   render() {
+    const { translate } = this.props.screenProps;
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
         menu = (
           <GenderOptions
+            screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedGenderChange={this.onSelectedGenderChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -610,6 +701,7 @@ class AdDetails extends Component {
       case "age": {
         menu = (
           <AgeOption
+            screenProps={this.props.screenProps}
             state={this.state.campaignInfo.targeting.demographics[0]}
             _handleMaxAge={this._handleMaxAge}
             _handleMinAge={this._handleMinAge}
@@ -621,6 +713,7 @@ class AdDetails extends Component {
       case "regions": {
         menu = (
           <SelectRegions
+            screenProps={this.props.screenProps}
             countryName={this.state.countryName}
             filteredRegions={this.state.filteredRegions}
             onSelectedRegionChange={this.onSelectedRegionChange}
@@ -636,6 +729,7 @@ class AdDetails extends Component {
       case "languages": {
         menu = (
           <SelectLanguages
+            screenProps={this.props.screenProps}
             filteredLanguages={this.state.filteredLanguages}
             onSelectedLangsChange={this.onSelectedLangsChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -650,6 +744,7 @@ class AdDetails extends Component {
       case "OS": {
         menu = (
           <SelectOS
+            screenProps={this.props.screenProps}
             campaignInfo={this.state.campaignInfo}
             onSelectedOSChange={this.onSelectedOSChange}
             _handleSideMenuState={this._handleSideMenuState}
@@ -661,6 +756,7 @@ class AdDetails extends Component {
       case "selectors": {
         menu = (
           <MultiSelectSections
+            screenProps={this.props.screenProps}
             countries={countries}
             country_code={
               this.state.campaignInfo.targeting.geos[0].country_code
@@ -702,7 +798,7 @@ class AdDetails extends Component {
           i => i === r.id
         )
       ) {
-        regions_names.push(r.name);
+        regions_names.push(translate(r.name));
       }
     });
     regions_names = regions_names.join(", ");
@@ -714,25 +810,33 @@ class AdDetails extends Component {
           i => i === r.id
         )
       ) {
-        languages_names.push(r.name);
+        languages_names.push(translate(r.name));
       }
     });
     languages_names = languages_names.join(", ");
 
     let interests_names = [];
-    this.state.interestNames.forEach(r => {
-      interests_names.push(r.name);
-    });
+    if (this.state.campaignInfo.targeting.interests[0].category_id.length > 0) {
+      interests_names = this.state.campaignInfo.targeting.interests[0].category_id.map(
+        interest => {
+          const nameItem = find(
+            this.props.interests,
+            intrst => interest === intrst.id
+          );
+          if (nameItem) return translate(nameItem.name);
+        }
+      );
+    }
     interests_names = interests_names.join(", ");
 
     let editCampaign = this.props.navigation.getParam("editCampaign", false);
 
     const campaign = this.props.navigation.getParam("campaign", {});
 
-    const image =
-      this.props.data && this.props.data.image
-        ? this.props.data.image
-        : this.props.navigation.getParam("image", "");
+    const media =
+      this.props.data && this.props.data.media
+        ? this.props.data.media
+        : this.props.navigation.getParam("media", "//");
     return (
       <Sidemenu
         onChange={isOpen => {
@@ -743,19 +847,25 @@ class AdDetails extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition="right"
+        menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
-        sty
         isOpen={this.state.sidemenustate}
+        // edgeHitWidth={-60}
       >
-        {(!image.includes(".jpg") ||
-          !image.includes(".png") ||
-          (campaign.media && !campaign.media.includes(".jpg")) ||
-          (campaign.media && !campaign.media.includes(".png"))) && (
+        {media.includes(".mp4") ||
+        media.includes(".mov") ||
+        media.includes(".MP4") ||
+        media.includes(".MOV") ||
+        (campaign.media &&
+          (campaign.media.includes(".mp4") ||
+            campaign.media.includes(".MP4"))) ||
+        (campaign.media &&
+          (campaign.media.includes(".mov") ||
+            campaign.media.includes(".MOV"))) ? (
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? campaign.media : image
+                uri: editCampaign ? campaign.media : media
               }}
               shouldPlay
               isLooping
@@ -764,489 +874,170 @@ class AdDetails extends Component {
               style={styles.videoBackgroundViewWrapper}
             />
           </View>
-        )}
-        <ImageBackground
-          // imageStyle={{ opacity: 0.3 }}
-          style={[
-            styles.imageBackgroundViewWrapper,
-            this.state.sidemenustate
-              ? {
-                  borderTopRightRadius: 30
-                }
-              : {}
-          ]}
-          source={{
-            uri: image.includes(".jpg") ? image : "www.go.com"
-          }}
-        >
-          <SafeAreaView
+        ) : (
+          <RNImageOrCacheImage
+            media={media}
             style={[
-              styles.safeArea
-              // {backgroundColor: this.state.sidemenustate ? "transparent" : 'rgba(0,0,0,0.75)'}
-            ]}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
-            <NavigationEvents
-              onDidFocus={() => {
-                if (this.props.navigation.getParam("editCampaign", false)) {
-                  Segment.screenWithProperties("Snap Ad Targetting Update", {
-                    category: "Campaign Update"
-                  });
-                } else {
-                  Segment.screenWithProperties("Snap Ad Targetting", {
-                    category: "Campaign Creation"
-                  });
-                  Segment.trackWithProperties("Viewed Checkout Step", {
-                    checkout_id: this.props.campaign_id,
-                    step: 4
-                  });
-                }
-              }}
-            />
-            <Container style={styles.mainContainer}>
-              <Container style={styles.container}>
-                <CustomHeader
-                  closeButton={false}
-                  segment={{
-                    str: "Ad Details Back Button",
-                    obj: {
-                      businessname: this.props.mainBusiness.businessname
-                    }
-                  }}
-                  actionButton={
-                    editCampaign
-                      ? () => this.props.navigation.navigate("CampaignDetails")
-                      : undefined
+              styles.imageBackgroundViewWrapper,
+              this.state.sidemenustate && !I18nManager.isRTL
+                ? {
+                    borderTopRightRadius: 30
                   }
-                  navigation={editCampaign ? undefined : this.props.navigation}
-                  title="Campaign details"
-                />
+                : {},
+              this.state.sidemenustate && I18nManager.isRTL
+                ? {
+                    borderTopLeftRadius: 30
+                  }
+                : {}
+            ]}
+          />
+        )}
 
-                <Content
-                  scrollEnabled={false}
-                  contentContainerStyle={styles.contentContainer}
-                >
-                  {!editCampaign ? (
-                    <>
-                      <Text style={styles.subHeadings}>Budget</Text>
-                      <View style={styles.moneyInputContainer}>
-                        <TextInputMask
-                          disableFullscreenUI={this.props.loading}
-                          // disableFullscreenUI={this.props.loading}
-                          includeRawValueInChangeText
-                          type={"money"}
-                          options={{
-                            precision: 0,
-                            delimiter: ",",
-                            unit: "$"
-                          }}
-                          // disabled={editCampaign || this.props.loading}
-                          maxLength={8}
-                          // defaultValue={this.state.value + ""}
-                          value={this.state.value + ""}
-                          onChangeText={(value, rawText) => {
-                            if (!editCampaign)
-                              this._handleBudget(value, rawText);
-                          }}
-                          style={styles.budget}
-                          ref={ref => (this.moneyField = ref)}
-                        />
-                        <Text style={styles.budgetInstructionText}>
-                          Tap to enter manually
+        <SafeAreaView
+          style={[
+            styles.safeArea
+            // {backgroundColor: this.state.sidemenustate ? "transparent" : 'rgba(0,0,0,0.75)'}
+          ]}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
+          <NavigationEvents
+            onDidFocus={() => {
+              this.props.saveCampaignSteps(
+                this.props.adType === "StoryAd"
+                  ? [
+                      "Dashboard",
+                      "AdObjective",
+                      "AdCover",
+                      "AdDesign",
+                      "AdDetails"
+                    ]
+                  : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
+              );
+
+              if (this.props.navigation.getParam("editCampaign", false)) {
+                Segment.screenWithProperties("Snap Ad Targetting Update", {
+                  category: "Campaign Update"
+                });
+              } else {
+                Segment.screenWithProperties("Snap Ad Targetting", {
+                  category: "Campaign Creation"
+                });
+                Segment.trackWithProperties("Viewed Checkout Step", {
+                  checkout_id: this.props.campaign_id,
+                  step: 4
+                });
+              }
+            }}
+          />
+          <Container style={styles.mainContainer}>
+            <Container style={styles.container}>
+              <CustomHeader
+                screenProps={this.props.screenProps}
+                closeButton={false}
+                segment={{
+                  str: "Ad Details Back Button",
+                  obj: {
+                    businessname: this.props.mainBusiness.businessname
+                  }
+                }}
+                actionButton={
+                  editCampaign
+                    ? () => this.props.navigation.navigate("CampaignDetails")
+                    : undefined
+                }
+                navigation={editCampaign ? undefined : this.props.navigation}
+                title={"Campaign details"}
+              />
+
+              <Content
+                scrollEnabled={false}
+                contentContainerStyle={styles.contentContainer}
+              >
+                {!editCampaign ? (
+                  <>
+                    <Text uppercase style={styles.subHeadings}>
+                      {translate("Budget")}
+                    </Text>
+                    <BudgetCards
+                      value={this.state.value}
+                      recBudget={this.state.recBudget}
+                      lifetime_budget_micro={
+                        this.state.campaignInfo.lifetime_budget_micro
+                      }
+                      budgetOption={this.state.budgetOption}
+                      _handleBudget={this._handleBudget}
+                    />
+
+                    {/*---------leave if in case we want to use it again---------*/}
+                    {/* <View style={styles.sliderContainer}>
+                      <View style={styles.budgetSliderText}>
+                        <Text style={globalStyles.whiteTextColor}>
+                          ${this.state.minValueBudget}
+                        </Text>
+                        <Text style={globalStyles.whiteTextColor}>
+                          ${this.state.maxValueBudget}
                         </Text>
                       </View>
-                      <View style={styles.sliderContainer}>
-                        <View style={styles.budgetSliderText}>
-                          <Text style={globalStyles.whiteTextColor}>
-                            ${this.state.minValueBudget}
-                          </Text>
-                          <Text style={globalStyles.whiteTextColor}>
-                            ${this.state.maxValueBudget}
-                          </Text>
-                        </View>
 
-                        <Slider
-                          thumbTintColor={globalColors.orange}
-                          disabled={editCampaign || this.props.loading}
-                          style={styles.slider}
-                          step={10}
-                          minimumValue={this.state.minValueBudget}
-                          maximumValue={this.state.maxValueBudget}
-                          value={
-                            this.state.campaignInfo.lifetime_budget_micro <
-                            90000000000000000000
-                              ? this.state.campaignInfo.lifetime_budget_micro
-                              : 1500
-                          }
-                          onValueChange={debounce(
-                            this.onSelectedBudgetChange,
-                            60
-                          )}
-                          maximumTrackTintColor={globalColors.white}
-                          minimumTrackTintColor={globalColors.purple}
-                        />
-                      </View>
-                    </>
-                  ) : (
-                    <View style={styles.sliderPlaceHolder}>
-                      <Text style={styles.subHeadings}>
-                        Editing budget and duration {"\n"} is currently
-                        unavailable.
-                      </Text>
+                      <Slider
+                        thumbTintColor={globalColors.orange}
+                        disabled={editCampaign || this.props.loading}
+                        style={styles.slider}
+                        step={10}
+                        minimumValue={this.state.minValueBudget}
+                        maximumValue={this.state.maxValueBudget}
+                        value={
+                          this.state.campaignInfo.lifetime_budget_micro <
+                          90000000000000000000
+                            ? this.state.campaignInfo.lifetime_budget_micro
+                            : 1500
+                        }
+                        onValueChange={debounce(
+                          this.onSelectedBudgetChange,
+                          60
+                        )}
+                        maximumTrackTintColor={globalColors.white}
+                        minimumTrackTintColor={globalColors.purple}
+                      />
                     </View>
-                  )}
-                  <Text style={styles.subHeadings}>
-                    Who would you like to reach?
-                  </Text>
-                  <ScrollView
-                    ref={ref => (this.scrollView = ref)}
-                    indicatorStyle="white"
-                    style={styles.targetList}
-                  >
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("gender");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={globalStyles.row}>
-                        <GenderIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-
-                        <View style={globalStyles.column}>
-                          <Text style={styles.menutext}>Gender</Text>
-                          <Text style={styles.menudetails}>
-                            {
-                              gender.find(r => {
-                                if (
-                                  r.value ===
-                                  this.state.campaignInfo.targeting
-                                    .demographics[0].gender
-                                )
-                                  return r;
-                              }).label
-                            }
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={globalStyles.column}>
-                        {this.state.campaignInfo.targeting.demographics[0]
-                          .gender === "" ||
-                        this.state.campaignInfo.targeting.demographics[0]
-                          .gender ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
-                        ) : (
-                          <PlusCircleIcon width={25} height={25} />
-                        )}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("age");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={globalStyles.row}>
-                        <AgeIcon
-                          fill={globalColors.orange}
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-                        <View style={globalStyles.column}>
-                          <Text style={styles.menutext}>Age</Text>
-                          <Text style={styles.menudetails}>
-                            {
-                              this.state.campaignInfo.targeting.demographics[0]
-                                .min_age
-                            }{" "}
-                            -{" "}
-                            {this.state.campaignInfo.targeting.demographics[0]
-                              .max_age === 35
-                              ? "35+"
-                              : this.state.campaignInfo.targeting
-                                  .demographics[0].max_age}
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.demographics[0]
-                        .max_age ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
+                  */}
+                  </>
+                ) : (
+                  <View style={styles.sliderPlaceHolder}>
+                    <Text style={styles.subHeadings}>
+                      {translate(
+                        "Editing budget and duration\nis currently unavailable"
                       )}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "countries");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={globalStyles.row}>
-                        <LocationIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-
-                        <View style={globalStyles.column}>
-                          <Text style={styles.menutext}>Country</Text>
-                          <Text style={styles.menudetails}>
-                            {this.state.countryName}
-                          </Text>
-                        </View>
-                      </View>
-                      {this.state.campaignInfo.targeting.geos[0]
-                        .country_code ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-
-                    {this.state.showRegions && (
-                      <TouchableOpacity
-                        onPress={() => {
-                          this._renderSideMenu("regions");
-                        }}
-                        style={styles.targetTouchable}
-                      >
-                        <View style={[globalStyles.row, styles.flex]}>
-                          <LocationIcon
-                            width={25}
-                            height={25}
-                            style={styles.icon}
-                          />
-                          <View style={[globalStyles.column, styles.flex]}>
-                            <Text style={styles.menutext}>Regions</Text>
-                            <Text style={styles.menudetails} numberOfLines={1}>
-                              {regions_names}
-                            </Text>
-                          </View>
-                        </View>
-
-                        {this.state.campaignInfo.targeting.geos[0].region_id
-                          .length !== 0 ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
-                        ) : (
-                          <PlusCircleIcon width={25} height={25} />
-                        )}
-                      </TouchableOpacity>
-                    )}
-
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("languages");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <LanguageIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Language</Text>
-                          <Text numberOfLines={1} style={styles.menudetails}>
-                            {languages_names}
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.demographics[0]
-                        .languages.length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this.state.campaignInfo.targeting.geos[0]
-                          .country_code === ""
-                          ? showMessage({
-                              message: "Please select a country first",
-                              position: "top",
-                              type: "warning"
-                            })
-                          : this._renderSideMenu("selectors", "interests");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <InterestsIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Interests</Text>
-                          <Text numberOfLines={1} style={styles.menudetails}>
-                            {interests_names}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={globalStyles.column}>
-                        {this.state.campaignInfo.targeting.interests[0]
-                          .category_id.length !== 0 ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
-                        ) : (
-                          <PlusCircleIcon width={25} height={25} />
-                        )}
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("OS");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <OperatingSystemIcon
-                          width={25}
-                          height={25}
-                          fill={globalColors.orange}
-                          style={styles.icon}
-                        />
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Operating System</Text>
-                          <Text style={styles.menudetails}>
-                            {
-                              OSType.find(r => {
-                                if (
-                                  r.value ===
-                                  this.state.campaignInfo.targeting.devices[0]
-                                    .os_type
-                                )
-                                  return r;
-                              }).label
-                            }
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.devices[0].os_type ===
-                        "" ||
-                      this.state.campaignInfo.targeting.devices[0].os_type ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-                    {this.state.campaignInfo.targeting.devices[0].os_type !==
-                      "" && (
-                      <TouchableOpacity
-                        disabled={this.props.loading}
-                        onPress={() => {
-                          this._renderSideMenu("selectors", "deviceVersions");
-                        }}
-                        style={styles.targetTouchable}
-                      >
-                        <View style={[globalStyles.row, styles.flex]}>
-                          <Icon
-                            name="versions"
-                            type="Octicons"
-                            width={25}
-                            height={25}
-                            style={{
-                              color: globalColors.orange,
-                              right: 2
-                            }}
-                          />
-                          <View style={[globalStyles.column, styles.flex]}>
-                            <Text style={styles.menutext}>OS Versions</Text>
-                            <Text style={styles.menudetails}>
-                              {this.state.campaignInfo.targeting.devices[0]
-                                .os_version_min +
-                                ", " +
-                                this.state.campaignInfo.targeting.devices[0]
-                                  .os_version_max}
-                            </Text>
-                          </View>
-                        </View>
-
-                        {this.state.campaignInfo.targeting.devices[0]
-                          .os_version_min !== "" ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
-                        ) : (
-                          <PlusCircleIcon width={25} height={25} />
-                        )}
-                      </TouchableOpacity>
-                    )}
-                    <TouchableOpacity
-                      disabled={this.props.loading}
-                      onPress={() => {
-                        this._renderSideMenu("selectors", "deviceBrands");
-                      }}
-                      style={styles.targetTouchable}
-                    >
-                      <View style={[globalStyles.row, styles.flex]}>
-                        <DeviceMakeIcon
-                          width={25}
-                          height={25}
-                          style={styles.icon}
-                          fill={globalColors.orange}
-                        />
-
-                        <View style={[globalStyles.column, styles.flex]}>
-                          <Text style={styles.menutext}>Device Make</Text>
-                          <Text numberOfLines={1} style={styles.menudetails}>
-                            {
-                              this.state.campaignInfo.targeting.devices[0]
-                                .marketing_name
-                            }
-                          </Text>
-                        </View>
-                      </View>
-
-                      {this.state.campaignInfo.targeting.devices[0]
-                        .marketing_name.length !== 0 ? (
-                        <GreenCheckmarkIcon width={25} height={25} />
-                      ) : (
-                        <PlusCircleIcon width={25} height={25} />
-                      )}
-                    </TouchableOpacity>
-                  </ScrollView>
-
-                  {!editCampaign && hp(100) < 800 && (
-                    <Text
-                      onPress={() => {
-                        this.scrollView.scrollToEnd({ animated: true });
-
-                        this.setState({ advance: !this.state.advance });
-                      }}
-                      style={styles.moreOptionsText}
-                    >
-                      Scroll for more options+
                     </Text>
-                  )}
+                  </View>
+                )}
+                <Text uppercase style={styles.subHeadings}>
+                  {translate("Who would you like to reach?")}
+                </Text>
+                <TargetAudience
+                  screenProps={this.props.screenProps}
+                  _renderSideMenu={this._renderSideMenu}
+                  loading={this.props.loading}
+                  gender={gender}
+                  targeting={this.state.campaignInfo.targeting}
+                  regions_names={regions_names}
+                  languages_names={languages_names}
+                  interests_names={interests_names}
+                  OSType={OSType}
+                  mainState={this.state}
+                  translate={translate}
+                  editCampaign={editCampaign}
+                />
 
-                  <ReachBar
-                    loading={this.props.loading}
-                    advance={this.state.advance}
-                    _handleSubmission={this._handleSubmission}
-                  />
-                </Content>
-              </Container>
+                <ReachBar
+                  loading={this.props.loading}
+                  _handleSubmission={this._handleSubmission}
+                  screenProps={this.props.screenProps}
+                />
+              </Content>
             </Container>
-            {/* <Modal isVisible={this.props.loading}>
-            <LoadingScreen top={50} />
-            </Modal> */}
-          </SafeAreaView>
-        </ImageBackground>
+          </Container>
+        </SafeAreaView>
       </Sidemenu>
     );
   }
@@ -1256,11 +1047,15 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   minValueBudget: state.campaignC.minValueBudget,
   maxValueBudget: state.campaignC.maxValueBudget,
+  adType: state.campaignC.adType,
   data: state.campaignC.data,
   average_reach: state.campaignC.average_reach,
   loading: state.campaignC.loadingDetail,
   mainBusiness: state.account.mainBusiness,
-  languages: state.campaignC.languagesList
+  languages: state.campaignC.languagesList,
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  interests: state.campaignC.interests
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1271,7 +1066,8 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
-  get_languages: () => dispatch(actionCreators.get_languages())
+  get_languages: () => dispatch(actionCreators.get_languages()),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 export default connect(
   mapStateToProps,

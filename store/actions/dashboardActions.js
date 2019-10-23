@@ -35,7 +35,10 @@ export const getCampaignDetails = (id, navigation) => {
         return res.data;
       })
       .then(data => {
-        if (typeof data === "string" && data === "Connection-Failure") {
+        if (
+          typeof data === "string" &&
+          data.toLowerCase() === "connection-failure"
+        ) {
           throw TypeError("Connection-Failure, Please try again later");
         }
         dispatch({
@@ -56,7 +59,7 @@ export const getCampaignDetails = (id, navigation) => {
         }
       })
       .catch(err => {
-        // console.log("getCampaignDetails error", err.message || err.response);
+        console.log("getCampaignDetails error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -96,7 +99,7 @@ export const getCampaignStats = (campaign, duration) => {
       payload: true
     });
     createBaseUrl()
-      .post(`getcampaignStats`, {
+      .post(`getcampaignStatsNew`, {
         //testing
         // campaign_id: "0fe08957-c083-4344-8c62-6825cdaa711a",
         // start_time: "2019-05-09",
@@ -125,6 +128,10 @@ export const getCampaignStats = (campaign, duration) => {
       })
       .catch(err => {
         // console.log("getCampaignStats error", err.message || err.response);
+        dispatch({
+          type: actionTypes.SET_CAMPAIGN_STATS,
+          payload: { loading: false, data: {}, err }
+        });
         showMessage({
           message:
             err.message ||

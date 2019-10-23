@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image as RNImage, TouchableOpacity } from "react-native";
 import { Button, Icon } from "native-base";
 import { Video } from "expo-av";
 import styles from "../styles";
@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
-
+import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 class SnapCard extends Component {
   state = { uploading: false };
   render() {
@@ -17,9 +17,27 @@ class SnapCard extends Component {
       snapCardInfo,
       removeSnapCard,
       _handleStoryAdCards,
-      video
+      rejected
     } = this.props;
-    // snapCardInfo.index === 0 && console.log(this.props);
+    const { translate } = this.props.screenProps;
+    let videoPlayer = this.props.loadingStoryAdsArray[
+      snapCardInfo.index
+    ] ? null : (
+      <Video
+        source={{
+          uri:
+            rejected ||
+            (!this.props.loadingStoryAdsArray[snapCardInfo.index] &&
+              snapCardInfo.item.uploaded)
+              ? snapCardInfo.item["media"]
+              : "//"
+        }}
+        shouldPlay={false}
+        isMuted
+        resizeMode={"stretch"}
+        style={styles.rejected}
+      />
+    );
 
     return (
       <View style={styles.SnapAdCard}>
@@ -33,16 +51,22 @@ class SnapCard extends Component {
             position: "absolute"
           }}
         >
-          <Image
-            source={{
-              uri:
-                !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
-                snapCardInfo.item.uploaded
-                  ? snapCardInfo.item.image
-                  : "snapCardInfo.item.image"
-            }}
-            style={{ height: "100%", width: "100%", position: "absolute" }}
-          />
+          {snapCardInfo.item.media_type === "VIDEO" ? (
+            videoPlayer
+          ) : (
+            <RNImageOrCacheImage
+              media={
+                rejected || !this.props.loadingStoryAdsArray[snapCardInfo.index]
+                  ? snapCardInfo.item["media"]
+                  : "//"
+              }
+              style={{
+                height: "100%",
+                width: "100%",
+                position: "absolute"
+              }}
+            />
+          )}
         </View>
         <View
           style={{
@@ -58,12 +82,16 @@ class SnapCard extends Component {
           <Text style={{ color: "#fff" }}>{snapCardInfo.index + 1}</Text>
         </View>
         {!this.props.loadingStoryAdsArray[snapCardInfo.index] ? (
-          !snapCardInfo.item.uploaded ? (
+          snapCardInfo.item.media === "//" ? (
             <MediaButton
-              image={snapCardInfo.item.image}
+              type={"media"}
+              media={
+                snapCardInfo.item[snapCardInfo.item.media ? "image" : "media"]
+              }
               _handleStoryAdCards={_handleStoryAdCards}
               snapAdCard={true}
               snapCardInfo={snapCardInfo}
+              screenProps={this.props.screenProps}
             />
           ) : (
             <TouchableOpacity
@@ -88,13 +116,18 @@ class SnapCard extends Component {
                   { fontSize: 11, width: 65, textAlign: "left", top: 0 }
                 ]}
               >
-                Edit Media
+                {translate("Edit Media")}
               </Text>
               <PenIcon width={15} height={15} />
             </TouchableOpacity>
           )
         ) : (
-          <ActivityIndicator color={globalColors.orange} />
+          <>
+            <ActivityIndicator color={globalColors.orange} />
+            <Text style={{ color: "#fff" }}>
+              {Math.round(snapCardInfo.item.progress, 2)}%
+            </Text>
+          </>
         )}
         {snapCardInfo.index > 2 && (
           <Icon
@@ -110,7 +143,11 @@ class SnapCard extends Component {
             }}
             name="close"
             type="MaterialCommunityIcons"
-            style={{ bottom: "15%", color: "#fff", alignSelf: "flex-start" }}
+            style={{
+              bottom: "15%",
+              color: "#fff",
+              alignSelf: "flex-start"
+            }}
           />
         )}
       </View>

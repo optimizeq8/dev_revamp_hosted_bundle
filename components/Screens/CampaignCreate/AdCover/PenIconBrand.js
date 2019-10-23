@@ -1,16 +1,21 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TextInput } from "react-native";
 import { Item, Input } from "native-base";
-import PenIcon from "../../../../assets/SVGs/Pen.svg";
+import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
+    let { rejected, coverHeadline } = this.props;
+    const { translate } = this.props.screenProps;
     return (
       <Item style={styles.inputHeadline}>
         <PenIcon
+          width={21}
+          height={21}
+          style={{ alignSelf: "flex-start" }}
           fill={
             this.state.input
               ? "#FF9D00"
@@ -19,18 +24,24 @@ export default class PenIconBrand extends Component {
               : "#fff"
           }
         />
-        <View style={{ flexDirection: "column" }}>
-          <Text style={[styles.inputText, styles.subtitleHeading]}>
-            {this.props.field}
+        <View
+          style={{
+            flexDirection: "column",
+            paddingBottom: 20,
+            justifyContent: "flex-start"
+          }}
+        >
+          <Text style={[styles.subtitleHeading]}>
+            {translate(this.props.field)}
           </Text>
-          <Input
-            style={styles.inputText}
-            defaultValue={
-              !this.props.data ? "Headline" : this.props.data.coverHeadline
-            }
+          <TextInput
+            style={[styles.inputText]}
+            defaultValue={this.props.coverHeadline}
             maxLength={55}
-            placeholderLabel={styles.inputText}
-            placeholderTextColor="white"
+            numberOfLines={3}
+            multiline={true}
+            placeholder={translate("Enter your cover headline")}
+            placeholderTextColor="#fff9"
             autoCorrect={false}
             autoCapitalize="none"
             onChangeText={value => this.props.changeHeadline(value)}

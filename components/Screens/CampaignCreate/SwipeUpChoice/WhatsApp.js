@@ -1,21 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, TouchableOpacity } from "react-native";
+import {
+  View,
+  BackHandler,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+  Modal
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Text, Item, Input, Icon } from "native-base";
+import { Text, Item, Input, Icon, Button, Container } from "native-base";
 import { showMessage } from "react-native-flash-message";
-import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
+import upperCase from "lodash/upperCase";
+// import { Modal } from 'react-native-paper';
+import { BlurView } from "expo-blur";
+
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import PhoneNo from "../../../Screens/Signup/PhoneNo";
+import PhoneNoField from "../../Signup/PhoneNo/PhoneNoField";
 //icons
 import WhatsAppIcon from "../../../../assets/SVGs/SwipeUps/WhatsApp";
+import SuccessIcon from "../../../../assets/SVGs/Success";
+import ErrorIcon from "../../../../assets/SVGs/Error";
+import WalletIcon from "../../../../assets/SVGs/Wallet";
+import CloseCircleIcon from "../../../../assets/SVGs/CloseCircle";
+import ForwardIcon from "../../../../assets/SVGs/ForwardButton";
+import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
+import LocationIcon from "../../../../assets/SVGs/LocationOutline";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -24,6 +40,7 @@ import * as actionCreators from "../../../../store/actions";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import isStringArabic from "../../../isStringArabic";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -40,39 +57,92 @@ class WhatsApp extends Component {
         callaction: list.SnapAd[4].call_to_action_list[0]
       },
       callactions: list.SnapAd[4].call_to_action_list,
-
+      validCallNumber: false,
+      validWhatsAppNumber: false,
       insta_handleError: "",
+      showChangeInstaHandle: false,
       inputCallToAction: false
     };
   }
-
   componentDidMount() {
     if (
-      (this.props.data.hasOwnProperty("attachment") &&
-        this.props.data.attachment !== "BLANK") ||
-      this.props.mainBusiness.whatsappnumber !== ""
+      this.props.data &&
+      this.props.data.hasOwnProperty("attachment")
+      // &&
+      // this.props.data.attachment !== "BLANK"
+      // ||
+      // this.props.mainBusiness.whatsappnumber !== ""
     ) {
+      // console.log('capmaignDetail', this.props.data);
+      // console.log('mainBusinessInstaHandle', this.props.mainBusiness);
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
-          weburl: this.props.mainBusiness.weburl
-            ? this.props.mainBusiness.weburl
-            : this.props.data.weburl,
-          insta_handle: this.props.mainBusiness.insta_handle
-            ? this.props.mainBusiness.insta_handle
-            : this.props.data.insta_handle,
-          whatsappnumber: this.props.mainBusiness.whatsappnumber
-            ? this.props.mainBusiness.whatsappnumber
-            : this.props.data.whatsappnumber,
-          callnumber: this.props.mainBusiness.callnumber
+          weburl:
+            this.props.data && this.props.data.weburl
+              ? this.props.data.weburl
+              : this.props.mainBusiness.weburl
+              ? this.props.mainBusiness.weburl
+              : "",
+          insta_handle:
+            this.props.data && this.props.data.insta_handle
+              ? this.props.data.insta_handle
+              : this.props.mainBusiness.insta_handle
+              ? this.props.mainBusiness.insta_handle
+              : "",
+          whatsappnumber:
+            this.props.data && this.props.data.whatsappnumber
+              ? this.props.data.whatsappnumber
+              : this.props.mainBusiness.whatsappnumber
+              ? this.props.mainBusiness.whatsappnumber
+              : "",
+          callnumber: this.props.data.callnumber
+            ? this.props.data.callnumber
+            : this.props.mainBusiness.callnumber
             ? this.props.mainBusiness.callnumber
-            : this.props.data.callnumber,
+            : "",
+          googlemaplink:
+            this.props.data && this.props.data.googlemaplink
+              ? this.props.data.googlemaplink
+              : this.props.mainBusiness.googlemaplink
+              ? this.props.mainBusiness.googlemaplink
+              : "",
           callaction:
-            this.props.data.call_to_action.value !== "BLANK"
+            this.props.data && this.props.data.call_to_action.value !== "BLANK"
               ? this.props.data.call_to_action
               : list.SnapAd[4].call_to_action_list[0]
         }
       });
+
+      // this.setState({
+      //   campaignInfo: {
+      //     ...this.state.campaignInfo,
+      //     weburl: this.props.mainBusiness.weburl
+      //       ? this.props.mainBusiness.weburl
+      //       : this.props.data.weburl,
+      //     insta_handle: this.props.data.insta_handle
+      //       ? this.props.data.insta_handle
+      //       : this.props.mainBusiness.insta_handle
+      //       ? this.props.mainBusiness.insta_handle
+      //       : "",
+      //     whatsappnumber: this.props.mainBusiness.whatsappnumber
+      //       ? this.props.mainBusiness.whatsappnumber
+      //       : this.props.data.whatsappnumber,
+      //     callnumber: this.props.mainBusiness.callnumber
+      //       ? this.props.mainBusiness.callnumber
+      //       : this.props.data.callnumber,
+      //     googlemaplink: this.props.mainBusiness.googlemaplink
+      //       ? this.props.mainBusiness.googlemaplink
+      //       : this.props.data && this.props.data.googlemaplink
+      //       ? this.props.data.googlemaplink
+      //       : "",
+      //     callaction:
+      //       this.props.data && this.props.data.call_to_action.value !== "BLANK"
+      //         ? this.props.data.call_to_action
+      //         : list.SnapAd[4].call_to_action_list[0]
+      //   }
+      // });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -84,6 +154,7 @@ class WhatsApp extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   validate = () => {
+    const { translate } = this.props.screenProps;
     const insta_handleError = validateWrapper(
       "mandatory",
       this.state.campaignInfo.insta_handle
@@ -92,22 +163,37 @@ class WhatsApp extends Component {
       "mandatory",
       this.state.campaignInfo.weburl
     );
-    const whatsappnumberError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.whatsappnumber
-    );
+    // const whatsappnumberError = validateWrapper(
+    //   "mandatory",
+    //   this.state.campaignInfo.whatsappnumber
+    // );
+    if (this.state.campaignInfo.googlemaplink.length > 0) {
+      var googleMapLinkError = validateWrapper(
+        "googleMapLink",
+        this.state.campaignInfo.googlemaplink
+      );
+    }
+
     this.setState({
       insta_handleError,
-      weburlError
+      weburlError,
+      googleMapLinkError
     });
-    if (insta_handleError || weburlError || whatsappnumberError) {
+    if (
+      insta_handleError ||
+      weburlError ||
+      // whatsappnumberError ||
+      googleMapLinkError
+    ) {
       showMessage({
         message: insta_handleError
-          ? "Please provide an instagram handle"
+          ? translate("Please provide an instagram handle")
           : weburlError
-          ? "Please provide domain name"
-          : whatsappnumberError
-          ? "Please provide a valid whatsapp number"
+          ? translate("Please provide domain name")
+          : // : whatsappnumberError
+          // ? translate("Please provide a valid WhatsApp number")
+          googleMapLinkError
+          ? translate("Please provide a valid location link")
           : "",
         type: "warning",
         position: "top",
@@ -118,23 +204,76 @@ class WhatsApp extends Component {
       return true;
     }
   };
-  _handleSubmission = async () => {
-    if (!this.props.mainBusiness.weburl) {
+
+  // decide if its an whatsapp or insta traffic
+
+  checkTypeOfTraffic = () => {
+    if (this.state.campaignInfo.whatsappnumber !== "") {
+      // whatsapp traffic
+      this.checkInstaAccountChange();
+    } else {
+      // instagram traffic
+      this._handleSubmissionInstaTraffic();
+    }
+  };
+
+  checkInstaAccountChange = async () => {
+    // console.log("data", this.props.data);
+    await this.props.verifyInstagramHandle(
+      this.state.campaignInfo.insta_handle
+    );
+    if (
+      this.props.data.insta_handle &&
+      this.props.data.insta_handle !== this.state.campaignInfo.insta_handle &&
+      !this.props.errorInstaHandle &&
+      this.props.selectedInstagramProducts.length > 0 &&
+      //    || (this.props.mainBusiness.insta_handle &&
+      //   this.props.mainBusiness.insta_handle !==
+      // this.state.campaignInfo.insta_handle
+      // )
+      this.props.productInfoId
+    ) {
+      this.setState({
+        showChangeInstaHandle: true
+      });
+    } else {
+      await this._handleSubmission();
+    }
+  };
+  // handle submission instagram traffic
+
+  _handleSubmissionInstaTraffic = async () => {
+    const { translate } = this.props.screenProps;
+    // if (!this.props.mainBusiness.weburl) {
+    await this.props.verifyInstagramHandle(
+      this.state.campaignInfo.insta_handle
+    );
+    if (!this.props.errorInstaHandle && !this.props.mainBusiness.weburl) {
       await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
+    }
+    if (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) {
+      showMessage({
+        message: translate(
+          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+          )}`,
+          { insta_handle: this.state.campaignInfo.insta_handle }
+        ),
+        type: "danger",
+        duration: 2000
+      });
     }
     let weburlAvalible =
       this.props.mainBusiness.weburl || this.props.weburlAvalible;
 
-    if (this.validate() && weburlAvalible) {
-      let whatsAppCampaign = {
+    if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
+      let instagramTrafficCampaign = {
         weburl: this.state.campaignInfo.weburl,
-        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
         insta_handle: this.state.campaignInfo.insta_handle,
-        callnumber:
-          this.state.campaignInfo.callnumber ||
-          this.state.campaignInfo.callnumber !== ""
-            ? this.state.campaignInfo.callnumber.replace("+", "")
-            : this.state.campaignInfo.whatsappnumber.replace("+", "")
+        callnumber: this.state.campaignInfo.callnumber.replace("+", ""),
+        googlemaplink: this.state.campaignInfo.googlemaplink,
+        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
+        source: "INSTAGRAM TRAFFIC"
       };
 
       this.props._changeDestination(
@@ -147,9 +286,85 @@ class WhatsApp extends Component {
           )}.optimizeapp.com`
         },
         null,
-        whatsAppCampaign
+        null,
+        instagramTrafficCampaign
       );
+
       this.props.navigation.navigate("AdDesign");
+    }
+  };
+
+  // handle submission whatsapp lead
+  _handleSubmission = async () => {
+    const { translate } = this.props.screenProps;
+    // if (!this.props.mainBusiness.weburl) {
+    await this.props.verifyInstagramHandle(
+      this.state.campaignInfo.insta_handle
+    );
+    if (!this.props.errorInstaHandle && !this.props.mainBusiness.weburl) {
+      await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
+    }
+    if (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) {
+      showMessage({
+        message: translate(
+          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+          )}`,
+          { insta_handle: this.state.campaignInfo.insta_handle }
+        ),
+        type: "danger",
+        duration: 2000
+      });
+    }
+    let weburlAvalible =
+      this.props.mainBusiness.weburl || this.props.weburlAvalible;
+
+    if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
+      let whatsAppCampaign = {
+        weburl: this.state.campaignInfo.weburl,
+        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
+        insta_handle: this.state.campaignInfo.insta_handle,
+        googlemaplink: this.state.campaignInfo.googlemaplink,
+        callnumber:
+          this.state.campaignInfo.callnumber ||
+          this.state.campaignInfo.callnumber !== ""
+            ? this.state.campaignInfo.callnumber.replace("+", "")
+            : this.state.campaignInfo.whatsappnumber.replace("+", ""),
+
+        source: "WHATSAPP LEADS"
+      };
+      // check here for insta handle change then update the selectedItemList to []
+      // if (this.props.data.insta_handle !== this.state.campaignInfo.insta_handle && this.props.productInfoId) {
+      // 	//   console.log('updating to empty list');
+      // 	this.props.saveWebProducts(
+      // 		[],
+      // 		this.props.data.campaign_id,
+      // 		this.props.productInfoId,
+      // 		this.props.navigation
+      // 	);
+      // }
+
+      let _changeDestination = () =>
+        this.props._changeDestination(
+          "REMOTE_WEBPAGE",
+          this.state.campaignInfo.callaction,
+          {
+            url: `https://${this.state.campaignInfo.weburl.replace(
+              /[^0-9a-z]/gi,
+              ""
+            )}.optimizeapp.com`
+          },
+          null,
+          whatsAppCampaign
+        );
+      if (this.state.showChangeInstaHandle) {
+        this.setState({ showChangeInstaHandle: false });
+      }
+
+      this.props.navigation.navigate("SelectInstagramPost", {
+        insta_handle: this.state.campaignInfo.insta_handle,
+        _changeDestination
+      });
     }
   };
   onSelectedCallToActionChange = value => {
@@ -179,19 +394,21 @@ class WhatsApp extends Component {
     // NOTE: compulsory to pass this function
     // console.log("businescatId", value);
   };
-  changeWhatsAppPhoneNo = (value, validNumber) => {
+  changeWhatsAppPhoneNo = (value, countryCode, numberType, validNumber) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        whatsappnumber: validNumber ? value : ""
+        whatsappnumber: validNumber ? value : "",
+        validWhatsAppNumber: validNumber
       }
     });
   };
-  changeCallNumberPhoneNo = (value, validNumber) => {
+  changeCallNumberPhoneNo = (value, countryCode, numberType, validNumber) => {
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
-        callnumber: validNumber ? value : ""
+        callnumber: validNumber ? value : "",
+        validCallNumber: validNumber
       }
     });
   };
@@ -211,15 +428,65 @@ class WhatsApp extends Component {
       }
     });
   };
+  changeGoogleMapLocation = value => {
+    // truncate before https: everything
+    if (value.includes("https:")) {
+      const link = value.substring(value.indexOf("https:") + 1);
+      // console.log("link", "h" + link);
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          googlemaplink: value === "" ? "" : "h" + link
+        }
+      });
+    } else {
+      this.setState({
+        campaignInfo: {
+          ...this.state.campaignInfo,
+          googlemaplink: value
+        }
+      });
+    }
+  };
+
+  validateUrl = () => {
+    const { translate } = this.props.screenProps;
+
+    const googleMapLinkError = validateWrapper(
+      "googleMapLink",
+      this.state.campaignInfo.googlemaplink
+    );
+    this.setState({
+      googleMapLinkError
+    });
+    if (googleMapLinkError) {
+      showMessage({
+        message: translate("Please provide a valid location link"),
+        type: "warning",
+        position: "top",
+        duration: 7000
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+  setModalInstagramChangedVisible = value => {
+    this.setState({
+      showChangeInstaHandle: value
+    });
+  };
   render() {
+    const { translate } = this.props.screenProps;
+
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
-        style={styles.safeAreaContainer}
+        style={[styles.safeAreaContainer]}
       >
-        <KeyboardShift>
+        <KeyboardShift style={{ flex: 1 }}>
           {() => (
-            <View style={[styles.whatsApp, { bottom: "5%", paddingTop: 20 }]}>
+            <View style={[styles.whatsApp]}>
               <WhatsAppIcon
                 width={60}
                 height={60}
@@ -227,42 +494,47 @@ class WhatsApp extends Component {
                 style={[styles.icon]}
               />
               <View style={[styles.textcontainer]}>
-                <Text style={styles.titletext}>WhatsApp Campaign</Text>
+                <Text uppercase style={styles.titletext}>
+                  {translate("SME Growth")}
+                </Text>
                 <Text style={styles.subtext}>
-                  We’ll create a mini website for your business. Just fill in
-                  the info below
+                  {translate(
+                    "We’ll create a mini website for your business Just fill in the info below"
+                  )}
                 </Text>
               </View>
-              <View style={[styles.whatsApp]}>
-                {!this.props.mainBusiness.weburl && (
-                  <View style={{}}>
-                    <Text style={[styles.subTitle]}>
-                      Pick a domain for your Website
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-evenly",
-                        alignItems: "center"
-                      }}
-                    >
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+              >
+                <View style={[styles.whatsAppDetailContainer]}>
+                  {!this.props.mainBusiness.weburl && (
+                    <View style={styles.marginVertical}>
+                      <Text style={[styles.subTitle]}>
+                        {translate("Pick a domain for your Website")}
+                      </Text>
+                      <View style={[styles.callToActionLabelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                          {translate("domain")}*
+                        </Text>
+                      </View>
                       <Item
                         rounded
                         style={[
                           styles.input,
                           {
-                            paddingHorizontal: 0,
-                            width: "50%"
-                          },
-                          this.state.weburlError
-                            ? GlobalStyles.redBorderColor
-                            : GlobalStyles.transparentBorderColor
+                            paddingHorizontal: 0
+                            // width: "50%"
+                          }
+                          //   this.state.weburlError
+                          //     ? GlobalStyles.redBorderColor
+                          //     : GlobalStyles.transparentBorderColor
                         ]}
                       >
                         <Input
-                          style={[styles.inputtext]}
+                          style={[styles.businessInputText]}
                           placeholder="eg. businessname"
-                          placeholderTextColor="#fff"
+                          placeholderTextColor="#FF9D00"
                           value={this.state.campaignInfo.weburl}
                           autoCorrect={false}
                           autoCapitalize="none"
@@ -276,117 +548,340 @@ class WhatsApp extends Component {
                             }
                           }}
                         />
+                        <Text style={[styles.url]}>.optimizeapp.com</Text>
                       </Item>
-                      <Text style={[styles.url]}>.optimizeapp.com</Text>
                     </View>
+                  )}
+                  <View style={styles.marginVertical}>
+                    {/* <Text style={[styles.subTitle]}>Call to action</Text> */}
+                    <Picker
+                      screenProps={this.props.screenProps}
+                      searchPlaceholderText={translate("Search Call To Action")}
+                      data={this.state.callactions}
+                      uniqueKey={"value"}
+                      displayKey={"label"}
+                      open={this.state.inputCallToAction}
+                      onSelectedItemsChange={
+                        this.onSelectedCallToActionIdChange
+                      }
+                      onSelectedItemObjectsChange={
+                        this.onSelectedCallToActionChange
+                      }
+                      selectedItems={[this.state.campaignInfo.callaction.value]}
+                      single={true}
+                      screenName={"Swipe up destination WhatsApp"}
+                      closeCategoryModal={this.closeCallToActionModal}
+                    />
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("call to action")}*
+                      </Text>
+                    </View>
+                    <Item
+                      rounded
+                      style={[styles.input]}
+                      onPress={() => {
+                        this.setState({ inputCallToAction: true });
+                      }}
+                    >
+                      <Text style={styles.callActionLabel}>
+                        {this.state.campaignInfo.callaction.label}
+                      </Text>
+                      <Icon
+                        type="AntDesign"
+                        name="down"
+                        style={styles.downArrowIcon}
+                      />
+                    </Item>
                   </View>
-                )}
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Call to action</Text>
-                  <Picker
-                    searchPlaceholderText={"Search Call To Action"}
-                    data={this.state.callactions}
-                    uniqueKey={"value"}
-                    displayKey={"label"}
-                    open={this.state.inputCallToAction}
-                    onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                    onSelectedItemObjectsChange={
-                      this.onSelectedCallToActionChange
-                    }
-                    selectedItems={[this.state.campaignInfo.callaction.value]}
-                    single={true}
-                    screenName={"Swipe up destination WhatsApp"}
-                    closeCategoryModal={this.closeCallToActionModal}
-                  />
-                  <Item
-                    rounded
-                    style={[styles.input]}
-                    onPress={() => {
-                      this.setState({ inputCallToAction: true });
-                    }}
-                  >
-                    <Text style={styles.callActionLabel}>
-                      {this.state.campaignInfo.callaction.label}
+
+                  <View style={styles.marginVertical}>
+                    {/* <Text style={[styles.subTitle]}>WhatsApp number</Text> */}
+                    <Text style={[styles.subtextReach]} uppercase>
+                      {translate("Where would you like people to reach you?")}
                     </Text>
-                    <Icon
-                      type="AntDesign"
-                      name="down"
-                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                  </View>
+                  <View style={styles.marginVertical}>
+                    {/* <Text style={[styles.subTitle]}>Instagram handle</Text> */}
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("instagram")}*
+                      </Text>
+                    </View>
+                    <Item
+                      rounded
+                      style={[
+                        styles.input,
+                        {
+                          paddingHorizontal: 0
+                          // width: "75%"
+                        }
+                        //   this.state.insta_handleError
+                        //     ? GlobalStyles.redBorderColor
+                        //     : GlobalStyles.transparentBorderColor
+                      ]}
+                    >
+                      <Icon
+                        style={{ color: "#FFF", position: "absolute" }}
+                        name="at"
+                        type="MaterialCommunityIcons"
+                      />
+                      <Input
+                        style={styles.inputtext}
+                        placeholder="Handle"
+                        placeholderTextColor="#fff"
+                        value={this.state.campaignInfo.insta_handle}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={value => this.changeInstaHandle(value)}
+                        onBlur={() => {
+                          this.validate();
+                          // if (!this.props.errorInstaHandle) {
+                          this.props.verifyInstagramHandle(
+                            this.state.campaignInfo.insta_handle
+                          );
+                          // }
+                        }}
+                      />
+                      {this.props.errorInstaHandle && (
+                        <ErrorIcon
+                          width={25}
+                          height={25}
+                          style={{ marginRight: 10 }}
+                        />
+                      )}
+                      {!this.props.errorInstaHandle && (
+                        <SuccessIcon
+                          width={25}
+                          height={25}
+                          style={{ marginRight: 10 }}
+                        />
+                      )}
+                    </Item>
+                    <Text
+                      style={{
+                        paddingTop: 12,
+                        paddingHorizontal: 50,
+                        fontSize: 14,
+                        fontFamily: "montserrat-regular",
+                        color: "#fff",
+                        textAlign: "center"
+                      }}
+                    >
+                      {this.props.errorInstaHandleMessage &&
+                        translate(
+                          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
+                            this.props.errorInstaHandleMessage.indexOf(" ") + 1
+                          )}`,
+                          { insta_handle: this.state.campaignInfo.insta_handle }
+                        )}
+                    </Text>
+                  </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text
+                        uppercase
+                        style={[
+                          styles.inputLabel,
+                          {
+                            fontFamily: "montserrat-bold-english",
+                            marginTop: 0
+                          }
+                        ]}
+                      >
+                        {translate("whatsApp")}
+                      </Text>
+                    </View>
+                    <PhoneNoField
+                      valid={this.state.validWhatsAppNumber}
+                      screenProps={this.props.screenProps}
+                      whatsApp
+                      phoneNum={this.state.campaignInfo.whatsappnumber}
+                      changeNo={this.changeWhatsAppPhoneNo}
+                      invite={true}
                     />
-                  </Item>
+                  </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("mobile")}
+                      </Text>
+                    </View>
+                    {/* <Text style={[styles.subTitle]}>Phone number (optional)</Text> */}
+                    <PhoneNoField
+                      valid={this.state.validCallNumber}
+                      screenProps={this.props.screenProps}
+                      whatsApp
+                      phoneNum={this.state.campaignInfo.callnumber}
+                      changeNo={this.changeCallNumberPhoneNo}
+                      invite={true}
+                    />
+                  </View>
+                  <View style={styles.marginVertical}>
+                    <View style={[styles.callToActionLabelView]}>
+                      <Text uppercase style={[styles.inputLabel]}>
+                        {translate("LOCATION URL")}
+                      </Text>
+                    </View>
+                    <Item
+                      rounded
+                      style={[
+                        styles.input,
+                        {
+                          paddingHorizontal: 0
+                          // width: "75%"
+                        }
+                        //   this.state.insta_handleError
+                        //     ? GlobalStyles.redBorderColor
+                        //     : GlobalStyles.transparentBorderColor
+                      ]}
+                    >
+                      <LocationIcon
+                        // width={50}
+                        // height={50}
+                        style={{ marginLeft: 12 }}
+                        stroke={"#FFF"}
+                      />
+                      <Input
+                        style={styles.inputtext}
+                        placeholder={translate("Add Location URL")}
+                        placeholderTextColor="#fff"
+                        value={this.state.campaignInfo.googlemaplink}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onChangeText={value =>
+                          this.changeGoogleMapLocation(value)
+                        }
+                        onBlur={() => {
+                          this.validateUrl();
+                        }}
+                        // onBlur={() => {
+                        //   this.validate();
+                        //   // if (!this.props.errorInstaHandle) {
+                        //   this.props.verifyInstagramHandle(
+                        //     this.state.campaignInfo.insta_handle
+                        //   );
+                        //   // }
+                        // }}
+                      />
+                    </Item>
+                  </View>
                 </View>
-
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>WhatsApp number</Text>
-                  <Text
-                    style={[
-                      styles.subtext,
-                      { fontFamily: "montserrat-regular" }
-                    ]}
-                  >
-                    Customers would be able to call And text this number
-                  </Text>
-                  <PhoneNo
-                    whatsApp
-                    phoneNum={this.state.campaignInfo.whatsappnumber}
-                    changeFunction={this.changeWhatsAppPhoneNo}
-                    invite={true}
+                <View style={styles.bottonViewWebsite}>
+                  <LowerButton
+                    checkmark={true}
+                    bottom={-5}
+                    function={this.checkTypeOfTraffic}
                   />
                 </View>
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Phone number</Text>
-                  <PhoneNo
-                    whatsApp
-                    phoneNum={this.state.campaignInfo.callnumber}
-                    changeFunction={this.changeCallNumberPhoneNo}
-                    invite={true}
-                  />
-                </View>
-
-                <View style={{}}>
-                  <Text style={[styles.subTitle]}>Instagram handle</Text>
-
-                  <Item
-                    rounded
-                    style={[
-                      styles.input,
-                      {
-                        paddingHorizontal: 0,
-                        width: "75%"
-                      },
-                      this.state.insta_handleError
-                        ? GlobalStyles.redBorderColor
-                        : GlobalStyles.transparentBorderColor
-                    ]}
-                  >
-                    <Icon
-                      style={{ color: "#FFF", position: "absolute" }}
-                      name="at"
-                      type="MaterialCommunityIcons"
-                    />
-                    <Input
-                      style={styles.inputtext}
-                      placeholder="Enter your Instagram handle"
-                      placeholderTextColor="#fff"
-                      value={this.state.campaignInfo.insta_handle}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={value => this.changeInstaHandle(value)}
-                      onBlur={() => this.validate()}
-                    />
-                  </Item>
-                </View>
-              </View>
-              <View style={styles.bottonViewWebsite}>
-                <LowerButton
-                  checkmark={true}
-                  bottom={-5}
-                  function={this._handleSubmission}
-                />
-              </View>
+              </ScrollView>
             </View>
           )}
         </KeyboardShift>
+        <Modal
+          animationType={"fade"}
+          transparent={Platform.OS === "ios"}
+          dismissable
+          onRequestClose={() => this.setState({ showChangeInstaHandle: false })}
+          visible={this.state.showChangeInstaHandle}
+        >
+          <BlurView tint="dark" intensity={100} style={styles.BlurView}>
+            <View style={styles.walletPaymentModalContainer}>
+              <>
+                {/* <WalletIcon width={80} height={80} /> */}
+                {/* <Text
+                  style={{
+                    fontSize: 160,
+                    color: "#ff9d00",
+                    fontFamily: "montserrat-regular"
+                  }}
+                >
+                  !
+                </Text> */}
+                <ExclamationIcon style={{ alignSelf: "center" }} />
+
+                <Text style={styles.instagramWarningHeadingText}>
+                  {upperCase(translate("Instagram Handle Changed"))}
+                </Text>
+
+                <Text style={styles.instagramWarningDescriptionText}>
+                  {translate(
+                    "You have changed the Instagram handle, if you continue it will reset your previous products/price selections"
+                  )}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    // flex: 1,
+                    width: "100%",
+                    paddingTop: 60
+                  }}
+                >
+                  {/* <TouchableOpacity
+                    onPress={() =>
+                      this.setState({ showChangeInstaHandle: false })
+                    }
+                  >
+                    <CloseCircleIcon width={53} height={53} />
+                  </TouchableOpacity> */}
+                  <LowerButton
+                    cross={true}
+                    bottom={0}
+                    function={() => this.setModalInstagramChangedVisible(false)}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      let whatsAppCampaign = {
+                        weburl: this.state.campaignInfo.weburl,
+                        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace(
+                          "+",
+                          ""
+                        ),
+                        insta_handle: this.state.campaignInfo.insta_handle,
+                        callnumber:
+                          this.state.campaignInfo.callnumber ||
+                          this.state.campaignInfo.callnumber !== ""
+                            ? this.state.campaignInfo.callnumber.replace(
+                                "+",
+                                ""
+                              )
+                            : this.state.campaignInfo.whatsappnumber.replace(
+                                "+",
+                                ""
+                              )
+                      };
+                      this.props._changeDestination(
+                        "REMOTE_WEBPAGE",
+                        this.state.campaignInfo.callaction,
+                        {
+                          url: `https://${this.state.campaignInfo.weburl.replace(
+                            /[^0-9a-z]/gi,
+                            ""
+                          )}.optimizeapp.com`
+                        },
+                        null,
+                        whatsAppCampaign
+                      );
+                      this.props.saveWebProducts(
+                        [],
+                        this.props.data.campaign_id,
+                        this.props.productInfoId,
+                        this.props.navigation,
+                        this.props.businessLogo
+                      );
+                      this._handleSubmission();
+                    }}
+                  >
+                    <ForwardIcon width={80} height={80} />
+                  </TouchableOpacity>
+                </View>
+              </>
+            </View>
+          </BlurView>
+        </Modal>
       </SafeAreaView>
     );
   }
@@ -395,12 +890,30 @@ class WhatsApp extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   weburlAvalible: state.campaignC.weburlAvalible,
-  mainBusiness: state.account.mainBusiness
+  mainBusiness: state.account.mainBusiness,
+  errorInstaHandle: state.campaignC.errorInstaHandle,
+  errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
+  productInfoId: state.campaignC.productInfoId,
+  businessLogo: state.campaignC.businessLogo,
+  selectedInstagramProducts: state.campaignC.selectedInstagramProducts
 });
 
 const mapDispatchToProps = dispatch => ({
   verifyBusinessUrl: weburl =>
-    dispatch(actionCreators.verifyBusinessUrl(weburl))
+    dispatch(actionCreators.verifyBusinessUrl(weburl)),
+  verifyInstagramHandle: insta_handle =>
+    dispatch(actionCreators.verifyInstagramHandle(insta_handle)),
+  saveWebProducts: (cartList, campaign_id, productInfoId, navigation) =>
+    dispatch(
+      actionCreators.saveWebProducts(
+        cartList,
+        campaign_id,
+        productInfoId,
+        navigation
+      )
+    ),
+  getWebProducts: campaign_id =>
+    dispatch(actionCreators.getWebProducts(campaign_id))
 });
 export default connect(
   mapStateToProps,

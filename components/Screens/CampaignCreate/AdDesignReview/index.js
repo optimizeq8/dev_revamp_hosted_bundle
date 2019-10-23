@@ -6,7 +6,13 @@ import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 
-import { View, TouchableOpacity, Image, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  BackHandler,
+  Platform,
+  Image as RNImage
+} from "react-native";
 import {
   Container,
   Header,
@@ -18,7 +24,8 @@ import {
   Button,
   Text
 } from "native-base";
-
+import { Image } from "react-native-expo-image-cache";
+import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
@@ -35,7 +42,12 @@ import globalStyles from "../../../../GlobalStyles";
 import startCase from "lodash/startCase";
 import toLower from "lodash/toLower";
 import isUndefined from "lodash/isUndefined";
+import upperCase from "lodash/upperCase";
 
+const preview = {
+  uri:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+};
 class AdDesignReview extends Component {
   static navigationOptions = {
     header: null
@@ -61,23 +73,31 @@ class AdDesignReview extends Component {
     return (
       <View style={styles.collectionPlaceholder}>
         {!isUndefined(collections[i]) && (
-          <Image
+          <RNImageOrCacheImage
+            media={collections[i].localUri || collections[i].media}
             style={styles.collectionImage}
-            source={{ uri: collections[i].localUri }}
-            resizeMode="cover"
           />
         )}
       </View>
     );
   };
   render() {
-    let adType = this.props.adType;
-    let storyAdsArray = this.props.storyAdsArray.filter(ad => ad.uploaded);
+    let adType =
+      this.props.navigation.getParam("adType", false) || this.props.adType;
+    let campaignDetails = this.props.navigation.getParam(
+      "campaignDetails",
+      false
+    );
+    let adDesign = this.props.navigation.getParam("adDesign", false);
+    let storyAdsArray =
+      campaignDetails && !adDesign
+        ? this.props.navigation.getParam("storyAdsArray", [])
+        : this.props.storyAdsArray.filter(ad => ad.media !== "//");
 
     let storyAds = this.props.navigation.getParam("storyAds", false);
     let destination = !storyAds
       ? this.props.navigation.getParam("destination", "")
-      : storyAdsArray[this.state.storyAdIndex].destination;
+      : this.props.storyAdAttachment.destination;
     let appIcon = this.props.navigation.getParam("icon_media_url", "");
     let brand_name = this.props.navigation.getParam("brand_name", "");
     let headline = this.props.navigation.getParam("headline", "");
@@ -86,27 +106,38 @@ class AdDesignReview extends Component {
       : storyAdsArray[this.state.storyAdIndex].media_type;
     let call_to_action = this.props.navigation.getParam("call_to_action", "");
 
-    let image = !storyAds
-      ? this.props.navigation.getParam("image", "")
-      : storyAdsArray[this.state.storyAdIndex].image;
-    if (storyAds) {
+    let media = !storyAds
+      ? this.props.navigation.getParam("media", "")
+      : storyAdsArray[this.state.storyAdIndex]["media"];
+
+    if (storyAds && !campaignDetails) {
       if (
-        storyAdsArray[this.state.storyAdIndex].hasOwnProperty("destination") &&
-        storyAdsArray[this.state.storyAdIndex].attachment.hasOwnProperty(
-          "icon_media_url"
-        )
+        (this.props.storyAdAttachment.hasOwnProperty("destination") &&
+          this.props.storyAdAttachment.attachment.hasOwnProperty(
+            "icon_media_url"
+          )) ||
+        (this.props.storyAdAttachment.attachment !== "BLANK" &&
+        typeof this.props.storyAdAttachment.attachment === "string"
+          ? JSON.parse(this.props.storyAdAttachment.attachment).hasOwnProperty(
+              "icon_media_url"
+            )
+          : this.props.storyAdAttachment.attachment.hasOwnProperty(
+              "icon_media_url"
+            ))
       ) {
-        appIcon =
-          storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
+        appIcon = campaignDetails
+          ? JSON.parse(storyAdsArray[this.state.storyAdIndex].attachment)
+              .icon_media_url
+          : this.props.storyAdAttachment.attachment.icon_media_url;
+        //storyAdsArray[this.state.storyAdIndex].attachment.icon_media_url;
       }
       if (
-        storyAdsArray[this.state.storyAdIndex].hasOwnProperty(
-          "call_to_action"
-        ) &&
-        storyAdsArray[this.state.storyAdIndex].call_to_action !== "BLANK"
+        this.props.storyAdAttachment.hasOwnProperty("call_to_action") &&
+        this.props.storyAdAttachment.call_to_action !== "BLANK"
       ) {
-        call_to_action =
-          storyAdsArray[this.state.storyAdIndex].call_to_action.value;
+        call_to_action = this.props.storyAdAttachment.call_to_action.value
+          ? this.props.storyAdAttachment.call_to_action.value
+          : this.props.storyAdAttachment.call_to_action;
       }
     }
 
@@ -118,14 +149,18 @@ class AdDesignReview extends Component {
         {this.collectionComp(3)}
       </View>
     );
-
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
         forceInset={{ top: "always" }}
       >
         <Container style={styles.container}>
-          <Header iosBarStyle={"light-content"} style={styles.header}>
+          <Header
+            screenProps={this.props.screenProps}
+            iosBarStyle={"light-content"}
+            style={styles.header}
+          >
             <Body style={styles.headerBody}>
               <Title style={styles.brandName}>{brand_name}</Title>
               <Subtitle numberOfLines={1} style={styles.headline}>
@@ -151,6 +186,7 @@ class AdDesignReview extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={() =>
+                    storyAdsArray &&
                     this.state.storyAdIndex + 1 !== storyAdsArray.length
                       ? this.setState({
                           storyAdIndex: this.state.storyAdIndex + 1
@@ -169,21 +205,18 @@ class AdDesignReview extends Component {
                         }
                         onLoad={() => this.setState({ videoIsLoading: false })}
                         source={{
-                          uri: image
+                          uri: media
                         }}
-                        isLooping
-                        shouldPlay
+                        isLooping={true}
+                        shouldPlay={true}
                         resizeMode="stretch"
                         style={styles.video}
                       />
                     </>
                   ) : (
-                    <Image
-                      resizeMode="stretch"
+                    <RNImageOrCacheImage
+                      media={media}
                       style={styles.placeholder}
-                      source={{
-                        uri: image
-                      }}
                     />
                   )}
                 </TouchableOpacity>
@@ -229,7 +262,9 @@ class AdDesignReview extends Component {
                       ]}
                     >
                       {call_to_action !== "BLANK"
-                        ? startCase(toLower(call_to_action))
+                        ? startCase(
+                            toLower(translate(upperCase(call_to_action)))
+                          )
                         : ""}
                     </Text>
                   </View>
@@ -247,9 +282,8 @@ class AdDesignReview extends Component {
                       <ArrowUpIcon />
                     </View>
                   )}
-                  <Text style={styles.AD}>Ad</Text>
+                  <Text style={styles.AD}>{translate("Ad")}</Text>
                 </View>
-
                 {adType === "CollectionAd" && (
                   <Animatable.View
                     animation={"fadeInUpBig"}
@@ -271,7 +305,8 @@ class AdDesignReview extends Component {
                   >
                     <View style={[globalStyles.lightGrayBorderColor]}>
                       <Image
-                        source={{ uri: appIcon }}
+                        {...{ preview, uri: appIcon }}
+                        // source={{ uri: appIcon }}
                         style={[
                           globalStyles.grayBorderColor,
                           styles.appIconBottom
@@ -302,7 +337,9 @@ class AdDesignReview extends Component {
                         globalStyles.darkGrayBackgroundColor
                       ]}
                     >
-                      <Text style={styles.getButtonText}>GET</Text>
+                      <Text style={styles.getButtonText}>
+                        {translate("GET")}
+                      </Text>
                     </Button>
                   </Animatable.View>
                 )}
@@ -319,7 +356,8 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   adType: state.campaignC.adType,
   data: state.campaignC.data,
-  storyAdsArray: state.campaignC.storyAdsArray
+  storyAdsArray: state.campaignC.storyAdsArray,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 export default connect(
   mapStateToProps,

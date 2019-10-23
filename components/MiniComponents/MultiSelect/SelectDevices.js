@@ -13,8 +13,8 @@ import * as actionCreators from "../../../store/actions";
 import BackButton from "../../MiniComponents/BackButton";
 
 //Icons
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
-import PlusCircle from "../../../assets/SVGs/PlusCircle.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import PlusCircle from "../../../assets/SVGs/PlusCircle";
 
 //Styles
 import SectionStyle, { colors } from "./SectionStyle";
@@ -24,7 +24,25 @@ class SelectDevices extends Component {
   state = { deviceBrands: null };
 
   componentDidMount() {
-    this.props.get_device_brands();
+    // console.log(
+    //   "this.props.campaignInfo:",
+    //   this.props.OSType
+    // );
+    // this.props.get_device_brands("");
+
+    switch (this.props.OSType) {
+      case "iOS":
+        this.props.get_device_brands("/1");
+        break;
+      case "ANDROID":
+        this.props.get_device_brands("/2");
+        break;
+
+      default:
+        this.props.get_device_brands("");
+
+        break;
+    }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -40,6 +58,7 @@ class SelectDevices extends Component {
     }
   }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
@@ -52,9 +71,12 @@ class SelectDevices extends Component {
               type="MaterialCommunityIcons"
               style={styles.icon}
             />
-            <Text style={styles.title}> Select Devices Make</Text>
+            <Text style={styles.title}>
+              {" "}
+              {translate("Select Devices Make")}
+            </Text>
             <Text style={styles.subHeadings}>
-              Choose which phones you want to target
+              {translate("Choose which phones you want to target")}
             </Text>
 
             <View style={styles.slidercontainer}>
@@ -98,7 +120,9 @@ class SelectDevices extends Component {
                     />
                   }
                   noResultsComponent={
-                    <Text style={styles.errorText}>No item found</Text>
+                    <Text style={styles.errorText}>
+                      {translate("No item found")}
+                    </Text>
                   }
                   hideSelect={true}
                   hideConfirm
@@ -124,6 +148,10 @@ class SelectDevices extends Component {
                     </View>
                   }
                   colors={colors}
+                  searchPlaceholderText={translate("Search Devices")}
+                  searchTextFontFamily={{
+                    fontFamily: "montserrat-regular"
+                  }}
                   searchIconComponent={
                     <Icon
                       type="MaterialCommunityIcons"
@@ -136,7 +164,9 @@ class SelectDevices extends Component {
                   showDropDowns={false}
                   showRemoveAll={true}
                   noItemsComponent={
-                    <Text>Sorry, no Devices for selected country</Text>
+                    <Text>
+                      {translate("Sorry, no Devices for selected country")}
+                    </Text>
                   }
                   onCancel={() => {
                     this.props.onSelectedItemsChange([], "devices");
@@ -173,7 +203,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  get_device_brands: () => dispatch(actionCreators.get_device_brands())
+  get_device_brands: os => dispatch(actionCreators.get_device_brands(os))
 });
 export default connect(
   mapStateToProps,

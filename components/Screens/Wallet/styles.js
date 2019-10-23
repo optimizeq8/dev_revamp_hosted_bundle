@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from "react-native";
+import { StyleSheet, PixelRatio, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "relative",
-    left: "20%"
+    // left: "10%"
+    left: 5
   },
   midContainer: { flex: 2, justifyContent: "center" },
   container: {
@@ -87,7 +88,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 14,
     paddingHorizontal: 10,
-    marginTop: 30
+    marginTop: 30,
+    width: widthPercentageToDP(60)
   },
   dollar: {
     color: "#fff",
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
 
   inputtext: {
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     fontSize: 31 / PixelRatio.getFontScale(),
     color: "#FF9D00",
     alignSelf: "center"
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     borderRadius: 15,
     alignSelf: "center",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     width: 300,
     height: 45,
     color: "#fff",
@@ -134,7 +137,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "montserrat-light",
-    marginVertical: 20
+    marginVertical: 20,
+    width: widthPercentageToDP(50)
   }
 });
 

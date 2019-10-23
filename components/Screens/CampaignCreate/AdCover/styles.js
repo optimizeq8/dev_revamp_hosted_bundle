@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   uplaodPercentage: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     justifyContent: "flex-end",
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    marginTop: hp(25)
+    top: "15%"
   },
   loadingSafeArea: {
     width: "100%",
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
-    opacity: 0.2
+    opacity: 0.5
   },
   transition: {
     height: "100%"
@@ -70,8 +70,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignSelf: "center",
     height: "85%",
-    width: "90%",
-    marginTop: hp(3)
+    width: "100%",
+    paddingHorizontal: 30,
+    paddingBottom: 40,
+    marginTop: hp(3),
+    alignItems: "center"
   },
   mainSafeArea: {
     height: "100%",
@@ -79,14 +82,14 @@ const styles = StyleSheet.create({
   },
   blankView: {
     backgroundColor: "rgba(0,0,0,0.5)",
-    opacity: 0.4,
+    opacity: 0.5,
     height: "100%",
     width: "100%"
   },
   title: {
     fontSize: 16,
     color: "#fff",
-    fontFamily: "montserrat-semibold",
+    fontFamily: "montserrat-bold",
     textAlign: "center",
     alignSelf: "center",
     position: "absolute",
@@ -149,56 +152,34 @@ const styles = StyleSheet.create({
     ]
   },
   inputHeadline: {
-    justifyContent: "center",
-    alignSelf: "center",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
     position: "absolute",
-    width: 250,
-    bottom: 20,
+    bottom: 0,
+    width: 150,
     borderColor: "transparent",
-    transform: [
-      {
-        translateX: -5
-      },
-      {
-        translateY: -3
-      }
-    ]
+    paddingLeft: 15
   },
   container: {
     backgroundColor: "transparent",
     flex: 1
   },
   inputText: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16 / PixelRatio.getFontScale(),
+    fontFamily: "montserrat-medium",
+    fontSize: 13 / PixelRatio.getFontScale(),
     textAlign: "left",
     color: "#fff",
     marginLeft: 8,
-    elevation: 10
+    // height: 150
+    // textAlignVertical: "top"
+    display: "flex",
+    justifyContent: "flex-start"
+    // lineHeight: 16
   },
-  swipeUp: {
-    backgroundColor: globalColors.orange,
-    position: "absolute",
-    alignSelf: "center",
-    width: "70%",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-    borderRadius: 25,
-    paddingVertical: 2,
-    top: "88%"
-  },
-  swipeUpText: {
-    alignSelf: "center",
-    textAlign: "center",
-    color: "white",
-    fontFamily: "montserrat-medium",
-    fontSize: 16
-  },
-  buttonN: {
-    minHeight: 300,
-    flex: 1
-  },
+
   placeholder: {
     borderRadius: 30,
     overflow: "hidden",
@@ -209,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   placeholder1: {
-    opacity: 0.2,
+    opacity: 0.5,
     borderRadius: 30,
     overflow: "hidden",
     alignSelf: "center",
@@ -229,16 +210,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     marginHorizontal: wp(10)
   },
-  gradient: {
-    ...StyleSheet.absoluteFillObject
-  },
-  swipeUpErrorText: {
-    textAlign: "center",
-    color: "#fff",
-    paddingTop: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 12
-  },
+
   footerTextStyle: {
     fontSize: 12,
     color: "white",
@@ -251,9 +223,11 @@ const styles = StyleSheet.create({
     elevation: 0
   },
   subtitleHeading: {
+    color: "#fff",
     fontSize: 12,
-    top: 10,
-    fontFamily: "montserrat-regular"
+    fontFamily: "montserrat-regular",
+    marginLeft: 8,
+    textAlign: "left"
   },
   MediaOptionsStyle: {
     width: "80%",
@@ -276,7 +250,6 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   subText: {
-    top: 10,
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-light",
@@ -302,12 +275,16 @@ const styles = StyleSheet.create({
     width: 250
   },
   changeLogoStyle: {
-    width: "95%",
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "#fff",
+    borderStyle: "dashed",
+    width: "90%",
     height: "20%",
     alignSelf: "center",
     paddingVertical: 5,
     position: "absolute",
-    top: 10
+    top: 15
   }
 });
 

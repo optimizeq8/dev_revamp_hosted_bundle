@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Button, Text, Container, Content, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Modal } from "react-native-paper";
+import { Modal, ActivityIndicator } from "react-native-paper";
 import { Linking } from "expo";
 
 import { BlurView } from "expo-blur";
@@ -43,11 +43,12 @@ class PaymentForm extends Component {
 
   constructor(props) {
     super(props);
+    this.showKnet = this.props.mainBusiness.country.toLowerCase() === "kuwait";
     this.state = {
       addingCredits: this.props.navigation.getParam("addingCredits", false),
       amount: this.props.navigation.getParam("amount", 0),
       payment_type: 1,
-      choice: 2,
+      choice: this.showKnet ? 2 : 3,
       showModal: false,
       browserLoading: false,
       showWalletModal: false,
@@ -297,6 +298,7 @@ class PaymentForm extends Component {
     });
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -326,6 +328,7 @@ class PaymentForm extends Component {
         <Container style={[styles.container]}>
           <BackDrop style={styles.backDrop} />
           <CustomHeader
+            screenProps={this.props.screenProps}
             closeButton={false}
             segment={{
               str: "Payment Method Screen Back Button",
@@ -334,7 +337,7 @@ class PaymentForm extends Component {
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
             // paymentForm={true}
-            title="Payment"
+            title={"Payment"}
           />
           <Content
             padder
@@ -359,39 +362,44 @@ class PaymentForm extends Component {
                         ? globalStyles.whiteTextColor
                         : globalStyles.purpleTextColor
                     ]}
+                    uppercase
                   >
-                    WALLET
+                    {translate("Wallet")}
                   </Text>
                 </Button>
               )}
 
-              <Button
-                style={[
-                  styles.whitebutton2,
-                  this.state.choice === 2
-                    ? globalStyles.orangeBackgroundColor
-                    : globalStyles.whiteBackgroundColor,
-                  {
-                    borderTopStartRadius: this.state.addingCredits ? 15 : 0,
-                    borderBottomStartRadius: this.state.addingCredits ? 15 : 0
-                  }
-                ]}
-                onPress={() => this._handleChoice(2)}
-              >
-                <Text
+              {this.showKnet && (
+                <Button
                   style={[
-                    styles.whitebuttontext,
+                    styles.whitebutton2,
                     this.state.choice === 2
-                      ? globalStyles.whiteTextColor
-                      : globalStyles.purpleTextColor
+                      ? globalStyles.orangeBackgroundColor
+                      : globalStyles.whiteBackgroundColor,
+                    {
+                      borderTopStartRadius: this.state.addingCredits ? 15 : 0,
+                      borderBottomStartRadius: this.state.addingCredits ? 15 : 0
+                    }
                   ]}
+                  onPress={() => this._handleChoice(2)}
                 >
-                  KNET
-                </Text>
-              </Button>
+                  <Text
+                    style={[
+                      styles.whitebuttontext,
+                      this.state.choice === 2
+                        ? globalStyles.whiteTextColor
+                        : globalStyles.purpleTextColor
+                    ]}
+                  >
+                    {translate("KNET")}
+                  </Text>
+                </Button>
+              )}
               <Button
                 style={[
-                  styles.whitebutton3,
+                  this.showKnet
+                    ? styles.whitebutton3
+                    : (styles.whitebutton2, { borderRadius: 13 }),
                   this.state.choice === 3
                     ? globalStyles.orangeBackgroundColor
                     : globalStyles.whiteBackgroundColor
@@ -405,8 +413,9 @@ class PaymentForm extends Component {
                       ? globalStyles.whiteTextColor
                       : globalStyles.purpleTextColor
                   ]}
+                  uppercase
                 >
-                  CREDIT CARD
+                  {translate("Credit Card")}
                 </Text>
               </Button>
             </View>
@@ -417,37 +426,35 @@ class PaymentForm extends Component {
                 setShowWalletModal={this.setShowWalletModal}
                 _changeToKnet={this._changeToKnet}
                 wallet={this.props.wallet}
+                screenProps={this.props.screenProps}
               />
             )}
             {this.state.choice === 2 && (
               <View style={styles.knetContainer}>
                 <Image
-                  style={styles.image}
+                  style={styles.media}
                   source={require("../../../assets/images/knet.png")}
                   resizeMode="contain"
                 />
                 <Text style={styles.errortext}>
-                  You will be redirected to{" "}
-                  <Text style={[styles.errortext, styles.errorTextKNET]}>
-                    KNET’s
-                  </Text>{" "}
+                  {translate("You will be redirected to")}
                   {"\n"}
-                  payment gateway for the {"\n"}
-                  payment process
+                  {translate("payment gateway for the")} {"\n"}
+                  {translate("payment process")}
                 </Text>
               </View>
             )}
             {this.state.choice === 3 && (
               <View style={styles.mastercardContainer}>
                 <Image
-                  style={[styles.image, styles.mastercardImage]}
+                  style={[styles.media, styles.mastercardImage]}
                   source={require("../../../assets/images/mastercard.png")}
                   resizeMode="contain"
                 />
                 <Text style={styles.errortext}>
-                  You will be redirected to a {"\n"}
-                  payment gateway for the {"\n"}
-                  payment process
+                  {translate("You will be redirected to")} {"\n"}
+                  {translate("payment gateway for the")} {"\n"}
+                  {translate("payment process")}
                 </Text>
               </View>
             )}
@@ -456,11 +463,17 @@ class PaymentForm extends Component {
             <View style={styles.bottomCardBlock1}>
               <View>
                 <View style={styles.dollarAmountContainer}>
-                  <Text style={[styles.money, styles.dollarAmountText]}>
+                  <Text
+                    style={[
+                      styles.money,
+                      styles.dollarAmountText,
+                      styles.colorOrange
+                    ]}
+                  >
                     ${/* {"\t "} */}
                   </Text>
 
-                  <Text style={[styles.money, {}]}>
+                  <Text style={[styles.money, styles.colorOrange, {}]}>
                     {this.state.addingCredits
                       ? formatNumber(this.state.amount, true)
                       : this.props.walletUsed
@@ -491,7 +504,7 @@ class PaymentForm extends Component {
                   <View style={styles.optimizeFeesTextContainer}>
                     <Text style={styles.optimizeFeesAmountText}>10%</Text>
                     <Text style={[styles.money, styles.optimizeFeesText]}>
-                      Optimize App fees included
+                      {translate("Optimize App fees included")}
                     </Text>
                   </View>
                 )}
@@ -507,17 +520,21 @@ class PaymentForm extends Component {
                   this.props.loadingTrans
                 }
               >
-                {/*
-              ----------For future maybe----------
-              <Text style={styles.text}>Agency Fee</Text>
-              <View style={{ flexDirection: "column", alignSelf: "center" }}>
-              <Text style={styles.text}>
-                {2500 - this._handleAgencyFee()} $
-              </Text>
-              <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
-            </View> */}
-
-                <Text style={styles.payNowText}>Pay now</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
+                  {this.props.loadingTrans && (
+                    <ActivityIndicator
+                      color={globalColors.red}
+                      style={{ right: 10, position: "absolute" }}
+                    />
+                  )}
+                </View>
               </TouchableOpacity>
             </View>
 
@@ -529,7 +546,7 @@ class PaymentForm extends Component {
             >
               <>
                 <Text allowFontScaling={false} style={[styles.link]}>
-                  {`By tapping this button you  agree to the `}
+                  {translate(`By tapping this button you  agree to the`)}
                 </Text>
                 <Text
                   allowFontScaling={false}
@@ -539,7 +556,7 @@ class PaymentForm extends Component {
                   }}
                   style={[styles.link, styles.tNcText]}
                 >
-                  Terms & Conditions
+                  {translate("Terms & Conditions")}
                 </Text>
               </>
             </TouchableOpacity>
@@ -558,24 +575,27 @@ class PaymentForm extends Component {
                 <>
                   <WalletIcon width={80} height={80} />
                   <Text style={[styles.walletInfo, styles.reviewPurchaseText]}>
-                    Review Purchase
+                    {translate("Review Purchase")}
                   </Text>
 
                   <Text style={styles.walletInfo}>
-                    Are you sure you want to go back? This will reset your
-                    wallet.
+                    {translate(
+                      "Are you sure you want to go back? This will reset your wallet"
+                    )}
                   </Text>
                   <Button
                     onPress={() => this.removeWalletAmountAndGoBack()}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Confirm</Text>
+                    <Text style={styles.colorWhite}>
+                      {translate("Confirm")}
+                    </Text>
                   </Button>
                   <Button
                     onPress={() => this.showRemoveAmountModal()}
                     style={styles.walletButton}
                   >
-                    <Text style={styles.colorWhite}>Cancel</Text>
+                    <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
                   </Button>
                 </>
               )}

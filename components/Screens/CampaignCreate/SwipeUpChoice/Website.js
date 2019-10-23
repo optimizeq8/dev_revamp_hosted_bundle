@@ -1,21 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, BackHandler, TouchableOpacity } from "react-native";
+import {
+  View,
+  BackHandler,
+  ScrollView,
+  TouchableOpacity,
+  I18nManager
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
-import { Text, Item, Input, Icon } from "native-base";
+import { Text, Item, Input, Icon, Button } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import CustomHeader from "../../../MiniComponents/Header";
 
 //icons
 import WebsiteIcon from "../../../../assets/SVGs/SwipeUps/Website";
 
 // Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
+import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
 
 //Data
 import list from "../../../Data/callactions.data";
@@ -59,6 +66,18 @@ class Website extends Component {
         },
         networkString: url[0] + "://"
       });
+    } else if (
+      this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE" ||
+      this.props.storyAdAttachment.destination === "LEAD_GENERATION"
+    ) {
+      const url = split(this.props.storyAdAttachment.attachment.url, "://");
+      this.setState({
+        campaignInfo: {
+          attachment: url[1],
+          callaction: this.props.storyAdAttachment.call_to_action
+        },
+        networkString: url[0] + "://"
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -70,6 +89,7 @@ class Website extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   validateUrl = () => {
+    const { translate } = this.props.screenProps;
     const urlError = validateWrapper(
       "website",
       this.state.networkString + this.state.campaignInfo.attachment
@@ -79,8 +99,9 @@ class Website extends Component {
     });
     if (urlError) {
       showMessage({
-        message:
-          "Please enter a vaild url that does not direct to Instagram, facebook, whatsapp, youtube, whatsapp, or any social media",
+        message: translate(
+          "Please enter a valid url that does not direct to Instagram, Facebook, WhatsApp, Youtube or any social media"
+        ),
         type: "warning",
         position: "top",
         duration: 7000
@@ -91,10 +112,17 @@ class Website extends Component {
     }
   };
   _handleSubmission = () => {
+    let objective = this.props.data
+      ? this.props.data.objective
+      : this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE"
+      ? this.props.storyAdAttachment.destination
+      : this.props.objective;
     if (this.validateUrl()) {
       this.props._changeDestination(
+        // this.props.adType !== "CollectionAd"
+        //   ?
         this.props.collectionAdLinkForm === 0
-          ? this.props.data.objective !== "LEAD_GENERATION"
+          ? objective !== "LEAD_GENERATION"
             ? "REMOTE_WEBPAGE"
             : "LEAD_GENERATION"
           : "COLLECTION",
@@ -136,11 +164,22 @@ class Website extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         forceInset={{ top: "always", bottom: "never" }}
         style={styles.safeAreaContainer}
       >
+        {this.props.adType === "CollectionAd" && (
+          <View style={{ paddingBottom: 10 }}>
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              closeButton={false}
+              title={"Swipe Up destination"}
+              navigation={this.props.navigation}
+            />
+          </View>
+        )}
         <KeyboardShift>
           {() => (
             <View
@@ -154,175 +193,151 @@ class Website extends Component {
             >
               <WebsiteIcon style={styles.icon} />
               <View style={[styles.textcontainer]}>
-                <Text style={styles.titletext}>Website</Text>
+                <Text style={styles.titletext}>{translate("Website")}</Text>
                 <Text style={styles.subtext}>
-                  The user will be taken to your website
+                  {translate("The user will be taken to your website")}
                 </Text>
               </View>
-              <Picker
-                searchPlaceholderText={"Search Call To Action"}
-                data={this.state.callactions}
-                uniqueKey={"value"}
-                displayKey={"label"}
-                open={this.state.inputCallToAction}
-                onSelectedItemsChange={this.onSelectedCallToActionIdChange}
-                onSelectedItemObjectsChange={this.onSelectedCallToActionChange}
-                selectedItems={[this.state.campaignInfo.callaction.value]}
-                single={true}
-                screenName={"Swipe up destination Website"}
-                closeCategoryModal={this.closeCallToActionModal}
-              />
-
-              <Item
-                rounded
-                style={[styles.input]}
-                onPress={() => {
-                  this.setState({ inputCallToAction: true });
-                }}
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
               >
-                <Text style={styles.callActionLabel}>
-                  {this.state.campaignInfo.callaction.label}
+                <Picker
+                  screenProps={this.props.screenProps}
+                  searchPlaceholderText={"Search Call To Action"}
+                  data={this.state.callactions}
+                  uniqueKey={"value"}
+                  displayKey={"label"}
+                  open={this.state.inputCallToAction}
+                  onSelectedItemsChange={this.onSelectedCallToActionIdChange}
+                  onSelectedItemObjectsChange={
+                    this.onSelectedCallToActionChange
+                  }
+                  selectedItems={[this.state.campaignInfo.callaction.value]}
+                  single={true}
+                  screenName={"Swipe up destination Website"}
+                  closeCategoryModal={this.closeCallToActionModal}
+                />
+                <View>
+                  <View style={[styles.callToActionLabelView]}>
+                    <Text uppercase style={[styles.inputLabel]}>
+                      {translate("call to action")}
+                    </Text>
+                  </View>
+                  <Item
+                    // rounded
+                    style={[styles.input, { paddingHorizontal: 30 }]}
+                    onPress={() => {
+                      this.setState({ inputCallToAction: true });
+                    }}
+                  >
+                    <Text style={styles.callActionLabel}>
+                      {this.state.campaignInfo.callaction.label}
+                    </Text>
+                    <Icon
+                      type="AntDesign"
+                      name="down"
+                      style={{ color: "#fff", fontSize: 20, left: 25 }}
+                    />
+                  </Item>
+                </View>
+
+                <View style={styles.topContainer}>
+                  <View style={styles.inputContainer}>
+                    <View style={styles.websiteView}>
+                      <View style={[styles.websiteLabelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                          {translate("url")}
+                        </Text>
+                      </View>
+                      <Item
+                        style={[
+                          styles.input
+                          // this.state.urlError
+                          //     ? GlobalStyles.redBorderColor
+                          //     : GlobalStyles.transparentBorderColor
+                        ]}
+                      >
+                        <TouchableOpacity
+                          style={[
+                            GlobalStyles.orangeBackgroundColor,
+                            {
+                              borderRadius: 30,
+                              width: 54,
+                              height: 54,
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }
+                          ]}
+                          onPress={() => {
+                            if (this.state.networkString === "https://") {
+                              this.setState({
+                                networkString: "http://"
+                              });
+                            } else {
+                              this.setState({
+                                networkString: "https://"
+                              });
+                            }
+                          }}
+                        >
+                          <Text uppercase style={styles.networkLabel}>
+                            {this.state.networkString === "https://"
+                              ? "https"
+                              : "http"}
+                          </Text>
+                          <Text uppercase style={styles.networkLabel}>
+                            {`< >`}
+                          </Text>
+                        </TouchableOpacity>
+                        <Input
+                          style={[
+                            styles.inputtext,
+                            I18nManager.isRTL
+                              ? { textAlign: "right" }
+                              : { textAlign: "left" }
+                          ]}
+                          placeholder={translate(`Enter your website's URL`)}
+                          placeholderTextColor={globalColors.white}
+                          value={this.state.campaignInfo.attachment}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          onChangeText={value =>
+                            this.setState({
+                              campaignInfo: {
+                                ...this.state.campaignInfo,
+                                attachment: value
+                              }
+                            })
+                          }
+                          onBlur={() => this.validateUrl()}
+                        />
+                      </Item>
+                    </View>
+                  </View>
+                </View>
+                <Text style={styles.warningText}>
+                  {translate(
+                    "Please make sure not to include social media sites such as Facebook, Instagram, Youtube, SnapChat, etc"
+                  )}
                 </Text>
-                <Icon
-                  type="AntDesign"
-                  name="down"
-                  style={{ color: "#fff", fontSize: 20, left: 25 }}
-                />
-              </Item>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                  width: "100%"
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.optionsRowContainer}
-                  onPress={() => {
-                    this.setState({
-                      networkString: "http://"
-                    });
-                  }}
-                  // onPress={() => this.props.onSelectedGenderChange("MALE")}
-                >
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name={
-                      this.state.networkString === "http://"
-                        ? "circle"
-                        : "circle-outline"
-                    }
-                    style={[
-                      this.state.networkString === "http://"
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      styles.optionsIconSize
-                    ]}
+                <View />
+                <View style={styles.bottonViewWebsite}>
+                  {this.props.swipeUpDestination && (
+                    <Text
+                      style={styles.footerText}
+                      onPress={() => this.props.toggleSideMenu()}
+                    >
+                      {translate("Change Swipe-up Destination")}
+                    </Text>
+                  )}
+                  <LowerButton
+                    checkmark={true}
+                    bottom={-5}
+                    function={this._handleSubmission}
                   />
-                  <Text
-                    style={[styles.inactivetext, styles.optionsTextContainer]}
-                  >
-                    http://
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.optionsRowContainer}
-                  onPress={() => {
-                    this.setState({
-                      networkString: "https://"
-                    });
-                  }}
-                  // onPress={() => this.props.onSelectedGenderChange("FEMALE")}
-                >
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name={
-                      this.state.networkString === "https://"
-                        ? "circle"
-                        : "circle-outline"
-                    }
-                    style={[
-                      this.state.networkString === "https://"
-                        ? styles.activetext
-                        : styles.inactivetext,
-                      styles.optionsIconSize
-                    ]}
-                  />
-                  <Text
-                    style={[styles.inactivetext, styles.optionsTextContainer]}
-                  >
-                    https://
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%",
-                  justifyContent: "center"
-                }}
-              >
-                <Item rounded style={styles.netLocStyle}>
-                  <Text style={[styles.callActionLabel, { top: 3, right: 4 }]}>
-                    {this.state.networkString}
-                  </Text>
-                </Item>
-
-                <Item
-                  rounded
-                  style={[
-                    styles.input,
-                    {
-                      paddingHorizontal: 0,
-                      width: "65%"
-                    },
-                    this.state.urlError
-                      ? GlobalStyles.redBorderColor
-                      : GlobalStyles.transparentBorderColor
-                  ]}
-                >
-                  <Input
-                    style={styles.inputtext}
-                    placeholder="Enter your website's URL"
-                    placeholderTextColor="#fff"
-                    value={this.state.campaignInfo.attachment}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    onChangeText={value =>
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          attachment: value
-                        }
-                      })
-                    }
-                    onBlur={() => this.validateUrl()}
-                  />
-                </Item>
-              </View>
-              <Text style={styles.warningText}>
-                Please make sure not to include social media sites such as
-                Facbook, Instagram, Youtube, SnapChat, etc.
-              </Text>
-              <View />
-              <View style={styles.bottonViewWebsite}>
-                {this.props.swipeUpDestination && (
-                  <Text
-                    style={styles.footerText}
-                    onPress={() => this.props.toggleSideMenu()}
-                  >
-                    Change Swipe-up Destination
-                  </Text>
-                )}
-                <LowerButton
-                  checkmark={true}
-                  bottom={0}
-                  function={this._handleSubmission}
-                />
-              </View>
+                </View>
+              </ScrollView>
             </View>
           )}
         </KeyboardShift>
@@ -334,7 +349,8 @@ class Website extends Component {
 const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  collectionAdLinkForm: state.campaignC.collectionAdLinkForm
+  collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

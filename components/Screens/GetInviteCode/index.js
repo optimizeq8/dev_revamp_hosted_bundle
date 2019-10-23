@@ -44,12 +44,14 @@ class GetInviteCode extends Component {
         });
   };
   _handleGetInviteCode = () => {
+    const { translate } = this.props.screenProps;
+
     const emailError = validateWrapper("email", this.state.email);
     const mobileError = validateWrapper("mandatory", this.state.mobile);
     const nameError = validateWrapper("mandatory", this.state.name);
     if (emailError || mobileError || nameError) {
       showMessage({
-        message: "Please enter your valid info!",
+        message: translate("Please enter your valid info!"),
         type: "warning",
         position: "top"
       });
@@ -64,12 +66,16 @@ class GetInviteCode extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
+
     return (
       <Container style={[styles.container]}>
         <KeyboardShift style={styles.keyboardContainer}>
           {() => (
             <View style={styles.keyboardView}>
-              <Text style={styles.title}>Get your invite code</Text>
+              {/* <Text style={styles.title}>
+                {translate("Get your invite code")}
+              </Text> */}
               <Item rounded style={[styles.input]}>
                 <Input
                   placeholderTextColor="#fff"
@@ -84,16 +90,20 @@ class GetInviteCode extends Component {
                   onBlur={() => {
                     if (validateWrapper("mandatory", this.state.name)) {
                       showMessage({
-                        message: "Please enter your name.",
+                        message: translate("Please enter your name"),
                         type: "warning",
                         position: "top"
                       });
                     }
                   }}
-                  placeholder="Enter your name"
+                  placeholder={translate("Enter your name")}
                 />
               </Item>
-              <PhoneNo _getMobile={this._getMobile} invite={true} />
+              <PhoneNo
+                _getMobile={this._getMobile}
+                invite={true}
+                screenProps={this.props.screenProps}
+              />
               <Item rounded style={[styles.input]}>
                 <Input
                   placeholderTextColor="#fff"
@@ -108,13 +118,13 @@ class GetInviteCode extends Component {
                   onBlur={() => {
                     if (validateWrapper("email", this.state.email)) {
                       showMessage({
-                        message: "Please enter a valid email!",
+                        message: translate("Please enter a valid email!"),
                         type: "warning",
                         position: "top"
                       });
                     }
                   }}
-                  placeholder="Enter your email"
+                  placeholder={translate("Enter your email")}
                 />
               </Item>
 
@@ -124,13 +134,15 @@ class GetInviteCode extends Component {
                   this._handleGetInviteCode();
                 }}
               >
-                <Text style={styles.buttontext}>Submit now!</Text>
+                <Text style={styles.buttontext}>
+                  {translate("Submit now!")}
+                </Text>
               </Button>
               <Text
                 style={[styles.link]}
                 onPress={() => this.props.toggleComps()}
               >
-                Already have an invite code?
+                {translate("Already have an invite code?")}
               </Text>
             </View>
           )}

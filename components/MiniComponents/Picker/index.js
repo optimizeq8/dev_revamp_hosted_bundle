@@ -5,7 +5,7 @@ import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
 
 import BackButton from "../../MiniComponents/BackButton";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
+import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
 
 import styles from "./styles";
 import SectionStyle, { colors } from "../MultiSelect/SectionStyle";
@@ -17,6 +17,7 @@ export default class Picker extends Component {
     }
   }
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SectionedMultiSelect
         ref={ref => (this.Section = ref)}
@@ -25,6 +26,10 @@ export default class Picker extends Component {
         single={this.props.single}
         uniqueKey={this.props.uniqueKey}
         displayKey={this.props.displayKey}
+        renderSelectText={() => {
+          console.log("item : ");
+          return "test";
+        }}
         selectToggleIconComponent={
           <Icon
             type="MaterialCommunityIcons"
@@ -40,6 +45,9 @@ export default class Picker extends Component {
           />
         }
         searchPlaceholderText={this.props.searchPlaceholderText}
+        searchTextFontFamily={{
+          fontFamily: "montserrat-regular"
+        }}
         unselectedIconComponent={
           <Icon
             type="MaterialCommunityIcons"
@@ -47,12 +55,13 @@ export default class Picker extends Component {
             style={styles.itemCircles}
           />
         }
-        noResultsComponent={<Text style={styles.errorText}>No item found</Text>}
+        noResultsComponent={
+          <Text style={styles.errorText}>{translate("No item found")}</Text>
+        }
         hideSelect
         hideConfirm
         subKey="children"
         styles={SectionStyle}
-        confirmText={"\u2714"}
         stickyFooterComponent={
           <Button
             style={styles.stickyFooterButton}
@@ -90,7 +99,9 @@ export default class Picker extends Component {
         showDropDowns={false}
         showRemoveAll={true}
         noItemsComponent={
-          <Text style={styles.errorText}>Sorry, No data available</Text>
+          <Text style={styles.errorText}>
+            {translate("Sorry, No data available")}
+          </Text>
         }
         onCancel={() => {
           this.props.onSelectedItemsChange([]);
@@ -101,6 +112,10 @@ export default class Picker extends Component {
         onSelectedItemsChange={this.props.onSelectedItemsChange}
         onSelectedItemObjectsChange={this.props.onSelectedItemObjectsChange}
         selectedItems={this.props.selectedItems}
+        removeAllText={translate("Remove all")}
+        itemFontFamily={{
+          fontFamily: "montserrat-regular"
+        }}
       />
     );
   }

@@ -12,22 +12,22 @@ export default [
     info: "Send Snapchatters to your app or a third-party app",
     icon: AttachmentIcons.DeeLinkIcon
   },
+  // {
+  //   label: "App Installs",
+  //   value: "APP_INSTALL",
+  //   info: "Send Snapchatters to the app store to download your app",
+  //   icon: AttachmentIcons.AppInstallIcon
+  // },
   {
-    label: "App Installs",
-    value: "APP_INSTALL",
-    info: "Send Snapchatters to the app store to download your app",
-    icon: AttachmentIcons.AppInstallIcon
-  },
-  {
-    label: "Longform Video",
+    label: "LongForm Video",
     value: "LONGFORM_VIDEO",
-    info: "Promote your brand or product to Snapchatters through video.",
+    info: "Promote your brand or product to Snapchatters through video",
     icon: AttachmentIcons.LongVideoIcon
-  },
-  {
-    label: "WhatsApp Campaign",
-    value: "WEB_CONVERSION",
-    info: "Send Snapchatters directly to your Website",
-    icon: AttachmentIcons.WhatsAppIcon
   }
+  // {
+  //   label: "WhatsApp Campaign",
+  //   value: "WEB_CONVERSION",
+  //   info: "Send Snapchatters directly to your Website",
+  //   icon: AttachmentIcons.WhatsAppIcon
+  // }
 ];

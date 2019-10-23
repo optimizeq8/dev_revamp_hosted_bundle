@@ -8,6 +8,7 @@ export const globalColors = {
   purple: "#751AFF",
   green: "#66D072",
   white: "#FFFFFF",
+  red: "#EA514B",
   black: "#000000",
   transparent: "#0000"
 };
@@ -105,7 +106,7 @@ const globalStyles = StyleSheet.create({
   numbers: {
     textAlign: "center",
     color: "#FF9D00",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 16 / PixelRatio.getFontScale(),
     paddingHorizontal: 10
   },

@@ -64,6 +64,13 @@ class Long_Form_Video extends Component {
         longformvideo_media: this.props.data.longformvideo_media,
         longformvideo_media_type: this.props.longformvideo_media_type
       });
+    } else if (this.props.storyAdAttachment.destination === "LONGFORM_VIDEO") {
+      this.setState({
+        longformvideo_media: this.props.storyAdAttachment.longformvideo_media,
+        longformvideo_media_type: this.props.storyAdAttachment
+          .longformvideo_media_type,
+        callaction: this.props.storyAdAttachment.call_to_action
+      });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -74,32 +81,34 @@ class Long_Form_Video extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   pick = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    return ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Videos",
       base64: false,
       exif: false,
       quality: 1,
       aspect: [9, 16]
-    });
-
-    this.setState({ videoLoading: true });
-
-    return result;
+    })
+      .then(res => {
+        this.setState({ videoLoading: true });
+        return res;
+      })
+      .catch(err => console.log(err));
   };
   _pickImage = async () => {
     let result = await this.pick();
+    const { translate } = this.props.screenProps;
 
-    if (!result.cancelled) {
+    if (result && !result.cancelled) {
       if (result.duration >= 15000) {
         FileSystem.getInfoAsync(result.uri, { size: true }).then(file => {
           if (file.size > 524288000) {
             showMessage({
-              message: "Video must be less than 500 Megabytes",
+              message: translate("Video must be less than 500 Megabytes"),
               type: "warning",
               position: "top"
             });
             this.setState({
-              videoError: "Video must be less than 500 Megabytes",
+              videoError: translate("Video must be less than 500 Megabytes"),
               longformvideo_media: null,
               videoLoading: false
             });
@@ -123,19 +132,19 @@ class Long_Form_Video extends Component {
             position: "top"
           });
         this.setState({
-          durationError: validateWrapper("duration", this.state.duration),
+          durationError: validateWrapper("duration", result.duration),
           longformvideo_media: null,
           videoLoading: false
         });
       }
     } else {
       showMessage({
-        message: "Please choose a video",
+        message: translate("Please choose a video"),
         type: "warning",
         position: "top"
       });
       this.setState({
-        videoError: "Please choose a video",
+        videoError: translate("Please choose a video"),
         longformvideo_media: null,
         videoLoading: false
       });
@@ -182,14 +191,17 @@ class Long_Form_Video extends Component {
     }
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <View style={styles.longFormVideoContainer}>
         <View style={styles.longFormVideoContent}>
           <VideoIcon fill="#fff" style={styles.icon} />
           <View style={[styles.textcontainer, { paddingBottom: 15 }]}>
-            <Text style={styles.titletext}>LongForm Video</Text>
+            <Text style={styles.titletext}>{translate("LongForm Video")}</Text>
             <Text style={styles.subtext}>
-              Promote your brand or product to{"\n"}Snapchatters through video.
+              {translate(
+                "Promote your brand or product to\nSnapchatters through video"
+              )}
             </Text>
           </View>
           {this.state.longformvideo_media && (
@@ -215,7 +227,7 @@ class Long_Form_Video extends Component {
                 }}
                 style={styles.videoSelectButton}
               >
-                <Text> Preview Video</Text>
+                <Text> {translate("Preview Video")}</Text>
               </Button>
               <Button
                 onPress={() => {
@@ -223,7 +235,7 @@ class Long_Form_Video extends Component {
                 }}
                 style={styles.videoSelectButton}
               >
-                <Text> Change Video</Text>
+                <Text> {translate("Change Video")}</Text>
               </Button>
             </View>
           )}
@@ -236,7 +248,7 @@ class Long_Form_Video extends Component {
               style={[styles.video]}
             >
               <AddVidIcon style={[styles.icon, { fontSize: 70 }]} />
-              <Text style={styles.addVideoText}>Add Video</Text>
+              <Text style={styles.addVideoText}>{translate("Add Video")}</Text>
             </TouchableOpacity>
           )}
           {/* {this.state.durationError ? (
@@ -259,7 +271,8 @@ class Long_Form_Video extends Component {
             </Text>
           ) : null} */}
           <Picker
-            searchPlaceholderText={"Search Call To Action"}
+            screenProps={this.props.screenProps}
+            searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
             uniqueKey={"value"}
             displayKey={"label"}
@@ -271,6 +284,11 @@ class Long_Form_Video extends Component {
             screenName={"Long form video"}
             closeCategoryModal={this.closeCallToActionModal}
           />
+          <View style={[styles.callToActionLabelView]}>
+            <Text uppercase style={[styles.inputLabel]}>
+              {translate("call to action")}
+            </Text>
+          </View>
           <Item
             onPress={() => {
               this.setState({ inputCallToAction: true });
@@ -298,7 +316,8 @@ class Long_Form_Video extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.campaignC.data
+  data: state.campaignC.data,
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

@@ -73,16 +73,22 @@ const reducer = (state = initialState, action) => {
         campaignError: true
       };
     case actionTypes.SET_CAMPAIGN_STATS:
+      let campStats = action.payload.data;
+      let err = action.payload.err;
+
       return {
         ...state,
         selectedCampaign: {
           ...state.selectedCampaign,
+          swipes: !err ? campStats.swipes : 0,
+          spends: !err ? campStats.spend : 0,
+          impressions: !err ? campStats.impressions : 0,
 
-          total_installs: action.payload.data.total_installs,
-          video_views: action.payload.data.video_views,
-          eCPV: action.payload.data.eCPV,
-          eCPI: action.payload.data.eCPI,
-          eCPSU: action.payload.data.eCPSU
+          total_installs: !err ? campStats.total_installs : 0,
+          video_views: !err ? campStats.video_views : 0,
+          eCPV: !err ? campStats.eCPV : 0,
+          eCPI: !err ? campStats.eCPI : 0,
+          eCPSU: !err ? campStats.eCPSU : 0
         },
         granularity: action.payload.data.hasOwnProperty("timeseries_stats")
           ? action.payload.data.timeseries_stats[0].timeseries_stat.granularity
