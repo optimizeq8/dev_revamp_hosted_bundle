@@ -52,6 +52,7 @@ class Website extends Component {
   }
 
   componentDidMount() {
+    this.props.data;
     if (
       this.props.data &&
       this.props.data.hasOwnProperty("attachment") &&

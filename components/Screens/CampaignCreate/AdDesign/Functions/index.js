@@ -298,7 +298,6 @@ export const _changeDestination = (
           source: instagramTrafficCampaign.source
         }
       };
-      console.log("newDAta", newData);
 
       save_campaign_info({
         whatsappnumber: instagramTrafficCampaign.whatsappnumber,

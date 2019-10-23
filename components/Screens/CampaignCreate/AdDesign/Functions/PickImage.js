@@ -100,7 +100,7 @@ export const _pickImage = async (
                 });
                 onToggleModal(false);
                 save_campaign_info({
-                  image: "//",
+                  media: "//",
                   type: ""
                 });
                 showMessage({
