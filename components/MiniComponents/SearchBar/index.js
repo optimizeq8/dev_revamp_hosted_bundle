@@ -45,7 +45,8 @@ class SearchBar extends Component {
         dateRange: [this.props.tranStartSearch, this.props.tranEndSearch]
       });
     } else if (this.props.businessList) {
-      this.props.filterBusinesses(this.state.value);
+      if (reset) this.setState({ value: "" });
+      this.props.filterBusinesses(reset ? "" : this.state.value);
     } else {
       if (reset) this.setState({ value: "" });
       this.props.onSearch({
