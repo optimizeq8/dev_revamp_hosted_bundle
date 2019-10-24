@@ -125,16 +125,12 @@ class Wallet extends Component {
             {this.props.loading ? (
               <ActivityIndicator
                 color={globalColors.orange}
-                style={{ position: "absolute", right: "35%" }}
+                style={[styles.loader]}
               />
             ) : (
               <Icon
                 onPress={this.props.getWalletAmount}
-                style={{
-                  position: "absolute",
-                  right: "35%",
-                  color: globalColors.orange
-                }}
+                style={styles.loader}
                 name="refresh"
                 type="MaterialCommunityIcons"
               />
