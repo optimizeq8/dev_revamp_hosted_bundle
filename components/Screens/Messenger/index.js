@@ -164,6 +164,12 @@ class Messenger extends Component {
           screenProps={this.props.screenProps}
           closeButton={true}
           title={"Support"}
+          titelStyle={{
+            // alignSelf: "center",
+            bottom: 8
+            // alignContent: "center",
+            // justifyContent: "center"
+          }}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>
@@ -230,7 +236,12 @@ class Messenger extends Component {
                   }
                 />
                 <TouchableOpacity
-                  style={styles.submitButton}
+                  style={[
+                    styles.submitButton,
+                    I18nManager.isRTL
+                      ? { transform: [{ rotateY: "180deg" }] }
+                      : {}
+                  ]}
                   onPress={this._handleSubmission}
                 >
                   <ForwardButton

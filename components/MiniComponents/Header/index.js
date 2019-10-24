@@ -64,7 +64,7 @@ export default class Header extends Component {
                     bottom: 0
                   }
                 : {
-                    left: 15,
+                    // left: 15,
                     bottom: 12
                   }
             ]}

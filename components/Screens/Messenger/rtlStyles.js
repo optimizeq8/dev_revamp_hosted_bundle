@@ -73,6 +73,9 @@ const styles = StyleSheet.create({
     right: heightPercentageToDP(5) > 40 ? 10 : "2%",
     transform: [
       {
+        rotateY: "180deg"
+      },
+      {
         translateX: 0
       },
       {

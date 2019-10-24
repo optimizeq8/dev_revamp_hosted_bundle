@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
   textInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 10,
+    // paddingRight: 8,
     backgroundColor: "#F4F4F4",
     paddingVertical: 8,
     borderTopEndRadius: 20,
