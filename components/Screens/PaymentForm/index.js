@@ -152,8 +152,6 @@ class PaymentForm extends Component {
       this.closeBrowserLoading();
       this._removeLinkingListener();
     } catch (error) {
-      console.log(error);
-
       showMessage({
         message: "Something went wrong!",
         type: "warning",

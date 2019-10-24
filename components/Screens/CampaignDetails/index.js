@@ -627,8 +627,10 @@ class CampaignDetails extends Component {
                                 {"\n "}
                                 <Text style={styles.subtext}>
                                   {targeting &&
-                                  (targeting.gender === "" ||
-                                    !targeting.hasOwnProperty("gender"))
+                                  (targeting.demographics[0].gender === "" ||
+                                    !targeting.demographics[0].hasOwnProperty(
+                                      "gender"
+                                    ))
                                     ? "All"
                                     : targeting &&
                                       targeting.demographics[0].gender}
@@ -718,11 +720,6 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
-                      <RejectedComp
-                        screenProps={this.props.screenProps}
-                        selectedCampaign={selectedCampaign}
-                        navigation={this.props.navigation}
-                      />
                     </Content>
                   ) : (
                     <RejectedComp
