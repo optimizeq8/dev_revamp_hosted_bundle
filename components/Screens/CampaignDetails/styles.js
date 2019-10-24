@@ -210,9 +210,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   handlerIcon: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
     left: wp("26%"),
-    top: hp("1.7%"),
+    top: -10,
     zIndex: 2
   },
   handlerText: {
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     paddingBottom: I18nManager.isRTL ? 0 : 20,
     fontFamily: "montserrat-medium",
     fontSize: 18,
-    bottom: I18nManager.isRTL ? -12 : 5
+    bottom: I18nManager.isRTL ? -5 : 5
     // zIndex: 1
   },
   boxStats: {
@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   choiceButtons: {
+    elevation: 0,
     borderRadius: 30,
     width: 100,
     justifyContent: "center"
