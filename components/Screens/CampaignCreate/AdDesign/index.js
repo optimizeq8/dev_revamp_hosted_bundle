@@ -216,9 +216,19 @@ class AdDesign extends Component {
         this.props.setRejectedStoryAds(this.selectedCampaign.story_creatives);
       } else if (this.adType === "CollectionAd") {
         this.setState({ media: this.selectedCampaign.media });
-        this.props.setRejectedCollectionAds(
-          this.selectedCampaign.collection_creatives
-        );
+        this.props.setRejectedCollectionAds({
+          collectionAdMedia: this.selectedCampaign.collection_creatives,
+          call_to_action: this.selectedCampaign.call_to_action
+        });
+        this.setState({
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            attachment: this.props.data.attachment,
+            call_to_action: this.props.data.call_to_action,
+            destination: this.selectedCampaign.destination
+          },
+          objective: this.selectedCampaign.objective
+        });
       } else {
         return;
       }
@@ -323,6 +333,10 @@ class AdDesign extends Component {
             ? "VIDEO"
             : "IMAGE"
         });
+        this.props.save_campaign_info({
+          media: this.state.tempType,
+          type: this.state.tempType
+        });
       });
     });
   };
@@ -383,14 +397,18 @@ class AdDesign extends Component {
         {
           creativeVideoUrl:
             `${testingOrLiveServer}fileupload/uploadCreative?` +
-            this.props.campaign_id +
+            (this.rejected
+              ? this.selectedCampaign.campaign_id
+              : this.props.campaign_id) +
             story_id
         },
         () => this.openUploadVideo()
       );
     } else
       this.props.getVideoUploadUrl(
-        this.props.campaign_id,
+        this.rejected
+          ? this.selectedCampaign.campaign_id
+          : this.props.campaign_id,
         this.openUploadVideo
       );
   };
@@ -413,6 +431,7 @@ class AdDesign extends Component {
       );
       this._removeLinkingListener();
     } catch (error) {
+      WebBrowser.dismissBrowser();
       showMessage({
         message: translate("Something went wrong!"),
         type: "warning",
@@ -1003,7 +1022,7 @@ class AdDesign extends Component {
                   {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
                     <View style={styles.storyAdIndexContainer}>
                       <Text style={styles.storyAdIndexNum}>
-                        {storyAdCards.selectedStoryAd.index + 1}
+                        {parseInt(storyAdCards.selectedStoryAd.index) + 1}
                       </Text>
                     </View>
                   )}
@@ -1283,7 +1302,8 @@ const mapStateToProps = state => ({
   mediaWebLink: state.campaignC.mediaWebLink,
   webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
-  admin: state.login.admin
+  admin: state.login.admin,
+  collAttachment: state.campaignC.collAttachment
 });
 
 const mapDispatchToProps = dispatch => ({

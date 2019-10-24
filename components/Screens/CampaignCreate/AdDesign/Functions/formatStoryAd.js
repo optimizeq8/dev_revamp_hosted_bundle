@@ -66,10 +66,7 @@ export const formatStoryAd = async (
     "campaign_id",
     selectedCampaign ? selectedCampaign.campaign_id : campaign_id
   );
-  storyBody.append(
-    "story_order",
-    rejected ? storyAdCards.selectedStoryAd.index : card.index
-  );
+  storyBody.append("story_order", card.index);
   storyBody.append(
     "story_call_to_action",
     storyAdAttachment.call_to_action

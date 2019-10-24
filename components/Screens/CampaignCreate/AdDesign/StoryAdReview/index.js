@@ -21,6 +21,7 @@ import Circles from "../../../../../assets/SVGs/StoryAdPerview/circles";
 import DiscoverBar from "../../../../../assets/SVGs/StoryAdPerview/discoverBar";
 // Style
 import styles from "./styles";
+import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
 
 //Functions
 
@@ -73,49 +74,6 @@ class StoryAdDesignReview extends Component {
       "campaignDetails",
       false
     );
-    let ImageOrRNImage =
-      Platform.OS === "ios" ? (
-        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
-          <Image
-            {...{ preview, uri: cover }}
-            // source={{ uri: cover }}
-            style={styles.cover}
-            resizeMode="cover"
-          />
-          <View style={styles.logoStyle}>
-            <Image
-              {...{ preview, uri: logo }}
-              resizeMode="contain"
-              style={styles.logo}
-            />
-          </View>
-          <View style={styles.headlineStyle}>
-            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
-            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={this.perviewStoryAds} style={styles.tiles}>
-          <RNImage
-            source={{ uri: cover }}
-            style={styles.cover}
-            resizeMode="cover"
-          />
-          <View style={styles.logoStyle}>
-            <RNImage
-              resizeMode="contain"
-              style={styles.logo}
-              source={{
-                uri: logo
-              }}
-            />
-          </View>
-          <View style={styles.headlineStyle}>
-            <Text style={styles.headlineTextStyle}>{coverHeadline}</Text>
-            <Text style={styles.sponsoredText}>{translate("Sponsored")}</Text>
-          </View>
-        </TouchableOpacity>
-      );
 
     return (
       <SafeAreaView
@@ -164,7 +122,31 @@ class StoryAdDesignReview extends Component {
                   <Text style={styles.heading}>{translate("For You")}</Text>
 
                   <View style={styles.tilesGrid}>
-                    {ImageOrRNImage}
+                    <TouchableOpacity
+                      onPress={this.perviewStoryAds}
+                      style={styles.tiles}
+                    >
+                      <RNImageOrCacheImage
+                        media={cover}
+                        style={styles.cover}
+                        resizeMode="contain"
+                      />
+                      <View style={styles.logoStyle}>
+                        <RNImageOrCacheImage
+                          media={logo}
+                          resizeMode="contain"
+                          style={styles.logo}
+                        />
+                      </View>
+                      <View style={styles.headlineStyle}>
+                        <Text style={styles.headlineTextStyle}>
+                          {coverHeadline}
+                        </Text>
+                        <Text style={styles.sponsoredText}>
+                          {translate("Sponsored")}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                     <View style={styles.tiles} />
                   </View>
 

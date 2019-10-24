@@ -115,7 +115,8 @@ export const getCampaignStats = (campaign, duration) => {
         campaign_id: campaign.snap_campaign_id,
         start_time: duration.start_time.split("T")[0],
         end_time: addDays(duration.end_time, 1),
-        hour: timeDiff + 1 <= 5 ? 1 : 0
+        hour: 0
+        //timeDiff + 1 <= 5 ? 1 : 0
       })
       .then(res => {
         return res.data;

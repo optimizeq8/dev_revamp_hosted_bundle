@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     marginTop: 15
   },
   walletAmountText: {
-    fontSize: 40
+    fontSize: 40,
+    left: "40%"
   },
   sendButton: {
     position: "relative",
@@ -139,6 +140,11 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-light",
     marginVertical: 20,
     width: widthPercentageToDP(50)
+  },
+  loader: {
+    color: globalColors.orange,
+    left: "20%",
+    top: 5
   }
 });
 

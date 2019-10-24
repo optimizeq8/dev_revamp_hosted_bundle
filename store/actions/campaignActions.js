@@ -331,9 +331,11 @@ export const ad_design = (
         dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
-        !rejected
-          ? navigation.push("AdDetails")
-          : navigation.navigate("Dashboard");
+        if (!rejected) navigation.push("AdDetails");
+        else {
+          navigation.navigate("Dashboard");
+          persistor.purge();
+        }
       })
       .catch(err => {
         loading(0);
@@ -458,6 +460,8 @@ export const uploadStoryAdCard = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
     };
+    console.log(info);
+
     createBaseUrl()
       .post(`savestorymedia`, info, {
         onUploadProgress: ProgressEvent => {
@@ -477,12 +481,15 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then(data => {
+        console.log(data);
+
         rejected &&
           showMessage({
             message: data.message,
             type: data.success ? "success" : "danger",
             position: "top"
           });
+
         //This is to call the final upload process once all cards are done uploading
         if (
           getState().campaignC.loadingStoryAdsArray.length > 1 &&

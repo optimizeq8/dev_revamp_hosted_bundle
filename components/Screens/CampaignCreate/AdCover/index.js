@@ -98,18 +98,18 @@ class AdCover extends Component {
       campaignInfo: {
         ...this.state.campaignInfo,
         campaign_id: this.rejected
-          ? this.params.campaign_id
+          ? this.selectedCampaign.campaign_id
           : this.props.campaign_id,
-        coverHeadline: !this.props.data
-          ? this.rejected
-            ? this.params.coverHeadline
-            : "Headline"
+        coverHeadline: this.rejected
+          ? this.selectedCampaign.story_headline
+          : !this.props.data
+          ? "Headline"
           : this.props.data.coverHeadline
       },
       objective: this.props.data
         ? this.props.data.objective
         : this.rejected
-        ? this.params.objective
+        ? this.selectedCampaign.objective
         : ""
     });
     const { translate } = this.props.screenProps;
