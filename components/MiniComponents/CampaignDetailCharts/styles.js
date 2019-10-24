@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
   },
   campaignNumbers: {
     top: 6,
-    fontFamily: "montserrat-medium",
     right: 10
   },
   campaignInfo: {
