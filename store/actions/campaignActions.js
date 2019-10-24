@@ -1298,13 +1298,19 @@ export const saveWebProducts = (
   };
 };
 
-export const getMediaUploadUrl = (campaign_id, brand_name, headline) => {
+export const getMediaUploadUrl = (
+  campaign_id,
+  brand_name,
+  headline,
+  adType
+) => {
   return dispatch => {
     createBaseUrl()
       .post(`/webuploadlink`, {
         campaign_id,
         brand_name,
-        headline
+        headline,
+        adType
       })
       .then(res => {
         // console.log("webuploadlink", res.data);
