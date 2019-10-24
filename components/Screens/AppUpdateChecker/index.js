@@ -18,6 +18,7 @@ import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
+import { NavigationEvents } from "react-navigation";
 
 class AppUpdateChecker extends Component {
   static navigationOptions = {
@@ -31,9 +32,6 @@ class AppUpdateChecker extends Component {
       status2: "",
       statusLoading: false
     };
-  }
-  async componentDidMount() {
-    this.props.checkForUpdate();
   }
 
   componentDidUpdate(prevProps) {
@@ -113,6 +111,9 @@ class AppUpdateChecker extends Component {
     } else
       return (
         <View style={{ height: "100%" }}>
+          <NavigationEvents
+            onDidFocus={async () => this.props.checkForUpdate()}
+          />
           <BackdropIcon
             style={{
               position: "absolute",
