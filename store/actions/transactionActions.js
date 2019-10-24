@@ -99,17 +99,21 @@ export const getWalletAmount = (retries = 3) => {
   };
 };
 
-export const addWalletAmount = (info, openBrowser) => {
+export const addWalletAmount = (info, openBrowser, retries = 3) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .post(`purchaseBusinessWalletAmount`, {
-        ...info,
-        businessid: getState().account.mainBusiness.businessid
-      })
+      .post(
+        `purchaseBusinessWalletAmount`,
+        {
+          ...info,
+          businessid: getState().account.mainBusiness.businessid
+        },
+        { timeout: 10000 }
+      )
       .then(res => {
         return res.data;
       })
@@ -123,8 +127,17 @@ export const addWalletAmount = (info, openBrowser) => {
       .catch(err => {
         // console.log("addWalletAmount Error: ", err.message || err.response);
 
+        if (retries > 0) {
+          dispatch(addWalletAmount(info, openBrowser, retries - 1));
+          return;
+        }
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
@@ -137,14 +150,14 @@ export const addWalletAmount = (info, openBrowser) => {
       });
   };
 };
-export const getWalletAmountInKwd = amount => {
+export const getWalletAmountInKwd = (amount, retries = 3) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .get(`kdamount/${amount}`)
+      .get(`kdamount/${amount}`, { timeout: 10000 })
       .then(res => {
         return res.data;
       })
@@ -159,8 +172,18 @@ export const getWalletAmountInKwd = amount => {
         //   "getWalletAmountInKwd Error: ",
         //   err.message || err.response
         // );
+
+        if (retries > 0) {
+          dispatch(getWalletAmountInKwd(amount, retries - 1));
+          return;
+        }
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long to retrieve wallet amount in KWD, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
@@ -173,7 +196,7 @@ export const getWalletAmountInKwd = amount => {
       });
   };
 };
-export const useWallet = (campaign_id, setWalletModal) => {
+export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -198,11 +221,18 @@ export const useWallet = (campaign_id, setWalletModal) => {
 
       .catch(err => {
         // console.log("useWallet Error: ", err.message);
+
+        if (retries > 0) {
+          dispatch(useWallet(campaign_id, setWalletModal, retries - 1));
+          return;
+        }
         showMessage({
           message:
             (err.message &&
               err.message.includes("timeout") &&
-              "Request took too long, please try again.") ||
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
@@ -217,7 +247,13 @@ export const useWallet = (campaign_id, setWalletModal) => {
   };
 };
 
-export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
+export const removeWalletAmount = (
+  campaign_id,
+  navigation,
+  names,
+  goBack,
+  retries = 3
+) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -242,8 +278,23 @@ export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
       })
       .catch(err => {
         // console.log("removeWalletAmount Error: ", err.message || err.response);
+        if (reties > 0) {
+          removeWalletAmount(
+            campaign_id,
+            navigation,
+            names,
+            goBack,
+            retries - 1
+          );
+          return;
+        }
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
@@ -257,7 +308,7 @@ export const removeWalletAmount = (campaign_id, navigation, names, goBack) => {
   };
 };
 
-export const checkoutwithWallet = campaign_id => {
+export const checkoutwithWallet = (campaign_id, retries = 3) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
@@ -280,8 +331,17 @@ export const checkoutwithWallet = campaign_id => {
 
       .catch(err => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
+        if (reties > 0) {
+          checkoutwithWallet(campaign_id, reties - 1);
+          return;
+        }
         showMessage({
           message:
+            (err.message &&
+              err.message.includes("timeout") &&
+              `Request took too long, ${
+                retries > 0 ? "re-trying again." : "try again later"
+              }`) ||
             err.message ||
             err.response ||
             "Something went wrong, please try again.",
