@@ -27,14 +27,14 @@ const reducer = (state = initialState, action) => {
       // console.log("message add", action.payload);
       const messageArr = state.messages;
       messageArr.unshift(action.payload);
-      console.log("messageArr len", messageArr.length);
+      // console.log("messageArr len", messageArr.length);
       return {
         ...state,
         messages: [...messageArr],
         loading_msg: false
       };
     case actionTypes.SET_CONVERSATION_AS_OPEN:
-      console.log("SET_CONVERSATION_AS_OPEN: ", action.payload);
+      // console.log("SET_CONVERSATION_AS_OPEN: ", action.payload);
 
       return {
         ...state,
@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
         loading_con: false
       };
     case actionTypes.SET_CONVERSATION:
-      console.log("SET_CONVERSATION: ", action.payload);
+      // console.log("SET_CONVERSATION: ", action.payload);
       const reverseMessages = reverse(action.payload.messages);
       return {
         ...state,

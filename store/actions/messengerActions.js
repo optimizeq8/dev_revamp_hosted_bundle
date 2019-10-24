@@ -26,7 +26,7 @@ export const connect_user_to_intercom = user_id => {
       })
       .then(data => {
         if (data.code === "not_found") {
-          console.log("couldn't find a user");
+          // console.log("couldn't find a user");
 
           var user = getState().auth.userInfo;
           var bus = getState().account.mainBusiness;
@@ -44,7 +44,7 @@ export const connect_user_to_intercom = user_id => {
           };
           dispatch(create_user_on_intercom(body));
         } else {
-          console.log("found user");
+          // console.log("found user");
 
           dispatch(get_conversation(user_id));
           return dispatch({
@@ -63,7 +63,7 @@ export const connect_user_to_intercom = user_id => {
         //    position: "top",
         //    description: translate("chat, login")
         //  });
-        console.log("get_user", err.message || err.response);
+        // console.log("get_user", err.message || err.response);
       });
   };
 };
@@ -91,7 +91,7 @@ export const create_user_on_intercom = user => {
     instance
       .post("/create-user", user)
       .then(res => {
-        console.log("created user:", res.data);
+        // console.log("created user:", res.data);
         dispatch(get_conversation(res.data.user_id));
 
         return dispatch({
@@ -100,7 +100,7 @@ export const create_user_on_intercom = user => {
         });
       })
       .catch(err => {
-        console.log("create_user_on_intercom", err.message || err.response);
+        // console.log("create_user_on_intercom", err.message || err.response);
       });
   };
 };
@@ -120,14 +120,14 @@ export const get_conversation = user_id => {
       })
       .then(data => {
         if (isNull(data.conversation_id)) {
-          console.log("couldn't find a conversation");
+          // console.log("couldn't find a conversation");
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION_AS_OPEN,
             payload: false
           });
         } else {
-          console.log("found conversation");
+          // console.log("found conversation");
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
@@ -142,7 +142,7 @@ export const get_conversation = user_id => {
         //   dispatch(set_as_seen());
       })
       .catch(err => {
-        console.log("get_conversation", err.message || err.response);
+        // console.log("get_conversation", err.message || err.response);
       });
   };
 };
@@ -179,7 +179,7 @@ export const start_conversation = message => {
         });
       })
       .catch(err => {
-        console.log("start_conversation", err.message || err.response);
+        // console.log("start_conversation", err.message || err.response);
       });
   };
 };
@@ -214,7 +214,7 @@ export const reply = message => {
         });
       })
       .catch(err => {
-        console.log("reply", err.message || err.response);
+        // console.log("reply", err.message || err.response);
       });
   };
 };
@@ -245,13 +245,13 @@ export const get_conversatusion_read_status = () => {
         return res.data;
       })
       .then(data => {
-        console.log("get reading status on conversation", data);
+        // console.log("get reading status on conversation", data);
 
-        console.log("intercom_chat_link", data.intercom_chat_link);
-        console.log(
-          "condition",
-          getState().messenger.messages.length === data.intercom_chat_link
-        );
+        // console.log("intercom_chat_link", data.intercom_chat_link);
+        // console.log(
+        //   "condition",
+        //   getState().messenger.messages.length === data.intercom_chat_link
+        // );
 
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
@@ -260,10 +260,10 @@ export const get_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        console.log(
-          "get_conversatusion_read_status err",
-          err.message || err.response
-        );
+        // // console.log(
+        //   "get_conversatusion_read_status err",
+        //   err.message || err.response
+        // );
       });
   };
 };
@@ -284,7 +284,7 @@ export const update_conversatusion_read_status = () => {
         return res.data;
       })
       .then(data => {
-        console.log("data", data);
+        // console.log("data", data);
 
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
@@ -293,10 +293,10 @@ export const update_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        console.log(
-          "update_conversatusion_read_status err",
-          err.message || err.response
-        );
+        // console.log(
+        //   "update_conversatusion_read_status err",
+        //   err.message || err.response
+        // );
       });
   };
 };
@@ -318,7 +318,7 @@ export const update_app_status_chat_notification = app_state => {
         return res.data;
       })
       .then(data => {
-        console.log("updated read status", data);
+        // console.log("updated read status", data);
 
         return dispatch({
           type: actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS,
@@ -327,17 +327,17 @@ export const update_app_status_chat_notification = app_state => {
         });
       })
       .catch(err => {
-        console.log(
-          "sendChatNotificationbySMS err",
-          err.message || err.response
-        );
+        // console.log(
+        //   "sendChatNotificationbySMS err",
+        //   err.message || err.response
+        // );
       });
   };
 };
 
 // export const set_as_seen
 export const set_as_seen = check => {
-  //   console.log("set_as_seen log");
+  // console.log("set_as_seen log");
   return (dispatch, getState) => {
     // console.log("log please???");
     // console.log("????", getState().messenger.conversation_id);
@@ -354,7 +354,7 @@ export const set_as_seen = check => {
           });
         })
         .catch(err => {
-          console.log("set_as_seen err", err.message || err.response);
+          // console.log("set_as_seen err", err.message || err.response);
         });
     else {
       return dispatch({
@@ -374,7 +374,7 @@ export const update_last_seen = () => {
         return res.data;
       })
       .then(data => {
-        console.log("last seen", data);
+        // console.log("last seen", data);
 
         return dispatch({
           type: actionTypes.UPDATE_LAST_SEEN,
@@ -382,7 +382,7 @@ export const update_last_seen = () => {
         });
       })
       .catch(err => {
-        console.log("update_last_seen", err.message || err.response);
+        // console.log("update_last_seen", err.message || err.response);
       });
   };
 };

@@ -32,7 +32,7 @@ export default class OptionalTargets extends Component {
           <View style={styles.optionalTargets}>
             <View style={styles.categoryView}>
               <InterestIcon width={hp("2")} height={hp("2")} />
-              <Text numberOfLines={4} style={styles.categories}>
+              <Text numberOfLines={2} style={styles.categories}>
                 {translate("Interests") + "\n"}
                 <Text numberOfLines={1} style={[styles.subtext]}>
                   {this.props.interesetNames.join(", ")}
@@ -53,7 +53,7 @@ export default class OptionalTargets extends Component {
                   fontSize: 23
                 }}
               />
-              <Text numberOfLines={4} style={styles.categories}>
+              <Text numberOfLines={2} style={styles.categories}>
                 {translate("Device Make") + "\n"}{" "}
                 <Text style={[styles.subtext]}>{this.props.deviceMakes}</Text>
               </Text>

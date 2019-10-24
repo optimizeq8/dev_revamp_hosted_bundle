@@ -1,21 +1,11 @@
 //Components
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Image as RNImage,
-  Platform,
-  BackHandler,
-  Slider,
-  I18nManager
-} from "react-native";
-import { Text, Container, Icon, Content } from "native-base";
+import { View, BackHandler, I18nManager } from "react-native";
+import { Text, Container, Content } from "native-base";
 import { Video } from "expo-av";
 import * as Segment from "expo-analytics-segment";
 // import Sidemenu from "react-native-side-menu";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReachBar from "./ReachBar";
 import SelectRegions from "../../../MiniComponents/SelectRegions";
@@ -24,32 +14,15 @@ import GenderOptions from "../../../MiniComponents/GenderOptions/GenderOptions";
 import AgeOption from "../../../MiniComponents/AgeOptions/AgeOption";
 import MultiSelectSections from "../../../MiniComponents/MultiSelect/MultiSelect";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import SelectOS from "../../../MiniComponents/SelectOS";
 import { showMessage } from "react-native-flash-message";
-import { Image } from "react-native-expo-image-cache";
 
 //Data
 import countries, { gender, OSType, country_regions } from "./data";
 
-//Icons
-import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark";
-import LocationIcon from "../../../../assets/SVGs/Location";
-import InterestsIcon from "../../../../assets/SVGs/Interests";
-import GenderIcon from "../../../../assets/SVGs/Gender";
-import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline";
-import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
-import OperatingSystemIcon from "../../../../assets/SVGs/AdDetails/OperatingSystem";
-import LanguageIcon from "../../../../assets/SVGs/Language";
-import DeviceMakeIcon from "../../../../assets/SVGs/DeviceMake";
-
 //Style
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
-const preview = {
-  uri:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-};
+
 //Redux Axios
 import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
@@ -59,7 +32,6 @@ import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import combineMerge from "./combineMerge";
 import deepmerge from "deepmerge";
 import cloneDeep from "lodash/cloneDeep";
-import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
 import isNan from "lodash/isNaN";
 import {

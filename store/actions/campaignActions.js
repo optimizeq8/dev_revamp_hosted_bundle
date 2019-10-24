@@ -340,7 +340,7 @@ export const ad_design = (
       .catch(err => {
         loading(0);
         onToggleModal(false);
-        console.log("ad_design error", err.message || err.response);
+        // console.log("ad_design error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -460,8 +460,6 @@ export const uploadStoryAdCard = (
       ...axios.defaults.headers.common,
       "Content-Type": "multipart/form-data"
     };
-    console.log(info);
-
     createBaseUrl()
       .post(`savestorymedia`, info, {
         onUploadProgress: ProgressEvent => {
@@ -481,8 +479,6 @@ export const uploadStoryAdCard = (
         return res.data;
       })
       .then(data => {
-        console.log(data);
-
         rejected &&
           showMessage({
             message: data.message,
@@ -1247,7 +1243,7 @@ export const saveWebProducts = (
           });
         })
         .catch(error => {
-          console.log("saveWebProducts error", error.response || error.message);
+          // console.log("saveWebProducts error", error.response || error.message);
           return dispatch({
             type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
           });
@@ -1469,7 +1465,7 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
         });
       }
     } catch (error) {
-      console.log("ERROR LOADING MORE", error.message || error.response);
+      // console.log("ERROR LOADING MORE", error.message || error.response);
 
       return dispatch({
         type: actionTypes.ERROR_GET_MORE_INSTAGRAM_POST,

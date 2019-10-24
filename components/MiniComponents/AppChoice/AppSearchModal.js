@@ -49,7 +49,7 @@ export default class AppSearchModal extends Component {
         // `/applications/com.espn.score_center/metadata.json`
       )
       .then(res => {
-        console.log(res);
+        // console.log(res);
         return !appIdorName ? res.data.content : [res.data.content];
       })
       .then(data =>
@@ -60,7 +60,7 @@ export default class AppSearchModal extends Component {
         })
       )
       .catch(err => {
-        console.log(err);
+        // console.log(err);
 
         this.props.setTheState({ loading: false });
         this.refs.modalFlash.showMessage({
@@ -108,7 +108,7 @@ export default class AppSearchModal extends Component {
         })
       )
       .catch(err => {
-        console.log(err);
+        // console.log(err);
 
         this.props.setTheState({ loading: false });
         this.refs.modalFlash.showMessage({

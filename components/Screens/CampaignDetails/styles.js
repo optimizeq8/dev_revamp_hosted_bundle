@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
   },
   optionalTargets: {
     flexDirection: "column",
-    marginBottom: 10,
-    alignSelf: "center"
+    marginBottom: 10
+    // alignSelf: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
