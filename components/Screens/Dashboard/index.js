@@ -75,8 +75,6 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
-    console.log("did mount");
-
     if (this.props.mainBusiness) {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");

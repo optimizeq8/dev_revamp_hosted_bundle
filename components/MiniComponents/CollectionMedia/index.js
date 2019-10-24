@@ -366,7 +366,7 @@ class CollectionMedia extends Component {
               }
             })
             .catch(error => {
-              console.log(error);
+              // console.log(error);
 
               this.onToggleModal(false);
               showMessage({

@@ -27,7 +27,7 @@ export default class Picker extends Component {
         uniqueKey={this.props.uniqueKey}
         displayKey={this.props.displayKey}
         renderSelectText={() => {
-          console.log("item : ");
+          // console.log("item : ");
           return "test";
         }}
         selectToggleIconComponent={
