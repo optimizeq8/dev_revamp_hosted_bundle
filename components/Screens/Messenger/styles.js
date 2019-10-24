@@ -60,29 +60,38 @@ const styles = StyleSheet.create({
     // flex: 0,
   },
   submitButton: {
-    position: "absolute",
-    flex: 0,
-    zIndex: 0,
-    // right: widthPercentageToDP(2),
-    // bottom: heightPercentageToDP(1),
+    // position: "absolute",
+    // flex: 0,
+    // zIndex: 0,
+    // // right: widthPercentageToDP(15),
+    // // bottom: heightPercentageToDP(1),
 
-    bottom: heightPercentageToDP(5) > 40 ? -2 : "5%",
-    right: heightPercentageToDP(5) > 40 ? 10 : "2%",
-    transform: [
-      {
-        translateX: 0
-      },
-      {
-        translateY: heightPercentageToDP(5) > 40 ? -2 : -5
-      }
-    ],
+    // bottom: heightPercentageToDP(5) > 40 ? -2 : "5%",
+    // right: heightPercentageToDP(5) > 40 ? 10 : "2%",
+    // transform: [
+    //   {
+    //     translateX: 0
+    //   },
+    //   {
+    //     translateY: heightPercentageToDP(5) > 40 ? -2 : -5
+    //   }
+    // ],
+    // alignSelf: "center",
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 3 },
+    // shadowRadius: 3,
+    // shadowOpacity: 0.2,
+    marginBottom: 25,
+    // marginRight: 18
+
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    marginBottom: 25,
-    marginRight: 18
+    // marginBottom: 17,
+    marginRight: 5
+
     // bottom: heightPercentageToDP(bottom)
   },
   connectingAgentText: {

@@ -4,6 +4,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import isNull from "lodash/isNull";
+import { showMessage } from "react-native-flash-message";
 
 instance = axios.create({
   baseURL: "https://www.optimizeapp.io/"
@@ -24,6 +25,8 @@ export const connect_user_to_intercom = user_id => {
       })
       .then(data => {
         if (data.code === "not_found") {
+          console.log("couldn't find a user");
+
           var user = getState().auth.userInfo;
           var bus = getState().account.mainBusiness;
           var body = {
@@ -40,6 +43,8 @@ export const connect_user_to_intercom = user_id => {
           };
           dispatch(create_user_on_intercom(body));
         } else {
+          console.log("found user");
+
           dispatch(get_conversation(user_id));
           return dispatch({
             type: actionTypes.SET_CURRENT_MESSENGER,
@@ -48,6 +53,15 @@ export const connect_user_to_intercom = user_id => {
         }
       })
       .catch(err => {
+        //  showMessage({
+        //    message:
+        //      err.message ||
+        //      err.response ||
+        //      "Something went wrong, please try again.",
+        //    type: "danger",
+        //    position: "top",
+        //    description: translate("chat, login")
+        //  });
         console.log("get_user", err.message || err.response);
       });
   };
@@ -76,7 +90,7 @@ export const create_user_on_intercom = user => {
     instance
       .post("/create-user", user)
       .then(res => {
-        console.log("created", res.data);
+        console.log("created user:", res.data);
         dispatch(get_conversation(res.data.user_id));
 
         return dispatch({
@@ -105,11 +119,15 @@ export const get_conversation = user_id => {
       })
       .then(data => {
         if (isNull(data.conversation_id)) {
+          console.log("couldn't find a conversation");
+
           return dispatch({
             type: actionTypes.SET_CONVERSATION_AS_OPEN,
             payload: false
           });
         } else {
+          console.log("found conversation");
+
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
             payload: data
@@ -224,9 +242,11 @@ export const get_conversatusion_read_status = () => {
         return res.data;
       })
       .then(data => {
-        console.log("data", data.intercom_chat_link);
+        console.log("get reading status on conversation", data);
+
+        console.log("intercom_chat_link", data.intercom_chat_link);
         console.log(
-          "an",
+          "condition",
           getState().messenger.messages.length === data.intercom_chat_link
         );
 
@@ -295,7 +315,7 @@ export const update_app_status_chat_notification = app_state => {
         return res.data;
       })
       .then(data => {
-        console.log("data", data);
+        console.log("updated read status", data);
 
         return dispatch({
           type: actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS,

@@ -34,12 +34,15 @@ const reducer = (state = initialState, action) => {
         loading_msg: false
       };
     case actionTypes.SET_CONVERSATION_AS_OPEN:
+      console.log("SET_CONVERSATION_AS_OPEN: ", action.payload);
+
       return {
         ...state,
-        open_conversation: action.payload
+        open_conversation: action.payload,
+        loading_con: false
       };
     case actionTypes.SET_CONVERSATION:
-      // console.log("con: ", action.payload);
+      console.log("SET_CONVERSATION: ", action.payload);
       const reverseMessages = reverse(action.payload.messages);
       return {
         ...state,
