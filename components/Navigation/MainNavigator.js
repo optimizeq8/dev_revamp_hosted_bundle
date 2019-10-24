@@ -74,7 +74,10 @@ export default FluidNavigator(
       path: "success/"
     },
     Messenger: Messenger,
-    MessengerLoading: MessengerLoading,
+    MessengerLoading: {
+      screen: MessengerLoading,
+      path: "MessengerLoading/"
+    },
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
     SelectedInstagramProductsList: SelectedInstagramProductsList,
