@@ -4,13 +4,13 @@ import { AsyncStorage } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import { Notifications } from "expo";
-import * as Permissions from 'expo-permissions';
-import * as Segment from 'expo-analytics-segment';
+import * as Permissions from "expo-permissions";
+import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 import { setAuthToken } from "./genericActions";
 import { setCurrentUser } from "./loginActions";
 import { getBusinessAccounts } from "./accountManagementActions";
-
+import { send_push_notification } from "./loginActions";
 import store from "../index";
 
 createBaseUrl = () =>
@@ -21,40 +21,6 @@ createBaseUrl = () =>
     // baseURL: "https://www.optimizeapp.com/optimize/public/"
   });
 const instance = createBaseUrl();
-
-export const send_push_notification = () => {
-  return (dispatch, getState) => {
-    Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
-      if (permission.status === "granted") {
-        Notifications.getExpoPushTokenAsync().then(token => {
-          createBaseUrl()
-            .post(`updatepushToken`, {
-              token: token,
-              userid: getState().auth.userInfo.userid
-            })
-            .then(res => {
-              return res.data;
-            })
-            .then(data => {
-              dispatch({
-                type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
-                payload: data
-              });
-            })
-            .catch(err => {
-              // console.log(
-              //   "send_push_notification",
-              //   err.message || err.response
-              // );
-              return dispatch({
-                type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
-              });
-            });
-        });
-      }
-    });
-  };
-};
 
 export const verifyBusinessName = (businessname, _handleBusinessName) => {
   return dispatch => {

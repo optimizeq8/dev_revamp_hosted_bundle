@@ -5,6 +5,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import isNull from "lodash/isNull";
 import { showMessage } from "react-native-flash-message";
+import { send_push_notification } from "./loginActions";
 
 instance = axios.create({
   baseURL: "https://www.optimizeapp.io/"
@@ -205,6 +206,8 @@ export const reply = message => {
         type: "user"
       })
       .then(response => {
+        dispatch(send_push_notification());
+
         return dispatch({
           type: actionTypes.ADD_MESSAGE,
           payload: response.data
