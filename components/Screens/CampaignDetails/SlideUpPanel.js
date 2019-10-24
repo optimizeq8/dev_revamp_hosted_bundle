@@ -162,7 +162,11 @@ export default class SlideUpPanel extends Component {
                     locations={[1, 0.3]}
                     style={styles.tab}
                   >
-                    <BarIcon style={styles.handlerIcon} />
+                    <BarIcon
+                      width={hp(5)}
+                      height={hp(5)}
+                      style={styles.handlerIcon}
+                    />
                     <Text style={styles.handlerText}>
                       {translate("Dashboard")}
                     </Text>
