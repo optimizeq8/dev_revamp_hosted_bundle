@@ -178,19 +178,36 @@ class AppUpdateChecker extends Component {
               autoPlay
             />
           ) : (
-            <Button
-              block
-              onPress={() =>
-                Linking.openURL(
-                  Platform.OS === "ios"
-                    ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
-                    : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
-                )
-              }
-              style={styles.updateButton}
+            <View
+              style={{
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+                height: "20%"
+              }}
             >
-              <Text style={styles.textUpdate}>{translate("Update Now")}</Text>
-            </Button>
+              <Button
+                block
+                onPress={() =>
+                  Linking.openURL(
+                    Platform.OS === "ios"
+                      ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
+                      : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
+                  )
+                }
+                style={styles.updateButton}
+              >
+                <Text style={styles.textUpdate}>{translate("Update Now")}</Text>
+              </Button>
+              <Button
+                block
+                onPress={() => this.setState({ updateDownloaded: true })}
+                style={styles.updateButton}
+              >
+                <Text style={styles.textUpdate}>
+                  {translate("Continue with the app")}
+                </Text>
+              </Button>
+            </View>
           )}
         </View>
       );
