@@ -16,7 +16,11 @@ export {
   filterCampaigns
 } from "./dashboardActions";
 
-export { setAuthToken, checkForUpdate } from "./genericActions";
+export {
+  setAuthToken,
+  checkForUpdate,
+  update_app_status_chat_notification
+} from "./genericActions";
 
 export {
   save_campaign_info,
@@ -107,8 +111,7 @@ export {
   set_as_seen,
   update_last_seen,
   subscribe,
-  update_conversatusion_read_status,
-  update_app_status_chat_notification
+  update_conversatusion_read_status
 } from "./messengerActions";
 
 export { getLanguageListPOEdit } from "./languageActions";

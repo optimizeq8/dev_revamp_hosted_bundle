@@ -6,6 +6,7 @@ import * as actionTypes from "./actionTypes";
 import isNull from "lodash/isNull";
 import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
+import { update_app_status_chat_notification } from "./genericActions";
 
 instance = axios.create({
   baseURL: "https://www.optimizeapp.io/"
@@ -295,40 +296,6 @@ export const update_conversatusion_read_status = () => {
       .catch(err => {
         // console.log(
         //   "update_conversatusion_read_status err",
-        //   err.message || err.response
-        // );
-      });
-  };
-};
-
-export const update_app_status_chat_notification = app_state => {
-  return (dispatch, getState) => {
-    axios
-      .post(
-        getState().login.admin
-          ? "https://optimizekwtestingserver.com/optimize/public/sendChatNotificationbySMS"
-          : "https://www.optimizeapp.com/optimize/public/sendChatNotificationbySMS",
-
-        {
-          app_state: app_state,
-          userid: getState().auth.userInfo && getState().auth.userInfo.userid
-        }
-      )
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        // console.log("updated read status", data);
-
-        return dispatch({
-          type: actionTypes.SET_MESSENGER_SMS_NOTIFICATION_STATUS,
-          payload: app_state
-          // getState().messenger.messages.length === data.intercom_chat_link
-        });
-      })
-      .catch(err => {
-        // console.log(
-        //   "sendChatNotificationbySMS err",
         //   err.message || err.response
         // );
       });

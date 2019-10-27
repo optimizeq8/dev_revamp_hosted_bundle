@@ -9,7 +9,7 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
-import { update_app_status_chat_notification } from "./messengerActions";
+import { update_app_status_chat_notification } from "./genericActions";
 
 createBaseUrl = () =>
   axios.create({
