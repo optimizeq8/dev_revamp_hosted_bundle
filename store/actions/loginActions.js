@@ -232,6 +232,10 @@ export const forgotPassword = (email, navigation) => {
 
 export const clearPushToken = (navigation, userid) => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.CLEAR_PUSH_NOTIFICATION_LOADING,
+      payload: true
+    });
     createBaseUrl()
       .post(`updatepushToken`, {
         token: null,
@@ -242,8 +246,7 @@ export const clearPushToken = (navigation, userid) => {
       })
       .then(data => {
         dispatch({
-          type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN,
-          payload: data
+          type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN
         });
       })
       .then(() => {

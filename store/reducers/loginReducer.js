@@ -1,8 +1,9 @@
 import * as actionTypes from "../actions/actionTypes";
-import * as Segment from 'expo-analytics-segment';
+import * as Segment from "expo-analytics-segment";
 const initialState = {
   exponentPushToken: null,
-  admin: false
+  admin: false,
+  clearTokenLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,7 +11,13 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN:
       return {
         ...state,
-        exponentPushToken: null
+        exponentPushToken: null,
+        clearTokenLoading: false
+      };
+    case actionTypes.CLEAR_PUSH_NOTIFICATION_LOADING:
+      return {
+        ...state,
+        clearTokenLoading: action.payload
       };
     case actionTypes.SET_PUSH_NOTIFICATION_TOKEN:
       return {
