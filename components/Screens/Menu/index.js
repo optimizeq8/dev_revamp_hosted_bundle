@@ -13,7 +13,7 @@ import { Button, Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList";
 import Constants from "expo-constants";
-
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
@@ -257,7 +257,7 @@ class Menu extends Component {
               </Text>
             </ScrollView>
           </View>
-
+          {this.props.clearTokenLoading && <LoadingScreen dash={true} />}
           <SlidingUpPanel
             showBackdrop={false}
             ref={c => (this._panel = c)}
@@ -288,7 +288,8 @@ const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
   campaignList: state.dashboard.campaignList,
-  exponentPushToken: state.login.exponentPushToken
+  exponentPushToken: state.login.exponentPushToken,
+  clearTokenLoading: state.login.clearTokenLoading
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
