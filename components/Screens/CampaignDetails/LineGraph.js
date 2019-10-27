@@ -83,7 +83,11 @@ ${day}/${shortMonths[month]}`;
           domainPadding={{ y: 10 }}
           containerComponent={
             <VictoryVoronoiContainer
-              labels={d => parseFloat(d.y).toFixed(2)}
+              labels={d =>
+                this.props.chartChoice === "Spend"
+                  ? parseFloat(d.y).toFixed(2)
+                  : parseFloat(d.y).toFixed(0)
+              }
               labelComponent={
                 <CustomLabel
                   category={category}
