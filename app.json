@@ -25,7 +25,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.optimizeapp.optimizeapp",
-      "buildNumber": "17",
+      "buildNumber": "18",
       "supportsTablet": false
     },
     "packagerOpts": {
@@ -34,7 +34,7 @@
     },
     "android": {
       "package": "com.optimizeapp.optimizeapp",
-      "versionCode": 16
+      "versionCode": 17
     },
     "hooks": {
       "postPublish": [
