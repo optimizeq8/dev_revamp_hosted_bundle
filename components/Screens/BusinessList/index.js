@@ -12,6 +12,7 @@ import styles from "./styles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 class BusinessList extends Component {
   static navigationOptions = {
@@ -55,7 +56,7 @@ class BusinessList extends Component {
             businessList={true}
             height={"6%"}
           />
-          <View style={{ height: "60%" }}>
+          <View style={{ height: heightPercentageToDP(55) }}>
             <ScrollView contentContainerStyle={styles.contentContainer}>
               {list}
             </ScrollView>

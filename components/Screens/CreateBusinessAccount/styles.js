@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30,
-    height: 80
-    // width: widthPercentageToDP(85)
+    height: heightPercentageToDP("11%"),
+    width: "90%"
   },
   subTitle: {
     fontSize: 18,
@@ -61,34 +61,33 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     // backgroundColor: "#fff",
     backgroundColor: "rgba(0,0,0,0)",
-    height: 80,
+    height: "100%",
     justifyContent: "center",
     flexDirection: "column",
-    paddingHorizontal: 10,
-    // width: "34%",
+    // paddingHorizontal: 10,
+    width: "34%",
     borderColor: "transparent"
   },
   activeButton: {
     borderColor: "transparent",
-    // width: "34%",
+    width: "34%",
     backgroundColor: "#FF9D00",
     borderRadius: 50,
-    height: 80,
+    height: "100%",
     justifyContent: "center",
     flexDirection: "column",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+
     borderColor: "transparent"
   },
   inactiveText: {
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "rgba(255,255,255,0.6)",
     textAlign: "center",
     paddingTop: 5
   },
   activeText: {
-    fontFamily: "montserrat-medium",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#FFF",
     textAlign: "center",
