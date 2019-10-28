@@ -4,6 +4,7 @@ import { View, ScrollView } from "react-native";
 import { Button, Text, Container } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
+import * as businessIcons from "../../../assets/SVGs/BusinessIcons";
 
 // Style
 import styles from "./styles";

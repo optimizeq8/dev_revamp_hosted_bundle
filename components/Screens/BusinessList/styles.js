@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   contentContainer: {
-    // paddingTop: 30,
+    paddingTop: 20,
     paddingBottom: hp("30")
   }
 });
