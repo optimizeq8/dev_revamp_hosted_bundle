@@ -47,7 +47,7 @@ class AppUpdateChecker extends Component {
     const { translate } = this.props.screenProps;
     try {
       this.setState({
-        status: translate("Checking for OTA updates"),
+        status: "",
         statusLoading: true
       });
       const update = await Updates.checkForUpdateAsync();
