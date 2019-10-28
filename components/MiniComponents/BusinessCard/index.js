@@ -4,7 +4,7 @@ import { Text, Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
-import businessList from "../../Data/businessCategoriesList.data";
+import businessList from "../../Data/newBusinessCategoryList.data";
 import find from "lodash/find";
 import isStringArabic from "../../isStringArabic";
 
@@ -16,11 +16,14 @@ class BusinessCard extends Component {
     };
   }
   render() {
-    let changeState = { color: "#5F5F5F" };
+    let changeState = { color: this.props.manageTeam ? "#C6C6C6" : "#5F5F5F" };
     if (
+      !this.props.manageTeam &&
       this.props.mainBusiness &&
       this.props.mainBusiness.businessid === this.props.business.businessid
     ) {
+      changeState.color = "#FF9D00";
+    } else if (this.props.isSelected) {
       changeState.color = "#FF9D00";
     }
 
@@ -28,23 +31,39 @@ class BusinessCard extends Component {
       this.state.type,
       cat => cat.value === this.props.business.businesscategory
     );
+    let BusinessIcon = businessCategory.icon;
 
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.changeBusiness(this.props.business);
-          this.props.resetCampaignInfo();
+          if (!this.props.manageTeam) {
+            this.props.changeBusiness(this.props.business);
+            this.props.resetCampaignInfo();
+          } else this.props.selectAccount();
         }}
         style={[
           styles.campaignButton,
           { backgroundColor: changeState.backgroundColor }
         ]}
       >
-        <Icon
-          type="MaterialCommunityIcons"
-          name="web"
-          style={[styles.icon, { color: changeState.color }]}
-        />
+        <View
+          style={{
+            backgroundColor: changeState.color,
+            width: 50,
+            height: 50,
+            borderRadius: 50,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <BusinessIcon
+            width={30}
+            height={30}
+            // type="MaterialCommunityIcons"
+            // name="web"
+            // style={[styles.icon, { color: changeState.color }]}
+          />
+        </View>
         <View style={styles.textcontainer}>
           <Text
             style={[
