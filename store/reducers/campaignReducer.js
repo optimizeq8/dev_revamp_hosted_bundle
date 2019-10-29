@@ -92,6 +92,7 @@ const initialState = {
   instaHandleId: null,
   instaHasNextPage: null,
   instaEndCursor: null,
+  mediaStoryAdsDifferentDevice: [],
   loadingMoreInstaPost: false
 };
 
@@ -816,6 +817,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loadingMoreInstaPost: action.payload
+      };
+    }
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS: {
+      return {
+        ...state,
+        mediaStoryAdsDifferentDevice: [...action.payload.adsArray]
+      };
+    }
+    case actionTypes.UPDATE_STORY_ADS_ARRAY: {
+      return {
+        ...state,
+        storyAdsArray: [...action.payload]
       };
     }
     default:

@@ -110,7 +110,8 @@ export const formatMedia = (
           cardMedia = card.media;
         if (card && card.media !== "//" && card.media.includes("https://"))
           cardUrl = card.media;
-        allIosVideos = !cardMedia && cardUrl && Platform.OS === "ios";
+        allIosVideos =
+          (!cardMedia && cardUrl && Platform.OS === "ios") || cardUrl; // added || cardUrl to make it work on android
         return !allIosVideos ? cardMedia : cardUrl;
       });
       if (storyAd.media === "//" && !allIosVideos) {

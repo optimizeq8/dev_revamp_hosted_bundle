@@ -1359,14 +1359,14 @@ export const getMediaUploadUrl = (
   };
 };
 
-export const getWebUploadLinkMedia = campaign_id => {
-  return dispatch => {
+export const getWebUploadLinkMedia = (campaign_id, adType) => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
       payload: true
     });
     createBaseUrl()
-      .get(`/webuploadlinkmedia/${campaign_id}`)
+      .get(`/webuploadlinkmedia/${campaign_id}/${adType}`)
       .then(res => res.data)
       .then(data => {
         // console.log("data", data);
@@ -1378,14 +1378,68 @@ export const getWebUploadLinkMedia = campaign_id => {
           type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
           payload: false
         });
+        // handle cases for story ad / snap ad
         if (data.success) {
-          return dispatch({
-            type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
-            payload: {
-              mediaWebLink: data.media,
-              mediaTypeWebLink: data.media_type
-            }
-          });
+          switch (adType) {
+            case "StoryAd":
+              // handle stories
+              // console.log("data story", data.data);
+              const imageStoryMediaArray = data.data;
+              let storyAdsArray2 = getState().campaignC.storyAdsArray;
+              const storyAdsArray3 = imageStoryMediaArray.map(
+                (story, index) => {
+                  return {
+                    ...storyAdsArray2[index],
+                    ...story
+                  };
+                }
+              );
+              // storyAdsArray3.push({
+              //   id: storyAdsArray3.length,
+              //   call_to_action: { label: "BLANK", value: "BLANK" },
+              //   media: "//",
+              //   destination: "BLANK",
+              //   attachment: "BLANK"
+              // });
+
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS,
+                payload: {
+                  adsArray: [...storyAdsArray3]
+                }
+              });
+              break;
+
+            case "SnapAd":
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
+                payload: {
+                  mediaWebLink: data.media,
+                  mediaTypeWebLink: data.media_type
+                }
+              });
+            default:
+              break;
+          }
+        } else if (!data.success) {
+          switch (adType) {
+            case "StoryAd":
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_STORY_ADS,
+                payload: {
+                  adsArray: []
+                }
+              });
+
+            case "SnapAd":
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA,
+                payload: {
+                  mediaWebLink: "",
+                  mediaTypeWebLink: ""
+                }
+              });
+          }
         }
       })
       .catch(error => {
@@ -1477,5 +1531,32 @@ export const loadMoreInstagramPost = (instaHandleId, instaEndCursor) => {
       });
     }
     // console.log('imageListAfterSize', imagesList.length);
+  };
+};
+
+export const updateStoryADS = storyAdsArray => {
+  return dispatch => {
+    const arrayCopy = storyAdsArray.map((storyAd, index) => {
+      return {
+        index: index,
+        id: index,
+        call_to_action: { label: "BLANK", value: "BLANK" },
+        media: storyAd.media,
+        destination: "BLANK",
+        attachment: "BLANK"
+      };
+    });
+    arrayCopy.push({
+      id: arrayCopy.length,
+      index: arrayCopy.length,
+      call_to_action: { label: "BLANK", value: "BLANK" },
+      media: "//",
+      destination: "BLANK",
+      attachment: "BLANK"
+    });
+    dispatch({
+      type: actionTypes.UPDATE_STORY_ADS_ARRAY,
+      payload: arrayCopy
+    });
   };
 };
