@@ -10,7 +10,7 @@ import styles from "./styles";
 
 export default class MediaModal extends Component {
   render() {
-    if (this.props.adType === "SnapAd") {
+    if (this.props.adType === "SnapAd" || this.props.adType === "StoryAd") {
       var options = [
         "Image",
         "Video",

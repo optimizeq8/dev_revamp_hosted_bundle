@@ -63,7 +63,8 @@ export {
   getWebUploadLinkMedia,
   saveCampaignSteps,
   setCampaignInProgress,
-  loadMoreInstagramPost
+  loadMoreInstagramPost,
+  updateStoryADS
 } from "./campaignActions";
 
 export {

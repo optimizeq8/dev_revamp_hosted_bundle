@@ -315,7 +315,7 @@ class AdDetails extends Component {
     }
     if (replace.targeting.demographics[0].languages.length === 0) {
       showMessage({
-        message: translate("Please choose a language."),
+        message: translate("Please choose a language"),
         type: "warning",
         position: "top"
       });

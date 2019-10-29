@@ -34,8 +34,8 @@ class SnapCard extends Component {
         }}
         shouldPlay={false}
         isMuted
-        resizeMode={"stretch"}
-        style={styles.rejected}
+        // resizeMode={"stretch"}
+        style={{ height: "100%", width: "100%" }}
       />
     );
 
