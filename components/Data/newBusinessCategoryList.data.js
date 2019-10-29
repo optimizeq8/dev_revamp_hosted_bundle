@@ -147,9 +147,19 @@ export default [
   { label: "Music Production", value: "40", icon: businesIcons.TVProduction },
   { label: "Nonprofit", value: "41", icon: businesIcons.Nonprofit },
   { label: "Oil & Gas", value: "42", icon: businesIcons.OilGas },
+  {
+    label: "Other",
+    value: "43",
+    icon: businesIcons.Other
+  },
   { label: "Pharmaceutical", value: "44", icon: businesIcons.Pharmaceutical },
   { label: "Radio", value: "45", icon: businesIcons.Radio },
   { label: "Real Estate", value: "46", icon: businesIcons.RealEstate },
+  {
+    label: "Real Estate/Housing",
+    value: "47",
+    icon: businesIcons.RealEstate
+  },
   {
     label: "Rental & Leasing Services",
     value: "48",
@@ -189,7 +199,7 @@ export default [
   {
     label: "Sports: Esports",
     value: "56",
-    icon: businesIcons.Esports
+    icon: businesIcons.SportsEsports
   },
   {
     label: "Sports: Motorsports",
@@ -206,7 +216,6 @@ export default [
     value: "59",
     icon: businesIcons.RetailSportsEquipment
   },
-  { label: "Home Business", value: "25", icon: businesIcons.TechBusiness },
   {
     label: "Tech Business",
     value: "60",
@@ -222,6 +231,19 @@ export default [
     value: "62",
     icon: businesIcons.TravelTourism
   },
-  { label: "Music Production", value: "40", icon: businesIcons.TVProduction },
-  { label: "IT: Other", value: "31", icon: businesIcons.Other }
+  {
+    label: "Travel & Tourism: Ride Hailing",
+    value: "63",
+    icon: businesIcons.TravelTourism
+  },
+  {
+    label: "Travel & Tourism: Travel Agency",
+    value: "64",
+    icon: businesIcons.TravelTourism
+  },
+  {
+    label: "TV Production",
+    value: "65",
+    icon: businesIcons.TravelTourism
+  }
 ];
