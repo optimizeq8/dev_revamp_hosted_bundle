@@ -940,6 +940,7 @@ class AdDesign extends Component {
     } = this.state;
 
     const { translate } = this.props.screenProps;
+    console.log("data", this.props.data);
 
     let validCards =
       this.adType === "StoryAd"
