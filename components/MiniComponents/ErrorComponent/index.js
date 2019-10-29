@@ -88,7 +88,7 @@ class ErrorComponent extends Component {
             <Text style={styles.buttontext}>
               {this.props.dashboard
                 ? translate("Sign in")
-                : translate("Go Back")}
+                : translate("Go back")}
             </Text>
           </Button>
           <Button
