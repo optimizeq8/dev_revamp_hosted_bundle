@@ -29,6 +29,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 //Functions
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import find from "lodash/find";
+import { showMessage } from "react-native-flash-message";
 
 class PhoneNo extends Component {
   static navigationOptions = {
@@ -37,7 +38,7 @@ class PhoneNo extends Component {
   constructor() {
     super();
     this.state = {
-      valid: true,
+      valid: false,
       type: "",
       countryCode: "",
       value: "",
@@ -62,8 +63,10 @@ class PhoneNo extends Component {
     if (this.state.valid && this.state.type === "MOBILE") {
       this.props.sendMobileNo({
         country_code: this.state.countryCode,
-        mobile: this.state.value.trim()
+        mobile: this.state.value && this.state.value.trim()
       });
+    } else {
+      this.validateNumber();
     }
   };
 
@@ -75,27 +78,22 @@ class PhoneNo extends Component {
     this.phone.selectCountry(country.iso2);
   };
 
-  renderInfo = () => {
-    return (
-      <View>
-        {this.state.type !== "MOBILE" &&
-          this.state.type !== "" &&
-          this.state.type !== "UNKNOWN" && (
-            <View style={styles.info}>
-              <Text style={styles.errorText}>
-                Please Enter a valid Mobile number.
-              </Text>
-            </View>
-          )}
-        {!this.state.valid ? (
-          <View style={styles.info}>
-            <Text style={styles.errorText}>
-              Please Enter a valid Mobile number.
-            </Text>
-          </View>
-        ) : null}
-      </View>
-    );
+  validateNumber = () => {
+    if (
+      this.state.type !== "MOBILE" &&
+      this.state.type !== "" &&
+      this.state.type !== "UNKNOWN"
+    ) {
+      showMessage({
+        message: "Please Enter a valid Mobile number.",
+        type: "warning"
+      });
+    }
+    if (!this.state.valid)
+      showMessage({
+        message: "Please Enter a valid Mobile number.",
+        type: "warning"
+      });
   };
 
   changeNo = (number, countryCode, type, valid) => {
@@ -166,8 +164,6 @@ class PhoneNo extends Component {
                 changeNo={this.changeNo}
               />
             )}
-
-            {this.renderInfo()}
 
             {/* <Button onPress={this.updateInfo} style={styles.button}>
             <Icon style={styles.icon} name="arrow-forward" />

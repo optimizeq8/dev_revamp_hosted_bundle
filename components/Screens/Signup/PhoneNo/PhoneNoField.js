@@ -10,7 +10,7 @@ import CountryModal from "./CountryModal";
 import { showMessage } from "react-native-flash-message";
 import find from "lodash/find";
 export default class PhoneNoField extends Component {
-  state = { pickerData: null };
+  state = { pickerData: null, country: "kw", dialCode: "+965", number: "" };
   componentDidMount() {
     this.setState({ pickerData: this.phone.getPickerData() });
   }
@@ -20,7 +20,32 @@ export default class PhoneNoField extends Component {
   };
 
   selectCountry = country => {
+    this.setState({
+      country: country,
+      dialCode: country.dialCode,
+      number: ""
+    });
     this.phone.selectCountry(country.iso2);
+    this.props.changeNo(
+      this.state.number,
+      null,
+      null,
+      this.phone.isValidNumber()
+    );
+  };
+
+  onChangePhoneNumber = number => {
+    this.setState({ number });
+    if (this.phone.isValidNumber()) {
+      this.props.changeNo(
+        number,
+        this.phone.getCountryCode(),
+        this.phone.getNumberType(),
+        this.phone.isValidNumber()
+      );
+    } else {
+      this.props.changeNo(number, null, null, this.phone.isValidNumber());
+    }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -109,25 +134,13 @@ export default class PhoneNoField extends Component {
             ref={ref => {
               this.phone = ref;
             }}
-            onChangePhoneNumber={number =>
-              this.phone.isValidNumber()
-                ? this.props.changeNo(
-                    number,
-                    this.phone.getCountryCode(),
-                    this.phone.getNumberType(),
-                    this.phone.isValidNumber()
-                  )
-                : this.props.changeNo(
-                    number,
-                    null,
-                    null,
-                    this.phone.isValidNumber()
-                  )
-            }
+            onChangePhoneNumber={number => this.onChangePhoneNumber(number)}
             onPressFlag={this.props.onPressFlag}
-            initialCountry="kw"
+            initialCountry={this.state.country.iso2}
             countriesList={countriesMobileData}
-            value={this.props.phoneNum ? this.props.phoneNum : "+965"}
+            value={
+              this.props.phoneNum ? this.props.phoneNum : this.state.dialCode
+            }
             offset={10}
           />
         </Item>
