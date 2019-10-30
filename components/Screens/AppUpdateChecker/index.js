@@ -37,7 +37,7 @@ class AppUpdateChecker extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.actualVersion !== this.props.actualVersion &&
-      this.props.actualVersion === "0.1.7"
+      this.props.actualVersion === Constants.manifest.version
     ) {
       this.handleUpdates();
     }

@@ -6,7 +6,8 @@ import { Button, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Swiper from "../../MiniComponents/Swiper";
-import Invitation from "../InvitationScreen";
+// import Invitation from "../InvitationScreen";
+import Signin from "../Signin";
 
 // Style
 import styles from "./styles";
@@ -84,7 +85,7 @@ class Tutorial extends Component {
                       AsyncStorage.setItem("tutorialOpened", "false");
                     } else {
                       AsyncStorage.setItem("tutorialOpened", "true").then(
-                        this.props.navigation.replace("Invitation")
+                        this.props.navigation.replace("Signin")
                       );
                     }
                   })
@@ -111,7 +112,7 @@ class Tutorial extends Component {
       );
     } else if (this.state.tutorialOpened) {
       return (
-        <Invitation
+        <Signin
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
         />
