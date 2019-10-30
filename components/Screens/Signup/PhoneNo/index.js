@@ -70,10 +70,6 @@ class PhoneNo extends Component {
     }
   };
 
-  onPressFlag = () => {
-    this.myCountryPicker.open();
-  };
-
   selectCountry = country => {
     this.phone.selectCountry(country.iso2);
   };
@@ -137,7 +133,6 @@ class PhoneNo extends Component {
                       handlePickerData={this.handlePickerData}
                       valid={this.state.valid}
                       type={this.state.type}
-                      onPressFlag={this.onPressFlag}
                       changeNo={this.changeNo}
                     />
                     <Text style={styles.text}>
