@@ -226,22 +226,20 @@ class MainForm extends Component {
                 )}
               </KeyboardShift>
 
-              {invite && (
-                <View style={styles.bottomInviteViewContainer}>
-                  <Text style={[styles.link, styles.dontHaveAccountText]}>
-                    {translate("Don’t Have an Account?")}
+              <View style={styles.bottomInviteViewContainer}>
+                <Text style={[styles.link, styles.dontHaveAccountText]}>
+                  {translate("Don’t Have an Account?")}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.push("MainForm");
+                  }}
+                >
+                  <Text style={styles.createOneText}>
+                    {translate("Create One!")}
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.goBack();
-                    }}
-                  >
-                    <Text style={styles.createOneText}>
-                      {translate("Create One!")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+                </TouchableOpacity>
+              </View>
             </View>
           </TouchableWithoutFeedback>
         </Container>

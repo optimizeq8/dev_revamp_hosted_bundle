@@ -95,7 +95,7 @@ class ErrorComponent extends Component {
             style={styles.whitebutton}
             onPress={() => {
               this.props.dashboard
-                ? this.props.navigation.navigate("Invitation")
+                ? this.props.navigation.navigate("AppUpdateChecker")
                 : this.props.navigation.navigate("Dashboard");
             }}
           >

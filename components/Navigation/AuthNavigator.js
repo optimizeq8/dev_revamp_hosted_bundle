@@ -5,7 +5,7 @@ import MainForm from "../Screens/Signup/MainForm";
 import AppUpdateChecker from "../Screens/AppUpdateChecker";
 
 import Signin from "../Screens/Signin";
-import Invitation from "../Screens/InvitationScreen";
+// import Invitation from "../Screens/InvitationScreen";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import ForgotPassword from "../Screens/ForgotPassword";
@@ -17,8 +17,8 @@ export default FluidNavigator(
     AppUpdateChecker: AppUpdateChecker,
 
     Signin: Signin,
-    ForgotPassword: ForgotPassword,
-    Invitation: Invitation
+    ForgotPassword: ForgotPassword
+    // Invitation: Invitation
   },
   {
     initialRouteName: "AppUpdateChecker",
