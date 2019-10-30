@@ -135,7 +135,7 @@ export default class PhoneNoField extends Component {
               this.phone = ref;
             }}
             onChangePhoneNumber={number => this.onChangePhoneNumber(number)}
-            onPressFlag={this.props.onPressFlag}
+            onPressFlag={this.onPressFlag}
             initialCountry={this.state.country.iso2}
             countriesList={countriesMobileData}
             value={
