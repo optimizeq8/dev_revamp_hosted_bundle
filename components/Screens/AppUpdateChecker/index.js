@@ -37,7 +37,7 @@ class AppUpdateChecker extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.actualVersion !== this.props.actualVersion &&
-      this.props.actualVersion === "0.1.8"
+      this.props.actualVersion === Constants.manifest.version
     ) {
       this.handleUpdates();
     }
@@ -112,7 +112,13 @@ class AppUpdateChecker extends Component {
       return (
         <View style={{ height: "100%" }}>
           <NavigationEvents
-            onDidFocus={async () => this.props.checkForUpdate()}
+            onDidFocus={async () => {
+              Constants.manifest.version[
+                Constants.manifest.version.length - 1
+              ] === "0"
+                ? this.handleUpdates()
+                : this.props.checkForUpdate();
+            }}
           />
           <BackdropIcon
             style={{
