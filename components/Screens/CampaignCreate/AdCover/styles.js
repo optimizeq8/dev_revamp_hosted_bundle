@@ -70,10 +70,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignSelf: "center",
     height: "85%",
+    flex: 1,
     width: "100%",
     paddingHorizontal: 30,
-    paddingBottom: 40,
-    marginTop: hp(3),
+    paddingBottom: 60,
+    // marginTop: hp(3),
     alignItems: "center"
   },
   mainSafeArea: {

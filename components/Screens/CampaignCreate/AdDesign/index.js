@@ -286,7 +286,7 @@ class AdDesign extends Component {
         //   ? "VIDEO"
         //   : "IMAGE"
       });
-      this.props.getWebUploadLinkMedia(this.props.campaign_id);
+      this.props.getWebUploadLinkMedia(this.props.campaign_id, this.adType);
     }
   };
 
@@ -713,7 +713,7 @@ class AdDesign extends Component {
     }
     if (collectionError) {
       showMessage({
-        message: translate("Please add more products to proceed."),
+        message: translate("Please add more products to proceed"),
         position: "top",
         type: "warning"
       });
@@ -860,7 +860,7 @@ class AdDesign extends Component {
     });
   };
   getWebUploadLinkMediaURL = () => {
-    this.props.getWebUploadLinkMedia(this.props.campaign_id);
+    this.props.getWebUploadLinkMedia(this.props.campaign_id, this.adType);
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = val => {
@@ -879,6 +879,43 @@ class AdDesign extends Component {
       type: mediaTypeWebLink
     });
   };
+  handleDownloadMediaStoryAds = async storyAdsArray => {
+    // update storyads array
+    await this.props.updateStoryADS(storyAdsArray);
+    let cards = this.props.storyAdsArray;
+
+    cards.map((card, index) => {
+      if (storyAdsArray[index]) {
+        card = {
+          ...card,
+          index: index,
+          story_id: storyAdsArray[index].story_id,
+          media: storyAdsArray[index].media,
+          media_type: storyAdsArray[index].media_type,
+          uploaded: true
+        };
+        cards[index] = card;
+        this.setState({
+          storyAdCards: {
+            ...this.state.storyAdCards,
+            selectedStoryAd: {
+              ...card
+            }
+          },
+
+          type: storyAdsArray[index].media_type
+        });
+        this.props.save_campaign_info({
+          selectedStoryAd: card,
+          type: storyAdsArray[index].media_type
+        });
+      }
+    });
+    this.setState({
+      downloadMediaModal: false
+    });
+  };
+
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     this.props.navigation.push("WebView", {
@@ -1269,6 +1306,8 @@ class AdDesign extends Component {
           handleDownloadMedia={this.handleDownloadMedia}
           webUploadLinkMediaLoading={this.props.webUploadLinkMediaLoading}
           screenProps={this.props.screenProps}
+          adType={this.adType}
+          handleDownloadMediaStoryAds={this.handleDownloadMediaStoryAds}
         />
         <LoadingModal
           videoUrlLoading={videoUrlLoading}
@@ -1358,9 +1397,11 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   setStoryAdAttachment: info =>
     dispatch(actionCreators.setStoryAdAttechment(info)),
-  getWebUploadLinkMedia: campaign_id =>
-    dispatch(actionCreators.getWebUploadLinkMedia(campaign_id)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
+  getWebUploadLinkMedia: (campaign_id, adType) =>
+    dispatch(actionCreators.getWebUploadLinkMedia(campaign_id, adType)),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  updateStoryADS: storyAdsArray =>
+    dispatch(actionCreators.updateStoryADS(storyAdsArray))
 });
 export default connect(
   mapStateToProps,

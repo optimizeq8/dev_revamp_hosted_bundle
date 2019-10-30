@@ -65,7 +65,7 @@ class MainForm extends Component {
           <View style={styles.progressCardView}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("Invitation");
+                this.props.navigation.navigate("Signin");
                 this.props.resetRegister();
               }}
             >

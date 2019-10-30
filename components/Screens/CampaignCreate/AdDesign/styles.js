@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   placeholderDownloadMedia: {
-    borderRadius: 30,
+    borderRadius: 20,
     // overflow: "hidden",
     // alignSelf: "center",
     width: "100%",
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
   downloadMediaBottomContainer: {
     display: "flex",
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     justifyContent: "center",
     marginVertical: 20
   },
@@ -501,6 +501,44 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 20
+  },
+  scrollViewStoryDownloadMedia: {
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    // alignItems: "center",
+    flexWrap: "wrap",
+    flexGrow: 1,
+    justifyContent: "space-around",
+    paddingHorizontal: 5
+  },
+  storyAdIndividual: {
+    width: 100,
+    height: 160,
+    borderWidth: 2,
+    borderColor: "#FF9D00",
+    borderRadius: 20,
+    backgroundColor: "black",
+    marginVertical: 10
+    // marginHorizontal: 5
+  },
+  storyAdIndexView: {
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 1,
+    backgroundColor: "#FF9D00",
+    justifyContent: "center",
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    marginTop: -12
+  },
+  storyAdTextNum: {
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    textAlign: "center",
+    textAlignVertical: "center"
   }
 });
 

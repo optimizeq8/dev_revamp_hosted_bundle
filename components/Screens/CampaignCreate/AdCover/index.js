@@ -712,7 +712,7 @@ class AdCover extends Component {
               style={[
                 styles.subText,
                 {
-                  bottom: -10
+                  // bottom: -10
                 }
               ]}
             >
