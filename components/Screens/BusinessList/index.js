@@ -20,21 +20,28 @@ class BusinessList extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { filteredBusinesses: this.props.businessAccounts };
+    this.state = { value: "", filteredBusinesses: this.props.businessAccounts };
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.businessAccounts !== this.props.businessAccounts) {
+      this.filterBusinesses(this.state.value);
+    }
   }
   filterBusinesses = value => {
+    let filteredBusinesses = this.props.businessAccounts.filter(
+      bus =>
+        bus.businessname
+          .trim()
+          .toLowerCase()
+          .includes(value.trim().toLowerCase()) ||
+        bus.brandname
+          .trim()
+          .toLowerCase()
+          .includes(value.trim().toLowerCase())
+    );
     this.setState({
-      filteredBusinesses: this.props.businessAccounts.filter(
-        bus =>
-          bus.businessname
-            .trim()
-            .toLowerCase()
-            .includes(value.trim().toLowerCase()) ||
-          bus.brandname
-            .trim()
-            .toLowerCase()
-            .includes(value.trim().toLowerCase())
-      )
+      filteredBusinesses,
+      value
     });
   };
   render() {
