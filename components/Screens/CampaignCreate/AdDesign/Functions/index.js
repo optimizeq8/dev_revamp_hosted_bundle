@@ -111,7 +111,7 @@ export const formatMedia = (
         if (card && card.media !== "//" && card.media.includes("https://"))
           cardUrl = card.media;
         allIosVideos =
-          (!cardMedia && cardUrl && Platform.OS === "ios") || cardUrl; // added || cardUrl to make it work on android
+          (!cardMedia && cardUrl && Platform.OS === "ios") || card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
         return !allIosVideos ? cardMedia : cardUrl;
       });
       if (storyAd.media === "//" && !allIosVideos) {

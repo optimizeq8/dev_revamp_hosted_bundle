@@ -887,13 +887,15 @@ class AdDesign extends Component {
     cards.map((card, index) => {
       if (storyAdsArray[index]) {
         card = {
-          ...card,
-          index: index,
-          story_id: storyAdsArray[index].story_id,
-          media: storyAdsArray[index].media,
-          media_type: storyAdsArray[index].media_type,
-          uploaded: true
-        };
+			...card,
+			index: index,
+			story_id: storyAdsArray[index].story_id,
+			media: storyAdsArray[index].media,
+			media_type: storyAdsArray[index].media_type,
+			uploaded: true,
+      iosVideoUploaded: true,
+      uploadedFromDifferentDevice: true
+		};
         cards[index] = card;
         this.setState({
           storyAdCards: {
