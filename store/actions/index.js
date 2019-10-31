@@ -5,7 +5,8 @@ export {
   updateUserInfo,
   addressForm,
   getAddressForm,
-  create_snapchat_ad_account
+  create_snapchat_ad_account,
+  deleteBusinessAccount
 } from "./accountManagementActions";
 
 export {
