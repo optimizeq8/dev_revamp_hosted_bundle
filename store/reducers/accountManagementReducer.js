@@ -167,6 +167,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         deletingBusinessLoading: action.payload
       };
+    case actionTypes.UPDATE_MAINBUSINESS:
+      let updatedMainBusiness = {
+        insta_handle: action.payload.insta_handle,
+        whatsappnumber: action.payload.whatsappnumber,
+        weburl: action.payload.weburl,
+        callnumber: action.payload.callnumber,
+        source: action.payload.source,
+        googlemaplink: action.payload.googlemaplink
+      };
+
+      return {
+        ...state,
+        mainBusiness: { ...state.mainBusiness, ...updatedMainBusiness }
+      };
     default:
       return state;
   }

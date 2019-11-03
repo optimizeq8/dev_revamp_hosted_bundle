@@ -254,3 +254,9 @@ export const checkRemainingBudget = campaign_id => {
       .catch(err => console.log(err.response));
   };
 };
+
+export const setRejectedCampaignData = rejCampaign => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_REJECTED_CAMPAIGN, payload: rejCampaign });
+  };
+};
