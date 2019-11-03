@@ -187,9 +187,13 @@ class PaymentForm extends Component {
 
   _handleSubmission = () => {
     if (this.state.choice === 1) {
-      this.setState({
-        showWalletModal: true
-      });
+      if (this.props.wallet && this.props.wallet !== "0")
+        this.setState({
+          showWalletModal: true
+        });
+      else {
+        showMessage({ message: "No ammount in wallet", type: "warning" });
+      }
     } else {
       this.setState({ browserLoading: true });
       if (this.state.browserLoading) return;
@@ -395,9 +399,7 @@ class PaymentForm extends Component {
               )}
               <Button
                 style={[
-                  this.showKnet
-                    ? styles.whitebutton3
-                    : (styles.whitebutton2, { borderRadius: 13 }),
+                  styles.whitebutton3,
                   this.state.choice === 3
                     ? globalStyles.orangeBackgroundColor
                     : globalStyles.whiteBackgroundColor
@@ -513,10 +515,7 @@ class PaymentForm extends Component {
                   styles.mainCard,
                   { opacity: this.props.loadingTrans ? 0.5 : 1 }
                 ]}
-                disabled={
-                  (this.state.choice === 1 && this.props.wallet === "0") ||
-                  this.props.loadingTrans
-                }
+                disabled={this.props.loadingTrans}
               >
                 <View
                   style={{

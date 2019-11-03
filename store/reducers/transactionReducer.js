@@ -78,7 +78,7 @@ const reducer = (state = initialState, action) => {
         campaign_balance_amount: action.payload.campaign_balance_amount,
         campaign_balance_amount_kwd: action.payload.campaign_balance_amount_kwd,
         walletUsed: action.payload.success,
-        loading: !action.payload.success
+        loading: false
       };
     case actionTypes.ERROR_USE_WALLET_AMOUNT:
       return {
