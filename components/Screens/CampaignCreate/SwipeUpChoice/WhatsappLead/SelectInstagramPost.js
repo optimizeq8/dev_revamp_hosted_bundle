@@ -37,7 +37,11 @@ class SelectInstagramPost extends React.Component {
     const insta_handle = this.props.navigation.getParam("insta_handle", "");
     this.props.getInstagramPostInitial(insta_handle);
     // console.log("campaign_id", this.props.data.campaign_id);
-    this.props.getWebProducts(this.props.data.campaign_id);
+    this.props.getWebProducts(
+      this.props.data
+        ? this.props.data.campaign_id
+        : this.props.rejCampaign.campaign_id
+    );
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -382,7 +386,8 @@ const mapStateToProps = state => ({
   instaHandleId: state.campaignC.instaHandleId,
   instaEndCursor: state.campaignC.instaEndCursor,
   instaHasNextPage: state.campaignC.instaHasNextPage,
-  loadingMoreInstaPost: state.campaignC.loadingMoreInstaPost
+  loadingMoreInstaPost: state.campaignC.loadingMoreInstaPost,
+  rejCampaign: state.dashboard.rejCampaign
 });
 
 const mapDispatchToProps = dispatch => ({

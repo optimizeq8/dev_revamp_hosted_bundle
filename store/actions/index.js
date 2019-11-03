@@ -13,7 +13,8 @@ export {
   getCampaignList,
   getCampaignStats,
   updateCampaignList,
-  filterCampaigns
+  filterCampaigns,
+  setRejectedCampaignData
 } from "./dashboardActions";
 
 export {
