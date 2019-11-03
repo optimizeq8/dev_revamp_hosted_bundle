@@ -213,10 +213,16 @@ export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
           type: "info",
           position: "top"
         });
-        return dispatch({
-          type: actionTypes.USE_WALLET_AMOUNT,
-          payload: data
-        });
+        if (!data.success) {
+          return dispatch({
+            type: actionTypes.SET_TRAN_LOADING,
+            payload: false
+          });
+        } else
+          return dispatch({
+            type: actionTypes.USE_WALLET_AMOUNT,
+            payload: data
+          });
       })
 
       .catch(err => {
