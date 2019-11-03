@@ -120,11 +120,7 @@ class AdDesign extends Component {
       downloadMediaModal: false
     };
     this.adType = this.props.adType;
-    this.params = this.props.navigation.state.params;
-    this.selectedCampaign = this.props.navigation.getParam(
-      "selectedCampaign",
-      false
-    );
+    this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
@@ -230,6 +226,26 @@ class AdDesign extends Component {
           objective: this.selectedCampaign.objective
         });
       } else {
+        let repState = this.state.campaignInfo;
+
+        repState = {
+          ...this.state.campaignInfo,
+          call_to_action: this.rejected
+            ? this.selectedCampaign.call_to_action
+            : "BLANK",
+          attachment: this.selectedCampaign.attachment,
+          destination: this.selectedCampaign.destination
+        };
+        this.setState({
+          ...this.state,
+          campaignInfo: repState,
+          media: this.selectedCampaign.media
+            ? this.selectedCampaign.media
+            : "//",
+          swipeUpError,
+          videoIsLoading: false,
+          type: this.selectedCampaign.campaign_type
+        });
         return;
       }
     } else if (
@@ -1342,7 +1358,8 @@ const mapStateToProps = state => ({
   webUploadLinkMediaLoading: state.campaignC.webUploadLinkMediaLoading,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
   admin: state.login.admin,
-  collAttachment: state.campaignC.collAttachment
+  collAttachment: state.campaignC.collAttachment,
+  rejCampaign: state.dashboard.rejCampaign
 });
 
 const mapDispatchToProps = dispatch => ({

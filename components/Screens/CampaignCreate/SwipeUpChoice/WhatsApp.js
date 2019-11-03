@@ -66,8 +66,8 @@ class WhatsApp extends Component {
   }
   componentDidMount() {
     if (
-      this.props.data &&
-      this.props.data.hasOwnProperty("attachment")
+      (this.props.data && this.props.data.hasOwnProperty("attachment")) ||
+      this.props.mainBusiness.hasOwnProperty("weburl")
       // &&
       // this.props.data.attachment !== "BLANK"
       // ||
@@ -93,15 +93,16 @@ class WhatsApp extends Component {
               : "",
           whatsappnumber:
             this.props.data && this.props.data.whatsappnumber
-              ? this.props.data.whatsappnumber
+              ? "+" + this.props.data.whatsappnumber
               : this.props.mainBusiness.whatsappnumber
-              ? this.props.mainBusiness.whatsappnumber
+              ? "+" + this.props.mainBusiness.whatsappnumber
               : "",
-          callnumber: this.props.data.callnumber
-            ? this.props.data.callnumber
-            : this.props.mainBusiness.callnumber
-            ? this.props.mainBusiness.callnumber
-            : "",
+          callnumber:
+            this.props.data && this.props.data.callnumber
+              ? "+" + this.props.data.callnumber
+              : this.props.mainBusiness.callnumber
+              ? "+" + this.props.mainBusiness.callnumber
+              : "",
           googlemaplink:
             this.props.data && this.props.data.googlemaplink
               ? this.props.data.googlemaplink
@@ -223,6 +224,7 @@ class WhatsApp extends Component {
       this.state.campaignInfo.insta_handle
     );
     if (
+      this.props.data &&
       this.props.data.insta_handle &&
       this.props.data.insta_handle !== this.state.campaignInfo.insta_handle &&
       !this.props.errorInstaHandle &&

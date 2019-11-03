@@ -36,6 +36,7 @@ class RejectedComp extends Component {
         <Button
           onPress={() => {
             this.props.setRejectedAdType(selectedCampaign.campaign_type);
+            this.props.setRejectedCampaignData(selectedCampaign);
             navigation.navigate(
               selectedCampaign.campaign_type === "SnapAd" ||
                 selectedCampaign.campaign_type === "CollectionAd"
@@ -43,7 +44,6 @@ class RejectedComp extends Component {
                 : "AdCover",
               {
                 rejected: true,
-                selectedCampaign: selectedCampaign,
                 objective: selectedCampaign.objective,
                 headline: selectedCampaign.headline,
                 campaign_id: selectedCampaign.campaign_id
@@ -61,7 +61,9 @@ class RejectedComp extends Component {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  setRejectedAdType: info => dispatch(actionCreators.setRejectedAdType(info))
+  setRejectedAdType: info => dispatch(actionCreators.setRejectedAdType(info)),
+  setRejectedCampaignData: rejCampaign =>
+    dispatch(actionCreators.setRejectedCampaignData(rejCampaign))
 });
 
 export default connect(
