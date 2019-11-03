@@ -15,7 +15,8 @@ const initialState = {
   campaignEndSearch: "",
   loadingCampaignDetails: false,
   loadingCampaignStats: false,
-  campaignError: false
+  campaignError: false,
+  rejCampaign: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -134,6 +135,8 @@ const reducer = (state = initialState, action) => {
         campaignStartSearch: action.payload.dateRange[0],
         campaignEndSearch: action.payload.dateRange[1]
       };
+    case actionTypes.SET_REJECTED_CAMPAIGN:
+      return { ...state, rejCampaign: action.payload };
     default:
       return state;
   }
