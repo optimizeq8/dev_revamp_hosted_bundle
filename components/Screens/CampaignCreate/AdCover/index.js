@@ -77,11 +77,7 @@ class AdCover extends Component {
       logoRejectionUpload: false,
       headlineRejectionUpload: false
     };
-    this.params = this.props.navigation.state.params;
-    this.selectedCampaign = this.props.navigation.getParam(
-      "selectedCampaign",
-      false
-    );
+    this.selectedCampaign = this.props.rejCampaign;
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
@@ -794,7 +790,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   storyAdCover: state.campaignC.storyAdCover,
   coverLoading: state.campaignC.coverLoading,
-  currentCampaignSteps: state.campaignC.currentCampaignSteps
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  rejCampaign: state.dashboard.rejCampaign
 });
 
 const mapDispatchToProps = dispatch => ({

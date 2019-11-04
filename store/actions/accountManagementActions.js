@@ -397,3 +397,33 @@ export const updateUserInfo = info => {
       });
   };
 };
+
+export const deleteBusinessAccount = business_id => {
+  return dispatch => {
+    dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: true });
+    createBaseUrl()
+      .delete(
+        `https://optimizekwtestingserver.com/optimize/public/deleteBusiness/${business_id}`
+      )
+      .then(res => res.data)
+      .then(data => {
+        if (data.success) {
+          showMessage({ message: data.message, type: "success" });
+          dispatch({
+            type: actionTypes.DELETE_BUSINESS_ACCOUNT,
+            payload: business_id
+          });
+        }
+      })
+      .catch(err => {
+        dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: false });
+
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
+      });
+  };
+};

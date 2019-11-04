@@ -84,7 +84,8 @@ export const checkForExpiredToken = navigation => {
               "sam.omran@hotmail.com",
               "imran@optimizekw.com",
               "saadiya@optimizekw.com",
-              "shorook@optimizekw.com"
+              "shorook@optimizekw.com",
+              "samy@optimizeapp.com"
             ].includes(user.email)
           )
             dispatch(chanege_base_url(true));
@@ -120,7 +121,8 @@ export const login = (userData, navigation) => {
         "sam.omran@hotmail.com",
         "imran@optimizekw.com",
         "saadiya@optimizekw.com",
-        "shorook@optimizekw.com"
+        "shorook@optimizekw.com",
+        "samy@optimizeapp.com"
       ].includes(userData.email)
     ) {
       dispatch(chanege_base_url(true));
