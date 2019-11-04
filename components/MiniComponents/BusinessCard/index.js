@@ -54,13 +54,14 @@ class BusinessCard extends Component {
         }
       }
     ];
-    console.log(
-      this.props.businessAccounts.length,
-      this.props.business.user_role
-    );
 
     return (
-      <Swipeout autoClose={true} backgroundColor={"#0000"} right={swipeoutBtns}>
+      <Swipeout
+        disabled
+        autoClose={true}
+        backgroundColor={"#0000"}
+        right={swipeoutBtns}
+      >
         <TouchableOpacity
           onPress={() => {
             if (!this.props.manageTeam) {
