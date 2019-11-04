@@ -66,7 +66,8 @@ export {
   saveCampaignSteps,
   setCampaignInProgress,
   loadMoreInstagramPost,
-  updateStoryADS
+  updateStoryADS,
+  setCollectionAdMediaArray
 } from "./campaignActions";
 
 export {

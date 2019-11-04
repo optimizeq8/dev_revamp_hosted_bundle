@@ -93,7 +93,10 @@ const initialState = {
   instaHasNextPage: null,
   instaEndCursor: null,
   mediaStoryAdsDifferentDevice: [],
-  loadingMoreInstaPost: false
+  loadingMoreInstaPost: false,
+  collectionMainMediaWebLink: "",
+  collectionMainMediaTypeWebLink: "",
+  collectionAdMediaLinks: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -190,9 +193,9 @@ const reducer = (state = initialState, action) => {
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? state.currentCampaignSteps.splice(
-                0,
-                state.currentCampaignSteps.length - 1
-              )
+              0,
+              state.currentCampaignSteps.length - 1
+            )
             : []
           : state.currentCampaignSteps
       };
@@ -830,6 +833,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         storyAdsArray: [...action.payload]
       };
+    }
+    case actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_COLLECTION_ADS: {
+      return {
+        ...state,
+        collectionAdMediaLinks: [...action.payload.collectionMediaArray],
+        collectionMainMediaTypeWebLink: action.payload.collectionMainMediaTypeWebLink,
+        collectionMainMediaWebLink: action.payload.collectionMainMediaWebLink
+      }
+    }
+    case actionTypes.SET_COLLECTION_AD_ARRAY: {
+      return {
+        ...state,
+        collectionAdMedia: [...action.payload]
+      }
     }
     default:
       return state;

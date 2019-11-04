@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium",
     fontSize: 14,
     // width: 150,
-    color: "#FF9D00",
+    color: globalColors.orange,
     paddingTop: 5
   },
   mediaButtonMsg: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "montserrat-medium",
     fontSize: 14,
-    color: "#FF9D00",
+    color: globalColors.orange,
     top: 23
   },
   icon: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   inputMiddleButton: {
     position: "absolute",
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     alignSelf: "center",
     width: 90,
     height: 90,
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     //   padding: 50,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular-english",
     fontSize: 13,
     lineHeight: 17,
-    color: "#FF9D00",
+    color: globalColors.orange,
     textAlign: "left"
     // alignSelf: "center"
   },
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 160,
     borderWidth: 2,
-    borderColor: "#FF9D00",
+    borderColor: globalColors.orange,
     borderRadius: 20,
     backgroundColor: "black",
     marginVertical: 10
@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     zIndex: 1,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     justifyContent: "center",
     width: 30,
     height: 30,
@@ -539,6 +539,67 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     textAlignVertical: "center"
+  },
+  collectionAdIndexView: {
+    position: "absolute",
+    alignSelf: "center",
+    zIndex: 2,
+    backgroundColor: globalColors.orange,
+    justifyContent: "center",
+    // width: 30,
+    // height: 30,
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    marginTop: -12
+  },
+  collectionAdTextNum: {
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    fontSize: 10,
+    lineHeight: 14,
+    textAlign: "center",
+    textAlignVertical: "center"
+  },
+  collectionAdDownloadPreviewContainer: {
+    display: "flex",
+    flexDirection: 'row',
+    justifyContent: "flex-end",
+    position: "absolute",
+    bottom: 20
+  },
+  collectionAdDownloadPreview: {
+    width: 80,
+    height: 80,
+    borderColor: globalColors.orange,
+    borderWidth: 2,
+    borderRadius: 20,
+    marginHorizontal: 2
+  },
+  collectionScrollViewContainer: {
+    display: "flex",
+    flexDirection: 'column',
+    alignItems: "center",
+    flex: 1,
+  },
+  snapAdDownloadView: {
+    flex: 1,
+    paddingHorizontal: 40,
+    paddingVertical: 10
+  },
+  collectionAdMainMediaImage: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    borderRadius: 20,
+    marginHorizontal: 2,
+  },
+  collectionAdDownloadView: {
+    flex: 1,
+    paddingVertical: 10,
+    width: 350,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 

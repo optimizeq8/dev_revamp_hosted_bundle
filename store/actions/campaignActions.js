@@ -246,8 +246,8 @@ export const ad_objective = (info, navigation) => {
       .then(data => {
         data.success
           ? navigation.push(
-              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-            )
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          )
           : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
@@ -527,13 +527,13 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
   return dispatch => {
     !story_id
       ? dispatch({
-          type: actionTypes.DELETE_STORY_AD_CARD,
-          payload: { card }
-        })
+        type: actionTypes.DELETE_STORY_AD_CARD,
+        payload: { card }
+      })
       : dispatch({
-          type: actionTypes.SET_DELETE_CARD_LOADING,
-          payload: { deleteing: true, index: card.index }
-        });
+        type: actionTypes.SET_DELETE_CARD_LOADING,
+        payload: { deleteing: true, index: card.index }
+      });
     createBaseUrl()
       .delete(`savestorymedia/${story_id}`)
       .then(res => {
@@ -1369,7 +1369,7 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
       .get(`/webuploadlinkmedia/${campaign_id}/${adType}`)
       .then(res => res.data)
       .then(data => {
-        // console.log("data", data);
+        // console.log("data webuploadlinkmedia", data);
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning"
@@ -1378,7 +1378,7 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
           type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_LOADING,
           payload: false
         });
-        // handle cases for story ad / snap ad
+        // handle cases for story ad / snap ad / collection ad
         if (data.success) {
           switch (adType) {
             case "StoryAd":
@@ -1418,6 +1418,26 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                   mediaTypeWebLink: data.media_type
                 }
               });
+
+            case "CollectionAd":
+              const collectionAdArray = data.data;
+              let copyCollectionAdArray = getState().campaignC.collectionAdMedia
+              const collectionArray = collectionAdArray.map((collection, index) => {
+                return {
+                  ...copyCollectionAdArray[index],
+                  ...collection,
+                  id: index
+                }
+              })
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_COLLECTION_ADS,
+                payload: {
+                  collectionMainMediaWebLink: data.media,
+                  collectionMainMediaTypeWebLink: data.media_type,
+                  collectionMediaArray: [...collectionArray]
+
+                }
+              })
             default:
               break;
           }
@@ -1437,6 +1457,15 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
                 payload: {
                   mediaWebLink: "",
                   mediaTypeWebLink: ""
+                }
+              });
+            case "CollectionAd":
+              return dispatch({
+                type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_COLLECTION_ADS,
+                payload: {
+                  collectionMainMediaWebLink: "",
+                  collectionMainMediaTypeWebLink: "",
+                  collectionMediaArray: []
                 }
               });
           }
@@ -1560,3 +1589,26 @@ export const updateStoryADS = storyAdsArray => {
     });
   };
 };
+
+export const setCollectionAdMediaArray = collectionMediaArray => {
+  return (dispatch, getState) => {
+    const data = getState().campaignC.data
+    const collectionAdLinkForm = getState().campaignC.collectionAdLinkForm
+    const newArray = collectionMediaArray.map(collection => {
+      return {
+        ...collection,
+        collection_order: collection.id,
+        collection_media: collection.media,
+        name: data.name + '_' + collection.id,
+        localUri: collection.media,
+        collection_destination: collectionAdLinkForm === 1 ? 'REMOTE_WEBPAGE' : 'DEEP_LINK',
+        collection_attachment: "BLANK"
+      }
+    });
+    return dispatch({
+      type: actionTypes.SET_COLLECTION_AD_ARRAY,
+      payload: [...newArray]
+    })
+
+  }
+}
