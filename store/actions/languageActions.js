@@ -9,7 +9,7 @@ export const getLanguageListPOEdit = language => {
     const response = await axios.post(
       "https://api.poeditor.com/v2/terms/list",
       qs.stringify({
-        api_token: "4893d456269b4eceb169566e24c597aa",
+        api_token: "12aec028da2333797aaaa1768d444fb9",
         id: "283545",
         language
       })

@@ -148,25 +148,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: true
       };
-    case actionTypes.DELETE_BUSINESS_ACCOUNT:
-      let newBusinessAccounts = state.businessAccounts.filter(
-        business => business.businessid !== action.payload
-      );
-      let mainBusiness = state.mainBusiness;
-      if (mainBusiness.businessid === action.payload) {
-        AsyncStorage.setItem("indexOfMainBusiness", 0);
-        mainBusiness = newBusinessAccounts[0];
-      }
-      return {
-        ...state,
-        businessAccounts: newBusinessAccounts,
-        mainBusiness: mainBusiness
-      };
-    case actionTypes.DELETE_BUSINESS_LOADING:
-      return {
-        ...state,
-        deletingBusinessLoading: action.payload
-      };
     case actionTypes.UPDATE_MAINBUSINESS:
       let updatedMainBusiness = {
         insta_handle: action.payload.insta_handle,
