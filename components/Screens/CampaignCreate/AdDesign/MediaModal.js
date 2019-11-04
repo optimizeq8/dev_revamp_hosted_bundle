@@ -10,48 +10,28 @@ import styles from "./styles";
 
 export default class MediaModal extends Component {
   render() {
-    if (this.props.adType === "SnapAd" || this.props.adType === "StoryAd") {
-      var options = [
-        "Image",
-        "Video",
-        "Upload media from a different device",
-        "Download media from a different device"
-      ].map(op => {
-        return (
-          <MediaOptions
-            getVideoUploadUrl={this.props.getVideoUploadUrl}
-            _pickImage={this.props._pickImage}
-            key={op}
-            title={op}
-            setUploadFromDifferentDeviceModal={
-              this.props.setUploadFromDifferentDeviceModal
-            }
-            setMediaModalVisible={this.props.setMediaModalVisible}
-            getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
-            setDownloadMediaModal={this.props.setDownloadMediaModal}
-            screenProps={this.props.screenProps}
-          />
-        );
-      });
-    } else {
-      var options = ["Image", "Video"].map(op => {
-        return (
-          <MediaOptions
-            getVideoUploadUrl={this.props.getVideoUploadUrl}
-            _pickImage={this.props._pickImage}
-            key={op}
-            title={op}
-            setUploadFromDifferentDeviceModal={
-              this.props.setUploadFromDifferentDeviceModal
-            }
-            setMediaModalVisible={this.props.setMediaModalVisible}
-            getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
-            setDownloadMediaModal={this.props.setDownloadMediaModal}
-            screenProps={this.props.screenProps}
-          />
-        );
-      });
-    }
+    var options = [
+      "Image",
+      "Video",
+      "Upload media from a different device",
+      "Download media from a different device"
+    ].map(op => {
+      return (
+        <MediaOptions
+          getVideoUploadUrl={this.props.getVideoUploadUrl}
+          _pickImage={this.props._pickImage}
+          key={op}
+          title={op}
+          setUploadFromDifferentDeviceModal={
+            this.props.setUploadFromDifferentDeviceModal
+          }
+          setMediaModalVisible={this.props.setMediaModalVisible}
+          getWebUploadLinkMedia={this.props.getWebUploadLinkMedia}
+          setDownloadMediaModal={this.props.setDownloadMediaModal}
+          screenProps={this.props.screenProps}
+        />
+      );
+    });
 
     return (
       <Modal

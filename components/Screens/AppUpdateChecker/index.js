@@ -112,7 +112,13 @@ class AppUpdateChecker extends Component {
       return (
         <View style={{ height: "100%" }}>
           <NavigationEvents
-            onDidFocus={async () => this.props.checkForUpdate()}
+            onDidFocus={async () => {
+              Constants.manifest.version[
+                Constants.manifest.version.length - 1
+              ] === "0"
+                ? this.handleUpdates()
+                : this.props.checkForUpdate();
+            }}
           />
           <BackdropIcon
             style={{

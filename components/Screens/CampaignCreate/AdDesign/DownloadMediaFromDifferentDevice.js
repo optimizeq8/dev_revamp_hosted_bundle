@@ -32,6 +32,8 @@ class DownloadMediaFromDifferentDevice extends Component {
 
   render() {
     // console.log("media", this.props.mediaWebLink);
+    // console.log('collectionAdMediaLinks', this.props.collectionAdMediaLinks);
+    // console.log('this.props.adType', this.props.adType);
     const { translate } = this.props.screenProps;
     let screen;
     switch (this.props.adType) {
@@ -51,19 +53,12 @@ class DownloadMediaFromDifferentDevice extends Component {
                 {this.props.mediaWebLink !== ""
                   ? translate("Media has been uploaded from a different device")
                   : translate(
-                      "No Media has been uploaded from different Device"
-                    )}
+                    "No Media has been uploaded from different Device"
+                  )}
               </Text>
             </View>
             {this.props.mediaWebLink !== "" && (
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 40,
-                  paddingVertical: 10
-                  //   height: 350
-                }}
-              >
+              <View style={styles.snapAdDownloadView} >
                 {this.props.mediaTypeWebLink === "VIDEO" ? (
                   <>
                     <Video
@@ -75,15 +70,15 @@ class DownloadMediaFromDifferentDevice extends Component {
                       resizeMode="stretch"
                       style={styles.placeholderDownloadMedia}
 
-                      //   style={styles.video}
+                    //   style={styles.video}
                     />
                   </>
                 ) : (
-                  <RNImageOrCacheImage
-                    media={this.props.mediaWebLink}
-                    style={styles.placeholderDownloadMedia}
-                  />
-                )}
+                    <RNImageOrCacheImage
+                      media={this.props.mediaWebLink}
+                      style={styles.placeholderDownloadMedia}
+                    />
+                  )}
               </View>
             )}
             {this.props.mediaWebLink !== "" && (
@@ -92,7 +87,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                   style={styles.marginH20}
                   fill={"#FFF"}
                   onPress={() => this.props.setDownloadMediaModal(false)}
-                  // onPress={() => this.props.handleDownloadMedia("//", "")}
+                // onPress={() => this.props.handleDownloadMedia("//", "")}
                 />
                 <CheckmarkIcon
                   onPress={() =>
@@ -107,7 +102,6 @@ class DownloadMediaFromDifferentDevice extends Component {
             )}
           </>
         );
-
         break;
       case "StoryAd":
         screen = (
@@ -118,7 +112,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                 {
                   flex:
                     this.props.mediaStoryAdsDifferentDevice &&
-                    this.props.mediaStoryAdsDifferentDevice.length > 0
+                      this.props.mediaStoryAdsDifferentDevice.length > 0
                       ? 0
                       : 1
                 }
@@ -127,11 +121,11 @@ class DownloadMediaFromDifferentDevice extends Component {
               <CameraIcon height={60} width={60} fill={"#FFF"} />
               <Text style={styles.downloadMediaHeaderText}>
                 {this.props.mediaStoryAdsDifferentDevice &&
-                this.props.mediaStoryAdsDifferentDevice.length > 0
+                  this.props.mediaStoryAdsDifferentDevice.length > 0
                   ? translate("Media has been uploaded from a different device")
                   : translate(
-                      "No Media has been uploaded from different Device"
-                    )}
+                    "No Media has been uploaded from different Device"
+                  )}
               </Text>
             </View>
             <ScrollView
@@ -162,11 +156,11 @@ class DownloadMediaFromDifferentDevice extends Component {
                             />
                           </>
                         ) : (
-                          <RNImageOrCacheImage
-                            media={storyMedia.media}
-                            style={styles.placeholderDownloadMedia}
-                          />
-                        )}
+                            <RNImageOrCacheImage
+                              media={storyMedia.media}
+                              style={styles.placeholderDownloadMedia}
+                            />
+                          )}
                       </View>
                     );
                   }
@@ -179,7 +173,7 @@ class DownloadMediaFromDifferentDevice extends Component {
                     style={styles.marginH20}
                     fill={"#FFF"}
                     onPress={() => this.props.setDownloadMediaModal(false)}
-                    // onPress={() => this.props.handleDownloadMedia("//", "")}
+                  // onPress={() => this.props.handleDownloadMedia("//", "")}
                   />
                   <CheckmarkIcon
                     onPress={() =>
@@ -193,9 +187,113 @@ class DownloadMediaFromDifferentDevice extends Component {
               )}
           </>
         );
+        break;
+
+      case "CollectionAd":
+        screen = (
+          <>
+            <View
+              style={[
+                styles.downloadMediaTopView,
+                {
+                  flex: this.props.collectionMainMediaWebLink &&
+                    this.props.collectionMainMediaWebLink !== "" && this.props.collectionAdMediaLinks && this.props.collectionAdMediaLinks.length > 0 ? 0 : 1
+                }
+              ]}
+            >
+              <CameraIcon height={60} width={60} fill={"#FFF"} />
+              <Text style={styles.downloadMediaHeaderText}>
+                {this.props.collectionMainMediaWebLink &&
+                  this.props.collectionMainMediaWebLink !== ""
+                  ? translate("Media has been uploaded from a different device")
+                  : translate(
+                    "No Media has been uploaded from different Device"
+                  )}
+              </Text>
+            </View>
+            <ScrollView
+              scrollEnabled={true}
+              contentContainerStyle={[styles.collectionScrollViewContainer]}
+            >
+              {this.props.collectionMainMediaWebLink !== "" && (
+                <View style={styles.collectionAdDownloadView}>
+                  {this.props.collectionMainMediaTypeWebLink === "VIDEO" ? (
+                    <>
+                      <Video
+                        source={{
+                          uri: this.props.collectionMainMediaWebLink
+                        }}
+                        shouldPlay
+                        isLooping
+                        resizeMode="stretch"
+                        style={styles.placeholderDownloadMedia}
+                      />
+                    </>
+                  ) : (
+                      <RNImageOrCacheImage
+                        media={this.props.collectionMainMediaWebLink}
+                        style={styles.collectionAdMainMediaImage}
+                      />
+                    )}
+                </View>
+              )}
+              <View style={styles.collectionAdDownloadPreviewContainer}>
+                {this.props.collectionAdMediaLinks &&
+                  this.props.collectionAdMediaLinks.map(
+                    (collectionMedia, index) => {
+                      return (
+                        <View
+                          key={collectionMedia.collection_id}
+                          style={styles.collectionAdDownloadPreview}
+                        >
+                          <View style={styles.collectionAdIndexView}>
+                            <Text style={styles.collectionAdTextNum}>Product {index + 1}</Text>
+                          </View>
+                          <RNImageOrCacheImage
+                            media={collectionMedia.media}
+                            style={styles.placeholderDownloadMedia}
+                          />
+                        </View>
+                      );
+                    }
+                  )}
+              </View>
+            </ScrollView>
+            {
+              // this.props.collectionMainMediaWebLink &&
+              this.props.collectionAdMediaLinks &&
+              this.props.collectionAdMediaLinks.length > 0 &&
+              (
+                <View style={styles.downloadMediaBottomContainer}>
+                  <CloseCircle
+                    style={styles.marginH20}
+                    fill={"#FFF"}
+                    onPress={() => this.props.setDownloadMediaModal(false)}
+                  // onPress={() => this.props.handleDownloadMedia("//", "")}
+                  />
+                  <CheckmarkIcon
+                    onPress={() => {
+                      this.props.handleDownloadMediaCollectionAds(
+                        this.props.collectionMainMediaWebLink,
+                        this.props.collectionMainMediaTypeWebLink,
+                        this.props.collectionAdMediaLinks
+                      )
+                    }
+                    }
+                    style={styles.marginH20}
+                  />
+                </View>
+              )
+            }
+          </>
+        );
+        break;
       default:
+        screen = null
         break;
     }
+
+
     return (
       <Modal
         animationType={"fade"}
@@ -221,8 +319,8 @@ class DownloadMediaFromDifferentDevice extends Component {
               {this.props.webUploadLinkMediaLoading ? (
                 <LoadingScreen top={50} />
               ) : (
-                screen
-              )}
+                  screen
+                )}
             </View>
           </SafeAreaView>
         </BlurView>
@@ -245,7 +343,10 @@ const mapStateToProps = state => ({
     state.campaignC.uploadMediaDifferentDeviceAccessCode,
   errorUploadMediaDiffernetDevice:
     state.campaignC.errorUploadMediaDiffernetDevice,
-  mediaStoryAdsDifferentDevice: state.campaignC.mediaStoryAdsDifferentDevice
+  mediaStoryAdsDifferentDevice: state.campaignC.mediaStoryAdsDifferentDevice,
+  collectionMainMediaWebLink: state.campaignC.collectionMainMediaWebLink,
+  collectionMainMediaTypeWebLink: state.campaignC.collectionMainMediaTypeWebLink,
+  collectionAdMediaLinks: state.campaignC.collectionAdMediaLinks
 });
 
 export default connect(

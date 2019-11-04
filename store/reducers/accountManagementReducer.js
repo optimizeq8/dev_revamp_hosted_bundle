@@ -14,7 +14,8 @@ const initialState = {
   businessLoadError: false,
   savingBillingAddress: false,
   progress: new Animated.Value(0),
-  progressSaving: new Animated.Value(0)
+  progressSaving: new Animated.Value(0),
+  deletingBusinessLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,11 +54,12 @@ const reducer = (state = initialState, action) => {
       let indexOfMainBusiness = state.businessAccounts.findIndex(
         business => business.businessid === action.payload.business.businessid
       );
-
+      let newSetMainBusiness = action.payload.business;
+      newSetMainBusiness["user_role"] = "1";
       AsyncStorage.setItem("indexOfMainBusiness", `${indexOfMainBusiness}`);
       return {
         ...state,
-        mainBusiness: action.payload.business
+        mainBusiness: newSetMainBusiness
       };
     case actionTypes.ERROR_SET_CURRENT_BUSINESS_ACCOUNT:
       return {
