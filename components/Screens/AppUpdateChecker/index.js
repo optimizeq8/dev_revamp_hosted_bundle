@@ -6,7 +6,15 @@ import * as Animatable from "react-native-animatable";
 const imageLogo = require("../../../assets/images/logo01.png");
 import LottieView from "lottie-react-native";
 
-import { Image, View, Text, Platform, Alert } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  Platform,
+  Alert,
+  TouchableOpacity,
+  I18nManager
+} from "react-native";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 import {
   widthPercentageToDP,
@@ -30,7 +38,8 @@ class AppUpdateChecker extends Component {
       updateDownloaded: false,
       status: "",
       status2: "",
-      statusLoading: false
+      statusLoading: false,
+      updateIsAvalible: false
     };
   }
 
@@ -39,7 +48,12 @@ class AppUpdateChecker extends Component {
       prevProps.actualVersion !== this.props.actualVersion &&
       this.props.actualVersion === Constants.manifest.version
     ) {
-      this.handleUpdates();
+      if (!this.props.underMaintenanceMessage_en) this.handleUpdates();
+    } else if (
+      prevProps.actualVersion !== this.props.actualVersion &&
+      this.props.actualVersion !== Constants.manifest.version
+    ) {
+      this.setState({ updateIsAvalible: true });
     }
   }
 
@@ -63,7 +77,9 @@ class AppUpdateChecker extends Component {
         // ... notify user of update ...
         Updates.reloadFromCache();
       } else {
-        this.setState({ updateDownloaded: true });
+        if (!(this.props.customMessage_en && this.props.customMessage_ar))
+          this.setState({ updateDownloaded: true });
+        else this.setState({ statusLoading: false });
       }
     } catch (e) {
       this.setState({ status: "", statusLoading: false });
@@ -93,11 +109,20 @@ class AppUpdateChecker extends Component {
   };
 
   handleOTAListener = event => {
+    const { translate } = this.props.screenProps;
     if (event.type === Updates.EventType.DOWNLOAD_STARTED) {
       this.setState({
         status2: translate("downloading")
       });
     }
+  };
+
+  handleButton = () => {
+    Linking.openURL(
+      Platform.OS === "ios"
+        ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
+        : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
+    );
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -128,19 +153,26 @@ class AppUpdateChecker extends Component {
             }}
             height={hp("100%")}
           />
-          <Image
+          <TouchableOpacity
+            activeOpacity={1}
             style={{
-              // position: "absolute",
-              alignSelf: "center",
-              top: "15%",
-              height: 150,
-              width: "100%",
-              margin: 10,
-              justifyContent: "flex-start"
+              top: "15%"
             }}
-            source={imageLogo}
-            resizeMode="contain"
-          />
+            delayLongPress={1000}
+            onLongPress={() => this.setState({ updateDownloaded: true })}
+          >
+            <Image
+              style={{
+                alignSelf: "center",
+                height: 150,
+                width: "100%",
+                margin: 10,
+                justifyContent: "flex-start"
+              }}
+              source={imageLogo}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
 
           <Animatable.View animation={"slideInUp"} style={styles.textContainer}>
             <Text style={styles.textUpdate}>
@@ -148,7 +180,13 @@ class AppUpdateChecker extends Component {
                 ? translate("checking for updates")
                 : this.state.statusLoading
                 ? ""
-                : translate("Update Available")}
+                : this.props.underMaintenanceMessage_en
+                ? translate("Under Maintenance")
+                : this.props.updateMessage_en && this.state.updateIsAvalible
+                ? translate("Update Available")
+                : this.props.customMessage_en && this.props.customMessage_ar
+                ? translate("Important notice")
+                : ""}
             </Text>
 
             <Text
@@ -157,9 +195,17 @@ class AppUpdateChecker extends Component {
               {this.props.loadingChecker
                 ? translate("Please wait while we check for updates")
                 : !this.state.statusLoading
-                ? translate(
-                    "You appear to be using an outdated version of OptimizeApp, please update to the latest version to enjoy all our features!"
-                  )
+                ? this.props.underMaintenanceMessage_en
+                  ? I18nManager.isRTL
+                    ? this.props.underMaintenanceMessage_ar
+                    : this.props.underMaintenanceMessage_en
+                  : this.state.updateIsAvalible
+                  ? I18nManager.isRTL
+                    ? this.props.updateMessage_ar
+                    : this.props.updateMessage_en
+                  : I18nManager.isRTL
+                  ? this.props.customMessage_ar
+                  : this.props.customMessage_en
                 : ""}
             </Text>
 
@@ -191,28 +237,30 @@ class AppUpdateChecker extends Component {
                 height: "20%"
               }}
             >
-              <Button
-                block
-                onPress={() =>
-                  Linking.openURL(
-                    Platform.OS === "ios"
-                      ? "https://apps.apple.com/us/app/optimizeapp/id1462878125"
-                      : "https://play.google.com/store/apps/details?id=com.optimizeapp.optimizeapp&hl=en"
-                  )
-                }
-                style={styles.updateButton}
-              >
-                <Text style={styles.textUpdate}>{translate("Update Now")}</Text>
-              </Button>
-              <Button
-                block
-                onPress={() => this.setState({ updateDownloaded: true })}
-                style={styles.updateButton}
-              >
-                <Text style={styles.textUpdate}>
-                  {translate("Continue with the app")}
-                </Text>
-              </Button>
+              {(this.props.updateMessage_en && this.state.updateIsAvalible) ||
+              this.props.underMaintenanceMessage_en ? (
+                <Button
+                  block
+                  onPress={this.handleButton}
+                  style={styles.updateButton}
+                >
+                  <Text style={styles.textUpdate}>
+                    {this.props.underMaintenanceMessage_en
+                      ? translate("Check for update")
+                      : translate("Update Now")}
+                  </Text>
+                </Button>
+              ) : (
+                <Button
+                  block
+                  onPress={() => this.setState({ updateDownloaded: true })}
+                  style={styles.updateButton}
+                >
+                  <Text style={styles.textUpdate}>
+                    {translate("Continue with the app")}
+                  </Text>
+                </Button>
+              )}
             </View>
           )}
         </View>
@@ -222,6 +270,12 @@ class AppUpdateChecker extends Component {
 
 const mapStateToProps = state => ({
   actualVersion: state.generic.actualVersion,
+  underMaintenanceMessage_ar: state.generic.underMaintenanceMessage_ar,
+  underMaintenanceMessage_en: state.generic.underMaintenanceMessage_en,
+  updateMessage_ar: state.generic.updateMessage_ar,
+  updateMessage_en: state.generic.updateMessage_en,
+  customMessage_en: state.generic.customMessage_en,
+  customMessage_ar: state.generic.customMessage_ar,
   loadingChecker: state.generic.loadingChecker
 });
 

@@ -51,12 +51,12 @@ export const checkForUpdate = (retries = 3) => {
     createBaseUrl()
       .get(`appVersion`)
       .then(res => res.data)
-      .then(data =>
+      .then(data => {
         dispatch({
           type: actionTypes.SET_ACTUAL_VERSION,
-          payload: data.app_version
-        })
-      )
+          payload: data
+        });
+      })
       .catch(err => {
         if (retries > 0) {
           dispatch(checkForUpdate(retries - 1));
