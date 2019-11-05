@@ -157,7 +157,25 @@ const reducer = (state = initialState, action) => {
         source: action.payload.source,
         googlemaplink: action.payload.googlemaplink
       };
-
+    case actionTypes.DELETE_BUSINESS_ACCOUNT:
+      let newBusinessAccounts = state.businessAccounts.filter(
+        business => business.businessid !== action.payload
+      );
+      let mainBusiness = state.mainBusiness;
+      if (mainBusiness.businessid === action.payload) {
+        AsyncStorage.setItem("indexOfMainBusiness", 0);
+        mainBusiness = newBusinessAccounts[0];
+      }
+      return {
+        ...state,
+        businessAccounts: newBusinessAccounts,
+        mainBusiness: mainBusiness
+      };
+    case actionTypes.DELETE_BUSINESS_LOADING:
+      return {
+        ...state,
+        deletingBusinessLoading: action.payload
+      };
       return {
         ...state,
         mainBusiness: { ...state.mainBusiness, ...updatedMainBusiness }

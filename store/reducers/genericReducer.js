@@ -1,11 +1,32 @@
 import * as actionTypes from "../actions/actionTypes";
 
-const initialState = { actualVersion: "", loadingChecker: false };
+const initialState = {
+  actualVersion: "",
+  underMaintenance: false,
+  underMaintenanceMessage_ar: "",
+  underMaintenanceMessage_en: "",
+  updateMessage_ar: "",
+  updateMessage_en: "",
+  customMessage_en: "",
+  customMessage_ar: "",
+  loadingChecker: false
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_ACTUAL_VERSION:
-      return { ...state, actualVersion: action.payload, loadingChecker: false };
+      return {
+        ...state,
+        actualVersion: action.payload.app_version,
+        underMaintenance: action.payload.underMaintenance,
+        underMaintenanceMessage_ar: action.payload.underMaintenanceMessage_ar,
+        underMaintenanceMessage_en: action.payload.underMaintenanceMessage_en,
+        updateMessage_ar: action.payload.updateMessage_ar,
+        updateMessage_en: action.payload.updateMessage_en,
+        customMessage_en: action.payload.customMessage_en,
+        customMessage_ar: action.payload.customMessage_ar,
+        loadingChecker: false
+      };
     case actionTypes.SET_UPDATE_LOADING:
       return { ...state, loadingChecker: action.payload };
     default:
