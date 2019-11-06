@@ -947,7 +947,7 @@ class AdDesign extends Component {
   handleSupportPage = () => {
     const { translate } = this.props.screenProps;
     this.props.navigation.push("WebView", {
-      url: "https://www.optimizeapp.com/support",
+      url: "https://www.optimizeapp.com/ad_requirements",
       title: "Support"
     });
   };
