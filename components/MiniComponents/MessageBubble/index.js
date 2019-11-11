@@ -1,13 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, View, ActivityIndicator, I18nManager } from "react-native";
+import {
+  Text,
+  View,
+  ActivityIndicator,
+  I18nManager,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity
+} from "react-native";
 import dateFormat from "dateformat";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
+import { Transition } from "react-navigation-fluid-transitions";
 
 import OrangeTriangle from "../../../assets/SVGs/ChatBubbleOrangeTriangle";
 import TransparentTriangle from "../../../assets/SVGs/ChatBubbleTransparentTriangle";
+import RNImageOrCacheImage from "../RNImageOrCacheImage";
 
 class MessageBubble extends Component {
   constructor(props) {
@@ -25,6 +35,8 @@ class MessageBubble extends Component {
       userFormatter = globalColors.orange;
       align = "flex-end";
     }
+    if (this.props.message.attachments.length !== 0)
+      console.log("message: ", this.props.message);
 
     return (
       <View style={styles.messageBubbleOuterView}>
@@ -44,70 +56,106 @@ class MessageBubble extends Component {
             )}
           </Text>
         }
+        {/* Triangle for admin */}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
-          {this.props.message.author.type === "admin" && (
-            <View
-              style={[
-                I18nManager.isRTL
-                  ? rtlStyles.transparentTriangleView
-                  : styles.transparentTriangleView,
-                {
-                  left: I18nManager.isRTL
-                    ? this.state.height > 50
-                      ? -5
-                      : -6
-                    : this.state.height > 50
-                    ? -8
-                    : -6,
-                  top:
-                    this.state.height > 100
-                      ? "75%"
+          {this.props.message.author.type === "admin" &&
+            this.props.message.attachments.length === 0 && (
+              <View
+                style={[
+                  I18nManager.isRTL
+                    ? rtlStyles.transparentTriangleView
+                    : styles.transparentTriangleView,
+                  {
+                    left: I18nManager.isRTL
+                      ? this.state.height > 50
+                        ? -5
+                        : -6
                       : this.state.height > 50
-                      ? "65%"
-                      : 20
-                }
-              ]}
-            >
-              <TransparentTriangle height={18} width={22} />
-            </View>
-          )}
-          <View
-            style={[
-              styles.messageView,
-              {
-                paddingVertical: this.state.height < 50 ? 10 : 18,
-                paddingHorizontal: this.state.height < 50 ? 20 : 25,
-                backgroundColor: userFormatter,
-                alignSelf: align
+                      ? -8
+                      : -6,
+                    top:
+                      this.state.height > 100
+                        ? "75%"
+                        : this.state.height > 50
+                        ? "65%"
+                        : 20
+                  }
+                ]}
+              >
+                <TransparentTriangle height={18} width={22} />
+              </View>
+            )}
+
+          {this.props.message.attachments.length !== 0 ? (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.push("ImagePreview", {
+                  image: this.props.message.attachments[0].url,
+                  id: this.props.message.id
+                })
               }
-            ]}
-            onLayout={event => {
-              var { x, y, width, height } = event.nativeEvent.layout;
-              // console.log('width', width);
-              // console.log('height', height);
-              this.setState({
-                height: height
-              });
-            }}
-          >
-            <Text selectable={true} style={styles.messageText}>
-              {this.props.message.body}
-            </Text>
-          </View>
-          {this.props.message.author.type === "user" && (
+            >
+              <Transition
+                style={{ height: "100%", opacity: 1 }}
+                shared={this.props.message.id}
+              >
+                <RNImageOrCacheImage
+                  media={this.props.message.attachments[0].url}
+                  style={{
+                    opacity: 0.5,
+                    borderRadius: 30,
+                    overflow: "hidden",
+                    alignSelf: "center",
+                    width: 150,
+                    height: 150,
+                    zIndex: 0,
+                    justifyContent: "center"
+                  }}
+                  resizeMode="center"
+                />
+              </Transition>
+            </TouchableOpacity>
+          ) : (
             <View
               style={[
-                I18nManager.isRTL
-                  ? rtlStyles.orangeTriangleView
-                  : styles.orangeTriangleView,
+                styles.messageView,
                 {
-                  right: this.state.height > 50 ? 5 : 0
+                  paddingVertical: this.state.height < 50 ? 10 : 18,
+                  paddingHorizontal: this.state.height < 50 ? 20 : 25,
+                  backgroundColor: userFormatter,
+                  alignSelf: align
                 }
               ]}
+              onLayout={event => {
+                var { x, y, width, height } = event.nativeEvent.layout;
+                // console.log('width', width);
+                // console.log('height', height);
+                this.setState({
+                  height: height
+                });
+              }}
             >
-              <OrangeTriangle width={22} height={22} />
+              <Text style={styles.messageText}>{this.props.message.body}</Text>
             </View>
           )}
+
+          {/* Triangle for user */}
+
+          {this.props.message.author.type === "user" &&
+            this.props.message.attachments.length === 0 && (
+              <View
+                style={[
+                  I18nManager.isRTL
+                    ? rtlStyles.orangeTriangleView
+                    : styles.orangeTriangleView,
+                  {
+                    right: this.state.height > 50 ? 5 : 0
+                  }
+                ]}
+              >
+                <OrangeTriangle width={22} height={22} />
+              </View>
+            )}
         </View>
       </View>
     );

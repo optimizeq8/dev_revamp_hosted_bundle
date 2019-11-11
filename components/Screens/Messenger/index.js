@@ -195,7 +195,11 @@ class Messenger extends Component {
                 renderItem={(msg, index) => {
                   if (!isNull(msg.item.body))
                     return (
-                      <MessageBubble key={msg.item.id} message={msg.item} />
+                      <MessageBubble
+                        navigation={this.props.navigation}
+                        key={msg.item.id}
+                        message={msg.item}
+                      />
                     );
                 }}
               />
@@ -207,11 +211,11 @@ class Messenger extends Component {
               {/* </View> */}
               <View style={styles.textInputContainer}>
                 {/* <Camera
-										fill={globalColors.orange}
-										style={styles.cameraIcon}
-										width={heightPercentageToDP(4)}
-										height={heightPercentageToDP(4)}
-									/> */}
+                  fill={globalColors.orange}
+                  style={styles.cameraIcon}
+                  width={heightPercentageToDP(4)}
+                  height={heightPercentageToDP(4)}
+                /> */}
                 <TextInput
                   editable={true}
                   multiline={true}

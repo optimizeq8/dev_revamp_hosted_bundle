@@ -49,6 +49,8 @@ import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 import SuspendedWarning from "../Screens/SuspendedWarning";
 import GoogleSEAPreviewScreen from "../Screens/GoogleSEAPreviewScreen";
 import VerifyAccount from "../Screens/VerifyAccount";
+import ImagePreview from "../MiniComponents/ImagePreview";
+
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -109,7 +111,8 @@ export default FluidNavigator(
     SwitchLanguageLoading: SwitchLanguageLoading,
     SuspendedWarning: SuspendedWarning,
     GoogleSEAPreviewScreen: GoogleSEAPreviewScreen,
-    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" }
+    VerifyAccount: { screen: VerifyAccount, path: "verify_account/" },
+    ImagePreview: ImagePreview
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
