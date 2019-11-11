@@ -8,8 +8,9 @@ import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
-NodeBackendURL = axios.create({
-  baseURL: "https://www.optimizeapp.io/"
+instance = axios.create({
+  // baseURL: "https://www.optimizeapp.io/"
+  baseURL: "https://intercom-react.glitch.me/"
 });
 
 // send the id of the user

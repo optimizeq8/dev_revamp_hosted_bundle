@@ -58,6 +58,7 @@ import InstagramFeedAdTargetting from "../Screens/InstagramCampaignCreate/Feed/A
 import InstagramStoryAdObjective from "../Screens/InstagramCampaignCreate/Story/AdObjective";
 import InstagramStoryAdDesign from "../Screens/InstagramCampaignCreate/Story/AdDesign";
 import InstagramSwipeUpDestination from "../Screens/InstagramCampaignCreate/SwipeUpDestination";
+import ImagePreview from "../MiniComponents/ImagePreview";
 
 export default FluidNavigator(
   {
@@ -126,7 +127,8 @@ export default FluidNavigator(
     InstagramStoryAdObjective: InstagramStoryAdObjective,
     InstagramStoryAdDesign: InstagramStoryAdDesign,
     InstagramSwipeUpDestination: InstagramSwipeUpDestination,
-    InstagramFeedAdTargetting: InstagramFeedAdTargetting
+    InstagramFeedAdTargetting: InstagramFeedAdTargetting,
+    ImagePreview: ImagePreview
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
