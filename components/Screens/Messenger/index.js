@@ -8,7 +8,10 @@ import {
   KeyboardAvoidingView,
   I18nManager
 } from "react-native";
+import * as Permissions from "expo-permissions";
+
 import { SafeAreaView, NavigationEvents } from "react-navigation";
+import * as ImagePicker from "expo-image-picker";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
@@ -44,23 +47,28 @@ YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
 ]);
 
-const socket = socketIOClient("https://www.optimizeapp.io/", {
-  timeout: 10000,
-  jsonp: false,
-  transports: ["websocket"],
-  autoConnect: false,
-  reconnection: true
-  // agent: '-',
-  // path: '/', // Whatever your path is
-  // pfx: '-',
-  // key: token, // Using token-based auth.
-  // passphrase: cookie, // Using cookie auth.
-  // cert: '-',
-  // ca: '-',
-  // ciphers: '-',
-  // rejectUnauthorized: '-',
-  // perMessageDeflate: '-',
-});
+const socket = socketIOClient(
+  "https://intercom-react.glitch.me/",
+  // "https://www.optimizeapp.io/"
+
+  {
+    timeout: 10000,
+    jsonp: false,
+    transports: ["websocket"],
+    autoConnect: false,
+    reconnection: true
+    // agent: '-',
+    // path: '/', // Whatever your path is
+    // pfx: '-',
+    // key: token, // Using token-based auth.
+    // passphrase: cookie, // Using cookie auth.
+    // cert: '-',
+    // ca: '-',
+    // ciphers: '-',
+    // rejectUnauthorized: '-',
+    // perMessageDeflate: '-',
+  }
+);
 
 class Messenger extends Component {
   static navigationOptions = {
@@ -113,7 +121,8 @@ class Messenger extends Component {
   };
   _handleSubmission = () => {
     if (this.state.textValue !== "") {
-      if (this.props.open_conversation) this.props.reply(this.state.textValue);
+      if (this.props.open_conversation)
+        this.props.reply(this.state.textValue, []);
       else this.props.start_conversation(this.state.textValue);
       this._resetTextInput();
     }
@@ -144,6 +153,57 @@ class Messenger extends Component {
       height
     });
   };
+
+  pick = async screenProps => {
+    await this.askForPermssion(screenProps);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: "Images",
+      base64: false,
+      exif: false,
+      quality: 0.8
+    });
+    console.log("result", result);
+
+    this.setState({ media: result }, () => this.formatMedia());
+  };
+
+  askForPermssion = async screenProps => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { translate } = screenProps;
+    if (status !== "granted") {
+      showMessage({
+        message: translate(
+          "Please allow access to the gallery to upload media"
+        ),
+        position: "top",
+        type: "warning"
+      });
+      Platform.OS === "ios" && Linking.openURL("app-settings:");
+    }
+  };
+
+  formatMedia() {
+    var body = new FormData();
+
+    let res = this.state.media.uri.split("/");
+    res = res[res.length - 1];
+    let format = res.split(".");
+
+    var photo = {
+      uri: this.state.media.uri,
+      type: "IMAGE" + "/" + format[1],
+      name: res
+    };
+    body.append("media", photo);
+    console.log("FormatMedia body", body);
+
+    this.setState({
+      formatted: body
+    });
+
+    this.props.upload_media(this.state.formatted);
+  }
+
   render() {
     const { translate } = this.props.screenProps;
     const { height } = this.state;
@@ -193,7 +253,10 @@ class Messenger extends Component {
                 // scrollToIndex={params => this.scrollToIndex(params)}
                 // initialScrollIndex={this.props.messages.length - 1}
                 renderItem={(msg, index) => {
-                  if (!isNull(msg.item.body))
+                  if (
+                    !isNull(msg.item.body) ||
+                    msg.item.attachments.length !== 0
+                  )
                     return (
                       <MessageBubble
                         navigation={this.props.navigation}
@@ -210,12 +273,23 @@ class Messenger extends Component {
               )}
               {/* </View> */}
               <View style={styles.textInputContainer}>
-                {/* <Camera
-                  fill={globalColors.orange}
-                  style={styles.cameraIcon}
-                  width={heightPercentageToDP(4)}
-                  height={heightPercentageToDP(4)}
-                /> */}
+                <TouchableOpacity
+                  style={[
+                    // styles.submitButton
+                    { padding: 5 }
+                    // I18nManager.isRTL
+                    //   ? { transform: [{ rotateY: "180deg" }] }
+                    //   : {}
+                  ]}
+                  onPress={() => this.pick(this.props.screenProps)}
+                >
+                  <Camera
+                    fill={globalColors.orange}
+                    style={styles.cameraIcon}
+                    width={heightPercentageToDP(3)}
+                    height={heightPercentageToDP(3)}
+                  />
+                </TouchableOpacity>
                 <TextInput
                   editable={true}
                   multiline={true}
@@ -277,7 +351,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  reply: message => dispatch(actionCreators.reply(message)),
+  reply: (message, media) => dispatch(actionCreators.reply(message, media)),
   admin_response: message => dispatch(actionCreators.admin_response(message)),
   set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
@@ -285,7 +359,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.start_conversation(message)),
   update_last_seen: () => dispatch(actionCreators.update_last_seen()),
   update_conversatusion_read_status: () =>
-    dispatch(actionCreators.update_conversatusion_read_status())
+    dispatch(actionCreators.update_conversatusion_read_status()),
+  upload_media: media => dispatch(actionCreators.upload_media(media))
 });
 
 export default connect(

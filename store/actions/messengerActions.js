@@ -129,6 +129,10 @@ export const get_conversation = user_id => {
           });
         } else {
           // console.log("found conversation");
+          console.log(
+            "conversation list: ",
+            data.messages[data.messages.length - 1]
+          );
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
@@ -192,7 +196,7 @@ export const start_conversation = message => {
 // "type": "user"
 // }
 
-export const reply = message => {
+export const reply = (message, upload) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
@@ -202,11 +206,13 @@ export const reply = message => {
       user_id: getState().auth.userInfo.userid,
       body: message,
       message_type: "comment",
-      type: "user"
+      type: "user",
+      attachment_urls: upload
     })
       .then(response => {
-        dispatch(send_push_notification());
+        console.log("response", response.data);
 
+        dispatch(send_push_notification());
         return dispatch({
           type: actionTypes.ADD_MESSAGE,
           payload: response.data
@@ -331,6 +337,46 @@ export const update_last_seen = () => {
       })
       .catch(err => {
         // console.log("update_last_seen", err.message || err.response);
+      });
+  };
+};
+
+export const upload_media = media => {
+  return (dispatch, getState) => {
+    axios
+      .post(
+        //  getState().login.admin
+        //    ?
+        "https://optimizekwtestingserver.com/optimize/public/uploadChatMedia",
+        //  : "https://www.optimizeapp.com/optimize/public/uploadChatMedia",
+
+        media
+      )
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("data", data);
+
+        if (data.success) return dispatch(reply("", [data.media_link]));
+        else {
+          showMessage({
+            message: data.message || "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          });
+        }
+      })
+      .catch(err => {
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("upload_media", err.message || err.response);
       });
   };
 };
