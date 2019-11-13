@@ -18,6 +18,7 @@ import { Transition } from "react-navigation-fluid-transitions";
 import OrangeTriangle from "../../../assets/SVGs/ChatBubbleOrangeTriangle";
 import TransparentTriangle from "../../../assets/SVGs/ChatBubbleTransparentTriangle";
 import RNImageOrCacheImage from "../RNImageOrCacheImage";
+import isNull from "lodash/isNull";
 
 class MessageBubble extends Component {
   constructor(props) {
@@ -29,14 +30,21 @@ class MessageBubble extends Component {
   render() {
     let userFormatter = "#6C63FF";
     var align = "flex-start";
-    // console.log("message...", this.props.message);
-
+    let body = "";
     if (this.props.message.author.type === "user") {
       userFormatter = globalColors.orange;
       align = "flex-end";
     }
-    if (this.props.message.attachments.length !== 0)
-      console.log("message: ", this.props.message);
+
+    if (!isNull(this.props.message.body))
+      body = this.props.message.body.split("[Attachment:")[0].trim();
+    if (
+      this.props.message.attachments.length !== 0 &&
+      this.props.message.author.type === "user"
+    ) {
+      console.log("body", this.props.message);
+      // console.log("message: ", this.props.message);]
+    }
 
     return (
       <View style={styles.messageBubbleOuterView}>
@@ -58,34 +66,28 @@ class MessageBubble extends Component {
         )}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
           {this.props.message.author.type === "admin" &&
-            this.props.message.attachments.length === 0 && (
+            !isNull(this.props.message.body) && (
               <View
                 style={[
                   I18nManager.isRTL
                     ? rtlStyles.transparentTriangleView
                     : styles.transparentTriangleView,
                   {
+                    zIndex: 5,
                     left: I18nManager.isRTL
                       ? this.state.height > 50
                         ? -5
                         : -6
                       : this.state.height > 50
                       ? -8
-                      : -6,
-                    top:
-                      this.state.height > 100
-                        ? "75%"
-                        : this.state.height > 50
-                        ? "65%"
-                        : 20
+                      : -6
                   }
                 ]}
               >
-                <TransparentTriangle height={18} width={22} />
+                <TransparentTriangle height={22} width={22} />
               </View>
             )}
-
-          {this.props.message.attachments.length !== 0 ? (
+          {this.props.message.attachments.length !== 0 && (
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.push("ImagePreview", {
@@ -93,6 +95,7 @@ class MessageBubble extends Component {
                   id: this.props.message.id
                 })
               }
+              style={{ paddingBottom: 5 }}
             >
               <Transition
                 style={{ height: "100%", opacity: 1 }}
@@ -114,7 +117,8 @@ class MessageBubble extends Component {
                 />
               </Transition>
             </TouchableOpacity>
-          ) : (
+          )}
+          {!isNull(this.props.message.body) && (
             <View
               style={[
                 styles.messageView,
@@ -134,21 +138,19 @@ class MessageBubble extends Component {
                 });
               }}
             >
-              <Text style={styles.messageText}>{this.props.message.body}</Text>
+              <Text style={styles.messageText}>{body}</Text>
             </View>
           )}
-
           {/* Triangle for user */}
-
           {this.props.message.author.type === "user" &&
-            this.props.message.attachments.length === 0 && (
+            !isNull(this.props.message.body) && (
               <View
                 style={[
                   I18nManager.isRTL
                     ? rtlStyles.orangeTriangleView
                     : styles.orangeTriangleView,
                   {
-                    right: this.state.height > 50 ? 5 : 0
+                    right: 0
                   }
                 ]}
               >
