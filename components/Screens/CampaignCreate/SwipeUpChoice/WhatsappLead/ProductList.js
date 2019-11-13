@@ -144,7 +144,7 @@ class ProductList extends React.Component {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "space-between",
                       // paddingVertical: 12,
                       marginVertical: 5,
                       width: "43%",
@@ -156,7 +156,7 @@ class ProductList extends React.Component {
                     <View
                       style={{
                         display: "flex",
-                        alignItems: "center",
+                        alignItems: "flex-start",
                         justifyContent: "center"
                       }}
                     >
