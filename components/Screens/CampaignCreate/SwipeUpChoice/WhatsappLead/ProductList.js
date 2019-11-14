@@ -28,7 +28,7 @@ class ProductList extends React.Component {
   }
   componentDidMount() {
     const list = this.props.navigation.getParam("selectetedItems", []);
-    console.log('list', list);
+    // console.log('list', list);
     this.setState({
       cartList: list
     });
@@ -60,7 +60,7 @@ class ProductList extends React.Component {
     //     type: "warning"
     //   });
     // } else {
-    console.log('cartListWIthProductnameNPrice', this.state.cartList);
+    // console.log('cartListWIthProductnameNPrice', this.state.cartList);
     // console.log('this.props.businessLogo', this.props.businessLogo);
     this.props.navigation.getParam("_changeDestination")();
     this.props.saveWebProducts(
