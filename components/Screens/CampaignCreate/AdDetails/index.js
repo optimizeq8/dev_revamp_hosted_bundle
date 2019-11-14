@@ -157,7 +157,7 @@ class AdDetails extends Component {
         Math.abs(
           (new Date(this.props.data.start_time).getTime() -
             new Date(this.props.data.end_time).getTime()) /
-          86400000
+            86400000
         ) + 1
       );
 
@@ -184,17 +184,25 @@ class AdDetails extends Component {
         this.setState(
           {
             ...this.state,
-            campaignInfo: {
-              ...rep
-            },
             ...this.props.data,
+            campaignInfo: {
+              ...rep,
+              lifetime_budget_micro: this.props.data.campaignDateChanged
+                ? recBudget
+                : this.props.data.campaignInfo.lifetime_budget_micro
+            },
             value: this.formatNumber(
-              this.props.data.campaignInfo.lifetime_budget_micro
+              this.props.data.campaignDateChanged
+                ? recBudget
+                : this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
-            regions: countryRegions.regions
+            regions: countryRegions.regions,
+            budgetOption: this.props.data.campaignDateChanged
+              ? 1
+              : this.props.data.budgetOption
           },
           () => {
             if (this.props.data.appChoice) {
@@ -209,17 +217,9 @@ class AdDetails extends Component {
               });
             }
             this._calcReach();
-            // this.state.campaignInfo &&
-            //   this.state.campaignInfo.targeting.geos[0].country_code &&
-            //   this.onSelectedCountryChange(
-            //     this.state.campaignInfo.targeting.geos[0].country_code,
-            //     true,
-            //     this.props.data.countryName
-            //   );
           }
         );
       }
-
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -490,7 +490,7 @@ class AdDetails extends Component {
   };
 
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => { });
+    this.setState({ sidemenustate: status }, () => {});
   };
 
   _renderSideMenu = (component, option = "") => {
@@ -822,48 +822,48 @@ class AdDetails extends Component {
         menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("85%")}
         isOpen={this.state.sidemenustate}
-      // edgeHitWidth={-60}
+        // edgeHitWidth={-60}
       >
         {media.includes(".mp4") ||
-          media.includes(".mov") ||
-          media.includes(".MP4") ||
-          media.includes(".MOV") ||
-          (campaign.media &&
-            (campaign.media.includes(".mp4") ||
-              campaign.media.includes(".MP4"))) ||
-          (campaign.media &&
-            (campaign.media.includes(".mov") ||
-              campaign.media.includes(".MOV"))) ? (
-            <View style={[styles.backgroundViewWrapper]}>
-              <Video
-                source={{
-                  uri: editCampaign ? campaign.media : media
-                }}
-                shouldPlay
-                isLooping
-                isMuted
-                resizeMode="cover"
-                style={styles.videoBackgroundViewWrapper}
-              />
-            </View>
-          ) : (
-            <RNImageOrCacheImage
-              media={media}
-              style={[
-                styles.imageBackgroundViewWrapper,
-                this.state.sidemenustate && !I18nManager.isRTL
-                  ? {
+        media.includes(".mov") ||
+        media.includes(".MP4") ||
+        media.includes(".MOV") ||
+        (campaign.media &&
+          (campaign.media.includes(".mp4") ||
+            campaign.media.includes(".MP4"))) ||
+        (campaign.media &&
+          (campaign.media.includes(".mov") ||
+            campaign.media.includes(".MOV"))) ? (
+          <View style={[styles.backgroundViewWrapper]}>
+            <Video
+              source={{
+                uri: editCampaign ? campaign.media : media
+              }}
+              shouldPlay
+              isLooping
+              isMuted
+              resizeMode="cover"
+              style={styles.videoBackgroundViewWrapper}
+            />
+          </View>
+        ) : (
+          <RNImageOrCacheImage
+            media={media}
+            style={[
+              styles.imageBackgroundViewWrapper,
+              this.state.sidemenustate && !I18nManager.isRTL
+                ? {
                     borderTopRightRadius: 30
                   }
-                  : {},
-                this.state.sidemenustate && I18nManager.isRTL
-                  ? {
+                : {},
+              this.state.sidemenustate && I18nManager.isRTL
+                ? {
                     borderTopLeftRadius: 30
                   }
-                  : {}
-              ]}
-            />
-          )}
+                : {}
+            ]}
+          />
+        )}
 
         <SafeAreaView
           style={[
@@ -877,12 +877,12 @@ class AdDetails extends Component {
               this.props.saveCampaignSteps(
                 this.props.adType === "StoryAd"
                   ? [
-                    "Dashboard",
-                    "AdObjective",
-                    "AdCover",
-                    "AdDesign",
-                    "AdDetails"
-                  ]
+                      "Dashboard",
+                      "AdObjective",
+                      "AdCover",
+                      "AdDesign",
+                      "AdDetails"
+                    ]
                   : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
               );
 
@@ -975,14 +975,14 @@ class AdDetails extends Component {
                   */}
                   </>
                 ) : (
-                    <View style={styles.sliderPlaceHolder}>
-                      <Text style={styles.subHeadings}>
-                        {translate(
-                          "Editing budget and duration\nis currently unavailable"
-                        )}
-                      </Text>
-                    </View>
-                  )}
+                  <View style={styles.sliderPlaceHolder}>
+                    <Text style={styles.subHeadings}>
+                      {translate(
+                        "Editing budget and duration\nis currently unavailable"
+                      )}
+                    </Text>
+                  </View>
+                )}
                 <Text uppercase style={styles.subHeadings}>
                   {translate("Who would you like to reach?")}
                 </Text>
@@ -1027,7 +1027,8 @@ const mapStateToProps = state => ({
   languages: state.campaignC.languagesList,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
-  interests: state.campaignC.interests
+  interests: state.campaignC.interests,
+  campaignDateChanged: state.campaignC.campaignDateChanged
 });
 
 const mapDispatchToProps = dispatch => ({
