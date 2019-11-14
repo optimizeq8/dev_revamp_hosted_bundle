@@ -39,6 +39,7 @@ class AdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
+    this.props.save_campaign_info({ campaignDateChanged: false });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
@@ -375,6 +376,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 
