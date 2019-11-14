@@ -46,11 +46,16 @@ export default class EditProductDetail extends React.Component {
 
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
-    if (
-      /^([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9]{3})?$/.test(
-        this.state.item.price
-      )
-    ) {
+    if (this.state.item.price !== "" && /^([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9]{3})?$/.test(
+      this.state.item.price
+    )) {
+      showMessage({
+        message: translate("Please enter a valid price"),
+        position: "top",
+        description: translate("eg 1 1500  1000 10000500"),
+        type: "warning"
+      });
+    } else {
       const newList = [...this.state.cartList];
       const index = findIndex(
         newList,
@@ -61,13 +66,6 @@ export default class EditProductDetail extends React.Component {
 
       this.props.navigation.navigate("SelectedInstagramProductsList", {
         selectetedItems: newList
-      });
-    } else {
-      showMessage({
-        message: translate("Please enter a valid price"),
-        position: "top",
-        description: translate("eg 1 1500  1000 10000500"),
-        type: "warning"
       });
     }
   };
@@ -143,7 +141,7 @@ export default class EditProductDetail extends React.Component {
                                 productNameError: value.length === 0
                               })
                             }
-                            // onBlur={() => this.validateUrl()}
+                          // onBlur={() => this.validateUrl()}
                           />
                         </Item>
                       </View>
@@ -180,21 +178,21 @@ export default class EditProductDetail extends React.Component {
                                 priceError: value.length === 0
                               })
                             }
-                            // onBlur={() => this.validateUrl()}
+                          // onBlur={() => this.validateUrl()}
                           />
                         </Item>
                       </View>
                     </View>
                   </View>
-                  {!this.state.productNameError && !this.state.priceError && (
-                    <View style={styles.bottonViewWebsite}>
-                      <LowerButton
-                        checkmark={true}
-                        bottom={0}
-                        function={this._handleSubmission}
-                      />
-                    </View>
-                  )}
+                  {/* {!this.state.productNameError && !this.state.priceError && ( */}
+                  <View style={styles.bottonViewWebsite}>
+                    <LowerButton
+                      checkmark={true}
+                      bottom={0}
+                      function={this._handleSubmission}
+                    />
+                  </View>
+                  {/* )} */}
                 </>
               )}
             </KeyBoardShift>

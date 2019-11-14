@@ -51,27 +51,27 @@ class ProductList extends React.Component {
     });
   };
   _handleSubmission = () => {
-    if (this.state.disable) {
-      showMessage({
-        message: this.props.screenProps.translate(
-          "Enter product names and price for all the selected products"
-        ),
-        duration: 2000,
-        type: "warning"
-      });
-    } else {
-      // console.log('cartListWIthProductnameNPrice', this.state.cartList);
-      // console.log('this.props.businessLogo', this.props.businessLogo);
-      this.props.navigation.getParam("_changeDestination")();
-      this.props.saveWebProducts(
-        this.state.cartList,
-        this.props.data.campaign_id,
-        this.props.productInfoId,
-        this.props.navigation,
-        this.props.businessLogo,
-        "fromUpdateProductList"
-      );
-    }
+    // if (this.state.disable) {
+    //   showMessage({
+    //     message: this.props.screenProps.translate(
+    //       "Enter product names and price for all the selected products"
+    //     ),
+    //     duration: 2000,
+    //     type: "warning"
+    //   });
+    // } else {
+    // console.log('cartListWIthProductnameNPrice', this.state.cartList);
+    // console.log('this.props.businessLogo', this.props.businessLogo);
+    this.props.navigation.getParam("_changeDestination")();
+    this.props.saveWebProducts(
+      this.state.cartList,
+      this.props.data.campaign_id,
+      this.props.productInfoId,
+      this.props.navigation,
+      this.props.businessLogo,
+      "fromUpdateProductList"
+    );
+    // }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -83,15 +83,15 @@ class ProductList extends React.Component {
         <NavigationEvents
           onDidFocus={() => {
             const list = this.props.navigation.getParam("selectetedItems", []);
-            const checkIfHasKeyProductName = list.map(item =>
-              item.hasOwnProperty("productName")
-            );
-            // console.log('checkIfHasKeyProductName', checkIfHasKeyProductName);
-            // console.log(' disable', includes(checkIfHasKeyProductName, false));
+            // const checkIfHasKeyProductName = list.map(item =>
+            //   item.hasOwnProperty("productName")
+            // );
+            // // console.log('checkIfHasKeyProductName', checkIfHasKeyProductName);
+            // // console.log(' disable', includes(checkIfHasKeyProductName, false));
 
             this.setState({
               cartList: list,
-              disable: includes(checkIfHasKeyProductName, false)
+              // disable: includes(checkIfHasKeyProductName, false)
             });
           }}
         />
@@ -144,7 +144,7 @@ class ProductList extends React.Component {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "space-between",
                       // paddingVertical: 12,
                       marginVertical: 5,
                       width: "43%",
@@ -156,7 +156,7 @@ class ProductList extends React.Component {
                     <View
                       style={{
                         display: "flex",
-                        alignItems: "center",
+                        alignItems: "flex-start",
                         justifyContent: "center"
                       }}
                     >
@@ -168,7 +168,7 @@ class ProductList extends React.Component {
                         height={"100%"}
                         style={[
                           {
-                            width: 144,
+                            width: wp(34),
                             height: 135,
                             borderRadius: 20,
                             // backgroundColor: "rgba(0,0,0,0.2)",
@@ -265,13 +265,13 @@ class ProductList extends React.Component {
                   style={{ width: wp(7), height: hp(7) }}
                 />
               ) : (
-                <LowerButton
-                  // disabled={this.state.disable}
-                  checkmark={true}
-                  bottom={0}
-                  function={this._handleSubmission}
-                />
-              )}
+                  <LowerButton
+                    // disabled={this.state.disable}
+                    checkmark={true}
+                    bottom={0}
+                    function={this._handleSubmission}
+                  />
+                )}
             </TouchableOpacity>
           </Content>
         </Container>
