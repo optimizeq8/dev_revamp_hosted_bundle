@@ -132,8 +132,8 @@ class PersonalInfo extends Component {
                       this.state.inputF
                         ? globalStyles.transparentBorderColor
                         : this.state.firstnameError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                     ]}
                   >
                     <UserProfile
@@ -177,7 +177,7 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.firstnameError !== "" ? (
+                  {this.state.firstnameError && this.state.firstnameError !== "" ? (
                     <Text style={[styles.text, styles.repasswordErrorText]}>
                       {translate(this.state.firstnameError)}
                     </Text>
@@ -204,8 +204,8 @@ class PersonalInfo extends Component {
                       this.state.inputL
                         ? globalStyles.purpleBorderColor
                         : this.state.lastnameError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                     ]}
                   >
                     <UserProfile
@@ -249,7 +249,7 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.lastnameError !== "" ? (
+                  {this.state.lastnameError && this.state.lastnameError !== "" ? (
                     <Text style={[styles.text]}>
                       {translate(this.state.lastnameError)}
                     </Text>
@@ -279,8 +279,8 @@ class PersonalInfo extends Component {
                       this.state.inputE
                         ? globalStyles.purpleBorderColor
                         : this.state.emailError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                     ]}
                   >
                     <EmailIcon
@@ -311,7 +311,7 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.emailError !== "" && (
+                  {this.state.emailError && this.state.emailError !== "" && (
                     <Text style={[styles.text, styles.emailErrorText]}>
                       {translate(this.state.emailError)}
                     </Text>
@@ -342,8 +342,8 @@ class PersonalInfo extends Component {
                       this.state.inputP
                         ? globalStyles.purpleBorderColor
                         : this.state.passwordError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor
                     ]}
                   >
                     <PasswordIcon
@@ -379,11 +379,11 @@ class PersonalInfo extends Component {
                     />
                   </Item>
                   {this.state.passwordError &&
-                  this.state.passwordError.includes("8 characters") ? (
-                    <Text style={[styles.text, styles.repasswordErrorText]}>
-                      {translate(this.state.passwordError)}
-                    </Text>
-                  ) : null}
+                    this.state.passwordError.includes("8 characters") ? (
+                      <Text style={[styles.text, styles.repasswordErrorText]}>
+                        {translate(this.state.passwordError)}
+                      </Text>
+                    ) : null}
                 </View>
 
                 <View style={styles.marginVertical}>
@@ -409,8 +409,8 @@ class PersonalInfo extends Component {
                       this.state.inputPR
                         ? globalStyles.purpleBorderColor
                         : this.state.repasswordError !== ""
-                        ? globalStyles.redBorderColor
-                        : globalStyles.transparentBorderColor,
+                          ? globalStyles.redBorderColor
+                          : globalStyles.transparentBorderColor,
                       styles.repeatPassword
                     ]}
                   >
@@ -437,11 +437,11 @@ class PersonalInfo extends Component {
                     />
                   </Item>
                   {this.state.repasswordError !== "" &&
-                  this.state.userInfo.password !== "" ? (
-                    <Text style={[styles.text, styles.repasswordErrorText]}>
-                      {translate(this.state.repasswordError)}
-                    </Text>
-                  ) : null}
+                    this.state.userInfo.password !== "" ? (
+                      <Text style={[styles.text, styles.repasswordErrorText]}>
+                        {translate(this.state.repasswordError)}
+                      </Text>
+                    ) : null}
                 </View>
                 <LowerButton function={() => this._handleSubmission()} />
               </View>
