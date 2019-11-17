@@ -11,10 +11,11 @@ import {
   StackActions
 } from "react-navigation";
 import CustomHeader from "../Header";
-import ExclamationIcon from "../../../assets/SVGs/ExclamationMark";
-import LowerButton from "../LowerButton";
 import { persistor } from "../../../store/";
 import styles from "./styles";
+import Buttons from "../Buttons";
+import ContinueInfo from "./ContinueInfo";
+
 class ContinueCampaign extends Component {
   constructor(props) {
     super(props);
@@ -58,6 +59,11 @@ class ContinueCampaign extends Component {
       }, 800);
     }
   };
+  handleContinue = () => {
+    this.navigateToContinue();
+    this.setModalVisible(false, false);
+    this.props.setCampaignInProgress(true);
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -79,50 +85,36 @@ class ContinueCampaign extends Component {
                 actionButton={() => {
                   this.setModalVisible(false, false);
                 }}
-                title={"Continue campaign"}
+                title={"Continue Ad Creation"}
               />
-              <View
-                style={{
-                  flex: 0.8,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    fontFamily: "montserrat-regular",
+                    width: 250
+                  }
+                ]}
               >
-                <ExclamationIcon style={{ alignSelf: "center" }} />
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      fontFamily: "montserrat-regular",
-                      width: 250
-                    }
-                  ]}
-                >
-                  {translate(
-                    "A campaign creation process was in progress, would you like to continue?"
-                  )}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-                  alignSelf: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <LowerButton
-                  cross={true}
-                  bottom={4}
-                  function={() => this.setModalVisible(false, true)}
+                {translate(
+                  "You were in the middle of creating an ad, would you like to continue"
+                )}
+              </Text>
+              {this.props.data && this.props.incompleteCampaign && (
+                <ContinueInfo
+                  data={this.props.data}
+                  screenProps={this.props.screenProps}
                 />
-                <LowerButton
-                  bottom={4}
-                  // function={() => this.props.navigation.push("AdDesign")}
-                  function={() => {
-                    this.navigateToContinue();
-                    this.setModalVisible(false, false);
-                    this.props.setCampaignInProgress(true);
-                  }}
+              )}
+              <View style={styles.footerButtons}>
+                <Buttons
+                  onPressFunction={() => this.handleContinue()}
+                  content="Resume"
+                  filled
+                />
+                <Buttons
+                  onPressFunction={() => this.setModalVisible(false, true)}
+                  content="Create a new ad"
                 />
               </View>
             </View>
