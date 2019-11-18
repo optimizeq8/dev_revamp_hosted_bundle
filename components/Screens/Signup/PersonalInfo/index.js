@@ -177,7 +177,7 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.firstnameError !== "" ? (
+                  {this.state.firstnameError ? (
                     <Text style={[styles.text, styles.repasswordErrorText]}>
                       {translate(this.state.firstnameError)}
                     </Text>
@@ -249,7 +249,7 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.lastnameError !== "" ? (
+                  {this.state.lastnameError ? (
                     <Text style={[styles.text]}>
                       {translate(this.state.lastnameError)}
                     </Text>
@@ -311,11 +311,11 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.emailError !== "" && (
+                  {this.state.emailError ? (
                     <Text style={[styles.text, styles.emailErrorText]}>
                       {translate(this.state.emailError)}
                     </Text>
-                  )}
+                  ) : null}
                 </View>
 
                 <View style={styles.marginVertical}>
