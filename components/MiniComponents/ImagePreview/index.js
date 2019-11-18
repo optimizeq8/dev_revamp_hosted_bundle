@@ -52,7 +52,7 @@ class ImagePreview extends Component {
       >
         <CustomHeader
           screenProps={this.props.screenProps}
-          title={"Preview"}
+          title={""}
           navigation={this.props.navigation}
         />
         <Container style={styles.container}>
