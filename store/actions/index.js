@@ -15,7 +15,8 @@ export {
   getCampaignStats,
   updateCampaignList,
   filterCampaigns,
-  setRejectedCampaignData
+  setRejectedCampaignData,
+  resetRejectedCampaignData
 } from "./dashboardActions";
 
 export {
