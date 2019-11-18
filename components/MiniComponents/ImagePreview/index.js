@@ -6,13 +6,21 @@ import * as Segment from "expo-analytics-segment";
 import { Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 
-import { BackHandler, View } from "react-native";
+import {
+  BackHandler,
+  View,
+  Text,
+  TouchableOpacity,
+  I18nManager
+} from "react-native";
 import { Container, Content } from "native-base";
 import RNImageOrCacheImage from "../RNImageOrCacheImage";
 import { Transition } from "react-navigation-fluid-transitions";
 import { SafeAreaView } from "react-navigation";
 import ImageViewer from "react-native-image-zoom-viewer";
 import CustomHeader from "../Header";
+import LowerButton from "../LowerButton";
+
 //icons
 // import CloseIcon from "../../../../assets/SVGs/Close";
 // import ArrowUpIcon from "../../../../assets/SVGs/ArrowUp";
@@ -22,6 +30,8 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 //Functions
+
+import isNull from "lodash/isNull";
 
 const preview = {
   uri:
@@ -45,16 +55,20 @@ class ImagePreview extends Component {
   render() {
     const image = this.props.navigation.getParam("image");
     const id = this.props.navigation.getParam("id");
+    const upload = this.props.navigation.getParam("upload", null);
+
     return (
       <SafeAreaView
         style={styles.safeAreaContainer}
         forceInset={{ top: "always" }}
       >
-        <CustomHeader
-          screenProps={this.props.screenProps}
-          title={""}
-          navigation={this.props.navigation}
-        />
+        {isNull(upload) && (
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            title={""}
+            navigation={this.props.navigation}
+          />
+        )}
         <Container style={styles.container}>
           <Content
             padder
@@ -74,6 +88,68 @@ class ImagePreview extends Component {
                 resizeMode={"cover"}
               /> */}
             </Transition>
+            {/* <TouchableOpacity
+              style={{
+                backgroundColor: "orange",
+                borderRadius: 30
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 30,
+                  fontFamily: "montserrat-bold",
+                  alignSelf: "center",
+                  padding
+                }}
+              >
+                Submit
+              </Text>
+            </TouchableOpacity> */}
+
+            {!isNull(upload) && (
+              <View style={{ alignSelf: "center" }}>
+                <Text
+                  style={[
+                    // styles.text,
+                    {
+                      textAlign: "center",
+                      color: "#fff",
+                      fontFamily: "montserrat-bold",
+                      fontSize: 17,
+                      paddingVertical: 10,
+                      bottom: 5,
+                      fontFamily: "montserrat-regular",
+                      width: 250
+                    }
+                  ]}
+                >
+                  would you like to upload this image?
+                </Text>
+
+                <View
+                  style={{
+                    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+                    alignSelf: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <LowerButton
+                    cross={true}
+                    bottom={0}
+                    function={() => this.props.navigation.goBack()}
+                  />
+                  <LowerButton
+                    bottom={0}
+                    function={() => {
+                      upload();
+
+                      this.props.navigation.goBack();
+                    }}
+                  />
+                </View>
+              </View>
+            )}
           </Content>
         </Container>
       </SafeAreaView>
