@@ -36,7 +36,11 @@ export default class AppBox extends Component {
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
                 {translate(`apple\napp store`)}
               </Text>
-              <Text style={styles.appStyle}>{iosApp_name}</Text>
+              <Text style={styles.appStyle}>
+                {iosApp_name +
+                  "\n" +
+                  (attachment.ios_app_id && "id: " + attachment.ios_app_id)}
+              </Text>
               <Toggle
                 switchOn={attachment.ios_app_id !== ""}
                 backgroundColorOff="rgba(255,255,255,0.1)"
@@ -61,7 +65,12 @@ export default class AppBox extends Component {
               <Text uppercase style={appConfirmStyles.appStoreButtonsText}>
                 {translate(`google\nplay store`)}
               </Text>
-              <Text style={styles.appStyle}>{androidApp_name}</Text>
+              <Text style={styles.appStyle}>
+                {androidApp_name +
+                  "\n" +
+                  (attachment.android_app_url &&
+                    "id: " + attachment.android_app_url)}
+              </Text>
 
               <Toggle
                 switchOn={attachment.android_app_url !== ""}
