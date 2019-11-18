@@ -147,11 +147,13 @@ export const _pickImage = async (
                       ...card
                     }
                   },
+                  rejectionUpload: true,
                   type: result.type.toUpperCase()
                 });
                 save_campaign_info({
                   media: result.uri,
-                  type: result.type.toUpperCase()
+                  type: result.type.toUpperCase(),
+                  rejectionUpload: true
                 });
                 onToggleModal(false);
               } else {
@@ -172,7 +174,8 @@ export const _pickImage = async (
                 });
                 save_campaign_info({
                   media: result.uri,
-                  type: result.type.toUpperCase()
+                  type: result.type.toUpperCase(),
+                  rejectionUpload: true
                 });
               }
             })
@@ -335,11 +338,13 @@ export const _pickImage = async (
                   ...card
                 }
               },
+              rejectionUpload: true,
               type: result.type.toUpperCase()
             });
             save_campaign_info({
               media: result.uri,
-              type: result.type.toUpperCase()
+              type: result.type.toUpperCase(),
+              rejectionUpload: true
             });
             onToggleModal(false);
           } else {

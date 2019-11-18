@@ -103,7 +103,9 @@ export const formatMedia = (
   allIosVideos = false;
   let cardMedia = "";
   let cardUrl = "";
-  if (!iosVideoUploaded || adType === "StoryAd") {
+  //rejectionUpload is true whenever the user picks an image, this to not send the https url
+  //back to the back end when they upload for rejection reasons
+  if (rejectionUpload && (!iosVideoUploaded || adType === "StoryAd")) {
     if (adType === "StoryAd") {
       storyAd = storyAdsArray.find(card => {
         if (card && card.media !== "//" && !card.media.includes("https://"))
@@ -111,7 +113,8 @@ export const formatMedia = (
         if (card && card.media !== "//" && card.media.includes("https://"))
           cardUrl = card.media;
         allIosVideos =
-          (!cardMedia && cardUrl && Platform.OS === "ios") || card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
+          (!cardMedia && cardUrl && Platform.OS === "ios") ||
+          card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
         return !allIosVideos ? cardMedia : cardUrl;
       });
       if (storyAd.media === "//" && !allIosVideos) {
