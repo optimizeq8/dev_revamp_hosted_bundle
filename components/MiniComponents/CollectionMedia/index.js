@@ -139,65 +139,63 @@ class CollectionMedia extends Component {
             collAds[order][collAds[order].localUri ? "localUri" : "media"],
           rejectionColUpload: true
         });
-
-      } else
+      } else if (
+        (this.props.collectionAdLinkForm === 1 &&
+          collAds[order].collection_destination === "REMOTE_WEBPAGE") ||
+        (this.props.collectionAdLinkForm === 2 &&
+          collAds[order].collection_destination === "DEEP_LINK") ||
+        collAds[order].interaction_type
+      ) {
         if (
-          (this.props.collectionAdLinkForm === 1 &&
-            collAds[order].collection_destination === "REMOTE_WEBPAGE") ||
-          (this.props.collectionAdLinkForm === 2 &&
-            collAds[order].collection_destination === "DEEP_LINK") ||
-          collAds[order].interaction_type
+          this.props.collectionAdLinkForm === 1 ||
+          collAds[order].interaction_type === "WEB_VIEW"
         ) {
-          if (
-            this.props.collectionAdLinkForm === 1 ||
-            collAds[order].interaction_type === "WEB_VIEW"
-          ) {
-            const url = split(
-              JSON.parse(
-                collAds[order][
+          const url = split(
+            JSON.parse(
+              collAds[order][
                 collAds[order].collection_attachment
                   ? "collection_attachment"
                   : "attachment_properties"
-                ]
-              ).url,
-              "://"
-            );
-            this.setState({
-              collection: {
-                ...this.state.collection,
-                ...collAds[order],
-                collection_attachment: url[1].includes("?utm_source")
-                  ? url[1].split("?utm_source")[0]
-                  : url[1],
-                collection_media:
-                  collAds[order][collAds[order].localUri ? "localUri" : "media"]
-              },
-              networkString: url[0] + "://",
-              localUri:
+              ]
+            ).url,
+            "://"
+          );
+          this.setState({
+            collection: {
+              ...this.state.collection,
+              ...collAds[order],
+              collection_attachment: url[1].includes("?utm_source")
+                ? url[1].split("?utm_source")[0]
+                : url[1],
+              collection_media:
                 collAds[order][collAds[order].localUri ? "localUri" : "media"]
-            });
-          } else {
-            const deep_link_uri = JSON.parse(
-              collAds[order][
+            },
+            networkString: url[0] + "://",
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
+          });
+        } else {
+          const deep_link_uri = JSON.parse(
+            collAds[order][
               collAds[order].collection_attachment
                 ? "collection_attachment"
                 : "attachment_properties"
-              ]
-            ).deep_link_uri;
-            this.setState({
-              collection: {
-                ...this.state.collection,
+            ]
+          ).deep_link_uri;
+          this.setState({
+            collection: {
+              ...this.state.collection,
 
-                ...collAds[order],
-                collection_attachment: deep_link_uri,
-                collection_media:
-                  collAds[order][collAds[order].localUri ? "localUri" : "media"]
-              },
-              localUri:
+              ...collAds[order],
+              collection_attachment: deep_link_uri,
+              collection_media:
                 collAds[order][collAds[order].localUri ? "localUri" : "media"]
-            });
-          }
+            },
+            localUri:
+              collAds[order][collAds[order].localUri ? "localUri" : "media"]
+          });
         }
+      }
     }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -680,15 +678,15 @@ class CollectionMedia extends Component {
                       {this.renderMediaButton()}
                     </View>
                   ) : (
-                      <View style={styles.placeholder}>
-                        <Image
-                          style={styles.imagePlaceholder}
-                          source={{ uri: this.state.localUri }}
-                          resizeMode="cover"
-                        />
-                        {this.renderMediaButton()}
-                      </View>
-                    )}
+                    <View style={styles.placeholder}>
+                      <Image
+                        style={styles.imagePlaceholder}
+                        source={{ uri: this.state.localUri }}
+                        resizeMode="cover"
+                      />
+                      {this.renderMediaButton()}
+                    </View>
+                  )}
                   {!this.state.imageError ? null : (
                     <Text style={styles.errorMsg}>
                       {!this.state.imageError.includes("blank")
@@ -742,86 +740,86 @@ class CollectionMedia extends Component {
                       </Item>
                     </Animatable.View>
                   ) : (
-                      <View style={styles.topContainer}>
-                        <View style={styles.inputContainer}>
-                          <View style={styles.websiteView}>
-                            <View style={[styles.websiteLabelView]}>
-                              <Text uppercase style={[styles.inputLabel]}>
-                                {translate("Website")}
-                              </Text>
-                            </View>
-                            <Item
-                              style={[
-                                styles.input
-                                // this.state.urlError
-                                //     ? GlobalStyles.redBorderColor
-                                //     : GlobalStyles.transparentBorderColor
-                              ]}
-                            >
-                              <TouchableOpacity
-                                style={[
-                                  GlobalStyles.orangeBackgroundColor,
-                                  {
-                                    borderRadius: 30,
-                                    width: 54,
-                                    height: 54,
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                  }
-                                ]}
-                                onPress={() => {
-                                  if (this.state.networkString === "https://") {
-                                    this.setState({
-                                      networkString: "http://"
-                                    });
-                                  } else {
-                                    this.setState({
-                                      networkString: "https://"
-                                    });
-                                  }
-                                }}
-                              >
-                                <Text uppercase style={styles.networkLabel}>
-                                  {this.state.networkString === "https://"
-                                    ? "https"
-                                    : "http"}
-                                </Text>
-                                <Text uppercase style={styles.networkLabel}>
-                                  {`< >`}
-                                </Text>
-                              </TouchableOpacity>
-                              <Input
-                                style={[
-                                  styles.inputtext,
-                                  I18nManager.isRTL
-                                    ? { textAlign: "right" }
-                                    : { textAlign: "left" }
-                                ]}
-                                placeholder={translate(
-                                  "Enter your website's URL"
-                                )}
-                                placeholderTextColor={globalColors.white}
-                                value={
-                                  this.state.collection.collection_attachment
-                                }
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                onChangeText={value =>
-                                  this.setState({
-                                    collection: {
-                                      ...this.state.collection,
-                                      collection_attachment: value
-                                    },
-                                    rejectionColUpload: true
-                                  })
-                                }
-                                onBlur={() => this.validateUrl()}
-                              />
-                            </Item>
+                    <View style={styles.topContainer}>
+                      <View style={styles.inputContainer}>
+                        <View style={styles.websiteView}>
+                          <View style={[styles.websiteLabelView]}>
+                            <Text uppercase style={[styles.inputLabel]}>
+                              {translate("Website")}
+                            </Text>
                           </View>
+                          <Item
+                            style={[
+                              styles.input
+                              // this.state.urlError
+                              //     ? GlobalStyles.redBorderColor
+                              //     : GlobalStyles.transparentBorderColor
+                            ]}
+                          >
+                            <TouchableOpacity
+                              style={[
+                                GlobalStyles.orangeBackgroundColor,
+                                {
+                                  borderRadius: 30,
+                                  width: 54,
+                                  height: 54,
+                                  alignItems: "center",
+                                  justifyContent: "center"
+                                }
+                              ]}
+                              onPress={() => {
+                                if (this.state.networkString === "https://") {
+                                  this.setState({
+                                    networkString: "http://"
+                                  });
+                                } else {
+                                  this.setState({
+                                    networkString: "https://"
+                                  });
+                                }
+                              }}
+                            >
+                              <Text uppercase style={styles.networkLabel}>
+                                {this.state.networkString === "https://"
+                                  ? "https"
+                                  : "http"}
+                              </Text>
+                              <Text uppercase style={styles.networkLabel}>
+                                {`< >`}
+                              </Text>
+                            </TouchableOpacity>
+                            <Input
+                              style={[
+                                styles.inputtext,
+                                I18nManager.isRTL
+                                  ? { textAlign: "right" }
+                                  : { textAlign: "left" }
+                              ]}
+                              placeholder={translate(
+                                "Enter your website's URL"
+                              )}
+                              placeholderTextColor={globalColors.white}
+                              value={
+                                this.state.collection.collection_attachment
+                              }
+                              autoCorrect={false}
+                              autoCapitalize="none"
+                              onChangeText={value =>
+                                this.setState({
+                                  collection: {
+                                    ...this.state.collection,
+                                    collection_attachment: value
+                                  },
+                                  rejectionColUpload: true
+                                })
+                              }
+                              onBlur={() => this.validateUrl()}
+                            />
+                          </Item>
                         </View>
                       </View>
-                    )}
+                    </View>
+                  )}
                 </View>
               )}
             </KeyboardShift>
@@ -837,10 +835,10 @@ class CollectionMedia extends Component {
                 </TouchableOpacity>
               </View>
             ) : (
-                <Text style={styles.footerTextStyle}>
-                  {translate("Please add media and link to proceed")}
-                </Text>
-              )}
+              <Text style={styles.footerTextStyle}>
+                {translate("Please add media and link to proceed")}
+              </Text>
+            )}
           </View>
         </Container>
         <Modal
