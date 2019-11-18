@@ -136,7 +136,28 @@ const reducer = (state = initialState, action) => {
         campaignEndSearch: action.payload.dateRange[1]
       };
     case actionTypes.SET_REJECTED_CAMPAIGN:
-      return { ...state, rejCampaign: action.payload };
+      let rejCampaign = action.payload;
+      //Since we receive call_to_action as "ORDER_NOW" for example from campaignDetails,
+      //Turn it to an object so that the process for re-uploading is the same as normal
+      if (typeof rejCampaign.call_to_action === "string") {
+        rejCampaign.call_to_action = {
+          label: rejCampaign.call_to_action.replace("_", " "),
+          value: rejCampaign.call_to_action
+        };
+      }
+
+      //Same thing, attachment comes in as a string from campaignDetails,
+      if (rejCampaign.hasOwnProperty("attachment")) {
+        //if its a string and not "BLANK" then parse it
+        rejCampaign.attachment =
+          typeof rejCampaign.attachment === "string" &&
+          rejCampaign.attachment !== "BLANK"
+            ? JSON.parse(rejCampaign.attachment)
+            : rejCampaign.attachment;
+      }
+      return { ...state, rejCampaign };
+    case actionTypes.RESET_REJECTED_CAMPAIGN:
+      return { ...state, rejCampaign: null };
     default:
       return state;
   }
