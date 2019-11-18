@@ -106,11 +106,11 @@ class Menu extends Component {
               style={[
                 styles.businessTitle,
                 this.props.mainBusiness &&
-                  this.props.mainBusiness.brandname &&
-                  !isStringArabic(this.props.mainBusiness.brandname)
+                this.props.mainBusiness.brandname &&
+                !isStringArabic(this.props.mainBusiness.brandname)
                   ? {
-                    fontFamily: "montserrat-regular-english"
-                  }
+                      fontFamily: "montserrat-regular-english"
+                    }
                   : {}
               ]}
             >
@@ -122,11 +122,11 @@ class Menu extends Component {
               style={[
                 styles.businessname,
                 this.props.mainBusiness &&
-                  this.props.mainBusiness.businessname &&
-                  !isStringArabic(this.props.mainBusiness.businessname)
+                this.props.mainBusiness.businessname &&
+                !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
-                    fontFamily: "montserrat-regular-english"
-                  }
+                      fontFamily: "montserrat-regular-english"
+                    }
                   : {}
               ]}
             >
@@ -251,7 +251,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/66/
+                {Constants.manifest.version}/67/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}
               </Text>
