@@ -42,7 +42,7 @@ class MessageBubble extends Component {
       this.props.message.attachments.length !== 0 &&
       this.props.message.author.type === "user"
     ) {
-      console.log("body", this.props.message);
+      // console.log("body", this.props.message);
       // console.log("message: ", this.props.message);]
     }
 
@@ -66,7 +66,8 @@ class MessageBubble extends Component {
         )}
         <View style={[styles.messagefullView, { alignSelf: align }]}>
           {this.props.message.author.type === "admin" &&
-            !isNull(this.props.message.body) && (
+            !isNull(this.props.message.body) &&
+            this.props.message.body !== "" && (
               <View
                 style={[
                   I18nManager.isRTL
@@ -104,7 +105,7 @@ class MessageBubble extends Component {
                 <RNImageOrCacheImage
                   media={this.props.message.attachments[0].url}
                   style={{
-                    opacity: 0.5,
+                    // opacity: 0.5,
                     borderRadius: 30,
                     overflow: "hidden",
                     alignSelf: "center",
@@ -118,7 +119,7 @@ class MessageBubble extends Component {
               </Transition>
             </TouchableOpacity>
           )}
-          {!isNull(this.props.message.body) && (
+          {!isNull(this.props.message.body) && this.props.message.body !== "" && (
             <View
               style={[
                 styles.messageView,
@@ -143,7 +144,8 @@ class MessageBubble extends Component {
           )}
           {/* Triangle for user */}
           {this.props.message.author.type === "user" &&
-            !isNull(this.props.message.body) && (
+            !isNull(this.props.message.body) &&
+            this.props.message.body !== "" && (
               <View
                 style={[
                   I18nManager.isRTL

@@ -229,6 +229,8 @@ export const start_conversation = message => {
  * @returns {Function} dispatch witht the conversation part of the same message from the axios request
  */
 export const reply = (message, upload) => {
+  console.log("message", message);
+
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
@@ -428,7 +430,7 @@ export const upload_media = media => {
       .then(data => {
         console.log("data", data);
 
-        if (data.success) return dispatch(reply("", [data.media_link]));
+        if (data.success) return dispatch(reply(null, [data.media_link]));
         else {
           showMessage({
             message: data.message || "Something went wrong, please try again.",

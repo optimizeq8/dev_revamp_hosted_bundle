@@ -164,8 +164,15 @@ class Messenger extends Component {
       quality: 0.8
     });
     console.log("result", result);
-
-    this.setState({ media: result }, () => this.formatMedia());
+    //  this.formatMedia();
+    if (!result.cancelled)
+      this.setState({ media: result }, () =>
+        this.props.navigation.push("ImagePreview", {
+          image: this.state.media.uri,
+          id: "upload",
+          upload: this.formatMedia.bind(this)
+        })
+      );
   };
 
   askForPermssion = async screenProps => {
