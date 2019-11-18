@@ -111,6 +111,7 @@ class Messenger extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     socket.removeAllListeners();
+    socket.disconnect();
     this.props.update_last_seen();
   }
 
@@ -197,11 +198,14 @@ class Messenger extends Component {
     body.append("media", photo);
     console.log("FormatMedia body", body);
 
-    this.setState({
-      formatted: body
-    });
-
-    this.props.upload_media(this.state.formatted);
+    this.setState(
+      {
+        formatted: body
+      },
+      () => {
+        this.props.upload_media(this.state.formatted);
+      }
+    );
   }
 
   render() {

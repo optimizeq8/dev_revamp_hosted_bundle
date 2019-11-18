@@ -13,8 +13,14 @@ instance = axios.create({
   baseURL: "https://intercom-react.glitch.me/"
 });
 
-// send the id of the user
-// will return the user object
+/**
+ * sends a request to get user object from intercom
+ * if it doesn't find one it makes a request to create another
+ *
+ * @method
+ * @param {string} user_id
+ * @returns {Function} dispatch action with user information if found
+ */
 export const connect_user_to_intercom = user_id => {
   return (dispatch, getState) => {
     dispatch({
@@ -73,7 +79,6 @@ export const connect_user_to_intercom = user_id => {
   };
 };
 
-// Signup user on intercom database
 // {
 //     "user_id": "5",
 //     "email": "heedll@oo.co",
@@ -87,6 +92,18 @@ export const connect_user_to_intercom = user_id => {
 //         ]
 // }
 
+/**
+ * Creates a user on intercom
+ *
+ * @method
+ * @param {object} user
+ * @param {string} user.user_id
+ * @param {string} user.email
+ * @param {string} user.phone
+ * @param {string} user.name includes both the first and last name in one string
+ * @param {array} user.companies includes objects of company id and name
+ * @returns {Function} dispatch action with user information
+ */
 export const create_user_on_intercom = user => {
   return dispatch => {
     dispatch({
@@ -107,8 +124,13 @@ export const create_user_on_intercom = user => {
   };
 };
 
-// get conversation array with messages
-
+/**
+ * Gets conversation array with messages
+ *
+ * @method
+ * @param {string} user_id
+ * @returns {Function} if the conversation id exists returns a dispatch action with the messages array
+ */
 export const get_conversation = user_id => {
   return (dispatch, getState) => {
     dispatch({
@@ -121,14 +143,11 @@ export const get_conversation = user_id => {
       })
       .then(data => {
         if (isNull(data.conversation_id)) {
-          // console.log("couldn't find a conversation");
-
           return dispatch({
             type: actionTypes.SET_CONVERSATION_AS_OPEN,
             payload: false
           });
         } else {
-          // console.log("found conversation");
           console.log(
             "conversation list: ",
             data.messages[data.messages.length - 1]
@@ -152,9 +171,6 @@ export const get_conversation = user_id => {
   };
 };
 
-//start a conversation from user side
-//API only called once if there is
-//no conversations prevously
 // {
 //   "from": {
 //     "type": "user",
@@ -162,6 +178,15 @@ export const get_conversation = user_id => {
 //   },
 //   "body": "Hey"
 // }
+
+/**
+ * start a conversation from user side
+ * This API is only called once if there is no conversations prevously
+ *
+ * @method
+ * @param {string} message
+ * @returns {Function}  dispatch with the conversation part of the same message from the axois request
+ */
 export const start_conversation = message => {
   return (dispatch, getState) => {
     dispatch({
@@ -188,7 +213,6 @@ export const start_conversation = message => {
   };
 };
 
-// reply to the conversation
 // {
 // "user_id": "5",
 // "body": "GREAT IT WORKS",
@@ -196,6 +220,14 @@ export const start_conversation = message => {
 // "type": "user"
 // }
 
+/**
+ * reply to the existing conversation
+ *
+ * @method
+ * @param {string} message
+ * @param {array} upload has the links of the uploaded images
+ * @returns {Function} dispatch witht the conversation part of the same message from the axios request
+ */
 export const reply = (message, upload) => {
   return (dispatch, getState) => {
     dispatch({
@@ -218,26 +250,40 @@ export const reply = (message, upload) => {
           payload: response.data
         });
       })
+      .then(() => dispatch(update_conversatusion_read_status()))
       .catch(err => {
         // console.log("reply", err.message || err.response);
       });
   };
 };
 
-//recived admin response
+/**
+ * recived admin response from socket
+ *
+ * @method
+ * @param {object} message
+ * @returns {Function} dispatch with the conversation object of the admin
+ */
 export const admin_response = message => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // dispatch(set_as_seen(true));
 
-    return dispatch({
+    await dispatch({
       type: actionTypes.ADD_MESSAGE,
       payload: message
     });
+
+    dispatch(update_conversatusion_read_status());
   };
 };
 
-//get status if conversation was seen
-
+/**
+ * Gets the last value of the message array size
+ * to compare it with the current array length
+ *
+ * @method
+ * @returns {Function} dispatch action with a boolean to diplay notifications icon according
+ */
 export const get_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
@@ -265,6 +311,12 @@ export const get_conversatusion_read_status = () => {
   };
 };
 
+/**
+ * updates the database with current size of the message array
+ *
+ * @method
+ * @returns {Function} dispatch action with a true boolean to set off the notification after update
+ */
 export const update_conversatusion_read_status = () => {
   return (dispatch, getState) => {
     axios
@@ -296,7 +348,13 @@ export const update_conversatusion_read_status = () => {
   };
 };
 
-// export const set_as_seen
+/**
+ * update the conversation as read from the user's side
+ *
+ * @method
+ * @param {boolean} check
+ * @returns {Function} dispatch action with the check boolean
+ */
 export const set_as_seen = check => {
   return (dispatch, getState) => {
     if (check)
@@ -322,7 +380,12 @@ export const set_as_seen = check => {
   };
 };
 
-// call when the user closes the msg screen ?
+/**
+ * call when the user closes the msg screen to update their last seen
+ *
+ * @method
+ * @returns {Function} dispatch action with the a data object
+ */
 export const update_last_seen = () => {
   return (dispatch, getState) => {
     NodeBackendURL.get(`update-last-seen/${getState().auth.userInfo.userid}`)
@@ -341,6 +404,13 @@ export const update_last_seen = () => {
   };
 };
 
+/**
+ * upload an image attechment
+ *
+ * @method
+ * @param {FormData} media
+ * @returns {Function} dispatch action to send a reply with the image link
+ */
 export const upload_media = media => {
   return (dispatch, getState) => {
     axios
@@ -381,6 +451,13 @@ export const upload_media = media => {
   };
 };
 
+/**
+ * subscribe the user to the chat room to recieve admin replies
+ *
+ * @method
+ * @param {socket} socket
+ * @returns {Function} dispatch action for subscription
+ */
 export const subscribe = socket => {
   return (dispatch, getState) => {
     socket.emit("subscribe", getState().auth.userInfo.userid);
