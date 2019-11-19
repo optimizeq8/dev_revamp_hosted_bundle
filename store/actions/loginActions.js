@@ -89,21 +89,38 @@ export const checkForExpiredToken = navigation => {
             ].includes(user.email)
           )
             dispatch(chanege_base_url(true));
-          setAuthToken(token)
-            .then(() =>
-              dispatch(
-                setCurrentUser({
-                  user: user,
-                  message: "Logged-in Successfully"
-                })
-              )
-            )
-            .then(() => {
-              dispatch(send_push_notification());
-              dispatch(getBusinessAccounts());
+          // check if the local store token is same as in db
+          createBaseUrl()
+            .get("verifyAccessToken", {
+              headers: {
+                Authorization: `jwt ${token}`
+              }
             })
-            .then(() => {
-              navigation.navigate("Dashboard");
+            .then(responseToken => {
+              if (responseToken.data.success) {
+                setAuthToken(token)
+                  .then(() =>
+                    dispatch(
+                      setCurrentUser({
+                        user: user,
+                        message: "Logged-in Successfully"
+                      })
+                    )
+                  )
+                  .then(() => {
+                    dispatch(send_push_notification());
+                    dispatch(getBusinessAccounts());
+                  })
+                  .then(() => {
+                    navigation.navigate("Dashboard");
+                  });
+              } else {
+                dispatch(clearPushToken(navigation, user.userid));
+              }
+            })
+            .catch(errorToken => {
+              // console.log('token error', errorToken.response || errorToken.message);
+              dispatch(clearPushToken(navigation, user.userid));
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
@@ -165,7 +182,9 @@ export const login = (userData, navigation) => {
       .then(() => {
         if (getState().auth.userInfo) {
           if (getState().auth.userInfo.tmp_pwd === "1") {
-            navigation.navigate("ChangePassword", { temp_pwd: true });
+            navigation.navigate("ChangePassword", {
+              temp_pwd: true
+            });
           } else {
             navigation.navigate("Dashboard");
           }
@@ -274,7 +293,10 @@ export const setCurrentUser = user => {
         payload: user
       });
     } else {
-      return dispatch({ type: actionTypes.LOGOUT_USER, payload: { user } });
+      return dispatch({
+        type: actionTypes.LOGOUT_USER,
+        payload: { user }
+      });
     }
   };
 };
@@ -316,7 +338,10 @@ export const changePassword = (currentPass, newPass, navigation, userEmail) => {
           );
           return dispatch({
             type: actionTypes.CHANGE_PASSWORD,
-            payload: { success: response.data.success, loading: false }
+            payload: {
+              success: response.data.success,
+              loading: false
+            }
           });
         }
         //   let time = new Animated.Value(0);

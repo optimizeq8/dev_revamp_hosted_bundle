@@ -342,7 +342,7 @@ export const create_snapchat_ad_account = (id, navigation) => {
   };
 };
 
-export const updateUserInfo = info => {
+export const updateUserInfo = (info, navigation) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
@@ -362,9 +362,14 @@ export const updateUserInfo = info => {
             type: "success",
             position: "top"
           });
+          const updateInfo = {
+            ...info,
+            mobile: info.country_code + info.mobile
+          };
+          navigation.goBack();
           return dispatch({
             type: actionTypes.UPDATE_USERINFO,
-            payload: { ...info }
+            payload: { ...updateInfo }
           });
         } else {
           showMessage({
