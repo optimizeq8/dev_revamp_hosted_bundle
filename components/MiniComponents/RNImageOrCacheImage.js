@@ -10,6 +10,11 @@ const preview = {
 export default class RNImageOrCacheImage extends Component {
   state = { path: "" };
   async componentDidMount() {}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.path !== this.state.path) {
+      this.handlCacheLoading();
+    }
+  }
   handlCacheLoading = async () => {
     let { media } = this.props;
     if (media.includes("https://") || media.includes("http://")) {
@@ -19,12 +24,15 @@ export default class RNImageOrCacheImage extends Component {
   };
   render() {
     let { media, style, resizeMode, blurRadius } = this.props;
+    console.log("path", this.state.path);
+
     return (
       <>
         <NavigationEvents onDidFocus={this.handlCacheLoading} />
 
         {media.includes("https://") || media.includes("http://") ? (
           <>
+            <Image style={style} {...{ preview, uri: media }} />
             {!this.state.path && (
               <ActivityIndicator
                 style={{
@@ -35,7 +43,6 @@ export default class RNImageOrCacheImage extends Component {
                 color="white"
               />
             )}
-            <Image style={style} {...{ preview, uri: media }} />
           </>
         ) : (
           <RNImage

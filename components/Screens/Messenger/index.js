@@ -374,7 +374,4 @@ const mapDispatchToProps = dispatch => ({
   upload_media: media => dispatch(actionCreators.upload_media(media))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Messenger);
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger);
