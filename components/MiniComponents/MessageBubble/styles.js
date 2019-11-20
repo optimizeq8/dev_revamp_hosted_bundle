@@ -47,6 +47,15 @@ const styles = StyleSheet.create({
   },
   messageFullView: {
     flexDirection: "row"
+  },
+  image: {
+    borderRadius: 30,
+    overflow: "hidden",
+    alignSelf: "center",
+    width: 150,
+    height: 150,
+    zIndex: 0,
+    justifyContent: "center"
   }
 });
 export default styles;

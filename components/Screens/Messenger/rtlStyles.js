@@ -9,7 +9,6 @@ const IsIOS = Platform.OS === "ios";
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1
-    // backgroundColor: '#0000',
   },
   container: {
     backgroundColor: "#0000",
@@ -22,9 +21,6 @@ const styles = StyleSheet.create({
   textInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: 'space-around',
-    // justifyContent: 'center',
-    // flex: 1,
     paddingLeft: 8,
     paddingRight: 8,
     backgroundColor: "#F4F4F4",
@@ -45,30 +41,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlignVertical: "center",
     display: "flex",
-    fontSize: 12,
+    fontSize: 12 / PixelRatio.getFontScale(),
     color: "#909090",
-    // lineHeight: 30,
     flex: 1,
-    // maxWidth:
     backgroundColor: "white",
     borderWidth: 0,
     borderRadius: 20,
     marginBottom: 17,
     width: "100%"
-    // marginHorizontal: 8,
-    // borderRadius: 80
   },
   cameraIcon: {
     marginBottom: 17
-    // flex: 0,
   },
   submitButton: {
     position: "absolute",
     flex: 0,
-
-    // right: widthPercentageToDP(2),
-    // bottom: heightPercentageToDP(1),
-
     bottom: heightPercentageToDP(5) > 40 ? -2 : "5%",
     right: heightPercentageToDP(5) > 40 ? 10 : "2%",
     transform: [
@@ -89,17 +76,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     marginBottom: 25,
     marginRight: 18
-    // bottom: heightPercentageToDP(bottom)
   },
   connectingAgentText: {
     color: "white",
-    fontSize: 14,
+    fontSize: 14 / PixelRatio.getFontScale(),
     lineHeight: 18,
     fontFamily: "montserrat-regular",
     letterSpacing: 0,
     maxWidth: 150,
     textAlign: "center"
-    // paddingTop: 10,
   },
   flexView: {
     display: "flex",

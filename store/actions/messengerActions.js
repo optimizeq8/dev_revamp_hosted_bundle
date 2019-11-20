@@ -164,8 +164,6 @@ export const get_conversation = user_id => {
         }
       })
       .then(() => {
-        console.log("pass??");
-
         dispatch(get_conversatusion_read_status());
         dispatch(update_app_status_chat_notification(true));
         // if (!isNull(getState().messenger.conversation_id))
@@ -247,8 +245,6 @@ export const start_conversation = message => {
  * @returns {Function} dispatch witht the conversation part of the same message from the axios request
  */
 export const reply = (message, upload) => {
-  console.log("message", message);
-
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
@@ -262,8 +258,6 @@ export const reply = (message, upload) => {
       attachment_urls: upload
     })
       .then(response => {
-        console.log("response", response.data);
-
         dispatch(send_push_notification());
         return dispatch({
           type: actionTypes.ADD_MESSAGE,
@@ -433,6 +427,10 @@ export const update_last_seen = () => {
  */
 export const upload_media = media => {
   return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_LOADING_MESSAGE,
+      payload: true
+    });
     axios
       .post(
         //  getState().login.admin
@@ -446,14 +444,16 @@ export const upload_media = media => {
         return res.data;
       })
       .then(data => {
-        console.log("data", data);
-
         if (data.success) return dispatch(reply(null, [data.media_link]));
         else {
           showMessage({
             message: data.message || "Something went wrong, please try again.",
             type: "danger",
             position: "top"
+          });
+          return dispatch({
+            type: actionTypes.SET_LOADING_MESSAGE,
+            payload: false
           });
         }
       })
@@ -467,6 +467,10 @@ export const upload_media = media => {
           position: "top"
         });
         console.log("upload_media", err.message || err.response);
+        return dispatch({
+          type: actionTypes.SET_LOADING_MESSAGE,
+          payload: false
+        });
       });
   };
 };
