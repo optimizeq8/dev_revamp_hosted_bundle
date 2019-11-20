@@ -388,7 +388,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
