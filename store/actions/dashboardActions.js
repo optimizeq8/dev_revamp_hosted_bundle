@@ -171,7 +171,9 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
           !err.message.includes("Api") &&
             showMessage({
               message:
-                err.response || "Something went wrong, please try again.",
+                err.message ||
+                err.response ||
+                "Something went wrong, please try again.",
               type: "danger",
               position: "top"
             });
