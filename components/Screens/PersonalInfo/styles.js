@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio, Platform } from "react-native";
+import { StyleSheet, PixelRatio, Platform, I18nManager } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
   },
   labelMobileNo: {
     // bottom: 5,
-    alignSelf: "center",
+    // alignSelf: "center",
 
     fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
     bottom: 5,
-    alignSelf: "center",
+    // alignSelf: "center",
     fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14
   },
   mainCard: {
@@ -71,18 +71,36 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontFamily: "montserrat-regular-english",
-    textAlign: "center",
+    textAlign: I18nManager.isRTL ? "right" : "left",
     fontSize: 21 / PixelRatio.getFontScale(),
     color: "#4B4B4B"
   },
   input: {
-    bottom: 25,
-    marginBottom: 30,
-    alignSelf: "center",
-    width: "90%",
-    height: 45,
+    // bottom: 25,
+    marginBottom: 10,
+    // alignSelf: "center",
+    // width: "90%",
+    // height: 45,
     borderColor: "#7039FF"
-  }
+  },
+  fullNameView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 0,
+    paddingHorizontal: 0,
+    width: "100%"
+  },
+  phoneInput: {
+    borderRadius: 0,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingBottom: 10,
+    marginTop: 10,
+    width: "100%"
+  },
+  mobileView: { width: "100%" },
+  emailItem: { width: "100%", marginTop: 25 }
 });
 
 export default styles;

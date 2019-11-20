@@ -3,10 +3,9 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler,
-  TouchableOpacity
+  BackHandler
 } from "react-native";
-import { Text, Item, Input, Label, Icon } from "native-base";
+import { Item, Input, Label, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
@@ -23,7 +22,7 @@ import PersonalInfoIcon from "../../../assets/SVGs/Person";
 // Style
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
-import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
+import PhoneNoField from "./PhoneInput";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -45,7 +44,6 @@ class PersonalInfo extends Component {
       inputF: false,
       inputL: false,
       inputE: false,
-
       firstnameError: "",
       lastnameError: "",
       emailError: ""
@@ -60,6 +58,12 @@ class PersonalInfo extends Component {
     return true;
   };
   componentDidMount() {
+    const countryCode = this.props.userInfo.mobile.substring(0, 3);
+    this.setState({
+      phoneNum: "+" + this.props.userInfo.mobile,
+      valid: true,
+      countryCode: countryCode
+    });
     Segment.screenWithProperties("Personal Info", {
       category: "User Menu"
     });
@@ -67,38 +71,50 @@ class PersonalInfo extends Component {
   }
 
   changePersonalNo = (number, countryCode, type, valid) => {
-    if (number.toString().length > 3 && valid) {
-      this.setState({
-        phoneNum: number.split(countryCode)[1],
-        countryCode: countryCode,
-        valid,
-        type
-      });
-    }
+    // if (number.toString().length > 3 && valid) {
+    this.setState({
+      // phoneNum: number.toString().length > 3 && valid ? number.split(countryCode)[1] : number,
+      phoneNum: number,
+      countryCode: countryCode,
+      valid,
+      type
+    });
+    // }
   };
 
   validator = () => {
     const firstnameError = validateWrapper("mandatory", this.state.firstname);
     const lastnameError = validateWrapper("mandatory", this.state.lastname);
-    const emailError = validateWrapper("mandatory", this.state.email);
+    const emailErrorMandatory = validateWrapper("mandatory", this.state.email);
+    const emailError = validateWrapper("email", this.state.email);
+
     this.setState({
       firstnameError,
       lastnameError,
-      emailError
+      emailError,
+      emailErrorMandatory
     });
     const { translate } = this.props.screenProps;
-
-    if (firstnameError || lastnameError) {
+    // validate all feilds and shows error if any
+    if (
+      firstnameError ||
+      lastnameError ||
+      emailError ||
+      emailErrorMandatory ||
+      !this.state.valid
+    ) {
       showMessage({
         type: "warning",
         message: translate(
-          `Please provide a ${
-            firstnameError
-              ? "first name"
-              : lastnameError
-              ? "last name"
-              : emailError && "email"
-          }`
+          !this.state.valid
+            ? "Please enter a valid number!"
+            : `Please provide a ${
+                firstnameError
+                  ? "first name"
+                  : lastnameError
+                  ? "last name"
+                  : (emailError || emailErrorMandatory) && "email"
+              }`
         )
       });
       return false;
@@ -110,14 +126,23 @@ class PersonalInfo extends Component {
     if (this.validator()) {
       const changedInfo =
         this.state.firstname !== this.props.userInfo.firstname ||
-        this.state.lastname !== this.props.userInfo.lastname;
-      if (changedInfo)
-        this.props.updateUserInfo({
-          // email: this.state.email,
-          firstname: this.state.firstname,
-          lastname: this.state.lastname
-        });
-      else
+        this.state.lastname !== this.props.userInfo.lastname ||
+        this.state.phoneNum !== "+" + this.props.userInfo.mobile ||
+        this.state.email !== this.props.userInfo.email;
+      if (changedInfo) {
+        const country_code = this.state.phoneNum.substring(1, 4);
+        const mobile = this.state.phoneNum.substring(4, this.state.phoneNum);
+        this.props.updateUserInfo(
+          {
+            email: this.state.email,
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
+            country_code,
+            mobile
+          },
+          this.props.navigation
+        );
+      } else
         showMessage({
           type: "warning",
           message: translate("No changes to update"),
@@ -149,17 +174,12 @@ class PersonalInfo extends Component {
               {() => (
                 <View style={styles.contentContainer}>
                   <View style={styles.dataContainer}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
+                    <View style={styles.fullNameView}>
                       <Item
                         floatingLabel
                         style={[
                           styles.input,
-                          { width: "45%" },
+                          { width: "50%" },
                           this.state.inputF
                             ? globalStyles.purpleBorderColor
                             : this.state.firstnameError
@@ -171,6 +191,7 @@ class PersonalInfo extends Component {
                           {translate("First Name")}
                         </Label>
                         <Input
+                          disabled={this.props.loadingUpdateInfo}
                           style={[styles.inputText]}
                           value={this.state.firstname}
                           onBlur={() => {
@@ -189,7 +210,7 @@ class PersonalInfo extends Component {
                         floatingLabel
                         style={[
                           styles.input,
-                          { width: "45%" },
+                          { width: "50%" },
 
                           this.state.inputL
                             ? globalStyles.purpleBorderColor
@@ -202,6 +223,7 @@ class PersonalInfo extends Component {
                           {translate("Last Name")}
                         </Label>
                         <Input
+                          disabled={this.props.loadingUpdateInfo}
                           style={[styles.inputText]}
                           value={this.state.lastname}
                           onBlur={() => {
@@ -213,34 +235,16 @@ class PersonalInfo extends Component {
                         />
                       </Item>
                     </View>
-                    {/* <Text style={styles.nameText}>
-                      {this.props.userInfo.firstname}{" "}
-                      {this.props.userInfo.lastname}
-                    </Text> */}
-
-                    <View
-                      style={[styles.input, globalStyles.lightGrayBorderColor]}
-                    >
-                      <Label
-                        style={[
-                          styles.label,
-                          styles.labelMobileNo,
-                          {
-                            // fontSize:
-                            //   Platform.OS === "android"
-                            //     ? 14 / PixelRatio.getFontScale()
-                            //     : 14
-                          }
-                        ]}
-                      >
+                    <View style={styles.mobileView}>
+                      <Label style={[styles.label, styles.labelMobileNo]}>
                         {translate("Mobile No")}
                       </Label>
                       <PhoneNoField
+                        disabled={this.props.loadingUpdateInfo}
                         screenProps={this.props.screenProps}
-                        valid
-                        disabled={true}
+                        valid={this.state.valid}
                         changeNo={this.changePersonalNo}
-                        phoneNum={this.props.userInfo.mobile}
+                        phoneNum={this.state.phoneNum}
                       />
                     </View>
 
@@ -249,15 +253,16 @@ class PersonalInfo extends Component {
                       style={[
                         styles.input,
                         globalStyles.lightGrayBorderColor,
-                        { width: "100%" }
+                        styles.emailItem
                       ]}
                     >
                       <Label style={[styles.label, styles.labelEmail]}>
                         {translate("Email")}
                       </Label>
                       <Input
-                        disabled
-                        style={[styles.inputText, { opacity: 0.5 }]}
+                        disabled={this.props.loadingUpdateInfo}
+                        autoCapitalize={"none"}
+                        style={[styles.inputText]}
                         value={this.state.email}
                         onBlur={() => this.validator()}
                         onChangeText={email => this.setState({ email })}
@@ -291,9 +296,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateUserInfo: info => dispatch(actionCreators.updateUserInfo(info))
+  updateUserInfo: (info, navigation) =>
+    dispatch(actionCreators.updateUserInfo(info, navigation))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PersonalInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
