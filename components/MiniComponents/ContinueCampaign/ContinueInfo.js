@@ -44,7 +44,12 @@ ContinueInfo = props => {
         height: "50%"
       }}
     >
-      <Content style={styles.contentStyle}>
+      <Content
+        contentContainerStyle={{
+          paddingBottom: "20%"
+        }}
+        style={styles.contentStyle}
+      >
         <Snapchat style={{ alignSelf: "center" }} />
         {data.name && <Text style={styles.text}>{data.name}</Text>}
         {data.campaignInfo && data.campaignInfo.lifetime_budget_micro && (
@@ -127,7 +132,4 @@ const mapStateToProps = state => ({
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(ContinueInfo);
+export default connect(mapStateToProps, null)(ContinueInfo);
