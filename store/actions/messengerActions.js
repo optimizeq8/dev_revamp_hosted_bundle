@@ -9,8 +9,7 @@ import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
 instance = axios.create({
-  // baseURL: "https://www.optimizeapp.io/"
-  baseURL: "https://intercom-react.glitch.me/"
+  baseURL: "https://www.optimizeapp.io/"
 });
 
 /**
@@ -433,10 +432,9 @@ export const upload_media = media => {
     });
     axios
       .post(
-        //  getState().login.admin
-        //    ?
-        "https://optimizekwtestingserver.com/optimize/public/uploadChatMedia",
-        //  : "https://www.optimizeapp.com/optimize/public/uploadChatMedia",
+        getState().login.admin
+          ? "https://optimizekwtestingserver.com/optimize/public/uploadChatMedia"
+          : "https://www.optimizeapp.com/optimize/public/uploadChatMedia",
 
         media
       )
