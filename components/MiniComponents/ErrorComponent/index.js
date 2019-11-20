@@ -63,7 +63,7 @@ class ErrorComponent extends Component {
         forceInset={{ top: "always", bottom: "never" }}
       >
         <LinearGradient
-          colors={[colors.background1, colors.background2]}
+          colors={["#6200FF", "#8900FF"]}
           locations={[1, 0.3]}
           style={styles.gradient}
         />
