@@ -613,10 +613,13 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
           screenProps={this.props.screenProps}
+          tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
+          navigation={this.props.navigation}
         />
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
           navigation={this.props.navigation}
+          dateField={this.dateField}
           screenProps={this.props.screenProps}
         />
         <Modal
@@ -677,7 +680,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.set_collectionAd_link_form(value)),
   reset_collections: () => dispatch(actionCreators.reset_collections())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdObjective);
+export default connect(mapStateToProps, mapDispatchToProps)(AdObjective);
