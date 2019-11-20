@@ -771,7 +771,7 @@ class CampaignDetails extends Component {
               )}
           </SafeAreaView>
           {selectedCampaign &&
-            (selectedCampaign.review_status !== "REJECTED" && (
+            selectedCampaign.review_status !== "REJECTED" && (
               <SlideUpPanel
                 screenProps={this.props.screenProps}
                 start_time={this.state.start_time}
@@ -781,7 +781,7 @@ class CampaignDetails extends Component {
                 hideCharts={this.hideCharts}
                 getCampaignStats={this.props.getCampaignStats}
               />
-            ))}
+            )}
         </>
       );
     }
@@ -805,7 +805,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignStats(info, range)),
   get_languages: () => dispatch(actionCreators.get_languages()),
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CampaignDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);
