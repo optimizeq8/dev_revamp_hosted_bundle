@@ -42,28 +42,23 @@ YellowBox.ignoreWarnings([
   "Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?"
 ]);
 
-const socket = socketIOClient(
-  "https://intercom-react.glitch.me/",
-  // "https://www.optimizeapp.io/"
-
-  {
-    timeout: 10000,
-    jsonp: false,
-    transports: ["websocket"],
-    autoConnect: false,
-    reconnection: true
-    // agent: '-',
-    // path: '/', // Whatever your path is
-    // pfx: '-',
-    // key: token, // Using token-based auth.
-    // passphrase: cookie, // Using cookie auth.
-    // cert: '-',
-    // ca: '-',
-    // ciphers: '-',
-    // rejectUnauthorized: '-',
-    // perMessageDeflate: '-',
-  }
-);
+const socket = socketIOClient("https://www.optimizeapp.io/", {
+  timeout: 10000,
+  jsonp: false,
+  transports: ["websocket"],
+  autoConnect: false,
+  reconnection: true
+  // agent: '-',
+  // path: '/', // Whatever your path is
+  // pfx: '-',
+  // key: token, // Using token-based auth.
+  // passphrase: cookie, // Using cookie auth.
+  // cert: '-',
+  // ca: '-',
+  // ciphers: '-',
+  // rejectUnauthorized: '-',
+  // perMessageDeflate: '-',
+});
 
 class Messenger extends Component {
   static navigationOptions = {
