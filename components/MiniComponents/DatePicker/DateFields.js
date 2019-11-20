@@ -6,8 +6,12 @@ import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { Modal } from "react-native-paper";
 import DateRangePicker from "./DateRangePicker";
 import CustomHeader from "../Header";
-import { SafeAreaView } from "react-navigation";
-import dateFormat from "dateformat";
+import {
+  SafeAreaView,
+  NavigationActions,
+  StackActions
+} from "react-navigation";
+import { connect } from "react-redux";
 
 // Style
 import styles from "./styles";
@@ -20,9 +24,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { showMessage } from "react-native-flash-message";
 
-export default class DateFields extends Component {
+class DateFields extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,6 +91,7 @@ export default class DateFields extends Component {
       await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
+      this.navigateToContinue();
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
@@ -128,6 +132,24 @@ export default class DateFields extends Component {
         reset: true
       });
     }
+  };
+  navigateToContinue = () => {
+    let tempAdType = this.props.tempAdType;
+
+    let continueRoutes = this.props.currentCampaignSteps.map(route =>
+      NavigationActions.navigate({
+        routeName: route,
+        params: {
+          tempAdType
+        }
+      })
+    );
+    resetAction = StackActions.reset({
+      index: continueRoutes.length - 1,
+      actions: continueRoutes
+    });
+
+    this.props.navigation.dispatch(resetAction);
   };
 
   render() {
@@ -236,7 +258,10 @@ export default class DateFields extends Component {
                       reset: false
                     });
                   }}
-                  theme={{ markColor: "#FF9D00", markTextColor: "white" }}
+                  theme={{
+                    markColor: "#FF9D00",
+                    markTextColor: "white"
+                  }}
                 />
               </View>
 
@@ -256,3 +281,13 @@ export default class DateFields extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  currentCampaignSteps: state.campaignC.currentCampaignSteps
+});
+const mapDispatchToProps = dispatch => ({
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
