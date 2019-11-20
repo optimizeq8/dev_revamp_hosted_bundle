@@ -148,12 +148,24 @@ const reducer = (state = initialState, action) => {
 
       //Same thing, attachment comes in as a string from campaignDetails,
       if (rejCampaign.hasOwnProperty("attachment")) {
+        let rejCampaignAttacment = rejCampaign.attachment;
         //if its a string and not "BLANK" then parse it
-        rejCampaign.attachment =
-          typeof rejCampaign.attachment === "string" &&
-          rejCampaign.attachment !== "BLANK"
-            ? JSON.parse(rejCampaign.attachment)
-            : rejCampaign.attachment;
+        rejCampaignAttacment =
+          typeof rejCampaignAttacment === "string" &&
+          rejCampaignAttacment !== "BLANK"
+            ? JSON.parse(rejCampaignAttacment)
+            : rejCampaignAttacment;
+        //Sometimes attachemnts have utm parameters, they are deleted so that
+        //if sent back they will be added from the backend
+        if (rejCampaignAttacment.hasOwnProperty("block_preload")) {
+          delete rejCampaignAttacment.block_preload;
+          if (rejCampaignAttacment.url.includes("?utm_source")) {
+            rejCampaignAttacment.url = rejCampaignAttacment.url.split(
+              "?utm_source"
+            )[0];
+          }
+        }
+        rejCampaign.attachment = rejCampaignAttacment;
       }
       return { ...state, rejCampaign };
     case actionTypes.RESET_REJECTED_CAMPAIGN:
