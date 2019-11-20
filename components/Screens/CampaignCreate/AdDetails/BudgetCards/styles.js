@@ -3,7 +3,8 @@ import { globalColors } from "../../../../../GlobalStyles";
 export default StyleSheet.create({
   scrollContainerStyle: {
     alignItems: "center",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingTop: 5
   },
   budgetCardsStyle: { alignSelf: "center" },
   budgetCardStyle: {

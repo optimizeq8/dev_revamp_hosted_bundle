@@ -40,6 +40,7 @@ class AdPaymentReview extends Component {
   };
   componentDidMount() {
     this.props.get_languages();
+    this.props.save_campaign_info({ campaignDateChanged: false });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
@@ -85,9 +86,15 @@ class AdPaymentReview extends Component {
         : [];
 
       let languageNames = [];
-      languageNames = targeting && targeting.demographics[0] && targeting.demographics[0].languages.map(languageId => {
-        return translate(this.props.languages && this.props.languages.find(lang => lang.id === languageId).name)
-      });
+      languageNames =
+        targeting &&
+        targeting.demographics[0] &&
+        targeting.demographics[0].languages.map(languageId => {
+          return translate(
+            this.props.languages &&
+              this.props.languages.find(lang => lang.id === languageId).name
+          );
+        });
 
       const media = this.props.data.media ? this.props.data.media : "//";
       return (
@@ -100,20 +107,20 @@ class AdPaymentReview extends Component {
               this.props.saveCampaignSteps(
                 this.props.adType === "StoryAd"
                   ? [
-                    "Dashboard",
-                    "AdObjective",
-                    "AdCover",
-                    "AdDesign",
-                    "AdDetails",
-                    "AdPaymentReview"
-                  ]
+                      "Dashboard",
+                      "AdObjective",
+                      "AdCover",
+                      "AdDesign",
+                      "AdDetails",
+                      "AdPaymentReview"
+                    ]
                   : [
-                    "Dashboard",
-                    "AdObjective",
-                    "AdDesign",
-                    "AdDetails",
-                    "AdPaymentReview"
-                  ]
+                      "Dashboard",
+                      "AdObjective",
+                      "AdDesign",
+                      "AdDetails",
+                      "AdPaymentReview"
+                    ]
               );
               Segment.screenWithProperties("Snap Ad Payment Review", {
                 category: "Campaign Creation"
@@ -161,19 +168,19 @@ class AdPaymentReview extends Component {
                 media.includes(".mov") ||
                 media.includes(".MP4") ||
                 media.includes(".MOV")) && (
-                  <View style={[styles.backgroundViewWrapper, styles.videoView]}>
-                    <Video
-                      source={{
-                        uri: media
-                      }}
-                      shouldPlay
-                      isLooping
-                      isMuted
-                      resizeMode="cover"
-                      style={styles.video}
-                    />
-                  </View>
-                )}
+                <View style={[styles.backgroundViewWrapper, styles.videoView]}>
+                  <Video
+                    source={{
+                      uri: media
+                    }}
+                    shouldPlay
+                    isLooping
+                    isMuted
+                    resizeMode="cover"
+                    style={styles.video}
+                  />
+                </View>
+              )}
               <ImageBackground
                 // blurRadius={20}
                 // imageStyle={{ opacity: 0.2 }}
@@ -181,11 +188,11 @@ class AdPaymentReview extends Component {
                 source={{
                   uri:
                     media.includes(".jpg") ||
-                      media.includes(".jpeg") ||
-                      media.includes(".png") ||
-                      media.includes(".JPG") ||
-                      media.includes(".JPEG") ||
-                      media.includes(".PNG")
+                    media.includes(".jpeg") ||
+                    media.includes(".png") ||
+                    media.includes(".JPG") ||
+                    media.includes(".JPEG") ||
+                    media.includes(".PNG")
                       ? media
                       : "www.go.com"
                 }}
@@ -276,16 +283,16 @@ class AdPaymentReview extends Component {
                           )
                         },
                         targeting.hasOwnProperty("devices") &&
-                        targeting.devices[0].os_version_max !== "" && {
-                          title: "OS Versions",
-                          content:
-                            targeting.devices[0].hasOwnProperty(
-                              "os_version_min"
-                            ) &&
-                            targeting.devices[0].os_version_min +
-                            ", " +
-                            targeting.devices[0].os_version_max
-                        }
+                          targeting.devices[0].os_version_max !== "" && {
+                            title: "OS Versions",
+                            content:
+                              targeting.devices[0].hasOwnProperty(
+                                "os_version_min"
+                              ) &&
+                              targeting.devices[0].os_version_min +
+                                ", " +
+                                targeting.devices[0].os_version_max
+                          }
                       ]}
                     />
                   </Content>
@@ -377,15 +384,13 @@ const mapStateToProps = state => ({
   kdamount: state.campaignC.kdamount,
   mainBusiness: state.account.mainBusiness,
   adType: state.campaignC.adType,
-  languages: state.campaignC.languagesList,
+  languages: state.campaignC.languagesList
 });
 
 const mapDispatchToProps = dispatch => ({
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
   get_languages: () => dispatch(actionCreators.get_languages()),
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdPaymentReview);
+export default connect(mapStateToProps, mapDispatchToProps)(AdPaymentReview);

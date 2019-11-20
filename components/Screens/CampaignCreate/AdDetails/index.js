@@ -184,41 +184,41 @@ class AdDetails extends Component {
         this.setState(
           {
             ...this.state,
-            campaignInfo: {
-              ...rep
-            },
             ...this.props.data,
+            campaignInfo: {
+              ...rep,
+              lifetime_budget_micro: this.props.data.campaignDateChanged
+                ? recBudget
+                : this.props.data.campaignInfo.lifetime_budget_micro
+            },
             value: this.formatNumber(
-              this.props.data.campaignInfo.lifetime_budget_micro
+              this.props.data.campaignDateChanged
+                ? recBudget
+                : this.props.data.campaignInfo.lifetime_budget_micro
             ),
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
-            regions: countryRegions.regions
+            regions: countryRegions.regions,
+            budgetOption: this.props.data.campaignDateChanged
+              ? 1
+              : this.props.data.budgetOption
           },
           () => {
+            if (this.props.data.appChoice) {
+              let navAppChoice =
+                this.props.data.iosApp_name && this.props.data.androidApp_name
+                  ? ""
+                  : this.props.data.appChoice;
+              let rep = this.state.campaignInfo;
+              rep.targeting.devices[0].os_type = navAppChoice;
+              this.setState({
+                campaignInfo: rep
+              });
+            }
             this._calcReach();
-            // this.state.campaignInfo &&
-            //   this.state.campaignInfo.targeting.geos[0].country_code &&
-            //   this.onSelectedCountryChange(
-            //     this.state.campaignInfo.targeting.geos[0].country_code,
-            //     true,
-            //     this.props.data.countryName
-            //   );
           }
         );
-      }
-
-      if (this.props.data.appChoice) {
-        let navAppChoice =
-          this.props.data.iosApp_name && this.props.data.androidApp_name
-            ? ""
-            : this.props.data.appChoice;
-        let rep = this.state.campaignInfo;
-        rep.targeting.devices[0].os_type = navAppChoice;
-        this.setState({
-          campaignInfo: rep
-        });
       }
     }
 
@@ -1027,7 +1027,8 @@ const mapStateToProps = state => ({
   languages: state.campaignC.languagesList,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
-  interests: state.campaignC.interests
+  interests: state.campaignC.interests,
+  campaignDateChanged: state.campaignC.campaignDateChanged
 });
 
 const mapDispatchToProps = dispatch => ({
