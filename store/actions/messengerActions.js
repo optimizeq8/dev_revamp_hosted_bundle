@@ -24,7 +24,7 @@ instance = axios.create({
 export const connect_user_to_intercom = user_id => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_LOADING_MESSENGER,
+      type: actionTypes.SET_LOADING,
       payload: true
     });
     // console.log("user_id: ", user_id);
@@ -53,7 +53,7 @@ export const connect_user_to_intercom = user_id => {
               }
             ];
           }
-          dispatch(create_user_on_intercom(body));
+          return dispatch(create_user_on_intercom(body));
         } else {
           // console.log("found user");
 
@@ -74,7 +74,11 @@ export const connect_user_to_intercom = user_id => {
         //    position: "top",
         //    description: translate("chat, login")
         //  });
-        // console.log("get_user", err.message || err.response);
+
+        console.log("get_user", err.message || err.response);
+        return dispatch({
+          type: actionTypes.ERROR_SET_CURRENT_MESSENGER
+        });
       });
   };
 };
@@ -148,10 +152,10 @@ export const get_conversation = user_id => {
             payload: false
           });
         } else {
-          console.log(
-            "conversation list: ",
-            data.messages[data.messages.length - 1]
-          );
+          // console.log(
+          //   "conversation list: ",
+          //   data.messages[data.messages.length - 1]
+          // );
 
           return dispatch({
             type: actionTypes.SET_CONVERSATION,
@@ -160,13 +164,27 @@ export const get_conversation = user_id => {
         }
       })
       .then(() => {
+        console.log("pass??");
+
         dispatch(get_conversatusion_read_status());
         dispatch(update_app_status_chat_notification(true));
         // if (!isNull(getState().messenger.conversation_id))
         //   dispatch(set_as_seen());
       })
       .catch(err => {
-        // console.log("get_conversation", err.message || err.response);
+        // showMessage({
+        //   message:
+        //     err.message ||
+        //     err.response ||
+        //     "Something went wrong, please try again.",
+        //   type: "danger",
+        //   position: "top"
+        // });
+
+        console.log("get_conversation", err.message || err.response);
+        return dispatch({
+          type: actionTypes.ERROR_SET_CONVERSATION
+        });
       });
   };
 };
