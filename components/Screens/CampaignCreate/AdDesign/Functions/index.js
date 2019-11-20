@@ -93,7 +93,7 @@ export const formatMedia = (
   longformvideo_media_type,
   mainBusiness,
   campaignInfo,
-  rejectionUpload,
+  fileReadyToUpload,
   rejected,
   data,
   setTheState
@@ -103,39 +103,35 @@ export const formatMedia = (
   allIosVideos = false;
   let cardMedia = "";
   let cardUrl = "";
-  if (!iosVideoUploaded || adType === "StoryAd") {
-    if (adType === "StoryAd") {
-      storyAd = storyAdsArray.find(card => {
-        if (card && card.media !== "//" && !card.media.includes("https://"))
-          cardMedia = card.media;
-        if (card && card.media !== "//" && card.media.includes("https://"))
-          cardUrl = card.media;
-        allIosVideos =
-          (!cardMedia && cardUrl && Platform.OS === "ios") || card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
-        return !allIosVideos ? cardMedia : cardUrl;
-      });
-      if (storyAd.media === "//" && !allIosVideos) {
-        storyAd.media = tempImage;
-        storyAd.media_type = tempType;
-      }
+  //fileReadyToUpload is true whenever the user picks an image, this is to not send the https url
+  //back to the back end when they re-upload for rejection reasons without choosing any images
+  if (fileReadyToUpload && adType === "StoryAd") {
+    storyAd = storyAdsArray.find(card => {
+      if (card && card.media !== "//" && !card.media.includes("https://"))
+        cardMedia = card.media;
+      if (card && card.media !== "//" && card.media.includes("https://"))
+        cardUrl = card.media;
+      allIosVideos =
+        (!cardMedia && cardUrl && Platform.OS === "ios") ||
+        card.uploadedFromDifferentDevice; // added || cardUrl to make it work on android
+      return !allIosVideos ? cardMedia : cardUrl;
+    });
+    if (storyAd.media === "//" && !allIosVideos) {
+      storyAd.media = tempImage;
+      storyAd.media_type = tempType;
     }
-    if (!allIosVideos) {
-      let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
-      res = res[res.length - 1];
-
-      let format = res.split(".")[1];
-
-      var photo = {
-        uri: adType !== "StoryAd" ? media : storyAd.media,
-        type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
-        name: res
-      };
-      body.append("media", photo);
-      body.append(
-        "media_type",
-        adType !== "StoryAd" ? type : storyAd.media_type
-      );
-    }
+  }
+  if (fileReadyToUpload && !iosVideoUploaded && !allIosVideos) {
+    let res = (adType !== "StoryAd" ? media : storyAd.media).split("/");
+    res = res[res.length - 1];
+    let format = res.split(".")[1];
+    var photo = {
+      uri: adType !== "StoryAd" ? media : storyAd.media,
+      type: (adType !== "StoryAd" ? type : storyAd.media_type) + "/" + format,
+      name: res
+    };
+    body.append("media", photo);
+    body.append("media_type", adType !== "StoryAd" ? type : storyAd.media_type);
   }
   if (longformvideo_media) {
     let resVideo = longformvideo_media.split("/ImagePicker/");
@@ -165,7 +161,7 @@ export const formatMedia = (
   body.append("brand_name", campaignInfo.brand_name);
   body.append("headline", campaignInfo.headline);
 
-  body.append("media_upload", rejectionUpload ? 1 : 0);
+  body.append("media_upload", fileReadyToUpload ? 1 : 0);
 
   body.append(
     "destination",
