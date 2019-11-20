@@ -9,6 +9,7 @@ import globalStyles from "../../../GlobalStyles";
 import CountryModal from "../Signup/PhoneNo/CountryModal";
 import { showMessage } from "react-native-flash-message";
 import find from "lodash/find";
+// added a new component for phone field with different styling
 export default class PhoneNoField extends Component {
   state = { pickerData: null, country: "kw", dialCode: "+965", number: "" };
   componentDidMount() {
@@ -66,6 +67,7 @@ export default class PhoneNoField extends Component {
             style={[styles.flagIcon, globalStyles.grayTextColor]}
           />
           <PhoneInput
+            disabled={this.props.disabled}
             textStyle={{
               fontSize: 20,
               color: "#4b4b4b",

@@ -58,15 +58,12 @@ class PersonalInfo extends Component {
     return true;
   };
   componentDidMount() {
-    if (this.props.userInfo) {
-      const countryCode = this.props.userInfo.mobile.substring(0, 3);
-      this.setState({
-        phoneNum: "+" + this.props.userInfo.mobile,
-        valid: true,
-        countryCode: countryCode
-      });
-    }
-
+    const countryCode = this.props.userInfo.mobile.substring(0, 3);
+    this.setState({
+      phoneNum: "+" + this.props.userInfo.mobile,
+      valid: true,
+      countryCode: countryCode
+    });
     Segment.screenWithProperties("Personal Info", {
       category: "User Menu"
     });
@@ -98,26 +95,27 @@ class PersonalInfo extends Component {
       emailErrorMandatory
     });
     const { translate } = this.props.screenProps;
-
-    if (firstnameError || lastnameError || emailError || emailErrorMandatory) {
+    // validate all feilds and shows error if any
+    if (
+      firstnameError ||
+      lastnameError ||
+      emailError ||
+      emailErrorMandatory ||
+      !this.state.valid
+    ) {
       showMessage({
         type: "warning",
         message: translate(
-          `Please provide a ${
-            firstnameError
-              ? "first name"
-              : lastnameError
-              ? "last name"
-              : (emailError || emailErrorMandatory) && "email"
-          }`
+          !this.state.valid
+            ? "Please enter a valid number!"
+            : `Please provide a ${
+                firstnameError
+                  ? "first name"
+                  : lastnameError
+                  ? "last name"
+                  : (emailError || emailErrorMandatory) && "email"
+              }`
         )
-      });
-      return false;
-    } else if (!this.state.valid) {
-      showMessage({
-        message: translate("Please enter a valid number!"),
-        type: "warning",
-        position: "top"
       });
       return false;
     } else return true;
@@ -193,6 +191,7 @@ class PersonalInfo extends Component {
                           {translate("First Name")}
                         </Label>
                         <Input
+                          disabled={this.props.loadingUpdateInfo}
                           style={[styles.inputText]}
                           value={this.state.firstname}
                           onBlur={() => {
@@ -224,6 +223,7 @@ class PersonalInfo extends Component {
                           {translate("Last Name")}
                         </Label>
                         <Input
+                          disabled={this.props.loadingUpdateInfo}
                           style={[styles.inputText]}
                           value={this.state.lastname}
                           onBlur={() => {
@@ -240,6 +240,7 @@ class PersonalInfo extends Component {
                         {translate("Mobile No")}
                       </Label>
                       <PhoneNoField
+                        disabled={this.props.loadingUpdateInfo}
                         screenProps={this.props.screenProps}
                         valid={this.state.valid}
                         changeNo={this.changePersonalNo}
@@ -259,7 +260,7 @@ class PersonalInfo extends Component {
                         {translate("Email")}
                       </Label>
                       <Input
-                        // disabled
+                        disabled={this.props.loadingUpdateInfo}
                         autoCapitalize={"none"}
                         style={[styles.inputText]}
                         value={this.state.email}
