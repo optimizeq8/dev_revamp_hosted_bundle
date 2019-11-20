@@ -1,16 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import {
-  Text,
-  View,
-  ActivityIndicator,
-  I18nManager,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity
-} from "react-native";
+import { Text, View, I18nManager, TouchableOpacity } from "react-native";
 import dateFormat from "dateformat";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
 import { Transition } from "react-navigation-fluid-transitions";
@@ -20,7 +12,7 @@ import TransparentTriangle from "../../../assets/SVGs/ChatBubbleTransparentTrian
 import RNImageOrCacheImage from "../RNImageOrCacheImage";
 import isNull from "lodash/isNull";
 
-class MessageBubble extends Component {
+class MessageBubble extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,20 +23,21 @@ class MessageBubble extends Component {
     let userFormatter = "#6C63FF";
     var align = "flex-start";
     let body = "";
+    // to format the color and direction of the bubble
     if (this.props.message.author.type === "user") {
       userFormatter = globalColors.orange;
       align = "flex-end";
     }
+    //originally the message body is sent in html but because I parse it into text
+    //the text comes with an [Attachment:] array conjoined with the text as a string
+    //so I just remove it if that's the case
 
-    if (!isNull(this.props.message.body))
-      body = this.props.message.body.split("[Attachment:")[0].trim();
     if (
-      this.props.message.attachments.length !== 0 &&
-      this.props.message.author.type === "user"
+      !isNull(this.props.message.body) &&
+      this.props.message.body.includes("[Attachment:")
     ) {
-      // console.log("body", this.props.message);
-      // console.log("message: ", this.props.message);]
-    }
+      body = this.props.message.body.split("[Attachment:")[0].trim();
+    } else body = this.props.message.body;
 
     return (
       <View style={styles.messageBubbleOuterView}>
@@ -105,16 +98,7 @@ class MessageBubble extends Component {
               >
                 <RNImageOrCacheImage
                   media={this.props.message.attachments[0].url}
-                  style={{
-                    // opacity: 0.5,
-                    borderRadius: 30,
-                    overflow: "hidden",
-                    alignSelf: "center",
-                    width: 150,
-                    height: 150,
-                    zIndex: 0,
-                    justifyContent: "center"
-                  }}
+                  style={styles.image}
                   resizeMode="center"
                 />
               </Transition>
@@ -132,9 +116,7 @@ class MessageBubble extends Component {
                 }
               ]}
               onLayout={event => {
-                var { x, y, width, height } = event.nativeEvent.layout;
-                // console.log('width', width);
-                // console.log('height', height);
+                var { height } = event.nativeEvent.layout;
                 this.setState({
                   height: height
                 });

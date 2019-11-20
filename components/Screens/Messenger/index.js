@@ -15,10 +15,9 @@ import * as ImagePicker from "expo-image-picker";
 import CustomHeader from "../../MiniComponents/Header";
 import MessageBubble from "../../MiniComponents/MessageBubble";
 import * as Segment from "expo-analytics-segment";
-import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 import socketIOClient from "socket.io-client";
-import { Content } from "native-base";
-import KeyBoardShift from "../../MiniComponents/KeyboardShift";
+import { ActivityIndicator } from "react-native-paper";
+
 //icons
 import ForwardButton from "../../../assets/SVGs/ForwardButton";
 import Camera from "../../../assets/SVGs/Camera";
@@ -27,18 +26,14 @@ import ChatBot from "../../../assets/SVGs/ChatBot";
 // Style
 import styles from "./styles";
 import rtlStyles from "./rtlStyles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 
 //Redux
 import * as actionCreators from "../../../store/actions/";
 import { connect } from "react-redux";
 
 //Functions
-import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
 import { YellowBox } from "react-native";
@@ -86,7 +81,11 @@ class Messenger extends Component {
     };
   }
   componentDidMount() {
-    // this.props.connect_user_to_intercom(this.props.userInfo.userid);
+    // after the scoket is connected, it will intercept any "AdminReply" activity for the
+    // room the user is subscribed to based on their id
+    // the conversation is set as seen/read whe they open the messenger
+    // at the same time the update_conversatusion_read_status gets called tp update the notifications indicator
+
     socket.connect();
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
@@ -98,17 +97,12 @@ class Messenger extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.messages.length !== this.props.messages.length) {
-    // 	// console.log("scrolling to end");
-    // 	this.flatList.scrollToEnd({ animated: true });
-    // }
-    // if (prevState.text !== this.state.text) {
-    //   socket.emit("unsubscribe", prevState.text);
-    // }
-  }
+  componentDidUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {
+    //whene the user leaves the chat I disconnect them from the server
+    //and I update their last seen status
+
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     socket.removeAllListeners();
     socket.disconnect();
@@ -120,6 +114,9 @@ class Messenger extends Component {
     this.props.navigation.navigate("Dashboard");
     return true;
   };
+
+  //this handles the message dilevry, if there are no conversation open
+  //it send the first msg through the open conversation function
   _handleSubmission = () => {
     if (this.state.textValue !== "") {
       if (this.props.open_conversation)
@@ -128,11 +125,13 @@ class Messenger extends Component {
       this._resetTextInput();
     }
   };
+
   _onChange(event) {
     this.setState({ textValue: event.nativeEvent.text || "" });
   }
 
   _resetTextInput() {
+    this.setState({ textValue: "" });
     this._textInput.clear();
     // this._textInput.resetHeightToMin();
   }
@@ -149,6 +148,7 @@ class Messenger extends Component {
   };
 
   getItemLayout = (data, index) => ({ length: 10, offset: 5 * index, index });
+
   updateSize = height => {
     this.setState({
       height
@@ -163,8 +163,6 @@ class Messenger extends Component {
       exif: false,
       quality: 0.8
     });
-    console.log("result", result);
-    //  this.formatMedia();
     if (!result.cancelled)
       this.setState({ media: result }, () =>
         this.props.navigation.push("ImagePreview", {
@@ -190,9 +188,9 @@ class Messenger extends Component {
     }
   };
 
+  //Submits the media after formatting it after the user confirm their selection
   formatMedia() {
     var body = new FormData();
-
     let res = this.state.media.uri.split("/");
     res = res[res.length - 1];
     let format = res.split(".");
@@ -203,8 +201,6 @@ class Messenger extends Component {
       name: res
     };
     body.append("media", photo);
-    console.log("FormatMedia body", body);
-
     this.setState(
       {
         formatted: body
@@ -236,15 +232,11 @@ class Messenger extends Component {
           closeButton={true}
           title={"Support"}
           titelStyle={{
-            // alignSelf: "center",
             bottom: 8
-            // alignContent: "center",
-            // justifyContent: "center"
           }}
           actionButton={() => this.props.navigation.navigate("Dashboard")}
         />
         <View style={styles.contentContainer}>
-          {/* <Content scrollEnabled={false} contentContainerStyle={{ flex: 1 }}> */}
           <KeyboardAvoidingView
             keyboardVerticalOffset={heightPercentageToDP("10%")}
             style={styles.container}
@@ -257,12 +249,8 @@ class Messenger extends Component {
                 ref={ref => {
                   this.flatList = ref;
                 }}
-                // onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
                 data={this.props.messages}
                 keyExtractor={this._keyExtractor}
-                // getItemLayout={this.getItemLayout}
-                // scrollToIndex={params => this.scrollToIndex(params)}
-                // initialScrollIndex={this.props.messages.length - 1}
                 renderItem={(msg, index) => {
                   if (
                     !isNull(msg.item.body) ||
@@ -282,16 +270,9 @@ class Messenger extends Component {
                   <ChatBot width={100} height={100} />
                 </View>
               )}
-              {/* </View> */}
               <View style={styles.textInputContainer}>
                 <TouchableOpacity
-                  style={[
-                    // styles.submitButton
-                    { padding: 5 }
-                    // I18nManager.isRTL
-                    //   ? { transform: [{ rotateY: "180deg" }] }
-                    //   : {}
-                  ]}
+                  style={styles.cameraButton}
                   onPress={() => this.pick(this.props.screenProps)}
                 >
                   <Camera
@@ -324,25 +305,33 @@ class Messenger extends Component {
                     this.updateSize(e.nativeEvent.contentSize.height)
                   }
                 />
-                <TouchableOpacity
-                  style={[
-                    styles.submitButton,
-                    I18nManager.isRTL
-                      ? { transform: [{ rotateY: "180deg" }] }
-                      : {}
-                  ]}
-                  onPress={this._handleSubmission}
-                >
-                  <ForwardButton
-                    width={heightPercentageToDP(7)}
-                    height={heightPercentageToDP(7)}
-                    bottom={-10}
+
+                {this.props.loading_msg ? (
+                  <ActivityIndicator
+                    color="orange"
+                    size="small"
+                    style={styles.activityIndicator}
                   />
-                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={[
+                      styles.submitButton,
+                      I18nManager.isRTL
+                        ? { transform: [{ rotateY: "180deg" }] }
+                        : {}
+                    ]}
+                    onPress={this._handleSubmission}
+                  >
+                    <ForwardButton
+                      width={heightPercentageToDP(7)}
+                      height={heightPercentageToDP(7)}
+                      bottom={-10}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </>
           </KeyboardAvoidingView>
-          {/* </Content> */}
         </View>
       </SafeAreaView>
     );
@@ -354,6 +343,7 @@ const mapStateToProps = state => ({
   user: state.messenger.user,
   messages: state.messenger.messages,
   loading_con: state.messenger.loading_con,
+  loading_msg: state.messenger.loading_msg,
   subscribed: state.messenger.subscribed,
   open_conversation: state.messenger.open_conversation,
   conversation_id: state.messenger.conversation_id
