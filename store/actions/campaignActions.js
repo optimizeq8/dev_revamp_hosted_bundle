@@ -405,7 +405,9 @@ export const uploadStoryAdCover = (
         navigation.push("AdDesign", {
           rejected,
           selectedCampaign,
-          adType: selectedCampaign.campaign_type
+          //if it's not a rejected campaign selectedCampaign=null, so i  need to check
+          //for it to not throw an error
+          adType: selectedCampaign && selectedCampaign.campaign_type
         });
       })
       .catch(err => {
