@@ -13,8 +13,9 @@ import {
 import CustomHeader from "../Header";
 import { persistor } from "../../../store/";
 import styles from "./styles";
-import Buttons from "../Buttons";
+import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
+import { showMessage } from "react-native-flash-message";
 
 class ContinueCampaign extends Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class ContinueCampaign extends Component {
       this.continueCampaign();
   }
   navigateToContinue = () => {
-    let tempAdType = this.props.navigation.getParam("tempAdType");
+    let tempAdType = this.props.tempAdType;
+
     let continueRoutes = this.props.currentCampaignSteps.map(route =>
       NavigationActions.navigate({
         routeName: route,
@@ -60,7 +62,17 @@ class ContinueCampaign extends Component {
     }
   };
   handleContinue = () => {
-    this.navigateToContinue();
+    if (
+      new Date(this.props.data.start_time) < new Date() ||
+      new Date(this.props.data.end_time) < new Date()
+    ) {
+      showMessage({
+        message: "The dates are no longer applicable",
+        description: "Please choose new dates",
+        type: "warning"
+      });
+      this.props.dateField.showModal();
+    } else this.navigateToContinue();
     this.setModalVisible(false, false);
     this.props.setCampaignInProgress(true);
   };
@@ -107,12 +119,12 @@ class ContinueCampaign extends Component {
                 />
               )}
               <View style={styles.footerButtons}>
-                <Buttons
+                <CustomButtons
                   onPressFunction={() => this.handleContinue()}
                   content="Resume"
                   filled
                 />
-                <Buttons
+                <CustomButtons
                   onPressFunction={() => this.setModalVisible(false, true)}
                   content="Create a new ad"
                 />
@@ -141,7 +153,4 @@ const mapDispatchToProps = dispatch => ({
 
   set_adType: value => dispatch(actionCreators.set_adType(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContinueCampaign);
+export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);
