@@ -51,27 +51,18 @@ class ProductList extends React.Component {
     });
   };
   _handleSubmission = () => {
-    // if (this.state.disable) {
-    //   showMessage({
-    //     message: this.props.screenProps.translate(
-    //       "Enter product names and price for all the selected products"
-    //     ),
-    //     duration: 2000,
-    //     type: "warning"
-    //   });
-    // } else {
-    // console.log('cartListWIthProductnameNPrice', this.state.cartList);
-    // console.log('this.props.businessLogo', this.props.businessLogo);
     this.props.navigation.getParam("_changeDestination")();
     this.props.saveWebProducts(
       this.state.cartList,
-      this.props.data.campaign_id,
+      //added checking for a rejected campaign to send the campaign id
+      this.props.rejCampaign
+        ? this.props.rejCampaign.campaign_id
+        : this.props.data.campaign_id,
       this.props.productInfoId,
       this.props.navigation,
       this.props.businessLogo,
       "fromUpdateProductList"
     );
-    // }
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -90,7 +81,7 @@ class ProductList extends React.Component {
             // // console.log(' disable', includes(checkIfHasKeyProductName, false));
 
             this.setState({
-              cartList: list,
+              cartList: list
               // disable: includes(checkIfHasKeyProductName, false)
             });
           }}
@@ -265,13 +256,13 @@ class ProductList extends React.Component {
                   style={{ width: wp(7), height: hp(7) }}
                 />
               ) : (
-                  <LowerButton
-                    // disabled={this.state.disable}
-                    checkmark={true}
-                    bottom={0}
-                    function={this._handleSubmission}
-                  />
-                )}
+                <LowerButton
+                  // disabled={this.state.disable}
+                  checkmark={true}
+                  bottom={0}
+                  function={this._handleSubmission}
+                />
+              )}
             </TouchableOpacity>
           </Content>
         </Container>
@@ -283,8 +274,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   savingWebProducts: state.campaignC.savingWebProducts,
   productInfoId: state.campaignC.productInfoId,
-  businessLogo: state.campaignC.businessLogo
-
+  businessLogo: state.campaignC.businessLogo,
+  rejCampaign: state.dashboard.rejCampaign
   // weburlAvalible: state.campaignC.weburlAvalible,
   // mainBusiness: state.account.mainBusiness,
   // errorInstaHandle: state.campaignC.errorInstaHandle,
@@ -314,7 +305,4 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductList);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
