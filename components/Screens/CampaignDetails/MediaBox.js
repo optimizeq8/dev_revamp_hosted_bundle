@@ -51,7 +51,7 @@ export default class MediaBox extends Component {
     return (
       <TouchableOpacity
         onPress={this.previewHandler}
-        style={{ height: 80, width: 80, marginHorizontal: 5 }}
+        style={{ height: 80, width: 80, margin: 5 }}
       >
         <View
           style={{
