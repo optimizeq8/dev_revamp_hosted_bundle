@@ -17,43 +17,59 @@ import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
 
+/**
+ * The modal that shows up when there's a campaign to resume
+ */
 class ContinueCampaign extends Component {
   constructor(props) {
     super(props);
     this.state = { isVisible: false };
   }
   componentDidMount() {
+    //this is to disable showing the modal everytime if a campaign creation is in progress
     if (this.props.incompleteCampaign && !this.props.campaignProgressStarted)
       this.continueCampaign();
   }
-  navigateToContinue = () => {
-    let tempAdType = this.props.tempAdType;
 
+  /**
+   * Resets the navigation stack and inserts the campaign steps/screens that the user
+   * already went over
+   */
+  navigateToContinue = () => {
+    //Array of navigation routes to set in the stack
     let continueRoutes = this.props.currentCampaignSteps.map(route =>
       NavigationActions.navigate({
-        routeName: route,
-        params: {
-          tempAdType
-        }
+        routeName: route
       })
     );
+    //resets the navigation stack
     resetAction = StackActions.reset({
-      index: continueRoutes.length - 1,
+      index: continueRoutes.length - 1, //index of the last screen route
       actions: continueRoutes
     });
 
     this.props.navigation.dispatch(resetAction);
   };
-  setModalVisible = (isVisible, resetCampaign) => {
+  /**
+   * Handles whether the modal is closed or not and if the user chooses to resume or not
+   *
+   * @param {Bool} isVisible boolean to show the modal or not
+   * @param {Bool} resetCampaign boolean to handle if user chooses to create a new campaign
+   */
+  handleSubmition = (isVisible, resetCampaign) => {
     this.setState({ isVisible });
     let tempAdType =
       this.props.navigation.getParam("tempAdType") || this.props.tempAdType;
     if (resetCampaign) {
+      //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       this.props.resetCampaignInfo(!resetCampaign);
       this.props.set_adType(tempAdType);
       persistor.purge();
     }
   };
+  /**
+   * Handles showing the continue modal after 0.8 seconds
+   */
   continueCampaign = () => {
     if (this.props.incompleteCampaign) {
       setTimeout(() => {
@@ -61,7 +77,13 @@ class ContinueCampaign extends Component {
       }, 800);
     }
   };
+
+  /**
+   * Handles if users chooses to continue a campaign
+   */
   handleContinue = () => {
+    //checks if the old campaign dates are still applicable or not so
+    //it doesn't create a campaign with old dates
     if (
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
@@ -71,10 +93,29 @@ class ContinueCampaign extends Component {
         description: "Please choose new dates",
         type: "warning"
       });
+      //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal();
-    } else this.navigateToContinue();
-    this.setModalVisible(false, false);
-    this.props.setCampaignInProgress(true);
+    } else {
+      this.navigateToContinue();
+      this.props.setCampaignInProgress(true);
+      this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
+      this.props.set_adType(this.props.oldTempAdType); //set the adType to the old campaign's adType
+    }
+    this.handleSubmition(false, false);
+  };
+
+  /**
+   * Handles if the user closes the modal without choosing to resume or not
+   */
+  handleClosing = () => {
+    this.handleSubmition(false, false);
+    if (this.props.handleClosingContinueModal)
+      //if being called from AdObjective handleClosingContinueModal will  not be Undefined
+      this.props.handleClosingContinueModal();
+    //Set the adType to the one the user clicked on from Dashboard or AdType
+    this.props.set_adType(
+      this.props.navigation.getParam("tempAdType", "SnapAd")
+    );
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -94,9 +135,7 @@ class ContinueCampaign extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
-                actionButton={() => {
-                  this.setModalVisible(false, false);
-                }}
+                actionButton={() => this.handleClosing()}
                 title={"Continue Ad Creation"}
               />
               <Text
@@ -113,10 +152,7 @@ class ContinueCampaign extends Component {
                 )}
               </Text>
               {this.props.data && this.props.incompleteCampaign && (
-                <ContinueInfo
-                  data={this.props.data}
-                  screenProps={this.props.screenProps}
-                />
+                <ContinueInfo screenProps={this.props.screenProps} />
               )}
               <View style={styles.footerButtons}>
                 <CustomButtons
@@ -125,7 +161,7 @@ class ContinueCampaign extends Component {
                   filled
                 />
                 <CustomButtons
-                  onPressFunction={() => this.setModalVisible(false, true)}
+                  onPressFunction={() => this.handleSubmition(false, true)}
                   content="Create a new ad"
                 />
               </View>
@@ -142,6 +178,8 @@ const mapStateToProps = state => ({
   incompleteCampaign: state.campaignC.incompleteCampaign,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  oldTempAdType: state.campaignC.oldTempAdType,
+  oldTempData: state.campaignC.oldTempData,
   mainBusiness: state.account.mainBusiness
 });
 
@@ -150,7 +188,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.resetCampaignInfo(resetAdType)),
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
-
-  set_adType: value => dispatch(actionCreators.set_adType(value))
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  save_campaign_info: value =>
+    dispatch(actionCreators.save_campaign_info(value)),
+  overWriteObjectiveData: value =>
+    dispatch(actionCreators.overWriteObjectiveData(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);
