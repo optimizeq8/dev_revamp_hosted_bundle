@@ -92,7 +92,9 @@ class Dashboard extends Component {
     }
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
-    this.props.setCampaignInProgress(false);
+    //Reset campaignProgressStarted only if there was a campaing in progress
+    if (this.props.campaignInProgress && this.props.incompleteCampaign)
+      this.props.setCampaignInProgress(false);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -217,7 +219,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    //   console.log(' let { t, locale } = this.props.screenProps;', this.props.screenProps);
     const { translate } = this.props.screenProps;
     const mySlideInUp = {
       from: {
@@ -633,7 +634,8 @@ const mapStateToProps = state => ({
   incompleteCampaign: state.campaignC.incompleteCampaign,
   conversation_status: state.messenger.conversation_status,
   appLanguage: state.language.phoneLanguage,
-  terms: state.language.terms
+  terms: state.language.terms,
+  campaignProgressStarted: state.campaignC.campaignProgressStarted
 });
 
 const mapDispatchToProps = dispatch => ({
