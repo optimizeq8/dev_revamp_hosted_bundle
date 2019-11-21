@@ -432,3 +432,72 @@ export const deleteBusinessAccount = business_id => {
       });
   };
 };
+/**
+ * Update the current business account information
+ * @method
+ * @param {string} userid
+ * @param {object} info fields that can be updated except for the businessid
+ * @param info.businessid {string}
+ * @param info.businessname {string}
+ * @param info.brandname {string}
+ * @param info.businessemail {string}
+ * @param info.businesstype {string}
+ * @param info.businesscategory {string}
+ * @param info.otherBusinessCategory {string}
+ * @param info.country {string}
+ * @param {function} naviagtion
+ *
+ * @returns for success navigates back to menu screen
+ */
+export const updateBusinessInfo = (userid, info, navigation) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.UPDATE_BUSINESS_INFO_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .put("businessAccount", {
+        userid,
+        ...info
+      })
+      .then(resp => {
+        return resp.data;
+      })
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "danger",
+          position: "top"
+        });
+        if (data.success) {
+          navigation.navigate("Dashboard");
+          return dispatch({
+            type: actionTypes.UPDATE_BUSINESS_INFO_SUCCESS,
+            payload: {
+              ...info
+            }
+          });
+        }
+        return dispatch({
+          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+          payload: {
+            success: data.success,
+            errorMessage: data.message
+          }
+        });
+      })
+      .catch(error => {
+        // console.log(
+        //   "updateBusinessInfo error",
+        //   error.response || error.message
+        // );
+        return dispatch({
+          type: actionTypes.UPDATE_BUSINESS_INFO_ERROR,
+          payload: {
+            success: false,
+            errorMessage: error.response || error.message
+          }
+        });
+      });
+  };
+};

@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 0,
     marginRight: 0
-
-    // paddingTop: 15÷ß
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -236,6 +234,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: -10,
     marginTop: I18nManager.isRTL ? -5 : 0
+  },
+  itemView: {
+    paddingHorizontal: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 });
 
