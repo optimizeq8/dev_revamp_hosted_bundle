@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     alignSelf: "center",
     textAlign: "center",
-    paddingHorizontal: widthPercentageToDP(20)
+    paddingHorizontal: widthPercentageToDP(20),
+    marginRight: 15
   },
   input: {
     marginTop: 10,
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   inputIcon: {
     marginLeft: 12,
     flex: 0,
-    position: "absolute",
+    // position: "absolute",
     color: "#FFF"
   }
 });
