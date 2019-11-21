@@ -1,28 +1,18 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import Logo from "../../../../assets/SVGs/Optimize";
-import Background from "../../../../assets/SVGs/Background";
-import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import * as Animatable from "react-native-animatable";
 import * as Segment from "expo-analytics-segment";
 import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Button } from "native-base";
+import { Bold } from "../../../MiniComponents/StyledComponents";
 export default class EmptyCampaigns extends Component {
   render() {
     let { mainBusiness, translate } = this.props;
-    const B = props => (
-      <Text style={{ fontFamily: "montserrat-bold" }}>{props.children}</Text>
-    );
-
     return (
       <View>
-        {/* <BackdropIcon style={styles.backDrop} /> */}
-        {/* <Background style={styles.background} /> */}
         <Logo
           style={{ alignSelf: "center" }}
           width={heightPercentageToDP(10)}
@@ -57,7 +47,8 @@ export default class EmptyCampaigns extends Component {
         </Text>
         <View style={styles.mainButtonView}>
           <Text style={styles.mainText}>
-            {translate("Tap the button below to")} <B>{translate("launch")} </B>
+            {translate("Tap the button below to")}{" "}
+            <Bold>{translate("launch")} </Bold>
             {translate("Your first Campaign")}
           </Text>
           <Animatable.View
