@@ -11,8 +11,9 @@ import {
   NavigationActions,
   StackActions
 } from "react-navigation";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
 
@@ -80,6 +81,7 @@ class DateFields extends Component {
   };
 
   handleDate = async () => {
+    //Gets the difference between two dates
     let timeDiff = Math.round(
       Math.abs(
         (new Date(this.state.start_date).getTime() -
@@ -91,7 +93,14 @@ class DateFields extends Component {
       await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
-      this.navigateToContinue();
+      //if user chooses to resume a campaign and the dates are not appiclble then
+      //the dateField modal shows up and handles to resume campaign or not with new dates
+      if (
+        !this.props.closedContinueModal &&
+        this.props.incompleteCampaign &&
+        !this.props.campaignProgressStarted
+      )
+        this.navigateToContinue();
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
@@ -133,22 +142,36 @@ class DateFields extends Component {
       });
     }
   };
+  /**
+   * Same as the navigateToContinue and handleContinue functions in ContinueCampaign modal
+   * except this filters out the AdPaymentReview route from the stack so the budget is recalculated
+   * again in AdDetails
+   */
   navigateToContinue = () => {
-    let tempAdType = this.props.tempAdType;
-
-    let continueRoutes = this.props.currentCampaignSteps.map(route =>
-      NavigationActions.navigate({
-        routeName: route,
-        params: {
-          tempAdType
-        }
-      })
+    //Same as if using a map and a filter at the same time
+    let reduceFunction = (newRoutes, route) => {
+      if (route !== "AdPaymentReview") {
+        let correctRoute = NavigationActions.navigate({
+          routeName: route
+        });
+        newRoutes.push(correctRoute);
+      }
+      return newRoutes;
+    };
+    let continueRoutes = this.props.currentCampaignSteps.reduce(
+      reduceFunction,
+      []
     );
     resetAction = StackActions.reset({
       index: continueRoutes.length - 1,
       actions: continueRoutes
     });
-
+    this.props.setCampaignInProgress(true);
+    this.props.overWriteObjectiveData({
+      start_time: this.state.start_date,
+      end_time: this.state.end_date
+    }); //overwrite this.props.data with the new dates
+    this.props.set_adType(this.props.oldTempAdType);
     this.props.navigation.dispatch(resetAction);
   };
 
@@ -210,6 +233,8 @@ class DateFields extends Component {
                   closeButton={true}
                   actionButton={() => {
                     this.setState({ modalVisible: false });
+                    this.props.handleClosingContinueModal &&
+                      this.props.handleClosingContinueModal();
                   }}
                   topRightButtonText={translate("Reset")}
                   topRightButtonFunction={this.handleReset}
@@ -282,12 +307,33 @@ class DateFields extends Component {
   }
 }
 const mapStateToProps = state => ({
-  currentCampaignSteps: state.campaignC.currentCampaignSteps
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  oldTempAdType: state.campaignC.oldTempAdType,
+  oldTempData: state.campaignC.oldTempData
 });
 const mapDispatchToProps = dispatch => ({
-  set_adType: value => dispatch(actionCreators.set_adType(value)),
-  save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  resetCampaignInfo: resetAdType =>
-    dispatch(actionCreators.resetCampaignInfo(resetAdType))
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value)),
+  overWriteObjectiveData: value =>
+    dispatch(actionCreators.overWriteObjectiveData(value)),
+  set_adType: value => dispatch(actionCreators.set_adType(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
+
+DateFields.propTypes = {
+  getMinimumCash: PropTypes.func, //Gets the minimum budget for a campaign based on dates
+  handleStartDatePicked: PropTypes.func.isRequired,
+  handleEndDatePicked: PropTypes.func.isRequired,
+  start_time: PropTypes.string.isRequired,
+  end_time: PropTypes.string.isRequired,
+  screenProps: PropTypes.object.isRequired,
+  navigation: PropTypes.func,
+  closedContinueModal: PropTypes.bool, //Determines whether navigateToContinue is called when submitting or not
+  handleClosingContinueModal: PropTypes.func, //Sets closedContinueModal to true so that creating a new campaing without choosing wheter to continue or not doesn't cause a conflict
+  open: PropTypes.bool, //Shows the modal if the sideMenu is open
+  filterMenu: PropTypes.bool, //Determines if the DateField is being rendered from the dashborad filter menu or not
+  durationChange: PropTypes.func, //Handles the api call to filter the charts by dates
+  selectedCampaign: PropTypes.object //The campaign from CampaignDetails
+};
