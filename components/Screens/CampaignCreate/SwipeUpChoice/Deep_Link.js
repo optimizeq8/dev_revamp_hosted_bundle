@@ -35,7 +35,6 @@ class Deep_Link extends Component {
         deep_link_uri: "",
         icon_media_url: ""
       },
-      firstStepDone: false,
       data: [],
       androidData: [],
       media: "",
@@ -56,12 +55,21 @@ class Deep_Link extends Component {
   }
 
   componentDidMount() {
-    if (
-      (this.props.data &&
-        this.props.adType !== "StoryAd" &&
-        this.props.data.hasOwnProperty("attachment") &&
-        this.props.data.destination === "DEEP_LINK") ||
-      this.props.data.destination === "COLLECTION"
+    //this is for SnapAd rejection process
+    if (this.props.rejCampaign && this.props.adType === "SnapAd") {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.rejCampaign.attachment
+        },
+        callaction: this.props.rejCampaign.call_to_action
+      });
+    } else if (
+      this.props.data &&
+      this.props.adType !== "StoryAd" &&
+      this.props.data.hasOwnProperty("attachment") &&
+      (this.props.data.destination === "DEEP_LINK" ||
+        this.props.data.destination === "COLLECTION")
     ) {
       this.setState({
         attachment: {
@@ -98,8 +106,7 @@ class Deep_Link extends Component {
     if (!nameError && !callActionError) {
       this.setState({
         attachment,
-        callaction,
-        firstStepDone: true
+        callaction
       });
       this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
@@ -168,6 +175,8 @@ class Deep_Link extends Component {
                     navigation={this.props.navigation}
                     selectApp={this.selectApp}
                     listNum={3}
+                    attachment={this.state.attachment}
+                    callaction={this.state.callaction}
                     swipeUpDestination={this.props.swipeUpDestination}
                     deep_link_uri={this.state.attachment.deep_link_uri}
                     toggleSideMenu={this.props.toggleSideMenu}
@@ -189,7 +198,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  storyAdAttachment: state.campaignC.storyAdAttachment
+  storyAdAttachment: state.campaignC.storyAdAttachment,
+  rejCampaign: state.dashboard.rejCampaign
 });
 
 const mapDispatchToProps = dispatch => ({
