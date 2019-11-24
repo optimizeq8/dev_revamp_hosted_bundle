@@ -906,4 +906,7 @@ const mapDispatchToProps = dispatch => ({
   getWebProducts: campaign_id =>
     dispatch(actionCreators.getWebProducts(campaign_id))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(WhatsApp);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WhatsApp);

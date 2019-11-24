@@ -945,4 +945,7 @@ const mapDispatchToProps = dispatch => ({
   resetRejectedCampaignData: () =>
     dispatch(actionCreators.resetRejectedCampaignData())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AdCover);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdCover);
