@@ -96,7 +96,9 @@ const initialState = {
   loadingMoreInstaPost: false,
   collectionMainMediaWebLink: "",
   collectionMainMediaTypeWebLink: "",
-  collectionAdMediaLinks: []
+  collectionAdMediaLinks: [],
+  oldTempAdType: "",
+  oldTempData: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -118,7 +120,10 @@ const reducer = (state = initialState, action) => {
         data: { ...state.data, ...action.payload.data },
         message: action.payload.message,
         loadingObj: false,
-        incompleteCampaign: true
+        incompleteCampaign: true,
+        //saves this part just in case anything is changed in AdObjective and not submitting
+        oldTempData: { ...state.data, ...action.payload.data },
+        oldTempAdType: state.adType
       };
     case actionTypes.SET_MINIMUN_CASH:
       return {
@@ -194,9 +199,9 @@ const reducer = (state = initialState, action) => {
         storyAdAttachment: { ...state.storyAdAttachment, ...resetSwipeUps },
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
-            ? state.currentCampaignSteps.splice(
-                0,
-                state.currentCampaignSteps.length - 1
+            ? //If objective is changed then AdDesign should be the current step again to set the swipe ups
+              state.currentCampaignSteps.filter(
+                step => step !== "AdDetails" && step !== "AdPaymentReview"
               )
             : []
           : state.currentCampaignSteps
@@ -848,6 +853,11 @@ const reducer = (state = initialState, action) => {
         collectionAdMedia: [...action.payload]
       };
     }
+    case actionTypes.OVERWRITE_OBJ_DATA:
+      return {
+        ...state,
+        data: { ...state.data, ...state.oldTempData, ...action.payload }
+      };
     default:
       return state;
   }
