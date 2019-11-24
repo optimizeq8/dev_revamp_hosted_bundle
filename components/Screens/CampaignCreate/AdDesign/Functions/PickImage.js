@@ -135,7 +135,7 @@ export const _pickImage = async (
                   uploaded: false,
                   media_type: result.type.toUpperCase(),
                   iosVideoUploaded: false,
-                  rejectionUpload: true
+                  fileReadyToUpload: true
                 };
 
                 cards[storyAdCards.selectedStoryAd.index] = card;
@@ -147,11 +147,13 @@ export const _pickImage = async (
                       ...card
                     }
                   },
+                  fileReadyToUpload: true,
                   type: result.type.toUpperCase()
                 });
                 save_campaign_info({
                   media: result.uri,
-                  type: result.type.toUpperCase()
+                  type: result.type.toUpperCase(),
+                  fileReadyToUpload: true
                 });
                 onToggleModal(false);
               } else {
@@ -161,7 +163,7 @@ export const _pickImage = async (
                   mediaError: null,
                   result: result.uri,
                   iosVideoUploaded: false,
-                  rejectionUpload: true
+                  fileReadyToUpload: true
                 });
 
                 onToggleModal(false);
@@ -172,7 +174,8 @@ export const _pickImage = async (
                 });
                 save_campaign_info({
                   media: result.uri,
-                  type: result.type.toUpperCase()
+                  type: result.type.toUpperCase(),
+                  fileReadyToUpload: true
                 });
               }
             })
@@ -323,7 +326,7 @@ export const _pickImage = async (
               media: result.uri,
               media_type: result.type.toUpperCase(),
               iosVideoUploaded: false,
-              rejectionUpload: true
+              fileReadyToUpload: true
             };
 
             cards[storyAdCards.selectedStoryAd.index] = card;
@@ -335,11 +338,13 @@ export const _pickImage = async (
                   ...card
                 }
               },
+              fileReadyToUpload: true,
               type: result.type.toUpperCase()
             });
             save_campaign_info({
               media: result.uri,
-              type: result.type.toUpperCase()
+              type: result.type.toUpperCase(),
+              fileReadyToUpload: true
             });
             onToggleModal(false);
           } else {
