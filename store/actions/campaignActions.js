@@ -246,8 +246,8 @@ export const ad_objective = (info, navigation) => {
       .then(data => {
         data.success
           ? navigation.push(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-          )
+              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+            )
           : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
@@ -328,13 +328,15 @@ export const ad_design = (
       })
       .then(() => {
         onToggleModal(false);
-        dispatch(save_campaign_info({ formatted: info }));
+        //to not save the formatted data if it's for a rejection
+        !rejected && dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
         if (!rejected) navigation.push("AdDetails");
         else {
-          navigation.navigate("Dashboard");
           persistor.purge();
+          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+          navigation.navigate("Dashboard");
         }
       })
       .catch(err => {
@@ -403,7 +405,9 @@ export const uploadStoryAdCover = (
         navigation.push("AdDesign", {
           rejected,
           selectedCampaign,
-          adType: selectedCampaign.campaign_type
+          //if it's not a rejected campaign selectedCampaign=null, so i  need to check
+          //for it to not throw an error
+          adType: selectedCampaign && selectedCampaign.campaign_type
         });
       })
       .catch(err => {
@@ -527,13 +531,13 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
   return dispatch => {
     !story_id
       ? dispatch({
-        type: actionTypes.DELETE_STORY_AD_CARD,
-        payload: { card }
-      })
+          type: actionTypes.DELETE_STORY_AD_CARD,
+          payload: { card }
+        })
       : dispatch({
-        type: actionTypes.SET_DELETE_CARD_LOADING,
-        payload: { deleteing: true, index: card.index }
-      });
+          type: actionTypes.SET_DELETE_CARD_LOADING,
+          payload: { deleteing: true, index: card.index }
+        });
     createBaseUrl()
       .delete(`savestorymedia/${story_id}`)
       .then(res => {
@@ -1421,23 +1425,25 @@ export const getWebUploadLinkMedia = (campaign_id, adType) => {
 
             case "CollectionAd":
               const collectionAdArray = data.data;
-              let copyCollectionAdArray = getState().campaignC.collectionAdMedia
-              const collectionArray = collectionAdArray.map((collection, index) => {
-                return {
-                  ...copyCollectionAdArray[index],
-                  ...collection,
-                  id: index
+              let copyCollectionAdArray = getState().campaignC
+                .collectionAdMedia;
+              const collectionArray = collectionAdArray.map(
+                (collection, index) => {
+                  return {
+                    ...copyCollectionAdArray[index],
+                    ...collection,
+                    id: index
+                  };
                 }
-              })
+              );
               return dispatch({
                 type: actionTypes.GET_WEB_UPLOAD_LINK_MEDIA_COLLECTION_ADS,
                 payload: {
                   collectionMainMediaWebLink: data.media,
                   collectionMainMediaTypeWebLink: data.media_type,
                   collectionMediaArray: [...collectionArray]
-
                 }
-              })
+              });
             default:
               break;
           }
@@ -1592,23 +1598,23 @@ export const updateStoryADS = storyAdsArray => {
 
 export const setCollectionAdMediaArray = collectionMediaArray => {
   return (dispatch, getState) => {
-    const data = getState().campaignC.data
-    const collectionAdLinkForm = getState().campaignC.collectionAdLinkForm
+    const data = getState().campaignC.data;
+    const collectionAdLinkForm = getState().campaignC.collectionAdLinkForm;
     const newArray = collectionMediaArray.map(collection => {
       return {
         ...collection,
         collection_order: collection.id,
         collection_media: collection.media,
-        name: data.name + '_' + collection.id,
+        name: data.name + "_" + collection.id,
         localUri: collection.media,
-        collection_destination: collectionAdLinkForm === 1 ? 'REMOTE_WEBPAGE' : 'DEEP_LINK',
+        collection_destination:
+          collectionAdLinkForm === 1 ? "REMOTE_WEBPAGE" : "DEEP_LINK",
         collection_attachment: "BLANK"
-      }
+      };
     });
     return dispatch({
       type: actionTypes.SET_COLLECTION_AD_ARRAY,
       payload: [...newArray]
-    })
-
-  }
-}
+    });
+  };
+};
