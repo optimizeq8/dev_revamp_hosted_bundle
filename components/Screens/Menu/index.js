@@ -106,11 +106,11 @@ class Menu extends Component {
               style={[
                 styles.businessTitle,
                 this.props.mainBusiness &&
-                  this.props.mainBusiness.brandname &&
-                  !isStringArabic(this.props.mainBusiness.brandname)
+                this.props.mainBusiness.brandname &&
+                !isStringArabic(this.props.mainBusiness.brandname)
                   ? {
-                    fontFamily: "montserrat-regular-english"
-                  }
+                      fontFamily: "montserrat-regular-english"
+                    }
                   : {}
               ]}
             >
@@ -122,11 +122,11 @@ class Menu extends Component {
               style={[
                 styles.businessname,
                 this.props.mainBusiness &&
-                  this.props.mainBusiness.businessname &&
-                  !isStringArabic(this.props.mainBusiness.businessname)
+                this.props.mainBusiness.businessname &&
+                !isStringArabic(this.props.mainBusiness.businessname)
                   ? {
-                    fontFamily: "montserrat-regular-english"
-                  }
+                      fontFamily: "montserrat-regular-english"
+                    }
                   : {}
               ]}
             >
@@ -152,6 +152,20 @@ class Menu extends Component {
                 <Icons.PersonalInfo style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Personal Info")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.options}
+                onPress={() => {
+                  // this.props.navigation.navigate("BusinessInfo")
+                  this.props.navigation.navigate("CreateBusinessAccount", {
+                    editBusinessInfo: true
+                  });
+                }}
+              >
+                <Icons.BusinessIcon style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Business Info")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -298,7 +312,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.createBusinessAccount(account)),
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

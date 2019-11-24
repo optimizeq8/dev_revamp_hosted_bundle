@@ -15,7 +15,9 @@ const initialState = {
   savingBillingAddress: false,
   progress: new Animated.Value(0),
   progressSaving: new Animated.Value(0),
-  deletingBusinessLoading: false
+  deletingBusinessLoading: false,
+  editBusinessInfoLoading: false,
+  editBusinessInfoErrorMessage: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -176,9 +178,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         deletingBusinessLoading: action.payload
       };
+    case actionTypes.UPDATE_BUSINESS_INFO_LOADING:
       return {
         ...state,
-        mainBusiness: { ...state.mainBusiness, ...updatedMainBusiness }
+        editBusinessInfoLoading: action.payload
+      };
+    case actionTypes.UPDATE_BUSINESS_INFO_SUCCESS:
+      return {
+        ...state,
+        editBusinessInfoLoading: false,
+        mainBusiness: {
+          ...state.mainBusiness,
+          ...action.payload
+        }
+      };
+    case actionTypes.UPDATE_BUSINESS_INFO_ERROR:
+      return {
+        ...state,
+        editBusinessInfoLoading: false,
+        editBusinessInfoErrorMessage: action.payload.editBusinessErrorMessage
       };
     default:
       return state;

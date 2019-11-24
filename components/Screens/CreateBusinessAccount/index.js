@@ -12,10 +12,14 @@ import * as Segment from "expo-analytics-segment";
 import CustomHeader from "../../MiniComponents/Header";
 import { SafeAreaView } from "react-navigation";
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 
 import Picker from "../../MiniComponents/Picker";
 import KeyBoardShift from "../../MiniComponents/KeyboardShift";
+import LowerButton from "../../MiniComponents/LowerButton";
+import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
 
+//data
 import businessCategoryList from "../../Data/businessCategoriesList.data";
 
 //privay
@@ -39,6 +43,7 @@ import EmailIcon from "../../../assets/SVGs/EmailOutline";
 //Validator
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import isStringArabic from "../../isStringArabic";
+import { showMessage } from "react-native-flash-message";
 
 class CreateBusinessAccount extends Component {
   static navigationOptions = {
@@ -46,7 +51,7 @@ class CreateBusinessAccount extends Component {
   };
   constructor(props) {
     super(props);
-
+    const { translate } = this.props.screenProps;
     this.state = {
       businessAccount: {
         businessname: "",
@@ -82,41 +87,58 @@ class CreateBusinessAccount extends Component {
       items: businessCategoryList,
       countries: [
         {
-          label: "Kuwait",
+          label: translate("Kuwait"),
           value: "Kuwait"
         },
         {
-          label: "UAE",
+          label: translate("UAE"),
           value: "UAE"
         },
         {
-          label: "KSA",
+          label: translate("KSA"),
           value: "KSA"
         },
         {
-          label: "Bahrain",
+          label: translate("Bahrain"),
           value: "Bahrain"
         },
         {
-          label: "Qatar",
+          label: translate("Qatar"),
           value: "Qatar"
         },
         {
-          label: "Oman",
+          label: translate("Oman"),
           value: "Oman"
         }
-      ]
+      ],
+      editBusinessInfo: false
     };
   }
   componentDidMount() {
+    // to check if call is from menu to update business info
+    const editBusinessInfo = this.props.navigation.getParam(
+      "editBusinessInfo",
+      false
+    );
     Segment.screen(
-      this.props.registering
+      editBusinessInfo
+        ? "Edit Business Info"
+        : this.props.registering
         ? "Business Info Registration"
         : "Create New Business",
       {
         category: this.props.registering ? "Sign Up" : "User Menu"
       }
     );
+    // prefilling the values in case of updating business info
+    if (this.props.mainBusiness && editBusinessInfo) {
+      this.setState({
+        businessAccount: {
+          ...this.props.mainBusiness
+        },
+        editBusinessInfo
+      });
+    }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentWillUnmount() {
@@ -149,6 +171,7 @@ class CreateBusinessAccount extends Component {
   };
 
   _handleSubmission = async () => {
+    const { translate } = this.props.screenProps;
     const businessnameError = validateWrapper(
       "mandatory",
       this.state.businessAccount.businessname
@@ -213,6 +236,33 @@ class CreateBusinessAccount extends Component {
         };
 
         this.props.registerUser(userInfo, this.props.navigation);
+      }
+      //  condition for updating business info
+      else if (this.state.editBusinessInfo) {
+        // check if info changed then call api else showMessage for no change
+        const changedInfo = !isEqual(
+          this.state.businessAccount,
+          this.props.mainBusiness
+        );
+        if (changedInfo) {
+          this.props.updateBusinessInfo(
+            this.props.userInfo.userid,
+            {
+              ...this.state.businessAccount,
+              otherBusinessCategory:
+                this.state.businessAccount.businesscategory !== "43"
+                  ? null
+                  : this.state.businessAccount.otherBusinessCategory // to handle other business category feild
+            },
+            this.props.navigation
+          );
+        } else {
+          showMessage({
+            type: "warning",
+            message: translate("No changes to update"),
+            position: "top"
+          });
+        }
       } else {
         this.props.createBusinessAccount(
           this.state.businessAccount,
@@ -284,6 +334,7 @@ class CreateBusinessAccount extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
+    // Added disable(when updating business info loading ) and value ={having state value} props to input feilds
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}
@@ -295,12 +346,17 @@ class CreateBusinessAccount extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 navigation={this.props.navigation}
-                title={"New Business"}
-                closeButton={true}
+                title={
+                  this.state.editBusinessInfo ? "Business Info" : "New Business"
+                }
+                closeButton={!this.state.editBusinessInfo}
               />
-              <Text style={styles.subTitle}>
-                {translate("You can create a new Business under you!")}
-              </Text>
+              {/* to display only when creating new business */}
+              {!this.state.editBusinessInfo && (
+                <Text style={styles.subTitle}>
+                  {translate("You can create a new Business under you!")}
+                </Text>
+              )}
             </>
           )}
           <Text uppercase style={styles.whatAreYouText}>
@@ -308,6 +364,10 @@ class CreateBusinessAccount extends Component {
           </Text>
           <View style={styles.topContainer}>
             <Button
+              disabled={
+                this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading
+              }
               style={[
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activeButton
@@ -340,6 +400,10 @@ class CreateBusinessAccount extends Component {
             </Button>
 
             <Button
+              disabled={
+                this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading
+              }
               style={[
                 this.state.businessAccount.businesstype === "2"
                   ? styles.activeButton
@@ -368,6 +432,10 @@ class CreateBusinessAccount extends Component {
             </Button>
 
             <Button
+              disabled={
+                this.state.editBusinessInfo &&
+                this.props.editBusinessInfoLoading
+              }
               style={[
                 this.state.businessAccount.businesstype === "3"
                   ? styles.activeButton
@@ -448,7 +516,12 @@ class CreateBusinessAccount extends Component {
                               fill={this.state.inputN ? "#FF9D00" : "#FFF"}
                             />
                             <Input
+                              disabled={
+                                this.state.editBusinessInfo &&
+                                this.props.editBusinessInfoLoading
+                              }
                               style={[styles.inputText]}
+                              value={this.state.businessAccount.businessname}
                               onChangeText={value => {
                                 this.setState({
                                   businessAccount: {
@@ -508,6 +581,11 @@ class CreateBusinessAccount extends Component {
                             <Input
                               style={styles.inputText}
                               autoCorrect={false}
+                              disabled={
+                                this.state.editBusinessInfo &&
+                                this.props.editBusinessInfoLoading
+                              }
+                              value={this.state.businessAccount.brandname}
                               onChangeText={value =>
                                 this.setState({
                                   businessAccount: {
@@ -564,9 +642,19 @@ class CreateBusinessAccount extends Component {
                                 fill={this.state.inputE ? "#FF9D00" : "#FFF"}
                               />
                               <Input
-                                style={styles.inputText}
+                                style={[
+                                  styles.inputText,
+                                  {
+                                    fontFamily: "montserrat-regular-english"
+                                  }
+                                ]}
                                 autoCorrect={false}
                                 autoCapitalize="none"
+                                disabled={
+                                  this.state.editBusinessInfo &&
+                                  this.props.editBusinessInfoLoading
+                                }
+                                value={this.state.businessAccount.businessemail}
                                 onChangeText={value =>
                                   this.setState({
                                     businessAccount: {
@@ -625,6 +713,10 @@ class CreateBusinessAccount extends Component {
                             </Text>
                           </View>
                           <Item
+                            disabled={
+                              this.state.editBusinessInfo &&
+                              this.props.editBusinessInfoLoading
+                            }
                             onPress={() => {
                               this.setState({ inputC: true });
                             }}
@@ -633,13 +725,7 @@ class CreateBusinessAccount extends Component {
                               this.state.countryError
                                 ? globalStyles.redBorderColor
                                 : globalStyles.transparentBorderColor,
-                              {
-                                paddingHorizontal: 0,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between"
-                                // width: "50%"
-                              }
+                              styles.itemView
                             ]}
                           >
                             <LocationIcon
@@ -649,8 +735,13 @@ class CreateBusinessAccount extends Component {
                               }}
                               stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
                             />
-                            <Text style={[styles.pickerText]}>
-                              {this.state.businessAccount.country}
+                            <Text
+                              style={[
+                                styles.pickerText,
+                                { fontFamily: "montserrat-regular" }
+                              ]}
+                            >
+                              {translate(this.state.businessAccount.country)}
                             </Text>
                             <Icon
                               type="AntDesign"
@@ -680,7 +771,11 @@ class CreateBusinessAccount extends Component {
                               this.state.businessAccount.businesscategory
                             ]}
                             single={true}
-                            screenName={"Create Business Account"}
+                            screenName={
+                              this.state.editBusinessInfo
+                                ? "Business Info"
+                                : "Create Business Account"
+                            }
                             closeCategoryModal={this.closeCategoryModal}
                           />
                           <View style={[styles.callToActionLabelView]}>
@@ -697,6 +792,10 @@ class CreateBusinessAccount extends Component {
                             </Text>
                           </View>
                           <Item
+                            disabled={
+                              this.state.editBusinessInfo &&
+                              this.props.editBusinessInfoLoading
+                            }
                             onPress={() => {
                               this.setState({ inputT: true });
                             }}
@@ -707,13 +806,7 @@ class CreateBusinessAccount extends Component {
                                 : this.state.businesscategoryError
                                 ? globalStyles.redBorderColor
                                 : globalStyles.transparentBorderColor,
-                              {
-                                paddingHorizontal: 0,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between"
-                                // width: "50%"
-                              }
+                              styles.itemView
                             ]}
                           >
                             <BusinessIcon
@@ -783,13 +876,7 @@ class CreateBusinessAccount extends Component {
                                   : this.state.businesscategoryOtherError
                                   ? globalStyles.redBorderColor
                                   : globalStyles.transparentBorderColor,
-                                {
-                                  paddingHorizontal: 0,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "space-between"
-                                  // width: "50%"
-                                }
+                                styles.itemView
                               ]}
                             >
                               <BusinessIcon
@@ -824,10 +911,35 @@ class CreateBusinessAccount extends Component {
                                     inputBusinessCategoryOther: false
                                   });
                                 }}
+                                value={
+                                  this.state.businessAccount
+                                    .otherBusinessCategory
+                                }
+                                disabled={
+                                  this.state.editBusinessInfo &&
+                                  this.props.editBusinessInfoLoading
+                                }
                               />
                             </Item>
                           </View>
                         )}
+                        {/* Added handle submision button for updating business info */}
+                        {this.state.editBusinessInfo &&
+                        this.props.loadingUpdateBusinessInfo ? (
+                          <CheckMarkLoading
+                            style={{
+                              top: 5,
+                              width: 60,
+                              height: 60
+                            }}
+                          />
+                        ) : this.state.editBusinessInfo ? (
+                          <LowerButton
+                            checkmark
+                            bottom={0}
+                            function={this._handleSubmission}
+                          />
+                        ) : null}
                       </View>
                     </TouchableWithoutFeedback>
                   </>
@@ -856,16 +968,18 @@ class CreateBusinessAccount extends Component {
               </Text>
             </Text>
           )}
-          <Button
-            style={[styles.bottomCard]}
-            onPress={() => {
-              this._handleSubmission();
-            }}
-          >
-            <Text style={styles.buttonText} uppercase>
-              {translate("Create new business")}
-            </Text>
-          </Button>
+          {!this.state.editBusinessInfo && (
+            <Button
+              style={[styles.bottomCard]}
+              onPress={() => {
+                this._handleSubmission();
+              }}
+            >
+              <Text style={styles.buttonText} uppercase>
+                {translate("Create new business")}
+              </Text>
+            </Button>
+          )}
         </Container>
       </SafeAreaView>
     );
@@ -877,7 +991,9 @@ const mapStateToProps = state => ({
   userInfoR: state.register.userInfo,
   countryCode: state.register.countryCode,
   inviteCode: state.register.inviteCode,
-  successName: state.register.successName
+  successName: state.register.successName,
+  mainBusiness: state.account.mainBusiness,
+  loadingUpdateBusinessInfo: state.account.editBusinessInfoLoading
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -888,7 +1004,9 @@ const mapDispatchToProps = dispatch => ({
   verifyBusinessName: (businessName, _handleBusinessName) =>
     dispatch(
       actionCreators.verifyBusinessName(businessName, _handleBusinessName)
-    )
+    ),
+  updateBusinessInfo: (userid, info, navigation) =>
+    dispatch(actionCreators.updateBusinessInfo(userid, info, navigation))
 });
 export default connect(
   mapStateToProps,
