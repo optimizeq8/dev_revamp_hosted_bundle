@@ -1614,3 +1614,17 @@ export const setCollectionAdMediaArray = collectionMediaArray => {
     });
   };
 };
+
+/**
+ * Overwrites campaign's data with oldTempData plus what ever is specified
+ * @param {Object} value what ever values in campaign's data to overwrite
+ *
+ */
+export const overWriteObjectiveData = value => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.OVERWRITE_OBJ_DATA,
+      payload: value
+    });
+  };
+};
