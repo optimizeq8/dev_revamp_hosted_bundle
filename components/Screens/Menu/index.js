@@ -251,7 +251,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <Text style={styles.version}>
                 {translate("Version:")}
-                {Constants.manifest.version}/67/
+                {Constants.manifest.version}/68/
                 {Constants.manifest.ios.buildNumber}/
                 {Constants.manifest.android.versionCode}
               </Text>
@@ -298,7 +298,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.createBusinessAccount(account)),
   updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
