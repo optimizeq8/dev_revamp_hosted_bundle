@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { connect } from "react-redux";
 import { Text, Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import AppConfirm from "../../../MiniComponents/AppConfirm";
 import AppChoice from "../../../MiniComponents/AppChoice";
 
 //Icons
@@ -33,6 +34,7 @@ class App_Install extends Component {
         icon_media_id: "",
         icon_media_url: ""
       },
+      firstStepDone: false,
       appChoice: "",
       data: [],
       nameError: "",
@@ -45,16 +47,7 @@ class App_Install extends Component {
   }
 
   componentDidMount() {
-    //This is for SnapAd rejection process
-    if (this.props.rejCampaign && this.props.adType === "SnapAd") {
-      this.setState({
-        attachment: {
-          ...this.state.attachment,
-          ...this.props.rejCampaign.attachment
-        },
-        callaction: this.props.rejCampaign.call_to_action
-      });
-    } else if (
+    if (
       this.props.data &&
       this.props.adType !== "StoryAd" &&
       this.props.data.hasOwnProperty("attachment") &&
@@ -153,8 +146,6 @@ class App_Install extends Component {
               selectApp={this.selectApp}
               navigation={this.props.navigation}
               deepLink={false}
-              attachment={this.state.attachment}
-              callaction={this.state.callaction}
               _handleSubmission={this._handleSubmission}
               screenProps={this.props.screenProps}
             />
@@ -169,8 +160,7 @@ const mapStateToProps = state => ({
   campaign_id: state.campaignC.campaign_id,
   data: state.campaignC.data,
   adType: state.campaignC.adType,
-  storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -60,13 +60,12 @@ class ProductList extends React.Component {
         type: "warning"
       });
     } else {
+      // console.log('cartListWIthProductnameNPrice', this.state.cartList);
+      // console.log('this.props.businessLogo', this.props.businessLogo);
       this.props.navigation.getParam("_changeDestination")();
       this.props.saveWebProducts(
         this.state.cartList,
-        //added checking for a rejected campaign to send the campaign id
-        this.props.rejCampaign
-          ? this.props.rejCampaign.campaign_id
-          : this.props.data.campaign_id,
+        this.props.data.campaign_id,
         this.props.productInfoId,
         this.props.navigation,
         this.props.businessLogo,
@@ -284,8 +283,8 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   savingWebProducts: state.campaignC.savingWebProducts,
   productInfoId: state.campaignC.productInfoId,
-  businessLogo: state.campaignC.businessLogo,
-  rejCampaign: state.dashboard.rejCampaign
+  businessLogo: state.campaignC.businessLogo
+
   // weburlAvalible: state.campaignC.weburlAvalible,
   // mainBusiness: state.account.mainBusiness,
   // errorInstaHandle: state.campaignC.errorInstaHandle,
@@ -315,4 +314,7 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductList);

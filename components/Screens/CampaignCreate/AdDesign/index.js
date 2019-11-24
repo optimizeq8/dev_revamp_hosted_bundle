@@ -111,7 +111,7 @@ class AdDesign extends Component {
       heightComponent: 0,
       creativeVideoUrl: "",
       sourceChanging: false,
-      fileReadyToUpload: false,
+      rejectionUpload: false,
       tempImage: "",
       tempImageloading: false,
       storyAdAttachChanged: false,
@@ -124,12 +124,18 @@ class AdDesign extends Component {
     this.rejected = this.props.navigation.getParam("rejected", false);
   }
 
+  handleBackButton = () => {
+    if (this.state.storyAdCards.storyAdSelected) {
+      this.setState({
+        ...this.state,
+        storyAdCards: { ...this.state.storyAdCards, storyAdSelected: false }
+      });
+    } else this.props.navigation.goBack();
+    return true;
+  };
+
   componentWillUnmount() {
-    //Switched handleBackButton to toggleAdSelection
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.toggleAdSelection
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   async componentDidMount() {
     this._notificationSubscription = Notifications.addListener(
@@ -145,19 +151,19 @@ class AdDesign extends Component {
         brand_name: this.rejected
           ? this.selectedCampaign.brand_name
           : this.props.data && this.props.data.brand_name
-          ? this.props.data.brand_name
-          : this.props.mainBusiness.businessname,
+            ? this.props.data.brand_name
+            : this.props.mainBusiness.businessname,
         headline: this.rejected
           ? this.selectedCampaign.headline
           : this.props.data && this.props.data.headline
-          ? this.props.data.headline
-          : this.props.data.name
+            ? this.props.data.headline
+            : this.props.data.name
       },
       objective: this.rejected
         ? this.selectedCampaign.objective
         : this.props.data
-        ? this.props.data.objective
-        : "TRAFFIC"
+          ? this.props.data.objective
+          : "TRAFFIC"
     });
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -238,7 +244,7 @@ class AdDesign extends Component {
             : "//",
           swipeUpError,
           videoIsLoading: false,
-          type: this.selectedCampaign.media_type
+          type: this.selectedCampaign.campaign_type
         });
         return;
       }
@@ -281,7 +287,7 @@ class AdDesign extends Component {
     // if (this.props.navigation.state.params) {
     //   this._handleRedirect(this.props.navigation.state.params);
     // }
-    BackHandler.addEventListener("hardwareBackPress", this.toggleAdSelection);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
   _handleNotification = async uploadMediaNotification => {
@@ -328,9 +334,9 @@ class AdDesign extends Component {
     FileSystem.downloadAsync(
       this.selectedCampaign.story_creatives[0].media,
       FileSystem.cacheDirectory +
-        this.selectedCampaign.story_creatives[0].media.split("/")[
-          this.selectedCampaign.story_creatives[0].media.split("/").length - 1
-        ]
+      this.selectedCampaign.story_creatives[0].media.split("/")[
+      this.selectedCampaign.story_creatives[0].media.split("/").length - 1
+      ]
     ).then(media => {
       FileSystem.getInfoAsync(media.uri, { md5: true }).then(info => {
         this.setState({
@@ -470,6 +476,15 @@ class AdDesign extends Component {
       ];
       let selectedImage = this.state.storyAdCards.selectedStoryAd;
       selectedImage.media = "//";
+      // this.setState({
+      //   videoIsLoading: true,
+      //   media: "//",
+      //   type: "VIDEO",
+      //   storyAdCards: {
+      //     ...this.state.storyAdCards,
+      //     selectedStoryAd: selectedImage
+      //   }
+      // });
       card = {
         ...card,
         index: this.state.storyAdCards.selectedStoryAd.index,
@@ -489,30 +504,103 @@ class AdDesign extends Component {
         },
         videoIsLoading: false,
         iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
+        type: "VIDEO"
       });
       this.props.save_campaign_info({
         selectedStoryAd: card,
         iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
+        type: "VIDEO"
       });
+      // FileSystem.downloadAsync(
+      //   data.queryParams.media,
+      //   FileSystem.cacheDirectory +
+      //     data.queryParams.media.split("/")[
+      //       data.queryParams.media.split("/").length - 1
+      //     ]
+      // )
+      //   .then(({ uri }) => {
+      //     card = {
+      //       ...card,
+      //       index: this.state.storyAdCards.selectedStoryAd.index,
+      //       story_id: data.queryParams.story_id,
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       media_type: "VIDEO",
+      //       uploaded: true
+      //     };
+      //     cards[this.state.storyAdCards.selectedStoryAd.index] = card;
+      //     this.setState({
+      //       storyAdCards: {
+      //         ...this.state.storyAdCards,
+      //         // storyAdSelected: false,
+      //         selectedStoryAd: {
+      //           ...card
+      //         }
+      //       },
+      //       videoIsLoading: false,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //     this.props.save_campaign_info({
+      //       selectedStoryAd: card,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //   })
+      //   .catch(error => {
+      //     this.setState({
+      //       videoIsLoading: false
+      //     });
+      //     // console.error(error);
+      //     showMessage({
+      //       message: "Something went wrong!",
+      //       type: "warning",
+      //       position: "top",
+      //       description: "Please try again later. " + error
+      //     });
+      //   });
     } else {
+      // this.setState({ videoIsLoading: true, media: "//", type: "VIDEO" });
       this.setState({
         ...this.state,
         media: data.queryParams.media,
         iosVideoUploaded: true,
         type: "VIDEO",
-        videoIsLoading: false,
-        fileReadyToUpload: true
+        videoIsLoading: false
       });
       this.props.save_campaign_info({
         media: data.queryParams.media,
         iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
+        type: "VIDEO"
       });
+      //---Keep just in case we want to download videos on iOS---//
+      // FileSystem.downloadAsync(
+      //   data.queryParams.media,
+      //   FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
+      // )
+      //   .then(({ uri }) => {
+      //     this.setState({
+      //       ...this.state,
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO",
+      //       videoIsLoading: false
+      //     });
+      //     this.props.save_campaign_info({
+      //       media: uri,
+      //       iosVideoUploaded: true,
+      //       type: "VIDEO"
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.error(error);
+      //     showMessage({
+      //       message: "Something went wrong!",
+      //       type: "warning",
+      //       position: "top",
+      //       description: "Please try again later. " + error
+      //     });
+      //   });
     }
   };
 
@@ -533,13 +621,13 @@ class AdDesign extends Component {
         this.adType !== "StoryAd"
           ? { media: this.state.media }
           : {
-              cover: this.rejected
-                ? this.selectedCampaign.story_preview_media
-                : this.props.data.cover,
-              logo: this.rejected
-                ? this.selectedCampaign.story_logo_media
-                : this.props.data.logo
-            };
+            cover: this.rejected
+              ? this.selectedCampaign.story_preview_media
+              : this.props.data.cover,
+            logo: this.rejected
+              ? this.selectedCampaign.story_logo_media
+              : this.props.data.logo
+          };
       this.props.navigation.push(
         this.adType === "StoryAd" ? "StoryAdDesignReview" : "AdDesignReview",
         {
@@ -593,15 +681,10 @@ class AdDesign extends Component {
     const collectionError =
       this.adType === "CollectionAd"
         ? this.props.collectionAdMedia.includes(undefined) ||
-          this.props.collectionAdMedia.length < 4
+        this.props.collectionAdMedia.length < 4
         : false;
 
-    const collectionMediaError =
-      this.adType === "CollectionAd" &&
-      this.props.collectionAdMedia &&
-      this.props.collectionAdMedia
-        .map(collection => collection.collection_attachment)
-        .includes("BLANK");
+    const collectionMediaError = this.adType === "CollectionAd" && this.props.collectionAdMedia && this.props.collectionAdMedia.map(collection => collection.collection_attachment).includes('BLANK')
     let swipeUpError = null;
     if (
       // !this.rejected &&
@@ -739,7 +822,7 @@ class AdDesign extends Component {
         this.state.longformvideo_media_type,
         this.props.mainBusiness,
         this.state.campaignInfo,
-        this.state.fileReadyToUpload,
+        this.state.rejectionUpload,
         this.rejected,
         this.props.data,
         this.setTheState
@@ -749,7 +832,7 @@ class AdDesign extends Component {
         this.rejected ||
         (this.props.data && !this.props.data.hasOwnProperty("formatted")) ||
         JSON.stringify(this.props.data.formatted) !==
-          JSON.stringify(this.state.formatted)
+        JSON.stringify(this.state.formatted)
       ) {
         if (!this.props.loading) {
           await this.props.ad_design(
@@ -761,7 +844,7 @@ class AdDesign extends Component {
             this.rejected,
             this.state.signal,
             this.state.longformvideo_media &&
-              this.state.longformvideo_media_type === "VIDEO",
+            this.state.longformvideo_media_type === "VIDEO",
             {
               iosUploaded: this.state.iosVideoUploaded,
               media: this.state.media
@@ -783,18 +866,9 @@ class AdDesign extends Component {
     if (this.state.signal) this.state.signal.cancel("Upload Cancelled");
   };
 
-  /**
-   * if adType is StoryAds then the back button toggles between list view
-   * and detail view else it checkes if it's a rejection process to reset
-   * the rejected campaign data from the store so it doesn't interfere with normal
-   * campaign creation then just goes back in navigation
-   *
-   * @returns {Bool} returns true because it's being used instead of handleBackButton for BackHandler
-   * since they're mostly the same
-   */
   toggleAdSelection = () => {
-    if (this.state.storyAdCards.storyAdSelected)
-      this.setState({
+    this.state.storyAdCards.storyAdSelected
+      ? this.setState({
         ...this.state,
         storyAdCards: {
           ...this.state.storyAdCards,
@@ -802,14 +876,8 @@ class AdDesign extends Component {
         },
         type: "",
         videoIsLoading: false
-      });
-    else {
-      if (this.rejected && this.adType !== "StoryAd") {
-        this.props.resetRejectedCampaignData();
-      }
-      this.props.navigation.goBack();
-    }
-    return true;
+      })
+      : this.props.navigation.goBack();
   };
 
   setUploadFromDifferentDeviceModal = val => {
@@ -818,12 +886,7 @@ class AdDesign extends Component {
     });
   };
   getWebUploadLinkMediaURL = () => {
-    this.props.getWebUploadLinkMedia(
-      this.rejected
-        ? this.selectedCampaign.campaign_id
-        : this.props.campaign_id,
-      this.adType
-    );
+    this.props.getWebUploadLinkMedia(this.props.campaign_id, this.adType);
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = val => {
@@ -846,6 +909,7 @@ class AdDesign extends Component {
     // update storyads array
     await this.props.updateStoryADS(storyAdsArray);
     let cards = this.props.storyAdsArray;
+
     cards.map((card, index) => {
       if (storyAdsArray[index]) {
         card = {
@@ -866,15 +930,12 @@ class AdDesign extends Component {
               ...card
             }
           },
-          type: storyAdsArray[index].media_type,
-          //Added fileReadyToUpload:true so that normal upload process
-          //works as normal when uploading ios videos
-          fileReadyToUpload: true
+
+          type: storyAdsArray[index].media_type
         });
         this.props.save_campaign_info({
           selectedStoryAd: card,
-          type: storyAdsArray[index].media_type,
-          fileReadyToUpload: true
+          type: storyAdsArray[index].media_type
         });
       }
     });
@@ -890,22 +951,18 @@ class AdDesign extends Component {
       title: "Support"
     });
   };
-  handleDownloadMediaCollectionAds = async (
-    collectionAdMainMedia,
-    collectionAdMainMediaType,
-    collectionAdsArray
-  ) => {
+  handleDownloadMediaCollectionAds = async (collectionAdMainMedia, collectionAdMainMediaType, collectionAdsArray) => {
     this.setState({
       media: collectionAdMainMedia,
       type: collectionAdMainMediaType,
       downloadMediaModal: false
     });
-    this.props.setCollectionAdMediaArray(collectionAdsArray);
+    this.props.setCollectionAdMediaArray(collectionAdsArray)
     this.props.save_campaign_info({
       media: collectionAdMainMedia,
       type: collectionAdMainMediaType
     });
-  };
+  }
   render() {
     let {
       media,
@@ -1027,18 +1084,18 @@ class AdDesign extends Component {
                   {type === "VIDEO" ? (
                     videoPlayer
                   ) : (
-                    <RNImageOrCacheImage
-                      media={
-                        this.adType !== "StoryAd" && media !== "//"
-                          ? media
-                          : storyAdCards.selectedStoryAd.media &&
-                            storyAdCards.storyAdSelected
-                          ? storyAdCards.selectedStoryAd.media
-                          : preview.uri
-                      }
-                      style={styles.placeholder1}
-                    />
-                  )}
+                      <RNImageOrCacheImage
+                        media={
+                          this.adType !== "StoryAd" && media !== "//"
+                            ? media
+                            : storyAdCards.selectedStoryAd.media &&
+                              storyAdCards.storyAdSelected
+                              ? storyAdCards.selectedStoryAd.media
+                              : preview.uri
+                        }
+                        style={styles.placeholder1}
+                      />
+                    )}
                   {this.adType === "StoryAd" && storyAdCards.storyAdSelected && (
                     <View style={styles.storyAdIndexContainer}>
                       <Text style={styles.storyAdIndexNum}>
@@ -1048,30 +1105,30 @@ class AdDesign extends Component {
                   )}
                   {inputFields}
                   {this.adType === "StoryAd" &&
-                  !storyAdCards.storyAdSelected ? (
-                    <StoryAdCards
-                      screenProps={this.props.screenProps}
-                      rejected={this.rejected}
-                      video={type === "VIDEO"}
-                      // numOfAds={storyAdCards.numOfAds}
-                      // openUploadVideo={this.openUploadVideo}
-                      selectedStoryAd={storyAdCards.selectedStoryAd}
-                      cancelUpload={this.cancelUpload} //one signal to cancel all requests
-                      StoryAdCards={this.props.storyAdsArray}
-                      _handleStoryAdCards={this._handleStoryAdCards}
-                    />
-                  ) : (
-                    <MediaButton
-                      screenProps={this.props.screenProps}
-                      type={"media"}
-                      setMediaModalVisible={this.setMediaModalVisible}
-                      media={
-                        media !== "//"
-                          ? media
-                          : storyAdCards.selectedStoryAd.media
-                      }
-                    />
-                  )}
+                    !storyAdCards.storyAdSelected ? (
+                      <StoryAdCards
+                        screenProps={this.props.screenProps}
+                        rejected={this.rejected}
+                        video={type === "VIDEO"}
+                        // numOfAds={storyAdCards.numOfAds}
+                        // openUploadVideo={this.openUploadVideo}
+                        selectedStoryAd={storyAdCards.selectedStoryAd}
+                        cancelUpload={this.cancelUpload} //one signal to cancel all requests
+                        StoryAdCards={this.props.storyAdsArray}
+                        _handleStoryAdCards={this._handleStoryAdCards}
+                      />
+                    ) : (
+                      <MediaButton
+                        screenProps={this.props.screenProps}
+                        type={"media"}
+                        setMediaModalVisible={this.setMediaModalVisible}
+                        media={
+                          media !== "//"
+                            ? media
+                            : storyAdCards.selectedStoryAd.media
+                        }
+                      />
+                    )}
                   {videoIsLoading ? <CameraLoading /> : null}
                   <SwipeCompCondition
                     screenProps={this.props.screenProps}
@@ -1138,122 +1195,122 @@ class AdDesign extends Component {
               //---For Story ads---//
               <View style={styles.footerButtonsContainer}>
                 {this.props.loadingStoryAdsArray.length > 0 &&
-                this.props.loadingStoryAdsArray.includes(true) ? (
-                  <CircleLoader
-                    mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={-0.2}
-                    loop={true}
-                    style={{ width: wp(8), height: hp(8) }}
-                  />
-                ) : (
-                  <>
-                    {this.adType === "StoryAd" ? (
-                      !storyAdCards.storyAdSelected &&
-                      validCards.length >= 3 && (
-                        <TouchableOpacity
-                          style={styles.button}
-                          onPress={() => this.previewHandler()}
-                        >
-                          <EyeIcon width={wp(24)} height={hp(8)} />
-                        </TouchableOpacity>
-                      )
-                    ) : (
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => this.previewHandler()}
-                      >
-                        <EyeIcon width={wp(24)} height={hp(8)} />
-                      </TouchableOpacity>
-                    )}
-                    {this.adType === "StoryAd" ? (
-                      true ? (
-                        <TouchableOpacity
-                          onPress={() => {
-                            this.handleUpload();
-                            _handleSubmission(
-                              this.adType,
-                              this.props.storyAdsArray,
-                              storyAdCards,
-                              storyAdAttachChanged,
-                              formatStoryAd,
-                              this.validator,
-                              this.finalSubmission,
-                              this.setTheState,
-                              {
-                                //for formatStoryAd
-                                storyAdAttachment: this.props.storyAdAttachment,
-                                campaignInfo: this.state.campaignInfo,
-                                selectedCampaign: this.selectedCampaign,
-                                campaign_id: this.props.campaign_id,
-                                rejected: this.rejected,
-                                handleUpload: this.handleUpload,
-                                signal: this.state.signal,
-                                uploadStoryAdCard: this.props.uploadStoryAdCard
-                              },
-                              this.props.screenProps
-                            );
-                          }}
-                          style={styles.button}
-                        >
-                          <ForwardButton width={wp(24)} height={hp(8)} />
-                        </TouchableOpacity>
+                  this.props.loadingStoryAdsArray.includes(true) ? (
+                    <CircleLoader
+                      mainViewStyle={{ width: wp(8), height: hp(8) }}
+                      bottom={-0.2}
+                      loop={true}
+                      style={{ width: wp(8), height: hp(8) }}
+                    />
+                  ) : (
+                    <>
+                      {this.adType === "StoryAd" ? (
+                        !storyAdCards.storyAdSelected &&
+                        validCards.length >= 3 && (
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => this.previewHandler()}
+                          >
+                            <EyeIcon width={wp(24)} height={hp(8)} />
+                          </TouchableOpacity>
+                        )
                       ) : (
-                        <Text style={styles.footerTextStyle}>
-                          {this.adType === "StoryAd"
-                            ? videoIsLoading
-                              ? translate(
-                                  "Please wait while the video is downloading"
-                                )
-                              : translate("Please add minimum of 3 media files")
-                            : objective !== "BRAND_AWARENESS"
-                            ? ""
-                            : translate("Please add media to proceed")}
-                        </Text>
-                      )
-                    ) : (
-                      <SubmitButton
-                        _handleSubmission={() =>
-                          _handleSubmission(
-                            this.adType,
-                            this.props.storyAdsArray,
-                            storyAdCards,
-                            storyAdAttachChanged,
-                            formatStoryAd,
-                            this.validator,
-                            this.finalSubmission,
-                            this.setTheState,
-                            {
-                              //for formatStoryAd
-                              storyAdAttachment: this.props.storyAdAttachment,
-                              campaignInfo: this.state.campaignInfo,
-                              selectedCampaign: this.selectedCampaign,
-                              campaign_id: this.props.campaign_id,
-                              rejected: this.rejected,
-                              handleUpload: this.handleUpload,
-                              signal: this.state.signal,
-                              uploadStoryAdCard: this.props.uploadStoryAdCard
-                            },
-                            this.props.screenProps
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => this.previewHandler()}
+                          >
+                            <EyeIcon width={wp(24)} height={hp(8)} />
+                          </TouchableOpacity>
+                        )}
+                      {this.adType === "StoryAd" ? (
+                        true ? (
+                          <TouchableOpacity
+                            onPress={() => {
+                              this.handleUpload();
+                              _handleSubmission(
+                                this.adType,
+                                this.props.storyAdsArray,
+                                storyAdCards,
+                                storyAdAttachChanged,
+                                formatStoryAd,
+                                this.validator,
+                                this.finalSubmission,
+                                this.setTheState,
+                                {
+                                  //for formatStoryAd
+                                  storyAdAttachment: this.props.storyAdAttachment,
+                                  campaignInfo: this.state.campaignInfo,
+                                  selectedCampaign: this.selectedCampaign,
+                                  campaign_id: this.props.campaign_id,
+                                  rejected: this.rejected,
+                                  handleUpload: this.handleUpload,
+                                  signal: this.state.signal,
+                                  uploadStoryAdCard: this.props.uploadStoryAdCard
+                                },
+                                this.props.screenProps
+                              );
+                            }}
+                            style={styles.button}
+                          >
+                            <ForwardButton width={wp(24)} height={hp(8)} />
+                          </TouchableOpacity>
+                        ) : (
+                            <Text style={styles.footerTextStyle}>
+                              {this.adType === "StoryAd"
+                                ? videoIsLoading
+                                  ? translate(
+                                    "Please wait while the video is downloading"
+                                  )
+                                  : translate("Please add minimum of 3 media files")
+                                : objective !== "BRAND_AWARENESS"
+                                  ? ""
+                                  : translate("Please add media to proceed")}
+                            </Text>
                           )
-                        }
-                        adType={this.adType}
-                      />
-                    )}
-                  </>
-                )}
+                      ) : (
+                          <SubmitButton
+                            _handleSubmission={() =>
+                              _handleSubmission(
+                                this.adType,
+                                this.props.storyAdsArray,
+                                storyAdCards,
+                                storyAdAttachChanged,
+                                formatStoryAd,
+                                this.validator,
+                                this.finalSubmission,
+                                this.setTheState,
+                                {
+                                  //for formatStoryAd
+                                  storyAdAttachment: this.props.storyAdAttachment,
+                                  campaignInfo: this.state.campaignInfo,
+                                  selectedCampaign: this.selectedCampaign,
+                                  campaign_id: this.props.campaign_id,
+                                  rejected: this.rejected,
+                                  handleUpload: this.handleUpload,
+                                  signal: this.state.signal,
+                                  uploadStoryAdCard: this.props.uploadStoryAdCard
+                                },
+                                this.props.screenProps
+                              )
+                            }
+                            adType={this.adType}
+                          />
+                        )}
+                    </>
+                  )}
               </View>
             ) : (
-              <FooterText
-                collectionAdMedia={this.props.collectionAdMedia}
-                storyAdCards={storyAdCards}
-                adType={this.adType}
-                videoIsLoading={videoIsLoading}
-                objective={objective}
-                swipeUpError={swipeUpError}
-                media={media}
-                screenProps={this.props.screenProps}
-              />
-            )}
+                <FooterText
+                  collectionAdMedia={this.props.collectionAdMedia}
+                  storyAdCards={storyAdCards}
+                  adType={this.adType}
+                  videoIsLoading={videoIsLoading}
+                  objective={objective}
+                  swipeUpError={swipeUpError}
+                  media={media}
+                  screenProps={this.props.screenProps}
+                />
+              )}
           </Footer>
         </Container>
         <MediaModal
@@ -1291,9 +1348,7 @@ class AdDesign extends Component {
           screenProps={this.props.screenProps}
           adType={this.adType}
           handleDownloadMediaStoryAds={this.handleDownloadMediaStoryAds}
-          handleDownloadMediaCollectionAds={
-            this.handleDownloadMediaCollectionAds
-          }
+          handleDownloadMediaCollectionAds={this.handleDownloadMediaCollectionAds}
         />
         <LoadingModal
           videoUrlLoading={videoUrlLoading}
@@ -1330,8 +1385,7 @@ const mapStateToProps = state => ({
   admin: state.login.admin,
   collAttachment: state.campaignC.collAttachment,
   collectionMainMediaWebLink: state.campaignC.collectionMainMediaWebLink,
-  collectionMainMediaTypeWebLink:
-    state.campaignC.collectionMainMediaTypeWebLink,
+  collectionMainMediaTypeWebLink: state.campaignC.collectionMainMediaTypeWebLink,
   rejCampaign: state.dashboard.rejCampaign
 });
 
@@ -1392,89 +1446,9 @@ const mapDispatchToProps = dispatch => ({
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
   updateStoryADS: storyAdsArray =>
     dispatch(actionCreators.updateStoryADS(storyAdsArray)),
-  setCollectionAdMediaArray: collectionAdsArray =>
-    dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray)),
-  resetRejectedCampaignData: () =>
-    dispatch(actionCreators.resetRejectedCampaignData())
+  setCollectionAdMediaArray: collectionAdsArray => dispatch(actionCreators.setCollectionAdMediaArray(collectionAdsArray))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AdDesign);
-
-//for handle redirect for story ads at the bottom of the if statement//
-// FileSystem.downloadAsync(
-//   data.queryParams.media,
-//   FileSystem.cacheDirectory +
-//     data.queryParams.media.split("/")[
-//       data.queryParams.media.split("/").length - 1
-//     ]
-// )
-//   .then(({ uri }) => {
-//     card = {
-//       ...card,
-//       index: this.state.storyAdCards.selectedStoryAd.index,
-//       story_id: data.queryParams.story_id,
-//       media: uri,
-//       iosVideoUploaded: true,
-//       media_type: "VIDEO",
-//       uploaded: true
-//     };
-//     cards[this.state.storyAdCards.selectedStoryAd.index] = card;
-//     this.setState({
-//       storyAdCards: {
-//         ...this.state.storyAdCards,
-//         // storyAdSelected: false,
-//         selectedStoryAd: {
-//           ...card
-//         }
-//       },
-//       videoIsLoading: false,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//     this.props.save_campaign_info({
-//       selectedStoryAd: card,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//   })
-//   .catch(error => {
-//     this.setState({
-//       videoIsLoading: false
-//     });
-//     // console.error(error);
-//     showMessage({
-//       message: "Something went wrong!",
-//       type: "warning",
-//       position: "top",
-//       description: "Please try again later. " + error
-//     });
-//   });
-
-////---Keep just in case we want to download videos on iOS---////
-//for handleRedirect for snap ads at the bottom of the else statement
-// FileSystem.downloadAsync(
-//   data.queryParams.media,
-//   FileSystem.cacheDirectory + data.queryParams.media.split("/")[5]
-// )
-//   .then(({ uri }) => {
-//     this.setState({
-//       ...this.state,
-//       media: uri,
-//       iosVideoUploaded: true,
-//       type: "VIDEO",
-//       videoIsLoading: false
-//     });
-//     this.props.save_campaign_info({
-//       media: uri,
-//       iosVideoUploaded: true,
-//       type: "VIDEO"
-//     });
-//   })
-//   .catch(error => {
-//     console.error(error);
-//     showMessage({
-//       message: "Something went wrong!",
-//       type: "warning",
-//       position: "top",
-//       description: "Please try again later. " + error
-//     });
-//   });
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdDesign);

@@ -658,4 +658,7 @@ const mapDispatchToProps = dispatch => ({
   getLanguageListPOEdit: language =>
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);
