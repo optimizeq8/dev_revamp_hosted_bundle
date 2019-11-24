@@ -163,9 +163,7 @@ const reducer = (state = initialState, action) => {
             action.payload.data.attachment !== "BLANK"
               ? JSON.parse(action.payload.data.attachment)
               : action.payload.data.attachment,
-          //added checking if data is not null becuase it was throwing an error for
-          //re-uploading for rejected ads
-          media: state.data && state.data.media
+          media: state.data.media
         },
         message: action.payload.message,
 
@@ -195,9 +193,9 @@ const reducer = (state = initialState, action) => {
         currentCampaignSteps: action.payload.reset
           ? state.currentCampaignSteps.length > 0
             ? state.currentCampaignSteps.splice(
-                0,
-                state.currentCampaignSteps.length - 1
-              )
+              0,
+              state.currentCampaignSteps.length - 1
+            )
             : []
           : state.currentCampaignSteps
       };
@@ -638,7 +636,10 @@ const reducer = (state = initialState, action) => {
         }
       }
       let oldData = state.data;
-      let collCall_to_action = rejColCalltoAction;
+      let collCall_to_action = {
+        label: rejColCalltoAction.replace("_", " "),
+        value: rejColCalltoAction
+      };
 
       oldData = {
         ...oldData,
@@ -837,16 +838,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         collectionAdMediaLinks: [...action.payload.collectionMediaArray],
-        collectionMainMediaTypeWebLink:
-          action.payload.collectionMainMediaTypeWebLink,
+        collectionMainMediaTypeWebLink: action.payload.collectionMainMediaTypeWebLink,
         collectionMainMediaWebLink: action.payload.collectionMainMediaWebLink
-      };
+      }
     }
     case actionTypes.SET_COLLECTION_AD_ARRAY: {
       return {
         ...state,
         collectionAdMedia: [...action.payload]
-      };
+      }
     }
     default:
       return state;
