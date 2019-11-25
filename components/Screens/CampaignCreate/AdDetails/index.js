@@ -1042,7 +1042,4 @@ const mapDispatchToProps = dispatch => ({
   get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

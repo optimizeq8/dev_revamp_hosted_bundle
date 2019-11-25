@@ -23,7 +23,8 @@ let blacklistTransform = createTransform((inboundState, key) => {
       "getWebProductsLoading",
       "webUploadLinkMediaLoading",
       "collectionLoader",
-      "loadingMoreInstaPost"
+      "loadingMoreInstaPost",
+      "campaignProgressStarted"
     ]);
   } else {
     return inboundState;

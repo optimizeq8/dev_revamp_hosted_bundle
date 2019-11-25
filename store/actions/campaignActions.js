@@ -321,10 +321,16 @@ export const ad_design = (
             type: data.success ? "success" : "danger",
             position: "top"
           });
-        return dispatch({
-          type: actionTypes.SET_AD_DESIGN,
-          payload: data
-        });
+        if (!rejected)
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN,
+            payload: data
+          });
+        else
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DESIGN,
+            payload: false
+          });
       })
       .then(() => {
         onToggleModal(false);
@@ -335,7 +341,10 @@ export const ad_design = (
         if (!rejected) navigation.push("AdDetails");
         else {
           persistor.purge();
-          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+          dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
+          dispatch({
+            type: actionTypes.RESET_CAMPAING_INFO
+          });
           navigation.navigate("Dashboard");
         }
       })
@@ -403,11 +412,7 @@ export const uploadStoryAdCover = (
       })
       .then(() => {
         navigation.push("AdDesign", {
-          rejected,
-          selectedCampaign,
-          //if it's not a rejected campaign selectedCampaign=null, so i  need to check
-          //for it to not throw an error
-          adType: selectedCampaign && selectedCampaign.campaign_type
+          rejected
         });
       })
       .catch(err => {
@@ -1615,6 +1620,20 @@ export const setCollectionAdMediaArray = collectionMediaArray => {
     return dispatch({
       type: actionTypes.SET_COLLECTION_AD_ARRAY,
       payload: [...newArray]
+    });
+  };
+};
+
+/**
+ * Overwrites campaign's data with oldTempData plus what ever is specified
+ * @param {Object} value what ever values in campaign's data to overwrite
+ *
+ */
+export const overWriteObjectiveData = value => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.OVERWRITE_OBJ_DATA,
+      payload: value
     });
   };
 };

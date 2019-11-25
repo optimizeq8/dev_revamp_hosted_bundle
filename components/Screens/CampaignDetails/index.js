@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
-import DateField from "../../MiniComponents/DatePicker/DateFields";
+import DateFields from "../../MiniComponents/DatePicker/DateFields";
 import Header from "../../MiniComponents/Header";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
@@ -39,7 +39,7 @@ import dateFormat from "dateformat";
 
 //Data
 import { country_regions as regionsCountries } from "../../Screens/CampaignCreate/AdDetails/data";
-import countries from '../../Screens/CampaignCreate/AdDetails/data'
+import countries from "../../Screens/CampaignCreate/AdDetails/data";
 import { interestNames } from "./interesetNames";
 
 //Redux
@@ -96,7 +96,7 @@ class CampaignDetails extends Component {
   shouldComponentUpdate(nextProps) {
     return (
       this.props.selectedCampaign.campaign_id !==
-      nextProps.selectedCampaign.campaign_id ||
+        nextProps.selectedCampaign.campaign_id ||
       this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU
     );
   }
@@ -232,55 +232,66 @@ class CampaignDetails extends Component {
 
         deviceMakes =
           targeting &&
-            targeting.hasOwnProperty("devices") &&
-            targeting.devices[0].hasOwnProperty("marketing_name")
+          targeting.hasOwnProperty("devices") &&
+          targeting.devices[0].hasOwnProperty("marketing_name")
             ? targeting.devices[0].marketing_name.join(", \n")
             : [];
 
         region_names =
           targeting.geos[0].hasOwnProperty("region_id") &&
           targeting.geos[0].region_id
-            .map(
-              id =>
-                translate(regionsCountries
+            .map(id =>
+              translate(
+                regionsCountries
                   .find(
                     country =>
                       country.country_code === targeting.geos[0].country_code
                   )
-                  .regions.find(reg => reg.id === id).name)
+                  .regions.find(reg => reg.id === id).name
+              )
             )
             .join(", ");
 
-        countryName = targeting && targeting.geos[0].country_code && translate(countries.find(
-          country =>
-            country.value === targeting.geos[0].country_code
-        ).label)
+        countryName =
+          targeting &&
+          targeting.geos[0].country_code &&
+          translate(
+            countries.find(
+              country => country.value === targeting.geos[0].country_code
+            ).label
+          );
 
         interesetNames =
           targeting && targeting.hasOwnProperty("interests")
             ? targeting.interests[0].category_id.map(interest => {
-              if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
-                return ` ${
-                  interestNames.interests.scls.find(
-                    interestObj => interestObj.id === interest
-                  ).name
+                if (targeting.interests[0].category_id.hasOwnProperty("scls")) {
+                  return ` ${
+                    interestNames.interests.scls.find(
+                      interestObj => interestObj.id === interest
+                    ).name
                   }`;
-              } else {
-                return (
-                  interest !== "scls" &&
-                  ` ${
-                  interestNames.interests.scls.find(
-                    interestObj => interestObj.id === interest
-                  ).name
-                  }`
-                );
-              }
-            })
+                } else {
+                  return (
+                    interest !== "scls" &&
+                    ` ${
+                      interestNames.interests.scls.find(
+                        interestObj => interestObj.id === interest
+                      ).name
+                    }`
+                  );
+                }
+              })
             : [];
 
-        langaugeNames = targeting && targeting.demographics[0] && targeting.demographics[0].languages.map(languageId => {
-          return this.props.languages && this.props.languages.find(lang => lang.id === languageId).name
-        });
+        langaugeNames =
+          targeting &&
+          targeting.demographics[0] &&
+          targeting.demographics[0].languages.map(languageId => {
+            return (
+              this.props.languages &&
+              this.props.languages.find(lang => lang.id === languageId).name
+            );
+          });
 
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
           end_time = new Date(selectedCampaign.end_time.split("T")[0]);
@@ -294,7 +305,7 @@ class CampaignDetails extends Component {
 
       return (
         <>
-          <DateField
+          <DateFields
             onRef={ref => (this.dateField = ref)}
             handleStartDatePicked={this.handleStartDatePicked}
             handleEndDatePicked={this.handleEndDatePicked}
@@ -395,137 +406,137 @@ class CampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : (
-                    <Text
-                      style={[
-                        styles.title,
-                        { width: 150 },
-                        !isStringArabic(selectedCampaign.name)
-                          ? { fontFamily: "montserrat-bold-english" }
-                          : {}
-                      ]}
-                    >
-                      {selectedCampaign.name}
-                    </Text>
-                  )}
+                  <Text
+                    style={[
+                      styles.title,
+                      { width: 150 },
+                      !isStringArabic(selectedCampaign.name)
+                        ? { fontFamily: "montserrat-bold-english" }
+                        : {}
+                    ]}
+                  >
+                    {selectedCampaign.name}
+                  </Text>
+                )}
                 {loading ? (
                   <View style={{ margin: 5 }}>
                     <PlaceholderLine />
                   </View>
                 ) : (
-                    <View>
-                      {selectedCampaign.review_status === "APPROVED" ? (
-                        selectedCampaign.campaign_end === "0" &&
-                          !this.props.campaignEnded &&
-                          new Date(selectedCampaign.end_time) > new Date() ? (
-                            selectedCampaign.review_status === "APPROVED" &&
-                              new Date(selectedCampaign.start_time) > new Date() ? (
-                                <View
-                                  style={[
-                                    styles.adStatus,
-                                    { backgroundColor: "#66D072" }
-                                  ]}
-                                >
-                                  <Text style={styles.reviewtext}>
-                                    {translate("Scheduled for")} {start_time}
-                                  </Text>
-                                </View>
-                              ) : (
-                                <View padder style={styles.toggleSpace}>
-                                  <View style={{ alignSelf: "center" }}>
-                                    {selectedCampaign && (
-                                      <Toggle
-                                        buttonTextStyle={styles.switchButtonText}
-                                        buttonText={
-                                          this.state.toggleText !== "PAUSED"
-                                            ? "LIVE"
-                                            : "PAUSED"
-                                        }
-                                        containerStyle={styles.toggleStyle}
-                                        switchOn={this.state.toggle}
-                                        onPress={() => {
-                                          this.state.toggle
-                                            ? this.setState({
-                                              modalVisible: true
-                                            })
-                                            : this.updateStatus();
-                                        }}
-                                        backgroundColorOff="rgba(255,255,255,0.1)"
-                                        backgroundColorOn="rgba(255,255,255,0.1)"
-                                        circleColorOff="#FF9D00"
-                                        circleColorOn="#66D072"
-                                        duration={500}
-                                        circleStyle={styles.switchCircle}
-                                      />
-                                    )}
-                                    <Text style={styles.statusText}>
-                                      {translate(
-                                        `${
-                                        this.state.toggle
-                                          ? "Tap to pause AD"
-                                          : "Tap to activate AD"
-                                        }`
-                                      )}
-                                    </Text>
-                                  </View>
-                                </View>
-                              )
-                          ) : (
-                            <View style={styles.adStatus}>
-                              <Text style={styles.reviewtext}>
-                                {translate("Campaign ended")}
-                              </Text>
-                            </View>
-                          )
-                      ) : (
+                  <View>
+                    {selectedCampaign.review_status === "APPROVED" ? (
+                      selectedCampaign.campaign_end === "0" &&
+                      !this.props.campaignEnded &&
+                      new Date(selectedCampaign.end_time) > new Date() ? (
+                        selectedCampaign.review_status === "APPROVED" &&
+                        new Date(selectedCampaign.start_time) > new Date() ? (
                           <View
                             style={[
                               styles.adStatus,
-                              {
-                                backgroundColor:
-                                  selectedCampaign.review_status === "PENDING"
-                                    ? globalColors.orange
-                                    : globalColors.red
-                              }
+                              { backgroundColor: "#66D072" }
                             ]}
                           >
                             <Text style={styles.reviewtext}>
-                              {translate(
-                                `${
-                                selectedCampaign.review_status === "PENDING"
-                                  ? "In Review"
-                                  : "Rejected"
-                                }`
-                              )}
+                              {translate("Scheduled for")} {start_time}
                             </Text>
                           </View>
-                        )}
-                    </View>
-                  )}
+                        ) : (
+                          <View padder style={styles.toggleSpace}>
+                            <View style={{ alignSelf: "center" }}>
+                              {selectedCampaign && (
+                                <Toggle
+                                  buttonTextStyle={styles.switchButtonText}
+                                  buttonText={
+                                    this.state.toggleText !== "PAUSED"
+                                      ? "LIVE"
+                                      : "PAUSED"
+                                  }
+                                  containerStyle={styles.toggleStyle}
+                                  switchOn={this.state.toggle}
+                                  onPress={() => {
+                                    this.state.toggle
+                                      ? this.setState({
+                                          modalVisible: true
+                                        })
+                                      : this.updateStatus();
+                                  }}
+                                  backgroundColorOff="rgba(255,255,255,0.1)"
+                                  backgroundColorOn="rgba(255,255,255,0.1)"
+                                  circleColorOff="#FF9D00"
+                                  circleColorOn="#66D072"
+                                  duration={500}
+                                  circleStyle={styles.switchCircle}
+                                />
+                              )}
+                              <Text style={styles.statusText}>
+                                {translate(
+                                  `${
+                                    this.state.toggle
+                                      ? "Tap to pause AD"
+                                      : "Tap to activate AD"
+                                  }`
+                                )}
+                              </Text>
+                            </View>
+                          </View>
+                        )
+                      ) : (
+                        <View style={styles.adStatus}>
+                          <Text style={styles.reviewtext}>
+                            {translate("Campaign ended")}
+                          </Text>
+                        </View>
+                      )
+                    ) : (
+                      <View
+                        style={[
+                          styles.adStatus,
+                          {
+                            backgroundColor:
+                              selectedCampaign.review_status === "PENDING"
+                                ? globalColors.orange
+                                : globalColors.red
+                          }
+                        ]}
+                      >
+                        <Text style={styles.reviewtext}>
+                          {translate(
+                            `${
+                              selectedCampaign.review_status === "PENDING"
+                                ? "In Review"
+                                : "Rejected"
+                            }`
+                          )}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                )}
                 {loading ? (
                   <View style={{ margin: 5 }}>
                     <PlaceholderLine />
                   </View>
                 ) : (
-                    <Text style={styles.subHeadings}>
-                      {translate("Budget")}
-                      {"\n"}
-                      <Text
-                        style={[
-                          styles.numbers,
-                          {
-                            fontSize: 25,
-                            fontFamily: "montserrat-bold"
-                          }
-                        ]}
-                      >
-                        {formatNumber(
-                          selectedCampaign.lifetime_budget_micro,
-                          true
-                        )}
-                      </Text>
-                      <Text style={{ color: "white" }}>$</Text>
+                  <Text style={styles.subHeadings}>
+                    {translate("Budget")}
+                    {"\n"}
+                    <Text
+                      style={[
+                        styles.numbers,
+                        {
+                          fontSize: 25,
+                          fontFamily: "montserrat-bold"
+                        }
+                      ]}
+                    >
+                      {formatNumber(
+                        selectedCampaign.lifetime_budget_micro,
+                        true
+                      )}
                     </Text>
-                  )}
+                    <Text style={{ color: "white" }}>$</Text>
+                  </Text>
+                )}
                 <Text style={styles.subHeadings}>{translate("Duration")}</Text>
                 <View style={{ flexDirection: "row", alignSelf: "center" }}>
                   <View
@@ -539,27 +550,27 @@ class CampaignDetails extends Component {
                         <PlaceholderLine />
                       </View>
                     ) : (
-                        <>
-                          <Text
-                            style={[
-                              styles.categories,
-                              {
-                                fontSize: 16,
-                                fontFamily: "montserrat-medium",
-                                textAlign: "center"
-                              }
-                            ]}
-                          >
-                            {translate("Start")}
+                      <>
+                        <Text
+                          style={[
+                            styles.categories,
+                            {
+                              fontSize: 16,
+                              fontFamily: "montserrat-medium",
+                              textAlign: "center"
+                            }
+                          ]}
+                        >
+                          {translate("Start")}
+                        </Text>
+                        <Text style={styles.numbers}>
+                          {start_time}{" "}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {start_year}
                           </Text>
-                          <Text style={styles.numbers}>
-                            {start_time}{" "}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {start_year}
-                            </Text>
-                          </Text>
-                        </>
-                      )}
+                        </Text>
+                      </>
+                    )}
                   </View>
                   <View
                     style={{
@@ -572,187 +583,192 @@ class CampaignDetails extends Component {
                         <PlaceholderLine />
                       </View>
                     ) : (
-                        <>
-                          <Text
-                            style={[
-                              styles.categories,
-                              {
-                                fontSize: 16,
-                                fontFamily: "montserrat-medium",
-                                textAlign: "center"
-                              }
-                            ]}
-                          >
-                            {translate("End")}
-                          </Text>
+                      <>
+                        <Text
+                          style={[
+                            styles.categories,
+                            {
+                              fontSize: 16,
+                              fontFamily: "montserrat-medium",
+                              textAlign: "center"
+                            }
+                          ]}
+                        >
+                          {translate("End")}
+                        </Text>
 
-                          <Text style={styles.numbers}>
-                            {end_time}{" "}
-                            <Text style={[styles.numbers, { fontSize: 12 }]}>
-                              {end_year}
-                            </Text>
+                        <Text style={styles.numbers}>
+                          {end_time}{" "}
+                          <Text style={[styles.numbers, { fontSize: 12 }]}>
+                            {end_year}
                           </Text>
-                        </>
-                      )}
+                        </Text>
+                      </>
+                    )}
                   </View>
                 </View>
                 {selectedCampaign &&
                   ((selectedCampaign.review_status !== "REJECTED" &&
                     selectedCampaign.campaign_end === "0") ||
-                    new Date(selectedCampaign.end_time) < new Date() ? (
-                      <Content contentContainerStyle={{ paddingBottom: "60%" }}>
-                        {media.length > 0 && (
-                          <>
-                            <Text style={styles.subHeadings}>
-                              {translate("Media")}
-                            </Text>
-                            <FlatList
-                              contentContainerStyle={{
-                                paddingTop: 20,
-                                paddingBottom: 100,
-                                alignItems: "center"
-                              }}
-                              keyExtractor={item => item.campaign_id}
-                              data={
-                                selectedCampaign.story_creatives ||
-                                selectedCampaign.collection_creatives
-                              }
-                              renderItem={this.adCreatives}
-                              numColumns={4}
+                  new Date(selectedCampaign.end_time) < new Date() ? (
+                    <Content contentContainerStyle={{ paddingBottom: "60%" }}>
+                      {media.length > 0 && (
+                        <>
+                          <Text style={styles.subHeadings}>
+                            {translate("Media")}
+                          </Text>
+                          <FlatList
+                            contentContainerStyle={{
+                              paddingTop: 20,
+                              paddingBottom: 100,
+                              alignItems: "center"
+                            }}
+                            keyExtractor={item => item.campaign_id}
+                            data={
+                              selectedCampaign.story_creatives ||
+                              selectedCampaign.collection_creatives
+                            }
+                            renderItem={this.adCreatives}
+                            numColumns={4}
+                          />
+                        </>
+                      )}
+                      <Text style={styles.subHeadings}>
+                        {translate("Audience")}
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          // justifyContent: "center",
+                          marginHorizontal: 40
+                        }}
+                      >
+                        <View style={{ flexDirection: "column" }}>
+                          <View style={styles.categoryView}>
+                            <GenderIcon width={hp("2")} height={hp("2")} />
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={styles.categories}>
+                                {translate("Gender")}
+                                {"\n "}
+                                <Text style={styles.subtext}>
+                                  {targeting &&
+                                  (targeting.demographics[0].gender === "" ||
+                                    !targeting.demographics[0].hasOwnProperty(
+                                      "gender"
+                                    ))
+                                    ? translate("All")
+                                    : targeting &&
+                                      translate(
+                                        startCase(
+                                          toLower(
+                                            targeting.demographics[0].gender
+                                          )
+                                        )
+                                      )}
+                                </Text>
+                              </Text>
+                            )}
+                          </View>
+                          <View style={styles.categoryView}>
+                            <Icon
+                              style={styles.icon}
+                              type="FontAwesome"
+                              name="language"
                             />
-                          </>
-                        )}
-                        <Text style={styles.subHeadings}>
-                          {translate("Audience")}
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            // justifyContent: "center",
-                            marginHorizontal: 40
-                          }}
-                        >
-                          <View style={{ flexDirection: "column" }}>
-                            <View style={styles.categoryView}>
-                              <GenderIcon width={hp("2")} height={hp("2")} />
-                              {loading ? (
-                                <View style={{ margin: 5 }}>
-                                  <PlaceholderLine />
-                                </View>
-                              ) : (
-                                  <Text style={styles.categories}>
-                                    {translate("Gender")}
-                                    {"\n "}
-                                    <Text style={styles.subtext}>
-                                      {targeting &&
-                                        (targeting.demographics[0].gender === "" ||
-                                          !targeting.demographics[0].hasOwnProperty(
-                                            "gender"
-                                          ))
-                                        ? translate("All")
-                                        : targeting &&
-                                        translate(startCase(toLower(targeting.demographics[0].gender)))}
-                                    </Text>
-                                  </Text>
-                                )}
-                            </View>
-                            <View style={styles.categoryView}>
-                              <Icon
-                                style={styles.icon}
-                                type="FontAwesome"
-                                name="language"
-                              />
-                              {loading ? (
-                                <View style={{ margin: 5 }}>
-                                  <PlaceholderLine />
-                                </View>
-                              ) : (
-                                  <Text style={styles.categories}>
-                                    {translate("Language")}
-                                    {"\n "}
-                                    <Text style={styles.subtext}>
-                                      {
-                                        langaugeNames && langaugeNames.length > 0 &&
-                                        langaugeNames.map(language => {
-                                          return translate(language) + ", "
-                                        })
-                                      }
-                                      {/* {targeting &&
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={styles.categories}>
+                                {translate("Language")}
+                                {"\n "}
+                                <Text style={styles.subtext}>
+                                  {langaugeNames &&
+                                    langaugeNames.length > 0 &&
+                                    langaugeNames.map(language => {
+                                      return translate(language) + ", ";
+                                    })}
+                                  {/* {targeting &&
                                         targeting.demographics[0].languages.join(
                                           ", "
                                         )} */}
-                                    </Text>
-                                  </Text>
-                                )}
-                            </View>
-                            <View style={styles.categoryView}>
-                              <Icon
-                                style={styles.icon}
-                                type="MaterialCommunityIcons"
-                                name="human-male-girl"
-                              />
-
-                              {loading ? (
-                                <View style={{ margin: 5 }}>
-                                  <PlaceholderLine />
-                                </View>
-                              ) : (
-                                  <Text style={[styles.categories]}>
-                                    {translate("Age range")}
-                                    {"\n"}
-                                    <Text style={styles.subtext}>
-                                      {targeting &&
-                                        targeting.demographics[0].min_age}{" "}
-                                      -{" "}
-                                      {targeting &&
-                                        targeting.demographics[0].max_age}
-                                    </Text>
-                                  </Text>
-                                )}
-                            </View>
-                            <View style={{ flexDirection: "row" }}>
-                              <LocationIcon width={hp("2")} height={hp("2")} />
-                              {loading && !targeting ? (
-                                <View style={{ margin: 5 }}>
-                                  <PlaceholderLine />
-                                </View>
-                              ) : (
-                                  <View style={{ flexDirection: "column" }}>
-                                    <Text style={styles.categories}>
-                                      {translate("Location")} {"\n"}
-                                      <Text style={styles.subtext}>
-                                        {countryName}
-                                        {/* {targeting &&
-                                          targeting.geos[0].country_code} */}
-                                      </Text>
-                                    </Text>
-                                  </View>
-                                )}
-                            </View>
-                          </View>
-
-                          {this.checkOptionalTargerts(
-                            interesetNames,
-                            deviceMakes,
-                            targeting
-                          ) && (
-                              <OptionalTargets
-                                screenProps={this.props.screenProps}
-                                region_names={region_names}
-                                deviceMakes={deviceMakes}
-                                interesetNames={interesetNames}
-                                targeting={targeting}
-                              />
+                                </Text>
+                              </Text>
                             )}
+                          </View>
+                          <View style={styles.categoryView}>
+                            <Icon
+                              style={styles.icon}
+                              type="MaterialCommunityIcons"
+                              name="human-male-girl"
+                            />
+
+                            {loading ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <Text style={[styles.categories]}>
+                                {translate("Age range")}
+                                {"\n"}
+                                <Text style={styles.subtext}>
+                                  {targeting &&
+                                    targeting.demographics[0].min_age}{" "}
+                                  -{" "}
+                                  {targeting &&
+                                    targeting.demographics[0].max_age}
+                                </Text>
+                              </Text>
+                            )}
+                          </View>
+                          <View style={{ flexDirection: "row" }}>
+                            <LocationIcon width={hp("2")} height={hp("2")} />
+                            {loading && !targeting ? (
+                              <View style={{ margin: 5 }}>
+                                <PlaceholderLine />
+                              </View>
+                            ) : (
+                              <View style={{ flexDirection: "column" }}>
+                                <Text style={styles.categories}>
+                                  {translate("Location")} {"\n"}
+                                  <Text style={styles.subtext}>
+                                    {countryName}
+                                    {/* {targeting &&
+                                          targeting.geos[0].country_code} */}
+                                  </Text>
+                                </Text>
+                              </View>
+                            )}
+                          </View>
                         </View>
-                      </Content>
-                    ) : (
-                      <RejectedComp
-                        screenProps={this.props.screenProps}
-                        selectedCampaign={selectedCampaign}
-                        navigation={this.props.navigation}
-                      />
-                    ))}
+
+                        {this.checkOptionalTargerts(
+                          interesetNames,
+                          deviceMakes,
+                          targeting
+                        ) && (
+                          <OptionalTargets
+                            screenProps={this.props.screenProps}
+                            region_names={region_names}
+                            deviceMakes={deviceMakes}
+                            interesetNames={interesetNames}
+                            targeting={targeting}
+                          />
+                        )}
+                      </View>
+                    </Content>
+                  ) : (
+                    <RejectedComp
+                      screenProps={this.props.screenProps}
+                      selectedCampaign={selectedCampaign}
+                      navigation={this.props.navigation}
+                    />
+                  ))}
               </Card>
             </Container>
             {loading ? (
@@ -760,15 +776,15 @@ class CampaignDetails extends Component {
                 <PlaceholderLine />
               </View>
             ) : (
-                <StatusModal
-                  screenProps={this.props.screenProps}
-                  selectedCampaign={selectedCampaign}
-                  updateStatus={this.updateStatus}
-                  endCampaign={this.endCampaign}
-                  modalVisible={this.state.modalVisible}
-                  showModal={this.showModal}
-                />
-              )}
+              <StatusModal
+                screenProps={this.props.screenProps}
+                selectedCampaign={selectedCampaign}
+                updateStatus={this.updateStatus}
+                endCampaign={this.endCampaign}
+                modalVisible={this.state.modalVisible}
+                showModal={this.showModal}
+              />
+            )}
           </SafeAreaView>
           {selectedCampaign &&
             selectedCampaign.review_status !== "REJECTED" && (
@@ -794,7 +810,7 @@ const mapStateToProps = state => ({
   loading: state.dashboard.loadingCampaignDetails,
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   campaignError: state.dashboard.campaignError,
-  languages: state.campaignC.languagesList,
+  languages: state.campaignC.languagesList
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
@@ -803,6 +819,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.endCampaign(info, handleToggle)),
   getCampaignStats: (info, range) =>
     dispatch(actionCreators.getCampaignStats(info, range)),
-  get_languages: () => dispatch(actionCreators.get_languages()),
+  get_languages: () => dispatch(actionCreators.get_languages())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

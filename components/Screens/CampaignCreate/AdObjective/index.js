@@ -27,17 +27,14 @@ import {
 import * as Animatable from "react-native-animatable";
 import ObjectivesCard from "../../../MiniComponents/ObjectivesCard";
 import LowerButton from "../../../MiniComponents/LowerButton";
-import DateField from "../../../MiniComponents/DatePicker/DateFields";
+import DateFields from "../../../MiniComponents/DatePicker/DateFields";
 import Duration from "./Duration";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 //Icons
 import PhoneIcon from "../../../../assets/SVGs/Phone";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
-import LoopStoryIcon from "../../../../assets/SVGs/Objectives/LoopStory";
-import AutoAdvanceIcon from "../../../../assets/SVGs/Objectives/AutoAdvance";
 
 // Style
 import styles from "./styles";
@@ -56,6 +53,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
+import { persistor } from "../../../../store";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -78,6 +76,7 @@ class AdObjective extends Component {
       objectiveLabel: "Select Objective",
       inputN: false,
       objectives: ObjectiveData[this.props.adType],
+      closedContinueModal: false,
       nameError: "",
       objectiveError: "",
       start_timeError: "",
@@ -130,6 +129,10 @@ class AdObjective extends Component {
       this._handleCollectionAdLinkForm(0);
     }
   }
+
+  /**
+   * Sets the state to what ever is in this.props.data
+   */
   setCampaignInfo = () => {
     if (
       this.props.data &&
@@ -151,7 +154,6 @@ class AdObjective extends Component {
         end_time: this.props.data.end_time ? this.props.data.end_time : ""
       };
       this.setState({
-        // ...this.props.data,
         collectionAdLinkForm: this.props.collectionAdLinkForm,
         minValueBudget: this.props.data.minValueBudget,
         maxValueBudget: this.props.data.maxValueBudget,
@@ -284,7 +286,27 @@ class AdObjective extends Component {
         business_name: this.props.mainBusiness.businessname,
         campaign_objective: this.state.campaignInfo.objective
       });
-
+      //If the user closes the continueModal without choosing to resume or not
+      //and creates a new campaign then everything related to campaign creation is reset
+      //in the store so the creation process is not affected
+      if (this.state.closedContinueModal) {
+        this.props.resetCampaignInfo(false);
+        this.props.set_adType(
+          //Comes from choosing an adType from either the Dashboard or AdType screens
+          this.props.navigation.getParam("tempAdType", "SnapAd")
+        );
+        this.props.save_campaign_info({
+          reset: true
+        });
+        //Set closedContinueModal back to false so that
+        //if the user navigates back and submits again then this process doesn't happen again
+        this.setState({
+          closedContinueModal: false
+        });
+        persistor.purge();
+      }
+      //Set campaignProgressStarted back to false so that the continue modal will show again if the exit and come back
+      this.props.setCampaignInProgress(false);
       if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
         this.props.reset_collections();
         this.props.save_campaign_info({
@@ -315,6 +337,10 @@ class AdObjective extends Component {
           this.props.navigation
         );
     }
+  };
+
+  handleClosingContinueModal = () => {
+    this.setState({ closedContinueModal: true });
   };
 
   render() {
@@ -605,7 +631,7 @@ class AdObjective extends Component {
           </Container>
         </TouchableWithoutFeedback>
 
-        <DateField
+        <DateFields
           getMinimumCash={this.getMinimumCash}
           onRef={ref => (this.dateField = ref)}
           handleStartDatePicked={this.handleStartDatePicked}
@@ -613,11 +639,16 @@ class AdObjective extends Component {
           start_time={this.state.campaignInfo.start_time}
           end_time={this.state.campaignInfo.end_time}
           screenProps={this.props.screenProps}
+          navigation={this.props.navigation}
+          closedContinueModal={this.state.closedContinueModal}
+          handleClosingContinueModal={this.handleClosingContinueModal}
         />
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
           navigation={this.props.navigation}
+          dateField={this.dateField}
           screenProps={this.props.screenProps}
+          handleClosingContinueModal={this.handleClosingContinueModal}
         />
         <Modal
           animationType={"slide"}
@@ -675,9 +706,12 @@ const mapDispatchToProps = dispatch => ({
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
   set_collectionAd_link_form: value =>
     dispatch(actionCreators.set_collectionAd_link_form(value)),
-  reset_collections: () => dispatch(actionCreators.reset_collections())
+  reset_collections: () => dispatch(actionCreators.reset_collections()),
+  resetCampaignInfo: resetAdType =>
+    dispatch(actionCreators.resetCampaignInfo(resetAdType)),
+  setCampaignInProgress: value =>
+    dispatch(actionCreators.setCampaignInProgress(value)),
+
+  set_adType: value => dispatch(actionCreators.set_adType(value))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdObjective);
+export default connect(mapStateToProps, mapDispatchToProps)(AdObjective);

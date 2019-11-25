@@ -108,7 +108,8 @@ class Deep_Link extends Component {
         attachment,
         callaction
       });
-      this.props.save_campaign_info({ iosApp_name, androidApp_name });
+      !this.props.rejCampaign &&
+        this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
   };
 
@@ -205,7 +206,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Deep_Link);
+export default connect(mapStateToProps, mapDispatchToProps)(Deep_Link);

@@ -69,7 +69,8 @@ export {
   setCampaignInProgress,
   loadMoreInstagramPost,
   updateStoryADS,
-  setCollectionAdMediaArray
+  setCollectionAdMediaArray,
+  overWriteObjectiveData
 } from "./campaignActions";
 
 export {

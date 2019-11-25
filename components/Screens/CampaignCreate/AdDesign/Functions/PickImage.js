@@ -40,7 +40,8 @@ export const _pickImage = async (
   onToggleModal,
   adType,
   setTheState,
-  screenProps
+  screenProps,
+  rejected
 ) => {
   try {
     let result = await pick(mediaTypes, screenProps);
@@ -99,10 +100,11 @@ export const _pickImage = async (
                   image: "//"
                 });
                 onToggleModal(false);
-                save_campaign_info({
-                  media: "//",
-                  type: ""
-                });
+                !rejected &&
+                  save_campaign_info({
+                    media: "//",
+                    type: ""
+                  });
                 showMessage({
                   message: translate(
                     "Image must be less than {{fileSize}} MBs",
@@ -150,11 +152,12 @@ export const _pickImage = async (
                   fileReadyToUpload: true,
                   type: result.type.toUpperCase()
                 });
-                save_campaign_info({
-                  media: result.uri,
-                  type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
-                });
+                !rejected &&
+                  save_campaign_info({
+                    media: result.uri,
+                    type: result.type.toUpperCase(),
+                    fileReadyToUpload: true
+                  });
                 onToggleModal(false);
               } else {
                 setTheState({
@@ -172,11 +175,12 @@ export const _pickImage = async (
                   position: "top",
                   type: "success"
                 });
-                save_campaign_info({
-                  media: result.uri,
-                  type: result.type.toUpperCase(),
-                  fileReadyToUpload: true
-                });
+                !rejected &&
+                  save_campaign_info({
+                    media: result.uri,
+                    type: result.type.toUpperCase(),
+                    fileReadyToUpload: true
+                  });
               }
             })
             .catch(error => {
@@ -209,10 +213,11 @@ export const _pickImage = async (
             type: ""
             // videoIsLoading: false
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           onToggleModal(false);
           showMessage({
             message: translate(
@@ -238,10 +243,11 @@ export const _pickImage = async (
             position: "top",
             type: "success"
           });
-          save_campaign_info({
-            media: result.uri,
-            type: result.type.toUpperCase()
-          });
+          !rejected &&
+            save_campaign_info({
+              media: result.uri,
+              type: result.type.toUpperCase()
+            });
           return;
         }
       } else if (result.type === "video") {
@@ -251,10 +257,11 @@ export const _pickImage = async (
             media: "//",
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           showMessage({
             message: translate("Maximum video duration is 10 seconds"),
             description:
@@ -275,10 +282,11 @@ export const _pickImage = async (
             media: "//",
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
             description:
@@ -297,10 +305,11 @@ export const _pickImage = async (
             mediaError: "Allowed video size is up to 32 MBs.",
             media: "//"
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
               fileSize: 32
@@ -341,11 +350,12 @@ export const _pickImage = async (
               fileReadyToUpload: true,
               type: result.type.toUpperCase()
             });
-            save_campaign_info({
-              media: result.uri,
-              type: result.type.toUpperCase(),
-              fileReadyToUpload: true
-            });
+            !rejected &&
+              save_campaign_info({
+                media: result.uri,
+                type: result.type.toUpperCase(),
+                fileReadyToUpload: true
+              });
             onToggleModal(false);
           } else {
             setTheState({
@@ -363,10 +373,11 @@ export const _pickImage = async (
               type: "success"
             });
           }
-          save_campaign_info({
-            media: result.uri,
-            type: result.type.toUpperCase()
-          });
+          !rejected &&
+            save_campaign_info({
+              media: result.uri,
+              type: result.type.toUpperCase()
+            });
           setTheState({ sourceChanging: false });
           return;
         } else {
@@ -377,10 +388,11 @@ export const _pickImage = async (
 
             sourceChanging: true
           });
-          save_campaign_info({
-            media: "//",
-            type: ""
-          });
+          !rejected &&
+            save_campaign_info({
+              media: "//",
+              type: ""
+            });
           onToggleModal(false);
           showMessage({
             message: translate(
@@ -405,10 +417,11 @@ export const _pickImage = async (
         mediaError: "Please choose a media file.",
         media: "//"
       });
-      save_campaign_info({
-        media: "//",
-        type: ""
-      });
+      !rejected &&
+        save_campaign_info({
+          media: "//",
+          type: ""
+        });
       onToggleModal(false);
       return;
     } else {

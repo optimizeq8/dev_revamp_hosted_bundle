@@ -99,14 +99,14 @@ class AdCover extends Component {
         coverHeadline: this.rejected
           ? this.selectedCampaign.story_headline
           : !this.props.data
-            ? "Headline"
-            : this.props.data.coverHeadline
+          ? "Headline"
+          : this.props.data.coverHeadline
       },
       objective: this.props.data
         ? this.props.data.objective
         : this.rejected
-          ? this.selectedCampaign.objective
-          : ""
+        ? this.selectedCampaign.objective
+        : ""
     });
     const { translate } = this.props.screenProps;
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
@@ -179,20 +179,19 @@ class AdCover extends Component {
   };
 
   changeHeadline = coverHeadline => {
-    this.setState(
-      {
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          coverHeadline
-        },
-        coverHeadlineError: validateWrapper("mandatory", coverHeadline),
-        headlineRejectionUpload: true
+    this.setState({
+      campaignInfo: {
+        ...this.state.campaignInfo,
+        coverHeadline
       },
+      coverHeadlineError: validateWrapper("mandatory", coverHeadline),
+      headlineRejectionUpload: true
+    });
+    !this.rejected &&
       this.props.save_campaign_info({
         coverHeadline,
         headlineRejectionUpload: true
-      })
-    );
+      });
   };
   pick = async mediaTypes => {
     await this.askForPermssion();
@@ -236,10 +235,11 @@ class AdCover extends Component {
         type: correctLogo ? "success" : "warning"
       });
 
-      this.props.save_campaign_info({
-        logo: correctLogo && logoFormat ? logo.uri : "",
-        logoRejectionUpload: correctLogo && logoFormat
-      });
+      !this.rejected &&
+        this.props.save_campaign_info({
+          logo: correctLogo && logoFormat ? logo.uri : "",
+          logoRejectionUpload: correctLogo && logoFormat
+        });
     }
   };
 
@@ -262,11 +262,11 @@ class AdCover extends Component {
                   resize:
                     result.width >= (result.height / 5) * 3
                       ? {
-                        height: 600
-                      }
+                          height: 600
+                        }
                       : {
-                        width: 360
-                      }
+                          width: 360
+                        }
                 }
               ],
               {
@@ -330,10 +330,11 @@ class AdCover extends Component {
                   position: "top",
                   type: "success"
                 });
-                this.props.save_campaign_info({
-                  cover: result.uri,
-                  coverRejectionUpload: true
-                });
+                !this.rejected &&
+                  this.props.save_campaign_info({
+                    cover: result.uri,
+                    coverRejectionUpload: true
+                  });
               })
               .catch(error => {
                 this.onToggleModal(false);
@@ -384,9 +385,10 @@ class AdCover extends Component {
               position: "top",
               type: "success"
             });
-            this.props.save_campaign_info({
-              cover: result.uri
-            });
+            !this.rejected &&
+              this.props.save_campaign_info({
+                cover: result.uri
+              });
             return;
           }
         } else {
@@ -453,6 +455,7 @@ class AdCover extends Component {
     this.rejected &&
       this.selectedCampaign &&
       body.append("preview_media_id", this.selectedCampaign.story_preview_id);
+    console.log(body);
 
     this.setState({
       formattedCover: body
@@ -475,8 +478,8 @@ class AdCover extends Component {
         message: coverError
           ? translate("Please add a cover image")
           : logoError
-            ? translate("Please add a logo")
-            : "",
+          ? translate("Please add a logo")
+          : "",
         type: coverError || logoError ? "warning" : "",
         position: "top"
       });
@@ -519,7 +522,7 @@ class AdCover extends Component {
           this.props.data &&
           (!this.props.data.hasOwnProperty("formattedCover") ||
             JSON.stringify(this.props.data.formattedCover) !==
-            JSON.stringify(this.state.formattedCover)))
+              JSON.stringify(this.state.formattedCover)))
       ) {
         if (!this.props.coverLoading) {
           await this.props.uploadStoryAdCover(
@@ -648,33 +651,33 @@ class AdCover extends Component {
                           </Text>
                         </TouchableOpacity>
                       ) : (
-                          <TouchableOpacity
-                            onPress={() => this._pickLogo()}
-                            style={styles.addLogoStyle}
+                        <TouchableOpacity
+                          onPress={() => this._pickLogo()}
+                          style={styles.addLogoStyle}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              alignItems: "center"
+                            }}
                           >
-                            <View
+                            <PlusAddIcon />
+                            <Text
                               style={{
-                                flexDirection: "column",
-                                alignItems: "center"
+                                color: globalColors.orange,
+                                fontFamily: "montserrat-bold"
                               }}
                             >
-                              <PlusAddIcon />
-                              <Text
-                                style={{
-                                  color: globalColors.orange,
-                                  fontFamily: "montserrat-bold"
-                                }}
-                              >
-                                {translate("Your Logo")}
-                              </Text>
-                              <Text style={styles.addLogoTextStyle}>
-                                {translate(
-                                  "Must be 993px by 284px and transparent"
-                                )}
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        )}
+                              {translate("Your Logo")}
+                            </Text>
+                            <Text style={styles.addLogoTextStyle}>
+                              {translate(
+                                "Must be 993px by 284px and transparent"
+                              )}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      )}
                       <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                           onPress={this.handleSupportPage}
@@ -736,10 +739,10 @@ class AdCover extends Component {
                 </TouchableOpacity>
               </View>
             ) : (
-                <Text style={styles.footerTextStyle}>
-                  {translate("Please add media to proceed")}
-                </Text>
-              )}
+              <Text style={styles.footerTextStyle}>
+                {translate("Please add media to proceed")}
+              </Text>
+            )}
           </Footer>
         </Container>
 

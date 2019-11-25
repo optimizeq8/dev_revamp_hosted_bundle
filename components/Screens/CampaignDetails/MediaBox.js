@@ -8,48 +8,50 @@ import RNImageOrCacheImage from "../../MiniComponents/RNImageOrCacheImage";
 export default class MediaBox extends Component {
   state = { imageLoaded: false };
   previewHandler = () => {
-    let media =
-      this.props.selectedCampaign.campaign_type === "CollectionAd"
-        ? { media: this.props.selectedCampaign.media }
-        : {
-            cover: this.props.selectedCampaign.story_preview_media,
-            logo: this.props.selectedCampaign.story_logo_media
-          };
-    let icon_media_url =
-      this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
-        ? JSON.parse(this.props.ad.attachment).icon_media_url
-        : "";
-    this.props.navigation.push(
-      this.props.selectedCampaign.campaign_type === "CollectionAd"
-        ? "AdDesignReview"
-        : "StoryAdDesignReview",
-      {
-        ...media,
-        type:
-          this.props.ad.media_type || this.props.selectedCampaign.media_type,
-        call_to_action: this.props.ad.call_to_action
-          ? this.props.ad.call_to_action
-          : this.props.selectedCampaign.call_to_action,
-        headline: this.props.selectedCampaign.headline,
-        brand_name: this.props.selectedCampaign.brand_name,
-        destination: this.props.ad.destination,
-        campaignDetails: true,
-        icon_media_url: icon_media_url,
-        adType: this.props.selectedCampaign.campaign_type,
-        coverHeadline: this.props.selectedCampaign.story_headline,
-        storyAdsArray: this.props.selectedCampaign.story_creatives,
-        collectionAdMedia: this.props.selectedCampaign.collection_creatives
-      }
-    );
+    if (!this.props.disabled) {
+      let media =
+        this.props.selectedCampaign.campaign_type === "CollectionAd"
+          ? { media: this.props.selectedCampaign.media }
+          : {
+              cover: this.props.selectedCampaign.story_preview_media,
+              logo: this.props.selectedCampaign.story_logo_media
+            };
+      let icon_media_url =
+        this.props.ad.attachment && this.props.ad.attachment !== "BLANK"
+          ? JSON.parse(this.props.ad.attachment).icon_media_url
+          : "";
+      this.props.navigation.push(
+        this.props.selectedCampaign.campaign_type === "CollectionAd"
+          ? "AdDesignReview"
+          : "StoryAdDesignReview",
+        {
+          ...media,
+          type:
+            this.props.ad.media_type || this.props.selectedCampaign.media_type,
+          call_to_action: this.props.ad.call_to_action
+            ? this.props.ad.call_to_action
+            : this.props.selectedCampaign.call_to_action,
+          headline: this.props.selectedCampaign.headline,
+          brand_name: this.props.selectedCampaign.brand_name,
+          destination: this.props.ad.destination,
+          campaignDetails: true,
+          icon_media_url: icon_media_url,
+          adType: this.props.selectedCampaign.campaign_type,
+          coverHeadline: this.props.selectedCampaign.story_headline,
+          storyAdsArray: this.props.selectedCampaign.story_creatives,
+          collectionAdMedia: this.props.selectedCampaign.collection_creatives
+        }
+      );
+    }
   };
   render() {
     let { name } = this.props;
-    let { media, media_type } = this.props.ad;
+    let { media, media_type, localUri } = this.props.ad;
 
     return (
       <TouchableOpacity
         onPress={this.previewHandler}
-        style={{ height: 80, width: 80, marginHorizontal: 5 }}
+        style={{ height: 80, width: 80, margin: 5 }}
       >
         <View
           style={{
@@ -109,7 +111,7 @@ export default class MediaBox extends Component {
             <RNImageOrCacheImage
               resizeMode="cover"
               style={{ width: "100%", height: "100%", alignSelf: "center" }}
-              media={media}
+              media={media || localUri}
             />
           )}
         </View>
