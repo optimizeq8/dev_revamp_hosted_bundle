@@ -340,13 +340,11 @@ export const ad_design = (
       .then(() => {
         if (!rejected) navigation.push("AdDetails");
         else {
-          // persistor.purge();
+          persistor.purge();
           dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
-
-          // dispatch({
-          //   type: actionTypes.RESET_CAMPAING_INFO,
-          //   payload: true
-          // });
+          dispatch({
+            type: actionTypes.RESET_CAMPAING_INFO
+          });
           navigation.navigate("Dashboard");
         }
       })
