@@ -329,7 +329,7 @@ DateFields.propTypes = {
   start_time: PropTypes.string.isRequired,
   end_time: PropTypes.string.isRequired,
   screenProps: PropTypes.object.isRequired,
-  navigation: PropTypes.func,
+  navigation: PropTypes.object,
   closedContinueModal: PropTypes.bool, //Determines whether navigateToContinue is called when submitting or not
   handleClosingContinueModal: PropTypes.func, //Sets closedContinueModal to true so that creating a new campaing without choosing wheter to continue or not doesn't cause a conflict
   open: PropTypes.bool, //Shows the modal if the sideMenu is open
