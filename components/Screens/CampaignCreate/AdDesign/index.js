@@ -343,10 +343,11 @@ class AdDesign extends Component {
             ? "VIDEO"
             : "IMAGE"
         });
-        this.props.save_campaign_info({
-          media: this.state.tempType,
-          type: this.state.tempType
-        });
+        !this.rejected &&
+          this.props.save_campaign_info({
+            media: this.state.tempType,
+            type: this.state.tempType
+          });
       });
     });
   };
@@ -365,7 +366,10 @@ class AdDesign extends Component {
         )
       }
     });
-    this.props.save_campaign_info({ brand_name: brand_name.replace("@", "") });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        brand_name: brand_name.replace("@", "")
+      });
   };
   changeHeadline = headline => {
     this.setState({
@@ -377,7 +381,8 @@ class AdDesign extends Component {
         )
       }
     });
-    this.props.save_campaign_info({ headline: headline.replace("@", "") });
+    !this.rejected &&
+      this.props.save_campaign_info({ headline: headline.replace("@", "") });
   };
   adDesignPickImage = mediaTypes =>
     _pickImage(
@@ -389,7 +394,8 @@ class AdDesign extends Component {
       this.onToggleModal,
       this.adType,
       this.setTheState,
-      this.props.screenProps
+      this.props.screenProps,
+      this.rejected
     );
 
   getVideoUploadUrl = () => {
@@ -492,12 +498,13 @@ class AdDesign extends Component {
         type: "VIDEO",
         fileReadyToUpload: true
       });
-      this.props.save_campaign_info({
-        selectedStoryAd: card,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
-      });
+      !this.rejected &&
+        this.props.save_campaign_info({
+          selectedStoryAd: card,
+          iosVideoUploaded: true,
+          type: "VIDEO",
+          fileReadyToUpload: true
+        });
     } else {
       this.setState({
         ...this.state,
@@ -507,12 +514,13 @@ class AdDesign extends Component {
         videoIsLoading: false,
         fileReadyToUpload: true
       });
-      this.props.save_campaign_info({
-        media: data.queryParams.media,
-        iosVideoUploaded: true,
-        type: "VIDEO",
-        fileReadyToUpload: true
-      });
+      !this.rejected &&
+        this.props.save_campaign_info({
+          media: data.queryParams.media,
+          iosVideoUploaded: true,
+          type: "VIDEO",
+          fileReadyToUpload: true
+        });
     }
   };
 
@@ -837,10 +845,11 @@ class AdDesign extends Component {
       type: mediaTypeWebLink,
       downloadMediaModal: false
     });
-    this.props.save_campaign_info({
-      media: mediaWebLink,
-      type: mediaTypeWebLink
-    });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: mediaWebLink,
+        type: mediaTypeWebLink
+      });
   };
   handleDownloadMediaStoryAds = async storyAdsArray => {
     // update storyads array
@@ -871,11 +880,12 @@ class AdDesign extends Component {
           //works as normal when uploading ios videos
           fileReadyToUpload: true
         });
-        this.props.save_campaign_info({
-          selectedStoryAd: card,
-          type: storyAdsArray[index].media_type,
-          fileReadyToUpload: true
-        });
+        !this.rejected &&
+          this.props.save_campaign_info({
+            selectedStoryAd: card,
+            type: storyAdsArray[index].media_type,
+            fileReadyToUpload: true
+          });
       }
     });
     this.setState({
@@ -901,10 +911,11 @@ class AdDesign extends Component {
       downloadMediaModal: false
     });
     this.props.setCollectionAdMediaArray(collectionAdsArray);
-    this.props.save_campaign_info({
-      media: collectionAdMainMedia,
-      type: collectionAdMainMediaType
-    });
+    !this.rejected &&
+      this.props.save_campaign_info({
+        media: collectionAdMainMedia,
+        type: collectionAdMainMediaType
+      });
   };
   render() {
     let {

@@ -321,10 +321,16 @@ export const ad_design = (
             type: data.success ? "success" : "danger",
             position: "top"
           });
-        return dispatch({
-          type: actionTypes.SET_AD_DESIGN,
-          payload: data
-        });
+        if (!rejected)
+          return dispatch({
+            type: actionTypes.SET_AD_DESIGN,
+            payload: data
+          });
+        else
+          dispatch({
+            type: actionTypes.SET_AD_LOADING_DESIGN,
+            payload: false
+          });
       })
       .then(() => {
         onToggleModal(false);
@@ -334,8 +340,13 @@ export const ad_design = (
       .then(() => {
         if (!rejected) navigation.push("AdDetails");
         else {
-          persistor.purge();
-          dispatch({ type: actionTypes.RESET_CAMPAING_INFO });
+          // persistor.purge();
+          dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
+
+          // dispatch({
+          //   type: actionTypes.RESET_CAMPAING_INFO,
+          //   payload: true
+          // });
           navigation.navigate("Dashboard");
         }
       })

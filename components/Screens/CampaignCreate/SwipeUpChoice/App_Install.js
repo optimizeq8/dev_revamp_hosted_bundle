@@ -95,7 +95,8 @@ class App_Install extends Component {
         callaction,
         appChoice
       });
-      this.props.save_campaign_info({ iosApp_name, androidApp_name });
+      !this.props.rejCampaign &&
+        this.props.save_campaign_info({ iosApp_name, androidApp_name });
     }
   };
 
@@ -176,7 +177,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionsCreators.save_campaign_info(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App_Install);
+export default connect(mapStateToProps, mapDispatchToProps)(App_Install);
