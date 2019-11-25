@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-around',
     // justifyContent: 'space-evenly',
     alignItems: "center",
-    bottom: "5%",
+    // bottom: "5%",
     paddingTop: 20
   },
   whatsAppDetailContainer: {
@@ -481,6 +481,14 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     width: widthPercentageToDP(85)
+  },
+  instagramErrorText: {
+    paddingTop: 12,
+    paddingHorizontal: 50,
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    color: "#fff",
+    textAlign: "center"
   }
 });
 
