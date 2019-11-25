@@ -3,7 +3,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Content, Container, View } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import CustomeHeader from "../../../MiniComponents/Header";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import KeyBoardShift from "../../../MiniComponents/KeyboardShift";
 import Website from "./Website";
 import App_Install from "./App_Install";
 import Long_Form_Video from "./Long_Form_Video";
@@ -165,13 +165,13 @@ class SwipeUpChoice extends Component {
               navigation={this.props.navigation}
             />
             <Content contentContainerStyle={styles.contentContainer}>
-              <KeyboardAwareScrollView
-                resetScrollToCoords={{ x: 0, y: 0 }}
-                scrollEnabled={false}
-                contentContainerStyle={styles.contentContainer}
+              <KeyBoardShift
+                // resetScrollToCoords={{ x: 0, y: 0 }}
+                // scrollEnabled={false}
+                style={styles.contentContainer}
               >
-                {menu}
-              </KeyboardAwareScrollView>
+                {() => menu}
+              </KeyBoardShift>
             </Content>
           </Container>
         </SafeAreaView>
@@ -184,7 +184,4 @@ const mapStateToProps = state => ({
   adType: state.campaignC.adType
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(SwipeUpChoice);
+export default connect(mapStateToProps, null)(SwipeUpChoice);
