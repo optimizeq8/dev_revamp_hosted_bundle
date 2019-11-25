@@ -4,7 +4,6 @@ const initialState = {
   message: "",
   data: null,
   campaign_id: "",
-
   average_reach: 0,
   kdamount: 0,
   minValueBudget: 0,
@@ -204,7 +203,12 @@ const reducer = (state = initialState, action) => {
                 step => step !== "AdDetails" && step !== "AdPaymentReview"
               )
             : []
-          : state.currentCampaignSteps
+          : state.currentCampaignSteps,
+        oldTempData: {
+          ...state.data,
+          ...action.payload,
+          ...resetSwipeUps
+        }
       };
     case actionTypes.ERROR_SET_AD_DESIGN:
       return {
@@ -517,6 +521,10 @@ const reducer = (state = initialState, action) => {
           delete data.objective;
           delete data.objectiveLabel;
         }
+        //overwrite any old campaign data with the reseted campaign data if user submits a rejected ad
+        if (state.oldTempData) {
+          data = { ...data, ...state.oldTempData };
+        }
       }
 
       return {
@@ -594,14 +602,6 @@ const reducer = (state = initialState, action) => {
             atch.url = atch.url.split("?utm_source")[0];
           }
         }
-        oldStoryAdAttachment = {
-          attachment: atch,
-          call_to_action: {
-            label: ad.call_to_action.replace("_", " "),
-            value: ad.call_to_action
-          },
-          destination: ad.destination
-        };
         return {
           ...ad,
           index: ad.story_order,
@@ -613,6 +613,11 @@ const reducer = (state = initialState, action) => {
           attachment: atch
         };
       });
+      oldStoryAdAttachment = {
+        attachment: oldStoryAdsArray[0].attachment,
+        call_to_action: oldStoryAdsArray[0].call_to_action,
+        destination: oldStoryAdsArray[0].destination
+      };
       oldStoryAdsArray = [
         ...oldStoryAdsArray,
         {
