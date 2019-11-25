@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-around',
     // justifyContent: 'space-evenly',
     alignItems: "center",
-    bottom: "5%",
+    // bottom: "5%",
     paddingTop: 20
   },
   whatsAppDetailContainer: {
