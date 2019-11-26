@@ -177,18 +177,6 @@ class WhatsApp extends Component {
     }
   };
 
-  // decide if its an whatsapp or insta traffic
-
-  checkTypeOfTraffic = () => {
-    if (this.state.campaignInfo.whatsappnumber !== "") {
-      // whatsapp traffic
-      this.checkInstaAccountChange();
-    } else {
-      // instagram traffic
-      this._handleSubmissionInstaTraffic();
-    }
-  };
-
   checkInstaAccountChange = async () => {
     // console.log("data", this.props.data);
     await this.props.verifyInstagramHandle(
@@ -211,59 +199,6 @@ class WhatsApp extends Component {
       });
     } else {
       await this._handleSubmission();
-    }
-  };
-  // handle submission instagram traffic
-
-  _handleSubmissionInstaTraffic = async () => {
-    const { translate } = this.props.screenProps;
-    // if (!this.props.mainBusiness.weburl) {
-    await this.props.verifyInstagramHandle(
-      this.state.campaignInfo.insta_handle
-    );
-    if (!this.props.errorInstaHandle && !this.props.mainBusiness.weburl) {
-      await this.props.verifyBusinessUrl(this.state.campaignInfo.weburl);
-    }
-    if (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) {
-      showMessage({
-        message: translate(
-          `{{insta_handle}} ${this.props.errorInstaHandleMessage.substr(
-            this.props.errorInstaHandleMessage.indexOf(" ") + 1
-          )}`,
-          { insta_handle: this.state.campaignInfo.insta_handle }
-        ),
-        type: "danger",
-        duration: 2000
-      });
-    }
-    let weburlAvalible =
-      this.props.mainBusiness.weburl || this.props.weburlAvalible;
-
-    if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
-      let instagramTrafficCampaign = {
-        weburl: this.state.campaignInfo.weburl,
-        insta_handle: this.state.campaignInfo.insta_handle,
-        callnumber: this.state.campaignInfo.callnumber.replace("+", ""),
-        googlemaplink: this.state.campaignInfo.googlemaplink,
-        whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
-        source: "INSTAGRAM TRAFFIC"
-      };
-
-      this.props._changeDestination(
-        "REMOTE_WEBPAGE",
-        this.state.campaignInfo.callaction,
-        {
-          url: `https://${this.state.campaignInfo.weburl.replace(
-            /[^0-9a-z]/gi,
-            ""
-          )}.optimizeapp.com`
-        },
-        null,
-        null,
-        instagramTrafficCampaign
-      );
-
-      this.props.navigation.navigate("AdDesign");
     }
   };
 
@@ -304,7 +239,7 @@ class WhatsApp extends Component {
             ? this.state.campaignInfo.callnumber.replace("+", "")
             : this.state.campaignInfo.whatsappnumber.replace("+", ""),
 
-        source: "WHATSAPP LEADS"
+        source: "SME GROWTH"
       };
       // check here for insta handle change then update the selectedItemList to []
       // if (this.props.data.insta_handle !== this.state.campaignInfo.insta_handle && this.props.productInfoId) {
@@ -747,7 +682,7 @@ class WhatsApp extends Component {
             <LowerButton
               checkmark={true}
               bottom={0}
-              function={this.checkTypeOfTraffic}
+              function={this.checkInstaAccountChange}
             />
           </View>
         </ScrollView>

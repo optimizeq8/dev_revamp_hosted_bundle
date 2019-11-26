@@ -12,7 +12,6 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
 import findIndex from "lodash/findIndex";
 import find from "lodash/find";
-import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 
 import * as actionCreators from "../../../../../store/actions";
@@ -20,7 +19,6 @@ import * as actionCreators from "../../../../../store/actions";
 import CustomeHeader from "../../../../MiniComponents/Header";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
-import filter from "lodash/filter";
 
 class SelectInstagramPost extends React.Component {
   constructor(props) {
@@ -175,7 +173,7 @@ class SelectInstagramPost extends React.Component {
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
-            title={"WhatsApp Campaign"}
+            title={["SME Growth", "Campaign"]}
             closeButton={false}
             navigation={this.props.navigation}
           />
@@ -187,16 +185,7 @@ class SelectInstagramPost extends React.Component {
               // marginBottom: heightPercentageToDP(30),
             }}
           >
-            <Text
-              style={{
-                color: "#FFF",
-                fontSize: 14,
-                fontFamily: "montserrat-regular",
-                textAlign: "center",
-                lineHeight: 18,
-                paddingHorizontal: 60
-              }}
-            >
+            <Text style={styles.promoteCampaignText}>
               {translate(
                 "Select the products you want to promote on your campaign"
               )}
@@ -238,56 +227,24 @@ class SelectInstagramPost extends React.Component {
                     return (
                       <TouchableOpacity
                         key={item.imageId}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingVertical: 4,
-                          // marginHorizontal: "auto",
-                          paddingHorizontal: 8,
-                          alignSelf: "flex-start"
-                        }}
+                        style={styles.itemProductView}
                         onPress={() => this.addToList(item)}
                       >
                         {itemFound + 1 >= 1 ? (
                           <View
-                            style={{
-                              width: 40,
-                              backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
+                            style={[
+                              styles.itemView,
+                              {
+                                backgroundColor: "#FF9D00"
+                              }
+                            ]}
                           >
-                            <Text
-                              style={{
-                                textAlign: "center",
-
-                                color: "#FFF"
-                              }}
-                            >
+                            <Text style={styles.itemFoundText}>
                               {itemFound + 1}
                             </Text>
                           </View>
                         ) : (
-                          <View
-                            style={{
-                              width: 40,
-                              //   backgroundColor: "#FF9D00",
-                              borderRadius: 40,
-                              height: 40,
-                              marginBottom: -25,
-                              zIndex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          ></View>
+                          <View style={styles.itemView}></View>
                         )}
                         <Image
                           source={{
@@ -317,39 +274,16 @@ class SelectInstagramPost extends React.Component {
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList && (
-                // !isEmpty(this.props.instagramPostList) &&
-                <Text
-                  style={{
-                    fontFamily: "montserrat-regular",
-                    color: "#FFF",
-                    fontSize: 14,
-                    lineHeight: 18,
-                    paddingVertical: 10,
-                    textAlign: "center"
-                  }}
-                >
+                <Text style={styles.selectProductText}>
                   {translate("(Select 3-6 Products)")}
                 </Text>
               )}
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList &&
-              // !isEmpty(this.props.instagramPostList) &&
               this.props.instaHasNextPage && (
                 <Text
-                  style={{
-                    fontFamily: "montserrat-bold",
-                    color: "#FFF",
-                    fontSize: 14,
-                    lineHeight: 18,
-                    paddingVertical: 10,
-                    textAlign: "center",
-                    borderWidth: 1,
-                    borderColor: "#FFF",
-                    borderRadius: 20,
-                    marginHorizontal: 60,
-                    marginBottom: 20
-                  }}
+                  style={styles.viewMoreText}
                   onPress={this.onScrollHandler}
                 >
                   {translate("VIEW MORE")}
@@ -358,7 +292,6 @@ class SelectInstagramPost extends React.Component {
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&
               this.props.instagramPostList && (
-                // !isEmpty(this.props.instagramPostList) &&
                 <View style={styles.bottonViewWebsite}>
                   <LowerButton
                     checkmark={true}

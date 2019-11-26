@@ -1091,8 +1091,7 @@ class AdDesign extends Component {
                       call_to_action,
                       attachment,
                       appChoice = null,
-                      whatsAppCampaign,
-                      instagramTrafficCampaign
+                      whatsAppCampaign
                     ) =>
                       _changeDestination(
                         destination,
@@ -1100,7 +1099,6 @@ class AdDesign extends Component {
                         attachment,
                         appChoice,
                         whatsAppCampaign,
-                        instagramTrafficCampaign,
                         this.adType,
                         this.props.setStoryAdAttachment,
                         this.state.campaignInfo,

@@ -73,8 +73,7 @@ export default class SwipeUpComponent extends Component {
               (destination === "COLLECTION" && collectionAdLinkForm === 2))
               ? translate(call_to_action_label)
               : (destination === "REMOTE_WEBPAGE" &&
-                  objective !== "WEB_CONVERSION" &&
-                  objective !== "WEB_CONVERSION_INSTAGRAM") ||
+                  objective !== "WEB_CONVERSION") ||
                 (destination === "COLLECTION" && collectionAdLinkForm === 1)
               ? translate(call_to_action_label)
               : objective === "WEB_CONVERSION" &&
