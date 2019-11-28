@@ -59,7 +59,13 @@ const reducer = (state = initialState, action) => {
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd
       };
-
+    case actionTypes.SET_CAMPAIGN_LOADING:
+      return {
+        ...state,
+        selectedCampaign: action.payload.data,
+        loadingCampaignDetails: action.payload.loading,
+        campaignError: false
+      };
     case actionTypes.SET_CAMPAIGN:
       return {
         ...state,

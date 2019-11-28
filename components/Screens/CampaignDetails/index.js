@@ -72,7 +72,6 @@ class CampaignDetails extends Component {
   }
 
   componentDidMount() {
-    this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -93,11 +92,14 @@ class CampaignDetails extends Component {
       });
     }
   }
+  // need to ask
   shouldComponentUpdate(nextProps) {
     return (
       this.props.selectedCampaign.campaign_id !==
         nextProps.selectedCampaign.campaign_id ||
-      this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU
+      this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
+      this.props.loading !== nextProps.loading ||
+      this.props.languagesListLoading !== nextProps.languagesListLoading
     );
   }
 
@@ -182,8 +184,11 @@ class CampaignDetails extends Component {
     const { translate } = this.props.screenProps;
 
     if (
-      (!loading && !this.props.selectedCampaign) ||
-      this.props.campaignError
+      (!loading &&
+        !this.props.languagesListLoading &&
+        !this.props.selectedCampaign) ||
+      this.props.campaignError ||
+      this.props.languagesListError
     ) {
       return (
         <ErrorComponent
@@ -284,13 +289,13 @@ class CampaignDetails extends Component {
             : [];
 
         langaugeNames =
+          !this.props.languagesListLoading &&
+          this.props.languages.length > 0 &&
           targeting &&
           targeting.demographics[0] &&
           targeting.demographics[0].languages.map(languageId => {
-            return (
-              this.props.languages &&
-              this.props.languages.find(lang => lang.id === languageId).name
-            );
+            return this.props.languages.find(lang => lang.id === languageId)
+              .name;
           });
 
         if (selectedCampaign.start_time && selectedCampaign.end_time) {
@@ -679,7 +684,7 @@ class CampaignDetails extends Component {
                               type="FontAwesome"
                               name="language"
                             />
-                            {loading ? (
+                            {loading || this.props.languagesListLoading ? (
                               <View style={{ margin: 5 }}>
                                 <PlaceholderLine />
                               </View>
@@ -810,7 +815,9 @@ const mapStateToProps = state => ({
   loading: state.dashboard.loadingCampaignDetails,
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   campaignError: state.dashboard.campaignError,
-  languages: state.campaignC.languagesList
+  languages: state.campaignC.languagesList,
+  languagesListLoading: state.campaignC.languagesListLoading,
+  languagesListError: state.campaignC.languagesListError
 });
 const mapDispatchToProps = dispatch => ({
   updateStatus: (info, handleToggle) =>
@@ -818,7 +825,6 @@ const mapDispatchToProps = dispatch => ({
   endCampaign: (info, handleToggle) =>
     dispatch(actionCreators.endCampaign(info, handleToggle)),
   getCampaignStats: (info, range) =>
-    dispatch(actionCreators.getCampaignStats(info, range)),
-  get_languages: () => dispatch(actionCreators.get_languages())
+    dispatch(actionCreators.getCampaignStats(info, range))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);
