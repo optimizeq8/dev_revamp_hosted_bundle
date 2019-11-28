@@ -90,7 +90,9 @@ class MessageBubble extends Component {
               });
             }}
           >
-            <Text style={styles.messageText}>{this.props.message.body}</Text>
+            <Text selectable={true} style={styles.messageText}>
+              {this.props.message.body}
+            </Text>
           </View>
           {this.props.message.author.type === "user" && (
             <View
