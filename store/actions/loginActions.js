@@ -34,6 +34,8 @@ export const send_push_notification = () => {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
       if (permission.status === "granted") {
         Notifications.getExpoPushTokenAsync().then(token => {
+          console.log("token", token);
+
           createBaseUrl()
             .post(`updatepushToken`, {
               token: token,

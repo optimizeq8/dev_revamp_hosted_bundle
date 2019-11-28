@@ -8,14 +8,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     zIndex: 13,
     paddingHorizontal: wp(5),
+    paddingBottom: hp(2),
     paddingTop: hp(1),
     flexDirection: "row",
-    backgroundColor: "#0000"
+    backgroundColor: "#0000",
+    alignItems: "center",
+    width: wp("100%"),
+    height: 70
   },
   left: {
-    flex: 0,
-    width: 50,
-    height: 50,
+    width: wp("10%"),
+
     zIndex: 1
   },
   title: {
@@ -26,17 +29,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",
-    // left: 15,
-    height: I18nManager.isRTL ? 40 : null,
-    bottom: I18nManager.isRTL ? 0 : 12
+    width: wp("80%")
   },
   right: {
     alignItems: "center",
-    width: 50
+    width: wp("10%")
   },
   edit: {
-    // fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 13,
     color: "#fff",
     fontFamily: "montserrat-regular",
     textDecorationLine: "underline"
@@ -46,14 +46,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontFamily: "montserrat-bold",
-    paddingHorizontal: 2
+    alignSelf: "center",
+    paddingHorizontal: 2,
+    alignSelf: "center",
+    alignContent: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   titleView: {
     display: "flex",
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    width: wp("80%"),
+    height: "100%"
   }
 });
 export default styles;

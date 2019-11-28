@@ -72,7 +72,6 @@ export const checkForUpdate = (retries = 3) => {
       });
   };
 };
-
 export const update_app_status_chat_notification = app_state => {
   return (dispatch, getState) => {
     axios

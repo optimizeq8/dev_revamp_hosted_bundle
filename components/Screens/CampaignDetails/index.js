@@ -377,7 +377,10 @@ class CampaignDetails extends Component {
               <Header
                 screenProps={this.props.screenProps}
                 campaignEnded={this.props.campaignEnded}
-                closeButton={true}
+                closeButton={false}
+                translateTitle={false}
+                title={loading ? "" : selectedCampaign.name}
+                icon={"snapchat"}
                 navigation={this.props.navigation}
                 selectedCampaign={selectedCampaign}
                 topRightButtonText={translate("Edit")}
@@ -394,6 +397,15 @@ class CampaignDetails extends Component {
                   new Date(selectedCampaign.end_time) > new Date() &&
                   !this.props.campaignEnded
                 }
+                titelStyle={{
+                  textAlign: "left",
+                  fontSize: 15,
+                  paddingTop: 3,
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  flex: 1,
+                  alignItems: "center"
+                }}
               />
               <Card style={styles.mainCard}>
                 <RNImage
