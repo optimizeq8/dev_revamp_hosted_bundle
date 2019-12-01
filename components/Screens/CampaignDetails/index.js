@@ -413,28 +413,6 @@ class CampaignDetails extends Component {
                 }}
               />
               <Card style={styles.mainCard}>
-                <RNImage
-                  style={styles.media}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-                {loading ? (
-                  <View style={{ margin: 5 }}>
-                    <PlaceholderLine />
-                  </View>
-                ) : (
-                  <Text
-                    style={[
-                      styles.title,
-                      { width: 150 },
-                      !isStringArabic(selectedCampaign.name)
-                        ? { fontFamily: "montserrat-bold-english" }
-                        : {}
-                    ]}
-                  >
-                    {selectedCampaign.name}
-                  </Text>
-                )}
                 {loading ? (
                   <View style={{ margin: 5 }}>
                     <PlaceholderLine />
