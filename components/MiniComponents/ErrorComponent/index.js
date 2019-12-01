@@ -88,7 +88,7 @@ class ErrorComponent extends Component {
             <Text style={styles.buttontext}>
               {this.props.dashboard
                 ? translate("Sign in")
-                : translate("Go back")}
+                : translate("Go Back")}
             </Text>
           </Button>
           <Button
@@ -115,7 +115,4 @@ const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
     dispatch(actionCreators.clearPushToken(navigation, userid))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ErrorComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorComponent);

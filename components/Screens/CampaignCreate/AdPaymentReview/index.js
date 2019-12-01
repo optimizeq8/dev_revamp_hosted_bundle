@@ -47,6 +47,7 @@ class AdPaymentReview extends Component {
     const { translate } = this.props.screenProps;
     if (
       this.props.loading ||
+      this.props.languagesListLoading ||
       !this.props.data ||
       !this.props.data.campaignInfo.targeting
     ) {
@@ -87,6 +88,7 @@ class AdPaymentReview extends Component {
 
       let languageNames = [];
       languageNames =
+        this.props.languages.length > 0 &&
         targeting &&
         targeting.demographics[0] &&
         targeting.demographics[0].languages.map(languageId => {
@@ -384,7 +386,8 @@ const mapStateToProps = state => ({
   kdamount: state.campaignC.kdamount,
   mainBusiness: state.account.mainBusiness,
   adType: state.campaignC.adType,
-  languages: state.campaignC.languagesList
+  languages: state.campaignC.languagesList,
+  languagesListLoading: state.campaignC.languagesListLoading
 });
 
 const mapDispatchToProps = dispatch => ({

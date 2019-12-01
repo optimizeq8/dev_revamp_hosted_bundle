@@ -869,7 +869,11 @@ export const endCampaign = (info, handleToggle) => {
 };
 
 export const get_languages = () => {
-  return (dispatch, getState) => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.GET_LANGUAGES_LOADING,
+      payload: true
+    });
     createBaseUrl()
       .get(`language`)
       .then(res => {
@@ -878,7 +882,7 @@ export const get_languages = () => {
       .then(data => {
         return dispatch({
           type: actionTypes.SET_LANGUAGE_LIST,
-          payload: data
+          payload: { data, loading: false }
         });
       })
       .catch(err => {

@@ -97,7 +97,9 @@ const initialState = {
   collectionMainMediaTypeWebLink: "",
   collectionAdMediaLinks: [],
   oldTempAdType: "",
-  oldTempData: null
+  oldTempData: null,
+  languagesListLoading: false,
+  languagesListError: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -476,12 +478,15 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LANGUAGE_LIST:
       return {
         ...state,
-        languagesList: action.payload
+        languagesList: action.payload.data,
+        languagesListLoading: action.payload.loading
       };
     case actionTypes.ERROR_SET_LANGUAGE_LIST:
       return {
         ...state,
-        languagesList: []
+        languagesList: [],
+        languagesListLoading: false,
+        languagesListError: true
       };
     case actionTypes.RESET_COLLECTIONS:
       return {
@@ -863,6 +868,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: { ...state.data, ...state.oldTempData, ...action.payload }
       };
+    case actionTypes.GET_LANGUAGES_LOADING: {
+      return {
+        ...state,
+        languagesList: [],
+        languagesListLoading: action.payload,
+        languagesListError: false
+      };
+    }
     default:
       return state;
   }

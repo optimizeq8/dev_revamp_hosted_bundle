@@ -4,7 +4,7 @@ import * as actionTypes from "./actionTypes";
 import * as Segment from "expo-analytics-segment";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-
+import { get_languages } from "./campaignActions";
 createBaseUrl = () =>
   axios.create({
     baseURL: store.getState().login.admin
@@ -23,8 +23,9 @@ export const filterCampaigns = query => {
 
 export const getCampaignDetails = (id, navigation) => {
   return dispatch => {
+    dispatch(get_languages());
     dispatch({
-      type: actionTypes.SET_CAMPAIGN,
+      type: actionTypes.SET_CAMPAIGN_LOADING,
       payload: { loading: true, data: {} }
     });
     navigation.push("CampaignDetails");
