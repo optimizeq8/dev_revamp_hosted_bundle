@@ -46,9 +46,13 @@ export default class EditProductDetail extends React.Component {
 
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
-    if (this.state.item.price !== "" && /^([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9]{3})?$/.test(
-      this.state.item.price
-    )) {
+
+    if (
+      this.state.item.price !== "" &&
+      !/^([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9]{3})?$/.test(
+        this.state.item.price
+      )
+    ) {
       showMessage({
         message: translate("Please enter a valid price"),
         position: "top",
@@ -79,35 +83,17 @@ export default class EditProductDetail extends React.Component {
         <Container style={styles.container}>
           <CustomeHeader
             screenProps={this.props.screenProps}
-            title={"WhatsApp Campaign"}
+            title={["SME Growth", "Campaign"]}
             closeButton={false}
             navigation={this.props.navigation}
           />
-          <Content
-            style={{
-              paddingTop: 20,
-              // paddingHorizontal: 20,
-              flexGrow: 1
-              // marginBottom: heightPercentageToDP(30),
-            }}
-          >
+          <Content style={styles.contentStyle}>
             <KeyBoardShift>
               {() => (
                 <>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      paddingVertical: 20
-                    }}
-                  >
+                  <View style={styles.mainProductView}>
                     <Image
-                      style={{
-                        width: 250,
-                        height: 250,
-                        borderRadius: 20
-                      }}
+                      style={styles.imageProductView}
                       source={{ uri: this.state.item.imageUrl }}
                     />
                     <View style={styles.inputContainer}>
@@ -141,7 +127,7 @@ export default class EditProductDetail extends React.Component {
                                 productNameError: value.length === 0
                               })
                             }
-                          // onBlur={() => this.validateUrl()}
+                            // onBlur={() => this.validateUrl()}
                           />
                         </Item>
                       </View>
@@ -178,7 +164,7 @@ export default class EditProductDetail extends React.Component {
                                 priceError: value.length === 0
                               })
                             }
-                          // onBlur={() => this.validateUrl()}
+                            // onBlur={() => this.validateUrl()}
                           />
                         </Item>
                       </View>

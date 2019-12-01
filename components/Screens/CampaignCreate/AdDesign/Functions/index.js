@@ -199,7 +199,6 @@ export const _changeDestination = (
   attachment,
   appChoice = null,
   whatsAppCampaign = null,
-  instagramTrafficCampaign = null,
   adType,
   setStoryAdAttachment,
   campaignInfo,
@@ -218,16 +217,7 @@ export const _changeDestination = (
           source: whatsAppCampaign.source
         });
     }
-    if (instagramTrafficCampaign) {
-      !store.getState().dashboard.rejCampaign &&
-        save_campaign_info({
-          insta_handle: instagramTrafficCampaign.insta_handle,
-          googlemaplink: instagramTrafficCampaign.googlemaplink,
-          weburl: instagramTrafficCampaign.weburl,
-          callnumber: instagramTrafficCampaign.callnumber,
-          source: instagramTrafficCampaign.source
-        });
-    }
+
     setStoryAdAttachment({
       attachment,
       call_to_action,
@@ -287,30 +277,7 @@ export const _changeDestination = (
           googlemaplink: whatsAppCampaign.googlemaplink
         });
     }
-    if (instagramTrafficCampaign) {
-      newData = {
-        ...newData,
-        campaignInfo: {
-          ...newData.campaignInfo,
-          whatsappnumber: instagramTrafficCampaign.whatsappnumber,
-          insta_handle: instagramTrafficCampaign.insta_handle,
-          googlemaplink: instagramTrafficCampaign.googlemaplink,
-          weburl: instagramTrafficCampaign.weburl,
-          callnumber: instagramTrafficCampaign.callnumber,
-          source: instagramTrafficCampaign.source
-        }
-      };
 
-      !store.getState().dashboard.rejCampaign &&
-        save_campaign_info({
-          whatsappnumber: instagramTrafficCampaign.whatsappnumber,
-          insta_handle: instagramTrafficCampaign.insta_handle,
-          googlemaplink: instagramTrafficCampaign.googlemaplink,
-          weburl: instagramTrafficCampaign.weburl,
-          callnumber: instagramTrafficCampaign.callnumber,
-          source: instagramTrafficCampaign.source
-        });
-    }
     setTheState(newData);
     !store.getState().dashboard.rejCampaign &&
       save_campaign_info({

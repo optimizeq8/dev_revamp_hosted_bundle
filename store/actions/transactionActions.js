@@ -337,8 +337,8 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
 
       .catch(err => {
         // console.log("checkoutwithWallet Error: ", err.message || err.response);
-        if (reties > 0) {
-          checkoutwithWallet(campaign_id, reties - 1);
+        if (retries > 0) {
+          checkoutwithWallet(campaign_id, retries - 1);
           return;
         }
         showMessage({

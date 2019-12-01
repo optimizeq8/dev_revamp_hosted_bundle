@@ -34,7 +34,6 @@ class SwipeCompCondition extends Component {
       />
     ) : this.props.adType === "StoryAd" &&
       this.props.objective !== "WEB_CONVERSION" &&
-      this.props.objective !== "WEB_CONVERSION_INSTAGRAM" &&
       this.props.storyAdCards.storyAdSelected ? (
       <SwipeUpComponent
         screenProps={this.props.screenProps}
@@ -76,7 +75,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SwipeCompCondition);
+export default connect(mapStateToProps, mapDispatchToProps)(SwipeCompCondition);
