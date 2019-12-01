@@ -121,7 +121,9 @@ class MessageBubble extends PureComponent {
                 });
               }}
             >
-              <Text style={styles.messageText}>{body}</Text>
+              <Text selectable={true} style={styles.messageText}>
+                {body}
+              </Text>
             </View>
           )}
           {/* Triangle for user */}
