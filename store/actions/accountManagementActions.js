@@ -613,7 +613,7 @@ export const deleteTeamMembers = (memberId, businessid, navigation) => {
         dispatch({
           type: actionTypes.SET_TEAM_MEMBERS_LOADING,
           payload: false
-                  });
+        });
       });
   };
 };
@@ -686,7 +686,6 @@ export const updateBusinessInfo = (userid, info, navigation) => {
       });
   };
 };
-<<<<<<< HEAD
 
 /**
  * Saves the necessariy info for handling team invites
@@ -744,5 +743,3 @@ export const resetBusinessInvitee = () => {
 //       });
 //   };
 // };
-=======
->>>>>>> Add Business Info screen
