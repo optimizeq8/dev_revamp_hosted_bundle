@@ -5,6 +5,7 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
   state = { input: false, brand_nameError: "" };
   render() {
@@ -82,12 +83,30 @@ export default class PenIconBrand extends Component {
             }}
             onBlur={() => {
               this.setState({ input: false });
-              this.setState({
-                brand_nameError: validateWrapper(
-                  "mandatory",
-                  field === "Business Name" ? brand_name : headline
-                )
-              });
+              this.setState(
+                {
+                  brand_nameError: validateWrapper(
+                    "mandatory",
+                    field === "Business Name" ? brand_name : headline
+                  )
+                },
+                () => {
+                  if (this.state.brand_nameError) {
+                    segmentEventTrack(
+                      `Error occured on blur of ${
+                        field === "Business Name" ? "Brand Name" : "Headline"
+                      } Ad Design Screen`,
+                      {
+                        [`${
+                          field === "Business Name"
+                            ? "Brand Name Error"
+                            : "Headline Error"
+                        }`]: this.state.brand_nameError
+                      }
+                    );
+                  }
+                }
+              );
             }}
           />
         </View>

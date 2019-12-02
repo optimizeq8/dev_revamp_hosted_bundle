@@ -5,6 +5,7 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
   state = { input: false, coverHeadline: "", coverHeadlineError: "" };
   render() {
@@ -51,12 +52,24 @@ export default class PenIconBrand extends Component {
             }}
             onBlur={() => {
               this.setState({ input: false });
-              this.setState({
-                coverHeadlineError: validateWrapper(
-                  "mandatory",
-                  this.props.coverHeadline
-                )
-              });
+              this.setState(
+                {
+                  coverHeadlineError: validateWrapper(
+                    "mandatory",
+                    this.props.coverHeadline
+                  )
+                },
+                () => {
+                  if (this.state.coverHeadlineError) {
+                    segmentEventTrack(
+                      "Error occured on Cover Headline input Blur",
+                      {
+                        coverHeadlineError: this.state.coverHeadlineError
+                      }
+                    );
+                  }
+                }
+              );
             }}
           />
         </View>

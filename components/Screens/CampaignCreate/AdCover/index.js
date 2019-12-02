@@ -40,6 +40,7 @@ import MediaButton from "../AdDesign/MediaButton";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import { globalColors } from "../../../../GlobalStyles";
 import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class AdCover extends Component {
   static navigationOptions = {
@@ -187,6 +188,9 @@ class AdCover extends Component {
       coverHeadlineError: validateWrapper("mandatory", coverHeadline),
       headlineRejectionUpload: true
     });
+    segmentEventTrack("Change Story Ad Cover Headline", {
+      "Story Ad Cover Headline": coverHeadline
+    });
     !this.rejected &&
       this.props.save_campaign_info({
         coverHeadline,
@@ -234,7 +238,19 @@ class AdCover extends Component {
         duration: correctLogo ? 2000 : 10000,
         type: correctLogo ? "success" : "warning"
       });
-
+      segmentEventTrack(
+        `${
+          correctLogo && logoFormat
+            ? "Logo selected successfully"
+            : "Selected Logo Error"
+        }`,
+        {
+          logoError:
+            correctLogo && logoFormat
+              ? ""
+              : "Logo must be exactly 993px by 284px,In png format and transparent background "
+        }
+      );
       !this.rejected &&
         this.props.save_campaign_info({
           logo: correctLogo && logoFormat ? logo.uri : "",
@@ -314,7 +330,9 @@ class AdCover extends Component {
                     position: "top",
                     type: "warning"
                   });
-
+                  segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                    imageError: "Image must be less than 2 MBs"
+                  });
                   return;
                 }
                 this.setState({
@@ -325,6 +343,7 @@ class AdCover extends Component {
                   coverRejectionUpload: true
                 });
                 this.onToggleModal(false);
+                segmentEventTrack("Selected Story Ad Cover Media successfully");
                 showMessage({
                   message: translate("Image has been selected successfully"),
                   position: "top",
@@ -338,6 +357,9 @@ class AdCover extends Component {
               })
               .catch(error => {
                 this.onToggleModal(false);
+                segmentEventTrack("Error in selecting Story Ad Cover Media", {
+                  imageError: "Please choose an image"
+                });
                 showMessage({
                   message: translate("Please choose an image"),
                   position: "top",
@@ -356,6 +378,9 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
+            segmentEventTrack("Error in selecting Story Ad Cover Media", {
+              imageError: "Image must be less than 2 MBs"
+            });
             return;
           } else if (
             Math.floor(result.width / 3) !== Math.floor(result.height / 5) ||
@@ -370,6 +395,10 @@ class AdCover extends Component {
               position: "top",
               type: "warning"
             });
+            segmentEventTrack("Error in selecting Story Ad Cover Media", {
+              imageError:
+                "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
+            });
             return;
           } else {
             this.setState({
@@ -380,6 +409,7 @@ class AdCover extends Component {
               result: result.uri
             });
             this.onToggleModal(false);
+            segmentEventTrack("Selected Story Ad Cover Media successfully");
             showMessage({
               message: translate("Image has been selected successfully"),
               position: "top",
@@ -397,12 +427,18 @@ class AdCover extends Component {
             position: "top",
             type: "warning"
           });
+          segmentEventTrack("Error in selecting Story Ad Cover Media", {
+            imageError: "Please make sure the image is in png format"
+          });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
           type: "warning"
+        });
+        segmentEventTrack("Error in selecting Story Ad Cover Media", {
+          imageError: "Please choose a media file"
         });
         this.onToggleModal(false);
         return;
@@ -497,7 +533,17 @@ class AdCover extends Component {
   };
   _handleSubmission = async () => {
     await this.validator();
-
+    if (
+      this.state.coverHeadlineError ||
+      this.state.logoError ||
+      this.state.coverError
+    ) {
+      segmentEventTrack("Error Story Ad Cover screen Submit button", {
+        coverError: this.state.coverError,
+        coverHeadlineError: this.state.coverHeadlineError,
+        logoError: this.state.logoError
+      });
+    }
     if (
       !this.state.coverHeadlineError &&
       !this.state.logoError &&
@@ -627,7 +673,12 @@ class AdCover extends Component {
 
                       {logo ? (
                         <TouchableOpacity
-                          onPress={() => this._pickLogo()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to select Logo from gallery"
+                            );
+                            this._pickLogo();
+                          }}
                           style={styles.changeLogoStyle}
                         >
                           <RNImageOrCacheImage
@@ -652,7 +703,12 @@ class AdCover extends Component {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
-                          onPress={() => this._pickLogo()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to select Logo from gallery"
+                            );
+                            this._pickLogo();
+                          }}
                           style={styles.addLogoStyle}
                         >
                           <View

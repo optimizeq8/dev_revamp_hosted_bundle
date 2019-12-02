@@ -13,6 +13,7 @@ import {
 } from "react-navigation";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
 // Style
 import styles from "./styles";
@@ -75,6 +76,7 @@ class DateFields extends Component {
   };
 
   showModal = () => {
+    Segment.screen("Date Modal");
     this.setState({
       modalVisible: true
     });

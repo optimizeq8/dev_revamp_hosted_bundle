@@ -47,6 +47,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
+import segmentEventTrack from "../../../segmentEventTrack";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
@@ -201,6 +202,9 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label
     });
+    segmentEventTrack("Selected Ad Objective", {
+      "Campaign Objective": choice.label
+    });
     this.props.save_campaign_info({
       objective: choice.value,
       objectiveLabel: choice.label,
@@ -218,6 +222,9 @@ class AdObjective extends Component {
         start_time: date
       }
     });
+    segmentEventTrack("Selected Campaign Start Date", {
+      "Campaign Start Date": date
+    });
     this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = date => {
@@ -227,12 +234,18 @@ class AdObjective extends Component {
         end_time: date
       }
     });
+    segmentEventTrack("Selected Campaign End Date", {
+      "Campaign End Date": date
+    });
     this.props.save_campaign_info({
       end_time: date,
       campaignDateChanged: true
     });
   };
   setModalVisible = visible => {
+    if (visible) {
+      Segment.screen("Ad Objective Modal");
+    }
     this.setState({ modalVisible: visible });
   };
 
@@ -271,16 +284,30 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
+    // In case error in any feild keep track
+    if (
+      nameError ||
+      objectiveError ||
+      dateErrors.start_timeError ||
+      dateErrors.end_timeError
+    ) {
+      segmentEventTrack("Error occured on ad objective screen sumbit button", {
+        "Ad Name Error": nameError ? nameError : "",
+        "Ad Objective Error": objectiveError ? objectiveError : "",
+        "Ad Start Date Error": dateErrors.start_timeError
+          ? dateErrors.start_timeError
+          : "",
+        "Ad End Date Error": dateErrors.end_timeError
+          ? dateErrors.end_timeError
+          : ""
+      });
+    }
     if (
       !nameError &&
       !objectiveError &&
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      Segment.trackWithProperties("Select Ad Objective", {
-        business_name: this.props.mainBusiness.businessname,
-        campaign_objective: this.state.campaignInfo.objective
-      });
       Segment.trackWithProperties("Completed Checkout Step", {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
@@ -460,6 +487,9 @@ class AdObjective extends Component {
                           name: value
                         }
                       });
+                      segmentEventTrack("Fill Campaign Ad Name", {
+                        "Ad Name": value
+                      });
                       this.props.save_campaign_info({ name: value });
                     }}
                     autoFocus={true}
@@ -468,12 +498,21 @@ class AdObjective extends Component {
                     }}
                     onBlur={() => {
                       this.setState({ inputN: false });
-                      this.setState({
-                        nameError: validateWrapper(
-                          "mandatory",
-                          this.state.campaignInfo.name
-                        )
-                      });
+                      this.setState(
+                        {
+                          nameError: validateWrapper(
+                            "mandatory",
+                            this.state.campaignInfo.name
+                          )
+                        },
+                        () => {
+                          if (this.state.nameError) {
+                            segmentEventTrack("Error occured on blur Ad Name", {
+                              "Ad Name Error": this.state.nameError
+                            });
+                          }
+                        }
+                      );
                     }}
                   />
                 </Item>

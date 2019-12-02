@@ -58,6 +58,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class CollectionMedia extends Component {
   constructor(props) {
@@ -349,6 +350,9 @@ class CollectionMedia extends Component {
                     collection_media: null
                   }
                 });
+                segmentEventTrack("Error Collection Ad Media", {
+                  imageError: "Image must be less than 2 MBs"
+                });
                 this.onToggleModal(false);
                 showMessage({
                   message: translate(
@@ -371,6 +375,7 @@ class CollectionMedia extends Component {
                   localUri: result.uri,
                   rejectionColUpload: true
                 });
+                segmentEventTrack("Selected Collection Ad Image successfully");
                 this.onToggleModal(false);
                 showMessage({
                   message: translate("Image has been selected successfully"),
@@ -381,7 +386,9 @@ class CollectionMedia extends Component {
             })
             .catch(error => {
               // console.log(error);
-
+              segmentEventTrack("Error Collection Ad Media", {
+                imageError: "Please choose another image"
+              });
               this.onToggleModal(false);
               showMessage({
                 message: translate("Please choose another image"),
@@ -400,6 +407,10 @@ class CollectionMedia extends Component {
               collection_media: null
             }
           });
+          segmentEventTrack("Error Collection Ad Media", {
+            imageError:
+              "Image's aspect ratio must be 1:1\nwith a size of 160px x 160px"
+          });
           this.onToggleModal(false);
           showMessage({
             message: translate(
@@ -416,6 +427,9 @@ class CollectionMedia extends Component {
               ...this.state.collection,
               collection_media: null
             }
+          });
+          segmentEventTrack("Error Collection Ad Media", {
+            imageError: "Image must be less than 2 MBs"
           });
           this.onToggleModal(false);
           showMessage({
@@ -436,6 +450,7 @@ class CollectionMedia extends Component {
             type: result.type.toUpperCase(),
             imageError: null
           });
+          segmentEventTrack("Selected Collection Ad Image successfully");
           this.onToggleModal(false);
           showMessage({
             message: translate("Image has been selected successfully"),
@@ -448,6 +463,9 @@ class CollectionMedia extends Component {
         !result.cancelled &&
         isNull(this.state.collection.collection_media)
       ) {
+        segmentEventTrack("Error Collection Ad Media", {
+          imageError: "Please choose a media file"
+        });
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",
@@ -554,6 +572,12 @@ class CollectionMedia extends Component {
   _handleSubmission = async () => {
     if (this.state.rejectionColUpload) {
       if (this.props.collectionAdLinkForm === 1) {
+        if (!this.validateUrl() || !this.validateImage()) {
+          segmentEventTrack("Error Collection Media Submit", {
+            imageError: this.state.imageError,
+            urlError: this.state.urlError
+          });
+        }
         if (this.validateUrl() && this.validateImage()) {
           await this.formatMedia();
           await this.handleUpload();
@@ -567,6 +591,12 @@ class CollectionMedia extends Component {
           );
         }
       } else {
+        if (!this.validateUrl() || !this.validateImage()) {
+          segmentEventTrack("Error Collection Media Submit", {
+            imageError: this.state.imageError,
+            deepLinkUrlError: this.state.deep_link_uriError
+          });
+        }
         if (this.validateDeepLinkUrl() && this.validateImage()) {
           await this.formatMedia();
           await this.handleUpload();
@@ -617,6 +647,7 @@ class CollectionMedia extends Component {
         <TouchableOpacity
           style={styles.inputMiddleButtonEdit}
           onPress={() => {
+            segmentEventTrack("Opened Gallery to select Collection Ad media");
             this._pickImage();
           }}
         >
@@ -629,6 +660,7 @@ class CollectionMedia extends Component {
         <Button
           style={styles.inputMiddleButton}
           onPress={() => {
+            segmentEventTrack("Opened Gallery to select Collection Ad media");
             this._pickImage();
           }}
         >
@@ -813,7 +845,17 @@ class CollectionMedia extends Component {
                                   rejectionColUpload: true
                                 })
                               }
-                              onBlur={() => this.validateUrl()}
+                              onBlur={() => {
+                                this.validateUrl();
+                                if (!this.validateUrl()) {
+                                  segmentEventTrack(
+                                    "Error Collection Ad URL Blur",
+                                    {
+                                      urlError: this.state.urlError
+                                    }
+                                  );
+                                }
+                              }}
                             />
                           </Item>
                         </View>
@@ -920,7 +962,4 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CollectionMedia);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionMedia);

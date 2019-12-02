@@ -68,6 +68,7 @@ import {
 } from "./Functions/index";
 import { _pickImage } from "./Functions/PickImage";
 import { formatStoryAd } from "./Functions/formatStoryAd";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class AdDesign extends Component {
   static navigationOptions = {
@@ -287,6 +288,9 @@ class AdDesign extends Component {
   _handleNotification = async uploadMediaNotification => {
     // console.log("uploadMediaNotification", uploadMediaNotification);
     if (uploadMediaNotification.data && uploadMediaNotification.data.media) {
+      segmentEventTrack(
+        "Received Notifcation on successful upload media from different device"
+      );
       this.setState({
         uploadMediaDifferentDeviceModal: false,
         uploadMediaNotification: uploadMediaNotification,
@@ -353,6 +357,9 @@ class AdDesign extends Component {
   };
 
   setMediaModalVisible = visible => {
+    if (visible) {
+      Segment.screen("Upload Media Modal");
+    }
     this.setState({ mediaModalVisible: visible });
   };
 
@@ -721,6 +728,19 @@ class AdDesign extends Component {
   };
   finalSubmission = async () => {
     if (
+      this.state.brand_nameError ||
+      this.state.headlineError ||
+      this.state.mediaError ||
+      this.state.swipeUpError
+    ) {
+      segmentEventTrack("Ad Design Submit Error", {
+        brand_nameError: this.state.brand_nameError,
+        headlineError: this.state.headlineError,
+        mediaError: this.state.mediaError,
+        swipeUpError: this.state.swipeUpError
+      });
+    }
+    if (
       // !this.props.loadingStoryAdsArray.includes(true) &&
       (!this.state.brand_nameError &&
         !this.state.headlineError &&
@@ -821,6 +841,9 @@ class AdDesign extends Component {
   };
 
   setUploadFromDifferentDeviceModal = val => {
+    if (val) {
+      Segment.screen(`Upload media from Different Device Modal`);
+    }
     this.setState({
       uploadMediaDifferentDeviceModal: val
     });
@@ -835,6 +858,9 @@ class AdDesign extends Component {
     this.setMediaModalVisible(false);
   };
   setDownloadMediaModal = val => {
+    if (val) {
+      Segment.screen("Download media from Different Device Modal");
+    }
     this.setState({
       downloadMediaModal: val
     });
@@ -1161,7 +1187,12 @@ class AdDesign extends Component {
                       validCards.length >= 3 && (
                         <TouchableOpacity
                           style={styles.button}
-                          onPress={() => this.previewHandler()}
+                          onPress={() => {
+                            segmentEventTrack(
+                              "Button clicked to preview Story Ad Design"
+                            );
+                            this.previewHandler();
+                          }}
                         >
                           <EyeIcon width={wp(24)} height={hp(8)} />
                         </TouchableOpacity>
@@ -1169,7 +1200,12 @@ class AdDesign extends Component {
                     ) : (
                       <TouchableOpacity
                         style={styles.button}
-                        onPress={() => this.previewHandler()}
+                        onPress={() => {
+                          segmentEventTrack(
+                            "Button clicked to preview Ad Design"
+                          );
+                          this.previewHandler();
+                        }}
                       >
                         <EyeIcon width={wp(24)} height={hp(8)} />
                       </TouchableOpacity>
