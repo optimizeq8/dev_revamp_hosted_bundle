@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import formatNumber from "../../../../formatNumber";
 import { Icon } from "native-base";
+import segmentEventTrack from "../../../../segmentEventTrack";
 export default class BudgetCard extends Component {
   render() {
     let { bud, _handleBudget, budgetOption } = this.props;
@@ -10,14 +11,17 @@ export default class BudgetCard extends Component {
     return (
       <>
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
+            segmentEventTrack("Campaign Budget Change", {
+              campaign_budget: bud.recBudget
+            });
             _handleBudget(
               "$" + bud.recBudget,
               parseInt(bud.recBudget),
               false,
               bud.id
-            )
-          }
+            );
+          }}
           style={[
             styles.budgetCardStyle,
             budgetOption == bud.id ? { borderWidth: 2.5 } : { borderWidth: 0 }

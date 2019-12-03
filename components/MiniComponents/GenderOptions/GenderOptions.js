@@ -5,8 +5,12 @@ import { Button, Text, Icon } from "native-base";
 import GenderIcon from "../../../assets/SVGs/Gender";
 import styles from "./styles";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
+import * as Segment from "expo-analytics-segment";
 
 export default class GenderOptions extends Component {
+  componentDidMount() {
+    Segment.screen("Gender Options");
+  }
   render() {
     const { translate } = this.props.screenProps;
     return (

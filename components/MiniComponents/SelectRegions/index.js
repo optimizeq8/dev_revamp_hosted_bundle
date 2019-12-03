@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { Input, Button, Item, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
+import * as Segment from "expo-analytics-segment";
 import * as actionCreators from "../../../store/actions";
 import styles from "../MultiSelect/styles";
 
@@ -17,7 +18,9 @@ import LocationIcon from "../../../assets/SVGs/Location";
 
 class SelectRegions extends Component {
   state = { selectedAll: false };
-
+  componentDidMount() {
+    Segment.screen("Regions Options");
+  }
   // selectAll = () => {
   //   this.setState({ selectedAll: !this.state.selectedAll });
   //   this.props.regions.forEach(region =>
@@ -144,7 +147,4 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectRegions);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectRegions);

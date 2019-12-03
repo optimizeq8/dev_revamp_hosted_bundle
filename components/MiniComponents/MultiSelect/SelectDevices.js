@@ -4,6 +4,7 @@ import { Button, Icon } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import isNull from "lodash/isNull";
+import * as Segment from "expo-analytics-segment";
 
 //Redux
 import { connect } from "react-redux";
@@ -29,6 +30,7 @@ class SelectDevices extends Component {
     //   this.props.OSType
     // );
     // this.props.get_device_brands("");
+    Segment.screen("Devices Brands Options");
 
     switch (this.props.OSType) {
       case "iOS":
@@ -205,7 +207,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   get_device_brands: os => dispatch(actionCreators.get_device_brands(os))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectDevices);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectDevices);

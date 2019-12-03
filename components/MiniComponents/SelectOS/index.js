@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, I18nManager } from "react-native";
 import { SafeAreaView } from "react-navigation";
+import * as Segment from "expo-analytics-segment";
 import LocationIcon from "../../../assets/SVGs/Location";
 import { Input, Button, Item, Icon } from "native-base";
 import styles from "../MultiSelect/styles";
@@ -9,6 +10,9 @@ import OperatingSystemIcon from "../../../assets/SVGs/AdDetails/OperatingSystem"
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 export default class SelectOS extends Component {
+  componentDidMount() {
+    Segment.screen("OS Type Options");
+  }
   render() {
     const { translate } = this.props.screenProps;
     return (
