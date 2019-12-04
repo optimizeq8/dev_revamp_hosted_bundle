@@ -1,6 +1,6 @@
 //Components
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, RefreshControl } from "react-native";
 import { Button, Text, Container } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
@@ -13,6 +13,8 @@ import styles from "./styles";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+
+import InvitationCard from "./InvitationCard";
 
 class BusinessList extends Component {
   static navigationOptions = {
@@ -64,7 +66,27 @@ class BusinessList extends Component {
             height={"6%"}
           />
           <View style={{ height: heightPercentageToDP(55) }}>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.props.businessesLoading}
+                  onRefresh={() => this.props.getBusinessAccounts()}
+                />
+              }
+              contentContainerStyle={styles.contentContainer}
+            >
+              {this.props.businessInvitee &&
+              this.props.userInfo.email === this.props.invitedEmail ? (
+                <InvitationCard
+                  handleTeamInvite={this.props.handleTeamInvite}
+                  tempInviteId={this.props.tempInviteId}
+                  businessInvitee={this.props.businessInvitee}
+                  navigation={this.props.navigation}
+                />
+              ) : null}
+              <Text uppercase style={[styles.headings]}>
+                Businesses
+              </Text>
               {list}
             </ScrollView>
             <Button
@@ -87,13 +109,16 @@ class BusinessList extends Component {
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
   mainBusiness: state.account.mainBusiness,
-  businessAccounts: state.account.businessAccounts
+  businessAccounts: state.account.businessAccounts,
+  businessesLoading: state.account.businessesLoading,
+  businessInvitee: state.account.businessInvitee,
+  tempInviteId: state.account.tempInviteId,
+  invitedEmail: state.account.invitedEmail
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id))
+  getBusinessAccounts: () => dispatch(actionCreators.getBusinessAccounts()),
+  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
+  handleTeamInvite: status => dispatch(actionCreators.handleTeamInvite(status))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BusinessList);
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessList);

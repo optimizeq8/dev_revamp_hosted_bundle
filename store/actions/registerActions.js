@@ -11,16 +11,7 @@ import { setAuthToken } from "./genericActions";
 import { setCurrentUser } from "./loginActions";
 import { getBusinessAccounts } from "./accountManagementActions";
 import { send_push_notification } from "./loginActions";
-import store from "../index";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
 
 export const verifyBusinessName = (businessname, _handleBusinessName) => {
   return dispatch => {
@@ -64,10 +55,13 @@ export const verifyBusinessName = (businessname, _handleBusinessName) => {
   };
 };
 
-export const registerUser = (userInfo, navigation) => {
+export const registerUser = (userInfo, navigation, businessInvite = false) => {
   return (dispatch, getState) => {
     createBaseUrl()
-      .post(`registerUser`, userInfo)
+      .post(
+        businessInvite === "0" ? "registerMemberUser" : `registerUser`,
+        userInfo
+      )
       .then(res => {
         return res.data;
       })
@@ -92,7 +86,7 @@ export const registerUser = (userInfo, navigation) => {
         }
       })
       .catch(err => {
-        // console.log(err.message || err.response);
+        // console.log("registerUser error", err.message || err.response);
         showMessage({
           message:
             err.message ||
@@ -280,7 +274,7 @@ export const resendVerifyMobileCodeByEmail = mobileAuth => {
   };
 };
 
-export const verifyEmail = (email, userInfo) => {
+export const verifyEmail = (email, userInfo, businessInvite, navigation) => {
   return dispatch => {
     createBaseUrl()
       .post(`verifyEmail`, { email: email })
@@ -299,6 +293,9 @@ export const verifyEmail = (email, userInfo) => {
             type: data.success ? "success" : "warning",
             position: "top"
           });
+        }
+        if (businessInvite === "0") {
+          dispatch(registerUser(userInfo, navigation, businessInvite));
         }
         return dispatch({
           type: actionTypes.VERIFY_EMAIL,

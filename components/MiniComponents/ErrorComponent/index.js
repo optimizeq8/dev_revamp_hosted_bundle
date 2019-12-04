@@ -78,10 +78,12 @@ class ErrorComponent extends Component {
             style={styles.button}
             onPress={() => {
               this.props.dashboard
-                ? this.props.clearPushToken(
-                    this.props.navigation,
-                    this.props.userInfo.userid
-                  )
+                ? this.props.userInfo
+                  ? this.props.clearPushToken(
+                      this.props.navigation,
+                      this.props.userInfo.userid
+                    )
+                  : this.props.logout(this.props.navigation)
                 : this.props.navigation.goBack();
             }}
           >
@@ -113,6 +115,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
-    dispatch(actionCreators.clearPushToken(navigation, userid))
+    dispatch(actionCreators.clearPushToken(navigation, userid)),
+  logout: nav => dispatch(actionCreators.logout(nav))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorComponent);

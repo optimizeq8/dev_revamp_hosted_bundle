@@ -6,12 +6,8 @@ import { AsyncStorage } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-  });
+import createBaseUrl from "./createBaseUrl";
+
 export const setAuthToken = token => {
   if (token) {
     return SecureStore.setItemAsync("token", token)

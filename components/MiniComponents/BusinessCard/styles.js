@@ -91,12 +91,7 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   campaignButton: {
-    justifyContent: "space-between",
     flexDirection: "row",
-    flex: 1,
-    marginHorizontal: 25,
-
-    backgroundColor: "#FF9D00",
     paddingVertical: 15,
     bottom: 15
   },
@@ -109,6 +104,14 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30
+  },
+  businessIconStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#5F5F5F"
   }
 });
 

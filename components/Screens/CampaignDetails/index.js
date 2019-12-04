@@ -400,7 +400,8 @@ class CampaignDetails extends Component {
                   selectedCampaign &&
                   selectedCampaign.campaign_end === "0" &&
                   new Date(selectedCampaign.end_time) > new Date() &&
-                  !this.props.campaignEnded
+                  !this.props.campaignEnded &&
+                  this.props.mainBusiness.user_role !== "3"
                 }
                 titelStyle={{
                   textAlign: "left",
@@ -756,6 +757,12 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
+                      {/* Only for development testing to test rejection process */}
+                      <RejectedComp
+                        screenProps={this.props.screenProps}
+                        selectedCampaign={selectedCampaign}
+                        navigation={this.props.navigation}
+                      />
                     </Content>
                   ) : (
                     <RejectedComp
@@ -806,6 +813,7 @@ const mapStateToProps = state => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   campaignError: state.dashboard.campaignError,
   languages: state.campaignC.languagesList,
+  mainBusiness: state.account.mainBusiness,
   languagesListLoading: state.campaignC.languagesListLoading,
   languagesListError: state.campaignC.languagesListError
 });

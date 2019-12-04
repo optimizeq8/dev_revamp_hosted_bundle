@@ -4,17 +4,11 @@ import { AsyncStorage, I18nManager } from "react-native";
 import i18n from "i18n-js";
 import * as actionTypes from "./actionTypes";
 import store from "../index";
-import arabicStrings from '../../components/Data/translationArabic';
-import englishStrings from '../../components/Data/translationEnglish';
+import arabicStrings from "../../components/Data/translationArabic";
+import englishStrings from "../../components/Data/translationEnglish";
 
+import createBaseUrl from "./createBaseUrl";
 
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
 export const getLanguageListPOEdit = language => {
   return async (dispatch, getState) => {
     try {
@@ -52,10 +46,9 @@ export const getLanguageListPOEdit = language => {
             }
           });
         }
-      }
-      else {
-        const response = await createBaseUrl().get(`translation/${language}`)
-        const data = response.data
+      } else {
+        const response = await createBaseUrl().get(`translation/${language}`);
+        const data = response.data;
         // if this also fails then local copy
         await AsyncStorage.setItem("appLanguage", language);
         I18nManager.allowRTL(language === "ar");
@@ -73,12 +66,12 @@ export const getLanguageListPOEdit = language => {
           });
         } else {
           i18n.translations = {
-            [language]: language === 'ar' ? arabicStrings : englishStrings
+            [language]: language === "ar" ? arabicStrings : englishStrings
           };
           return dispatch({
             type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
             payload: {
-              terms: language === 'ar' ? arabicStrings : englishStrings,
+              terms: language === "ar" ? arabicStrings : englishStrings,
               language
             }
           });
@@ -91,12 +84,12 @@ export const getLanguageListPOEdit = language => {
       I18nManager.allowRTL(language === "ar");
       I18nManager.forceRTL(language === "ar");
       i18n.translations = {
-        [language]: language === 'ar' ? arabicStrings : englishStrings
+        [language]: language === "ar" ? arabicStrings : englishStrings
       };
       return dispatch({
         type: actionTypes.SET_LANGUAGE_LIST_POEDIT,
         payload: {
-          terms: language === 'ar' ? arabicStrings : englishStrings,
+          terms: language === "ar" ? arabicStrings : englishStrings,
           language
         }
       });

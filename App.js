@@ -147,7 +147,7 @@ class App extends React.Component {
     persistor.dispatch({ type: REHYDRATE });
 
     this._loadAsync();
-
+    store.dispatch(actionCreators.checkForExpiredToken(this.props.navigation));
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
     );

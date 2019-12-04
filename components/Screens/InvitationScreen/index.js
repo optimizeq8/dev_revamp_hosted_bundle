@@ -29,6 +29,7 @@ import Background from "../../../assets/SVGs/Background";
 // Style
 import styles from "./styles";
 import { colors } from "../../GradiantColors/colors";
+import globalStyles from "../../../GlobalStyles";
 
 export default class Invitation extends Component {
   static navigationOptions = {
@@ -144,7 +145,7 @@ export default class Invitation extends Component {
               animation="fadeInUpBig"
             >
               <Background
-                style={styles.background}
+                style={globalStyles.background}
                 width={widthPercentageToDP(90)}
                 height={heightPercentageToDP(65)}
               />

@@ -1,24 +1,58 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { View, TouchableOpacity, Alert } from "react-native";
+import { Text } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import businessList from "../../Data/newBusinessCategoryList.data";
-import find from "lodash/find";
 import isStringArabic from "../../isStringArabic";
 import Swipeout from "react-native-swipeout";
 import { ActivityIndicator } from "react-native-paper";
 
 class BusinessCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: businessList
-    };
-  }
+  businessCategory = businessList.find(
+    cat => cat.value === this.props.business.businesscategory
+  );
+  swipeoutBtns = [
+    {
+      text: "Delete",
+      component: this.props.deleteBusinessLoading ? (
+        <ActivityIndicator color="white" style={{ top: "30%" }} />
+      ) : null,
+      type: this.props.business.user_role !== "1" ? "default" : "delete",
+      underlayColor: "rgba(255,0,0,0.6)",
+      disabled: this.props.business.user_role !== "1",
+      onPress: () => {
+        Alert.alert(
+          "Business deletion",
+          "Are you sure you want to delete this business?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel"
+            },
+            {
+              text: "Delete",
+              onPress: () =>
+                this.props.deleteBusinessAccount(
+                  this.props.business.businessid
+                ),
+              style: "destructive"
+            }
+          ]
+          // { cancelable: false }
+        );
+
+        //
+      }
+    }
+  ];
   render() {
-    let changeState = { color: this.props.manageTeam ? "#C6C6C6" : "#5F5F5F" };
+    //this.props.manageTeam was to be used in BusinessModal to choose multiple businesses but
+    //it's not being used anymore until further notice
+    let changeState = {
+      color: this.props.manageTeam ? "#C6C6C6" : "#5F5F5F"
+    };
     if (
       !this.props.manageTeam &&
       this.props.mainBusiness &&
@@ -28,39 +62,12 @@ class BusinessCard extends Component {
     } else if (this.props.isSelected) {
       changeState.color = "#FF9D00";
     }
-
-    const businessCategory = find(
-      this.state.type,
-      cat => cat.value === this.props.business.businesscategory
-    );
-    let BusinessIcon = businessCategory.icon;
-    let swipeoutBtns = [
-      {
-        text: "Delete",
-        component: this.props.deleteBusinessLoading ? (
-          <ActivityIndicator color="white" style={{ top: "30%" }} />
-        ) : null,
-        type:
-          this.props.businessAccounts.length === 1 ||
-          this.props.business.user_role !== "1"
-            ? "default"
-            : "delete",
-        underlayColor: "rgba(255,0,0,0.6)",
-        disabled:
-          this.props.businessAccounts.length === 1 ||
-          this.props.business.user_role !== "1",
-        onPress: () => {
-          this.props.deleteBusinessAccount(this.props.business.businessid);
-        }
-      }
-    ];
-
+    let BusinessIcon = this.businessCategory.icon;
     return (
       <Swipeout
-        disabled
         autoClose={true}
         backgroundColor={"#0000"}
-        right={swipeoutBtns}
+        right={this.swipeoutBtns}
       >
         <TouchableOpacity
           onPress={() => {
@@ -75,22 +82,14 @@ class BusinessCard extends Component {
           ]}
         >
           <View
-            style={{
-              backgroundColor: changeState.color,
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
+            style={[
+              styles.businessIconStyle,
+              {
+                backgroundColor: changeState.color
+              }
+            ]}
           >
-            <BusinessIcon
-              width={30}
-              height={30}
-              // type="MaterialCommunityIcons"
-              // name="web"
-              // style={[styles.icon, { color: changeState.color }]}
-            />
+            <BusinessIcon width={30} height={30} />
           </View>
           <View style={styles.textcontainer}>
             <Text
@@ -107,7 +106,7 @@ class BusinessCard extends Component {
               {this.props.business.businessname}
             </Text>
             <Text style={[styles.subtext, { color: changeState.color }]}>
-              {businessCategory && businessCategory.label}
+              {this.businessCategory && this.businessCategory.label}
             </Text>
           </View>
         </TouchableOpacity>
@@ -126,7 +125,4 @@ const mapDispatchToProps = dispatch => ({
   deleteBusinessAccount: business_id =>
     dispatch(actionCreators.deleteBusinessAccount(business_id))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BusinessCard);
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessCard);

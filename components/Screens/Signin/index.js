@@ -6,7 +6,7 @@ import {
   Keyboard,
   TouchableOpacity
 } from "react-native";
-import { Button, Text, Item, Input, Container } from "native-base";
+import { Button, Text, Item, Input, Container, Content } from "native-base";
 import {
   heightPercentageToDP,
   widthPercentageToDP
@@ -38,6 +38,7 @@ import PasswordIcon from "../../../assets/SVGs/PasswordOutline";
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 import { colors } from "../../GradiantColors/colors";
+import Loading from "../../MiniComponents/LoadingScreen";
 
 class MainForm extends Component {
   static navigationOptions = {
@@ -98,110 +99,119 @@ class MainForm extends Component {
             accessible={false}
           >
             <View style={[styles.touchableViewContainer]}>
-              <View>
-                <Background
-                  style={styles.background}
-                  width={widthPercentageToDP(90)}
-                  height={heightPercentageToDP(65)}
-                />
-              </View>
-              <View style={styles.logoContainer}>
-                <Logo
-                  style={styles.logo}
-                  width={heightPercentageToDP(12)}
-                  height={heightPercentageToDP(12)}
-                />
-                <Text style={styles.logoText}>Optimize</Text>
-              </View>
-              <KeyboardShift style={styles.keyboardShiftContainer}>
-                {() => (
-                  <View style={styles.keyboardShiftContainer}>
-                    {/* <Text style={styles.text}>Sign In</Text> */}
+              <Background
+                style={[globalStyles.background]}
+                width={widthPercentageToDP(90)}
+                height={heightPercentageToDP(65)}
+              />
+              {this.props.checkingForToken ? (
+                <Loading dash={true}></Loading>
+              ) : (
+                <>
+                  <View style={styles.logoContainer}>
+                    <Logo
+                      style={styles.logo}
+                      width={heightPercentageToDP(12)}
+                      height={heightPercentageToDP(12)}
+                    />
+                    <Text style={styles.logoText}>Optimize</Text>
+                  </View>
 
-                    <View style={styles.mainView}>
-                      <Item
-                        rounded
-                        style={[
-                          styles.input,
-                          this.state.emailError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.transparentBorderColor
-                        ]}
-                      >
-                        <UserProfile style={styles.inputIcon} fill={"#fff"} />
-                        <Input
-                          placeholderTextColor="#fff"
-                          autoCorrect={false}
-                          autoCapitalize="none"
-                          style={styles.inputText}
-                          onChangeText={value => {
-                            this.setState({
-                              email: value.trim()
-                            });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              emailError: validateWrapper(
-                                "email",
-                                this.state.email
-                              )
-                            });
-                          }}
-                          placeholder={translate("Email")}
-                        />
-                      </Item>
+                  <KeyboardShift style={styles.keyboardShiftContainer}>
+                    {() => (
+                      <View style={styles.keyboardShiftContainer}>
+                        {/* <Text style={styles.text}>Sign In</Text> */}
 
-                      <Item
-                        rounded
-                        style={[
-                          styles.input,
-                          this.state.passwordError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.transparentBorderColor
-                        ]}
-                      >
-                        <PasswordIcon style={styles.inputIcon} fill={"#FFF"} />
-                        <Input
-                          placeholderTextColor="#fff"
-                          secureTextEntry={true}
-                          autoCorrect={false}
-                          textContentType="password"
-                          autoCapitalize="none"
-                          style={styles.inputText}
-                          onChangeText={value => {
-                            this.setState({
-                              password: value
-                            });
-                          }}
-                          onBlur={() => {
-                            this.setState({
-                              passwordError: validateWrapper(
-                                "password",
-                                this.state.password
-                              )
-                            });
-                          }}
-                          placeholder={translate("Password")}
-                        />
-                      </Item>
-                      {this.props.loading ? (
-                        <ForwardLoading
-                          mainViewStyle={{
-                            width: widthPercentageToDP(9),
-                            height: heightPercentageToDP(9)
-                          }}
-                          bottom={5}
-                          style={{
-                            width: widthPercentageToDP(7),
-                            height: heightPercentageToDP(7)
-                          }}
-                        />
-                      ) : (
-                        <LowerButton
-                          function={() => this._handleSubmission()}
-                        />
-                      )}
-                      {/* <Button
+                        <View style={styles.mainView}>
+                          <Item
+                            rounded
+                            style={[
+                              styles.input,
+                              this.state.emailError
+                                ? globalStyles.redBorderColor
+                                : globalStyles.transparentBorderColor
+                            ]}
+                          >
+                            <UserProfile
+                              style={styles.inputIcon}
+                              fill={"#fff"}
+                            />
+                            <Input
+                              placeholderTextColor="#fff"
+                              autoCorrect={false}
+                              autoCapitalize="none"
+                              style={styles.inputText}
+                              onChangeText={value => {
+                                this.setState({
+                                  email: value.trim()
+                                });
+                              }}
+                              onBlur={() => {
+                                this.setState({
+                                  emailError: validateWrapper(
+                                    "email",
+                                    this.state.email
+                                  )
+                                });
+                              }}
+                              placeholder={translate("Email")}
+                            />
+                          </Item>
+
+                          <Item
+                            rounded
+                            style={[
+                              styles.input,
+                              this.state.passwordError
+                                ? globalStyles.redBorderColor
+                                : globalStyles.transparentBorderColor
+                            ]}
+                          >
+                            <PasswordIcon
+                              style={styles.inputIcon}
+                              fill={"#FFF"}
+                            />
+                            <Input
+                              placeholderTextColor="#fff"
+                              secureTextEntry={true}
+                              autoCorrect={false}
+                              textContentType="password"
+                              autoCapitalize="none"
+                              style={styles.inputText}
+                              onChangeText={value => {
+                                this.setState({
+                                  password: value
+                                });
+                              }}
+                              onBlur={() => {
+                                this.setState({
+                                  passwordError: validateWrapper(
+                                    "password",
+                                    this.state.password
+                                  )
+                                });
+                              }}
+                              placeholder={translate("Password")}
+                            />
+                          </Item>
+                          {this.props.loading ? (
+                            <ForwardLoading
+                              mainViewStyle={{
+                                width: widthPercentageToDP(9),
+                                height: heightPercentageToDP(9)
+                              }}
+                              bottom={5}
+                              style={{
+                                width: widthPercentageToDP(7),
+                                height: heightPercentageToDP(7)
+                              }}
+                            />
+                          ) : (
+                            <LowerButton
+                              function={() => this._handleSubmission()}
+                            />
+                          )}
+                          {/* <Button
                         block
                         style={styles.button}
                         onPress={() => {
@@ -212,34 +222,35 @@ class MainForm extends Component {
                           {translate("Sign in")}
                         </Text>
                       </Button> */}
-                      <Text
-                        onPress={() => {
-                          Segment.track("Forgot Password Button");
-                          this.props.navigation.push("ForgotPassword");
-                        }}
-                        style={[styles.link, styles.forgotPasswordLink]}
-                      >
-                        {translate("Forgot Password?")}
+                          <Text
+                            onPress={() => {
+                              Segment.track("Forgot Password Button");
+                              this.props.navigation.push("ForgotPassword");
+                            }}
+                            style={[styles.link, styles.forgotPasswordLink]}
+                          >
+                            {translate("Forgot Password?")}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </KeyboardShift>
+                  <View style={styles.bottomInviteViewContainer}>
+                    <Text style={[styles.link, styles.dontHaveAccountText]}>
+                      {translate("Don’t Have an Account?")}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.push("MainForm");
+                      }}
+                    >
+                      <Text style={styles.createOneText}>
+                        {translate("Create One!")}
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   </View>
-                )}
-              </KeyboardShift>
-
-              <View style={styles.bottomInviteViewContainer}>
-                <Text style={[styles.link, styles.dontHaveAccountText]}>
-                  {translate("Don’t Have an Account?")}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.push("MainForm");
-                  }}
-                >
-                  <Text style={styles.createOneText}>
-                    {translate("Create One!")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                </>
+              )}
             </View>
           </TouchableWithoutFeedback>
         </Container>
@@ -249,7 +260,8 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.auth.loading
+  loading: state.auth.loading,
+  checkingForToken: state.login.checkingForToken
 });
 
 const mapDispatchToProps = dispatch => ({

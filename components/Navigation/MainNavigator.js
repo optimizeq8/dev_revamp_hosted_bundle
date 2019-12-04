@@ -1,5 +1,3 @@
-import React from "react";
-import { Platform } from "react-native";
 import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import Menu from "../Screens/Menu";
@@ -36,11 +34,13 @@ import MessengerLoading from "../Screens/Messenger/LoadingChatScreen";
 import SelectInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/SelectInstagramPost";
 import SelectedInstagramProductsList from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/ProductList";
 import EditProductDetailInstagramPost from "../Screens/CampaignCreate/SwipeUpChoice/WhatsappLead/EditProductDetail";
-
+import ManageTeam from "../Screens/ManageTeam";
+import AddOrEditTeamMember from "../Screens/ManageTeam/AddOrEditTeamMember";
+import TeamInvite from "../Screens/TeamInvite";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
-    Dashboard: Dashboard,
+    Dashboard: { screen: Dashboard, path: "dashboard/" },
     SnapchatCreateAdAcc: SnapchatCreateAdAcc,
     CreateBusinessAccount: CreateBusinessAccount,
     CampaignDetails: CampaignDetails,
@@ -81,10 +81,10 @@ export default FluidNavigator(
     WebView: WebView,
     SelectInstagramPost: SelectInstagramPost,
     SelectedInstagramProductsList: SelectedInstagramProductsList,
-    EditProductDetailInstagramPost: EditProductDetailInstagramPost
-    //     PaymentForm: {
-    //       screen: PaymentForm
-    //     }
+    EditProductDetailInstagramPost: EditProductDetailInstagramPost,
+    ManageTeam: ManageTeam,
+    AddOrEditTeamMember: AddOrEditTeamMember,
+    TeamInvite: { screen: TeamInvite, path: "team_invite/" }
   },
 
   {
