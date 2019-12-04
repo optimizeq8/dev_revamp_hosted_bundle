@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, Modal, Platform } from "react-native";
+import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
 import WalletIcon from "../../../assets/SVGs/Wallet";
 import { connect } from "react-redux";
@@ -10,6 +11,7 @@ import GlobalStyles from "../../../GlobalStyles";
 import { Button } from "native-base";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import segmentEventTrack from "../../segmentEventTrack";
 class UseWallet extends Component {
   //   state = { showModal: false };
 
@@ -21,8 +23,20 @@ class UseWallet extends Component {
   }
   _handleConfirm = () => {
     if (this.props.campaign_balance_amount === "0") {
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: "WALLET"
+      });
       this.props.checkoutwithWallet(this.props.campaign_id);
     } else {
+      Segment.trackWithProperties("Pay remaining balance through KNET", {
+        step: 6,
+        business_name: this.props.mainBusiness.businessname,
+        checkout_id: this.props.campaign_id,
+        paymentMethod: "KNET"
+      });
       this.props._changeToKnet();
     }
     this.props.setShowWalletModal(false);
@@ -117,6 +131,9 @@ class UseWallet extends Component {
                   </Button>
                   <Button
                     onPress={() => {
+                      segmentEventTrack(
+                        "Button Clicked to CANCEL payment throught wallet"
+                      );
                       this._handleRemoveAmount();
                       this.props.setShowWalletModal(false);
                     }}
@@ -141,7 +158,8 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
   walletUsed: state.transA.walletUsed,
-  campaign_id: state.campaignC.campaign_id
+  campaign_id: state.campaignC.campaign_id,
+  mainBusiness: state.account.mainBusiness
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -150,7 +168,4 @@ const mapDispatchToProps = dispatch => ({
   removeWalletAmount: info => dispatch(actionCreators.removeWalletAmount(info)),
   checkoutwithWallet: info => dispatch(actionCreators.checkoutwithWallet(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UseWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(UseWallet);

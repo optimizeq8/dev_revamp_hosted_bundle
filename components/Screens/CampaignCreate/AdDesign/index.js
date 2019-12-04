@@ -734,10 +734,10 @@ class AdDesign extends Component {
       this.state.swipeUpError
     ) {
       segmentEventTrack("Ad Design Submit Error", {
-        brand_nameError: this.state.brand_nameError,
-        headlineError: this.state.headlineError,
-        mediaError: this.state.mediaError,
-        swipeUpError: this.state.swipeUpError
+        campaign_brand_name_error: this.state.brand_nameError,
+        cmapign_headline_error: this.state.headlineError,
+        campaign_media_error: this.state.mediaError,
+        campaign_swipeUp_error: this.state.swipeUpError
       });
     }
     if (

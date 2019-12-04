@@ -445,7 +445,7 @@ class AdDetails extends Component {
         rIds = this.state.regions.map(r => r.id);
         replace.targeting.geos[0].region_id = rIds;
         segmentEventTrack(`Selected Regions`, {
-          campaign_region_names: rNamesSelected
+          campaign_region_names: rNamesSelected.join(", ")
         });
         this.setState({
           regionNames: rNamesSelected,
@@ -472,7 +472,7 @@ class AdDetails extends Component {
         rNamesSelected.push(regionName);
       }
       segmentEventTrack(`Selected Regions`, {
-        campaign_region_names: rNamesSelected
+        campaign_region_names: rNamesSelected.join(", ")
       });
       this.setState({
         campaignInfo: replace,
