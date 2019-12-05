@@ -98,10 +98,10 @@ class CampaignCard extends Component {
               </Text>
             </View>
             {this.review_status.includes("APPROVED") &&
-            (new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
+            new Date(campaign.start_time).setHours(0, 0, 0, 0) <=
               new Date().setHours(0, 0, 0, 0) &&
-              new Date(campaign.end_time) >=
-                new Date()) ? null : campaign.campaign_end === "1" ||
+            new Date(campaign.end_time) >=
+              new Date() ? null : campaign.campaign_end === "1" ||
               new Date(campaign.end_time) < new Date() ? (
               <View
                 style={[styles.adStatus, GlobalStyles.orangeBackgroundColor]}
@@ -262,7 +262,4 @@ const mapDispatchToProps = dispatch => ({
   getCampaignDetails: (id, naviagtion) =>
     dispatch(actionCreators.getCampaignDetails(id, naviagtion))
 });
-export default connect(
-  null,
-  mapDispatchToProps
-)(CampaignCard);
+export default connect(null, mapDispatchToProps)(CampaignCard);

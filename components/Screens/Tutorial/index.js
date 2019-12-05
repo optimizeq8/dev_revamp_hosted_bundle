@@ -22,6 +22,8 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
+import Loading from "../../MiniComponents/LoadingScreen";
+import globalStyles from "../../../GlobalStyles";
 
 class Tutorial extends Component {
   static navigationOptions = {
@@ -102,12 +104,13 @@ class Tutorial extends Component {
     };
     if (isNull(this.state.tutorialOpened)) {
       return (
-        <Container style={styles.imageView}>
-          <Image
-            style={{ height: "100%", width: "100%" }}
-            source={require("../../../assets/splash.png")}
-            resizeMode="cover"
+        <Container style={[styles.container, { top: "6%" }]}>
+          <Background
+            style={[globalStyles.background]}
+            width={widthPercentageToDP(90)}
+            height={heightPercentageToDP(65)}
           />
+          <Loading dash={true}></Loading>
         </Container>
       );
     } else if (this.state.tutorialOpened) {
@@ -136,7 +139,7 @@ class Tutorial extends Component {
           />
           <Container style={styles.container}>
             <Background
-              style={[styles.background]}
+              style={[globalStyles.background]}
               width={widthPercentageToDP(85)}
               height={heightPercentageToDP(61)}
             />

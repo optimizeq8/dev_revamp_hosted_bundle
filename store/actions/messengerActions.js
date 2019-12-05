@@ -35,14 +35,16 @@ export const connect_user_to_intercom = user_id => {
             user_id: user.userid,
             email: user.email,
             phone: user.mobile,
-            name: `${user.firstname} ${user.lastname}`,
-            companies: [
+            name: `${user.firstname} ${user.lastname}`
+          };
+          if (bus.hasOwnProperty("businessid")) {
+            body["companies"] = [
               {
                 company_id: bus.businessid,
                 name: bus.businessname
               }
-            ]
-          };
+            ];
+          }
           dispatch(create_user_on_intercom(body));
         } else {
           // console.log("found user");
@@ -285,8 +287,6 @@ export const update_conversatusion_read_status = () => {
         return res.data;
       })
       .then(data => {
-        // console.log("data", data);
-
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
           payload: true

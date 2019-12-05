@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "doc": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
@@ -35,6 +36,7 @@
     "lodash": "^4.17.15",
     "lottie-react-native": "~2.6.1",
     "native-base": "^2.13.8",
+    "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-animatable": "^1.3.3",

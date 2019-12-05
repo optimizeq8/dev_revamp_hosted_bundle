@@ -2,17 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
-import store from "../index";
-import Axios from "axios";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
 
 export const getTransactions = () => {
   return dispatch => {

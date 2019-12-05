@@ -1,20 +1,12 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { showMessage } from "react-native-flash-message";
 import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
-import store, { persistor } from "../index";
+import { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
 import { setAuthToken } from "./genericActions";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
+import { errorMessageHandler } from "./ErrorActions";
+import NavigationService from "../../NavigationService";
 
 export const changeBusiness = business => {
   return dispatch => {
@@ -26,7 +18,7 @@ export const changeBusiness = business => {
     persistor.purge();
     return dispatch({
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-      payload: { business: business }
+      payload: { ...business }
     });
   };
 };
@@ -34,7 +26,8 @@ export const changeBusiness = business => {
 export const getBusinessAccounts = () => {
   return (dispatch, getState) => {
     dispatch({
-      type: actionTypes.SET_LOADING_BUSINESS_LIST
+      type: actionTypes.SET_LOADING_BUSINESS_LIST,
+      payload: true
     });
     createBaseUrl()
       .get(`businessaccounts`)
@@ -49,7 +42,11 @@ export const getBusinessAccounts = () => {
         AsyncStorage.getItem("indexOfMainBusiness").then(value => {
           return dispatch({
             type: actionTypes.SET_BUSINESS_ACCOUNTS,
-            payload: { data: data, index: value ? value : 0 }
+            payload: {
+              data: data,
+              index: value ? value : 0,
+              userid: getState().auth.userInfo.userid
+            }
           });
         });
         return;
@@ -57,12 +54,8 @@ export const getBusinessAccounts = () => {
 
       .catch(err => {
         // console.log("getBusinessAccountsError", err.message || err.response);
-        showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
+
         return dispatch({
           type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
         });
@@ -71,7 +64,7 @@ export const getBusinessAccounts = () => {
 };
 
 export const createBusinessAccount = (account, navigation) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
       payload: true
@@ -91,23 +84,21 @@ export const createBusinessAccount = (account, navigation) => {
         if (data.success) {
           dispatch({
             type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
-            payload: { business: data.data }
+            payload: { ...data.data }
           });
           // data.success && navigation.navigate("Dashboard");
           return dispatch({
             type: actionTypes.ADD_BUSINESS_ACCOUNT,
-            payload: { data: data.data, success: true }
+            payload: {
+              ...data.data
+            }
           });
         }
       })
       .catch(err => {
         // console.log("error creating new bsn", err.message || err.response);
-        showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
+
         dispatch({
           type: actionTypes.ERROR_ADD_BUSINESS_ACCOUNT,
           payload: {
@@ -117,69 +108,6 @@ export const createBusinessAccount = (account, navigation) => {
       });
   };
 };
-
-// export const changePassword = (currentPass, newPass, navigation, userEmail) => {
-//   axios.defaults.headers.common = {
-//     ...axios.defaults.headers.common,
-//     "Content-Type": "application/x-www-form-urlencoded"
-//   };
-//   return dispatch => {
-//     dispatch({
-//       type: actionTypes.CHANGE_PASSWORD,
-//       payload: { success: false }
-//     });
-//     instance
-//       .put("changePassword", {
-//         current_password: currentPass,
-//         password: newPass
-//       })
-//       .then(response => {
-//         showMessage({
-//           message: response.data.message,
-//           type: response.data.success ? "success" : "warning",
-//           position: "top"
-//         });
-//         const temPwd = navigation.getParam("temp_pwd", false);
-//         // if tempPwd change relogin for setting new auth token
-//         if (temPwd && response.data.success) {
-//           dispatch(
-//             login(
-//               {
-//                 email: userEmail,
-//                 emailError: null,
-//                 password: newPass,
-//                 passwordError: ""
-//               },
-//               navigation
-//             )
-//           );
-//         } else if (response.data.success) {
-//           navigation.goBack();
-//         }
-//         return dispatch({
-//           type: actionTypes.CHANGE_PASSWORD,
-//           payload: response.data
-//         });
-//       })
-//       .catch(err => {
-//         console.log("changePasswordError", err.message || err.response);
-
-//         showMessage({
-//           message: "Oops! Something went wrong. Please try again.",
-//           description: err.message || err.response,
-//           type: "danger",
-//           position: "top"
-//         });
-
-//         return dispatch({
-//           type: actionTypes.ERROR_CHANGE_PASSWORD,
-//           payload: {
-//             success: false
-//           }
-//         });
-//       });
-//   };
-// };
 
 export const addressForm = (address, navigation, addressId) => {
   return async (dispatch, getState) => {
@@ -236,12 +164,8 @@ export const addressForm = (address, navigation, addressId) => {
       }
     } catch (error) {
       // console.log("Error while put/post address form", error.message);
-      showMessage({
-        message: "Oops! Something went wrong. Please try again.",
-        description: error.message || error.response,
-        type: "danger",
-        position: "top"
-      });
+      errorMessageHandler(err);
+
       return dispatch({
         type: actionTypes.ERROR_ADD_ADDRESS
       });
@@ -272,12 +196,8 @@ export const getAddressForm = () => {
       })
       .catch(err => {
         // console.log("Get Billing Address Error: ", err.message || err.response);
-        showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
+
         return dispatch({
           type: actionTypes.ERROR_GET_BILLING_ADDRESS,
           payload: {}
@@ -326,12 +246,8 @@ export const create_snapchat_ad_account = (id, navigation) => {
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
-        showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
+
         return dispatch({
           type: actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT,
           payload: {
@@ -389,12 +305,8 @@ export const updateUserInfo = (info, navigation) => {
         //   "create_snapchat_ad_account_ERROR",
         //   err.message || err.response
         // );
-        showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
+
         dispatch({
           type: actionTypes.SET_LOADING_ACCOUNT_UPDATE,
           payload: false
@@ -403,13 +315,19 @@ export const updateUserInfo = (info, navigation) => {
   };
 };
 
+/**
+ * Sends a request to delete a business from a user's account
+ *
+ * @method
+ * @param {String} business_id the id of the business that will be deleted
+ * @returns {Function} the function that calls the axios request 'deleteBusiness/${business_id}' and redux actions of
+ * (DELETE_BUSINESS_LOADING,DELETE_BUSINESS_ACCOUNT)
+ */
 export const deleteBusinessAccount = business_id => {
   return dispatch => {
     dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: true });
     createBaseUrl()
-      .delete(
-        `https://optimizekwtestingserver.com/optimize/public/deleteBusiness/${business_id}`
-      )
+      .delete(`deleteBusiness/${business_id}`)
       .then(res => res.data)
       .then(data => {
         if (data.success) {
@@ -423,12 +341,39 @@ export const deleteBusinessAccount = business_id => {
       .catch(err => {
         dispatch({ type: actionTypes.DELETE_BUSINESS_LOADING, payload: false });
 
+        errorMessageHandler(err);
+      });
+  };
+};
+/**
+ * Sends a request to send an invite to a user to be added to a team
+ * The Agecny account admins send: first and last name, email and membership type:
+ * Admin, campaign maneger, Client
+ *
+ *
+ * @method
+ * @param {Object} info the object containing the information of the invited member
+ * @param {String} info.firstname
+ * @param {String} info.lastname
+ * @param {String} info.email
+ * @param {String} info.user_role
+ * @param {String} info.businessid
+ * @returns {Function} the function the calls the axios request 'memberaccount'
+ */
+
+export const inviteTeamMember = info => {
+  return dispatch => {
+    createBaseUrl()
+      .post("memberaccount", info)
+      .then(res => res.data)
+      .then(data =>
         showMessage({
-          message: "Oops! Something went wrong. Please try again.",
-          description: err.message || err.response,
-          type: "danger",
-          position: "top"
-        });
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        })
+      )
+      .catch(err => {
+        errorMessageHandler(err);
       });
   };
 };
@@ -501,3 +446,256 @@ export const updateBusinessInfo = (userid, info, navigation) => {
       });
   };
 };
+
+/**
+ * After a user that was invited opens the app through the deep link
+ * The app receives a temporary ID that is sent back to the backend to get
+ * the info that was inputted by the Agency account admins
+ *
+ * @method
+ * @param {String} member_id the temporary id of the invited user
+ * @returns {Function} the function that calls the axios request 'memberaccount/${member_id}' and redux action of (SET_TEMP_USERINFO)
+ */
+
+export const getTempUserInfo = member_id => {
+  return dispatch => {
+    createBaseUrl()
+      .get(`memberaccount/${member_id}`)
+      .then(res => res.data)
+      .then(data => {
+        dispatch({
+          type: actionTypes.SET_TEMP_USERINFO,
+          payload: data.data
+        });
+      })
+      .catch(err => {
+        //console.log(err);
+        errorMessageHandler(err);
+      });
+  };
+};
+
+/**
+ * When a user that's already registered is invited, they receive an email with a deep link that opens
+ * the app to the dashboard and a modal pops up to accept or decline the invite. This is where to send to
+ * the  backend if they accepted or not with their tempID, status
+ *
+ * @method
+ * @param {Int} status the status of the invite, 0 for declining or 1 for accepting
+ * @param {Function} toggleInviteModal a function the closes the invite modal after submitting the answer
+ * @param {Function} handleDoneWithInvite a function that resets the navigation params and state of the dashboard
+ *                                         so that componentDidUpdate doesn't keep showing the InviteModal
+ * @returns {Function} the function that calls the axios request 'acceptInvitation', dispatches getBusinessAccounts
+ *                      and redux actions of (SET_TEAMINV_LOADING)
+ */
+
+export const handleTeamInvite = status => {
+  return (dispatch, getState) => {
+    dispatch({ type: actionTypes.SET_TEAMINV_LOADING, payload: true });
+    createBaseUrl()
+      .post(`acceptInvitation`, { ...status })
+      .then(res => res.data)
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        });
+        if (data.success) {
+          dispatch(getBusinessAccounts());
+        }
+        NavigationService.navigate("Dashboard");
+        dispatch(resetBusinessInvitee());
+        dispatch({
+          type: actionTypes.SET_TEAMINV_LOADING,
+          payload: false
+        });
+      })
+      .catch(err => {
+        // console.log(err);
+        errorMessageHandler(err);
+
+        dispatch({
+          type: actionTypes.SET_TEAMINV_LOADING,
+          payload: false
+        });
+      });
+  };
+};
+
+/**
+ * Gets the list of team members for a business
+ *
+ * @method
+ * @param {String} business_id the id of the business to retrieve its members
+ * @returns {Function} the function that calls the axios request 'businessMembers', and redux actions of (SET_TEAM_MEMBERS_LOADING,SET_TEAM_MEMBERS)
+ */
+export const getTeamMembers = business_id => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
+    createBaseUrl()
+      .get(`businessMembers/${business_id}`)
+      .then(res => res.data)
+      .then(data => {
+        dispatch({ type: actionTypes.SET_TEAM_MEMBERS, payload: data.data });
+      })
+      .catch(err => {
+        // console.log("getTeamMembers", err);
+        dispatch({
+          type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+          payload: false
+        });
+        errorMessageHandler(err);
+      });
+  };
+};
+
+/**
+ * For updating members for 1 business at a time
+ *
+ * @method
+ * @param {Object} memberInfo an object containing the info of the updated team member.
+ * @param {String} userid
+ * @param {String} userrole 1 for admin,2 for campaign manager, 3 for client
+ * @param {String} businessid
+ * @returns {Function} the function that calls the axios request 'userRole', and redux actions of (SET_TEAM_MEMBERS_LOADING,SET_UPDATED_TEAM_MEMBER)
+ */
+
+export const updateTeamMembers = memberInfo => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
+    createBaseUrl()
+      .put(`userRole`, { ...memberInfo })
+      .then(res => res.data)
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.SET_UPDATED_TEAM_MEMBER,
+            payload: memberInfo
+          });
+        } else
+          dispatch({
+            type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+            payload: false
+          });
+      })
+      .catch(err => {
+        // console.log("updateTeamMembers", err)
+        errorMessageHandler(err);
+
+        dispatch({
+          type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+          payload: false
+        });
+      });
+  };
+};
+
+/**
+ *  Deletes the team member from the business
+ *
+ * @method
+ * @param {String} memberId the Id of the member to delete
+ * @param {String} businessid the id of the member's business
+ * @param {Function} navigation the navigation function to go back to the member's list
+ * @returns {Function} the function that calls the axios request '/businessMembers/${memberId}/${businessid}',
+ *                      dispatches getTeamMembers() and redux actions of (SET_TEAM_MEMBERS_LOADING,DELETE_TEAM_MEMBER)
+ */
+export const deleteTeamMembers = (memberId, businessid, navigation) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
+    createBaseUrl()
+      .delete(`/businessMembers/${memberId}/${businessid}`)
+      .then(res => res.data)
+      .then(data => {
+        showMessage({
+          message: data.message,
+          type: data.success ? "success" : "warning"
+        });
+        if (data.success) {
+          dispatch({
+            type: actionTypes.DELETE_TEAM_MEMBER,
+            payload: { data }
+          });
+          dispatch(getTeamMembers(businessid));
+        } else
+          dispatch({
+            type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+            payload: false
+          });
+      })
+      .then(() => {
+        navigation.goBack();
+      })
+      .catch(err => {
+        // console.log("deleteTeamMembers", err);
+        errorMessageHandler(err);
+
+        dispatch({
+          type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+          payload: false
+        });
+      });
+  };
+};
+
+/**
+ * Saves the necessariy info for handling team invites
+ * @param {Object} inviteeInfo the info of the business that the user was invited to
+ * @param {String} inviteeInfo.businessInvitee the name of the business
+ * @param {String} inviteeInfo.invitedEmail the email of the invited account
+ * @param {String} inviteeInfo.tempInviteId the temp id to send back to the backend
+ */
+export const saveBusinessInvitee = inviteeInfo => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.SAVE_INVITEE_INFO,
+      payload: inviteeInfo
+    });
+  };
+};
+
+export const resetBusinessInvitee = () => {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.RESET_INVITEE_INFO
+    });
+  };
+};
+
+//For updating members for multiple businesses at the same time only from the main business of the account
+// export const updateTeamMemberForBusinesses = memberInfo => {
+//   return dispatch => {
+//     dispatch({ type: actionTypes.SET_TEAM_MEMBERS_LOADING, payload: true });
+//     createBaseUrl()
+//       .put(`userRoleMultiple`, { ...memberInfo })
+//       .then(res => res.data)
+//       .then(data => {
+//         console.log(data);
+//         showMessage({
+//           message: data.message,
+//           type: data.success ? "success" : "warning"
+//         });
+//         if (data.success) {
+//           dispatch({
+//             type: actionTypes.SET_UPDATED_TEAM_MEMBER,
+//             payload: memberInfo
+//           });
+//         } else
+//           dispatch({
+//             type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+//             payload: false
+//           });
+//       })
+//       .catch(err => {
+//         console.log("updateTeamMembers", err);
+//         dispatch({
+//           type: actionTypes.SET_TEAM_MEMBERS_LOADING,
+//           payload: false
+//         });
+//       });
+//   };
+// };

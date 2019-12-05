@@ -70,6 +70,7 @@ export default class PhoneNoField extends Component {
             disabled={this.props.disabled}
             textStyle={{
               fontSize: 20,
+              height: 25,
               color: "#4b4b4b",
               fontFamily: "montserrat-regular-english",
               textAlign: I18nManager.isRTL ? "right" : "left",

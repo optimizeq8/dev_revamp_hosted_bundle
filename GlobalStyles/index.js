@@ -133,6 +133,12 @@ const globalStyles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  background: {
+    position: "absolute",
+    opacity: 0.4,
+    top: "25%",
+    alignSelf: "center"
   }
 });
 export default globalStyles;

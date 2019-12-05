@@ -55,6 +55,8 @@ import {
 } from "react-native-responsive-screen";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 import { persistor } from "../../../../store";
+import InputField from "../../../MiniComponents/InputField";
+import ModalField from "../../../MiniComponents/ModalField";
 
 class AdObjective extends Component {
   static navigationOptions = {
@@ -81,7 +83,8 @@ class AdObjective extends Component {
       nameError: "",
       objectiveError: "",
       start_timeError: "",
-      end_timeError: ""
+      end_timeError: "",
+      incomplete: false
     };
   }
   componentWillUnmount() {
@@ -185,7 +188,6 @@ class AdObjective extends Component {
         modalVisible: false,
         objectiveLabel: "Select Objective",
         inputN: false,
-        objectives: ObjectiveData[this.props.adType],
         nameError: "",
         objectiveError: "",
         start_timeError: "",
@@ -267,20 +269,10 @@ class AdObjective extends Component {
   };
 
   _handleSubmission = async () => {
-    const nameError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.name
-    );
-    const objectiveError = validateWrapper(
-      "mandatory",
-      this.state.campaignInfo.objective
-    );
-
+    let { nameError, objectiveError } = this.state;
     let dateErrors = this.dateField.getErrors();
 
     this.setState({
-      nameError,
-      objectiveError,
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
@@ -353,21 +345,38 @@ class AdObjective extends Component {
         ...this.state.campaignInfo
       };
 
-      if (this.props.campaign_id !== "") {
-        this.props.ad_objective(
-          { ...info, campaign_id: this.props.campaign_id },
-          this.props.navigation
-        );
-      } else
-        this.props.ad_objective(
-          { ...info, campaign_id: 0 },
-          this.props.navigation
-        );
+      this.props.ad_objective(
+        {
+          ...info,
+          campaign_id:
+            this.props.campaign_id !== "" ? this.props.campaign_id : 0
+        },
+        this.props.navigation
+      );
+    } else {
+      this.setState({ incomplete: true });
     }
   };
 
   handleClosingContinueModal = () => {
     this.setState({ closedContinueModal: true });
+  };
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    this.setState({ campaignInfo: { ...this.state.campaignInfo, ...state } });
+    this.props.save_campaign_info({ name: value });
+  };
+
+  /* gets sent a string of stateName +'Error'
+   and validateWrapper object from input feilds 
+  and overwrites what's in the state  to check when submitting*/
+  getValidInfo = (stateError, validObj) => {
+    let state = {};
+    state[stateError] = validObj;
+    this.setState({
+      ...state
+    });
   };
 
   render() {
@@ -437,86 +446,22 @@ class AdObjective extends Component {
               scrollEnabled={true}
               style={styles.scrollViewStyle}
             >
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ nameError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.nameError ? "" : "shake"}
-              >
-                <View
-                  style={[
-                    {
-                      borderTopLeftRadius: 150,
-                      borderTopRightRadius: 150,
-                      borderBottomLeftRadius: 20,
-                      borderBottomRightRadius: 20,
-                      paddingTop: 10,
-                      width: 150,
-                      alignSelf: "center",
-                      backgroundColor: "rgba(0,0,0,0.2)",
-                      height: 15,
-                      zIndex: 1
-                    }
-                  ]}
-                >
-                  <Text
-                    uppercase
-                    style={[
-                      styles.inputLabel,
-                      this.state.inputN
-                        ? [GlobalStyles.orangeTextColor]
-                        : GlobalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("Ad Name")}
-                  </Text>
-                </View>
-                <Item style={[styles.input1]}>
-                  <Input
-                    placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
-                    value={this.state.campaignInfo.name}
-                    style={[styles.inputText]}
-                    autoCorrect={false}
-                    maxLength={34}
-                    autoCapitalize="none"
-                    onChangeText={value => {
-                      this.setState({
-                        campaignInfo: {
-                          ...this.state.campaignInfo,
-                          name: value
-                        }
-                      });
-                      segmentEventTrack("Fill Campaign Ad Name", {
-                        campaign_ad_name: value
-                      });
-                      this.props.save_campaign_info({ name: value });
-                    }}
-                    autoFocus={true}
-                    onFocus={() => {
-                      this.setState({ inputN: true });
-                    }}
-                    onBlur={() => {
-                      this.setState({ inputN: false });
-                      this.setState(
-                        {
-                          nameError: validateWrapper(
-                            "mandatory",
-                            this.state.campaignInfo.name
-                          )
-                        },
-                        () => {
-                          if (this.state.nameError) {
-                            segmentEventTrack("Error occured on blur Ad Name", {
-                              campaign_error_ad_name: this.state.nameError
-                            });
-                          }
-                        }
-                      );
-                    }}
-                  />
-                </Item>
-              </Animatable.View>
+
+              <InputField
+                label={"Ad Name"}
+                setValue={this.setValue}
+                getValidInfo={this.getValidInfo}
+                disabled={this.props.loading}
+                disabled={this.props.loading}
+                stateName1={"name"}
+                value={this.state.campaignInfo.name}
+                valueError1={this.state.nameError}
+                maxLength={34}
+                autoFocus={true}
+                incomplete={this.state.incomplete}
+                valueText={this.state.objectiveLabel}
+                translate={this.props.screenProps.translate}
+              />
               <Animatable.View
                 onAnimationEnd={() =>
                   this.setState({
@@ -551,32 +496,21 @@ class AdObjective extends Component {
               <Text style={styles.minBudget}>
                 {translate("Minimum of $25/day")}
               </Text>
-              <Animatable.View
-                onAnimationEnd={() => this.setState({ objectiveError: null })}
-                duration={200}
-                easing={"ease"}
-                animation={!this.state.objectiveError ? "" : "shake"}
-              >
-                <View style={[styles.objectiveTextLabel]}>
-                  <Text style={[styles.inputLabel]} uppercase>
-                    {translate("Objective")}
-                  </Text>
-                </View>
-                <Item
+              <View style={[styles.input2]}>
+                <ModalField
+                  stateName={"objective"}
+                  setModalVisible={this.setModalVisible}
+                  modal={true}
+                  label={"Objective"}
+                  valueError={this.state.objectiveError}
+                  getValidInfo={this.getValidInfo}
                   disabled={this.props.loading}
-                  // rounded
-                  style={[styles.input2]}
-                  onPress={() => {
-                    Keyboard.dismiss();
-                    this.setModalVisible(true);
-                  }}
-                >
-                  <Text style={styles.label}>
-                    {translate(this.state.objectiveLabel)}
-                  </Text>
-                  <Icon type="AntDesign" name="down" style={styles.downicon} />
-                </Item>
-              </Animatable.View>
+                  valueText={this.state.objectiveLabel}
+                  value={this.state.campaignInfo.objective}
+                  incomplete={this.state.incomplete}
+                  translate={this.props.screenProps.translate}
+                />
+              </View>
 
               {this.props.adType === "CollectionAd" && (
                 <View style={styles.collectionAdView}>

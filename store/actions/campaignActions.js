@@ -1,18 +1,11 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import store, { persistor } from "../index";
-import segmentEventTrack from "../../components/segmentEventTrack";
-import filter from "lodash/filter";
 
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import segmentEventTrack from "../../components/segmentEventTrack";
+import { persistor } from "../index";
+import createBaseUrl from "./createBaseUrl";
+import { errorMessageHandler } from "./ErrorActions";
 
 export const payment_request_credit_card = (
   campaign_id,
@@ -50,14 +43,7 @@ export const payment_request_credit_card = (
       })
       .catch(err => {
         // console.log("payment_request_cc", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
@@ -105,14 +91,7 @@ export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
       })
       .catch(err => {
         // console.log("payment_request_knet", err || err);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
           payload: {
@@ -139,14 +118,7 @@ export const snap_ad_audience_size = (info, totalReach) => {
       .then(() => dispatch(get_total_reach(totalReach)))
       .catch(err => {
         // console.log("snap_ad_audience_size", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_SNAP_AUDIENCE_SIZE
         });
@@ -169,14 +141,7 @@ export const get_total_reach = info => {
       })
       .catch(err => {
         // console.log("get_total_reach", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_SNAP_TOTAL_AUDIENCE_SIZE
         });
@@ -208,14 +173,7 @@ export const verifyBusinessUrl = weburl => {
       })
       .catch(err => {
         // console.log("verifyBusinessName", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_VERIFY_BUSINESSNAME,
           payload: {
@@ -238,29 +196,26 @@ export const ad_objective = (info, navigation) => {
         return res.data;
       })
       .then(data => {
-        dispatch({
-          type: actionTypes.SET_AD_OBJECTIVE,
-          payload: data
-        });
+        data.success
+          ? dispatch({
+              type: actionTypes.SET_AD_OBJECTIVE,
+              payload: data
+            })
+          : dispatch({
+              type: actionTypes.SET_AD_LOADING_OBJ,
+              payload: false
+            });
         return data;
       })
       .then(data => {
-        data.success
-          ? navigation.push(
-              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-            )
-          : showMessage({ message: data.message, position: "top" });
+        data.success &&
+          navigation.push(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          );
       })
       .catch(err => {
         // console.log("ad_objective", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_OBJECTIVE
         });
@@ -352,15 +307,12 @@ export const ad_design = (
       .catch(err => {
         loading(0);
         onToggleModal(false);
-        // console.log("ad_design error", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
+        dispatch({
+          type: actionTypes.SET_AD_LOADING_DESIGN,
+          payload: false
         });
+        // console.log("ad_design error", err.message || err.response);
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
         });
@@ -420,14 +372,7 @@ export const uploadStoryAdCover = (
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_COVER_DESIGN
         });
@@ -518,14 +463,7 @@ export const uploadStoryAdCard = (
           payload: { uploading: false, index: card.index }
         });
         // console.log("ad_design", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DESIGN
         });
@@ -562,14 +500,7 @@ export const deleteStoryAdCard = (story_id, card, removeCrad) => {
           payload: { deleteing: false, index: card.index }
         });
         // console.log("getVideoUploadUrl", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
       });
   };
 };
@@ -596,14 +527,7 @@ export const getVideoUploadUrl = (campaign_id, openBrowser) => {
       .then(() => openBrowser())
       .catch(err => {
         // console.log("getVideoUploadUrl", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
       });
   };
 };
@@ -629,14 +553,7 @@ export const get_interests = countryCode => {
       })
       .catch(err => {
         // console.log("get_interests", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_INTERESTS
         });
@@ -659,14 +576,7 @@ export const get_device_brands = os => {
       })
       .catch(err => {
         // console.log("get_device_brands", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_DEVICE_MAKES
         });
@@ -689,14 +599,7 @@ export const get_ios_versions = () => {
       })
       .catch(err => {
         // console.log("get_ios_versions", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_IOS_VERSIONS
         });
@@ -719,14 +622,7 @@ export const get_android_versions = () => {
       })
       .catch(err => {
         // console.log("get_android_versions", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_ANDROID_VERSIONS
         });
@@ -756,14 +652,7 @@ export const ad_details = (info, names, navigation) => {
       })
       .catch(err => {
         // console.log("ad_details", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_DETAILS
         });
@@ -791,14 +680,7 @@ export const updateCampaign = (info, businessid, navigation) => {
       })
       .catch(err => {
         // console.log("updateCampaign", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_UPDATE_CAMPAIGN_DETAILS
         });
@@ -825,14 +707,7 @@ export const updateStatus = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
   };
@@ -856,14 +731,7 @@ export const endCampaign = (info, handleToggle) => {
         });
       })
       .catch(err => {
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         // console.log(err.message || err.response);
       });
   };
@@ -888,14 +756,7 @@ export const get_languages = () => {
       })
       .catch(err => {
         // console.log("get_language", err.message || err.response);
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_LANGUAGE_LIST
         });
@@ -984,15 +845,7 @@ export const save_collection_media = (
             err.response ||
             "Something went wrong, please try again."
         });
-
-        showMessage({
-          message:
-            err.message ||
-            err.response ||
-            "Something went wrong, please try again.",
-          type: "danger",
-          position: "top"
-        });
+        errorMessageHandler(err);
         return dispatch({
           type: actionTypes.ERROR_SET_AD_COLLECTION_MEDIA
         });

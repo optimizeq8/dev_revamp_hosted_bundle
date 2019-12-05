@@ -149,7 +149,7 @@ class DateFields extends Component {
    * except this filters out the AdPaymentReview route from the stack so the budget is recalculated
    * again in AdDetails
    */
-  navigateToContinue = () => {
+  navigateToContinue = async () => {
     //Same as if using a map and a filter at the same time
     let reduceFunction = (newRoutes, route) => {
       if (route !== "AdPaymentReview") {
@@ -174,6 +174,23 @@ class DateFields extends Component {
       end_time: this.state.end_date
     }); //overwrite this.props.data with the new dates
     this.props.set_adType(this.props.oldTempAdType);
+    //Updates the campaign's date in the back end when resuming with the same data
+    this.setState({ modalVisible: false });
+    await this.props.ad_objective(
+      {
+        campaign_id: this.props.campaign_id,
+        campaign_type: this.props.adType,
+        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+        businessid: this.props.mainBusiness.businessid,
+        name: this.props.data.name,
+        objective: this.props.data.objective,
+        start_time: this.props.data.start_time,
+        end_time: this.props.data.end_time
+      },
+      //this is as if passing this.props.navigation and calling navigation.push but it does nothing
+      //because i don't want to navigate from within the store after the request is done
+      { push: () => {} }
+    );
     this.props.navigation.dispatch(resetAction);
   };
 
@@ -313,14 +330,20 @@ const mapStateToProps = state => ({
   incompleteCampaign: state.campaignC.incompleteCampaign,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
   oldTempAdType: state.campaignC.oldTempAdType,
-  oldTempData: state.campaignC.oldTempData
+  oldTempData: state.campaignC.oldTempData,
+  data: state.campaignC.data,
+  mainBusiness: state.account.mainBusiness,
+  campaign_id: state.campaignC.campaign_id,
+  adType: state.campaignC.adType
 });
 const mapDispatchToProps = dispatch => ({
   setCampaignInProgress: value =>
     dispatch(actionCreators.setCampaignInProgress(value)),
   overWriteObjectiveData: value =>
     dispatch(actionCreators.overWriteObjectiveData(value)),
-  set_adType: value => dispatch(actionCreators.set_adType(value))
+  set_adType: value => dispatch(actionCreators.set_adType(value)),
+  ad_objective: (info, navigation) =>
+    dispatch(actionCreators.ad_objective(info, navigation))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
 

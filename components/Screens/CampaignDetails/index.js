@@ -400,7 +400,8 @@ class CampaignDetails extends Component {
                   selectedCampaign &&
                   selectedCampaign.campaign_end === "0" &&
                   new Date(selectedCampaign.end_time) > new Date() &&
-                  !this.props.campaignEnded
+                  !this.props.campaignEnded &&
+                  this.props.mainBusiness.user_role !== "3"
                 }
                 titelStyle={{
                   textAlign: "left",
@@ -413,28 +414,6 @@ class CampaignDetails extends Component {
                 }}
               />
               <Card style={styles.mainCard}>
-                <RNImage
-                  style={styles.media}
-                  source={require("../../../assets/images/snap-ghost.png")}
-                  resizeMode="contain"
-                />
-                {loading ? (
-                  <View style={{ margin: 5 }}>
-                    <PlaceholderLine />
-                  </View>
-                ) : (
-                  <Text
-                    style={[
-                      styles.title,
-                      { width: 150 },
-                      !isStringArabic(selectedCampaign.name)
-                        ? { fontFamily: "montserrat-bold-english" }
-                        : {}
-                    ]}
-                  >
-                    {selectedCampaign.name}
-                  </Text>
-                )}
                 {loading ? (
                   <View style={{ margin: 5 }}>
                     <PlaceholderLine />
@@ -778,6 +757,12 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
+                      {/* Only for development testing to test rejection process */}
+                      <RejectedComp
+                        screenProps={this.props.screenProps}
+                        selectedCampaign={selectedCampaign}
+                        navigation={this.props.navigation}
+                      />
                     </Content>
                   ) : (
                     <RejectedComp
@@ -828,6 +813,7 @@ const mapStateToProps = state => ({
   loadingCampaignStats: state.dashboard.loadingCampaignStats,
   campaignError: state.dashboard.campaignError,
   languages: state.campaignC.languagesList,
+  mainBusiness: state.account.mainBusiness,
   languagesListLoading: state.campaignC.languagesListLoading,
   languagesListError: state.campaignC.languagesListError
 });

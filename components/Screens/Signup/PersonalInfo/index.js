@@ -34,7 +34,9 @@ class PersonalInfo extends Component {
         lastname: "",
         email: "",
         mobile: this.props.mobileNo,
-        password: ""
+        country_code: this.props.countryCode,
+        password: "",
+        v: this.props.tempId
       },
       inputF: false,
       inputL: false,
@@ -53,6 +55,17 @@ class PersonalInfo extends Component {
     this._passwordVarification = this._passwordVarification.bind(this);
   }
   componentDidMount() {
+    if (this.props.tempUserInfo) {
+      this.setState({
+        ...this.state,
+        userInfo: {
+          ...this.state.userInfo,
+          firstname: this.props.tempUserInfo.firstname,
+          lastname: this.props.tempUserInfo.lastname,
+          email: this.props.tempUserInfo.email
+        }
+      });
+    }
     Segment.screenWithProperties("Personal Info Registration", {
       category: "Sign Up"
     });
@@ -100,7 +113,12 @@ class PersonalInfo extends Component {
       !this.state.emailError &&
       !this.state.passwordError
     ) {
-      this.props.verifyEmail(this.state.userInfo.email, this.state.userInfo);
+      this.props.verifyEmail(
+        this.state.userInfo.email,
+        this.state.userInfo,
+        this.props.businessInvite,
+        this.props.navigation
+      );
     }
   };
   render() {
@@ -132,8 +150,8 @@ class PersonalInfo extends Component {
                       this.state.inputF
                         ? globalStyles.transparentBorderColor
                         : this.state.firstnameError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor
                     ]}
                   >
                     <UserProfile
@@ -150,6 +168,7 @@ class PersonalInfo extends Component {
                       style={styles.inputText}
                       autoCorrect={false}
                       autoCapitalize="none"
+                      value={this.state.userInfo.firstname}
                       onChangeText={value => {
                         this.setState({
                           userInfo: {
@@ -177,7 +196,8 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.firstnameError && this.state.firstnameError !== "" ? (
+                  {this.state.firstnameError &&
+                  this.state.firstnameError !== "" ? (
                     <Text style={[styles.text, styles.repasswordErrorText]}>
                       {translate(this.state.firstnameError)}
                     </Text>
@@ -204,8 +224,8 @@ class PersonalInfo extends Component {
                       this.state.inputL
                         ? globalStyles.purpleBorderColor
                         : this.state.lastnameError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor
                     ]}
                   >
                     <UserProfile
@@ -222,6 +242,7 @@ class PersonalInfo extends Component {
                       style={styles.inputText}
                       autoCorrect={false}
                       autoCapitalize="none"
+                      value={this.state.userInfo.lastname}
                       onChangeText={value =>
                         this.setState({
                           userInfo: {
@@ -249,7 +270,8 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.lastnameError && this.state.lastnameError !== "" ? (
+                  {this.state.lastnameError &&
+                  this.state.lastnameError !== "" ? (
                     <Text style={[styles.text]}>
                       {translate(this.state.lastnameError)}
                     </Text>
@@ -279,8 +301,8 @@ class PersonalInfo extends Component {
                       this.state.inputE
                         ? globalStyles.purpleBorderColor
                         : this.state.emailError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor
                     ]}
                   >
                     <EmailIcon
@@ -292,6 +314,7 @@ class PersonalInfo extends Component {
                       style={styles.inputText}
                       autoCorrect={false}
                       autoCapitalize="none"
+                      value={this.state.userInfo.email}
                       onChangeText={value =>
                         this.setState({
                           userInfo: { ...this.state.userInfo, email: value }
@@ -311,11 +334,11 @@ class PersonalInfo extends Component {
                       }}
                     />
                   </Item>
-                  {this.state.emailError && this.state.emailError !== "" && (
+                  {this.state.emailError && this.state.emailError !== "" ? (
                     <Text style={[styles.text, styles.emailErrorText]}>
                       {translate(this.state.emailError)}
                     </Text>
-                  )}
+                  ) : null}
                 </View>
 
                 <View style={styles.marginVertical}>
@@ -342,8 +365,8 @@ class PersonalInfo extends Component {
                       this.state.inputP
                         ? globalStyles.purpleBorderColor
                         : this.state.passwordError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor
                     ]}
                   >
                     <PasswordIcon
@@ -379,11 +402,11 @@ class PersonalInfo extends Component {
                     />
                   </Item>
                   {this.state.passwordError &&
-                    this.state.passwordError.includes("8 characters") ? (
-                      <Text style={[styles.text, styles.repasswordErrorText]}>
-                        {translate(this.state.passwordError)}
-                      </Text>
-                    ) : null}
+                  this.state.passwordError.includes("8 characters") ? (
+                    <Text style={[styles.text, styles.repasswordErrorText]}>
+                      {translate(this.state.passwordError)}
+                    </Text>
+                  ) : null}
                 </View>
 
                 <View style={styles.marginVertical}>
@@ -409,8 +432,8 @@ class PersonalInfo extends Component {
                       this.state.inputPR
                         ? globalStyles.purpleBorderColor
                         : this.state.repasswordError !== ""
-                          ? globalStyles.redBorderColor
-                          : globalStyles.transparentBorderColor,
+                        ? globalStyles.redBorderColor
+                        : globalStyles.transparentBorderColor,
                       styles.repeatPassword
                     ]}
                   >
@@ -437,11 +460,11 @@ class PersonalInfo extends Component {
                     />
                   </Item>
                   {this.state.repasswordError !== "" &&
-                    this.state.userInfo.password !== "" ? (
-                      <Text style={[styles.text, styles.repasswordErrorText]}>
-                        {translate(this.state.repasswordError)}
-                      </Text>
-                    ) : null}
+                  this.state.userInfo.password !== "" ? (
+                    <Text style={[styles.text, styles.repasswordErrorText]}>
+                      {translate(this.state.repasswordError)}
+                    </Text>
+                  ) : null}
                 </View>
                 <LowerButton function={() => this._handleSubmission()} />
               </View>
@@ -453,14 +476,15 @@ class PersonalInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  mobileNo: state.register.mobileNo
+  mobileNo: state.register.mobileNo,
+  countryCode: state.register.countryCode,
+  tempUserInfo: state.account.tempUserInfo
 });
 
 const mapDispatchToProps = dispatch => ({
-  verifyEmail: (email, userInfo) =>
-    dispatch(actionCreators.verifyEmail(email, userInfo))
+  verifyEmail: (email, userInfo, businessInvite, navigation) =>
+    dispatch(
+      actionCreators.verifyEmail(email, userInfo, businessInvite, navigation)
+    )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PersonalInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
