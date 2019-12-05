@@ -323,9 +323,10 @@ class AdDetails extends Component {
     });
     let names = [];
     names = selectedItems.length > 0 && selectedItems.map(item => item.name);
-    segmentEventTrack(`Selected Interests`, {
-      campaign_interests_names: names.join(", ")
-    });
+    if (names && names.length > 0)
+      segmentEventTrack(`Selected Interests`, {
+        campaign_interests_names: names.join(", ")
+      });
     this.props.save_campaign_info({
       interestNames: selectedItems
     });

@@ -203,7 +203,7 @@ class AdObjective extends Component {
       objectiveLabel: choice.label
     });
     segmentEventTrack("Selected Ad Objective", {
-      campaign_ad_objective: choice.label
+      campaign_objective: choice.label
     });
     this.props.save_campaign_info({
       objective: choice.value,
@@ -223,7 +223,7 @@ class AdObjective extends Component {
       }
     });
     segmentEventTrack("Selected Campaign Start Date", {
-      "Campaign Start Date": date
+      campaign_start_date: date
     });
     this.props.save_campaign_info({ start_time: date });
   };
@@ -311,7 +311,16 @@ class AdObjective extends Component {
       Segment.trackWithProperties("Completed Checkout Step", {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
-        campaign_objective: this.state.campaignInfo.objective
+        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_start_date: this.state.campaignInfo.start_time,
+        campaign_end_date: this.state.campaignInfo.end_time,
+        campaign_objective: this.state.campaignInfo.objective,
+        campaign_collection_ad_link_form:
+          this.props.adType === "CollectionAd"
+            ? this.state.collectionAdLinkForm === 1
+              ? "Website"
+              : "App DeepLink"
+            : null
       });
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -487,9 +496,7 @@ class AdObjective extends Component {
                           name: value
                         }
                       });
-                      segmentEventTrack("Fill Campaign Ad Name", {
-                        campaign_ad_name: value
-                      });
+
                       this.props.save_campaign_info({ name: value });
                     }}
                     autoFocus={true}
@@ -497,6 +504,9 @@ class AdObjective extends Component {
                       this.setState({ inputN: true });
                     }}
                     onBlur={() => {
+                      segmentEventTrack("Filled Campaign Ad Name", {
+                        campaign_ad_name: this.state.campaignInfo.name
+                      });
                       this.setState({ inputN: false });
                       this.setState(
                         {
@@ -593,9 +603,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm1
                       ]}
                       onPress={() => {
-                        segmentEventTrack(
-                          "Selected Website for Collection Ad Link Form "
-                        );
+                        segmentEventTrack("Selected Collection Ad Link Form ", {
+                          campaign_collection_ad_link_form: "Website"
+                        });
                         this._handleCollectionAdLinkForm(1);
                       }}
                     >
@@ -629,9 +639,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm2
                       ]}
                       onPress={() => {
-                        segmentEventTrack(
-                          "Selected App DeepLink for Collection Ad Link Form "
-                        );
+                        segmentEventTrack("Selected Collection Ad Link Form ", {
+                          campaign_collection_ad_link_form: "App DeepLink"
+                        });
                         this._handleCollectionAdLinkForm(2);
                       }}
                     >
