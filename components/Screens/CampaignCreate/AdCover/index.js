@@ -188,8 +188,8 @@ class AdCover extends Component {
       coverHeadlineError: validateWrapper("mandatory", coverHeadline),
       headlineRejectionUpload: true
     });
-    segmentEventTrack("Change Story Ad Cover Headline", {
-      "Story Ad Cover Headline": coverHeadline
+    segmentEventTrack("Changed Story Ad Cover Headline", {
+      campaign_stoty_ad_cover_headline: coverHeadline
     });
     !this.rejected &&
       this.props.save_campaign_info({
@@ -245,7 +245,7 @@ class AdCover extends Component {
             : "Selected Logo Error"
         }`,
         {
-          logoError:
+          campaign_error_story_ad_logo:
             correctLogo && logoFormat
               ? ""
               : "Logo must be exactly 993px by 284px,In png format and transparent background "
@@ -331,7 +331,8 @@ class AdCover extends Component {
                     type: "warning"
                   });
                   segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                    imageError: "Image must be less than 2 MBs"
+                    campaign_error_story_ad_cover_image:
+                      "Image must be less than 2 MBs"
                   });
                   return;
                 }
@@ -358,7 +359,7 @@ class AdCover extends Component {
               .catch(error => {
                 this.onToggleModal(false);
                 segmentEventTrack("Error in selecting Story Ad Cover Media", {
-                  imageError: "Please choose an image"
+                  campaign_error_story_ad_cover_image: "Please choose an image"
                 });
                 showMessage({
                   message: translate("Please choose an image"),
@@ -379,7 +380,8 @@ class AdCover extends Component {
               type: "warning"
             });
             segmentEventTrack("Error in selecting Story Ad Cover Media", {
-              imageError: "Image must be less than 2 MBs"
+              campaign_error_story_ad_cover_image:
+                "Image must be less than 2 MBs"
             });
             return;
           } else if (
@@ -396,7 +398,7 @@ class AdCover extends Component {
               type: "warning"
             });
             segmentEventTrack("Error in selecting Story Ad Cover Media", {
-              imageError:
+              campaign_error_story_ad_cover_image:
                 "Image's aspect ratio must be 3:5 with a minimum size of 360px by 600px"
             });
             return;
@@ -428,7 +430,8 @@ class AdCover extends Component {
             type: "warning"
           });
           segmentEventTrack("Error in selecting Story Ad Cover Media", {
-            imageError: "Please make sure the image is in png format"
+            campaign_error_story_ad_cover_image:
+              "Please make sure the image is in png format"
           });
         }
       } else if (!result.cancelled && isNull(this.state.cover)) {
@@ -438,7 +441,7 @@ class AdCover extends Component {
           type: "warning"
         });
         segmentEventTrack("Error in selecting Story Ad Cover Media", {
-          imageError: "Please choose a media file"
+          campaign_error_story_ad_cover_image: "Please choose a media file"
         });
         this.onToggleModal(false);
         return;
@@ -539,9 +542,9 @@ class AdCover extends Component {
       this.state.coverError
     ) {
       segmentEventTrack("Error Story Ad Cover screen Submit button", {
-        coverError: this.state.coverError,
-        coverHeadlineError: this.state.coverHeadlineError,
-        logoError: this.state.logoError
+        campaign_error_story_ad_cover_image: this.state.coverError,
+        campaign_error_stoty_ad_cover_headline: this.state.coverHeadlineError,
+        campaign_error_story_ad_logo: this.state.logoError
       });
     }
     if (

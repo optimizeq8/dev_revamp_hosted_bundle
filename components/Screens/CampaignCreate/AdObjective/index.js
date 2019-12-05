@@ -203,7 +203,7 @@ class AdObjective extends Component {
       objectiveLabel: choice.label
     });
     segmentEventTrack("Selected Ad Objective", {
-      "Campaign Objective": choice.label
+      campaign_ad_objective: choice.label
     });
     this.props.save_campaign_info({
       objective: choice.value,
@@ -235,7 +235,7 @@ class AdObjective extends Component {
       }
     });
     segmentEventTrack("Selected Campaign End Date", {
-      "Campaign End Date": date
+      campaign_end_date: date
     });
     this.props.save_campaign_info({
       end_time: date,
@@ -292,12 +292,12 @@ class AdObjective extends Component {
       dateErrors.end_timeError
     ) {
       segmentEventTrack("Error occured on ad objective screen sumbit button", {
-        "Ad Name Error": nameError ? nameError : "",
-        "Ad Objective Error": objectiveError ? objectiveError : "",
-        "Ad Start Date Error": dateErrors.start_timeError
+        campaign_error_ad_name: nameError ? nameError : "",
+        campaign_error_ad_objective: objectiveError ? objectiveError : "",
+        campaign_error_ad_start_date: dateErrors.start_timeError
           ? dateErrors.start_timeError
           : "",
-        "Ad End Date Error": dateErrors.end_timeError
+        campaign_error_ad_start_date: dateErrors.end_timeError
           ? dateErrors.end_timeError
           : ""
       });
@@ -488,7 +488,7 @@ class AdObjective extends Component {
                         }
                       });
                       segmentEventTrack("Fill Campaign Ad Name", {
-                        "Ad Name": value
+                        campaign_ad_name: value
                       });
                       this.props.save_campaign_info({ name: value });
                     }}
@@ -508,7 +508,7 @@ class AdObjective extends Component {
                         () => {
                           if (this.state.nameError) {
                             segmentEventTrack("Error occured on blur Ad Name", {
-                              "Ad Name Error": this.state.nameError
+                              campaign_error_ad_name: this.state.nameError
                             });
                           }
                         }
@@ -593,6 +593,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm1
                       ]}
                       onPress={() => {
+                        segmentEventTrack(
+                          "Selected Website for Collection Ad Link Form "
+                        );
                         this._handleCollectionAdLinkForm(1);
                       }}
                     >
@@ -626,6 +629,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm2
                       ]}
                       onPress={() => {
+                        segmentEventTrack(
+                          "Selected App DeepLink for Collection Ad Link Form "
+                        );
                         this._handleCollectionAdLinkForm(2);
                       }}
                     >

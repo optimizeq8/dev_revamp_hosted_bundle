@@ -364,6 +364,9 @@ class AdDesign extends Component {
   };
 
   changeBusinessName = brand_name => {
+    segmentEventTrack("Changed Business Name", {
+      campaign_brand_name: brand_name
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -379,6 +382,9 @@ class AdDesign extends Component {
       });
   };
   changeHeadline = headline => {
+    segmentEventTrack("Changed Headline", {
+      campaign_headline: headline
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,

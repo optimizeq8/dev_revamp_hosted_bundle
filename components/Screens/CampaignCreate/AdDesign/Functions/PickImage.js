@@ -117,7 +117,7 @@ export const _pickImage = async (
                   type: "warning"
                 });
                 segmentEventTrack("Seleeted Image Error", {
-                  imagerror: "Image must be less than 5 MBs"
+                  campaign_error_image: "Image must be less than 5 MBs"
                 });
                 return Promise.reject("Image must be less than 5 MBs");
               }
@@ -193,7 +193,7 @@ export const _pickImage = async (
 
               onToggleModal(false);
               segmentEventTrack("Seleeted Image Error", {
-                imagerror: "The dimensions are too large"
+                campaign_error_image: "The dimensions are too large"
               });
               showMessage({
                 message:
@@ -228,7 +228,7 @@ export const _pickImage = async (
             });
           onToggleModal(false);
           segmentEventTrack("Seleeted Image Error", {
-            imagerror:
+            campaign_error_image:
               "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px"
           });
           showMessage({
@@ -276,7 +276,7 @@ export const _pickImage = async (
               type: ""
             });
           segmentEventTrack("Selected Video Error", {
-            videoError: "Maximum video duration is 10 seconds"
+            campaign_error_video: "Maximum video duration is 10 seconds"
           });
           showMessage({
             message: translate("Maximum video duration is 10 seconds"),
@@ -304,7 +304,7 @@ export const _pickImage = async (
               type: ""
             });
           segmentEventTrack("Selected Video Error", {
-            videoError: "Minimum video duration is 3 seconds"
+            campaign_error_video: "Minimum video duration is 3 seconds"
           });
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
@@ -418,7 +418,7 @@ export const _pickImage = async (
             });
           onToggleModal(false);
           segmentEventTrack("Selected Video Error", {
-            videoError:
+            campaign_error_video:
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
           });
 

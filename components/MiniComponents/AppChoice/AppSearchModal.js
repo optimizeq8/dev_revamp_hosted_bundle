@@ -20,6 +20,7 @@ import AppCard from "./AppCard";
 import globalStyles from "../../../GlobalStyles";
 import Axios from "axios";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../segmentEventTrack";
 export default class AppSearchModal extends Component {
   state = { showBtn: false };
   componentDidUpdate(pervProps) {
@@ -63,6 +64,15 @@ export default class AppSearchModal extends Component {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
+        segmentEventTrack("Error received android apps list", {
+          error_message_android_app_list:
+            err.response && err.response.data
+              ? err.response.data.error
+              : "Something went wrong!",
+          error_description_android_app_list: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later"
+        });
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
@@ -111,6 +121,15 @@ export default class AppSearchModal extends Component {
         // console.log(err);
 
         this.props.setTheState({ loading: false });
+        segmentEventTrack("Error received iOS apps list", {
+          error_message_ios_app_list:
+            err.response && err.response.data
+              ? err.response.data.error
+              : "Something went wrong!",
+          error_description_ios_app_list: err.response.data
+            ? "Please make sure the app id is correct"
+            : "Please try again later"
+        });
         this.refs.modalFlash.showMessage({
           message:
             err.response && err.response.data
@@ -235,6 +254,10 @@ export default class AppSearchModal extends Component {
                     }
                     onBlur={() => {
                       if (appValue !== "") {
+                        segmentEventTrack("Searched on blur for App", {
+                          campaign_app_choice_value: appValue,
+                          campaign_app_os_type: appSelection
+                        });
                         switch (appSelection) {
                           case "iOS":
                             this._searchIosApps();

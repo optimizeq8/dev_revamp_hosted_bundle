@@ -99,8 +99,8 @@ export default class PenIconBrand extends Component {
                       {
                         [`${
                           field === "Business Name"
-                            ? "Brand Name Error"
-                            : "Headline Error"
+                            ? "camapign_error_brand_name"
+                            : "campaign_error_headline"
                         }`]: this.state.brand_nameError
                       }
                     );

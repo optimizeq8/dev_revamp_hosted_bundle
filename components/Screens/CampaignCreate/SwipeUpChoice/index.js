@@ -21,7 +21,9 @@ class SwipeUpChoice extends Component {
   static navigationOptions = {
     header: null
   };
-
+  componentDidMount() {
+    this.segment();
+  }
   segment = () => {
     {
       switch (this.props.navigation.getParam("objective")) {

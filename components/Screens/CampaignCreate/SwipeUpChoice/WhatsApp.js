@@ -15,7 +15,7 @@ import isEmpty from "lodash/isEmpty";
 import upperCase from "lodash/upperCase";
 // import { Modal } from 'react-native-paper';
 import { BlurView } from "expo-blur";
-
+import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -42,6 +42,7 @@ import * as actionCreators from "../../../../store/actions";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isStringArabic from "../../../isStringArabic";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -55,7 +56,8 @@ class WhatsApp extends Component {
         whatsappnumber: "",
         insta_handle: "",
         callnumber: "",
-        callaction: list.SnapAd[4].call_to_action_list[0]
+        callaction: list.SnapAd[4].call_to_action_list[0],
+        googlemaplink: ""
       },
       callactions: list.SnapAd[4].call_to_action_list,
       validCallNumber: false,
@@ -194,6 +196,7 @@ class WhatsApp extends Component {
       // )
       this.props.productInfoId
     ) {
+      Segment.screen("Change Insta Handle Modal");
       this.setState({
         showChangeInstaHandle: true
       });
@@ -202,7 +205,7 @@ class WhatsApp extends Component {
     }
   };
 
-  // handle submission whatsapp lead
+  // handle submission sme growth
   _handleSubmission = async () => {
     const { translate } = this.props.screenProps;
     // if (!this.props.mainBusiness.weburl) {
@@ -226,7 +229,19 @@ class WhatsApp extends Component {
     }
     let weburlAvalible =
       this.props.mainBusiness.weburl || this.props.weburlAvalible;
-
+    if (
+      !weburlAvalible ||
+      (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) ||
+      !this.validateUrl()
+    ) {
+      segmentEventTrack("Error submit SME Growth swipeup", {
+        camapign_error_insta_handle: this.props.errorInstaHandleMessage,
+        campaign_error_weburl: this.state.weburlError,
+        campaign_error_whatsappnumber: this.state.validWhatsAppNumber,
+        campaign_error_googlemaplink: this.state.googleMapLinkError,
+        campaign_error_callnumber: this.state.validCallNumber
+      });
+    }
     if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
       let whatsAppCampaign = {
         weburl: this.state.campaignInfo.weburl,
@@ -268,7 +283,14 @@ class WhatsApp extends Component {
       if (this.state.showChangeInstaHandle) {
         this.setState({ showChangeInstaHandle: false });
       }
-
+      segmentEventTrack("Submitted Sme Growth Success", {
+        campaign_call_to_action: this.state.campaignInfo.callaction.label,
+        campaign_whatsappnumber: this.state.campaignInfo.whatsappnumber,
+        campaign_callnumber: this.state.campaignInfo.callnumber,
+        campaign_insta_handle: this.state.campaignInfo.insta_handle,
+        campaign_weburl: this.state.campaignInfo.weburl,
+        campaign_googlemaplink: this.state.campaignInfo.googlemaplink
+      });
       this.props.navigation.navigate("SelectInstagramPost", {
         insta_handle: this.state.campaignInfo.insta_handle,
         _changeDestination
@@ -277,6 +299,9 @@ class WhatsApp extends Component {
   };
   onSelectedCallToActionChange = value => {
     if (value && !isEmpty(value)) {
+      segmentEventTrack("Selected SME Growth Call to Action", {
+        campaign_call_to_action: value[0].label
+      });
       this.setState(
         {
           campaignInfo: {
@@ -321,6 +346,9 @@ class WhatsApp extends Component {
     });
   };
   changeInstaHandle = value => {
+    segmentEventTrack("Changed SME Growth Instagram Handle", {
+      campaign_insta_handle: value
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -329,6 +357,9 @@ class WhatsApp extends Component {
     });
   };
   changeWebUrl = value => {
+    segmentEventTrack("Changed SME Growth Web URL", {
+      campaign_weburl: value.replace(/[^0-9a-z]/gi, "")
+    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -341,6 +372,9 @@ class WhatsApp extends Component {
     if (value.includes("https:")) {
       const link = value.substring(value.indexOf("https:") + 1);
       // console.log("link", "h" + link);
+      segmentEventTrack("Changed SME Growth Google Map Location", {
+        campaign_googlemaplink: value === "" ? "" : "h" + link
+      });
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -348,6 +382,9 @@ class WhatsApp extends Component {
         }
       });
     } else {
+      segmentEventTrack("Changed Google Map Location", {
+        campaign_googlemaplink: value
+      });
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -451,8 +488,13 @@ class WhatsApp extends Component {
                     autoCorrect={false}
                     autoCapitalize="none"
                     onChangeText={value => this.changeWebUrl(value)}
-                    onBlur={() => {
-                      this.validate();
+                    onBlur={async () => {
+                      const valid = await this.validate();
+                      if (!valid) {
+                        segmentEventTrack("Error on blur sme growth weburl", {
+                          campaign_error_weburl: this.state.weburlError
+                        });
+                      }
                       if (!this.props.mainBusiness.weburl) {
                         this.props.verifyBusinessUrl(
                           this.state.campaignInfo.weburl
@@ -489,7 +531,14 @@ class WhatsApp extends Component {
                 rounded
                 style={[styles.input]}
                 onPress={() => {
-                  this.setState({ inputCallToAction: true });
+                  segmentEventTrack(
+                    "Button Clicked to open Call to action Modal"
+                  );
+                  this.setState({ inputCallToAction: true }, () => {
+                    if (this.state.inputCallToAction) {
+                      Segment.screen("Call to Action Modal");
+                    }
+                  });
                 }}
               >
                 <Text style={styles.callActionLabel}>
@@ -541,13 +590,20 @@ class WhatsApp extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={value => this.changeInstaHandle(value)}
-                  onBlur={() => {
+                  onBlur={async () => {
                     this.validate();
-                    // if (!this.props.errorInstaHandle) {
-                    this.props.verifyInstagramHandle(
+                    await this.props.verifyInstagramHandle(
                       this.state.campaignInfo.insta_handle
                     );
-                    // }
+                    if (this.props.errorInstaHandle) {
+                      segmentEventTrack(
+                        "Error on blur sme growth insta handle",
+                        {
+                          campaign_error_insta_handle: this.props
+                            .errorInstaHandleMessage
+                        }
+                      );
+                    }
                   }}
                 />
                 {this.props.errorInstaHandle && (
@@ -663,17 +719,18 @@ class WhatsApp extends Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={value => this.changeGoogleMapLocation(value)}
-                  onBlur={() => {
-                    this.validateUrl();
+                  onBlur={async () => {
+                    await this.validateUrl();
+                    if (this.state.googleMapLinkError) {
+                      segmentEventTrack(
+                        "Error on blur sme growth google map location",
+                        {
+                          campaign_error_googlemaplink: this.state
+                            .googleMapLinkError
+                        }
+                      );
+                    }
                   }}
-                  // onBlur={() => {
-                  //   this.validate();
-                  //   // if (!this.props.errorInstaHandle) {
-                  //   this.props.verifyInstagramHandle(
-                  //     this.state.campaignInfo.insta_handle
-                  //   );
-                  //   // }
-                  // }}
                 />
               </Item>
             </View>

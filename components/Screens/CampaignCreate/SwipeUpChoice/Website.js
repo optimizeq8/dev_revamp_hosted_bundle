@@ -12,6 +12,7 @@ import { Text, Item, Input, Icon, Button } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
+import * as Segment from "expo-analytics-segment";
 import Picker from "../../../MiniComponents/Picker";
 import KeyboardShift from "../../../MiniComponents/KeyboardShift";
 import LowerButton from "../../../MiniComponents/LowerButton";
@@ -30,6 +31,7 @@ import { netLoc } from "../../../Data/callactions.data";
 
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class Website extends Component {
   static navigationOptions = {
@@ -118,6 +120,12 @@ class Website extends Component {
       : this.props.storyAdAttachment.destination === "REMOTE_WEBPAGE"
       ? this.props.storyAdAttachment.destination
       : this.props.objective;
+    if (!this.validateUrl()) {
+      segmentEventTrack("Error Submit Website SwipeUp", {
+        campaign_website_url: this.state.campaignInfo.attachment,
+        campaign_error_website_url: this.state.urlError
+      });
+    }
     if (this.validateUrl()) {
       this.props._changeDestination(
         // this.props.adType !== "CollectionAd"
@@ -133,6 +141,9 @@ class Website extends Component {
           url: this.state.networkString + this.state.campaignInfo.attachment
         }
       );
+      segmentEventTrack("Submitted Website SwipeUp Success", {
+        campaign_website_url: this.state.campaignInfo.attachment
+      });
       this.props.navigation.navigate("AdDesign");
     }
   };
@@ -148,6 +159,9 @@ class Website extends Component {
 
   onSelectedCallToActionChange = value => {
     if (value && !isEmpty(value)) {
+      segmentEventTrack("Selected Website Call to Action", {
+        campaign_call_to_action: value[0].label
+      });
       this.setState(
         {
           campaignInfo: {
@@ -177,6 +191,9 @@ class Website extends Component {
               screenProps={this.props.screenProps}
               closeButton={false}
               title={"Swipe Up destination"}
+              segment={{
+                str: "Swipe up Destination CollectionAd  Back Button"
+              }}
               navigation={this.props.navigation}
             />
           </View>
@@ -229,7 +246,14 @@ class Website extends Component {
                     // rounded
                     style={[styles.input, { paddingHorizontal: 30 }]}
                     onPress={() => {
-                      this.setState({ inputCallToAction: true });
+                      segmentEventTrack(
+                        "Button Clicked to open Call to action Modal"
+                      );
+                      this.setState({ inputCallToAction: true }, () => {
+                        if (this.state.inputCallToAction) {
+                          Segment.screen("Call to Action Modal");
+                        }
+                      });
                     }}
                   >
                     <Text style={styles.callActionLabel}>
@@ -272,13 +296,35 @@ class Website extends Component {
                           ]}
                           onPress={() => {
                             if (this.state.networkString === "https://") {
-                              this.setState({
-                                networkString: "http://"
-                              });
+                              this.setState(
+                                {
+                                  networkString: "http://"
+                                },
+                                () => {
+                                  segmentEventTrack(
+                                    "Changed SwipeUp Website network string",
+                                    {
+                                      campaign_website_network_string: this
+                                        .state.networkString
+                                    }
+                                  );
+                                }
+                              );
                             } else {
-                              this.setState({
-                                networkString: "https://"
-                              });
+                              this.setState(
+                                {
+                                  networkString: "https://"
+                                },
+                                () => {
+                                  segmentEventTrack(
+                                    "Changed SwipeUp Website network string",
+                                    {
+                                      campaign_website_network_string: this
+                                        .state.networkString
+                                    }
+                                  );
+                                }
+                              );
                             }
                           }}
                         >
@@ -311,7 +357,14 @@ class Website extends Component {
                               }
                             })
                           }
-                          onBlur={() => this.validateUrl()}
+                          onBlur={async () => {
+                            const valid = await this.validateUrl();
+                            if (!valid) {
+                              segmentEventTrack("Error blur input Website", {
+                                campaign_error_website_url: this.state.urlError
+                              });
+                            }
+                          }}
                         />
                       </Item>
                     </View>
@@ -327,7 +380,12 @@ class Website extends Component {
                   {this.props.swipeUpDestination && (
                     <Text
                       style={styles.footerText}
-                      onPress={() => this.props.toggleSideMenu()}
+                      onPress={() => {
+                        segmentEventTrack(
+                          "Clicked Change Swipe-up Destination"
+                        );
+                        this.props.toggleSideMenu();
+                      }}
                     >
                       {translate("Change Swipe-up Destination")}
                     </Text>
@@ -355,7 +413,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Website);
+export default connect(mapStateToProps, mapDispatchToProps)(Website);

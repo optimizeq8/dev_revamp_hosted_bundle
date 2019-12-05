@@ -64,7 +64,8 @@ export default class PenIconBrand extends Component {
                     segmentEventTrack(
                       "Error occured on Cover Headline input Blur",
                       {
-                        coverHeadlineError: this.state.coverHeadlineError
+                        campaign_error_stoty_ad_cover_headline: this.state
+                          .coverHeadlineError
                       }
                     );
                   }

@@ -2,6 +2,7 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
 import store, { persistor } from "../index";
+import segmentEventTrack from "../../components/segmentEventTrack";
 import filter from "lodash/filter";
 
 createBaseUrl = () =>
@@ -970,12 +971,20 @@ export const save_collection_media = (
         onToggleModal(false);
       })
       .then(() => {
+        segmentEventTrack("Submitted Collection Ad media successfully");
         navigation.navigate("AdDesign");
       })
       .catch(err => {
         loading(0);
         onToggleModal(false);
         // console.log("ad_design", err.message || err.response);
+        segmentEventTrack("Error Submit Collection Ad media", {
+          campaign_error_collection_media_submit:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again."
+        });
+
         showMessage({
           message:
             err.message ||
@@ -1245,6 +1254,7 @@ export const saveWebProducts = (
         })
         .then(data => {
           if (data.success) {
+            segmentEventTrack("Submitted SME Growth Products List Success");
             navigation.navigate("AdDesign");
           }
           return data;
@@ -1257,6 +1267,10 @@ export const saveWebProducts = (
         })
         .catch(error => {
           // console.log("saveWebProducts error", error.response || error.message);
+          segmentEventTrack("Error Submit SME Growth Products List", {
+            campaign_error_sme_products_list: error.response || error.message
+          });
+
           return dispatch({
             type: actionTypes.ERROR_SAVE_WEB_PRODUCTS
           });
