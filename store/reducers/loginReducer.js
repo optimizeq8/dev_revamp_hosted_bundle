@@ -3,7 +3,8 @@ import * as Segment from "expo-analytics-segment";
 const initialState = {
   exponentPushToken: null,
   admin: false,
-  clearTokenLoading: false
+  clearTokenLoading: false,
+  checkingForToken: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +13,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         exponentPushToken: null,
-        clearTokenLoading: false
+        clearTokenLoading: false,
+        checkingForToken: false
       };
     case actionTypes.CLEAR_PUSH_NOTIFICATION_LOADING:
       return {
@@ -34,6 +36,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         exponentPushToken: null
       };
+    case actionTypes.CHECKING_FOR_TOKEN:
+      return { ...state, checkingForToken: action.payload };
     default:
       return state;
   }

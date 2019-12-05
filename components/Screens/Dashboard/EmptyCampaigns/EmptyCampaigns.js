@@ -46,41 +46,61 @@ export default class EmptyCampaigns extends Component {
           {mainBusiness.businessname}
         </Text>
         <View style={styles.mainButtonView}>
-          <Text style={styles.mainText}>
-            {translate("Tap the button below to")}{" "}
-            <Bold>{translate("launch")} </Bold>
-            {translate("Your first Campaign")}
-          </Text>
-          <Animatable.View
-            animation="swing"
-            duration={1200}
-            iterationDelay={1000}
-            iterationCount="infinite"
-          >
-            <Button
-              onPress={() => {
-                if (!this.props.mainBusiness.snap_ad_account_id) {
-                  Segment.trackWithProperties("Create SnapAd Acount", {
-                    category: "Ad Account",
-                    label: "New SnapAd Account",
-                    business_name: this.props.mainBusiness.businessname,
-                    business_id: this.props.mainBusiness.businessid
-                  });
-                  this.props.navigation.navigate("SnapchatCreateAdAcc");
-                } else {
-                  Segment.trackWithProperties("Create Campaign", {
-                    category: "Campaign Creation"
-                  });
-                  this.props.navigation.navigate("AdType");
-                }
-              }}
-              style={styles.campaignButton}
+          {mainBusiness.user_role === "3" ? (
+            <Text style={styles.mainText}>
+              {translate("This account doesn't have campaigns yet")}
+            </Text>
+          ) : !mainBusiness.hasOwnProperty("businessid") ? (
+            <Text style={styles.mainText}>
+              {translate("Tap the button below to")}{" "}
+              <Bold>{translate("create")} </Bold>
+              {translate("Your first business")}
+            </Text>
+          ) : (
+            <Text style={styles.mainText}>
+              {translate("Tap the button below to")}{" "}
+              <Bold>{translate("launch")} </Bold>
+              {translate("Your first Campaign")}
+            </Text>
+          )}
+          {mainBusiness.user_role !== "3" && (
+            <Animatable.View
+              animation="swing"
+              duration={1200}
+              iterationDelay={1000}
+              iterationCount="infinite"
             >
-              <Text style={styles.campaignButtonText}>
-                {translate(`New\nCampaign`)}
-              </Text>
-            </Button>
-          </Animatable.View>
+              <Button
+                onPress={() => {
+                  if (this.props.mainBusiness.hasOwnProperty("businessid")) {
+                    if (!this.props.mainBusiness.snap_ad_account_id) {
+                      Segment.trackWithProperties("Create SnapAd Acount", {
+                        category: "Ad Account",
+                        label: "New SnapAd Account",
+                        business_name: this.props.mainBusiness.businessname,
+                        business_id: this.props.mainBusiness.businessid
+                      });
+                      this.props.navigation.navigate("SnapchatCreateAdAcc");
+                    } else {
+                      Segment.trackWithProperties("Create Campaign", {
+                        category: "Campaign Creation"
+                      });
+                      this.props.navigation.navigate("AdType");
+                    }
+                  } else {
+                    this.props.navigation.navigate("CreateBusinessAccount");
+                  }
+                }}
+                style={styles.campaignButton}
+              >
+                <Text style={styles.campaignButtonText}>
+                  {mainBusiness.hasOwnProperty("businessid")
+                    ? translate(`New\nCampaign`)
+                    : translate(`Create new business`)}
+                </Text>
+              </Button>
+            </Animatable.View>
+          )}
         </View>
       </View>
     );

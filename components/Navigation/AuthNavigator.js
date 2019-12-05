@@ -13,7 +13,7 @@ import ForgotPassword from "../Screens/ForgotPassword";
 export default FluidNavigator(
   {
     Tutorial: Tutorial,
-    MainForm: MainForm,
+    MainForm: { screen: MainForm, path: "register_team/" },
     AppUpdateChecker: AppUpdateChecker,
 
     Signin: Signin,

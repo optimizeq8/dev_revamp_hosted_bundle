@@ -48,14 +48,13 @@ const styles = StyleSheet.create({
   },
   button: {
     top: heightPercentageToDP("2"),
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
     marginBottom: heightPercentageToDP(3),
     backgroundColor: "#FF9D00",
     borderRadius: 30,
     alignSelf: "center",
-    zIndex: 2
+    zIndex: 2,
+    flexDirection: "column",
+    justifyContent: "center"
   },
   buttonText: {
     fontFamily: "montserrat-bold",

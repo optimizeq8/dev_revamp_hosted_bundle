@@ -155,7 +155,6 @@ class CreateBusinessAccount extends Component {
         businesstype: type
       }
     });
-    this._verifyBusinessName(this.state.businessAccount.businessname);
   };
 
   _verifyBusinessName = async name => {

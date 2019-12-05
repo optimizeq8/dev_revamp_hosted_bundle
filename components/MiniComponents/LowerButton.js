@@ -7,25 +7,39 @@ import CrossIcon from "../../assets/SVGs/CrossButton";
 
 export default class LowerButton extends Component {
   render() {
+    let { width, height, style } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     return (
       <TouchableOpacity
-        style={{
-          alignSelf: "center",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 3 },
-          shadowRadius: 3,
-          shadowOpacity: 0.2,
-          bottom: heightPercentageToDP(bottom)
-        }}
+        style={[
+          {
+            alignSelf: "center",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 3 },
+            shadowRadius: 3,
+            shadowOpacity: 0.2,
+            bottom: heightPercentageToDP(bottom)
+          },
+          style
+        ]}
         onPress={() => this.props.function(false)}
       >
         {this.props.checkmark ? (
-          <CheckmarkIcon width={53} height={53} />
+          <CheckmarkIcon
+            width={width ? width : 53}
+            height={height ? height : 53}
+          />
         ) : this.props.cross ? (
-          <CrossIcon fill="#E26A65" width={73} height={63} />
+          <CrossIcon
+            fill="#000"
+            width={width ? width : 73}
+            height={height ? height : 63}
+          />
         ) : (
-          <ForwardButton width={83} height={83} />
+          <ForwardButton
+            width={width ? width : 83}
+            height={height ? height : 83}
+          />
         )}
       </TouchableOpacity>
     );

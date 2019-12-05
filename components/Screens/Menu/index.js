@@ -38,6 +38,7 @@ import {
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
+import { showMessage } from "react-native-flash-message";
 const imageLogo = require("../../../assets/images/logo01.png");
 
 class Menu extends Component {
@@ -85,6 +86,21 @@ class Menu extends Component {
       this.setState({ slidePanel: true });
     }
   }
+  handleNavigation = (route, checkForBusinessId = false) => {
+    const { translate } = this.props.screenProps;
+    if (checkForBusinessId) {
+      if (this.props.mainBusiness.hasOwnProperty("businessid")) {
+        this.props.navigation.navigate(route);
+      } else {
+        showMessage({
+          message: translate("Please create a business account first"),
+          type: "warning"
+        });
+      }
+    } else {
+      this.props.navigation.navigate(route);
+    }
+  };
 
   render() {
     const { translate } = this.props.screenProps;
@@ -138,16 +154,29 @@ class Menu extends Component {
               style={[styles.button]}
               onPress={() => this.slidePanelShow()}
             >
-              <Text style={styles.buttonText}>
-                {translate("Switch Account")}
-              </Text>
-              <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <Text style={styles.buttonText}>
+                  {translate("Switch Account")}
+                </Text>
+                <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
+              </View>
+              {this.props.businessInvitee &&
+              this.props.userInfo.email === this.props.invitedEmail ? (
+                <Text
+                  style={[
+                    styles.buttonText,
+                    { fontFamily: "montserrat-regular" }
+                  ]}
+                >
+                  {"Invite received "}
+                </Text>
+              ) : null}
             </Button>
 
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.props.navigation.navigate("PersonalInfo")}
+                onPress={() => this.handleNavigation("PersonalInfo")}
               >
                 <Icons.PersonalInfo style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
@@ -170,7 +199,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() => this.props.navigation.navigate("Wallet")}
+                onPress={() => this.handleNavigation("Wallet", true)}
               >
                 <Icons.Wallet style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
@@ -179,9 +208,7 @@ class Menu extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.options}
-                onPress={() =>
-                  this.props.navigation.navigate("TransactionList")
-                }
+                onPress={() => this.handleNavigation("TransactionList")}
               >
                 <Icons.TransactionIcon style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
@@ -189,7 +216,7 @@ class Menu extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("ChangePassword")}
+                onPress={() => this.handleNavigation("ChangePassword")}
                 style={styles.options}
               >
                 <Icons.ChangePassIcon style={styles.icons} />
@@ -199,12 +226,22 @@ class Menu extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddressForm")}
+                onPress={() => this.handleNavigation("AddressForm", true)}
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
                 <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
                   {translate("Address")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.handleNavigation("ManageTeam", true)}
+                style={styles.options}
+              >
+                <Icons.GroupIcon style={styles.icons} />
+                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                  {translate("Manage Team")}
                 </Text>
               </TouchableOpacity>
 
@@ -303,7 +340,9 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   campaignList: state.dashboard.campaignList,
   exponentPushToken: state.login.exponentPushToken,
-  clearTokenLoading: state.login.clearTokenLoading
+  clearTokenLoading: state.login.clearTokenLoading,
+  businessInvitee: state.account.businessInvitee,
+  invitedEmail: state.account.invitedEmail
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>

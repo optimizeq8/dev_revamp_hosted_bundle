@@ -7,7 +7,8 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
   ScrollView,
-  I18nManager
+  I18nManager,
+  Linking
 } from "react-native";
 import { Updates } from "expo";
 import i18n from "i18n-js";
@@ -53,6 +54,8 @@ import {
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
+import { showMessage } from "react-native-flash-message";
+import globalStyles from "../../../GlobalStyles";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -75,21 +78,28 @@ class Dashboard extends Component {
     this.page = 1;
   }
   componentDidMount() {
-    if (this.props.mainBusiness) {
+    if (
+      this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("businessid")
+    ) {
       if (!this.props.mainBusiness.snap_ad_account_id) {
         this.props.navigation.navigate("SnapchatCreateAdAcc");
       }
       // this.props.getWalletAmount();
-      this.props.getCampaignList(
-        this.props.mainBusiness.businessid,
-        this.increasePage,
-        this.signal.token
-      );
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
-
-      this.props.getBusinessAccounts();
-      Segment.screen("Dashboard");
+      if (this.props.campaignList.length === 0) {
+        this.props.getCampaignList(
+          this.props.mainBusiness.businessid,
+          this.increasePage,
+          this.signal.token
+        );
+      }
+      if (this.props.businessAccounts.length === 0) {
+        this.props.getBusinessAccounts();
+      }
     }
+    Segment.screen("Dashboard");
+    this.props.userInfo &&
+      this.props.connect_user_to_intercom(this.props.userInfo.userid);
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
@@ -110,6 +120,7 @@ class Dashboard extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.mainBusiness &&
+      this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
       if (
@@ -120,7 +131,8 @@ class Dashboard extends Component {
           closeAnimation: this.closeAnimation
         });
       }
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
+      this.props.userInfo &&
+        this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
@@ -247,7 +259,6 @@ class Dashboard extends Component {
         screenProps={this.props.screenProps}
       />
     ) : null;
-
     let adButtons = snapAds.map(adType => (
       <AdButtions
         translate={this.props.screenProps.translate}
@@ -257,7 +268,7 @@ class Dashboard extends Component {
       />
     ));
     if (
-      (!this.props.mainBusiness && this.props.loadingAccountMgmt) ||
+      this.props.loadingAccountMgmt ||
       (!this.props.mainBusiness && this.props.loading)
     ) {
       return (
@@ -270,14 +281,16 @@ class Dashboard extends Component {
           mySlideInUp={mySlideInUp}
         />
       );
-    } else if (this.props.businessLoadError) {
+    } else if (this.props.businessLoadError || !this.props.userInfo) {
       return (
-        <ErrorComponent
-          screenProps={this.props.screenProps}
-          dashboard={true}
-          loading={this.props.loading}
-          navigation={this.props.navigation}
-        />
+        <>
+          <ErrorComponent
+            screenProps={this.props.screenProps}
+            dashboard={true}
+            loading={this.props.loading}
+            navigation={this.props.navigation}
+          />
+        </>
       );
     } else {
       return (
@@ -287,7 +300,7 @@ class Dashboard extends Component {
         >
           <BackdropIcon style={styles.backDrop} />
           <Background
-            style={[styles.background]}
+            style={[globalStyles.background]}
             width={wp(85)}
             height={hp(61)}
           />
@@ -377,10 +390,12 @@ class Dashboard extends Component {
               animation={
                 !this.props.loadingAccountMgmt
                   ? this.state.anim
-                    ? this.props.campaignList.length === 0
+                    ? this.props.campaignList &&
+                      this.props.campaignList.length === 0
                       ? "fadeOut"
                       : mySlideOutDown
-                    : this.props.campaignList.length === 0
+                    : this.props.campaignList &&
+                      this.props.campaignList.length === 0
                     ? ""
                     : this.state.play
                     ? mySlideInUp
@@ -396,6 +411,7 @@ class Dashboard extends Component {
             >
               {!this.props.loading &&
               !this.props.loadingAccountMgmt &&
+              this.props.campaignList &&
               this.props.campaignList.length === 0 ? (
                 <EmptyCampaigns
                   translate={translate}
@@ -462,63 +478,74 @@ class Dashboard extends Component {
                           : ""}
                       </Text>
                       <View style={styles.sideMenuCard}>
-                        <View
-                          style={{
-                            flexDirection: "column"
-                          }}
-                        >
-                          <Button
-                            style={styles.button}
-                            onPress={() => {
-                              if (!this.props.mainBusiness.snap_ad_account_id) {
-                                Segment.trackWithProperties(
-                                  "Create SnapAd Acount",
-                                  {
-                                    category: "Ad Account",
-                                    label: "New SnapAd Account",
-                                    business_name: this.props.mainBusiness
-                                      .businessname,
-                                    business_id: this.props.mainBusiness
-                                      .businessid
+                        {this.props.mainBusiness.user_role !== "3" && (
+                          <>
+                            <View
+                              style={{
+                                flexDirection: "column"
+                              }}
+                            >
+                              <Button
+                                style={styles.button}
+                                onPress={() => {
+                                  if (
+                                    !this.props.mainBusiness.snap_ad_account_id
+                                  ) {
+                                    Segment.trackWithProperties(
+                                      "Create SnapAd Acount",
+                                      {
+                                        category: "Ad Account",
+                                        label: "New SnapAd Account",
+                                        business_name: this.props.mainBusiness
+                                          .businessname,
+                                        business_id: this.props.mainBusiness
+                                          .businessid
+                                      }
+                                    );
+                                    this.props.navigation.navigate(
+                                      "SnapchatCreateAdAcc"
+                                    );
+                                  } else {
+                                    Segment.trackWithProperties(
+                                      "Create Campaign",
+                                      {
+                                        category: "Campaign Creation"
+                                      }
+                                    );
+                                    this.props.navigation.navigate("AdType");
                                   }
-                                );
-                                this.props.navigation.navigate(
-                                  "SnapchatCreateAdAcc"
-                                );
-                              } else {
-                                Segment.trackWithProperties("Create Campaign", {
-                                  category: "Campaign Creation"
-                                });
-                                this.props.navigation.navigate("AdType");
-                              }
-                            }}
-                          >
-                            <Icon name="plus" type="MaterialCommunityIcons" />
-                          </Button>
-                          <Text
-                            style={[
-                              styles.campaignButtonText,
-                              styles.newCampaignTitle
-                            ]}
-                          >
-                            {translate("New Ad")}
-                          </Text>
-                        </View>
-                        <ScrollView
-                          style={{
-                            height: 90,
-                            top: I18nManager.isRTL ? 5 : 10
-                          }}
-                          contentContainerStyle={{
-                            flex: 1,
-                            alignItems: "flex-start"
-                          }}
-                          horizontal
-                        >
-                          {adButtons}
-                        </ScrollView>
+                                }}
+                              >
+                                <Icon
+                                  name="plus"
+                                  type="MaterialCommunityIcons"
+                                />
+                              </Button>
+                              <Text
+                                style={[
+                                  styles.campaignButtonText,
+                                  styles.newCampaignTitle
+                                ]}
+                              >
+                                {translate("New Ad")}
+                              </Text>
+                            </View>
+                            <ScrollView
+                              style={{
+                                height: 90,
+                                top: 10
+                              }}
+                              contentContainerStyle={{
+                                flex: 1,
+                                alignItems: "flex-start"
+                              }}
+                              horizontal
+                            >
+                              {adButtons}
+                            </ScrollView>
+                          </>
+                        )}
                       </View>
-
                       <View
                         style={{
                           flexDirection: "row",
@@ -596,8 +623,11 @@ class Dashboard extends Component {
               }}
               duration={100}
               animation={
-                (this.props.campaignList.length === 0 && this.state.anim) ||
+                (this.props.campaignList &&
+                  this.props.campaignList.length === 0 &&
+                  this.state.anim) ||
                 (!this.state.sidemenustate &&
+                  this.props.campaignList &&
                   this.props.campaignList.length !== 0)
                   ? "fadeIn"
                   : "fadeOut"
@@ -635,7 +665,8 @@ const mapStateToProps = state => ({
   conversation_status: state.messenger.conversation_status,
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
-  campaignProgressStarted: state.campaignC.campaignProgressStarted
+  campaignProgressStarted: state.campaignC.campaignProgressStarted,
+  businessAccounts: state.account.businessAccounts
 });
 
 const mapDispatchToProps = dispatch => ({

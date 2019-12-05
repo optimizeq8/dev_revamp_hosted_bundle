@@ -1,7 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
 import find from "lodash/find";
 import { AsyncStorage, Animated } from "react-native";
-
 const initialState = {
   loading: false,
   businessAccounts: [],
@@ -17,18 +16,28 @@ const initialState = {
   progressSaving: new Animated.Value(0),
   deletingBusinessLoading: false,
   editBusinessInfoLoading: false,
-  editBusinessInfoErrorMessage: null
+  editBusinessInfoErrorMessage: null,
+  tempUserInfo: null,
+  agencyTeamMembers: [],
+  loadingTeamMembers: false,
+  numberOfTeamAdmins: 0,
+  businessesLoading: false,
+  tempInviteId: "",
+  businessInvitee: "",
+  invitedEmail: "",
+  teamInviteLoading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_BUSINESS_ACCOUNT:
       let arr = state.businessAccounts;
-      arr.push(action.payload.data);
+      let newBusiness = action.payload;
+      arr.push(newBusiness);
       return {
         ...state,
         businessAccounts: arr,
-        loading: !action.payload.success
+        loading: false
       };
     case actionTypes.ERROR_ADD_BUSINESS_ACCOUNT:
       return {
@@ -36,14 +45,19 @@ const reducer = (state = initialState, action) => {
         loading: action.payload.loading
       };
     case actionTypes.SET_BUSINESS_ACCOUNTS:
-      let main = action.payload.data.business_accounts[action.payload.index]
-        ? action.payload.data.business_accounts[action.payload.index]
-        : action.payload.data.business_accounts[0];
+      let main = {};
+      let setNewBusinessAccounts = action.payload.data.business_accounts;
+      if (action.payload.data.business_accounts.length > 0) {
+        main = setNewBusinessAccounts[action.payload.index]
+          ? setNewBusinessAccounts[action.payload.index]
+          : setNewBusinessAccounts[0];
+      }
+
       return {
         ...state,
         mainBusiness: main,
-        businessAccounts: action.payload.data.business_accounts,
-        loading: false,
+        businessAccounts: setNewBusinessAccounts,
+        businessesLoading: false,
         businessLoadError: false
       };
     case actionTypes.ERROR_SET_BUSINESS_ACCOUNTS:
@@ -54,10 +68,9 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
       let indexOfMainBusiness = state.businessAccounts.findIndex(
-        business => business.businessid === action.payload.business.businessid
+        business => business.businessid === action.payload.businessid
       );
-      let newSetMainBusiness = action.payload.business;
-      newSetMainBusiness["user_role"] = "1";
+      let newSetMainBusiness = action.payload;
       AsyncStorage.setItem("indexOfMainBusiness", `${indexOfMainBusiness}`);
       return {
         ...state,
@@ -148,7 +161,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LOADING_BUSINESS_LIST:
       return {
         ...state,
-        loading: true
+        businessesLoading: action.payload
       };
     case actionTypes.UPDATE_MAINBUSINESS:
       let updatedMainBusiness = {
@@ -164,9 +177,11 @@ const reducer = (state = initialState, action) => {
         business => business.businessid !== action.payload
       );
       let mainBusiness = state.mainBusiness;
+      //if the business that was deleted is the mainBusiness then reset mainBusiness to the first business in the lsit
       if (mainBusiness.businessid === action.payload) {
         AsyncStorage.setItem("indexOfMainBusiness", 0);
-        mainBusiness = newBusinessAccounts[0];
+        mainBusiness =
+          newBusinessAccounts.length > 0 ? newBusinessAccounts[0] : {};
       }
       return {
         ...state,
@@ -177,6 +192,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         deletingBusinessLoading: action.payload
+      };
+    //the temp info of the invited user eg. first and last name and email
+    case actionTypes.SET_TEMP_USERINFO:
+      return {
+        ...state,
+        tempUserInfo: action.payload
       };
     case actionTypes.UPDATE_BUSINESS_INFO_LOADING:
       return {
@@ -198,6 +219,68 @@ const reducer = (state = initialState, action) => {
         editBusinessInfoLoading: false,
         editBusinessInfoErrorMessage: action.payload.editBusinessErrorMessage
       };
+    case actionTypes.SET_TEAM_MEMBERS:
+      let newMainBusinessRole = state.mainBusiness;
+      let mainBusinessUser = {};
+      //if a role of a member is updated by an admin,
+      //update the user_role key in mainBusiness whenever they open the team list or refreash the list
+      mainBusinessUser = action.payload.find(
+        member => member.userid === state.mainBusiness.userid
+      );
+      newMainBusinessRole["user_role"] = mainBusinessUser.user_role;
+      return {
+        ...state,
+        agencyTeamMembers: action.payload,
+        mainBusiness: { ...state.mainBusiness, ...newMainBusinessRole },
+        loadingTeamMembers: false
+      };
+    case actionTypes.SET_UPDATED_TEAM_MEMBER:
+      // update the userrole key in agencyTeamMembers when a member is updated
+      //so they don't have to refresh the list again
+      let newTeamMembers = state.agencyTeamMembers.map(member => {
+        if (member.userid === action.payload.userid) {
+          return { ...member, user_role: action.payload.userrole };
+        } else {
+          return member;
+        }
+      });
+      let updatedMainBusinessRole = state.mainBusiness;
+      //Update user_role key in mainBusiness if the updated member is the logged in user
+      if (updatedMainBusinessRole.userid === action.payload.userid) {
+        updatedMainBusinessRole["user_role"] = action.payload.userrole;
+      }
+      return {
+        ...state,
+        agencyTeamMembers: [...newTeamMembers],
+        mainBusiness: { ...state.mainBusiness, ...updatedMainBusinessRole },
+        loadingTeamMembers: false
+      };
+    case actionTypes.DELETE_TEAM_MEMBER:
+      let filteredAgencyTeamMembers = state.agencyTeamMembers.filter(
+        memebr => memebr.userid !== action.payload.userid
+      );
+      return {
+        ...state,
+        agencyTeamMembers: [...filteredAgencyTeamMembers],
+        loadingTeamMembers: false
+      };
+    case actionTypes.SET_TEAM_MEMBERS_LOADING:
+      return { ...state, loadingTeamMembers: action.payload };
+    //saves businessInvitee, invitedEmail and tempInivtedId from the navigation params of the deep_link
+    case actionTypes.SAVE_INVITEE_INFO:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case actionTypes.RESET_INVITEE_INFO:
+      return {
+        ...state,
+        businessInvitee: "",
+        tempInviteId: "",
+        invitedEmail: ""
+      };
+    case actionTypes.SET_TEAMINV_LOADING:
+      return { ...state, teamInviteLoading: action.payload };
     default:
       return state;
   }

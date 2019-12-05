@@ -122,15 +122,8 @@ const styles = StyleSheet.create({
   },
   background: {
     position: "absolute",
-    top: heightPercentageToDP(20),
-    transform: [
-      {
-        translateX: 0
-      },
-      {
-        translateY: 0
-      }
-    ],
+    top: "10%",
+
     opacity: 0.3,
     alignSelf: "center",
     zIndex: 0

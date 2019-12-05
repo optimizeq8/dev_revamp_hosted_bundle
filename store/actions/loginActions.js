@@ -3,22 +3,17 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage, Animated } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import { getBusinessAccounts } from "./accountManagementActions";
+import {
+  getBusinessAccounts,
+  saveBusinessInvitee
+} from "./accountManagementActions";
 import { setAuthToken } from "./genericActions";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
 import { update_app_status_chat_notification } from "./genericActions";
-
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
+import createBaseUrl from "./createBaseUrl";
 
 export const chanege_base_url = admin => {
   return dispatch => {
@@ -75,6 +70,7 @@ export const send_push_notification = () => {
 
 export const checkForExpiredToken = navigation => {
   return (dispatch, getState) => {
+    dispatch({ type: actionTypes.CHECKING_FOR_TOKEN, payload: true });
     return SecureStore.getItemAsync("token").then(token => {
       if (token) {
         const currentTime = Date.now() / 1000;
@@ -120,14 +116,22 @@ export const checkForExpiredToken = navigation => {
                 dispatch(clearPushToken(navigation, user.userid));
               }
             })
-            .catch(errorToken => {
-              // console.log('token error', errorToken.response || errorToken.message);
-              dispatch(clearPushToken(navigation, user.userid));
+            .then(() => {
+              dispatch({
+                type: actionTypes.CHECKING_FOR_TOKEN,
+                payload: false
+              });
+
+              navigation && navigation.navigate("Dashboard");
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
         }
-      }
+      } else
+        dispatch({
+          type: actionTypes.CHECKING_FOR_TOKEN,
+          payload: false
+        });
     });
   };
 };
@@ -188,7 +192,18 @@ export const login = (userData, navigation) => {
               temp_pwd: true
             });
           } else {
-            navigation.navigate("Dashboard");
+            dispatch(
+              saveBusinessInvitee({
+                tempInviteId: navigation.getParam("v", ""),
+                businessInvitee: navigation.getParam("business", ""),
+                invitedEmail: navigation.getParam("email", "")
+              })
+            );
+            navigation.navigate("Dashboard", {
+              v: navigation.getParam("v", ""),
+              business: navigation.getParam("business", ""),
+              email: navigation.getParam("email", "")
+            });
           }
 
           dispatch(getBusinessAccounts());
@@ -214,11 +229,19 @@ export const login = (userData, navigation) => {
 };
 
 export const logout = navigation => {
-  return dispatch => {
+  return (dispatch, getState) => {
     setAuthToken()
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
-        navigation.navigate("Signin", { loggedout: true });
+        navigation.navigate("Signin", {
+          loggedout: true,
+          v: navigation.getParam("v", false) || getState().account.tempInviteId,
+          business:
+            navigation.getParam("business", "") ||
+            getState().account.businessInvitee,
+          email:
+            navigation.getParam("email", "") || getState().account.invitedEmail
+        });
       });
   };
 };

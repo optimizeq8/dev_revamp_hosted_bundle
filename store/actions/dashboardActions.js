@@ -4,15 +4,8 @@ import * as actionTypes from "./actionTypes";
 import * as Segment from "expo-analytics-segment";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
+import createBaseUrl from "./createBaseUrl";
 import { get_languages } from "./campaignActions";
-createBaseUrl = () =>
-  axios.create({
-    baseURL: store.getState().login.admin
-      ? "https://optimizekwtestingserver.com/optimize/public/"
-      : "https://www.optimizeapp.com/optimize/public/"
-    // baseURL: "https://www.optimizeapp.com/optimize/public/"
-  });
-const instance = createBaseUrl();
 
 export const filterCampaigns = query => {
   return {

@@ -76,7 +76,14 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 20,
-    paddingBottom: hp("30")
+    paddingBottom: hp("30"),
+    paddingHorizontal: "10%"
+  },
+  headings: {
+    fontFamily: "montserrat-bold",
+    marginVertical: 10,
+    fontSize: 14,
+    color: "#575757"
   }
 });
 

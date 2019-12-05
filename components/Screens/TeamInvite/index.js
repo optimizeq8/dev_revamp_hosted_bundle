@@ -1,0 +1,205 @@
+import React, { Component } from "react";
+import { Text, View, I18nManager } from "react-native";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import Header from "../../MiniComponents/Header";
+import { connect } from "react-redux";
+import AddTeamIcon from "../../../assets/SVGs/AddTeam";
+import * as actionCreators from "../../../store/actions";
+import styles from "./styles";
+import { Button } from "native-base";
+import * as Segment from "expo-analytics-segment";
+
+import { Bold } from "../../MiniComponents/StyledComponents";
+import Loading from "../../MiniComponents/LoadingScreen";
+class TeamInvite extends Component {
+  state = { wrongEmail: false, loggedOut: false };
+  componentDidMount() {
+    if (this.props.navigation.getParam("v", false)) {
+      this.checkTeamInvite();
+    } else if (this.props.businessInvitee) {
+      this.props.navigation.setParams({
+        v: this.props.tempInviteId,
+        email: this.props.invitedEmail,
+        business: this.props.businessInvitee
+      });
+      this.checkTeamInvite();
+    }
+  }
+
+  /**
+   * Saves the navigation params in the store and checks if the correct invited user is logged in
+   */
+  checkTeamInvite = () => {
+    if (
+      this.props.navigation.getParam("v", false) &&
+      this.props.navigation.getParam("business", false)
+    ) {
+      this.props.saveBusinessInvitee({
+        tempInviteId: this.props.navigation.getParam("v", ""),
+        businessInvitee: this.props.navigation.getParam("business", ""),
+        invitedEmail: this.props.navigation.getParam("email", false)
+      });
+      if (!this.props.userInfo) {
+        this.setState({ loggedOut: true });
+      } else if (
+        this.props.userInfo &&
+        this.props.navigation.getParam("email", false) !==
+          this.props.userInfo.email
+      ) {
+        this.setState({
+          wrongEmail: true
+        });
+      }
+    }
+  };
+
+  /**
+   * handles the accept button's function
+   */
+  handleCheckingInvite = () => {
+    let {
+      navigation,
+      userInfo,
+      clearPushToken,
+      logout,
+      tempInviteId
+    } = this.props;
+    if (this.state.wrongEmail || this.state.loggedOut) {
+      if (userInfo) clearPushToken(navigation, userInfo.userid);
+      else logout(navigation);
+    } else {
+      //Accept invite
+      this.props.handleTeamInvite({ status: 1, v: tempInviteId });
+    }
+  };
+  render() {
+    let { wrongEmail, loggedOut } = this.state;
+    let { businessInvitee, userInfo, tempInviteId } = this.props;
+
+    const { translate } = this.props.screenProps;
+
+    return (
+      <View style={{ margin: 0 }}>
+        <SafeAreaView
+          style={styles.safeAreaView}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
+          <NavigationEvents
+            onDidFocus={() => {
+              Segment.screen("TeamInvite");
+              this.checkTeamInvite();
+            }}
+          />
+          <Header
+            screenProps={this.props.screenProps}
+            actionButton={() => {
+              this.props.navigation.navigate(
+                userInfo ? "Dashboard" : "Signin",
+                {
+                  v: this.props.tempInviteId,
+                  email: this.props.invitedEmail,
+                  business: this.props.businessInvitee
+                }
+              );
+            }}
+          />
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <AddTeamIcon style={{ alignSelf: "center" }} />
+            <Text style={styles.title}>INVITATION</Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontFamily: "montserrat-regular",
+                  width: 250
+                }
+              ]}
+            >
+              {translate("You have been invited to join")}
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontFamily: "montserrat-bold",
+                  width: 250
+                }
+              ]}
+            >
+              {businessInvitee}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "column",
+              height: "30%",
+              justifyContent: "space-evenly"
+            }}
+          >
+            {(wrongEmail || loggedOut) && (
+              <Text style={[styles.wrongEmailText]}>
+                {translate("Please sign in with the correct email to accept.")}
+                <Bold>
+                  {"\n" + this.props.navigation.getParam("email", false)}
+                </Bold>
+              </Text>
+            )}
+            <Button
+              block
+              onPress={this.handleCheckingInvite}
+              style={styles.button}
+            >
+              <Text style={styles.textButton}>
+                {loggedOut
+                  ? "Sign in"
+                  : wrongEmail
+                  ? "Sign out"
+                  : translate("Accept")}
+              </Text>
+            </Button>
+            {!wrongEmail && (
+              <Button
+                block
+                onPress={() => this.handleInvite(0, tempInviteId)}
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: "#0000",
+                    borderColor: "#fff",
+                    borderWidth: 0.8
+                  }
+                ]}
+              >
+                <Text style={[styles.textButton]}>{translate("Decline")}</Text>
+              </Button>
+            )}
+          </View>
+          {this.props.teamInviteLoading && <Loading dash />}
+        </SafeAreaView>
+      </View>
+    );
+  }
+}
+const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo,
+  businessInvitee: state.account.businessInvitee,
+  tempInviteId: state.account.tempInviteId,
+  invitedEmail: state.account.invitedEmail,
+  teamInviteLoading: state.account.teamInviteLoading
+});
+
+const mapDispatchToProps = dispatch => ({
+  clearPushToken: (navigation, userid) =>
+    dispatch(actionCreators.clearPushToken(navigation, userid)),
+  logout: nav => dispatch(actionCreators.logout(nav)),
+  handleTeamInvite: status => dispatch(actionCreators.handleTeamInvite(status)),
+  saveBusinessInvitee: inviteeInfo =>
+    dispatch(actionCreators.saveBusinessInvitee(inviteeInfo))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamInvite);
