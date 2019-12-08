@@ -83,6 +83,15 @@ export default class PenIconBrand extends Component {
             }}
             onBlur={() => {
               this.setState({ input: false });
+              if (field === "Business Name") {
+                segmentEventTrack("Changed Business Name", {
+                  campaign_brand_name: brand_name
+                });
+              } else {
+                segmentEventTrack("Changed Headline", {
+                  campaign_headline: headline
+                });
+              }
               this.setState(
                 {
                   brand_nameError: validateWrapper(

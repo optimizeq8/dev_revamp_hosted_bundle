@@ -289,7 +289,7 @@ class AdObjective extends Component {
         campaign_error_ad_start_date: dateErrors.start_timeError
           ? dateErrors.start_timeError
           : "",
-        campaign_error_ad_start_date: dateErrors.end_timeError
+        campaign_error_ad_end_date: dateErrors.end_timeError
           ? dateErrors.end_timeError
           : ""
       });
@@ -381,6 +381,11 @@ class AdObjective extends Component {
    and validateWrapper object from input feilds 
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
+    if (validObj) {
+      segmentEventTrack(`Error in ${stateError}`, {
+        campaign_error: validObj
+      });
+    }
     let state = {};
     state[stateError] = validObj;
     this.setState({

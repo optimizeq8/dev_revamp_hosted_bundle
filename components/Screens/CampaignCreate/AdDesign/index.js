@@ -364,9 +364,6 @@ class AdDesign extends Component {
   };
 
   changeBusinessName = brand_name => {
-    segmentEventTrack("Changed Business Name", {
-      campaign_brand_name: brand_name
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -382,9 +379,6 @@ class AdDesign extends Component {
       });
   };
   changeHeadline = headline => {
-    segmentEventTrack("Changed Headline", {
-      campaign_headline: headline
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -741,7 +735,7 @@ class AdDesign extends Component {
     ) {
       segmentEventTrack("Ad Design Submit Error", {
         campaign_brand_name_error: this.state.brand_nameError,
-        cmapign_headline_error: this.state.headlineError,
+        campaign_headline_error: this.state.headlineError,
         campaign_media_error: this.state.mediaError,
         campaign_swipeUp_error: this.state.swipeUpError
       });
@@ -759,7 +753,9 @@ class AdDesign extends Component {
       Segment.trackWithProperties("Completed Checkout Step", {
         checkout_id: this.props.campaign_id,
         step: 3,
-        business_name: this.props.mainBusiness.businessname
+        business_name: this.props.mainBusiness.businessname,
+        campaign_brand_name: this.state.campaignInfo.brand_name,
+        campaign_headline: this.state.campaignInfo.headline
       });
       await formatMedia(
         this.state.iosVideoUploaded,

@@ -739,10 +739,57 @@ class AdDetails extends Component {
           campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
           campaign_id: this.props.campaign_id
         });
+        let interestNamesList = [];
+        interestNamesList =
+          this.state.interestNames &&
+          this.state.interestNames.length > 0 &&
+          this.state.interestNames.map(inter => inter.name);
         Segment.trackWithProperties("Completed Checkout Step", {
           checkout_id: this.props.campaign_id,
           step: 4,
-          business_name: this.props.mainBusiness.businessname
+          business_name: this.props.mainBusiness.businessname,
+          campaign_budget: this.state.campaignInfo.lifetime_budget_micro,
+          campaign_gender:
+            this.state.campaignInfo.targeting.demographics[0].gender === ""
+              ? "ALL"
+              : this.state.campaignInfo.targeting.demographics[0].gender,
+          campaign_max_age: this.state.campaignInfo.targeting.demographics[0]
+            .max_age,
+          campaign_min_age: this.state.campaignInfo.targeting.demographics[0]
+            .min_age,
+          campaign_country_name: this.state.countryName,
+          campaign_region_names:
+            this.state.regionNames && this.state.regionNames.length > 0
+              ? this.state.regionNames.join(", ")
+              : null,
+          campaign_languages:
+            this.state.campaignInfo.targeting.demographics[0].languages &&
+            this.state.campaignInfo.targeting.demographics[0].languages.length >
+              0
+              ? this.state.campaignInfo.targeting.demographics[0].languages.join(
+                  ", "
+                )
+              : null,
+          campaign_min_version: this.state.campaignInfo.targeting.devices[0]
+            .os_version_min,
+          campaign_max_version: this.state.campaignInfo.targeting.devices[0]
+            .os_version_max,
+          campaign_os_type:
+            this.state.campaignInfo.targeting.devices[0].os_type === ""
+              ? "ALL"
+              : this.state.campaignInfo.targeting.devices[0].os_type,
+          campaign_devices_name:
+            this.state.campaignInfo.targeting.devices[0].marketing_name &&
+            this.state.campaignInfo.targeting.devices[0].marketing_name.length >
+              0
+              ? this.state.campaignInfo.targeting.devices[0].marketing_name.join(
+                  ", "
+                )
+              : null,
+          campaign_interests_names:
+            interestNamesList && interestNamesList.length > 0
+              ? interestNamesList.join(", ")
+              : null
         });
         this.props.ad_details(
           rep,
