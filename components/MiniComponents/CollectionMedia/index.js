@@ -766,12 +766,6 @@ class CollectionMedia extends Component {
                           autoCorrect={false}
                           autoCapitalize="none"
                           onChangeText={value => {
-                            segmentEventTrack(
-                              "Changed Collection Media deep link url Attachment",
-                              {
-                                campaign_collection_attachment: value
-                              }
-                            );
                             this.setState({
                               collection: {
                                 ...this.state.collection,
@@ -780,6 +774,13 @@ class CollectionMedia extends Component {
                             });
                           }}
                           onBlur={async () => {
+                            segmentEventTrack(
+                              "Changed Collection Media deep link url Attachment",
+                              {
+                                campaign_collection_attachment: this.state
+                                  .collection.collection_attachment
+                              }
+                            );
                             const valid = await this.validateDeepLinkUrl();
                             if (!valid) {
                               segmentEventTrack(
@@ -874,12 +875,6 @@ class CollectionMedia extends Component {
                               autoCorrect={false}
                               autoCapitalize="none"
                               onChangeText={value => {
-                                segmentEventTrack(
-                                  "Changed Collection Media Website url",
-                                  {
-                                    campaign_collection_ad_website_url: value
-                                  }
-                                );
                                 this.setState({
                                   collection: {
                                     ...this.state.collection,
@@ -889,6 +884,13 @@ class CollectionMedia extends Component {
                                 });
                               }}
                               onBlur={async () => {
+                                segmentEventTrack(
+                                  "Changed Collection Media Website url",
+                                  {
+                                    campaign_collection_ad_website_url: this
+                                      .state.collection.collection_attachment
+                                  }
+                                );
                                 const valid = await this.validateUrl();
                                 if (!valid) {
                                   segmentEventTrack(

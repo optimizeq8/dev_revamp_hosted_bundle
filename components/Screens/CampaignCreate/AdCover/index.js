@@ -188,9 +188,7 @@ class AdCover extends Component {
       coverHeadlineError: validateWrapper("mandatory", coverHeadline),
       headlineRejectionUpload: true
     });
-    segmentEventTrack("Changed Story Ad Cover Headline", {
-      campaign_stoty_ad_cover_headline: coverHeadline
-    });
+
     !this.rejected &&
       this.props.save_campaign_info({
         coverHeadline,

@@ -134,15 +134,6 @@ export default class EditProductDetail extends React.Component {
                             autoCorrect={false}
                             autoCapitalize="none"
                             onChangeText={value => {
-                              segmentEventTrack(
-                                "Changed Product Name Sme Growth",
-                                {
-                                  campaign_sme_product_item: {
-                                    ...this.state.item,
-                                    productName: value
-                                  }
-                                }
-                              );
                               this.setState({
                                 item: {
                                   ...this.state.item,
@@ -150,6 +141,16 @@ export default class EditProductDetail extends React.Component {
                                 },
                                 productNameError: value.length === 0
                               });
+                            }}
+                            onBlur={() => {
+                              segmentEventTrack(
+                                "Changed Product Name Sme Growth",
+                                {
+                                  campaign_sme_product_item: {
+                                    ...this.state.item
+                                  }
+                                }
+                              );
                             }}
                             // onBlur={() => this.validateUrl()}
                           />
@@ -180,15 +181,6 @@ export default class EditProductDetail extends React.Component {
                             autoCorrect={false}
                             autoCapitalize="none"
                             onChangeText={value => {
-                              segmentEventTrack(
-                                "Changed Product Price Sme Growth",
-                                {
-                                  campaign_sme_product_item: {
-                                    ...this.state.item,
-                                    price: value
-                                  }
-                                }
-                              );
                               this.setState({
                                 item: {
                                   ...this.state.item,
@@ -196,6 +188,16 @@ export default class EditProductDetail extends React.Component {
                                 },
                                 priceError: value.length === 0
                               });
+                            }}
+                            onBlur={() => {
+                              segmentEventTrack(
+                                "Changed Product Price Sme Growth",
+                                {
+                                  campaign_sme_product_item: {
+                                    ...this.state.item
+                                  }
+                                }
+                              );
                             }}
                             // onBlur={() => this.validateUrl()}
                           />

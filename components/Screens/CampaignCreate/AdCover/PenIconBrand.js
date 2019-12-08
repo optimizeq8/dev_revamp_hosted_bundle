@@ -51,6 +51,9 @@ export default class PenIconBrand extends Component {
               this.setState({ input: true });
             }}
             onBlur={() => {
+              segmentEventTrack("Changed Story Ad Cover Headline", {
+                campaign_stoty_ad_cover_headline: this.props.coverHeadline
+              });
               this.setState({ input: false });
               this.setState(
                 {

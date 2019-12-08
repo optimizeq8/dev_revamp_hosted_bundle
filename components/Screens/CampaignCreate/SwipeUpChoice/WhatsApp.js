@@ -346,9 +346,6 @@ class WhatsApp extends Component {
     });
   };
   changeInstaHandle = value => {
-    segmentEventTrack("Changed SME Growth Instagram Handle", {
-      campaign_insta_handle: value
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -357,9 +354,6 @@ class WhatsApp extends Component {
     });
   };
   changeWebUrl = value => {
-    segmentEventTrack("Changed SME Growth Web URL", {
-      campaign_weburl: value.replace(/[^0-9a-z]/gi, "")
-    });
     this.setState({
       campaignInfo: {
         ...this.state.campaignInfo,
@@ -372,9 +366,6 @@ class WhatsApp extends Component {
     if (value.includes("https:")) {
       const link = value.substring(value.indexOf("https:") + 1);
       // console.log("link", "h" + link);
-      segmentEventTrack("Changed SME Growth Google Map Location", {
-        campaign_googlemaplink: value === "" ? "" : "h" + link
-      });
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -382,9 +373,6 @@ class WhatsApp extends Component {
         }
       });
     } else {
-      segmentEventTrack("Changed Google Map Location", {
-        campaign_googlemaplink: value
-      });
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -489,6 +477,9 @@ class WhatsApp extends Component {
                     autoCapitalize="none"
                     onChangeText={value => this.changeWebUrl(value)}
                     onBlur={async () => {
+                      segmentEventTrack("Changed SME Growth Web URL", {
+                        campaign_weburl: this.state.campaignInfo.weburl
+                      });
                       const valid = await this.validate();
                       if (!valid) {
                         segmentEventTrack("Error on blur sme growth weburl", {
@@ -591,6 +582,10 @@ class WhatsApp extends Component {
                   autoCapitalize="none"
                   onChangeText={value => this.changeInstaHandle(value)}
                   onBlur={async () => {
+                    segmentEventTrack("Changed SME Growth Instagram Handle", {
+                      campaign_insta_handle: this.state.campaignInfo
+                        .insta_handle
+                    });
                     this.validate();
                     await this.props.verifyInstagramHandle(
                       this.state.campaignInfo.insta_handle
@@ -720,6 +715,12 @@ class WhatsApp extends Component {
                   autoCapitalize="none"
                   onChangeText={value => this.changeGoogleMapLocation(value)}
                   onBlur={async () => {
+                    segmentEventTrack(
+                      "Changed SME Growth Google Map Location",
+                      {
+                        campaign_googlemaplink: this.state.googleMapLinkError
+                      }
+                    );
                     await this.validateUrl();
                     if (this.state.googleMapLinkError) {
                       segmentEventTrack(

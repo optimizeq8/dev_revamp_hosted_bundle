@@ -348,14 +348,14 @@ class AppChoice extends Component {
                       autoCorrect={false}
                       autoCapitalize="none"
                       onChangeText={value => {
-                        segmentEventTrack("Changed Deep Link Url", {
-                          campaign_deep_link_url: value
-                        });
                         this.setState({
                           deep_link_uri: value
                         });
                       }}
                       onBlur={async () => {
+                        segmentEventTrack("Changed Deep Link Url", {
+                          campaign_deep_link_url: this.state.deep_link_uri
+                        });
                         const valid = await this.validateUrl();
                         if (!valid) {
                           segmentEventTrack("Error on Blur Deep Link URL", {
