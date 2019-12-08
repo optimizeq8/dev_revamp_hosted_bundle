@@ -5,6 +5,7 @@ import PenIcon from "../../../../assets/SVGs/Pen";
 
 import styles from "./styles";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../../segmentEventTrack";
 export default class PenIconBrand extends Component {
   state = { input: false, brand_nameError: "" };
   render() {
@@ -82,12 +83,39 @@ export default class PenIconBrand extends Component {
             }}
             onBlur={() => {
               this.setState({ input: false });
-              this.setState({
-                brand_nameError: validateWrapper(
-                  "mandatory",
-                  field === "Business Name" ? brand_name : headline
-                )
-              });
+              if (field === "Business Name") {
+                segmentEventTrack("Changed Business Name", {
+                  campaign_brand_name: brand_name
+                });
+              } else {
+                segmentEventTrack("Changed Headline", {
+                  campaign_headline: headline
+                });
+              }
+              this.setState(
+                {
+                  brand_nameError: validateWrapper(
+                    "mandatory",
+                    field === "Business Name" ? brand_name : headline
+                  )
+                },
+                () => {
+                  if (this.state.brand_nameError) {
+                    segmentEventTrack(
+                      `Error occured on blur of ${
+                        field === "Business Name" ? "Brand Name" : "Headline"
+                      } Ad Design Screen`,
+                      {
+                        [`${
+                          field === "Business Name"
+                            ? "camapign_error_brand_name"
+                            : "campaign_error_headline"
+                        }`]: this.state.brand_nameError
+                      }
+                    );
+                  }
+                }
+              );
             }}
           />
         </View>

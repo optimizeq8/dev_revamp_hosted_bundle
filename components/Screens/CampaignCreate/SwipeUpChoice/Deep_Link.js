@@ -20,6 +20,8 @@ import list from "../../../Data/callactions.data";
 import { connect } from "react-redux";
 import * as actionsCreators from "../../../../store/actions";
 
+import segmentEventTrack from "../../../segmentEventTrack";
+
 class Deep_Link extends Component {
   static navigationOptions = {
     header: null
@@ -103,7 +105,16 @@ class Deep_Link extends Component {
     iosApp_name,
     androidApp_name
   ) => {
+    if (nameError || callActionError) {
+      segmentEventTrack("Error Swipeup DeepLink", {
+        campaign_error_deeplink: nameError,
+        campaign_error_call_to_action: callActionError
+      });
+    }
     if (!nameError && !callActionError) {
+      segmentEventTrack(`Submitted Selected App Success for ${appChoice}`, {
+        caampaign_app_name: appChoice === "iOS" ? iosApp_name : androidApp_name
+      });
       this.setState({
         attachment,
         callaction

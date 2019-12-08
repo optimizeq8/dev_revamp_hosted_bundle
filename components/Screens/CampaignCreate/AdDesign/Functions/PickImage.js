@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
+import segmentEventTrack from "../../../../segmentEventTrack";
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -115,6 +116,9 @@ export const _pickImage = async (
                   position: "top",
                   type: "warning"
                 });
+                segmentEventTrack("Seleeted Image Error", {
+                  campaign_error_image: "Image must be less than 5 MBs"
+                });
                 return Promise.reject("Image must be less than 5 MBs");
               }
 
@@ -175,6 +179,7 @@ export const _pickImage = async (
                   position: "top",
                   type: "success"
                 });
+                segmentEventTrack("Selected Image Successful");
                 !rejected &&
                   save_campaign_info({
                     media: result.uri,
@@ -187,6 +192,9 @@ export const _pickImage = async (
               // console.log(error);
 
               onToggleModal(false);
+              segmentEventTrack("Seleeted Image Error", {
+                campaign_error_image: "The dimensions are too large"
+              });
               showMessage({
                 message:
                   error ||
@@ -219,6 +227,10 @@ export const _pickImage = async (
               type: ""
             });
           onToggleModal(false);
+          segmentEventTrack("Seleeted Image Error", {
+            campaign_error_image:
+              "Image's aspect ratio must be 9:16 with a minimum size of 1080px x 1920px"
+          });
           showMessage({
             message: translate(
               "Image's aspect ratio must be 9:16\nwith a minimum size of 1080px x 1920px"
@@ -238,6 +250,7 @@ export const _pickImage = async (
             iosVideoUploaded: false
           });
           onToggleModal(false);
+          segmentEventTrack("Selected Image successfully");
           showMessage({
             message: translate("Image has been selected successfully"),
             position: "top",
@@ -262,6 +275,9 @@ export const _pickImage = async (
               media: "//",
               type: ""
             });
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video: "Maximum video duration is 10 seconds"
+          });
           showMessage({
             message: translate("Maximum video duration is 10 seconds"),
             description:
@@ -287,6 +303,9 @@ export const _pickImage = async (
               media: "//",
               type: ""
             });
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video: "Minimum video duration is 3 seconds"
+          });
           showMessage({
             message: translate("Minimum video duration is 3 seconds"),
             description:
@@ -310,6 +329,9 @@ export const _pickImage = async (
               media: "//",
               type: ""
             });
+          segmentEventTrack("Selected Video Error", {
+            videoError: "Allowed video size is up to 32 MBs"
+          });
           showMessage({
             message: translate("Allowed video size is up to {{fileSize}} MBs", {
               fileSize: 32
@@ -367,6 +389,7 @@ export const _pickImage = async (
               sourceChanging: true
             });
             onToggleModal(false);
+            segmentEventTrack("Selected Video Successfully");
             showMessage({
               message: translate("Video has been selected successfully"),
               position: "top",
@@ -394,6 +417,11 @@ export const _pickImage = async (
               type: ""
             });
           onToggleModal(false);
+          segmentEventTrack("Selected Video Error", {
+            campaign_error_video:
+              "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
+          });
+
           showMessage({
             message: translate(
               "Video's aspect ratio must be 9:16\nwith a minimum size of 1080 x 1920"
@@ -413,6 +441,7 @@ export const _pickImage = async (
         position: "top",
         type: "warning"
       });
+      segmentEventTrack("Image Picker closed without selecting a media file");
       setTheState({
         mediaError: "Please choose a media file.",
         media: "//"

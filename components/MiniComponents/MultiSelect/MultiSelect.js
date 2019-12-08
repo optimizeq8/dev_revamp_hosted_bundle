@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-navigation";
 import SelectDevices from "./SelectDevices";
 import SelectInterests from "./SelectInterests";
 import SelectVersions from "./SelectVersions";
+import * as Segment from "expo-analytics-segment";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location";
@@ -39,6 +40,9 @@ class MultiSelectList extends Component {
       selectedDevices: this.props.selectedDevices,
       selectedVersions: this.props.selectedVersions
     });
+    if (this.props.option === "countries") {
+      Segment.screen("Country Options");
+    }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -218,7 +222,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   get_interests: info => dispatch(actionCreators.get_interests(info))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MultiSelectList);
+export default connect(mapStateToProps, mapDispatchToProps)(MultiSelectList);

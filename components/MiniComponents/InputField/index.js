@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 
 //styles
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import segmentEventTrack from "../../segmentEventTrack";
 
 export default class InputField extends Component {
   state = {
@@ -97,9 +98,19 @@ export default class InputField extends Component {
     this.setState({ highlight: false });
     //check if function is being called from the second part of the input feild
     //Either way, sets the values for the parent component
-    if (secondHalf)
+    if (secondHalf) {
+      // set segments
+      segmentEventTrack(`${this.props.stateName2} Feild on Blur`, {
+        [`campaign_${this.props.stateName2}`]: this.props.value2
+      });
       this.props.setValue(this.props.stateName2, this.props.value2);
-    else this.props.setValue(this.props.stateName1, this.props.value);
+    } else {
+      // set segments
+      segmentEventTrack(`${this.props.stateName1} Feild on Blur`, {
+        [`campaign_${this.props.stateName1}`]: this.props.value
+      });
+      this.props.setValue(this.props.stateName1, this.props.value);
+    }
     this.validate(secondHalf);
   };
   /**

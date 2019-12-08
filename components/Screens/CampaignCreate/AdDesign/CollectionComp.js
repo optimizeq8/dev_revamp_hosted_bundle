@@ -8,6 +8,7 @@ import PlusCircle from "../../../../assets/SVGs/PlusCircle";
 
 import styles from "./styles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import segmentEventTrack from "../../../segmentEventTrack";
 class CollectionComp extends Component {
   render() {
     let {
@@ -68,6 +69,7 @@ class CollectionComp extends Component {
             justifyContent: "center"
           }}
           onPress={() => {
+            segmentEventTrack("Button clicked to go to Collection Media");
             navigation.push("CollectionMedia", {
               collection_order: collIdx,
               rejected: rejected,
@@ -101,6 +103,7 @@ class CollectionComp extends Component {
                 backgroundColor: "#FF9D00"
               }}
               onPress={() => {
+                segmentEventTrack("Button clicked to go to Collection Media");
                 navigation.push("CollectionMedia", {
                   collection_order: collIdx,
                   rejected: rejected,
@@ -129,7 +132,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CollectionComp);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionComp);

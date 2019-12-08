@@ -10,6 +10,7 @@ import * as actionCreators from "../../../../../store/actions";
 import { globalColors } from "../../../../../GlobalStyles";
 import PenIcon from "../../../../../assets/SVGs/Pen.svg";
 import RNImageOrCacheImage from "../../../../MiniComponents/RNImageOrCacheImage";
+import segmentEventTrack from "../../../../segmentEventTrack";
 class SnapCard extends Component {
   state = { uploading: false };
   render() {
@@ -95,12 +96,14 @@ class SnapCard extends Component {
             />
           ) : (
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
+                segmentEventTrack("Button clicked to edit snap story ad card");
+
                 _handleStoryAdCards({
                   index: snapCardInfo.index,
                   ...snapCardInfo.item
-                })
-              }
+                });
+              }}
               style={{
                 flexDirection: "row",
                 alignItems: "flex-end",
@@ -133,7 +136,7 @@ class SnapCard extends Component {
           <Icon
             onPress={() => {
               //   this.props.cancelUpload();
-
+              segmentEventTrack("Button clicked to delete snap story ad card");
               !this.props.loadingStoryAdsArray[snapCardInfo.index] &&
                 this.props.deleteStoryAdCard(
                   snapCardInfo.item.story_id,
@@ -164,7 +167,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.deleteStoryAdCard(story_id, card, removeCard))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SnapCard);
+export default connect(mapStateToProps, mapDispatchToProps)(SnapCard);

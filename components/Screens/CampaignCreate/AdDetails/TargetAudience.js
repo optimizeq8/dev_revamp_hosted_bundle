@@ -27,6 +27,7 @@ import globalStyles, { globalColors } from "../../../../GlobalStyles";
 import { Icon } from "native-base";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
+import segmentEventTrack from "../../../segmentEventTrack";
 export class TargetAudience extends Component {
   state = { scrollY: 1, advance: true };
   handleFading = event => {
@@ -70,6 +71,7 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack("Cliked button to open sidemenu for Gender");
                 _renderSideMenu("gender");
               }}
               style={styles.targetTouchable}
@@ -100,6 +102,7 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack("Cliked button to open sidemenu for Age");
                 _renderSideMenu("age");
               }}
               style={styles.targetTouchable}
@@ -132,6 +135,7 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack("Cliked button to open sidemenu for Country");
                 _renderSideMenu("selectors", "countries");
               }}
               style={styles.targetTouchable}
@@ -158,6 +162,9 @@ export class TargetAudience extends Component {
             {mainState.showRegions && (
               <TouchableOpacity
                 onPress={() => {
+                  segmentEventTrack(
+                    "Cliked button to open sidemenu for Region"
+                  );
                   _renderSideMenu("regions");
                 }}
                 style={styles.targetTouchable}
@@ -199,6 +206,9 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack(
+                  "Cliked button to open sidemenu for Language"
+                );
                 _renderSideMenu("languages");
               }}
               style={styles.targetTouchable}
@@ -223,13 +233,24 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
-                targeting.geos[0].country_code === ""
-                  ? showMessage({
-                      message: translate("Please select a country first"),
-                      position: "top",
-                      type: "warning"
-                    })
-                  : _renderSideMenu("selectors", "interests");
+                if (targeting.geos[0].country_code === "") {
+                  segmentEventTrack(
+                    "Error occured on button click to open sidemenu for Interests",
+                    {
+                      campaign_interest_error: "Please select a country first"
+                    }
+                  );
+                  showMessage({
+                    message: translate("Please select a country first"),
+                    position: "top",
+                    type: "warning"
+                  });
+                } else {
+                  segmentEventTrack(
+                    "Cliked button to open sidemenu for Interests"
+                  );
+                  _renderSideMenu("selectors", "interests");
+                }
               }}
               style={styles.targetTouchable}
             >
@@ -254,6 +275,7 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack("Cliked button to open sidemenu for OS");
                 _renderSideMenu("OS");
               }}
               style={styles.targetTouchable}
@@ -291,6 +313,9 @@ export class TargetAudience extends Component {
               <TouchableOpacity
                 disabled={loading}
                 onPress={() => {
+                  segmentEventTrack(
+                    "Cliked button to open sidemenu for Device Version"
+                  );
                   _renderSideMenu("selectors", "deviceVersions");
                 }}
                 style={styles.targetTouchable}
@@ -328,6 +353,9 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => {
+                segmentEventTrack(
+                  "Cliked button to open sidemenu for Device Brands"
+                );
                 _renderSideMenu("selectors", "deviceBrands");
               }}
               style={styles.targetTouchable}
@@ -381,7 +409,4 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TargetAudience);
+export default connect(mapStateToProps, mapDispatchToProps)(TargetAudience);

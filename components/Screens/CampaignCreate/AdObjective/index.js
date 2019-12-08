@@ -47,6 +47,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
+import segmentEventTrack from "../../../segmentEventTrack";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
@@ -203,6 +204,9 @@ class AdObjective extends Component {
       },
       objectiveLabel: choice.label
     });
+    segmentEventTrack("Selected Ad Objective", {
+      campaign_objective: choice.label
+    });
     this.props.save_campaign_info({
       objective: choice.value,
       objectiveLabel: choice.label,
@@ -220,6 +224,9 @@ class AdObjective extends Component {
         start_time: date
       }
     });
+    segmentEventTrack("Selected Campaign Start Date", {
+      campaign_start_date: date
+    });
     this.props.save_campaign_info({ start_time: date });
   };
   handleEndDatePicked = date => {
@@ -229,12 +236,18 @@ class AdObjective extends Component {
         end_time: date
       }
     });
+    segmentEventTrack("Selected Campaign End Date", {
+      campaign_end_date: date
+    });
     this.props.save_campaign_info({
       end_time: date,
       campaignDateChanged: true
     });
   };
   setModalVisible = visible => {
+    if (visible) {
+      Segment.screen("Ad Objective Modal");
+    }
     this.setState({ modalVisible: visible });
   };
 
@@ -263,20 +276,43 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
+    // In case error in any feild keep track
+    if (
+      nameError ||
+      objectiveError ||
+      dateErrors.start_timeError ||
+      dateErrors.end_timeError
+    ) {
+      segmentEventTrack("Error occured on ad objective screen sumbit button", {
+        campaign_error_ad_name: nameError ? nameError : "",
+        campaign_error_ad_objective: objectiveError ? objectiveError : "",
+        campaign_error_ad_start_date: dateErrors.start_timeError
+          ? dateErrors.start_timeError
+          : "",
+        campaign_error_ad_end_date: dateErrors.end_timeError
+          ? dateErrors.end_timeError
+          : ""
+      });
+    }
     if (
       !nameError &&
       !objectiveError &&
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      Segment.trackWithProperties("Select Ad Objective", {
-        business_name: this.props.mainBusiness.businessname,
-        campaign_objective: this.state.campaignInfo.objective
-      });
       Segment.trackWithProperties("Completed Checkout Step", {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
-        campaign_objective: this.state.campaignInfo.objective
+        campaign_ad_name: this.state.campaignInfo.name,
+        campaign_start_date: this.state.campaignInfo.start_time,
+        campaign_end_date: this.state.campaignInfo.end_time,
+        campaign_objective: this.state.campaignInfo.objective,
+        campaign_collection_ad_link_form:
+          this.props.adType === "CollectionAd"
+            ? this.state.collectionAdLinkForm === 1
+              ? "Website"
+              : "App DeepLink"
+            : null
       });
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
@@ -345,6 +381,11 @@ class AdObjective extends Component {
    and validateWrapper object from input feilds 
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
+    if (validObj) {
+      segmentEventTrack(`Error in ${stateError}`, {
+        campaign_error: validObj
+      });
+    }
     let state = {};
     state[stateError] = validObj;
     this.setState({
@@ -499,6 +540,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm1
                       ]}
                       onPress={() => {
+                        segmentEventTrack("Selected Collection Ad Link Form ", {
+                          campaign_collection_ad_link_form: "Website"
+                        });
                         this._handleCollectionAdLinkForm(1);
                       }}
                     >
@@ -532,6 +576,9 @@ class AdObjective extends Component {
                         styles.collectionAdLinkForm2
                       ]}
                       onPress={() => {
+                        segmentEventTrack("Selected Collection Ad Link Form ", {
+                          campaign_collection_ad_link_form: "App DeepLink"
+                        });
                         this._handleCollectionAdLinkForm(2);
                       }}
                     >

@@ -5,6 +5,7 @@ import * as actionCreators from "../../../../../store/actions";
 
 import { connect } from "react-redux";
 import styles from "../styles";
+import segmentEventTrack from "../../../../segmentEventTrack";
 
 class AddCard extends Component {
   render() {
@@ -21,7 +22,10 @@ class AddCard extends Component {
           >
             <Button
               style={styles.addButtonStyle}
-              onPress={() => this.props.addSnapCard()}
+              onPress={() => {
+                segmentEventTrack("Button clicked to add snap story ad card");
+                this.props.addSnapCard();
+              }}
             >
               <Icon
                 style={{
@@ -45,7 +49,4 @@ const mapDispatchToProps = dispatch => ({
   addSnapCard: () => dispatch(actionCreators.addSnapCard())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddCard);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard);

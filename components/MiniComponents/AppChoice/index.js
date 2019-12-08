@@ -10,6 +10,7 @@ import isEmpty from "lodash/isEmpty";
 import { Item, Icon, Input, Text } from "native-base";
 import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
+import * as Segment from "expo-analytics-segment";
 import LowerButton from "../LowerButton";
 import KeyboradShift from "../../MiniComponents/KeyboardShift";
 import Picker from "../Picker";
@@ -28,6 +29,7 @@ import appConfirmStyles from "../AppConfirm/styles";
 import globalStyles from "../../../GlobalStyles";
 
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
+import segmentEventTrack from "../../segmentEventTrack";
 import AppSearchModal from "./AppSearchModal";
 import AppBox from "./AppBox";
 
@@ -154,6 +156,9 @@ class AppChoice extends Component {
   };
 
   setModalVisible = (isVisible, os) => {
+    if (isVisible) {
+      segmentEventTrack(`Button clicked to open search APP modal for ${os}`);
+    }
     this.setState({ isVisible, appSelection: os });
   };
 
@@ -226,6 +231,9 @@ class AppChoice extends Component {
 
   onSelectedCallToActionChange = value => {
     if (value && !isEmpty(value)) {
+      segmentEventTrack("Selected App Choice Call to Action", {
+        campaign_call_to_action: value[0].label
+      });
       this.setState(
         {
           callaction: {
@@ -283,8 +291,13 @@ class AppChoice extends Component {
                 </View>
                 <Item
                   onPress={() => {
-                    this.setState({
-                      inputCallToAction: true
+                    segmentEventTrack(
+                      "Button Clicked to open Call to action Modal"
+                    );
+                    this.setState({ inputCallToAction: true }, () => {
+                      if (this.state.inputCallToAction) {
+                        Segment.screen("Call to Action Modal");
+                      }
                     });
                   }}
                   // rounded
@@ -334,13 +347,22 @@ class AppChoice extends Component {
                       placeholderTextColor="white"
                       autoCorrect={false}
                       autoCapitalize="none"
-                      onChangeText={value =>
+                      onChangeText={value => {
                         this.setState({
                           deep_link_uri: value
-                        })
-                      }
-                      onBlur={() => {
-                        this.validateUrl();
+                        });
+                      }}
+                      onBlur={async () => {
+                        segmentEventTrack("Changed Deep Link Url", {
+                          campaign_deep_link_url: this.state.deep_link_uri
+                        });
+                        const valid = await this.validateUrl();
+                        if (!valid) {
+                          segmentEventTrack("Error on Blur Deep Link URL", {
+                            campaign_error_deep_link_url: this.state
+                              .deep_link_uriError
+                          });
+                        }
                       }}
                     />
                   </Item>
@@ -364,7 +386,10 @@ class AppChoice extends Component {
           {this.props.swipeUpDestination && (
             <Text
               style={styles.footerText}
-              onPress={() => this.props.toggleSideMenu()}
+              onPress={() => {
+                segmentEventTrack("Clicked Change Swipe-up Destination");
+                this.props.toggleSideMenu();
+              }}
             >
               {translate("Change Swipe-up Destination")}
             </Text>
@@ -385,7 +410,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppChoice);
+export default connect(mapStateToProps, mapDispatchToProps)(AppChoice);

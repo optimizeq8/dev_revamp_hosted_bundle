@@ -35,6 +35,7 @@ import BackDrop from "../../../assets/SVGs/BackDropIcon";
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../segmentEventTrack";
 
 class PaymentForm extends Component {
   static navigationOptions = {
@@ -98,9 +99,16 @@ class PaymentForm extends Component {
     //   this.reviewPurchase();
   };
   showRemoveAmountModal = () => {
-    this.setState({
-      showRemoveWalletAmount: !this.state.showRemoveWalletAmount
-    });
+    this.setState(
+      {
+        showRemoveWalletAmount: !this.state.showRemoveWalletAmount
+      },
+      () => {
+        if (this.state.showRemoveWalletAmount) {
+          Segment.screen("Remove Wallet Amount");
+        }
+      }
+    );
   };
   _openWebBrowserAsync = async () => {
     try {
@@ -276,6 +284,10 @@ class PaymentForm extends Component {
   };
 
   _handleChoice = choice => {
+    segmentEventTrack("Selected Payment Type", {
+      payment_type:
+        choice === 1 ? "Wallet" : choice === 2 ? "KNET" : "CREDIT CARD"
+    });
     this.setState({
       choice,
       payment_type: choice === 3 ? 2 : 1
@@ -295,6 +307,9 @@ class PaymentForm extends Component {
   };
 
   setShowWalletModal = value => {
+    if (value) {
+      Segment.screen("Payment through WALLET");
+    }
     this.setState({
       showWalletModal: value
     });
@@ -581,7 +596,13 @@ class PaymentForm extends Component {
                     )}
                   </Text>
                   <Button
-                    onPress={() => this.removeWalletAmountAndGoBack()}
+                    onPress={() => {
+                      segmentEventTrack(
+                        "Button clicked to CONFIRM remove wallet amount and go back to ad payment review screen"
+                      );
+
+                      this.removeWalletAmountAndGoBack();
+                    }}
                     style={styles.walletButton}
                   >
                     <Text style={styles.colorWhite}>
@@ -589,7 +610,12 @@ class PaymentForm extends Component {
                     </Text>
                   </Button>
                   <Button
-                    onPress={() => this.showRemoveAmountModal()}
+                    onPress={() => {
+                      segmentEventTrack(
+                        "Cancel Button clicked to close remove wallet amount modal"
+                      );
+                      this.showRemoveAmountModal();
+                    }}
                     style={styles.walletButton}
                   >
                     <Text style={styles.colorWhite}>{translate("Cancel")}</Text>
@@ -647,7 +673,4 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaymentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);
