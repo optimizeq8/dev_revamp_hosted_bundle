@@ -146,9 +146,8 @@ export default class EditProductDetail extends React.Component {
                               segmentEventTrack(
                                 "Changed Product Name Sme Growth",
                                 {
-                                  campaign_sme_product_item: {
-                                    ...this.state.item
-                                  }
+                                  campaign_sme_product_item_name: this.state
+                                    .item.productName
                                 }
                               );
                             }}
@@ -193,9 +192,8 @@ export default class EditProductDetail extends React.Component {
                               segmentEventTrack(
                                 "Changed Product Price Sme Growth",
                                 {
-                                  campaign_sme_product_item: {
-                                    ...this.state.item
-                                  }
+                                  campaign_sme_product_item_price: this.state
+                                    .item.price
                                 }
                               );
                             }}

@@ -358,10 +358,13 @@ class Website extends Component {
                             })
                           }
                           onBlur={async () => {
-                            segmentEventTrack("Error blur input Website", {
-                              campaign_website_url_attachment: this.state
-                                .campaignInfo.attachment
-                            });
+                            segmentEventTrack(
+                              "Changed Website URL attachment",
+                              {
+                                campaign_website_url_attachment: this.state
+                                  .campaignInfo.attachment
+                              }
+                            );
                             const valid = await this.validateUrl();
                             if (!valid) {
                               segmentEventTrack("Error blur input Website", {
