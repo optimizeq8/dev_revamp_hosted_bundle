@@ -39,6 +39,7 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../segmentEventTrack";
 const imageLogo = require("../../../assets/images/logo01.png");
 
 class Menu extends Component {
@@ -87,6 +88,7 @@ class Menu extends Component {
     }
   }
   handleNavigation = (route, checkForBusinessId = false) => {
+    segmentEventTrack(`Clicked ${route}`);
     const { translate } = this.props.screenProps;
     if (checkForBusinessId) {
       if (this.props.mainBusiness.hasOwnProperty("businessid")) {
