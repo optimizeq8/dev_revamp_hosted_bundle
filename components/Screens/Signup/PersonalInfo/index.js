@@ -294,7 +294,10 @@ class PersonalInfo extends Component {
                       autoCapitalize="none"
                       onChangeText={value =>
                         this.setState({
-                          userInfo: { ...this.state.userInfo, email: value }
+                          userInfo: {
+                            ...this.state.userInfo,
+                            email: value.trim()
+                          }
                         })
                       }
                       onFocus={() => {
@@ -305,7 +308,7 @@ class PersonalInfo extends Component {
                         this.setState({
                           emailError: validateWrapper(
                             "email",
-                            this.state.userInfo.email
+                            this.state.userInfo.email.trim()
                           )
                         });
                       }}
@@ -460,7 +463,4 @@ const mapDispatchToProps = dispatch => ({
   verifyEmail: (email, userInfo) =>
     dispatch(actionCreators.verifyEmail(email, userInfo))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PersonalInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
