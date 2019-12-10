@@ -317,7 +317,10 @@ class PersonalInfo extends Component {
                       value={this.state.userInfo.email}
                       onChangeText={value =>
                         this.setState({
-                          userInfo: { ...this.state.userInfo, email: value }
+                          userInfo: {
+                            ...this.state.userInfo,
+                            email: value.trim()
+                          }
                         })
                       }
                       onFocus={() => {
@@ -328,7 +331,7 @@ class PersonalInfo extends Component {
                         this.setState({
                           emailError: validateWrapper(
                             "email",
-                            this.state.userInfo.email
+                            this.state.userInfo.email.trim()
                           )
                         });
                       }}
