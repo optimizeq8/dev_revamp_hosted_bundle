@@ -548,8 +548,12 @@ class PaymentForm extends Component {
                 <Text
                   allowFontScaling={false}
                   onPress={() => {
-                    this.setState({ browserLoading: true });
-                    openTerms(this.closeBrowserLoading);
+                    // this.setState({ browserLoading: true });
+                    this.props.navigation.push("WebView", {
+                      url: "https://www.optimizeapp.com/terms_conditions",
+                      title: "Terms & Conditions"
+                    });
+                    // openTerms(this.closeBrowserLoading);
                   }}
                   style={[styles.link, styles.tNcText]}
                 >
@@ -647,7 +651,4 @@ const mapDispatchToProps = dispatch => ({
       )
     )
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaymentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentForm);
