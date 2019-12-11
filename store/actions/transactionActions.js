@@ -5,13 +5,13 @@ import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 
 export const getTransactions = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
     createBaseUrl()
-      .get(`paymentHistory`)
+      .get(`paymentHistory/${getState().account.mainBusiness.businessid}`)
       .then(res => {
         return res.data;
       })
