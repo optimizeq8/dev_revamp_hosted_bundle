@@ -563,8 +563,12 @@ class PaymentForm extends Component {
                 <Text
                   allowFontScaling={false}
                   onPress={() => {
-                    this.setState({ browserLoading: true });
-                    openTerms(this.closeBrowserLoading);
+                    this.props.navigation.push("WebView", {
+                      url: "https://www.optimizeapp.com/terms_conditions",
+                      title: "Terms & Conditions"
+                    });
+                    // this.setState({ browserLoading: true });
+                    // openTerms(this.closeBrowserLoading);
                   }}
                   style={[styles.link, styles.tNcText]}
                 >
