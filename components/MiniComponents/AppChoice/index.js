@@ -75,55 +75,51 @@ class AppChoice extends Component {
   };
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
-  }
-  //Took out all the if statements and setStates from componentDidMount and moved
-  //most of them to componentDidUpdate to eleminate unnecessary repitition of code
-  //from app_installs and deep_link's componentDidmounts
-  componentDidUpdate(prevProps) {
+    this.setState({
+      callaction:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list[0]
+          : list.SnapAd[this.props.listNum].call_to_action_list[0],
+      callactions:
+        this.props.adType === "CollectionAd"
+          ? list[this.props.adType][0].call_to_action_list
+          : list.SnapAd[this.props.listNum].call_to_action_list
+    });
     if (
-      prevProps.attachment !== this.props.attachment &&
-      this.props.attachment.app_name
+      this.props.data.hasOwnProperty("attachment") &&
+      this.props.data.attachment !== "BLANK"
     ) {
       this.setState({
         attachment: {
           ...this.state.attachment,
-          ...this.props.attachment
+          ...this.props.data.attachment
         },
-        deep_link_uri: this.props.attachment.deep_link_uri,
-        callaction: this.props.callaction
-          ? this.props.callaction
-          : this.props.adType === "CollectionAd"
-          ? list[this.props.adType][0].call_to_action_list[0]
-          : list.SnapAd[this.props.listNum].call_to_action_list[0],
-        callactions:
-          this.props.adType === "CollectionAd"
-            ? list[this.props.adType][0].call_to_action_list
-            : list.SnapAd[this.props.listNum].call_to_action_list
+        iosApp_name: this.props.data.iosApp_name,
+        androidApp_name: this.props.data.androidApp_name,
+        deep_link_uri: this.props.data.attachment.deep_link_uri,
+        callaction: this.props.data.call_to_action
       });
-
-      //only update the iosApp name if it was changed instead of updating everything
-      if (
-        prevProps.attachment.ios_app_id !== this.props.attachment.ios_app_id
-      ) {
-        this.setState({
-          iosApp_name: this.props.attachment.ios_app_id
-            ? this.props.attachment.app_name
-            : ""
-        });
-      }
-      //only update the androidApp name if it was changed instead of updating everything
-      if (
-        prevProps.attachment.android_app_url !==
-        this.props.attachment.android_app_url
-      ) {
-        this.setState({
-          androidApp_name: this.props.attachment.android_app_url
-            ? this.props.attachment.app_name
-            : ""
-        });
-      }
+    } else if (
+      this.props.storyAdAttachment.destination === "APP_INSTALL" ||
+      this.props.storyAdAttachment.destination === "DEEP_LINK"
+    ) {
+      this.setState({
+        attachment: {
+          ...this.state.attachment,
+          ...this.props.storyAdAttachment.attachment
+        },
+        iosApp_name: this.props.data.iosApp_name
+          ? this.props.data.iosApp_name
+          : "",
+        androidApp_name: this.props.data.androidApp_name
+          ? this.props.data.androidApp_name
+          : "",
+        callaction: this.props.storyAdAttachment.call_to_action
+      });
     }
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+  componentDidUpdate(prevProps) {
     if (prevProps.deep_link_uri !== this.props.deep_link_uri) {
       this.setState({ deep_link_uri: this.props.deep_link_uri });
     }
@@ -405,8 +401,7 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
   adType: state.campaignC.adType,
-  storyAdAttachment: state.campaignC.storyAdAttachment,
-  rejCampaign: state.dashboard.rejCampaign
+  storyAdAttachment: state.campaignC.storyAdAttachment
 });
 
 const mapDispatchToProps = dispatch => ({});

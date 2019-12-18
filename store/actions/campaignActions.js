@@ -208,10 +208,11 @@ export const ad_objective = (info, navigation) => {
         return data;
       })
       .then(data => {
-        data.success &&
-          navigation.push(
-            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-          );
+        data.success
+          ? navigation.push(
+              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+            )
+          : showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
         // console.log("ad_objective", err.message || err.response);
@@ -290,8 +291,7 @@ export const ad_design = (
       })
       .then(() => {
         onToggleModal(false);
-        //to not save the formatted data if it's for a rejection
-        !rejected && dispatch(save_campaign_info({ formatted: info }));
+        dispatch(save_campaign_info({ formatted: info }));
       })
       .then(() => {
         if (!rejected) navigation.push("AdDetails");
@@ -302,6 +302,7 @@ export const ad_design = (
             type: actionTypes.RESET_CAMPAING_INFO
           });
           navigation.navigate("Dashboard");
+          persistor.purge();
         }
       })
       .catch(err => {
@@ -669,12 +670,7 @@ export const updateCampaign = (info, businessid, navigation) => {
 
         return res.data;
       })
-      .then(data => {
-        return dispatch({
-          type: actionTypes.UPDATE_CAMPAIGN_DETAILS,
-          payload: data
-        });
-      })
+      .then(data => {})
       .then(() => {
         navigation.navigate("Dashboard");
       })

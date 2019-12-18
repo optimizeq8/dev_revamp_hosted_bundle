@@ -70,10 +70,15 @@ class WhatsApp extends Component {
   componentDidMount() {
     if (
       (this.props.data && this.props.data.hasOwnProperty("attachment")) ||
-      //added checking for a rejected campaign so that call to action is set
-      this.props.rejCampaign ||
       this.props.mainBusiness.hasOwnProperty("weburl")
+      // &&
+      // this.props.data.attachment !== "BLANK"
+      // ||
+      // this.props.mainBusiness.whatsappnumber !== ""
     ) {
+      // console.log('capmaignDetail', this.props.data);
+      // console.log('mainBusinessInstaHandle', this.props.mainBusiness);
+
       this.setState({
         campaignInfo: {
           ...this.state.campaignInfo,
@@ -107,16 +112,41 @@ class WhatsApp extends Component {
               : this.props.mainBusiness.googlemaplink
               ? this.props.mainBusiness.googlemaplink
               : "",
-          //added checking for a rejected campaign so that call to action is set
-          callaction: this.props.rejCampaign
-            ? this.props.rejCampaign.call_to_action
-            : this.props.data &&
-              this.props.data.call_to_action &&
-              this.props.data.call_to_action.value !== "BLANK"
-            ? this.props.data.call_to_action
-            : list.SnapAd[4].call_to_action_list[0]
+          callaction:
+            this.props.data && this.props.data.call_to_action.value !== "BLANK"
+              ? this.props.data.call_to_action
+              : list.SnapAd[4].call_to_action_list[0]
         }
       });
+
+      // this.setState({
+      //   campaignInfo: {
+      //     ...this.state.campaignInfo,
+      //     weburl: this.props.mainBusiness.weburl
+      //       ? this.props.mainBusiness.weburl
+      //       : this.props.data.weburl,
+      //     insta_handle: this.props.data.insta_handle
+      //       ? this.props.data.insta_handle
+      //       : this.props.mainBusiness.insta_handle
+      //       ? this.props.mainBusiness.insta_handle
+      //       : "",
+      //     whatsappnumber: this.props.mainBusiness.whatsappnumber
+      //       ? this.props.mainBusiness.whatsappnumber
+      //       : this.props.data.whatsappnumber,
+      //     callnumber: this.props.mainBusiness.callnumber
+      //       ? this.props.mainBusiness.callnumber
+      //       : this.props.data.callnumber,
+      //     googlemaplink: this.props.mainBusiness.googlemaplink
+      //       ? this.props.mainBusiness.googlemaplink
+      //       : this.props.data && this.props.data.googlemaplink
+      //       ? this.props.data.googlemaplink
+      //       : "",
+      //     callaction:
+      //       this.props.data && this.props.data.call_to_action.value !== "BLANK"
+      //         ? this.props.data.call_to_action
+      //         : list.SnapAd[4].call_to_action_list[0]
+      //   }
+      // });
     }
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -861,8 +891,7 @@ const mapStateToProps = state => ({
   errorInstaHandleMessage: state.campaignC.errorInstaHandleMessage,
   productInfoId: state.campaignC.productInfoId,
   businessLogo: state.campaignC.businessLogo,
-  selectedInstagramProducts: state.campaignC.selectedInstagramProducts,
-  rejCampaign: state.dashboard.rejCampaign
+  selectedInstagramProducts: state.campaignC.selectedInstagramProducts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -882,4 +911,7 @@ const mapDispatchToProps = dispatch => ({
   getWebProducts: campaign_id =>
     dispatch(actionCreators.getWebProducts(campaign_id))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(WhatsApp);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WhatsApp);

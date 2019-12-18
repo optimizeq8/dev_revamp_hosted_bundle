@@ -83,7 +83,7 @@ class AdCover extends Component {
   }
 
   handleBackButton = () => {
-    this.props.resetRejectedCampaignData();
+    this.props.navigation.goBack();
     return true;
   };
 
@@ -608,13 +608,6 @@ class AdCover extends Component {
       title: "Support"
     });
   };
-  /**
-   * resets rejCampiagn in store so it doesn't conflict with normal ad creation process
-   */
-  handleRejectionData = () => {
-    if (this.props.rejCampaign) this.props.resetRejectedCampaignData();
-    this.props.navigation.goBack();
-  };
   render() {
     let { cover, coverHeadlineError, formattedCover } = this.state;
 
@@ -657,7 +650,7 @@ class AdCover extends Component {
               str: "Ad Design Back Button",
               obj: { businessname: this.props.mainBusiness.businessname }
             }}
-            actionButton={this.handleRejectionData}
+            navigation={this.props.navigation}
             title={"Compose Ad"}
           />
           <Content contentContainerStyle={styles.contentContainer} padder>
@@ -883,8 +876,9 @@ const mapDispatchToProps = dispatch => ({
       )
     ),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
-  resetRejectedCampaignData: () =>
-    dispatch(actionCreators.resetRejectedCampaignData())
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AdCover);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdCover);

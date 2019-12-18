@@ -72,6 +72,7 @@ class CampaignDetails extends Component {
   }
 
   componentDidMount() {
+    this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   handleBackPress = () => {
@@ -675,7 +676,7 @@ class CampaignDetails extends Component {
                               type="FontAwesome"
                               name="language"
                             />
-                            {loading || this.props.languagesListLoading ? (
+                            {loading ? (
                               <View style={{ margin: 5 }}>
                                 <PlaceholderLine />
                               </View>
@@ -757,7 +758,7 @@ class CampaignDetails extends Component {
                           />
                         )}
                       </View>
-                      {/* Only for development testing to test rejection process */}
+                      {/* Only for development testing to test rejection process  */}
                       <RejectedComp
                         screenProps={this.props.screenProps}
                         selectedCampaign={selectedCampaign}
@@ -823,6 +824,7 @@ const mapDispatchToProps = dispatch => ({
   endCampaign: (info, handleToggle) =>
     dispatch(actionCreators.endCampaign(info, handleToggle)),
   getCampaignStats: (info, range) =>
-    dispatch(actionCreators.getCampaignStats(info, range))
+    dispatch(actionCreators.getCampaignStats(info, range)),
+  get_languages: () => dispatch(actionCreators.get_languages())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

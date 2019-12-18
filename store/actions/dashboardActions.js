@@ -256,9 +256,3 @@ export const setRejectedCampaignData = rejCampaign => {
     dispatch({ type: actionTypes.SET_REJECTED_CAMPAIGN, payload: rejCampaign });
   };
 };
-
-export const resetRejectedCampaignData = () => {
-  return dispatch => {
-    dispatch({ type: actionTypes.RESET_REJECTED_CAMPAIGN });
-  };
-};

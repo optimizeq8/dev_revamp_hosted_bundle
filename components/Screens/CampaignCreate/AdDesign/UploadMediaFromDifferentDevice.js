@@ -22,10 +22,7 @@ class UploadMediaFromDifferentDevice extends Component {
       this.props.uploadMediaDifferentDeviceModal
     ) {
       this.props.getMediaUploadUrl(
-        //for rejected campaigns
-        this.props.rejCampaign
-          ? this.props.rejCampaign.campaign_id
-          : this.props.campaign_id,
+        this.props.campaign_id,
         this.props.brand_name,
         this.props.headline,
         this.props.adType
@@ -157,8 +154,7 @@ const mapStateToProps = state => ({
   uploadMediaDifferentDeviceAccessCode:
     state.campaignC.uploadMediaDifferentDeviceAccessCode,
   errorUploadMediaDiffernetDevice:
-    state.campaignC.errorUploadMediaDiffernetDevice,
-  rejCampaign: state.dashboard.rejCampaign
+    state.campaignC.errorUploadMediaDiffernetDevice
 });
 
 export default connect(

@@ -874,15 +874,15 @@ class CollectionMedia extends Component {
                               }
                               autoCorrect={false}
                               autoCapitalize="none"
-                              onChangeText={value => {
+                              onChangeText={value =>
                                 this.setState({
                                   collection: {
                                     ...this.state.collection,
                                     collection_attachment: value
                                   },
                                   rejectionColUpload: true
-                                });
-                              }}
+                                })
+                              }
                               onBlur={async () => {
                                 segmentEventTrack(
                                   "Changed Collection Media Website url",

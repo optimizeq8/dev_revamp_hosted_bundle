@@ -141,7 +141,7 @@ export const _pickImage = async (
                   uploaded: false,
                   media_type: result.type.toUpperCase(),
                   iosVideoUploaded: false,
-                  fileReadyToUpload: true
+                  rejectionUpload: true
                 };
 
                 cards[storyAdCards.selectedStoryAd.index] = card;
@@ -153,15 +153,12 @@ export const _pickImage = async (
                       ...card
                     }
                   },
-                  fileReadyToUpload: true,
                   type: result.type.toUpperCase()
                 });
-                !rejected &&
-                  save_campaign_info({
-                    media: result.uri,
-                    type: result.type.toUpperCase(),
-                    fileReadyToUpload: true
-                  });
+                save_campaign_info({
+                  media: result.uri,
+                  type: result.type.toUpperCase()
+                });
                 onToggleModal(false);
               } else {
                 setTheState({
@@ -170,7 +167,7 @@ export const _pickImage = async (
                   mediaError: null,
                   result: result.uri,
                   iosVideoUploaded: false,
-                  fileReadyToUpload: true
+                  rejectionUpload: true
                 });
 
                 onToggleModal(false);
@@ -357,7 +354,7 @@ export const _pickImage = async (
               media: result.uri,
               media_type: result.type.toUpperCase(),
               iosVideoUploaded: false,
-              fileReadyToUpload: true
+              rejectionUpload: true
             };
 
             cards[storyAdCards.selectedStoryAd.index] = card;
@@ -369,15 +366,12 @@ export const _pickImage = async (
                   ...card
                 }
               },
-              fileReadyToUpload: true,
               type: result.type.toUpperCase()
             });
-            !rejected &&
-              save_campaign_info({
-                media: result.uri,
-                type: result.type.toUpperCase(),
-                fileReadyToUpload: true
-              });
+            save_campaign_info({
+              media: result.uri,
+              type: result.type.toUpperCase()
+            });
             onToggleModal(false);
           } else {
             setTheState({

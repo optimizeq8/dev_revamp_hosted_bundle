@@ -47,10 +47,7 @@ import segmentEventTrack from "../../../segmentEventTrack";
 class AdDetails extends Component {
   static navigationOptions = {
     header: null,
-    gesturesEnabled: false,
-    state: {
-      editCampaign: false
-    }
+    gesturesEnabled: false
   };
   constructor(props) {
     super(props);
@@ -98,6 +95,7 @@ class AdDetails extends Component {
       recBudget: 0,
       budgetOption: 1
     };
+    this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
 
   componentWillUnmount() {
@@ -122,10 +120,10 @@ class AdDetails extends Component {
   };
   async componentDidMount() {
     this.props.get_languages();
-    if (this.props.navigation.getParam("editCampaign", false)) {
+    if (this.editCampaign) {
       let editedCampaign = deepmerge(
         this.state.campaignInfo,
-        this.props.navigation.state.params.campaign,
+        this.props.navigation.getParam("campaign", {}),
         { arrayMerge: combineMerge }
       );
       editedCampaign.targeting.demographics[0].max_age = parseInt(
@@ -200,6 +198,7 @@ class AdDetails extends Component {
             showRegions: this.props.data.showRegions,
             filteredLanguages: this.props.languages,
             recBudget,
+            filteredRegions: countryRegions.regions,
             regions: countryRegions.regions,
             budgetOption: this.props.data.campaignDateChanged
               ? 1
@@ -235,7 +234,7 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: rep
     });
-    this.props.save_campaign_info({ campaignInfo: rep });
+    !this.editCampaign && this.props.save_campaign_info({ campaignInfo: rep });
   };
 
   _handleMinAge = value => {
@@ -248,9 +247,10 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: rep
     });
-    this.props.save_campaign_info({
-      campaignInfo: rep
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: rep
+      });
   };
   onSelectedCountryChange = async (
     selectedItem,
@@ -284,12 +284,14 @@ class AdDetails extends Component {
         countryName,
         showRegions: reg.regions.length > 3
       });
-      this.props.save_campaign_info({
-        campaignInfo: replace,
-        country_code: newCountry,
-        countryName,
-        showRegions: reg.regions.length > 3
-      });
+
+      !this.editCampaign &&
+        this.props.save_campaign_info({
+          campaignInfo: replace,
+          country_code: newCountry,
+          countryName,
+          showRegions: reg.regions.length > 3
+        });
     }
   };
 
@@ -297,7 +299,8 @@ class AdDetails extends Component {
     let replace = cloneDeep(this.state.campaignInfo);
     replace.targeting.interests[0].category_id = selectedItems;
     this.setState({ campaignInfo: replace });
-    this.props.save_campaign_info({ campaignInfo: replace });
+    !this.editCampaign &&
+      this.props.save_campaign_info({ campaignInfo: replace });
   };
 
   onSelectedDevicesChange = selectedItems => {
@@ -313,9 +316,10 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: replace
     });
-    this.props.save_campaign_info({
-      campaignInfo: replace
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: replace
+      });
   };
   onSelectedInterestsNamesChange = selectedItems => {
     this.setState({
@@ -327,9 +331,10 @@ class AdDetails extends Component {
       segmentEventTrack(`Selected Interests`, {
         campaign_interests_names: names.join(", ")
       });
-    this.props.save_campaign_info({
-      interestNames: selectedItems
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        interestNames: selectedItems
+      });
   };
 
   onSelectedLangsChange = selectedItem => {
@@ -372,7 +377,8 @@ class AdDetails extends Component {
           ? "Please choose a language."
           : null
     });
-    this.props.save_campaign_info({ campaignInfo: replace });
+    !this.editCampaign &&
+      this.props.save_campaign_info({ campaignInfo: replace });
   };
 
   onSelectedOSChange = selectedItem => {
@@ -386,9 +392,10 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: { ...replace }
     });
-    this.props.save_campaign_info({
-      campaignInfo: { ...replace }
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: { ...replace }
+      });
   };
 
   onSelectedVersionsChange = selectedItem => {
@@ -402,9 +409,10 @@ class AdDetails extends Component {
     this.setState({
       campaignInfo: { ...replace }
     });
-    this.props.save_campaign_info({
-      campaignInfo: { ...replace }
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: { ...replace }
+      });
   };
   onSelectedBudgetChange = budget => {
     if (budget === this.state.maxValueBudget) {
@@ -423,9 +431,10 @@ class AdDetails extends Component {
       campaignInfo: replace,
       value: this.formatNumber(budget)
     });
-    this.props.save_campaign_info({
-      campaignInfo: replace
-    });
+    !this.editCampaign &&
+      this.props.save_campaign_info({
+        campaignInfo: replace
+      });
   };
 
   onSelectedRegionChange = (selectedItem, regionName) => {
@@ -454,10 +463,11 @@ class AdDetails extends Component {
         });
       }
 
-      this.props.save_campaign_info({
-        campaignInfo: replace,
-        regionNames: rNamesSelected
-      });
+      !this.editCampaign &&
+        this.props.save_campaign_info({
+          campaignInfo: replace,
+          regionNames: rNamesSelected
+        });
       return;
     } else {
       // logic change
@@ -475,14 +485,16 @@ class AdDetails extends Component {
       segmentEventTrack(`Selected Regions`, {
         campaign_region_names: rNamesSelected.join(", ")
       });
+
       this.setState({
         campaignInfo: replace,
         regionNames: rNamesSelected
       });
-      this.props.save_campaign_info({
-        campaignInfo: replace,
-        regionNames: rNamesSelected
-      });
+      !this.editCampaign &&
+        this.props.save_campaign_info({
+          campaignInfo: replace,
+          regionNames: rNamesSelected
+        });
     }
   };
 
@@ -504,13 +516,14 @@ class AdDetails extends Component {
         value: value,
         budgetOption
       });
-      this.props.save_campaign_info({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          lifetime_budget_micro: rawValue
-        },
-        budgetOption
-      });
+      !this.editCampaign &&
+        this.props.save_campaign_info({
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            lifetime_budget_micro: rawValue
+          },
+          budgetOption
+        });
       return true;
     } else {
       if (onBlur) {
@@ -542,13 +555,14 @@ class AdDetails extends Component {
         value: value,
         budgetOption
       });
-      this.props.save_campaign_info({
-        campaignInfo: {
-          ...this.state.campaignInfo,
-          lifetime_budget_micro: this.state.minValueBudget
-        },
-        budgetOption
-      });
+      !this.editCampaign &&
+        this.props.save_campaign_info({
+          campaignInfo: {
+            ...this.state.campaignInfo,
+            lifetime_budget_micro: this.state.minValueBudget
+          },
+          budgetOption
+        });
 
       return false;
     }
@@ -561,7 +575,8 @@ class AdDetails extends Component {
       campaign_gender: gender === "" ? "ALL" : gender
     });
     this.setState({ campaignInfo: { ...replace } });
-    this.props.save_campaign_info({ campaignInfo: { ...replace } });
+    !this.editCampaign &&
+      this.props.save_campaign_info({ campaignInfo: { ...replace } });
   };
 
   filterRegions = value => {
@@ -723,7 +738,7 @@ class AdDetails extends Component {
       }
       rep.targeting = JSON.stringify(rep.targeting);
 
-      if (this.props.navigation.getParam("editCampaign", false)) {
+      if (this.editCampaign) {
         Segment.trackWithProperties("Updated Ad Details", {
           business_name: this.props.mainBusiness.businessname,
           campaign_id: this.props.campaign_id
@@ -950,8 +965,6 @@ class AdDetails extends Component {
     }
     interests_names = interests_names.join(", ");
 
-    let editCampaign = this.props.navigation.getParam("editCampaign", false);
-
     const campaign = this.props.navigation.getParam("campaign", {});
 
     const media =
@@ -986,7 +999,7 @@ class AdDetails extends Component {
           <View style={[styles.backgroundViewWrapper]}>
             <Video
               source={{
-                uri: editCampaign ? campaign.media : media
+                uri: this.editCampaign ? campaign.media : media
               }}
               shouldPlay
               isLooping
@@ -1035,7 +1048,7 @@ class AdDetails extends Component {
                   : ["Dashboard", "AdObjective", "AdDesign", "AdDetails"]
               );
 
-              if (this.props.navigation.getParam("editCampaign", false)) {
+              if (this.editCampaign) {
                 Segment.screenWithProperties("Snap Ad Targetting Update", {
                   category: "Campaign Update"
                 });
@@ -1062,11 +1075,13 @@ class AdDetails extends Component {
                   }
                 }}
                 actionButton={
-                  editCampaign
+                  this.editCampaign
                     ? () => this.props.navigation.navigate("CampaignDetails")
                     : undefined
                 }
-                navigation={editCampaign ? undefined : this.props.navigation}
+                navigation={
+                  this.editCampaign ? undefined : this.props.navigation
+                }
                 title={"Campaign details"}
               />
 
@@ -1074,7 +1089,7 @@ class AdDetails extends Component {
                 scrollEnabled={false}
                 contentContainerStyle={styles.contentContainer}
               >
-                {!editCampaign ? (
+                {!this.editCampaign ? (
                   <>
                     <Text uppercase style={styles.subHeadings}>
                       {translate("Budget")}
@@ -1102,7 +1117,7 @@ class AdDetails extends Component {
 
                       <Slider
                         thumbTintColor={globalColors.orange}
-                        disabled={editCampaign || this.props.loading}
+                        disabled={this.editCampaign || this.props.loading}
                         style={styles.slider}
                         step={10}
                         minimumValue={this.state.minValueBudget}
@@ -1147,7 +1162,7 @@ class AdDetails extends Component {
                   OSType={OSType}
                   mainState={this.state}
                   translate={translate}
-                  editCampaign={editCampaign}
+                  editCampaign={this.editCampaign}
                 />
 
                 <ReachBar
@@ -1189,6 +1204,7 @@ const mapDispatchToProps = dispatch => ({
   snap_ad_audience_size: (info, totalReach) =>
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
   get_languages: () => dispatch(actionCreators.get_languages()),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

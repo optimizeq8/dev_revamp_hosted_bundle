@@ -48,7 +48,7 @@ const validation = {
     //   allowLocal: true
     // },
     // format: /^((https+|http+|ftp|smtp):\/\/)+(www.)?[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?)*$/i,
-    format: /^((https+|http+|ftp|smtp):\/\/)?(www.|m.)?(?!snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)\b[a-z0-9]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*$/i,
+    format: /^((https+|http+|ftp|smtp):\/\/)?(www.|m.)?(?!snapchat.|instagram.|youtube.|youtu.be|facebook.|fb.me|whatsapp.|wa.me)\b[a-z0-9_-]{1,63}\.[a-z]{2,}(\/?[a-zA-Z0-9#]+\/?(\.[a-z]{2,})*(\\?[?;&a-z\\d%_~+=-]*)?)*$/i,
     presence: { allowEmpty: false }
   },
   deepLink: {

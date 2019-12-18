@@ -58,8 +58,10 @@ class ContinueCampaign extends Component {
    */
   handleSubmition = (isVisible, resetCampaign) => {
     this.setState({ isVisible });
-    let tempAdType =
-      this.props.navigation.getParam("tempAdType", this.props.tempAdType);
+    let tempAdType = this.props.navigation.getParam(
+      "tempAdType",
+      this.props.tempAdType
+    );
     if (resetCampaign) {
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       this.props.resetCampaignInfo(!resetCampaign);
@@ -135,7 +137,10 @@ class ContinueCampaign extends Component {
               <CustomHeader
                 screenProps={this.props.screenProps}
                 closeButton={true}
-                actionButton={() => this.handleClosing()}
+                actionButton={() => {
+                  this.props.navigation.goBack();
+                  this.handleClosing();
+                }}
                 title={"Continue Ad Creation"}
               />
               <Text

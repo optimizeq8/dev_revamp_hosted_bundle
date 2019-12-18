@@ -333,8 +333,6 @@ class AdObjective extends Component {
         });
         persistor.purge();
       }
-      //Set campaignProgressStarted back to false so that the continue modal will show again if the exit and come back
-      this.props.setCampaignInProgress(false);
       if (this.props.collectionAdLinkForm !== this.state.collectionAdLinkForm) {
         this.props.reset_collections();
         this.props.save_campaign_info({
@@ -470,7 +468,7 @@ class AdObjective extends Component {
                 value={this.state.campaignInfo.name}
                 valueError1={this.state.nameError}
                 maxLength={34}
-                autoFocus={true}
+                autoFocus={false}
                 incomplete={this.state.incomplete}
                 valueText={this.state.objectiveLabel}
                 translate={this.props.screenProps.translate}

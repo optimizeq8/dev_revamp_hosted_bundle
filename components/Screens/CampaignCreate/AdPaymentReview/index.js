@@ -39,8 +39,8 @@ class AdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
-    this.props.get_languages();
     this.props.save_campaign_info({ campaignDateChanged: false });
+    this.props.get_languages();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
   render() {
@@ -391,9 +391,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  get_languages: () => dispatch(actionCreators.get_languages()),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
-  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
+  saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  get_languages: () => dispatch(actionCreators.get_languages())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdPaymentReview);
