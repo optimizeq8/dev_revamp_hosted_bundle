@@ -8,12 +8,11 @@ import { errorMessageHandler } from "./ErrorActions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
 
-
 GoogleBackendURL = () =>
   axios.create({
     baseURL: store.getState().login.admin
       ? "http://goog.optimizeapp.com/"
-      : "http://goog.optimizeapp.com/"
+      : "http://googliver.optimizeapp.com/"
     // ? "https://optimize.reemcantmath.com/"
     // : "https://optimize.reemcantmath.com/"
     // baseURL: "http://optimize.reemcantmath.com"
@@ -180,7 +179,6 @@ export const create_google_SE_campaign_info = (info, navigation) => {
 };
 
 export const create_google_SE_campaign_ad_design = (info, rejected) => {
-
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
