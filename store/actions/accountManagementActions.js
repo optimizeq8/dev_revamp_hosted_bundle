@@ -237,9 +237,9 @@ export const create_snapchat_ad_account = (id, navigation) => {
           });
         }
       })
-      // .then(() => {
-      //   navigation.navigate("Dashboard");
-      // })
+      .then(() => {
+        navigation.goBack();
+      })
 
       .catch(err => {
         // console.log(

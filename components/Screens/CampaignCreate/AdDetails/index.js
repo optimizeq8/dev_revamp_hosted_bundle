@@ -93,7 +93,8 @@ class AdDetails extends Component {
       selectionOption: "",
       showRegions: false,
       recBudget: 0,
-      budgetOption: 1
+      budgetOption: 1,
+      startEditing: true
     };
     this.editCampaign = this.props.navigation.getParam("editCampaign", false);
   }
@@ -148,9 +149,13 @@ class AdDetails extends Component {
           .name;
         this.onSelectedRegionChange(id, name);
       });
-      this.setState({
-        campaignInfo: editedCampaign
-      });
+      this.setState(
+        {
+          campaignInfo: editedCampaign,
+          startEditing: false
+        },
+        () => this._calcReach()
+      );
     } else {
       let duration = Math.round(
         Math.abs(
@@ -806,6 +811,11 @@ class AdDetails extends Component {
               ? interestNamesList.join(", ")
               : null
         });
+        // this.props.setCampaignInfoForTransaction({
+        //   campaign_id: this.props.campaign_id,
+        //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
+        // });
+
         this.props.ad_details(
           rep,
           {
@@ -821,6 +831,7 @@ class AdDetails extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
+    let { campaignInfo, startEditing } = this.state;
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -986,51 +997,54 @@ class AdDetails extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        {media.includes(".mp4") ||
-        media.includes(".mov") ||
-        media.includes(".MP4") ||
-        media.includes(".MOV") ||
-        (campaign.media &&
-          (campaign.media.includes(".mp4") ||
-            campaign.media.includes(".MP4"))) ||
-        (campaign.media &&
-          (campaign.media.includes(".mov") ||
-            campaign.media.includes(".MOV"))) ? (
-          <View style={[styles.backgroundViewWrapper]}>
-            <Video
-              source={{
-                uri: this.editCampaign ? campaign.media : media
-              }}
-              shouldPlay
-              isLooping
-              isMuted
-              resizeMode="cover"
-              style={styles.videoBackgroundViewWrapper}
+        {!editCampaign &&
+          (media.includes(".mp4") ||
+          media.includes(".mov") ||
+          media.includes(".MP4") ||
+          media.includes(".MOV") ||
+          (campaign.media &&
+            (campaign.media.includes(".mp4") ||
+              campaign.media.includes(".MP4"))) ||
+          (campaign.media &&
+            (campaign.media.includes(".mov") ||
+              campaign.media.includes(".MOV"))) ? (
+            <View style={[styles.backgroundViewWrapper]}>
+              <Video
+                source={{
+                  uri: editCampaign ? campaign.media : media
+                }}
+                shouldPlay
+                isLooping
+                isMuted
+                resizeMode="cover"
+                style={styles.videoBackgroundViewWrapper}
+              />
+            </View>
+          ) : (
+            <RNImageOrCacheImage
+              media={media}
+              style={[
+                styles.imageBackgroundViewWrapper,
+                this.state.sidemenustate && !I18nManager.isRTL
+                  ? {
+                      borderTopRightRadius: 30
+                    }
+                  : {},
+                this.state.sidemenustate && I18nManager.isRTL
+                  ? {
+                      borderTopLeftRadius: 30
+                    }
+                  : {}
+              ]}
             />
-          </View>
-        ) : (
-          <RNImageOrCacheImage
-            media={media}
-            style={[
-              styles.imageBackgroundViewWrapper,
-              this.state.sidemenustate && !I18nManager.isRTL
-                ? {
-                    borderTopRightRadius: 30
-                  }
-                : {},
-              this.state.sidemenustate && I18nManager.isRTL
-                ? {
-                    borderTopLeftRadius: 30
-                  }
-                : {}
-            ]}
-          />
-        )}
+          ))}
 
         <SafeAreaView
           style={[
-            styles.safeArea
-            // {backgroundColor: this.state.sidemenustate ? "transparent" : 'rgba(0,0,0,0.75)'}
+            styles.safeArea,
+            {
+              backgroundColor: editCampaign ? "transparent" : "rgba(0,0,0,0.75)"
+            }
           ]}
           forceInset={{ bottom: "never", top: "always" }}
         >
@@ -1079,10 +1093,19 @@ class AdDetails extends Component {
                     ? () => this.props.navigation.navigate("CampaignDetails")
                     : undefined
                 }
-                navigation={
-                  this.editCampaign ? undefined : this.props.navigation
+                showTopRightButton={
+                  editCampaign &&
+                  this.state.campaignInfo.campaign_end === "0" &&
+                  new Date(this.state.campaignInfo.end_time) > new Date() &&
+                  !this.props.campaignEnded &&
+                  this.props.mainBusiness.user_role !== "3"
                 }
-                title={"Campaign details"}
+                topRightButtonFunction={() => {
+                  this.setState({ startEditing: !startEditing });
+                }}
+                topRightButtonText={translate("Edit")}
+                navigation={editCampaign ? undefined : this.props.navigation}
+                title={editCampaign ? "Audience" : "Campaign details"}
               />
 
               <Content
@@ -1139,17 +1162,21 @@ class AdDetails extends Component {
                   */}
                   </>
                 ) : (
-                  <View style={styles.sliderPlaceHolder}>
-                    <Text style={styles.subHeadings}>
-                      {translate(
-                        "Editing budget and duration\nis currently unavailable"
-                      )}
-                    </Text>
-                  </View>
+                  startEditing && (
+                    <View style={styles.sliderPlaceHolder}>
+                      <Text style={styles.subHeadings}>
+                        {translate(
+                          "Editing budget and duration\nis currently unavailable"
+                        )}
+                      </Text>
+                    </View>
+                  )
                 )}
-                <Text uppercase style={styles.subHeadings}>
-                  {translate("Who would you like to reach?")}
-                </Text>
+                {startEditing && (
+                  <Text uppercase style={styles.subHeadings}>
+                    {translate("Who would you like to reach?")}
+                  </Text>
+                )}
                 <TargetAudience
                   screenProps={this.props.screenProps}
                   _renderSideMenu={this._renderSideMenu}
@@ -1162,12 +1189,17 @@ class AdDetails extends Component {
                   OSType={OSType}
                   mainState={this.state}
                   translate={translate}
-                  editCampaign={this.editCampaign}
+                  editCampaign={editCampaign}
+                  startEditing={startEditing}
                 />
 
                 <ReachBar
                   loading={this.props.loading}
+                  campaignInfo={campaignInfo}
                   _handleSubmission={this._handleSubmission}
+                  startEditing={startEditing}
+                  campaignInfo={campaignInfo}
+                  editCampaign={editCampaign}
                   screenProps={this.props.screenProps}
                 />
               </Content>
@@ -1205,6 +1237,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.snap_ad_audience_size(info, totalReach)),
   get_languages: () => dispatch(actionCreators.get_languages()),
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
+  setCampaignInfoForTransaction: data =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
   resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);

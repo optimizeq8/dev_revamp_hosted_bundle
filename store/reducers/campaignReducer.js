@@ -301,20 +301,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         total_reach: 0
       };
-
-    case actionTypes.PAYMENT_REQUEST_URL:
-      return {
-        ...state,
-        payment_data: action.payload,
-        loading: !action.payload.success
-      };
-    case actionTypes.ERROR_PAYMENT_REQUEST_URL:
-      return {
-        ...state,
-        payment_data: null,
-        loading: false
-      };
-
     case actionTypes.SET_INTERESTS:
       return {
         ...state,
@@ -324,7 +310,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_DEVICE_MAKES:
       return {
         ...state,
@@ -334,7 +319,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_IOS_VERSIONS:
       return {
         ...state,
@@ -344,7 +328,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
-
     case actionTypes.SET_ANDROID_VERSIONS:
       return {
         ...state,
@@ -353,12 +336,6 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_SET_ANDROID_VERSIONS:
       return {
         ...state
-      };
-
-    case actionTypes.SET_AD_LOADING:
-      return {
-        ...state,
-        loading: action.payload
       };
     case actionTypes.SET_AD_LOADING_OBJ:
       return {

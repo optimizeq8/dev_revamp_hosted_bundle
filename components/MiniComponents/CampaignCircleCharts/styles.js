@@ -1,0 +1,84 @@
+import { StyleSheet } from "react-native";
+
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
+
+export const colors = {
+  black: "#1a1917",
+  gray: "#888888",
+  background1: "#751AFF",
+  background2: "#751AFF"
+};
+const styles = StyleSheet.create({
+  campaignInfoStyle: {},
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignSelf: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    height: 50
+  },
+  title: {
+    fontFamily: "montserrat-bold",
+    fontSize: 16,
+    color: globalColors.white,
+    alignSelf: "flex-start"
+  },
+  subtext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#fff",
+    textTransform: "uppercase"
+  },
+  chart: {
+    alignItems: "center",
+    paddingHorizontal: 5
+  },
+  chartText: {
+    color: "#fff",
+    fontFamily: "montserrat-medium",
+    fontSize: 16,
+    marginLeft: 10
+  },
+  chartSubtext: {
+    alignSelf: "center",
+    paddingTop: 10,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: "#fff"
+  },
+  campaignIcons: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#0004",
+    marginVertical: 2.5,
+    borderRadius: 20,
+    padding: "3%"
+  },
+  campaignNumbers: {
+    paddingHorizontal: 0,
+    paddingTop: 10
+  },
+  campaignInfo: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    width: wp(40),
+    left: 10
+  },
+  campaignInfoCard: {
+    flexDirection: "row",
+    top: 10,
+    flex: 3
+  },
+  campaignCard: {
+    flexDirection: "row",
+    alignItems: "center"
+  }
+});
+
+export default styles;

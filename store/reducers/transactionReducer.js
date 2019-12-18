@@ -1,6 +1,12 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
+  campaign_id: "",
+  campaign_payment_data: null,
+  loading_transaction: false,
+  campaign_budget: 0,
+  campaign_budget_kdamount: 0,
+  channel: "",
   wallet: 0,
   transactionList: [],
   filteredTransactions: [],
@@ -154,6 +160,38 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ERROR_FILTER_TRANSACTION:
       return {
         ...state
+      };
+    case actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION:
+      // console.log("SET_CAMPAIGN_INFO_FOR_TRANSACTION", action.payload);
+
+      return {
+        ...state,
+        ...action.payload
+        // campaign_id: action.payload.campaign_id,
+        // campaign_budget: action.payload.campaign_budget,
+        // campaign_budget_kdamount: action.payload.campaign_budget_kdamount,
+        // channel: action.payload
+      };
+    case actionTypes.PAYMENT_REQUEST_URL:
+      return {
+        ...state,
+        campaign_payment_data: action.payload,
+        loading_transaction: !action.payload.success
+      };
+    case actionTypes.ERROR_PAYMENT_REQUEST_URL:
+      return {
+        ...state,
+        campaign_payment_data: null,
+        loading_transaction: false
+      };
+    case actionTypes.SET_AD_LOADING:
+      return {
+        ...state,
+        loading_transaction: action.payload
+      };
+    case actionTypes.RESET_TRANSACTION_DATA:
+      return {
+        initialState
       };
     default:
       return state;

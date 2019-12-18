@@ -11,11 +11,14 @@ import { Text } from "react-native";
  */
 export const Small = props => (
   <Text
-    style={{
-      fontFamily: "montserrat-medium",
-      fontSize: 17,
-      color: globalColors.white
-    }}
+    style={[
+      {
+        fontFamily: "montserrat-medium",
+        fontSize: 17,
+        color: globalColors.white
+      },
+      props.style
+    ]}
   >
     {props.children}
   </Text>
@@ -29,5 +32,7 @@ export const Small = props => (
  * @returns {React Element} Styled Text component from react-native
  */
 export const Bold = props => (
-  <Text style={{ fontFamily: "montserrat-bold" }}>{props.children}</Text>
+  <Text style={[{ fontFamily: "montserrat-bold" }, props.style]}>
+    {props.children}
+  </Text>
 );

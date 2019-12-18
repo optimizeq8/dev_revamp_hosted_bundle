@@ -8,7 +8,7 @@ import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
-instance = axios.create({
+NodeBackendURL = axios.create({
   baseURL: "https://www.optimizeapp.io/"
 });
 
@@ -20,9 +20,12 @@ export const connect_user_to_intercom = user_id => {
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-    instance
-      .get(`get-user/${user_id}`)
+    console.log("user_id: ", user_id);
+
+    NodeBackendURL.get(`get-user/${user_id}`)
       .then(res => {
+        console.log("res.data: ", res.data);
+
         return res.data;
       })
       .then(data => {
@@ -91,12 +94,9 @@ export const create_user_on_intercom = user => {
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-    instance
-      .post("/create-user", user)
+    NodeBackendURL.post("/create-user", user)
       .then(res => {
-        // console.log("created user:", res.data);
         dispatch(get_conversation(res.data.user_id));
-
         return dispatch({
           type: actionTypes.SET_CURRENT_MESSENGER,
           payload: res.data
@@ -116,8 +116,7 @@ export const get_conversation = user_id => {
       type: actionTypes.SET_LOADING_CON,
       payload: true
     });
-    instance
-      .get(`get-conversation/${user_id}`)
+    NodeBackendURL.get(`get-conversation/${user_id}`)
       .then(res => {
         return res.data;
       })
@@ -167,14 +166,13 @@ export const start_conversation = message => {
       payload: true
     });
 
-    instance
-      .post("/start-conversation", {
-        from: {
-          type: "user",
-          user_id: getState().auth.userInfo.userid
-        },
-        body: message
-      })
+    NodeBackendURL.post("/start-conversation", {
+      from: {
+        type: "user",
+        user_id: getState().auth.userInfo.userid
+      },
+      body: message
+    })
       .then(response => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION,
@@ -201,13 +199,12 @@ export const reply = message => {
       type: actionTypes.SET_LOADING_MESSAGE,
       payload: true
     });
-    instance
-      .post("/reply", {
-        user_id: getState().auth.userInfo.userid,
-        body: message,
-        message_type: "comment",
-        type: "user"
-      })
+    NodeBackendURL.post("/reply", {
+      user_id: getState().auth.userInfo.userid,
+      body: message,
+      message_type: "comment",
+      type: "user"
+    })
       .then(response => {
         dispatch(send_push_notification());
 
@@ -248,14 +245,6 @@ export const get_conversatusion_read_status = () => {
         return res.data;
       })
       .then(data => {
-        // console.log("get reading status on conversation", data);
-
-        // console.log("intercom_chat_link", data.intercom_chat_link);
-        // console.log(
-        //   "condition",
-        //   getState().messenger.messages.length === data.intercom_chat_link
-        // );
-
         return dispatch({
           type: actionTypes.SET_CONVERSATION_STATUS,
           payload:
@@ -304,13 +293,9 @@ export const update_conversatusion_read_status = () => {
 
 // export const set_as_seen
 export const set_as_seen = check => {
-  // console.log("set_as_seen log");
   return (dispatch, getState) => {
-    // console.log("log please???");
-    // console.log("????", getState().messenger.conversation_id);
     if (check)
-      instance
-        .get(`read/${getState().messenger.conversation_id}`)
+      NodeBackendURL.get(`read/${getState().messenger.conversation_id}`)
         .then(res => {
           return res.data;
         })
@@ -335,14 +320,11 @@ export const set_as_seen = check => {
 // call when the user closes the msg screen ?
 export const update_last_seen = () => {
   return (dispatch, getState) => {
-    instance
-      .get(`update-last-seen/${getState().auth.userInfo.userid}`)
+    NodeBackendURL.get(`update-last-seen/${getState().auth.userInfo.userid}`)
       .then(res => {
         return res.data;
       })
       .then(data => {
-        // console.log("last seen", data);
-
         return dispatch({
           type: actionTypes.UPDATE_LAST_SEEN,
           payload: data

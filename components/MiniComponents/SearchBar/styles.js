@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   searchBarItem: {
     backgroundColor: "#fff",
-    borderColor: "#fff",
+    borderColor: "#0000",
     paddingHorizontal: 15
   },
   searchBarInput: {

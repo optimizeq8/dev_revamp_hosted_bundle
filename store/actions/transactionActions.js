@@ -4,6 +4,23 @@ import NavigationService from "../../NavigationService";
 import { showMessage } from "react-native-flash-message";
 import createBaseUrl from "./createBaseUrl";
 
+export const setCampaignInfoForTransaction = data => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.SET_CAMPAIGN_INFO_FOR_TRANSACTION,
+      payload: data
+    });
+  };
+};
+
+export const reset_transaction_reducer = () => {
+  return dispatch => {
+    return dispatch({
+      type: actionTypes.RESET_TRANSACTION_DATA
+    });
+  };
+};
+
 export const getTransactions = () => {
   return (dispatch, getState) => {
     dispatch({
@@ -16,6 +33,8 @@ export const getTransactions = () => {
         return res.data;
       })
       .then(data => {
+        // console.log("payment list:", data);
+
         return dispatch({
           type: actionTypes.SET_TRANSACTION_LIST,
           payload: data
@@ -187,13 +206,16 @@ export const getWalletAmountInKwd = (amount, retries = 3) => {
   };
 };
 export const useWallet = (campaign_id, setWalletModal, retries = 3) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
     createBaseUrl()
-      .post(`useWallet`, { campaign_id }, { timeout: 10000 })
+      .post(`useWallet`, info, { timeout: 10000 })
       .then(res => {
         return res.data;
       })
@@ -250,13 +272,18 @@ export const removeWalletAmount = (
   goBack,
   retries = 3
 ) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
+    console.log("remove info wallet:", info);
+
     createBaseUrl()
-      .post(`removeWallet`, { campaign_id })
+      .post(`removeWallet`, info)
       .then(res => {
         return res.data;
       })
@@ -305,13 +332,18 @@ export const removeWalletAmount = (
 };
 
 export const checkoutwithWallet = (campaign_id, retries = 3) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_TRAN_LOADING,
       payload: true
     });
+    var info = { campaign_id: campaign_id };
+    if (getState().transA.channel === "google")
+      info = { ...info, channel: getState().transA.channel };
+    console.log("checkout info wallet:", info);
+
     createBaseUrl()
-      .post(`checkoutwithWallet`, { campaign_id })
+      .post(`checkoutwithWallet`, info)
       .then(res => {
         return res.data;
       })
@@ -356,4 +388,131 @@ export const filterTransactions = query => {
       type: actionTypes.FILTER_TRANSACTION,
       payload: query
     });
+};
+
+export const payment_request_knet = (
+  campaign_id,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+    var url =
+      getState().transA.channel === ""
+        ? `makeknetpayment/${campaign_id}`
+        : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
+    console.log("url knet: ", url);
+
+    createBaseUrl()
+      .get(url)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        if (data.knet_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.knet_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        // console.log("payment_request_knet", err || err);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
+  };
+};
+
+export const payment_request_credit_card = (
+  campaign_id,
+  openBrowser,
+  navigation,
+  closeBrowserLoading
+) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_AD_LOADING,
+      payload: true
+    });
+
+    var url =
+      getState().transA.channel === ""
+        ? `makeccpayment/${campaign_id}`
+        : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
+    console.log("url cc: ", url);
+
+    createBaseUrl()
+      .post(url)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        console.log("data cc: ", data);
+
+        if (data.cc_payment_url) {
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        } else {
+          navigation.navigate("SuccessRedirect", data);
+          return dispatch({
+            type: actionTypes.PAYMENT_REQUEST_URL,
+            payload: data
+          });
+        }
+      })
+      .then(() => {
+        if (getState().transA.campaign_payment_data.cc_payment_url) {
+          openBrowser();
+        }
+      })
+      .catch(err => {
+        // console.log("payment_request_cc", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        closeBrowserLoading();
+        return dispatch({
+          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
+          payload: {
+            loading: false
+          }
+        });
+      });
+  };
 };

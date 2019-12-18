@@ -26,6 +26,12 @@ let blacklistTransform = createTransform((inboundState, key) => {
       "loadingMoreInstaPost",
       "campaignProgressStarted"
     ]);
+  }
+  if (key === "googleAds") {
+    // console.log("inboundState", inboundState);
+
+    inboundState = { ...inboundState, loadingStoryAdsArray: [] };
+    return omit(inboundState, ["loading", "uploading", "campaignResumed"]);
   } else {
     return inboundState;
   }
@@ -33,7 +39,7 @@ let blacklistTransform = createTransform((inboundState, key) => {
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["campaignC"],
+  whitelist: ["campaignC", "googleAds"],
   transforms: [blacklistTransform]
 };
 

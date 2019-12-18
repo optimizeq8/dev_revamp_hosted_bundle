@@ -46,7 +46,7 @@ class AppUpdateChecker extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.actualVersion !== this.props.actualVersion &&
-this.props.actualVersion === Constants.manifest.version
+      this.props.actualVersion === Constants.manifest.version
     ) {
       if (!this.props.underMaintenanceMessage_en) this.handleUpdates();
     } else if (
@@ -282,7 +282,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   checkForUpdate: () => dispatch(actionCreators.checkForUpdate())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppUpdateChecker);
+export default connect(mapStateToProps, mapDispatchToProps)(AppUpdateChecker);

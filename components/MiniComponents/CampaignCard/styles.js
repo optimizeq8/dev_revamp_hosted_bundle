@@ -78,17 +78,15 @@ const styles = StyleSheet.create({
     padding: 0
   },
   icon: {
-    position: "absolute",
     color: "#fff",
-    left: "88%",
-    fontSize: 40,
-    top: "-3%"
+    fontSize: 40
   },
   reviewText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 13,
     padding: 3,
-    color: "#fff"
+    color: "#fff",
+    textTransform: "uppercase"
   },
   campaignInfo: {
     flexDirection: "column",
@@ -127,7 +125,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
-    top: 5
+    top: "50%",
+    left: "10%",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute"
   },
   circleStyle: {
     width: 17,
@@ -139,6 +141,18 @@ const styles = StyleSheet.create({
   },
   iconImpression: {
     bottom: 3
+  },
+  circleIcon: { color: "#fff", fontSize: 16 },
+  cardText: {
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    fontSize: 12,
+    textAlign: "center"
+  },
+  cardStatusDays: {
+    flex: 1,
+    alignSelf: "center"
   }
 });
 

@@ -1,13 +1,14 @@
 import React from "react";
 
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
-
+// import GoogleSE from "../../assets/SVGs/GoogleAds.svg";
 export const snapAds = [
   {
     id: 1,
-    media: "snapchat",
+    mediaType: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
+    createRout: "SnapchatCreateAdAcc",
     icon: "snapchat-ghost",
     title: "Snap Ad",
     value: "SnapAd",
@@ -16,9 +17,10 @@ export const snapAds = [
   },
   {
     id: 2,
-    media: "snapchat",
+    mediaType: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
+    createRout: "SnapchatCreateAdAcc",
     icon: "snapchat-ghost",
     title: "Story Ad",
     value: "StoryAd",
@@ -27,9 +29,10 @@ export const snapAds = [
   },
   {
     id: 3,
-    media: "snapchat",
+    mediaType: "snapchat",
     text: "Create Your Ad Now!",
     rout: "AdObjective",
+    createRout: "SnapchatCreateAdAcc",
     icon: "snapchat-ghost",
     title: "Collection Ad",
     value: "CollectionAd",
@@ -38,14 +41,18 @@ export const snapAds = [
   }
 ];
 
-export const twittwerAds = [
+export const googleAds = [
   {
     id: 1,
-    media: "twitter",
+    mediaType: "google",
     text: "Create Your Ad Now!",
-    rout: "",
-    title: "",
-    media: require("../../assets/images/logoP.png")
+    rout: "GoogleAdInfo",
+    createRout: "GoogleCreateAdAcc",
+    icon: "snapchat-ghost",
+    title: "GoogleSE Ad",
+    value: "GoogleSEAd",
+    media: require("../../assets/images/AdTypes/GoogleAdEx.png"),
+    icon: AdIcons.GoogleSE
   }
 ];
 

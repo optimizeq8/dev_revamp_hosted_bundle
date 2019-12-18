@@ -134,7 +134,28 @@ const reducer = (state = initialState, action) => {
         businessAccounts: [...state.businessAccounts],
         loading: false
       };
+    case actionTypes.CREATE_GOOGLE_AD_ACCOUNT:
+      var mb = find(
+        state.businessAccounts,
+        bus => bus.businessid === state.mainBusiness.businessid
+      );
+      if (mb) {
+        mb.google_account_id = action.payload.data.google_account_id;
+      }
+      return {
+        ...state,
+        mainBusiness: mb,
+        businessAccounts: [...state.businessAccounts],
+        loading: false
+      };
     case actionTypes.ERROR_CREATE_SNAPCHAT_AD_ACCOUNT:
+      return {
+        ...state,
+        // mainBusiness: newMainBusiness,
+        // businessAccounts: [...state.businessAccounts],
+        loading: action.payload.loading
+      };
+    case actionTypes.ERROR_CREATE_GOOGLE_AD_ACCOUNT:
       return {
         ...state,
         // mainBusiness: newMainBusiness,

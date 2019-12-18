@@ -191,8 +191,6 @@ class App extends React.Component {
 
     if (handleScreen.data) {
       if (handleScreen.data.screenName === "MessengerLoading") {
-        console.log("iniodsfj");
-
         store.dispatch(actionCreators.set_as_seen(false));
 
         if (AppState.currentState !== "active")

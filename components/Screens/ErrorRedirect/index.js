@@ -127,7 +127,14 @@ class ErrorRedirect extends Component {
             <Button
               style={styles.whitebutton}
               onPress={() => {
-                this.props.resetCampaignInfo();
+                // if (this.props.channel === "") {
+                //   this.props.resetCampaignInfo();
+                //   this.props.reset_transaction_reducer();
+                // }
+                // if (this.props.channel === "google") {
+                //   this.props.rest_google_campaign_data();
+                //   this.props.reset_transaction_reducer();
+                // }
                 this.props.navigation.reset(
                   [NavigationActions.navigate({ routeName: "Dashboard" })],
                   0
@@ -146,14 +153,13 @@ class ErrorRedirect extends Component {
 }
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data,
-  interestsNames: state.campaignC.interestsNames
+  channel: state.transA.channel
 });
 const mapDispatchToProps = dispatch => ({
-  updateCampaignList: id => dispatch(actionCreators.updateCampaignList(id)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
+  rest_google_campaign_data: () =>
+    dispatch(actionCreators.rest_google_campaign_data()),
+  reset_transaction_reducer: () =>
+    dispatch(actionCreators.reset_transaction_reducer())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ErrorRedirect);
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorRedirect);

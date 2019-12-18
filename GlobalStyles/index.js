@@ -7,6 +7,7 @@ export const globalColors = {
   orange: "#FF9D00",
   purple: "#751AFF",
   green: "#66D072",
+  yellow: "#FFFC00",
   white: "#FFFFFF",
   red: "#EA514B",
   black: "#000000",
@@ -79,6 +80,9 @@ const globalStyles = StyleSheet.create({
   transparentBorderColor: {
     borderColor: "#0000"
   },
+  lightGrayTextColor: {
+    color: "#C6C6C6"
+  },
   lightGrayBorderColor: {
     borderColor: "#D9D9D9"
   },
@@ -96,12 +100,10 @@ const globalStyles = StyleSheet.create({
     flexDirection: "column"
   },
   title: {
-    fontSize: 24 / PixelRatio.getFontScale(),
+    fontSize: 20 / PixelRatio.getFontScale(),
     color: "#fff",
-    textAlign: "center",
-    paddingTop: 10,
-    textAlign: "center",
-    fontFamily: "montserrat-medium"
+    paddingVertical: 10,
+    fontFamily: "montserrat-bold"
   },
   buttonText: {
     fontSize: 16 / PixelRatio.getFontScale(),

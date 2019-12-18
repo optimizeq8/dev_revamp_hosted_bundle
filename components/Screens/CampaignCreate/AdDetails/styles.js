@@ -125,55 +125,47 @@ const styles = StyleSheet.create({
   },
 
   chart: {
-    alignItems: "center",
-    alignSelf: "center",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    top: -20,
-    right: 0
+    bottom: 0
   },
   bottom: {
-    // display: "flex",
-    // alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "row",
     position: "absolute",
     bottom: 0,
-    alignSelf: "center"
-    // flexDirection: "row"
+    width: "100%",
+    paddingHorizontal: 20
   },
   chartText: {
     color: "#fff",
     textAlign: "center",
-    fontFamily: "montserrat-regular",
-    fontSize: 12
+    fontFamily: "montserrat-bold",
+    fontSize: 17
   },
   chartTextNum: {
     color: "#fff",
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-regular",
     fontSize: 16,
-    textAlign: "center"
+    textAlign: "center",
+    marginHorizontal: "10%"
   },
   chartItems: {
-    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    paddingVertical: Platform.OS === "android" ? 0 : 10
+    alignSelf: "center"
   },
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     fontSize: 13,
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-bold",
     color: "#fff",
-    textAlign: "left"
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   menudetails: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
     paddingRight: Platform.OS === "android" && I18nManager.isRTL ? 15 : 0,
     color: "#fff",
-    fontFamily: "montserrat-light",
+    fontFamily: "montserrat-regular",
     fontSize: 11,
     textAlign: "left"
   },

@@ -632,6 +632,9 @@ class AdObjective extends Component {
           navigation={this.props.navigation}
           closedContinueModal={this.state.closedContinueModal}
           handleClosingContinueModal={this.handleClosingContinueModal}
+          incompleteCampaign={this.props.incompleteCampaign}
+          campaignProgressStarted={this.props.campaignProgressStarted}
+          currentCampaignSteps={this.props.currentCampaignSteps}
         />
         <ContinueCampaign
           tempAdType={this.props.navigation.getParam("tempAdType", "SnapAd")}
@@ -686,7 +689,9 @@ const mapStateToProps = state => ({
   data: state.campaignC.data,
   adType: state.campaignC.adType,
   collectionAdLinkForm: state.campaignC.collectionAdLinkForm,
-  currentCampaignSteps: state.campaignC.currentCampaignSteps
+  currentCampaignSteps: state.campaignC.currentCampaignSteps,
+  incompleteCampaign: state.campaignC.incompleteCampaign,
+  campaignProgressStarted: state.campaignC.campaignProgressStarted
 });
 
 const mapDispatchToProps = dispatch => ({

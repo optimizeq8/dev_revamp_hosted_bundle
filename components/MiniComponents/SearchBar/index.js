@@ -60,15 +60,15 @@ class SearchBar extends Component {
     }
   };
   render() {
-    let { height, businessList } = this.props;
+    let { height, businessList, customInputStyle } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View
         searchBar
         style={[styles.searchBarView, { height: height ? height : "70%" }]}
       >
-        <Item rounded style={styles.searchBarItem}>
-          <SearchIcon width={18} height={18} stroke="#575757" />
+        <Item rounded style={[styles.searchBarItem, customInputStyle]}>
+          <SearchIcon width={18} height={18} stroke="#fff" />
           <Input
             style={[
               I18nManager.isRTL
@@ -86,6 +86,7 @@ class SearchBar extends Component {
             placeholder={translate(
               `Search ${businessList ? "businesses" : "ads"}`
             )}
+            placeholderTextColor={"#fff"}
             value={this.state.value}
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());
@@ -121,7 +122,4 @@ const mapDispatchToProps = dispatch => ({
   filterTransactions: query =>
     dispatch(actionCreators.filterTransactions(query))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

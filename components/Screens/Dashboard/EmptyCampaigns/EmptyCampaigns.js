@@ -73,20 +73,10 @@ export default class EmptyCampaigns extends Component {
               <Button
                 onPress={() => {
                   if (this.props.mainBusiness.hasOwnProperty("businessid")) {
-                    if (!this.props.mainBusiness.snap_ad_account_id) {
-                      Segment.trackWithProperties("Create SnapAd Acount", {
-                        category: "Ad Account",
-                        label: "New SnapAd Account",
-                        business_name: this.props.mainBusiness.businessname,
-                        business_id: this.props.mainBusiness.businessid
-                      });
-                      this.props.navigation.navigate("SnapchatCreateAdAcc");
-                    } else {
-                      Segment.trackWithProperties("Create Campaign", {
-                        category: "Campaign Creation"
-                      });
-                      this.props.navigation.navigate("AdType");
-                    }
+                    Segment.trackWithProperties("Create Campaign", {
+                      category: "Campaign Creation"
+                    });
+                    this.props.navigation.navigate("AdType");
                   } else {
                     this.props.navigation.navigate("CreateBusinessAccount");
                   }

@@ -5,6 +5,7 @@ import styles from "./styles";
 import BackIcon from "../../../assets/SVGs/BackButton";
 import CloseIcon from "../../../assets/SVGs/Close";
 import SnapchatIcon from "../../../assets/SVGs/Snapchat-Border";
+import GoogleSE from "../../../assets/SVGs/GoogleAds";
 import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
@@ -39,7 +40,9 @@ export default class Header extends Component {
         title = translate(title);
       }
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View
+        style={[styles.container, { height: 50, padding: 0 }, containerStyle]}
+      >
         <TouchableOpacity
           onPress={() => {
             if (!isUndefined(segment))
@@ -63,6 +66,11 @@ export default class Header extends Component {
         {icon === "snapchat" && (
           <View style={{ paddingHorizontal: 5 }}>
             <SnapchatIcon width={30} height={30} />
+          </View>
+        )}
+        {icon === "google" && (
+          <View style={{ paddingHorizontal: 5 }}>
+            <GoogleSE width={30} style={styles.googleIcon} />
           </View>
         )}
         {title && typeof title === "object" ? (

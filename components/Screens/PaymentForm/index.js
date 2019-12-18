@@ -223,7 +223,8 @@ class PaymentForm extends Component {
         this.props.payment_request_knet(
           this.props.campaign_id,
           this._openWebBrowserAsync,
-          this.props.navigation
+          this.props.navigation,
+          this.closeBrowserLoading
         );
       } else if (this.state.choice === 3) {
         Segment.trackWithProperties("Completed Checkout Step", {
@@ -235,7 +236,8 @@ class PaymentForm extends Component {
         this.props.payment_request_credit_card(
           this.props.campaign_id,
           this._openWebBrowserAsync,
-          this.props.navigation
+          this.props.navigation,
+          this.closeBrowserLoading
         );
       }
     }
@@ -294,12 +296,12 @@ class PaymentForm extends Component {
     });
   };
   _handleAgencyFee = () => {
-    if (this.props.data.lifetime_budget_micro < 3000) {
-      return this.props.data.lifetime_budget_micro * 0.15;
-    } else if (this.props.data.lifetime_budget_micro < 10000) {
-      return this.props.data.lifetime_budget_micro * 0.1;
+    if (this.props.campaign_budget < 3000) {
+      return this.props.campaign_budget * 0.15;
+    } else if (this.props.campaign_budget < 10000) {
+      return this.props.campaign_budget * 0.1;
     } else {
-      return this.props.data.lifetime_budget_micro * 0.05;
+      return this.props.campaign_budget * 0.05;
     }
   };
   closeBrowserLoading = () => {
@@ -493,11 +495,8 @@ class PaymentForm extends Component {
                       ? formatNumber(this.state.amount, true)
                       : this.props.walletUsed
                       ? formatNumber(this.props.campaign_balance_amount, true)
-                      : this.props.data &&
-                        formatNumber(
-                          this.props.data.campaignInfo.lifetime_budget_micro,
-                          true
-                        )}
+                      : this.props.campaign_budget &&
+                        formatNumber(this.props.campaign_budget, true)}
                   </Text>
                 </View>
                 <View style={styles.kdAmountContainer}>
@@ -511,7 +510,7 @@ class PaymentForm extends Component {
                       ? this.props.campaign_balance_amount_kwd
                       : this.props.navigation.getParam(
                           "kdamount",
-                          this.props.kdamount
+                          this.props.campaign_budget_kdamount
                         )}
                   </Text>
                 </View>
@@ -639,11 +638,11 @@ class PaymentForm extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  data: state.campaignC.data,
+  campaign_budget: state.transA.campaign_budget,
   mainBusiness: state.account.mainBusiness,
-  campaign_id: state.campaignC.campaign_id,
-  kdamount: state.campaignC.kdamount,
-  payment_data: state.campaignC.payment_data,
+  campaign_id: state.transA.campaign_id,
+  campaign_budget_kdamount: state.transA.campaign_budget_kdamount,
+  payment_data: state.transA.campaign_payment_data,
   payment_data_wallet: state.transA.payment_data,
   wallet_amount_applied: state.transA.wallet_amount_applied,
   wallet_balance_amount: state.transA.wallet_balance_amount,
@@ -651,16 +650,26 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   walletUsed: state.transA.walletUsed,
   walletAmountInKwd: state.transA.walletAmountInKwd,
-  loading: state.campaignC.loading,
+  loading: state.transA.loading_transaction,
   loadingTrans: state.transA.loading,
   wallet: state.transA.wallet
 });
 const mapDispatchToProps = dispatch => ({
   getWalletAmount: () => dispatch(actionCreators.getWalletAmount()),
 
-  payment_request_knet: (campaign_id, openBrowser, navigation) =>
+  payment_request_knet: (
+    campaign_id,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
     dispatch(
-      actionCreators.payment_request_knet(campaign_id, openBrowser, navigation)
+      actionCreators.payment_request_knet(
+        campaign_id,
+        openBrowser,
+        navigation,
+        closeBrowserLoading
+      )
     ),
   removeWalletAmount: (info, naviagtion, names, goBack) =>
     dispatch(
@@ -668,12 +677,18 @@ const mapDispatchToProps = dispatch => ({
     ),
   addWalletAmount: (info, openBrowser) =>
     dispatch(actionCreators.addWalletAmount(info, openBrowser)),
-  payment_request_credit_card: (campaign_id, openBrowser, navigation) =>
+  payment_request_credit_card: (
+    campaign_id,
+    openBrowser,
+    navigation,
+    closeBrowserLoading
+  ) =>
     dispatch(
       actionCreators.payment_request_credit_card(
         campaign_id,
         openBrowser,
-        navigation
+        navigation,
+        closeBrowserLoading
       )
     )
 });

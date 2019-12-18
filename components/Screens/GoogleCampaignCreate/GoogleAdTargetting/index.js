@@ -1,0 +1,716 @@
+//Components
+import React, { Component } from "react";
+import {
+  View,
+  Slider,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+  BackHandler
+} from "react-native";
+import { Text, Container, Icon, Content } from "native-base";
+import * as Segment from "expo-analytics-segment";
+import Sidemenu from "react-native-side-menu";
+import { TextInputMask } from "react-native-masked-text";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
+import CustomHeader from "../../../MiniComponents/Header";
+import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import { showMessage } from "react-native-flash-message";
+import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
+import RadioButtons from "../../../MiniComponents/RadioButtons";
+import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
+import LowerButton from "../../../MiniComponents/LowerButton";
+
+//Data
+import gender from "../../../Data/gender.googleSE.data";
+import ageRange from "../../../Data/ageRange.googleSE.data";
+//Icons
+import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
+import GenderIcon from "../../../../assets/SVGs/Gender.svg";
+import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
+import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
+import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
+// import Icon from "react-native-vector-icons/MaterialIcons";
+
+//Style
+import styles from "./styles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
+
+//Redux Axios
+import * as actionCreators from "../../../../store/actions";
+import { connect } from "react-redux";
+
+//Functions
+import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
+
+import debounce from "lodash/debounce";
+import isNan from "lodash/isNaN";
+import isUndefined from "lodash/isUndefined";
+
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
+
+class GoogleAdTargetting extends Component {
+  static navigationOptions = {
+    header: null,
+    gesturesEnabled: false
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      budget: this.props.campaign.minValueBudget + 25,
+      age: ["Undetermined"],
+      gender: "Undetermined",
+      keywords: [],
+      sidemenustate: false,
+      sidemenu: "gender",
+      value: this.props.campaign.minValueBudget + 25,
+      // minValueBudget: 25,
+      // maxValueBudget: 1500,
+      modalVisible: false,
+      selectionOption: ""
+    };
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.goBack();
+    return true;
+  };
+
+  componentDidMount() {
+    let keys = Object.keys(this.state).filter(key => {
+      // console.log("this.props.campaign", key);
+
+      if (this.props.campaign.hasOwnProperty(key)) return key;
+    });
+
+    let data = { ...this.state };
+    keys.filter(key => {
+      data = {
+        ...data,
+        [key]: this.props.campaign[key]
+      };
+    }, {});
+    // console.log("after data", data);
+
+    this.setState(
+      {
+        ...data,
+        budget:
+          this.props.campaign.budget === 0 ||
+          this.props.campaign.budget < this.props.campaign.minValueBudget
+            ? this.props.campaign.minValueBudget + 25
+            : this.props.campaign.budget,
+        value:
+          this.props.campaign.budget === 0 ||
+          this.props.campaign.budget < this.props.campaign.minValueBudget
+            ? this.props.campaign.minValueBudget + 25
+            : this.props.campaign.budget
+      },
+      () => {
+        // console.log("state", this.state);
+      }
+    );
+
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  onSelectedBudgetChange = budget => {
+    this.setState({
+      budget: budget,
+      value: this.formatNumber(budget)
+    });
+    this.props.save_google_campaign_data({ budget: budget });
+    this.props.setCampaignInfoForTransaction({
+      campaign_id: this.props.campaign.campaign_id,
+      campaign_budget: budget
+    });
+  };
+
+  formatNumber = num => {
+    return "$" + num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  _handleSideMenuState = status => {
+    this.setState({ sidemenustate: status }, () => {});
+  };
+
+  _renderSideMenu = (component, option = "") => {
+    this.setState({ sidemenu: component, selectionOption: option }, () =>
+      this._handleSideMenuState(true)
+    );
+  };
+  _handleGenderSelection = gender => {
+    this.setState({ gender: gender });
+    this.props.save_google_campaign_data({ gender: gender });
+  };
+
+  _handleAgeSelection = val => {
+    if (val === "Undetermined") {
+      this.setState({ age: [val] });
+      this.props.save_google_campaign_data({ age: [val] });
+    } else {
+      var res;
+      if (isUndefined(this.state.age.find(l => l === val))) {
+        res = this.state.age.filter(l => l !== val);
+        res = this.state.age.filter(l => l !== "Undetermined");
+        this.setState({ age: [...res, val] });
+        this.props.save_google_campaign_data({ age: [...res, val] });
+      } else {
+        res = this.state.age.filter(l => l !== val);
+        if (res.length === 0) {
+          res = ["Undetermined"];
+        } else if (res.length - 1 !== 0) {
+          res = res.filter(l => l !== "Undetermined");
+        }
+        this.setState({ age: res });
+        this.props.save_google_campaign_data({ age: res });
+      }
+    }
+  };
+
+  _handleAddKeyword = keyword => {
+    if (keyword === "Reset") {
+      this.setState({ keywords: [] });
+      this.props.save_google_campaign_data({ keywords: [] });
+
+      return;
+    }
+    var res = this.state.keywords.filter(l => l !== keyword);
+    if (isUndefined(this.state.keywords.find(l => l === keyword))) {
+      this.setState({ keywords: [...res, keyword] });
+      this.props.save_google_campaign_data({
+        keywords: [...res, keyword]
+      });
+    } else {
+      this.setState({ keywords: res });
+      this.props.save_google_campaign_data({
+        keywords: res
+      });
+    }
+  };
+  _handleBudget = (value, rawValue) => {
+    if (
+      !validateWrapper("Budget", rawValue) &&
+      rawValue >= this.props.campaign.minValueBudget &&
+      !isNan(rawValue)
+    ) {
+      this.setState({
+        budget: rawValue,
+        value: value
+      });
+      this.props.save_google_campaign_data({
+        budget: rawValue
+      });
+      return true;
+    } else {
+      showMessage({
+        message: validateWrapper("Budget", rawValue)
+          ? validateWrapper("Budget", rawValue)
+          : "Budget can't be less than the minimum",
+        type: "warning",
+        position: "top"
+      });
+      this.setState({
+        budget: rawValue,
+        value: value
+      });
+      this.props.save_google_campaign_data({
+        budget: rawValue
+      });
+      return false;
+    }
+  };
+
+  _handleSubmission = () => {
+    const keywordsError =
+      this.state.keywords.length === 0
+        ? "Please choose keywords for your product."
+        : null;
+
+    this.props.setCampaignInfoForTransaction({
+      campaign_id: this.props.campaign.campaign_id,
+      campaign_budget: this.state.budget
+    });
+
+    if (!keywordsError) {
+      this.props.create_google_SE_campaign_ad_targetting({
+        businessid: this.props.mainBusiness.businessid,
+        campaign_id: this.props.campaign.campaign_id,
+        budget: this.state.budget,
+        age: this.state.age,
+        gender: this.state.gender,
+        keywords: this.state.keywords
+      });
+      this.props.save_google_campaign_data({
+        budget: this.state.budget,
+        age: this.state.age,
+        gender: this.state.gender,
+        keywords: this.state.keywords
+      });
+    } else {
+      showMessage({
+        message: keywordsError,
+        type: "warning",
+        position: "top"
+      });
+    }
+  };
+
+  render() {
+    const { translate } = this.props.screenProps;
+
+    let menu;
+    switch (this.state.sidemenu) {
+      case "gender": {
+        menu = (
+          <SideMenuContainer
+            children={
+              <RadioButtons
+                screenProps={this.props.screenProps}
+                data={gender}
+                _handleChange={this._handleGenderSelection}
+                selected={this.state.gender}
+                id={"value"}
+                value={"value"}
+                label={"label"}
+              />
+            }
+            icon={"gender"}
+            title={"Gender"}
+            subtitle={"Select your audience's Gender"}
+            _handleSideMenuState={this._handleSideMenuState}
+            screenProps={this.props.screenProps}
+          />
+        );
+        break;
+      }
+      case "age": {
+        menu = (
+          <SideMenuContainer
+            children={
+              <RadioButtons
+                screenProps={this.props.screenProps}
+                data={ageRange}
+                _handleChange={this._handleAgeSelection}
+                selected={this.state.age}
+                id={"value"}
+                value={"value"}
+                label={"label"}
+              />
+            }
+            icon={"age"}
+            title={"Age"}
+            subtitle={"Select your audience's Age Range"}
+            _handleSideMenuState={this._handleSideMenuState}
+            screenProps={this.props.screenProps}
+          />
+        );
+        break;
+      }
+
+      case "keywords": {
+        menu = (
+          <SideMenuContainer
+            children={
+              <KeywordsSelectionList
+                _handleSearch={this.props.get_google_SE_keywords}
+                loading={this.props.campaign.loading}
+                _handleAddItem={this._handleAddKeyword}
+                selected={this.state.keywords}
+                data={this.props.campaign.fetchedKeywords}
+                campaign_id={this.props.campaign.campaign_id}
+                businessid={this.props.mainBusiness.businessid}
+                screenProps={this.props.screenProps}
+              />
+            }
+            icon={""}
+            title={"Products"}
+            subtitle={""}
+            _handleSideMenuState={this._handleSideMenuState}
+            screenProps={this.props.screenProps}
+          />
+        );
+        break;
+      }
+    }
+
+    let selectedlist = this.state.keywords.map((x, i) => {
+      if (i === 0) {
+        return (
+          <View key={i} style={styles.keywordsColumn}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => {
+                this._renderSideMenu("keywords");
+              }}
+            >
+              <Text style={styles.editButtonText} numberOfLines={1}>
+                {translate("Edit")}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[globalStyles.orangeBackgroundColor, styles.keywordButton]}
+              onPress={() => {
+                this._handleAddKeyword(this.state.keywords[i]);
+              }}
+            >
+              <Text style={styles.keywordButtonText} numberOfLines={1}>
+                {this.state.keywords[i]}
+              </Text>
+              <Icon name="close" style={styles.xIcon} />
+            </TouchableOpacity>
+          </View>
+        );
+      }
+
+      if (i % 2 === 1) {
+        return (
+          <View key={i} style={styles.keywordsColumn}>
+            <TouchableOpacity
+              style={[globalStyles.orangeBackgroundColor, styles.keywordButton]}
+              onPress={() => {
+                this._handleAddKeyword(this.state.keywords[i]);
+              }}
+            >
+              <Text style={styles.keywordButtonText} numberOfLines={1}>
+                {this.state.keywords[i]}
+              </Text>
+              <Icon name="close" style={styles.xIcon} />
+            </TouchableOpacity>
+
+            {i + 1 !== this.state.keywords.length ? (
+              <TouchableOpacity
+                style={[
+                  globalStyles.orangeBackgroundColor,
+                  styles.keywordButton
+                ]}
+                onPress={() => {
+                  this._handleAddKeyword(this.state.keywords[i + 1]);
+                }}
+              >
+                <Text style={styles.keywordButtonText} numberOfLines={1}>
+                  {this.state.keywords[i + 1]}
+                </Text>
+                <Icon name="close" style={styles.keywordButtonText} />
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )}
+          </View>
+        );
+      }
+    });
+    // console.log("genderlist", gender);
+    // console.log("gender", this.state.gender);
+
+    return (
+      <Sidemenu
+        onChange={isOpen => {
+          if (isOpen === false) {
+            this._handleSideMenuState(isOpen);
+          }
+        }}
+        disableGestures={true}
+        menu={this.state.sidemenustate && menu}
+        menuPosition="right"
+        openMenuOffset={wp("100%")}
+        isOpen={this.state.sidemenustate}
+      >
+        <SafeAreaView
+          style={[styles.safeArea]}
+          forceInset={{ bottom: "never", top: "always" }}
+        >
+          <NavigationEvents
+            onDidFocus={() => {
+              this.props.save_google_campaign_steps([
+                "Dashboard",
+                "GoogleAdInfo",
+                "GoogleAdDesign",
+                "GoogleAdTargetting"
+              ]);
+
+              //   if (this.props.navigation.getParam("editCampaign", false)) {
+              // Segment.screenWithProperties("Snap Ad Targetting Update", {
+              //   category: "Campaign Update"
+              // });
+              //   } else {
+              // Segment.screenWithProperties("Snap Ad Targetting", {
+              //   category: "Campaign Creation"
+              // });
+              // Segment.trackWithProperties("Viewed Checkout Step", {
+              //   checkout_id: this.props.campaign_id,
+              //   step: 4
+              // });
+              //   }
+            }}
+          />
+          <Container style={styles.mainContainer}>
+            <Container style={styles.container}>
+              <CustomHeader
+                closeButton={false}
+                segment={{
+                  str: "Google SE Targetting Back Button",
+                  obj: {
+                    businessname: this.props.mainBusiness.businessname
+                  }
+                }}
+                // actionButton={
+                // //   editCampaign
+                // //     ? () => this.props.navigation.navigate("CampaignDetails")
+                // //     : undefined
+                // }
+                navigation={
+                  // editCampaign ? undefined :
+                  this.props.navigation
+                }
+                title={"Campaign details"}
+                screenProps={this.props.screenProps}
+              />
+
+              <Content
+                scrollEnabled={false}
+                contentContainerStyle={styles.contentContainer}
+              >
+                {/* {!editCampaign ? (
+                  <> */}
+
+                <Text style={styles.subHeadings}>Budget</Text>
+                <View style={styles.moneyInputContainer}>
+                  <TextInputMask
+                    disableFullscreenUI={this.props.campaign.uploading}
+                    // disableFullscreenUI={this.props.loading}
+                    includeRawValueInChangeText
+                    type={"money"}
+                    options={{
+                      precision: 0,
+                      delimiter: ",",
+                      unit: "$"
+                    }}
+                    // disabled={editCampaign || this.props.loading}
+                    maxLength={8}
+                    // defaultValue={this.state.value + ""}
+                    value={this.state.value + ""}
+                    onChangeText={(value, rawText) => {
+                      //   if (!editCampaign)
+                      this._handleBudget(value, rawText);
+                    }}
+                    style={styles.budget}
+                    ref={ref => (this.moneyField = ref)}
+                  />
+                  <Text style={styles.budgetInstructionText}>
+                    {translate("Tap to enter manually")}
+                  </Text>
+                </View>
+                <View style={styles.sliderContainer}>
+                  <View style={styles.budgetSliderText}>
+                    <Text style={globalStyles.whiteTextColor}>
+                      ${this.props.campaign.minValueBudget}
+                    </Text>
+                    <Text style={globalStyles.whiteTextColor}>
+                      ${this.props.campaign.maxValueBudget}
+                    </Text>
+                  </View>
+
+                  <Slider
+                    thumbTintColor={globalColors.orange}
+                    disabled={
+                      //editCampaign ||
+                      this.props.campaign.uploading
+                    }
+                    style={styles.slider}
+                    step={10}
+                    minimumValue={this.props.campaign.minValueBudget}
+                    maximumValue={this.props.campaign.maxValueBudget}
+                    value={
+                      this.state.budget < 90000000000000000000
+                        ? this.state.budget
+                        : 1500
+                    }
+                    onValueChange={debounce(this.onSelectedBudgetChange, 60)}
+                    maximumTrackTintColor={globalColors.white}
+                    minimumTrackTintColor={globalColors.purple}
+                  />
+                </View>
+                {/* </>
+                // ) : (
+                //   <View style={styles.sliderPlaceHolder}>
+                //     <Text style={styles.subHeadings}>
+                //       Editing budget and duration {"\n"} is currently
+                //       unavailable.
+                //     </Text>
+                //   </View>
+                // )} */}
+                <Text style={styles.subHeadings}>
+                  {translate("What are you promoting?")}
+                </Text>
+                {this.state.keywords.length !== 0 ? (
+                  <View
+                    style={{
+                      padding: 5,
+                      borderRadius: 10,
+                      flex: 1
+                    }}
+                  >
+                    <ScrollView
+                      style={{ marginVertical: 10 }}
+                      contentContainerStyle={styles.keywordScrollView}
+                      horizontal={true}
+                    >
+                      {selectedlist}
+                    </ScrollView>
+                  </View>
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      // disabled={this.props.country_code === ""}
+                      style={styles.keywordsAddButton}
+                      onPress={() => this._renderSideMenu("keywords")}
+                    >
+                      <PlusCircle width={35} height={35} />
+                    </TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.subHeadings,
+                        {
+                          fontSize: 10
+                        }
+                      ]}
+                    >
+                      {translate("Add Products and Services")}
+                    </Text>
+                  </>
+                )}
+
+                <Text style={styles.subHeadings}>
+                  {translate("Who would you like to reach?")}
+                </Text>
+                <ScrollView
+                  ref={ref => (this.scrollView = ref)}
+                  indicatorStyle="white"
+                  style={styles.targetList}
+                >
+                  <TouchableOpacity
+                    disabled={this.props.loading}
+                    onPress={() => {
+                      this._renderSideMenu("gender");
+                    }}
+                    style={styles.targetTouchable}
+                  >
+                    <View style={globalStyles.row}>
+                      <GenderIcon width={25} height={25} style={styles.icon} />
+
+                      <View style={globalStyles.column}>
+                        <Text style={styles.menutext}>
+                          {translate("Gender")}
+                        </Text>
+                        <Text style={styles.menudetails}>
+                          {gender.find(r => r.value === this.state.gender)
+                            ? gender.find(r => r.value === this.state.gender)
+                                .label
+                            : ""}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={globalStyles.column}>
+                      {this.state.gender ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                      ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={this.props.loading}
+                    onPress={() => {
+                      this._renderSideMenu("age");
+                    }}
+                    style={styles.targetTouchable}
+                  >
+                    <View style={globalStyles.row}>
+                      <AgeIcon
+                        fill={globalColors.orange}
+                        width={25}
+                        height={25}
+                        style={styles.icon}
+                      />
+                      <View style={globalStyles.column}>
+                        <Text style={styles.menutext}>{translate("Age")}</Text>
+                        <Text style={styles.menudetails}>
+                          {this.state.age[0] === "Undetermined"
+                            ? translate("All")
+                            : "[ " + this.state.age.join(", ") + " ]"}
+                        </Text>
+                      </View>
+                    </View>
+
+                    {this.state.age.length !== 0 ? (
+                      <GreenCheckmarkIcon width={25} height={25} />
+                    ) : (
+                      <PlusCircleIcon width={25} height={25} />
+                    )}
+                  </TouchableOpacity>
+                </ScrollView>
+                {/* 
+                <View
+                  style={[
+                    {
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      flexDirection: "row"
+                    },
+                    styles.chipsWrapper
+                  ]}
+                > */}
+
+                {this.props.campaign.uploading ? (
+                  <ForwardLoading
+                    mainViewStyle={{ width: wp(8), height: hp(8) }}
+                    bottom={hp(5)}
+                    style={{ width: wp(8), height: hp(8) }}
+                  />
+                ) : (
+                  <LowerButton bottom={5} function={this._handleSubmission} />
+                )}
+              </Content>
+            </Container>
+          </Container>
+          {/* <Modal isVisible={this.props.loading}>
+            <LoadingScreen top={50} />
+            </Modal> */}
+        </SafeAreaView>
+      </Sidemenu>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  mainBusiness: state.account.mainBusiness,
+  userInfo: state.auth.userInfo,
+  campaign: state.googleAds
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCampaignInfoForTransaction: data =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data)),
+  create_google_SE_campaign_ad_targetting: info =>
+    dispatch(actionCreators.create_google_SE_campaign_ad_targetting(info)),
+  get_google_SE_keywords: (keyword, campaign_id, businessid) =>
+    dispatch(
+      actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)
+    ),
+  save_google_campaign_data: info =>
+    dispatch(actionCreators.save_google_campaign_data(info)),
+  save_google_campaign_steps: value =>
+    dispatch(actionCreators.save_google_campaign_steps(value))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAdTargetting);

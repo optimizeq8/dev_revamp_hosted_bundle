@@ -98,6 +98,28 @@ class ContinueCampaign extends Component {
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal();
     } else {
+      let updated_transaction_data = {
+        channel: ""
+      };
+      if (this.props.currentCampaignSteps.includes("AdObjective")) {
+        updated_transaction_data = {
+          ...updated_transaction_data,
+          campaign_id: this.props.data.campaign_id
+        };
+      }
+      if (this.props.currentCampaignSteps.includes("AdDetails")) {
+        updated_transaction_data = {
+          ...updated_transaction_data,
+          campaign_budget: this.props.data.lifetime_budget_micro
+        };
+      }
+      if (this.props.currentCampaignSteps.includes("AdPaymentReview")) {
+        updated_transaction_data = {
+          ...updated_transaction_data,
+          campaign_budget_kdamount: this.props.data.kdamount
+        };
+      }
+      this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.navigateToContinue();
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
@@ -139,7 +161,7 @@ class ContinueCampaign extends Component {
                 closeButton={true}
                 actionButton={() => {
                   this.props.navigation.goBack();
-                  this.handleClosing();
+                  //this.handleClosing();
                 }}
                 title={"Continue Ad Creation"}
               />
@@ -161,11 +183,13 @@ class ContinueCampaign extends Component {
               )}
               <View style={styles.footerButtons}>
                 <CustomButtons
+                  screenProps={this.props.screenProps}
                   onPressFunction={() => this.handleContinue()}
                   content="Resume"
                   filled
                 />
                 <CustomButtons
+                  screenProps={this.props.screenProps}
                   onPressFunction={() => this.handleSubmition(false, true)}
                   content="Create a new ad"
                 />
@@ -197,6 +221,8 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: value =>
     dispatch(actionCreators.save_campaign_info(value)),
   overWriteObjectiveData: value =>
-    dispatch(actionCreators.overWriteObjectiveData(value))
+    dispatch(actionCreators.overWriteObjectiveData(value)),
+  setCampaignInfoForTransaction: data =>
+    dispatch(actionCreators.setCampaignInfoForTransaction(data))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ContinueCampaign);

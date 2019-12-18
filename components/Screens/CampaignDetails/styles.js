@@ -7,8 +7,8 @@ import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    backgroundColor: "#0000"
+    // height: "100%",
+    backgroundColor: "#000"
   },
   media: {
     alignSelf: "center",
@@ -32,15 +32,10 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   mainCard: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
-    flex: 1,
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    elevation: -10,
-    zIndex: -1
+    height: "100%",
+    overflow: "hidden",
+    borderBottomStartRadius: 30,
+    borderBottomEndRadius: 30
   },
   text: {
     textAlign: "center",
@@ -76,12 +71,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-bold",
-    fontSize: 13,
+    fontSize: 16,
     paddingHorizontal: 10
   },
   categoryView: {
     flexDirection: "row",
-    alignSelf: "flex-start"
+    padding: 5
+    // alignSelf: "flex-start"
   },
   subHeadings: {
     textAlign: "center",
@@ -92,11 +88,11 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 19,
-    alignSelf: "center"
+    fontSize: 12,
+    textAlign: "left",
+    textTransform: "uppercase"
   },
   chartTitle: {
     color: "#fff",
@@ -106,8 +102,7 @@ const styles = StyleSheet.create({
   },
   subtext: {
     fontFamily: "montserrat-light",
-    fontSize: 14,
-    paddingTop: 5,
+    fontSize: 15,
     color: "#fff"
   },
   numbers: {
@@ -125,8 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 20,
-    bottom: 5
+    fontSize: 25
   },
   gender: {
     // ...StyleSheet.absoluteFillObject,
@@ -149,7 +143,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#000"
   },
   backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
+    justifyContent: "center",
+    overflow: "hidden",
+    backgroundColor: "#0004",
+    width: "100%",
+    height: "85%",
+    borderRadius: 40
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -193,12 +192,12 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: wp("100"),
-    // height: 200,
+    flex: 1,
     elevation: 10,
     zIndex: 10,
     alignItems: "center",
     justifyContent: "center",
-    bottom: 30
+    top: 10
   },
   tab: {
     // position: "absolute",
@@ -278,7 +277,6 @@ const styles = StyleSheet.create({
     zIndex: 11,
     position: "absolute",
     width: "80%",
-    backgroundColor: "rgba(255,255,255,0.3)",
     flexDirection: "row",
     alignSelf: "center",
     justifyContent: "space-between",
@@ -301,10 +299,8 @@ const styles = StyleSheet.create({
     top: hp(4)
   },
   mainMetrics: {
-    top: 50,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginBottom: 10
+    // top: 50,
+    flex: 1
   },
   statusButtonsText: {
     fontFamily: "montserrat-medium",
@@ -317,7 +313,9 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     alignSelf: "center",
     marginVertical: 5,
-    padding: 10
+    padding: 10,
+    width: "40%",
+    justifyContent: "center"
   },
   switchButtonText: {
     fontSize: 10,
@@ -338,7 +336,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderTopWidth: 1,
     borderTopColor: "rgba(255,255,255,0.4)",
-    height: 35
+    height: 35,
+    top: 20
   },
   placeHolderChartText: { fontFamily: "montserrat-medium", color: "#fff" },
   dot: {
@@ -355,6 +354,63 @@ const styles = StyleSheet.create({
     top: "10%",
     padding: 20,
     backgroundColor: globalColors.orange
+  },
+  campaignMediaAndInfo: {
+    flexDirection: "row",
+    width: "100%",
+    height: "40%",
+    marginVertical: 10,
+    justifyContent: "space-evenly",
+    overflow: "hidden"
+  },
+  titleHeader: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%"
+  },
+  targetingContainer: {
+    flexDirection: "column",
+    backgroundColor: "#0005",
+    height: "85%",
+    width: "100%",
+    borderRadius: 40,
+    justifyContent: "center",
+    padding: 10
+  },
+  storyOrCollectionStyle: {
+    borderRadius: 40,
+    width: "100%",
+    height: "75%",
+    position: "absolute",
+    top: "16%",
+    left: "7%",
+    opacity: 0.4
+  },
+  metricsStyle: {
+    flexDirection: "row",
+    marginVertical: 3,
+    marginRight: 40,
+    backgroundColor: "#0004",
+    width: 170,
+    borderRadius: 20,
+    height: 53,
+    padding: "3%"
+  },
+  chartChoices: {
+    justifyContent: "center"
+  },
+  chartChoiceButtons: {
+    width: "35%"
+  },
+  chartChoiceText: {
+    fontSize: 12 / PixelRatio.getFontScale()
+  },
+  pauseModalTitle: {
+    fontFamily: "montserrat-bold",
+    color: "#fff",
+    textTransform: "uppercase",
+    fontSize: 20,
+    textAlign: "center"
   }
 });
 

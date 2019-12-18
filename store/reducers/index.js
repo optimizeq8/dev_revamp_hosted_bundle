@@ -9,6 +9,8 @@ import loginReducer from "./loginReducer";
 import registerReducer from "./registerReducer";
 import messengerReducer from "./messengerReducer";
 import languageReducer from "./languageReducer";
+import googleAdsReducer from "./googleAdsCampaignReducer";
+
 const appReducer = combineReducers({
   auth: authReducer,
   campaignC: campaignReducer,
@@ -19,7 +21,8 @@ const appReducer = combineReducers({
   account: accountManagementReducer,
   generic: genericReducer,
   messenger: messengerReducer,
-  language: languageReducer
+  language: languageReducer,
+  googleAds: googleAdsReducer
 });
 
 const rootReducer = (state, action) => {

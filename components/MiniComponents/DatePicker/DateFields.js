@@ -92,17 +92,19 @@ class DateFields extends Component {
       )
     );
     if (!this.props.filterMenu && !this.props.chartRange) {
-      await this.props.getMinimumCash(timeDiff + 1);
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
+      await this.props.getMinimumCash(timeDiff + 1);
+
       //if user chooses to resume a campaign and the dates are not appiclble then
       //the dateField modal shows up and handles to resume campaign or not with new dates
       if (
-        !this.props.closedContinueModal &&
-        this.props.incompleteCampaign &&
-        !this.props.campaignProgressStarted
-      )
+        this.props.incompleteCampaign && //pass as a props
+        !this.props.campaignProgressStarted //pass as a props
+      ) {
+
         this.navigateToContinue();
+      }
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
@@ -150,48 +152,92 @@ class DateFields extends Component {
    * again in AdDetails
    */
   navigateToContinue = async () => {
-    //Same as if using a map and a filter at the same time
-    let reduceFunction = (newRoutes, route) => {
-      if (route !== "AdPaymentReview") {
+    if (this.props.channel === "google") {
+      //Same as if using a map and a filter at the same time
+      let reduceFunction = (newRoutes, route) => {
+        // if (route !== "AdPaymentReview") {
+        // pass as a props lastScreen
         let correctRoute = NavigationActions.navigate({
           routeName: route
         });
         newRoutes.push(correctRoute);
-      }
-      return newRoutes;
-    };
-    let continueRoutes = this.props.currentCampaignSteps.reduce(
-      reduceFunction,
-      []
-    );
-    resetAction = StackActions.reset({
-      index: continueRoutes.length - 1,
-      actions: continueRoutes
-    });
-    this.props.setCampaignInProgress(true);
-    this.props.overWriteObjectiveData({
-      start_time: this.state.start_date,
-      end_time: this.state.end_date
-    }); //overwrite this.props.data with the new dates
-    this.props.set_adType(this.props.oldTempAdType);
-    //Updates the campaign's date in the back end when resuming with the same data
-    this.setState({ modalVisible: false });
-    await this.props.ad_objective(
-      {
-        campaign_id: this.props.campaign_id,
-        campaign_type: this.props.adType,
-        ad_account_id: this.props.mainBusiness.snap_ad_account_id,
-        businessid: this.props.mainBusiness.businessid,
-        name: this.props.data.name,
-        objective: this.props.data.objective,
-        start_time: this.props.data.start_time,
-        end_time: this.props.data.end_time
-      },
-      //this is as if passing this.props.navigation and calling navigation.push but it does nothing
-      //because i don't want to navigate from within the store after the request is done
-      { push: () => {} }
-    );
-    this.props.navigation.dispatch(resetAction);
+        // }
+        return newRoutes;
+      };
+      let continueRoutes = this.props.currentCampaignSteps.reduce(
+        //pass props
+        reduceFunction,
+        []
+      );
+      resetAction = StackActions.reset({
+        index: continueRoutes.length - 1,
+        actions: continueRoutes
+      });
+      this.props.set_google_campaign_resumed(true);
+
+      // //Updates the campaign's date in the back end when resuming with the same data
+      this.setState({ modalVisible: false });
+      await this.props.create_google_SE_campaign_info(
+        {
+          campaign_id: this.props.googleCampaign.campaign_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: this.googleCampaign.name,
+          language: this.googleCampaign.language,
+          start_time: this.googleCampaign.start_time,
+          end_time: this.googleCampaign.end_time,
+          location: this.googleCampaign.location
+        },
+        //this is as if passing this.props.navigation and calling navigation.push but it does nothing
+        //because i don't want to navigate from within the store after the request is done
+        { push: () => {} }
+      );
+      this.props.navigation.dispatch(resetAction);
+    } else {
+      //Same as if using a map and a filter at the same time
+      let reduceFunction = (newRoutes, route) => {
+        if (route !== "AdPaymentReview") {
+          // pass as a props lastScreen
+          let correctRoute = NavigationActions.navigate({
+            routeName: route
+          });
+          newRoutes.push(correctRoute);
+        }
+        return newRoutes;
+      };
+      let continueRoutes = this.props.currentCampaignSteps.reduce(
+        //pass props
+        reduceFunction,
+        []
+      );
+      resetAction = StackActions.reset({
+        index: continueRoutes.length - 1,
+        actions: continueRoutes
+      });
+      this.props.setCampaignInProgress(true);
+      this.props.overWriteObjectiveData({
+        start_time: this.state.start_date,
+        end_time: this.state.end_date
+      }); //overwrite this.props.data with the new dates
+      this.props.set_adType(this.props.oldTempAdType);
+      //Updates the campaign's date in the back end when resuming with the same data
+      this.setState({ modalVisible: false });
+      await this.props.ad_objective(
+        {
+          campaign_id: this.props.campaign_id,
+          campaign_type: this.props.adType,
+          ad_account_id: this.props.mainBusiness.snap_ad_account_id,
+          businessid: this.props.mainBusiness.businessid,
+          name: this.props.data.name,
+          objective: this.props.data.objective,
+          start_time: this.props.data.start_time,
+          end_time: this.props.data.end_time
+        },
+        //this is as if passing this.props.navigation and calling navigation.push but it does nothing
+        //because i don't want to navigate from within the store after the request is done
+        { push: () => {} }
+      );
+      this.props.navigation.dispatch(resetAction);
+    }
   };
 
   render() {
@@ -326,15 +372,14 @@ class DateFields extends Component {
   }
 }
 const mapStateToProps = state => ({
-  currentCampaignSteps: state.campaignC.currentCampaignSteps,
-  incompleteCampaign: state.campaignC.incompleteCampaign,
-  campaignProgressStarted: state.campaignC.campaignProgressStarted,
   oldTempAdType: state.campaignC.oldTempAdType,
   oldTempData: state.campaignC.oldTempData,
   data: state.campaignC.data,
   mainBusiness: state.account.mainBusiness,
   campaign_id: state.campaignC.campaign_id,
-  adType: state.campaignC.adType
+  adType: state.campaignC.adType,
+  channel: state.transA.channel,
+  googleCampaign: state.googleAds
 });
 const mapDispatchToProps = dispatch => ({
   setCampaignInProgress: value =>
@@ -343,7 +388,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.overWriteObjectiveData(value)),
   set_adType: value => dispatch(actionCreators.set_adType(value)),
   ad_objective: (info, navigation) =>
-    dispatch(actionCreators.ad_objective(info, navigation))
+    dispatch(actionCreators.ad_objective(info, navigation)),
+  set_google_campaign_resumed: value =>
+    dispatch(actionCreators.set_google_campaign_resumed(value)),
+  save_google_campaign_data: info =>
+    dispatch(actionCreators.save_google_campaign_data(info)),
+  create_google_SE_campaign_info: (info, navigation) =>
+    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DateFields);
 

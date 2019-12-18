@@ -6,99 +6,11 @@ import segmentEventTrack from "../../components/segmentEventTrack";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
+import { setCampaignInfoForTransaction } from "./transactionActions";
 
-export const payment_request_credit_card = (
-  campaign_id,
-  openBrowser,
-  navigation
-) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_AD_LOADING,
-      payload: true
-    });
-    createBaseUrl()
-      .post(`makeccpayment/${campaign_id}`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.cc_payment_url) {
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        } else {
-          navigation.navigate("SuccessRedirect", data);
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        }
-      })
-      .then(() => {
-        if (getState().campaignC.payment_data.cc_payment_url) {
-          openBrowser();
-        }
-      })
-      .catch(err => {
-        // console.log("payment_request_cc", err.message || err.response);
-        errorMessageHandler(err);
-        return dispatch({
-          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
-          payload: {
-            loading: false
-          }
-        });
-      });
-  };
-};
 export const resetCampaignInfo = (resetAdType = false) => {
   return dispatch => {
     dispatch({ type: actionTypes.RESET_CAMPAING_INFO, payload: resetAdType });
-  };
-};
-
-export const payment_request_knet = (campaign_id, openBrowser, navigation) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_AD_LOADING,
-      payload: true
-    });
-    createBaseUrl()
-      .get(`makeknetpayment/${campaign_id}`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        if (data.knet_payment_url) {
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        } else {
-          navigation.navigate("SuccessRedirect", data);
-          return dispatch({
-            type: actionTypes.PAYMENT_REQUEST_URL,
-            payload: data
-          });
-        }
-      })
-      .then(() => {
-        if (getState().campaignC.payment_data.knet_payment_url) {
-          openBrowser();
-        }
-      })
-      .catch(err => {
-        // console.log("payment_request_knet", err || err);
-        errorMessageHandler(err);
-        return dispatch({
-          type: actionTypes.ERROR_PAYMENT_REQUEST_URL,
-          payload: {
-            loading: false
-          }
-        });
-      });
   };
 };
 
@@ -643,6 +555,14 @@ export const ad_details = (info, names, navigation) => {
         return res.data;
       })
       .then(data => {
+        dispatch(
+          setCampaignInfoForTransaction({
+            campaign_id: getState().campaignC.campaign_id,
+            campaign_budget: data.data.lifetime_budget_micro,
+            campaign_budget_kdamount: data.kdamount,
+            channel: ""
+          })
+        );
         return dispatch({
           type: actionTypes.SET_AD_DETAILS,
           payload: { data, names }

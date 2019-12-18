@@ -12,7 +12,7 @@ export const setAuthToken = token => {
   if (token) {
     return SecureStore.setItemAsync("token", token)
       .then(
-        () => (axios.defaults.headers.common.Authorization = `jwt ${token}`)
+        () => (axios.defaults.headers.common.Authorization = `Bearer ${token}`)
       )
       .catch(err => {
         //  console.log("setAuthToken setItem token", err.message || err.response )

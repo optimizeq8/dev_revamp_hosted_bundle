@@ -34,9 +34,30 @@ export class TargetAudience extends Component {
     let y = event.nativeEvent.contentOffset.y;
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
   };
+  callFunction = (selector, option) => {
+    segmentEventTrack("Cliked button to open sidemenu for "+selector+" "+ option?option:"");
+
+    if (
+     ( selector === "regions" ||
+      selector === "interests") &&
+      this.props.targeting.geos[0].country_code === ""
+    ) {
+       segmentEventTrack(
+                  "Error occured on button click to open sidemenu for "+selector,
+                    {
+                      campaign_interest_error: "Please select a country first"
+                    }
+                  );
+      showMessage({
+        message: translate("Please select a country first"),
+        position: "top",
+        type: "warning"
+      });
+    } else if (this.props.startEditing)
+      this.props._renderSideMenu(selector, option);
+  };
   render() {
     let {
-      _renderSideMenu,
       loading,
       gender,
       targeting,
@@ -45,7 +66,8 @@ export class TargetAudience extends Component {
       interests_names,
       OSType,
       mainState,
-      editCampaign
+      editCampaign,
+      startEditing
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -66,14 +88,14 @@ export class TargetAudience extends Component {
             ref={ref => (this.scrollView = ref)}
             indicatorStyle="white"
             contentContainerStyle={{ paddingBottom: 100 }}
-            style={styles.targetList}
+            style={[
+              styles.targetList,
+              { height: editCampaign ? "100%" : "50%" }
+            ]}
           >
             <TouchableOpacity
               disabled={loading}
-              onPress={() => {
-                segmentEventTrack("Cliked button to open sidemenu for Gender");
-                _renderSideMenu("gender");
-              }}
+              onPress={() => this.callFunction("gender")}
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
@@ -92,19 +114,17 @@ export class TargetAudience extends Component {
               </View>
               <View style={globalStyles.column}>
                 {targeting.demographics[0].gender === "" ||
-                targeting.demographics[0].gender ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
-                ) : (
-                  <PlusCircleIcon width={25} height={25} />
-                )}
+                  (startEditing &&
+                    (targeting.demographics[0].gender ? (
+                      <GreenCheckmarkIcon width={25} height={25} />
+                    ) : (
+                      <PlusCircleIcon width={25} height={25} />
+                    )))}
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               disabled={loading}
-              onPress={() => {
-                segmentEventTrack("Cliked button to open sidemenu for Age");
-                _renderSideMenu("age");
-              }}
+              onPress={() => this.callFunction("age")}
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
@@ -125,19 +145,17 @@ export class TargetAudience extends Component {
                 </View>
               </View>
 
-              {targeting.demographics[0].max_age ? (
-                <GreenCheckmarkIcon width={25} height={25} />
-              ) : (
-                <PlusCircleIcon width={25} height={25} />
-              )}
+              {startEditing &&
+                (targeting.demographics[0].max_age ? (
+                  <GreenCheckmarkIcon width={25} height={25} />
+                ) : (
+                  <PlusCircleIcon width={25} height={25} />
+                ))}
             </TouchableOpacity>
 
             <TouchableOpacity
               disabled={loading}
-              onPress={() => {
-                segmentEventTrack("Cliked button to open sidemenu for Country");
-                _renderSideMenu("selectors", "countries");
-              }}
+              onPress={() => this.callFunction("selectors", "countries")}
               style={styles.targetTouchable}
             >
               <View style={globalStyles.row}>
@@ -152,21 +170,18 @@ export class TargetAudience extends Component {
                   </Text>
                 </View>
               </View>
-              {targeting.geos[0].country_code ? (
-                <GreenCheckmarkIcon width={25} height={25} />
-              ) : (
-                <PlusCircleIcon width={25} height={25} />
-              )}
+              {startEditing &&
+                (targeting.geos[0].country_code ? (
+                  <GreenCheckmarkIcon width={25} height={25} />
+                ) : (
+                  <PlusCircleIcon width={25} height={25} />
+                ))}
             </TouchableOpacity>
 
-            {mainState.showRegions && (
+            {((!startEditing && editCampaign && regions_names) ||
+              (!editCampaign && mainState.showRegions)) && (
               <TouchableOpacity
-                onPress={() => {
-                  segmentEventTrack(
-                    "Cliked button to open sidemenu for Region"
-                  );
-                  _renderSideMenu("regions");
-                }}
+                onPress={() => this.callFunction("regions")}
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
@@ -189,95 +204,85 @@ export class TargetAudience extends Component {
                     >
                       {translate("Regions")}
                     </Text>
-                    <Text style={styles.menudetails} numberOfLines={1}>
+                    <Text
+                      style={styles.menudetails}
+                      numberOfLines={startEditing ? 1 : 10}
+                    >
                       {regions_names}
                     </Text>
                   </View>
                 </View>
 
-                {targeting.geos[0].region_id.length !== 0 ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
-                ) : (
-                  <PlusCircleIcon width={25} height={25} />
-                )}
+                {startEditing &&
+                  (targeting.geos[0].region_id.length !== 0 ? (
+                    <GreenCheckmarkIcon width={25} height={25} />
+                  ) : (
+                    <PlusCircleIcon width={25} height={25} />
+                  ))}
               </TouchableOpacity>
             )}
 
             <TouchableOpacity
               disabled={loading}
-              onPress={() => {
-                segmentEventTrack(
-                  "Cliked button to open sidemenu for Language"
-                );
-                _renderSideMenu("languages");
-              }}
+              onPress={() => this.callFunction("languages")}
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
                 <LanguageIcon width={25} height={25} style={styles.icon} />
                 <View style={[globalStyles.column, styles.flex]}>
                   <Text style={styles.menutext}>{translate("Language")}</Text>
-                  <Text numberOfLines={1} style={styles.menudetails}>
+                  <Text
+                    numberOfLines={startEditing ? 1 : 10}
+                    style={styles.menudetails}
+                  >
                     {languages_names}
                   </Text>
                 </View>
               </View>
-
-              {targeting.demographics[0].languages.length !== 0 ? (
-                <GreenCheckmarkIcon width={25} height={25} />
-              ) : (
-                <PlusCircleIcon width={25} height={25} />
-              )}
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => {
-                if (targeting.geos[0].country_code === "") {
-                  segmentEventTrack(
-                    "Error occured on button click to open sidemenu for Interests",
-                    {
-                      campaign_interest_error: "Please select a country first"
-                    }
-                  );
-                  showMessage({
-                    message: translate("Please select a country first"),
-                    position: "top",
-                    type: "warning"
-                  });
-                } else {
-                  segmentEventTrack(
-                    "Cliked button to open sidemenu for Interests"
-                  );
-                  _renderSideMenu("selectors", "interests");
-                }
-              }}
-              style={styles.targetTouchable}
-            >
-              <View style={[globalStyles.row, styles.flex]}>
-                <InterestsIcon width={25} height={25} style={styles.icon} />
-                <View style={[globalStyles.column, styles.flex]}>
-                  <Text style={styles.menutext}>{translate("Interests")}</Text>
-                  <Text numberOfLines={1} style={styles.menudetails}>
-                    {interests_names}
-                  </Text>
-                </View>
-              </View>
-              <View style={globalStyles.column}>
-                {targeting.interests[0].category_id.length !== 0 ? (
+              {startEditing &&
+                (targeting.demographics[0].languages.length !== 0 ? (
                   <GreenCheckmarkIcon width={25} height={25} />
                 ) : (
                   <PlusCircleIcon width={25} height={25} />
-                )}
-              </View>
+                ))}
             </TouchableOpacity>
 
+            {((!startEditing && editCampaign && interests_names) ||
+              !editCampaign ||
+              startEditing) && (
+              <TouchableOpacity
+                disabled={loading}
+                onPress={() => this.callFunction("selectors", "interests")}
+                style={styles.targetTouchable}
+              >
+                <View style={[globalStyles.row, styles.flex]}>
+                  <InterestsIcon width={25} height={25} style={styles.icon} />
+                  <View style={[globalStyles.column, styles.flex]}>
+                    <Text style={styles.menutext}>
+                      {translate("Interests")}
+                    </Text>
+                    <Text
+                      numberOfLines={startEditing ? 1 : 10}
+                      style={styles.menudetails}
+                    >
+                      {interests_names}
+                    </Text>
+                  </View>
+                </View>
+                <View style={globalStyles.column}>
+                  {startEditing &&
+                    (targeting.interests[0].category_id.length !== 0 ? (
+                      <GreenCheckmarkIcon width={25} height={25} />
+                    ) : (
+                      <PlusCircleIcon width={25} height={25} />
+                    ))}
+                </View>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               disabled={loading}
-              onPress={() => {
-                segmentEventTrack("Cliked button to open sidemenu for OS");
-                _renderSideMenu("OS");
-              }}
+              onPress={() => this.callFunction("OS")}
+
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
@@ -302,88 +307,98 @@ export class TargetAudience extends Component {
               </View>
 
               {targeting.devices[0].os_type === "" ||
-              targeting.devices[0].os_type ? (
-                <GreenCheckmarkIcon width={25} height={25} />
-              ) : (
-                <PlusCircleIcon width={25} height={25} />
-              )}
+                (startEditing &&
+                  (targeting.devices[0].os_type ? (
+                    <GreenCheckmarkIcon width={25} height={25} />
+                  ) : (
+                    <PlusCircleIcon width={25} height={25} />
+                  )))}
             </TouchableOpacity>
 
-            {targeting.devices[0].os_type !== "" && (
+            {(startEditing &&
+              editCampaign &&
+              targeting.devices[0].os_version_min) ||
+              ((!editCampaign || startEditing) &&
+                targeting.devices[0].os_type !== "" && (
+                  <TouchableOpacity
+                    disabled={loading}
+                    onPress={() =>
+                      this.callFunction("selectors", "deviceVersions")
+                    }
+                    style={styles.targetTouchable}
+                  >
+                    <View style={[globalStyles.row, styles.flex]}>
+                      <Icon
+                        name="versions"
+                        type="Octicons"
+                        width={25}
+                        height={25}
+                        style={{
+                          color: globalColors.orange,
+                          right: 2
+                        }}
+                      />
+                      <View style={[globalStyles.column, styles.flex]}>
+                        <Text style={styles.menutext}>
+                          {translate("OS Versions")}
+                        </Text>
+                        <Text style={styles.menudetails}>
+                          {targeting.devices[0].os_version_min +
+                            ", " +
+                            targeting.devices[0].os_version_max}
+                        </Text>
+                      </View>
+                    </View>
+
+                    {startEditing &&
+                      (targeting.devices[0].os_version_min !== "" ? (
+                        <GreenCheckmarkIcon width={25} height={25} />
+                      ) : (
+                        <PlusCircleIcon width={25} height={25} />
+                      ))}
+                  </TouchableOpacity>
+                ))}
+
+            {((startEditing &&
+              editCampaign &&
+              targeting.devices[0].marketing_name.length > 0) ||
+              !editCampaign ||
+              startEditing) && (
               <TouchableOpacity
                 disabled={loading}
-                onPress={() => {
-                  segmentEventTrack(
-                    "Cliked button to open sidemenu for Device Version"
-                  );
-                  _renderSideMenu("selectors", "deviceVersions");
-                }}
+                onPress={() => this.callFunction("selectors", "deviceBrands")}
+
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>
-                  <Icon
-                    name="versions"
-                    type="Octicons"
+                  <DeviceMakeIcon
                     width={25}
                     height={25}
-                    style={{
-                      color: globalColors.orange,
-                      right: 2
-                    }}
+                    style={styles.icon}
+                    fill={globalColors.orange}
                   />
+
                   <View style={[globalStyles.column, styles.flex]}>
                     <Text style={styles.menutext}>
-                      {translate("OS Versions")}
+                      {translate("Device Make")}
                     </Text>
-                    <Text style={styles.menudetails}>
-                      {targeting.devices[0].os_version_min +
-                        ", " +
-                        targeting.devices[0].os_version_max}
+                    <Text
+                      numberOfLines={startEditing ? 1 : 10}
+                      style={styles.menudetails}
+                    >
+                      {targeting.devices[0].marketing_name}
                     </Text>
                   </View>
                 </View>
 
-                {targeting.devices[0].os_version_min !== "" ? (
-                  <GreenCheckmarkIcon width={25} height={25} />
-                ) : (
-                  <PlusCircleIcon width={25} height={25} />
-                )}
+                {startEditing &&
+                  (targeting.devices[0].marketing_name.length !== 0 ? (
+                    <GreenCheckmarkIcon width={25} height={25} />
+                  ) : (
+                    <PlusCircleIcon width={25} height={25} />
+                  ))}
               </TouchableOpacity>
             )}
-            <TouchableOpacity
-              disabled={loading}
-              onPress={() => {
-                segmentEventTrack(
-                  "Cliked button to open sidemenu for Device Brands"
-                );
-                _renderSideMenu("selectors", "deviceBrands");
-              }}
-              style={styles.targetTouchable}
-            >
-              <View style={[globalStyles.row, styles.flex]}>
-                <DeviceMakeIcon
-                  width={25}
-                  height={25}
-                  style={styles.icon}
-                  fill={globalColors.orange}
-                />
-
-                <View style={[globalStyles.column, styles.flex]}>
-                  <Text style={styles.menutext}>
-                    {translate("Device Make")}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.menudetails}>
-                    {targeting.devices[0].marketing_name}
-                  </Text>
-                </View>
-              </View>
-
-              {targeting.devices[0].marketing_name.length !== 0 ? (
-                <GreenCheckmarkIcon width={25} height={25} />
-              ) : (
-                <PlusCircleIcon width={25} height={25} />
-              )}
-            </TouchableOpacity>
           </ScrollView>
         </MaskedViewIOS>
         {this.state.scrollY < 12 &&

@@ -7,14 +7,24 @@ import { colors } from "../../GradiantColors/colors";
 class ReviewItemCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
-    const list = this.props.subtitles.map((e, i) => (
-      <View style={styles.listView} key={i}>
-        <Text style={[styles.subText, styles.listTitleText]}>
-          {e.title ? translate(e.title) : ""}
-        </Text>
-        <Text style={[styles.subText, styles.contentText]}>{e.content}</Text>
-      </View>
-    ));
+    const list = this.props.subtitles.map((e, i) => {
+      let text = "";
+
+      if (typeof e.title === "object")
+        e.title.forEach(element => {
+          text += translate(element) + " ";
+        });
+      else text = translate(e.title);
+
+      return (
+        <View style={styles.listView} key={i}>
+          <Text style={[styles.subText, styles.listTitleText]}>
+            {text ? text : ""}
+          </Text>
+          <Text style={[styles.subText, styles.contentText]}>{e.content}</Text>
+        </View>
+      );
+    });
     return (
       <View style={styles.campaignButton}>
         <Icon type="MaterialIcons" name="check" style={[styles.icon]} />

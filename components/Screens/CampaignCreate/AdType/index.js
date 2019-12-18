@@ -9,15 +9,12 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import AdTypeCard from "./AdTypeCard";
 import CustomHeader from "../../../MiniComponents/Header";
-import { StackActions, NavigationActions } from "react-navigation";
 
 //Icons
 import BackDrop from "../../../MiniComponents/BackDrop";
-import ExclamationIcon from "../../../../assets/SVGs/ExclamationMark";
 
 //Style
 import styles from "./styles";
-import GlobalStyles from "../../../../GlobalStyles";
 
 //Redux
 import { connect } from "react-redux";
@@ -25,13 +22,10 @@ import * as actionCreators from "../../../../store/actions";
 
 //Data
 import { SocialPlatforms } from "../../../Data/socialMediaPlatforms.data";
-import { snapAds, twittwerAds, instagramAds } from "../../../Data/adTypes.data";
+import { snapAds, googleAds, instagramAds } from "../../../Data/adTypes.data";
 //Functions
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { from } from "rxjs";
 
-import { BlurView } from "expo-blur";
-import Modal from "react-native-modal";
 import ContinueCampaign from "../../../MiniComponents/ContinueCampaign";
 
 class AdType extends Component {
@@ -101,19 +95,20 @@ class AdType extends Component {
     switch (index) {
       case 0:
         route = "AdObjective";
-        media_type = StoryAdCards;
+        media_type = snapAds;
         break;
       case 1:
-        media_type = twittwerAds;
+        route = "GoogleAdInfo";
+        media_type = googleAds;
         break;
-      case 2:
-        media_type = instagramAds;
-        break;
+      // case 2:
+      //   media_type = instagramAds;
+      //   break;
     }
     this.setState({ route, media_type, activeSlide: 0 });
   };
 
-  navigationHandler = route => {
+  navigationHandler = adType => {
     Segment.trackWithProperties("Selected Ad Type", {
       business_name: this.props.mainBusiness.businessname,
       campaign_type: this.state.campaign_type
@@ -124,14 +119,30 @@ class AdType extends Component {
       campaign_type: this.state.campaign_type
     });
 
-    if (this.props.adType !== this.state.campaign_type) {
-      this.props.resetCampaignInfo();
+    if (
+      this.props.adType !== this.state.campaign_type &&
+      !this.props.incompleteCampaign
+    ) {
+      this.props.resetCampaignInfo(true);
     }
-    this.props.set_adType(this.state.campaign_type);
-    this.props.navigation.navigate(this.state.route, {
-      tempAdType: this.state.campaign_type
-    });
-    this.props.save_campaign_info({ index: this.state.activeSlide });
+    if (!this.props.incompleteCampaign) {
+      this.props.set_adType(this.state.campaign_type);
+    }
+    if (
+      !this.props.mainBusiness.snap_ad_account_id &&
+      adType.mediaType === "snapchat"
+    ) {
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else if (
+      !this.props.mainBusiness.google_ad_account_id &&
+      adType.mediaType === "google"
+    ) {
+      this.props.navigation.navigate("GoogleCreateAdAcc");
+    } else
+      this.props.navigation.navigate(adType.rout, {
+        tempAdType: this.state.campaign_type
+      });
+    // this.props.save_campaign_info({ index: this.state.activeSlide });
   };
 
   _renderItem = ({ item }) => {
@@ -273,7 +284,4 @@ const mapDispatchToProps = dispatch => ({
   resetCampaignInfo: resetAdType =>
     dispatch(actionCreators.resetCampaignInfo(resetAdType))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdType);
+export default connect(mapStateToProps, mapDispatchToProps)(AdType);

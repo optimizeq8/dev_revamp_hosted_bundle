@@ -26,45 +26,49 @@ export const chanege_base_url = admin => {
 
 export const send_push_notification = () => {
   return (dispatch, getState) => {
-    Permissions.getAsync(Permissions.NOTIFICATIONS).then(permission => {
-      if (permission.status === "granted") {
-        Notifications.getExpoPushTokenAsync().then(token => {
-          console.log("token", token);
+    Permissions.getAsync(Permissions.NOTIFICATIONS)
+      .then(permission => {
+        if (permission.status === "granted") {
+          Notifications.getExpoPushTokenAsync().then(token => {
+            console.log("token", token);
 
-          createBaseUrl()
-            .post(`updatepushToken`, {
-              token: token,
-              userid: getState().auth.userInfo.userid
-            })
-            .then(res => {
-              return res.data;
-            })
-            .then(data => {
-              dispatch({
-                type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
-                payload: data
+            createBaseUrl()
+              .post(`updatepushToken`, {
+                token: token,
+                userid: getState().auth.userInfo.userid
+              })
+              .then(res => {
+                return res.data;
+              })
+              .then(data => {
+                dispatch({
+                  type: actionTypes.SET_PUSH_NOTIFICATION_TOKEN,
+                  payload: data
+                });
+              })
+              .catch(err => {
+                // console.log(
+                //   "send_push_notification",
+                //   err.message || err.response
+                // );
+                showMessage({
+                  message:
+                    err.message ||
+                    err.response ||
+                    "Something went wrong, please try again.",
+                  type: "danger",
+                  position: "top"
+                });
+                dispatch({
+                  type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
+                });
               });
-            })
-            .catch(err => {
-              // console.log(
-              //   "send_push_notification",
-              //   err.message || err.response
-              // );
-              showMessage({
-                message:
-                  err.message ||
-                  err.response ||
-                  "Something went wrong, please try again.",
-                type: "danger",
-                position: "top"
-              });
-              dispatch({
-                type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
-              });
-            });
-        });
-      }
-    });
+          });
+        }
+      })
+      .catch(err => {
+        console.log("Token Error", err);
+      });
   };
 };
 
@@ -75,6 +79,8 @@ export const checkForExpiredToken = navigation => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
+        console.log("user: ", user);
+
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           if (
             [
@@ -91,7 +97,7 @@ export const checkForExpiredToken = navigation => {
           createBaseUrl()
             .get("verifyAccessToken", {
               headers: {
-                Authorization: `jwt ${token}`
+                Authorization: `Bearer ${token}`
               }
             })
             .then(responseToken => {
@@ -163,6 +169,8 @@ export const login = (userData, navigation) => {
         let decodedUser = null;
         if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
+          console.log("decodedUser", decodedUser);
+
           let promise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
         } else {

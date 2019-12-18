@@ -158,7 +158,7 @@ const mapStateToProps = state => ({
   campaign_balance_amount: state.transA.campaign_balance_amount,
   campaign_balance_amount_kwd: state.transA.campaign_balance_amount_kwd,
   walletUsed: state.transA.walletUsed,
-  campaign_id: state.campaignC.campaign_id,
+  campaign_id: state.transA.campaign_id,
   mainBusiness: state.account.mainBusiness
 });
 

@@ -19,6 +19,7 @@ import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 import * as Segment from "expo-analytics-segment";
 import CampaignCard from "../../MiniComponents/CampaignCard";
+import GoogleCampaignCard from "../../MiniComponents/GoogleCampaignCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
@@ -40,7 +41,7 @@ import Background from "../../../assets/SVGs/Background";
 import styles from "./styles";
 
 //data
-import { snapAds } from "../../Data/adTypes.data";
+import { snapAds, googleAds } from "../../Data/adTypes.data";
 
 //Redux
 import { connect } from "react-redux";
@@ -82,9 +83,6 @@ class Dashboard extends Component {
       this.props.mainBusiness &&
       this.props.mainBusiness.hasOwnProperty("businessid")
     ) {
-      if (!this.props.mainBusiness.snap_ad_account_id) {
-        this.props.navigation.navigate("SnapchatCreateAdAcc");
-      }
       // this.props.getWalletAmount();
       if (this.props.campaignList.length === 0) {
         this.props.getCampaignList(
@@ -123,14 +121,6 @@ class Dashboard extends Component {
       this.props.mainBusiness.hasOwnProperty("businessid") &&
       prevProps.mainBusiness !== this.props.mainBusiness
     ) {
-      if (
-        this.props.mainBusiness &&
-        !this.props.mainBusiness.snap_ad_account_id
-      ) {
-        this.props.navigation.navigate("SnapchatCreateAdAcc", {
-          closeAnimation: this.closeAnimation
-        });
-      }
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
       // this.props.set_as_seen(false);
@@ -189,7 +179,19 @@ class Dashboard extends Component {
     if (!this.props.incompleteCampaign) {
       this.props.set_adType(adType.value);
     }
-    this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
+
+    if (
+      !this.props.mainBusiness.snap_ad_account_id &&
+      adType.mediaType === "snapchat"
+    ) {
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else if (
+      !this.props.mainBusiness.google_ad_account_id &&
+      adType.mediaType === "google"
+    ) {
+      this.props.navigation.navigate("GoogleCreateAdAcc");
+    } else
+      this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
   };
 
   increasePage = (reset = false) => {
@@ -222,7 +224,6 @@ class Dashboard extends Component {
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
     // this.props.set_as_seen(false);
-
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -259,10 +260,10 @@ class Dashboard extends Component {
         screenProps={this.props.screenProps}
       />
     ) : null;
-    let adButtons = snapAds.map(adType => (
+    let adButtons = [...snapAds, ...googleAds].map(adType => (
       <AdButtions
         translate={this.props.screenProps.translate}
-        key={adType.id}
+        key={adType.id + adType.mediaType}
         navigationHandler={this.navigationHandler}
         ad={adType}
       />
@@ -433,50 +434,45 @@ class Dashboard extends Component {
                     isOpen={this.state.sidemenustate}
                     screenProps={this.props.screenProps}
                   >
-                    <View style={[styles.nameStyle]}>
-                      <Text
-                        ellipsizeMode="tail"
-                        numberOfLines={1}
-                        style={[
-                          styles.text,
-                          this.props.mainBusiness &&
-                          !isStringArabic(this.props.mainBusiness.businessname)
-                            ? {
-                                fontFamily: "montserrat-bold-english"
-                              }
-                            : {}
-                        ]}
-                      >
-                        {this.props.mainBusiness
-                          ? this.props.mainBusiness.businessname
-                          : ""}
-                      </Text>
-                    </View>
-
-                    <View
-                      padder
-                      style={[
-                        styles.mainCard
-                        // { top: this.state.sidemenustate ? 40 : 0 }
-                      ]}
-                    >
-                      <Text
-                        ellipsizeMode="tail"
-                        numberOfLines={1}
-                        style={[
-                          styles.brandStyle,
-                          this.props.mainBusiness &&
-                          !isStringArabic(this.props.mainBusiness.brandname)
-                            ? {
-                                fontFamily: "montserrat-regular-english"
-                              }
-                            : {}
-                        ]}
-                      >
-                        {this.props.mainBusiness
-                          ? this.props.mainBusiness.brandname
-                          : ""}
-                      </Text>
+                    <View style={styles.dashboardHeader}>
+                      <View style={[styles.nameStyle]}>
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={[
+                            styles.text,
+                            this.props.mainBusiness &&
+                            !isStringArabic(
+                              this.props.mainBusiness.businessname
+                            )
+                              ? {
+                                  fontFamily: "montserrat-bold-english"
+                                }
+                              : {}
+                          ]}
+                        >
+                          {this.props.mainBusiness
+                            ? this.props.mainBusiness.businessname
+                            : ""}
+                        </Text>
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={[
+                            styles.brandStyle,
+                            this.props.mainBusiness &&
+                            !isStringArabic(this.props.mainBusiness.brandname)
+                              ? {
+                                  fontFamily: "montserrat-regular-english"
+                                }
+                              : {}
+                          ]}
+                        >
+                          {this.props.mainBusiness
+                            ? this.props.mainBusiness.brandname
+                            : ""}
+                        </Text>
+                      </View>
                       <View style={styles.sideMenuCard}>
                         {this.props.mainBusiness.user_role !== "3" && (
                           <>
@@ -535,10 +531,6 @@ class Dashboard extends Component {
                                 height: 90,
                                 top: 10
                               }}
-                              contentContainerStyle={{
-                                flex: 1,
-                                alignItems: "flex-start"
-                              }}
                               horizontal
                             >
                               {adButtons}
@@ -546,18 +538,14 @@ class Dashboard extends Component {
                           </>
                         )}
                       </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          height: 50,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginBottom: 10
-                        }}
-                      >
+                      <View style={styles.searchbarContainer}>
                         <View style={{ width: "80%" }}>
                           <SearchBar
                             screenProps={this.props.screenProps}
+                            customInputStyle={{
+                              backgroundColor: "#0008",
+                              height: "100%"
+                            }}
                             renderSearchBar={this.renderSearchBar}
                           />
                         </View>
@@ -567,31 +555,50 @@ class Dashboard extends Component {
                             this._handleSideMenuState(true);
                           }}
                         >
-                          <FilterIcon width={23} height={23} fill="#575757" />
+                          <FilterIcon width={30} height={30} fill="#fff" />
                         </Button>
                       </View>
-
+                    </View>
+                    <View style={[styles.mainCard]}>
                       {this.props.loading ? (
                         placeHolderCards
                       ) : (
-                        // <ActivityIndicator size="large" />
                         <Animatable.View duration={1000} animation="fadeIn">
                           <FlatList
                             contentContainerStyle={
                               styles.flatlistContainerStyle
                             }
                             keyExtractor={item => item.campaign_id}
-                            data={this.props.filteredCampaigns}
+                            data={
+                              this.props.filteredCampaigns
+                              // .sort((a, b) =>
+                              //   a.start_time < b.start_time ? 1 : -1
+                              // )
+                            }
                             onEndReached={() => this.loadMoreData()}
                             onEndReachedThreshold={0.3}
-                            renderItem={({ item, index }) => (
-                              <CampaignCard
-                                campaign={item}
-                                navigation={this.props.navigation}
-                                key={item.campaign_id}
-                                screenProps={this.props.screenProps}
-                              />
-                            )}
+                            renderItem={({ item, index }) => {
+                              if (item.channel === "google") {
+                                return (
+                                  <GoogleCampaignCard
+                                    channel={"google"}
+                                    campaign={item}
+                                    navigation={this.props.navigation}
+                                    key={item.campaign_id}
+                                    screenProps={this.props.screenProps}
+                                  />
+                                );
+                              } else
+                                return (
+                                  <CampaignCard
+                                    channel={"snapchat"}
+                                    campaign={item}
+                                    navigation={this.props.navigation}
+                                    key={item.campaign_id}
+                                    screenProps={this.props.screenProps}
+                                  />
+                                );
+                            }}
                             onRefresh={() => this.reloadData()}
                             refreshing={this.state.fetching_from_server}
                             ListFooterComponent={() => this.renderFooter()}
@@ -626,9 +633,11 @@ class Dashboard extends Component {
                 (this.props.campaignList &&
                   this.props.campaignList.length === 0 &&
                   this.state.anim) ||
-                (!this.state.sidemenustate &&
+                (this.state.anim &&
+                  !this.state.sidemenustate &&
                   this.props.campaignList &&
-                  this.props.campaignList.length !== 0)
+                  this.props.campaignList.length !== 0) ||
+                this.state.anim
                   ? "fadeIn"
                   : "fadeOut"
               }

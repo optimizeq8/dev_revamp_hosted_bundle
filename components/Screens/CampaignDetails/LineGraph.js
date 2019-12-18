@@ -6,19 +6,20 @@ import { BlurView } from "expo-blur";
 import shortMonths from "./ShortMonths";
 import {
   VictoryChart,
-  VictoryLine,
   VictoryVoronoiContainer,
-  VictoryAxis
+  VictoryAxis,
+  VictoryArea
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Defs, LinearGradient, Stop } from "react-native-svg";
 
 class LineGraph extends Component {
   kFormatter = num => {
     return Math.abs(num) > 999
       ? (Math.abs(num) / 1000).toFixed(1) + " k"
-      : Math.abs(num.toFixed(2));
+      : Math.abs(num).toFixed(2);
   };
   render() {
     const { translate } = this.props.screenProps;
@@ -60,7 +61,7 @@ ${day}/${shortMonths[month]}`;
       <ScrollView
         scrollEnabled={this.props.campaignStats.length > 1}
         horizontal
-        style={{ height: 200 }}
+        contentContainerStyle={{ bottom: 20, height: "100%", paddingTop: 20 }}
       >
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
@@ -80,14 +81,14 @@ ${day}/${shortMonths[month]}`;
           />
         )}
         <VictoryChart
-          domainPadding={{ y: 10 }}
+          domainPadding={{ y: 15 }}
           containerComponent={
             <VictoryVoronoiContainer
-              labels={d =>
-                this.props.chartChoice === "Spend"
-                  ? parseFloat(d.y).toFixed(2)
-                  : parseFloat(d.y).toFixed(0)
-              }
+              labels={({ datum }) => {
+                return this.props.chartChoice === "Spend"
+                  ? parseFloat(datum.y).toFixed(2)
+                  : parseFloat(datum.y).toFixed(0);
+              }}
               labelComponent={
                 <CustomLabel
                   category={category}
@@ -97,15 +98,23 @@ ${day}/${shortMonths[month]}`;
             />
           }
           padding={{ top: 70, bottom: 20, left: 50, right: 50 }}
-          height={200}
+          height={240}
           width={this.props.campaignStats.length < 1 ? wp(90) : wp(150)}
         >
-          <VictoryLine
+          <Defs>
+            <LinearGradient x1="0" y1="0" x2="0" y2="180" id="myGradient">
+              <Stop offset="0%" stopColor="#FF7D08" />
+              <Stop offset="5%" stopColor="#f07204" />
+              <Stop offset="60%" stopColor="#000" />
+            </LinearGradient>
+          </Defs>
+          <VictoryArea
             categories={{ x: category }}
             interpolation="cardinal"
             style={{
               data: {
-                stroke: "#FFFC00",
+                stroke: "#FF7D08",
+                fill: "url(#myGradient)",
                 strokeWidth: 5
               }
             }}
@@ -146,7 +155,4 @@ const mapStateToProps = state => ({
   granularity: state.dashboard.granularity
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(LineGraph);
+export default connect(mapStateToProps, null)(LineGraph);

@@ -20,7 +20,7 @@ export default class AdButtons extends Component {
             this.props.navigationHandler(ad);
           }}
         >
-          <SnapIcon style={{}} />
+          <SnapIcon style={{}} width={30} height={30} />
         </Button>
         <Text style={[styles.adButtonText, styles.newCampaignTitle]}>
           {this.props.translate(ad.title)}

@@ -4,21 +4,23 @@ import styles from "./styles";
 import { globalColors } from "../../../GlobalStyles";
 
 export default props => {
-  let { content, filled, onPressFunction } = props;
+  const { translate } = props.screenProps;
+  let { content, filled, onPressFunction, buttonStyle, textStyle } = props;
   return (
     <Button
       rounded
       onPress={() => onPressFunction()}
-      style={filled ? styles.filledButton : styles.emptyButton}
+      style={[filled ? styles.filledButton : styles.emptyButton, buttonStyle]}
     >
       <Text
         uppercase
         style={[
           styles.contentStyle,
-          !filled ? { color: globalColors.orange } : {}
+          !filled ? { color: globalColors.orange } : {},
+          textStyle
         ]}
       >
-        {content}
+        {translate(content)}
       </Text>
     </Button>
   );

@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: wp("80%"),
     height: "100%"
+  },
+  googleIcon: {
+    alignSelf: "center"
+    // width: 30
+    // marginTop: 20
   }
 });
 export default styles;

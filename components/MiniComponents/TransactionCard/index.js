@@ -9,7 +9,9 @@ import globalStyles from "../../../GlobalStyles";
 // icons
 import WalletIcon from "../../../assets/SVGs/MenuIcons/Wallet";
 import SnapGhostIcon from "../../../assets/SVGs/Snapchat-Border";
+import GoogleSE from "../../../assets/SVGs/GoogleAds.svg";
 import isStringArabic from "../../isStringArabic";
+
 class TransactionCard extends Component {
   state = {
     paused: false,
@@ -48,13 +50,17 @@ class TransactionCard extends Component {
                 fill="#a0a0a0"
                 style={[styles.icon, styles.iconWallet]}
               />
-            ) : (
+            ) : transaction.channel === "snapchat" ? (
               <SnapGhostIcon width={40} style={[styles.icon]} />
+            ) : (
+              <GoogleSE width={40} style={[styles.icon]} />
             )}
 
             <Text style={[styles.text]}>{translate("Card Type")}</Text>
             <Text style={[styles.subText]}>
-              {transaction.payment_type}: {transaction.card_ending_with}
+              {transaction.payment_type}
+              {transaction.payment_type === "MASTERCARD" &&
+                " " + transaction.card_ending_with}
             </Text>
             <Text style={[styles.text]}>{translate("Transaction ID")}</Text>
             <Text style={[styles.subText]}>{transaction.reference_id}</Text>

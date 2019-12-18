@@ -77,7 +77,7 @@ class BusinessCard extends Component {
             } else this.props.selectAccount();
           }}
           style={[
-            styles.campaignButton,
+            styles.businessButton,
             { backgroundColor: changeState.backgroundColor }
           ]}
         >
@@ -98,7 +98,7 @@ class BusinessCard extends Component {
                 { color: changeState.color },
                 !isStringArabic(this.props.business.businessname)
                   ? {
-                      fontFamily: "montserrat-medium-english"
+                      fontFamily: "montserrat-bold-english"
                     }
                   : {}
               ]}

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import ForwardButton from "../../assets/SVGs/ForwardButton";
 import CheckmarkIcon from "../../assets/SVGs/Checkmark";
 import CrossIcon from "../../assets/SVGs/CrossButton";
+import BackButton from "../../assets/SVGs/BackButton";
 
 export default class LowerButton extends Component {
   render() {
-    let { width, height, style } = this.props;
+    let { width, height, style, isRTL } = this.props;
     let bottom = this.props.bottom ? this.props.bottom : 0;
     return (
       <TouchableOpacity
@@ -35,6 +36,8 @@ export default class LowerButton extends Component {
             width={width ? width : 73}
             height={height ? height : 63}
           />
+        ) : isRTL ? (
+          <BackButton width={8} />
         ) : (
           <ForwardButton
             width={width ? width : 83}
