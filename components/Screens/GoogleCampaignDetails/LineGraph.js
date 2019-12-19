@@ -8,7 +8,8 @@ import {
   VictoryChart,
   VictoryVoronoiContainer,
   VictoryAxis,
-  VictoryArea
+  VictoryArea,
+  VictoryScatter
 } from "victory-native";
 import chartData from "./ChartData";
 import styles from "./styles";
@@ -89,7 +90,12 @@ class LineGraph extends Component {
               }
             />
           }
-          padding={{ top: 70, bottom: 20, left: 50, right: 50 }}
+          padding={{
+            top: 70,
+            bottom: this.props.campaignStats.length === 1 ? 50 : 20,
+            left: 50,
+            right: 50
+          }}
           height={240}
           width={this.props.campaignStats.length < 1 ? wp(90) : wp(100)}
         >
@@ -100,18 +106,33 @@ class LineGraph extends Component {
               <Stop offset="60%" stopColor="#000" />
             </LinearGradient>
           </Defs>
-          <VictoryArea
-            categories={{ x: category }}
-            interpolation="cardinal"
-            style={{
-              data: {
-                stroke: "#FF7D08",
-                fill: "url(#myGradient)",
-                strokeWidth: 5
-              }
-            }}
-            data={data}
-          />
+          {this.props.campaignStats.length === 1 ? (
+            <VictoryScatter
+              categories={{ x: category }}
+              style={{
+                data: {
+                  stroke: "#FF7D08",
+                  fill: "url(#myGradient)",
+                  strokeWidth: 5
+                }
+              }}
+              size={8}
+              data={data}
+            />
+          ) : (
+            <VictoryArea
+              categories={{ x: category }}
+              interpolation="cardinal"
+              style={{
+                data: {
+                  stroke: "#FF7D08",
+                  fill: "url(#myGradient)",
+                  strokeWidth: 5
+                }
+              }}
+              data={data}
+            />
+          )}
           <VictoryAxis
             dependentAxis
             tickFormat={t => this.kFormatter(t)}
