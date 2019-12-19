@@ -10,7 +10,8 @@ import TimeDifferance from "../../Functions/TimeDifferance";
 import { globalColors } from "../../../GlobalStyles";
 import isNaN from "lodash/isNaN";
 export default props => {
-  let { campaign, loading, translate } = props;
+  let { campaign, loading, screenProps } = props;
+  let { translate } = screenProps;
   let statusOfCampaign = campaign
     ? new Date().setHours(0, 0, 0, 0) <
       new Date(campaign.start_time).setHours(0, 0, 0, 0)
@@ -20,7 +21,7 @@ export default props => {
       ? "ends"
       : "ended"
     : "";
-  let currentDate = new Date();
+  let currentDate = new Date().toLocaleDateString();
   return (
     <View style={{ alignSelf: "center", top: 10 }}>
       {loading ? (
@@ -34,7 +35,10 @@ export default props => {
               new Date(campaign.start_time).setHours(0, 0, 0, 0) &&
             campaign.campaign_end === "0" ? (
               <Text style={styles.subtext}>
-                {TimeDifferance(new Date(), campaign.end_time)} Day(s) left
+                {TimeDifferance(currentDate, campaign.end_time) === 0
+                  ? 1
+                  : TimeDifferance(currentDate, campaign.end_time)}{" "}
+                {translate("Day(s) left")}
               </Text>
             ) : (
               <Text style={styles.subtext}>campaign ended</Text>
@@ -45,7 +49,9 @@ export default props => {
               statusOfCampaign === "starts"
                 ? 0
                 : TimeDifferance(campaign.start_time, currentDate) /
-                  TimeDifferance(campaign.start_time, campaign.end_time)
+                  (TimeDifferance(campaign.start_time, campaign.end_time) === 0
+                    ? 1
+                    : TimeDifferance(campaign.start_time, campaign.end_time))
             }
             borderWidth={0}
             unfilledColor="#0004"
