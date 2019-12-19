@@ -27,25 +27,25 @@ export default props => {
         <PlaceholderLine width={widthPercentageToDP(85)} />
       ) : (
         <View>
-          {(new Date().setHours(0, 0, 0, 0) <=
-            new Date(campaign.end_time).setHours(0, 0, 0, 0) &&
+          {statusOfCampaign !== "starts" &&
+            (new Date().setHours(0, 0, 0, 0) <=
+              new Date(campaign.end_time).setHours(0, 0, 0, 0) &&
             new Date().setHours(0, 0, 0, 0) >=
-              new Date(campaign.start_time).setHours(0, 0, 0, 0)) ||
-          campaign.campaign_end !== "0" ? (
-            <Text style={styles.subtext}>
-              {TimeDifferance(new Date(), campaign.end_time)} Day(s) left
-            </Text>
-          ) : (
-            <Text style={styles.subtext}>campaign ended</Text>
-          )}
+              new Date(campaign.start_time).setHours(0, 0, 0, 0) &&
+            campaign.campaign_end === "0" ? (
+              <Text style={styles.subtext}>
+                {TimeDifferance(new Date(), campaign.end_time)} Day(s) left
+              </Text>
+            ) : (
+              <Text style={styles.subtext}>campaign ended</Text>
+            ))}
           <ProgressBar
             color={globalColors.orange}
             progress={
               statusOfCampaign === "starts"
                 ? 0
-                : TimeDifferance(campaign.start_time, currentDate) +
-                  1 / TimeDifferance(campaign.start_time, campaign.end_time) +
-                  1
+                : TimeDifferance(campaign.start_time, currentDate) /
+                  TimeDifferance(campaign.start_time, campaign.end_time)
             }
             borderWidth={0}
             unfilledColor="#0004"

@@ -43,9 +43,8 @@ export default props => {
             progress={
               statusOfCampaign === "starts"
                 ? 0
-                : TimeDifferance(campaign.start_time, currentDate) +
-                  1 / TimeDifferance(campaign.start_time, campaign.end_time) +
-                  1
+                : TimeDifferance(campaign.start_time, currentDate) /
+                  TimeDifferance(campaign.start_time, campaign.end_time)
             }
             borderWidth={0}
             unfilledColor="#0004"
