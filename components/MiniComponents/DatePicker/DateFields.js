@@ -59,7 +59,7 @@ class DateFields extends Component {
     });
     return {
       end_timeError: validateWrapper("mandatory", this.props.end_time),
-      start_timeError: validateWrapper("mandatory", this.props.end_time)
+      start_timeError: validateWrapper("mandatory", this.props.start_time)
     };
   };
 
@@ -102,7 +102,6 @@ class DateFields extends Component {
         this.props.incompleteCampaign && //pass as a props
         !this.props.campaignProgressStarted //pass as a props
       ) {
-
         this.navigateToContinue();
       }
     } else if (this.props.filterMenu) {
