@@ -46,7 +46,7 @@ class Menu extends Component {
   _draggedValue = new Animated.Value(0);
 
   draggableRange = {
-    top: hp("84"),
+    top: hp("80"),
     bottom: -hp("120")
   };
   constructor(props) {

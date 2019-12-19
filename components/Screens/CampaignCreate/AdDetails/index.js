@@ -997,7 +997,7 @@ class AdDetails extends Component {
         isOpen={this.state.sidemenustate}
         // edgeHitWidth={-60}
       >
-        {!editCampaign &&
+        {!this.editCampaign &&
           (media.includes(".mp4") ||
           media.includes(".mov") ||
           media.includes(".MP4") ||
@@ -1011,7 +1011,7 @@ class AdDetails extends Component {
             <View style={[styles.backgroundViewWrapper]}>
               <Video
                 source={{
-                  uri: editCampaign ? campaign.media : media
+                  uri: this.editCampaign ? campaign.media : media
                 }}
                 shouldPlay
                 isLooping
@@ -1043,7 +1043,9 @@ class AdDetails extends Component {
           style={[
             styles.safeArea,
             {
-              backgroundColor: editCampaign ? "transparent" : "rgba(0,0,0,0.75)"
+              backgroundColor: this.editCampaign
+                ? "transparent"
+                : "rgba(0,0,0,0.75)"
             }
           ]}
           forceInset={{ bottom: "never", top: "always" }}
@@ -1094,7 +1096,7 @@ class AdDetails extends Component {
                     : undefined
                 }
                 showTopRightButton={
-                  editCampaign &&
+                  this.editCampaign &&
                   this.state.campaignInfo.campaign_end === "0" &&
                   new Date(this.state.campaignInfo.end_time) > new Date() &&
                   !this.props.campaignEnded &&
@@ -1104,8 +1106,10 @@ class AdDetails extends Component {
                   this.setState({ startEditing: !startEditing });
                 }}
                 topRightButtonText={translate("Edit")}
-                navigation={editCampaign ? undefined : this.props.navigation}
-                title={editCampaign ? "Audience" : "Campaign details"}
+                navigation={
+                  this.editCampaign ? undefined : this.props.navigation
+                }
+                title={this.editCampaign ? "Audience" : "Campaign details"}
               />
 
               <Content
@@ -1189,7 +1193,7 @@ class AdDetails extends Component {
                   OSType={OSType}
                   mainState={this.state}
                   translate={translate}
-                  editCampaign={editCampaign}
+                  editCampaign={this.editCampaign}
                   startEditing={startEditing}
                 />
 
@@ -1199,7 +1203,7 @@ class AdDetails extends Component {
                   _handleSubmission={this._handleSubmission}
                   startEditing={startEditing}
                   campaignInfo={campaignInfo}
-                  editCampaign={editCampaign}
+                  editCampaign={this.editCampaign}
                   screenProps={this.props.screenProps}
                 />
               </Content>

@@ -93,7 +93,8 @@ class GoogleCampaignDetails extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.selectedCampaign !== this.props.selectedCampaign &&
-      this.props.selectedCampaign
+      this.props.selectedCampaign &&
+      !this.props.loading
     ) {
       this.setState({
         toggleText: this.props.selectedCampaign.campaign.status,
