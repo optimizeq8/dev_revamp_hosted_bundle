@@ -119,9 +119,12 @@ class GoogleCreateAdAcc extends Component {
                   // disabled={!this.state.accept}
                   style={[styles.button]}
                   onPress={() => {
-                    this.props.create_google_ad_account({
-                      businessid: this.props.mainBusiness.businessid
-                    });
+                    this.props.create_google_ad_account(
+                      {
+                        businessid: this.props.mainBusiness.businessid
+                      },
+                      this.props.navigation
+                    );
                   }}
                 >
                   <Text style={styles.buttontext}>Accept</Text>
@@ -141,7 +144,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_google_ad_account: info =>
-    dispatch(actionCreators.create_google_ad_account(info))
+  create_google_ad_account: (info, navigation) =>
+    dispatch(actionCreators.create_google_ad_account(info, navigation))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleCreateAdAcc);
