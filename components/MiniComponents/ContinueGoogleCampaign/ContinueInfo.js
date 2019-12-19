@@ -39,7 +39,7 @@ ContinueInfo = props => {
         {campaign.budget !== 0 && (
           <View style={styles.sections}>
             <Text uppercase style={styles.text}>
-              Budget
+              {translate("Budget")}
             </Text>
             <Text style={[globalStyles.numbers, { fontSize: 24 }]}>
               {formatNumber(campaign.budget)}
@@ -48,11 +48,13 @@ ContinueInfo = props => {
         )}
         <View style={styles.sections}>
           <Text uppercase style={[styles.text, { fontSize: 14 }]}>
-            Duration
+            {translate("Duration")}
           </Text>
           {campaign.start_time !== "" ? (
             new Date(campaign.start_time) < new Date() ? (
-              <Text style={styles.text}>The date is no longer applicable</Text>
+              <Text style={styles.text}>
+                {translate("The date is no longer applicable")}
+              </Text>
             ) : (
               <Text style={globalStyles.numbers}>
                 {dateFormat(new Date(campaign.start_time), "mmm dS, yyyy")}{" "}
@@ -61,7 +63,7 @@ ContinueInfo = props => {
               </Text>
             )
           ) : (
-            <Text style={styles.text}>No dates selected</Text>
+            <Text style={styles.text}>{translate("No dates selected")}</Text>
           )}
         </View>
 
