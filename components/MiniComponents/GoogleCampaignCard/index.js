@@ -26,10 +26,7 @@ class GoogleCampaignCard extends Component {
       this.props.campaign.end_time
     );
     this.props.navigation.navigate("GoogleCampaignDetails", {
-      amount: this.props.campaign.amount,
-      cost: this.props.campaign.cost,
-      clicks: this.props.campaign.clicks,
-      impressions: this.props.campaign.impressions
+      campaign: this.props.campaign
     });
     Segment.trackWithProperties("Pressed Google Campaign Card", {
       campaign_id: this.props.campaign.campaign_id

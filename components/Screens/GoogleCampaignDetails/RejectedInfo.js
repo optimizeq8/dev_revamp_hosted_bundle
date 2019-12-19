@@ -43,7 +43,7 @@ export default RejectedInfo = props => {
           paddingVertical: 5
         }}
       >
-        {translate("AD Rejected")}
+        {translate("Ad Rejected")}
       </Text>
       <Text
         style={{
@@ -103,7 +103,7 @@ export default RejectedInfo = props => {
       </View>
 
       <CustomButtons
-        screenProps={this.props.screenProps}
+        screenProps={props.screenProps}
         onPressFunction={() =>
           navigation.push("GoogleAdDesign", {
             rejected: true,

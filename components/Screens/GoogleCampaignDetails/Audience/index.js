@@ -15,6 +15,7 @@ import Sidemenu from "../../../MiniComponents/SideMenu";
 import * as Animatable from "react-native-animatable";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
 
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
@@ -47,6 +48,7 @@ import LocationIcon from "../../../../assets/SVGs/Location";
 //Style
 import styles from "./styles";
 import globalStyles, { globalColors } from "../../../../GlobalStyles";
+import { colors } from "../../../GradiantColors/colors";
 
 //Redux Axios
 import * as actionCreators from "../../../../store/actions";
@@ -407,7 +409,7 @@ class GoogleAdTargetting extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition={isRTL ? "right" : "left"}
+        menuPosition={isRTL ? "left" : "right"}
         openMenuOffset={wp("100%")}
         isOpen={this.state.sidemenustate}
       >
@@ -415,6 +417,11 @@ class GoogleAdTargetting extends Component {
           style={[styles.safeArea]}
           forceInset={{ bottom: "never", top: "always" }}
         >
+          <LinearGradient
+            colors={[colors.background1, colors.background2]}
+            locations={[1, 0.3]}
+            style={styles.gradient}
+          />
           <NavigationEvents
             onDidFocus={() => {
               //   if (this.props.navigation.getParam("editCampaign", false)) {
@@ -445,10 +452,10 @@ class GoogleAdTargetting extends Component {
                 navigation={this.props.navigation}
                 title={"Audience"}
                 topRightButtonText={"Edit"}
-                showTopRightButton={this.props.navigation.getParam(
-                  "editCampaign",
-                  false
-                )}
+                showTopRightButton={
+                  !this.state.editCampaign &&
+                  this.props.navigation.getParam("editCampaign", false)
+                }
                 topRightButtonFunction={() => {
                   this.setState({
                     editCampaign: true
