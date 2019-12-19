@@ -130,16 +130,16 @@ class AdType extends Component {
     }
     if (
       !this.props.mainBusiness.snap_ad_account_id &&
-      adType.mediaType === "snapchat"
+      (adType.mediaType === "snapchat" || this.state.media_type === "snapchat")
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc");
     } else if (
       !this.props.mainBusiness.google_ad_account_id &&
-      adType.mediaType === "google"
+      (adType.mediaType === "google" || this.state.media_type === "google")
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc");
     } else
-      this.props.navigation.navigate(adType.rout, {
+      this.props.navigation.navigate(adType.rout || this.state.route, {
         tempAdType: this.state.campaign_type
       });
     // this.props.save_campaign_info({ index: this.state.activeSlide });
