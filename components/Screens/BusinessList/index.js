@@ -89,17 +89,17 @@ class BusinessList extends Component {
               </Text>
               {list}
             </ScrollView>
-            <Button
-              style={[styles.bottomCard]}
-              onPress={() =>
-                this.props.navigation.navigate("CreateBusinessAccount")
-              }
-            >
-              <Text style={styles.subtext}>
-                + {translate("Add a new Business")}{" "}
-              </Text>
-            </Button>
           </View>
+          <Button
+            style={[styles.bottomCard]}
+            onPress={() =>
+              this.props.navigation.navigate("CreateBusinessAccount")
+            }
+          >
+            <Text style={styles.subtext}>
+              + {translate("Add a new Business")}{" "}
+            </Text>
+          </Button>
         </View>
       </Container>
     );
