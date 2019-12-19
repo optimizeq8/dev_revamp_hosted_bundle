@@ -60,7 +60,12 @@ class SearchBar extends Component {
     }
   };
   render() {
-    let { height, businessList, customInputStyle } = this.props;
+    let {
+      height,
+      businessList,
+      transactionSearch,
+      customInputStyle
+    } = this.props;
     const { translate } = this.props.screenProps;
     return (
       <View
@@ -81,18 +86,29 @@ class SearchBar extends Component {
                         fontFamily: "montserrat-light-english"
                       }
                     : {}
-                )
+                ),
+              {
+                color: !transactionSearch && !businessList ? "#fff" : "#000"
+              }
             ]}
             placeholder={translate(
-              `Search ${businessList ? "businesses" : "ads"}`
+              `Search ${
+                businessList
+                  ? "businesses"
+                  : transactionSearch
+                  ? "transactions"
+                  : "ads"
+              }`
             )}
-            placeholderTextColor={"#fff"}
+            placeholderTextColor={
+              !transactionSearch && !businessList ? "#fff" : "#000"
+            }
             value={this.state.value}
             onChangeText={value => {
               this.setState({ value: value }, () => this._handleSubmit());
             }}
           />
-          {!this.props.transactionSearch && (
+          {!transactionSearch && (
             <TouchableOpacity
               onPress={() => {
                 this._handleSubmit(true);
