@@ -21,7 +21,7 @@ GoogleBackendURL = () =>
     // }
   });
 
-export const create_google_ad_account = info => {
+export const create_google_ad_account = (info, navigation) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_LOADING_ACCOUNT_MANAGEMENT,
