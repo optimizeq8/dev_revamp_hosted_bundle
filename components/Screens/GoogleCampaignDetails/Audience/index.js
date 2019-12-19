@@ -322,10 +322,6 @@ class GoogleAdTargetting extends Component {
   render() {
     const { translate } = this.props.screenProps;
     const { editCampaign } = this.state;
-    // const listName =
-    //   this.props.campaign.locationsFetchedList.length > 0 &&
-    //   this.props.campaign.locationsFetchedList.map(loc => loc.location);
-
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -590,9 +586,11 @@ class GoogleAdTargetting extends Component {
                                   reg => reg.id === loc
                                 )
                               )
-                                return this.props.campaign.locationsFetchedList.find(
-                                  reg => reg.id === loc
-                                ).location;
+                                return translate(
+                                  this.props.campaign.locationsFetchedList.find(
+                                    reg => reg.id === loc
+                                  ).location
+                                );
                             })}
                         </Text>
                       </View>
