@@ -253,8 +253,8 @@ class GoogleCampaignDetails extends Component {
           );
           countryName = countryName.filter((v, i, a) => a.indexOf(v) === i);
 
-          let regionNames = selectedCampaign.campaign.location.map(
-            loc => loc.name
+          let regionNames = selectedCampaign.campaign.location.map(loc =>
+            translate(loc.name)
           );
 
           const location =

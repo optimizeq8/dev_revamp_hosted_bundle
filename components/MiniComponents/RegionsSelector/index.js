@@ -62,8 +62,9 @@ class RegionsSelector extends Component {
               />
               <Text
                 style={{
-                  fontFamily: "montserrat-bold-english",
+                  fontFamily: "montserrat-bold",
                   fontSize: 14,
+                  textAlign: "left",
                   justifyContent: "center",
                   alignSelf: "center",
                   paddingLeft: 10,
@@ -72,7 +73,7 @@ class RegionsSelector extends Component {
                 }}
                 numberOfLines={2}
               >
-                {r.location}
+                {translate(r.location)}
               </Text>
             </View>
             <Text
@@ -120,7 +121,9 @@ class RegionsSelector extends Component {
                     let filteredR = this.props.locationsFetchedList.filter(c =>
                       // console.log("c", c)
 
-                      c.location.toLowerCase().includes(value.toLowerCase())
+                      translate(c.location)
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
                     );
                     this.setState({ filteredRegions: filteredR });
                   }}
