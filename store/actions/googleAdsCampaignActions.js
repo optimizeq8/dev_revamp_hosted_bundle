@@ -14,14 +14,14 @@ GoogleBackendURL = () =>
     baseURL: store.getState().login.admin
       ? "http://goog.optimizeapp.com/"
       : "http://googliver.optimizeapp.com/"
-    // ? "https://optimize.reemcantmath.com/"
-    // : "https://optimize.reemcantmath.com/"
-    // baseURL: "http://optimize.reemcantmath.com"
-    // headers: {
-    //   Authorization: axios.defaults.headers.common.Authorization
-    // }
   });
 
+/**
+ * @method
+ * @param {Object} info this has the businessid
+ * @param {Object} navigation
+ * @returns {Function} returns an action to create an ad account under google
+ */
 export const create_google_ad_account = (info, navigation) => {
   return dispatch => {
     dispatch({
@@ -72,6 +72,11 @@ export const create_google_ad_account = (info, navigation) => {
   };
 };
 
+/**
+ * @method
+ * @param {String} country country code
+ * @returns {Function} an action to set the values of the regions with thier reach
+ */
 export const get_google_SE_location_list_reach = country => {
   return dispatch => {
     dispatch({
@@ -110,7 +115,6 @@ export const get_google_SE_location_list_reach = country => {
         }
       })
       .catch(err => {
-        console.log("err", err);
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -127,6 +131,15 @@ export const get_google_SE_location_list_reach = country => {
   };
 };
 
+/**
+ * Used to create the first step in the campaign. users can't create campaigns with the same name (will return an error)
+ * the language and country are submitted here becaus ethis will help later recommend keywords based on the demographics
+ *
+ * @method
+ * @param {Object} info has the keys for creating a campaign (dates/name/locations/language/businessid)
+ * @param {Object} navigation
+ * @return {Function} an action to set the campaign info data from the first step along with a campaign id
+ */
 export const create_google_SE_campaign_info = (
   info,
   navigation,
@@ -192,6 +205,15 @@ export const create_google_SE_campaign_info = (
   };
 };
 
+/**
+ * used to create the campiagn's ad part. will recive an error key if the data was incorrect
+ * while validation (special characters, wrong/url length, inavlid url)
+ *
+ * @method
+ * @param {Object} info has keys for the headers/description/url
+ * @param {Boolean} rejected this is used to handle the rejected ads default is false
+ * @return {Function} returns an actions that sets the data in teh reducer
+ */
 export const create_google_SE_campaign_ad_design = (
   info,
   rejected,
@@ -209,17 +231,17 @@ export const create_google_SE_campaign_ad_design = (
       })
       .then(data => {
         if (!data.error) {
-          segmentEventTrack("Successfully Submitted Ad Info");
-          dispatch({
-            type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
-            payload: { data: data }
-          });
+          if (!rejected) {
+            segmentEventTrack("Successfully Submitted Ad Info");
+            dispatch({
+              type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
+              payload: { data: data }
+            });
+          } else segmentEventTrack("Successfully re-Submitted rejected ad");
         } else {
-          //  console.log("error: ", data.error);
           segmentEventTrack("Error Submitting Ad Info", {
             campaign_error: data.error
           });
-
           showMessage({
             message: data.error,
             type: "info",
@@ -256,11 +278,17 @@ export const create_google_SE_campaign_ad_design = (
   };
 };
 
+/**
+ * this is used to generate search results for recomended keywords.
+ *
+ * @method
+ * @param {String} keyword
+ * @param {String} campaign_id
+ * @param {String} businessid
+ * @returns {Function} an action to set an array of search results for the lookedup keyword
+ */
 export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
-  // console.log("campaign_id", campaign_id);
-  // console.log("businessid", businessid);
-
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_LOADING,
       payload: true
@@ -309,8 +337,14 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
   };
 };
 
+/**
+ *
+ * @method
+ * @param {Object} info has keys for targetting that include (gender/age/budget/keywords)
+ * @returns {Function} an action to set the targetting
+ */
 export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
       payload: true
@@ -326,7 +360,7 @@ export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETTING,
             payload: { data: data }
           });
-
+          //sets the transaction reducer if there is chanage in the data
           dispatch(
             setCampaignInfoForTransaction({
               campaign_id: data.campaign_id,

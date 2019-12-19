@@ -263,39 +263,34 @@ class GoogleAdInfo extends Component {
       //Set campaignProgressStarted back to false so that the continue modal will show again if the exit and come back
       this.props.set_google_campaign_resumed(false);
 
-      // if (this.props.campaign.campaign_id !== "") {
-      // console.log("update");
-
-      this.props.create_google_SE_campaign_info(
-        {
-          campaign_id: this.props.campaign.campaign_id
-            ? this.props.campaign.campaign_id
-            : "",
-          businessid: this.props.mainBusiness.businessid,
-          name: this.state.name,
-          language: this.state.language,
-          start_time: this.state.start_time,
-          end_time: this.state.end_time,
-          location: this.state.location
-        },
-        this.props.navigation,
-        segmentInfo
-      );
-      // } else {
-      // console.log("new");
-      // this.props.create_google_SE_campaign_info(
-      //   {
-      //     campaign_id: "",
-      //     businessid: this.props.mainBusiness.businessid,
-      //     name: this.state.name,
-      //     language: this.state.language,
-      //     start_time: this.state.start_time,
-      //     end_time: this.state.end_time,
-      //     location: this.state.location
-      //   },
-      //   this.props.navigation
-      // );
-      // }
+      if (this.props.campaign.campaign_id !== "") {
+        this.props.create_google_SE_campaign_info(
+          {
+            campaign_id: this.props.campaign.campaign_id,
+            businessid: this.props.mainBusiness.businessid,
+            name: this.state.name,
+            language: this.state.language,
+            start_time: this.state.start_time,
+            end_time: this.state.end_time,
+            location: this.state.location
+          },
+          this.props.navigation,
+          segmentInfo
+        );
+      } else {
+        this.props.create_google_SE_campaign_info(
+          {
+            businessid: this.props.mainBusiness.businessid,
+            name: this.state.name,
+            language: this.state.language,
+            start_time: this.state.start_time,
+            end_time: this.state.end_time,
+            location: this.state.location
+          },
+          this.props.navigation,
+          segmentInfo
+        );
+      }
 
       this.props.save_google_campaign_data({
         name: this.state.name,
@@ -351,8 +346,6 @@ class GoogleAdInfo extends Component {
                 this.props.navigation.goBack();
                 this.props.set_google_campaign_resumed(false);
               }}
-              // navigation={this.props.navigation}
-
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
             />
@@ -600,7 +593,6 @@ class GoogleAdInfo extends Component {
             >
               {this.state.selectRegion ? (
                 <Animatable.View
-                  // onAnimationEnd={() => this.setState({ nameError: null })}
                   duration={300}
                   easing={"ease"}
                   animation={
@@ -611,20 +603,12 @@ class GoogleAdInfo extends Component {
                     <CustomHeader
                       closeButton={false}
                       actionButton={() => {
-                        // this.setModalVisible(false);
                         this.setState({ selectRegion: false });
                       }}
                       title="Select Regions"
                       screenProps={this.props.screenProps}
                     />
-                    <Content
-                      scrollEnabled={false}
-                      // padder
-                      indicatorStyle="white"
-                    >
-                      {/* {this.props.campaign.loading ? (
-                        <LoadingScreen top={50} />
-                      ) : ( */}
+                    <Content scrollEnabled={false} indicatorStyle="white">
                       <RegionsSelector
                         screenProps={this.props.screenProps}
                         country={this.state.country}
@@ -635,22 +619,15 @@ class GoogleAdInfo extends Component {
                         onSelectRegions={this._handleSelectedRegions}
                         loading={this.props.campaign.loading}
                       />
-                      {/* )} */}
                     </Content>
                     <LowerButton bottom={4} function={this.setModalVisible} />
                   </View>
                 </Animatable.View>
               ) : (
                 <Animatable.View
-                  // onAnimationEnd={() => this.setState({ nameError: null })}
                   duration={300}
                   easing={"ease"}
-                  animation={
-                    // !this.state.selectRegion ?
-                    // "slideInRight"
-                    // :
-                    "slideInLeft"
-                  }
+                  animation={"slideInLeft"}
                 >
                   <View style={styles.popupOverlay}>
                     <CustomHeader
@@ -661,17 +638,12 @@ class GoogleAdInfo extends Component {
                       title="Select Country"
                       screenProps={this.props.screenProps}
                     />
-                    <Content
-                      scrollEnabled={false}
-                      // padder
-                      indicatorStyle="white"
-                    >
+                    <Content scrollEnabled={false} indicatorStyle="white">
                       <CountrySelector
                         screenProps={this.props.screenProps}
                         countries={CountriesList}
                         country={this.state.country}
                         onSelectedCountryChange={this._handleCountryChange}
-                        //   _handleSideMenuState={this.props._handleSideMenuState}
                       />
                     </Content>
                     <LowerButton
