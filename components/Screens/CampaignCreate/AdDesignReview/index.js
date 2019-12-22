@@ -57,7 +57,8 @@ class AdDesignReview extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
 
     Segment.screenWithProperties("Ad Preview", {
-      category: "Campaign Creation"
+      category: "Campaign Creation",
+      channel: "snapchat"
     });
   }
   handleBackButton = () => {

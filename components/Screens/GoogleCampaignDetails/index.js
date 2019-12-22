@@ -54,7 +54,7 @@ import genderData from "../../Data/gender.googleSE.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import isStringArabic from "../../isStringArabic";
+import segmentEventTrack from "../../segmentEventTrack";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -113,12 +113,18 @@ class GoogleCampaignDetails extends Component {
   }
 
   handleStartDatePicked = date => {
+    segmentEventTrack("Selected Campaign Start Date", {
+      campaign_start_date: date
+    });
     this.setState({
       start_time: date
     });
   };
 
   handleEndDatePicked = date => {
+    segmentEventTrack("Selected Campaign Start Date", {
+      campaign_start_date: date
+    });
     this.setState({
       end_time: date
     });

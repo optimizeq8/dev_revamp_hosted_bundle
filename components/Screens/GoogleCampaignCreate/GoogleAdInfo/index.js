@@ -47,6 +47,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
 
 //Functions
+import segmentEventTrack from "../../../segmentEventTrack";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import {
   heightPercentageToDP as hp,
@@ -118,15 +119,24 @@ class GoogleAdInfo extends Component {
     this.setState({
       start_time: date
     });
+    segmentEventTrack("Selected Campaign Start Date", {
+      campaign_start_date: date
+    });
     this.props.save_google_campaign_data({ start_time: date });
   };
   handleEndDatePicked = date => {
     this.setState({
       end_time: date
     });
+    segmentEventTrack("Selected Campaign End Date", {
+      campaign_end_date: date
+    });
     this.props.save_google_campaign_data({ end_time: date });
   };
   setModalVisible = visible => {
+    if (visible) {
+      Segment.screen("Select Country Modal");
+    }
     this.setState({ modalVisible: visible });
     // this.setState({ selectRegion: false });
   };
@@ -148,11 +158,17 @@ class GoogleAdInfo extends Component {
   };
   _handleCountryChange = val => {
     this.setState({ country: val, location: [val] });
+    segmentEventTrack("Selected Campaign Country", {
+      campaign_country: val
+    });
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
   _handleSelectedRegions = val => {
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] });
+      segmentEventTrack("Selected Campaign Regions", {
+        campaign_regions: val
+      });
       this.props.save_google_campaign_data({
         country: val,
         location: [val]
@@ -162,7 +178,11 @@ class GoogleAdInfo extends Component {
       if (isUndefined(this.state.location.find(l => l === val))) {
         res = this.state.location.filter(l => l !== val);
         res = this.state.location.filter(l => l !== this.state.country);
-        this.setState({ location: [...res, val] });
+        this.setState({ location: [...res, val] }, () => {
+          segmentEventTrack("Selected Campaign Regions", {
+            campaign_regions: [...res, val]
+          });
+        });
         this.props.save_google_campaign_data({
           location: [...res, val]
         });
@@ -173,7 +193,9 @@ class GoogleAdInfo extends Component {
         } else if (res.length - 1 !== 0) {
           res = res.filter(l => l !== this.state.country);
         }
-
+        segmentEventTrack("Selected Campaign Regions", {
+          campaign_regions: res
+        });
         this.setState({ location: res });
         this.props.save_google_campaign_data({
           location: res
@@ -195,6 +217,24 @@ class GoogleAdInfo extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
+    // segment track on submit
+    if (
+      nameError ||
+      countryError ||
+      dateErrors.start_timeError ||
+      dateErrors.end_timeError
+    ) {
+      segmentEventTrack("Error occured on ad info screen sumbit button", {
+        campaign_error_ad_name: nameError ? nameError : "",
+        campaign_error_country: countryError ? countryError : "",
+        campaign_error_ad_start_date: dateErrors.start_timeError
+          ? dateErrors.start_timeError
+          : "",
+        campaign_error_ad_end_date: dateErrors.end_timeError
+          ? dateErrors.end_timeError
+          : ""
+      });
+    }
     if (
       !nameError &&
       !countryError &&
@@ -204,10 +244,17 @@ class GoogleAdInfo extends Component {
       // Segment.trackWithProperties("Google SE Info AD", {
       //   business_name: this.props.mainBusiness.businessname
       // });
-      // Segment.trackWithProperties("Completed Checkout Step", {
-      //   step: 2,
-      //   business_name: this.props.mainBusiness.businessname
-      // });
+      const segmentInfo = {
+        step: 2,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_name: this.state.name,
+        campaign_language: this.state.language,
+        campaign_start_date: this.state.start_time,
+        campaign_end_date: this.state.end_time,
+        campaign_location: this.state.location,
+        campaign_country: this.state.country,
+        checkout_id: this.props.campaign.campaign_id
+      };
       // console.log(
       //   "this.props.campaign.campaign_id ",
       //   this.props.campaign.campaign_id
@@ -231,7 +278,8 @@ class GoogleAdInfo extends Component {
           end_time: this.state.end_time,
           location: this.state.location
         },
-        this.props.navigation
+        this.props.navigation,
+        segmentInfo
       );
       // } else {
       // console.log("new");
@@ -281,13 +329,14 @@ class GoogleAdInfo extends Component {
                 "GoogleAdInfo"
               ]);
             }
-            // Segment.screenWithProperties("Google SE Info AD", {
-            //   category: "Campaign Creation Google"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   step: 2,
-            //   business_name: this.props.mainBusiness.businessname
-            // });
+            Segment.screenWithProperties("Google SE Info AD", {
+              category: "Campaign Creation",
+              channel: "google"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 2,
+              business_name: this.props.mainBusiness.businessname
+            });
           }}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -359,10 +408,25 @@ class GoogleAdInfo extends Component {
                       this.setState({ inputN: true });
                     }}
                     onBlur={() => {
-                      this.setState({ inputN: false });
-                      this.setState({
-                        nameError: validateWrapper("mandatory", this.state.name)
+                      segmentEventTrack("Name Field on Blur", {
+                        campaign_name: this.state.name
                       });
+                      this.setState({ inputN: false });
+                      this.setState(
+                        {
+                          nameError: validateWrapper(
+                            "mandatory",
+                            this.state.name
+                          )
+                        },
+                        () => {
+                          if (this.state.nameError) {
+                            segmentEventTrack("Error Name Field on Blur", {
+                              campaign_error_ad_name: this.state.nameError
+                            });
+                          }
+                        }
+                      );
                     }}
                   />
                 </Item>
@@ -447,6 +511,9 @@ class GoogleAdInfo extends Component {
                       styles.choiceButtonLeft
                     ]}
                     onPress={() => {
+                      segmentEventTrack("Selected campaign language", {
+                        campaign_language: "English"
+                      });
                       this._handleLanguageChange("1000");
                     }}
                   >
@@ -470,6 +537,9 @@ class GoogleAdInfo extends Component {
                       styles.choiceButtonRight
                     ]}
                     onPress={() => {
+                      segmentEventTrack("Selected campaign language", {
+                        campaign_language: "Arabic"
+                      });
                       this._handleLanguageChange("1019");
                     }}
                   >
@@ -609,12 +679,23 @@ class GoogleAdInfo extends Component {
                       bottom={4}
                       function={() => {
                         if (this.state.country) {
+                          segmentEventTrack(
+                            "Button clicked to get google SE location list reach and to show regions modal",
+                            {
+                              campaign_country: this.state.country
+                            }
+                          );
                           this.props.get_google_SE_location_list_reach(
                             this.state.country
                           );
-                          this.setState({
-                            selectRegion: true
-                          });
+                          this.setState(
+                            {
+                              selectRegion: true
+                            },
+                            () => {
+                              Segment.screen("Select Regions Modal");
+                            }
+                          );
                         }
                       }}
                     />
@@ -636,8 +717,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_google_SE_campaign_info: (info, navigation) =>
-    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation)),
+  create_google_SE_campaign_info: (info, navigation, segmentInfo) =>
+    dispatch(
+      actionCreators.create_google_SE_campaign_info(
+        info,
+        navigation,
+        segmentInfo
+      )
+    ),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
   set_google_SE_budget_range: budget =>

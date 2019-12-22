@@ -132,7 +132,7 @@ class CampaignCircleChart extends Component {
                 <View style={styles.campaignInfo}>
                   <Text uppercase style={[styles.subtext]}>
                     {translate("Reach")}
-                    <Small style={{ fontSize: 8 }}> Total</Small>
+                    <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
                   </Text>
                   <Text
                     ellipsizeMode="tail"
@@ -176,7 +176,7 @@ class CampaignCircleChart extends Component {
                 <View style={styles.campaignInfo}>
                   <Text uppercase style={[styles.subtext]}>
                     {translate("Frequency")}
-                    <Small style={{ fontSize: 8 }}> Total</Small>
+                    <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
                   </Text>
                   <Text
                     ellipsizeMode="tail"

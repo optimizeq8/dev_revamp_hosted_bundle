@@ -43,6 +43,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import split from "lodash/split";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class GoogleAdDesign extends Component {
   static navigationOptions = {
@@ -149,7 +150,24 @@ class GoogleAdDesign extends Component {
       description2Error,
       urlError
     });
-
+    // set segment track for error
+    if (
+      headline1Error ||
+      headline2Error ||
+      headline3Error ||
+      descriptionError ||
+      description2Error ||
+      urlError
+    ) {
+      segmentEventTrack("Error occured on ad design screen sumbit button", {
+        campaign_error_headline1: headline1Error,
+        campaign_error_headline2: headline2Error,
+        campaign_error_headline3: headline3Error,
+        campaign_error_description: descriptionError,
+        campaign_error_description2: description2Error,
+        campaign_error_url: urlError
+      });
+    }
     if (
       !headline1Error &&
       !headline2Error &&
@@ -165,6 +183,17 @@ class GoogleAdDesign extends Component {
         description: this.state.description,
         description2: this.state.description2,
         finalurl: this.state.networkString + this.state.finalurl
+      };
+      const segmentInfo = {
+        step: 3,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_headline1: this.state.headline1,
+        campaign_headline2: this.state.headline2,
+        campaign_headline3: this.state.headline3,
+        campaign_description: this.state.description,
+        campaign_description2: this.state.description2,
+        campaign_finalurl: this.state.finalurl,
+        checkout_id: this.props.campaign.campaign_id
       };
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       if (!rejectedVal) {
@@ -182,7 +211,8 @@ class GoogleAdDesign extends Component {
             campaign_id: this.props.campaign.campaign_id,
             businessid: this.props.mainBusiness.businessid
           },
-          rejectedVal
+          rejectedVal,
+          segmentInfo
         );
 
         this.props.save_google_campaign_data({
@@ -204,7 +234,8 @@ class GoogleAdDesign extends Component {
             ...data,
             campaign_id: this.props.navigation.getParam("campaign_id", null)
           },
-          rejectedVal
+          rejectedVal,
+          segmentInfo
         );
       }
     }
@@ -230,13 +261,14 @@ class GoogleAdDesign extends Component {
                 "GoogleAdDesign"
               ]);
             // }
-            // Segment.screenWithProperties("Google SE Design AD", {
-            //   category: "Campaign Creation Google"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   step: 3,
-            //   business_name: this.props.mainBusiness.businessname
-            // });
+            Segment.screenWithProperties("Google SE Design AD", {
+              category: "Campaign Creation",
+              channel: "google"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
           }}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -319,13 +351,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH1: true });
                       }}
                       onBlur={() => {
-                        this.setState({ inputH1: false });
-                        this.setState({
-                          headline1Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline1
-                          )
+                        segmentEventTrack("headline1 Field on Blur", {
+                          campaign_headline1: this.state.headline1
                         });
+                        this.setState({ inputH1: false });
+                        this.setState(
+                          {
+                            headline1Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline1
+                            )
+                          },
+                          () => {
+                            if (this.state.headline1Error) {
+                              segmentEventTrack(
+                                "Error at headline1 field on blur",
+                                {
+                                  campaign_error_headline1: this.state
+                                    .headline1Error
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -373,13 +421,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH2: true });
                       }}
                       onBlur={() => {
-                        this.setState({ inputH2: false });
-                        this.setState({
-                          headline2Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline2
-                          )
+                        segmentEventTrack("headline2 Field on Blur", {
+                          campaign_headline2: this.state.headline2
                         });
+                        this.setState({ inputH2: false });
+                        this.setState(
+                          {
+                            headline2Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline2
+                            )
+                          },
+                          () => {
+                            if (this.state.headline2Error) {
+                              segmentEventTrack(
+                                "Error at headline2 field on blur",
+                                {
+                                  campaign_error_headline2: this.state
+                                    .headline2Error
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -427,13 +491,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH3: true });
                       }}
                       onBlur={() => {
-                        this.setState({ inputH3: false });
-                        this.setState({
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline3
-                          )
+                        segmentEventTrack("description Field on Blur", {
+                          campaign_description: this.state.description
                         });
+                        this.setState({ inputH3: false });
+                        this.setState(
+                          {
+                            headline3Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline3
+                            )
+                          },
+                          () => {
+                            if (this.state.description2Error) {
+                              segmentEventTrack(
+                                "Error description Field on Blur",
+                                {
+                                  campaign_error_description: this.state
+                                    .descriptionError
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -636,13 +716,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputD2: true });
                       }}
                       onBlur={() => {
-                        this.setState({ inputD2: false });
-                        this.setState({
-                          description2Error: validateWrapper(
-                            "mandatory",
-                            this.state.description2
-                          )
+                        segmentEventTrack("description2 Field on Blur", {
+                          campaign_description2: this.state.description2
                         });
+                        this.setState({ inputD2: false });
+                        this.setState(
+                          {
+                            description2Error: validateWrapper(
+                              "mandatory",
+                              this.state.description2
+                            )
+                          },
+                          () => {
+                            if (this.state.description2Error) {
+                              segmentEventTrack(
+                                "Error description2 Field on Blur",
+                                {
+                                  campaign_error_description2: this.state
+                                    .description2Error
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -678,9 +774,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_google_SE_campaign_ad_design: (info, rejected) =>
+  create_google_SE_campaign_ad_design: (info, rejected, segmentInfo) =>
     dispatch(
-      actionCreators.create_google_SE_campaign_ad_design(info, rejected)
+      actionCreators.create_google_SE_campaign_ad_design(
+        info,
+        rejected,
+        segmentInfo
+      )
     ),
   save_google_campaign_data: info =>
     dispatch(actionCreators.save_google_campaign_data(info)),

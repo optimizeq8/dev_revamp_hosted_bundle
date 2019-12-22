@@ -14,7 +14,7 @@ class ReviewItemCard extends Component {
         e.title.forEach(element => {
           text += translate(element) + " ";
         });
-      else text = translate(e.title);
+      else text = e.title && translate(e.title);
 
       return (
         <View style={styles.listView} key={i}>

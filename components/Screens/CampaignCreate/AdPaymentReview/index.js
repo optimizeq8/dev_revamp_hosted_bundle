@@ -125,7 +125,8 @@ class AdPaymentReview extends Component {
                     ]
               );
               Segment.screenWithProperties("Snap Ad Payment Review", {
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "snapchat"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 step: 5,

@@ -30,6 +30,7 @@ class SwipeUpChoice extends Component {
         case "LEAD_GENERATION":
           Segment.screenWithProperties("Snap Ad Website SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "Lead Generation Objective"
           });
           // Segment.trackWithProperties(
@@ -42,18 +43,21 @@ class SwipeUpChoice extends Component {
         case "VIDEO_VIEWS":
           Segment.screenWithProperties("Snap Ad Video Views SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "Video Views Objective"
           });
           break;
         case "WEB_CONVERSION":
           Segment.screenWithProperties("Snap Ad SME Growth SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "SME Growth Campaign Objective"
           });
           break;
         default:
           Segment.screenWithProperties("Snap Ad App Install SwipeUp", {
             category: "Campaign Creation",
+            channel: "snapchat",
             label: "App Install Objective"
           });
       }

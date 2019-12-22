@@ -112,9 +112,11 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: 13,
     fontFamily: "montserrat-light",
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   menudetails: {
+    textAlign: "left",
     paddingLeft: 15,
     color: "#fff",
     fontFamily: "montserrat-extralight",

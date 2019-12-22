@@ -95,7 +95,7 @@ class PersonalInfo extends Component {
       emailErrorMandatory
     });
     const { translate } = this.props.screenProps;
-    // validate all feilds and shows error if any
+    // validate all fields and shows error if any
     if (
       firstnameError ||
       lastnameError ||

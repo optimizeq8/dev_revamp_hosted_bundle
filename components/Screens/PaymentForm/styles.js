@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold"
   },
   colorWhite: {
+    fontFamily: "montserrat-regular",
     color: "#FFFF"
   },
   walltetAmountText: {

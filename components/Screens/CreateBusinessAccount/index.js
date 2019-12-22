@@ -251,7 +251,7 @@ class CreateBusinessAccount extends Component {
               otherBusinessCategory:
                 this.state.businessAccount.businesscategory !== "43"
                   ? null
-                  : this.state.businessAccount.otherBusinessCategory // to handle other business category feild
+                  : this.state.businessAccount.otherBusinessCategory // to handle other business category field
             },
             this.props.navigation
           );
@@ -333,7 +333,7 @@ class CreateBusinessAccount extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-    // Added disable(when updating business info loading ) and value ={having state value} props to input feilds
+    // Added disable(when updating business info loading ) and value ={having state value} props to input fields
     return (
       <SafeAreaView
         style={styles.safeAreaViewContainer}

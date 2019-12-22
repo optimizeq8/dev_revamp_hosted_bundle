@@ -276,7 +276,7 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
-    // In case error in any feild keep track
+    // In case error in any field keep track
     if (
       nameError ||
       objectiveError ||
@@ -300,7 +300,7 @@ class AdObjective extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      Segment.trackWithProperties("Completed Checkout Step", {
+      const segmentInfo = {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
         campaign_ad_name: this.state.campaignInfo.name,
@@ -313,7 +313,7 @@ class AdObjective extends Component {
               ? "Website"
               : "App DeepLink"
             : null
-      });
+      };
       //If the user closes the continueModal without choosing to resume or not
       //and creates a new campaign then everything related to campaign creation is reset
       //in the store so the creation process is not affected
@@ -358,7 +358,8 @@ class AdObjective extends Component {
           campaign_id:
             this.props.campaign_id !== "" ? this.props.campaign_id : 0
         },
-        this.props.navigation
+        this.props.navigation,
+        segmentInfo
       );
     } else {
       this.setState({ incomplete: true });
@@ -376,7 +377,7 @@ class AdObjective extends Component {
   };
 
   /* gets sent a string of stateName +'Error'
-   and validateWrapper object from input feilds 
+   and validateWrapper object from input fields 
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {
@@ -417,7 +418,8 @@ class AdObjective extends Component {
                 ? "Story Ad"
                 : "Collection Ad") + " Objective",
               {
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "snapchat"
               }
             );
             Segment.trackWithProperties("Viewed Checkout Step", {
@@ -695,8 +697,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_objective: (info, navigation) =>
-    dispatch(actionCreators.ad_objective(info, navigation)),
+  ad_objective: (info, navigation, segmentInfo) =>
+    dispatch(actionCreators.ad_objective(info, navigation, segmentInfo)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   getMinimumCash: values => dispatch(actionCreators.getMinimumCash(values)),
   set_collectionAd_link_form: value =>
