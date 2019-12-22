@@ -628,7 +628,8 @@ class AdCover extends Component {
               ]);
             }
             Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "snapchat"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               checkout_id: this.props.campaign_id,
@@ -878,7 +879,4 @@ const mapDispatchToProps = dispatch => ({
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdCover);
+export default connect(mapStateToProps, mapDispatchToProps)(AdCover);

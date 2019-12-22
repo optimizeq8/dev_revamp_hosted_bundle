@@ -57,7 +57,8 @@ class SwipeUpDestination extends Component {
   }
   componentDidMount() {
     Segment.screenWithProperties("Snap Ad Traffic SwipeUp Selection", {
-      category: "Campaign Creation"
+      category: "Campaign Creation",
+      channel: "snapchat"
     });
     let media = this.props.navigation.getParam("media", "");
     let destination = this.props.navigation.getParam("destination", false);
@@ -89,6 +90,7 @@ class SwipeUpDestination extends Component {
       () => {
         Segment.trackWithProperties("Selected " + value + " Swipeup", {
           category: "Campaign Creation",
+          channel: "snapchat",
           label: this.props.data
             ? this.props.data.objective
             : this.props.navigation.getParam("objective", "objective") +
@@ -203,7 +205,8 @@ class SwipeUpDestination extends Component {
                   Segment.screenWithProperties(
                     "Snap Ad Traffic SwipeUp Selection",
                     {
-                      category: "Campaign Creation"
+                      category: "Campaign Creation",
+                      channel: "snapchat"
                     }
                   );
                 });
@@ -211,11 +214,13 @@ class SwipeUpDestination extends Component {
                 if (this.state.selected === "REMOTE_WEBPAGE")
                   Segment.screenWithProperties("Snap Ad Website SwipeUp", {
                     category: "Campaign Creation",
+                    channel: "snapchat",
                     label: "Traffic Objective"
                   });
                 else
                   Segment.screenWithProperties("Snap Ad Deep link SwipeUp", {
                     category: "Campaign Creation",
+                    channel: "snapchat",
                     label: "Traffic Objective"
                   });
               }

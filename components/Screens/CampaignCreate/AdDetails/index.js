@@ -1070,7 +1070,8 @@ class AdDetails extends Component {
                 });
               } else {
                 Segment.screenWithProperties("Snap Ad Targetting", {
-                  category: "Campaign Creation"
+                  category: "Campaign Creation",
+                  channel: "snapchat"
                 });
                 Segment.trackWithProperties("Viewed Checkout Step", {
                   checkout_id: this.props.campaign_id,

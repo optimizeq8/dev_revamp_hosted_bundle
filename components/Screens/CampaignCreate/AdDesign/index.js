@@ -1023,7 +1023,8 @@ class AdDesign extends Component {
               );
             }
             Segment.screenWithProperties("Snap Ad Design", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "snapchat"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               checkout_id: this.props.campaign_id,

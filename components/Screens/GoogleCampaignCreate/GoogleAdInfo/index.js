@@ -327,7 +327,8 @@ class GoogleAdInfo extends Component {
               ]);
             }
             Segment.screenWithProperties("Google SE Info AD", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "google"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               step: 2,

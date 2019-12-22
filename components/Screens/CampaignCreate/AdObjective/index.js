@@ -417,7 +417,8 @@ class AdObjective extends Component {
                 ? "Story Ad"
                 : "Collection Ad") + " Objective",
               {
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "snapchat"
               }
             );
             Segment.trackWithProperties("Viewed Checkout Step", {

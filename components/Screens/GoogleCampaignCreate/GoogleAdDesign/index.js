@@ -259,7 +259,8 @@ class GoogleAdDesign extends Component {
               ]);
             // }
             Segment.screenWithProperties("Google SE Design AD", {
-              category: "Campaign Creation"
+              category: "Campaign Creation",
+              channel: "google"
             });
             Segment.trackWithProperties("Viewed Checkout Step", {
               step: 3,

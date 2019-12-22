@@ -333,7 +333,8 @@ class PaymentForm extends Component {
               Segment.screenWithProperties("Payment Selection", {
                 businessname: this.props.mainBusiness.businessname,
                 campaign_id: this.props.campaign_id,
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "google"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 step: 6,

@@ -483,7 +483,8 @@ class GoogleAdTargetting extends Component {
               // });
               //   } else {
               Segment.screenWithProperties("Google Ad Targetting", {
-                category: "Campaign Creation"
+                category: "Campaign Creation",
+                channel: "google"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 checkout_id: this.props.campaign.campaign_id,
