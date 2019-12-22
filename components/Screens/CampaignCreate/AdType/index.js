@@ -134,7 +134,7 @@ class AdType extends Component {
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc");
     } else if (
-      !this.props.mainBusiness.google_ad_account_id &&
+      !this.props.mainBusiness.google_account_id &&
       (adType.mediaType === "google" || this.state.media_type === "google")
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc");

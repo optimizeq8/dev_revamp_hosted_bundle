@@ -33,7 +33,13 @@ class RegionsSelector extends Component {
       });
     }
   }
-
+  kFormatter = num => {
+    return Math.abs(num) > 999999
+      ? (Math.abs(num) / 1000000).toFixed(1) + "M"
+      : Math.abs(num) > 999
+      ? (Math.abs(num) / 1000).toFixed(1) + "K"
+      : Math.abs(num).toFixed(2);
+  };
   render() {
     // console.log("loca", this.props.locationsFetchedList);
     const { translate } = this.props.screenProps;
@@ -87,7 +93,7 @@ class RegionsSelector extends Component {
                 // marginRight: 10
               }}
             >
-              {r.reach}
+              {this.kFormatter(r.reach)}
             </Text>
           </TouchableOpacity>
         );
@@ -136,7 +142,7 @@ class RegionsSelector extends Component {
                 }}
               >
                 <Text uppercase style={styles.title}>
-                  {translate("Top results")}
+                  {translate("Regions")}
                 </Text>
                 <Text uppercase style={styles.title}>
                   {translate("Reach")}

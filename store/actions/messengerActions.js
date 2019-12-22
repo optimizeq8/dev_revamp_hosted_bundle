@@ -20,12 +20,10 @@ export const connect_user_to_intercom = user_id => {
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-    console.log("user_id: ", user_id);
+    // console.log("user_id: ", user_id);
 
     NodeBackendURL.get(`get-user/${user_id}`)
       .then(res => {
-        console.log("res.data: ", res.data);
-
         return res.data;
       })
       .then(data => {

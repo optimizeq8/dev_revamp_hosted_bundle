@@ -107,7 +107,9 @@ const reducer = (state = initialState, action) => {
               "call_clicks",
               "instagram_clicks",
               "location_clicks",
-              "whatsapp_clicks"
+              "whatsapp_clicks",
+              "total_installs",
+              "timeseries_stats"
             ].includes(metric)
           ) {
             campaignMetrics.push({

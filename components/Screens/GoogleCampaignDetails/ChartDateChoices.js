@@ -43,9 +43,12 @@ export default class ChartDateChoices extends Component {
     result.setDate(result.getDate() - 1);
     if (
       (choice === "Today" &&
-        new Date() > new Date(this.props.selectedCampaign.end_time)) ||
+        (new Date() > new Date(this.props.selectedCampaign.end_time) ||
+          new Date() < new Date(this.props.selectedCampaign.start_time))) ||
       (choice === "Yesterday" &&
-        result > new Date(this.props.selectedCampaign.end_time))
+        (result > new Date(this.props.selectedCampaign.end_time) ||
+          result < new Date(this.props.selectedCampaign.start_time))) ||
+      new Date() < new Date(this.props.selectedCampaign.start_time)
     )
       disabledBtn = true;
     return (

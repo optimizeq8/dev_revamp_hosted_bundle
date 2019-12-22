@@ -280,7 +280,6 @@ export const removeWalletAmount = (
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
       info = { ...info, channel: getState().transA.channel };
-    console.log("remove info wallet:", info);
 
     createBaseUrl()
       .post(`removeWallet`, info)
@@ -340,7 +339,6 @@ export const checkoutwithWallet = (campaign_id, retries = 3) => {
     var info = { campaign_id: campaign_id };
     if (getState().transA.channel === "google")
       info = { ...info, channel: getState().transA.channel };
-    console.log("checkout info wallet:", info);
 
     createBaseUrl()
       .post(`checkoutwithWallet`, info)
@@ -405,7 +403,6 @@ export const payment_request_knet = (
       getState().transA.channel === ""
         ? `makeknetpayment/${campaign_id}`
         : `makeknetpayment/${campaign_id}/${getState().transA.channel}`;
-    console.log("url knet: ", url);
 
     createBaseUrl()
       .get(url)
@@ -468,7 +465,6 @@ export const payment_request_credit_card = (
       getState().transA.channel === ""
         ? `makeccpayment/${campaign_id}`
         : `makeccpayment/${campaign_id}/${getState().transA.channel}`;
-    console.log("url cc: ", url);
 
     createBaseUrl()
       .post(url)
@@ -476,8 +472,6 @@ export const payment_request_credit_card = (
         return res.data;
       })
       .then(data => {
-        console.log("data cc: ", data);
-
         if (data.cc_payment_url) {
           return dispatch({
             type: actionTypes.PAYMENT_REQUEST_URL,

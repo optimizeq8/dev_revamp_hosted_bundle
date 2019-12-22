@@ -556,15 +556,16 @@ class GoogleCampaignDetails extends Component {
                 )}
               </ScrollView>
             </Container>
-            {!loading && (
-              <StatusModal
-                screenProps={this.props.screenProps}
-                selectedCampaign={selectedCampaign}
-                updateStatus={this.updateStatus}
-                modalVisible={this.state.modalVisible}
-                showModal={this.showModal}
-              />
-            )}
+            {!loading &&
+              selectedCampaign.campaign.review_status !== "REJECTED" && (
+                <StatusModal
+                  screenProps={this.props.screenProps}
+                  selectedCampaign={selectedCampaign}
+                  updateStatus={this.updateStatus}
+                  modalVisible={this.state.modalVisible}
+                  showModal={this.showModal}
+                />
+              )}
             <Animated.View
               style={[
                 { backgroundColor: "#000", overflow: "hidden" },

@@ -186,7 +186,7 @@ class Dashboard extends Component {
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc");
     } else if (
-      !this.props.mainBusiness.google_ad_account_id &&
+      !this.props.mainBusiness.google_account_id &&
       adType.mediaType === "google"
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc");
@@ -700,7 +700,4 @@ const mapDispatchToProps = dispatch => ({
   getLanguageListPOEdit: language =>
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

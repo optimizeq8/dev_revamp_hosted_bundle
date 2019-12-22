@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   scrollContainer: {
+    marginTop: 15,
     // marginVertical: 10,
     // flexGrow: 1,
     width: "100%",

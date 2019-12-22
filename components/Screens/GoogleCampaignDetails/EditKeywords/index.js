@@ -50,7 +50,7 @@ class EditKeywords extends Component {
   }
   componentDidMount() {
     let keywords = this.props.selectedCampaign.keywords.map(k => k.keyword);
-    console.log("keywords", keywords);
+    // console.log("keywords", keywords);
 
     this.setState({
       keywords: keywords
@@ -80,7 +80,6 @@ class EditKeywords extends Component {
   };
 
   _handleSubmission = () => {
-
     const keywordsError =
       this.state.keywords.length === 0
         ? "Please choose keywords for your product."
