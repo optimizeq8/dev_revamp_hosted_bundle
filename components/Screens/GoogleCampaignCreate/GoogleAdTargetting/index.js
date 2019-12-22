@@ -271,7 +271,7 @@ class GoogleAdTargetting extends Component {
       const segmentInfo = {
         step: 3,
         business_name: this.props.mainBusiness.businessname,
-        campaign_id: this.props.campaign.campaign_id,
+        checkout_id: this.props.campaign.campaign_id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
