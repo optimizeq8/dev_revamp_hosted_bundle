@@ -183,7 +183,7 @@ class GoogleAdDesign extends Component {
         description2: this.state.description2,
         finalurl: this.state.networkString + this.state.finalurl
       };
-      Segment.trackWithProperties("Completed Checkout Step", {
+      const segmentInfo = {
         step: 3,
         business_name: this.props.mainBusiness.businessname,
         campaign_headline1: this.state.headline1,
@@ -192,8 +192,8 @@ class GoogleAdDesign extends Component {
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        campaign_id: this.props.campaign.campaign_id
-      });
+        checkout_id: this.props.campaign.campaign_id
+      };
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       if (!rejectedVal) {
         // Segment.trackWithProperties("Google SE Design AD", {
@@ -210,7 +210,8 @@ class GoogleAdDesign extends Component {
             campaign_id: this.props.campaign.campaign_id,
             businessid: this.props.mainBusiness.businessid
           },
-          rejectedVal
+          rejectedVal,
+          segmentInfo
         );
 
         this.props.save_google_campaign_data({
@@ -232,7 +233,8 @@ class GoogleAdDesign extends Component {
             ...data,
             campaign_id: this.props.navigation.getParam("campaign_id", null)
           },
-          rejectedVal
+          rejectedVal,
+          segmentInfo
         );
       }
     }
@@ -799,9 +801,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_google_SE_campaign_ad_design: (info, rejected) =>
+  create_google_SE_campaign_ad_design: (info, rejected, segmentInfo) =>
     dispatch(
-      actionCreators.create_google_SE_campaign_ad_design(info, rejected)
+      actionCreators.create_google_SE_campaign_ad_design(
+        info,
+        rejected,
+        segmentInfo
+      )
     ),
   save_google_campaign_data: info =>
     dispatch(actionCreators.save_google_campaign_data(info)),

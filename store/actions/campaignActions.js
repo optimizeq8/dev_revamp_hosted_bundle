@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-
+import * as Segment from "expo-analytics-segment";
 import segmentEventTrack from "../../components/segmentEventTrack";
 import { persistor } from "../index";
 import createBaseUrl from "./createBaseUrl";
@@ -96,7 +96,7 @@ export const verifyBusinessUrl = weburl => {
   };
 };
 
-export const ad_objective = (info, navigation) => {
+export const ad_objective = (info, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_OBJ,
@@ -120,11 +120,12 @@ export const ad_objective = (info, navigation) => {
         return data;
       })
       .then(data => {
-        data.success
-          ? navigation.push(
-              getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
-            )
-          : showMessage({ message: data.message, position: "top" });
+        if (data.success) {
+          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.push(
+            getState().campaignC.adType === "StoryAd" ? "AdCover" : "AdDesign"
+          );
+        } else showMessage({ message: data.message, position: "top" });
       })
       .catch(err => {
         // console.log("ad_objective", err.message || err.response);
@@ -543,7 +544,7 @@ export const get_android_versions = () => {
   };
 };
 
-export const ad_details = (info, names, navigation) => {
+export const ad_details = (info, names, navigation, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_AD_LOADING_DETAIL,
@@ -569,6 +570,7 @@ export const ad_details = (info, names, navigation) => {
         });
       })
       .then(() => {
+        Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
         navigation.navigate("AdPaymentReview");
       })
       .catch(err => {

@@ -764,7 +764,7 @@ class AdDetails extends Component {
           this.state.interestNames &&
           this.state.interestNames.length > 0 &&
           this.state.interestNames.map(inter => inter.name);
-        Segment.trackWithProperties("Completed Checkout Step", {
+        const segmentInfo = {
           checkout_id: this.props.campaign_id,
           step: 4,
           business_name: this.props.mainBusiness.businessname,
@@ -810,7 +810,7 @@ class AdDetails extends Component {
             interestNamesList && interestNamesList.length > 0
               ? interestNamesList.join(", ")
               : null
-        });
+        };
         // this.props.setCampaignInfoForTransaction({
         //   campaign_id: this.props.campaign_id,
         //   campaign_budget: this.state.campaignInfo.lifetime_budget_micro
@@ -823,7 +823,8 @@ class AdDetails extends Component {
             regionNames: this.state.regionNames,
             countryName: this.state.countryName
           },
-          this.props.navigation
+          this.props.navigation,
+          segmentInfo
         );
       }
     }
@@ -1233,8 +1234,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ad_details: (info, names, navigation) =>
-    dispatch(actionCreators.ad_details(info, names, navigation)),
+  ad_details: (info, names, navigation, segmentInfo) =>
+    dispatch(actionCreators.ad_details(info, names, navigation, segmentInfo)),
   updateCampaign: (info, businessid, navigation) =>
     dispatch(actionCreators.updateCampaign(info, businessid, navigation)),
   save_campaign_info: info => dispatch(actionCreators.save_campaign_info(info)),

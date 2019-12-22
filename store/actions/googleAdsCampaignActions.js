@@ -127,7 +127,11 @@ export const get_google_SE_location_list_reach = country => {
   };
 };
 
-export const create_google_SE_campaign_info = (info, navigation) => {
+export const create_google_SE_campaign_info = (
+  info,
+  navigation,
+  segmentInfo
+) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -158,7 +162,10 @@ export const create_google_SE_campaign_info = (info, navigation) => {
         return data;
       })
       .then(data => {
-        if (!data.error) navigation.push("GoogleAdDesign");
+        if (!data.error) {
+          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.push("GoogleAdDesign");
+        }
       })
       .catch(err => {
         showMessage({
@@ -177,7 +184,11 @@ export const create_google_SE_campaign_info = (info, navigation) => {
   };
 };
 
-export const create_google_SE_campaign_ad_design = (info, rejected) => {
+export const create_google_SE_campaign_ad_design = (
+  info,
+  rejected,
+  segmentInfo
+) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -196,8 +207,7 @@ export const create_google_SE_campaign_ad_design = (info, rejected) => {
             payload: { data: data }
           });
         } else {
-
-        //  console.log("error: ", data.error);
+          //  console.log("error: ", data.error);
           segmentEventTrack("Error Submitting Ad Info", {
             campaign_error: data.error
           });
@@ -216,8 +226,10 @@ export const create_google_SE_campaign_ad_design = (info, rejected) => {
       })
       .then(data => {
         if (rejected && !data.error) NavigationService.navigate("Dashboard");
-        else if (!rejected && !data.error)
+        else if (!rejected && !data.error) {
+          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
           NavigationService.navigate("GoogleAdTargetting");
+        }
       })
       .catch(err => {
         showMessage({
@@ -289,7 +301,7 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
   };
 };
 
-export const create_google_SE_campaign_ad_targetting = info => {
+export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -329,7 +341,7 @@ export const create_google_SE_campaign_ad_targetting = info => {
         return data;
       })
       .then(data => {
-        if (!data.error) dispatch(create_google_keywords(info));
+        if (!data.error) dispatch(create_google_keywords(info, segmentInfo));
       })
       .catch(err => {
         showMessage({
@@ -539,7 +551,7 @@ export const update_google_keywords = info => {
   };
 };
 
-export const create_google_keywords = info => {
+export const create_google_keywords = (info, segmentInfo) => {
   return dispatch => {
     // dispatch({
     //   type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -557,6 +569,7 @@ export const create_google_keywords = info => {
       })
       .then(data => {
         if (!data.error) {
+          segmentEventTrack("Completed Checkout Step", segmentInfo);
           NavigationService.navigate("GoogleAdPaymentReview");
         } else
           showMessage({

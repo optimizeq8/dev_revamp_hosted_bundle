@@ -244,7 +244,7 @@ class GoogleAdInfo extends Component {
       // Segment.trackWithProperties("Google SE Info AD", {
       //   business_name: this.props.mainBusiness.businessname
       // });
-      Segment.trackWithProperties("Completed Checkout Step", {
+      const segmentInfo = {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
         campaign_name: this.state.name,
@@ -253,8 +253,8 @@ class GoogleAdInfo extends Component {
         campaign_end_date: this.state.end_time,
         campaign_location: this.state.location,
         campaign_country: this.state.country,
-        campaign_id: this.props.campaign.campaign_id
-      });
+        checkout_id: this.props.campaign.campaign_id
+      };
       // console.log(
       //   "this.props.campaign.campaign_id ",
       //   this.props.campaign.campaign_id
@@ -276,7 +276,8 @@ class GoogleAdInfo extends Component {
             end_time: this.state.end_time,
             location: this.state.location
           },
-          this.props.navigation
+          this.props.navigation,
+          segmentInfo
         );
       } else {
         // console.log("new");
@@ -290,7 +291,8 @@ class GoogleAdInfo extends Component {
             end_time: this.state.end_time,
             location: this.state.location
           },
-          this.props.navigation
+          this.props.navigation,
+          segmentInfo
         );
       }
 
@@ -714,8 +716,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  create_google_SE_campaign_info: (info, navigation) =>
-    dispatch(actionCreators.create_google_SE_campaign_info(info, navigation)),
+  create_google_SE_campaign_info: (info, navigation, segmentInfo) =>
+    dispatch(
+      actionCreators.create_google_SE_campaign_info(
+        info,
+        navigation,
+        segmentInfo
+      )
+    ),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
   set_google_SE_budget_range: budget =>

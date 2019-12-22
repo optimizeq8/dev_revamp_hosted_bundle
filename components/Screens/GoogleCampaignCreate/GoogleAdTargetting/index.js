@@ -268,7 +268,7 @@ class GoogleAdTargetting extends Component {
     });
 
     if (!keywordsError) {
-      segmentEventTrack("Completed Checkout Step", {
+      const segmentInfo = {
         step: 3,
         business_name: this.props.mainBusiness.businessname,
         campaign_id: this.props.campaign.campaign_id,
@@ -276,15 +276,18 @@ class GoogleAdTargetting extends Component {
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
         campaign_keywords: this.state.keywords
-      });
-      this.props.create_google_SE_campaign_ad_targetting({
-        businessid: this.props.mainBusiness.businessid,
-        campaign_id: this.props.campaign.campaign_id,
-        budget: this.state.budget,
-        age: this.state.age,
-        gender: this.state.gender,
-        keywords: this.state.keywords
-      });
+      };
+      this.props.create_google_SE_campaign_ad_targetting(
+        {
+          businessid: this.props.mainBusiness.businessid,
+          campaign_id: this.props.campaign.campaign_id,
+          budget: this.state.budget,
+          age: this.state.age,
+          gender: this.state.gender,
+          keywords: this.state.keywords
+        },
+        segmentInfo
+      );
       this.props.save_google_campaign_data({
         budget: this.state.budget,
         age: this.state.age,
@@ -749,8 +752,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setCampaignInfoForTransaction: data =>
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
-  create_google_SE_campaign_ad_targetting: info =>
-    dispatch(actionCreators.create_google_SE_campaign_ad_targetting(info)),
+  create_google_SE_campaign_ad_targetting: (info, segmentInfo) =>
+    dispatch(
+      actionCreators.create_google_SE_campaign_ad_targetting(info, segmentInfo)
+    ),
   get_google_SE_keywords: (keyword, campaign_id, businessid) =>
     dispatch(
       actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)

@@ -55,11 +55,11 @@ class AdPaymentReview extends Component {
         if (!isUndefined(regionName)) return translate(regionName.location);
       });
     }
-    console.log("this.props.campaign.gender", this.props.campaign.gender);
 
-    let gender = this.props.campaign.gender
-      ? this.props.campaign.gender
-      : "All";
+    let gender =
+      this.props.campaign.gender === "Undetermined"
+        ? "All"
+        : this.props.campaign.gender;
     let age =
       this.props.campaign.age.join(", ") === "Undetermined"
         ? translate("All")
