@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
 import { connect } from "react-redux";
 import { Text } from "native-base";
+import * as Segment from "expo-analytics-segment";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
 import * as actionCreators from "../../../store/actions";
@@ -16,6 +17,7 @@ import styles from "./styles";
 import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
+import segmentEventTrack from "../../segmentEventTrack";
 
 /**
  * The modal that shows up when there's a campaign to resume
@@ -59,6 +61,7 @@ class ContinueCampaign extends Component {
   handleSubmition = (isVisible, resetCampaign) => {
     this.setState({ isVisible });
     if (resetCampaign) {
+      segmentEventTrack("Button Clicked to create a new campaign");
       //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
       this.props.rest_google_campaign_data(!resetCampaign);
       persistor.purge();
@@ -70,7 +73,11 @@ class ContinueCampaign extends Component {
   continueCampaign = () => {
     if (this.props.data.incompleteCampaign) {
       setTimeout(() => {
-        this.setState({ isVisible: true });
+        this.setState({ isVisible: true }, () => {
+          if (this.state.isVisible) {
+            Segment.screen("Continue Google Campaign Modal");
+          }
+        });
       }, 800);
     }
   };
@@ -80,6 +87,7 @@ class ContinueCampaign extends Component {
    */
   handleContinue = () => {
     const { translate } = this.props.screenProps;
+    segmentEventTrack("Button Clicked to resume previous campaign");
 
     //checks if the old campaign dates are still applicable or not so
     //it doesn't create a campaign with old dates

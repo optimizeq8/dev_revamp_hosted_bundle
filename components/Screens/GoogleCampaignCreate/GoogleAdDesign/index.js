@@ -42,6 +42,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import split from "lodash/split";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class GoogleAdDesign extends Component {
   static navigationOptions = {
@@ -148,7 +149,24 @@ class GoogleAdDesign extends Component {
       description2Error,
       urlError
     });
-
+    // set segment track for error
+    if (
+      headline1Error ||
+      headline2Error ||
+      headline3Error ||
+      descriptionError ||
+      description2Error ||
+      urlError
+    ) {
+      segmentEventTrack("Error occured on ad design screen sumbit button", {
+        campaign_error_headline1: headline1Error,
+        campaign_error_headline2: headline2Error,
+        campaign_error_headline3: headline3Error,
+        campaign_error_description: descriptionError,
+        campaign_error_description2: description2Error,
+        campaign_error_url: urlError
+      });
+    }
     if (
       !headline1Error &&
       !headline2Error &&
@@ -165,6 +183,17 @@ class GoogleAdDesign extends Component {
         description2: this.state.description2,
         finalurl: this.state.networkString + this.state.finalurl
       };
+      Segment.trackWithProperties("Completed Checkout Step", {
+        step: 3,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_headline1: this.state.headline1,
+        campaign_headline2: this.state.headline2,
+        campaign_headline3: this.state.headline3,
+        campaign_description: this.state.description,
+        campaign_description2: this.state.description2,
+        campaign_finalurl: this.state.finalurl,
+        campaign_id: this.props.campaign.campaign_id
+      });
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       if (!rejectedVal) {
         // Segment.trackWithProperties("Google SE Design AD", {
@@ -229,13 +258,13 @@ class GoogleAdDesign extends Component {
                 "GoogleAdDesign"
               ]);
             // }
-            // Segment.screenWithProperties("Google SE Design AD", {
-            //   category: "Campaign Creation Google"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   step: 3,
-            //   business_name: this.props.mainBusiness.businessname
-            // });
+            Segment.screenWithProperties("Google SE Design AD", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 3,
+              business_name: this.props.mainBusiness.businessname
+            });
           }}
         />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -319,6 +348,9 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputH1: true });
                           }}
                           onBlur={() => {
+                            segmentEventTrack("headline1 Feild on Blur", {
+                              campaign_headline1: this.state.headline1
+                            });
                             this.setState({ inputH1: false });
                             this.setState({
                               headline1Error: validateWrapper(
@@ -376,6 +408,9 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputH2: true });
                           }}
                           onBlur={() => {
+                            segmentEventTrack("headline2 Feild on Blur", {
+                              campaign_headline2: this.state.headline2
+                            });
                             this.setState({ inputH2: false });
                             this.setState({
                               headline2Error: validateWrapper(
@@ -433,6 +468,9 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputH3: true });
                           }}
                           onBlur={() => {
+                            segmentEventTrack("headline3 Feild on Blur", {
+                              campaign_headline3: this.state.headline3
+                            });
                             this.setState({ inputH3: false });
                             this.setState({
                               headline3Error: validateWrapper(
@@ -477,13 +515,35 @@ class GoogleAdDesign extends Component {
                           ]}
                           onPress={() => {
                             if (this.state.networkString === "https://") {
-                              this.setState({
-                                networkString: "http://"
-                              });
+                              this.setState(
+                                {
+                                  networkString: "http://"
+                                },
+                                () => {
+                                  segmentEventTrack(
+                                    "Changed Campaign network string",
+                                    {
+                                      campaign_url_network_string: this.state
+                                        .networkString
+                                    }
+                                  );
+                                }
+                              );
                             } else {
-                              this.setState({
-                                networkString: "https://"
-                              });
+                              this.setState(
+                                {
+                                  networkString: "https://"
+                                },
+                                () => {
+                                  segmentEventTrack(
+                                    "Changed Campaign network string",
+                                    {
+                                      campaign_url_network_string: this.state
+                                        .networkString
+                                    }
+                                  );
+                                }
+                              );
                             }
                           }}
                         >
@@ -518,13 +578,29 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputURL: true });
                           }}
                           onBlur={() => {
-                            this.setState({ inputURL: false });
-                            this.setState({
-                              urlError: validateWrapper(
-                                "mandatory",
-                                this.state.networkString + this.state.finalurl
-                              )
+                            segmentEventTrack("finalurl Feild on Blur", {
+                              campaign_finalurl: this.state.finalurl
                             });
+                            this.setState({ inputURL: false });
+                            this.setState(
+                              {
+                                urlError: validateWrapper(
+                                  "mandatory",
+                                  this.state.networkString + this.state.finalurl
+                                )
+                              },
+                              () => {
+                                if (this.state.urlError) {
+                                  segmentEventTrack(
+                                    "Error urlError Feild on Blur",
+                                    {
+                                      campaign_error_urlError: this.state
+                                        .urlError
+                                    }
+                                  );
+                                }
+                              }
+                            );
                           }}
                         />
                       </Item>
@@ -581,13 +657,29 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputD: true });
                           }}
                           onBlur={() => {
-                            this.setState({ inputD: false });
-                            this.setState({
-                              descriptionError: validateWrapper(
-                                "mandatory",
-                                this.state.description
-                              )
+                            segmentEventTrack("description Feild on Blur", {
+                              campaign_description: this.state.description
                             });
+                            this.setState({ inputD: false });
+                            this.setState(
+                              {
+                                descriptionError: validateWrapper(
+                                  "mandatory",
+                                  this.state.description
+                                )
+                              },
+                              () => {
+                                if (this.state.description2Error) {
+                                  segmentEventTrack(
+                                    "Error description Feild on Blur",
+                                    {
+                                      campaign_error_description: this.state
+                                        .descriptionError
+                                    }
+                                  );
+                                }
+                              }
+                            );
                           }}
                         />
                       </Item>
@@ -645,13 +737,30 @@ class GoogleAdDesign extends Component {
                             this.setState({ inputD2: true });
                           }}
                           onBlur={() => {
-                            this.setState({ inputD2: false });
-                            this.setState({
-                              description2Error: validateWrapper(
-                                "mandatory",
-                                this.state.description2
-                              )
+                            segmentEventTrack("description2 Feild on Blur", {
+                              campaign_description2: this.state.description2
                             });
+
+                            this.setState({ inputD2: false });
+                            this.setState(
+                              {
+                                description2Error: validateWrapper(
+                                  "mandatory",
+                                  this.state.description2
+                                )
+                              },
+                              () => {
+                                if (this.state.description2Error) {
+                                  segmentEventTrack(
+                                    "Error description2 Feild on Blur",
+                                    {
+                                      campaign_error_description2: this.state
+                                        .description2Error
+                                    }
+                                  );
+                                }
+                              }
+                            );
                           }}
                         />
                       </Item>
@@ -667,8 +776,8 @@ class GoogleAdDesign extends Component {
                       <LowerButton
                         bottom={3}
                         function={this._handleSubmission}
-                        width={40}
-                        height={40}
+                        width={70}
+                        height={70}
                       />
                     )}
                   </>

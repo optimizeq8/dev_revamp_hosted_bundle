@@ -428,7 +428,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold",
     fontSize: 14,
     color: "#FFF",
-    paddingVertical: 10
+    paddingVertical: 10,
+    textAlign: "center"
   },
   subHeadingView: {
     display: "flex",

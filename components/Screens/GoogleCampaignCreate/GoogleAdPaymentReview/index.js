@@ -45,22 +45,25 @@ class AdPaymentReview extends Component {
     return true;
   };
   componentDidMount() {
+    const { translate } = this.props.screenProps;
     let regionsNames = [];
     if (this.props.campaign.location.length > 0) {
       regionsNames = this.props.campaign.location.map(r => {
         let regionName = this.props.campaign.locationsFetchedList.find(
           x => x.id === r
         );
-        if (!isUndefined(regionName)) return regionName.location;
+        if (!isUndefined(regionName)) return translate(regionName.location);
       });
     }
+    console.log("this.props.campaign.gender", this.props.campaign.gender);
+
     let gender = this.props.campaign.gender
       ? this.props.campaign.gender
       : "All";
     let age =
       this.props.campaign.age.join(", ") === "Undetermined"
-        ? "All"
-        : this.props.campaign.age.join(", ");
+        ? translate("All")
+        : this.props.campaign.age.map(a => translate(a) + ", ");
     // console.log("gender: ", gender);
     // console.log("regionsNames: ", regionsNames);
     let end_time = new Date(this.props.campaign.end_time || "01-01-1970");
@@ -133,7 +136,7 @@ class AdPaymentReview extends Component {
             scrollEnabled={false}
             contentContainerStyle={{
               flex: 1,
-              marginHorizontal: 20,
+              paddingHorizontal: 20,
               marginVertical: 20,
               borderRadius: 30
             }}
@@ -201,12 +204,12 @@ class AdPaymentReview extends Component {
                     subtitles={[
                       {
                         title: "Gender",
-                        content: this.state.gender
+                        content: translate(this.state.gender)
                       },
                       {
                         title: "Location",
                         content: [
-                          this.state.country,
+                          translate(this.state.country),
 
                           ...this.state.regionsNames
                         ].join(", ")
@@ -215,8 +218,8 @@ class AdPaymentReview extends Component {
                         title: "Language",
                         content:
                           this.props.campaign.language === "1000"
-                            ? "English"
-                            : "Arabic"
+                            ? translate("English")
+                            : translate("Arabic")
                       },
                       {
                         title: "Age group",

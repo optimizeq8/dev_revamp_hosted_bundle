@@ -10,6 +10,7 @@ import GreenCheckmarkIcon from "../../../assets/SVGs/GreenCheckmark.svg";
 import PlusCircleIcon from "../../../assets/SVGs/PlusCircleOutline.svg";
 import globalStyles from "../../../GlobalStyles";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
+import segmentEventTrack from "../../segmentEventTrack";
 
 export default class KeywordsSelectionList extends Component {
   constructor() {
@@ -211,6 +212,9 @@ export default class KeywordsSelectionList extends Component {
               this.setState({ keyword: value });
             }}
             onBlur={() => {
+              segmentEventTrack("Search for keyword on Blur", {
+                campaign_keyword_search: this.state.keyword
+              });
               this.props._handleSearch(
                 this.state.keyword,
                 this.props.campaign_id,

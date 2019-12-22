@@ -7,6 +7,7 @@ import { setCampaignInfoForTransaction } from "./transactionActions";
 import { errorMessageHandler } from "./ErrorActions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
+import segmentEventTrack from "../../components/segmentEventTrack";
 
 GoogleBackendURL = () =>
   axios.create({
@@ -192,6 +193,7 @@ export const create_google_SE_campaign_ad_design = (info, rejected) => {
       .then(data => {
         if (!data.error) {
           console.log("ad design data", data);
+          segmentEventTrack("Successfully Submitted Ad Info");
 
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
@@ -199,6 +201,9 @@ export const create_google_SE_campaign_ad_design = (info, rejected) => {
           });
         } else {
           console.log("error: ", data.error);
+          segmentEventTrack("Error Submitting Ad Info", {
+            campaign_error: data.error
+          });
 
           showMessage({
             message: data.error,

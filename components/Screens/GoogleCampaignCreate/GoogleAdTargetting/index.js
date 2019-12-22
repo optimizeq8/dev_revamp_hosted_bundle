@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
-  BackHandler
+  BackHandler,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import * as Segment from "expo-analytics-segment";
-import Sidemenu from "react-native-side-menu";
+import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
@@ -52,6 +53,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import segmentEventTrack from "../../../segmentEventTrack";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -127,6 +129,9 @@ class GoogleAdTargetting extends Component {
       budget: budget,
       value: this.formatNumber(budget)
     });
+    segmentEventTrack("Selected Budget Change", {
+      campaign_budget: budget
+    });
     this.props.save_google_campaign_data({ budget: budget });
     this.props.setCampaignInfoForTransaction({
       campaign_id: this.props.campaign.campaign_id,
@@ -143,17 +148,24 @@ class GoogleAdTargetting extends Component {
   };
 
   _renderSideMenu = (component, option = "") => {
+    segmentEventTrack(`Button Clicked to open side menu for ${component}`);
     this.setState({ sidemenu: component, selectionOption: option }, () =>
       this._handleSideMenuState(true)
     );
   };
   _handleGenderSelection = gender => {
     this.setState({ gender: gender });
+    segmentEventTrack("Selected Campaign gender", {
+      campaign_gender: gender
+    });
     this.props.save_google_campaign_data({ gender: gender });
   };
 
   _handleAgeSelection = val => {
     if (val === "Undetermined") {
+      segmentEventTrack("Selected Campaign Age", {
+        campaign_age: [val]
+      });
       this.setState({ age: [val] });
       this.props.save_google_campaign_data({ age: [val] });
     } else {
@@ -162,6 +174,9 @@ class GoogleAdTargetting extends Component {
         res = this.state.age.filter(l => l !== val);
         res = this.state.age.filter(l => l !== "Undetermined");
         this.setState({ age: [...res, val] });
+        segmentEventTrack("Selected Campaign Age", {
+          campaign_age: [...res, val]
+        });
         this.props.save_google_campaign_data({ age: [...res, val] });
       } else {
         res = this.state.age.filter(l => l !== val);
@@ -170,6 +185,9 @@ class GoogleAdTargetting extends Component {
         } else if (res.length - 1 !== 0) {
           res = res.filter(l => l !== "Undetermined");
         }
+        segmentEventTrack("Selected Campaign Age", {
+          campaign_age: res
+        });
         this.setState({ age: res });
         this.props.save_google_campaign_data({ age: res });
       }
@@ -178,6 +196,7 @@ class GoogleAdTargetting extends Component {
 
   _handleAddKeyword = keyword => {
     if (keyword === "Reset") {
+      segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       this.props.save_google_campaign_data({ keywords: [] });
 
@@ -186,10 +205,16 @@ class GoogleAdTargetting extends Component {
     var res = this.state.keywords.filter(l => l !== keyword);
     if (isUndefined(this.state.keywords.find(l => l === keyword))) {
       this.setState({ keywords: [...res, keyword] });
+      segmentEventTrack("Selected Campaign keywords", {
+        campaign_keywords: [...res, keyword]
+      });
       this.props.save_google_campaign_data({
         keywords: [...res, keyword]
       });
     } else {
+      segmentEventTrack("Selected Campaign keywords", {
+        campaign_keywords: res
+      });
       this.setState({ keywords: res });
       this.props.save_google_campaign_data({
         keywords: res
@@ -197,6 +222,7 @@ class GoogleAdTargetting extends Component {
     }
   };
   _handleBudget = (value, rawValue) => {
+    const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
       rawValue >= this.props.campaign.minValueBudget &&
@@ -214,7 +240,7 @@ class GoogleAdTargetting extends Component {
       showMessage({
         message: validateWrapper("Budget", rawValue)
           ? validateWrapper("Budget", rawValue)
-          : "Budget can't be less than the minimum",
+          : translate("Budget can't be less than the minimum"),
         type: "warning",
         position: "top"
       });
@@ -230,9 +256,10 @@ class GoogleAdTargetting extends Component {
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const keywordsError =
       this.state.keywords.length === 0
-        ? "Please choose keywords for your product."
+        ? "Please choose keywords for your product"
         : null;
 
     this.props.setCampaignInfoForTransaction({
@@ -241,6 +268,15 @@ class GoogleAdTargetting extends Component {
     });
 
     if (!keywordsError) {
+      segmentEventTrack("Completed Checkout Step", {
+        step: 3,
+        business_name: this.props.mainBusiness.businessname,
+        campaign_id: this.props.campaign.campaign_id,
+        campaign_budget: this.state.budget,
+        campaign_age: this.state.age,
+        campaign_gender: this.state.gender,
+        campaign_keywords: this.state.keywords
+      });
       this.props.create_google_SE_campaign_ad_targetting({
         businessid: this.props.mainBusiness.businessid,
         campaign_id: this.props.campaign.campaign_id,
@@ -256,8 +292,11 @@ class GoogleAdTargetting extends Component {
         keywords: this.state.keywords
       });
     } else {
+      segmentEventTrack("Error on submit google Ad Targetting", {
+        campaign_error_keywords: keywordsError
+      });
       showMessage({
-        message: keywordsError,
+        message: translate(keywordsError),
         type: "warning",
         position: "top"
       });
@@ -421,7 +460,7 @@ class GoogleAdTargetting extends Component {
         }}
         disableGestures={true}
         menu={this.state.sidemenustate && menu}
-        menuPosition="right"
+        menuPosition={I18nManager.isRTL ? "left" : "right"}
         openMenuOffset={wp("100%")}
         isOpen={this.state.sidemenustate}
       >
@@ -443,13 +482,13 @@ class GoogleAdTargetting extends Component {
               //   category: "Campaign Update"
               // });
               //   } else {
-              // Segment.screenWithProperties("Snap Ad Targetting", {
-              //   category: "Campaign Creation"
-              // });
-              // Segment.trackWithProperties("Viewed Checkout Step", {
-              //   checkout_id: this.props.campaign_id,
-              //   step: 4
-              // });
+              Segment.screenWithProperties("Google Ad Targetting", {
+                category: "Campaign Creation"
+              });
+              Segment.trackWithProperties("Viewed Checkout Step", {
+                checkout_id: this.props.campaign.campaign_id,
+                step: 4
+              });
               //   }
             }}
           />
@@ -483,7 +522,7 @@ class GoogleAdTargetting extends Component {
                 {/* {!editCampaign ? (
                   <> */}
 
-                <Text style={styles.subHeadings}>Budget</Text>
+                <Text style={styles.subHeadings}>{translate("Budget")}</Text>
                 <View style={styles.moneyInputContainer}>
                   <TextInputMask
                     disableFullscreenUI={this.props.campaign.uploading}
@@ -502,6 +541,11 @@ class GoogleAdTargetting extends Component {
                     onChangeText={(value, rawText) => {
                       //   if (!editCampaign)
                       this._handleBudget(value, rawText);
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("Budget Feild on blur", {
+                        campaign_budget: this.state.budget
+                      });
                     }}
                     style={styles.budget}
                     ref={ref => (this.moneyField = ref)}
@@ -614,8 +658,10 @@ class GoogleAdTargetting extends Component {
                         </Text>
                         <Text style={styles.menudetails}>
                           {gender.find(r => r.value === this.state.gender)
-                            ? gender.find(r => r.value === this.state.gender)
-                                .label
+                            ? translate(
+                                gender.find(r => r.value === this.state.gender)
+                                  .label
+                              )
                             : ""}
                         </Text>
                       </View>
