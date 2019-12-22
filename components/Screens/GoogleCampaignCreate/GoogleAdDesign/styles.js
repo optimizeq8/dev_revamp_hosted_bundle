@@ -13,7 +13,8 @@ export const colors = {
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
-    height: "100%"
+    height: "100%",
+    flex: 1
   },
   container: {
     backgroundColor: "#0000",
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   mainContent: {
-    paddingBottom: hp(35),
+    paddingBottom: "10%",
     paddingTop: 13
   },
   inputView: {
@@ -89,10 +90,12 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     paddingTop: 5,
     width: 150,
+    height: 150,
     alignSelf: "center",
     backgroundColor: "rgba(0,0,0,0.2)",
     height: 15,
-    zIndex: 1
+    zIndex: 1,
+    flex: 1
   },
   input: {
     marginBottom: 30,
