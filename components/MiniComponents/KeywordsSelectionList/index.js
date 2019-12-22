@@ -212,7 +212,7 @@ export default class KeywordsSelectionList extends Component {
               this.setState({ keyword: value });
             }}
             onBlur={() => {
-              segmentEventTrack("Search for keyword on Blur", {
+              segmentEventTrack("Search keyword field on Blur", {
                 campaign_keyword_search: this.state.keyword
               });
               this.props._handleSearch(
