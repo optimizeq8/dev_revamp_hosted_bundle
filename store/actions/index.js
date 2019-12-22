@@ -140,14 +140,13 @@ export {
   get_google_SE_location_list_reach,
   create_google_SE_campaign_info,
   get_google_SE_keywords,
-  create_google_SE_campaign_ad_targetting,
+  create_google_SE_campaign_ad_targeting,
   get_google_campiagn_details,
-  set_google_SE_budget_range,
   save_google_campaign_data,
   save_google_campaign_steps,
   set_google_campaign_resumed,
   rest_google_campaign_data,
-  update_google_audience_targetting,
+  update_google_audience_targeting,
   update_google_keywords,
   enable_end_or_pause_google_campaign
 } from "./googleAdsCampaignActions";

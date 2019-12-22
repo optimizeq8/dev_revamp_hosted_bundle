@@ -212,7 +212,7 @@ export const create_google_SE_campaign_info = (
  * @method
  * @param {Object} info has keys for the headers/description/url
  * @param {Boolean} rejected this is used to handle the rejected ads default is false
- * @return {Function} returns an actions that sets the data in teh reducer
+ * @return {Function} returns an actions that sets the data in the reducer
  */
 export const create_google_SE_campaign_ad_design = (
   info,
@@ -231,6 +231,7 @@ export const create_google_SE_campaign_ad_design = (
       })
       .then(data => {
         if (!data.error) {
+          //do not set the reducer if it is a rejected data
           if (!rejected) {
             segmentEventTrack("Successfully Submitted Ad Info");
             dispatch({
@@ -280,6 +281,7 @@ export const create_google_SE_campaign_ad_design = (
 
 /**
  * this is used to generate search results for recomended keywords.
+ * this comes based on the selected language and region on the first step
  *
  * @method
  * @param {String} keyword
@@ -338,10 +340,12 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
 };
 
 /**
+ *  this creates targeting info which are only age, budget and gender.
+ *  there is an action that gets called to create the keywords seperatly if it gets submitted
  *
  * @method
  * @param {Object} info has keys for targetting that include (gender/age/budget/keywords)
- * @returns {Function} an action to set the targetting
+ * @returns {Function} an action to set the targetting info and the campaign transactions info
  */
 export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
   return dispatch => {
@@ -357,7 +361,7 @@ export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
       .then(data => {
         if (!data.error) {
           dispatch({
-            type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETTING,
+            type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING,
             payload: { data: data }
           });
           //sets the transaction reducer if there is chanage in the data
@@ -393,7 +397,7 @@ export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
           position: "top"
         });
         return dispatch({
-          type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETTING,
+          type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETING,
           payload: {
             loading: false
           }
@@ -401,7 +405,17 @@ export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
       });
   };
 };
-
+/**
+ * this action is used for two things: retrieve the campiagn details' info and get stats info.
+ * the default for stats comes as the whole campaign date range which is sent from the campiagn card
+ *
+ * @method
+ * @param {String} id
+ * @param {String} start_time
+ * @param {String} end_time
+ * @param {Boolean} getStats used to set the google campiagn stats seperatly from the whole campaign's data
+ * @returns {Function} returns an action that either sets the campiagn stats in the reducer or the whole campaign
+ */
 export const get_google_campiagn_details = (
   id,
   start_time,
@@ -460,10 +474,6 @@ export const get_google_campiagn_details = (
           type: "danger",
           position: "top"
         });
-        // return dispatch({
-        //   type: actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_DETAILS,
-        //   payload: false
-        // });
         return dispatch({
           type: actionTypes.ERROR_SET_CAMPAIGN,
           payload: { loading: false }
@@ -472,15 +482,13 @@ export const get_google_campiagn_details = (
   };
 };
 
-export const set_google_SE_budget_range = budget => {
-  return dispatch => {
-    dispatch({
-      type: actionTypes.SET_BUDGET_RANGE,
-      payload: budget
-    });
-  };
-};
-
+/**
+ * Used to keep track of the data during the campaign creation
+ *
+ * @method
+ * @param {Object} info
+ * @returns {Function} an action to set the data in the reducer
+ */
 export const save_google_campaign_data = info => {
   return dispatch => {
     dispatch({
@@ -490,6 +498,13 @@ export const save_google_campaign_data = info => {
   };
 };
 
+/**
+ * Used to keep track of the last step the user made while creating a campiagn
+ *
+ * @method
+ * @param {Array} steps array has the names of the screens that were passed starting from the dashboard
+ * @returns {Function} an action to set the list in the reducer
+ */
 export const save_google_campaign_steps = steps => {
   return dispatch => {
     dispatch({
@@ -499,6 +514,14 @@ export const save_google_campaign_steps = steps => {
   };
 };
 
+/**
+ * this is to set the status of the campign to resumed or otherwise depending if the user
+ * chose to complete the campaign or start a new one
+ *
+ * @method
+ * @param {Boolean} value
+ * @returns {Function} an action to set the resume state of the campaign
+ */
 export const set_google_campaign_resumed = value => {
   return dispatch => {
     dispatch({
@@ -508,16 +531,26 @@ export const set_google_campaign_resumed = value => {
   };
 };
 
-export const rest_google_campaign_data = value => {
+/**
+ * reset campaign data
+ * @method
+ * @returns {Function} an action to reset the reducer
+ */
+export const rest_google_campaign_data = () => {
   return dispatch => {
     dispatch({
-      type: actionTypes.RESET_GOOGLE_CAMPAIGN,
-      payload: value
+      type: actionTypes.RESET_GOOGLE_CAMPAIGN
     });
   };
 };
 
-export const update_google_audience_targetting = info => {
+/**
+ * update targeting info after the campiagn is published
+ *
+ * @method
+ * @param {Object} info (gender/age/location/language/campiagnid)
+ */
+export const update_google_audience_targeting = info => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -527,7 +560,6 @@ export const update_google_audience_targetting = info => {
       .post(`campaign/edit/`, info)
       .then(resp => resp.data)
       .then(data => {
-        // console.log("data success", data);
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
           payload: false
@@ -560,7 +592,10 @@ export const update_google_audience_targetting = info => {
       });
   };
 };
-
+/**
+ *
+ * @param {Object} info
+ */
 export const update_google_keywords = info => {
   return dispatch => {
     dispatch({

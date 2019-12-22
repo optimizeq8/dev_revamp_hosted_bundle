@@ -698,12 +698,8 @@ const mapDispatchToProps = dispatch => ({
     ),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
-  set_google_SE_budget_range: budget =>
-    dispatch(actionCreators.set_google_SE_budget_range(budget)),
   save_google_campaign_data: info =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  rest_google_campaign_data: value =>
-    dispatch(actionCreators.rest_google_campaign_data(value)),
   set_google_campaign_resumed: value =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
   save_google_campaign_steps: value =>

@@ -315,7 +315,7 @@ class GoogleAdTargetting extends Component {
       language: this.state.language
     };
 
-    this.props.update_google_audience_targetting(info);
+    this.props.update_google_audience_targeting(info);
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
@@ -790,8 +790,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  update_google_audience_targetting: info =>
-    dispatch(actionCreators.update_google_audience_targetting(info)),
+  update_google_audience_targeting: info =>
+    dispatch(actionCreators.update_google_audience_targeting(info)),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country))
 });

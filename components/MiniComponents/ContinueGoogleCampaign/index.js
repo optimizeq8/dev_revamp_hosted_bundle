@@ -63,8 +63,8 @@ class ContinueCampaign extends Component {
     this.setState({ isVisible });
     if (resetCampaign) {
       segmentEventTrack("Button Clicked to create a new campaign");
-      //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
-      this.props.rest_google_campaign_data(!resetCampaign);
+      //if resetCampaign is true, then resetCampaignInfo is called
+      this.props.rest_google_campaign_data();
       persistor.purge();
     }
   };
@@ -214,8 +214,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  rest_google_campaign_data: reset =>
-    dispatch(actionCreators.rest_google_campaign_data(reset)),
+  rest_google_campaign_data: () =>
+    dispatch(actionCreators.rest_google_campaign_data()),
   set_google_campaign_resumed: value =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
   save_google_campaign_data: info =>
