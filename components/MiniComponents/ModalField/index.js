@@ -83,7 +83,7 @@ ModalField.propTypes = {
   stateName: PropTypes.string.isRequired,
   //The label that appears on top of the input field
   label: PropTypes.string,
-  //checks whether to disable the feild or not
+  //checks whether to disable the field or not
   disabled: PropTypes.bool,
   //the translate function
   translate: PropTypes.func.isRequired,

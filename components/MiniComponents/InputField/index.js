@@ -96,17 +96,17 @@ export default class InputField extends Component {
   handleBlur = (secondHalf = false) => {
     // sets highlight to false to switch back to original style
     this.setState({ highlight: false });
-    //check if function is being called from the second part of the input feild
+    //check if function is being called from the second part of the input field
     //Either way, sets the values for the parent component
     if (secondHalf) {
       // set segments
-      segmentEventTrack(`${this.props.stateName2} Feild on Blur`, {
+      segmentEventTrack(`${this.props.stateName2} Field on Blur`, {
         [`campaign_${this.props.stateName2}`]: this.props.value2
       });
       this.props.setValue(this.props.stateName2, this.props.value2);
     } else {
       // set segments
-      segmentEventTrack(`${this.props.stateName1} Feild on Blur`, {
+      segmentEventTrack(`${this.props.stateName1} Field on Blur`, {
         [`campaign_${this.props.stateName1}`]: this.props.value
       });
       this.props.setValue(this.props.stateName1, this.props.value);
@@ -233,16 +233,16 @@ InputField.propTypes = {
   //The label that appears on top of the input field
   label: PropTypes.string,
   //Placeholders if needed, 1 is for the main field, 2 is
-  //for the second part of the input feild
+  //for the second part of the input field
   placeholder1: PropTypes.string,
   placeholder2: PropTypes.string,
   //Actual state values for the parent component
-  //1 is for the main field, 2 is for the second part of the input feild
+  //1 is for the main field, 2 is for the second part of the input field
   value: PropTypes.string.isRequired,
   value2: PropTypes.string,
   //An icon that's passed from the parent component to display
   icon: PropTypes.any,
-  //checks whether to disable the feild or not
+  //checks whether to disable the field or not
   disabled: PropTypes.bool,
   //The parent's function that sets the error values in its state
   getValidInfo: PropTypes.func.isRequired,

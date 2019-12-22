@@ -276,7 +276,7 @@ class AdObjective extends Component {
       start_timeError: dateErrors.start_timeError,
       end_timeError: dateErrors.end_timeError
     });
-    // In case error in any feild keep track
+    // In case error in any field keep track
     if (
       nameError ||
       objectiveError ||
@@ -377,7 +377,7 @@ class AdObjective extends Component {
   };
 
   /* gets sent a string of stateName +'Error'
-   and validateWrapper object from input feilds 
+   and validateWrapper object from input fields 
   and overwrites what's in the state  to check when submitting*/
   getValidInfo = (stateError, validObj) => {
     if (validObj) {

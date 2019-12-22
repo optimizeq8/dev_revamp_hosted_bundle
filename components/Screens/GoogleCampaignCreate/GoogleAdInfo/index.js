@@ -408,7 +408,7 @@ class GoogleAdInfo extends Component {
                       this.setState({ inputN: true });
                     }}
                     onBlur={() => {
-                      segmentEventTrack("Name Feild on Blur", {
+                      segmentEventTrack("Name Field on Blur", {
                         campaign_name: this.state.name
                       });
                       this.setState({ inputN: false });
@@ -421,7 +421,7 @@ class GoogleAdInfo extends Component {
                         },
                         () => {
                           if (this.state.nameError) {
-                            segmentEventTrack("Error Name Feild on Blur", {
+                            segmentEventTrack("Error Name Field on Blur", {
                               campaign_error_ad_name: this.state.nameError
                             });
                           }

@@ -547,7 +547,7 @@ class GoogleAdTargetting extends Component {
                       this._handleBudget(value, rawText);
                     }}
                     onBlur={() => {
-                      segmentEventTrack("Budget Feild on blur", {
+                      segmentEventTrack("Budget Field on blur", {
                         campaign_budget: this.state.budget
                       });
                     }}

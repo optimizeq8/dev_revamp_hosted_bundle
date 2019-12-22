@@ -351,16 +351,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH1: true });
                       }}
                       onBlur={() => {
-                       segmentEventTrack("headline1 Feild on Blur", {
+                        segmentEventTrack("headline1 Field on Blur", {
                           campaign_headline1: this.state.headline1
                         });
                         this.setState({ inputH1: false });
-                        this.setState({
-                          headline1Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline1
-                          )
-                        });
+                        this.setState(
+                          {
+                            headline1Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline1
+                            )
+                          },
+                          () => {
+                            if (this.state.headline1Error) {
+                              segmentEventTrack(
+                                "Error at headline1 field on blur",
+                                {
+                                  campaign_error_headline1: this.state
+                                    .headline1Error
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -382,7 +395,6 @@ class GoogleAdDesign extends Component {
                           : GlobalStyles.whiteTextColor
                       ]}
                     >
-
                       {translate("Headline")} {translate("2")}
                     </Text>
                   </View>
@@ -409,16 +421,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH2: true });
                       }}
                       onBlur={() => {
-                        segmentEventTrack("headline2 Feild on Blur", {
+                        segmentEventTrack("headline2 Field on Blur", {
                           campaign_headline2: this.state.headline2
                         });
                         this.setState({ inputH2: false });
-                        this.setState({
-                          headline2Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline2
-                          )
-                        });
+                        this.setState(
+                          {
+                            headline2Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline2
+                            )
+                          },
+                          () => {
+                            if (this.state.headline2Error) {
+                              segmentEventTrack(
+                                "Error at headline2 field on blur",
+                                {
+                                  campaign_error_headline2: this.state
+                                    .headline2Error
+                                }
+                              );
+                            }
+                          }
+                        );
                       }}
                     />
                   </Item>
@@ -440,7 +465,6 @@ class GoogleAdDesign extends Component {
                           : GlobalStyles.whiteTextColor
                       ]}
                     >
-
                       {translate("Headline")} {translate("3")}
                     </Text>
                   </View>
@@ -467,27 +491,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputH3: true });
                       }}
                       onBlur={() => {
-                        segmentEventTrack("description Feild on Blur", {
+                        segmentEventTrack("description Field on Blur", {
                           campaign_description: this.state.description
                         });
                         this.setState({ inputH3: false });
-                        this.setState({
-                          headline3Error: validateWrapper(
-                            "mandatory",
-                            this.state.headline3
-                          )
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error description Feild on Blur",
-                              {
-                                campaign_error_description: this.state
-                                  .descriptionError
-                              }
-                            );
+                        this.setState(
+                          {
+                            headline3Error: validateWrapper(
+                              "mandatory",
+                              this.state.headline3
+                            )
+                          },
+                          () => {
+                            if (this.state.description2Error) {
+                              segmentEventTrack(
+                                "Error description Field on Blur",
+                                {
+                                  campaign_error_description: this.state
+                                    .descriptionError
+                                }
+                              );
+                            }
                           }
-                        });
+                        );
                       }}
                     />
                   </Item>
@@ -690,27 +716,29 @@ class GoogleAdDesign extends Component {
                         this.setState({ inputD2: true });
                       }}
                       onBlur={() => {
-                        segmentEventTrack("description2 Feild on Blur", {
+                        segmentEventTrack("description2 Field on Blur", {
                           campaign_description2: this.state.description2
                         });
                         this.setState({ inputD2: false });
-                        this.setState({
-                          description2Error: validateWrapper(
-                            "mandatory",
-                            this.state.description2
-                          )
-                        },
-                        () => {
-                          if (this.state.description2Error) {
-                            segmentEventTrack(
-                              "Error description2 Feild on Blur",
-                              {
-                                campaign_error_description2: this.state
-                                  .description2Error
-                              }
-                            );
+                        this.setState(
+                          {
+                            description2Error: validateWrapper(
+                              "mandatory",
+                              this.state.description2
+                            )
+                          },
+                          () => {
+                            if (this.state.description2Error) {
+                              segmentEventTrack(
+                                "Error description2 Field on Blur",
+                                {
+                                  campaign_error_description2: this.state
+                                    .description2Error
+                                }
+                              );
+                            }
                           }
-                        });
+                        );
                       }}
                     />
                   </Item>
