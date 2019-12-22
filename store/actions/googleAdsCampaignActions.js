@@ -149,8 +149,6 @@ export const create_google_SE_campaign_info = (info, navigation) => {
             payload: false
           });
         } else {
-          console.log("info data", data);
-
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_INFO,
             payload: { data: data }
@@ -191,15 +189,11 @@ export const create_google_SE_campaign_ad_design = (info, rejected) => {
       })
       .then(data => {
         if (!data.error) {
-          console.log("ad design data", data);
-
           dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_AD_DESIGN,
             payload: { data: data }
           });
         } else {
-          console.log("error: ", data.error);
-
           showMessage({
             message: data.error,
             type: "info",
@@ -314,8 +308,6 @@ export const create_google_SE_campaign_ad_targetting = info => {
             })
           );
         } else {
-          console.log("error: ", data.error);
-
           showMessage({
             message: data.error,
             type: "info",
@@ -373,7 +365,6 @@ export const get_google_campiagn_details = (
         }`
       )
       .then(res => {
-        console.log("get_google_campiagn_details", res.data);
         return res.data;
       })
       .then(data => {

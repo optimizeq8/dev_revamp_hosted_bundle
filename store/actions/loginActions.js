@@ -30,8 +30,6 @@ export const send_push_notification = () => {
       .then(permission => {
         if (permission.status === "granted") {
           Notifications.getExpoPushTokenAsync().then(token => {
-            console.log("token", token);
-
             createBaseUrl()
               .post(`updatepushToken`, {
                 token: token,
@@ -79,7 +77,6 @@ export const checkForExpiredToken = navigation => {
       if (token) {
         const currentTime = Date.now() / 1000;
         const user = jwt_decode(token);
-        console.log("user: ", user);
 
         if (user.exp >= currentTime && user.tmp_pwd !== "1") {
           if (
@@ -169,7 +166,6 @@ export const login = (userData, navigation) => {
         let decodedUser = null;
         if (user.hasOwnProperty("token")) {
           decodedUser = jwt_decode(user.token);
-          console.log("decodedUser", decodedUser);
 
           let promise = await setAuthToken(user.token);
           return { user: decodedUser, message: user.message };
@@ -299,6 +295,8 @@ export const clearPushToken = (navigation, userid) => {
         return res.data;
       })
       .then(data => {
+        console.log("clearPushToken", data);
+
         dispatch({
           type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN
         });
@@ -308,7 +306,7 @@ export const clearPushToken = (navigation, userid) => {
         dispatch(logout(navigation));
       })
       .catch(err => {
-        // console.log("clear push notification", err.message || err.response);
+        console.log("clear push notification", err.message || err.response);
         dispatch({
           type: actionTypes.ERROR_SET_PUSH_NOTIFICATION_TOKEN
         });
