@@ -17,22 +17,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   mainView: {
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     zIndex: 10,
-    height: 10,
-    top: 13,
-    zIndex: 100,
-    elevation: 10,
-    backgroundColor: "#0000",
+    elevation: 5,
     width: "100%",
     height: "5%",
-    marginBottom: "5%"
+    paddingHorizontal: "3.5%",
+    flexDirection: "row"
   },
   lottieView: {
-    left: 5,
-    // width: wp(5),
-    height: heightPercentageToDP(5),
-    position: "absolute"
+    width: heightPercentageToDP(5),
+    height: heightPercentageToDP(5)
   },
   animateView: {
     zIndex: 1,
@@ -76,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     top: 20
   },
-  container: { backgroundColor: "#0000", bottom: 5 },
+  container: { backgroundColor: "#0000" },
   media: {
     alignSelf: "center",
     height: heightPercentageToDP(10),
@@ -130,9 +126,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase"
   },
   nameStyle: {
-    maxWidth: "75%",
-    minWidth: "50%",
-    // height: 55,
     fontFamily: "montserrat-bold",
     fontSize: 21
   },
@@ -238,22 +231,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30
   },
-  // checkbutton: {
-  //   backgroundColor: "#FF9D00",
-  //   alignSelf: "center",
-  //   width: 55,
-  //   height: 55,
-  //   borderRadius: 27.5,
-  //   borderColor: "transparent",
-  //   borderWidth: 1,
-  //   alignItems: "center",
-  //   justifyContent: "flex-end",
-  //   shadowColor: "#000",
-  //   shadowOffset: { width: 0, height: 3 },
-  //   shadowRadius: 3,
-  //   shadowOpacity: 0.2,
-  //   marginVertical: 5
-  // },
   activebutton: {
     backgroundColor: "#0000",
     justifyContent: "center",
@@ -293,14 +270,11 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("100%"),
     marginTop: 0
   },
-  wallet: {
-    // top: "50%",
-    right: "5%",
-    position: "absolute",
+  headerIcons: {
     alignItems: "center",
     justifyContent: "center",
-    width: 50,
-    height: 50
+    width: "10%",
+    height: "100%"
   },
   placeHolderCardsStyle: {
     backgroundColor: "rgba(0,0,0,0.2)",
@@ -332,7 +306,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   dashboardHeader: {
-    paddingHorizontal: "3%",
+    paddingHorizontal: "5%",
     marginBottom: 15
   },
   searchbarContainer: {

@@ -308,7 +308,7 @@ class Dashboard extends Component {
                 }
               ]}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
                 onPress={() => {
                   if (this.state.open === false) {
                     this.startAnimation();
@@ -316,6 +316,7 @@ class Dashboard extends Component {
                     this.closeAnimation();
                   }
                 }}
+                style={styles.headerIcons}
               >
                 <LottieView
                   style={styles.lottieView}
@@ -323,14 +324,14 @@ class Dashboard extends Component {
                   source={require("../../../assets/animation/menu-btn.json")}
                   progress={this.state.menu}
                 />
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               {!this.state.open ? (
                 <>
                   <TouchableOpacity
                     onPress={() =>
                       this.props.navigation.push("MessengerLoading")
                     }
-                    style={[styles.wallet]}
+                    style={[styles.headerIcons]}
                   >
                     {this.props.conversation_status ? (
                       <IntercomIcon width={24} height={24} />
