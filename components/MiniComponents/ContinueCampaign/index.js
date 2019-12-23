@@ -16,14 +16,14 @@ import styles from "./styles";
 import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
-
+import Loading from "../LoadingScreen";
 /**
  * The modal that shows up when there's a campaign to resume
  */
 class ContinueCampaign extends Component {
   constructor(props) {
     super(props);
-    this.state = { isVisible: false };
+    this.state = { isVisible: false, resumeLoading: false };
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
@@ -97,7 +97,9 @@ class ContinueCampaign extends Component {
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal();
+      this.handleSubmition(false, false), 800;
     } else {
+      this.setState({ resumeLoading: true });
       let updated_transaction_data = {
         channel: ""
       };
@@ -120,12 +122,16 @@ class ContinueCampaign extends Component {
         };
       }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
-      this.navigateToContinue();
       this.props.setCampaignInProgress(true);
       this.props.overWriteObjectiveData(); //overwrite this.props.data with what ever is in oldTempData
       this.props.set_adType(this.props.oldTempAdType); //set the adType to the old campaign's adType
+      //the app actually freezes for a few seconds when navigateToContinue runs so i delay
+      //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+      setTimeout(() => {
+        this.handleSubmition(false, false);
+        this.navigateToContinue();
+      }, 200);
     }
-    this.handleSubmition(false, false);
   };
 
   /**
@@ -195,6 +201,7 @@ class ContinueCampaign extends Component {
                 />
               </View>
             </View>
+            {this.state.resumeLoading && <Loading dash />}
           </SafeAreaView>
         </BlurView>
       </Modal>

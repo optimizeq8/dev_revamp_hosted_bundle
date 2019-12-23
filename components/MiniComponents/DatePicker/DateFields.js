@@ -26,6 +26,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import Loading from "../LoadingScreen";
 
 class DateFields extends Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class DateFields extends Component {
       reset: false,
       start_timeError: "",
       end_date: "",
-      start_date: ""
+      start_date: "",
+      resumeLoading: false
     };
   }
 
@@ -102,19 +104,39 @@ class DateFields extends Component {
         this.props.incompleteCampaign && //pass as a props
         !this.props.campaignProgressStarted //pass as a props
       ) {
-        this.navigateToContinue();
-      }
+        //the app actually freezes for a few seconds when navigateToContinue runs so i delay
+        //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+        this.setState({ resumeLoading: true });
+        setTimeout(() => {
+          this.navigateToContinue();
+          this.setState({
+            modalVisible: false,
+            start_choice: false,
+            end_choice: false
+          });
+        }, 200);
+      } else
+        this.setState({
+          modalVisible: false,
+          start_choice: false,
+          end_choice: false
+        });
     } else if (this.props.filterMenu) {
       await this.props.handleStartDatePicked(this.state.start_date);
       await this.props.handleEndDatePicked(this.state.end_date);
+      this.setState({
+        modalVisible: false,
+        start_choice: false,
+        end_choice: false
+      });
     } else if (this.props.chartRange) {
       this.props.durationChange(this.state.start_date, this.state.end_date);
+      this.setState({
+        modalVisible: false,
+        start_choice: false,
+        end_choice: false
+      });
     }
-    this.setState({
-      modalVisible: false,
-      start_choice: false,
-      end_choice: false
-    });
   };
 
   handleReset = () => {
@@ -365,6 +387,7 @@ class DateFields extends Component {
               ) : null}
             </SafeAreaView>
           </BlurView>
+          {this.state.resumeLoading && <Loading dash />}
         </Modal>
       </View>
     );

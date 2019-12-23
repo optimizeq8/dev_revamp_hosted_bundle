@@ -17,7 +17,9 @@ import styles from "./styles";
 import CustomButtons from "../CustomButtons";
 import ContinueInfo from "./ContinueInfo";
 import { showMessage } from "react-native-flash-message";
+import Loading from "../LoadingScreen";
 import segmentEventTrack from "../../segmentEventTrack";
+
 
 /**
  * The modal that shows up when there's a campaign to resume
@@ -25,7 +27,7 @@ import segmentEventTrack from "../../segmentEventTrack";
 class ContinueCampaign extends Component {
   constructor(props) {
     super(props);
-    this.state = { isVisible: false };
+    this.state = { isVisible: false, resumeLoading: false };
   }
   componentDidMount() {
     //this is to disable showing the modal everytime if a campaign creation is in progress
@@ -102,7 +104,9 @@ class ContinueCampaign extends Component {
       });
       //Shows the dateField's modal to set new dates and resumes campaign
       this.props.dateField.showModal();
+      this.handleSubmition(false, false);
     } else {
+      this.setState({ resumeLoading: true });
       let updated_transaction_data = {
         channel: "google"
       };
@@ -125,10 +129,14 @@ class ContinueCampaign extends Component {
         };
       }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
-      this.navigateToContinue();
       this.props.set_google_campaign_resumed(true);
+      //the app actually freezes for a few seconds when navigateToContinue runs so i delay
+      //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+      setTimeout(() => {
+        this.handleSubmition(false, false);
+        this.navigateToContinue();
+      }, 200);
     }
-    this.handleSubmition(false, false);
   };
 
   /**
@@ -194,6 +202,7 @@ class ContinueCampaign extends Component {
                 />
               </View>
             </View>
+            {this.state.resumeLoading && <Loading top={40} />}
           </SafeAreaView>
         </BlurView>
       </Modal>
