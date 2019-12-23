@@ -13,7 +13,7 @@ import { Small } from "../StyledComponents";
 adCreatives = item => {
   return (
     <MediaBox
-      key={item.id}
+      key={item.index}
       name={item.index + 1}
       disabled={true}
       ad={item.item}
@@ -45,29 +45,20 @@ ContinueInfo = props => {
   return (
     <View
       style={{
-        height: "50%"
+        height: "60%",
+        top: 10
       }}
     >
       <Content
         contentContainerStyle={{
-          paddingBottom: "20%",
-          alignItems: "center"
+          alignItems: "center",
+          paddingBottom: "15%"
         }}
         style={styles.contentStyle}
       >
         <Snapchat style={{ alignSelf: "center" }} />
         {oldTempData.name && (
           <Text style={styles.text}>{oldTempData.name}</Text>
-        )}
-        {data.campaignInfo && data.campaignInfo.lifetime_budget_micro && (
-          <View style={styles.sections}>
-            <Text uppercase style={styles.text}>
-              Budget
-            </Text>
-            <Text style={[globalStyles.numbers, { fontSize: 24 }]}>
-              {formatNumber(data.campaignInfo.lifetime_budget_micro)}
-            </Text>
-          </View>
         )}
         {oldTempData.start_time && (
           <View style={styles.sections}>
@@ -88,7 +79,7 @@ ContinueInfo = props => {
           </View>
         )}
         {data.media && (
-          <View style={[styles.sections, { top: "5%", height: "35%" }]}>
+          <View style={[styles.sections, { top: "2%", height: "60%" }]}>
             <Text uppercase style={[styles.text]}>
               Media
             </Text>
@@ -102,8 +93,7 @@ ContinueInfo = props => {
               ) : (
                 <View
                   style={{
-                    alignItems: "center",
-                    marginTop: 20
+                    alignItems: "center"
                   }}
                 >
                   {oldTempAdType === "CollectionAd" && (
@@ -114,19 +104,21 @@ ContinueInfo = props => {
                     />
                   )}
                   <FlatList
-                    style={{ top: "5%" }}
+                    style={{
+                      top: "5%"
+                    }}
                     contentContainerStyle={{
                       paddingBottom: "20%",
                       alignItems: "center"
                     }}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.index}
                     data={
                       oldTempAdType === "CollectionAd"
                         ? collectionAdMedia
                         : storyAdsArray.slice(0, storyAdsArray.length - 1)
                     }
                     renderItem={this.adCreatives}
-                    numColumns={4}
+                    numColumns={2}
                   />
                 </View>
               )}
