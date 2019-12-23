@@ -95,10 +95,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   sections: {
-    marginVertical: 10,
+    marginVertical: 5,
     justifyContent: "space-evenly",
     flexDirection: "column",
-    // backgroundColor: "red",
     height: "15%"
   },
   footerButtons: {

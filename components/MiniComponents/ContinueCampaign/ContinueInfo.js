@@ -89,7 +89,7 @@ ContinueInfo = props => {
         )}
         {data.media && (
           <View style={[styles.sections, { top: "5%", height: "35%" }]}>
-            <Text uppercase style={[styles.text, { marginBottom: 30 }]}>
+            <Text uppercase style={[styles.text]}>
               Media
             </Text>
             <View style={styles.mediaContainer}>
@@ -102,7 +102,8 @@ ContinueInfo = props => {
               ) : (
                 <View
                   style={{
-                    alignItems: "center"
+                    alignItems: "center",
+                    marginTop: 20
                   }}
                 >
                   {oldTempAdType === "CollectionAd" && (
