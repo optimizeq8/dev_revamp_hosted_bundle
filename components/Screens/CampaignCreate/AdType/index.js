@@ -209,13 +209,13 @@ class AdType extends Component {
               ref={c => {
                 this.media_carousel = c;
               }}
+              enableMomentum={true}
               onSnapToItem={indx => this.handleMediaChange(indx)}
               inactiveSlideScale={0.75}
               data={SocialPlatforms}
               renderItem={this._renderItem}
               sliderWidth={widthPercentageToDP(100)}
               itemWidth={110}
-              scrollEndDragDebounceValue={0}
             />
           </View>
           <Carousel
