@@ -1,5 +1,5 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import { globalColors } from "../../../../GlobalStyles";
+import { globalColors } from "../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -107,11 +107,9 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: 13,
     fontFamily: "montserrat-light",
-    color: "#fff",
-    textAlign: "left"
+    color: "#fff"
   },
   menudetails: {
-    textAlign: "left",
     paddingLeft: 15,
     color: "#fff",
     fontFamily: "montserrat-extralight",

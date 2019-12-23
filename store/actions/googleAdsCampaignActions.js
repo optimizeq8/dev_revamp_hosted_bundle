@@ -592,8 +592,11 @@ export const update_google_audience_targeting = info => {
       });
   };
 };
+
 /**
+ * update keywords after the campign is lunched
  *
+ * @method
  * @param {Object} info
  */
 export const update_google_keywords = info => {
@@ -606,7 +609,6 @@ export const update_google_keywords = info => {
       .post(`keywords/`, info)
       .then(res => res.data)
       .then(data => {
-        // console.log("data success", data);
         dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
           payload: false
@@ -640,12 +642,14 @@ export const update_google_keywords = info => {
   };
 };
 
+/**
+ * Gets called after the ad targeting information is submitted
+ *
+ * @method
+ * @param {Object} info
+ */
 export const create_google_keywords = (info, segmentInfo) => {
   return dispatch => {
-    // dispatch({
-    //   type: actionTypes.SET_GOOGLE_UPLOADING,
-    //   payload: true
-    // });
     GoogleBackendURL()
       .post(`keywords/`, info)
       .then(res => res.data)
@@ -685,6 +689,16 @@ export const create_google_keywords = (info, segmentInfo) => {
   };
 };
 
+/**
+ * Updates the status of the campiagn from paused/enabled/ended
+ *
+ * @method
+ * @param {String} campaign_id
+ * @param {Boolean} pauseOrEnable
+ * @param {Boolean} endCampaign
+ * @param {Function} handleModalToggle
+ *
+ */
 export const enable_end_or_pause_google_campaign = (
   campaign_id,
   pauseOrEnable,
@@ -692,13 +706,6 @@ export const enable_end_or_pause_google_campaign = (
   handleModalToggle
 ) => {
   return (dispatch, getState) => {
-    console.log(
-      `${endCampaign ? "end" : pauseOrEnable ? "enable" : "pause"}/`,
-      {
-        campaign_id: campaign_id,
-        businessid: getState().account.mainBusiness.businessid
-      }
-    );
     dispatch({
       type: actionTypes.SET_GOOGLE_STATUS_LOADING,
       payload: true

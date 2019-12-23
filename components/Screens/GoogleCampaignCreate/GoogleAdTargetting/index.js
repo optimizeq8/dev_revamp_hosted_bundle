@@ -15,7 +15,6 @@ import Sidemenu from "../../../MiniComponents/SideMenu";
 import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import { showMessage } from "react-native-flash-message";
 import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
 import RadioButtons from "../../../MiniComponents/RadioButtons";
@@ -23,17 +22,18 @@ import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import { BudgetCards } from "./BudgetCards";
+import KeywordsCarousel from "../../../MiniComponents/KeywordsCarousel";
 
 //Data
 import gender from "../../../Data/gender.googleSE.data";
 import ageRange from "../../../Data/ageRange.googleSE.data";
+
 //Icons
 import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
 import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
-// import Icon from "react-native-vector-icons/MaterialIcons";
 
 //Style
 import styles from "./styles";
@@ -72,8 +72,6 @@ class GoogleAdTargetting extends Component {
       sidemenustate: false,
       sidemenu: "gender",
       value: this.props.campaign.recommendedBudget,
-      // minValueBudget: 25,
-      // maxValueBudget: 1500,
       modalVisible: false,
       selectionOption: "",
       budgetOption: 1
@@ -91,8 +89,6 @@ class GoogleAdTargetting extends Component {
 
   componentDidMount() {
     let keys = Object.keys(this.state).filter(key => {
-      // console.log("this.props.campaign", key);
-
       if (this.props.campaign.hasOwnProperty(key)) return key;
     });
 
@@ -103,18 +99,12 @@ class GoogleAdTargetting extends Component {
         [key]: this.props.campaign[key]
       };
     }, {});
-    // console.log("after data", data);
 
-    this.setState(
-      {
-        ...data,
-        budget: this.props.campaign.budget,
-        value: this.props.campaign.budget
-      },
-      () => {
-        // console.log("state", this.state);
-      }
-    );
+    this.setState({
+      ...data,
+      budget: this.props.campaign.budget,
+      value: this.props.campaign.budget
+    });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -148,6 +138,7 @@ class GoogleAdTargetting extends Component {
       this._handleSideMenuState(true)
     );
   };
+
   _handleGenderSelection = gender => {
     this.setState({ gender: gender });
     segmentEventTrack("Selected Campaign gender", {
@@ -194,7 +185,6 @@ class GoogleAdTargetting extends Component {
       segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       this.props.save_google_campaign_data({ keywords: [] });
-
       return;
     }
     var res = this.state.keywords.filter(l => l !== keyword);
@@ -282,6 +272,12 @@ class GoogleAdTargetting extends Component {
       campaign_id: this.props.campaign.campaign_id,
       campaign_budget: this.state.budget
     });
+    let data = {
+      budget: this.state.budget,
+      age: this.state.age,
+      gender: this.state.gender,
+      keywords: this.state.keywords
+    };
     if (
       this._handleBudget(
         this.state.value,
@@ -300,23 +296,16 @@ class GoogleAdTargetting extends Component {
         campaign_gender: this.state.gender,
         campaign_keywords: this.state.keywords
       };
-      this.props.create_google_SE_campaign_ad_targetting(
+
+      this.props.create_google_SE_campaign_ad_targeting(
         {
           businessid: this.props.mainBusiness.businessid,
           campaign_id: this.props.campaign.campaign_id,
-          budget: this.state.budget,
-          age: this.state.age,
-          gender: this.state.gender,
-          keywords: this.state.keywords
+          ...data
         },
         segmentInfo
       );
-      this.props.save_google_campaign_data({
-        budget: this.state.budget,
-        age: this.state.age,
-        gender: this.state.gender,
-        keywords: this.state.keywords
-      });
+      this.props.save_google_campaign_data(data);
     } else {
       segmentEventTrack("Error on submit google Ad Targetting", {
         campaign_error_keywords: keywordsError
@@ -337,7 +326,6 @@ class GoogleAdTargetting extends Component {
 
   render() {
     const { translate } = this.props.screenProps;
-
     let menu;
     switch (this.state.sidemenu) {
       case "gender": {
@@ -413,74 +401,6 @@ class GoogleAdTargetting extends Component {
       }
     }
 
-    let selectedlist = this.state.keywords.map((x, i) => {
-      if (i === 0) {
-        return (
-          <View key={i} style={styles.keywordsColumn}>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => {
-                this._renderSideMenu("keywords");
-              }}
-            >
-              <Text style={styles.editButtonText} numberOfLines={1}>
-                {translate("Edit")}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[globalStyles.orangeBackgroundColor, styles.keywordButton]}
-              onPress={() => {
-                this._handleAddKeyword(this.state.keywords[i]);
-              }}
-            >
-              <Text style={styles.keywordButtonText} numberOfLines={1}>
-                {this.state.keywords[i]}
-              </Text>
-              <Icon name="close" style={styles.xIcon} />
-            </TouchableOpacity>
-          </View>
-        );
-      }
-
-      if (i % 2 === 1) {
-        return (
-          <View key={i} style={styles.keywordsColumn}>
-            <TouchableOpacity
-              style={[globalStyles.orangeBackgroundColor, styles.keywordButton]}
-              onPress={() => {
-                this._handleAddKeyword(this.state.keywords[i]);
-              }}
-            >
-              <Text style={styles.keywordButtonText} numberOfLines={1}>
-                {this.state.keywords[i]}
-              </Text>
-              <Icon name="close" style={styles.xIcon} />
-            </TouchableOpacity>
-
-            {i + 1 !== this.state.keywords.length ? (
-              <TouchableOpacity
-                style={[
-                  globalStyles.orangeBackgroundColor,
-                  styles.keywordButton
-                ]}
-                onPress={() => {
-                  this._handleAddKeyword(this.state.keywords[i + 1]);
-                }}
-              >
-                <Text style={styles.keywordButtonText} numberOfLines={1}>
-                  {this.state.keywords[i + 1]}
-                </Text>
-                <Icon name="close" style={styles.keywordButtonText} />
-              </TouchableOpacity>
-            ) : (
-              <View />
-            )}
-          </View>
-        );
-      }
-    });
-
     return (
       <Sidemenu
         onChange={isOpen => {
@@ -506,12 +426,6 @@ class GoogleAdTargetting extends Component {
                 "GoogleAdDesign",
                 "GoogleAdTargetting"
               ]);
-
-              //   if (this.props.navigation.getParam("editCampaign", false)) {
-              // Segment.screenWithProperties("Snap Ad Targetting Update", {
-              //   category: "Campaign Update"
-              // });
-              //   } else {
               Segment.screenWithProperties("Google Ad Targetting", {
                 category: "Campaign Creation",
                 channel: "google"
@@ -520,7 +434,6 @@ class GoogleAdTargetting extends Component {
                 checkout_id: this.props.campaign.campaign_id,
                 step: 4
               });
-              //   }
             }}
           />
           <Container style={styles.mainContainer}>
@@ -562,18 +475,16 @@ class GoogleAdTargetting extends Component {
                       flex: 1
                     }}
                   >
-                    <ScrollView
-                      style={{ marginVertical: 10 }}
-                      contentContainerStyle={styles.keywordScrollView}
-                      horizontal={true}
-                    >
-                      {selectedlist}
-                    </ScrollView>
+                    <KeywordsCarousel
+                      screenProps={this.props.screenProps}
+                      keywords={this.state.keywords}
+                      _renderSideMenu={this._renderSideMenu}
+                      _handleAddKeyword={this._handleAddKeyword}
+                    />
                   </View>
                 ) : (
                   <>
                     <TouchableOpacity
-                      // disabled={this.props.country_code === ""}
                       style={styles.keywordsAddButton}
                       onPress={() => this._renderSideMenu("keywords")}
                     >
@@ -663,19 +574,6 @@ class GoogleAdTargetting extends Component {
                     )}
                   </TouchableOpacity>
                 </ScrollView>
-                {/* 
-                <View
-                  style={[
-                    {
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      flexDirection: "row"
-                    },
-                    styles.chipsWrapper
-                  ]}
-                > */}
-
                 {this.props.campaign.uploading ? (
                   <ForwardLoading
                     mainViewStyle={{ width: wp(8), height: hp(8) }}
@@ -688,9 +586,6 @@ class GoogleAdTargetting extends Component {
               </Content>
             </Container>
           </Container>
-          {/* <Modal isVisible={this.props.loading}>
-            <LoadingScreen top={50} />
-            </Modal> */}
         </SafeAreaView>
       </Sidemenu>
     );

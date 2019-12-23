@@ -86,7 +86,6 @@ class GoogleAdInfo extends Component {
   }
   componentDidMount() {
     this.setCampaignInfo();
-
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -115,6 +114,7 @@ class GoogleAdInfo extends Component {
     this.props.navigation.goBack();
     return true;
   };
+
   handleStartDatePicked = date => {
     this.setState({
       start_time: date
@@ -124,6 +124,7 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ start_time: date });
   };
+
   handleEndDatePicked = date => {
     this.setState({
       end_time: date
@@ -133,13 +134,14 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ end_time: date });
   };
+
   setModalVisible = visible => {
     if (visible) {
       Segment.screen("Select Country Modal");
     }
     this.setState({ modalVisible: visible });
-    // this.setState({ selectRegion: false });
   };
+
   getMinimumCash = days => {
     // let minValueBudget = days !== 0 ? 50 * days : 50;
     // let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
@@ -152,10 +154,12 @@ class GoogleAdInfo extends Component {
     //   maxValueBudget: this.state.maxValueBudget
     // });
   };
+
   _handleLanguageChange = val => {
     this.setState({ language: val });
     this.props.save_google_campaign_data({ language: val });
   };
+
   _handleCountryChange = val => {
     this.setState({ country: val, location: [val] });
     segmentEventTrack("Selected Campaign Country", {
@@ -163,7 +167,14 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
+
   _handleSelectedRegions = val => {
+    /**
+     * this is to set the main value of the location array as
+     * the country value if "all" was selected
+     *
+     */
+
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] });
       segmentEventTrack("Selected Campaign Regions", {
@@ -174,6 +185,10 @@ class GoogleAdInfo extends Component {
         location: [val]
       });
     } else {
+      /**
+       * This checks if the value of the selected regio exists inside the location array
+       * to either add it or remove it from the list
+       */
       var res;
       if (isUndefined(this.state.location.find(l => l === val))) {
         res = this.state.location.filter(l => l !== val);
@@ -187,6 +202,11 @@ class GoogleAdInfo extends Component {
           location: [...res, val]
         });
       } else {
+        /**
+         * filtering the array to remove the selected value,
+         * if the array becomes empty, the country value gets set in the location array as all
+         * the country value gets removed if another value gets set
+         */
         res = this.state.location.filter(l => l !== val);
         if (res.length === 0) {
           res = [this.state.country];
@@ -241,9 +261,6 @@ class GoogleAdInfo extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      // Segment.trackWithProperties("Google SE Info AD", {
-      //   business_name: this.props.mainBusiness.businessname
-      // });
       const segmentInfo = {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
@@ -255,42 +272,29 @@ class GoogleAdInfo extends Component {
         campaign_country: this.state.country,
         checkout_id: this.props.campaign.campaign_id
       };
-      // console.log(
-      //   "this.props.campaign.campaign_id ",
-      //   this.props.campaign.campaign_id
-      // );
 
-      //Set campaignProgressStarted back to false so that the continue modal will show again if the exit and come back
+      /**
+       * Set campaignProgressStarted back to false so that the continue modal
+       * will show again if the exit and come back
+       */
       this.props.set_google_campaign_resumed(false);
 
-      if (this.props.campaign.campaign_id !== "") {
-        this.props.create_google_SE_campaign_info(
-          {
-            campaign_id: this.props.campaign.campaign_id,
-            businessid: this.props.mainBusiness.businessid,
-            name: this.state.name,
-            language: this.state.language,
-            start_time: this.state.start_time,
-            end_time: this.state.end_time,
-            location: this.state.location
-          },
-          this.props.navigation,
-          segmentInfo
-        );
-      } else {
-        this.props.create_google_SE_campaign_info(
-          {
-            businessid: this.props.mainBusiness.businessid,
-            name: this.state.name,
-            language: this.state.language,
-            start_time: this.state.start_time,
-            end_time: this.state.end_time,
-            location: this.state.location
-          },
-          this.props.navigation,
-          segmentInfo
-        );
-      }
+      this.props.create_google_SE_campaign_info(
+        {
+          campaign_id:
+            this.props.campaign.campaign_id !== ""
+              ? this.props.campaign.campaign_id
+              : "",
+          businessid: this.props.mainBusiness.businessid,
+          name: this.state.name,
+          language: this.state.language,
+          start_time: this.state.start_time,
+          end_time: this.state.end_time,
+          location: this.state.location
+        },
+        this.props.navigation,
+        segmentInfo
+      );
 
       this.props.save_google_campaign_data({
         name: this.state.name,
@@ -304,9 +308,11 @@ class GoogleAdInfo extends Component {
       });
     }
   };
+
   handleClosingContinueModal = () => {
     this.setState({ closedContinueModal: true });
   };
+
   render() {
     const { translate } = this.props.screenProps;
 

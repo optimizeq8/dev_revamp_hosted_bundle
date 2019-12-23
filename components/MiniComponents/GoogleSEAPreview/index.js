@@ -1,15 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {
-  View,
-  Slider,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-  BackHandler
-} from "react-native";
-import { Text, Container, Icon, Content } from "native-base";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { View } from "react-native";
+import { Text } from "native-base";
+import GlobalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 import ADIcon from "../../../assets/SVGs/ADIcon";
 

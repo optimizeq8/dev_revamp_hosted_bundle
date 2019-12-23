@@ -5,8 +5,7 @@ import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
-// import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-// import * as actionCreators from "../../../../store/actions";
+
 // Style
 import styles from "./styles";
 
@@ -15,7 +14,6 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //Functions
-
 import formatNumber from "../../../formatNumber";
 import dateFormat from "dateformat";
 import isUndefined from "lodash/isUndefined";
@@ -74,8 +72,6 @@ class AdPaymentReview extends Component {
       this.props.campaign.age.join(", ") === "Undetermined"
         ? translate("All")
         : this.props.campaign.age.map(a => translate(a) + ", ");
-    // console.log("gender: ", gender);
-    // console.log("regionsNames: ", regionsNames);
     let end_time = new Date(this.props.campaign.end_time || "01-01-1970");
     let start_time = new Date(this.props.campaign.start_time || "01-01-1970");
     end_time = dateFormat(end_time, "d mmm yyyy");
@@ -97,12 +93,6 @@ class AdPaymentReview extends Component {
   render() {
     const { translate } = this.props.screenProps;
 
-    //country
-    // let countryName = "";
-    // this.props.campaign.location.find(x => x === r.id);
-
-    // let countryName = CountriesList.find(x => x === this.props);
-
     return (
       <SafeAreaView
         style={[styles.safeAreaView]}
@@ -117,14 +107,6 @@ class AdPaymentReview extends Component {
               "GoogleAdTargetting",
               "GoogleAdPaymentReview"
             ]);
-            // Segment.screenWithProperties("Google Ad Payment Review", {
-            //   category: "Campaign Creation"
-            // });
-            // Segment.trackWithProperties("Viewed Checkout Step", {
-            //   step: 5,
-            //   business_name: this.props.mainBusiness.businessname,
-            //   checkout_id: this.props.campaign_id
-            // });
           }}
         />
 
@@ -288,17 +270,6 @@ class AdPaymentReview extends Component {
                 }}
                 style={[styles.mainCard]}
               >
-                {/*
-                    ----------For future maybe----------
-                    <Text style={styles.text}>Agency Fee</Text>
-                    <View style={{ flexDirection: "column", alignSelf: "center" }}>
-                    <Text style={styles.text}>
-                        {2500 - this._handleAgencyFee()} $
-                    </Text>
-                    <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
-                    </View> 
-                */}
-
                 <Text style={styles.payNowText}>
                   {translate("Payment Info")}
                 </Text>

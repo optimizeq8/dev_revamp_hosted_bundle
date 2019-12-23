@@ -3,31 +3,8 @@ import {
   heightPercentageToDP,
   widthPercentageToDP
 } from "react-native-responsive-screen";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
+
 const styles = StyleSheet.create({
-  contentContainerStyle1: {},
-  videoView: {
-    height: "100%"
-  },
-  video: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 30
-    // backgroundColor: "rgba(0,0,0,0.15)"
-  },
-  imageBackground: {
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-    flex: 1,
-    borderRadius: 30,
-    backgroundColor: "rgba(0,0,0,0.6)"
-  },
   budgetView: {
     display: "flex",
     alignItems: "center",
@@ -78,10 +55,7 @@ const styles = StyleSheet.create({
   safeAreaView: {
     height: "100%",
     width: "100%"
-    // backgroundColor: "rgba(0,0,0,0.75)"
   },
-  slide: { alignItems: "center", flex: 1, justifyContent: "center" },
-  title: { color: "#000", fontSize: 48 },
   container: {
     height: "100%",
     backgroundColor: "transparent",
@@ -91,21 +65,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     justifyContent: "space-between"
   },
-  media: {
-    alignSelf: "center",
-    height: 120,
-    width: 120,
-    margin: 15
-  },
-  imageIcon: {
-    alignSelf: "center",
-    height: 50,
-    width: 50
-  },
-
   mainCard: {
-    // top: 20,
-    // borderColor: "#FF9D00",
     backgroundColor: "#FF9D00",
     shadowRadius: 5,
     shadowOpacity: 0.2,
@@ -116,19 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center"
   },
-  text: {
-    textAlign: "center",
-    color: "#fff",
-    paddingBottom: 10,
-    fontFamily: "montserrat-medium",
-    fontSize: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
 
-  backgroundViewWrapper: {
-    ...StyleSheet.absoluteFillObject
-  },
   bottomCardBlock1: {
     display: "flex",
     flexDirection: "row",
@@ -140,7 +88,6 @@ const styles = StyleSheet.create({
   },
   dollarAmountContainer: {
     flexDirection: "row"
-    // alignItems: 'baseline',
   },
   dollarAmountText: {
     fontSize: 15,
@@ -148,7 +95,6 @@ const styles = StyleSheet.create({
   },
   kdAmountContainer: {
     flexDirection: "row",
-    // alignItems: 'center',
     paddingTop: 2
   },
   kdText: {
@@ -165,32 +111,21 @@ const styles = StyleSheet.create({
   optimizeFeesTextContainer: {
     flexDirection: "row",
     paddingTop: 10
-    // width: '70%',
   },
   optimizeFeesText: {
     color: "#C6C6C6",
     fontSize: 12,
     fontFamily: "montserrat-light"
-    // textAlign: 'left',
   },
   payNowText: {
     color: "#FFF",
     textAlign: "center",
     fontSize: 14,
     fontFamily: "montserrat-bold"
-    //   paddingBottom: 3
   },
   money: {
     color: "#FF9D00",
-    // textAlign: 'center',
     fontSize: 21,
-    fontFamily: "montserrat-bold"
-    // paddingTop: 3
-  },
-  feesAmountText: {
-    color: "#fff",
-    textAlign: "left",
-    fontSize: 12,
     fontFamily: "montserrat-bold"
   }
 });
