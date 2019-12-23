@@ -9,6 +9,7 @@ export default props => {
   return (
     <Button
       rounded
+      block
       onPress={() => onPressFunction()}
       style={[filled ? styles.filledButton : styles.emptyButton, buttonStyle]}
     >
