@@ -1,7 +1,13 @@
 // Components
 import React, { Component } from "react";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { View, BackHandler, Platform, I18nManager } from "react-native";
+import {
+  View,
+  BackHandler,
+  Platform,
+  I18nManager,
+  TouchableOpacity
+} from "react-native";
 import { Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import * as Animatable from "react-native-animatable";
@@ -149,10 +155,15 @@ class AdType extends Component {
     let MediaIcon = item.icon.type;
     const { translate } = this.props.screenProps;
     return (
-      <View style={styles.slide}>
+      <TouchableOpacity
+        onPress={() => {
+          this.media_carousel.snapToItem(item.id - 1);
+        }}
+        style={styles.slide}
+      >
         <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
         <Text style={styles.iconTitle}>{translate(item.title)}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
