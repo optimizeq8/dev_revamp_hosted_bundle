@@ -101,7 +101,7 @@ class GoogleCampaignCard extends Component {
                     {translate(
                       `${
                         campaign.serving_status === "eligible"
-                          ? "Tap to view Details"
+                          ? " "
                           : campaign.serving_status === "paused"
                           ? "Campaign Paused"
                           : "Campaign ended"
@@ -160,28 +160,25 @@ class GoogleCampaignCard extends Component {
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
-                <View
-                  style={{
-                    width: 1,
-                    height: "90%",
-                    backgroundColor: "#0002"
-                  }}
-                />
-                {!campaignEndedOrNot ? (
-                  <View style={styles.cardStatusDays}>
-                    <Text style={globalStyles.numbers}>
-                      {TimeDifferance(new Date(), campaign.end_time)}
-                    </Text>
-                    <Text style={styles.cardText}>
-                      {translate("Day(s) left")}
-                    </Text>
-                  </View>
-                ) : (
-                  <View style={styles.cardStatusDays}>
-                    <Text style={styles.cardText}>
-                      {translate("Campaign ended")}
-                    </Text>
-                  </View>
+
+                {!campaignEndedOrNot && (
+                  <>
+                    <View
+                      style={{
+                        width: 1,
+                        height: "90%",
+                        backgroundColor: "#0002"
+                      }}
+                    />
+                    <View style={styles.cardStatusDays}>
+                      <Text style={globalStyles.numbers}>
+                        {TimeDifferance(new Date(), campaign.end_time)}
+                      </Text>
+                      <Text style={styles.cardText}>
+                        {translate("Day(s) left")}
+                      </Text>
+                    </View>
+                  </>
                 )}
               </View>
             )}

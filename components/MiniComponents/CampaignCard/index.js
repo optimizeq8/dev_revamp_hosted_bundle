@@ -173,7 +173,7 @@ class CampaignCard extends Component {
                       new Date(campaign.end_time) < new Date()
                     )
                       ? "Tap to submit your Ad again"
-                      : "Tap to view more"
+                      : " "
                   }`
                 )}
               </Text>
@@ -187,20 +187,23 @@ class CampaignCard extends Component {
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
-                <View
-                  style={{ width: 1, height: "90%", backgroundColor: "#0002" }}
-                />
-                {!campaignEndedOrNot ? (
-                  <View style={styles.cardStatusDays}>
-                    <Text style={globalStyles.numbers}>
-                      {TimeDifferance(new Date(), campaign.end_time)}
-                    </Text>
-                    <Text style={styles.cardText}>{"Day(s) left"}</Text>
-                  </View>
-                ) : (
-                  <View style={styles.cardStatusDays}>
-                    <Text style={styles.cardText}>{"Campaign \n Ended"}</Text>
-                  </View>
+
+                {!campaignEndedOrNot && (
+                  <>
+                    <View
+                      style={{
+                        width: 1,
+                        height: "90%",
+                        backgroundColor: "#0002"
+                      }}
+                    />
+                    <View style={styles.cardStatusDays}>
+                      <Text style={globalStyles.numbers}>
+                        {TimeDifferance(new Date(), campaign.end_time)}
+                      </Text>
+                      <Text style={styles.cardText}>{"Day(s) left"}</Text>
+                    </View>
+                  </>
                 )}
               </View>
             )}
