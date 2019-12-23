@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
+import AnimatedCircularProgress from "../AnimatedCircleProgress/AnimatedCircularProgress";
 import styles from "./styles";
 import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
@@ -23,6 +23,9 @@ export default Chart = props => {
         style={styles.chart}
         tintColor={globalColors.orange}
         backgroundColor="#0004"
+        tintColorSecondary={globalColors.orange}
+        tintColorThirdy={globalColors.green}
+        tintColor={globalColors.yellow}
       >
         {fill => (
           <>
