@@ -299,12 +299,6 @@ class Dashboard extends Component {
           style={styles.safeAreaViewContainer}
           forceInset={{ bottom: "never", top: "always" }}
         >
-          <BackdropIcon style={styles.backDrop} />
-          <Background
-            style={[globalStyles.background]}
-            width={wp(85)}
-            height={hp(61)}
-          />
           {!this.state.sidemenustate && (
             <View
               style={[

@@ -129,6 +129,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "montserrat-medium-english",
     marginBottom: "5%"
+  },
+  backDrop: {
+    position: "absolute",
+    top: heightPercentageToDP(5) < 40 ? -240 : -210,
+    alignSelf: "center",
+    zIndex: -1,
+    elevation: -2
   }
 });
 

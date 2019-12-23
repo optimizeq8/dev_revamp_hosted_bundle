@@ -19,6 +19,7 @@ import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
 import Logo from "../../../assets/SVGs/Optimize";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
+import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 //browser
 import { openPrivacy, openTerms } from "../../Terms&Conditions";
@@ -112,6 +113,7 @@ class Menu extends Component {
         forceInset={{ top: "always", bottom: "never" }}
         style={[{ top: 10 }]}
       >
+        <BackdropIcon style={styles.backDrop} />
         <Container style={[styles.menuModal]}>
           <View style={styles.menuContainer}>
             <Logo

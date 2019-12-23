@@ -322,7 +322,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     width: 50,
     height: 50,
-    borderRadius: 50
+    borderRadius: 50,
+    elevation: 0
   },
   background: {
     position: "absolute",
