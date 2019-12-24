@@ -78,6 +78,15 @@ const styles = StyleSheet.create({
   campaignCard: {
     flexDirection: "row",
     alignItems: "center"
+  },
+  adPerformanceLowerBUtton: {
+    width: 35,
+    height: 35,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9D00",
+    borderRadius: 30
   }
 });
 

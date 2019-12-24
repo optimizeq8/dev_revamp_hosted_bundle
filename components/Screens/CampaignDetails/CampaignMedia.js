@@ -80,20 +80,10 @@ export default props => {
         </Text>
         <LowerButton
           function={() => this.previewHandler(selectedCampaign, navigation)}
-          width={40}
+          width={I18nManager.isRTL ? 8 : 40}
           height={40}
           isRTL={I18nManager.isRTL}
-          style={{
-            width: 30,
-            height: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#FF9D00",
-            borderRadius: 50,
-            paddingLeft: 10,
-            paddingRight: 6
-          }}
+          style={styles.mediaPreviewLowerButton}
         />
       </View>
       {loading ? (

@@ -321,8 +321,9 @@ class CampaignDetails extends Component {
           targeting &&
           targeting.demographics[0] &&
           targeting.demographics[0].languages.map(languageId => {
-            return this.props.languages.find(lang => lang.id === languageId)
-              .name;
+            return translate(
+              this.props.languages.find(lang => lang.id === languageId).name
+            );
           });
         audienceOverViewData.push({
           heading: "Language",

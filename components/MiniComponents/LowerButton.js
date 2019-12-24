@@ -37,7 +37,10 @@ export default class LowerButton extends Component {
             height={height ? height : 63}
           />
         ) : isRTL ? (
-          <BackButton width={8} />
+          <BackButton
+            width={width ? width : 83}
+            height={height ? height : 83}
+          />
         ) : (
           <ForwardButton
             width={width ? width : 83}
