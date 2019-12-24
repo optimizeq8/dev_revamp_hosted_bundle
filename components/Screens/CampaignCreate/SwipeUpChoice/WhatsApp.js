@@ -43,6 +43,7 @@ import * as actionCreators from "../../../../store/actions";
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 import isStringArabic from "../../../isStringArabic";
 import segmentEventTrack from "../../../segmentEventTrack";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 class WhatsApp extends Component {
   static navigationOptions = {
@@ -64,7 +65,8 @@ class WhatsApp extends Component {
       validWhatsAppNumber: false,
       insta_handleError: "",
       showChangeInstaHandle: false,
-      inputCallToAction: false
+      inputCallToAction: false,
+      submissionLoading: false
     };
   }
   componentDidMount() {
@@ -201,7 +203,7 @@ class WhatsApp extends Component {
           : "",
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 2000
       });
       return false;
     } else {
@@ -237,6 +239,9 @@ class WhatsApp extends Component {
 
   // handle submission sme growth
   _handleSubmission = async () => {
+    this.setState({
+      submissionLoading: true
+    });
     const { translate } = this.props.screenProps;
     // if (!this.props.mainBusiness.weburl) {
     await this.props.verifyInstagramHandle(
@@ -259,11 +264,15 @@ class WhatsApp extends Component {
     }
     let weburlAvalible =
       this.props.mainBusiness.weburl || this.props.weburlAvalible;
+    const validate = this.validate();
     if (
       !weburlAvalible ||
       (this.props.errorInstaHandle && this.props.errorInstaHandleMessage) ||
-      !this.validateUrl()
+      !validate
     ) {
+      this.setState({
+        submissionLoading: false
+      });
       segmentEventTrack("Error submit SME Growth swipeup", {
         camapign_error_insta_handle: this.props.errorInstaHandleMessage,
         campaign_error_weburl: this.state.weburlError,
@@ -272,7 +281,7 @@ class WhatsApp extends Component {
         campaign_error_callnumber: this.state.validCallNumber
       });
     }
-    if (this.validate() && weburlAvalible && !this.props.errorInstaHandle) {
+    if (validate && weburlAvalible && !this.props.errorInstaHandle) {
       let whatsAppCampaign = {
         weburl: this.state.campaignInfo.weburl,
         whatsappnumber: this.state.campaignInfo.whatsappnumber.replace("+", ""),
@@ -320,6 +329,9 @@ class WhatsApp extends Component {
         campaign_insta_handle: this.state.campaignInfo.insta_handle,
         campaign_weburl: this.state.campaignInfo.weburl,
         campaign_googlemaplink: this.state.campaignInfo.googlemaplink
+      });
+      this.setState({
+        submissionLoading: false
       });
       this.props.navigation.navigate("SelectInstagramPost", {
         insta_handle: this.state.campaignInfo.insta_handle,
@@ -414,11 +426,12 @@ class WhatsApp extends Component {
 
   validateUrl = () => {
     const { translate } = this.props.screenProps;
-
-    const googleMapLinkError = validateWrapper(
-      "googleMapLink",
-      this.state.campaignInfo.googlemaplink
-    );
+    let googleMapLinkError = null;
+    if (this.state.campaignInfo.googlemaplink !== "")
+      googleMapLinkError = validateWrapper(
+        "googleMapLink",
+        this.state.campaignInfo.googlemaplink
+      );
     this.setState({
       googleMapLinkError
     });
@@ -427,7 +440,7 @@ class WhatsApp extends Component {
         message: translate("Please provide a valid location link"),
         type: "warning",
         position: "top",
-        duration: 7000
+        duration: 2000
       });
       return false;
     } else {
@@ -767,11 +780,15 @@ class WhatsApp extends Component {
             </View>
           </View>
           <View style={styles.bottonViewWebsite}>
-            <LowerButton
-              checkmark={true}
-              bottom={0}
-              function={this.checkInstaAccountChange}
-            />
+            {this.state.submissionLoading ? (
+              <ForwardLoading bottom={-5} />
+            ) : (
+              <LowerButton
+                // checkmark={true}
+                bottom={0}
+                function={this.checkInstaAccountChange}
+              />
+            )}
           </View>
         </ScrollView>
         <Modal
@@ -911,7 +928,4 @@ const mapDispatchToProps = dispatch => ({
   getWebProducts: campaign_id =>
     dispatch(actionCreators.getWebProducts(campaign_id))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WhatsApp);
+export default connect(mapStateToProps, mapDispatchToProps)(WhatsApp);
