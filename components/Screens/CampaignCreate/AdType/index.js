@@ -167,7 +167,12 @@ class AdType extends Component {
         }}
         style={styles.slide}
       >
-        <MediaIcon width={"75%"} height={"75%"} style={styles.slideIcon} />
+        <MediaIcon
+          fill="#fff"
+          width={"75%"}
+          height={"75%"}
+          style={styles.slideIcon}
+        />
         <Text style={styles.iconTitle}>{translate(item.title)}</Text>
       </TouchableOpacity>
     );
