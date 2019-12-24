@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, I18nManager } from "react-native";
 // import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../MiniComponents/LowerButton";
 import ForwardLoading from "../../MiniComponents/ForwardLoading";
@@ -27,7 +27,7 @@ class ReachBar extends Component {
     return (
       <View style={styles.bottom}>
         <AnimatedCircularProgress
-          size={wp(25)}
+          size={85}
           width={10}
           fill={total_reach}
           // arcSweepAngle={200}
@@ -40,13 +40,13 @@ class ReachBar extends Component {
           backgroundColor="rgba(255,255,255,0.3)"
         />
         <View style={styles.chartItems}>
-          <View>
+          <View style={styles.reachPeopleView}>
             <Text uppercase style={styles.chartText}>
               {translate("Potential Reach")}
             </Text>
             <Text uppercase style={styles.chartTextNum}>
-              {formatNumber(avg_reach, true)} {translate("people")}
-              {"\n"}
+              {formatNumber(avg_reach, true)}
+              {"  " + translate("people")}
             </Text>
           </View>
           {editCampaign &&
@@ -64,7 +64,15 @@ class ReachBar extends Component {
                 style={{ width: wp(7), height: hp(7) }}
               />
             ) : (
-              <LowerButton function={() => this.props._handleSubmission()} />
+              <LowerButton
+                isRTL={I18nManager.isRTL}
+                width={I18nManager.isRTL ? 25 : 70}
+                height={I18nManager.isRTL ? 25 : 70}
+                style={[
+                  I18nManager.isRTL ? styles.reachBarLowerButton : styles.flex
+                ]}
+                function={() => this.props._handleSubmission()}
+              />
             ))}
         </View>
       </View>

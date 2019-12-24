@@ -388,6 +388,18 @@ export const get_google_campiagn_details = (
         return res.data;
       })
       .then(data => {
+        // added to handle in case of error
+        if (data.error) {
+          showMessage({
+            message: data.error,
+            type: "danger",
+            position: "top"
+          });
+          return dispatch({
+            type: actionTypes.ERROR_SET_CAMPAIGN,
+            payload: { loading: false }
+          });
+        }
         if (getStats)
           return dispatch({
             type: actionTypes.SET_GOOGLE_CAMPAIGN_STATS,

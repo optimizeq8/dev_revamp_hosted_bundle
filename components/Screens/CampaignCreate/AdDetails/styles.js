@@ -1,5 +1,5 @@
 import { StyleSheet, Platform, PixelRatio, I18nManager } from "react-native";
-import { heightPercentageToDP } from "react-native-responsive-screen";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingBottom: 40,
     height: "50%",
-    marginHorizontal: 40
+    marginHorizontal: 30
   },
   targetTouchable: {
     flexDirection: "row",
@@ -125,18 +125,25 @@ const styles = StyleSheet.create({
   },
 
   chart: {
-    bottom: 0
+    // bottom: 0,
+    // width: widthPercentageToDP(25)
   },
   bottom: {
+    display: "flex",
+    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     position: "absolute",
     bottom: 0,
+    marginLeft: 25,
     width: "100%",
-    paddingHorizontal: 20
+    // marginHorizontal: 30
+    paddingBottom: 15
   },
   chartText: {
     color: "#fff",
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17
   },
@@ -144,13 +151,30 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    textAlign: "center",
-    marginHorizontal: "10%"
+    textAlign: "left"
   },
   chartItems: {
-    flexDirection: "row",
+    flexDirection: "row"
+  },
+  reachBarLowerButton: {
+    backgroundColor: "#ff9d00",
+    borderRadius: 50,
+    paddingLeft: 5,
+    // padding: 5,
+    width: 55,
+    height: 55,
+    display: "flex",
     alignItems: "center",
-    alignSelf: "center"
+    justifyContent: "center",
+    marginRight: widthPercentageToDP(35),
+    flex: 0
+  },
+  reachPeopleView: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingHorizontal: 8
   },
   menutext: {
     paddingLeft: Platform.OS === "android" && I18nManager.isRTL ? 0 : 15,
