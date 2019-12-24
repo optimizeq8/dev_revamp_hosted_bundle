@@ -42,9 +42,13 @@ class AdType extends Component {
     activeSlide: 0,
     media_type:
       Platform.OS === "android" && I18nManager.isRTL
-        ? snapAds.reverse()
+        ? [...snapAds].reverse() //For some reason reverse inverts the original array every time, so this creates a new instance of it
         : snapAds,
     isVisible: false,
+    socialMediaPlatforms:
+      Platform.OS === "android" && I18nManager.isRTL
+        ? [...SocialPlatforms].reverse()
+        : SocialPlatforms,
     campaign_type: "SnapAd",
     route: "AdObjective",
     inverted: Platform.OS === "android" && I18nManager.isRTL
@@ -75,7 +79,7 @@ class AdType extends Component {
   navigationRouteHandler = index => {
     let activeSlide = index;
     if (this.state.inverted) {
-      const reversedSnapAds = this.state.media_type.reverse();
+      const reversedSnapAds = [...this.state.media_type].reverse(); //Needed to spread the state array becuase it was reversing the array every time you switch between slides
       // console.log("reversedSnapAds", reversedSnapAds);
       let campaign_type = reversedSnapAds[index].value;
       // console.log("index", index);
@@ -101,7 +105,7 @@ class AdType extends Component {
     switch (index) {
       case 0:
         route = "AdObjective";
-        media_type = snapAds;
+        media_type = this.state.inverted ? [...snapAds].reverse() : snapAds;
         break;
       case 1:
         route = "GoogleAdInfo";
@@ -136,12 +140,14 @@ class AdType extends Component {
     }
     if (
       !this.props.mainBusiness.snap_ad_account_id &&
-      (adType.mediaType === "snapchat" || this.state.media_type === "snapchat")
+      (adType.mediaType === "snapchat" ||
+        this.state.media_type[0].mediaType === "snapchat")
     ) {
       this.props.navigation.navigate("SnapchatCreateAdAcc");
     } else if (
       !this.props.mainBusiness.google_account_id &&
-      (adType.mediaType === "google" || this.state.media_type === "google")
+      (adType.mediaType === "google" ||
+        this.state.media_type[0].mediaType === "google")
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc");
     } else
@@ -223,10 +229,11 @@ class AdType extends Component {
               enableMomentum={true}
               onSnapToItem={indx => this.handleMediaChange(indx)}
               inactiveSlideScale={0.75}
-              data={SocialPlatforms}
+              data={this.state.socialMediaPlatforms}
               renderItem={this._renderItem}
               sliderWidth={widthPercentageToDP(100)}
               itemWidth={110}
+              inverted={this.state.inverted}
             />
           </View>
           <Carousel
@@ -235,11 +242,7 @@ class AdType extends Component {
               this._carousel = c;
             }}
             onSnapToItem={indx => this.navigationRouteHandler(indx)}
-            data={
-              this.state.inverted
-                ? this.state.media_type.reverse()
-                : this.state.media_type
-            }
+            data={this.state.media_type}
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
             itemWidth={250}
