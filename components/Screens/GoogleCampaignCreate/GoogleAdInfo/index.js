@@ -403,7 +403,6 @@ class GoogleAdInfo extends Component {
                       });
                       this.props.save_google_campaign_data({ name: value });
                     }}
-                    autoFocus={true}
                     onFocus={() => {
                       this.setState({ inputN: true });
                     }}

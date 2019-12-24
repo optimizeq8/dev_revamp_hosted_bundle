@@ -35,7 +35,9 @@ ContinueInfo = props => {
         style={styles.contentStyle}
       >
         <GoogleAds style={{ alignSelf: "center", marginBottom: 10 }} />
-        {campaign.name && <Text style={styles.text}>{campaign.name}</Text>}
+        {campaign.name ? (
+          <Text style={styles.text}>{campaign.name}</Text>
+        ) : null}
         {campaign.budget !== 0 && (
           <View style={styles.sections}>
             <Text uppercase style={styles.text}>
