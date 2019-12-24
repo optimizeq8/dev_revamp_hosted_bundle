@@ -29,14 +29,11 @@ class ReachBar extends Component {
           size={85}
           width={8}
           fill={this.props.total_reach}
-          // arcSweepAngle={200}
-          tintColorSecondary={globalColors.orange}
           rotation={360}
-          tintColorThirdy={globalColors.green}
           lineCap="round"
           style={[styles.chart]}
-          tintColor={globalColors.yellow}
           backgroundColor="rgba(255,255,255,0.3)"
+          adDetails={true}
         />
         <View style={styles.chartItems}>
           <View style={styles.reachPeopleView}>
