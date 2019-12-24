@@ -411,6 +411,15 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontSize: 20,
     textAlign: "center"
+  },
+  mediaPreviewLowerButton: {
+    width: 35,
+    height: 35,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9D00",
+    borderRadius: 25
   }
 });
 

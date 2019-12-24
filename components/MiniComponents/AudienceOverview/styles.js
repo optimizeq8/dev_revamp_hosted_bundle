@@ -55,6 +55,15 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     margin: 5
+  },
+  proceedLowerButton: {
+    width: 35,
+    height: 35,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9D00",
+    borderRadius: 30
   }
 });
 

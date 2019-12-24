@@ -441,21 +441,34 @@ const styles = StyleSheet.create({
     margin: 5
   },
   keywordContainer: { width: "40%" },
+  keywordLowerButton: {
+    width: 35,
+    height: 35,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FF9D00",
+    borderRadius: 20
+  },
   chart: {
-    bottom: 0
+    // bottom: 0
   },
   bottom: {
+    display: "flex",
+    flex: 1,
     flexDirection: "row",
-    position: "absolute",
     alignItems: "center",
+    justifyContent: "space-between",
+    position: "absolute",
     bottom: 0,
+    marginLeft: 25,
     width: "100%",
-    paddingHorizontal: 20,
-    justifyContent: "space-between"
+    // marginHorizontal: 30
+    paddingBottom: 15
   },
   chartText: {
     color: "#fff",
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "montserrat-bold",
     fontSize: 17
   },
@@ -463,14 +476,33 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 16,
-    textAlign: "center"
-    // marginHorizontal: "7%"
+    textAlign: "left"
   },
   chartItems: {
-    flexDirection: "row",
+    flexDirection: "row"
+  },
+  reachBarLowerButton: {
+    backgroundColor: "#ff9d00",
+    borderRadius: 50,
+    paddingLeft: 5,
+    // padding: 5,
+    width: 55,
+    height: 55,
+    display: "flex",
     alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "space-around"
+    justifyContent: "center",
+    marginRight: wp(35),
+    flex: 0
+  },
+  reachPeopleView: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingHorizontal: 8
+  },
+  flex: {
+    flex: 1
   }
 });
 

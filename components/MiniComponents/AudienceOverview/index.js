@@ -43,20 +43,10 @@ export default AundienceOverView = props => {
                 campaign: selectedCampaign
               })
             }
-            width={40}
+            width={I18nManager.isRTL ? 8 : 40}
             height={40}
             isRTL={I18nManager.isRTL}
-            style={{
-              width: 30,
-              height: 30,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#FF9D00",
-              borderRadius: 50,
-              paddingLeft: 10,
-              paddingRight: 6
-            }}
+            style={styles.proceedLowerButton}
           />
         </View>
       )}

@@ -35,19 +35,23 @@ export class TargetAudience extends Component {
     this.setState({ scrollY: y > 10 ? y / 10 : 1 });
   };
   callFunction = (selector, option) => {
-    segmentEventTrack("Cliked button to open sidemenu for "+selector+" "+ option?option:"");
+    const { translate } = this.props.screenProps;
+    segmentEventTrack(
+      "Cliked button to open sidemenu for " + selector + " " + option
+        ? option
+        : ""
+    );
 
     if (
-     ( selector === "regions" ||
-      selector === "interests") &&
+      (option === "regions" || option === "interests") &&
       this.props.targeting.geos[0].country_code === ""
     ) {
-       segmentEventTrack(
-                  "Error occured on button click to open sidemenu for "+selector,
-                    {
-                      campaign_interest_error: "Please select a country first"
-                    }
-                  );
+      segmentEventTrack(
+        "Error occured on button click to open sidemenu for " + selector,
+        {
+          campaign_interest_error: "Please select a country first"
+        }
+      );
       showMessage({
         message: translate("Please select a country first"),
         position: "top",
@@ -282,7 +286,6 @@ export class TargetAudience extends Component {
             <TouchableOpacity
               disabled={loading}
               onPress={() => this.callFunction("OS")}
-
               style={styles.targetTouchable}
             >
               <View style={[globalStyles.row, styles.flex]}>
@@ -367,7 +370,6 @@ export class TargetAudience extends Component {
               <TouchableOpacity
                 disabled={loading}
                 onPress={() => this.callFunction("selectors", "deviceBrands")}
-
                 style={styles.targetTouchable}
               >
                 <View style={[globalStyles.row, styles.flex]}>

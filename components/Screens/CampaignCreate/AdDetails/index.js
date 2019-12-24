@@ -127,6 +127,7 @@ class AdDetails extends Component {
         this.props.navigation.getParam("campaign", {}),
         { arrayMerge: combineMerge }
       );
+      this.props.get_interests(editedCampaign.targeting.geos[0].country_code);
       editedCampaign.targeting.demographics[0].max_age = parseInt(
         editedCampaign.targeting.demographics[0].max_age
       );
@@ -1245,6 +1246,7 @@ const mapDispatchToProps = dispatch => ({
   saveCampaignSteps: step => dispatch(actionCreators.saveCampaignSteps(step)),
   setCampaignInfoForTransaction: data =>
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
-  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo())
+  resetCampaignInfo: () => dispatch(actionCreators.resetCampaignInfo()),
+  get_interests: info => dispatch(actionCreators.get_interests(info))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AdDetails);
