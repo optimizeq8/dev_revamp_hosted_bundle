@@ -16,6 +16,8 @@ import { showMessage } from "react-native-flash-message";
 import Axios from "axios";
 import CustomHeader from "../../../MiniComponents/Header";
 import CameraLoading from "../../../MiniComponents/CameraLoading";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -115,12 +117,26 @@ class AdCover extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }
@@ -164,15 +180,29 @@ class AdCover extends Component {
     const { translate } = this.props.screenProps;
     if (status !== "granted") {
       this.onToggleModal(false);
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package // When published, considered as using standalone build
+        : "host.exp.exponent"; // In expo client mode
+
       showMessage({
         message: translate(
           "Please allow access to the gallery to upload media"
         ),
         position: "top",
-        type: "warning"
+        type: "warning",
+        onPress: () =>
+          Platform.OS === "ios"
+            ? Linking.openURL("app-settings:")
+            : Platform.OS === "android" &&
+              IntentLauncher.startActivityAsync(
+                IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                { data: "package:" + pkg }
+              ),
+        duration: 5000,
+        description: translate("Press here to open settings")
       });
-      Platform.OS === "ios" && Linking.openURL("app-settings:");
     }
+    return status;
   };
 
   setMediaModalVisible = visible => {
@@ -196,14 +226,16 @@ class AdCover extends Component {
       });
   };
   pick = async mediaTypes => {
-    await this.askForPermssion();
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: mediaTypes,
-      base64: false,
-      exif: false,
-      quality: 0.8
-    });
-
+    let status = await this.askForPermssion();
+    let result = "";
+    if (status === "granted") {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: mediaTypes,
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+    }
     // this.onToggleModal(true);
     return result;
   };
@@ -211,7 +243,7 @@ class AdCover extends Component {
   _pickLogo = async () => {
     let logo = await this.pick("Images");
     const { translate } = this.props.screenProps;
-    if (!logo.cancelled) {
+    if (logo && !logo.cancelled) {
       let correctLogo = logo.width === 993 && logo.height === 284;
       let logoFormat =
         logo.uri.split("/ImagePicker/")[1].split(".")[1] === "png";
@@ -261,12 +293,16 @@ class AdCover extends Component {
     try {
       const { translate } = this.props.screenProps;
       let result = await this.pick(mediaTypes);
-      let file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
-      });
+
       this.setMediaModalVisible(false);
-      this.setState({ directory: "/ImagePicker/" });
-      if (!result.cancelled) {
+      let file = {};
+      if (result) {
+        file = await FileSystem.getInfoAsync(result.uri, {
+          size: true
+        });
+        this.setState({ directory: "/ImagePicker/" });
+      }
+      if (result && !result.cancelled) {
         if (result.type === "image") {
           if (result.width > 360 && result.height > 600) {
             ImageManipulator.manipulateAsync(
@@ -432,7 +468,7 @@ class AdCover extends Component {
               "Please make sure the image is in png format"
           });
         }
-      } else if (!result.cancelled && isNull(this.state.cover)) {
+      } else if (result && !result.cancelled && isNull(this.state.cover)) {
         showMessage({
           message: translate("Please choose a media file"),
           position: "top",

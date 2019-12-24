@@ -26,6 +26,8 @@ import MediaModal from "./MediaModal";
 import UploadMediaFromDifferentDevice from "./UploadMediaFromDifferentDevice";
 import DownloadMediaFromDifferentDevice from "./DownloadMediaFromDifferentDevice";
 import StoryAdCards from "./SnapAdCards/StoryAdCards";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -171,13 +173,26 @@ class AdDesign extends Component {
     if (permission.status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
-        // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }

@@ -34,7 +34,8 @@ import { showMessage } from "react-native-flash-message";
 import CustomHeader from "../Header";
 import KeyboardShift from "../KeyboardShift";
 import CameraLoading from "../CameraLoading";
-
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
@@ -110,12 +111,26 @@ class CollectionMedia extends Component {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         // this.onToggleModal();
+        const pkg = Constants.manifest.releaseChannel
+          ? Constants.manifest.android.package // When published, considered as using standalone build
+          : "host.exp.exponent"; // In expo client mode
+
         showMessage({
           message: translate(
             "Please allow access to the gallery to upload media"
           ),
           position: "top",
-          type: "warning"
+          type: "warning",
+          onPress: () =>
+            Platform.OS === "ios"
+              ? Linking.openURL("app-settings:")
+              : Platform.OS === "android" &&
+                IntentLauncher.startActivityAsync(
+                  IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                  { data: "package:" + pkg }
+                ),
+          duration: 5000,
+          description: translate("Press here to open settings")
         });
       }
     }
@@ -272,14 +287,17 @@ class CollectionMedia extends Component {
   };
 
   pick = async () => {
-    await this.askForPermssion();
+    let status = await this.askForPermssion();
     this.onToggleModal(true);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "Images",
-      base64: false,
-      exif: false,
-      quality: 0.8
-    });
+    let result = "";
+    if (status === "granted") {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "Images",
+        base64: false,
+        exif: false,
+        quality: 0.8
+      });
+    }
 
     return result;
   };
@@ -289,15 +307,20 @@ class CollectionMedia extends Component {
       const { translate } = this.props.screenProps;
       let result = await this.pick();
 
-      let file = await FileSystem.getInfoAsync(result.uri, {
-        size: true
-      });
-      this.setState({ directory: "/ImagePicker/" });
-      let newWidth = result.width;
-      let newHeight = result.height;
-      await this.validateImage();
+      let file = {};
+      let newWidth = "";
+      let newHeight = "";
+      if (result) {
+        file = await FileSystem.getInfoAsync(result.uri, {
+          size: true
+        });
+        this.setState({ directory: "/ImagePicker/" });
+        newWidth = result.width;
+        newHeight = result.height;
+        await this.validateImage();
+      }
 
-      if (!result.cancelled) {
+      if (result && !result.cancelled) {
         if (result.width >= 160 && result.height >= 160) {
           newWidth = 160;
           newHeight = 160;
@@ -464,6 +487,7 @@ class CollectionMedia extends Component {
           return;
         }
       } else if (
+        result &&
         !result.cancelled &&
         isNull(this.state.collection.collection_media)
       ) {
@@ -499,15 +523,29 @@ class CollectionMedia extends Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
       this.onToggleModal(false);
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package // When published, considered as using standalone build
+        : "host.exp.exponent"; // In expo client mode
+
       showMessage({
         message: translate(
           "Please allow access to the gallery to upload media"
         ),
         position: "top",
-        type: "warning"
+        type: "warning",
+        onPress: () =>
+          Platform.OS === "ios"
+            ? Linking.openURL("app-settings:")
+            : Platform.OS === "android" &&
+              IntentLauncher.startActivityAsync(
+                IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                { data: "package:" + pkg }
+              ),
+        duration: 5000,
+        description: translate("Press here to open settings")
       });
-      Platform.OS === "ios" && Linking.openURL("app-settings:");
     }
+    return status;
   };
 
   formatMedia() {

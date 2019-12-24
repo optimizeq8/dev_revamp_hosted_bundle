@@ -5,29 +5,48 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as ImageManipulator from "expo-image-manipulator";
 import segmentEventTrack from "../../../../segmentEventTrack";
+import * as IntentLauncher from "expo-intent-launcher";
+import Constants from "expo-constants";
+import { Linking } from "expo";
 // ADD TRANSLATE PROP
 export const askForPermssion = async screenProps => {
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   const { translate } = screenProps;
   if (status !== "granted") {
+    const pkg = Constants.manifest.releaseChannel
+      ? Constants.manifest.android.package // When published, considered as using standalone build
+      : "host.exp.exponent"; // In expo client mode
     showMessage({
       message: translate("Please allow access to the gallery to upload media"),
       position: "top",
-      type: "warning"
+      type: "warning",
+      onPress: () =>
+        Platform.OS === "ios"
+          ? Linking.openURL("app-settings:")
+          : Platform.OS === "android" &&
+            IntentLauncher.startActivityAsync(
+              IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+              { data: "package:" + pkg }
+            ),
+      duration: 5000,
+      description: translate("Press here to open settings")
     });
-    Platform.OS === "ios" && Linking.openURL("app-settings:");
   }
+  return status;
 };
 
 export const pick = async (mediaTypes, screenProps) => {
-  await askForPermssion(screenProps);
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: mediaTypes,
-    //Platform.OS === "ios" ? "Images" : "All",
-    base64: false,
-    exif: false,
-    quality: 0.8
-  });
+  let status = await askForPermssion(screenProps);
+  let result = "";
+  if (status === "granted") {
+    result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: mediaTypes,
+      //Platform.OS === "ios" ? "Images" : "All",
+      base64: false,
+      exif: false,
+      quality: 0.8
+    });
+  }
 
   return result;
 };
@@ -46,14 +65,16 @@ export const _pickImage = async (
 ) => {
   try {
     let result = await pick(mediaTypes, screenProps);
-
-    let file = await FileSystem.getInfoAsync(result.uri, {
-      size: true
-    });
+    let file = {};
+    if (result) {
+      file = await FileSystem.getInfoAsync(result.uri, {
+        size: true
+      });
+      setTheState({ directory: "/ImagePicker/" });
+    }
     const { translate } = screenProps;
     setMediaModalVisible(false);
-    setTheState({ directory: "/ImagePicker/" });
-    if (!result.cancelled) {
+    if (result && !result.cancelled) {
       if (result.type === "image") {
         if (result.width >= 1080 && result.height >= 1920) {
           ImageManipulator.manipulateAsync(
@@ -429,7 +450,7 @@ export const _pickImage = async (
           return;
         }
       }
-    } else if (!result.cancelled && isNull(media)) {
+    } else if (result && !result.cancelled && isNull(media)) {
       showMessage({
         message: translate("Please choose a media file"),
         position: "top",
