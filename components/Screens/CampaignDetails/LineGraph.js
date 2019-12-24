@@ -51,7 +51,9 @@ ${day}/${shortMonths[month]}`;
               ? stat.stats.swipes
               : this.props.chartChoice === "CPM"
               ? (parseFloat(stat.stats.spend / 1000000) /
-                  parseFloat(stat.stats.impressions)) *
+                  parseFloat(
+                    stat.stats.impressions !== 0 ? stat.stats.impressions : 1
+                  )) *
                 1000
               : 0
         };
