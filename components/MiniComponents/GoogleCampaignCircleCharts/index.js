@@ -66,13 +66,15 @@ class CampaignCircleChart extends Component {
           style={{
             maxHeight: !detail ? "100%" : "80%",
             width: "100%"
-            // height: "25%"
           }}
         >
           {!loading && (
             <Chart
               budget={selectedCampaign.campaign.budget}
-              spends={selectedCampaign.campaign.cost}
+              spends={
+                googleCampaignOverall.spend ||
+                (!detail ? selectedCampaign.campaign.cost : 0)
+              }
               screenProps={this.props.screenProps}
               detail={detail}
             />
@@ -83,7 +85,10 @@ class CampaignCircleChart extends Component {
                 detail={detail}
                 translate={translate}
                 loadingCampaignStats={this.props.loadingCampaignStats}
-                metricValue={googleCampaignOverall.impressions}
+                metricValue={
+                  googleCampaignOverall.impressions ||
+                  (detail ? selectedCampaign.campaign.impressions : 0)
+                }
                 metric="impressions"
               />
             )}
@@ -91,14 +96,20 @@ class CampaignCircleChart extends Component {
               detail={detail}
               translate={translate}
               loadingCampaignStats={this.props.loadingCampaignStats}
-              metricValue={googleCampaignOverall.clicks}
+              metricValue={
+                googleCampaignOverall.clicks ||
+                (!detail ? selectedCampaign.campaign.clicks : 0)
+              }
               metric="clicks"
             />
             <SingleMetric
               detail={detail}
               translate={translate}
               loadingCampaignStats={this.props.loadingCampaignStats}
-              metricValue={googleCampaignOverall.ctr}
+              metricValue={
+                googleCampaignOverall.ctr ||
+                (!detail ? selectedCampaign.campaign.ctr.toFixed(2) : 0)
+              }
               metric="ctr"
             />
           </View>
