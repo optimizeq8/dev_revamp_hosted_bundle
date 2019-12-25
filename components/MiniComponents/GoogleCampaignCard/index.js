@@ -35,6 +35,8 @@ class GoogleCampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
+    console.log("campaign", campaign);
+
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -80,12 +82,9 @@ class GoogleCampaignCard extends Component {
                     flex: 1
                   }}
                 >
-
-      
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-
                     style={[
                       styles.titleText,
                       !isStringArabic(campaign.name)
@@ -117,9 +116,9 @@ class GoogleCampaignCard extends Component {
                       >
                         {translate(
                           `${
-                            campaign.serving_status === "eligible"
+                            campaign.status === "ENABLED"
                               ? " "
-                              : campaign.serving_status === "paused"
+                              : campaign.status === "PAUSED"
                               ? "Campaign Paused"
                               : "Campaign ended"
                           }`
@@ -171,30 +170,30 @@ class GoogleCampaignCard extends Component {
                 </View>
               </View>
             </View>
-            {this.review_status === "APPROVED" && (
-              <View style={styles.chartContainer}>
-                <GoogleCampaignCircleCharts
-                  channel={this.props.channel}
-                  selectedCampaign={{ campaign }}
-                  detail={false}
-                  screenProps={this.props.screenProps}
-                />
+            {/* {this.review_status === "APPROVED" && ( */}
+            <View style={styles.chartContainer}>
+              <GoogleCampaignCircleCharts
+                channel={this.props.channel}
+                selectedCampaign={{ campaign }}
+                detail={false}
+                screenProps={this.props.screenProps}
+              />
 
-                {!campaignEndedOrNot && (
-                  <>
-                    <View style={styles.horizontalLineView} />
-                    <View style={styles.cardStatusDays}>
-                      <Text style={globalStyles.numbers}>
-                        {TimeDifferance(new Date(), campaign.end_time)}
-                      </Text>
-                      <Text uppercase style={styles.cardText}>
-                        {translate("Day(s) left")}
-                      </Text>
-                    </View>
-                  </>
-                )}
-              </View>
-            )}
+              {!campaignEndedOrNot && (
+                <>
+                  <View style={styles.horizontalLineView} />
+                  <View style={styles.cardStatusDays}>
+                    <Text style={globalStyles.numbers}>
+                      {TimeDifferance(new Date(), campaign.end_time)}
+                    </Text>
+                    <Text uppercase style={styles.cardText}>
+                      {translate("Day(s) left")}
+                    </Text>
+                  </View>
+                </>
+              )}
+            </View>
+            {/* )} */}
           </View>
         </TouchableOpacity>
       </LinearGradient>

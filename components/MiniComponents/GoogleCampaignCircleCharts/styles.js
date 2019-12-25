@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
@@ -93,6 +93,17 @@ const styles = StyleSheet.create({
     height: 53,
     padding: "3%"
   },
+  metricsCardStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    // marginVertical: 3,
+    // marginRight: 40,
+    backgroundColor: "#0000",
+    // width: 170,
+    borderRadius: 20
+    // height: 53,
+    // padding: "3%"
+  },
   adPerformanceLowerButton: {
     width: 35,
     height: 35,
@@ -101,6 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderRadius: 30
+  },
+  numbers: {
+    textAlign: "left",
+    color: "#FF9D00",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 16 / PixelRatio.getFontScale()
   }
 });
 
