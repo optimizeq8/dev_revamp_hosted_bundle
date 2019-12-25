@@ -372,6 +372,7 @@ export const inviteTeamMember = info => {
           type: data.success ? "success" : "warning"
         })
       )
+      .then(() => NavigationService.navigate("ManageTeam"))
       .catch(err => {
         errorMessageHandler(err);
       });
