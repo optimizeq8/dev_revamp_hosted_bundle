@@ -6,6 +6,7 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
+import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
 
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
@@ -51,19 +52,16 @@ class CampaignCard extends Component {
           style={styles.campaignButton}
         >
           <View style={styles.textcontainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "flex-start",
-                justifyContent: "center"
-              }}
-            >
-              <View style={styles.header}>
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="snapchat"
-                  style={styles.icon}
-                />
+            <View style={styles.header}>
+              <SnapchatBorder width={30} height={30} />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingHorizontal: 10,
+                  flex: 1
+                }}
+              >
                 <Text
                   ellipsizeMode="tail"
                   numberOfLines={1}
@@ -78,106 +76,106 @@ class CampaignCard extends Component {
                 >
                   {this.props.campaign.name}
                 </Text>
-              </View>
-              {campaignEndedOrNot ? (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.orange
+                {campaignEndedOrNot ? (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: globalColors.orange
+                        }
+                      ]}
+                      name={"circle"}
+                      type={"FontAwesome"}
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        { color: globalColors.orange }
+                      ]}
+                    >
+                      {translate("Campaign ended")}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={[styles.adStatus]}>
+                    <Icon
+                      style={[
+                        styles.circleIcon,
+                        {
+                          color: this.review_status.includes("REJECTED")
+                            ? globalColors.red
+                            : globalColors.orange
+                        }
+                      ]}
+                      name={
+                        this.review_status.includes("REJECTED")
+                          ? "circle-slash"
+                          : "circle"
                       }
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.orange }]}
-                  >
-                    {translate("Campaign ended")}
-                  </Text>
-                </View>
-              ) : (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: this.review_status.includes("REJECTED")
-                          ? globalColors.red
-                          : globalColors.orange
+                      type={
+                        this.review_status.includes("REJECTED")
+                          ? "Octicons"
+                          : "FontAwesome"
                       }
-                    ]}
-                    name={
-                      this.review_status.includes("REJECTED")
-                        ? "circle-slash"
-                        : "circle"
-                    }
-                    type={
-                      this.review_status.includes("REJECTED")
-                        ? "Octicons"
-                        : "FontAwesome"
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: this.review_status.includes("REJECTED")
-                          ? globalColors.red
-                          : !this.review_status.includes("PENDING") &&
-                            this.campaign_status === "LIVE"
-                          ? globalColors.green
-                          : globalColors.orange
-                      }
-                    ]}
-                  >
-                    {translate(
-                      `${
-                        this.review_status.includes("PENDING")
-                          ? "In Review"
-                          : this.review_status.includes("REJECTED")
-                          ? "Ad Rejected"
-                          : this.campaign_status === "LIVE"
-                          ? "LIVE"
-                          : "Campaign Paused"
-                      }`
-                    )}
-                  </Text>
-                </View>
-              )}
-            </View>
-            {campaign.snap_ad_id &&
-              campaign.campaign_end === "0" &&
-              endDate < new Date() && (
-                <Icon
-                  type="MaterialCommunityIcons"
-                  name="alert"
-                  style={[
-                    styles.icon,
-                    {
-                      left: "75%",
-                      color: globalColors.green,
-                      position: "absolute"
-                    }
-                  ]}
-                />
-              )}
-            {!this.review_status.includes("PENDING") && (
-              <Text style={[styles.subtext]}>
-                {translate(
-                  `${
-                    this.review_status.includes("REJECTED") &&
-                    !(
-                      campaign.campaign_end === "1" ||
-                      new Date(campaign.end_time) < new Date()
-                    )
-                      ? "Tap to submit your Ad again"
-                      : " "
-                  }`
+                    />
+                    <Text
+                      style={[
+                        styles.reviewText,
+                        {
+                          color: this.review_status.includes("REJECTED")
+                            ? globalColors.red
+                            : !this.review_status.includes("PENDING") &&
+                              this.campaign_status === "LIVE"
+                            ? globalColors.green
+                            : globalColors.orange
+                        }
+                      ]}
+                    >
+                      {translate(
+                        `${
+                          this.review_status.includes("PENDING")
+                            ? "In Review"
+                            : this.review_status.includes("REJECTED")
+                            ? "Ad Rejected"
+                            : this.campaign_status === "LIVE"
+                            ? "LIVE"
+                            : "Campaign Paused"
+                        }`
+                      )}
+                    </Text>
+                  </View>
                 )}
-              </Text>
-            )}
+              </View>
+              {campaign.snap_ad_id &&
+                campaign.campaign_end === "0" &&
+                endDate < new Date() && (
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="alert"
+                    style={[
+                      styles.icon,
+                      {
+                        marginLeft: "auto",
+                        // left: "75%",
+                        color: globalColors.green
+                        // position: "absolute"
+                      }
+                    ]}
+                  />
+                )}
+            </View>
+
+            {!this.review_status.includes("PENDING") &&
+              this.review_status.includes("REJECTED") &&
+              !(
+                campaign.campaign_end === "1" ||
+                new Date(campaign.end_time) < new Date()
+              ) && (
+                <Text style={[styles.subtext]}>
+                  {translate("Tap to submit your Ad again")}
+                </Text>
+              )}
 
             {this.review_status.includes("APPROVED") && (
               <View style={styles.chartContainer}>
@@ -190,18 +188,14 @@ class CampaignCard extends Component {
 
                 {!campaignEndedOrNot && (
                   <>
-                    <View
-                      style={{
-                        width: 1,
-                        height: "90%",
-                        backgroundColor: "#0002"
-                      }}
-                    />
+                    <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
                       <Text style={globalStyles.numbers}>
                         {TimeDifferance(new Date(), campaign.end_time)}
                       </Text>
-                      <Text style={styles.cardText}>{"Day(s) left"}</Text>
+                      <Text uppercase style={styles.cardText}>
+                        {"Day(s) left"}
+                      </Text>
                     </View>
                   </>
                 )}

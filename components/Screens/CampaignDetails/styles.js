@@ -390,11 +390,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 3,
     marginRight: 40,
-    backgroundColor: "#0004",
+    backgroundColor: "rgba(0,0,0,0.2)",
     width: 170,
     borderRadius: 20,
     height: 53,
-    padding: "3%"
+    padding: 10
   },
   chartChoices: {
     justifyContent: "center"

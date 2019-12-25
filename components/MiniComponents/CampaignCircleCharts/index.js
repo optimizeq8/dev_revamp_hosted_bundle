@@ -56,7 +56,8 @@ class CampaignCircleChart extends Component {
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
-            justifyContent: "flex-start"
+            justifyContent: "flex-start",
+            marginHorizontal: detail ? 20 : 0
           }}
           style={{ maxHeight: !detail ? "100%" : "80%", width: "100%" }}
         >
@@ -73,7 +74,7 @@ class CampaignCircleChart extends Component {
             />
           )}
 
-          <View style={{ width: 170 }}>
+          <View style={{ paddingHorizontal: 12 }}>
             <View style={detail ? styles.campaignIcons : styles.campaignCard}>
               {!detail ||
               (campaign && campaign.objective === "BRAND_AWARENESS") ? (
@@ -89,15 +90,17 @@ class CampaignCircleChart extends Component {
                   width={heightPercentageToDP(3)}
                 />
               )}
-              <View style={styles.campaignInfo}>
-                <Text uppercase style={[styles.subtext]}>
-                  {!detail ||
-                  (campaign && campaign.objective === "BRAND_AWARENESS")
-                    ? translate("Impressions")
-                    : translate("Swipe Ups")}
-                </Text>
+              <View
+                style={[
+                  styles.campaignInfo,
+                  { flexDirection: detail ? "column-reverse" : "column" }
+                ]}
+              >
                 <Text
-                  style={[GlobalStyles.numbers, styles.campaignNumbers]}
+                  style={[
+                    styles.campaignNumbers,
+                    detail && styles.campaignNumbersDetail
+                  ]}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                 >
@@ -110,6 +113,15 @@ class CampaignCircleChart extends Component {
                     true
                   )}
                 </Text>
+                <Text
+                  uppercase
+                  style={[styles.subtext, detail && styles.subtextDetail]}
+                >
+                  {!detail ||
+                  (campaign && campaign.objective === "BRAND_AWARENESS")
+                    ? translate("Impressions")
+                    : translate("Swipe Ups")}
+                </Text>
               </View>
             </View>
             {detail ? (
@@ -120,14 +132,20 @@ class CampaignCircleChart extends Component {
                   width={heightPercentageToDP(3)}
                 />
                 <View style={styles.campaignInfo}>
-                  <Text uppercase style={[styles.subtext]}>
+                  <Text
+                    uppercase
+                    style={[styles.subtext, , detail && styles.subtextDetail]}
+                  >
                     {translate("Reach")}
                     <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
                   </Text>
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={[GlobalStyles.numbers, styles.campaignNumbers]}
+                    style={[
+                      styles.campaignNumbers,
+                      detail && styles.campaignNumbersDetail
+                    ]}
                   >
                     {campaign ? campaign.reach : 0}
                   </Text>
@@ -141,17 +159,23 @@ class CampaignCircleChart extends Component {
                   width={heightPercentageToDP(3)}
                 />
                 <View style={styles.campaignInfo}>
-                  <Text uppercase style={[styles.subtext]}>
-                    {campaign && campaign.objective === "BRAND_AWARENESS"
-                      ? translate("cpm")
-                      : translate("Swipe Ups")}
-                  </Text>
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={[GlobalStyles.numbers, styles.campaignNumbers]}
+                    style={[
+                      styles.campaignNumbers,
+                      detail && styles.campaignNumbersDetail
+                    ]}
                   >
                     {campaign ? campaign.cpm : 0}
+                  </Text>
+                  <Text
+                    uppercase
+                    style={[styles.subtext, , detail && styles.subtextDetail]}
+                  >
+                    {campaign && campaign.objective === "BRAND_AWARENESS"
+                      ? translate("cpm")
+                      : translate("Swipe Ups")}
                   </Text>
                 </View>
               </View>
@@ -164,14 +188,20 @@ class CampaignCircleChart extends Component {
                   width={heightPercentageToDP(3)}
                 />
                 <View style={styles.campaignInfo}>
-                  <Text uppercase style={[styles.subtext]}>
+                  <Text
+                    uppercase
+                    style={[styles.subtext, detail && styles.subtextDetail]}
+                  >
                     {translate("Frequency")}
                     <Small style={{ fontSize: 8 }}> {translate("Total")}</Small>
                   </Text>
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={[GlobalStyles.numbers, styles.campaignNumbers]}
+                    style={[
+                      styles.campaignNumbers,
+                      detail && styles.campaignNumbersDetail
+                    ]}
                   >
                     {campaign ? campaign.paid_frequency : 0}
                   </Text>
