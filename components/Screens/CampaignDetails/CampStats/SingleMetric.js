@@ -51,7 +51,12 @@ export default class SingleMetric extends Component {
           <Text style={[styles.title]}>
             {translate(metric)}
             {"\n "}
-            <Text style={[globalStyles.numbers]}>
+            <Text
+              style={[
+                globalStyles.numbers,
+                { fontFamily: "montserrat-regular" }
+              ]}
+            >
               {formatNumber(metricValue, true)}
             </Text>
           </Text>

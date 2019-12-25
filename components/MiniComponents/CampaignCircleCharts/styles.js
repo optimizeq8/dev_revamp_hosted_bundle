@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
@@ -30,10 +30,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start"
   },
   subtext: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
     textTransform: "uppercase"
+  },
+  subtextDetail: {
+    fontFamily: "montserrat-bold"
   },
   chart: {
     alignItems: "center",
@@ -58,17 +61,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#0004",
     marginVertical: 2.5,
     borderRadius: 20,
-    padding: "3%"
+    paddingHorizontal: 10,
+    paddingVertical: 10
   },
   campaignNumbers: {
     paddingHorizontal: 0,
-    paddingTop: 10
+    color: "#FF9D00",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 15 / PixelRatio.getFontScale()
+    // paddingHorizontal: 10
+  },
+  campaignNumbersDetail: {
+    fontFamily: "montserrat-regular-english",
+    fontSize: 14 / PixelRatio.getFontScale()
   },
   campaignInfo: {
     flexDirection: "column",
-    alignItems: "flex-start",
-    width: wp(40),
-    left: 10
+    paddingHorizontal: 10
+    // alignItems: "center"
+    // width: wp(40),
+    // left: 10
   },
   campaignInfoCard: {
     flexDirection: "row",
@@ -78,6 +90,7 @@ const styles = StyleSheet.create({
   campaignCard: {
     flexDirection: "row",
     alignItems: "center"
+    // paddingHorizontal: 10
   },
   adPerformanceLowerBUtton: {
     width: 35,
