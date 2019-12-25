@@ -43,7 +43,12 @@ class GoogleCampaignCard extends Component {
         new Date().setHours(0, 0, 0, 0) &&
       new Date(campaign.end_time) >= new Date()
         ? null
-        : new Date(campaign.end_time) < new Date();
+        : new Date(campaign.end_time) < new Date() &&
+          new Date(campaign.start_time).setHours(0, 0, 0, 0) >=
+            new Date().setHours(0, 0, 0, 0) &&
+          new Date(campaign.end_time) <= new Date()
+        ? null
+        : new Date(campaign.end_time) > new Date();
 
     return (
       <LinearGradient
@@ -75,9 +80,12 @@ class GoogleCampaignCard extends Component {
                     flex: 1
                   }}
                 >
+
+      
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
+
                     style={[
                       styles.titleText,
                       !isStringArabic(campaign.name)
@@ -89,7 +97,7 @@ class GoogleCampaignCard extends Component {
                   >
                     {campaign.name}
                   </Text>
-                  {this.campaign_status === "APPROVED" ? (
+                  {this.review_status === "APPROVED" ? (
                     <View style={[styles.adStatus]}>
                       <Icon
                         style={[
@@ -163,11 +171,11 @@ class GoogleCampaignCard extends Component {
                 </View>
               </View>
             </View>
-            {this.campaign_status === "APPROVED" && (
+            {this.review_status === "APPROVED" && (
               <View style={styles.chartContainer}>
                 <GoogleCampaignCircleCharts
                   channel={this.props.channel}
-                  selectedCampaign={campaign}
+                  selectedCampaign={{ campaign }}
                   detail={false}
                   screenProps={this.props.screenProps}
                 />

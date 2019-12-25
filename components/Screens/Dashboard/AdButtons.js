@@ -7,7 +7,8 @@ import styles from "./styles";
 export default class AdButtons extends Component {
   render() {
     let ad = this.props.ad;
-    let SnapIcon = ad.icon;
+    let AdIcon = ad.icon;
+    let ChannelIcon = ad.channelIcon;
     return (
       <View
         style={{
@@ -20,7 +21,20 @@ export default class AdButtons extends Component {
             this.props.navigationHandler(ad);
           }}
         >
-          <SnapIcon style={{}} width={30} height={30} />
+          <AdIcon
+            style={{}}
+            width={ad.mediaType === "google" ? 20 : 30}
+            height={ad.mediaType === "google" ? 20 : 30}
+            stroke="#fff"
+          />
+          {ChannelIcon && (
+            <ChannelIcon
+              width={60}
+              height={60}
+              style={{ position: "absolute", top: -20, left: -20 }}
+              fill="#0000"
+            />
+          )}
         </Button>
         <Text style={[styles.adButtonText, styles.newCampaignTitle]}>
           {this.props.translate(ad.title)}

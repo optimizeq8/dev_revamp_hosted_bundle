@@ -1,7 +1,9 @@
 import React from "react";
 
 import * as AdIcons from "../../assets/SVGs/AdType/SnapAdButtons";
-// import GoogleSE from "../../assets/SVGs/GoogleAds.svg";
+import Snapchat from "../../assets/SVGs/AdType/Snapchat";
+import GoogleAds from "../../assets/SVGs/AdType/GoogleIcon";
+
 export const snapAds = [
   {
     id: 1,
@@ -9,11 +11,11 @@ export const snapAds = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     createRout: "SnapchatCreateAdAcc",
-    icon: "snapchat-ghost",
-    title: "Snap Ad",
+    title: "Snap",
     value: "SnapAd",
     media: require("../../assets/images/AdTypes/SnapAd.gif"),
-    icon: AdIcons.SnapAd
+    icon: AdIcons.SnapAd,
+    channelIcon: Snapchat
   },
   {
     id: 2,
@@ -21,11 +23,11 @@ export const snapAds = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     createRout: "SnapchatCreateAdAcc",
-    icon: "snapchat-ghost",
-    title: "Story Ad",
+    title: "Story",
     value: "StoryAd",
     media: require("../../assets/images/AdTypes/StoryAd.gif"),
-    icon: AdIcons.StoryAd
+    icon: AdIcons.StoryAd,
+    channelIcon: Snapchat
   },
   {
     id: 3,
@@ -33,11 +35,11 @@ export const snapAds = [
     text: "Create Your Ad Now!",
     rout: "AdObjective",
     createRout: "SnapchatCreateAdAcc",
-    icon: "snapchat-ghost",
-    title: "Collection Ad",
+    title: "Collection",
     value: "CollectionAd",
     media: require("../../assets/images/AdTypes/CollectionAd.gif"),
-    icon: AdIcons.CollectionAd
+    icon: AdIcons.CollectionAd,
+    channelIcon: Snapchat
   }
 ];
 
@@ -48,11 +50,11 @@ export const googleAds = [
     text: "Create Your Ad Now!",
     rout: "GoogleAdInfo",
     createRout: "GoogleCreateAdAcc",
-    icon: "snapchat-ghost",
-    title: "GoogleSE Ad",
+    title: "GoogleSE",
     value: "GoogleSEAd",
     media: require("../../assets/images/AdTypes/GoogleAdEx.png"),
-    icon: AdIcons.GoogleSE
+    icon: AdIcons.GoogleSE,
+    channelIcon: GoogleAds
   }
 ];
 

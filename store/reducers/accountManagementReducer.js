@@ -248,7 +248,8 @@ const reducer = (state = initialState, action) => {
       mainBusinessUser = action.payload.find(
         member => member.userid === state.mainBusiness.userid
       );
-      newMainBusinessRole["user_role"] = mainBusinessUser.user_role;
+      if (mainBusinessUser)
+        newMainBusinessRole["user_role"] = mainBusinessUser.user_role;
       return {
         ...state,
         agencyTeamMembers: action.payload,

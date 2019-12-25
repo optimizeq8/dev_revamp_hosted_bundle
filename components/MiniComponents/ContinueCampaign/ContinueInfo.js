@@ -57,9 +57,9 @@ ContinueInfo = props => {
         style={styles.contentStyle}
       >
         <Snapchat style={{ alignSelf: "center" }} />
-        {oldTempData.name && (
+        {oldTempData.name ? (
           <Text style={styles.text}>{oldTempData.name}</Text>
-        )}
+        ) : null}
         {oldTempData.start_time && (
           <View style={styles.sections}>
             <Text uppercase style={styles.text}>

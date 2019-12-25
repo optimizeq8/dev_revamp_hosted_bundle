@@ -51,7 +51,9 @@ ${day}/${shortMonths[month]}`;
               ? stat.stats.swipes
               : this.props.chartChoice === "CPM"
               ? (parseFloat(stat.stats.spend / 1000000) /
-                  parseFloat(stat.stats.impressions)) *
+                  parseFloat(
+                    stat.stats.impressions !== 0 ? stat.stats.impressions : 1
+                  )) *
                 1000
               : 0
         };
@@ -62,7 +64,12 @@ ${day}/${shortMonths[month]}`;
       <ScrollView
         scrollEnabled={this.props.campaignStats.length > 1}
         horizontal
-        contentContainerStyle={{ bottom: 20, height: "100%", paddingTop: 20 }}
+        contentContainerStyle={{
+          bottom: 20,
+          height: "100%",
+          paddingTop: 20,
+          paddingHorizontal: 20
+        }}
       >
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
@@ -165,10 +172,12 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 8,
-    padding: 4
+    fontSize: 12,
+    padding: 6,
+    fontFamily: "Helvetica",
+    fontWeight: "100"
   },
-  ticks: { stroke: "#fff", size: 5, padding: 0 }
+  ticks: { stroke: "#fff", size: 6, padding: 0 }
 };
 
 const mapStateToProps = state => ({

@@ -11,9 +11,7 @@ import {
   Linking
 } from "react-native";
 import { Updates } from "expo";
-import i18n from "i18n-js";
 import { Button, Text, Container, Icon } from "native-base";
-import * as Localization from "expo-localization";
 import LottieView from "lottie-react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
@@ -27,15 +25,12 @@ import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
 import Menu from "../Menu";
 import * as Animatable from "react-native-animatable";
-import AdButtions from "./AdButtons";
+import AdButtons from "./AdButtons";
 
 //icons
 import FilterIcon from "../../../assets/SVGs/Filter";
 import IntercomIcon from "../../../assets/SVGs/IntercomIcon";
 import IntercomNotificationIcon from "../../../assets/SVGs/IntercomNotificationIcon";
-import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
-import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import Background from "../../../assets/SVGs/Background";
 
 // Style
 import styles from "./styles";
@@ -55,8 +50,6 @@ import {
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
-import { showMessage } from "react-native-flash-message";
-import globalStyles from "../../../GlobalStyles";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -261,7 +254,7 @@ class Dashboard extends Component {
       />
     ) : null;
     let adButtons = [...snapAds, ...googleAds].map(adType => (
-      <AdButtions
+      <AdButtons
         translate={this.props.screenProps.translate}
         key={adType.id + adType.mediaType}
         navigationHandler={this.navigationHandler}

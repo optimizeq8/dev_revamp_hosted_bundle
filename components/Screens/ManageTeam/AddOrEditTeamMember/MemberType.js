@@ -39,17 +39,6 @@ export default props => {
       >
         <Text uppercase style={styles.meberTypeStyle}>
           {translate(member.type)}{" "}
-          {member.type === "Client" && (
-            <Text
-              uppercase
-              style={[
-                styles.meberTypeStyle,
-                { fontFamily: "montserrat-light", fontSize: 11 }
-              ]}
-            >
-              (view reports only)
-            </Text>
-          )}
         </Text>
 
         <Text style={styles.memberDescription}>{member.description}</Text>

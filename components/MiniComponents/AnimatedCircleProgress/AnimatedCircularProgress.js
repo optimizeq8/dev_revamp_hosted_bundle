@@ -1,14 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Animated, AppState, Easing, View, ViewPropTypes } from 'react-native';
-import CircularProgress from './CircularProgress';
+import React from "react";
+import PropTypes from "prop-types";
+import { Animated, AppState, Easing, View, ViewPropTypes } from "react-native";
+import CircularProgress from "./CircularProgress";
+import { globalColors } from "../../../GlobalStyles";
 const AnimatedProgress = Animated.createAnimatedComponent(CircularProgress);
 
 export default class AnimatedCircularProgress extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fillAnimation: new Animated.Value(props.prefill),
+      fillAnimation: new Animated.Value(props.prefill)
     };
   }
 
@@ -25,7 +26,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
   reAnimate(prefill, toVal, dur, ease) {
     this.setState(
       {
-        fillAnimation: new Animated.Value(prefill),
+        fillAnimation: new Animated.Value(prefill)
       },
       () => this.animate(toVal, dur, ease)
     );
@@ -39,30 +40,52 @@ export default class AnimatedCircularProgress extends React.PureComponent {
     const anim = Animated.timing(this.state.fillAnimation, {
       toValue,
       easing,
-      duration,
+      duration
     });
     anim.start(this.props.onAnimationComplete);
 
     return anim;
   }
   animateColor() {
-    if (!this.props.tintColorSecondary) {
-      return this.props.tintColor
+    let animateColorsPercentages = [0, 35, 100];
+    let animateColors = [
+      this.props.tintColor,
+      this.props.tintColorSecondary,
+      this.props.tintColorThirdy
+    ];
+    if (this.props.adDetails) {
+      animateColorsPercentages = [0, 15, 35, 65, 85, 100];
+      animateColors = [
+        globalColors.red,
+        globalColors.yellow,
+        globalColors.green,
+        globalColors.green,
+        globalColors.yellow,
+        globalColors.red
+      ];
+    }
+    if (!this.props.tintColorSecondary && !this.props.adDetails) {
+      return this.props.tintColor;
     }
 
     const tintAnimation = this.state.fillAnimation.interpolate({
-      inputRange: [0, 35, 100],
-      outputRange: [this.props.tintColor,this.props.tintColorSecondary,this.props.tintColorThirdy ]
-    })
+      inputRange: animateColorsPercentages,
+      outputRange: animateColors
+    });
 
-    return tintAnimation
- }
-
+    return tintAnimation;
+  }
 
   render() {
     const { fill, prefill, ...other } = this.props;
 
-    return <AnimatedProgress {...other} fill={this.state.fillAnimation} tintColor={this.animateColor()} />;
+    return (
+      <AnimatedProgress
+        {...other}
+        fill={this.state.fillAnimation}
+        tintColor={this.animateColor()}
+      />
+    );
   }
 }
 
@@ -71,11 +94,11 @@ AnimatedCircularProgress.propTypes = {
   prefill: PropTypes.number,
   duration: PropTypes.number,
   easing: PropTypes.func,
-  onAnimationComplete: PropTypes.func,
+  onAnimationComplete: PropTypes.func
 };
 
 AnimatedCircularProgress.defaultProps = {
   duration: 500,
   easing: Easing.out(Easing.ease),
-  prefill: 0,
+  prefill: 0
 };
