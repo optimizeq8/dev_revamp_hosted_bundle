@@ -64,7 +64,12 @@ ${day}/${shortMonths[month]}`;
       <ScrollView
         scrollEnabled={this.props.campaignStats.length > 1}
         horizontal
-        contentContainerStyle={{ bottom: 20, height: "100%", paddingTop: 20 }}
+        contentContainerStyle={{
+          bottom: 20,
+          height: "100%",
+          paddingTop: 20,
+          paddingHorizontal: 20
+        }}
       >
         {this.props.campaignStats.length < 1 ? (
           <BlurView intensity={70} tint="dark" style={styles.placeHolderChart}>
@@ -167,8 +172,10 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 10,
-    padding: 9
+    fontSize: 12,
+    padding: 6,
+    fontFamily: "Helvetica",
+    fontWeight: "100"
   },
   ticks: { stroke: "#fff", size: 6, padding: 0 }
 };
