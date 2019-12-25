@@ -19,24 +19,25 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: "row",
-    paddingVertical: 0
+    paddingVertical: 0,
+    alignItems: "center"
   },
   textcontainer: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start"
+    flexDirection: "column"
+    // alignItems: "center"
+    // justifyContent: "flex-start"
   },
   titleText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 16,
-    width: "70%",
-    left: 5,
+    // left: 5,
     textAlign: "left"
   },
 
   subtext: {
-    paddingTop: 5,
+    // paddingTop: 5,
     fontFamily: "montserrat-bold",
     fontSize: 10,
     color: "#fff"
@@ -83,8 +84,9 @@ const styles = StyleSheet.create({
   },
   reviewText: {
     fontFamily: "montserrat-bold",
+    textAlign: "left",
     fontSize: 13,
-    padding: 3,
+    paddingHorizontal: 5,
     color: "#fff",
     textTransform: "uppercase"
   },
@@ -123,13 +125,9 @@ const styles = StyleSheet.create({
   },
   adStatus: {
     borderRadius: 16,
-    marginBottom: 5,
-    paddingHorizontal: 10,
-    top: "50%",
-    left: "10%",
+    paddingTop: 3,
     flexDirection: "row",
-    alignItems: "center",
-    position: "absolute"
+    alignItems: "center"
   },
   circleStyle: {
     width: 17,
@@ -137,7 +135,8 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   chartContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center"
   },
   iconImpression: {
     bottom: 3
@@ -146,13 +145,20 @@ const styles = StyleSheet.create({
   cardText: {
     color: "#fff",
     fontFamily: "montserrat-bold",
-    textTransform: "uppercase",
     fontSize: 12,
     textAlign: "center"
   },
   cardStatusDays: {
     flex: 1,
-    alignSelf: "center"
+    alignItems: "center",
+    justifyContent: "flex-end",
+    alignSelf: "center",
+    paddingLeft: 5
+  },
+  horizontalLineView: {
+    width: 3,
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.05)"
   }
 });
 

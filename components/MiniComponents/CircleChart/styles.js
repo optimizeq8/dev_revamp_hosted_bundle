@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { globalColors } from "../../../GlobalStyles";
 export default StyleSheet.create({
   chart: {
-    marginHorizontal: 10
+    // marginHorizontal: 10
     // top: 15
   },
   chartText: {

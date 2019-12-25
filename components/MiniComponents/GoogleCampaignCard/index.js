@@ -66,115 +66,120 @@ class GoogleCampaignCard extends Component {
               }}
             >
               <View style={styles.header}>
-                <GoogleAd width={40} />
-                <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={[
-                    styles.titleText,
-                    !isStringArabic(campaign.name)
-                      ? {
-                          fontFamily: "montserrat-bold-english"
-                        }
-                      : {}
-                  ]}
+                <GoogleAd width={30} height={30} />
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingHorizontal: 10,
+                    flex: 1
+                  }}
                 >
-                  {campaign.name}
-                </Text>
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={[
+                      styles.titleText,
+                      !isStringArabic(campaign.name)
+                        ? {
+                            fontFamily: "montserrat-bold-english"
+                          }
+                        : {}
+                    ]}
+                  >
+                    {campaign.name}
+                  </Text>
+                  {this.campaign_status === "APPROVED" ? (
+                    <View style={[styles.adStatus]}>
+                      <Icon
+                        style={[
+                          styles.circleIcon,
+                          {
+                            color: globalColors.green
+                          }
+                        ]}
+                        name={"circle"}
+                        type={"FontAwesome"}
+                      />
+                      <Text
+                        style={[
+                          styles.reviewText,
+                          { color: globalColors.green }
+                        ]}
+                      >
+                        {translate(
+                          `${
+                            campaign.serving_status === "eligible"
+                              ? " "
+                              : campaign.serving_status === "paused"
+                              ? "Campaign Paused"
+                              : "Campaign ended"
+                          }`
+                        )}
+                      </Text>
+                    </View>
+                  ) : this.review_status === "REJECTED" ? (
+                    <View style={[styles.adStatus]}>
+                      <Icon
+                        style={[
+                          styles.circleIcon,
+                          {
+                            color: globalColors.red
+                          }
+                        ]}
+                        name={"circle-slash"}
+                        type={"Octicons"}
+                      />
+                      <Text
+                        style={[styles.reviewText, { color: globalColors.red }]}
+                      >
+                        {translate("Ad Rejected")}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.adStatus]}>
+                      <Icon
+                        style={[
+                          styles.circleIcon,
+                          {
+                            color: globalColors.orange
+                          }
+                        ]}
+                        name={"circle"}
+                        type={"FontAwesome"}
+                      />
+                      <Text
+                        style={[
+                          styles.reviewText,
+                          {
+                            color: globalColors.orange
+                          }
+                        ]}
+                      >
+                        {translate("In Review")}
+                      </Text>
+                    </View>
+                  )}
+                </View>
               </View>
-
-              {this.campaign_status === "APPROVED" ? (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.green
-                      }
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.green }]}
-                  >
-                    {translate(
-                      `${
-                        campaign.serving_status === "eligible"
-                          ? " "
-                          : campaign.serving_status === "paused"
-                          ? "Campaign Paused"
-                          : "Campaign ended"
-                      }`
-                    )}
-                  </Text>
-                </View>
-              ) : this.review_status === "REJECTED" ? (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.red
-                      }
-                    ]}
-                    name={"circle-slash"}
-                    type={"Octicons"}
-                  />
-                  <Text
-                    style={[styles.reviewText, { color: globalColors.red }]}
-                  >
-                    {translate("Ad Rejected")}
-                  </Text>
-                </View>
-              ) : (
-                <View style={[styles.adStatus]}>
-                  <Icon
-                    style={[
-                      styles.circleIcon,
-                      {
-                        color: globalColors.orange
-                      }
-                    ]}
-                    name={"circle"}
-                    type={"FontAwesome"}
-                  />
-                  <Text
-                    style={[
-                      styles.reviewText,
-                      {
-                        color: globalColors.orange
-                      }
-                    ]}
-                  >
-                    {translate("In Review")}
-                  </Text>
-                </View>
-              )}
             </View>
             {this.campaign_status === "APPROVED" && (
               <View style={styles.chartContainer}>
                 <GoogleCampaignCircleCharts
                   channel={this.props.channel}
-                  campaign={campaign}
+                  selectedCampaign={campaign}
                   detail={false}
                   screenProps={this.props.screenProps}
                 />
 
                 {!campaignEndedOrNot && (
                   <>
-                    <View
-                      style={{
-                        width: 1,
-                        height: "90%",
-                        backgroundColor: "#0002"
-                      }}
-                    />
+                    <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
                       <Text style={globalStyles.numbers}>
                         {TimeDifferance(new Date(), campaign.end_time)}
                       </Text>
-                      <Text style={styles.cardText}>
+                      <Text uppercase style={styles.cardText}>
                         {translate("Day(s) left")}
                       </Text>
                     </View>
