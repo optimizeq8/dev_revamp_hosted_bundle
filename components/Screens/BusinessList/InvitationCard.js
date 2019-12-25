@@ -17,7 +17,7 @@ export default InvitationCard = props => {
       <Text uppercase style={[styles.headings]}>
         Invitation
       </Text>
-      <View style={[businessCardStyles.campaignButton]}>
+      <View style={[{ flexDirection: "row" }]}>
         <View style={[businessCardStyles.businessIconStyle]}>
           <Icon
             name="envelope-letter"
