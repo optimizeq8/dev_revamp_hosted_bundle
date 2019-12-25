@@ -49,6 +49,15 @@ class RegionsSelector extends Component {
       let regionslist = this.state.filteredRegions.map(r => {
         var found = !isUndefined(this.props.locations.find(l => l === r.id));
         // console.log("location", r.location);
+        let textLocation = "";
+        if (r.location.includes(", ")) {
+          let locArray = r.location.split(", ");
+          locArray = locArray.map(loc => translate(loc));
+          textLocation = locArray.join(", ");
+        } else {
+          textLocation = translate(r.location);
+        }
+
         return (
           <TouchableOpacity
             key={r.id}
@@ -79,7 +88,7 @@ class RegionsSelector extends Component {
                 }}
                 numberOfLines={2}
               >
-                {translate(r.location)}
+                {textLocation}
               </Text>
             </View>
             <Text
