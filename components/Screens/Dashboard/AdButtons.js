@@ -12,7 +12,8 @@ export default class AdButtons extends Component {
     return (
       <View
         style={{
-          flexDirection: "column"
+          flexDirection: "column",
+          backgroundColor: "#0000"
         }}
       >
         <Button

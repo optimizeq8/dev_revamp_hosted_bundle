@@ -17,9 +17,11 @@ const styles = StyleSheet.create({
     height: 70
   },
   left: {
-    width: wp("10%"),
-
-    zIndex: 1
+    width: "10%",
+    height: "150%",
+    zIndex: 1,
+    alignItems: "center",
+    justifyContent: "center"
   },
   title: {
     flex: 1,
