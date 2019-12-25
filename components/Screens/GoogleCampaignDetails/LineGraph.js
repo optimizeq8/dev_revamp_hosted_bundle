@@ -157,10 +157,10 @@ let tickLabelStyles = {
   tickLabels: {
     stroke: "#fff",
     fill: "#fff",
-    fontSize: 8,
-    padding: 4
+    fontSize: 10,
+    padding: 9
   },
-  ticks: { stroke: "#fff", size: 5, padding: 0 }
+  ticks: { stroke: "#fff", size: 6, padding: 0 }
 };
 
 const mapStateToProps = state => ({});
