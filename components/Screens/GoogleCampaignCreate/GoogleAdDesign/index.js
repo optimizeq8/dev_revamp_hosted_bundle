@@ -6,11 +6,9 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  TouchableOpacity,
-  KeyboardAvoidingView
+  TouchableOpacity
 } from "react-native";
 import {
-  Content,
   Text,
   Item,
   Input,
@@ -26,9 +24,8 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-import KeyboradShift from "../../../MiniComponents/KeyboardShift";
 import GoogleSEAPreview from "../../../MiniComponents/GoogleSEAPreview";
-
+import InputScrollView from "react-native-input-scroll-view";
 // Style
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
@@ -300,466 +297,480 @@ class GoogleAdDesign extends Component {
                 inputURL={this.state.inputURL}
               />
             </View>
-            <KeyboardAvoidingView
-              keyboardVerticalOffset={30}
-              style={{ flex: 1, height: "100%" }}
-              behavior="padding"
+
+            <InputScrollView
+              {...ScrollView.props}
+              contentContainerStyle={styles.mainContent}
             >
-              <ScrollView
-                contentContainerStyle={styles.mainContent}
-                scrollEnabled={true}
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ headline1Error: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.headline1Error ? "" : "shake"}
               >
-                <Animatable.View
-                  onAnimationEnd={() => this.setState({ headline1Error: null })}
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.headline1Error ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputH1
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Headline")} {translate("1")}
-                    </Text>
-                  </View>
-                  <Item style={[styles.input]}>
-                    <Input
-                      placeholder={translate("Input headline text")}
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.headline1}
-                      style={[styles.inputText]}
-                      autoCorrect={false}
-                      maxLength={30}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
-                          headline1: value
-                        });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            headline1: value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputH1: true });
-                      }}
-                      onBlur={() => {
-                        segmentEventTrack("headline1 Field on Blur", {
-                          campaign_headline1: this.state.headline1
-                        });
-                        this.setState({ inputH1: false });
-                        this.setState(
-                          {
-                            headline1Error: validateWrapper(
-                              "mandatory",
-                              this.state.headline1
-                            )
-                          },
-                          () => {
-                            if (this.state.headline1Error) {
-                              segmentEventTrack(
-                                "Error at headline1 field on blur",
-                                {
-                                  campaign_error_headline1: this.state
-                                    .headline1Error
-                                }
-                              );
-                            }
-                          }
-                        );
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
-
-                <Animatable.View
-                  onAnimationEnd={() => this.setState({ headline2Error: null })}
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.headline2Error ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputH2
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Headline")} {translate("2")}
-                    </Text>
-                  </View>
-                  <Item style={[styles.input]}>
-                    <Input
-                      placeholder={translate("Input headline text")}
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.headline2}
-                      style={[styles.inputText]}
-                      autoCorrect={false}
-                      maxLength={30}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
-                          headline2: value
-                        });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            headline2: value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputH2: true });
-                      }}
-                      onBlur={() => {
-                        segmentEventTrack("headline2 Field on Blur", {
-                          campaign_headline2: this.state.headline2
-                        });
-                        this.setState({ inputH2: false });
-                        this.setState(
-                          {
-                            headline2Error: validateWrapper(
-                              "mandatory",
-                              this.state.headline2
-                            )
-                          },
-                          () => {
-                            if (this.state.headline2Error) {
-                              segmentEventTrack(
-                                "Error at headline2 field on blur",
-                                {
-                                  campaign_error_headline2: this.state
-                                    .headline2Error
-                                }
-                              );
-                            }
-                          }
-                        );
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
-
-                <Animatable.View
-                  onAnimationEnd={() => this.setState({ headline3Error: null })}
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.headline3Error ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputH3
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Headline")} {translate("3")}
-                    </Text>
-                  </View>
-                  <Item style={[styles.input]}>
-                    <Input
-                      placeholder={translate("Input headline text")}
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.headline3}
-                      style={[styles.inputText]}
-                      autoCorrect={false}
-                      maxLength={30}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
-                          headline3: value
-                        });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            headline3: value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputH3: true });
-                      }}
-                      onBlur={() => {
-                        segmentEventTrack("description Field on Blur", {
-                          campaign_description: this.state.description
-                        });
-                        this.setState({ inputH3: false });
-                        this.setState(
-                          {
-                            headline3Error: validateWrapper(
-                              "mandatory",
-                              this.state.headline3
-                            )
-                          },
-                          () => {
-                            if (this.state.description2Error) {
-                              segmentEventTrack(
-                                "Error description Field on Blur",
-                                {
-                                  campaign_error_description: this.state
-                                    .descriptionError
-                                }
-                              );
-                            }
-                          }
-                        );
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
-                <Animatable.View
-                  onAnimationEnd={() => this.setState({ urlError: null })}
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.urlError ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputURL
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Landing Page")}
-                    </Text>
-                  </View>
-                  <Item style={[styles.input]}>
-                    <TouchableOpacity
-                      style={[
-                        GlobalStyles.orangeBackgroundColor,
-                        {
-                          borderRadius: 30,
-                          width: 54,
-                          height: 54,
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }
-                      ]}
-                      onPress={() => {
-                        if (this.state.networkString === "https://") {
-                          this.setState({
-                            networkString: "http://"
-                          });
-                        } else {
-                          this.setState({
-                            networkString: "https://"
-                          });
-                        }
-                      }}
-                    >
-                      <Text uppercase style={styles.networkLabel}>
-                        {this.state.networkString === "https://"
-                          ? "https"
-                          : "http"}
-                      </Text>
-                      <Text uppercase style={styles.networkLabel}>
-                        {`< >`}
-                      </Text>
-                    </TouchableOpacity>
-                    <Input
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.finalurl}
-                      style={[styles.inputText, { textAlign: "left" }]}
-                      autoCorrect={false}
-                      maxLength={34}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
-                          finalurl: value
-                        });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            finalurl: this.state.networkString + value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputURL: true });
-                      }}
-                      onBlur={() => {
-                        this.setState({ inputURL: false });
-                        this.setState({
-                          urlError: validateWrapper(
-                            "mandatory",
-                            this.state.networkString + this.state.finalurl
-                          )
-                        });
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
-                <Animatable.View
-                  onAnimationEnd={() =>
-                    this.setState({ descriptionError: null })
-                  }
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.descriptionError ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputD
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Description")}
-                    </Text>
-                  </View>
-                  <Item
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
                     style={[
-                      styles.input,
-                      { paddingVertical: 20, paddingHorizontal: 5 }
+                      styles.inputLabel,
+                      this.state.inputH1
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
                     ]}
                   >
-                    <Textarea
-                      rowSpan={3}
-                      multiline={true}
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.description}
-                      style={[styles.inputTextarea]}
-                      autoCorrect={false}
-                      numberOfLines={6}
-                      maxLength={90}
-                      autoCapitalize="none"
-                      onChangeText={value => {
+                    {translate("Headline")} {translate("1")}
+                  </Text>
+                </View>
+                <Item style={[styles.input]}>
+                  <Input
+                    autoFocus={true}
+                    placeholder={translate("Input headline text")}
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.headline1}
+                    style={[styles.inputText]}
+                    autoCorrect={true}
+                    maxLength={30}
+                    onChangeText={value => {
+                      this.setState({
+                        headline1: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
+                          headline1: value
+                        });
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputH1: true });
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("headline1 Field on Blur", {
+                        campaign_headline1: this.state.headline1
+                      });
+                      this.setState({ inputH1: false });
+                      this.setState(
+                        {
+                          headline1Error: validateWrapper(
+                            "mandatory",
+                            this.state.headline1
+                          )
+                        },
+                        () => {
+                          if (this.state.headline1Error) {
+                            segmentEventTrack(
+                              "Error at headline1 field on blur",
+                              {
+                                campaign_error_headline1: this.state
+                                  .headline1Error
+                              }
+                            );
+                          }
+                        }
+                      );
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
+
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ headline2Error: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.headline2Error ? "" : "shake"}
+              >
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
+                    style={[
+                      styles.inputLabel,
+                      this.state.inputH2
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
+                    ]}
+                  >
+                    {translate("Headline")} {translate("2")}
+                  </Text>
+                </View>
+                <Item style={[styles.input]}>
+                  <Input
+                    placeholder={translate("Input headline text")}
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.headline2}
+                    style={[styles.inputText]}
+                    autoCorrect={true}
+                    maxLength={30}
+                    onChangeText={value => {
+                      this.setState({
+                        headline2: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
+                          headline2: value
+                        });
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputH2: true });
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("headline2 Field on Blur", {
+                        campaign_headline2: this.state.headline2
+                      });
+                      this.setState({ inputH2: false });
+                      this.setState(
+                        {
+                          headline2Error: validateWrapper(
+                            "mandatory",
+                            this.state.headline2
+                          )
+                        },
+                        () => {
+                          if (this.state.headline2Error) {
+                            segmentEventTrack(
+                              "Error at headline2 field on blur",
+                              {
+                                campaign_error_headline2: this.state
+                                  .headline2Error
+                              }
+                            );
+                          }
+                        }
+                      );
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
+
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ headline3Error: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.headline3Error ? "" : "shake"}
+              >
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
+                    style={[
+                      styles.inputLabel,
+                      this.state.inputH3
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
+                    ]}
+                  >
+                    {translate("Headline")} {translate("3")}
+                  </Text>
+                </View>
+                <Item style={[styles.input]}>
+                  <Input
+                    placeholder={translate("Input headline text")}
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.headline3}
+                    style={[styles.inputText]}
+                    autoCorrect={true}
+                    maxLength={30}
+                    onChangeText={value => {
+                      this.setState({
+                        headline3: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
+                          headline3: value
+                        });
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputH3: true });
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("headline3 Field on Blur", {
+                        campaign_headline3: this.state.headline3
+                      });
+                      this.setState({ inputH3: false });
+                      this.setState(
+                        {
+                          headline3Error: validateWrapper(
+                            "mandatory",
+                            this.state.headline3
+                          )
+                        },
+                        () => {
+                          if (this.state.description2Error) {
+                            segmentEventTrack(
+                              "Error at headline3 Field on Blur",
+                              {
+                                campaign_error_headline3: this.state
+                                  .headline3Error
+                              }
+                            );
+                          }
+                        }
+                      );
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ urlError: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.urlError ? "" : "shake"}
+              >
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
+                    style={[
+                      styles.inputLabel,
+                      this.state.inputURL
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
+                    ]}
+                  >
+                    {translate("Landing Page")}
+                  </Text>
+                </View>
+                <Item style={[styles.input]}>
+                  <TouchableOpacity
+                    style={[
+                      GlobalStyles.orangeBackgroundColor,
+                      {
+                        borderRadius: 30,
+                        width: 54,
+                        height: 54,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }
+                    ]}
+                    onPress={() => {
+                      if (this.state.networkString === "https://") {
                         this.setState({
+                          networkString: "http://"
+                        });
+                      } else {
+                        this.setState({
+                          networkString: "https://"
+                        });
+                      }
+                    }}
+                  >
+                    <Text uppercase style={styles.networkLabel}>
+                      {this.state.networkString === "https://"
+                        ? "https"
+                        : "http"}
+                    </Text>
+                    <Text uppercase style={styles.networkLabel}>
+                      {`< >`}
+                    </Text>
+                  </TouchableOpacity>
+                  <Input
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.finalurl}
+                    style={[
+                      styles.inputText,
+                      this.state.finalurl
+                        ? { textAlign: "left" }
+                        : { right: wp(6) }
+                    ]}
+                    autoCorrect={false}
+                    maxLength={34}
+                    autoCapitalize="none"
+                    placeholder={"Input landing page url"}
+                    onChangeText={value => {
+                      this.setState({
+                        finalurl: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
+                          finalurl: this.state.networkString + value
+                        });
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputURL: true });
+                    }}
+                    onBlur={() => {
+                      this.setState({ inputURL: false });
+                      this.setState({
+                        urlError: validateWrapper(
+                          "mandatory",
+                          this.state.networkString + this.state.finalurl
+                        )
+                      });
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
+
+              <Animatable.View
+                onAnimationEnd={() => this.setState({ descriptionError: null })}
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.descriptionError ? "" : "shake"}
+              >
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
+                    style={[
+                      styles.inputLabel,
+                      this.state.inputD
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
+                    ]}
+                  >
+                    {translate("Description")}
+                  </Text>
+                </View>
+                <Item
+                  style={[
+                    styles.input,
+                    { paddingVertical: 20, paddingHorizontal: 5 }
+                  ]}
+                >
+                  <Textarea
+                    rowSpan={3}
+                    multiline={true}
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.description}
+                    style={[styles.inputTextarea]}
+                    autoCorrect={true}
+                    numberOfLines={6}
+                    maxLength={90}
+                    placeholder={"Input Description 1 text"}
+                    onChangeText={value => {
+                      this.setState({
+                        description: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
                           description: value
                         });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            description: value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputD: true });
-                      }}
-                      onBlur={() => {
-                        this.setState({ inputD: false });
-                        this.setState({
-                          descriptionError: validateWrapper(
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputD: true });
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("description Field on Blur", {
+                        campaign_description: this.state.description
+                      });
+                      this.setState({ inputD: false });
+                      this.setState(
+                        {
+                          headline3Error: validateWrapper(
                             "mandatory",
                             this.state.description
                           )
-                        });
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
+                        },
+                        () => {
+                          if (this.state.descriptionError) {
+                            segmentEventTrack(
+                              "Error description Field on Blur",
+                              {
+                                campaign_error_description: this.state
+                                  .descriptionError
+                              }
+                            );
+                          }
+                        }
+                      );
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
 
-                <Animatable.View
-                  onAnimationEnd={() =>
-                    this.setState({ description2Error: null })
-                  }
-                  duration={200}
-                  easing={"ease"}
-                  animation={!this.state.description2Error ? "" : "shake"}
-                >
-                  <View style={[styles.inputView]}>
-                    <Text
-                      uppercase
-                      style={[
-                        styles.inputLabel,
-                        this.state.inputD2
-                          ? [GlobalStyles.orangeTextColor]
-                          : GlobalStyles.whiteTextColor
-                      ]}
-                    >
-                      {translate("Description")} {translate("2")}
-                    </Text>
-                  </View>
-                  <Item
+              <Animatable.View
+                onAnimationEnd={() =>
+                  this.setState({ description2Error: null })
+                }
+                duration={200}
+                easing={"ease"}
+                animation={!this.state.description2Error ? "" : "shake"}
+              >
+                <View style={[styles.inputView]}>
+                  <Text
+                    uppercase
                     style={[
-                      styles.input,
-                      { paddingVertical: 20, paddingHorizontal: 5 }
+                      styles.inputLabel,
+                      this.state.inputD2
+                        ? [GlobalStyles.orangeTextColor]
+                        : GlobalStyles.whiteTextColor
                     ]}
                   >
-                    <Textarea
-                      rowSpan={3}
-                      multiline={true}
-                      placeholderTextColor={"#FFF"}
-                      disabled={this.props.loading}
-                      value={this.state.description2}
-                      style={[styles.inputTextarea]}
-                      autoCorrect={false}
-                      numberOfLines={6}
-                      maxLength={90}
-                      autoCapitalize="none"
-                      onChangeText={value => {
-                        this.setState({
+                    {translate("Description")} {translate("2")}
+                  </Text>
+                </View>
+                <Item
+                  style={[
+                    styles.input,
+                    { paddingVertical: 20, paddingHorizontal: 5 }
+                  ]}
+                >
+                  <Textarea
+                    rowSpan={3}
+                    multiline={true}
+                    placeholderTextColor={"#FFF"}
+                    disabled={this.props.loading}
+                    value={this.state.description2}
+                    style={[styles.inputTextarea]}
+                    autoCorrect={true}
+                    numberOfLines={6}
+                    maxLength={90}
+                    placeholder={"Input Description 2 text"}
+                    onChangeText={value => {
+                      this.setState({
+                        description2: value
+                      });
+                      if (!rejected)
+                        this.props.save_google_campaign_data({
                           description2: value
                         });
-                        if (!rejected)
-                          this.props.save_google_campaign_data({
-                            description2: value
-                          });
-                      }}
-                      onFocus={() => {
-                        this.setState({ inputD2: true });
-                      }}
-                      onBlur={() => {
-                        segmentEventTrack("description2 Field on Blur", {
-                          campaign_description2: this.state.description2
-                        });
-                        this.setState({ inputD2: false });
-                        this.setState(
-                          {
-                            description2Error: validateWrapper(
-                              "mandatory",
-                              this.state.description2
-                            )
-                          },
-                          () => {
-                            if (this.state.description2Error) {
-                              segmentEventTrack(
-                                "Error description2 Field on Blur",
-                                {
-                                  campaign_error_description2: this.state
-                                    .description2Error
-                                }
-                              );
-                            }
+                    }}
+                    onFocus={() => {
+                      this.setState({ inputD2: true });
+                    }}
+                    onBlur={() => {
+                      segmentEventTrack("description2 Field on Blur", {
+                        campaign_description2: this.state.description2
+                      });
+                      this.setState({ inputD2: false });
+                      this.setState(
+                        {
+                          description2Error: validateWrapper(
+                            "mandatory",
+                            this.state.description2
+                          )
+                        },
+                        () => {
+                          if (this.state.description2Error) {
+                            segmentEventTrack(
+                              "Error description2 Field on Blur",
+                              {
+                                campaign_error_description2: this.state
+                                  .description2Error
+                              }
+                            );
                           }
-                        );
-                      }}
-                    />
-                  </Item>
-                </Animatable.View>
+                        }
+                      );
+                    }}
+                  />
+                </Item>
+              </Animatable.View>
 
-                {this.props.campaign.uploading ? (
-                  <ForwardLoading
-                    mainViewStyle={{ width: wp(8), height: hp(8) }}
-                    bottom={hp(3)}
-                    style={{ width: wp(8), height: hp(8) }}
-                  />
-                ) : (
-                  <LowerButton
-                    bottom={3}
-                    function={this._handleSubmission}
-                    width={40}
-                    height={40}
-                  />
-                )}
-              </ScrollView>
-            </KeyboardAvoidingView>
+              {this.props.campaign.uploading ? (
+                <ForwardLoading
+                  mainViewStyle={{ width: wp(8), height: hp(8) }}
+                  bottom={hp(3)}
+                  style={{ width: wp(8), height: hp(8) }}
+                />
+              ) : (
+                <LowerButton
+                  bottom={3}
+                  function={this._handleSubmission}
+                  width={70}
+                  height={70}
+                />
+              )}
+            </InputScrollView>
           </Container>
         </TouchableWithoutFeedback>
       </SafeAreaView>

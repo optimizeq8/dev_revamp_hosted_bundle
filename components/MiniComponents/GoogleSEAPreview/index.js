@@ -43,7 +43,9 @@ export default GoogleSEAPreview = props => {
           {
             alignSelf: "flex-start"
           },
-          headline1 || headline2 ? GlobalStyles.column : GlobalStyles.row
+          // headline1 || headline2 ?
+          GlobalStyles.column
+          // : GlobalStyles.row
         ]}
       >
         <View style={GlobalStyles.row}>
@@ -68,7 +70,7 @@ export default GoogleSEAPreview = props => {
               <Text style={[styles.headlineText]}>{headline1}</Text>
             ) : (
               <Text uppercase style={[styles.headlineText]}>
-                {translate("Headline")}
+                {translate("Add")} {translate("Headline")}
               </Text>
             )}
           </View>
@@ -77,7 +79,7 @@ export default GoogleSEAPreview = props => {
           <View style={styles.headlineBlueLine} />
           <View
             style={[
-              headline1 || headline2 ? {} : { paddingLeft: 10 },
+              // headline1 || headline2 ? {} : { paddingLeft: 10 },
               GlobalStyles.column
             ]}
           >
@@ -99,7 +101,7 @@ export default GoogleSEAPreview = props => {
               </Text>
             ) : (
               <Text uppercase style={[styles.headlineText, { paddingLeft: 6 }]}>
-                {translate("Headline")}
+                {translate("Add")} {translate("Headline")}
               </Text>
             )}
           </View>
@@ -108,7 +110,7 @@ export default GoogleSEAPreview = props => {
           <View style={styles.headlineBlueLine} />
           <View
             style={[
-              headline1 || headline2 || headline3 ? {} : { paddingLeft: 10 },
+              // headline1 || headline2 || headline3 ? {} : { paddingLeft: 10 },
               GlobalStyles.column
             ]}
           >
@@ -130,7 +132,7 @@ export default GoogleSEAPreview = props => {
               </Text>
             ) : (
               <Text uppercase style={[styles.headlineText, { paddingLeft: 6 }]}>
-                {translate("Headline")}
+                {translate("Add")} {translate("Headline")}
               </Text>
             )}
           </View>
@@ -187,8 +189,22 @@ export default GoogleSEAPreview = props => {
         <Text
           style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
         >
-          {description || translate("Description")}{" "}
-          {description2 || translate("Description")}
+          {description ||
+            translate("Add") +
+              " " +
+              translate("Description") +
+              " " +
+              translate("1")}
+        </Text>
+        <Text
+          style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
+        >
+          {description2 ||
+            translate("Add") +
+              " " +
+              translate("Description") +
+              " " +
+              translate("2")}
         </Text>
       </View>
     </View>
