@@ -121,7 +121,16 @@ const styles = StyleSheet.create({
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
     fontSize: 16 / PixelRatio.getFontScale()
-  }
+  },
+  metricText: {
+    color: "#fff",
+    fontSize: 12,
+    textAlign: "left"
+  },
+  metricView: {
+    display: "flex"
+  },
+  metricIcon: { marginRight: 10 }
 });
 
 export default styles;

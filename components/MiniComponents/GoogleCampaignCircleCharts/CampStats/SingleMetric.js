@@ -51,24 +51,26 @@ export default class SingleMetric extends Component {
             width={heightPercentageToDP(3)}
             height={heightPercentageToDP(3)}
             fill="#fff"
-            style={{ marginRight: 10 }}
+            style={styles.metricIcon}
           />
         )}
         {!loadingCampaignStats ? (
           <View
-            style={{
-              display: "flex",
-              flexDirection: detail ? "column" : "column-reverse"
-            }}
+            style={[
+              styles.metricView,
+              {
+                flexDirection: detail ? "column" : "column-reverse"
+              }
+            ]}
           >
             <Text
               uppercase
-              style={{
-                color: "#fff",
-                fontFamily: detail ? "montserrat-bold" : "montserrat-regular",
-                fontSize: 12,
-                textAlign: "left"
-              }}
+              style={[
+                {
+                  fontFamily: detail ? "montserrat-bold" : "montserrat-regular"
+                },
+                styles.metricText
+              ]}
             >
               {translate(metric)}
             </Text>
