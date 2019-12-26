@@ -71,7 +71,9 @@ class CampaignCard extends Component {
                       ? {
                           fontFamily: "montserrat-bold-english"
                         }
-                      : {}
+                      : {
+                          fontFamily: "changa-bold-arabic"
+                        }
                   ]}
                 >
                   {this.props.campaign.name}

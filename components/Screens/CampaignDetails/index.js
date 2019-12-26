@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Animated, BackHandler } from "react-native";
+import { View, Animated, BackHandler, TouchableOpacity } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Text, Container, Icon } from "native-base";
 import DateFields from "../../MiniComponents/DatePicker/DateFields";
@@ -305,7 +305,10 @@ class CampaignDetails extends Component {
                 } else {
                   return (
                     interest !== "scls" &&
-                    ` ${
+                    interestNames.interests.scls.find(
+                      interestObj => interestObj.id === interest
+                    ) &&
+                    `${
                       interestNames.interests.scls.find(
                         interestObj => interestObj.id === interest
                       ).name
@@ -434,7 +437,10 @@ class CampaignDetails extends Component {
                       selectedCampaign.review_status !== "REJECTED" &&
                       selectedCampaign.campaign_end === "0") ||
                     new Date(selectedCampaign.end_time) < new Date() ? (
-                      <>
+                      <TouchableOpacity
+                        disabled={this.state.expand}
+                        onPress={this.handleChartToggle}
+                      >
                         {this.state.expand && (
                           <ChartDateChoices
                             selectedCampaign={selectedCampaign}
@@ -452,7 +458,7 @@ class CampaignDetails extends Component {
                           handleChartToggle={this.handleChartToggle}
                           chartExpanded={this.state.expand}
                         />
-                      </>
+                      </TouchableOpacity>
                     ) : (
                       <RejectedSnapchatInfo
                         loading={loading}

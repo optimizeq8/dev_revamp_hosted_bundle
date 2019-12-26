@@ -48,7 +48,7 @@ export default Chart = props => {
                   numberOfLines={1}
                   style={styles.chartText}
                 >
-                  {formatNumber(spends, true)}
+                  ${formatNumber(spends, true)}
                 </Text>
                 {!detail && (
                   <Text uppercase style={[styles.chartSubtext]}>
@@ -59,7 +59,7 @@ export default Chart = props => {
                   <Text
                     uppercase
                     style={[styles.chartBudgetSubtext]}
-                  >{`${translate("out of")} ${budget}`}</Text>
+                  >{`${translate("out of")} $${budget}`}</Text>
                 )}
               </View>
             </View>
