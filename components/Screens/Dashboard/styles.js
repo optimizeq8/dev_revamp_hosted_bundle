@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   sideMenuCard: {
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
     marginBottom: 5
   },
   sideMenuTop: {
@@ -68,9 +68,10 @@ const styles = StyleSheet.create({
   adButtonText: {
     textAlign: "center",
     color: globalColors.white,
-    fontFamily: "montserrat-regular-english",
-    fontSize: 16,
-    top: 20
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    paddingTop: 0
+    // top: 20
   },
   container: { backgroundColor: "#0000" },
   media: {
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     // elevation: 1
   },
   snapAd: {
-    top: 10,
+    marginTop: 10,
     justifyContent: "center",
     backgroundColor: "#0003",
     marginHorizontal: 10,
@@ -313,6 +314,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 50,
     alignItems: "center"
+  },
+  channelIcon: {
+    position: "absolute",
+    top: -20
+  },
+  adButtonView: {
+    flexDirection: "column",
+    backgroundColor: "#0000",
+    justifyContent: "space-around"
   }
 });
 

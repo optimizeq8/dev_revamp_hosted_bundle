@@ -516,8 +516,8 @@ class Dashboard extends Component {
                             </View>
                             <ScrollView
                               style={{
-                                height: 90,
-                                top: 10
+                                // height: 90,
+                                top: I18nManager.isRTL ? 5 : 0
                               }}
                               horizontal
                             >

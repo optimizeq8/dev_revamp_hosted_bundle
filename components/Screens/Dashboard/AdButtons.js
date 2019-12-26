@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, I18nManager } from "react-native";
 import { Button } from "native-base";
 
 //styles
@@ -10,12 +10,7 @@ export default class AdButtons extends Component {
     let AdIcon = ad.icon;
     let ChannelIcon = ad.channelIcon;
     return (
-      <View
-        style={{
-          flexDirection: "column",
-          backgroundColor: "#0000"
-        }}
-      >
+      <View style={styles.adButtonView}>
         <Button
           style={styles.snapAd}
           onPress={() => {
@@ -32,12 +27,32 @@ export default class AdButtons extends Component {
             <ChannelIcon
               width={60}
               height={60}
-              style={{ position: "absolute", top: -20, left: -20 }}
+              style={[
+                styles.channelIcon,
+                I18nManager.isRTL
+                  ? {
+                      right: -20
+                    }
+                  : {
+                      left: -20
+                    }
+              ]}
               fill="#0000"
             />
           )}
         </Button>
-        <Text style={[styles.adButtonText, styles.newCampaignTitle]}>
+        <Text
+          style={[
+            styles.adButtonText,
+            !isStringArabic(this.props.translate(ad.title))
+              ? {
+                  fontFamily: "montserrat-regular-english"
+                }
+              : {
+                  fontFamily: "montserrat-regular"
+                }
+          ]}
+        >
           {this.props.translate(ad.title)}
         </Text>
       </View>
