@@ -77,13 +77,6 @@ export default props => {
         <Text uppercase style={globalStyles.title}>
           {translate("Media")}
         </Text>
-        {/* <LowerButton
-          function={() => this.previewHandler(selectedCampaign, navigation)}
-          width={I18nManager.isRTL ? 8 : 40}
-          height={40}
-          isRTL={I18nManager.isRTL}
-          style={styles.mediaPreviewLowerButton}
-        /> */}
       </View>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>
@@ -100,12 +93,6 @@ export default props => {
               }}
               style={[styles.storyOrCollectionStyle]}
             />
-            // <View
-            //   style={[
-            //     styles.backgroundViewWrapper,
-            //     { position: "absolute", top: "16%", left: "8%", height: "80%" }
-            //   ]}
-            // />
           )}
           {!loading &&
           selectedCampaign &&
