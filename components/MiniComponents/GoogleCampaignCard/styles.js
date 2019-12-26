@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   campaignButton: {
     flex: 1,
     padding: 20,
-    paddingVertical: 15
+    paddingVertical: 20
   },
   chart: {
     paddingHorizontal: 5,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    textAlign: "center"
+    textAlign: "right"
   },
   cardStatusDays: {
     flex: 1,

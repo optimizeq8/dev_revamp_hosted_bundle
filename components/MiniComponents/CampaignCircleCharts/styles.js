@@ -68,12 +68,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     color: "#FF9D00",
     fontFamily: "montserrat-bold-english",
-    fontSize: 15 / PixelRatio.getFontScale()
+    fontSize: 15 / PixelRatio.getFontScale(),
+    textAlign: "left"
     // paddingHorizontal: 10
   },
   campaignNumbersDetail: {
     fontFamily: "montserrat-regular-english",
-    fontSize: 14 / PixelRatio.getFontScale()
+    fontSize: 16 / PixelRatio.getFontScale()
   },
   campaignInfo: {
     flexDirection: "column",

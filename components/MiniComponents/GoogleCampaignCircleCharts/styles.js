@@ -85,18 +85,21 @@ const styles = StyleSheet.create({
   },
   metricsStyle: {
     flexDirection: "row",
+    alignItems: "center",
+    // flex: 1,
+    paddingHorizontal: 20,
     marginVertical: 3,
-    marginRight: 40,
+    marginRight: 10,
     backgroundColor: "#0004",
-    width: 170,
+    width: 160,
     borderRadius: 20,
-    height: 53,
-    padding: "3%"
+    height: 50
+    // padding: "3%"
   },
   metricsCardStyle: {
     flexDirection: "row",
     alignItems: "center",
-    // marginVertical: 3,
+    marginBottom: 3,
     // marginRight: 40,
     backgroundColor: "#0000",
     // width: 170,

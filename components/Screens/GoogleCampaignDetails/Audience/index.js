@@ -592,12 +592,22 @@ class GoogleAdTargetting extends Component {
                                 this.props.campaign.locationsFetchedList.find(
                                   reg => reg.id === loc
                                 )
-                              )
-                                return translate(
-                                  this.props.campaign.locationsFetchedList.find(
-                                    reg => reg.id === loc
-                                  ).location
-                                );
+                              ) {
+                                let textLoc = "";
+                                const locationName = this.props.campaign.locationsFetchedList.find(
+                                  reg => reg.id === loc
+                                ).location;
+                                if (locationName.includes(", ")) {
+                                  let splitArr = locationName.split(", ");
+                                  splitArr = splitArr.map(lctn =>
+                                    translate(lctn)
+                                  );
+                                  textLoc = splitArr.join(", ");
+                                  return textLoc;
+                                } else {
+                                  return translate(locationName) + ", ";
+                                }
+                              }
                             })}
                         </Text>
                       </View>

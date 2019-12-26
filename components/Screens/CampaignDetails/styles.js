@@ -388,13 +388,16 @@ const styles = StyleSheet.create({
   },
   metricsStyle: {
     flexDirection: "row",
+    alignItems: "center",
+    // flex: 1,
+    paddingHorizontal: 20,
     marginVertical: 3,
-    marginRight: 40,
-    backgroundColor: "rgba(0,0,0,0.2)",
-    width: 170,
+    marginRight: 10,
+    backgroundColor: "#0004",
+    width: 160,
     borderRadius: 20,
-    height: 53,
-    padding: 10
+    height: 50
+    // padding: "3%"
   },
   chartChoices: {
     justifyContent: "center"
