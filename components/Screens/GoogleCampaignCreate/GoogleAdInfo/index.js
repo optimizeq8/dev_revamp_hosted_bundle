@@ -141,7 +141,7 @@ class GoogleAdInfo extends Component {
     // this.setState({ selectRegion: false });
   };
   getMinimumCash = days => {
-    let minValueBudget = days !== 0 ? 25 * days : 25;
+    let minValueBudget = days !== 0 ? 50 * days : 50;
     let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
     this.setState({
       minValueBudget,

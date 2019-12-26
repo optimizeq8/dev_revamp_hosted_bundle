@@ -270,7 +270,7 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
         if (!data.error) {
           return dispatch({
             type: actionTypes.SET_GOOGLE_SE_KEYWORDS,
-            payload: { data: data.keywords, loading: false }
+            payload: { data: [keyword, ...data.keywords], loading: false }
           });
         } else {
           showMessage({

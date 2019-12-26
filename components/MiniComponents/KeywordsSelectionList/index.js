@@ -215,11 +215,16 @@ export default class KeywordsSelectionList extends Component {
               segmentEventTrack("Search keyword field on Blur", {
                 campaign_keyword_search: this.state.keyword
               });
-              this.props._handleSearch(
-                this.state.keyword,
-                this.props.campaign_id,
-                this.props.businessid
-              );
+              if (
+                this.state.keyword.indexOf(" ") !== 0 &&
+                this.state.keyword !== ""
+              ) {
+                this.props._handleSearch(
+                  this.state.keyword,
+                  this.props.campaign_id,
+                  this.props.businessid
+                );
+              }
             }}
           />
         </Item>

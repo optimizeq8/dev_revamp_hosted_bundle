@@ -63,13 +63,13 @@ class GoogleAdTargetting extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      budget: this.props.campaign.minValueBudget + 25,
+      budget: this.props.campaign.minValueBudget + 50,
       age: ["Undetermined"],
       gender: "Undetermined",
       keywords: [],
       sidemenustate: false,
       sidemenu: "gender",
-      value: this.props.campaign.minValueBudget + 25,
+      value: this.props.campaign.minValueBudget + 50,
       // minValueBudget: 25,
       // maxValueBudget: 1500,
       modalVisible: false,
@@ -108,12 +108,12 @@ class GoogleAdTargetting extends Component {
         budget:
           this.props.campaign.budget === 0 ||
           this.props.campaign.budget < this.props.campaign.minValueBudget
-            ? this.props.campaign.minValueBudget + 25
+            ? this.props.campaign.minValueBudget + 50
             : this.props.campaign.budget,
         value:
           this.props.campaign.budget === 0 ||
           this.props.campaign.budget < this.props.campaign.minValueBudget
-            ? this.props.campaign.minValueBudget + 25
+            ? this.props.campaign.minValueBudget + 50
             : this.props.campaign.budget
       },
       () => {
@@ -697,7 +697,7 @@ class GoogleAdTargetting extends Component {
                         <Text style={styles.menudetails}>
                           {this.state.age[0] === "Undetermined"
                             ? translate("All")
-                            : "[ " + this.state.age.join(", ") + " ]"}
+                            : this.state.age.join(", ")}
                         </Text>
                       </View>
                     </View>
