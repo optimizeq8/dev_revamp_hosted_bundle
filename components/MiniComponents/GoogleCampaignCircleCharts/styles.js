@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import {
@@ -85,13 +85,27 @@ const styles = StyleSheet.create({
   },
   metricsStyle: {
     flexDirection: "row",
+    alignItems: "center",
+    // flex: 1,
+    paddingHorizontal: 20,
     marginVertical: 3,
-    marginRight: 40,
+    marginRight: 10,
     backgroundColor: "#0004",
-    width: 170,
+    width: 160,
     borderRadius: 20,
-    height: 53,
-    padding: "3%"
+    height: 50
+    // padding: "3%"
+  },
+  metricsCardStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 3,
+    // marginRight: 40,
+    backgroundColor: "#0000",
+    // width: 170,
+    borderRadius: 20
+    // height: 53,
+    // padding: "3%"
   },
   adPerformanceLowerButton: {
     width: 35,
@@ -101,7 +115,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderRadius: 30
-  }
+  },
+  numbers: {
+    textAlign: "left",
+    color: "#FF9D00",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 16 / PixelRatio.getFontScale()
+  },
+  metricText: {
+    color: "#fff",
+    fontSize: 12,
+    textAlign: "left"
+  },
+  metricView: {
+    display: "flex"
+  },
+  metricIcon: { marginRight: 10 }
 });
 
 export default styles;

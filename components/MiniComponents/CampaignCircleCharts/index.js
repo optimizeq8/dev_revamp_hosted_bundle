@@ -56,10 +56,13 @@ class CampaignCircleChart extends Component {
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
-            justifyContent: "flex-start",
+            justifyContent: "flex-start"
+          }}
+          style={{
+            maxHeight: !detail ? "100%" : "80%",
+            width: "100%",
             marginHorizontal: detail ? 20 : 0
           }}
-          style={{ maxHeight: !detail ? "100%" : "80%", width: "100%" }}
         >
           {!loading && (
             <Chart

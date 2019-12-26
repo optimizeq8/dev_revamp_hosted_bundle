@@ -52,7 +52,17 @@ class AdPaymentReview extends Component {
         let regionName = this.props.campaign.locationsFetchedList.find(
           x => x.id === r
         );
-        if (!isUndefined(regionName)) return translate(regionName.location);
+        if (!isUndefined(regionName)) {
+          if (regionName.location && regionName.location.includes(", ")) {
+            let textLoc = "";
+            let splitArr = regionName.location.split(", ");
+            splitArr = splitArr.map(lctn => translate(lctn));
+            textLoc = splitArr.join("-");
+            return textLoc;
+          } else {
+            return translate(regionName.location);
+          }
+        }
       });
     }
 
@@ -208,11 +218,10 @@ class AdPaymentReview extends Component {
                       },
                       {
                         title: "Location",
-                        content: [
-                          translate(this.state.country),
-
-                          ...this.state.regionsNames
-                        ].join(", ")
+                        content:
+                          translate(this.state.country) +
+                          ": " +
+                          [...this.state.regionsNames].join(", ")
                       },
                       {
                         title: "Language",

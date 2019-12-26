@@ -35,6 +35,8 @@ class GoogleCampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
+    // console.log("campaign", campaign);
+
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -80,12 +82,9 @@ class GoogleCampaignCard extends Component {
                     flex: 1
                   }}
                 >
-
-      
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
-
                     style={[
                       styles.titleText,
                       !isStringArabic(campaign.name)
@@ -117,9 +116,9 @@ class GoogleCampaignCard extends Component {
                       >
                         {translate(
                           `${
-                            campaign.serving_status === "eligible"
-                              ? " "
-                              : campaign.serving_status === "paused"
+                            campaign.status === "ENABLED"
+                              ? "LIVE"
+                              : campaign.status === "PAUSED"
                               ? "Campaign Paused"
                               : "Campaign ended"
                           }`

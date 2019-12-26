@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   campaignButton: {
     flex: 1,
     padding: 20,
-    paddingVertical: 15
+    paddingVertical: 20
   },
   chart: {
     paddingHorizontal: 5,

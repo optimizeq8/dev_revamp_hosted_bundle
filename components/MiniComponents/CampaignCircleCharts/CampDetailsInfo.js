@@ -41,7 +41,7 @@ export default props => {
                 {translate("Day(s) left")}
               </Text>
             ) : (
-              <Text style={styles.subtext}>campaign ended</Text>
+              <Text style={styles.subtext}>{translate("Campaign ended")}</Text>
             ))}
           <ProgressBar
             color={globalColors.orange}

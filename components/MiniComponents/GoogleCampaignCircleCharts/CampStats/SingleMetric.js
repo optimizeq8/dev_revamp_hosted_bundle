@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "native-base";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
@@ -44,37 +45,39 @@ export default class SingleMetric extends Component {
         Icon = ClicksIcon;
     }
     return (
-      <View
-        style={[
-          styles.metricsStyle,
-          { backgroundColor: detail ? "#0004" : "#0000" }
-        ]}
-      >
+      <View style={[detail ? styles.metricsStyle : styles.metricsCardStyle]}>
         {Icon && (
           <Icon
             width={heightPercentageToDP(3)}
             height={heightPercentageToDP(3)}
             fill="#fff"
-            style={{ marginRight: 10 }}
+            style={styles.metricIcon}
           />
         )}
         {!loadingCampaignStats ? (
-          <Text
-            style={{
-              color: "#fff",
-              fontFamily: "montserrat-bold",
-              fontSize: 12,
-              textAlign: "left",
-              textTransform: "uppercase"
-            }}
+          <View
+            style={[
+              styles.metricView,
+              {
+                flexDirection: detail ? "column" : "column-reverse"
+              }
+            ]}
           >
-            {translate(metric)}
-            {/* {metric} */}
-            {"\n "}
-            <Text style={[globalStyles.numbers]}>
+            <Text
+              uppercase
+              style={[
+                {
+                  fontFamily: detail ? "montserrat-bold" : "montserrat-regular"
+                },
+                styles.metricText
+              ]}
+            >
+              {translate(metric)}
+            </Text>
+            <Text style={[styles.numbers, { textAlign: "left" }]}>
               {formatNumber(metricValue, true)}
             </Text>
-          </Text>
+          </View>
         ) : (
           <PlaceholderLine width={70} />
         )}
