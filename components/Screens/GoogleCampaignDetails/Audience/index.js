@@ -321,6 +321,32 @@ class GoogleAdTargetting extends Component {
     this.setState({ modalVisible: visible });
     // this.setState({ selectRegion: false });
   };
+  regionNames = () => {
+    const { translate } = this.props.screenProps;
+    if (this.state.location.length > 0) {
+      return this.state.location.map(loc => {
+        if (
+          this.props.campaign &&
+          this.props.campaign.locationsFetchedList &&
+          this.props.campaign.locationsFetchedList.find(reg => reg.id === loc)
+        ) {
+          let textLoc = "";
+          const locationName = this.props.campaign.locationsFetchedList.find(
+            reg => reg.id === loc
+          ).location;
+          if (locationName.includes(", ")) {
+            let splitArr = locationName.split(", ");
+            splitArr = splitArr.map(lctn => translate(lctn));
+            textLoc = splitArr.join(", ");
+            return textLoc;
+          } else {
+            return translate(locationName) + ", ";
+          }
+        }
+      });
+    }
+    return "Hello";
+  };
   render() {
     const { translate } = this.props.screenProps;
     const { editCampaign } = this.state;
@@ -579,36 +605,11 @@ class GoogleAdTargetting extends Component {
                                 CountriesList.find(
                                   c => c.criteria_id === this.state.country
                                 ).name
-                              )
+                              ) + ": "
                             : translate("Select Country") +
                               "/" +
                               translate("Region")}
-                          :{" "}
-                          {this.state.location.length > 0 &&
-                            this.state.location.map(loc => {
-                              if (
-                                this.props.campaign &&
-                                this.props.campaign.locationsFetchedList &&
-                                this.props.campaign.locationsFetchedList.find(
-                                  reg => reg.id === loc
-                                )
-                              ) {
-                                let textLoc = "";
-                                const locationName = this.props.campaign.locationsFetchedList.find(
-                                  reg => reg.id === loc
-                                ).location;
-                                if (locationName.includes(", ")) {
-                                  let splitArr = locationName.split(", ");
-                                  splitArr = splitArr.map(lctn =>
-                                    translate(lctn)
-                                  );
-                                  textLoc = splitArr.join(", ");
-                                  return textLoc;
-                                } else {
-                                  return translate(locationName) + ", ";
-                                }
-                              }
-                            })}
+                          {this.regionNames()}
                         </Text>
                       </View>
                     </View>

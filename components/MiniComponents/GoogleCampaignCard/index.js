@@ -117,7 +117,7 @@ class GoogleCampaignCard extends Component {
                         {translate(
                           `${
                             campaign.status === "ENABLED"
-                              ? " "
+                              ? "LIVE"
                               : campaign.status === "PAUSED"
                               ? "Campaign Paused"
                               : "Campaign ended"

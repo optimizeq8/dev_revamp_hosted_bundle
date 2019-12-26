@@ -53,11 +53,7 @@ class AdPaymentReview extends Component {
           x => x.id === r
         );
         if (!isUndefined(regionName)) {
-          if (
-            regionName &&
-            regionName.location &&
-            regionName.location.includes(", ")
-          ) {
+          if (regionName.location && regionName.location.includes(", ")) {
             let textLoc = "";
             let splitArr = regionName.location.split(", ");
             splitArr = splitArr.map(lctn => translate(lctn));
