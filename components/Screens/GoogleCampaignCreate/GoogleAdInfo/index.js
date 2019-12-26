@@ -141,16 +141,16 @@ class GoogleAdInfo extends Component {
     // this.setState({ selectRegion: false });
   };
   getMinimumCash = days => {
-    let minValueBudget = days !== 0 ? 50 * days : 50;
-    let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
-    this.setState({
-      minValueBudget,
-      maxValueBudget
-    });
-    this.props.save_google_campaign_data({
-      minValueBudget: this.state.minValueBudget,
-      maxValueBudget: this.state.maxValueBudget
-    });
+    // let minValueBudget = days !== 0 ? 50 * days : 50;
+    // let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
+    // this.setState({
+    //   minValueBudget,
+    //   maxValueBudget
+    // });
+    // this.props.save_google_campaign_data({
+    //   minValueBudget: this.state.minValueBudget,
+    //   maxValueBudget: this.state.maxValueBudget
+    // });
   };
   _handleLanguageChange = val => {
     this.setState({ language: val });

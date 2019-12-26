@@ -202,11 +202,11 @@ class DateFields extends Component {
         {
           campaign_id: this.props.googleCampaign.campaign_id,
           businessid: this.props.mainBusiness.businessid,
-          name: this.googleCampaign.name,
-          language: this.googleCampaign.language,
-          start_time: this.googleCampaign.start_time,
-          end_time: this.googleCampaign.end_time,
-          location: this.googleCampaign.location
+          name: this.props.googleCampaign.name,
+          language: this.props.googleCampaign.language,
+          start_time: this.props.googleCampaign.start_time,
+          end_time: this.props.googleCampaign.end_time,
+          location: this.props.googleCampaign.location
         },
         //this is as if passing this.props.navigation and calling navigation.push but it does nothing
         //because i don't want to navigate from within the store after the request is done

@@ -62,7 +62,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload.data,
-        uploading: false,
         incompleteCampaign: true
       };
     case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_INFO:
@@ -105,7 +104,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_BUDGET_RANGE:
       return {
         ...state,
-        ...action.payload
+        minValueBudget: action.payload.min_budget,
+        maxValueBudget: action.payload.max_budget,
+        recommendedBudget: action.payload.recommended_budget,
+        uploading: false
       };
     case actionTypes.SAVE_GOOGLE_CAMPAIGN_DATA:
       // console.log("save google data", action.payload);
