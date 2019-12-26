@@ -516,6 +516,7 @@ class App extends React.Component {
 
       Font.loadAsync({
         "montserrat-regular-arabic": require("./assets/fonts/Arabic/Changa-Regular.ttf"),
+        "changa-bold-arabic": require("./assets/fonts/Arabic/Changa-Bold.ttf"),
         "montserrat-regular-english": require("./assets/fonts/Montserrat-Regular.ttf"),
         "montserrat-medium-english": require("./assets/fonts/Montserrat-Medium.ttf"),
         "montserrat-bold-english": require("./assets/fonts/Montserrat-Bold.ttf"),

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, I18nManager } from "react-native";
+import { View, I18nManager, TouchableOpacity } from "react-native";
 import { Text } from "native-base";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -29,22 +29,15 @@ export default function(props) {
 
   return (
     <View style={styles.keywordContainer}>
-      <View style={styles.subHeadingView}>
-        <Text uppercase style={[styles.subHeadings, { paddingVertical: 10 }]}>
-          {translate("Keywords")}
-        </Text>
-        {!loading && (
-          <LowerButton
-            function={() => props.navigation.push("GoogleKeywordsStats")}
-            width={I18nManager.isRTL ? 8 : 40}
-            height={40}
-            isRTL={I18nManager.isRTL}
-            style={styles.keywordLowerButton}
-          />
-        )}
-      </View>
-      {/* )} */}
-      <View style={styles.targetingContainer}>
+      <Text uppercase style={[styles.subHeadings, { paddingVertical: 10 }]}>
+        {translate("Keywords")}
+      </Text>
+      <TouchableOpacity
+        style={styles.targetingContainer}
+        onPress={() => {
+          !loading && props.navigation.push("GoogleKeywordsStats");
+        }}
+      >
         {listKeyWords && listKeyWords.length > 0 && (
           <Text uppercase style={styles.subHeading}>
             {translate("Best Performing")}
@@ -69,7 +62,7 @@ export default function(props) {
             </Text>
           </View>
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

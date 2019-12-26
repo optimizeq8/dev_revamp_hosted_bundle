@@ -2,8 +2,7 @@ import React from "react";
 import { Image } from "react-native-expo-image-cache";
 import { Text } from "native-base";
 import globalStyles from "../../../GlobalStyles";
-import { View, I18nManager } from "react-native";
-import LowerButton from "../../MiniComponents/LowerButton";
+import { View, TouchableOpacity } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
 import { ActivityIndicator } from "react-native-paper";
@@ -78,13 +77,6 @@ export default props => {
         <Text uppercase style={globalStyles.title}>
           {translate("Media")}
         </Text>
-        <LowerButton
-          function={() => this.previewHandler(selectedCampaign, navigation)}
-          width={I18nManager.isRTL ? 8 : 40}
-          height={40}
-          isRTL={I18nManager.isRTL}
-          style={styles.mediaPreviewLowerButton}
-        />
       </View>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>
@@ -101,18 +93,15 @@ export default props => {
               }}
               style={[styles.storyOrCollectionStyle]}
             />
-            // <View
-            //   style={[
-            //     styles.backgroundViewWrapper,
-            //     { position: "absolute", top: "16%", left: "8%", height: "80%" }
-            //   ]}
-            // />
           )}
           {!loading &&
           selectedCampaign &&
           !selectedCampaign.media.includes(".jpg") &&
           !selectedCampaign.media.includes(".png") ? (
-            <View style={[styles.backgroundViewWrapper]}>
+            <TouchableOpacity
+              onPress={() => this.previewHandler(selectedCampaign, navigation)}
+              style={[styles.backgroundViewWrapper]}
+            >
               <Video
                 // onLoadEnd={() => this.setState({ imageIsLoading: false })}
                 source={{
@@ -129,19 +118,25 @@ export default props => {
                   height: "100%"
                 }}
               />
-            </View>
+            </TouchableOpacity>
           ) : (
-            <Image
-              {...{
-                preview,
-                uri: !loading && selectedCampaign ? selectedCampaign.media : ""
-              }}
-              style={{
-                borderRadius: 40,
-                width: !loading ? "100%" : 0,
-                height: !loading ? "85%" : 0
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => this.previewHandler(selectedCampaign, navigation)}
+              style={styles.backgroundViewWrapper}
+            >
+              <Image
+                {...{
+                  preview,
+                  uri:
+                    !loading && selectedCampaign ? selectedCampaign.media : ""
+                }}
+                style={{
+                  borderRadius: 40,
+                  width: !loading ? "100%" : 0,
+                  height: !loading ? "100%" : 0
+                }}
+              />
+            </TouchableOpacity>
           )}
         </>
       )}

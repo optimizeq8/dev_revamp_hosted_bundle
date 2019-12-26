@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
     marginVertical: 2.5,
     borderRadius: 20,
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
+    width: 160,
+    height: 50
   },
   campaignNumbers: {
     paddingHorizontal: 0,

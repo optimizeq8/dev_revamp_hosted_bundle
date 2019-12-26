@@ -5,7 +5,7 @@ import {
   Animated,
   ScrollView,
   BackHandler,
-  FlatList
+  TouchableOpacity
 } from "react-native";
 import { Card, Text, Container, Icon, Content, Button } from "native-base";
 import Loading from "../../MiniComponents/LoadingScreen";
@@ -371,16 +371,20 @@ class GoogleCampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : selectedCampaign.campaign.review_status !== "REJECTED" ? (
-                  // <View>
-                  <CampaignCircleChart
-                    selectedCampaign={selectedCampaign}
-                    detail={true}
-                    screenProps={this.props.screenProps}
-                    loading={loading}
-                    channel={"google"}
-                    handleChartToggle={this.handleChartToggle}
-                    chartExpanded={this.state.expand}
-                  />
+                  <TouchableOpacity
+                    disabled={this.state.expand}
+                    onPress={this.handleChartToggle}
+                  >
+                    <CampaignCircleChart
+                      selectedCampaign={selectedCampaign}
+                      detail={true}
+                      screenProps={this.props.screenProps}
+                      loading={loading}
+                      channel={"google"}
+                      handleChartToggle={this.handleChartToggle}
+                      chartExpanded={this.state.expand}
+                    />
+                  </TouchableOpacity>
                 ) : (
                   <RejectedInfo
                     loading={loading}

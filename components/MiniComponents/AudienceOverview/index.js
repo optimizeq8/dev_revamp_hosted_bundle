@@ -1,5 +1,5 @@
 import React from "react";
-import { View, I18nManager } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
 import styles from "./styles";
@@ -33,25 +33,22 @@ export default AundienceOverView = props => {
         </View>
       ) : (
         <View style={styles.audienceHeadingView}>
-          <Text uppercase style={[globalStyles.title, { fontSize: 18 }]}>
+          <Text uppercase style={[globalStyles.title]}>
             {translate("Audience")}
           </Text>
-          <LowerButton
-            function={() =>
-              NavigationService.navigate(navigatingRoutePath, {
-                editCampaign,
-                campaign: selectedCampaign
-              })
-            }
-            width={I18nManager.isRTL ? 8 : 40}
-            height={40}
-            isRTL={I18nManager.isRTL}
-            style={styles.proceedLowerButton}
-          />
         </View>
       )}
 
-      <View style={styles.targetingContainer}>
+      <TouchableOpacity
+        style={styles.targetingContainer}
+        onPress={() => {
+          !loading &&
+            NavigationService.navigate(navigatingRoutePath, {
+              editCampaign,
+              campaign: selectedCampaign
+            });
+        }}
+      >
         {data &&
           data.map(info => (
             <View key={info.heading} style={styles.categoryView}>
@@ -72,7 +69,7 @@ export default AundienceOverView = props => {
               )}
             </View>
           ))}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

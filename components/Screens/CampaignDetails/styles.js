@@ -360,8 +360,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "40%",
     marginVertical: 10,
-    justifyContent: "space-evenly",
-    overflow: "hidden"
+    justifyContent: "space-evenly"
   },
   titleHeader: {
     flexDirection: "row",
