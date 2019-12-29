@@ -135,10 +135,19 @@ class RegionsSelector extends Component {
                   onChangeText={value => {
                     let filteredR = this.props.locationsFetchedList.filter(c =>
                       // console.log("c", c)
-
-                      translate(c.location)
-                        .toLowerCase()
-                        .includes(value.toLowerCase())
+                      {
+                        let textLocation = "";
+                        if (c.location.includes(", ")) {
+                          let locArray = c.location.split(", ");
+                          locArray = locArray.map(loc => translate(loc));
+                          textLocation = locArray.join(", ");
+                        } else {
+                          textLocation = translate(c.location);
+                        }
+                        return textLocation
+                          .toLowerCase()
+                          .includes(value.toLowerCase());
+                      }
                     );
                     this.setState({ filteredRegions: filteredR });
                   }}
