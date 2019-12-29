@@ -7,9 +7,8 @@ import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
 import NavigationService from "../../NavigationService";
-import { setAuthToken } from "./genericActions";
+import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { setCurrentUser } from "./loginActions";
-import { getBusinessAccounts } from "./accountManagementActions";
 import { send_push_notification } from "./loginActions";
 import createBaseUrl from "./createBaseUrl";
 

@@ -3,7 +3,7 @@ import * as Segment from "expo-analytics-segment";
 import { AsyncStorage, Animated } from "react-native";
 import { persistor } from "../index";
 import * as actionTypes from "./actionTypes";
-import { setAuthToken } from "./genericActions";
+import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
 import { errorMessageHandler } from "./ErrorActions";
 import NavigationService from "../../NavigationService";
@@ -20,46 +20,6 @@ export const changeBusiness = business => {
       type: actionTypes.SET_CURRENT_BUSINESS_ACCOUNT,
       payload: { ...business }
     });
-  };
-};
-
-export const getBusinessAccounts = () => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_LOADING_BUSINESS_LIST,
-      payload: true
-    });
-    createBaseUrl()
-      .get(`businessaccounts`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        // showMessage({
-        //   message: data.message,
-        //   type: response.data.success ? "success" : "warning"
-        // })
-        AsyncStorage.getItem("indexOfMainBusiness").then(value => {
-          return dispatch({
-            type: actionTypes.SET_BUSINESS_ACCOUNTS,
-            payload: {
-              data: data,
-              index: value ? value : 0,
-              userid: getState().auth.userInfo.userid
-            }
-          });
-        });
-        return;
-      })
-
-      .catch(err => {
-        // console.log("getBusinessAccountsError", err.message || err.response);
-        errorMessageHandler(err);
-
-        return dispatch({
-          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
-        });
-      });
   };
 };
 

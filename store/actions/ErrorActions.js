@@ -2,7 +2,7 @@ import { showMessage } from "react-native-flash-message";
 import store, { persistor } from "..";
 import NavigationService from "../../NavigationService";
 import * as actionTypes from "./actionTypes";
-import { getBusinessAccounts } from "./accountManagementActions";
+import { getBusinessAccounts } from "./genericActions";
 export const errorMessageHandler = err => {
   if (err.errorStatus === 401) {
     showMessage({

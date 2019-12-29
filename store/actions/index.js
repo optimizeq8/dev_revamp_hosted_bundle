@@ -1,6 +1,5 @@
 export {
   changeBusiness,
-  getBusinessAccounts,
   createBusinessAccount,
   updateUserInfo,
   addressForm,
@@ -31,7 +30,8 @@ export {
 export {
   setAuthToken,
   checkForUpdate,
-  update_app_status_chat_notification
+  update_app_status_chat_notification,
+  getBusinessAccounts
 } from "./genericActions";
 
 export {
