@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, I18nManager } from "react-native";
 import { Dimensions } from "react-native";
 import {
   widthPercentageToDP,
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     // paddingTop: 5,
     fontFamily: "montserrat-bold",
     fontSize: 10,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   campaignButton: {
     flex: 1,
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   chartContainer: {
-    flexDirection: "row",
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
     alignItems: "center"
   },
   iconImpression: {

@@ -503,7 +503,59 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1
-  }
+  },
+  customButtonStyle: {
+    width: 160,
+    height: 40,
+    alignSelf: "flex-end",
+    paddingHorizontal: 20
+  },
+  customButtonText: {
+    fontSize: 14
+    // paddingVertical: 5
+  },
+  reviewStatusText: {
+    textAlign: "left",
+    paddingVertical: 3,
+    fontSize: 12,
+    fontFamily: "montserrat-regular",
+    color: "#FFF"
+  },
+  rejectedReasonContainer: {
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 20,
+    flexDirection: "column",
+    // alignItems: "center",
+    // height: 80,
+    width: "100%",
+    // justifyContent: "space-evenly",
+    marginVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15
+  },
+  hereReasonsText: {
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    color: "#FFF"
+  },
+  adRejectedTitle: {
+    fontSize: 18,
+    fontFamily: "montserrat-bold",
+    color: "#EA514B",
+    paddingVertical: 5
+  },
+  rejectedHeader: {
+    alignItems: "center",
+    flex: 1,
+    marginHorizontal: 20
+  },
+  reviewStatusReason: {
+    fontSize: 13,
+    fontFamily: "montserrat-bold",
+    color: "#FF9D00",
+    textAlign: "left"
+  },
+  infoButton: { alignSelf: "flex-end" }
 });
 
 export default styles;

@@ -33,7 +33,7 @@ export default AundienceOverView = props => {
         </View>
       ) : (
         <View style={styles.audienceHeadingView}>
-          <Text uppercase style={[globalStyles.title]}>
+          <Text numberOfLines={1} uppercase style={[globalStyles.title]}>
             {translate("Audience")}
           </Text>
         </View>

@@ -42,8 +42,10 @@ class RejectedSnapchatInfo extends Component {
   render() {
     const { review_status_reason, screenProps } = this.props;
 
+    const { translate } = this.props.screenProps;
     let rejReasons = review_status_reason.map((reason, i) => (
       <RejectedReason
+        screenProps={screenProps}
         key={reason}
         reason={reason}
         index={i + 1}
@@ -51,36 +53,18 @@ class RejectedSnapchatInfo extends Component {
       />
     ));
     return (
-      <View
-        style={{
-          maxHeight: "50%",
-          paddingHorizontal: "5%"
-        }}
-      >
+      <View style={styles.rejectedOuterView}>
         <ScrollView
-          contentContainerStyle={{
-            paddingBottom: "10%"
-          }}
+          contentContainerStyle={styles.contentStyle}
           nestedScrollEnabled={true}
         >
-          <View
-            style={{
-              alignItems: "center",
-              flex: 1
-            }}
-          >
+          <View style={styles.rejectedHeader}>
             <Rejected />
             <Text uppercase style={styles.adRejectedTitle}>
-              AD Rejected
+              {translate("Ad Rejected")}
             </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                fontFamily: "montserrat-regular",
-                color: "#FFF"
-              }}
-            >
-              Here Are The Reasons:
+            <Text style={styles.hereReasonsText}>
+              {translate("Here Are The Reasons") + ":"}
             </Text>
             {rejReasons}
           </View>
@@ -90,12 +74,8 @@ class RejectedSnapchatInfo extends Component {
           onPressFunction={this.handleSnapchatRejection}
           content="Review Ad"
           filled
-          buttonStyle={{
-            width: "39%",
-            height: "10%",
-            alignSelf: "flex-end"
-          }}
-          textStyle={{ fontSize: 14 }}
+          buttonStyle={styles.customButtonStyle}
+          textStyle={styles.customButtonText}
         />
         <RejectedReasonModal
           screenProps={screenProps}

@@ -9,38 +9,86 @@ export default StyleSheet.create({
     paddingVertical: 5
   },
   rejectedReasonContainer: {
-    backgroundColor: "rgba(0,0,0,0.3)",
-    borderRadius: 50,
-    flexDirection: "row",
-    alignItems: "center",
-    height: 80,
-    width: "100%",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    borderRadius: 20,
+    flexDirection: "column",
+    // alignItems: "center",
+    // height: 80,
+    // width: "100%",
     justifyContent: "space-evenly",
     marginTop: 10
   },
   reasonTitle: {
+    textAlign: "left",
     color: globalColors.orange,
     textTransform: "uppercase",
     fontFamily: "montserrat-bold",
-    fontSize: 15
+    fontSize: 13,
+    marginBottom: 5
   },
   rejectedReasonText: {
-    fontSize: 11,
+    textAlign: "left",
+    fontSize: 12,
     fontFamily: "montserrat-regular",
     color: "#fff",
-    width: 200
+    lineHeight: 16
+    // width: 200
   },
   rejectedModalTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
-    width: "70%"
+    // justifyContent: "space-evenly",
+    width: "75%"
   },
   rejectedModalReasonText: {
+    textAlign: "left",
     fontFamily: "montserrat-regular",
     fontSize: 15,
     color: "#fff",
     width: "70%",
     alignSelf: "center"
+  },
+  rejectedInfoButton: {
+    alignSelf: "flex-end",
+    marginHorizontal: 20,
+    marginBottom: 15
+  },
+  rejectedReasonView: {
+    paddingHorizontal: 20,
+    paddingVertical: 15
+  },
+  hereReasonsText: {
+    fontSize: 14,
+    fontFamily: "montserrat-regular",
+    color: "#FFF"
+  },
+  rejectedHeader: {
+    alignItems: "center",
+    flex: 1
+  },
+  rejectedOuterView: {
+    maxHeight: 280,
+    paddingHorizontal: "5%"
+  },
+  contentStyle: {
+    paddingBottom: "10%"
+  },
+  rejectReasonWord: {
+    fontSize: 20,
+    marginLeft: 10
+  },
+  rejectModalView: {
+    marginTop: "5%",
+    paddingHorizontal: 20
+  },
+  customButtonStyle: {
+    width: 164,
+    height: 40,
+    alignSelf: "flex-end",
+    paddingHorizontal: 20
+  },
+  customButtonText: {
+    fontSize: 14
+    // paddingVertical: 5
   }
 });

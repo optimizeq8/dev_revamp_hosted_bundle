@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontFamily: "montserrat-bold",
     fontSize: 10,
+    textAlign: "left",
     color: "#fff"
   },
   campaignButton: {

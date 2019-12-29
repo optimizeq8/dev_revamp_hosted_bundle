@@ -26,80 +26,33 @@ export default RejectedInfo = props => {
     });
   };
   return (
-    <View
-      style={{
-        marginHorizontal: 15,
-        flex: 1,
-        alignItems: "center"
-      }}
-    >
+    <View style={styles.rejectedHeader}>
       <Rejected />
-      <Text
-        uppercase
-        style={{
-          fontSize: 18,
-          fontFamily: "montserrat-bold",
-          color: "#EA514B",
-          paddingVertical: 5
-        }}
-      >
+      <Text uppercase style={styles.adRejectedTitle}>
         {translate("Ad Rejected")}
       </Text>
-      <Text
-        style={{
-          fontSize: 14,
-          fontFamily: "montserrat-regular",
-          color: "#FFF"
-        }}
-      >
+      <Text style={styles.hereReasonsText}>
         {translate("Here Are The Reasons")}:
       </Text>
-      <View
-        style={{
-          paddingVertical: "5%",
-          paddingHorizontal: "5%",
-          backgroundColor: "rgba(0,0,0,0.3)",
-          borderRadius: 15,
-          marginVertical: "3%",
-          alignItems: "left"
-        }}
-      >
-        <Text
-          uppercase
-          style={{
-            fontSize: 13,
-            fontFamily: "montserrat-bold",
-            color: "#FF9D00"
-          }}
-        >
+      <View style={styles.rejectedReasonContainer}>
+        <Text uppercase style={styles.reviewStatusReason}>
           {review_status_reason}
         </Text>
-        <Text
-          style={{
-            paddingVertical: 3,
-            fontSize: 13,
-            fontFamily: "montserrat-regular",
-            color: "#FFF"
-          }}
-        >
+        <Text style={styles.reviewStatusText}>
           {translate("You can find more details here")}
         </Text>
         <Text
           selectable={true}
           //   onPress={this.handleSupportPage}
-          style={{
-            paddingVertical: 3,
-            fontSize: 13,
-            fontFamily: "montserrat-regular",
-            color: "#FFF"
-          }}
+          style={[
+            styles.reviewStatusText,
+            { fontFamily: "montserrat-regular-english" }
+          ]}
+          numberOfLines={2}
         >
           {review_status_help}
         </Text>
-        <Info
-          onPress={this.handleSupportPage}
-          style={{ alignSelf: "flex-end" }}
-        />
+        <Info onPress={this.handleSupportPage} style={styles.infoButton} />
       </View>
 
       <CustomButtons
@@ -113,8 +66,8 @@ export default RejectedInfo = props => {
         }
         content="Review Ad"
         filled
-        buttonStyle={{ width: "39%", height: "14%", alignSelf: "flex-end" }}
-        textStyle={{ fontSize: 14 }}
+        buttonStyle={styles.customButtonStyle}
+        textStyle={styles.customButtonText}
       />
     </View>
   );
