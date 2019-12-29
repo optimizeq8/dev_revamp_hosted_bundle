@@ -22,6 +22,7 @@ import RadioButtons from "../../../MiniComponents/RadioButtons";
 import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
+import { BudgetCards } from "./BudgetCards";
 
 //Data
 import gender from "../../../Data/gender.googleSE.data";
@@ -54,6 +55,7 @@ import {
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
 import segmentEventTrack from "../../../segmentEventTrack";
+import isNull from "lodash/isNull";
 
 class GoogleAdTargetting extends Component {
   static navigationOptions = {
@@ -73,7 +75,8 @@ class GoogleAdTargetting extends Component {
       // minValueBudget: 25,
       // maxValueBudget: 1500,
       modalVisible: false,
-      selectionOption: ""
+      selectionOption: "",
+      budgetOption: 1
     };
   }
 
@@ -105,16 +108,8 @@ class GoogleAdTargetting extends Component {
     this.setState(
       {
         ...data,
-        budget:
-          this.props.campaign.budget === 0 ||
-          this.props.campaign.budget < this.props.campaign.minValueBudget
-            ? this.props.campaign.recommendedBudget
-            : this.props.campaign.budget,
-        value:
-          this.props.campaign.budget === 0 ||
-          this.props.campaign.budget < this.props.campaign.minValueBudget
-            ? this.props.campaign.recommendedBudget
-            : this.props.campaign.budget
+        budget: this.props.campaign.budget,
+        value: this.props.campaign.budget
       },
       () => {
         // console.log("state", this.state);
@@ -221,7 +216,8 @@ class GoogleAdTargetting extends Component {
       });
     }
   };
-  _handleBudget = (value, rawValue) => {
+
+  _handleBudget = (value, rawValue, onBlur, budgetOption) => {
     const { translate } = this.props.screenProps;
     if (
       !validateWrapper("Budget", rawValue) &&
@@ -230,27 +226,47 @@ class GoogleAdTargetting extends Component {
     ) {
       this.setState({
         budget: rawValue,
-        value: value
+        value: value,
+        budgetOption
       });
+
       this.props.save_google_campaign_data({
-        budget: rawValue
+        budget: rawValue,
+        budgetOption
       });
       return true;
     } else {
-      showMessage({
-        message: validateWrapper("Budget", rawValue)
-          ? validateWrapper("Budget", rawValue)
-          : translate("Budget can't be less than the minimum"),
-        type: "warning",
-        position: "top"
+      if (onBlur) {
+        if (validateWrapper("Budget", rawValue)) {
+          segmentEventTrack("Error Campaign Budget Change", {
+            campaign_budget_error:
+              validateWrapper("Budget", rawValue) +
+              " $" +
+              this.props.campaign.minValueBudget
+          });
+        }
+        showMessage({
+          message: validateWrapper("Budget", rawValue)
+            ? validateWrapper("Budget", rawValue)
+            : translate("Budget can't be less than the minimum"),
+          description: "$" + this.props.campaign.minValueBudget,
+          type: "warning",
+          position: "top"
+        });
+      }
+      segmentEventTrack("Custom Campaign Budget Change", {
+        campaign_budget: rawValue
       });
       this.setState({
         budget: rawValue,
-        value: value
+        value: value,
+        budgetOption
       });
       this.props.save_google_campaign_data({
-        budget: rawValue
+        budget: rawValue,
+        budgetOption
       });
+
       return false;
     }
   };
@@ -266,8 +282,15 @@ class GoogleAdTargetting extends Component {
       campaign_id: this.props.campaign.campaign_id,
       campaign_budget: this.state.budget
     });
-
-    if (!keywordsError) {
+    if (
+      this._handleBudget(
+        this.state.value,
+        this.state.budget,
+        true,
+        this.state.budgetOption
+      ) &&
+      !keywordsError
+    ) {
       const segmentInfo = {
         step: 3,
         business_name: this.props.mainBusiness.businessname,
@@ -299,7 +322,13 @@ class GoogleAdTargetting extends Component {
         campaign_error_keywords: keywordsError
       });
       showMessage({
-        message: translate(keywordsError),
+        message: isNull(keywordsError)
+          ? translate("Budget can't be less than the minimum")
+          : translate(keywordsError),
+        description: isNull(keywordsError)
+          ? "$" + this.props.campaign.minValueBudget
+          : "",
+
         type: "warning",
         position: "top"
       });
@@ -451,8 +480,6 @@ class GoogleAdTargetting extends Component {
         );
       }
     });
-    // console.log("genderlist", gender);
-    // console.log("gender", this.state.gender);
 
     return (
       <Sidemenu
@@ -506,15 +533,7 @@ class GoogleAdTargetting extends Component {
                     businessname: this.props.mainBusiness.businessname
                   }
                 }}
-                // actionButton={
-                // //   editCampaign
-                // //     ? () => this.props.navigation.navigate("CampaignDetails")
-                // //     : undefined
-                // }
-                navigation={
-                  // editCampaign ? undefined :
-                  this.props.navigation
-                }
+                navigation={this.props.navigation}
                 title={"Campaign details"}
                 screenProps={this.props.screenProps}
               />
@@ -523,80 +542,15 @@ class GoogleAdTargetting extends Component {
                 scrollEnabled={false}
                 contentContainerStyle={styles.contentContainer}
               >
-                {/* {!editCampaign ? (
-                  <> */}
-
                 <Text style={styles.subHeadings}>{translate("Budget")}</Text>
-                <View style={styles.moneyInputContainer}>
-                  <TextInputMask
-                    disableFullscreenUI={this.props.campaign.uploading}
-                    // disableFullscreenUI={this.props.loading}
-                    includeRawValueInChangeText
-                    type={"money"}
-                    options={{
-                      precision: 0,
-                      delimiter: ",",
-                      unit: "$"
-                    }}
-                    // disabled={editCampaign || this.props.loading}
-                    maxLength={8}
-                    // defaultValue={this.state.value + ""}
-                    value={this.state.value + ""}
-                    onChangeText={(value, rawText) => {
-                      //   if (!editCampaign)
-                      this._handleBudget(value, rawText);
-                    }}
-                    onBlur={() => {
-                      segmentEventTrack("Budget Field on blur", {
-                        campaign_budget: this.state.budget
-                      });
-                    }}
-                    style={styles.budget}
-                    ref={ref => (this.moneyField = ref)}
-                  />
-                  <Text style={styles.budgetInstructionText}>
-                    {translate("Tap to enter manually")}
-                  </Text>
-                </View>
-                <View style={styles.sliderContainer}>
-                  <View style={styles.budgetSliderText}>
-                    <Text style={globalStyles.whiteTextColor}>
-                      ${this.props.campaign.minValueBudget}
-                    </Text>
-                    <Text style={globalStyles.whiteTextColor}>
-                      ${this.props.campaign.maxValueBudget}
-                    </Text>
-                  </View>
+                <BudgetCards
+                  value={this.state.value}
+                  recBudget={this.props.campaign.recommendedBudget}
+                  lifetime_budget_micro={this.state.budget}
+                  budgetOption={this.state.budgetOption}
+                  _handleBudget={this._handleBudget}
+                />
 
-                  <Slider
-                    thumbTintColor={globalColors.orange}
-                    disabled={
-                      //editCampaign ||
-                      this.props.campaign.uploading
-                    }
-                    style={styles.slider}
-                    step={10}
-                    minimumValue={this.props.campaign.minValueBudget}
-                    maximumValue={this.props.campaign.maxValueBudget}
-                    value={
-                      this.state.budget < 90000000000000000000
-                        ? this.state.budget
-                        : 1500
-                    }
-                    onValueChange={debounce(this.onSelectedBudgetChange, 60)}
-                    maximumTrackTintColor={globalColors.white}
-                    minimumTrackTintColor={globalColors.purple}
-                  />
-                </View>
-                {/* </>
-                // ) : (
-                //   <View style={styles.sliderPlaceHolder}>
-                //     <Text style={styles.subHeadings}>
-                //       Editing budget and duration {"\n"} is currently
-                //       unavailable.
-                //     </Text>
-                //   </View>
-                // )} */}
                 <Text style={styles.subHeadings}>
                   {translate("What are you promoting?")}
                 </Text>

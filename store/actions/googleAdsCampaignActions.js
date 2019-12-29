@@ -678,6 +678,8 @@ export const get_budget = (info, segmentInfo, navigation) => {
       })
       .then(data => {
         if (!data.error) {
+          console.log("budget data", data);
+
           dispatch({
             type: actionTypes.SET_BUDGET_RANGE,
             payload: data

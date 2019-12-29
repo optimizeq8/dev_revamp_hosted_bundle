@@ -212,7 +212,7 @@ class DateFields extends Component {
         //because i don't want to navigate from within the store after the request is done
         { push: () => {} }
       );
-      this.props.navigation.dispatch(resetAction);
+      // this.props.navigation.dispatch(resetAction);
     } else {
       //Same as if using a map and a filter at the same time
       let reduceFunction = (newRoutes, route) => {

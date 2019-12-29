@@ -323,7 +323,6 @@ class GoogleAdInfo extends Component {
         <NavigationEvents
           onDidFocus={() => {
             if (this.props.campaign.campaignResumed) {
-              // console.log("this.state.closedContinueModal");
               this.props.save_google_campaign_steps([
                 "Dashboard",
                 "GoogleAdInfo"
@@ -580,6 +579,7 @@ class GoogleAdInfo extends Component {
           incompleteCampaign={this.props.campaign.incompleteCampaign}
           campaignProgressStarted={this.props.campaign.campaignResumed}
           currentCampaignSteps={this.props.campaign.campaignSteps}
+          navigation={this.props.navigation}
         />
         <ContinueGoogleCampaign
           navigation={this.props.navigation}

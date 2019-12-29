@@ -20,7 +20,6 @@ import { showMessage } from "react-native-flash-message";
 import Loading from "../LoadingScreen";
 import segmentEventTrack from "../../segmentEventTrack";
 
-
 /**
  * The modal that shows up when there's a campaign to resume
  */
@@ -133,7 +132,7 @@ class ContinueCampaign extends Component {
       //the app actually freezes for a few seconds when navigateToContinue runs so i delay
       //it's exectution to desiplay a loader because if i don't the loader doesn't show up
       setTimeout(() => {
-        this.handleSubmition(false, false);
+        // this.handleSubmition(false, false);
         this.navigateToContinue();
       }, 200);
     }
