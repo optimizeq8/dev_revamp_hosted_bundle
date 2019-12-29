@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, SafeAreaView } from "react-native";
+import { View, SafeAreaView } from "react-native";
+import { Text } from "native-base";
 import Modal from "react-native-modal";
 import Header from "../../../MiniComponents/Header";
 import { BlurView } from "expo-blur";
@@ -18,6 +19,7 @@ export default props => {
     setModalVisible,
     screenProps
   } = props;
+  const { translate } = props.screenProps;
   return (
     <Modal
       animationIn={"fadeIn"}
@@ -36,11 +38,14 @@ export default props => {
             closeButton={true}
             actionButton={() => setModalVisible(false)}
           />
-          <View style={{ top: "5%" }}>
+          <View style={styles.rejectModalView}>
             <View style={styles.rejectedModalTitleContainer}>
               <RejectedIcon fill={globalColors.orange} />
-              <Text style={[styles.reasonTitle, { fontSize: 20 }]}>
-                Rejected Reason {reasonNum}
+              <Text
+                uppercase
+                style={[styles.reasonTitle, styles.rejectReasonWord]}
+              >
+                {translate("Rejected Reason")} {reasonNum}
               </Text>
             </View>
             <Text style={styles.rejectedModalReasonText}>{rejectedReason}</Text>

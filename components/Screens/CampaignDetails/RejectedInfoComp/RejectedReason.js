@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import RejectedIcon from "../../../../assets/SVGs/CampaignDetail/RejectedIcon";
 import { globalColors } from "../../../../GlobalStyles";
 import Info from "../../../../assets/SVGs/Info.svg";
@@ -12,13 +12,12 @@ import styles from "./styles";
  */
 export default props => {
   let { reason, setModalVisible, index } = props;
-
+  const { translate } = props.screenProps;
   return (
     <View style={styles.rejectedReasonContainer}>
-      <RejectedIcon fill={globalColors.orange} />
-      <View>
+      <View style={styles.rejectedReasonView}>
         <Text uppercase style={styles.reasonTitle}>
-          Rejected Reason {index}
+          {translate("Rejected Reason")} {index}
         </Text>
         <Text
           style={styles.rejectedReasonText}
@@ -28,7 +27,12 @@ export default props => {
           {reason}
         </Text>
       </View>
-      <Info onPress={() => setModalVisible(true, reason, index)} />
+      <TouchableOpacity
+        style={styles.rejectedInfoButton}
+        onPress={() => setModalVisible(true, reason, index)}
+      >
+        <Info />
+      </TouchableOpacity>
     </View>
   );
 };
