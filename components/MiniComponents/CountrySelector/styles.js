@@ -1,9 +1,4 @@
-import { StyleSheet, PixelRatio, StatusBar } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
+import { StyleSheet, PixelRatio } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +13,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between"
   },
-
   slidercontainer: {
     paddingHorizontal: 40,
     width: "100%",
@@ -40,31 +34,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     flexDirection: "row"
   },
-  optionsTextContainer: {
-    fontFamily: "montserrat-bold",
-    color: "#fff",
-    fontSize: 14,
-    paddingLeft: 20
-  },
-  inactivetext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    color: "#fff"
-  },
-  activetext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    color: globalColors.orange
-  },
-  optionsRowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingBottom: 20
-  },
-  optionsContainer: {
-    flex: 1,
-    flexDirection: "column"
-    // alignItems: "center"
+  searchBar: {
+    marginBottom: 10,
+    marginTop: 20,
+    alignSelf: "center",
+    width: 300,
+    borderColor: "#0000",
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 30,
+    paddingHorizontal: 15
   }
 });
 export default styles;

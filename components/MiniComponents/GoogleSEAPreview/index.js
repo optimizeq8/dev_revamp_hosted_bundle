@@ -31,23 +31,9 @@ export default GoogleSEAPreview = props => {
 
   return (
     <View style={styles.previewBlock}>
-      <View
-        style={[
-          {
-            alignSelf: "flex-start"
-          },
-          // headline1 || headline2 ?
-          GlobalStyles.column
-          // : GlobalStyles.row
-        ]}
-      >
+      <View style={styles.headersCol}>
         <View style={GlobalStyles.row}>
-          <View
-            style={{
-              flexDirection: "column",
-              paddingRight: 0
-            }}
-          >
+          <View style={styles.headerContent}>
             <Text
               uppercase
               style={[
@@ -70,12 +56,7 @@ export default GoogleSEAPreview = props => {
         </View>
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
-          <View
-            style={[
-              // headline1 || headline2 ? {} : { paddingLeft: 10 },
-              GlobalStyles.column
-            ]}
-          >
+          <View style={[GlobalStyles.column]}>
             <Text
               uppercase
               style={[
@@ -101,12 +82,7 @@ export default GoogleSEAPreview = props => {
         </View>
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
-          <View
-            style={[
-              // headline1 || headline2 || headline3 ? {} : { paddingLeft: 10 },
-              GlobalStyles.column
-            ]}
-          >
+          <View style={[GlobalStyles.column]}>
             <Text
               uppercase
               style={[

@@ -173,17 +173,7 @@ class ContinueCampaign extends Component {
                 navigation={this.props.navigation}
                 title={"Continue Ad Creation"}
               />
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontFamily: "montserrat-light",
-                    width: 300,
-                    fontSize: 16,
-                    paddingBottom: 25
-                  }
-                ]}
-              >
+              <Text style={[styles.text, styles.warningText]}>
                 {translate(
                   "You were in the middle of creating an ad, would you like to continue"
                 )}

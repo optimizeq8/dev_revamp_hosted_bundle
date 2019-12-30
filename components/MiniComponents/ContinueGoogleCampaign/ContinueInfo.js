@@ -22,19 +22,12 @@ ContinueInfo = props => {
   const { translate } = screenProps;
 
   return (
-    <View
-      style={{
-        height: "50%"
-      }}
-    >
+    <View style={styles.container}>
       <Content
-        contentContainerStyle={{
-          paddingBottom: "20%",
-          alignItems: "center"
-        }}
+        contentContainerStyle={styles.contentContainer}
         style={styles.contentStyle}
       >
-        <GoogleAds style={{ alignSelf: "center", marginBottom: 10 }} />
+        <GoogleAds style={styles.icon} />
         {campaign.name ? (
           <Text style={styles.text}>{campaign.name}</Text>
         ) : null}
@@ -68,8 +61,7 @@ ContinueInfo = props => {
             <Text style={styles.text}>{translate("No dates selected")}</Text>
           )}
         </View>
-
-        <View style={{ width: "80%", marginHorizontal: 10 }}>
+        <View style={styles.previewContainer}>
           <GoogleSEAPreview
             screenProps={screenProps}
             headline1={campaign.headline1}

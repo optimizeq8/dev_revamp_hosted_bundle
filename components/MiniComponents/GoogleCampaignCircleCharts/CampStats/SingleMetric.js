@@ -4,7 +4,6 @@ import { Text } from "native-base";
 import styles from "../styles";
 import formatNumber from "../../../formatNumber";
 import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
-import globalStyles from "../../../../GlobalStyles";
 import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
 import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
 import ClicksIcon from "../../../../assets/SVGs/Performance/Clicks";
@@ -23,7 +22,6 @@ export default class SingleMetric extends Component {
       detail
     } = this.props;
     let Icon = null;
-    // console.log("metric", metric);
 
     switch (metric) {
       case "impressions":
@@ -74,7 +72,7 @@ export default class SingleMetric extends Component {
             >
               {translate(metric)}
             </Text>
-            <Text style={[styles.numbers, { textAlign: "left" }]}>
+            <Text style={[styles.numbers]}>
               {formatNumber(metricValue, true)}
             </Text>
           </View>

@@ -3,16 +3,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
+import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
-  subHeadings: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-bold",
-    fontSize: 15,
-    paddingVertical: hp("1")
-  },
   previewBlock: {
     display: "flex",
     flexDirection: "column",
@@ -28,6 +21,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     alignSelf: "center"
   },
+  headersCol: {
+    alignSelf: "flex-start",
+    flexDirection: "column"
+  },
+  headerContent: {
+    flexDirection: "column",
+    paddingRight: 0
+  },
   headline: {
     fontFamily: "montserrat-bold",
     fontSize: 10 / PixelRatio.getFontScale(),
@@ -37,12 +38,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     paddingBottom: 2,
     paddingHorizontal: 20
-  },
-  headlineBlueLine: {
-    borderLeftColor: "#1B10AB",
-    borderLeftWidth: 1,
-    marginBottom: 5,
-    marginLeft: 13
   },
   headlineText: {
     fontFamily: "montserrat-bold",
@@ -54,6 +49,20 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingHorizontal: 20
   },
+  headlineBlueLine: {
+    borderLeftColor: "#1B10AB",
+    borderLeftWidth: 1,
+    marginBottom: 5,
+    marginLeft: 13
+  },
+  subHeadings: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-bold",
+    fontSize: 15,
+    paddingVertical: hp("1")
+  },
+
   adIcon: {
     marginRight: 5,
     alignSelf: "center",
