@@ -3,17 +3,15 @@ import jwt_decode from "jwt-decode";
 import { AsyncStorage, Animated } from "react-native";
 import * as actionTypes from "./actionTypes";
 import { showMessage } from "react-native-flash-message";
-import {
-  getBusinessAccounts,
-  saveBusinessInvitee
-} from "./accountManagementActions";
-import { setAuthToken } from "./genericActions";
+import { saveBusinessInvitee } from "./accountManagementActions";
+import { setAuthToken, getBusinessAccounts } from "./genericActions";
 import { Notifications } from "expo";
 import * as Permissions from "expo-permissions";
 import store from "../index";
 import * as SecureStore from "expo-secure-store";
 import { update_app_status_chat_notification } from "./genericActions";
 import createBaseUrl from "./createBaseUrl";
+import NavigationService from "../../NavigationService";
 
 export const chanege_base_url = admin => {
   return dispatch => {
@@ -113,7 +111,7 @@ export const checkForExpiredToken = navigation => {
                     dispatch(getBusinessAccounts());
                   })
                   .then(() => {
-                    navigation.navigate("Dashboard");
+                    navigation && NavigationService.navigate("Dashboard");
                   });
               } else {
                 dispatch(clearPushToken(navigation, user.userid));
@@ -125,7 +123,7 @@ export const checkForExpiredToken = navigation => {
                 payload: false
               });
 
-              navigation && navigation.navigate("Dashboard");
+              navigation && NavigationService.navigate("Dashboard");
             });
         } else {
           dispatch(clearPushToken(navigation, user.userid));
@@ -237,15 +235,19 @@ export const logout = navigation => {
     setAuthToken()
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
-        navigation.navigate("Signin", {
-          loggedout: true,
-          v: navigation.getParam("v", false) || getState().account.tempInviteId,
-          business:
-            navigation.getParam("business", "") ||
-            getState().account.businessInvitee,
-          email:
-            navigation.getParam("email", "") || getState().account.invitedEmail
-        });
+        navigation &&
+          navigation.navigate("Signin", {
+            loggedout: true,
+            v:
+              (navigation && navigation.getParam("v", false)) ||
+              getState().account.tempInviteId,
+            business:
+              (navigation && navigation.getParam("business", "")) ||
+              getState().account.businessInvitee,
+            email:
+              (navigation && navigation.getParam("email", "")) ||
+              getState().account.invitedEmail
+          });
       });
   };
 };

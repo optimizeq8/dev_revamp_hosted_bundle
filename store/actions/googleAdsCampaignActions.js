@@ -163,8 +163,16 @@ export const create_google_SE_campaign_info = (
       })
       .then(data => {
         if (!data.error) {
-          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
-          navigation.push("GoogleAdDesign");
+          dispatch(
+            get_budget(
+              {
+                businessid: info.businessid,
+                campaign_id: info.campaign_id
+              },
+              segmentInfo,
+              navigation
+            )
+          );
         }
       })
       .catch(err => {
@@ -270,7 +278,7 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
         if (!data.error) {
           return dispatch({
             type: actionTypes.SET_GOOGLE_SE_KEYWORDS,
-            payload: { data: data.keywords, loading: false }
+            payload: { data: [keyword, ...data.keywords], loading: false }
           });
         } else {
           showMessage({
@@ -650,6 +658,51 @@ export const enable_end_or_pause_google_campaign = (
         errorMessageHandler(err);
         dispatch({
           type: actionTypes.SET_GOOGLE_STATUS_LOADING,
+          payload: false
+        });
+      });
+  };
+};
+
+export const get_budget = (info, segmentInfo, navigation) => {
+  return dispatch => {
+    GoogleBackendURL()
+      .post(`campaign/budget/`, info)
+      .then(res => res.data)
+      .then(data => {
+        dispatch({
+          type: actionTypes.SET_GOOGLE_UPLOADING,
+          payload: false
+        });
+        return data;
+      })
+      .then(data => {
+        if (!data.error) {
+          console.log("budget data", data);
+
+          dispatch({
+            type: actionTypes.SET_BUDGET_RANGE,
+            payload: data
+          });
+          Segment.trackWithProperties("Completed Checkout Step", segmentInfo);
+          navigation.push("GoogleAdDesign");
+        } else
+          showMessage({
+            message: "Oops! Something went wrong. Please try again.",
+            description: data.error,
+            type: "danger",
+            position: "top"
+          });
+      })
+      .catch(err => {
+        showMessage({
+          message: "Oops! Something went wrong. Please try again.",
+          description: err.message || err.response,
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.SET_GOOGLE_UPLOADING,
           payload: false
         });
       });
