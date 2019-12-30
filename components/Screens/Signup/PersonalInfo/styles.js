@@ -8,7 +8,7 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   marginVertical: {
-    marginVertical: 5
+    marginVertical: 15
   },
   inputLabel: {
     marginBottom: -10,
