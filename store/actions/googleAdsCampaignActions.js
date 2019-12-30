@@ -29,7 +29,7 @@ export const create_google_ad_account = (info, navigation) => {
       payload: true
     });
     GoogleBackendURL()
-      .post(`create/account/?businessid=${info.businessid}`)
+      .post(`create/account/`, { businessid: info.businessid })
       .then(res => {
         return res.data;
       })
