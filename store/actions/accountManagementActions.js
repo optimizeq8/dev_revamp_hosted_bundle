@@ -23,46 +23,6 @@ export const changeBusiness = business => {
   };
 };
 
-export const getBusinessAccounts = () => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: actionTypes.SET_LOADING_BUSINESS_LIST,
-      payload: true
-    });
-    createBaseUrl()
-      .get(`businessaccounts`)
-      .then(res => {
-        return res.data;
-      })
-      .then(data => {
-        // showMessage({
-        //   message: data.message,
-        //   type: response.data.success ? "success" : "warning"
-        // })
-        AsyncStorage.getItem("indexOfMainBusiness").then(value => {
-          return dispatch({
-            type: actionTypes.SET_BUSINESS_ACCOUNTS,
-            payload: {
-              data: data,
-              index: value ? value : 0,
-              userid: getState().auth.userInfo.userid
-            }
-          });
-        });
-        dispatch(getBusinessInvites());
-        return;
-      })
-
-      .catch(err => {
-        // console.log("getBusinessAccountsError", err.message || err.response);
-        errorMessageHandler(err);
-
-        return dispatch({
-          type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
-        });
-      });
-  };
-};
 export const createBusinessAccount = (account, navigation) => {
   return (dispatch, getState) => {
     dispatch({
