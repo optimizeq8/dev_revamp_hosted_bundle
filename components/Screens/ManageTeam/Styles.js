@@ -3,11 +3,18 @@ import { globalColors } from "../../../GlobalStyles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export default styles = StyleSheet.create({
+  title: {
+    fontFamily: "montserrat-bold",
+    fontSize: 20,
+    textTransform: "uppercase",
+    color: "#fff",
+    left: "10%"
+  },
   groupIconStyle: { alignSelf: "center" },
   teamMember: {
     alignSelf: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "#0002",
     borderRadius: 30,
@@ -48,5 +55,11 @@ export default styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     marginTop: heightPercentageToDP(3)
+  },
+  resendStyle: {
+    fontSize: 12,
+    fontFamily: "montserrat-bold",
+    textTransform: "uppercase",
+    color: globalColors.orange
   }
 });

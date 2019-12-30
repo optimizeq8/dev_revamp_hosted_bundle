@@ -6,70 +6,50 @@ import isStringArabic from "../../isStringArabic";
 import businessCardStyles from "../../MiniComponents/BusinessCard/styles";
 import LowerButton from "../../MiniComponents/LowerButton";
 import globalStyles, { globalColors } from "../../../GlobalStyles";
+import { connect } from "react-redux";
+import InvitationRow from "./InvitationRow";
 
 /**
  * Functional component for showing there is a business invite in the busniess list
  */
-export default InvitationCard = props => {
-  let { handleTeamInvite, businessInvitee, navigation, tempInviteId } = props;
+InvitationCard = props => {
+  let {
+    handleTeamInvite,
+    businessInvitee,
+    navigation,
+    tempInviteId,
+    businessInvites,
+    userInfo,
+    invitedEmail
+  } = props;
+
+  let invites = [];
+  if (businessInvites)
+    invites = businessInvites.map(invite => (
+      <InvitationRow
+        key={invite.v}
+        {...invite}
+        handleTeamInvite={handleTeamInvite}
+        invitedEmail={invitedEmail}
+        navigation={navigation}
+        userEmail={userInfo.email}
+      />
+    ));
+
   return (
     <View>
       <Text uppercase style={[styles.headings]}>
         Invitation
       </Text>
-      <View style={[{ flexDirection: "row" }]}>
-        <View style={[businessCardStyles.businessIconStyle]}>
-          <Icon
-            name="envelope-letter"
-            type="SimpleLineIcons"
-            style={{ color: "#fff", fontSize: 25 }}
-          />
-        </View>
-        <View style={businessCardStyles.textcontainer}>
-          <Text
-            style={[
-              businessCardStyles.titletext,
-              !isStringArabic(businessInvitee)
-                ? {
-                    fontFamily: "montserrat-medium-english"
-                  }
-                : {}
-            ]}
-          >
-            {businessInvitee}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            width: "30%"
-          }}
-        >
-          <LowerButton
-            cross
-            function={() => handleTeamInvite({ status: 0, v: tempInviteId })}
-            width={30}
-            height={30}
-            style={[
-              {
-                shadowOpacity: 0,
-                borderWidth: 1,
-                borderRadius: 30,
-                backgroundColor: globalColors.orange
-              },
-              globalStyles.orangeBorderColor
-            ]}
-          />
-          <LowerButton
-            checkmark
-            function={() => navigation.navigate("TeamInvite")}
-            width={30}
-            height={30}
-            style={{ shadowOpacity: 0 }}
-          />
-        </View>
-      </View>
+      {invites}
     </View>
   );
 };
+
+const mapStateToProps = state => ({
+  businessInvites: state.account.businessInvites,
+  invitedEmail: state.account.invitedEmail,
+  userInfo: state.auth.userInfo
+});
+
+export default connect(mapStateToProps, null)(InvitationCard);

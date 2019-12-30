@@ -28,6 +28,19 @@ class ManageTeam extends Component {
         loadingTeamMembers={this.props.loadingTeamMembers}
       />
     ));
+    let pendingInvites = this.props.pendingTeamInvites.map(invite => (
+      <TeamMember
+        key={invite.appuserid}
+        navigation={this.props.navigation}
+        member={invite}
+        screenProps={this.props.screenProps}
+        mainBusiness={this.props.mainBusiness}
+        loadingTeamMembers={this.props.loadingTeamMembers}
+        isPending={true}
+        inviteTeamMember={this.props.inviteTeamMember}
+      />
+    ));
+
     return (
       <SafeAreaView
         style={{ height: "100%" }}
@@ -55,6 +68,10 @@ class ManageTeam extends Component {
           }
         >
           {team}
+          <View style={{ top: 20 }}>
+            <Text style={styles.title}>Pending</Text>
+            {pendingInvites}
+          </View>
         </ScrollView>
         <AddMember
           mainBusiness={this.props.mainBusiness}
@@ -70,15 +87,14 @@ const mapStateToProps = state => ({
   mainBusiness: state.account.mainBusiness,
   userInfo: state.auth.userInfo,
   agencyTeamMembers: state.account.agencyTeamMembers,
+  pendingTeamInvites: state.account.pendingTeamInvites,
   loadingTeamMembers: state.account.loadingTeamMembers
 });
 
 const mapDispatchToProps = dispatch => ({
   getTeamMembers: businessId =>
-    dispatch(actionCreators.getTeamMembers(businessId))
+    dispatch(actionCreators.getTeamMembers(businessId)),
+  inviteTeamMember: info => dispatch(actionCreators.inviteTeamMember(info))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManageTeam);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageTeam);

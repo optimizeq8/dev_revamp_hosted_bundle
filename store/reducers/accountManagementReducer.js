@@ -25,7 +25,8 @@ const initialState = {
   tempInviteId: "",
   businessInvitee: "",
   invitedEmail: "",
-  teamInviteLoading: false
+  teamInviteLoading: false,
+  pendingTeamInvites: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -243,17 +244,21 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_TEAM_MEMBERS:
       let newMainBusinessRole = state.mainBusiness;
       let mainBusinessUser = {};
+      let pendingTeamInvites = [];
       //if a role of a member is updated by an admin,
       //update the user_role key in mainBusiness whenever they open the team list or refreash the list
-      mainBusinessUser = action.payload.find(
+      mainBusinessUser = action.payload.teamMembers.find(
         member => member.userid === state.mainBusiness.userid
       );
       if (mainBusinessUser)
         newMainBusinessRole["user_role"] = mainBusinessUser.user_role;
+
+      pendingTeamInvites = action.payload.pendingTeamInvites;
       return {
         ...state,
-        agencyTeamMembers: action.payload,
+        agencyTeamMembers: action.payload.teamMembers,
         mainBusiness: { ...state.mainBusiness, ...newMainBusinessRole },
+        pendingTeamInvites: pendingTeamInvites,
         loadingTeamMembers: false
       };
     case actionTypes.SET_UPDATED_TEAM_MEMBER:
@@ -303,6 +308,8 @@ const reducer = (state = initialState, action) => {
       };
     case actionTypes.SET_TEAMINV_LOADING:
       return { ...state, teamInviteLoading: action.payload };
+    case actionTypes.SET_BUSINESS_INVITES:
+      return { ...state, businessInvites: action.payload };
     default:
       return state;
   }

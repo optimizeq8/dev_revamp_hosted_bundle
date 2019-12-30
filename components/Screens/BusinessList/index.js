@@ -75,8 +75,9 @@ class BusinessList extends Component {
               }
               contentContainerStyle={styles.contentContainer}
             >
-              {this.props.businessInvitee &&
-              this.props.userInfo.email === this.props.invitedEmail ? (
+              {(this.props.businessInvitee &&
+                this.props.userInfo.email === this.props.invitedEmail) ||
+              this.props.businessInvites ? (
                 <InvitationCard
                   handleTeamInvite={this.props.handleTeamInvite}
                   tempInviteId={this.props.tempInviteId}
@@ -113,7 +114,8 @@ const mapStateToProps = state => ({
   businessesLoading: state.account.businessesLoading,
   businessInvitee: state.account.businessInvitee,
   tempInviteId: state.account.tempInviteId,
-  invitedEmail: state.account.invitedEmail
+  invitedEmail: state.account.invitedEmail,
+  businessInvites: state.account.businessInvites
 });
 
 const mapDispatchToProps = dispatch => ({
