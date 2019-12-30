@@ -61,7 +61,7 @@ class AdDetails extends Component {
               gender: "",
               languages: ["ar", "en"],
               min_age: 13,
-              max_age: 35
+              max_age: 50
             }
           ],
           interests: [{ category_id: [] }],
@@ -617,8 +617,8 @@ class AdDetails extends Component {
       ) {
         delete r.geos[0].region_id;
       }
-      if (r.demographics[0].max_age >= 35) {
-        r.demographics[0].max_age = "35+";
+      if (r.demographics[0].max_age >= 50) {
+        r.demographics[0].max_age = "50+";
       }
       if (
         r.hasOwnProperty("interests") &&
@@ -636,7 +636,7 @@ class AdDetails extends Component {
           {
             languages: this.props.languages.map(lang => lang.id),
             min_age: 13,
-            max_age: "35+"
+            max_age: "50+"
           }
         ],
         geos: [
@@ -739,8 +739,8 @@ class AdDetails extends Component {
       ) {
         delete rep.targeting.devices;
       }
-      if (rep.targeting.demographics[0].max_age >= 35) {
-        rep.targeting.demographics[0].max_age = "35+";
+      if (rep.targeting.demographics[0].max_age >= 50) {
+        rep.targeting.demographics[0].max_age = "50+";
       }
       rep.targeting = JSON.stringify(rep.targeting);
 

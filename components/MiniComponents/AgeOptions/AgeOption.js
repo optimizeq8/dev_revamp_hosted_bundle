@@ -18,7 +18,7 @@ import AgeIcon from "../../../assets/SVGs/AdDetails/AgeIcon";
 
 export default class AgeOption extends Component {
   state = {
-    values: [13, 35]
+    values: [13, 50]
   };
 
   componentDidMount() {
@@ -60,7 +60,7 @@ export default class AgeOption extends Component {
                 customMarkerRight={e => <RangeMarkers value={e.currentValue} />}
                 onValuesChange={this.multiSliderValuesChange}
                 min={13}
-                max={35}
+                max={50}
                 step={1}
                 selectedStyle={styles.selected}
                 unselectedStyle={{
