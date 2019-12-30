@@ -276,13 +276,6 @@ class AdType extends Component {
               <LowerButton function={this.navigationHandler} bottom={1} />
             </Animatable.View>
           </View>
-          <View>
-            <ContinueCampaign
-              tempAdType={this.props.adType}
-              navigation={this.props.navigation}
-              screenProps={this.props.screenProps}
-            />
-          </View>
         </Container>
       </SafeAreaView>
     );
