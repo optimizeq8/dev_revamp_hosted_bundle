@@ -89,9 +89,10 @@ class ContinueCampaign extends Component {
   handleContinue = () => {
     const { translate } = this.props.screenProps;
     segmentEventTrack("Button Clicked to resume previous campaign");
-
-    //checks if the old campaign dates are still applicable or not so
-    //it doesn't create a campaign with old dates
+    /**
+     * checks if the old campaign dates are still applicable or not so
+     * it doesn't create a campaign with old dates
+     */
     if (
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
@@ -129,8 +130,11 @@ class ContinueCampaign extends Component {
       }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.set_google_campaign_resumed(true);
-      //the app actually freezes for a few seconds when navigateToContinue runs so i delay
-      //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+      /**
+       * the app actually freezes for a few seconds when navigateToContinue runs so i delay
+       * it's exectution to desiplay a loader because if i don't the loader doesn't show up
+       */
+
       setTimeout(() => {
         // this.handleSubmition(false, false);
         this.navigateToContinue();
