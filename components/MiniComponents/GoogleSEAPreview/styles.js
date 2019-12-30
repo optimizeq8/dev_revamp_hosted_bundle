@@ -1,9 +1,5 @@
-import { StyleSheet, PixelRatio, I18nManager } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { StyleSheet, PixelRatio } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   previewBlock: {
@@ -55,14 +51,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 13
   },
-  subHeadings: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-bold",
-    fontSize: 15,
-    paddingVertical: hp("1")
-  },
-
   adIcon: {
     marginRight: 5,
     alignSelf: "center",
@@ -79,6 +67,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     marginBottom: 5,
     width: "100%"
+  },
+  descriptionText: {
+    color: "#1B10AB",
+    textAlign: "left"
   }
 });
 

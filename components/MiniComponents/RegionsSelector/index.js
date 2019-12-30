@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Button, Text, Item, Input, Icon, Content } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { Text, Item, Input, Icon } from "native-base";
 import LoadingScreen from "../LoadingScreen";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 
 //Styles
 import styles from "./styles";
 
+//Function
 import isUndefined from "lodash/isUndefined";
 
 class RegionsSelector extends Component {
@@ -41,15 +40,14 @@ class RegionsSelector extends Component {
       : Math.abs(num).toFixed(2);
   };
   render() {
-    // console.log("loca", this.props.locationsFetchedList);
     const { translate } = this.props.screenProps;
     if (this.props.loading) {
       return <LoadingScreen top={50} />;
     } else {
       let regionslist = this.state.filteredRegions.map(r => {
         var found = !isUndefined(this.props.locations.find(l => l === r.id));
-        // console.log("location", r.location);
         let textLocation = "";
+
         if (r.location.includes(", ")) {
           let locArray = r.location.split(", ");
           locArray = locArray.map(loc => translate(loc));
@@ -66,7 +64,7 @@ class RegionsSelector extends Component {
               this.props.onSelectRegions(r.id);
             }}
           >
-            <View style={{ flexDirection: "row", flex: 1 }}>
+            <View style={styles.regionTextView}>
               <Icon
                 type="MaterialCommunityIcons"
                 name={found ? "circle" : "circle-outline"}
@@ -75,67 +73,30 @@ class RegionsSelector extends Component {
                   { color: found ? "#FF9D00" : "#fff" }
                 ]}
               />
-              <Text
-                style={{
-                  fontFamily: "montserrat-bold",
-                  fontSize: 14,
-                  textAlign: "left",
-                  justifyContent: "center",
-                  alignSelf: "center",
-                  paddingLeft: 10,
-                  width: 180,
-                  color: "#fff"
-                }}
-                numberOfLines={2}
-              >
+              <Text style={styles.regionText} numberOfLines={2}>
                 {textLocation}
               </Text>
             </View>
-            <Text
-              style={{
-                // flex: 0,
-                fontFamily: "montserrat-bold-english",
-                color: "#fff",
-                fontSize: 14,
-                justifyContent: "center",
-                alignSelf: "center"
-                // marginRight: 10
-              }}
-            >
-              {this.kFormatter(r.reach)}
-            </Text>
+            <Text style={styles.reachText}>{this.kFormatter(r.reach)}</Text>
           </TouchableOpacity>
         );
       });
+
       return (
         <View style={styles.container}>
           <View style={styles.dataContainer}>
             <LocationIcon width={50} height={80} fill="#fff" />
-            {/* <Text style={styles.title}> Select REGIONS </Text> */}
 
             <View style={styles.slidercontainer}>
-              <Item
-                style={{
-                  marginBottom: 10,
-                  marginTop: 20,
-                  alignSelf: "center",
-                  width: 300,
-                  borderColor: "#0000",
-                  backgroundColor: "rgba(0,0,0,0.15)",
-                  borderRadius: 30,
-                  paddingHorizontal: 15
-                }}
-              >
-                <SearchIcon width={18} height={18} stroke="#fff" style={{}} />
-
+              <Item style={styles.searchbarContainer}>
+                <SearchIcon width={18} height={18} stroke="#fff" />
                 <Input
                   placeholder={translate("Search Region") + "..."}
                   style={styles.searchInputText}
                   placeholderTextColor="#fff"
                   onChangeText={value => {
-                    let filteredR = this.props.locationsFetchedList.filter(c =>
-                      // console.log("c", c)
-                      {
+                    let filteredR = this.props.locationsFetchedList.filter(
+                      c => {
                         let textLocation = "";
                         if (c.location.includes(", ")) {
                           let locArray = c.location.split(", ");
@@ -153,12 +114,7 @@ class RegionsSelector extends Component {
                   }}
                 />
               </Item>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
+              <View style={styles.regionsHeader}>
                 <Text uppercase style={styles.title}>
                   {translate("Regions")}
                 </Text>
@@ -167,30 +123,10 @@ class RegionsSelector extends Component {
                 </Text>
               </View>
               <View style={styles.scrollContainer}>
-                <ScrollView
-                // scrollEnabled={true}
-                // bounces={false}
-                // style={styles.countryScrollContainer}
-                >
-                  {/* <Content
-                //   scrollEnabled={false}
-                padder
-                indicatorStyle="white"
-                contentContainerStyle={styles.contentContainer}
-                 >*/}
-                  {regionslist}
-                  {/* </Content> */}
-                </ScrollView>
+                <ScrollView>{regionslist}</ScrollView>
               </View>
             </View>
           </View>
-
-          {/* <Button
-            style={styles.button}
-            onPress={() => this.props._handleMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button> */}
         </View>
       );
     }

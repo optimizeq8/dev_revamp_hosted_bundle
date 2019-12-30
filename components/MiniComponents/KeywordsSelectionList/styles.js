@@ -11,93 +11,23 @@ export const colors = {
   background2: "#751AFF"
 };
 const styles = StyleSheet.create({
-  scrollViewContainer: {
-    width: "100%",
-    // flex: 1,
-    maxHeight: hp("25%")
-  },
-  safeAreaContainer: {
-    height: "100%",
-    width: "100%"
-  },
-  dataContainer: {
-    alignItems: "center",
-    width: "100%",
-    paddingTop: 30
-  },
-  title: {
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 16,
-    fontFamily: "montserrat-bold",
-    paddingTop: 20,
-    alignSelf: "center"
-  },
-  subTitle: {
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    // width: 150,
-    paddingTop: 20,
-    alignSelf: "center"
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-between"
-  },
-  button: {
-    backgroundColor: "#FF9D00",
-    alignSelf: "center",
-    width: 55,
-    height: 55,
-    borderRadius: 27.5,
-    borderColor: "transparent",
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    marginBottom: 40
-  },
-  icon: {
-    fontSize: 35,
-    color: "#fff",
-    paddingLeft: 5,
-    alignSelf: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  inactivetext: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    color: "#fff"
-    // paddingLeft: 10
-  },
-  activetext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 16,
-    color: globalColors.orange
-  },
-  optionsContainer: {
-    flexDirection: "column",
-    // paddingTop: 20,
-    width: wp("80%")
-    // flex: 1
-  },
   optionsRowContainer: {
     flexDirection: "row",
     alignItems: "center",
     paddingBottom: 20
   },
-  optionsIconSize: {
-    fontSize: 25
+  inactivetext: {
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    color: "#fff"
   },
   optionsTextContainer: {
     textAlign: "center",
     paddingLeft: 10
+  },
+  optionsContainer: {
+    flexDirection: "column",
+    width: wp("80%")
   },
   searchInputText: {
     fontFamily: "montserrat-regular",
@@ -107,6 +37,63 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     height: 37
+  },
+  searchfield: {
+    marginBottom: 10,
+    marginTop: 20,
+    alignSelf: "center",
+    width: 300,
+    borderColor: "#0000",
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 30,
+    paddingHorizontal: 15
+  },
+  infoText: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-regular",
+    fontSize: 14,
+    width: 250,
+    paddingTop: 50,
+    alignSelf: "center"
+  },
+  scrollViewContainer: {
+    width: "100%",
+    maxHeight: hp("25%")
+  },
+  selectedContainer: {
+    width: "100%",
+    height: "40%",
+    marginTop: 20,
+    padding: 5,
+    borderRadius: 10
+  },
+  selectedScrollView: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  resetText: {
+    alignSelf: "center",
+    paddingTop: 20,
+    margin: 0
+  },
+  icon: {
+    color: "#fff",
+    fontSize: 20,
+    marginRight: 10
+  },
+  selectedItem: {
+    overflow: "hidden",
+    justifyContent: "center",
+    height: 26,
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 3,
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0
   }
 });
 

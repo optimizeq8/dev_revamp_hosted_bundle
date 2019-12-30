@@ -3,7 +3,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Text, Icon } from "native-base";
 import styles from "./styles";
-import globalStyles, { globalColors } from "../../../GlobalStyles";
+import globalStyles from "../../../GlobalStyles";
 
 export default Keyword = props => {
   let { _handler, keyword, type = "Keyword" } = props;
@@ -33,5 +33,6 @@ export default Keyword = props => {
 
 Keyword.propTypes = {
   _handler: PropTypes.func.isRequired,
-  keyword: PropTypes.string.isRequired
+  keyword: PropTypes.string.isRequired,
+  type: PropTypes.string
 };

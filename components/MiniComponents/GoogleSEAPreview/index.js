@@ -107,12 +107,7 @@ export default GoogleSEAPreview = props => {
           </View>
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: "column",
-          alignSelf: "flex-start"
-        }}
-      >
+      <View style={styles.headersCol}>
         <Text
           uppercase
           style={[
@@ -138,12 +133,7 @@ export default GoogleSEAPreview = props => {
         </View>
       </View>
       <View style={styles.descriptionGrayLine} />
-      <View
-        style={{
-          flexDirection: "column",
-          alignSelf: "flex-start"
-        }}
-      >
+      <View style={styles.headersCol}>
         <Text
           uppercase
           style={[
@@ -155,9 +145,7 @@ export default GoogleSEAPreview = props => {
         >
           {translate("Description")}
         </Text>
-        <Text
-          style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
-        >
+        <Text style={[styles.headlineText, styles.descriptionText]}>
           {description ||
             translate("Add") +
               " " +
@@ -165,9 +153,7 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("1")}
         </Text>
-        <Text
-          style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
-        >
+        <Text style={[styles.headlineText, styles.descriptionText]}>
           {description2 ||
             translate("Add") +
               " " +
