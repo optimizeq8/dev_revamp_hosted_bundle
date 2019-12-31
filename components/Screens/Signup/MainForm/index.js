@@ -285,7 +285,4 @@ const mapDispatchToProps = dispatch => ({
   resetRegister: () => dispatch(actionCreators.resetRegister()),
   getTempUserInfo: tempId => dispatch(actionCreators.getTempUserInfo(tempId))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MainForm);

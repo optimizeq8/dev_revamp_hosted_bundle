@@ -8,6 +8,16 @@ import { showMessage } from "react-native-flash-message";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 export default class TeamMember extends Component {
+  resendInvite = () => {
+    let { firstname, lastname, email, user_role } = this.props.member;
+    this.props.inviteTeamMember({
+      firstname,
+      lastname,
+      email,
+      user_role,
+      businessid: this.props.mainBusiness.businessid
+    });
+  };
   handleUserRole = () =>
     this.props.mainBusiness.user_role === "1"
       ? this.props.navigation.push("AddOrEditTeamMember", {
@@ -20,10 +30,14 @@ export default class TeamMember extends Component {
         });
   render() {
     const { translate } = this.props.screenProps;
-    let { member, loadingTeamMembers } = this.props;
+    let { member, loadingTeamMembers, isPending } = this.props;
     let userRoles = ["Admin", "Campaign manager", "Client"];
     return (
-      <TouchableOpacity onPress={this.handleUserRole} style={styles.teamMember}>
+      <TouchableOpacity
+        disabled={isPending}
+        onPress={this.handleUserRole}
+        style={styles.teamMember}
+      >
         <Icons.PersonalInfo
           style={styles.teamMemberIconStyle}
           width={30}
@@ -48,7 +62,16 @@ export default class TeamMember extends Component {
             </Text>
           )}
         </View>
-        <PenIcon width={20} height={20} />
+        {isPending ? (
+          <TouchableOpacity
+            disabled={loadingTeamMembers}
+            onPress={this.resendInvite}
+          >
+            <Text style={styles.resendStyle}>resend</Text>
+          </TouchableOpacity>
+        ) : (
+          <PenIcon width={20} height={20} />
+        )}
       </TouchableOpacity>
     );
   }

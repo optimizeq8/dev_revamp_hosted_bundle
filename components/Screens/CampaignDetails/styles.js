@@ -425,6 +425,11 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     margin: 5
+},
+ xAxisStyle: {
+    position: "absolute",
+    backgroundColor: "#000",
+    width: "15%"
   }
 });
 

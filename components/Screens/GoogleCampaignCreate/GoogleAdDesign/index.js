@@ -238,6 +238,11 @@ class GoogleAdDesign extends Component {
       }
     }
   };
+  focusTheField = fieldName => {
+    this.inputs[fieldName]._root.focus();
+  };
+  inputs = {};
+
   render() {
     const { translate } = this.props.screenProps;
     const rejected = this.props.navigation.getParam("rejected", false);
@@ -369,6 +374,11 @@ class GoogleAdDesign extends Component {
                         }
                       );
                     }}
+                    onSubmitEditing={() => {
+                      this.focusTheField("inputH2");
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType={"next"}
                   />
                 </Item>
               </Animatable.View>
@@ -438,6 +448,14 @@ class GoogleAdDesign extends Component {
                         }
                       );
                     }}
+                    ref={input => {
+                      this.inputs["inputH2"] = input;
+                    }}
+                    onSubmitEditing={() => {
+                      this.focusTheField("inputH3");
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType={"next"}
                   />
                 </Item>
               </Animatable.View>
@@ -507,6 +525,14 @@ class GoogleAdDesign extends Component {
                         }
                       );
                     }}
+                    onSubmitEditing={() => {
+                      this.focusTheField("inputURL");
+                    }}
+                    ref={input => {
+                      this.inputs["inputH3"] = input;
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType={"next"}
                   />
                 </Item>
               </Animatable.View>
@@ -597,6 +623,14 @@ class GoogleAdDesign extends Component {
                         )
                       });
                     }}
+                    onSubmitEditing={() => {
+                      this.focusTheField("inputD");
+                    }}
+                    ref={input => {
+                      this.inputs["inputURL"] = input;
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType={"next"}
                   />
                 </Item>
               </Animatable.View>
@@ -674,6 +708,14 @@ class GoogleAdDesign extends Component {
                         }
                       );
                     }}
+                    onSubmitEditing={() => {
+                      this.focusTheField("inputD2");
+                    }}
+                    ref={input => {
+                      this.inputs["inputD"] = input;
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType={"next"}
                   />
                 </Item>
               </Animatable.View>
@@ -753,6 +795,11 @@ class GoogleAdDesign extends Component {
                         }
                       );
                     }}
+                    ref={input => {
+                      this.inputs["inputD2"] = input;
+                    }}
+                    blurOnSubmit={true}
+                    returnKeyType={"done"}
                   />
                 </Item>
               </Animatable.View>

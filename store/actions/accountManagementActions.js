@@ -497,7 +497,13 @@ export const getTeamMembers = business_id => {
       .get(`businessMembers/${business_id}`)
       .then(res => res.data)
       .then(data => {
-        dispatch({ type: actionTypes.SET_TEAM_MEMBERS, payload: data.data });
+        dispatch({
+          type: actionTypes.SET_TEAM_MEMBERS,
+          payload: {
+            teamMembers: data.data,
+            pendingTeamInvites: data.pending_invitation_data
+          }
+        });
       })
       .catch(err => {
         // console.log("getTeamMembers", err);
@@ -624,6 +630,21 @@ export const resetBusinessInvitee = () => {
     dispatch({
       type: actionTypes.RESET_INVITEE_INFO
     });
+  };
+};
+
+export const getBusinessInvites = () => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        dispatch({
+          payload: data.data,
+          type: actionTypes.SET_BUSINESS_INVITES
+        });
+      });
   };
 };
 
