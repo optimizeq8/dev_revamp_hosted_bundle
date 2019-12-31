@@ -30,7 +30,7 @@ class ManageTeam extends Component {
     ));
     let pendingInvites = [];
     if (this.props.pendingTeamInvites)
-      this.props.pendingTeamInvites.map(invite => (
+      pendingInvites = this.props.pendingTeamInvites.map(invite => (
         <TeamMember
           key={invite.appuserid}
           navigation={this.props.navigation}
@@ -59,6 +59,7 @@ class ManageTeam extends Component {
           height={60}
         />
         <ScrollView
+          contentContainerStyle={{ paddingBottom: "40%" }}
           refreshControl={
             <RefreshControl
               tintColor={"white"}
@@ -70,7 +71,7 @@ class ManageTeam extends Component {
           }
         >
           {team}
-          {this.props.pendingTeamInvites && (
+          {this.props.pendingTeamInvites.length > 0 && (
             <View style={{ top: 20 }}>
               <Text style={styles.title}>Pending</Text>
               {pendingInvites}
