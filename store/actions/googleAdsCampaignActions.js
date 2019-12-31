@@ -347,7 +347,7 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
  * @param {Object} info has keys for targetting that include (gender/age/budget/keywords)
  * @returns {Function} an action to set the targetting info and the campaign transactions info
  */
-export const create_google_SE_campaign_ad_targetting = (info, segmentInfo) => {
+export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,

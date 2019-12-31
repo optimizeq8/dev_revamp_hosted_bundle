@@ -601,9 +601,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setCampaignInfoForTransaction: data =>
     dispatch(actionCreators.setCampaignInfoForTransaction(data)),
-  create_google_SE_campaign_ad_targetting: (info, segmentInfo) =>
+  create_google_SE_campaign_ad_targeting: (info, segmentInfo) =>
     dispatch(
-      actionCreators.create_google_SE_campaign_ad_targetting(info, segmentInfo)
+      actionCreators.create_google_SE_campaign_ad_targeting(info, segmentInfo)
     ),
   get_google_SE_keywords: (keyword, campaign_id, businessid) =>
     dispatch(
