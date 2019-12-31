@@ -620,20 +620,7 @@ class AdObjective extends Component {
               ) : (
                 <LowerButton
                   isRTL={I18nManager.isRTL}
-                  style={
-                    I18nManager.isRTL
-                      ? {
-                          width: 65,
-                          height: 65,
-                          backgroundColor: "#FF9D00",
-                          borderRadius: 45,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingLeft: 4
-                          // padding: 20
-                        }
-                      : {}
-                  }
+                  style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
                   width={I18nManager.isRTL ? 25 : null}
                   height={I18nManager.isRTL ? 25 : null}
                   bottom={-5}
