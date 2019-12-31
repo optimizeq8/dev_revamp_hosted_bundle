@@ -28,18 +28,20 @@ class ManageTeam extends Component {
         loadingTeamMembers={this.props.loadingTeamMembers}
       />
     ));
-    let pendingInvites = this.props.pendingTeamInvites.map(invite => (
-      <TeamMember
-        key={invite.appuserid}
-        navigation={this.props.navigation}
-        member={invite}
-        screenProps={this.props.screenProps}
-        mainBusiness={this.props.mainBusiness}
-        loadingTeamMembers={this.props.loadingTeamMembers}
-        isPending={true}
-        inviteTeamMember={this.props.inviteTeamMember}
-      />
-    ));
+    let pendingInvites = [];
+    if (this.props.pendingTeamInvites)
+      this.props.pendingTeamInvites.map(invite => (
+        <TeamMember
+          key={invite.appuserid}
+          navigation={this.props.navigation}
+          member={invite}
+          screenProps={this.props.screenProps}
+          mainBusiness={this.props.mainBusiness}
+          loadingTeamMembers={this.props.loadingTeamMembers}
+          isPending={true}
+          inviteTeamMember={this.props.inviteTeamMember}
+        />
+      ));
 
     return (
       <SafeAreaView
@@ -68,10 +70,12 @@ class ManageTeam extends Component {
           }
         >
           {team}
-          <View style={{ top: 20 }}>
-            <Text style={styles.title}>Pending</Text>
-            {pendingInvites}
-          </View>
+          {this.props.pendingTeamInvites && (
+            <View style={{ top: 20 }}>
+              <Text style={styles.title}>Pending</Text>
+              {pendingInvites}
+            </View>
+          )}
         </ScrollView>
         <AddMember
           mainBusiness={this.props.mainBusiness}
