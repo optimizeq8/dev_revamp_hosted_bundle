@@ -8,7 +8,13 @@ import * as Segment from "expo-analytics-segment";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { View, TouchableOpacity, Platform, BackHandler } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Platform,
+  BackHandler,
+  I18nManager
+} from "react-native";
 import { Content, Text, Container, Footer } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { Modal } from "react-native-paper";
@@ -25,6 +31,7 @@ import * as actionCreators from "../../../../store/actions";
 //icons
 import PlusAddIcon from "../../../../assets/SVGs/PlusAdd";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import BackButton from "../../../../assets/SVGs/BackButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
 // Style
 import styles from "./styles";
@@ -820,9 +827,17 @@ class AdCover extends Component {
               <View style={styles.footerButtonsContainer}>
                 <TouchableOpacity
                   onPress={this._handleSubmission}
-                  style={styles.button}
+                  style={[
+                    styles.button,
+
+                    I18nManager.isRTL && styles.proceedButtonRTL
+                  ]}
                 >
-                  <ForwardButton width={wp(24)} height={hp(8)} />
+                  {I18nManager.isRTL ? (
+                    <BackButton />
+                  ) : (
+                    <ForwardButton width={wp(24)} height={hp(8)} />
+                  )}
                 </TouchableOpacity>
               </View>
             ) : (

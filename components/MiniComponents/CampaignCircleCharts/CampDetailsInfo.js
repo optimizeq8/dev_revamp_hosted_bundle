@@ -34,7 +34,7 @@ export default props => {
             new Date().setHours(0, 0, 0, 0) >=
               new Date(campaign.start_time).setHours(0, 0, 0, 0) &&
             campaign.campaign_end === "0" ? (
-              <Text style={styles.subtext}>
+              <Text style={[styles.subtext]}>
                 {TimeDifferance(currentDate, campaign.end_time) === 0
                   ? 1
                   : TimeDifferance(currentDate, campaign.end_time)}{" "}
@@ -61,7 +61,10 @@ export default props => {
           />
           {statusOfCampaign !== "ended" && (
             <Text style={[styles.chartSubtext, { alignSelf: "flex-start" }]}>
-              {`Campaign ${statusOfCampaign} on ` +
+              {translate(`Campaign {{statusOfCampaign}} on`, {
+                statusOfCampaign: statusOfCampaign
+              }) +
+                " " +
                 dateFormat(
                   new Date(
                     statusOfCampaign === "starts"

@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
     width: "35%"
   },
   chartChoiceText: {
-    fontSize: 12 / PixelRatio.getFontScale()
+    fontSize: 11 / PixelRatio.getFontScale()
   },
   pauseModalTitle: {
     fontFamily: "montserrat-bold",
@@ -422,6 +422,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderRadius: 25
+  },
+  placeholderView: {
+    margin: 5
+},
+ xAxisStyle: {
+    position: "absolute",
+    backgroundColor: "#000",
+    width: "15%"
   }
 });
 

@@ -555,7 +555,12 @@ const styles = StyleSheet.create({
     color: "#FF9D00",
     textAlign: "left"
   },
-  infoButton: { alignSelf: "flex-end" }
+  infoButton: { alignSelf: "flex-end" },
+  xAxisStyle: {
+    position: "absolute",
+    backgroundColor: "#000",
+    width: "15%"
+  }
 });
 
 export default styles;

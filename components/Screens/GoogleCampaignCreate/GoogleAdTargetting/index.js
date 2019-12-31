@@ -577,7 +577,14 @@ class GoogleAdTargetting extends Component {
                     style={{ width: wp(8), height: hp(8) }}
                   />
                 ) : (
-                  <LowerButton bottom={5} function={this._handleSubmission} />
+                  <LowerButton
+                    isRTL={I18nManager.isRTL}
+                    style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                    width={I18nManager.isRTL ? 25 : null}
+                    height={I18nManager.isRTL ? 25 : null}
+                    bottom={5}
+                    function={this._handleSubmission}
+                  />
                 )}
               </Content>
             </Container>

@@ -70,7 +70,7 @@ class CampaignCircleChart extends Component {
               detail={detail}
             />
           )}
-          <View style={{ paddingHorizontal: 12 }}>
+          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
             {detail && (
               <SingleMetric
                 detail={detail}

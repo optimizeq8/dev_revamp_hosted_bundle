@@ -28,18 +28,20 @@ class ManageTeam extends Component {
         loadingTeamMembers={this.props.loadingTeamMembers}
       />
     ));
-    let pendingInvites = this.props.pendingTeamInvites.map(invite => (
-      <TeamMember
-        key={invite.appuserid}
-        navigation={this.props.navigation}
-        member={invite}
-        screenProps={this.props.screenProps}
-        mainBusiness={this.props.mainBusiness}
-        loadingTeamMembers={this.props.loadingTeamMembers}
-        isPending={true}
-        inviteTeamMember={this.props.inviteTeamMember}
-      />
-    ));
+    let pendingInvites = [];
+    if (this.props.pendingTeamInvites)
+      pendingInvites = this.props.pendingTeamInvites.map(invite => (
+        <TeamMember
+          key={invite.appuserid}
+          navigation={this.props.navigation}
+          member={invite}
+          screenProps={this.props.screenProps}
+          mainBusiness={this.props.mainBusiness}
+          loadingTeamMembers={this.props.loadingTeamMembers}
+          isPending={true}
+          inviteTeamMember={this.props.inviteTeamMember}
+        />
+      ));
 
     return (
       <SafeAreaView
@@ -57,6 +59,7 @@ class ManageTeam extends Component {
           height={60}
         />
         <ScrollView
+          contentContainerStyle={{ paddingBottom: "40%" }}
           refreshControl={
             <RefreshControl
               tintColor={"white"}
@@ -68,10 +71,12 @@ class ManageTeam extends Component {
           }
         >
           {team}
-          <View style={{ top: 20 }}>
-            <Text style={styles.title}>Pending</Text>
-            {pendingInvites}
-          </View>
+          {this.props.pendingTeamInvites.length > 0 && (
+            <View style={{ top: 20 }}>
+              <Text style={styles.title}>Pending</Text>
+              {pendingInvites}
+            </View>
+          )}
         </ScrollView>
         <AddMember
           mainBusiness={this.props.mainBusiness}

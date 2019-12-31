@@ -6,6 +6,8 @@ import { View, TouchableOpacity } from "react-native";
 import { Video } from "expo-av";
 import styles from "./styles";
 import { ActivityIndicator } from "react-native-paper";
+import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
+
 const preview = {
   uri:
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
@@ -74,9 +76,15 @@ export default props => {
           width: "100%"
         }}
       >
-        <Text uppercase style={globalStyles.title}>
-          {translate("Media")}
-        </Text>
+        {loading ? (
+          <View style={styles.placeholderView}>
+            <PlaceholderLine />
+          </View>
+        ) : (
+          <Text uppercase style={globalStyles.title}>
+            {translate("Media")}
+          </Text>
+        )}
       </View>
       {loading ? (
         <View style={styles.backgroundViewWrapper}>

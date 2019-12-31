@@ -193,6 +193,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     elevation: -1
+  },
+  proceedButtonRTL: {
+    width: 55,
+    height: 55,
+    backgroundColor: "#FF9D00",
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

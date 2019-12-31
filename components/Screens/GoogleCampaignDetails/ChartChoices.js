@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
-import { Button } from "native-base";
+import { Button, Text } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -27,9 +27,11 @@ export default class ChartChoices extends Component {
         ]}
       >
         <Text
+          uppercase
           style={[
             styles.choiceText,
             {
+              fontSize: 11,
               color:
                 this.state.selectedChoice !== choice
                   ? globalColors.orange

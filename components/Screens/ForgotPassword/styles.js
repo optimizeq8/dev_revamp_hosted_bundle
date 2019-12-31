@@ -58,6 +58,16 @@ const styles = StyleSheet.create({
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
+  },
+  proceedButtonRTL: {
+    width: 65,
+    height: 65,
+    backgroundColor: "#FF9D00",
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

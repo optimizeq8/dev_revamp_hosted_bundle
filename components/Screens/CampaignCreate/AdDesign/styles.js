@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   footerButtonsContainer: {
     display: "flex",
-    flexDirection: I18nManager.isRTL ? "row-reverse" : "row"
+    flexDirection: "row"
   },
   errorMsg: {
     textAlign: "center",
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
   },
   collectionAdDownloadPreviewContainer: {
     display: "flex",
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "flex-end",
     position: "absolute",
     bottom: 20
@@ -578,9 +578,9 @@ const styles = StyleSheet.create({
   },
   collectionScrollViewContainer: {
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     alignItems: "center",
-    flex: 1,
+    flex: 1
   },
   snapAdDownloadView: {
     flex: 1,
@@ -589,10 +589,10 @@ const styles = StyleSheet.create({
   },
   collectionAdMainMediaImage: {
     flex: 1,
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     borderRadius: 20,
-    marginHorizontal: 2,
+    marginHorizontal: 2
   },
   collectionAdDownloadView: {
     flex: 1,
@@ -600,6 +600,15 @@ const styles = StyleSheet.create({
     width: 350,
     alignItems: "center",
     justifyContent: "center"
+  },
+  proceedButtonRTL: {
+    backgroundColor: "#FF9D00",
+    width: wp(13),
+    height: hp(6),
+    borderRadius: 26,
+    // alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 3
   }
 });
 

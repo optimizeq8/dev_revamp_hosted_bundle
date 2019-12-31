@@ -59,7 +59,7 @@ class CampaignDetails extends Component {
       imageIsLoading: true,
       expand: false,
       minHeight: 0,
-      maxHeight: heightPercentageToDP(53)
+      maxHeight: heightPercentageToDP(50)
     };
   }
 

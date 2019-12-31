@@ -13,9 +13,9 @@ export default Chart = props => {
   let x = (spends / budget) * 100;
 
   return (
-    <View>
+    <View style={{ alignSelf: "center", marginVertical: 10 }}>
       <AnimatedCircularProgress
-        size={detail ? 180 : 80}
+        size={detail ? 160 : 80}
         width={detail ? 12 : 5}
         fill={x}
         rotation={0}
