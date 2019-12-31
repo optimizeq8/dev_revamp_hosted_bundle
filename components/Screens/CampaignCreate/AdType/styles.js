@@ -93,6 +93,16 @@ const styles = StyleSheet.create({
   media: {
     width: "100%",
     height: "100%"
+  },
+  proceedButtonRTL: {
+    width: 55,
+    height: 55,
+    backgroundColor: "#FF9D00",
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

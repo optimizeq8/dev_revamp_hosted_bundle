@@ -145,6 +145,16 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     flex: 1,
     height: "100%"
+  },
+  proceedButtonRTL: {
+    width: 55,
+    height: 55,
+    backgroundColor: "#FF9D00",
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

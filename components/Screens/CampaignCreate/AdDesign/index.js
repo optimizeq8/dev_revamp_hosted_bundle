@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   Platform,
   BackHandler,
-  Image as RNImage
+  Image as RNImage,
+  I18nManager
 } from "react-native";
 import { Content, Text, Container, Footer, Button } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
@@ -40,6 +41,7 @@ import * as actionCreators from "../../../../store/actions";
 import EyeIcon from "../../../../assets/SVGs/Eye";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
 import InfoIcon from "../../../../assets/SVGs/InfoIcon";
+import BackButton from "../../../../assets/SVGs/BackButton";
 
 // Style
 import styles from "./styles";
@@ -1249,9 +1251,16 @@ class AdDesign extends Component {
                               this.props.screenProps
                             );
                           }}
-                          style={styles.button}
+                          style={[
+                            styles.button,
+                            I18nManager.isRTL && styles.proceedButtonRTL
+                          ]}
                         >
-                          <ForwardButton width={wp(24)} height={hp(8)} />
+                          {I18nManager.isRTL ? (
+                            <BackButton />
+                          ) : (
+                            <ForwardButton width={wp(24)} height={hp(8)} />
+                          )}
                         </TouchableOpacity>
                       ) : (
                         <Text style={styles.footerTextStyle}>

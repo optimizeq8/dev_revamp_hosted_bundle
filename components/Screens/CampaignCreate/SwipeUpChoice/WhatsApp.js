@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
-  Modal
+  Modal,
+  I18nManager
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { Text, Item, Input, Icon, Button, Container } from "native-base";
@@ -784,8 +785,12 @@ class WhatsApp extends Component {
               <ForwardLoading bottom={-5} />
             ) : (
               <LowerButton
+                isRTL={I18nManager.isRTL}
+                style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                width={I18nManager.isRTL ? 25 : null}
+                height={I18nManager.isRTL ? 25 : null}
+                bottom={I18nManager.isRTL ? 0 : 0}
                 // checkmark={true}
-                bottom={0}
                 function={this.checkInstaAccountChange}
               />
             )}

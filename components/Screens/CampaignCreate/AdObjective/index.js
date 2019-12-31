@@ -5,7 +5,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
-  ScrollView
+  ScrollView,
+  I18nManager
 } from "react-native";
 import {
   Content,
@@ -617,7 +618,27 @@ class AdObjective extends Component {
                   style={{ width: wp(8), height: hp(8) }}
                 />
               ) : (
-                <LowerButton bottom={-5} function={this._handleSubmission} />
+                <LowerButton
+                  isRTL={I18nManager.isRTL}
+                  style={
+                    I18nManager.isRTL
+                      ? {
+                          width: 65,
+                          height: 65,
+                          backgroundColor: "#FF9D00",
+                          borderRadius: 45,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          paddingLeft: 4
+                          // padding: 20
+                        }
+                      : {}
+                  }
+                  width={I18nManager.isRTL ? 25 : null}
+                  height={I18nManager.isRTL ? 25 : null}
+                  bottom={-5}
+                  function={this._handleSubmission}
+                />
               )}
             </ScrollView>
           </Container>
