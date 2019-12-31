@@ -123,7 +123,14 @@ class Dashboard extends Component {
         this.signal.token
       );
     }
-
+    if (
+      this.state.open &&
+      this.props.mainBusiness &&
+      prevProps.mainBusiness &&
+      prevProps.mainBusiness.businessid !== this.props.mainBusiness.businessid
+    ) {
+      this.closeAnimation();
+    }
     if (this.props.adType !== prevProps.adType) {
       this.setState({
         adTypeChanged: true
