@@ -1,10 +1,4 @@
 import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
-import { globalColors } from "../../../GlobalStyles";
 
 const styles = StyleSheet.create({
   cardStyle: {
@@ -16,16 +10,26 @@ const styles = StyleSheet.create({
     shadowColor: "#6268FF",
     shadowOffset: { height: 6, width: 0 }
   },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "center"
+  },
   header: {
     flex: 1,
     flexDirection: "row",
     paddingVertical: 0,
     alignItems: "center"
   },
+  headerContent: {
+    display: "flex",
+    flexDirection: "column",
+    paddingHorizontal: 10,
+    flex: 1
+  },
   textcontainer: {
     flex: 1,
     flexDirection: "column"
-    // alignItems: "flex-start"
   },
   titleText: {
     color: "#fff",
@@ -33,95 +37,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "left"
   },
-
-  subtext: {
-    paddingTop: 5,
-    fontFamily: "montserrat-bold",
-    fontSize: 10,
-    textAlign: "left",
-    color: "#fff"
-  },
   campaignButton: {
     flex: 1,
     padding: 20,
     paddingVertical: 20
-  },
-  chart: {
-    paddingHorizontal: 5,
-    top: 15
-  },
-  chartText: {
-    color: globalColors.orange,
-    fontFamily: "montserrat-medium",
-    fontSize: 12,
-    marginLeft: 10
-  },
-  chartSubtext: {
-    alignSelf: "center",
-    paddingTop: 17,
-    fontFamily: "montserrat-regular",
-    fontSize: 12,
-    color: "#fff",
-    fontFamily: "montserrat-bold"
-  },
-  containerStyle: {
-    position: "absolute",
-    left: "80%",
-    top: "87%",
-    backgroundColor: "transparent",
-    borderRadius: 20
-  },
-  toggleStyle: {
-    width: 65,
-    height: 20,
-    borderRadius: 20,
-    padding: 0
-  },
-  icon: {
-    color: "#fff",
-    fontSize: 40
   },
   reviewText: {
     fontFamily: "montserrat-bold",
     textAlign: "left",
     fontSize: 13,
     paddingHorizontal: 5,
-    // padding: 3,
     color: "#fff",
     textTransform: "uppercase"
-  },
-  campaignInfo: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    width: widthPercentageToDP(40),
-    left: 10
-  },
-  campaignIcons: {
-    top: 10,
-    left: 10,
-    flexDirection: "row",
-    alignItems: "flex-end"
-  },
-  campaignNumbers: {
-    top: 6,
-    fontFamily: "montserrat-medium",
-    right: 10
-  },
-  toggleTextLeft: {
-    fontSize: 11,
-    position: "absolute",
-    top: -7,
-    left: 12,
-    fontFamily: "montserrat-light",
-    color: "#fff"
-  },
-  toggleTextRight: {
-    fontSize: 9.5,
-    position: "absolute",
-    top: -7,
-    // left: 12,
-    fontFamily: "montserrat-light",
-    color: "#fff"
   },
   adStatus: {
     borderRadius: 16,
@@ -129,19 +56,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  circleStyle: {
-    width: 17,
-    height: 17,
-    borderRadius: 50
-  },
   chartContainer: {
     flexDirection: "row",
     flex: 1
   },
-  iconImpression: {
-    bottom: 3
+
+  circleIcon: {
+    color: "#fff",
+    fontSize: 16
   },
-  circleIcon: { color: "#fff", fontSize: 16 },
   cardText: {
     color: "#fff",
     fontFamily: "montserrat-bold",

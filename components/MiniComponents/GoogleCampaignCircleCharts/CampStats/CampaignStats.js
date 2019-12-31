@@ -1,13 +1,8 @@
-import React, { Component, PureComponent } from "react";
-import { Text, View } from "react-native";
+import React, { PureComponent } from "react";
+import { View } from "react-native";
 import { connect } from "react-redux";
-import PlaceholderLine from "../../../MiniComponents/PlaceholderLine";
 import SingleMetric from "./SingleMetric";
-//styles
 import styles from "../styles";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import globalStyles, { globalColors } from "../../../../GlobalStyles";
-import formatNumber from "../../../formatNumber";
 
 class CampaignStats extends PureComponent {
   renderMetrics = item => {
@@ -45,7 +40,6 @@ class CampaignStats extends PureComponent {
 
   render() {
     let { googleCampaignOverall, detail } = this.props;
-    const { translate } = this.props.screenProps;
     let campaignMetrics = [];
     Object.keys(googleCampaignOverall).map((metric, i) => {
       campaignMetrics.push({
@@ -62,13 +56,7 @@ class CampaignStats extends PureComponent {
     while (campaignMetrics.length > 0)
       metrics.push(campaignMetrics.splice(0, 3));
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignSelf: "center"
-          // left: 10
-        }}
-      >
+      <View style={styles.metricRow}>
         {metrics.map(metric => this.renderMetrics(metric))}
       </View>
     );

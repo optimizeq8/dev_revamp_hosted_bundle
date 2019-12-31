@@ -1,27 +1,19 @@
 import React, { Component } from "react";
 import { View, ScrollView, I18nManager } from "react-native";
+import { Text } from "native-base";
 import Chart from "../CircleChart/Chart";
-import ImpressionsIcons from "../../../assets/SVGs/CampaignCards/ImpressionsIcon";
-import SwipeUpsIcon from "../../../assets/SVGs/CampaignCards/SwipeUpsIcon";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
-import styles from "./styles";
-import formatNumber from "../../formatNumber";
-import ReachIcon from "../../../assets/SVGs/CampaignDetail/ReachIcon";
-import FrequencyIcon from "../../../assets/SVGs/CampaignDetail/FrequencyIcon";
-import CTRIcon from "../../../assets/SVGs/Performance/CTR";
-import ClicksIcon from "../../../assets/SVGs/Performance/Clicks";
 import CampaignStats from "./CampStats/CampaignStats";
-import { connect } from "react-redux";
 import SingleMetric from "./CampStats/SingleMetric";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP
-} from "react-native-responsive-screen";
-import { Text, Button, Icon } from "native-base";
-
 import CampDetailsInfo from "./CampDetailsInfo";
 import LowerButton from "../LowerButton";
+
+//Redux
+import { connect } from "react-redux";
+
+//Styles
 import globalStyles from "../../../GlobalStyles";
+import styles from "./styles";
+
 class CampaignCircleChart extends Component {
   render() {
     const { translate } = this.props.screenProps;
@@ -30,7 +22,6 @@ class CampaignCircleChart extends Component {
       detail,
       loading,
       handleChartToggle,
-      channel,
       chartExpanded,
       googleCampaignOverall
     } = this.props;
@@ -65,7 +56,6 @@ class CampaignCircleChart extends Component {
           }}
           style={{
             maxHeight: "100%",
-            // width: "100%",
             marginHorizontal: detail ? 20 : 0
           }}
         >

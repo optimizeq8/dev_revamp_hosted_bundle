@@ -15,10 +15,13 @@ export const colors = {
 };
 const styles = StyleSheet.create({
   campaignInfoStyle: {
-    // flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
-    // height: "40%"
+  },
+  campaignInfoCard: {
+    flexDirection: "row",
+    top: 10,
+    flex: 3
   },
   titleContainer: {
     flexDirection: "row",
@@ -34,80 +37,6 @@ const styles = StyleSheet.create({
     color: globalColors.white,
     alignSelf: "flex-start"
   },
-  subtext: {
-    fontFamily: "montserrat-bold",
-    fontSize: 12,
-    color: "#fff",
-    textAlign: "left"
-  },
-  chart: {
-    alignItems: "center",
-    paddingHorizontal: 5
-  },
-  chartText: {
-    color: "#fff",
-    fontFamily: "montserrat-medium",
-    fontSize: 16,
-    marginLeft: 10
-  },
-  chartSubtext: {
-    alignSelf: "center",
-    paddingTop: 10,
-    fontFamily: "montserrat-regular",
-    fontSize: 12,
-    color: "#fff"
-  },
-  campaignIcons: {
-    // flexDirection: "row",
-    // alignItems: "center"
-    // backgroundColor: "#0004",
-    // marginVertical: 2.5,
-    // borderRadius: 20
-    // padding: "3%"
-  },
-  campaignNumbers: {
-    paddingHorizontal: 0,
-    paddingTop: 10
-  },
-  campaignInfo: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    width: wp(40),
-    left: 10
-  },
-  campaignInfoCard: {
-    flexDirection: "row",
-    top: 10,
-    flex: 3
-  },
-  campaignCard: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  metricsStyle: {
-    flexDirection: "row",
-    alignItems: "center",
-    // flex: 1,
-    paddingHorizontal: 20,
-    marginVertical: 3,
-    marginRight: 10,
-    backgroundColor: "#0004",
-    width: 160,
-    borderRadius: 20,
-    height: 50
-    // padding: "3%"
-  },
-  metricsCardStyle: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 3,
-    // marginRight: 40,
-    backgroundColor: "#0000",
-    // width: 170,
-    borderRadius: 20
-    // height: 53,
-    // padding: "3%"
-  },
   adPerformanceLowerButton: {
     width: 35,
     height: 35,
@@ -117,21 +46,60 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF9D00",
     borderRadius: 30
   },
-  numbers: {
-    textAlign: "left",
-    color: "#FF9D00",
-    fontFamily: "montserrat-bold-english",
-    fontSize: 16 / PixelRatio.getFontScale()
+  subtext: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#fff",
+    textAlign: "left"
+  },
+  chartSubtext: {
+    alignSelf: "center",
+    paddingTop: 10,
+    fontFamily: "montserrat-regular",
+    fontSize: 12,
+    color: "#fff",
+    alignSelf: "flex-start"
+  },
+  metricsStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginVertical: 3,
+    marginRight: 10,
+    backgroundColor: "#0004",
+    width: 160,
+    borderRadius: 20,
+    height: 50
+  },
+  metricsCardStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 3,
+    backgroundColor: "#0000",
+    borderRadius: 20
+  },
+  metricIcon: {
+    marginRight: 10
+  },
+  metricView: {
+    display: "flex"
   },
   metricText: {
     color: "#fff",
     fontSize: 12,
     textAlign: "left"
   },
-  metricView: {
-    display: "flex"
+  numbers: {
+    textAlign: "left",
+    color: "#FF9D00",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 16 / PixelRatio.getFontScale(),
+    textAlign: "left"
   },
-  metricIcon: { marginRight: 10 }
+  metricRow: {
+    flexDirection: "row",
+    alignSelf: "center"
+  }
 });
 
 export default styles;

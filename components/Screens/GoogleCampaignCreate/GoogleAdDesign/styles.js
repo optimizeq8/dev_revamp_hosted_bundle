@@ -3,13 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../../GlobalStyles";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
+
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
@@ -21,66 +15,11 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between"
   },
-  previewBlock: {
-    display: "flex",
-    flexDirection: "column",
-    width: wp(90),
-    alignItems: "center",
-    marginTop: 10,
-    paddingTop: 10,
-    paddingBottom: 15,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "black",
-    shadowOpacity: 0.2,
-    alignSelf: "center"
-  },
-  headlineText: {
-    fontFamily: "montserrat-bold",
-    fontSize: 12 / PixelRatio.getFontScale(),
-    color: "#1B10AB",
-    alignSelf: "center",
-    textAlign: "center",
-    alignSelf: "flex-start",
-    paddingBottom: 5,
-    paddingHorizontal: 20
-  },
-  headline: {
-    fontFamily: "montserrat-bold",
-    fontSize: 10 / PixelRatio.getFontScale(),
-    color: "#fff",
-    alignSelf: "center",
-    textAlign: "center",
-    alignSelf: "flex-start",
-    paddingBottom: 2,
-    paddingHorizontal: 20
-  },
-  headlineBlueLine: {
-    borderLeftColor: "#1B10AB",
-    borderLeftWidth: 1,
-    marginBottom: 5,
-    marginLeft: 13
-  },
-  adIcon: {
-    marginRight: 5,
-    alignSelf: "center",
-    marginBottom: 5,
-    marginLeft: 20
-  },
-  linkText: {
-    fontFamily: "montserrat-regular",
-    color: "#197132",
-    paddingLeft: 0
-  },
-  descriptionGrayLine: {
-    borderTopColor: "#EDEDED",
-    borderTopWidth: 1,
-    marginBottom: 5,
-    width: "100%"
-  },
   mainContent: {
     paddingBottom: "10%",
+    // flexGrow: 1,
+    // height: "100%",
+    // flex: 1,
     paddingTop: 13
   },
   inputView: {

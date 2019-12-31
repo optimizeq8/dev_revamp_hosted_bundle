@@ -8,6 +8,7 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 import { Text } from "native-base";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import { globalColors } from "../../../GlobalStyles";
+
 export default props => {
   let { campaign, loading } = props;
   const { translate } = props.screenProps;
@@ -56,7 +57,7 @@ export default props => {
             borderRadius={30}
             width={widthPercentageToDP(90)}
           />
-          <Text style={[styles.chartSubtext, { alignSelf: "flex-start" }]}>
+          <Text style={[styles.chartSubtext]}>
             {translate(`Campaign {{statusOfCampaign}} on`, {
               statusOfCampaign: translate(statusOfCampaign)
             }) +

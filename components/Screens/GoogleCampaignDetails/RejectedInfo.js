@@ -1,8 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "native-base";
-import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
-import LowerButton from "../../MiniComponents/LowerButton";
 import Rejected from "../../../assets/SVGs/Rejected.svg";
 import Info from "../../../assets/SVGs/Info.svg";
 import CustomButtons from "../../MiniComponents/CustomButtons";
@@ -11,7 +9,6 @@ import styles from "./styles";
 
 export default RejectedInfo = props => {
   const {
-    loading,
     review_status_reason,
     review_status_help,
     navigation,
@@ -43,7 +40,6 @@ export default RejectedInfo = props => {
         </Text>
         <Text
           selectable={true}
-          //   onPress={this.handleSupportPage}
           style={[
             styles.reviewStatusText,
             { fontFamily: "montserrat-regular-english" }

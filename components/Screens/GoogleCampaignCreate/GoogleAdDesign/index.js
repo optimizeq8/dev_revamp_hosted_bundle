@@ -9,27 +9,19 @@ import {
   TouchableOpacity,
   I18nManager
 } from "react-native";
-import {
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button,
-  Textarea
-} from "native-base";
+import { Text, Item, Input, Container, Textarea } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import GoogleSEAPreview from "../../../MiniComponents/GoogleSEAPreview";
 import InputScrollView from "react-native-input-scroll-view";
 // Style
 import styles from "./styles";
 import GlobalStyles from "../../../../GlobalStyles";
+
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../../store/actions";
@@ -195,14 +187,6 @@ class GoogleAdDesign extends Component {
       };
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       if (!rejectedVal) {
-        // Segment.trackWithProperties("Google SE Design AD", {
-        //   business_name: this.props.mainBusiness.businessname
-        // });
-        // Segment.trackWithProperties("Completed Checkout Step", {
-        //   step: 3,
-        //   business_name: this.props.mainBusiness.businessname
-        // });
-
         this.props.create_google_SE_campaign_ad_design(
           {
             ...data,
@@ -212,20 +196,11 @@ class GoogleAdDesign extends Component {
           rejectedVal,
           segmentInfo
         );
-
         this.props.save_google_campaign_data({
           ...data,
           campaign_id: this.props.campaign.campaign_id
         });
       } else {
-        // Segment.trackWithProperties("Google SE Design AD", {
-        //   business_name: this.props.mainBusiness.businessname
-        // });
-        // Segment.trackWithProperties("Completed Checkout Step", {
-        //   step: 3,
-        //   business_name: this.props.mainBusiness.businessname
-        // });
-
         this.props.create_google_SE_campaign_ad_design(
           {
             businessid: this.props.mainBusiness.businessid,
@@ -254,16 +229,12 @@ class GoogleAdDesign extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            // if (
-            //   !this.props.campaign.campaignSteps.includes("GoogleAdTargetting")
-            // ) {
             if (!rejected)
               this.props.save_google_campaign_steps([
                 "Dashboard",
                 "GoogleAdInfo",
                 "GoogleAdDesign"
               ]);
-            // }
             Segment.screenWithProperties("Google SE Design AD", {
               category: "Campaign Creation",
               channel: "google"
@@ -303,10 +274,13 @@ class GoogleAdDesign extends Component {
                 inputURL={this.state.inputURL}
               />
             </View>
-
             <InputScrollView
+              keyboardAvoidingViewProps={{ behavior: "padding" }}
               {...ScrollView.props}
-              contentContainerStyle={styles.mainContent}
+              contentContainerStyle={[
+                styles.mainContent,
+                { paddingBottom: "80%" }
+              ]}
             >
               <Animatable.View
                 onAnimationEnd={() => this.setState({ headline1Error: null })}
@@ -657,7 +631,10 @@ class GoogleAdDesign extends Component {
                 <Item
                   style={[
                     styles.input,
-                    { paddingVertical: 20, paddingHorizontal: 5 }
+                    {
+                      paddingVertical: 20,
+                      paddingHorizontal: 5
+                    }
                   ]}
                 >
                   <Textarea
@@ -666,11 +643,16 @@ class GoogleAdDesign extends Component {
                     placeholderTextColor={"#FFF"}
                     disabled={this.props.loading}
                     value={this.state.description}
-                    style={[styles.inputTextarea]}
+                    style={[styles.inputTextarea, { textAlignVertical: "top" }]}
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={translate("Input Description 1 text")}
+                    placeholder={
+                      this.state.inputD
+                        ? null
+                        : translate("Input Description 1 text")
+                    }
+
                     onChangeText={value => {
                       this.setState({
                         description: value
@@ -757,7 +739,11 @@ class GoogleAdDesign extends Component {
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={translate("Input Description 2 text")}
+                    placeholder={
+                      this.state.inputD2
+                        ? null
+                        : translate("Input Description 2 text")
+                    }
                     onChangeText={value => {
                       this.setState({
                         description2: value

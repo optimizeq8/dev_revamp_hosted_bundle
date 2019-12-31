@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Button, Text, Item, Input } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { Text, Item, Input } from "native-base";
 
 //Icon
 import LocationIcon from "../../../assets/SVGs/Location.svg";
-import CheckmarkIcon from "../../../assets/SVGs/Checkmark.svg";
 import SearchIcon from "../../../assets/SVGs/Search.svg";
 
 //Styles
@@ -23,7 +21,6 @@ class CountrySelector extends Component {
       filteredCountreis: this.props.countries
     });
   }
-  componentDidUpdate(prevProps) {}
 
   render() {
     const { translate } = this.props.screenProps;
@@ -50,22 +47,9 @@ class CountrySelector extends Component {
       <View style={styles.container}>
         <View style={styles.dataContainer}>
           <LocationIcon width={50} height={80} fill="#fff" />
-          {/* <Text style={styles.title}> Select Country </Text> */}
-
           <View style={styles.slidercontainer}>
-            <Item
-              style={{
-                marginBottom: 10,
-                marginTop: 20,
-                alignSelf: "center",
-                width: 300,
-                borderColor: "#0000",
-                backgroundColor: "rgba(0,0,0,0.15)",
-                borderRadius: 30,
-                paddingHorizontal: 15
-              }}
-            >
-              <SearchIcon width={18} height={18} stroke="#fff" style={{}} />
+            <Item style={styles.searchBar}>
+              <SearchIcon width={18} height={18} stroke="#fff" />
               <Input
                 placeholder={translate("Search Country") + "..."}
                 style={styles.searchInputText}
@@ -86,13 +70,6 @@ class CountrySelector extends Component {
             </ScrollView>
           </View>
         </View>
-
-        {/* <Button
-            style={styles.button}
-            onPress={() => this.props._handleMenuState(false)}
-          >
-            <CheckmarkIcon width={53} height={53} />
-          </Button> */}
       </View>
     );
   }

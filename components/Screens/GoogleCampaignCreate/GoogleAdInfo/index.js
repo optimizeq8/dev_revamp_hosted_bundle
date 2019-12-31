@@ -29,12 +29,10 @@ import Duration from "../../CampaignCreate/AdObjective/Duration"; //needs to be 
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
 
 //Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
 
@@ -87,7 +85,6 @@ class GoogleAdInfo extends Component {
   }
   componentDidMount() {
     this.setCampaignInfo();
-
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -116,6 +113,7 @@ class GoogleAdInfo extends Component {
     this.props.navigation.goBack();
     return true;
   };
+
   handleStartDatePicked = date => {
     this.setState({
       start_time: date
@@ -125,6 +123,7 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ start_time: date });
   };
+
   handleEndDatePicked = date => {
     this.setState({
       end_time: date
@@ -134,13 +133,14 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ end_time: date });
   };
+
   setModalVisible = visible => {
     if (visible) {
       Segment.screen("Select Country Modal");
     }
     this.setState({ modalVisible: visible });
-    // this.setState({ selectRegion: false });
   };
+
   getMinimumCash = days => {
     // let minValueBudget = days !== 0 ? 50 * days : 50;
     // let maxValueBudget = days > 1 ? minValueBudget + 1500 : 1500;
@@ -153,10 +153,12 @@ class GoogleAdInfo extends Component {
     //   maxValueBudget: this.state.maxValueBudget
     // });
   };
+
   _handleLanguageChange = val => {
     this.setState({ language: val });
     this.props.save_google_campaign_data({ language: val });
   };
+
   _handleCountryChange = val => {
     this.setState({ country: val, location: [val] });
     segmentEventTrack("Selected Campaign Country", {
@@ -164,7 +166,14 @@ class GoogleAdInfo extends Component {
     });
     this.props.save_google_campaign_data({ country: val, location: [val] });
   };
+
   _handleSelectedRegions = val => {
+    /**
+     * this is to set the main value of the location array as
+     * the country value if "all" was selected
+     *
+     */
+
     if (val === this.state.country) {
       this.setState({ country: val, location: [val] });
       segmentEventTrack("Selected Campaign Regions", {
@@ -175,6 +184,10 @@ class GoogleAdInfo extends Component {
         location: [val]
       });
     } else {
+      /**
+       * This checks if the value of the selected regio exists inside the location array
+       * to either add it or remove it from the list
+       */
       var res;
       if (isUndefined(this.state.location.find(l => l === val))) {
         res = this.state.location.filter(l => l !== val);
@@ -188,6 +201,11 @@ class GoogleAdInfo extends Component {
           location: [...res, val]
         });
       } else {
+        /**
+         * filtering the array to remove the selected value,
+         * if the array becomes empty, the country value gets set in the location array as all
+         * the country value gets removed if another value gets set
+         */
         res = this.state.location.filter(l => l !== val);
         if (res.length === 0) {
           res = [this.state.country];
@@ -242,9 +260,6 @@ class GoogleAdInfo extends Component {
       !dateErrors.start_timeError &&
       !dateErrors.end_timeError
     ) {
-      // Segment.trackWithProperties("Google SE Info AD", {
-      //   business_name: this.props.mainBusiness.businessname
-      // });
       const segmentInfo = {
         step: 2,
         business_name: this.props.mainBusiness.businessname,
@@ -256,22 +271,19 @@ class GoogleAdInfo extends Component {
         campaign_country: this.state.country,
         checkout_id: this.props.campaign.campaign_id
       };
-      // console.log(
-      //   "this.props.campaign.campaign_id ",
-      //   this.props.campaign.campaign_id
-      // );
 
-      //Set campaignProgressStarted back to false so that the continue modal will show again if the exit and come back
+      /**
+       * Set campaignProgressStarted back to false so that the continue modal
+       * will show again if the exit and come back
+       */
       this.props.set_google_campaign_resumed(false);
-
-      // if (this.props.campaign.campaign_id !== "") {
-      // console.log("update");
 
       this.props.create_google_SE_campaign_info(
         {
-          campaign_id: this.props.campaign.campaign_id
-            ? this.props.campaign.campaign_id
-            : "",
+          campaign_id:
+            this.props.campaign.campaign_id !== ""
+              ? this.props.campaign.campaign_id
+              : "",
           businessid: this.props.mainBusiness.businessid,
           name: this.state.name,
           language: this.state.language,
@@ -282,21 +294,6 @@ class GoogleAdInfo extends Component {
         this.props.navigation,
         segmentInfo
       );
-      // } else {
-      // console.log("new");
-      // this.props.create_google_SE_campaign_info(
-      //   {
-      //     campaign_id: "",
-      //     businessid: this.props.mainBusiness.businessid,
-      //     name: this.state.name,
-      //     language: this.state.language,
-      //     start_time: this.state.start_time,
-      //     end_time: this.state.end_time,
-      //     location: this.state.location
-      //   },
-      //   this.props.navigation
-      // );
-      // }
 
       this.props.save_google_campaign_data({
         name: this.state.name,
@@ -310,9 +307,11 @@ class GoogleAdInfo extends Component {
       });
     }
   };
+
   handleClosingContinueModal = () => {
     this.setState({ closedContinueModal: true });
   };
+
   render() {
     const { translate } = this.props.screenProps;
 
@@ -352,8 +351,6 @@ class GoogleAdInfo extends Component {
                 this.props.navigation.goBack();
                 this.props.set_google_campaign_resumed(false);
               }}
-              // navigation={this.props.navigation}
-
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
             />
@@ -608,7 +605,6 @@ class GoogleAdInfo extends Component {
             >
               {this.state.selectRegion ? (
                 <Animatable.View
-                  // onAnimationEnd={() => this.setState({ nameError: null })}
                   duration={300}
                   easing={"ease"}
                   animation={
@@ -619,20 +615,12 @@ class GoogleAdInfo extends Component {
                     <CustomHeader
                       closeButton={false}
                       actionButton={() => {
-                        // this.setModalVisible(false);
                         this.setState({ selectRegion: false });
                       }}
                       title="Select Regions"
                       screenProps={this.props.screenProps}
                     />
-                    <Content
-                      scrollEnabled={false}
-                      // padder
-                      indicatorStyle="white"
-                    >
-                      {/* {this.props.campaign.loading ? (
-                        <LoadingScreen top={50} />
-                      ) : ( */}
+                    <Content scrollEnabled={false} indicatorStyle="white">
                       <RegionsSelector
                         screenProps={this.props.screenProps}
                         country={this.state.country}
@@ -643,22 +631,15 @@ class GoogleAdInfo extends Component {
                         onSelectRegions={this._handleSelectedRegions}
                         loading={this.props.campaign.loading}
                       />
-                      {/* )} */}
                     </Content>
                     <LowerButton bottom={4} function={this.setModalVisible} />
                   </View>
                 </Animatable.View>
               ) : (
                 <Animatable.View
-                  // onAnimationEnd={() => this.setState({ nameError: null })}
                   duration={300}
                   easing={"ease"}
-                  animation={
-                    // !this.state.selectRegion ?
-                    // "slideInRight"
-                    // :
-                    "slideInLeft"
-                  }
+                  animation={"slideInLeft"}
                 >
                   <View style={styles.popupOverlay}>
                     <CustomHeader
@@ -669,17 +650,12 @@ class GoogleAdInfo extends Component {
                       title="Select Country"
                       screenProps={this.props.screenProps}
                     />
-                    <Content
-                      scrollEnabled={false}
-                      // padder
-                      indicatorStyle="white"
-                    >
+                    <Content scrollEnabled={false} indicatorStyle="white">
                       <CountrySelector
                         screenProps={this.props.screenProps}
                         countries={CountriesList}
                         country={this.state.country}
                         onSelectedCountryChange={this._handleCountryChange}
-                        //   _handleSideMenuState={this.props._handleSideMenuState}
                       />
                     </Content>
                     <LowerButton
@@ -734,12 +710,8 @@ const mapDispatchToProps = dispatch => ({
     ),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country)),
-  set_google_SE_budget_range: budget =>
-    dispatch(actionCreators.set_google_SE_budget_range(budget)),
   save_google_campaign_data: info =>
     dispatch(actionCreators.save_google_campaign_data(info)),
-  rest_google_campaign_data: value =>
-    dispatch(actionCreators.rest_google_campaign_data(value)),
   set_google_campaign_resumed: value =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
   save_google_campaign_steps: value =>

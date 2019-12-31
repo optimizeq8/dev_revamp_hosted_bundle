@@ -1,15 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {
-  View,
-  Slider,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-  BackHandler
-} from "react-native";
-import { Text, Container, Icon, Content } from "native-base";
-import GlobalStyles, { globalColors } from "../../../GlobalStyles";
+import { View } from "react-native";
+import { Text } from "native-base";
+import GlobalStyles from "../../../GlobalStyles";
 import styles from "./styles";
 import ADIcon from "../../../assets/SVGs/ADIcon";
 
@@ -38,23 +31,9 @@ export default GoogleSEAPreview = props => {
 
   return (
     <View style={styles.previewBlock}>
-      <View
-        style={[
-          {
-            alignSelf: "flex-start"
-          },
-          // headline1 || headline2 ?
-          GlobalStyles.column
-          // : GlobalStyles.row
-        ]}
-      >
+      <View style={styles.headersCol}>
         <View style={GlobalStyles.row}>
-          <View
-            style={{
-              flexDirection: "column",
-              paddingRight: 0
-            }}
-          >
+          <View style={styles.headerContent}>
             <Text
               uppercase
               style={[
@@ -77,12 +56,7 @@ export default GoogleSEAPreview = props => {
         </View>
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
-          <View
-            style={[
-              // headline1 || headline2 ? {} : { paddingLeft: 10 },
-              GlobalStyles.column
-            ]}
-          >
+          <View style={[GlobalStyles.column]}>
             <Text
               uppercase
               style={[
@@ -108,12 +82,7 @@ export default GoogleSEAPreview = props => {
         </View>
         <View style={GlobalStyles.row}>
           <View style={styles.headlineBlueLine} />
-          <View
-            style={[
-              // headline1 || headline2 || headline3 ? {} : { paddingLeft: 10 },
-              GlobalStyles.column
-            ]}
-          >
+          <View style={[GlobalStyles.column]}>
             <Text
               uppercase
               style={[
@@ -138,12 +107,7 @@ export default GoogleSEAPreview = props => {
           </View>
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: "column",
-          alignSelf: "flex-start"
-        }}
-      >
+      <View style={styles.headersCol}>
         <Text
           uppercase
           style={[
@@ -169,12 +133,7 @@ export default GoogleSEAPreview = props => {
         </View>
       </View>
       <View style={styles.descriptionGrayLine} />
-      <View
-        style={{
-          flexDirection: "column",
-          alignSelf: "flex-start"
-        }}
-      >
+      <View style={styles.headersCol}>
         <Text
           uppercase
           style={[
@@ -186,9 +145,7 @@ export default GoogleSEAPreview = props => {
         >
           {translate("Description")}
         </Text>
-        <Text
-          style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
-        >
+        <Text style={[styles.headlineText, styles.descriptionText]}>
           {description ||
             translate("Add") +
               " " +
@@ -196,9 +153,7 @@ export default GoogleSEAPreview = props => {
               " " +
               translate("1")}
         </Text>
-        <Text
-          style={[styles.headlineText, { color: "#1B10AB", textAlign: "left" }]}
-        >
+        <Text style={[styles.headlineText, styles.descriptionText]}>
           {description2 ||
             translate("Add") +
               " " +

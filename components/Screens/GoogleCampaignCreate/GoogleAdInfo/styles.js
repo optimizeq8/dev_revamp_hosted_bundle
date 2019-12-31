@@ -3,13 +3,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { globalColors } from "../../../../GlobalStyles";
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#6268FF"
-};
 const styles = StyleSheet.create({
   safeAreaView: {
     backgroundColor: "#0000",
@@ -91,7 +84,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 300,
     height: 50,
-    // marginTop: 10,
     marginBottom: 20,
     borderColor: "transparent"
   },

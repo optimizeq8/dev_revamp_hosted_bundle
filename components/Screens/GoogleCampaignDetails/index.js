@@ -101,15 +101,6 @@ class GoogleCampaignDetails extends Component {
         toggle: this.props.selectedCampaign.campaign.status !== "PAUSED"
       });
     }
-    // if (
-    //   prevProps.selectedCampaign !== this.props.selectedCampaign &&
-    //   this.props.selectedCampaign
-    // ) {
-    //   this.setState({
-    //     start_time: this.props.selectedCampaign.campaign.start_time,
-    //     end_time: this.props.selectedCampaign.campaign.end_time
-    //   });
-    // }
   }
 
   handleStartDatePicked = date => {
@@ -253,7 +244,6 @@ class GoogleCampaignDetails extends Component {
             content: translate(gender)
           });
 
-          // locationString = CountryName : RegionsNames
           let countryName = selectedCampaign.campaign.location.map(
             loc => loc.country
           );
@@ -310,7 +300,6 @@ class GoogleCampaignDetails extends Component {
               </View>
               <Header
                 screenProps={this.props.screenProps}
-                // campaignEnded={this.props.campaignEnded}
                 closeButton={false}
                 translateTitle={false}
                 title={loading ? "" : selectedCampaign.campaign.name}

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { View, Image, ScrollView, BackHandler } from "react-native";
+import { View, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
-import * as Segment from "expo-analytics-segment";
-import { LinearGradient } from "expo-linear-gradient";
+
 import { NavigationEvents, SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";
@@ -16,7 +15,6 @@ import { connect } from "react-redux";
 
 // Style
 import styles, { htmlStyles } from "./styles";
-import { colors } from "../../GradiantColors/colors";
 
 class GoogleCreateAdAcc extends Component {
   static navigationOptions = {
@@ -33,8 +31,6 @@ class GoogleCreateAdAcc extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
-
-  componentDidUpdate(prevProps) {}
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -63,9 +59,9 @@ class GoogleCreateAdAcc extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            // Segment.screenWithProperties("Google Ad Account", {
-            //   category: "Sign Up"
-            // });
+            Segment.screenWithProperties("Google Ad Account", {
+              category: "Sign Up"
+            });
           }}
         />
         <Container style={styles.container}>
@@ -86,12 +82,6 @@ class GoogleCreateAdAcc extends Component {
             height={70}
             style={{ alignSelf: "center", margin: 15 }}
           />
-
-          {/* <Image
-            style={styles.media}
-            source={require("../../../assets/images/logo01.png")}
-            resizeMode="contain"
-          /> */}
           <Card padder style={styles.mainCard}>
             <Text style={styles.text}>Terms And Conditions</Text>
             <ScrollView
@@ -116,7 +106,6 @@ class GoogleCreateAdAcc extends Component {
                 <Button
                   block
                   dark
-                  // disabled={!this.state.accept}
                   style={[styles.button]}
                   onPress={() => {
                     this.props.create_google_ad_account(

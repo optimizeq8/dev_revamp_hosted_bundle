@@ -35,8 +35,6 @@ class GoogleCampaignCard extends Component {
   render() {
     const { translate } = this.props.screenProps;
     let campaign = this.props.campaign;
-    // console.log("campaign", campaign);
-
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -65,23 +63,10 @@ class GoogleCampaignCard extends Component {
           style={styles.campaignButton}
         >
           <View style={styles.textcontainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "flex-start",
-                justifyContent: "center"
-              }}
-            >
+            <View style={styles.headerContainer}>
               <View style={styles.header}>
                 <GoogleAd width={30} height={30} />
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingHorizontal: 10,
-                    flex: 1
-                  }}
-                >
+                <View style={styles.headerContent}>
                   <Text
                     ellipsizeMode="tail"
                     numberOfLines={1}
@@ -202,8 +187,6 @@ class GoogleCampaignCard extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getCampaignDetails: (id, naviagtion) =>
-    dispatch(actionCreators.getCampaignDetails(id, naviagtion)),
   get_google_campiagn_details: (id, start_time, end_time) =>
     dispatch(
       actionCreators.get_google_campiagn_details(id, start_time, end_time)

@@ -63,8 +63,8 @@ class ContinueCampaign extends Component {
     this.setState({ isVisible });
     if (resetCampaign) {
       segmentEventTrack("Button Clicked to create a new campaign");
-      //if resetCampaign is true, then resetCampaignInfo is called with false to return this.props.data back to null
-      this.props.rest_google_campaign_data(!resetCampaign);
+      //if resetCampaign is true, then resetCampaignInfo is called
+      this.props.rest_google_campaign_data();
       persistor.purge();
     }
   };
@@ -89,9 +89,10 @@ class ContinueCampaign extends Component {
   handleContinue = () => {
     const { translate } = this.props.screenProps;
     segmentEventTrack("Button Clicked to resume previous campaign");
-
-    //checks if the old campaign dates are still applicable or not so
-    //it doesn't create a campaign with old dates
+    /**
+     * checks if the old campaign dates are still applicable or not so
+     * it doesn't create a campaign with old dates
+     */
     if (
       new Date(this.props.data.start_time) < new Date() ||
       new Date(this.props.data.end_time) < new Date()
@@ -129,8 +130,11 @@ class ContinueCampaign extends Component {
       }
       this.props.setCampaignInfoForTransaction(updated_transaction_data);
       this.props.set_google_campaign_resumed(true);
-      //the app actually freezes for a few seconds when navigateToContinue runs so i delay
-      //it's exectution to desiplay a loader because if i don't the loader doesn't show up
+      /**
+       * the app actually freezes for a few seconds when navigateToContinue runs so i delay
+       * it's exectution to desiplay a loader because if i don't the loader doesn't show up
+       */
+
       setTimeout(() => {
         // this.handleSubmition(false, false);
         this.navigateToContinue();
@@ -169,17 +173,7 @@ class ContinueCampaign extends Component {
                 navigation={this.props.navigation}
                 title={"Continue Ad Creation"}
               />
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontFamily: "montserrat-light",
-                    width: 300,
-                    fontSize: 16,
-                    paddingBottom: 25
-                  }
-                ]}
-              >
+              <Text style={[styles.text, styles.warningText]}>
                 {translate(
                   "You were in the middle of creating an ad, would you like to continue"
                 )}
@@ -214,8 +208,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  rest_google_campaign_data: reset =>
-    dispatch(actionCreators.rest_google_campaign_data(reset)),
+  rest_google_campaign_data: () =>
+    dispatch(actionCreators.rest_google_campaign_data()),
   set_google_campaign_resumed: value =>
     dispatch(actionCreators.set_google_campaign_resumed(value)),
   save_google_campaign_data: info =>

@@ -2,15 +2,12 @@
 import React, { Component } from "react";
 import {
   View,
-  Slider,
   TouchableOpacity,
   ScrollView,
-  Platform,
   Keyboard,
   BackHandler
 } from "react-native";
-import { Text, Container, Icon, Content, Item } from "native-base";
-import * as Segment from "expo-analytics-segment";
+import { Text, Container, Icon, Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
 import * as Animatable from "react-native-animatable";
 import { BlurView } from "expo-blur";
@@ -19,16 +16,11 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
-import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
-import { showMessage } from "react-native-flash-message";
 import SideMenuContainer from "../../../MiniComponents/SideMenuContainer";
 import RadioButtons from "../../../MiniComponents/RadioButtons";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import LowerButton from "../../../MiniComponents/LowerButton";
-// import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ReachBar from "../ReachBar";
 
 //Data
@@ -41,9 +33,7 @@ import GreenCheckmarkIcon from "../../../../assets/SVGs/GreenCheckmark.svg";
 import GenderIcon from "../../../../assets/SVGs/Gender.svg";
 import PlusCircleIcon from "../../../../assets/SVGs/PlusCircleOutline.svg";
 import AgeIcon from "../../../../assets/SVGs/AdDetails/AgeIcon";
-import PlusCircle from "../../../../assets/SVGs/PlusCircle.svg";
 import LocationIcon from "../../../../assets/SVGs/Location";
-// import Icon from "react-native-vector-icons/MaterialIcons";
 
 //Style
 import styles from "./styles";
@@ -55,10 +45,6 @@ import * as actionCreators from "../../../../store/actions";
 import { connect } from "react-redux";
 
 //Functions
-import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
-
-import debounce from "lodash/debounce";
-import isNan from "lodash/isNaN";
 import isUndefined from "lodash/isUndefined";
 import isEqual from "lodash/isEqual";
 
@@ -81,8 +67,6 @@ class GoogleAdTargetting extends Component {
       keywords: [],
       sidemenustate: false,
       sidemenu: "gender",
-      // minValueBudget: 25,
-      // maxValueBudget: 1500,
       modalVisible: false,
       selectionOption: "",
       country: "",
@@ -114,11 +98,6 @@ class GoogleAdTargetting extends Component {
       "campaign",
       {}
     );
-    let keys = Object.keys(this.state).filter(key => {
-      // console.log("this.props.campaign", key);
-
-      if (this.props.campaign.hasOwnProperty(key)) return key;
-    });
 
     //gender
     let genderVal = "";
@@ -233,21 +212,12 @@ class GoogleAdTargetting extends Component {
   };
 
   _handleReachChange = val => {
-    // console.log("val", val);
-
-    // console.log("this.state.location.", this.state.location);
-    // console.log(
-    //   "this.props.campaign.locationsFetchedList",
-    //   this.props.campaign.locationsFetchedList
-    // );
-
     // find locationList
     let list = this.state.location.map(loc =>
       this.props.campaign.locationsFetchedList.find(lctn => lctn.id === loc)
     );
     // to remove undefined values
     list = list.filter(val => val);
-    // console.log("list", list);
     // regions selcted
     if (list && list.length > 0) {
       var avg_reach = list.reduce(
@@ -315,11 +285,10 @@ class GoogleAdTargetting extends Component {
       language: this.state.language
     };
 
-    this.props.update_google_audience_targetting(info);
+    this.props.update_google_audience_targeting(info);
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
-    // this.setState({ selectRegion: false });
   };
   regionNames = () => {
     const { translate } = this.props.screenProps;
@@ -448,23 +417,7 @@ class GoogleAdTargetting extends Component {
             locations={[1, 0.3]}
             style={styles.gradient}
           />
-          <NavigationEvents
-            onDidFocus={() => {
-              //   if (this.props.navigation.getParam("editCampaign", false)) {
-              // Segment.screenWithProperties("Snap Ad Targetting Update", {
-              //   category: "Campaign Update"
-              // });
-              //   } else {
-              // Segment.screenWithProperties("Snap Ad Targetting", {
-              //   category: "Campaign Creation"
-              // });
-              // Segment.trackWithProperties("Viewed Checkout Step", {
-              //   checkout_id: this.props.campaign_id,
-              //   step: 4
-              // });
-              //   }
-            }}
-          />
+
           <Container style={styles.mainContainer}>
             <Container style={styles.container}>
               <CustomHeader
@@ -494,9 +447,6 @@ class GoogleAdTargetting extends Component {
                 scrollEnabled={false}
                 contentContainerStyle={styles.contentContainer}
               >
-                {/* {!editCampaign ? (
-                  <> */}
-
                 <Text uppercase style={styles.subHeadings}>
                   {translate("Who would you like to reach?")}
                 </Text>
@@ -687,7 +637,6 @@ class GoogleAdTargetting extends Component {
               >
                 {this.state.selectRegion ? (
                   <Animatable.View
-                    // onAnimationEnd={() => this.setState({ nameError: null })}
                     duration={300}
                     easing={"ease"}
                     animation={
@@ -698,17 +647,12 @@ class GoogleAdTargetting extends Component {
                       <CustomHeader
                         closeButton={false}
                         actionButton={() => {
-                          // this.setModalVisible(false);
                           this.setState({ selectRegion: false });
                         }}
                         title="Select Regions"
                         screenProps={this.props.screenProps}
                       />
-                      <Content
-                        scrollEnabled={false}
-                        // padder
-                        indicatorStyle="white"
-                      >
+                      <Content scrollEnabled={false} indicatorStyle="white">
                         <RegionsSelector
                           screenProps={this.props.screenProps}
                           country={this.state.country}
@@ -725,15 +669,9 @@ class GoogleAdTargetting extends Component {
                   </Animatable.View>
                 ) : (
                   <Animatable.View
-                    // onAnimationEnd={() => this.setState({ nameError: null })}
                     duration={300}
                     easing={"ease"}
-                    animation={
-                      // !this.state.selectRegion ?
-                      // "slideInRight"
-                      // :
-                      "slideInLeft"
-                    }
+                    animation={"slideInLeft"}
                   >
                     <View style={styles.popupOverlay}>
                       <CustomHeader
@@ -744,17 +682,12 @@ class GoogleAdTargetting extends Component {
                         title="Select Country"
                         screenProps={this.props.screenProps}
                       />
-                      <Content
-                        scrollEnabled={false}
-                        // padder
-                        indicatorStyle="white"
-                      >
+                      <Content scrollEnabled={false} indicatorStyle="white">
                         <CountrySelector
                           screenProps={this.props.screenProps}
                           countries={CountriesList}
                           country={this.state.country}
                           onSelectedCountryChange={this._handleCountryChange}
-                          //   _handleSideMenuState={this.props._handleSideMenuState}
                         />
                       </Content>
                       <LowerButton
@@ -773,10 +706,6 @@ class GoogleAdTargetting extends Component {
               </SafeAreaView>
             </BlurView>
           </Modal>
-
-          {/* <Modal isVisible={this.props.campaign.uploading}>
-            <LoadingScreen top={50} />
-            </Modal> */}
         </SafeAreaView>
       </Sidemenu>
     );
@@ -790,8 +719,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  update_google_audience_targetting: info =>
-    dispatch(actionCreators.update_google_audience_targetting(info)),
+  update_google_audience_targeting: info =>
+    dispatch(actionCreators.update_google_audience_targeting(info)),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country))
 });

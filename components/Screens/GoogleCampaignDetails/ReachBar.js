@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, I18nManager } from "react-native";
-// import { AnimatedCircularProgress } from "react-native-circular-progress";
 import LowerButton from "../../MiniComponents/LowerButton";
 import ForwardLoading from "../../MiniComponents/ForwardLoading";
 //Styles
@@ -22,7 +21,6 @@ import AnimatedCircularProgress from "../../MiniComponents/AnimatedCircleProgres
 class ReachBar extends Component {
   render() {
     const { translate } = this.props.screenProps;
-    // let { startEditing, editCampaign, campaignInfo } = this.props;
     const { total_reach, avg_reach, editCampaign } = this.props;
     return (
       <View style={styles.bottom}>
@@ -30,7 +28,6 @@ class ReachBar extends Component {
           size={85}
           width={10}
           fill={total_reach}
-          // arcSweepAngle={200}
           tintColorSecondary={globalColors.orange}
           rotation={360}
           tintColorThirdy={globalColors.green}
@@ -50,13 +47,7 @@ class ReachBar extends Component {
             </Text>
           </View>
           {editCampaign &&
-            // startEditing &&
-            // campaignInfo.campaign_end &&
-            // campaignInfo.campaign_end === "0" &&
-            // !this.props.campaignEnded &&
             this.props.mainBusiness.user_role !== "3" &&
-            //  ||
-            // (!editCampaign && startEditing))
             (this.props.loading ? (
               <ForwardLoading
                 mainViewStyle={{ width: wp(9), height: hp(9) }}
@@ -80,10 +71,7 @@ class ReachBar extends Component {
   }
 }
 const mapStateToProps = state => ({
-  // average_reach: state.campaignC.average_reach,
-  // total_reach: state.campaignC.total_reach,
   mainBusiness: state.account.mainBusiness
-  // campaignEnded: state.campaignC.campaignEnded
 });
 const mapDispatchToProps = dispatch => ({
   snap_ad_audience_size: (info, totalReach) =>

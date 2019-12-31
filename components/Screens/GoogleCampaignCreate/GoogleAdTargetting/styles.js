@@ -1,9 +1,4 @@
-import { StyleSheet, Platform, PixelRatio } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { StyleSheet, PixelRatio } from "react-native";
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",

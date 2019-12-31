@@ -1,24 +1,12 @@
 import React, { Component } from "react";
 import {
   View,
-  Image as RNImage,
-  Animated,
   BackHandler,
-  FlatList,
   TouchableWithoutFeedback,
-  ScrollView,
   Keyboard
 } from "react-native";
-import {
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import Header from "../../../MiniComponents/Header";
 import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
@@ -34,8 +22,6 @@ import { LinearGradient } from "expo-linear-gradient";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
-
 import isUndefined from "lodash/isUndefined";
 
 class EditKeywords extends Component {
@@ -50,8 +36,6 @@ class EditKeywords extends Component {
   }
   componentDidMount() {
     let keywords = this.props.selectedCampaign.keywords.map(k => k.keyword);
-    // console.log("keywords", keywords);
-
     this.setState({
       keywords: keywords
     });
@@ -150,12 +134,6 @@ class EditKeywords extends Component {
               campaign_id={this.props.selectedCampaign.campaign.campaign_id}
               businessid={this.props.mainBusiness.businessid}
             />
-            {/* <TouchableOpacity
-              // disabled={this.props.country_code === ""}
-              style={styles.keywordsAddButton}
-              onPress={() => this._renderSideMenu("keywords")}
-            >
-            </TouchableOpacity> */}
             {this.props.campaign.uploading ? (
               <ForwardLoading
                 mainViewStyle={{ width: wp(9), height: hp(9) }}

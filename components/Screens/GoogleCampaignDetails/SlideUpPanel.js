@@ -1,26 +1,10 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  RefreshControl,
-  Animated,
-  ScrollView,
-  TouchableOpacity
-} from "react-native";
-import SlidingUpPanel from "rn-sliding-up-panel";
-import { LinearGradient } from "expo-linear-gradient";
-import Chart from "../../MiniComponents/CampaignCircleCharts";
-import Duration from "../../Screens/CampaignCreate/AdObjective/Duration";
+import { View, Animated, ScrollView } from "react-native";
 import LineChartGraphs from "./LineChartGraphs";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-import BarIcon from "../../../assets/SVGs/Bar";
-
-import { colors } from "../../GradiantColors/colors";
-
 import styles from "./styles";
 import ChartChoices from "./ChartChoices";
-import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
 
 export default class SlideUpPanel extends Component {
   _draggedValue = new Animated.Value(0);
@@ -35,17 +19,6 @@ export default class SlideUpPanel extends Component {
     gotStats: false,
     refreshing: false
   };
-  // componentDidMount() {
-  //   this.props.getCampaignStats(this.props.selectedCampaign.campaign.campaign_id,
-  //     // start_time: "2019-05-09",
-  //     // end_time: "2019-05-25"
-  //     start_time: this.props.selectedCampaign.start_time,
-  //     end_time:
-  //       new Date(this.props.selectedCampaign.end_time) < new Date()
-  //         ? this.props.selectedCampaign.end_time
-  //         : new Date()
-  //   });
-  // }
 
   _onRefresh = async selectedCampaign => {
     this.setState({ refreshing: true });
@@ -61,7 +34,6 @@ export default class SlideUpPanel extends Component {
   };
 
   render() {
-    const { translate } = this.props.screenProps;
     let selectedCampaign = this.props.selectedCampaign;
     this._draggedValue.addListener(({ value }) => {
       this.hideCharts(value);
@@ -85,13 +57,6 @@ export default class SlideUpPanel extends Component {
           </View>
 
           <ScrollView
-            // refreshControl={
-            //   <RefreshControl
-            //     tintColor={"#fff"}
-            //     refreshing={this.state.refreshing}
-            //     onRefresh={() => this._onRefresh(selectedCampaign)}
-            //   />
-            // }
             style={{ zIndex: 2 }}
             contentContainerStyle={{
               paddingBottom: 100,
@@ -103,10 +68,6 @@ export default class SlideUpPanel extends Component {
               chartChoice={this.state.chartChoice}
               campaignStats={this.props.campaignStats}
             />
-            {/* <CampaginStats
-              selectedCampaign={selectedCampaign}
-              screenProps={this.props.screenProps}
-            /> */}
           </ScrollView>
         </View>
       </View>

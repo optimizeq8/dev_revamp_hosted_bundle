@@ -1,19 +1,17 @@
 import React from "react";
-import { View, I18nManager, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Text } from "native-base";
 import PlaceholderLine from "../../MiniComponents/PlaceholderLine";
-import LowerButton from "../../MiniComponents/LowerButton";
 
 import styles from "./styles";
 
 export default function(props) {
   const { loading, keywords } = props;
   const { translate } = props.screenProps;
-  // console.log("first keywords", keywords);
 
   let listKeyWords = [];
-  // to diplay top 3 keywords
-  // if (!loading)
+  // to display top 3 keywords
+
   if (keywords.length > 3) {
     listKeyWords = keywords.map((key, index) => {
       if (index < 3) {
@@ -25,7 +23,6 @@ export default function(props) {
   } else {
     listKeyWords = [...keywords];
   }
-  // console.log("keywords", listKeyWords);
 
   return (
     <View style={styles.keywordContainer}>

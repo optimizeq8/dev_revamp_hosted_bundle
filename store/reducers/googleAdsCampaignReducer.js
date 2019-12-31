@@ -80,12 +80,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         uploading: false
       };
-    case actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETTING:
+    case actionTypes.SET_GOOGLE_CAMPAIGN_AD_TARGETING:
       return {
         ...state,
         ...action.payload.data
       };
-    case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETTING:
+    case actionTypes.ERROR_SET_GOOGLE_CAMPAIGN_AD_TARGETING:
       return {
         ...state,
         uploading: false
