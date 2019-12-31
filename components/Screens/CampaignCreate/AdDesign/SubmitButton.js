@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { TouchableOpacity, I18nManager } from "react-native";
 import { connect } from "react-redux";
+import { Text } from "native-base";
 import ForwardButton from "../../../../assets/SVGs/ForwardButton";
+import BackButton from "../../../../assets/SVGs/BackButton";
 
 import styles from "./styles";
 import {
@@ -19,9 +21,16 @@ class SubmitButton extends Component {
         return (
           <TouchableOpacity
             onPress={this.props._handleSubmission}
-            style={styles.button}
+            style={[
+              styles.button,
+              I18nManager.isRTL && styles.proceedButtonRTL
+            ]}
           >
-            <ForwardButton width={wp(24)} height={hp(8)} />
+            {I18nManager.isRTL ? (
+              <BackButton />
+            ) : (
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            )}
           </TouchableOpacity>
         );
       }
@@ -31,9 +40,16 @@ class SubmitButton extends Component {
         return (
           <TouchableOpacity
             onPress={this.props._handleSubmission}
-            style={styles.button}
+            style={[
+              styles.button,
+              I18nManager.isRTL && styles.proceedButtonRTL
+            ]}
           >
-            <ForwardButton width={wp(24)} height={hp(8)} />
+            {I18nManager.isRTL ? (
+              <BackButton />
+            ) : (
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            )}
           </TouchableOpacity>
         );
       } else if (
@@ -43,9 +59,16 @@ class SubmitButton extends Component {
         return (
           <TouchableOpacity
             onPress={this.props._handleSubmission}
-            style={styles.button}
+            style={[
+              styles.button,
+              I18nManager.isRTL && styles.proceedButtonRTL
+            ]}
           >
-            <ForwardButton width={wp(24)} height={hp(8)} />
+            {I18nManager.isRTL ? (
+              <BackButton />
+            ) : (
+              <ForwardButton width={wp(24)} height={hp(8)} />
+            )}
           </TouchableOpacity>
         );
       }
@@ -61,7 +84,4 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SubmitButton);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitButton);

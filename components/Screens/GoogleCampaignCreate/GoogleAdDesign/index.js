@@ -6,7 +6,8 @@ import {
   Keyboard,
   BackHandler,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  I18nManager
 } from "react-native";
 import {
   Text,
@@ -600,7 +601,7 @@ class GoogleAdDesign extends Component {
                     autoCorrect={false}
                     maxLength={34}
                     autoCapitalize="none"
-                    placeholder={"Input landing page url"}
+                    placeholder={translate("Input landing page url")}
                     onChangeText={value => {
                       this.setState({
                         finalurl: value
@@ -669,7 +670,7 @@ class GoogleAdDesign extends Component {
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={"Input Description 1 text"}
+                    placeholder={translate("Input Description 1 text")}
                     onChangeText={value => {
                       this.setState({
                         description: value
@@ -756,7 +757,7 @@ class GoogleAdDesign extends Component {
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={"Input Description 2 text"}
+                    placeholder={translate("Input Description 2 text")}
                     onChangeText={value => {
                       this.setState({
                         description2: value
@@ -811,10 +812,12 @@ class GoogleAdDesign extends Component {
                 />
               ) : (
                 <LowerButton
-                  bottom={3}
+                  isRTL={I18nManager.isRTL}
+                  style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                  width={I18nManager.isRTL ? 25 : 70}
+                  height={I18nManager.isRTL ? 25 : 70}
+                  bottom={2}
                   function={this._handleSubmission}
-                  width={70}
-                  height={70}
                 />
               )}
             </InputScrollView>

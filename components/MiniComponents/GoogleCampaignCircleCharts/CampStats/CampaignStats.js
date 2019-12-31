@@ -65,7 +65,8 @@ class CampaignStats extends PureComponent {
       <View
         style={{
           flexDirection: "row",
-          left: 10
+          alignSelf: "center"
+          // left: 10
         }}
       >
         {metrics.map(metric => this.renderMetrics(metric))}

@@ -64,7 +64,7 @@ class CampaignCircleChart extends Component {
             justifyContent: "flex-start"
           }}
           style={{
-            maxHeight: !detail ? "100%" : "80%",
+            maxHeight: "100%",
             // width: "100%",
             marginHorizontal: detail ? 20 : 0
           }}
@@ -80,7 +80,7 @@ class CampaignCircleChart extends Component {
               detail={detail}
             />
           )}
-          <View style={{ paddingHorizontal: 12 }}>
+          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
             {detail && (
               <SingleMetric
                 detail={detail}

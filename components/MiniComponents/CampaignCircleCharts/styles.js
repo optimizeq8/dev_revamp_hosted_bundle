@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-regular",
     fontSize: 12,
     color: "#fff",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    textAlign: "left"
   },
   subtextDetail: {
     fontFamily: "montserrat-bold"
@@ -53,7 +54,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontFamily: "montserrat-regular",
     fontSize: 12,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   campaignIcons: {
     flexDirection: "row",

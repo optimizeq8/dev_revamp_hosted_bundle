@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     paddingBottom: heightPercentageToDP(5) < 40 ? 0 : 12
   },
   text: {
+    textAlign: "left",
     color: globalColors.white,
     fontFamily: "montserrat-bold",
     fontSize: 20,
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     // top: 4
   },
   brandStyle: {
+    textAlign: "left",
     maxWidth: "80%",
     color: globalColors.white,
     fontFamily: "montserrat-regular",

@@ -29,9 +29,15 @@ export default function(props) {
 
   return (
     <View style={styles.keywordContainer}>
-      <Text uppercase style={[styles.subHeadings, { paddingVertical: 10 }]}>
-        {translate("Keywords")}
-      </Text>
+      {loading ? (
+        <View style={styles.placeholderView}>
+          <PlaceholderLine />
+        </View>
+      ) : (
+        <Text uppercase style={[styles.subHeadings, { paddingVertical: 10 }]}>
+          {translate("Keywords")}
+        </Text>
+      )}
       <TouchableOpacity
         style={styles.targetingContainer}
         onPress={() => {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
-import { Button } from "native-base";
+import { Text, Button } from "native-base";
 import { globalColors } from "../../../GlobalStyles";
 
 export default class ChartChoices extends Component {
@@ -41,6 +41,7 @@ export default class ChartChoices extends Component {
         ]}
       >
         <Text
+          uppercase
           style={[
             styles.choiceText,
             {
