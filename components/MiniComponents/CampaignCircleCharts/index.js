@@ -60,7 +60,7 @@ class CampaignCircleChart extends Component {
           }}
           style={{
             maxHeight: "100%",
-            width: "100%",
+            // width: "100%",
             marginHorizontal: detail ? 20 : 0
           }}
         >
