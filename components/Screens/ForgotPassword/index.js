@@ -1,6 +1,11 @@
 //// components
 import React, { Component } from "react";
-import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  I18nManager
+} from "react-native";
 import { Text, Item, Input } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
@@ -134,6 +139,10 @@ class ForgotPassword extends Component {
                     </Item>
                   </View>
                   <LowerButton
+                    isRTL={I18nManager.isRTL}
+                    style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                    width={I18nManager.isRTL ? 25 : null}
+                    height={I18nManager.isRTL ? 25 : null}
                     function={() => this._handleSubmission()}
                     bottom={-heightPercentageToDP(1.8)}
                   />
@@ -153,7 +162,4 @@ const mapDispatchToProps = dispatch => ({
   forgotPassword: (email, navigation) =>
     dispatch(actionCreators.forgotPassword(email, navigation))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ForgotPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

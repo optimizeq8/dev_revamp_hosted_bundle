@@ -399,7 +399,6 @@ class AppChoice extends Component {
             height={I18nManager.isRTL ? 25 : null}
             bottom={I18nManager.isRTL ? 2 : 0}
             function={() => this.validate()}
-            bottom={0}
           />
         </View>
       </View>

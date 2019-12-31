@@ -4,7 +4,8 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity
+  TouchableOpacity,
+  I18nManager
 } from "react-native";
 import { Button, Text, Item, Input, Container, Content } from "native-base";
 import {
@@ -208,6 +209,13 @@ class MainForm extends Component {
                             />
                           ) : (
                             <LowerButton
+                              isRTL={I18nManager.isRTL}
+                              style={
+                                I18nManager.isRTL ? styles.proceedButtonRTL : {}
+                              }
+                              width={I18nManager.isRTL ? 25 : null}
+                              height={I18nManager.isRTL ? 25 : null}
+                              bottom={I18nManager.isRTL ? 0 : 0}
                               function={() => this._handleSubmission()}
                             />
                           )}
@@ -271,7 +279,4 @@ const mapDispatchToProps = dispatch => ({
   checkForExpiredToken: navigation =>
     dispatch(actionCreators.checkForExpiredToken(navigation))
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MainForm);
