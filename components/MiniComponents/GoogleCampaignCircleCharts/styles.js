@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   metricRow: {
     flexDirection: "row",
-    left: 10
+    alignSelf: "center"
   }
 });
 

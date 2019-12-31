@@ -647,7 +647,9 @@ class GoogleAdDesign extends Component {
                     numberOfLines={6}
                     maxLength={90}
                     placeholder={
-                      this.state.inputD ? null : "Input Description 1 text"
+                      this.state.inputD
+                        ? null
+                        : translate("Input Description 1 text")
                     }
                     onChangeText={value => {
                       this.setState({
@@ -736,7 +738,9 @@ class GoogleAdDesign extends Component {
                     numberOfLines={6}
                     maxLength={90}
                     placeholder={
-                      this.state.inputD2 ? null : "Input Description 2 text"
+                      this.state.inputD2
+                        ? null
+                        : translate("Input Description 2 text")
                     }
                     onChangeText={value => {
                       this.setState({

@@ -55,7 +55,7 @@ class CampaignCircleChart extends Component {
             justifyContent: "flex-start"
           }}
           style={{
-            maxHeight: !detail ? "100%" : "80%",
+            maxHeight: "100%",
             marginHorizontal: detail ? 20 : 0
           }}
         >
