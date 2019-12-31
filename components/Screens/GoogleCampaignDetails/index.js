@@ -74,7 +74,7 @@ class GoogleCampaignDetails extends Component {
       LineAnimation: new Animated.Value(0),
       expand: false,
       minHeight: 0,
-      maxHeight: hp(53)
+      maxHeight: hp(50)
     };
   }
 

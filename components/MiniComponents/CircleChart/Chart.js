@@ -6,6 +6,7 @@ import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
 import { Text } from "native-base";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default Chart = props => {
   const { translate } = props.screenProps;
@@ -13,9 +14,9 @@ export default Chart = props => {
   let x = (spends / budget) * 100;
 
   return (
-    <View>
+    <View style={{ alignSelf: "center", marginVertical: 10 }}>
       <AnimatedCircularProgress
-        size={detail ? 180 : 80}
+        size={detail ? 160 : 80}
         width={detail ? 12 : 5}
         fill={x}
         rotation={0}

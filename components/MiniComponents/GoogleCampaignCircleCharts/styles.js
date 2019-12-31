@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
   subtext: {
     fontFamily: "montserrat-bold",
     fontSize: 12,
-    color: "#fff"
+    color: "#fff",
+    textAlign: "left"
   },
   chart: {
     alignItems: "center",
