@@ -273,10 +273,13 @@ class GoogleAdDesign extends Component {
                 inputURL={this.state.inputURL}
               />
             </View>
-
             <InputScrollView
+              keyboardAvoidingViewProps={{ behavior: "padding" }}
               {...ScrollView.props}
-              contentContainerStyle={styles.mainContent}
+              contentContainerStyle={[
+                styles.mainContent,
+                { paddingBottom: "80%" }
+              ]}
             >
               <Animatable.View
                 onAnimationEnd={() => this.setState({ headline1Error: null })}
@@ -627,7 +630,10 @@ class GoogleAdDesign extends Component {
                 <Item
                   style={[
                     styles.input,
-                    { paddingVertical: 20, paddingHorizontal: 5 }
+                    {
+                      paddingVertical: 20,
+                      paddingHorizontal: 5
+                    }
                   ]}
                 >
                   <Textarea
@@ -636,11 +642,13 @@ class GoogleAdDesign extends Component {
                     placeholderTextColor={"#FFF"}
                     disabled={this.props.loading}
                     value={this.state.description}
-                    style={[styles.inputTextarea]}
+                    style={[styles.inputTextarea, { textAlignVertical: "top" }]}
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={"Input Description 1 text"}
+                    placeholder={
+                      this.state.inputD ? null : "Input Description 1 text"
+                    }
                     onChangeText={value => {
                       this.setState({
                         description: value
@@ -727,7 +735,9 @@ class GoogleAdDesign extends Component {
                     autoCorrect={true}
                     numberOfLines={6}
                     maxLength={90}
-                    placeholder={"Input Description 2 text"}
+                    placeholder={
+                      this.state.inputD2 ? null : "Input Description 2 text"
+                    }
                     onChangeText={value => {
                       this.setState({
                         description2: value

@@ -1,24 +1,14 @@
 import React, { Component } from "react";
 import {
   View,
-  Image as RNImage,
   Animated,
   BackHandler,
-  FlatList,
   TouchableWithoutFeedback,
   ScrollView,
   Keyboard
 } from "react-native";
-import {
-  Content,
-  Text,
-  Item,
-  Input,
-  Container,
-  Icon,
-  Button
-} from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { Text, Item, Input, Container } from "native-base";
+import { SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import Header from "../../../MiniComponents/Header";
 import KeywordRow from "./KeywordRow";
@@ -31,15 +21,11 @@ import { LinearGradient } from "expo-linear-gradient";
 
 // Style
 import styles from "./styles";
-import GlobalStyles, { globalColors } from "../../../../GlobalStyles";
 
 //Icons
 import ClicksIcon from "../../../../assets/SVGs/Performance/Clicks";
-import ImpressionsIcon from "../../../../assets/SVGs/Performance/Impressions";
-import CPCIcon from "../../../../assets/SVGs/Performance/CPC";
 import CTRIcon from "../../../../assets/SVGs/Performance/CTR";
 import SpendIcon from "../../../../assets/SVGs/Performance/Spend";
-import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
 import SearchIcon from "../../../../assets/SVGs/Search.svg";
 import isUndefined from "lodash/isUndefined";
 
@@ -237,13 +223,7 @@ class GoogleKeywordsStats extends Component {
                   }
                 ]}
               >
-                <ScrollView
-                // scrollEnabled={true}
-                // bounces={false}
-                // style={styles.countryScrollContainer}
-                >
-                  {keywordslist}
-                </ScrollView>
+                <ScrollView>{keywordslist}</ScrollView>
               </View>
             </View>
           </Container>

@@ -2,17 +2,14 @@
 import React, { Component } from "react";
 import {
   View,
-  Slider,
   TouchableOpacity,
   ScrollView,
-  Platform,
   BackHandler,
   I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import Sidemenu from "../../../MiniComponents/SideMenu";
-import { TextInputMask } from "react-native-masked-text";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import CustomHeader from "../../../MiniComponents/Header";
 import { showMessage } from "react-native-flash-message";
@@ -46,7 +43,6 @@ import { connect } from "react-redux";
 //Functions
 import validateWrapper from "../../../../ValidationFunctions/ValidateWrapper";
 
-import debounce from "lodash/debounce";
 import isNan from "lodash/isNaN";
 import isUndefined from "lodash/isUndefined";
 

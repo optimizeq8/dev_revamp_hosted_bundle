@@ -1,9 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-
-import { Button, Text } from "native-base";
+import { Text } from "native-base";
 import styles from "./styles";
-import { globalColors } from "../../../../GlobalStyles";
 
 export default props => {
   let { content, selected, onPressFunction } = props;

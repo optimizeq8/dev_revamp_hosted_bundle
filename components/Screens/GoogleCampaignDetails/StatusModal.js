@@ -11,7 +11,6 @@ import CloseIcon from "../../../assets/SVGs/Close";
 //styles
 import styles from "./styles";
 import formatNumber from "../../formatNumber";
-import { globalColors } from "../../../GlobalStyles";
 import { colors } from "../../GradiantColors/colors";
 export default class StatusModal extends Component {
   render() {
@@ -106,12 +105,6 @@ export default class StatusModal extends Component {
               {translate("The remaining budget will be added to your wallet")}
             </Text>
           </View>
-          {/* <Button
-                  onPress={() => this.updateStatus()}
-                  style={styles.button}
-                >
-                  <CheckmarkIcon width={53} height={53} />
-                </Button> */}
         </BlurView>
       </Modal>
     );

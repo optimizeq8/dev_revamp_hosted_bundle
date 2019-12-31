@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     paddingBottom: "10%",
+    // flexGrow: 1,
+    // height: "100%",
+    // flex: 1,
     paddingTop: 13
   },
   inputView: {

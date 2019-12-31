@@ -7,8 +7,6 @@ import { globalColors } from "../../../GlobalStyles";
 export default class ChartChoices extends Component {
   state = { selectedChoice: "Spend" };
   render() {
-    // let selectedCampaign = this.props.selectedCampaign;
-
     const { translate } = this.props.screenProps;
     let choices = ["Spend", "Clicks", "CPC", "ctr"].map(choice => (
       <Button
