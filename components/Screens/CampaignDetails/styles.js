@@ -422,6 +422,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF9D00",
     borderRadius: 25
+  },
+  xAxisStyle: {
+    position: "absolute",
+    backgroundColor: "#000",
+    width: "15%"
   }
 });
 
