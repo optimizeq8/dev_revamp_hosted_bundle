@@ -28,12 +28,10 @@ import Duration from "../../CampaignCreate/AdObjective/Duration"; //needs to be 
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
 import CustomHeader from "../../../MiniComponents/Header";
-import LoadingScreen from "../../../MiniComponents/LoadingScreen";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import ContinueGoogleCampaign from "../../../MiniComponents/ContinueGoogleCampaign";
 
 //Icons
-import PhoneIcon from "../../../../assets/SVGs/Phone.svg";
 import BackdropIcon from "../../../../assets/SVGs/BackDropIcon";
 import GoogleSE from "../../../../assets/SVGs/GoogleAds.svg";
 

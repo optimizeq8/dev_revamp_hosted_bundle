@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, ScrollView, BackHandler } from "react-native";
 import { Card, Button, Text, Container } from "native-base";
 
-import { SafeAreaView } from "react-navigation";
+import { NavigationEvents, SafeAreaView } from "react-navigation";
 import HTMLView from "react-native-htmlview";
 import { ActivityIndicator } from "react-native-paper";
 import { terms, secondTerms } from "../../Data/terms.google.data";
@@ -57,6 +57,13 @@ class GoogleCreateAdAcc extends Component {
         }}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Google Ad Account", {
+              category: "Sign Up"
+            });
+          }}
+        />
         <Container style={styles.container}>
           <CustomHeader
             closeButton={false}

@@ -107,6 +107,14 @@ class AdPaymentReview extends Component {
               "GoogleAdTargetting",
               "GoogleAdPaymentReview"
             ]);
+            Segment.screenWithProperties("Google Ad Payment Review", {
+              category: "Campaign Creation"
+            });
+            Segment.trackWithProperties("Viewed Checkout Step", {
+              step: 5,
+              business_name: this.props.mainBusiness.businessname,
+              checkout_id: this.props.campaign_id
+            });
           }}
         />
 
