@@ -135,7 +135,7 @@ class PersonalInfo extends Component {
           {...ScrollView.props}
           contentContainerStyle={[
             {
-              paddingBottom: "25%",
+              paddingBottom: "55%",
               paddingTop: 13
             }
           ]}
@@ -197,6 +197,7 @@ class PersonalInfo extends Component {
                       }
                     });
                   }}
+                  autoFocus={true}
                   onFocus={() => {
                     this.setState({ inputF: true });
                   }}

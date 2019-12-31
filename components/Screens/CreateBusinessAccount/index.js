@@ -466,7 +466,7 @@ class CreateBusinessAccount extends Component {
           <View style={[styles.mainCard]}>
             <InputScrollView
               {...ScrollView.props}
-              contentContainerStyle={{ paddingBottom: "10%", paddingTop: 13 }}
+              contentContainerStyle={{ paddingBottom: "30%", paddingTop: 13 }}
             >
               <View style={styles.marginVertical}>
                 <View style={[styles.callToActionLabelView]}>
@@ -744,7 +744,9 @@ class CreateBusinessAccount extends Component {
                       { fontFamily: "montserrat-regular" }
                     ]}
                   >
-                    {translate(this.state.businessAccount.country)}
+                    {this.state.businessAccount.country !== ""
+                      ? translate(this.state.businessAccount.country)
+                      : translate("Select Country")}
                   </Text>
                   <Icon type="AntDesign" name="down" style={styles.iconDown} />
                 </Item>
