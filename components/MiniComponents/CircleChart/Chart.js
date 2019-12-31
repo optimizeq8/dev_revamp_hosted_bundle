@@ -6,7 +6,6 @@ import SpendingIcon from "../../../assets/SVGs/SpendingIcon";
 import { globalColors } from "../../../GlobalStyles";
 import formatNumber from "../../formatNumber";
 import { Text } from "native-base";
-import { widthPercentageToDP } from "react-native-responsive-screen";
 
 export default Chart = props => {
   const { translate } = props.screenProps;
