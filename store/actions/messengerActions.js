@@ -8,9 +8,11 @@ import { showMessage } from "react-native-flash-message";
 import { send_push_notification } from "./loginActions";
 import { update_app_status_chat_notification } from "./genericActions";
 
-instance = axios.create({
-  baseURL: "https://www.optimizeapp.io/"
-});
+NodeBackendURL = () =>
+  axios.create({
+    // baseURL: "https://www.optimizeapp.io/"
+    baseURL: "https://intercom-react.glitch.me/"
+  });
 
 /**
  * sends a request to get user object from intercom
@@ -28,7 +30,8 @@ export const connect_user_to_intercom = user_id => {
     });
     // console.log("user_id: ", user_id);
 
-    NodeBackendURL.get(`get-user/${user_id}`)
+    NodeBackendURL()
+      .get(`get-user/${user_id}`)
       .then(res => {
         return res.data;
       })
@@ -113,7 +116,8 @@ export const create_user_on_intercom = user => {
       type: actionTypes.SET_LOADING_MESSENGER,
       payload: true
     });
-    NodeBackendURL.post("/create-user", user)
+    NodeBackendURL()
+      .post("/create-user", user)
       .then(res => {
         dispatch(get_conversation(res.data.user_id));
         return dispatch({
@@ -140,7 +144,8 @@ export const get_conversation = user_id => {
       type: actionTypes.SET_LOADING_CON,
       payload: true
     });
-    NodeBackendURL.get(`get-conversation/${user_id}`)
+    NodeBackendURL()
+      .get(`get-conversation/${user_id}`)
       .then(res => {
         return res.data;
       })
@@ -209,13 +214,14 @@ export const start_conversation = message => {
       payload: true
     });
 
-    NodeBackendURL.post("/start-conversation", {
-      from: {
-        type: "user",
-        user_id: getState().auth.userInfo.userid
-      },
-      body: message
-    })
+    NodeBackendURL()
+      .post("/start-conversation", {
+        from: {
+          type: "user",
+          user_id: getState().auth.userInfo.userid
+        },
+        body: message
+      })
       .then(response => {
         return dispatch({
           type: actionTypes.SET_CONVERSATION,
@@ -249,13 +255,14 @@ export const reply = (message, upload) => {
       type: actionTypes.SET_LOADING_MESSAGE,
       payload: true
     });
-    NodeBackendURL.post("/reply", {
-      user_id: getState().auth.userInfo.userid,
-      body: message,
-      message_type: "comment",
-      type: "user",
-      attachment_urls: upload
-    })
+    NodeBackendURL()
+      .post("/reply", {
+        user_id: getState().auth.userInfo.userid,
+        body: message,
+        message_type: "comment",
+        type: "user",
+        attachment_urls: upload
+      })
       .then(response => {
         dispatch(send_push_notification());
         return dispatch({
@@ -371,7 +378,8 @@ export const update_conversatusion_read_status = () => {
 export const set_as_seen = check => {
   return (dispatch, getState) => {
     if (check)
-      NodeBackendURL.get(`read/${getState().messenger.conversation_id}`)
+      NodeBackendURL()
+        .get(`read/${getState().messenger.conversation_id}`)
         .then(res => {
           return res.data;
         })
@@ -401,7 +409,8 @@ export const set_as_seen = check => {
  */
 export const update_last_seen = () => {
   return (dispatch, getState) => {
-    NodeBackendURL.get(`update-last-seen/${getState().auth.userInfo.userid}`)
+    NodeBackendURL()
+      .get(`update-last-seen/${getState().auth.userInfo.userid}`)
       .then(res => {
         return res.data;
       })
