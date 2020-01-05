@@ -6,7 +6,6 @@ import {
   MaskedViewIOS,
   TouchableOpacity
 } from "react-native";
-import { connect } from "react-redux";
 import styles from "./styles";
 import BudgetCard from "./BudgetCard";
 import { TextInputMask } from "react-native-masked-text";
@@ -23,7 +22,8 @@ export class BudgetCards extends Component {
       value,
       recBudget,
       lifetime_budget_micro,
-      budgetOption
+      budgetOption,
+      uploading
     } = this.props;
 
     recBudget = parseFloat(recBudget);
@@ -34,6 +34,7 @@ export class BudgetCards extends Component {
       { recBudget: recBudget * 3, id: 3 }
     ].map((bud, i) => (
       <BudgetCard
+        uploading={uploading}
         key={bud.id}
         bud={bud}
         _handleBudget={_handleBudget}
@@ -69,6 +70,7 @@ export class BudgetCards extends Component {
               {budgetOption !== 0 ||
               (value === "$0" && !this.state.placeholder) ? (
                 <TouchableOpacity
+                  disabled={uploading}
                   style={{ flex: 1, justifyContent: "center" }}
                   onPress={() => {
                     this.setState({ placeholder: true });
@@ -135,8 +137,4 @@ export class BudgetCards extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetCards);
+export default BudgetCards;

@@ -306,7 +306,7 @@ class GoogleAdDesign extends Component {
                     autoFocus={true}
                     placeholder={translate("Input headline text")}
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.headline1}
                     style={[styles.inputText]}
                     autoCorrect={true}
@@ -380,7 +380,7 @@ class GoogleAdDesign extends Component {
                   <Input
                     placeholder={translate("Input headline text")}
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.headline2}
                     style={[styles.inputText]}
                     autoCorrect={true}
@@ -457,7 +457,7 @@ class GoogleAdDesign extends Component {
                   <Input
                     placeholder={translate("Input headline text")}
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.headline3}
                     style={[styles.inputText]}
                     autoCorrect={true}
@@ -564,7 +564,7 @@ class GoogleAdDesign extends Component {
                   </TouchableOpacity>
                   <Input
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.finalurl}
                     style={[
                       styles.inputText,
@@ -641,7 +641,7 @@ class GoogleAdDesign extends Component {
                     rowSpan={3}
                     multiline={true}
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.description}
                     style={[styles.inputTextarea, { textAlignVertical: "top" }]}
                     autoCorrect={true}
@@ -652,7 +652,6 @@ class GoogleAdDesign extends Component {
                         ? null
                         : translate("Input Description 1 text")
                     }
-
                     onChangeText={value => {
                       this.setState({
                         description: value
@@ -733,7 +732,7 @@ class GoogleAdDesign extends Component {
                     rowSpan={3}
                     multiline={true}
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.description2}
                     style={[styles.inputTextarea]}
                     autoCorrect={true}

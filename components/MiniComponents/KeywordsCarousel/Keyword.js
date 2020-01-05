@@ -6,7 +6,7 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 export default Keyword = props => {
-  let { _handler, keyword, type = "Keyword" } = props;
+  let { _handler, keyword, type = "Keyword", uploading } = props;
   return (
     <TouchableOpacity
       style={
@@ -17,6 +17,7 @@ export default Keyword = props => {
       onPress={() => {
         _handler(keyword);
       }}
+      disabled={uploading}
     >
       <Text
         style={

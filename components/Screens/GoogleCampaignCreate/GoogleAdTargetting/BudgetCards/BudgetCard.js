@@ -6,11 +6,12 @@ import { Icon } from "native-base";
 import segmentEventTrack from "../../../../segmentEventTrack";
 export default class BudgetCard extends Component {
   render() {
-    let { bud, _handleBudget, budgetOption } = this.props;
+    let { bud, _handleBudget, budgetOption, uploading } = this.props;
 
     return (
       <>
         <TouchableOpacity
+          disabled={uploading}
           onPress={() => {
             segmentEventTrack("Campaign Budget Change", {
               campaign_budget: bud.recBudget

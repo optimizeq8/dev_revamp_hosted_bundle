@@ -388,7 +388,7 @@ class GoogleAdInfo extends Component {
                 <Item style={[styles.input1]}>
                   <Input
                     placeholderTextColor={"#FFF"}
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     value={this.state.name}
                     style={[styles.inputText]}
                     autoCorrect={false}
@@ -449,7 +449,7 @@ class GoogleAdInfo extends Component {
                 </View>
                 <Duration
                   screenProps={this.props.screenProps}
-                  loading={this.props.loading}
+                  loading={this.props.campaign.uploading}
                   dismissKeyboard={Keyboard.dismiss}
                   start_time={this.state.start_time}
                   end_time={this.state.end_time}
@@ -470,7 +470,7 @@ class GoogleAdInfo extends Component {
                   </Text>
                 </View>
                 <Item
-                  disabled={this.props.loading}
+                  disabled={this.props.campaign.uploading}
                   // rounded
                   style={[styles.input2]}
                   onPress={() => {

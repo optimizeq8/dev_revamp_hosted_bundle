@@ -458,6 +458,7 @@ class GoogleAdTargetting extends Component {
                   lifetime_budget_micro={this.state.budget}
                   budgetOption={this.state.budgetOption}
                   _handleBudget={this._handleBudget}
+                  uploading={this.props.campaign.uploading}
                 />
 
                 <Text style={styles.subHeadings}>
@@ -476,6 +477,7 @@ class GoogleAdTargetting extends Component {
                       keywords={this.state.keywords}
                       _renderSideMenu={this._renderSideMenu}
                       _handleAddKeyword={this._handleAddKeyword}
+                      uploading={this.props.campaign.uploading}
                     />
                   </View>
                 ) : (
@@ -508,7 +510,7 @@ class GoogleAdTargetting extends Component {
                   style={styles.targetList}
                 >
                   <TouchableOpacity
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     onPress={() => {
                       this._renderSideMenu("gender");
                     }}
@@ -540,7 +542,7 @@ class GoogleAdTargetting extends Component {
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    disabled={this.props.loading}
+                    disabled={this.props.campaign.uploading}
                     onPress={() => {
                       this._renderSideMenu("age");
                     }}

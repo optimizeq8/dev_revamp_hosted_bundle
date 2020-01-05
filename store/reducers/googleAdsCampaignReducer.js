@@ -34,8 +34,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  // console.log("campign reduce", action.payload);
-
   switch (action.type) {
     case actionTypes.SET_GOOGLE_LOADING:
       return {
@@ -107,11 +105,10 @@ const reducer = (state = initialState, action) => {
         minValueBudget: action.payload.min_budget,
         maxValueBudget: action.payload.max_budget,
         recommendedBudget: action.payload.recommended_budget,
+        budget: action.payload.recommended_budget,
         uploading: false
       };
     case actionTypes.SAVE_GOOGLE_CAMPAIGN_DATA:
-      // console.log("save google data", action.payload);
-
       return {
         ...state,
         ...action.payload

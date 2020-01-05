@@ -28,10 +28,8 @@ let blacklistTransform = createTransform((inboundState, key) => {
     ]);
   }
   if (key === "googleAds") {
-    // console.log("inboundState", inboundState);
-
-    inboundState = { ...inboundState, loadingStoryAdsArray: [] };
-    return omit(inboundState, ["loading", "uploading", "campaignResumed"]);
+    inboundState = { ...inboundState };
+    return omit(inboundState, ["campaignResumed"]);
   } else {
     return inboundState;
   }
