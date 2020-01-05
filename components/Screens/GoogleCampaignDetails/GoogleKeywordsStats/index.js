@@ -8,7 +8,7 @@ import {
   Keyboard
 } from "react-native";
 import { Text, Item, Input, Container } from "native-base";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, NavigationEvents } from "react-navigation";
 import { connect } from "react-redux";
 import Header from "../../../MiniComponents/Header";
 import KeywordRow from "./KeywordRow";
@@ -18,7 +18,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
-
+import * as Segment from "expo-analytics-segment";
 // Style
 import styles from "./styles";
 
@@ -96,6 +96,14 @@ class GoogleKeywordsStats extends Component {
         style={styles.safeAreaView}
         forceInset={{ bottom: "never", top: "always" }}
       >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screenWithProperties("Google Keywords Stats", {
+              category: "Campaign Details",
+              channel: "google"
+            });
+          }}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <Container style={styles.container}>
             <View
@@ -219,7 +227,8 @@ class GoogleKeywordsStats extends Component {
                 style={[
                   styles.scrollContainer,
                   !isUndefined(this.state.selected.keyword) && {
-                    maxHeight: hp("45%")
+                    maxHeight: hp("45%"),
+                    paddingBottom: "3%"
                   }
                 ]}
               >
