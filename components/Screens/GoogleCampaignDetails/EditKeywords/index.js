@@ -7,18 +7,25 @@ import {
 } from "react-native";
 import { Container } from "native-base";
 import { SafeAreaView } from "react-navigation";
-import { connect } from "react-redux";
-import Header from "../../../MiniComponents/Header";
-import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
-import * as actionCreators from "../../../../store/actions";
-import LowerButton from "../../../MiniComponents/LowerButton";
-import ForwardLoading from "../../../MiniComponents/ForwardLoading";
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
+import { connect } from "react-redux";
+import * as Segment from "expo-analytics-segment";
+
+//components
+import Header from "../../../MiniComponents/Header";
+import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
+
+// functions
+import * as actionCreators from "../../../../store/actions";
+import segmentEventTrack from "../../../segmentEventTrack";
+
+// icons
+import LowerButton from "../../../MiniComponents/LowerButton";
+import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 
 // Style
 import styles from "./styles";
@@ -35,6 +42,10 @@ class EditKeywords extends Component {
     };
   }
   componentDidMount() {
+    Segment.screenWithProperties("Update keywords", {
+      channel: "google",
+      category: "Campaign Updating"
+    });
     let keywords = this.props.selectedCampaign.keywords.map(k => k.keyword);
     this.setState({
       keywords: keywords
@@ -52,31 +63,50 @@ class EditKeywords extends Component {
   }
   _handleAddKeyword = keyword => {
     if (keyword === "Reset") {
+      segmentEventTrack("Reset button keyword selected");
       this.setState({ keywords: [] });
       return;
     }
     var res = this.state.keywords.filter(l => l !== keyword);
     if (isUndefined(this.state.keywords.find(l => l === keyword))) {
+      segmentEventTrack("Selected Campaign keywords", {
+        campaign_keywords: [...res, keyword]
+      });
       this.setState({ keywords: [...res, keyword] });
     } else {
+      segmentEventTrack("Selected Campaign keywords", {
+        campaign_keywords: res
+      });
       this.setState({ keywords: res });
     }
   };
 
   _handleSubmission = () => {
+    const { translate } = this.props.screenProps;
     const keywordsError =
       this.state.keywords.length === 0
-        ? "Please choose keywords for your product."
+        ? "Please choose keywords for your product"
         : null;
     if (!keywordsError) {
-      this.props.update_google_keywords({
+      const segmentInfo = {
         businessid: this.props.mainBusiness.businessid,
         campaign_id: this.props.selectedCampaign.campaign.campaign_id,
-        keywords: this.state.keywords
-      });
+        campaign_keywords: this.state.keywords
+      };
+      this.props.update_google_keywords(
+        {
+          businessid: this.props.mainBusiness.businessid,
+          campaign_id: this.props.selectedCampaign.campaign.campaign_id,
+          keywords: this.state.keywords
+        },
+        segmentInfo
+      );
     } else {
+      segmentEventTrack("Error on submit updating keywords", {
+        campaign_error_keywords: keywordsError
+      });
       showMessage({
-        message: keywordsError,
+        message: translate(keywordsError),
         type: "warning",
         position: "top"
       });
@@ -158,8 +188,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  update_google_keywords: info =>
-    dispatch(actionCreators.update_google_keywords(info)),
+  update_google_keywords: (info, segmentInfo) =>
+    dispatch(actionCreators.update_google_keywords(info, segmentInfo)),
   get_google_SE_keywords: (keyword, campaign_id, businessid) =>
     dispatch(
       actionCreators.get_google_SE_keywords(keyword, campaign_id, businessid)

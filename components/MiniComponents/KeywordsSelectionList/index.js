@@ -160,7 +160,7 @@ export default class KeywordsSelectionList extends Component {
                 this.props._handleAddItem("Reset");
               }}
             >
-              Reset
+              {translate("Reset")}
             </Text>
           </>
         )}

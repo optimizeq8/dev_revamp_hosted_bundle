@@ -281,6 +281,14 @@ class GoogleCampaignDetails extends Component {
             style={{ flex: 1 }}
             forceInset={{ bottom: "never", top: "always" }}
           >
+            <NavigationEvents
+              onDidFocus={() => {
+                Segment.screenWithProperties("Google Campaign Details", {
+                  category: "Campaign Details",
+                  channel: "google"
+                });
+              }}
+            />
             <Container style={styles.container}>
               <View
                 style={[

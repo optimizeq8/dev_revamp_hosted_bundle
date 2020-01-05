@@ -30,7 +30,7 @@ export default props => {
           <SpendIcon width={26} fill={"#fff"} />
           <View style={styles.innerBlock}>
             <Text uppercase style={styles.title}>
-              Spend
+              {translate("Spend")}
             </Text>
             <Text style={styles.number}>{this.kFormatter(content.spend)}</Text>
           </View>
@@ -39,7 +39,7 @@ export default props => {
           <ClicksIcon width={26} fill={"#fff"} />
           <View style={styles.innerBlock}>
             <Text uppercase style={styles.title}>
-              clicks
+              {translate("clicks")}
             </Text>
             <Text style={styles.number}>{this.kFormatter(content.clicks)}</Text>
           </View>

@@ -344,8 +344,8 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
  *  there is an action that gets called to create the keywords seperatly if it gets submitted
  *
  * @method
- * @param {Object} info has keys for targetting that include (gender/age/budget/keywords)
- * @returns {Function} an action to set the targetting info and the campaign transactions info
+ * @param {Object} info has keys for targeting that include (gender/age/budget/keywords)
+ * @returns {Function} an action to set the targeting info and the campaign transactions info
  */
 export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
   return dispatch => {
@@ -550,7 +550,7 @@ export const rest_google_campaign_data = () => {
  * @method
  * @param {Object} info (gender/age/location/language/campiagnid)
  */
-export const update_google_audience_targeting = info => {
+export const update_google_audience_targeting = (info, segmentInfo) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -568,16 +568,27 @@ export const update_google_audience_targeting = info => {
       })
       .then(data => {
         if (!data.error) {
+          segmentEventTrack(
+            "Successfully updated google audience targeting",
+            segmentInfo
+          );
           NavigationService.navigate("Dashboard");
-        } else
+        } else {
+          segmentEventTrack("Error updating google audience targeting", {
+            campaign_error_targeting: data.error
+          });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
             position: "top"
           });
+        }
       })
       .catch(err => {
+        segmentEventTrack("Error updating google audience targeting", {
+          campaign_error_targeting: err.message || err.response
+        });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,
@@ -599,7 +610,7 @@ export const update_google_audience_targeting = info => {
  * @method
  * @param {Object} info
  */
-export const update_google_keywords = info => {
+export const update_google_keywords = (info, segmentInfo) => {
   return dispatch => {
     dispatch({
       type: actionTypes.SET_GOOGLE_UPLOADING,
@@ -617,16 +628,27 @@ export const update_google_keywords = info => {
       })
       .then(data => {
         if (!data.error) {
+          segmentEventTrack(
+            "Successfully updated google keywords",
+            segmentInfo
+          );
           NavigationService.navigate("Dashboard");
-        } else
+        } else {
+          segmentEventTrack("Error updating google keywords", {
+            campaign_error_keywords: data.error
+          });
           showMessage({
             message: "Oops! Something went wrong. Please try again.",
             description: data.error,
             type: "danger",
             position: "top"
           });
+        }
       })
       .catch(err => {
+        segmentEventTrack("Error updating google keywords", {
+          campaign_error_keywords: err.message || err.response
+        });
         showMessage({
           message: "Oops! Something went wrong. Please try again.",
           description: err.message || err.response,

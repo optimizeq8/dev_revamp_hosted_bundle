@@ -48,6 +48,7 @@ class GoogleCreateAdAcc extends Component {
     );
   };
   render() {
+    const { translate } = this.props.screenProps;
     return (
       <SafeAreaView
         style={{
@@ -83,7 +84,7 @@ class GoogleCreateAdAcc extends Component {
             style={{ alignSelf: "center", margin: 15 }}
           />
           <Card padder style={styles.mainCard}>
-            <Text style={styles.text}>Terms And Conditions</Text>
+            <Text style={styles.text}>{translate("Terms & Conditions")}</Text>
             <ScrollView
               onScroll={({ nativeEvent }) => {
                 if (this.isCloseToBottom(nativeEvent)) {
@@ -116,7 +117,7 @@ class GoogleCreateAdAcc extends Component {
                     );
                   }}
                 >
-                  <Text style={styles.buttontext}>Accept</Text>
+                  <Text style={styles.buttontext}>{translate("Accept")}</Text>
                 </Button>
               )}
             </View>

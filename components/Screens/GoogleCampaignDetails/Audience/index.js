@@ -13,6 +13,7 @@ import * as Animatable from "react-native-animatable";
 import { BlurView } from "expo-blur";
 import { Modal } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Segment from "expo-analytics-segment";
 
 import CountrySelector from "../../../MiniComponents/CountrySelector";
 import RegionsSelector from "../../../MiniComponents/RegionsSelector";
@@ -284,8 +285,15 @@ class GoogleAdTargetting extends Component {
       location: this.state.location,
       language: this.state.language
     };
-
-    this.props.update_google_audience_targeting(info);
+    const segmentInfo = {
+      businessid: this.props.mainBusiness.businessid,
+      campaign_id: this.state.campaignInfo.campaign_id,
+      campaign_age: this.state.age,
+      campaign_gender: this.state.gender,
+      campaign_location: this.state.location,
+      campaign_language: this.state.language
+    };
+    this.props.update_google_audience_targeting(info, segmentInfo);
   };
   setModalVisible = visible => {
     this.setState({ modalVisible: visible });
@@ -412,6 +420,17 @@ class GoogleAdTargetting extends Component {
           style={[styles.safeArea]}
           forceInset={{ bottom: "never", top: "always" }}
         >
+          <NavigationEvents
+            onDidFocus={() => {
+              Segment.screenWithProperties(
+                "Google Campaign Audience Targetting",
+                {
+                  category: "Campaign Details",
+                  channel: "google"
+                }
+              );
+            }}
+          />
           <LinearGradient
             colors={[colors.background1, colors.background2]}
             locations={[1, 0.3]}
@@ -719,8 +738,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  update_google_audience_targeting: info =>
-    dispatch(actionCreators.update_google_audience_targeting(info)),
+  update_google_audience_targeting: (info, segmentInfo) =>
+    dispatch(
+      actionCreators.update_google_audience_targeting(info, segmentInfo)
+    ),
   get_google_SE_location_list_reach: country =>
     dispatch(actionCreators.get_google_SE_location_list_reach(country))
 });

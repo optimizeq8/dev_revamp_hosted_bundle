@@ -56,7 +56,8 @@ export default StyleSheet.create({
   scrollContainer: {
     // marginVertical: 10,
     // flexGrow: 1,
-    width: "100%"
+    width: "100%",
+    paddingBottom: "10%"
     // maxHeight: hp("45%")
 
     // flex: 1
