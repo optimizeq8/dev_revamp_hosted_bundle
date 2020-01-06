@@ -22,7 +22,9 @@ const initialState = {
   message: "",
   payment_data: null,
   loading: false,
-  errorTransactionList: false
+  errorTransactionList: false,
+  walletTransactionList: [],
+  walletTransactionListLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -192,6 +194,25 @@ const reducer = (state = initialState, action) => {
     case actionTypes.RESET_TRANSACTION_DATA:
       return {
         initialState
+      };
+    case actionTypes.SET_WALLET_TRANSACTION_LIST:
+      return {
+        ...state,
+        walletTransactionList: action.payload.data,
+        walletTransactionListLoading: false,
+        message: action.payload.message
+      };
+    case actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST:
+      return {
+        ...state,
+        walletTransactionListLoading: false,
+        errorTransactionList: true
+      };
+    case actionTypes.SET_TRAN_WALLET_LOADING:
+      return {
+        ...state,
+        walletTransactionListLoading: action.payload,
+        errorTransactionList: false
       };
     default:
       return state;

@@ -325,7 +325,7 @@ class PaymentForm extends Component {
       >
         <NavigationEvents
           onDidFocus={() => {
-            if (this.props.navigation.getParam("addingCredits") === true) {
+            if (this.state.addingCredits) {
               Segment.screenWithProperties("Payment Selection", {
                 category: "Wallet Top Up"
               });
@@ -333,8 +333,7 @@ class PaymentForm extends Component {
               Segment.screenWithProperties("Payment Selection", {
                 businessname: this.props.mainBusiness.businessname,
                 campaign_id: this.props.campaign_id,
-                category: "Campaign Creation",
-                channel: "google"
+                category: "Campaign Creation"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
                 step: 6,
@@ -346,7 +345,7 @@ class PaymentForm extends Component {
         />
 
         <Container style={[styles.container]}>
-          <BackDrop style={styles.backDrop} />
+          {/* <BackDrop style={styles.backDrop} /> */}
           <CustomHeader
             screenProps={this.props.screenProps}
             closeButton={false}
@@ -357,7 +356,7 @@ class PaymentForm extends Component {
             // navigation={this.props.navigation}
             actionButton={this.reviewPurchase}
             // paymentForm={true}
-            title={"Payment"}
+            title={this.state.addingCredits ? "Top up wallet" : "Payment"}
           />
           <Content
             padder
@@ -369,18 +368,15 @@ class PaymentForm extends Component {
                 <Button
                   style={[
                     styles.whitebutton,
-                    this.state.choice === 1
-                      ? globalStyles.orangeBackgroundColor
-                      : globalStyles.whiteBackgroundColor
+                    this.state.choice === 1 &&
+                      globalStyles.orangeBackgroundColor
                   ]}
                   onPress={() => this._handleChoice(1)}
                 >
                   <Text
                     style={[
                       styles.whitebuttontext,
-                      this.state.choice === 1
-                        ? globalStyles.whiteTextColor
-                        : globalStyles.purpleTextColor
+                      this.state.choice === 1 && globalStyles.whiteTextColor
                     ]}
                     uppercase
                   >
@@ -393,12 +389,11 @@ class PaymentForm extends Component {
                 <Button
                   style={[
                     styles.whitebutton2,
-                    this.state.choice === 2
-                      ? globalStyles.orangeBackgroundColor
-                      : globalStyles.whiteBackgroundColor,
+                    this.state.choice === 2 &&
+                      globalStyles.orangeBackgroundColor,
                     {
-                      borderTopStartRadius: this.state.addingCredits ? 15 : 0,
-                      borderBottomStartRadius: this.state.addingCredits ? 15 : 0
+                      borderTopStartRadius: this.state.addingCredits ? 25 : 0,
+                      borderBottomStartRadius: this.state.addingCredits ? 25 : 0
                     }
                   ]}
                   onPress={() => this._handleChoice(2)}
@@ -406,9 +401,7 @@ class PaymentForm extends Component {
                   <Text
                     style={[
                       styles.whitebuttontext,
-                      this.state.choice === 2
-                        ? globalStyles.whiteTextColor
-                        : globalStyles.purpleTextColor
+                      this.state.choice === 2 && globalStyles.whiteTextColor
                     ]}
                   >
                     {translate("KNET")}
@@ -418,18 +411,14 @@ class PaymentForm extends Component {
               <Button
                 style={[
                   styles.whitebutton3,
-                  this.state.choice === 3
-                    ? globalStyles.orangeBackgroundColor
-                    : globalStyles.whiteBackgroundColor
+                  this.state.choice === 3 && globalStyles.orangeBackgroundColor
                 ]}
                 onPress={() => this._handleChoice(3)}
               >
                 <Text
                   style={[
                     styles.whitebuttontext,
-                    this.state.choice === 3
-                      ? globalStyles.whiteTextColor
-                      : globalStyles.purpleTextColor
+                    this.state.choice === 3 && globalStyles.whiteTextColor
                   ]}
                   uppercase
                 >
@@ -539,7 +528,14 @@ class PaymentForm extends Component {
                     alignItems: "center"
                   }}
                 >
-                  <Text style={styles.payNowText}>{translate("Pay Now")}</Text>
+                  <Text
+                    uppercase={this.state.addingCredits}
+                    style={styles.payNowText}
+                  >
+                    {this.state.addingCredits
+                      ? translate("Top Up Now")
+                      : translate("Pay Now")}
+                  </Text>
                   {this.props.loadingTrans && (
                     <ActivityIndicator
                       color={globalColors.red}

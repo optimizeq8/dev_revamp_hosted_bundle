@@ -510,3 +510,43 @@ export const payment_request_credit_card = (
       });
   };
 };
+/**
+ * Get wallet transaction list for the current business id
+ *
+ *
+ *
+ */
+export const getWalletTransactionsHistory = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: actionTypes.SET_TRAN_WALLET_LOADING,
+      payload: true
+    });
+    createBaseUrl()
+      .get(`walletpaymentHistory/${getState().account.mainBusiness.businessid}`)
+      .then(res => {
+        return res.data;
+      })
+      .then(data => {
+        // console.log("payment list:", data);
+        return dispatch({
+          type: actionTypes.SET_WALLET_TRANSACTION_LIST,
+          payload: data
+        });
+      })
+      .catch(err => {
+        // console.log("getTransactions Error: ", err.message || err.response); // => prints: Api is being canceled
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        return dispatch({
+          type: actionTypes.ERROR_SET_WALLET_TRANSACTION_LIST
+        });
+      });
+  };
+};

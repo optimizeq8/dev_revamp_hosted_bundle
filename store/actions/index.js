@@ -92,7 +92,8 @@ export {
   setCampaignInfoForTransaction,
   payment_request_knet,
   payment_request_credit_card,
-  reset_transaction_reducer
+  reset_transaction_reducer,
+  getWalletTransactionsHistory
 } from "./transactionActions";
 
 export {

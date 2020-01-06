@@ -26,7 +26,6 @@ import {
   Icon
 } from "native-base";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Animatable from "react-native-animatable";
 import Axios from "axios";
 import { Modal } from "react-native-paper";

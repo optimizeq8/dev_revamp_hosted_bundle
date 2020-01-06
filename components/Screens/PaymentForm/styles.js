@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.2,
     height: 45,
-    width: heightPercentageToDP(5) < 30 ? 150 : 200,
+    width: heightPercentageToDP(5) < 30 ? 150 : 160,
     marginLeft: 0,
     marginRight: 0,
     borderRadius: 30,
@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
   bottomCardBlock1: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: "100%",
-    paddingHorizontal: 25
+    paddingHorizontal: 0
   },
   bottomCardBlock2: { width: "100%", paddingTop: 5 },
   button: {
@@ -178,10 +178,10 @@ const styles = StyleSheet.create({
   },
   whitebutton: {
     // marginTop: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(0,0,0,0.15)",
     borderRadius: 0,
-    borderTopStartRadius: 15,
-    borderBottomStartRadius: 15,
+    borderTopStartRadius: 25,
+    borderBottomStartRadius: 25,
     alignSelf: "center",
     justifyContent: "center",
     // paddingVertical: 20,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   whitebutton2: {
     // marginTop: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(0,0,0,0.15)",
     borderRadius: 0,
     // borderTopEndRadius: 15,
     // borderBottomEndRadius: 15,
@@ -204,22 +204,23 @@ const styles = StyleSheet.create({
   },
   whitebutton3: {
     // marginTop: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(0,0,0,0.15)",
     borderRadius: 0,
-    borderTopEndRadius: 15,
-    borderBottomEndRadius: 15,
+    borderTopEndRadius: 25,
+    borderBottomEndRadius: 25,
     alignSelf: "center",
     justifyContent: "center",
     paddingHorizontal: 10,
-    height: 50
+    height: 50,
+    borderWidth: 0
     // width: 125
 
     // paddingVertical: 20
   },
   whitebuttontext: {
-    color: "#751AFF",
-    fontSize: 12,
-    fontFamily: "montserrat-medium",
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 16,
+    fontFamily: "montserrat-bold",
     textAlign: "center"
   },
   colorOrange: {
