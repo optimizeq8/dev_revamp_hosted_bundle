@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#0000"
   },
   walletIcon: {
-    alignSelf: "center",
-    marginTop: 15
+    alignSelf: "center"
+    // marginTop: 15
   },
   walletAmountText: {
     fontSize: 40,
@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
     // left: "10%"
     left: 5
   },
-  midContainer: { flex: 2, justifyContent: "center" },
+  midContainer: { justifyContent: "center" },
   container: {
     backgroundColor: "#0000"
   },
   inputAnimatableView: {
-    paddingVertical: 30
+    paddingTop: 30
   },
-  keyboardContainer: { height: "100%" },
+  keyboardContainer: {},
   title: {
     fontSize: 18,
     color: "#fff",
@@ -55,16 +55,29 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     shadowOpacity: 0,
     backgroundColor: globalColors.orange,
-    borderRadius: 15,
+    borderRadius: 30,
     alignSelf: "center",
     width: 250,
     height: 50,
     marginTop: 20
   },
+  buttonTransparent: {
+    zIndex: 4,
+    // shadowColor: "#6C6C6C",
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    backgroundColor: "#0000",
+    borderRadius: 30,
+    alignSelf: "center",
+    width: 250,
+    height: 50,
+    marginTop: 20,
+    borderWidth: 1
+  },
   buttontext: {
     textAlign: "center",
     color: "#fff",
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 14
   },
   contentContainer: {
@@ -85,11 +98,11 @@ const styles = StyleSheet.create({
   mainText: {
     textAlign: "center",
     alignSelf: "center",
-    color: "#5F5F5F",
+    color: "#FFFFFF",
     fontFamily: "montserrat-regular",
     fontSize: 14,
-    paddingHorizontal: 10,
-    marginTop: 30,
+    // paddingHorizontal: 10,
+    // marginTop: 30
     width: widthPercentageToDP(60)
   },
   dollar: {
@@ -99,39 +112,39 @@ const styles = StyleSheet.create({
   },
 
   inputtext: {
-    fontFamily: "montserrat-bold",
+    fontFamily: "montserrat-bold-english",
     fontSize: 31 / PixelRatio.getFontScale(),
     color: "#FF9D00",
-    alignSelf: "center"
+    alignSelf: "center",
+    textAlign: "center"
   },
   labeltext: {
-    flex: 0,
-    fontFamily: "montserrat-light",
-    fontSize: 14,
-    textAlign: "right",
+    // flex: 0,
+    fontFamily: "montserrat-regular-english",
+    fontSize: 18,
+    textAlign: "center",
+    alignSelf: "center",
     color: "#fff",
-    top: 5
+    position: "absolute",
+    left: "22%"
+    // top: 5
   },
   input: {
-    bottom: 25,
-    paddingHorizontal: 50,
-    borderRadius: 15,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    borderRadius: 25,
     alignSelf: "center",
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-    width: 300,
-    height: 45,
+    paddingVertical: 10,
+    width: 230,
+    // height: 45,
     color: "#fff",
-    borderColor: "#7039FF",
-    position: "absolute"
+    textAlign: "center"
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
   },
   BlurView: {
-    height: "100%",
-    padding: 30,
-    paddingTop: 40,
-    alignItems: "center"
+    height: "100%"
   },
   subHeading: {
     textAlign: "center",
@@ -145,6 +158,39 @@ const styles = StyleSheet.create({
     color: globalColors.orange,
     left: "20%",
     top: 5
+  },
+  topUpHistory: {
+    color: "#FFFFFF",
+    fontFamily: "montserrat-bold",
+    fontSize: 18,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    textAlign: "left"
+  },
+  amountLabelView: {
+    width: 150,
+    height: 15,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.3)",
+    paddingTop: 5,
+    zIndex: 10,
+    borderTopLeftRadius: 85,
+    borderTopRightRadius: 85
+  },
+  amountLabelText: {
+    textAlign: "center",
+    fontSize: 12,
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    marginBottom: -10
+  },
+  contentScrollView: { paddingHorizontal: 15 },
+  listLoader: {
+    marginTop: 30,
+    alignSelf: "center"
+  },
+  modalWalletIcon: {
+    marginTop: 50
   }
 });
 
