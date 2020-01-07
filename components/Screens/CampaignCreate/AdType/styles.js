@@ -62,15 +62,12 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold"
   },
   placeholder: {
-    backgroundColor: "#fff",
     borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
     width: "100%",
     height: "90%",
-    zIndex: 0,
     marginTop: 10,
-    backgroundColor: "black",
     justifyContent: "center"
   },
   slideText: {
@@ -86,8 +83,6 @@ const styles = StyleSheet.create({
     top: "0%",
     width: "100%",
     height: "95%",
-    bottom: "5%",
-    paddingTop: 10,
     alignSelf: "center"
   },
   media: {

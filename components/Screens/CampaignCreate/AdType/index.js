@@ -250,7 +250,13 @@ class AdType extends Component {
             data={this.state.media_type}
             renderItem={this._renderSlides}
             sliderWidth={widthPercentageToDP(100)}
-            itemWidth={250}
+            itemWidth={
+              Platform.OS === "android"
+                ? widthPercentageToDP(
+                    this.state.route === "GoogleAdInfo" ? 80 : 60
+                  )
+                : widthPercentageToDP(70)
+            }
             inactiveSlideScale={0.8}
             inverted={this.state.inverted}
           />

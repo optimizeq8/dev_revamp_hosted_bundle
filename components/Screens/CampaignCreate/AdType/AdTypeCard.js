@@ -38,7 +38,7 @@ export default class AdTypeCard extends Component {
             style={[
               styles.placeholder,
               {
-                width: adType.mediaType === "google" ? "180%" : "100%",
+                width: adType.mediaType === "google" ? "140%" : "100%",
                 backgroundColor:
                   adType.mediaType === "google" ? "#0000" : "#fff"
               }
