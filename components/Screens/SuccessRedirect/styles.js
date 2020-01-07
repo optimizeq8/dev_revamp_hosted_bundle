@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   },
 
   media: {
-    // flex: 1,
     alignSelf: "center",
     height: heightPercentageToDP(20),
     width: "100%",
@@ -52,7 +51,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 25,
-    // backgroundColor: "#FF9D00",
     borderRadius: 25,
     width: 250,
     height: 50,

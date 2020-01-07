@@ -54,8 +54,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 25,
-    // backgroundColor: "#FF9D00",
-    // borderRadius: 15,
     width: 250,
     height: 50,
     alignSelf: "center",
@@ -65,7 +63,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderColor: "#FFF",
     borderWidth: 1,
-    // backgroundColor: "#fff",
     borderRadius: 25,
     width: 250,
     height: 50,
