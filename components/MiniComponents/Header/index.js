@@ -10,7 +10,7 @@ import * as Segment from "expo-analytics-segment";
 import isUndefined from "lodash/isUndefined";
 import isStringArabic from "../../isStringArabic";
 const forwardICon = require("../../../assets/images/ForwardIconWhite.png");
-
+import ShareIcon from "../../../assets/SVGs/ShareIcon";
 export default class Header extends Component {
   render() {
     let {
@@ -27,7 +27,8 @@ export default class Header extends Component {
       containerStyle,
       titelStyle,
       icon,
-      translateTitle = true
+      translateTitle = true,
+      showTopRightButtonIcon
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -117,6 +118,10 @@ export default class Header extends Component {
             <Text onPress={() => topRightButtonFunction()} style={styles.edit}>
               {topRightButtonText}
             </Text>
+          ) : showTopRightButtonIcon ? (
+            <TouchableOpacity onPress={topRightButtonFunction}>
+              <ShareIcon fill="#fff" />
+            </TouchableOpacity>
           ) : null}
         </View>
       </View>

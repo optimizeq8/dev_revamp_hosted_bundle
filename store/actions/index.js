@@ -25,7 +25,8 @@ export {
   getCampaignStats,
   updateCampaignList,
   filterCampaigns,
-  setRejectedCampaignData
+  setRejectedCampaignData,
+  downloadCSV
 } from "./dashboardActions";
 
 export {
@@ -149,5 +150,6 @@ export {
   rest_google_campaign_data,
   update_google_audience_targeting,
   update_google_keywords,
-  enable_end_or_pause_google_campaign
+  enable_end_or_pause_google_campaign,
+  downloadGoogleCSV
 } from "./googleAdsCampaignActions";

@@ -425,11 +425,18 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     margin: 5
-},
- xAxisStyle: {
+  },
+  xAxisStyle: {
     position: "absolute",
     backgroundColor: "#000",
     width: "15%"
+  },
+  CSVText: {
+    fontFamily: "montserrat-regular",
+    color: "#fff",
+    textAlign: "center",
+    width: "80%",
+    alignSelf: "center"
   }
 });
 

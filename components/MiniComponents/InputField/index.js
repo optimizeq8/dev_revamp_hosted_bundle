@@ -15,6 +15,7 @@ import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import segmentEventTrack from "../../segmentEventTrack";
 
 export default class InputField extends Component {
+  typingTimeout = null;
   state = {
     highlight: false
   };
@@ -75,8 +76,11 @@ export default class InputField extends Component {
                                   of the input field
    */
   handleTextChange = (value, secondHalf = false) => {
-    if (secondHalf) this.props.setValue(this.props.stateName2, value);
+    clearTimeout(this.typingTimeout);
+
+    if (secondHalf);
     else this.props.setValue(this.props.stateName1, value);
+    this.typingTimeout = setTimeout(() => this.validate(), 800);
   };
 
   /**

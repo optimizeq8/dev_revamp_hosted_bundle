@@ -57,6 +57,7 @@ import * as actionCreators from "../../../store/actions";
 import segmentEventTrack from "../../segmentEventTrack";
 import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { LinearGradient } from "expo-linear-gradient";
+import CSVModal from "../CampaignDetails/CSVModal";
 
 class GoogleCampaignDetails extends Component {
   static navigationOptions = {
@@ -74,7 +75,8 @@ class GoogleCampaignDetails extends Component {
       LineAnimation: new Animated.Value(0),
       expand: false,
       minHeight: 0,
-      maxHeight: hp(50)
+      maxHeight: hp(50),
+      CSVModalVisible: false
     };
   }
 
@@ -163,6 +165,9 @@ class GoogleCampaignDetails extends Component {
       endCampaign,
       this.handleModalToggle
     );
+  };
+  showCSVModal = isVisible => {
+    this.setState({ CSVModalVisible: isVisible });
   };
   render() {
     let loading = this.props.loading;
@@ -317,21 +322,11 @@ class GoogleCampaignDetails extends Component {
                 }
                 actionButton={this.state.expand && this.handleChartToggle}
                 selectedCampaign={selectedCampaign}
-                topRightButtonText={translate("Edit")}
-                topRightButtonFunction={() =>
-                  this.props.navigation.push("GoogleAdTargetting", {
-                    editCampaign: true,
-                    campaign: selectedCampaign,
-                    media: selectedCampaign.media
-                  })
+                showTopRightButtonIcon={
+                  !loading &&
+                  selectedCampaign.campaign.review_status === "APPROVED"
                 }
-                showTopRightButton={
-                  selectedCampaign &&
-                  selectedCampaign.campaign_end === "0" &&
-                  new Date(selectedCampaign.end_time) > new Date() &&
-                  !this.props.campaignEnded &&
-                  this.props.mainBusiness.user_role !== "3"
-                }
+                topRightButtonFunction={() => this.showCSVModal(true)}
                 containerStyle={{ height: 50 }}
                 titelStyle={{
                   textAlign: "left",
@@ -589,6 +584,16 @@ class GoogleCampaignDetails extends Component {
                   />
                 )}
             </Animated.View>
+            <CSVModal
+              google={true}
+              isVisible={this.state.CSVModalVisible}
+              showCSVModal={this.showCSVModal}
+              screenProps={this.props.screenProps}
+              downloadGoogleCSV={this.props.downloadGoogleCSV}
+              campaign_id={
+                selectedCampaign && selectedCampaign.campaign.campaign_id
+              }
+            />
           </SafeAreaView>
         </>
       );
@@ -627,6 +632,10 @@ const mapDispatchToProps = dispatch => ({
         endCampaign,
         handleToggle
       )
+    ),
+  downloadGoogleCSV: (campaign_id, email, showModalMessage) =>
+    dispatch(
+      actionCreators.downloadGoogleCSV(campaign_id, email, showModalMessage)
     )
 });
 export default connect(

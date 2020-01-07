@@ -41,6 +41,7 @@ import AudienceOverview from "../../MiniComponents/AudienceOverview";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import ChartDateChoices from "./ChartDateChoices";
+import CSVModal from "./CSVModal";
 
 class CampaignDetails extends Component {
   static navigationOptions = {
@@ -59,7 +60,8 @@ class CampaignDetails extends Component {
       imageIsLoading: true,
       expand: false,
       minHeight: 0,
-      maxHeight: heightPercentageToDP(50)
+      maxHeight: heightPercentageToDP(50),
+      CSVModalVisible: false
     };
   }
 
@@ -93,8 +95,7 @@ class CampaignDetails extends Component {
       this.props.selectedCampaign.eCPSU !== nextProps.selectedCampaign.eCPSU ||
       this.props.loading !== nextProps.loading ||
       this.props.languagesListLoading !== nextProps.languagesListLoading ||
-      this.state.expand !== nextState.expand ||
-      this.state.modalVisible !== nextState.modalVisible
+      JSON.stringify(this.state) !== JSON.stringify(nextState)
     );
   }
 
@@ -186,6 +187,10 @@ class CampaignDetails extends Component {
     Animated.spring(this.state.chartAnimation, {
       toValue: !this.state.expand ? this.state.maxHeight : this.state.minHeight
     }).start();
+  };
+
+  showCSVModal = isVisible => {
+    this.setState({ CSVModalVisible: isVisible });
   };
 
   render() {
@@ -415,6 +420,10 @@ class CampaignDetails extends Component {
                 }
                 selectedCampaign={selectedCampaign}
                 containerStyle={{ height: 50 }}
+                showTopRightButtonIcon={
+                  !loading && selectedCampaign.review_status === "APPROVED"
+                }
+                topRightButtonFunction={() => this.showCSVModal(true)}
                 titelStyle={{
                   textAlign: "left",
                   fontSize: 15,
@@ -561,7 +570,9 @@ class CampaignDetails extends Component {
                               <View
                                 style={[
                                   styles.adStatus,
-                                  { backgroundColor: globalColors.orange }
+                                  {
+                                    backgroundColor: globalColors.orange
+                                  }
                                 ]}
                               >
                                 <Text style={styles.reviewtext}>
@@ -630,20 +641,14 @@ class CampaignDetails extends Component {
                   />
                 )}
             </Animated.View>
+            <CSVModal
+              isVisible={this.state.CSVModalVisible}
+              showCSVModal={this.showCSVModal}
+              screenProps={this.props.screenProps}
+              downloadCSV={this.props.downloadCSV}
+              campaign_id={selectedCampaign && selectedCampaign.campaign_id}
+            />
           </SafeAreaView>
-
-          {/* {selectedCampaign &&
-            selectedCampaign.review_status !== "REJECTED" && (
-              <SlideUpPanel
-                screenProps={this.props.screenProps}
-                start_time={this.state.start_time}
-                end_time={this.state.end_time}
-                dateField={this.dateField}
-                selectedCampaign={selectedCampaign}
-                hideCharts={this.hideCharts}
-                getCampaignStats={this.props.getCampaignStats}
-              />
-            )} */}
         </>
       );
     }
@@ -668,6 +673,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.endCampaign(info, handleToggle)),
   getCampaignStats: (info, range) =>
     dispatch(actionCreators.getCampaignStats(info, range)),
-  get_languages: () => dispatch(actionCreators.get_languages())
+  get_languages: () => dispatch(actionCreators.get_languages()),
+  downloadCSV: (campaign_id, email, showModalMessage) =>
+    dispatch(actionCreators.downloadCSV(campaign_id, email, showModalMessage))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CampaignDetails);

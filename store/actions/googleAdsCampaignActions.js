@@ -804,3 +804,19 @@ export const get_budget = (info, segmentInfo, navigation) => {
       });
   };
 };
+
+export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
+  return (dispatch, getState) => {
+    GoogleBackendURL()
+      .get(`http://goog.optimizeapp.com/export/report/`, {
+        businessid: getState().account.mainBusiness.businessid,
+        campaign_id,
+        email
+      })
+      .then(res => res.data)
+      .then(data => {
+        if (data.message) showModalMessage(data.message, "success");
+      })
+      .catch(err => showModalMessage(err));
+  };
+};

@@ -256,3 +256,17 @@ export const setRejectedCampaignData = rejCampaign => {
     dispatch({ type: actionTypes.SET_REJECTED_CAMPAIGN, payload: rejCampaign });
   };
 };
+
+export const downloadCSV = (campaign_id, email, showModalMessage) => {
+  console.log(campaign_id, email);
+
+  return dispatch => {
+    createBaseUrl()
+      .post(`exportData`, { campaign_id, email })
+      .then(res => res.data)
+      .then(data => {
+        showModalMessage(data.message, data.success ? "success" : "warning");
+      })
+      .catch(err => showModalMessage(err));
+  };
+};
