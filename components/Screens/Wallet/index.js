@@ -10,7 +10,7 @@ import {
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import { BlurView } from "expo-blur";
-import { Button, Text, Item, Input, Label, Container, Icon } from "native-base";
+import { Text, Item, Input, Label, Container, Icon } from "native-base";
 import * as Animatable from "react-native-animatable";
 
 import { Modal, ActivityIndicator } from "react-native-paper";
@@ -32,6 +32,7 @@ import formatNumber from "../../formatNumber";
 
 //compnents
 import CustomHeader from "../../MiniComponents/Header";
+import GradientButton from "../../MiniComponents/GradientButton";
 import WalletCard from "../../MiniComponents/WalletTopUpCard";
 import segmentEventTrack from "../../segmentEventTrack";
 
@@ -151,16 +152,15 @@ class Wallet extends Component {
                   "Your wallet can be used to purchase ads or to resume paused ads immediately"
                 )}
               </Text>
-
-              <Button
-                full
+              <GradientButton
                 style={styles.button}
-                onPress={this.handleModalVisibility}
-              >
-                <Text uppercase style={styles.buttontext}>
-                  {translate("Top up wallet")}
-                </Text>
-              </Button>
+                onPressAction={this.handleModalVisibility}
+                text={translate("Top up wallet")}
+                textStyle={styles.buttontext}
+                uppercase={true}
+                gradientDirection={"vertical"}
+                orangeDark={true}
+              />
               {/* <Button
                 full
                 style={styles.button}
@@ -180,12 +180,14 @@ class Wallet extends Component {
             />
           )}
           {!this.props.walletTransactionListLoading &&
+            this.props.walletTransactionList &&
             this.props.walletTransactionList.length > 0 && (
               <Text uppercase style={styles.topUpHistory}>
                 {translate("Top-Up History")}
               </Text>
             )}
           {!this.props.walletTransactionListLoading &&
+            this.props.walletTransactionList &&
             this.props.walletTransactionList.length > 0 && (
               <ScrollView contentContainerStyle={styles.contentScrollView}>
                 {this.props.walletTransactionList.map(transaction => {
@@ -232,7 +234,6 @@ class Wallet extends Component {
                         "Please input the amount You’d like to add to your wallet"
                       )}
                     </Text> */}
-
                   <Animatable.View
                     animation={!this.state.amountError ? "" : "shake"}
                     duration={200}
@@ -284,27 +285,26 @@ class Wallet extends Component {
                       />
                     </Item>
                   </Animatable.View>
-                  <Button
-                    full
+                  <GradientButton
                     style={styles.button}
-                    onPress={() => this._handleSubmission()}
-                  >
-                    <Text uppercase style={styles.buttontext}>
-                      {translate("Top up wallet")}
-                    </Text>
-                  </Button>
-                  <Button
-                    full
+                    onPressAction={this._handleSubmission}
+                    text={translate("Top up wallet")}
+                    textStyle={styles.buttontext}
+                    uppercase={true}
+                    gradientDirection={"vertical"}
+                  />
+                  <GradientButton
                     style={[
                       styles.buttonTransparent,
                       globalStyles.whiteBorderColor
                     ]}
-                    onPress={() => this.handleModalVisibility()}
-                  >
-                    <Text uppercase style={styles.buttontext}>
-                      {translate("Cancel")}
-                    </Text>
-                  </Button>
+                    onPressAction={() => this.handleModalVisibility()}
+                    text={translate("Cancel")}
+                    textStyle={styles.buttontext}
+                    uppercase={true}
+                    gradientDirection={"vertical"}
+                    transparent={true}
+                  />
                 </View>
               </TouchableWithoutFeedback>
             </SafeAreaView>

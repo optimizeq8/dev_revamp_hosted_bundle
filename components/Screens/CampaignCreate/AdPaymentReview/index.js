@@ -14,6 +14,7 @@ import lowerCase from "lodash/lowerCase";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
 import LoadingScreen from "../../../MiniComponents/LoadingScreen";
+import GradientButton from "../../../MiniComponents/GradientButton";
 import * as actionCreators from "../../../../store/actions";
 // Style
 import styles from "./styles";
@@ -332,8 +333,8 @@ class AdPaymentReview extends Component {
                     </Text>
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => {
+                <GradientButton
+                  onPressAction={() => {
                     Segment.trackWithProperties(
                       "Select Ad Payment Review Button",
                       {
@@ -350,8 +351,11 @@ class AdPaymentReview extends Component {
                     this.props.navigation.navigate("PaymentForm");
                   }}
                   style={[styles.mainCard]}
-                >
-                  {/*
+                  text={translate("Payment Info")}
+                  textStyle={styles.payNowText}
+                />
+
+                {/*
                                                     ----------For future maybe----------
                                                     <Text style={styles.text}>Agency Fee</Text>
                                                     <View style={{ flexDirection: "column", alignSelf: "center" }}>
@@ -361,11 +365,6 @@ class AdPaymentReview extends Component {
                                                     <Text style={styles.text}>{this._handleAgencyFee()} $</Text>
                                                     </View> 
                                                 */}
-
-                  <Text style={styles.payNowText}>
-                    {translate("Payment Info")}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </Footer>
           </Container>

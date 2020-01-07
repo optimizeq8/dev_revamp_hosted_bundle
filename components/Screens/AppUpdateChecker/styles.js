@@ -27,10 +27,9 @@ export default StyleSheet.create({
     top: "30%"
   },
   updateButton: {
-    backgroundColor: globalColors.orange,
     width: "70%",
     alignSelf: "center",
     top: "40%",
-    borderRadius: 15
+    borderRadius: 40
   }
 });

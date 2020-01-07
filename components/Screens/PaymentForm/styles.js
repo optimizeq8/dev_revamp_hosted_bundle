@@ -19,18 +19,15 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#0000"
-    // flex: 1,
-    // height: "100%",
-    // width: "100%"
   },
   buttonGroupBlock: {
     flexDirection: "row",
-    marginHorizontal: 40,
     marginTop: 20,
-    alignSelf: "center"
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 40
   },
   errortext: {
-    // marginTop: 5,
     color: "#fff",
     fontSize: 14,
     fontFamily: "montserrat-light",
@@ -38,10 +35,7 @@ const styles = StyleSheet.create({
     lineHeight: 18
   },
   media: {
-    // top: "10%",
     alignSelf: "center",
-    // height: heightPercentageToDP(20),
-    // width: heightPercentageToDP(20)
     width: heightPercentageToDP(5) < 30 ? 100 : 200,
     height: heightPercentageToDP(5) < 30 ? 100 : 200
   },
@@ -50,9 +44,6 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   mainCard: {
-    // top: 20,
-    // borderColor: "#FF9D00",
-    backgroundColor: "#FF9D00",
     shadowRadius: 5,
     shadowOpacity: 0.2,
     height: 45,
@@ -61,6 +52,11 @@ const styles = StyleSheet.create({
     marginRight: 0,
     borderRadius: 30,
     justifyContent: "center"
+  },
+  flexBoxRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   backDrop: {
     position: "absolute",
@@ -97,12 +93,8 @@ const styles = StyleSheet.create({
   },
   link: {
     textAlign: "left",
-    // alignSelf: "flex-start",
-    // bottom: 10,
-    color: "#C6C6C6",
     fontFamily: "montserrat-light",
     fontSize: 12,
-    // paddingHorizontal: 10,
     lineHeight: 20
   },
   walletInfo: {
@@ -115,8 +107,6 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: "montserrat-medium",
-    // paddingHorizontal: 50,
-    // paddingVertical: 20,
     textAlign: "center",
     fontSize: 16,
     color: "#fff",
@@ -130,11 +120,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   bottomCard: {
-    // top: 15,
     display: "flex",
     flexDirection: "column",
     borderColor: "#FFF",
-    // justifyContent: "center",
     backgroundColor: "#FFF",
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
@@ -177,61 +165,38 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   whitebutton: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    borderTopStartRadius: 25,
-    borderBottomStartRadius: 25,
+    marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    // paddingVertical: 20,
-    height: 50,
-    width: 100
+    height: 70
   },
   whitebutton2: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    // borderTopEndRadius: 15,
-    // borderBottomEndRadius: 15,
-    alignSelf: "center",
+    marginHorizontal: 0,
     justifyContent: "center",
-    paddingHorizontal: 10,
-    height: 50,
-    width: 100
-
-    // paddingVertical: 20
+    height: 70,
+    width: 120
   },
   whitebutton3: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    borderTopEndRadius: 25,
-    borderBottomEndRadius: 25,
+    marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    paddingHorizontal: 10,
-    height: 50,
-    borderWidth: 0
-    // width: 125
-
-    // paddingVertical: 20
+    height: 70
   },
   whitebuttontext: {
     color: "rgba(255,255,255,0.6)",
     fontSize: 16,
     fontFamily: "montserrat-bold",
-    textAlign: "center"
+    textAlign: "center",
+    paddingHorizontal: 20
   },
   colorOrange: {
-    color: "#FF9D00"
+    color: "#FF8D04"
   },
   money: {
     color: "#C6C6C6",
     textAlign: "center",
     fontSize: 21,
     fontFamily: "montserrat-bold"
-    // paddingTop: 3
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
@@ -248,7 +213,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontFamily: "montserrat-bold"
-    //   paddingBottom: 3
   },
   tNcText: {
     textDecorationLine: "underline",
@@ -257,7 +221,6 @@ const styles = StyleSheet.create({
   },
   dollarAmountContainer: {
     flexDirection: "row"
-    // alignItems: 'baseline',
   },
   dollarAmountText: {
     fontSize: 16,
@@ -265,9 +228,7 @@ const styles = StyleSheet.create({
   },
   kdAmountContainer: {
     flexDirection: "row",
-    // alignItems: 'center',
     paddingTop: 2
-    // alignItems: 'baseline',
   },
   kdText: {
     fontSize: 9,

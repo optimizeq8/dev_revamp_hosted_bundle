@@ -23,6 +23,7 @@ import UseWallet from "./UseWallet";
 import formatNumber from "../../formatNumber";
 import CustomHeader from "../../MiniComponents/Header";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //terms&conditions
 import { openTerms } from "../../Terms&Conditions";
@@ -365,66 +366,46 @@ class PaymentForm extends Component {
           >
             <View style={styles.buttonGroupBlock}>
               {!this.state.addingCredits && (
-                <Button
-                  style={[
-                    styles.whitebutton,
-                    this.state.choice === 1 &&
-                      globalStyles.orangeBackgroundColor
+                <GradientButton
+                  radius={35}
+                  transparent={this.state.choice !== 1}
+                  style={[styles.whitebutton]}
+                  textStyle={[
+                    styles.whitebuttontext,
+                    this.state.choice === 1 && globalStyles.whiteTextColor
                   ]}
-                  onPress={() => this._handleChoice(1)}
-                >
-                  <Text
-                    style={[
-                      styles.whitebuttontext,
-                      this.state.choice === 1 && globalStyles.whiteTextColor
-                    ]}
-                    uppercase
-                  >
-                    {translate("Wallet")}
-                  </Text>
-                </Button>
+                  onPressAction={() => this._handleChoice(1)}
+                  text={translate("Wallet")}
+                  uppercase={true}
+                />
               )}
 
               {this.showKnet && (
-                <Button
-                  style={[
-                    styles.whitebutton2,
-                    this.state.choice === 2 &&
-                      globalStyles.orangeBackgroundColor,
-                    {
-                      borderTopStartRadius: this.state.addingCredits ? 25 : 0,
-                      borderBottomStartRadius: this.state.addingCredits ? 25 : 0
-                    }
-                  ]}
-                  onPress={() => this._handleChoice(2)}
-                >
-                  <Text
-                    style={[
-                      styles.whitebuttontext,
-                      this.state.choice === 2 && globalStyles.whiteTextColor
-                    ]}
-                  >
-                    {translate("KNET")}
-                  </Text>
-                </Button>
-              )}
-              <Button
-                style={[
-                  styles.whitebutton3,
-                  this.state.choice === 3 && globalStyles.orangeBackgroundColor
-                ]}
-                onPress={() => this._handleChoice(3)}
-              >
-                <Text
-                  style={[
+                <GradientButton
+                  radius={35}
+                  transparent={this.state.choice !== 2}
+                  style={[styles.whitebutton2]}
+                  textStyle={[
                     styles.whitebuttontext,
-                    this.state.choice === 3 && globalStyles.whiteTextColor
+                    this.state.choice === 2 && globalStyles.whiteTextColor
                   ]}
-                  uppercase
-                >
-                  {translate("Credit Card")}
-                </Text>
-              </Button>
+                  onPressAction={() => this._handleChoice(2)}
+                  text={translate("KNET")}
+                  uppercase={true}
+                />
+              )}
+              <GradientButton
+                transparent={this.state.choice !== 3}
+                radius={35}
+                style={[styles.whitebutton3]}
+                textStyle={[
+                  styles.whitebuttontext,
+                  this.state.choice === 3 && globalStyles.whiteTextColor
+                ]}
+                onPressAction={() => this._handleChoice(3)}
+                text={translate("Credit Card")}
+                uppercase={true}
+              />
             </View>
 
             {this.state.choice === 1 && (
@@ -513,21 +494,16 @@ class PaymentForm extends Component {
                   </View>
                 )}
               </View>
-              <TouchableOpacity
-                onPress={() => this._handleSubmission()}
+
+              <GradientButton
+                onPressAction={this._handleSubmission}
                 style={[
-                  styles.mainCard,
-                  { opacity: this.props.loadingTrans ? 0.5 : 1 }
+                  styles.mainCard
+                  // { opacity: this.props.loadingTrans ? 0.5 : 1 }
                 ]}
                 disabled={this.props.loadingTrans}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                >
+                <View style={styles.flexBoxRow}>
                   <Text
                     uppercase={this.state.addingCredits}
                     style={styles.payNowText}
@@ -543,7 +519,7 @@ class PaymentForm extends Component {
                     />
                   )}
                 </View>
-              </TouchableOpacity>
+              </GradientButton>
             </View>
 
             <TouchableOpacity

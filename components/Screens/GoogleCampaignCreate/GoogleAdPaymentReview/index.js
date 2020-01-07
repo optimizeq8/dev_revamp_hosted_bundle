@@ -259,8 +259,8 @@ class AdPaymentReview extends Component {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity
-                onPress={() => {
+              <GradientButton
+                onPressAction={() => {
                   Segment.trackWithProperties(
                     "Select Ad Payment Review Button",
                     {
@@ -277,11 +277,9 @@ class AdPaymentReview extends Component {
                   this.props.navigation.navigate("PaymentForm");
                 }}
                 style={[styles.mainCard]}
-              >
-                <Text style={styles.payNowText}>
-                  {translate("Payment Info")}
-                </Text>
-              </TouchableOpacity>
+                text={translate("Payment Info")}
+                textStyle={styles.payNowText}
+              />
             </View>
           </Footer>
         </Container>

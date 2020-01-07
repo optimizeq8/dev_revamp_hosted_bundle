@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 40,
+    borderRadius: 50,
     flexDirection: "row",
     alignSelf: "center",
     alignItems: "center",
@@ -51,25 +51,22 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   button: {
-    // marginHorizontal: 30,
+    marginHorizontal: 0,
     elevation: 0,
     paddingVertical: 10,
     borderRadius: 50,
     borderStartWidth: 0,
     borderWidth: 0,
-    // backgroundColor: "#fff",
-    backgroundColor: "rgba(0,0,0,0)",
     height: "100%",
     justifyContent: "center",
     flexDirection: "column",
-    // paddingHorizontal: 10,
     width: "34%",
     borderColor: "transparent"
   },
   activeButton: {
+    marginHorizontal: 0,
     borderColor: "transparent",
     width: "34%",
-    backgroundColor: "#FF9D00",
     borderRadius: 50,
     height: "100%",
     justifyContent: "center",
@@ -78,14 +75,14 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   },
   inactiveText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "rgba(255,255,255,0.6)",
     textAlign: "center",
     paddingTop: 5
   },
   activeText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#FFF",
     textAlign: "center",
@@ -123,7 +120,6 @@ const styles = StyleSheet.create({
     fontSize: 14 / PixelRatio.getFontScale(),
     textAlign: "center",
     color: globalColors.white
-    // marginBottom: 130
   },
   pickerText: {
     fontFamily: "montserrat-regular-english",
@@ -133,7 +129,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "rgba(0,0,0,0.2)",
-    // paddingHorizontal: 10,
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
@@ -192,11 +187,9 @@ const styles = StyleSheet.create({
     fontSize: 20 / PixelRatio.getFontScale()
   },
   iconDown: {
-    // position: "absolute",
     color: "#FFF",
     fontSize: 20,
     right: 15
-    // left: 25
   },
   labelEmail: {
     bottom: 5,

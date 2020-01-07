@@ -3,7 +3,7 @@ import globalStyles from "../../../GlobalStyles";
 
 export default StyleSheet.create({
   filledButton: {
-    ...globalStyles.orangeBackgroundColor,
+    // ...globalStyles.orangeBackgroundColor,
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 5,
@@ -13,6 +13,7 @@ export default StyleSheet.create({
   emptyButton: {
     ...globalStyles.transparentBackgroundColor,
     ...globalStyles.orangeBorderColor,
+    borderRadius: 25,
     borderWidth: 1,
     justifyContent: "center",
     alignSelf: "center",

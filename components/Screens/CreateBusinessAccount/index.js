@@ -14,6 +14,7 @@ import Picker from "../../MiniComponents/Picker";
 import KeyBoardShift from "../../MiniComponents/KeyboardShift";
 import LowerButton from "../../MiniComponents/LowerButton";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //data
 import businessCategoryList from "../../Data/businessCategoriesList.data";
@@ -362,18 +363,20 @@ class CreateBusinessAccount extends Component {
             {translate("What are you ?")}
           </Text>
           <View style={styles.topContainer}>
-            <Button
+            <GradientButton
               disabled={
                 this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading
               }
+              radius={50}
+              transparent={this.state.businessAccount.businesstype !== "1"}
               style={[
                 this.state.businessAccount.businesstype === "1"
                   ? styles.activeButton
                   : styles.button,
                 isStringArabic(translate("Startup")) ? { width: "40%" } : {}
               ]}
-              onPress={() => {
+              onPressAction={() => {
                 this._handleBusinessCategories("1");
               }}
             >
@@ -396,19 +399,21 @@ class CreateBusinessAccount extends Component {
                 {!isStringArabic(translate("Startup")) &&
                   "\n" + translate("or") + " " + translate("Startup")}
               </Text>
-            </Button>
+            </GradientButton>
 
-            <Button
+            <GradientButton
+              radius={50}
               disabled={
                 this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading
               }
+              transparent={this.state.businessAccount.businesstype !== "2"}
               style={[
                 this.state.businessAccount.businesstype === "2"
                   ? styles.activeButton
                   : styles.button
               ]}
-              onPress={() => {
+              onPressAction={() => {
                 this._handleBusinessCategories("2");
               }}
             >
@@ -428,19 +433,21 @@ class CreateBusinessAccount extends Component {
               >
                 {translate("Agency")}
               </Text>
-            </Button>
+            </GradientButton>
 
-            <Button
+            <GradientButton
+              radius={50}
               disabled={
                 this.state.editBusinessInfo &&
                 this.props.editBusinessInfoLoading
               }
+              transparent={this.state.businessAccount.businesstype !== "3"}
               style={[
                 this.state.businessAccount.businesstype === "3"
                   ? styles.activeButton
                   : styles.button
               ]}
-              onPress={() => {
+              onPressAction={() => {
                 this._handleBusinessCategories("3");
               }}
             >
@@ -461,7 +468,7 @@ class CreateBusinessAccount extends Component {
               >
                 {translate("Corporate")}
               </Text>
-            </Button>
+            </GradientButton>
           </View>
           <View style={[styles.mainCard]}>
             <InputScrollView
