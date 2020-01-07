@@ -13,7 +13,8 @@ export default RejectedInfo = props => {
     review_status_help,
     navigation,
     campaign_id,
-    ad
+    ad,
+    errors
   } = props;
   const { translate } = props.screenProps;
   handleSupportPage = () => {
@@ -22,6 +23,27 @@ export default RejectedInfo = props => {
       title: "Support"
     });
   };
+  let list = errors.map((e, i) => (
+    <View style={styles.rejectedReasonContainer} key={i}>
+      <Text uppercase style={styles.reviewStatusReason}>
+        {e.name}
+      </Text>
+      {/* <Text style={styles.reviewStatusText}>
+        {translate("You can find more details here")}
+      </Text> */}
+      <Text
+        selectable={true}
+        style={[
+          styles.reviewStatusText,
+          { fontFamily: "montserrat-regular-english" }
+        ]}
+        numberOfLines={2}
+      >
+        {e.description}
+      </Text>
+      {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
+    </View>
+  ));
   return (
     <View style={styles.rejectedHeader}>
       <Rejected />
@@ -31,31 +53,10 @@ export default RejectedInfo = props => {
       <Text style={styles.hereReasonsText}>
         {translate("Here Are The Reasons")}:
       </Text>
-      <View style={styles.rejectedReasonContainer}>
-        <Text uppercase style={styles.reviewStatusReason}>
-          {review_status_reason}
-        </Text>
-        <Text style={styles.reviewStatusText}>
-          {translate("You can find more details here")}
-        </Text>
-        <Text
-          selectable={true}
-          style={[
-            styles.reviewStatusText,
-            { fontFamily: "montserrat-regular-english" }
-          ]}
-          numberOfLines={2}
-        >
-          {review_status_help}
-        </Text>
-        <Info onPress={this.handleSupportPage} style={styles.infoButton} />
-      </View>
-
+      {list}
       <CustomButtons
         screenProps={props.screenProps}
         onPressFunction={() => {
-          console.log("campaign_id", campaign_id);
-
           navigation.push("GoogleAdDesign", {
             rejected: true,
             id: campaign_id,
