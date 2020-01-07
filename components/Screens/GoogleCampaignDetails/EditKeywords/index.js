@@ -90,14 +90,15 @@ class EditKeywords extends Component {
     if (!keywordsError) {
       const segmentInfo = {
         businessid: this.props.mainBusiness.businessid,
-        campaign_id: this.props.selectedCampaign.campaign.campaign_id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords
       };
       this.props.update_google_keywords(
         {
           businessid: this.props.mainBusiness.businessid,
-          campaign_id: this.props.selectedCampaign.campaign.campaign_id,
-          keywords: this.state.keywords
+          id: this.props.selectedCampaign.campaign.id,
+          keywords: this.state.keywords,
+          completed: true
         },
         segmentInfo
       );
@@ -161,7 +162,7 @@ class EditKeywords extends Component {
               _handleAddItem={this._handleAddKeyword}
               selected={this.state.keywords}
               data={this.props.campaign.fetchedKeywords}
-              campaign_id={this.props.selectedCampaign.campaign.campaign_id}
+              campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
             />
             {this.props.campaign.uploading ? (

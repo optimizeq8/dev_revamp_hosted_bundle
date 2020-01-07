@@ -113,7 +113,7 @@ class ContinueCampaign extends Component {
       if (this.props.data.campaignSteps.includes("GoogleAdInfo")) {
         updated_transaction_data = {
           ...updated_transaction_data,
-          campaign_id: this.props.data.campaign_id
+          campaign_id: this.props.data.id
         };
       }
       if (this.props.data.campaignSteps.includes("GoogleAdTargetting")) {

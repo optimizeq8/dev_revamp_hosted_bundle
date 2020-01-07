@@ -183,29 +183,30 @@ class GoogleAdDesign extends Component {
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        checkout_id: this.props.campaign.campaign_id
+        checkout_id: this.props.campaign.id
       };
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       if (!rejectedVal) {
         this.props.create_google_SE_campaign_ad_design(
           {
             ...data,
-            campaign_id: this.props.campaign.campaign_id,
-            businessid: this.props.mainBusiness.businessid
+            id: this.props.campaign.id,
+            businessid: this.props.mainBusiness.businessid,
+            completed: true
           },
           rejectedVal,
           segmentInfo
         );
         this.props.save_google_campaign_data({
           ...data,
-          campaign_id: this.props.campaign.campaign_id
+          id: this.props.campaign.id
         });
       } else {
         this.props.create_google_SE_campaign_ad_design(
           {
             businessid: this.props.mainBusiness.businessid,
             ...data,
-            campaign_id: this.props.navigation.getParam("campaign_id", null)
+            id: this.props.navigation.getParam("id", null)
           },
           rejectedVal,
           segmentInfo
@@ -256,6 +257,7 @@ class GoogleAdDesign extends Component {
               navigation={this.props.navigation}
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
+              disabled={this.props.campaign.uploading}
             />
             <View style={{ zIndex: 10000 }}>
               <GoogleSEAPreview

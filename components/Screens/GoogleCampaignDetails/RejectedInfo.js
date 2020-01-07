@@ -53,13 +53,15 @@ export default RejectedInfo = props => {
 
       <CustomButtons
         screenProps={props.screenProps}
-        onPressFunction={() =>
+        onPressFunction={() => {
+          console.log("campaign_id", campaign_id);
+
           navigation.push("GoogleAdDesign", {
             rejected: true,
-            campaign_id: campaign_id,
+            id: campaign_id,
             ad: ad
-          })
-        }
+          });
+        }}
         content="Review Ad"
         filled
         buttonStyle={styles.customButtonStyle}

@@ -200,7 +200,8 @@ class DateFields extends Component {
       this.setState({ modalVisible: false });
       await this.props.create_google_SE_campaign_info(
         {
-          campaign_id: this.props.googleCampaign.campaign_id,
+          campaign_id: "",
+          id: this.props.googleCampaign.id,
           businessid: this.props.mainBusiness.businessid,
           name: this.props.googleCampaign.name,
           language: this.props.googleCampaign.language,
