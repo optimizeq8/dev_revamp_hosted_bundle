@@ -265,7 +265,7 @@ class AdPaymentReview extends Component {
                     "Select Ad Payment Review Button",
                     {
                       business_name: this.props.mainBusiness.businessname,
-                      campaign_budget: this.props.data.lifetime_budget_micro
+                      campaign_budget: this.props.campaign_budget
                     }
                   );
                   Segment.trackWithProperties("Completed Checkout Step", {
