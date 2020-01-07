@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-bold"
   },
   money: {
-    color: "#FF9D00",
+    color: "#FF8D04",
     fontSize: 21,
     fontFamily: "montserrat-bold"
   }

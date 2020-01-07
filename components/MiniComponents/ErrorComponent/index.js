@@ -16,6 +16,7 @@ import styles, { colors } from "./styles";
 import ErrorIcon from "../../../assets/SVGs/Error";
 
 import LoadingScreen from "../LoadingScreen";
+import GradientButton from "../GradientButton";
 
 const imageLogo = require("../../../assets/images/logo01.png");
 
@@ -57,7 +58,10 @@ class ErrorComponent extends Component {
       );
     }
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: "always", bottom: "never" }}
+      >
         <LinearGradient
           colors={[colors.background1, colors.background2]}
           locations={[1, 0.3]}
@@ -65,18 +69,18 @@ class ErrorComponent extends Component {
         />
         <Image style={styles.media} source={imageLogo} resizeMode="contain" />
         <View style={styles.view}>
-          <ErrorIcon fill="#E26A65" width={80} height={80} />
+          <ErrorIcon fill="#ea514b" width={80} height={80} />
 
-          <Text style={styles.title}> {translate("Sorry")} </Text>
+          <Text style={styles.title}>{translate("Sorry")}</Text>
           <Text style={styles.errortext}>
             {translate(
               "Oops ! There seems to be a problem\nTry again in sometime"
             )}
             .
           </Text>
-          <Button
+          <GradientButton
             style={styles.button}
-            onPress={() => {
+            onPressAction={() => {
               this.props.dashboard
                 ? this.props.userInfo
                   ? this.props.clearPushToken(
@@ -86,25 +90,26 @@ class ErrorComponent extends Component {
                   : this.props.logout(this.props.navigation)
                 : this.props.navigation.goBack();
             }}
-          >
-            <Text style={styles.buttontext}>
-              {this.props.dashboard
-                ? translate("Sign in")
-                : translate("Go Back")}
-            </Text>
-          </Button>
-          <Button
+            textStyle={styles.buttontext}
+            text={
+              this.props.dashboard ? translate("Sign in") : translate("Go Back")
+            }
+            uppercase={true}
+          />
+          <GradientButton
+            transparent={true}
             style={styles.whitebutton}
-            onPress={() => {
+            onPressAction={() => {
               this.props.dashboard
                 ? this.props.navigation.navigate("AppUpdateChecker")
                 : this.props.navigation.navigate("Dashboard");
             }}
-          >
-            <Text style={styles.whitebuttontext}>
-              {this.props.dashboard ? translate("Reload") : translate("Home")}
-            </Text>
-          </Button>
+            textStyle={styles.whitebuttontext}
+            text={
+              this.props.dashboard ? translate("Reload") : translate("Home")
+            }
+            uppercase={true}
+          />
         </View>
       </SafeAreaView>
     );

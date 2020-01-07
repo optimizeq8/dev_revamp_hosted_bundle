@@ -25,9 +25,11 @@ const styles = StyleSheet.create({
   },
   buttonGroupBlock: {
     flexDirection: "row",
-    marginHorizontal: 40,
+    // marginHorizontal: 40,
     marginTop: 20,
-    alignSelf: "center"
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: 40
   },
   errortext: {
     // marginTop: 5,
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
   mainCard: {
     // top: 20,
     // borderColor: "#FF9D00",
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     shadowRadius: 5,
     shadowOpacity: 0.2,
     height: 45,
@@ -61,6 +63,11 @@ const styles = StyleSheet.create({
     marginRight: 0,
     borderRadius: 30,
     justifyContent: "center"
+  },
+  flexBoxRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   backDrop: {
     position: "absolute",
@@ -177,54 +184,32 @@ const styles = StyleSheet.create({
     fontFamily: "montserrat-medium"
   },
   whitebutton: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    borderTopStartRadius: 25,
-    borderBottomStartRadius: 25,
+    marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    // paddingVertical: 20,
-    height: 50,
-    width: 100
+    height: 70
   },
   whitebutton2: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    // borderTopEndRadius: 15,
-    // borderBottomEndRadius: 15,
-    alignSelf: "center",
+    marginHorizontal: 0,
     justifyContent: "center",
-    paddingHorizontal: 10,
-    height: 50,
-    width: 100
-
-    // paddingVertical: 20
+    height: 70,
+    width: 120
   },
   whitebutton3: {
-    // marginTop: 15,
-    backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 0,
-    borderTopEndRadius: 25,
-    borderBottomEndRadius: 25,
+    marginHorizontal: 0,
     alignSelf: "center",
     justifyContent: "center",
-    paddingHorizontal: 10,
-    height: 50,
-    borderWidth: 0
-    // width: 125
-
-    // paddingVertical: 20
+    height: 70
   },
   whitebuttontext: {
     color: "rgba(255,255,255,0.6)",
     fontSize: 16,
     fontFamily: "montserrat-bold",
-    textAlign: "center"
+    textAlign: "center",
+    paddingHorizontal: 20
   },
   colorOrange: {
-    color: "#FF9D00"
+    color: "#FF8D04"
   },
   money: {
     color: "#C6C6C6",

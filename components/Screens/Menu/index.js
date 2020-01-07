@@ -14,6 +14,7 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import BusinessList from "../BusinessList";
 import Constants from "expo-constants";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
+import GradientButton from "../../MiniComponents/GradientButton";
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
 import Background from "../../../assets/SVGs/Background";
@@ -154,9 +155,12 @@ class Menu extends Component {
                 ? ""
                 : this.props.mainBusiness.businessname}
             </Text>
-            <Button
+
+            <GradientButton
               style={[styles.button]}
-              onPress={() => this.slidePanelShow()}
+              onPressAction={() => {
+                this.slidePanelShow();
+              }}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <Text style={styles.buttonText}>
@@ -175,7 +179,7 @@ class Menu extends Component {
                   {"Invite received "}
                 </Text>
               ) : null}
-            </Button>
+            </GradientButton>
 
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
               <TouchableOpacity

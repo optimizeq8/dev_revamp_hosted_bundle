@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   switchArrowIcon: {
     marginLeft: 5,
-    right: 20,
+    // right: 20,
     top: 1
   },
   scrollViewContainer: {
@@ -49,8 +49,10 @@ const styles = StyleSheet.create({
   button: {
     top: heightPercentageToDP("2"),
     marginBottom: heightPercentageToDP(3),
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     borderRadius: 30,
+    width: 150,
+    height: 50,
     alignSelf: "center",
     zIndex: 2,
     flexDirection: "column",

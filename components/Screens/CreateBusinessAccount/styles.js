@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     backgroundColor: "rgba(0,0,0,0.15)",
-    borderRadius: 40,
+    borderRadius: 50,
     flexDirection: "row",
     alignSelf: "center",
     alignItems: "center",
@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   button: {
-    // marginHorizontal: 30,
+    marginHorizontal: 0,
     elevation: 0,
     paddingVertical: 10,
     borderRadius: 50,
     borderStartWidth: 0,
     borderWidth: 0,
     // backgroundColor: "#fff",
-    backgroundColor: "rgba(0,0,0,0)",
+    // backgroundColor: "rgba(0,0,0,0)",
     height: "100%",
     justifyContent: "center",
     flexDirection: "column",
@@ -67,9 +67,10 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   },
   activeButton: {
+    marginHorizontal: 0,
     borderColor: "transparent",
     width: "34%",
-    backgroundColor: "#FF9D00",
+    // backgroundColor: "#FF9D00",
     borderRadius: 50,
     height: "100%",
     justifyContent: "center",
@@ -78,14 +79,14 @@ const styles = StyleSheet.create({
     borderColor: "transparent"
   },
   inactiveText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "rgba(255,255,255,0.6)",
     textAlign: "center",
     paddingTop: 5
   },
   activeText: {
-    fontFamily: "montserrat-regular",
+    fontFamily: "montserrat-bold",
     fontSize: 12,
     color: "#FFF",
     textAlign: "center",

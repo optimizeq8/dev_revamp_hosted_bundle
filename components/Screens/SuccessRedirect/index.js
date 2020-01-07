@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { View, Image } from "react-native";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
-import { Button, Text } from "native-base";
+import { Text } from "native-base";
 import { SafeAreaView, NavigationActions } from "react-navigation";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //Redux
 import { connect } from "react-redux";
@@ -131,7 +132,9 @@ class SuccessRedirect extends Component {
             />
           </View> */}
           <SuccessIcon width={80} height={80} />
-          <Text style={styles.title}> {translate("Success!")} </Text>
+          <Text uppercase style={styles.title}>
+            {translate("Success!")}
+          </Text>
           <Text style={styles.errortext}>
             {this.state.isWallet !== "1"
               ? translate("Your Ad is now being processed")
@@ -154,17 +157,18 @@ class SuccessRedirect extends Component {
               {translate("Status:")} {this.state.status}
             </Text>
           </View>
-          <Button
+          <GradientButton
             style={styles.button}
-            onPress={() => {
+            onPressAction={() => {
               this.props.navigation.reset(
                 [NavigationActions.navigate({ routeName: "Dashboard" })],
                 0
               );
             }}
-          >
-            <Text style={styles.buttontext}> {translate("Home")} </Text>
-          </Button>
+            textStyle={styles.buttontext}
+            text={translate("Home")}
+            uppercase={true}
+          />
         </View>
       </SafeAreaView>
     );

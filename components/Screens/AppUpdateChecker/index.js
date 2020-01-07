@@ -22,12 +22,11 @@ import {
 } from "react-native-responsive-screen";
 import Tutorial from "../Tutorial";
 import { globalColors } from "../../../GlobalStyles";
-import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
 import { NavigationEvents } from "react-navigation";
-
+import GradientButton from "../../MiniComponents/GradientButton";
 class AppUpdateChecker extends Component {
   static navigationOptions = {
     header: null
@@ -239,27 +238,29 @@ class AppUpdateChecker extends Component {
             >
               {(this.props.updateMessage_en && this.state.updateIsAvalible) ||
               this.props.underMaintenanceMessage_en ? (
-                <Button
-                  block
-                  onPress={this.handleButton}
+                <GradientButton
+                  radius={38}
+                  onPressAction={this.handleButton}
                   style={styles.updateButton}
-                >
-                  <Text style={styles.textUpdate}>
-                    {this.props.underMaintenanceMessage_en
+                  textStyle={styles.textUpdate}
+                  text={
+                    this.props.underMaintenanceMessage_en
                       ? translate("Check for update")
-                      : translate("Update Now")}
-                  </Text>
-                </Button>
+                      : translate("Update Now")
+                  }
+                  uppercase={true}
+                />
               ) : (
-                <Button
-                  block
-                  onPress={() => this.setState({ updateDownloaded: true })}
+                <GradientButton
+                  radius={38}
+                  onPressAction={() =>
+                    this.setState({ updateDownloaded: true })
+                  }
                   style={styles.updateButton}
-                >
-                  <Text style={styles.textUpdate}>
-                    {translate("Continue with the app")}
-                  </Text>
-                </Button>
+                  textStyle={styles.textUpdate}
+                  text={translate("Continue with the app")}
+                  uppercase={true}
+                />
               )}
             </View>
           )}
