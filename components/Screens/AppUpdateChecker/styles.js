@@ -30,6 +30,7 @@ export default StyleSheet.create({
     width: "70%",
     alignSelf: "center",
     top: "40%",
+    height: 50,
     borderRadius: 40
   }
 });

@@ -239,7 +239,6 @@ class AppUpdateChecker extends Component {
               {(this.props.updateMessage_en && this.state.updateIsAvalible) ||
               this.props.underMaintenanceMessage_en ? (
                 <GradientButton
-                  radius={38}
                   onPressAction={this.handleButton}
                   style={styles.updateButton}
                   textStyle={styles.textUpdate}
@@ -252,7 +251,6 @@ class AppUpdateChecker extends Component {
                 />
               ) : (
                 <GradientButton
-                  radius={38}
                   onPressAction={() =>
                     this.setState({ updateDownloaded: true })
                   }

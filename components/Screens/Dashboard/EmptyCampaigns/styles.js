@@ -46,7 +46,8 @@ export default StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignSelf: "center",
-    width: "35%"
+    width: "35%",
+    height: 50
   },
   campaignButtonText: {
     textAlign: "center",
