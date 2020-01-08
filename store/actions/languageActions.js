@@ -12,6 +12,10 @@ import createBaseUrl from "./createBaseUrl";
 export const getLanguageListPOEdit = language => {
   return async (dispatch, getState) => {
     try {
+      dispatch({
+        type: actionTypes.SET_LANGUAGE_CHANGE_LOADING,
+        payload: true
+      });
       const response = await axios.post(
         "https://api.poeditor.com/v2/terms/list",
         qs.stringify({

@@ -345,35 +345,22 @@ class Dashboard extends Component {
                   </TouchableOpacity>
                 </>
               ) : (
-                <Text
-                  onPress={async () => {
-                    await this.props.getLanguageListPOEdit(
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.getLanguageListPOEdit(
                       this.props.appLanguage === "en" ? "ar" : "en"
                     );
-                    await this.props.screenProps.setLocale(
-                      this.props.appLanguage
-                    );
+                    this.props.screenProps.setLocale(this.props.appLanguage);
+                    this.props.navigation.navigate("SwitchLanguageLoading");
                     // RNRestart.Restart();
-                    Updates.reload();
-                    // i18n.translations = {
-                    //   [this.props.appLanguage]: this.props.terms
-                    // };
+                    // Updates.reload();
                   }}
-                  style={[
-                    {
-                      color: "#FFF",
-                      fontSize: 19,
-                      right: "5%",
-                      position: "absolute",
-                      textAlign: "left",
-                      fontFamily: !I18nManager.isRTL
-                        ? "montserrat-regular-arabic"
-                        : "montserrat-regular-english"
-                    }
-                  ]}
+                  style={[styles.languageTouchView]}
                 >
-                  {!I18nManager.isRTL ? "العربية" : "English"}
-                </Text>
+                  <Text style={[styles.languageText]}>
+                    {!I18nManager.isRTL ? "العربية" : "English"}
+                  </Text>
+                </TouchableOpacity>
               )}
             </View>
           )}

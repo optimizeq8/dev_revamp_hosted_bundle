@@ -45,6 +45,7 @@ import GoogleCampaignDetails from "../Screens/GoogleCampaignDetails";
 import GoogleKeywordsStats from "../Screens/GoogleCampaignDetails/GoogleKeywordsStats";
 import GoogleAudience from "../Screens/GoogleCampaignDetails/Audience";
 import GoogleEditKeywords from "../Screens/GoogleCampaignDetails/EditKeywords";
+import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
 
 export default FluidNavigator(
   {
@@ -102,7 +103,8 @@ export default FluidNavigator(
     GoogleCampaignDetails: GoogleCampaignDetails,
     GoogleKeywordsStats: GoogleKeywordsStats,
     GoogleAudience: GoogleAudience,
-    GoogleEditKeywords: GoogleEditKeywords
+    GoogleEditKeywords: GoogleEditKeywords,
+    SwitchLanguageLoading: SwitchLanguageLoading
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }

@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     zIndex: 80,
     elevation: 3,
-    backgroundColor: "#FF9D00",
     width: widthPercentageToDP(60),
     height: heightPercentageToDP(7),
-    borderRadius: 15,
+    borderRadius: 50,
     justifyContent: "center"
   },
   imageSlide: {

@@ -6,6 +6,7 @@ import { Button, Text, Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Swiper from "../../MiniComponents/Swiper";
+import GradientButton from "../../MiniComponents/GradientButton";
 // import Invitation from "../InvitationScreen";
 import Signin from "../Signin";
 
@@ -78,9 +79,9 @@ class Tutorial extends Component {
             resizeMode="contain"
           />
           {i === 3 && (
-            <Button
+            <GradientButton
               style={[styles.getStartedButton]}
-              onPress={() => {
+              onPressAction={() => {
                 AsyncStorage.getItem("tutorialOpened")
                   .then(value => {
                     if (value == null) {
@@ -93,11 +94,9 @@ class Tutorial extends Component {
                   })
                   .catch(err => console.log(err));
               }}
-            >
-              <Text style={styles.getStartedText}>
-                {translate("Get Started!")}
-              </Text>
-            </Button>
+              textStyle={styles.getStartedText}
+              text={translate("Get Started!")}
+            />
           )}
         </>
       );
@@ -176,7 +175,4 @@ class Tutorial extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tutorial);
+export default connect(mapStateToProps, mapDispatchToProps)(Tutorial);

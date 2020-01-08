@@ -325,6 +325,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#0000",
     justifyContent: "space-around"
+  },
+  languageText: {
+    color: "#FFF",
+    fontSize: 19,
+    textAlign: "left",
+    fontFamily: !I18nManager.isRTL
+      ? "montserrat-regular-arabic"
+      : "montserrat-regular-english"
+  },
+  languageTouchView: {
+    right: "5%",
+    position: "absolute"
   }
 });
 
