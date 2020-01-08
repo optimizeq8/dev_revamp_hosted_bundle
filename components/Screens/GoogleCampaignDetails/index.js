@@ -596,9 +596,7 @@ class GoogleCampaignDetails extends Component {
               showCSVModal={this.showCSVModal}
               screenProps={this.props.screenProps}
               downloadGoogleCSV={this.props.downloadGoogleCSV}
-              campaign_id={
-                selectedCampaign && selectedCampaign.campaign.campaign_id
-              }
+              campaign_id={selectedCampaign && selectedCampaign.campaign.id}
             />
           </SafeAreaView>
         </>

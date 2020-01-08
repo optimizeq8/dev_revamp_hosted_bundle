@@ -810,8 +810,8 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
     GoogleBackendURL()
       .get(`http://goog.optimizeapp.com/export/report/`, {
         businessid: getState().account.mainBusiness.businessid,
-        campaign_id,
-        email
+        id: campaign_id,
+        email: email
       })
       .then(res => res.data)
       .then(data => {
