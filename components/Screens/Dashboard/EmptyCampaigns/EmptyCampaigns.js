@@ -6,8 +6,8 @@ import * as Segment from "expo-analytics-segment";
 import isStringArabic from "../../../isStringArabic";
 import styles from "./styles";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { Button } from "native-base";
 import { Bold } from "../../../MiniComponents/StyledComponents";
+import GradientButton from "../../../MiniComponents/GradientButton";
 export default class EmptyCampaigns extends Component {
   render() {
     let { mainBusiness, translate } = this.props;
@@ -70,8 +70,8 @@ export default class EmptyCampaigns extends Component {
               iterationDelay={1000}
               iterationCount="infinite"
             >
-              <Button
-                onPress={() => {
+              <GradientButton
+                onPressAction={() => {
                   if (this.props.mainBusiness.hasOwnProperty("businessid")) {
                     Segment.trackWithProperties("Create Campaign", {
                       category: "Campaign Creation"
@@ -81,14 +81,15 @@ export default class EmptyCampaigns extends Component {
                     this.props.navigation.navigate("CreateBusinessAccount");
                   }
                 }}
+                uppercase={true}
                 style={styles.campaignButton}
-              >
-                <Text style={styles.campaignButtonText}>
-                  {mainBusiness.hasOwnProperty("businessid")
+                textStyle={styles.campaignButtonText}
+                text={
+                  mainBusiness.hasOwnProperty("businessid")
                     ? translate(`New\nCampaign`)
-                    : translate(`Create new business`)}
-                </Text>
-              </Button>
+                    : translate(`Create new business`)
+                }
+              />
             </Animatable.View>
           )}
         </View>
