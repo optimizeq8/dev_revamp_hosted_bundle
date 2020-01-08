@@ -18,7 +18,7 @@ import * as Segment from "expo-analytics-segment";
 //components
 import Header from "../../../MiniComponents/Header";
 import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
-
+import EditModal from "./EditModal";
 // functions
 import * as actionCreators from "../../../../store/actions";
 import segmentEventTrack from "../../../segmentEventTrack";
@@ -38,7 +38,8 @@ class EditKeywords extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keywords: []
+      keywords: [],
+      modalVisible: false
     };
   }
   componentDidMount() {
@@ -81,6 +82,10 @@ class EditKeywords extends Component {
     }
   };
 
+  handleModalToggle = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  };
+
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     const keywordsError =
@@ -117,6 +122,7 @@ class EditKeywords extends Component {
   };
 
   render() {
+    let rejected = this.props.navigation.getParam("rejected", false);
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -146,7 +152,8 @@ class EditKeywords extends Component {
               translateTitle={false}
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
-              navigation={this.props.navigation}
+              navigation={!rejected ? this.props.navigation : undefined}
+              actionButton={rejected && this.handleModalToggle}
               titelStyle={{
                 textAlign: "left",
                 fontSize: 15,
@@ -178,6 +185,13 @@ class EditKeywords extends Component {
             )}
           </Container>
         </TouchableWithoutFeedback>
+        {this.state.modalVisible && (
+          <EditModal
+            handleModalToggle={this.handleModalToggle}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        )}
       </SafeAreaView>
     );
   }

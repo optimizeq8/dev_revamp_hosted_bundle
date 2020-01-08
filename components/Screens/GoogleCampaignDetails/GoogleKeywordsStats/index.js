@@ -140,7 +140,10 @@ class GoogleKeywordsStats extends Component {
               }}
               topRightButtonText={"Edit"}
               showTopRightButton={
-                this.props.selectedCampaign.campaign.review_status === "PENDING"
+                this.props.selectedCampaign.campaign.review_status ===
+                  "PENDING" ||
+                this.props.selectedCampaign.campaign.review_status ===
+                  "REJECTED"
                   ? false
                   : true
               }

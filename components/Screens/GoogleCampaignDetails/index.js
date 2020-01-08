@@ -363,20 +363,24 @@ class GoogleCampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : selectedCampaign.campaign.review_status !== "REJECTED" ? (
-                  <TouchableOpacity
-                    disabled={this.state.expand}
-                    onPress={this.handleChartToggle}
-                  >
-                    <CampaignCircleChart
-                      selectedCampaign={selectedCampaign}
-                      detail={true}
-                      screenProps={this.props.screenProps}
-                      loading={loading}
-                      channel={"google"}
-                      handleChartToggle={this.handleChartToggle}
-                      chartExpanded={this.state.expand}
-                    />
-                  </TouchableOpacity>
+                  selectedCampaign.campaign.review_status !== "PENDING" ? (
+                    <TouchableOpacity
+                      disabled={this.state.expand}
+                      onPress={this.handleChartToggle}
+                    >
+                      <CampaignCircleChart
+                        selectedCampaign={selectedCampaign}
+                        detail={true}
+                        screenProps={this.props.screenProps}
+                        loading={loading}
+                        channel={"google"}
+                        handleChartToggle={this.handleChartToggle}
+                        chartExpanded={this.state.expand}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <></>
+                  )
                 ) : (
                   <RejectedInfo
                     loading={loading}

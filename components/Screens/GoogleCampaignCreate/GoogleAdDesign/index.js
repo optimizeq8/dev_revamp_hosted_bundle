@@ -17,6 +17,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import GoogleSEAPreview from "../../../MiniComponents/GoogleSEAPreview";
+import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
 // Style
 import styles from "./styles";
@@ -60,7 +61,8 @@ class GoogleAdDesign extends Component {
       descriptionError: "",
       description2Error: "",
       urlError: "",
-      networkString: "http://"
+      networkString: "http://",
+      modalVisible: false
     };
   }
   componentWillUnmount() {
@@ -224,6 +226,11 @@ class GoogleAdDesign extends Component {
   focusTheField = fieldName => {
     this.inputs[fieldName]._root.focus();
   };
+  handleModalToggle = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible
+    });
+  };
   inputs = {};
 
   render() {
@@ -261,7 +268,8 @@ class GoogleAdDesign extends Component {
                 str: "Google SE Design Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname }
               }}
-              navigation={this.props.navigation}
+              actionButton={rejected && this.handleModalToggle}
+              navigation={!rejected ? this.props.navigation : undefined}
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
               disabled={this.props.campaign.uploading}
@@ -817,6 +825,13 @@ class GoogleAdDesign extends Component {
             </InputScrollView>
           </Container>
         </TouchableWithoutFeedback>
+        {this.state.modalVisible && (
+          <EditModal
+            handleModalToggle={this.handleModalToggle}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        )}
       </SafeAreaView>
     );
   }
