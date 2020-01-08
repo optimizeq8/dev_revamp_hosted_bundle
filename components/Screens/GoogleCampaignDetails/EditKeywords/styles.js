@@ -169,7 +169,7 @@ export default StyleSheet.create({
     color: "#fff",
     fontFamily: "montserrat-light",
     fontSize: 14,
-    marginVertical: 20,
+    // marginVertical: 20,
     padding: 20
   },
   btnClose: {
@@ -181,6 +181,38 @@ export default StyleSheet.create({
   },
   BlurView: {
     height: "100%",
-    paddingTop: hp("15%")
+    flex: 1
+  },
+  whitebutton: {
+    marginTop: 15,
+    borderColor: "#FFF",
+    borderWidth: 1,
+    borderRadius: 25,
+    width: 250,
+    height: 50,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  button: {
+    marginTop: 25,
+    width: 250,
+    height: 50,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  buttontext: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-bold"
+  },
+  whitebuttontext: {
+    color: "#FFF",
+    fontSize: 14,
+    fontFamily: "montserrat-bold"
+  },
+  popupOverlay: {
+    height: "100%",
+    flex: 0.75,
+    justifyContent: "center"
   }
 });
