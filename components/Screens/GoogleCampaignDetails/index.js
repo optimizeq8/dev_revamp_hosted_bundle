@@ -386,7 +386,8 @@ class GoogleCampaignDetails extends Component {
                     navigation={this.props.navigation}
                     campaign_id={selectedCampaign.campaign.id}
                     ad={selectedCampaign.ad}
-                    errors={selectedCampaign.error}
+                    error_type={selectedCampaign.error_type}
+                    errors={selectedCampaign.errors}
                   />
                 )}
                 {loading ? (

@@ -93,12 +93,14 @@ class EditKeywords extends Component {
         campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords
       };
+      AdData = this.props.navigation.getParam("adData", {});
       this.props.update_google_keywords(
         {
           businessid: this.props.mainBusiness.businessid,
           id: this.props.selectedCampaign.campaign.id,
           keywords: this.state.keywords,
-          completed: true
+          completed: true,
+          ...AdData
         },
         segmentInfo
       );

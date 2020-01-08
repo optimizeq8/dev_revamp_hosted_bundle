@@ -14,7 +14,8 @@ export default RejectedInfo = props => {
     navigation,
     campaign_id,
     ad,
-    errors
+    errors,
+    error_type
   } = props;
   const { translate } = props.screenProps;
   handleSupportPage = () => {
@@ -57,11 +58,25 @@ export default RejectedInfo = props => {
       <CustomButtons
         screenProps={props.screenProps}
         onPressFunction={() => {
-          navigation.push("GoogleAdDesign", {
-            rejected: true,
-            id: campaign_id,
-            ad: ad
-          });
+          if (error_type === 1)
+            navigation.push("GoogleAdDesign", {
+              rejected: true,
+              id: campaign_id,
+              ad: ad,
+              error_type: error_type
+            });
+          else if (error_type === 2)
+            props.navigation.push("GoogleEditKeywords", {
+              rejected: true,
+              error_type: error_type
+            });
+          else
+            props.navigation.push("GoogleAdDesign", {
+              rejected: true,
+              id: campaign_id,
+              ad: ad,
+              error_type: error_type
+            });
         }}
         content="Review Ad"
         filled

@@ -186,13 +186,14 @@ class GoogleAdDesign extends Component {
         checkout_id: this.props.campaign.id
       };
       let rejectedVal = this.props.navigation.getParam("rejected", false);
+      let error_type = this.props.navigation.getParam("error_type", 1) === 1;
       if (!rejectedVal) {
         this.props.create_google_SE_campaign_ad_design(
           {
             ...data,
             id: this.props.campaign.id,
             businessid: this.props.mainBusiness.businessid,
-            completed: true
+            completed: error_type
           },
           rejectedVal,
           segmentInfo
@@ -202,15 +203,21 @@ class GoogleAdDesign extends Component {
           id: this.props.campaign.id
         });
       } else {
-        this.props.create_google_SE_campaign_ad_design(
-          {
-            businessid: this.props.mainBusiness.businessid,
-            ...data,
-            id: this.props.navigation.getParam("id", null)
-          },
-          rejectedVal,
-          segmentInfo
-        );
+        if (error_type)
+          this.props.create_google_SE_campaign_ad_design(
+            {
+              ...data,
+              id: this.props.navigation.getParam("id", null),
+              businessid: this.props.mainBusiness.businessid,
+              completed: error_type
+            },
+            rejectedVal,
+            segmentInfo
+          );
+        else
+          this.props.navigation.navigate("GoogleEditKeywords", {
+            adData: data
+          });
       }
     }
   };
