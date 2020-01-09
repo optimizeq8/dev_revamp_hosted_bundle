@@ -809,7 +809,7 @@ export const get_budget = (info, segmentInfo, navigation) => {
 export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
   return (dispatch, getState) => {
     GoogleBackendURL()
-      .get(`http://goog.optimizeapp.com/export/report/`, {
+      .get(`export/report/`, {
         businessid: getState().account.mainBusiness.businessid,
         id: campaign_id,
         email: email
