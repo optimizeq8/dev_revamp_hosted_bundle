@@ -252,8 +252,8 @@ class MainForm extends Component {
                         this.props.navigation.push("MainForm");
                       }}
                     >
-                      <Text style={styles.createOneText}>
-                        {translate("Create One!")}
+                      <Text uppercase style={styles.createOneText}>
+                        {translate("SIGN UP")}!
                       </Text>
                     </TouchableOpacity>
                   </View>

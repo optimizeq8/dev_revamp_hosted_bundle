@@ -5,6 +5,7 @@ import {
 } from "react-native-responsive-screen";
 export const globalColors = {
   orange: "#FF9D00",
+  darkOrange: "#FF790A",
   purple: "#751AFF",
   green: "#66D072",
   yellow: "#FFFC00",
