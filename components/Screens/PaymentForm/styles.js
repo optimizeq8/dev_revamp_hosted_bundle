@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   mainCard: {
     shadowRadius: 5,
     shadowOpacity: 0.2,
-    height: 45,
+    height: 50,
     width: heightPercentageToDP(5) < 30 ? 150 : 160,
     marginLeft: 0,
     marginRight: 0,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     justifyContent: "center",
     height: 70,
-    width: 120
+    width: 100
   },
   whitebutton3: {
     marginHorizontal: 0,

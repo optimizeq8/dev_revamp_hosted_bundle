@@ -5,6 +5,7 @@ import * as Segment from "expo-analytics-segment";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
 import ReviewItemCard from "../../../MiniComponents/ReviewItemCard";
 import CustomHeader from "../../../MiniComponents/Header";
+import GradientButton from "../../../MiniComponents/GradientButton";
 
 // Style
 import styles from "./styles";
