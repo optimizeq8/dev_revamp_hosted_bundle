@@ -77,8 +77,7 @@ export default class InputField extends Component {
    */
   handleTextChange = (value, secondHalf = false) => {
     clearTimeout(this.typingTimeout);
-
-    if (secondHalf);
+    if (secondHalf) this.props.setValue(this.props.stateName2, value);
     else this.props.setValue(this.props.stateName1, value);
     this.typingTimeout = setTimeout(() => this.validate(), 800);
   };

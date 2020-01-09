@@ -5,7 +5,7 @@ import {
   Keyboard,
   BackHandler
 } from "react-native";
-import { Item, Input, Label, Icon } from "native-base";
+import { Text } from "native-base";
 import { SafeAreaView } from "react-navigation";
 import * as Segment from "expo-analytics-segment";
 import CheckMarkLoading from "../../MiniComponents/CheckMarkLoading";
@@ -14,18 +14,21 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 
 import CustomHeader from "../../MiniComponents/Header";
-import KeyboardShift from "../..//MiniComponents/KeyboardShift";
+import KeyboardShift from "../../MiniComponents/KeyboardShift";
 
 //icons
-import PersonalInfoIcon from "../../../assets/SVGs/Person";
+import EmailTransparentIcon from "../../../assets/SVGs/EmailTransparent";
+import PersonTransparentIcon from "../../../assets/SVGs/MenuIcons/PersonTransparent";
 
 // Style
 import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
-import PhoneNoField from "./PhoneInput";
+// import PhoneNoField from "./PhoneInput";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import { showMessage } from "react-native-flash-message";
 import LowerButton from "../../MiniComponents/LowerButton";
+import InputFeild from "../../MiniComponents/InputField";
+import PhoneNoField from "../Signup/PhoneNo/PhoneNoField";
 
 class PersonalInfo extends Component {
   static navigationOptions = {
@@ -150,6 +153,20 @@ class PersonalInfo extends Component {
         });
     }
   };
+
+  setValue = (stateName, value) => {
+    let state = {};
+    state[stateName] = value;
+    this.setState({ ...state });
+  };
+
+  getValidInfo = (stateError, validWrap) => {
+    let state = {};
+    state[stateError] = validWrap;
+    this.setState({
+      ...state
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
@@ -163,11 +180,6 @@ class PersonalInfo extends Component {
           navigation={this.props.navigation}
         />
 
-        <PersonalInfoIcon
-          style={styles.personalInfoIcon}
-          width={55}
-          height={55}
-        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.mainCard}>
             <KeyboardShift>
@@ -175,70 +187,32 @@ class PersonalInfo extends Component {
                 <View style={styles.contentContainer}>
                   <View style={styles.dataContainer}>
                     <View style={styles.fullNameView}>
-                      <Item
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          { width: "50%" },
-                          this.state.inputF
-                            ? globalStyles.purpleBorderColor
-                            : this.state.firstnameError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
-                        ]}
-                      >
-                        <Label style={[styles.label, styles.labelEmail]}>
-                          {translate("First Name")}
-                        </Label>
-                        <Input
-                          disabled={this.props.loadingUpdateInfo}
-                          style={[styles.inputText]}
-                          value={this.state.firstname}
-                          onBlur={() => {
-                            this.validator();
-                            this.setState({
-                              inputF: false
-                            });
-                          }}
-                          onFocus={() => this.setState({ inputF: true })}
-                          onChangeText={firstname =>
-                            this.setState({ firstname })
-                          }
-                        />
-                      </Item>
-                      <Item
-                        floatingLabel
-                        style={[
-                          styles.input,
-                          { width: "50%" },
-
-                          this.state.inputL
-                            ? globalStyles.purpleBorderColor
-                            : this.state.lastnameError
-                            ? globalStyles.redBorderColor
-                            : globalStyles.lightGrayBorderColor
-                        ]}
-                      >
-                        <Label style={[styles.label, styles.labelEmail]}>
-                          {translate("Last Name")}
-                        </Label>
-                        <Input
-                          disabled={this.props.loadingUpdateInfo}
-                          style={[styles.inputText]}
-                          value={this.state.lastname}
-                          onBlur={() => {
-                            this.validator();
-                            this.setState({ inputL: false });
-                          }}
-                          onFocus={() => this.setState({ inputL: true })}
-                          onChangeText={lastname => this.setState({ lastname })}
-                        />
-                      </Item>
+                      <InputFeild
+                        key={"Full Name"}
+                        getValidInfo={this.getValidInfo}
+                        setValue={this.setValue}
+                        incomplete={false}
+                        translate={this.props.screenProps.translate}
+                        stateName1="firstname"
+                        stateName2="lastname"
+                        label="Full name"
+                        placeholder1="First Name"
+                        placeholder2="Last Name"
+                        value={this.state.firstname}
+                        value2={this.state.lastname}
+                        valueError1={this.state.firstnameError}
+                        valueError2={this.state.lastnameError}
+                        icon={PersonTransparentIcon}
+                        disabled={this.props.loadingUpdateInfo}
+                      />
                     </View>
                     <View style={styles.mobileView}>
-                      <Label style={[styles.label, styles.labelMobileNo]}>
-                        {translate("Mobile No")}
-                      </Label>
+                      <View style={[styles.labelView]}>
+                        <Text uppercase style={[styles.inputLabel]}>
+                          {translate("Mobile No")}
+                        </Text>
+                      </View>
+
                       <PhoneNoField
                         disabled={this.props.loadingUpdateInfo}
                         screenProps={this.props.screenProps}
@@ -247,27 +221,20 @@ class PersonalInfo extends Component {
                         phoneNum={this.state.phoneNum}
                       />
                     </View>
-
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        globalStyles.lightGrayBorderColor,
-                        styles.emailItem
-                      ]}
-                    >
-                      <Label style={[styles.label, styles.labelEmail]}>
-                        {translate("Email")}
-                      </Label>
-                      <Input
-                        disabled={this.props.loadingUpdateInfo}
-                        autoCapitalize={"none"}
-                        style={[styles.inputText]}
-                        value={this.state.email}
-                        onBlur={() => this.validator()}
-                        onChangeText={email => this.setState({ email })}
-                      />
-                    </Item>
+                    <InputFeild
+                      disabled={this.props.loadingUpdateInfo}
+                      incomplete={false}
+                      translate={this.props.screenProps.translate}
+                      stateName1="email"
+                      label="Email"
+                      placeholder1="Enter their email"
+                      value={this.state.email}
+                      valueError1={this.state.emailError}
+                      icon={EmailTransparentIcon}
+                      setValue={this.setValue}
+                      getValidInfo={this.getValidInfo}
+                      key={"Email"}
+                    />
                   </View>
 
                   {this.props.loadingUpdateInfo ? (

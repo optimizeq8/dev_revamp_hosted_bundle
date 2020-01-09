@@ -26,9 +26,6 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   labelMobileNo: {
-    // bottom: 5,
-    // alignSelf: "center",
-
     fontSize: 14 / PixelRatio.getFontScale()
   },
   labelEmail: {
@@ -37,20 +34,7 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === "android" ? 14 / PixelRatio.getFontScale() : 14
   },
   mainCard: {
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    borderColor: "transparent",
-    flex: 1,
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: heightPercentageToDP(5),
-    marginBottom: 0,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    paddingTop: 15
+    flex: 1
   },
   button: {
     alignSelf: "center",
@@ -84,10 +68,6 @@ const styles = StyleSheet.create({
     borderColor: "#7039FF"
   },
   fullNameView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 0,
-    paddingHorizontal: 0,
     width: "100%"
   },
   phoneInput: {
@@ -99,8 +79,30 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%"
   },
-  mobileView: { width: "100%" },
-  emailItem: { width: "100%", marginTop: 25 }
+  mobileView: {
+    width: "100%",
+    marginBottom: 30
+  },
+  emailItem: { width: "100%", marginTop: 25 },
+  inputLabel: {
+    fontFamily: "montserrat-bold",
+    fontSize: 12,
+    color: "#FFF",
+    textAlign: "center"
+  },
+  labelView: {
+    height: 15,
+    width: 150,
+    alignSelf: "center",
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    // borderRadius: 25,
+    paddingTop: 2,
+    marginBottom: 0,
+    backgroundColor: "rgba(0,0,0,0.15)"
+  }
 });
 
 export default styles;
