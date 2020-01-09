@@ -59,7 +59,7 @@ class ManageTeam extends Component {
           height={60}
         />
         <ScrollView
-          contentContainerStyle={{ paddingBottom: "40%" }}
+          contentContainerStyle={{ paddingBottom: "40%", height: "100%" }}
           refreshControl={
             <RefreshControl
               tintColor={"white"}
