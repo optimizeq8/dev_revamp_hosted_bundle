@@ -506,9 +506,8 @@ const styles = StyleSheet.create({
   },
   customButtonStyle: {
     width: 160,
-    height: 40,
-    alignSelf: "flex-end",
-    paddingHorizontal: 20
+    height: 50,
+    alignSelf: "flex-end"
   },
   customButtonText: {
     fontSize: 14

@@ -37,7 +37,7 @@ export default class CSVModal extends Component {
       if (this.props.google)
         this.props.downloadGoogleCSV(
           this.props.campaign_id,
-          this.state.emai,
+          this.state.email,
           this.showModalMessage
         );
       else

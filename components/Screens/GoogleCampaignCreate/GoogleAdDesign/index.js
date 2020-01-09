@@ -17,6 +17,7 @@ import LowerButton from "../../../MiniComponents/LowerButton";
 import CustomHeader from "../../../MiniComponents/Header";
 import ForwardLoading from "../../../MiniComponents/ForwardLoading";
 import GoogleSEAPreview from "../../../MiniComponents/GoogleSEAPreview";
+import EditModal from "../../GoogleCampaignDetails/EditKeywords/EditModal";
 import InputScrollView from "react-native-input-scroll-view";
 // Style
 import styles from "./styles";
@@ -60,7 +61,8 @@ class GoogleAdDesign extends Component {
       descriptionError: "",
       description2Error: "",
       urlError: "",
-      networkString: "http://"
+      networkString: "http://",
+      modalVisible: false
     };
   }
   componentWillUnmount() {
@@ -183,38 +185,59 @@ class GoogleAdDesign extends Component {
         campaign_description: this.state.description,
         campaign_description2: this.state.description2,
         campaign_finalurl: this.state.finalurl,
-        checkout_id: this.props.campaign.campaign_id
+        checkout_id: this.props.campaign.id
       };
+      /**
+       * the screen is used to handle rejected ads as well, I send back rejected as a param
+       * to handle the data submitted or the route it takes
+       */
       let rejectedVal = this.props.navigation.getParam("rejected", false);
+      let error_type = this.props.navigation.getParam("error_type", 1) === 1;
       if (!rejectedVal) {
         this.props.create_google_SE_campaign_ad_design(
           {
             ...data,
-            campaign_id: this.props.campaign.campaign_id,
-            businessid: this.props.mainBusiness.businessid
+            id: this.props.campaign.id,
+            businessid: this.props.mainBusiness.businessid,
+            completed: error_type
           },
           rejectedVal,
           segmentInfo
         );
         this.props.save_google_campaign_data({
           ...data,
-          campaign_id: this.props.campaign.campaign_id
+          id: this.props.campaign.id
         });
       } else {
-        this.props.create_google_SE_campaign_ad_design(
-          {
-            businessid: this.props.mainBusiness.businessid,
-            ...data,
-            campaign_id: this.props.navigation.getParam("campaign_id", null)
-          },
-          rejectedVal,
-          segmentInfo
-        );
+        /**
+         * if error type is 1 that means it will submit the ad details through the ad design action
+         * if it is 3 it will navigate to the keywords screen and pass the data with it
+         */
+        if (error_type)
+          this.props.create_google_SE_campaign_ad_design(
+            {
+              ...data,
+              id: this.props.navigation.getParam("id", null),
+              businessid: this.props.mainBusiness.businessid,
+              completed: error_type
+            },
+            rejectedVal,
+            segmentInfo
+          );
+        else
+          this.props.navigation.navigate("GoogleEditKeywords", {
+            adData: data
+          });
       }
     }
   };
   focusTheField = fieldName => {
     this.inputs[fieldName]._root.focus();
+  };
+  handleModalToggle = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible
+    });
   };
   inputs = {};
 
@@ -253,9 +276,11 @@ class GoogleAdDesign extends Component {
                 str: "Google SE Design Back Button",
                 obj: { businessname: this.props.mainBusiness.businessname }
               }}
-              navigation={this.props.navigation}
+              actionButton={rejected && this.handleModalToggle}
+              navigation={!rejected ? this.props.navigation : undefined}
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
+              disabled={this.props.campaign.uploading}
             />
             <View style={{ zIndex: 10000 }}>
               <GoogleSEAPreview
@@ -808,6 +833,13 @@ class GoogleAdDesign extends Component {
             </InputScrollView>
           </Container>
         </TouchableWithoutFeedback>
+        {this.state.modalVisible && (
+          <EditModal
+            handleModalToggle={this.handleModalToggle}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        )}
       </SafeAreaView>
     );
   }

@@ -23,7 +23,7 @@ export default class SlideUpPanel extends Component {
   _onRefresh = async selectedCampaign => {
     this.setState({ refreshing: true });
     await this.props.getCampaignStats(
-      selectedCampaign.campaign.campaign_id,
+      selectedCampaign.campaign.id,
       selectedCampaign.start_time,
       selectedCampaign.end_time
     );

@@ -180,9 +180,9 @@ export const create_google_SE_campaign_info = (
             get_budget(
               {
                 businessid: info.businessid,
-                campaign_id: info.campaign_id
+                id: data.id
               },
-              segmentInfo,
+              { ...segmentInfo, checkout_id: data.id },
               navigation
             )
           );
@@ -248,11 +248,11 @@ export const create_google_SE_campaign_ad_design = (
             type: "info",
             position: "top"
           });
-          dispatch({
-            type: actionTypes.SET_GOOGLE_UPLOADING,
-            payload: false
-          });
         }
+        dispatch({
+          type: actionTypes.SET_GOOGLE_UPLOADING,
+          payload: false
+        });
         return data;
       })
       .then(data => {
@@ -297,7 +297,7 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
     });
     GoogleBackendURL()
       .get(
-        `keywords/?keyword=${keyword}&campaign_id=${campaign_id}&businessid=${businessid}`
+        `keywords/?keyword=${keyword}&id=${campaign_id}&businessid=${businessid}`
       )
       .then(res => {
         if (isUndefined(res.data.keywords)) {
@@ -308,7 +308,10 @@ export const get_google_SE_keywords = (keyword, campaign_id, businessid) => {
         if (!data.error) {
           return dispatch({
             type: actionTypes.SET_GOOGLE_SE_KEYWORDS,
-            payload: { data: [keyword, ...data.keywords], loading: false }
+            payload: {
+              data: data.keywords,
+              loading: false
+            }
           });
         } else {
           showMessage({
@@ -367,7 +370,7 @@ export const create_google_SE_campaign_ad_targeting = (info, segmentInfo) => {
           //sets the transaction reducer if there is chanage in the data
           dispatch(
             setCampaignInfoForTransaction({
-              campaign_id: data.campaign_id,
+              campaign_id: data.id,
               campaign_budget: data.budget,
               campaign_budget_kdamount: data.kdamount,
               channel: "google"
@@ -436,7 +439,7 @@ export const get_google_campiagn_details = (
 
     GoogleBackendURL()
       .get(
-        `campaign/detail/?campaign_id=${id}&start_time=${start_time}&end_time=${end_time}&businessid=${
+        `campaign/detail/?id=${id}&start_time=${start_time}&end_time=${end_time}&businessid=${
           getState().account.mainBusiness.businessid
         }`
       )
@@ -595,7 +598,6 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
           type: "danger",
           position: "top"
         });
-        console.log("data error", err);
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
           payload: false
@@ -609,6 +611,7 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
  *
  * @method
  * @param {Object} info
+ * @param {Boolean} info.completed this was created to keep track of the rejection process
  */
 export const update_google_keywords = (info, segmentInfo) => {
   return dispatch => {
@@ -701,8 +704,6 @@ export const create_google_keywords = (info, segmentInfo) => {
           type: "danger",
           position: "top"
         });
-        console.log("data error", err);
-
         return dispatch({
           type: actionTypes.SET_GOOGLE_UPLOADING,
           payload: false
@@ -736,7 +737,7 @@ export const enable_end_or_pause_google_campaign = (
       .post(
         `${endCampaign ? "end" : pauseOrEnable ? "enable" : "pause"}/campaign/`,
         {
-          campaign_id: campaign_id,
+          id: campaign_id,
           businessid: getState().account.mainBusiness.businessid
         }
       )
@@ -810,8 +811,8 @@ export const downloadGoogleCSV = (campaign_id, email, showModalMessage) => {
     GoogleBackendURL()
       .get(`http://goog.optimizeapp.com/export/report/`, {
         businessid: getState().account.mainBusiness.businessid,
-        campaign_id,
-        email
+        id: campaign_id,
+        email: email
       })
       .then(res => res.data)
       .then(data => {

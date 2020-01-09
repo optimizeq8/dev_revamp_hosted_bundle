@@ -28,7 +28,8 @@ export default class Header extends Component {
       titelStyle,
       icon,
       translateTitle = true,
-      showTopRightButtonIcon
+      showTopRightButtonIcon,
+      disabled = false
     } = this.props;
     const { translate } = this.props.screenProps;
     if (translateTitle)
@@ -45,6 +46,7 @@ export default class Header extends Component {
         style={[styles.container, { height: 50, padding: 0 }, containerStyle]}
       >
         <TouchableOpacity
+          disabled={disabled}
           onPress={() => {
             if (!isUndefined(segment))
               Segment.trackWithProperties(segment.str, segment.obj);

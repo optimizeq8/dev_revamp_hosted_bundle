@@ -1,5 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
-import globalStyles from "../../../../GlobalStyles";
+import globalStyles, { globalColors } from "../../../../GlobalStyles";
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -147,5 +148,71 @@ export default StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "space-between"
+  },
+  statusButtons: {
+    borderRadius: 10,
+    borderColor: globalColors.orange,
+    borderWidth: 0.5,
+    alignSelf: "center",
+    marginVertical: 5,
+    padding: 10,
+    width: "40%",
+    justifyContent: "center"
+  },
+  statusButtonsText: {
+    fontFamily: "montserrat-medium",
+    color: "#fff",
+    backgroundColor: "transparent"
+  },
+  pauseDes: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "montserrat-light",
+    fontSize: 14,
+    // marginVertical: 20,
+    padding: 20
+  },
+  btnClose: {
+    position: "absolute",
+    top: hp("5%"),
+    left: wp("10%"),
+    height: 100,
+    width: 100
+  },
+  BlurView: {
+    height: "100%",
+    flex: 1
+  },
+  whitebutton: {
+    marginTop: 15,
+    borderColor: "#FFF",
+    borderWidth: 1,
+    borderRadius: 25,
+    width: 250,
+    height: 50,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  button: {
+    marginTop: 25,
+    width: 250,
+    height: 50,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  buttontext: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "montserrat-bold"
+  },
+  whitebuttontext: {
+    color: "#FFF",
+    fontSize: 14,
+    fontFamily: "montserrat-bold"
+  },
+  popupOverlay: {
+    height: "100%",
+    flex: 0.75,
+    justifyContent: "center"
   }
 });

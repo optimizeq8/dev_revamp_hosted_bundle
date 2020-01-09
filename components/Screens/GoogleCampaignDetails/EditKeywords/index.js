@@ -18,7 +18,7 @@ import * as Segment from "expo-analytics-segment";
 //components
 import Header from "../../../MiniComponents/Header";
 import KeywordsSelectionList from "../../../MiniComponents/KeywordsSelectionList";
-
+import EditModal from "./EditModal";
 // functions
 import * as actionCreators from "../../../../store/actions";
 import segmentEventTrack from "../../../segmentEventTrack";
@@ -38,7 +38,8 @@ class EditKeywords extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keywords: []
+      keywords: [],
+      modalVisible: false
     };
   }
   componentDidMount() {
@@ -81,6 +82,10 @@ class EditKeywords extends Component {
     }
   };
 
+  handleModalToggle = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  };
+
   _handleSubmission = () => {
     const { translate } = this.props.screenProps;
     const keywordsError =
@@ -90,14 +95,21 @@ class EditKeywords extends Component {
     if (!keywordsError) {
       const segmentInfo = {
         businessid: this.props.mainBusiness.businessid,
-        campaign_id: this.props.selectedCampaign.campaign.campaign_id,
+        campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords
       };
+      /**
+       * if it was navigated from the AdDesign screen through a rejection review process
+       * adData will be part of the navigation params
+       */
+      AdData = this.props.navigation.getParam("adData", {});
       this.props.update_google_keywords(
         {
           businessid: this.props.mainBusiness.businessid,
-          campaign_id: this.props.selectedCampaign.campaign.campaign_id,
-          keywords: this.state.keywords
+          id: this.props.selectedCampaign.campaign.id,
+          keywords: this.state.keywords,
+          completed: true,
+          ...AdData
         },
         segmentInfo
       );
@@ -114,6 +126,7 @@ class EditKeywords extends Component {
   };
 
   render() {
+    let rejected = this.props.navigation.getParam("rejected", false);
     return (
       <SafeAreaView
         style={styles.safeAreaView}
@@ -143,7 +156,8 @@ class EditKeywords extends Component {
               translateTitle={false}
               title={this.props.selectedCampaign.campaign.name}
               icon={"google"}
-              navigation={this.props.navigation}
+              navigation={!rejected ? this.props.navigation : undefined}
+              actionButton={rejected && this.handleModalToggle}
               titelStyle={{
                 textAlign: "left",
                 fontSize: 15,
@@ -161,7 +175,7 @@ class EditKeywords extends Component {
               _handleAddItem={this._handleAddKeyword}
               selected={this.state.keywords}
               data={this.props.campaign.fetchedKeywords}
-              campaign_id={this.props.selectedCampaign.campaign.campaign_id}
+              campaign_id={this.props.selectedCampaign.campaign.id}
               businessid={this.props.mainBusiness.businessid}
             />
             {this.props.campaign.uploading ? (
@@ -175,6 +189,13 @@ class EditKeywords extends Component {
             )}
           </Container>
         </TouchableWithoutFeedback>
+        {this.state.modalVisible && (
+          <EditModal
+            handleModalToggle={this.handleModalToggle}
+            screenProps={this.props.screenProps}
+            navigation={this.props.navigation}
+          />
+        )}
       </SafeAreaView>
     );
   }

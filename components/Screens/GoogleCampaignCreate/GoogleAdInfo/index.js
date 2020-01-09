@@ -84,6 +84,9 @@ class GoogleAdInfo extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
   componentDidMount() {
+    if (!this.props.campaign.incompleteCampaign) {
+      this.props.save_google_campaign_steps(["Dashboard", "GoogleAdInfo"]);
+    }
     this.setCampaignInfo();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
   }
@@ -269,7 +272,7 @@ class GoogleAdInfo extends Component {
         campaign_end_date: this.state.end_time,
         campaign_location: this.state.location,
         campaign_country: this.state.country,
-        checkout_id: this.props.campaign.campaign_id
+        checkout_id: this.props.campaign.id
       };
 
       /**
@@ -280,10 +283,7 @@ class GoogleAdInfo extends Component {
 
       this.props.create_google_SE_campaign_info(
         {
-          campaign_id:
-            this.props.campaign.campaign_id !== ""
-              ? this.props.campaign.campaign_id
-              : "",
+          id: this.props.campaign.id !== "" ? this.props.campaign.id : "",
           businessid: this.props.mainBusiness.businessid,
           name: this.state.name,
           language: this.state.language,
@@ -351,6 +351,7 @@ class GoogleAdInfo extends Component {
                 this.props.navigation.goBack();
                 this.props.set_google_campaign_resumed(false);
               }}
+              disabled={this.props.campaign.uploading}
               title={"Search Engine Ad"}
               screenProps={this.props.screenProps}
             />

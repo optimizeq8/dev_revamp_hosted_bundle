@@ -4,6 +4,7 @@ import { AsyncStorage, Animated } from "react-native";
 
 const initialState = {
   campaign_id: "",
+  id: "",
   loading: false,
   locationsFetchedList: [],
   name: "",

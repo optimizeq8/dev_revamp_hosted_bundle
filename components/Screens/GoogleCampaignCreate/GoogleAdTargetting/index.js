@@ -115,7 +115,7 @@ class GoogleAdTargetting extends Component {
     });
     this.props.save_google_campaign_data({ budget: budget });
     this.props.setCampaignInfoForTransaction({
-      campaign_id: this.props.campaign.campaign_id,
+      campaign_id: this.props.campaign.id,
       campaign_budget: budget
     });
   };
@@ -265,7 +265,7 @@ class GoogleAdTargetting extends Component {
         : null;
 
     this.props.setCampaignInfoForTransaction({
-      campaign_id: this.props.campaign.campaign_id,
+      campaign_id: this.props.campaign.id,
       campaign_budget: this.state.budget
     });
     let data = {
@@ -286,7 +286,7 @@ class GoogleAdTargetting extends Component {
       const segmentInfo = {
         step: 3,
         business_name: this.props.mainBusiness.businessname,
-        checkout_id: this.props.campaign.campaign_id,
+        checkout_id: this.props.campaign.id,
         campaign_budget: this.state.budget,
         campaign_age: this.state.age,
         campaign_gender: this.state.gender,
@@ -296,7 +296,8 @@ class GoogleAdTargetting extends Component {
       this.props.create_google_SE_campaign_ad_targeting(
         {
           businessid: this.props.mainBusiness.businessid,
-          campaign_id: this.props.campaign.campaign_id,
+          id: this.props.campaign.id,
+          completed: true,
           ...data
         },
         segmentInfo
@@ -381,7 +382,7 @@ class GoogleAdTargetting extends Component {
                 _handleAddItem={this._handleAddKeyword}
                 selected={this.state.keywords}
                 data={this.props.campaign.fetchedKeywords}
-                campaign_id={this.props.campaign.campaign_id}
+                campaign_id={this.props.campaign.id}
                 businessid={this.props.mainBusiness.businessid}
                 screenProps={this.props.screenProps}
               />
@@ -427,7 +428,7 @@ class GoogleAdTargetting extends Component {
                 channel: "google"
               });
               Segment.trackWithProperties("Viewed Checkout Step", {
-                checkout_id: this.props.campaign.campaign_id,
+                checkout_id: this.props.campaign.id,
                 step: 4
               });
             }}
@@ -445,6 +446,7 @@ class GoogleAdTargetting extends Component {
                 navigation={this.props.navigation}
                 title={"Campaign details"}
                 screenProps={this.props.screenProps}
+                disabled={this.props.campaign.uploading}
               />
 
               <Content

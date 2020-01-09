@@ -130,7 +130,7 @@ class GoogleCampaignDetails extends Component {
   durationChange = (start_time, end_time) => {
     this.setState({ start_time, end_time });
     this.props.get_google_campiagn_details(
-      this.props.selectedCampaign.campaign.campaign_id,
+      this.props.selectedCampaign.campaign.id,
       start_time,
       end_time,
       true
@@ -160,7 +160,7 @@ class GoogleCampaignDetails extends Component {
 
   updateStatus = (endCampaign = false) => {
     this.props.enable_end_or_pause_google_campaign(
-      this.props.selectedCampaign.campaign.campaign_id,
+      this.props.selectedCampaign.campaign.id,
       this.state.toggleText === "PAUSED",
       endCampaign,
       this.handleModalToggle
@@ -363,20 +363,24 @@ class GoogleCampaignDetails extends Component {
                     <PlaceholderLine />
                   </View>
                 ) : selectedCampaign.campaign.review_status !== "REJECTED" ? (
-                  <TouchableOpacity
-                    disabled={this.state.expand}
-                    onPress={this.handleChartToggle}
-                  >
-                    <CampaignCircleChart
-                      selectedCampaign={selectedCampaign}
-                      detail={true}
-                      screenProps={this.props.screenProps}
-                      loading={loading}
-                      channel={"google"}
-                      handleChartToggle={this.handleChartToggle}
-                      chartExpanded={this.state.expand}
-                    />
-                  </TouchableOpacity>
+                  selectedCampaign.campaign.review_status !== "PENDING" ? (
+                    <TouchableOpacity
+                      disabled={this.state.expand}
+                      onPress={this.handleChartToggle}
+                    >
+                      <CampaignCircleChart
+                        selectedCampaign={selectedCampaign}
+                        detail={true}
+                        screenProps={this.props.screenProps}
+                        loading={loading}
+                        channel={"google"}
+                        handleChartToggle={this.handleChartToggle}
+                        chartExpanded={this.state.expand}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <></>
+                  )
                 ) : (
                   <RejectedInfo
                     loading={loading}
@@ -384,8 +388,10 @@ class GoogleCampaignDetails extends Component {
                     review_status_reason={selectedCampaign.review_status_reason}
                     review_status_help={selectedCampaign.review_status_help}
                     navigation={this.props.navigation}
-                    campaign_id={selectedCampaign.campaign.campaign_id}
+                    campaign_id={selectedCampaign.campaign.id}
                     ad={selectedCampaign.ad}
+                    error_type={selectedCampaign.error_type}
+                    errors={selectedCampaign.errors}
                   />
                 )}
                 {loading ? (
@@ -590,9 +596,7 @@ class GoogleCampaignDetails extends Component {
               showCSVModal={this.showCSVModal}
               screenProps={this.props.screenProps}
               downloadGoogleCSV={this.props.downloadGoogleCSV}
-              campaign_id={
-                selectedCampaign && selectedCampaign.campaign.campaign_id
-              }
+              campaign_id={selectedCampaign && selectedCampaign.campaign.id}
             />
           </SafeAreaView>
         </>

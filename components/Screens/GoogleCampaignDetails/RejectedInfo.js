@@ -13,7 +13,9 @@ export default RejectedInfo = props => {
     review_status_help,
     navigation,
     campaign_id,
-    ad
+    ad,
+    errors,
+    error_type
   } = props;
   const { translate } = props.screenProps;
   handleSupportPage = () => {
@@ -22,6 +24,27 @@ export default RejectedInfo = props => {
       title: "Support"
     });
   };
+  let list = errors.map((e, i) => (
+    <View style={styles.rejectedReasonContainer} key={i}>
+      <Text uppercase style={styles.reviewStatusReason}>
+        {e.name}
+      </Text>
+      {/* <Text style={styles.reviewStatusText}>
+        {translate("You can find more details here")}
+      </Text> */}
+      <Text
+        selectable={true}
+        style={[
+          styles.reviewStatusText,
+          { fontFamily: "montserrat-regular-english" }
+        ]}
+        numberOfLines={2}
+      >
+        {e.description}
+      </Text>
+      {/* <Info onPress={this.handleSupportPage} style={styles.infoButton} /> */}
+    </View>
+  ));
   return (
     <View style={styles.rejectedHeader}>
       <Rejected />
@@ -31,35 +54,38 @@ export default RejectedInfo = props => {
       <Text style={styles.hereReasonsText}>
         {translate("Here Are The Reasons")}:
       </Text>
-      <View style={styles.rejectedReasonContainer}>
-        <Text uppercase style={styles.reviewStatusReason}>
-          {review_status_reason}
-        </Text>
-        <Text style={styles.reviewStatusText}>
-          {translate("You can find more details here")}
-        </Text>
-        <Text
-          selectable={true}
-          style={[
-            styles.reviewStatusText,
-            { fontFamily: "montserrat-regular-english" }
-          ]}
-          numberOfLines={2}
-        >
-          {review_status_help}
-        </Text>
-        <Info onPress={this.handleSupportPage} style={styles.infoButton} />
-      </View>
-
+      {list}
       <CustomButtons
         screenProps={props.screenProps}
-        onPressFunction={() =>
-          navigation.push("GoogleAdDesign", {
-            rejected: true,
-            campaign_id: campaign_id,
-            ad: ad
-          })
-        }
+        onPressFunction={() => {
+          /**
+           * there are three error types that will come back if the ad is rejected
+           * 1 related to the Ad content
+           * 2 related to the keywords
+           * 3 rejection includes both (in this case I have both screens right after eachother)
+           * and the whole review is submitted through the keywords api
+           *
+           */
+          if (error_type === 1)
+            navigation.push("GoogleAdDesign", {
+              rejected: true,
+              id: campaign_id,
+              ad: ad,
+              error_type: error_type
+            });
+          else if (error_type === 2)
+            props.navigation.push("GoogleEditKeywords", {
+              rejected: true,
+              error_type: error_type
+            });
+          else
+            props.navigation.push("GoogleAdDesign", {
+              rejected: true,
+              id: campaign_id,
+              ad: ad,
+              error_type: error_type
+            });
+        }}
         content="Review Ad"
         filled
         buttonStyle={styles.customButtonStyle}
