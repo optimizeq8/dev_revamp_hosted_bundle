@@ -132,10 +132,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   createOneText: {
-    fontFamily: "montserrat-regular",
-    fontSize: 14,
-    color: globalColors.orange,
-    textAlign: "center"
+    fontFamily: "montserrat-bold-english",
+    fontSize: 18,
+    color: globalColors.darkOrange,
+    textAlign: "center",
+    lineHeight: 22
   },
   inputIcon: {
     marginLeft: 12,

@@ -27,6 +27,7 @@ import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
 import { NavigationEvents } from "react-navigation";
 import GradientButton from "../../MiniComponents/GradientButton";
+import SwitchLanguage from "../SwitchLanguage";
 class AppUpdateChecker extends Component {
   static navigationOptions = {
     header: null
@@ -127,7 +128,7 @@ class AppUpdateChecker extends Component {
     const { translate } = this.props.screenProps;
     if (this.state.updateDownloaded) {
       return (
-        <Tutorial
+        <SwitchLanguage
           screenProps={this.props.screenProps}
           navigation={this.props.navigation}
         />

@@ -34,7 +34,13 @@ TextInputMask.defaultProps = TextInputMask.defaultProps || {};
 TextInputMask.defaultProps.allowFontScaling = false;
 import { showMessage } from "react-native-flash-message";
 
-import { AppLoading, Linking, SplashScreen, Notifications } from "expo";
+import {
+  AppLoading,
+  Linking,
+  SplashScreen,
+  Notifications,
+  Updates
+} from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Segment from "expo-analytics-segment";
@@ -466,6 +472,8 @@ class App extends React.Component {
         this.setState({
           locale: "ar"
         });
+        // for proper RTL direction
+        Updates.reload();
       } else {
         await store.dispatch(actionCreators.getLanguageListPOEdit("en"));
         this.setState({
