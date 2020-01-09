@@ -21,7 +21,8 @@ const initialState = {
   campaignMetrics: [],
   googleCampaignStats: [],
   googleCampaignOverall: {},
-  smeMetrics: []
+  smeMetrics: [],
+  loadingCampaigns: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,21 +34,21 @@ const reducer = (state = initialState, action) => {
         filteredCampaigns: action.payload.data,
         fetching_from_server: false,
         isListEnd: false,
-        loading: false
+        loadingCampaigns: false
       };
     case actionTypes.ERROR_SET_CAMPAIGN_LIST:
       return {
         ...state,
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd,
-        loading: action.payload.loading
+        loadingCampaigns: action.payload.loadingCampaigns
       };
     case actionTypes.GOT_ALL_CAMPAIGNS:
       return {
         ...state,
         fetching_from_server: action.payload.fetching_from_server,
         isListEnd: action.payload.isListEnd,
-        loading: action.payload.loading
+        loadingCampaigns: action.payload.loadingCampaigns
       };
 
     case actionTypes.UPDATE_CAMPAIGN_LIST:

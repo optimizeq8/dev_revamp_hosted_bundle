@@ -7,16 +7,30 @@ import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import SnapchatBorder from "../../../assets/SVGs/Snapchat-Border";
+import whyDidYouRender from "@welldone-software/why-did-you-render";
+import slowlog from "react-native-slowlog";
 
 import GlobalStyles, { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import CampaignCircleChart from "../CampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
+import isEqual from "react-fast-compare";
 import globalStyles from "../../../GlobalStyles";
+
+whyDidYouRender(React);
 class CampaignCard extends Component {
+  constructor(props) {
+    super(props);
+    // slowlog(this, /.*/, {
+    // verbose: true
+    // }); //verbose logs all functions and their time
+  }
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
+  }
   handleCampaignPress = () => {
     Segment.trackWithProperties("Pressed Campaign Card", {
       campaign_id: this.props.campaign.campaign_id
@@ -215,3 +229,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getCampaignDetails(id, naviagtion))
 });
 export default connect(null, mapDispatchToProps)(CampaignCard);
+CampaignCard.whyDidYouRender = false;

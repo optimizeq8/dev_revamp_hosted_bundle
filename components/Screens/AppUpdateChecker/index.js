@@ -1,34 +1,20 @@
 //Components
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Linking, Updates } from "expo";
 import Constants from "expo-constants";
 import * as Animatable from "react-native-animatable";
-const imageLogo = require("../../../assets/images/logo01.png");
 import LottieView from "lottie-react-native";
-
-import {
-  Image,
-  View,
-  Text,
-  Platform,
-  Alert,
-  TouchableOpacity,
-  I18nManager
-} from "react-native";
-import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-import Tutorial from "../Tutorial";
-import { globalColors } from "../../../GlobalStyles";
+import { BlurView } from "expo-blur";
+import { Text, Platform, I18nManager } from "react-native";
+import { Button } from "native-base";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
-import { NavigationEvents } from "react-navigation";
+import Modal from "react-native-modal";
+import { Small } from "../../MiniComponents/StyledComponents";
 import GradientButton from "../../MiniComponents/GradientButton";
-import SwitchLanguage from "../SwitchLanguage";
-class AppUpdateChecker extends Component {
+
+class AppUpdateChecker extends PureComponent {
   static navigationOptions = {
     header: null
   };
@@ -39,10 +25,16 @@ class AppUpdateChecker extends Component {
       status: "",
       status2: "",
       statusLoading: false,
-      updateIsAvalible: false
+      updateIsAvalible: false,
+      OTAAvalibe: false
     };
   }
 
+  componentDidMount() {
+    Constants.manifest.version[Constants.manifest.version.length - 1] === "0"
+      ? this.handleUpdates()
+      : this.props.checkForUpdate();
+  }
   componentDidUpdate(prevProps) {
     if (
       prevProps.actualVersion !== this.props.actualVersion &&
@@ -69,12 +61,12 @@ class AppUpdateChecker extends Component {
         this.setState({
           status: translate(
             "There is an OTA update available Please wait while it downloads"
-          )
+          ),
+          OTAAvalibe: true
         });
         await Updates.fetchUpdateAsync({
           eventListener: this.handleOTAListener
         });
-        // ... notify user of update ...
         Updates.reloadFromCache();
       } else {
         if (!(this.props.customMessage_en && this.props.customMessage_ar))
@@ -82,29 +74,12 @@ class AppUpdateChecker extends Component {
         else this.setState({ statusLoading: false });
       }
     } catch (e) {
-      this.setState({ status: "", statusLoading: false });
-
-      Alert.alert(
-        e.message || e.response || translate("Something went wrong!"),
-        "",
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              this.setState({
-                updateDownloaded: true
-              });
-            }
-          },
-          ,
-          {
-            text: "Reload",
-            onPress: () => Updates.reload()
-          }
-        ]
-      );
-
-      // handle or log error
+      this.setState({
+        status: "",
+        statusLoading: false,
+        OTAAvalibe: false,
+        updateIsAvalible: false
+      });
     }
   };
 
@@ -126,55 +101,15 @@ class AppUpdateChecker extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    if (this.state.updateDownloaded) {
-      return (
-        <SwitchLanguage
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-        />
-      );
-    } else
-      return (
-        <View style={{ height: "100%" }}>
-          <NavigationEvents
-            onDidFocus={async () => {
-              Constants.manifest.version[
-                Constants.manifest.version.length - 1
-              ] === "0"
-                ? this.handleUpdates()
-                : this.props.checkForUpdate();
-            }}
-          />
-          <BackdropIcon
-            style={{
-              position: "absolute",
-              top: -hp("50%"),
-              alignSelf: "center"
-            }}
-            height={hp("100%")}
-          />
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              top: "15%"
-            }}
-            delayLongPress={1000}
-            onLongPress={() => this.setState({ updateDownloaded: true })}
-          >
-            <Image
-              style={{
-                alignSelf: "center",
-                height: 150,
-                width: "100%",
-                margin: 10,
-                justifyContent: "flex-start"
-              }}
-              source={imageLogo}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-
-          <Animatable.View animation={"slideInUp"} style={styles.textContainer}>
+    return (
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        style={{ margin: 0 }}
+        isVisible={this.state.updateIsAvalible || this.state.OTAAvalibe}
+      >
+        <BlurView intensity={70} tint="dark" style={styles.blurStyle}>
+          <Animatable.View animation="fadeInDown" style={styles.textContainer}>
             <Text style={styles.textUpdate}>
               {this.props.loadingChecker
                 ? translate("checking for updates")
@@ -213,6 +148,9 @@ class AppUpdateChecker extends Component {
               <>
                 <Text style={[styles.textUpdate, { top: 10 }]}>
                   {this.state.status + "\n"}
+                  <Small style={{ fontSize: 14 }}>
+                    {translate("The app will restart once it's done")}
+                  </Small>
                   {this.state.status2}
                 </Text>
               </>
@@ -230,12 +168,9 @@ class AppUpdateChecker extends Component {
               autoPlay
             />
           ) : (
-            <View
-              style={{
-                flexDirection: "column",
-                justifyContent: "space-evenly",
-                height: "20%"
-              }}
+            <Animatable.View
+              animation="fadeInUp"
+              style={styles.buttonContainer}
             >
               {(this.props.updateMessage_en && this.state.updateIsAvalible) ||
               this.props.underMaintenanceMessage_en ? (
@@ -253,7 +188,10 @@ class AppUpdateChecker extends Component {
               ) : (
                 <GradientButton
                   onPressAction={() =>
-                    this.setState({ updateDownloaded: true })
+                    this.setState({
+                      updateIsAvalible: false,
+                      OTAAvalibe: false
+                    })
                   }
                   style={styles.updateButton}
                   textStyle={styles.textUpdate}
@@ -261,10 +199,11 @@ class AppUpdateChecker extends Component {
                   uppercase={true}
                 />
               )}
-            </View>
+            </Animatable.View>
           )}
-        </View>
-      );
+        </BlurView>
+      </Modal>
+    );
   }
 }
 

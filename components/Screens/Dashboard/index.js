@@ -41,7 +41,7 @@ import { snapAds, googleAds } from "../../Data/adTypes.data";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-
+import slowlog from "react-native-slowlog";
 //Functions
 import {
   widthPercentageToDP as wp,
@@ -50,6 +50,12 @@ import {
 import PlacholderDashboard from "./PlacholderDashboard";
 import EmptyCampaigns from "./EmptyCampaigns/EmptyCampaigns";
 import isStringArabic from "../../isStringArabic";
+import whyDidYouRender from "@welldone-software/why-did-you-render";
+import isEqual from "react-fast-compare";
+import AppUpdateChecker from "../AppUpdateChecker";
+
+//Logs reasons why a component might be uselessly re-rendering
+whyDidYouRender(React);
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -69,7 +75,15 @@ class Dashboard extends Component {
       play: false,
       componentMounting: true
     };
+    //Logs/gives warnign if a component has any functions that take a while to render
+    slowlog(this, /.*/, {
+      // verbose: true
+    }); //verbose logs all functions and their time
     this.page = 1;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidMount() {
     if (
@@ -142,7 +156,8 @@ class Dashboard extends Component {
     this.setState({ anim: true });
     Animated.timing(this.state.menu, {
       toValue: 1,
-      duration: 350
+      duration: 350,
+      useNativeDriver: true
     }).start(() => {
       this.setState({ open: true });
     });
@@ -153,7 +168,8 @@ class Dashboard extends Component {
 
     Animated.timing(this.state.menu, {
       toValue: 0,
-      duration: 350
+      duration: 350,
+      useNativeDriver: true
     }).start(() => {});
   };
   renderSearchBar = () => {
@@ -392,7 +408,7 @@ class Dashboard extends Component {
                 }
               ]}
             >
-              {!this.props.loading &&
+              {!this.props.loadingCampaigns &&
               !this.props.loadingAccountMgmt &&
               this.props.campaignList &&
               this.props.campaignList.length === 0 ? (
@@ -542,7 +558,7 @@ class Dashboard extends Component {
                       </View>
                     </View>
                     <View style={[styles.mainCard]}>
-                      {this.props.loading ? (
+                      {this.props.loadingCampaigns ? (
                         placeHolderCards
                       ) : (
                         <Animatable.View duration={1000} animation="fadeIn">
@@ -558,7 +574,7 @@ class Dashboard extends Component {
                               // )
                             }
                             onEndReached={() => this.loadMoreData()}
-                            onEndReachedThreshold={0.3}
+                            onEndReachedThreshold={0.1}
                             renderItem={({ item, index }) => {
                               if (item.channel === "google") {
                                 return (
@@ -633,6 +649,7 @@ class Dashboard extends Component {
               />
             </Animatable.View>
           </>
+          <AppUpdateChecker screenProps={this.props.screenProps} />
         </SafeAreaView>
       );
     }
@@ -641,7 +658,6 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   userInfo: state.auth.userInfo,
-  wallet: state.transA.wallet,
   loading: state.dashboard.loading,
   adType: state.campaignC.adType,
   loadingAccountMgmt: state.account.loading,
@@ -657,7 +673,8 @@ const mapStateToProps = state => ({
   appLanguage: state.language.phoneLanguage,
   terms: state.language.terms,
   campaignProgressStarted: state.campaignC.campaignProgressStarted,
-  businessAccounts: state.account.businessAccounts
+  businessAccounts: state.account.businessAccounts,
+  loadingCampaigns: state.dashboard.loadingCampaigns
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -683,3 +700,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+//Initializing whyDidYouRender for dashboard
+Dashboard.whyDidYouRender = false;

@@ -1,3 +1,6 @@
+if (__DEV__) {
+  import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
+}
 import React from "react";
 import { connect } from "react-redux";
 import * as Localization from "expo-localization";
@@ -357,7 +360,6 @@ class App extends React.Component {
                   }}
                   uriPrefix={prefix}
                   ref={navigatorRef => {
-                    //console.log(navigatorRef);
                     NavigationService.setTopLevelNavigator(navigatorRef);
                   }}
                   screenProps={{

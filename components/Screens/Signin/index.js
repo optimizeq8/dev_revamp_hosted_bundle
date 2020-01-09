@@ -77,7 +77,9 @@ class MainForm extends Component {
     //   this.props.navigation.getParam("loggedout", false)
     // ) {
     // } else {
-    this.props.checkForExpiredToken(this.props.navigation);
+    if (!this.props.userInfo)
+      this.props.checkForExpiredToken(this.props.navigation);
+    else this.props.navigation.navigate("Dashboard");
     // }
   }
   render() {
@@ -268,6 +270,7 @@ class MainForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  userInfo: state.auth.userInfo,
   loading: state.auth.loading,
   checkingForToken: state.login.checkingForToken
 });

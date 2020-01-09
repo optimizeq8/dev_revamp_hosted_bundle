@@ -143,7 +143,11 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
   return dispatch => {
     dispatch({
       type: actionTypes.GOT_ALL_CAMPAIGNS,
-      payload: { isListEnd: false, fetching_from_server: false, loading: true }
+      payload: {
+        isListEnd: false,
+        fetching_from_server: false,
+        loadingCampaigns: true
+      }
     });
     createBaseUrl()
       .get(`campaignlist/${id}/${1}`, {
@@ -177,7 +181,7 @@ export const getCampaignList = (id, increasePage, cancelToken) => {
           payload: {
             isListEnd: false,
             fetching_from_server: false,
-            loading: false
+            loadingCampaigns: false
           }
         });
       });
