@@ -20,7 +20,6 @@ class GoogleCampaignCard extends Component {
   campaign_status = this.props.campaign.status;
 
   handleCampaignPress = () => {
-    console.log(this.props.campaign);
 
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,
