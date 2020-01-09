@@ -611,6 +611,7 @@ export const update_google_audience_targeting = (info, segmentInfo) => {
  *
  * @method
  * @param {Object} info
+ * @param {Boolean} info.completed this was created to keep track of the rejection process
  */
 export const update_google_keywords = (info, segmentInfo) => {
   return dispatch => {

@@ -58,6 +58,14 @@ export default RejectedInfo = props => {
       <CustomButtons
         screenProps={props.screenProps}
         onPressFunction={() => {
+          /**
+           * there are three error types that will come back if the ad is rejected
+           * 1 related to the Ad content
+           * 2 related to the keywords
+           * 3 rejection includes both (in this case I have both screens right after eachother)
+           * and the whole review is submitted through the keywords api
+           *
+           */
           if (error_type === 1)
             navigation.push("GoogleAdDesign", {
               rejected: true,

@@ -187,6 +187,10 @@ class GoogleAdDesign extends Component {
         campaign_finalurl: this.state.finalurl,
         checkout_id: this.props.campaign.id
       };
+      /**
+       * the screen is used to handle rejected ads as well, I send back rejected as a param
+       * to handle the data submitted or the route it takes
+       */
       let rejectedVal = this.props.navigation.getParam("rejected", false);
       let error_type = this.props.navigation.getParam("error_type", 1) === 1;
       if (!rejectedVal) {
@@ -205,6 +209,10 @@ class GoogleAdDesign extends Component {
           id: this.props.campaign.id
         });
       } else {
+        /**
+         * if error type is 1 that means it will submit the ad details through the ad design action
+         * if it is 3 it will navigate to the keywords screen and pass the data with it
+         */
         if (error_type)
           this.props.create_google_SE_campaign_ad_design(
             {

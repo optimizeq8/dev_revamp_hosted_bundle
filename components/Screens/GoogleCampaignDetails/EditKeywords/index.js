@@ -98,6 +98,10 @@ class EditKeywords extends Component {
         campaign_id: this.props.selectedCampaign.campaign.id,
         campaign_keywords: this.state.keywords
       };
+      /**
+       * if it was navigated from the AdDesign screen through a rejection review process
+       * adData will be part of the navigation params
+       */
       AdData = this.props.navigation.getParam("adData", {});
       this.props.update_google_keywords(
         {
