@@ -86,7 +86,7 @@ class BusinessList extends Component {
                 />
               ) : null}
               <Text uppercase style={[styles.headings]}>
-                Businesses
+                {translate("Businesses")}
               </Text>
               {list}
             </ScrollView>
