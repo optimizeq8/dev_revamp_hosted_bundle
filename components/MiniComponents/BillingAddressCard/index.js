@@ -68,7 +68,6 @@ class BillingAddressCard extends React.Component {
         selectedItems: [],
         selectedObjectets: []
       });
-      console.log("country_code", this.props.country_code);
 
       this.onSelectedCountryChange(
         [
@@ -93,7 +92,6 @@ class BillingAddressCard extends React.Component {
       let area = allAreas.find(
         c => c.country_code.toLowerCase() === selectedItem[0].value
       );
-      console.log("selectedItem[0].value", selectedItem[0].value);
 
       this.props._handleAddressChange(
         "address",
