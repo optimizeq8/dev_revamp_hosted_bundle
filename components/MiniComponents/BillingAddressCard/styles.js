@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     paddingBottom: "70%"
   },
   marginVertical: {
-    marginVertical: 10
+    marginBottom: 25
   },
   callToActionLabelView: {
     borderTopLeftRadius: 150,
@@ -61,9 +61,9 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderColor: "rgba(0,0,0,0)",
     alignSelf: "center",
-    width: widthPercentageToDP(85),
+    width: 300,
     borderWidth: 0,
-    height: 54
+    height: 50
   },
   pickerText: {
     fontFamily: "montserrat-regular-english",

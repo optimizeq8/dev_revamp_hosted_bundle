@@ -9,6 +9,7 @@ import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
 import Picker from "../Picker";
+import InputField from "../InputField";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -67,6 +68,8 @@ class BillingAddressCard extends React.Component {
         selectedItems: [],
         selectedObjectets: []
       });
+      console.log("country_code", this.props.country_code);
+
       this.onSelectedCountryChange(
         [
           {
@@ -85,10 +88,13 @@ class BillingAddressCard extends React.Component {
       replace.country = Countries.find(
         country => country.value === selectedItem[0].value
       ).label;
+
       if (!mounting) replace.area = "";
       let area = allAreas.find(
         c => c.country_code.toLowerCase() === selectedItem[0].value
       );
+      console.log("selectedItem[0].value", selectedItem[0].value);
+
       this.props._handleAddressChange(
         "address",
         replace,
@@ -190,7 +196,68 @@ class BillingAddressCard extends React.Component {
       ...state
     });
   };
-
+  feildsComponent = () => {
+    const feilds = [
+      {
+        label: "Block",
+        stateName1: "block",
+        value: this.props.address.block,
+        valueError1: this.state.blockError,
+        maxLength: 10,
+        incomplete: true
+      },
+      {
+        label: "Building/House",
+        stateName1: "building",
+        value: this.props.address.building,
+        valueError1: this.state.buildingError,
+        maxLength: 15,
+        incomplete: true
+      },
+      {
+        label: "Street",
+        stateName1: "street",
+        value: this.props.address.street,
+        valueError1: this.state.streetError,
+        maxLength: 70,
+        incomplete: true
+      },
+      {
+        label: "Office No",
+        stateName1: "office",
+        value: this.props.address.office,
+        valueError1: this.state.officeError,
+        maxLength: 10,
+        incomplete: false
+      },
+      {
+        label: "Avenue",
+        stateName1: "avenue",
+        value: this.props.address.avenue,
+        valueError1: this.state.avenueError,
+        maxLength: 10,
+        incomplete: true
+      }
+    ].map(feild => {
+      return (
+        <InputField
+          key={feild.label}
+          label={feild.label}
+          setValue={this.setValue}
+          getValidInfo={this.getValidInfo}
+          disabled={this.props.saving}
+          stateName1={feild.stateName1}
+          value={feild.value}
+          valueError1={feild.valueError1}
+          maxLength={feild.maxLength}
+          autoFocus={false}
+          incomplete={feild.incomplete}
+          translate={this.props.screenProps.translate}
+        />
+      );
+    });
+    return feilds;
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -260,7 +327,7 @@ class BillingAddressCard extends React.Component {
                   { fontFamily: "montserrat-regular" }
                 ]}
               >
-                {isUndefined(this.props.address.country)
+                {this.props.address.country === ""
                   ? translate("Select Country")
                   : translate(this.props.address.country)}
               </Text>
@@ -340,239 +407,7 @@ class BillingAddressCard extends React.Component {
               <Icon type="AntDesign" name="down" style={styles.iconDown} />
             </Item>
           </View>
-
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputBL
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Block")}*
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              style={[
-                styles.input,
-                this.state.blockError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor,
-                styles.itemView
-              ]}
-            >
-              <Input
-                disabled={this.props.saving}
-                multiline={false}
-                maxLength={10}
-                style={styles.inputtext}
-                autoCorrect={false}
-                autoCapitalize="none"
-                value={this.props.address.block}
-                onChangeText={block =>
-                  this.props._handleAddressChange("block", block)
-                }
-                onFocus={() => {
-                  this.setState({ inputBL: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputBL: false,
-                    blockError: validateWrapper(
-                      "mandatory",
-                      this.props.address.block
-                    )
-                  });
-                }}
-              />
-            </Item>
-          </View>
-
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputB
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Building/House")}*
-              </Text>
-            </View>
-            <Item
-              disabled={this.props.saving}
-              style={[
-                styles.input,
-                this.state.buildingError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor
-              ]}
-            >
-              <Input
-                disabled={this.props.saving}
-                multiline={false}
-                numberOfLines={1}
-                value={this.props.address.building}
-                maxLength={15}
-                style={styles.inputtext}
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={building =>
-                  this.props._handleAddressChange("building", building)
-                }
-                onFocus={() => {
-                  this.setState({ inputB: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputB: false,
-                    buildingError: validateWrapper(
-                      "mandatory",
-                      this.props.address.building
-                    )
-                  });
-                }}
-              />
-            </Item>
-          </View>
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputS
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Street")}*
-              </Text>
-            </View>
-            <Item
-              style={[
-                styles.input,
-                this.state.streetError
-                  ? globalStyles.redBorderColor
-                  : globalStyles.transparentBorderColor
-              ]}
-            >
-              <Input
-                disabled={this.props.saving}
-                value={this.props.address.street}
-                numberOfLines={1}
-                maxLength={70}
-                style={styles.inputtext}
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={street =>
-                  this.props._handleAddressChange("street", street)
-                }
-                onFocus={() => {
-                  this.setState({ inputS: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputS: false,
-                    streetError: validateWrapper(
-                      "mandatory",
-                      this.props.address.street
-                    )
-                  });
-                }}
-              />
-            </Item>
-          </View>
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputO
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Office No")}
-              </Text>
-            </View>
-            <Item style={[styles.input]}>
-              <Input
-                disabled={this.props.saving}
-                value={this.props.address.office}
-                multiline={false}
-                maxLength={10}
-                style={styles.inputtext}
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={office =>
-                  this.props._handleAddressChange("office", office)
-                }
-                onFocus={() => {
-                  this.setState({ inputO: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputO: false
-                  });
-                }}
-              />
-            </Item>
-          </View>
-          <View style={styles.marginVertical}>
-            <View style={[styles.callToActionLabelView]}>
-              <Text
-                uppercase
-                style={[
-                  styles.inputLabel,
-                  this.state.inputAv
-                    ? globalStyles.orangeTextColor
-                    : globalStyles.whiteTextColor
-                ]}
-              >
-                {translate("Avenue")}
-              </Text>
-            </View>
-            <Item
-              floatingLabel
-              style={[
-                styles.input
-                // this.state.inputAv
-                //   ? globalStyles.purpleBorderColor
-                //   : globalStyles.lightGrayBorderColor
-              ]}
-            >
-              <Input
-                disabled={this.props.saving}
-                value={this.props.address.avenue}
-                multiline={false}
-                maxLength={10}
-                style={styles.inputtext}
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={avenue =>
-                  this.props._handleAddressChange("avenue", avenue)
-                }
-                onFocus={() => {
-                  this.setState({ inputAv: true });
-                }}
-                onBlur={() => {
-                  this.setState({
-                    inputAv: false
-                  });
-                }}
-              />
-            </Item>
-          </View>
-
+          {this.feildsComponent()}
           {this.props.saving ? (
             <CheckmarkLoading
               style={{ bottom: -5, width: 70, height: 70 }}

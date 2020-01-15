@@ -8,7 +8,15 @@ const initialState = {
   passwordChanged: false,
   loadingPasswordChanged: false,
   loadingBillingAddress: false,
-  address: {},
+  address: {
+    country: "",
+    area: "",
+    block: "",
+    street: "",
+    building: "",
+    office: "",
+    avenue: ""
+  },
   errorLoadingBillingAddress: false,
   businessLoadError: false,
   savingBillingAddress: false,
@@ -172,6 +180,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_BILLING_ADDRESS_LOADING:
       return {
         ...state,
+        address: { ...initialState.address },
         loadingBillingAddress: action.payload,
         errorLoadingBillingAddress: false
       };

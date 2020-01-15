@@ -146,7 +146,15 @@ export const getAddressForm = () => {
           if (!response.data.business_accounts) {
             return dispatch({
               type: actionTypes.GET_BILLING_ADDRESS,
-              payload: {}
+              payload: {
+                country: "",
+                area: "",
+                block: "",
+                street: "",
+                building: "",
+                office: "",
+                avenue: ""
+              }
             });
           }
         return dispatch({

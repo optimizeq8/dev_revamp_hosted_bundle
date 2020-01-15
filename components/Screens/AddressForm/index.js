@@ -92,14 +92,7 @@ class AddressForm extends Component {
     if (
       prevProps.address &&
       this.props.address &&
-      (!isEqual(prevProps.address, this.props.address) ||
-        (prevState.address.country === "" &&
-          prevState.address.area === "" &&
-          prevState.address.block === "" &&
-          prevState.address.street === "" &&
-          prevState.address.building === "" &&
-          prevState.address.avenue === "" &&
-          prevState.address.office === ""))
+      !isEqual(prevProps.address, this.props.address)
     ) {
       const bsn_address = {
         country: this.props.address.country,
@@ -129,8 +122,11 @@ class AddressForm extends Component {
       });
     } else {
       this.setState({
-        address: { ...this.state.address, [key]: value },
-        country_code
+        address: {
+          ...this.state.address,
+          [key]: value
+        }
+        // country_code
       });
     }
   };
