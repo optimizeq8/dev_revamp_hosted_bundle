@@ -42,10 +42,7 @@ class AddressForm extends Component {
       addressId: null,
       country_code: "",
       region_id: [],
-
-      sidemenustate: false,
       sidemenu: "",
-
       inputC: false,
       inputA: false,
       inputBL: false,
@@ -74,8 +71,7 @@ class AddressForm extends Component {
     this.setState(
       {
         from: this.props.navigation.getParam("from", null),
-        kdamount: this.props.navigation.getParam("kdamount", null),
-        interestNames: this.props.navigation.getParam("interestNames", null)
+        kdamount: this.props.navigation.getParam("kdamount", null)
       },
       () => {
         if (this.state.from === "creditCard")
@@ -139,9 +135,6 @@ class AddressForm extends Component {
     }
   };
 
-  _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {});
-  };
   _handleSubmission = () => {
     this.props.addressForm(
       this.state.address,
@@ -156,35 +149,30 @@ class AddressForm extends Component {
         style={styles.safeAreaContainer}
         forceInset={{ bottom: "never", top: "always" }}
       >
-        <Container style={styles.container}>
-          <View style={styles.dataContainer}>
-            {/* TODO: When user selects CC display this */}
-            {this.state.from === "creditCard" &&
-            !isUndefined(this.state.addressId) &&
-            !isNull(this.state.addressId) ? (
-              <SelectBillingAddressCard
-                address={this.state.address}
-                addressId={this.state.addressId}
-                navigation={this.props.navigation}
-                kdamount={this.state.kdamount}
-              />
-            ) : (
-              <BillingAddressCard
-                screenProps={this.props.screenProps}
-                address={this.state.address}
-                _handleSubmission={this._handleSubmission}
-                _handleAddressChange={this._handleAddressChange}
-                country_code={this.state.country_code}
-                _handleSideMenuState={this._handleSideMenuState}
-                sidemenustate={this.state.sidemenustate}
-                errorLoading={this.props.errorLoading}
-                navigation={this.props.navigation}
-                saving={this.props.saving}
-                progressSaving={this.props.progressSaving}
-              />
-            )}
-          </View>
-        </Container>
+        {/* TODO: When user selects CC display this */}
+        {this.state.from === "creditCard" &&
+        !isUndefined(this.state.addressId) &&
+        !isNull(this.state.addressId) ? (
+          <SelectBillingAddressCard
+            address={this.state.address}
+            addressId={this.state.addressId}
+            navigation={this.props.navigation}
+            kdamount={this.state.kdamount}
+          />
+        ) : (
+          <BillingAddressCard
+            screenProps={this.props.screenProps}
+            address={this.state.address}
+            _handleSubmission={this._handleSubmission}
+            _handleAddressChange={this._handleAddressChange}
+            country_code={this.state.country_code}
+            errorLoading={this.props.errorLoading}
+            navigation={this.props.navigation}
+            saving={this.props.saving}
+            progressSaving={this.props.progressSaving}
+          />
+        )}
+
         <Modal visible={this.props.loading}>
           <LoadingScreen top={0} />
         </Modal>
@@ -205,7 +193,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.addressForm(address, navigation, addressId)),
   getAddressDetail: () => dispatch(actionCreators.getAddressForm())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddressForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

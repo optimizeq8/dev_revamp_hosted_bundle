@@ -1,20 +1,14 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView, I18nManager } from "react-native";
-import { Text, Item, Input, Label } from "native-base";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp
-} from "react-native-responsive-screen";
+import { View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, Item, Input, Icon } from "native-base";
 import isUndefined from "lodash/isUndefined";
 import { showMessage } from "react-native-flash-message";
+import InputScrollView from "react-native-input-scroll-view";
 
-import RegionsAndAreas from "./RegionAndAreas";
-import MultiSelect from "../MultiSelect/MultiSelect";
-import KeyboardShift from "../KeyboardShift";
 import CustomHeader from "../Header";
 import validateWrapper from "../../../ValidationFunctions/ValidateWrapper";
 import CheckmarkLoading from "../../MiniComponents/CheckMarkLoading";
-import Sidemenu from "../SideMenu";
+import Picker from "../Picker";
 
 //Data
 import Countries from "../../Data/countries.billingAddress";
@@ -25,22 +19,19 @@ import styles from "./styles";
 import globalStyles from "../../../GlobalStyles";
 
 //Icons
-import DownButton from "../../../assets/SVGs/DownButton";
 import CheckmarkIcon from "../../../assets/SVGs/Checkmark";
-import Address from "../../../assets/SVGs/Location";
-import { from } from "rxjs";
+import LocationIcon from "../../../assets/SVGs/LocationOutline";
 
 class BillingAddressCard extends React.Component {
   constructor(props) {
     super(props);
+    const { translate } = this.props.screenProps;
     this.state = {
       country_code: this.props.country_code,
       region_id: [],
       areas: [],
-      sidemenustate: false,
       sidemenu: "",
       selectedItems: [],
-
       selectedObjectets: [],
       inputC: false,
       inputA: false,
@@ -53,7 +44,13 @@ class BillingAddressCard extends React.Component {
       areaError: "",
       blockError: "",
       streetError: "",
-      buildingError: ""
+      buildingError: "",
+      countries: Countries.map(country => {
+        return {
+          label: translate(country.label),
+          value: country.value
+        };
+      })
     };
   }
 
@@ -71,34 +68,38 @@ class BillingAddressCard extends React.Component {
         selectedObjectets: []
       });
       this.onSelectedCountryChange(
-        {
-          label: this.props.address.country,
-          value: this.props.country_code
-        },
+        [
+          {
+            label: this.props.address.country,
+            value: this.props.country_code
+          }
+        ],
         true
       );
     }
   }
 
-  _renderSideMenu = (component, option = "") => {
-    this.setState({ sidemenu: component, selectionOption: option }, () =>
-      this.props._handleSideMenuState(true)
-    );
-  };
   onSelectedCountryChange = async (selectedItem, mounting) => {
     let replace = this.props.address;
-    if (selectedItem) {
-      replace.country = selectedItem.label;
+    if (selectedItem && selectedItem.length > 0) {
+      replace.country = Countries.find(
+        country => country.value === selectedItem[0].value
+      ).label;
       if (!mounting) replace.area = "";
       let area = allAreas.find(
-        c => c.country_code.toLowerCase() === selectedItem.value
+        c => c.country_code.toLowerCase() === selectedItem[0].value
       );
-      this.props._handleAddressChange("address", replace, selectedItem.value);
+      this.props._handleAddressChange(
+        "address",
+        replace,
+        selectedItem[0].value
+      );
 
       this.setState({
-        country_code: selectedItem.value,
+        country_code: selectedItem[0].value,
         areas: area ? area.list : [],
-        countryError: ""
+        countryError: "",
+        inputC: false
       });
     }
   };
@@ -106,7 +107,7 @@ class BillingAddressCard extends React.Component {
   onSelectedRegionChange = async selectedItem => {
     if (selectedItem) {
       await this.setState({
-        region_id: [selectedItem.id],
+        region_id: [selectedItem],
         selectedItems: selectedItem,
         areaError: ""
       });
@@ -114,7 +115,7 @@ class BillingAddressCard extends React.Component {
   };
   onSelectedRegionNameChange = async selectedItem => {
     let replace = this.props.address;
-    if (selectedItem) {
+    if (selectedItem && selectedItem.length > 0) {
       replace.area = selectedItem[0].name;
 
       this.props._handleAddressChange(
@@ -124,7 +125,8 @@ class BillingAddressCard extends React.Component {
       );
       await this.setState({
         selectedObjectets: selectedItem,
-        areaError: ""
+        areaError: "",
+        inputA: false
       });
     }
   };
@@ -167,407 +169,431 @@ class BillingAddressCard extends React.Component {
       this.props._handleSubmission();
     }
   };
+  closeCountryModal = () => {
+    this.setState({
+      countryError: validateWrapper("mandatory", this.props.address.country),
+      inputC: false,
+      inputA: false
+    });
+  };
+  onSelectedCountryIdChange = value => {
+    // NOTE: compulsory to pass this function
+    // console.log("country", value);
+  };
+  setValue = (stateName, value) => {
+    this.props._handleAddressChange(stateName, value);
+  };
+  getValidInfo = (stateError, validObj) => {
+    let state = {};
+    state[stateError] = validObj;
+    this.setState({
+      ...state
+    });
+  };
+
   render() {
     const { translate } = this.props.screenProps;
-    let menu;
-    switch (this.state.sidemenu) {
-      case "countries": {
-        menu = (
-          <MultiSelect
-            screenProps={this.props.screenProps}
-            countries={Countries}
-            country_code={this.state.country_code}
-            onSelectedCountryChange={this.onSelectedCountryChange}
-            _handleSideMenuState={this.props._handleSideMenuState}
-            option={"countries"}
-            addressForm={true}
-          />
-        );
-        break;
-      }
-      case "regions": {
-        menu = (
-          <RegionsAndAreas
-            area={this.props.address.area}
-            _handleSideMenuState={this.props._handleSideMenuState}
-            areas={this.state.areas}
-            selectedObjectets={this.state.selectedObjectets}
-            onSelectedRegionChange={this.onSelectedRegionChange}
-            onSelectedRegionNameChange={this.onSelectedRegionNameChange}
-            selectedItems={this.state.selectedItems}
-            screenProps={this.props.screenProps}
-          />
-        );
-        break;
-      }
-    }
+
     return (
-      <Sidemenu
-        onChange={isOpen => {
-          if (isOpen === false) this.props._handleSideMenuState(isOpen);
-        }}
-        disableGestures={true}
-        menu={this.props.sidemenustate && menu}
-        menuPosition={I18nManager.isRTL ? "left" : "right"}
-        openMenuOffset={wp("85%")}
-        isOpen={this.props.sidemenustate}
-        screenProps={this.props.screenProps}
-      >
-        <View style={styles.headerBlock}>
-          <CustomHeader
-            screenProps={this.props.screenProps}
-            title={"Billing Address"}
-            navigation={this.props.navigation}
-          />
+      <>
+        <CustomHeader
+          screenProps={this.props.screenProps}
+          title={"Billing Address"}
+          navigation={this.props.navigation}
+        />
 
-          <Address
-            fill="#fff"
-            style={styles.addressIcon}
-            width={55}
-            height={55}
-          />
-        </View>
-        <View style={[styles.mainCard]}>
-          <ScrollView contentContainerStyle={styles.contentScrollViewContainer}>
-            <KeyboardShift>
-              {() => (
-                <View>
-                  <Item
-                    disabled={this.props.saving}
-                    style={[
-                      styles.selector,
-                      this.state.inputC
-                        ? globalStyles.purpleBorderColor
-                        : this.state.countryError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.lightGrayBorderColor,
-                      globalStyles.row
-                    ]}
-                    onPress={() => this._renderSideMenu("countries")}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        this.state.inputC
-                          ? globalStyles.orangeTextColor
-                          : globalStyles.darkGrayTextColor,
-                        {
-                          flex: 3
-                        }
-                      ]}
-                    >
-                      {isUndefined(this.props.address.country)
-                        ? translate("Country")
-                        : this.props.address.country}
-                    </Label>
-                    <DownButton style={styles.flex} />
-                  </Item>
-                  <Item
-                    disabled={this.props.saving}
-                    style={[
-                      styles.selector,
-                      this.state.inputA
-                        ? globalStyles.purpleBorderColor
-                        : this.state.areaError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.lightGrayBorderColor,
-                      globalStyles.row
-                    ]}
-                    onPress={() => {
-                      this.state.country_code === ""
-                        ? showMessage({
-                            message: translate("Please select a country first"),
-                            type: "warning",
-                            position: "top"
-                          })
-                        : this._renderSideMenu("regions");
-                    }}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        this.state.inputA
-                          ? globalStyles.orangeTextColor
-                          : globalStyles.darkGrayTextColor,
-                        {
-                          flex: 3
-                        }
-                      ]}
-                    >
-                      {isUndefined(this.props.address.area) ||
-                      this.props.address.area === ""
-                        ? translate("Area")
-                        : this.props.address.area}
-                    </Label>
-                    <DownButton style={styles.flex} />
-                  </Item>
-
-                  <View style={styles.blockAndBuildingView}>
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        this.state.inputBL
-                          ? globalStyles.orangeBorderColor
-                          : this.state.blockError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.lightGrayBorderColor
-                      ]}
-                    >
-                      <Label
-                        style={[
-                          styles.inputtext,
-                          this.state.inputBL
-                            ? globalStyles.orangeTextColor
-                            : globalStyles.darkGrayTextColor,
-
-                          styles.bottom5
-                        ]}
-                      >
-                        <Text style={styles.required}> *</Text>
-                        {translate("Block")}
-                      </Label>
-                      <Input
-                        disabled={this.props.saving}
-                        multiline={false}
-                        maxLength={10}
-                        style={styles.inputtext}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={this.props.address.block}
-                        onChangeText={block =>
-                          this.props._handleAddressChange("block", block)
-                        }
-                        onFocus={() => {
-                          this.setState({ inputBL: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputBL: false,
-                            blockError: validateWrapper(
-                              "mandatory",
-                              this.props.address.block
-                            )
-                          });
-                        }}
-                      />
-                    </Item>
-                    <Item
-                      disabled={this.props.saving}
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        this.state.inputB
-                          ? globalStyles.purpleBorderColor
-                          : this.state.buildingError
-                          ? globalStyles.redBorderColor
-                          : globalStyles.lightGrayBorderColor,
-                        {
-                          alignSelf: "flex-end"
-                        }
-                      ]}
-                    >
-                      <Label
-                        style={[
-                          styles.inputtext,
-                          this.state.inputB
-                            ? globalStyles.orangeTextColor
-                            : globalStyles.darkGrayTextColor,
-                          styles.bottom5,
-                          {
-                            fontSize: 11
-                          }
-                        ]}
-                      >
-                        <Text style={styles.required}> *</Text>
-                        {translate("Building/House")}
-                      </Label>
-                      <Input
-                        disabled={this.props.saving}
-                        multiline={false}
-                        numberOfLines={1}
-                        value={this.props.address.building}
-                        maxLength={15}
-                        style={styles.inputtext}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={building =>
-                          this.props._handleAddressChange("building", building)
-                        }
-                        onFocus={() => {
-                          this.setState({ inputB: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputB: false,
-                            buildingError: validateWrapper(
-                              "mandatory",
-                              this.props.address.building
-                            )
-                          });
-                        }}
-                      />
-                    </Item>
-                  </View>
-                  <Item
-                    floatingLabel
-                    style={[
-                      styles.input,
-                      this.state.inputS
-                        ? globalStyles.purpleBorderColor
-                        : this.state.streetError
-                        ? globalStyles.redBorderColor
-                        : globalStyles.lightGrayBorderColor,
-                      styles.streetItem
-                    ]}
-                  >
-                    <Label
-                      style={[
-                        styles.inputtext,
-                        this.state.inputS
-                          ? globalStyles.orangeTextColor
-                          : globalStyles.darkGrayTextColor
-                      ]}
-                    >
-                      <Text style={styles.required}> *</Text>
-                      {translate("Street")}
-                    </Label>
-                    <Input
-                      disabled={this.props.saving}
-                      value={this.props.address.street}
-                      numberOfLines={1}
-                      maxLength={70}
-                      style={styles.inputtext}
-                      autoCorrect={false}
-                      autoCapitalize="none"
-                      onChangeText={street =>
-                        this.props._handleAddressChange("street", street)
-                      }
-                      onFocus={() => {
-                        this.setState({ inputS: true });
-                      }}
-                      onBlur={() => {
-                        this.setState({
-                          inputS: false,
-                          streetError: validateWrapper(
-                            "mandatory",
-                            this.props.address.street
-                          )
-                        });
-                      }}
-                    />
-                  </Item>
-
-                  <View style={styles.officeAndAvenueView}>
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        this.state.inputO
-                          ? globalStyles.purpleBorderColor
-                          : globalStyles.lightGrayBorderColor
-                      ]}
-                    >
-                      <Label
-                        style={[
-                          styles.inputtext,
-                          this.state.inputO
-                            ? globalStyles.orangeTextColor
-                            : globalStyles.darkGrayTextColor,
-                          styles.bottom5
-                        ]}
-                      >
-                        {translate("Office No")}
-                      </Label>
-                      <Input
-                        disabled={this.props.saving}
-                        value={this.props.address.office}
-                        multiline={false}
-                        maxLength={10}
-                        style={styles.inputtext}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={office =>
-                          this.props._handleAddressChange("office", office)
-                        }
-                        onFocus={() => {
-                          this.setState({ inputO: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputO: false
-                          });
-                        }}
-                      />
-                    </Item>
-                    <Item
-                      floatingLabel
-                      style={[
-                        styles.input,
-                        this.state.inputAv
-                          ? globalStyles.purpleBorderColor
-                          : globalStyles.lightGrayBorderColor
-                      ]}
-                    >
-                      <Label
-                        style={[
-                          styles.inputtext,
-                          this.state.inputAv
-                            ? globalStyles.orangeTextColor
-                            : globalStyles.darkGrayTextColor,
-
-                          styles.bottom5
-                        ]}
-                      >
-                        {translate("Avenue")}
-                      </Label>
-                      <Input
-                        disabled={this.props.saving}
-                        value={this.props.address.avenue}
-                        multiline={false}
-                        maxLength={10}
-                        style={styles.inputtext}
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        onChangeText={avenue =>
-                          this.props._handleAddressChange("avenue", avenue)
-                        }
-                        onFocus={() => {
-                          this.setState({ inputAv: true });
-                        }}
-                        onBlur={() => {
-                          this.setState({
-                            inputAv: false
-                          });
-                        }}
-                      />
-                    </Item>
-                  </View>
-                </View>
-              )}
-            </KeyboardShift>
-            {this.props.saving ? (
-              <CheckmarkLoading
-                style={{ bottom: 10, width: 65, height: 65 }}
-                progress={this.props.progressSaving}
-              />
-            ) : (
-              <TouchableOpacity
-                onPress={() => this._handleSubmission()}
+        <InputScrollView
+          {...ScrollView.props}
+          contentContainerStyle={styles.contentScrollViewContainer}
+        >
+          <View style={styles.marginVertical}>
+            <Picker
+              showIcon={true}
+              screenProps={this.props.screenProps}
+              searchPlaceholderText={translate("Search Country")}
+              data={this.state.countries}
+              uniqueKey={"value"}
+              displayKey={"label"}
+              open={this.state.inputC}
+              onSelectedItemsChange={this.onSelectedCountryIdChange}
+              onSelectedItemObjectsChange={this.onSelectedCountryChange}
+              selectedItems={[this.state.country_code]}
+              single={true}
+              screenName={"Billing Address"}
+              closeCategoryModal={this.closeCountryModal}
+            />
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
                 style={[
-                  styles.button,
-                  {
-                    opacity: this.props.errorLoading ? 0.5 : 1
-                  }
+                  styles.inputLabel,
+                  this.state.inputC
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
                 ]}
-                disabled={this.props.errorLoading}
               >
-                <CheckmarkIcon />
-              </TouchableOpacity>
-            )}
-          </ScrollView>
-        </View>
-      </Sidemenu>
+                {translate("Country")}
+              </Text>
+            </View>
+            <Item
+              disabled={this.props.saving}
+              onPress={() => {
+                this.setState({
+                  inputC: true
+                });
+              }}
+              style={[
+                styles.input,
+                this.state.countryError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+                styles.itemView
+              ]}
+            >
+              <LocationIcon
+                style={styles.locationIcon}
+                stroke={this.state.inputC ? "#FF9D00" : "#FFF"}
+              />
+              <Text
+                style={[
+                  styles.pickerText,
+                  { fontFamily: "montserrat-regular" }
+                ]}
+              >
+                {isUndefined(this.props.address.country)
+                  ? translate("Select Country")
+                  : translate(this.props.address.country)}
+              </Text>
+              <Icon type="AntDesign" name="down" style={styles.iconDown} />
+            </Item>
+          </View>
+
+          <View style={styles.marginVertical}>
+            <Picker
+              showDropDowns={true}
+              screenProps={this.props.screenProps}
+              searchPlaceholderText={translate("Search Area")}
+              data={this.state.areas}
+              uniqueKey={"id"}
+              displayKey={"name"}
+              subKey="areas"
+              single={true}
+              open={this.state.inputA}
+              onSelectedItemsChange={this.onSelectedRegionChange}
+              onSelectedItemObjectsChange={this.onSelectedRegionNameChange}
+              selectedItems={this.state.selectedItems}
+              single={true}
+              screenName={"Billing Address"}
+              closeCategoryModal={this.closeCountryModal}
+              readOnlyHeadings={true}
+              showIcon={false}
+            />
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputA
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Area")}
+              </Text>
+            </View>
+            <Item
+              disabled={this.props.saving}
+              onPress={() => {
+                this.state.country_code === ""
+                  ? showMessage({
+                      message: translate("Please select a country first"),
+                      type: "warning",
+                      position: "top"
+                    })
+                  : this.setState({
+                      inputA: true
+                    });
+              }}
+              style={[
+                styles.input,
+                this.state.areaError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+                styles.itemView
+              ]}
+            >
+              <LocationIcon
+                style={styles.locationIcon}
+                stroke={this.state.inputA ? "#FF9D00" : "#FFF"}
+              />
+              <Text
+                style={[
+                  styles.pickerText,
+                  { fontFamily: "montserrat-regular" }
+                ]}
+              >
+                {isUndefined(this.props.address.area) ||
+                this.props.address.area === ""
+                  ? translate("Select Area")
+                  : this.props.address.area}
+              </Text>
+              <Icon type="AntDesign" name="down" style={styles.iconDown} />
+            </Item>
+          </View>
+
+          <View style={styles.marginVertical}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputBL
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Block")}*
+              </Text>
+            </View>
+            <Item
+              disabled={this.props.saving}
+              style={[
+                styles.input,
+                this.state.blockError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor,
+                styles.itemView
+              ]}
+            >
+              <Input
+                disabled={this.props.saving}
+                multiline={false}
+                maxLength={10}
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                value={this.props.address.block}
+                onChangeText={block =>
+                  this.props._handleAddressChange("block", block)
+                }
+                onFocus={() => {
+                  this.setState({ inputBL: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    inputBL: false,
+                    blockError: validateWrapper(
+                      "mandatory",
+                      this.props.address.block
+                    )
+                  });
+                }}
+              />
+            </Item>
+          </View>
+
+          <View style={styles.marginVertical}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputB
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Building/House")}*
+              </Text>
+            </View>
+            <Item
+              disabled={this.props.saving}
+              style={[
+                styles.input,
+                this.state.buildingError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor
+              ]}
+            >
+              <Input
+                disabled={this.props.saving}
+                multiline={false}
+                numberOfLines={1}
+                value={this.props.address.building}
+                maxLength={15}
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={building =>
+                  this.props._handleAddressChange("building", building)
+                }
+                onFocus={() => {
+                  this.setState({ inputB: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    inputB: false,
+                    buildingError: validateWrapper(
+                      "mandatory",
+                      this.props.address.building
+                    )
+                  });
+                }}
+              />
+            </Item>
+          </View>
+          <View style={styles.marginVertical}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputS
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Street")}*
+              </Text>
+            </View>
+            <Item
+              style={[
+                styles.input,
+                this.state.streetError
+                  ? globalStyles.redBorderColor
+                  : globalStyles.transparentBorderColor
+              ]}
+            >
+              <Input
+                disabled={this.props.saving}
+                value={this.props.address.street}
+                numberOfLines={1}
+                maxLength={70}
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={street =>
+                  this.props._handleAddressChange("street", street)
+                }
+                onFocus={() => {
+                  this.setState({ inputS: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    inputS: false,
+                    streetError: validateWrapper(
+                      "mandatory",
+                      this.props.address.street
+                    )
+                  });
+                }}
+              />
+            </Item>
+          </View>
+          <View style={styles.marginVertical}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputO
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Office No")}
+              </Text>
+            </View>
+            <Item style={[styles.input]}>
+              <Input
+                disabled={this.props.saving}
+                value={this.props.address.office}
+                multiline={false}
+                maxLength={10}
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={office =>
+                  this.props._handleAddressChange("office", office)
+                }
+                onFocus={() => {
+                  this.setState({ inputO: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    inputO: false
+                  });
+                }}
+              />
+            </Item>
+          </View>
+          <View style={styles.marginVertical}>
+            <View style={[styles.callToActionLabelView]}>
+              <Text
+                uppercase
+                style={[
+                  styles.inputLabel,
+                  this.state.inputAv
+                    ? globalStyles.orangeTextColor
+                    : globalStyles.whiteTextColor
+                ]}
+              >
+                {translate("Avenue")}
+              </Text>
+            </View>
+            <Item
+              floatingLabel
+              style={[
+                styles.input
+                // this.state.inputAv
+                //   ? globalStyles.purpleBorderColor
+                //   : globalStyles.lightGrayBorderColor
+              ]}
+            >
+              <Input
+                disabled={this.props.saving}
+                value={this.props.address.avenue}
+                multiline={false}
+                maxLength={10}
+                style={styles.inputtext}
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={avenue =>
+                  this.props._handleAddressChange("avenue", avenue)
+                }
+                onFocus={() => {
+                  this.setState({ inputAv: true });
+                }}
+                onBlur={() => {
+                  this.setState({
+                    inputAv: false
+                  });
+                }}
+              />
+            </Item>
+          </View>
+
+          {this.props.saving ? (
+            <CheckmarkLoading
+              style={{ bottom: -5, width: 70, height: 70 }}
+              progress={this.props.progressSaving}
+            />
+          ) : (
+            <TouchableOpacity
+              onPress={() => this._handleSubmission()}
+              style={[
+                styles.button,
+                {
+                  opacity: this.props.errorLoading ? 0.5 : 1
+                }
+              ]}
+              disabled={this.props.errorLoading}
+            >
+              <CheckmarkIcon />
+            </TouchableOpacity>
+          )}
+        </InputScrollView>
+      </>
     );
   }
 }

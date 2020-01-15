@@ -286,6 +286,7 @@ class Long_Form_Video extends Component {
             </Text>
           ) : null} */}
           <Picker
+            showIcon={true}
             screenProps={this.props.screenProps}
             searchPlaceholderText={translate("Search Call To Action")}
             data={this.state.callactions}
