@@ -47,9 +47,13 @@ export default class InputField extends Component {
     } else {
       // same as above but for the main input field
       valueError = validateWrapper(
-        // this to check if the input field is for email input,
-        //if so validate using the 'email' validator
-        this.props.stateName1 === "email" ? "email" : "mandatory",
+        // this to check if the input field is for email/password input,
+        //if so validate using the 'email'/'password' validator
+        this.props.stateName1 === "email"
+          ? "email"
+          : this.props.stateName1 === "password"
+          ? "password"
+          : "mandatory",
         this.props.value
       );
       this.props.getValidInfo(this.props.stateName1 + "Error", valueError);
@@ -139,7 +143,8 @@ export default class InputField extends Component {
       autoFocus,
       maxLength,
       valueError1,
-      valueError2
+      valueError2,
+      secureTextEntry
     } = this.props;
 
     let FieldIcon = icon ? icon : null;
@@ -186,6 +191,7 @@ export default class InputField extends Component {
               stateName2 ? { maxWidth: "45%" } : {},
               disabled ? { opacity: 0.6 } : {}
             ]}
+            secureTextEntry={secureTextEntry}
             autoCorrect={false}
             maxLength={maxLength ? maxLength : 34}
             autoFocus={autoFocus}
