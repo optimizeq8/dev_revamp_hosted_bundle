@@ -46,7 +46,7 @@ import GoogleKeywordsStats from "../Screens/GoogleCampaignDetails/GoogleKeywords
 import GoogleAudience from "../Screens/GoogleCampaignDetails/Audience";
 import GoogleEditKeywords from "../Screens/GoogleCampaignDetails/EditKeywords";
 import SwitchLanguageLoading from "../Screens/SwitchLanguage/Loading";
-
+import SuspendedWarning from "../Screens/SuspendedWarning";
 export default FluidNavigator(
   {
     Menu: { screen: Menu, navigationOptions: { gesturesEnabled: false } },
@@ -104,7 +104,8 @@ export default FluidNavigator(
     GoogleKeywordsStats: GoogleKeywordsStats,
     GoogleAudience: GoogleAudience,
     GoogleEditKeywords: GoogleEditKeywords,
-    SwitchLanguageLoading: SwitchLanguageLoading
+    SwitchLanguageLoading: SwitchLanguageLoading,
+    SuspendedWarning: SuspendedWarning
     //     PaymentForm: {
     //       screen: PaymentForm
     //     }
@@ -112,7 +113,6 @@ export default FluidNavigator(
 
   {
     transConfig,
-
     initialRouteName: "Dashboard",
     mode: "card",
     navigationOptions: {

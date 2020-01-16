@@ -206,8 +206,17 @@ class Dashboard extends Component {
       adType.mediaType === "google"
     ) {
       this.props.navigation.navigate("GoogleCreateAdAcc");
-    } else
-      this.props.navigation.navigate(adType.rout, { tempAdType: adType.value });
+    } else {
+      if (
+        adType.mediaType === "google" &&
+        this.props.mainBusiness.google_suspended === "1"
+      )
+        this.props.navigation.navigate("SuspendedWarning");
+      else
+        this.props.navigation.navigate(adType.rout, {
+          tempAdType: adType.value
+        });
+    }
   };
 
   increasePage = (reset = false) => {
@@ -567,12 +576,7 @@ class Dashboard extends Component {
                               styles.flatlistContainerStyle
                             }
                             keyExtractor={item => item.campaign_id}
-                            data={
-                              this.props.filteredCampaigns
-                              // .sort((a, b) =>
-                              //   a.start_time < b.start_time ? 1 : -1
-                              // )
-                            }
+                            data={this.props.filteredCampaigns}
                             onEndReached={() => this.loadMoreData()}
                             onEndReachedThreshold={0.1}
                             renderItem={({ item, index }) => {
