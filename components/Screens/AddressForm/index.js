@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, BackHandler } from "react-native";
+import { BackHandler } from "react-native";
 import * as Segment from "expo-analytics-segment";
-import { Container } from "native-base";
 import { Modal } from "react-native-paper";
 import { SafeAreaView } from "react-navigation";
+
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import BillingAddressCard from "../../MiniComponents/BillingAddressCard";
 import SelectBillingAddressCard from "../../MiniComponents/SelectBillingAddressCard";
@@ -21,7 +21,7 @@ import Countries from "../../Data/countries.billingAddress";
 //Functions
 import isUndefined from "lodash/isUndefined";
 import isNull from "lodash/isNull";
-import isEqual from "lodash/isEqual";
+import isEqual from "react-fast-compare";
 
 class AddressForm extends Component {
   static navigationOptions = {
