@@ -1,17 +1,19 @@
 import React, { Component } from "react";
-import { Text, View, I18nManager } from "react-native";
-import { Button } from "native-base";
-
+import { Text, View, I18nManager, TouchableOpacity } from "react-native";
+import isEqual from "react-fast-compare";
 //styles
 import styles from "./styles";
 export default class AdButtons extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps);
+  }
   render() {
     let ad = this.props.ad;
     let AdIcon = ad.icon;
     let ChannelIcon = ad.channelIcon;
     return (
       <View style={styles.adButtonView}>
-        <Button
+        <TouchableOpacity
           style={styles.snapAd}
           onPress={() => {
             this.props.navigationHandler(ad);
@@ -40,7 +42,7 @@ export default class AdButtons extends Component {
               fill="#0000"
             />
           )}
-        </Button>
+        </TouchableOpacity>
         <Text
           style={[
             styles.adButtonText,

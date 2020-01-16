@@ -7,6 +7,7 @@ import * as Segment from "expo-analytics-segment";
 import isNull from "lodash/isNull";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 import GradientButton from "../../MiniComponents/GradientButton";
 import LowerButton from "../../MiniComponents/LowerButton";
@@ -49,9 +50,7 @@ class SwitchLanguage extends Component {
             });
           });
         } else if (value === "true") {
-          this.setState({
-            languageOpened: true
-          });
+          this.props.navigation.replace("Tutorial");
         } else {
           this.setState({
             languageOpened: false
@@ -89,13 +88,8 @@ class SwitchLanguage extends Component {
   };
   render() {
     const { translate } = this.props.screenProps;
-    if (this.state.languageOpened) {
-      return (
-        <Tutorial
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-        />
-      );
+    if (isNull(this.state.languageOpened)) {
+      return <LoadingScreen dash={true} />;
     } else
       return (
         <SafeAreaView

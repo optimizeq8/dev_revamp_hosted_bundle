@@ -76,11 +76,11 @@ const reducer = (state = initialState, action) => {
         businessLoadError: true
       };
     case actionTypes.SET_CURRENT_BUSINESS_ACCOUNT:
-      let indexOfMainBusiness = state.businessAccounts.findIndex(
-        business => business.businessid === action.payload.businessid
-      );
       let newSetMainBusiness = action.payload;
-      AsyncStorage.setItem("indexOfMainBusiness", `${indexOfMainBusiness}`);
+      AsyncStorage.setItem(
+        "indexOfMainBusiness",
+        `${newSetMainBusiness.index}`
+      );
       return {
         ...state,
         mainBusiness: newSetMainBusiness

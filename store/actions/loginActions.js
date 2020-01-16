@@ -236,7 +236,7 @@ export const logout = navigation => {
       .then(() => dispatch(setCurrentUser(null)))
       .then(() => {
         navigation &&
-          navigation.navigate("Signin", {
+          navigation.navigate("SwitchLanguage", {
             loggedout: true,
             v:
               (navigation && navigation.getParam("v", false)) ||
@@ -297,8 +297,6 @@ export const clearPushToken = (navigation, userid) => {
         return res.data;
       })
       .then(data => {
-        console.log("clearPushToken", data);
-
         dispatch({
           type: actionTypes.CLEAR_PUSH_NOTIFICATION_TOKEN
         });

@@ -23,7 +23,8 @@ import Sidemenu from "../../MiniComponents/SideMenu";
 import { ActivityIndicator } from "react-native-paper";
 import FilterMenu from "../../MiniComponents/FilterMenu";
 import Axios from "axios";
-import Menu from "../Menu";
+// import Menu from "../Menu";
+let Menu = null; //Doing an inline require for big components helps with performance
 import * as Animatable from "react-native-animatable";
 import AdButtons from "./AdButtons";
 
@@ -154,6 +155,9 @@ class Dashboard extends Component {
 
   startAnimation = () => {
     this.setState({ anim: true });
+    if (Menu == null) {
+      Menu = require("../Menu").default; //Doing an inline require for big components helps with performance
+    }
     Animated.timing(this.state.menu, {
       toValue: 1,
       duration: 350,
@@ -165,12 +169,14 @@ class Dashboard extends Component {
   closeAnimation = () => {
     this.setState({ anim: false });
     this.setState({ open: false });
-
     Animated.timing(this.state.menu, {
       toValue: 0,
       duration: 350,
       useNativeDriver: true
-    }).start(() => {});
+    }).start();
+    if (Menu) {
+      Menu = null;
+    }
   };
   renderSearchBar = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
@@ -233,7 +239,7 @@ class Dashboard extends Component {
       );
     }
   };
-  renderFooter() {
+  renderFooter = () => {
     return (
       <View style={styles.footer}>
         {this.props.fetching_from_server ? (
@@ -244,7 +250,7 @@ class Dashboard extends Component {
         ) : null}
       </View>
     );
-  }
+  };
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
@@ -254,6 +260,46 @@ class Dashboard extends Component {
       this.increasePage,
       this.signal.token
     );
+  };
+
+  renderCampaignCards = ({ item, index }) => {
+    if (item.channel === "google") {
+      return (
+        <GoogleCampaignCard
+          channel={"google"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+    } else
+      return (
+        <CampaignCard
+          channel={"snapchat"}
+          campaign={item}
+          navigation={this.props.navigation}
+          key={item.campaign_id}
+          screenProps={this.props.screenProps}
+        />
+      );
+  };
+
+  handleNewCampaign = () => {
+    if (!this.props.mainBusiness.snap_ad_account_id) {
+      Segment.trackWithProperties("Create SnapAd Acount", {
+        category: "Ad Account",
+        label: "New SnapAd Account",
+        business_name: this.props.mainBusiness.businessname,
+        business_id: this.props.mainBusiness.businessid
+      });
+      this.props.navigation.navigate("SnapchatCreateAdAcc");
+    } else {
+      Segment.trackWithProperties("Create Campaign", {
+        category: "Campaign Creation"
+      });
+      this.props.navigation.navigate("AdType");
+    }
   };
 
   render() {
@@ -488,42 +534,16 @@ class Dashboard extends Component {
                                 flexDirection: "column"
                               }}
                             >
-                              <Button
+                              <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => {
-                                  if (
-                                    !this.props.mainBusiness.snap_ad_account_id
-                                  ) {
-                                    Segment.trackWithProperties(
-                                      "Create SnapAd Acount",
-                                      {
-                                        category: "Ad Account",
-                                        label: "New SnapAd Account",
-                                        business_name: this.props.mainBusiness
-                                          .businessname,
-                                        business_id: this.props.mainBusiness
-                                          .businessid
-                                      }
-                                    );
-                                    this.props.navigation.navigate(
-                                      "SnapchatCreateAdAcc"
-                                    );
-                                  } else {
-                                    Segment.trackWithProperties(
-                                      "Create Campaign",
-                                      {
-                                        category: "Campaign Creation"
-                                      }
-                                    );
-                                    this.props.navigation.navigate("AdType");
-                                  }
-                                }}
+                                onPress={this.handleNewCampaign}
                               >
                                 <Icon
                                   name="plus"
                                   type="MaterialCommunityIcons"
+                                  style={{ color: "#fff" }}
                                 />
-                              </Button>
+                              </TouchableOpacity>
                               <Text
                                 style={[
                                   styles.campaignButtonText,
@@ -556,14 +576,14 @@ class Dashboard extends Component {
                             renderSearchBar={this.renderSearchBar}
                           />
                         </View>
-                        <Button
+                        <TouchableOpacity
                           style={styles.activebutton}
                           onPress={() => {
                             this._handleSideMenuState(true);
                           }}
                         >
                           <FilterIcon width={30} height={30} fill="#fff" />
-                        </Button>
+                        </TouchableOpacity>
                       </View>
                     </View>
                     <View style={[styles.mainCard]}>
@@ -577,33 +597,12 @@ class Dashboard extends Component {
                             }
                             keyExtractor={item => item.campaign_id}
                             data={this.props.filteredCampaigns}
-                            onEndReached={() => this.loadMoreData()}
+                            onEndReached={this.loadMoreData}
                             onEndReachedThreshold={0.1}
-                            renderItem={({ item, index }) => {
-                              if (item.channel === "google") {
-                                return (
-                                  <GoogleCampaignCard
-                                    channel={"google"}
-                                    campaign={item}
-                                    navigation={this.props.navigation}
-                                    key={item.campaign_id}
-                                    screenProps={this.props.screenProps}
-                                  />
-                                );
-                              } else
-                                return (
-                                  <CampaignCard
-                                    channel={"snapchat"}
-                                    campaign={item}
-                                    navigation={this.props.navigation}
-                                    key={item.campaign_id}
-                                    screenProps={this.props.screenProps}
-                                  />
-                                );
-                            }}
-                            onRefresh={() => this.reloadData()}
+                            renderItem={this.renderCampaignCards}
+                            onRefresh={this.reloadData}
                             refreshing={this.state.fetching_from_server}
-                            ListFooterComponent={() => this.renderFooter()}
+                            ListFooterComponent={this.renderFooter}
                           />
                         </Animatable.View>
                       )}
@@ -645,12 +644,14 @@ class Dashboard extends Component {
               }
               style={styles.menuContainer}
             >
-              <Menu
-                closeAnimation={this.closeAnimation}
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-                open={this.state.open}
-              />
+              {Menu ? (
+                <Menu
+                  closeAnimation={this.closeAnimation}
+                  navigation={this.props.navigation}
+                  screenProps={this.props.screenProps}
+                  open={this.state.open}
+                />
+              ) : null}
             </Animatable.View>
           </>
           <AppUpdateChecker screenProps={this.props.screenProps} />

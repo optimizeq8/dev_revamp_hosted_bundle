@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Text, Icon } from "native-base";
+import { View, TouchableOpacity, Text } from "react-native";
+import { Icon } from "native-base";
 import styles from "./styles";
 import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
@@ -40,10 +40,8 @@ class CampaignCard extends Component {
       this.props.navigation
     );
   };
-  render() {
-    const { translate } = this.props.screenProps;
-    let campaign = this.props.campaign;
-    let endDate = new Date(campaign.end_time);
+
+  campaignEndedOrNot = (campaign, endDate) => {
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
       this.review_status.includes("APPROVED") &&
@@ -53,6 +51,12 @@ class CampaignCard extends Component {
         ? null
         : campaign.campaign_end === "1" ||
           new Date(campaign.end_time) < new Date();
+    return campaignEndedOrNot;
+  };
+  render() {
+    const { translate } = this.props.screenProps;
+    let campaign = this.props.campaign;
+    let endDate = new Date(campaign.end_time);
     return (
       <LinearGradient
         colors={["#9300FF", "#4E00CB"]}
@@ -92,7 +96,7 @@ class CampaignCard extends Component {
                 >
                   {this.props.campaign.name}
                 </Text>
-                {campaignEndedOrNot ? (
+                {this.campaignEndedOrNot(campaign, endDate) ? (
                   <View style={[styles.adStatus]}>
                     <Icon
                       style={[
@@ -202,7 +206,7 @@ class CampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!campaignEndedOrNot && (
+                {!this.campaignEndedOrNot(campaign, endDate) && (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>

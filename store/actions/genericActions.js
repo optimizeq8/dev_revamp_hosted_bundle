@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
+import { getBusinessInvites } from "./accountManagementActions";
 
 export const setAuthToken = token => {
   if (token) {
@@ -104,6 +105,7 @@ export const update_app_status_chat_notification = app_state => {
 
 export const getBusinessAccounts = () => {
   return (dispatch, getState) => {
+    dispatch(getBusinessInvites());
     dispatch({
       type: actionTypes.SET_LOADING_BUSINESS_LIST,
       payload: true

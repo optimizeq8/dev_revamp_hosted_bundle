@@ -1,10 +1,9 @@
 //Components
-import React, { Component } from "react";
-import { View, ScrollView, RefreshControl } from "react-native";
+import React, { Component, Fragment } from "react";
+import { View, FlatList } from "react-native";
 import { Button, Text, Container } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
-import * as businessIcons from "../../../assets/SVGs/BusinessIcons";
 
 // Style
 import styles from "./styles";
@@ -15,14 +14,19 @@ import * as actionCreators from "../../../store/actions";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 
 import InvitationCard from "./InvitationCard";
-
 class BusinessList extends Component {
   static navigationOptions = {
     header: null
   };
   constructor(props) {
     super(props);
-    this.state = { value: "", filteredBusinesses: this.props.businessAccounts };
+    this.state = {
+      value: "",
+      filteredBusinesses: [{ businessid: "-1" }].concat(
+        //adding that dummy data so that i can show the invitation cards in the flatlist
+        this.props.businessAccounts
+      )
+    };
   }
   componentDidUpdate(prevProps) {
     if (prevProps.businessAccounts !== this.props.businessAccounts) {
@@ -42,16 +46,43 @@ class BusinessList extends Component {
           .includes(value.trim().toLowerCase())
     );
     this.setState({
-      filteredBusinesses,
+      filteredBusinesses: [{ businessid: "-1" }].concat(filteredBusinesses),
       value
     });
   };
+
+  renderBusinessCards = item => {
+    let business = item.item;
+    const { translate } = this.props.screenProps;
+    if (business.businessid === "-1") {
+      return (
+        <Fragment key={business.businessid}>
+          {(this.props.businessInvitee &&
+            this.props.userInfo.email === this.props.invitedEmail) ||
+          this.props.businessInvites ? (
+            <InvitationCard
+              handleTeamInvite={this.props.handleTeamInvite}
+              tempInviteId={this.props.tempInviteId}
+              businessInvitee={this.props.businessInvitee}
+              navigation={this.props.navigation}
+            />
+          ) : null}
+        </Fragment>
+      );
+    } else
+      return (
+        <Fragment key={business.businessid}>
+          {item.index === 1 ? (
+            <Text uppercase style={[styles.headings]}>
+              {translate("Businesses")}
+            </Text>
+          ) : null}
+          <BusinessCard business={business} />
+        </Fragment>
+      );
+  };
   render() {
     const { translate } = this.props.screenProps;
-
-    const list = this.state.filteredBusinesses.map(business => (
-      <BusinessCard business={business} key={business.businessid} />
-    ));
     return (
       <Container style={styles.container}>
         <View padder style={[styles.mainCard]}>
@@ -66,30 +97,15 @@ class BusinessList extends Component {
             height={"6%"}
           />
           <View style={{ height: heightPercentageToDP(55) }}>
-            <ScrollView
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.props.businessesLoading}
-                  onRefresh={() => this.props.getBusinessAccounts()}
-                />
-              }
+            <FlatList
               contentContainerStyle={styles.contentContainer}
-            >
-              {(this.props.businessInvitee &&
-                this.props.userInfo.email === this.props.invitedEmail) ||
-              this.props.businessInvites ? (
-                <InvitationCard
-                  handleTeamInvite={this.props.handleTeamInvite}
-                  tempInviteId={this.props.tempInviteId}
-                  businessInvitee={this.props.businessInvitee}
-                  navigation={this.props.navigation}
-                />
-              ) : null}
-              <Text uppercase style={[styles.headings]}>
-                {translate("Businesses")}
-              </Text>
-              {list}
-            </ScrollView>
+              keyExtractor={item => item.businessid}
+              data={this.state.filteredBusinesses}
+              initialNumToRender={10}
+              renderItem={this.renderBusinessCards}
+              onRefresh={this.props.getBusinessAccounts}
+              refreshing={this.props.businessesLoading}
+            />
           </View>
           <Button
             style={[styles.bottomCard]}

@@ -153,18 +153,13 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    // marginBottom: 10,
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: globalColors.orange,
-    // marginHorizontal: 20,
     width: 60,
     height: 60,
-    borderRadius: 33,
+    borderRadius: 50,
     elevation: 0,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 3, height: 3 },
     top: I18nManager.isRTL ? 8 : 0
   },
   link: {
@@ -240,8 +235,7 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     borderRadius: 33,
-    // top: 30,
-    // marginBottom: 10,
+    alignItems: "center",
     elevation: 0
   },
   dateInput: {
@@ -300,7 +294,8 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    elevation: 0
+    elevation: 0,
+    alignItems: "center"
   },
   background: {
     position: "absolute",

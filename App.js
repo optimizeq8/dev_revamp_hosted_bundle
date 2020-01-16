@@ -15,7 +15,8 @@ import {
   Text as TextReactNative,
   I18nManager,
   AppState,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from "react-native";
 
 TextReactNative.defaultProps = TextReactNative.defaultProps || {};
@@ -73,7 +74,6 @@ import {
 //icons
 import PurpleLogo from "./assets/SVGs/PurpleLogo";
 import { colors } from "./components/GradiantColors/colors";
-import { ActivityIndicator } from "react-native-paper";
 import { REHYDRATE } from "redux-persist";
 
 Sentry.init({

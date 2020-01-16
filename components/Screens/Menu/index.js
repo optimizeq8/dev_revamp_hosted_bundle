@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { Button, Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
-import BusinessList from "../BusinessList";
+// import BusinessList from "../BusinessList";
+let BusinessList = null;
 import Constants from "expo-constants";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
@@ -60,6 +61,7 @@ class Menu extends Component {
   }
 
   componentWillUnmount() {
+    BusinessList = null;
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
   }
 
@@ -77,18 +79,27 @@ class Menu extends Component {
     }).start();
   }
   closePanel = () => {
+    if (BusinessList) {
+      BusinessList = null;
+    }
     this._panel.hide();
     this.setState({ slidePanel: false });
   };
-  slidePanelShow() {
+  slidePanelShow = () => {
     if (this.state.slidePanel) {
+      if (BusinessList) {
+        BusinessList = null;
+      }
       this._panel.hide();
       this.setState({ slidePanel: false });
     } else {
+      if (!BusinessList) {
+        BusinessList = require("../BusinessList").default;
+      }
       this.showPanel();
       this.setState({ slidePanel: true });
     }
-  }
+  };
   handleNavigation = (route, checkForBusinessId = false) => {
     segmentEventTrack(`Clicked ${route}`);
     const { translate } = this.props.screenProps;
@@ -158,9 +169,7 @@ class Menu extends Component {
 
             <GradientButton
               style={[styles.button]}
-              onPressAction={() => {
-                this.slidePanelShow();
-              }}
+              onPressAction={this.slidePanelShow}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <Text style={styles.buttonText}>
@@ -361,10 +370,12 @@ class Menu extends Component {
               >
                 <Icons.CloseListIcon />
               </TouchableOpacity>
-              <BusinessList
-                navigation={this.props.navigation}
-                screenProps={this.props.screenProps}
-              />
+              {BusinessList ? (
+                <BusinessList
+                  navigation={this.props.navigation}
+                  screenProps={this.props.screenProps}
+                />
+              ) : null}
             </>
           </SlidingUpPanel>
         </Container>

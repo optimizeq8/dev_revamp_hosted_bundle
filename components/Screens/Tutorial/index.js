@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Image, AsyncStorage } from "react-native";
 import { SafeAreaView, NavigationEvents } from "react-navigation";
-import { Button, Text, Container } from "native-base";
+import { Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
 import Swiper from "../../MiniComponents/Swiper";
 import GradientButton from "../../MiniComponents/GradientButton";
-// import Invitation from "../InvitationScreen";
-import Signin from "../Signin";
+import LoadingScreen from "../../MiniComponents/LoadingScreen";
 
 // Style
 import styles from "./styles";
@@ -23,7 +22,6 @@ import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
-import Loading from "../../MiniComponents/LoadingScreen";
 import globalStyles from "../../../GlobalStyles";
 
 class Tutorial extends Component {
@@ -43,9 +41,7 @@ class Tutorial extends Component {
             });
           });
         } else if (value === "true") {
-          this.setState({
-            tutorialOpened: true
-          });
+          this.props.navigation.replace("Signin");
         } else {
           this.setState({
             tutorialOpened: false
@@ -102,23 +98,7 @@ class Tutorial extends Component {
       );
     };
     if (isNull(this.state.tutorialOpened)) {
-      return (
-        <Container style={[styles.container, { top: "6%" }]}>
-          <Background
-            style={[globalStyles.background]}
-            width={widthPercentageToDP(90)}
-            height={heightPercentageToDP(65)}
-          />
-          <Loading dash={true}></Loading>
-        </Container>
-      );
-    } else if (this.state.tutorialOpened) {
-      return (
-        <Signin
-          screenProps={this.props.screenProps}
-          navigation={this.props.navigation}
-        />
-      );
+      return <LoadingScreen dash={true} />;
     } else {
       Segment.screen("Tutorial");
       return (

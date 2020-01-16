@@ -6,21 +6,17 @@ import * as actionCreators from "../../../store/actions";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
 import { LinearGradient } from "expo-linear-gradient";
-
 import GoogleAd from "../../../assets/SVGs/GoogleAds";
-
 import { globalColors } from "../../../GlobalStyles";
 import isStringArabic from "../../isStringArabic";
 import GoogleCampaignCircleCharts from "../GoogleCampaignCircleCharts";
 import TimeDifferance from "../../Functions/TimeDifferance";
 import globalStyles from "../../../GlobalStyles";
-
 class GoogleCampaignCard extends Component {
   review_status = this.props.campaign.review_status;
   campaign_status = this.props.campaign.status;
 
   handleCampaignPress = () => {
-
     this.props.get_google_campiagn_details(
       this.props.campaign.campaign_id,
       this.props.campaign.start_time,
@@ -33,9 +29,7 @@ class GoogleCampaignCard extends Component {
       campaign_id: this.props.campaign.campaign_id
     });
   };
-  render() {
-    const { translate } = this.props.screenProps;
-    let campaign = this.props.campaign;
+  campaignEndedOrNot = campaign => {
     let endDate = new Date(campaign.end_time);
     endDate.setDate(endDate.getDate() + 2);
     let campaignEndedOrNot =
@@ -50,6 +44,11 @@ class GoogleCampaignCard extends Component {
           new Date(campaign.end_time) <= new Date()
         ? null
         : new Date(campaign.end_time) > new Date();
+    return campaignEndedOrNot;
+  };
+  render() {
+    const { translate } = this.props.screenProps;
+    let campaign = this.props.campaign;
 
     return (
       <LinearGradient
@@ -165,7 +164,7 @@ class GoogleCampaignCard extends Component {
                   screenProps={this.props.screenProps}
                 />
 
-                {!campaignEndedOrNot && (
+                {!campaign.status==="REMOVED" && (
                   <>
                     <View style={styles.horizontalLineView} />
                     <View style={styles.cardStatusDays}>
