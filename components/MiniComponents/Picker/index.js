@@ -38,29 +38,34 @@ export default class Picker extends Component {
           />
         }
         selectedIconComponent={
-          <Icon
-            type="MaterialCommunityIcons"
-            name="circle"
-            style={styles.itemCircles}
-          />
+          this.props.showIcon ? (
+            <Icon
+              type="MaterialCommunityIcons"
+              name="circle"
+              style={styles.itemCircles}
+            />
+          ) : null
         }
         searchPlaceholderText={this.props.searchPlaceholderText}
         searchTextFontFamily={{
           fontFamily: "montserrat-regular"
         }}
         unselectedIconComponent={
-          <Icon
-            type="MaterialCommunityIcons"
-            name="circle-outline"
-            style={styles.itemCircles}
-          />
+          this.props.showIcon ? (
+            <Icon
+              type="MaterialCommunityIcons"
+              name="circle-outline"
+              style={styles.itemCircles}
+            />
+          ) : null
         }
         noResultsComponent={
           <Text style={styles.errorText}>{translate("No item found")}</Text>
         }
         hideSelect
         hideConfirm
-        subKey="children"
+        subKey={this.props.subKey ? this.props.subKey : "children"}
+        readOnlyHeadings={this.props.readOnlyHeadings}
         styles={SectionStyle}
         stickyFooterComponent={
           <Button
@@ -96,7 +101,9 @@ export default class Picker extends Component {
         }
         modalWithSafeAreaView={true}
         iconKey="icon"
-        showDropDowns={false}
+        showDropDowns={
+          this.props.showDropDowns ? this.props.showDropDowns : false
+        }
         showRemoveAll={true}
         noItemsComponent={
           <Text style={styles.errorText}>

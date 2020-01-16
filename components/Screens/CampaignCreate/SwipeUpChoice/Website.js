@@ -221,6 +221,7 @@ class Website extends Component {
                 contentContainerStyle={styles.scrollViewContainer}
               >
                 <Picker
+                  showIcon={true}
                   screenProps={this.props.screenProps}
                   searchPlaceholderText={"Search Call To Action"}
                   data={this.state.callactions}

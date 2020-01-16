@@ -267,6 +267,7 @@ class AppChoice extends Component {
           >
             <>
               <Picker
+                showIcon={true}
                 screenProps={this.props.screenProps}
                 searchPlaceholderText={translate("Search Call To Action")}
                 data={this.state.callactions}

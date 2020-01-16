@@ -187,7 +187,10 @@ class Menu extends Component {
                 onPress={() => this.handleNavigation("PersonalInfo")}
               >
                 <Icons.PersonalInfo style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Personal Info")}
                 </Text>
               </TouchableOpacity>
@@ -201,7 +204,10 @@ class Menu extends Component {
                 }}
               >
                 <Icons.BusinessIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Business Info")}
                 </Text>
               </TouchableOpacity>
@@ -210,7 +216,10 @@ class Menu extends Component {
                 onPress={() => this.handleNavigation("Wallet", true)}
               >
                 <Icons.Wallet style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Wallet")}
                 </Text>
               </TouchableOpacity>
@@ -219,7 +228,10 @@ class Menu extends Component {
                 onPress={() => this.handleNavigation("TransactionList")}
               >
                 <Icons.TransactionIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Transactions")}
                 </Text>
               </TouchableOpacity>
@@ -228,7 +240,10 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.ChangePassIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Change Password")}
                 </Text>
               </TouchableOpacity>
@@ -238,7 +253,10 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.AddressIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Address")}
                 </Text>
               </TouchableOpacity>
@@ -248,7 +266,10 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.GroupIcon style={styles.icons} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Manage Team")}
                 </Text>
               </TouchableOpacity>
@@ -267,7 +288,10 @@ class Menu extends Component {
                   type="MaterialIcons"
                   style={[styles.icons]}
                 />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Privacy Policy")}
                 </Text>
               </TouchableOpacity>
@@ -289,7 +313,10 @@ class Menu extends Component {
                     // { top: heightPercentageToDP(5) < 30 ? 0 : 2 }
                   ]}
                 />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Terms & Conditions")}
                 </Text>
               </TouchableOpacity>
@@ -304,7 +331,10 @@ class Menu extends Component {
                 style={styles.options}
               >
                 <Icons.LogoutIcon style={[styles.icons]} />
-                <Text style={I18nManager.isRTL ? rtlStyles.text : styles.text}>
+                <Text
+                  uppercase
+                  style={I18nManager.isRTL ? rtlStyles.text : styles.text}
+                >
                   {translate("Logout")}
                 </Text>
               </TouchableOpacity>

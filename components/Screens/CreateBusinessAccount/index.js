@@ -696,6 +696,7 @@ class CreateBusinessAccount extends Component {
 
               <View style={styles.marginVertical}>
                 <Picker
+                  showIcon={true}
                   screenProps={this.props.screenProps}
                   searchPlaceholderText={translate("Search Country")}
                   data={this.state.countries}
@@ -761,6 +762,7 @@ class CreateBusinessAccount extends Component {
 
               <View style={styles.marginVertical}>
                 <Picker
+                  showIcon={true}
                   screenProps={this.props.screenProps}
                   searchPlaceholderText={translate("Search Business Category")}
                   data={this.state.items}

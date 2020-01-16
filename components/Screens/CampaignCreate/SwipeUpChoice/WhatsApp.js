@@ -544,6 +544,7 @@ class WhatsApp extends Component {
             <View style={styles.marginVertical}>
               {/* <Text style={[styles.subTitle]}>Call to action</Text> */}
               <Picker
+                showIcon={true}
                 screenProps={this.props.screenProps}
                 searchPlaceholderText={translate("Search Call To Action")}
                 data={this.state.callactions}
