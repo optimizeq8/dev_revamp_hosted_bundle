@@ -131,7 +131,9 @@ class FilterMenu extends Component {
                   />
                 </>
               )}
-              <Text style={styles.titleDate}> {translate("Date")} </Text>
+              <View style={styles.labelView}>
+                <Text style={styles.titleDate}> {translate("Date")} </Text>
+              </View>
               <TouchableHighlight
                 underlayColor="rgba(0,0,0,0.2)"
                 style={[
@@ -162,7 +164,9 @@ class FilterMenu extends Component {
                     )}
                   </View>
                   <View style={styles.middleColumn}>
-                    <Text style={styles.categories}>{translate("To")}</Text>
+                    <Text style={styles.categories}>
+                      {I18nManager.isRTL ? "\t" : translate("To")}
+                    </Text>
                   </View>
                   <View style={styles.endColumn}>
                     {this.state.end_time === "" && (

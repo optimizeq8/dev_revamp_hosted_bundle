@@ -81,7 +81,7 @@ export default class Duration extends Component {
               }
             ]}
           >
-            {translate("To")}
+            {I18nManager.isRTL ? "\t" : translate("To")}
           </Text>
 
           {!this.props.slidePanel ||
