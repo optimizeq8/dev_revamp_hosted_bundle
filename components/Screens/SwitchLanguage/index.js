@@ -81,9 +81,7 @@ class SwitchLanguage extends Component {
       this.props.navigation.navigate("SwitchLanguageLoading");
     } else {
       // to show  tutorial if app langugage is same as app language
-      this.setState({
-        languageOpened: true
-      });
+      this.props.navigation.replace("Tutorial");
     }
   };
   render() {
