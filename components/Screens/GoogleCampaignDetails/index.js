@@ -189,10 +189,7 @@ class GoogleCampaignDetails extends Component {
       let end_time = "";
       if (!loading && this.props.selectedCampaign) {
         selectedCampaign = {
-          ...this.props.selectedCampaign,
-          review_status_reason: "One website per ad group",
-          review_status_help:
-            "https://support.google.com/adspolicy/answer/6088505?hl=en#210"
+          ...this.props.selectedCampaign
         };
         if (
           selectedCampaign.campaign.start_time &&
@@ -245,7 +242,7 @@ class GoogleCampaignDetails extends Component {
 
           audienceOverviewData.push({
             heading: "Gender",
-            icon: <GenderIcon width={hp("3")} height={hp("3")} />,
+            icon: <GenderIcon width={31} height={31} fill={"#FF790A"} />,
             content: translate(gender)
           });
 
@@ -263,7 +260,7 @@ class GoogleCampaignDetails extends Component {
 
           audienceOverviewData.push({
             heading: "Location",
-            icon: <LocationIcon width={hp("3")} height={hp("3")} />,
+            icon: <LocationIcon width={31} height={31} fill={"#FF790A"} />,
             content: location
           });
         }

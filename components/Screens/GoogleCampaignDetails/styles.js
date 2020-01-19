@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 5,
     paddingHorizontal: 10,
-    top: 5,
+    marginTop: 5,
     width: "30%",
     alignItems: "center",
     alignSelf: "center"
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: "column",
     alignSelf: "center",
-    color: "#FF9D00",
-    fontSize: 24
+    color: "#FF790A",
+    fontSize: 33
     // bottom: 5
   },
   gender: {
@@ -398,18 +398,19 @@ const styles = StyleSheet.create({
   campaignMediaAndInfo: {
     flexDirection: "row",
     width: "100%",
-    height: "40%",
-    marginVertical: 10,
+    height: 250,
+    marginTop: 10,
+    marginBottom: hp(8),
     justifyContent: "space-evenly"
   },
   targetingContainer: {
     flexDirection: "column",
     backgroundColor: "#0005",
-    height: "85%",
     width: "100%",
     borderRadius: 40,
     justifyContent: "center",
-    paddingVertical: 0,
+    // paddingVertical: 20,
+    paddingBottom: 30,
     paddingHorizontal: 20
   },
   keyword: {
@@ -419,17 +420,17 @@ const styles = StyleSheet.create({
   },
   keywordView: {
     marginVertical: 6,
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 12,
-    backgroundColor: "#FF9D00",
+    backgroundColor: "#FF790A",
     borderRadius: 20
   },
   subHeading: {
     fontFamily: "montserrat-bold",
     fontSize: 14,
     color: "#FFF",
-    paddingVertical: 10,
-    textAlign: "center"
+    paddingVertical: 20,
+    textAlign: "left"
   },
   subHeadingView: {
     display: "flex",
@@ -545,7 +546,6 @@ const styles = StyleSheet.create({
   },
   rejectedHeader: {
     alignItems: "center",
-    flex: 1,
     marginHorizontal: 20
   },
   reviewStatusReason: {
@@ -559,6 +559,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#000",
     width: "15%"
+  },
+  noKeywordsView: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%"
   }
 });
 

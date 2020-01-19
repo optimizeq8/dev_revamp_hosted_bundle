@@ -59,7 +59,7 @@ export default function(props) {
             </View>
           ))
         ) : (
-          <View>
+          <View style={styles.noKeywordsView}>
             <Text uppercase style={styles.subHeading}>
               {translate("No available keywords")}
             </Text>

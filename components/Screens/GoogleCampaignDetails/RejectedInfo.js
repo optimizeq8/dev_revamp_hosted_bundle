@@ -38,7 +38,6 @@ export default RejectedInfo = props => {
           styles.reviewStatusText,
           { fontFamily: "montserrat-regular-english" }
         ]}
-        numberOfLines={2}
       >
         {e.description}
       </Text>
