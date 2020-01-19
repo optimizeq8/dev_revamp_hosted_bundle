@@ -281,7 +281,7 @@ class CampaignDetails extends Component {
               translate(startCase(toLower(targeting.demographics[0].gender)));
         audienceOverViewData.push({
           heading: "Gender",
-          icon: <GenderIcon width={hp("3")} height={hp("3")} />,
+          icon: <GenderIcon fill={"#FF790A"} width={31} height={31} />,
           content: gender
         });
         const ageMin = targeting && targeting.demographics[0].min_age;
@@ -351,7 +351,7 @@ class CampaignDetails extends Component {
           );
         audienceOverViewData.push({
           heading: "Location",
-          icon: <LocationIcon width={hp("3")} height={hp("3")} />,
+          icon: <LocationIcon fill={"#FF790A"} width={31} height={31} />,
           content: countryName + ": " + (region_names ? region_names : "")
         });
         if (selectedCampaign.start_time && selectedCampaign.end_time) {

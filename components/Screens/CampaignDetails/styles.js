@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
   icon: {
     flexDirection: "column",
     alignSelf: "center",
-    color: "#FF9D00",
-    fontSize: 25
+    color: "#FF790A",
+    fontSize: 33
   },
   gender: {
     // ...StyleSheet.absoluteFillObject,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "#0004",
     width: "100%",
-    height: "85%",
+    height: "100%",
     borderRadius: 40
   },
   overlay: {
@@ -358,7 +358,8 @@ const styles = StyleSheet.create({
   campaignMediaAndInfo: {
     flexDirection: "row",
     width: "100%",
-    height: "40%",
+    height: 250,
+    marginBottom: hp(8),
     marginVertical: 10,
     justifyContent: "space-evenly"
   },
@@ -370,7 +371,6 @@ const styles = StyleSheet.create({
   targetingContainer: {
     flexDirection: "column",
     backgroundColor: "#0005",
-    height: "85%",
     width: "100%",
     borderRadius: 40,
     justifyContent: "center",

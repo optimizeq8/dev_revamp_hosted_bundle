@@ -31,20 +31,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // paddingTop: 5,
     paddingHorizontal: 10,
+    paddingTop: 6,
     color: "#fff"
   },
   targetingContainer: {
     flexDirection: "column",
     backgroundColor: "#0005",
-    height: "85%",
     width: "100%",
     borderRadius: 40,
     justifyContent: "center",
-    paddingVertical: 0,
+    paddingVertical: 20,
     paddingHorizontal: 20
   },
   audienceOverview: {
     alignItems: "center",
+
     width: "40%"
   },
   audienceHeadingView: {
