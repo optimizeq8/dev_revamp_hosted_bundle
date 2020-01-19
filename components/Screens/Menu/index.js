@@ -75,7 +75,8 @@ class Menu extends Component {
     Animated.timing(this._draggedValue, {
       toValue: this.draggableRange.top,
       easing: Easing.elastic(1), // Springy
-      duration: 250
+      duration: 250,
+      useNativeDriver: true
     }).start();
   }
   closePanel = () => {
