@@ -178,8 +178,9 @@ class Menu extends Component {
                 </Text>
                 <DownArrowIcon style={styles.switchArrowIcon} stroke="#fff" />
               </View>
-              {this.props.businessInvitee &&
-              this.props.userInfo.email === this.props.invitedEmail ? (
+              {(this.props.businessInvitee &&
+                this.props.userInfo.email === this.props.invitedEmail) ||
+              this.props.businessInvites ? (
                 <Text
                   style={[
                     styles.buttonText,
@@ -392,7 +393,8 @@ const mapStateToProps = state => ({
   exponentPushToken: state.login.exponentPushToken,
   clearTokenLoading: state.login.clearTokenLoading,
   businessInvitee: state.account.businessInvitee,
-  invitedEmail: state.account.invitedEmail
+  invitedEmail: state.account.invitedEmail,
+  businessInvites: state.account.businessInvites
 });
 const mapDispatchToProps = dispatch => ({
   clearPushToken: (navigation, userid) =>
