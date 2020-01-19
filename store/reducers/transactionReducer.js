@@ -125,9 +125,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FILTER_TRANSACTION:
       let filtered = state.transactionList.filter(
         transaction =>
-          transaction.campaign_name
-            .toLowerCase()
-            .includes(action.payload.value.toLowerCase()) ||
+          (transaction.campaign_name &&
+            transaction.campaign_name
+              .toLowerCase()
+              .includes(action.payload.value.toLowerCase())) ||
           transaction.reference_id
             .toLowerCase()
             .includes(action.payload.value.toLowerCase()) ||
