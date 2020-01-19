@@ -83,22 +83,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40
   },
   contentContainerStyle: {
-    flex: 1,
-    paddingHorizontal: 40,
-    paddingTop: 20,
     flexDirection: "row",
     flexWrap: "wrap",
-    flexGrow: 1
-    // justifyContent: "space-around"
+    flexGrow: 1,
+    justifyContent: "space-between",
+    width: "90%",
+    alignSelf: "center"
   },
   productView: {
-    display: "flex",
-    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
-    // paddingVertical: 12,
     marginVertical: 5,
-    width: "43%",
+    width: "38%",
     borderRadius: 20,
     marginHorizontal: 10,
     backgroundColor: "rgba(0,0,0,0.3)"
