@@ -27,7 +27,7 @@ InvitationCard = props => {
   if (businessInvites)
     invites = businessInvites.map(invite => (
       <InvitationRow
-        key={invite.v}
+        key={invite.businssid}
         {...invite}
         handleTeamInvite={handleTeamInvite}
         invitedEmail={invitedEmail}
