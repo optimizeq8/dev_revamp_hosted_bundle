@@ -34,18 +34,22 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     color: "#fff"
   },
+  title: {
+    fontSize: 16
+  },
   targetingContainer: {
+    height: "100%",
     flexDirection: "column",
     backgroundColor: "#0005",
     width: "100%",
     borderRadius: 40,
-    justifyContent: "center",
+    // justifyContent: "center",
     paddingVertical: 20,
     paddingHorizontal: 20
   },
   audienceOverview: {
     alignItems: "center",
-
+    height: "100%",
     width: "40%"
   },
   audienceHeadingView: {

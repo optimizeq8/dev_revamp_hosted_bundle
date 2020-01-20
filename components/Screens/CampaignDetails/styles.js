@@ -94,6 +94,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textTransform: "uppercase"
   },
+  titleMedia: {
+    fontSize: 16,
+    color: "#fff",
+    paddingVertical: 10,
+    fontFamily: "montserrat-bold"
+  },
   chartTitle: {
     color: "#fff",
     fontFamily: "montserrat-bold",

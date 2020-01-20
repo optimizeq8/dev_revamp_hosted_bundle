@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontFamily: "montserrat-bold",
-    fontSize: 18
+    fontSize: 16
     // paddingRight: 30
     // paddingVertical: hp("1")
   },
@@ -404,11 +404,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   targetingContainer: {
+    height: "100%",
     flexDirection: "column",
     backgroundColor: "#0005",
     width: "100%",
     borderRadius: 40,
-    justifyContent: "center",
+    // justifyContent: "center",
     // paddingVertical: 20,
     paddingBottom: 30,
     paddingHorizontal: 20
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
   placeholderView: {
     margin: 5
   },
-  keywordContainer: { width: "40%" },
+  keywordContainer: { width: "40%", height: "100%" },
   keywordLowerButton: {
     width: 35,
     height: 35,
