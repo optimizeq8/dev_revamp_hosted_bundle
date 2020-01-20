@@ -85,9 +85,8 @@ class Messenger extends Component {
     this.props.subscribe(socket);
     socket.on("AdminReply", data => {
       this.props.admin_response(data);
-      // this.props.set_as_seen(true);
     });
-    this.props.set_as_seen(true);
+    if (this.props.conversation_id) this.props.set_as_seen(true);
     this.props.update_conversatusion_read_status();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -105,8 +104,7 @@ class Messenger extends Component {
   }
 
   handleBackPress = () => {
-    // this.props.navigation.goBack();
-    this.props.navigation.navigate("Dashboard");
+    this.props.navigation.goBack();
     return true;
   };
 
@@ -116,7 +114,7 @@ class Messenger extends Component {
     if (this.state.textValue !== "") {
       if (this.props.open_conversation)
         this.props.reply(this.state.textValue, []);
-      else this.props.start_conversation(this.state.textValue);
+      else this.props.start_conversation(this.state.textValue, () => {});
       this._resetTextInput();
     }
   };
@@ -345,14 +343,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  connect_user_to_intercom: user_id =>
-    dispatch(actionCreators.connect_user_to_intercom(user_id)),
   reply: (message, media) => dispatch(actionCreators.reply(message, media)),
   admin_response: message => dispatch(actionCreators.admin_response(message)),
   set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   subscribe: socket => dispatch(actionCreators.subscribe(socket)),
-  start_conversation: message =>
-    dispatch(actionCreators.start_conversation(message)),
+  start_conversation: (message, callback) =>
+    dispatch(actionCreators.start_conversation(message, callback)),
   update_last_seen: () => dispatch(actionCreators.update_last_seen()),
   update_conversatusion_read_status: () =>
     dispatch(actionCreators.update_conversatusion_read_status()),

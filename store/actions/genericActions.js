@@ -94,10 +94,18 @@ export const update_app_status_chat_notification = app_state => {
         });
       })
       .catch(err => {
-        // console.log(
-        //   "sendChatNotificationbySMS err",
-        //   err.message || err.response
-        // );
+        // showMessage({
+        //   message:
+        //     err.message ||
+        //     err.response ||
+        //     "Something went wrong, please try again.",
+        //   type: "danger",
+        //   position: "top"
+        // });
+        console.log(
+          "sendChatNotificationbySMS err",
+          err.message || err.response
+        );
       });
   };
 };

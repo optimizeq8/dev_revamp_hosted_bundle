@@ -37,8 +37,6 @@ export const connect_user_to_intercom = user_id => {
       })
       .then(data => {
         if (data.code === "not_found") {
-          // console.log("couldn't find a user");
-
           var user = getState().auth.userInfo;
           var bus = getState().account.mainBusiness;
           var body = {
@@ -67,15 +65,15 @@ export const connect_user_to_intercom = user_id => {
         }
       })
       .catch(err => {
-        //  showMessage({
-        //    message:
-        //      err.message ||
-        //      err.response ||
-        //      "Something went wrong, please try again.",
-        //    type: "danger",
-        //    position: "top",
-        //    description: translate("chat, login")
-        //  });
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top",
+          description: translate("chat, login")
+        });
 
         console.log("get_user", err.message || err.response);
         return dispatch({
@@ -119,14 +117,22 @@ export const create_user_on_intercom = user => {
     NodeBackendURL()
       .post("/create-user", user)
       .then(res => {
-        dispatch(get_conversation(res.data.user_id));
+        // dispatch(get_conversation(res.data.user_id));
         return dispatch({
           type: actionTypes.SET_CURRENT_MESSENGER,
           payload: res.data
         });
       })
       .catch(err => {
-        // console.log("create_user_on_intercom", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("create_user_on_intercom", err.message || err.response);
       });
   };
 };
@@ -170,18 +176,16 @@ export const get_conversation = user_id => {
       .then(() => {
         dispatch(get_conversatusion_read_status());
         dispatch(update_app_status_chat_notification(true));
-        // if (!isNull(getState().messenger.conversation_id))
-        //   dispatch(set_as_seen());
       })
       .catch(err => {
-        // showMessage({
-        //   message:
-        //     err.message ||
-        //     err.response ||
-        //     "Something went wrong, please try again.",
-        //   type: "danger",
-        //   position: "top"
-        // });
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
 
         console.log("get_conversation", err.message || err.response);
         return dispatch({
@@ -207,7 +211,7 @@ export const get_conversation = user_id => {
  * @param {string} message
  * @returns {Function}  dispatch with the conversation part of the same message from the axois request
  */
-export const start_conversation = message => {
+export const start_conversation = (message, callback) => {
   return (dispatch, getState) => {
     dispatch({
       type: actionTypes.SET_LOADING_MESSAGE,
@@ -228,8 +232,17 @@ export const start_conversation = message => {
           payload: response.data
         });
       })
+      .then(() => callback())
       .catch(err => {
-        // console.log("start_conversation", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("start_conversation", err.message || err.response);
       });
   };
 };
@@ -272,7 +285,19 @@ export const reply = (message, upload) => {
       })
       .then(() => dispatch(update_conversatusion_read_status()))
       .catch(err => {
-        // console.log("reply", err.message || err.response);
+        dispatch({
+          type: actionTypes.SET_LOADING_MESSAGE,
+          payload: false
+        });
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("reply", err.message || err.response);
       });
   };
 };
@@ -286,8 +311,6 @@ export const reply = (message, upload) => {
  */
 export const admin_response = message => {
   return async (dispatch, getState) => {
-    // dispatch(set_as_seen(true));
-
     await dispatch({
       type: actionTypes.ADD_MESSAGE,
       payload: message
@@ -323,10 +346,18 @@ export const get_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        // // console.log(
-        //   "get_conversatusion_read_status err",
-        //   err.message || err.response
-        // );
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log(
+          "get_conversatusion_read_status err",
+          err.message || err.response
+        );
       });
   };
 };
@@ -360,10 +391,18 @@ export const update_conversatusion_read_status = () => {
         });
       })
       .catch(err => {
-        // console.log(
-        //   "update_conversatusion_read_status err",
-        //   err.message || err.response
-        // );
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log(
+          "update_conversatusion_read_status err",
+          err.message || err.response
+        );
       });
   };
 };
@@ -390,7 +429,15 @@ export const set_as_seen = check => {
           });
         })
         .catch(err => {
-          // console.log("set_as_seen err", err.message || err.response);
+          showMessage({
+            message:
+              err.message ||
+              err.response ||
+              "Something went wrong, please try again.",
+            type: "danger",
+            position: "top"
+          });
+          console.log("set_as_seen err", err.message || err.response);
         });
     else {
       return dispatch({
@@ -421,7 +468,15 @@ export const update_last_seen = () => {
         });
       })
       .catch(err => {
-        // console.log("update_last_seen", err.message || err.response);
+        showMessage({
+          message:
+            err.message ||
+            err.response ||
+            "Something went wrong, please try again.",
+          type: "danger",
+          position: "top"
+        });
+        console.log("update_last_seen", err.message || err.response);
       });
   };
 };
@@ -451,8 +506,17 @@ export const upload_media = media => {
         return res.data;
       })
       .then(data => {
-        if (data.success) return dispatch(reply(null, [data.media_link]));
-        else {
+        if (data.success) {
+          if (getState().messenger.open_conversation) {
+            return dispatch(reply(null, [data.media_link]));
+          } else {
+            dispatch(
+              start_conversation("Sending an attachment", () =>
+                dispatch(reply(null, [data.media_link]))
+              )
+            );
+          }
+        } else {
           showMessage({
             message: data.message || "Something went wrong, please try again.",
             type: "danger",

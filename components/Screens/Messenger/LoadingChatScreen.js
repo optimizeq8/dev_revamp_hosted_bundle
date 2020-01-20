@@ -1,6 +1,11 @@
 import React from "react";
 import { View, Text, BackHandler } from "react-native";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import {
+  SafeAreaView,
+  NavigationEvents,
+  NavigationActions,
+  StackActions
+} from "react-navigation";
 import { Container } from "native-base";
 import * as Segment from "expo-analytics-segment";
 import LottieView from "lottie-react-native";
@@ -34,8 +39,19 @@ class LoadingChatScreen extends React.Component {
       prevProps.loading_con !== this.props.loading_con &&
       !this.props.loading_con
     ) {
-      if (!this.props.loading_failed)
-        this.props.navigation.navigate("Messenger");
+      if (!this.props.loading_failed) {
+        let continueRoutes = ["Dashboard", "Messenger"].map(route =>
+          NavigationActions.navigate({
+            routeName: route
+          })
+        );
+        //resets the navigation stack
+        resetAction = StackActions.reset({
+          index: continueRoutes.length - 1, //index of the last screen route
+          actions: continueRoutes
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     }
   }
 
