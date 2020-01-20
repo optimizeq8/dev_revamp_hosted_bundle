@@ -647,7 +647,6 @@ export const getBusinessInvites = () => {
       .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
       .then(res => res.data)
       .then(data => {
-        console.log(data);
         dispatch({
           payload: data.data,
           type: actionTypes.SET_BUSINESS_INVITES
