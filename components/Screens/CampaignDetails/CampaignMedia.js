@@ -81,7 +81,7 @@ export default props => {
             <PlaceholderLine />
           </View>
         ) : (
-          <Text uppercase style={globalStyles.title}>
+          <Text uppercase style={styles.titleMedia}>
             {translate("Media")}
           </Text>
         )}
