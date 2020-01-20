@@ -107,8 +107,6 @@ class Dashboard extends Component {
       }
     }
     Segment.screen("Dashboard");
-    this.props.userInfo &&
-      this.props.connect_user_to_intercom(this.props.userInfo.userid);
     this.setState({ menu: new Animated.Value(0) });
     this.closeAnimation();
     //Reset campaignProgressStarted only if there was a campaing in progress
@@ -134,7 +132,6 @@ class Dashboard extends Component {
     ) {
       this.props.userInfo &&
         this.props.connect_user_to_intercom(this.props.userInfo.userid);
-      // this.props.set_as_seen(false);
       this.props.getCampaignList(
         this.props.mainBusiness.businessid,
         this.increasePage,
@@ -267,7 +264,6 @@ class Dashboard extends Component {
 
   reloadData = () => {
     this.props.connect_user_to_intercom(this.props.userInfo.userid);
-    // this.props.set_as_seen(false);
     this.props.getCampaignList(
       this.props.mainBusiness.businessid,
       this.increasePage,
@@ -724,7 +720,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.setCampaignInProgress(value)),
   connect_user_to_intercom: user_id =>
     dispatch(actionCreators.connect_user_to_intercom(user_id)),
-  set_as_seen: check => dispatch(actionCreators.set_as_seen(check)),
   getLanguageListPOEdit: language =>
     dispatch(actionCreators.getLanguageListPOEdit(language))
 });
