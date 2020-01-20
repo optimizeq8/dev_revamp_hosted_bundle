@@ -1,109 +1,77 @@
 import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
-import {
-  widthPercentageToDP,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
 
-export const colors = {
-  black: "#1a1917",
-  gray: "#888888",
-  background1: "#751AFF",
-  background2: "#751AFF"
-};
 const styles = StyleSheet.create({
-  iconWallet: {
-    top: "1%",
-    left: "90%"
-  },
   mainView: {
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
-    width: "100%"
+    width: "100%",
+    paddingVertical: 13,
+    alignItems: "center"
   },
   amountContainer: {
     flexDirection: "column"
   },
   amountText: {
-    fontSize: heightPercentageToDP(3.4),
-    paddingHorizontal: 0
+    fontSize: 26,
+    paddingHorizontal: 0,
+    color: "#FF8D04"
   },
   cardStyle: {
     justifyContent: "space-between",
-    backgroundColor: "#FFFF",
-    flexDirection: "row",
+    backgroundColor: "rgba(0,0,0,0.2)",
     flex: 1,
-    marginHorizontal: 25,
-    borderRadius: 25,
-    marginVertical: 10,
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowColor: "#a0a0a0",
-    shadowOffset: { height: 6, width: 0 },
-    elevation: 5
+    marginHorizontal: 15,
+    borderRadius: 40,
+    marginVertical: 9,
+    paddingVertical: 18,
+    paddingHorizontal: 25
   },
   text: {
-    color: "#5F5F5F",
-    fontFamily: "montserrat-medium",
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
     fontSize: 13,
-    textAlign: "left",
-    paddingTop: heightPercentageToDP(0.5)
+    textAlign: "left"
+  },
+  amountTextTitle: {
+    color: "#FFF",
+    fontFamily: "montserrat-bold",
+    fontSize: 14,
+    textAlign: "center"
   },
   dateText: {
-    color: "#5F5F5F",
-    fontFamily: "montserrat-medium",
-    fontSize: 13,
-    paddingTop: heightPercentageToDP(0.5)
+    color: "#FF8D04",
+    fontFamily: "montserrat-bold-english",
+    fontSize: 18,
+    textAlign: "left"
   },
   header: {
-    paddingBottom: heightPercentageToDP(1)
-  },
-  textContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start"
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
   },
   titleText: {
     textAlign: "left",
-    color: "#5F5F5F",
+    color: "#FFFF",
     fontFamily: "montserrat-bold",
     fontSize: 16,
     paddingVertical: 0,
+    paddingHorizontal: 10,
     width: 200
   },
-
   subText: {
-    paddingTop: heightPercentageToDP(0.25),
-    paddingBottom: heightPercentageToDP(0.5),
     fontFamily: "montserrat-regular-english",
     fontSize: 14,
-    color: "#a0a0a0",
-    textAlign: "left"
-  },
-  transactionButton: {
-    flex: 1,
-    padding: 20
-  },
-  containerStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-
-    backgroundColor: "transparent",
-    borderRadius: 20
+    color: "#FFF",
+    textAlign: "left",
+    marginTop: 3
   },
   icon: {
-    position: "absolute",
-    color: "#a0a0a0",
-    // left: widthPercentageToDP('63%'),
-    right: 0,
-    fontSize: widthPercentageToDP("15%"),
-    top: widthPercentageToDP("-3%"),
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    shadowColor: "#6268FF",
-    shadowOffset: { height: 1, width: 0 }
-    // elevation: 0
+    color: "#FFFF",
+    fontSize: 35
+  },
+  transactionText: {
+    marginTop: 7
   }
 });
 

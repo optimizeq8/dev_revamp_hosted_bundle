@@ -88,7 +88,7 @@ class SearchBar extends Component {
                     : {}
                 ),
               {
-                color: !transactionSearch && !businessList ? "#fff" : "#000"
+                color: !businessList ? "#fff" : "#000"
               }
             ]}
             placeholder={translate(
@@ -101,7 +101,11 @@ class SearchBar extends Component {
               }`
             )}
             placeholderTextColor={
-              !transactionSearch && !businessList ? "#fff" : "#000"
+              transactionSearch
+                ? "#rgba(255,255,255,0.4)"
+                : !businessList
+                ? "#fff"
+                : "#000"
             }
             value={this.state.value}
             onChangeText={value => {

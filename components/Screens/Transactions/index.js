@@ -75,65 +75,75 @@ class Transactions extends Component {
         />
       ) : null;
       return (
-        <SafeAreaView
-          style={styles.safeAreaContainer}
-          forceInset={{ bottom: "never", top: "always" }}
+        <Sidemenu
+          onChange={isOpen => {
+            if (isOpen === false) this._handleSideMenuState(isOpen);
+          }}
+          disableGestures={true}
+          menu={this.state.sidemenustate ? menu : null}
+          menuPosition={I18nManager.isRTL ? "left" : "right"}
+          openMenuOffset={widthPercentageToDP("85%")}
+          isOpen={this.state.sidemenustate}
         >
-          <NavigationEvents
-            onDidFocus={() => {
-              Segment.screenWithProperties("Transactions List", {
-                category: "User Menu"
-              });
-            }}
-          />
-          <View style={styles.container}>
-            <Sidemenu
-              onChange={isOpen => {
-                if (isOpen === false) this._handleSideMenuState(isOpen);
+          <SafeAreaView
+            style={styles.safeAreaContainer}
+            forceInset={{ bottom: "never", top: "always" }}
+          >
+            <NavigationEvents
+              onDidFocus={() => {
+                Segment.screenWithProperties("Transactions List", {
+                  category: "User Menu"
+                });
               }}
-              disableGestures={true}
-              menu={this.state.sidemenustate ? menu : null}
-              menuPosition={I18nManager.isRTL ? "left" : "right"}
-              openMenuOffset={widthPercentageToDP("85%")}
-              isOpen={this.state.sidemenustate}
-            >
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                title={"Transactions"}
-                navigation={this.props.navigation}
-              />
-              <View style={styles.mainContainer}>
-                <View style={styles.headerBlock}>
-                  <View style={styles.searchContainer}>
-                    <SearchBar
-                      screenProps={this.props.screenProps}
-                      transactionSearch={true}
-                    />
-                  </View>
+            />
+            <CustomHeader
+              screenProps={this.props.screenProps}
+              title={"Transactions"}
+              navigation={this.props.navigation}
+            />
+            <View style={styles.mainContainer}>
+              <View style={styles.headerBlock}>
+                <View style={styles.searchContainer}>
+                  <SearchBar
+                    screenProps={this.props.screenProps}
+                    transactionSearch={true}
+                    customInputStyle={{
+                      backgroundColor: "#0004"
+                    }}
+                  />
+                </View>
+                {this.props.filteredTransactions.length !== 0 && (
                   <Button
                     style={styles.activebutton}
                     onPress={() => {
                       this._handleSideMenuState(true);
                     }}
                   >
-                    <FilterIcon width={23} height={23} fill="#575757" />
+                    <FilterIcon
+                      onPress={() => {
+                        this._handleSideMenuState(true);
+                      }}
+                      width={30}
+                      height={30}
+                      fill="#FFF"
+                    />
                   </Button>
-                </View>
-                {this.props.filteredTransactions.length === 0 && (
-                  <Text style={styles.noTranText}>
-                    {translate("No transactions available")}
-                  </Text>
                 )}
-                <FlatList
-                  renderItem={this.renderTransactionCard}
-                  data={this.props.filteredTransactions}
-                  contentContainerStyle={styles.contentContainer}
-                  keyExtractor={item => item.payment_id}
-                />
               </View>
-            </Sidemenu>
-          </View>
-        </SafeAreaView>
+              {this.props.filteredTransactions.length === 0 && (
+                <Text style={styles.noTranText}>
+                  {translate("No transactions available")}
+                </Text>
+              )}
+              <FlatList
+                renderItem={this.renderTransactionCard}
+                data={this.props.filteredTransactions}
+                contentContainerStyle={styles.contentContainer}
+                keyExtractor={item => item.payment_id}
+              />
+            </View>
+          </SafeAreaView>
+        </Sidemenu>
       );
     }
   }

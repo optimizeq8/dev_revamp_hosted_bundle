@@ -16,8 +16,7 @@ const styles = StyleSheet.create({
   },
   headerBlock: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingVertical: widthPercentageToDP(5)
+    justifyContent: "space-evenly"
   },
   container: {
     backgroundColor: "#0000",
@@ -32,26 +31,21 @@ const styles = StyleSheet.create({
     // marginBottom: heightPercentageToDP(50)
   },
   activebutton: {
-    backgroundColor: "#fff",
+    backgroundColor: "#0000",
     justifyContent: "center",
     width: 55,
-    height: 55,
-    borderRadius: 50,
-    elevation: 0,
-    marginRight: 10
+    height: 55
   },
   mainContainer: {
-    backgroundColor: "#F4F4F4",
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
     width: "100%",
-    height: "100%",
-    marginTop: 10
+    height: "100%"
   },
   noTranText: {
     alignSelf: "center",
     fontSize: 18,
-    fontFamily: "montserrat-light"
+    color: "#FFF",
+    fontFamily: "montserrat-regular",
+    paddingVertical: 20
   }
 });
 
