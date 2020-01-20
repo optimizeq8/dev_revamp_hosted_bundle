@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { View, ScrollView, BackHandler, Text, I18nManager } from "react-native";
-import { Button, Container } from "native-base";
-import { SafeAreaView, NavigationEvents } from "react-navigation";
+import { View, BackHandler, Text, I18nManager } from "react-native";
+import { Button } from "native-base";
+import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import * as Segment from "expo-analytics-segment";
 import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import TransactionCard from "../../MiniComponents/TransactionCard";
 import SearchBar from "../../MiniComponents/SearchBar";
 import CustomHeader from "../../MiniComponents/Header";
-import FilterMenu from "../../MiniComponents/FilterMenu";
+// import FilterMenu from "../../MiniComponents/FilterMenu";
+let FilterMenu = null;
 import ErrorComponent from "../../MiniComponents/ErrorComponent";
 
 //Redux
@@ -41,8 +42,19 @@ class Transactions extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
   _handleSideMenuState = status => {
-    this.setState({ sidemenustate: status }, () => {});
+    this.setState({ sidemenustate: status });
+    if (!FilterMenu) {
+      FilterMenu = require("../../MiniComponents/FilterMenu").default;
+    } else FilterMenu = null;
   };
+
+  renderTransactionCard = ({ item }) => (
+    <TransactionCard
+      key={item.payment_id}
+      transaction={item}
+      screenProps={this.props.screenProps}
+    />
+  );
   render() {
     const { translate } = this.props.screenProps;
     if (this.props.errorTransactionList) {
@@ -54,21 +66,14 @@ class Transactions extends Component {
       );
     } else if (this.props.loading) return <LoadingScreen dash={true} top={0} />;
     else {
-      let menu = (
+      let menu = FilterMenu ? (
         <FilterMenu
           screenProps={this.props.screenProps}
           transactionFilter={true}
           _handleSideMenuState={this._handleSideMenuState}
           open={this.state.sidemenustate}
         />
-      );
-      let transList = this.props.filteredTransactions.map(transaction => (
-        <TransactionCard
-          key={transaction.id}
-          transaction={transaction}
-          screenProps={this.props.screenProps}
-        />
-      ));
+      ) : null;
       return (
         <SafeAreaView
           style={styles.safeAreaContainer}
@@ -81,7 +86,7 @@ class Transactions extends Component {
               });
             }}
           />
-          <Container style={styles.container}>
+          <View style={styles.container}>
             <Sidemenu
               onChange={isOpen => {
                 if (isOpen === false) this._handleSideMenuState(isOpen);
@@ -114,17 +119,20 @@ class Transactions extends Component {
                     <FilterIcon width={23} height={23} fill="#575757" />
                   </Button>
                 </View>
-                {transList.length === 0 && (
+                {this.props.filteredTransactions.length === 0 && (
                   <Text style={styles.noTranText}>
                     {translate("No transactions available")}
                   </Text>
                 )}
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                  {transList}
-                </ScrollView>
+                <FlatList
+                  renderItem={this.renderTransactionCard}
+                  data={this.props.filteredTransactions}
+                  contentContainerStyle={styles.contentContainer}
+                  keyExtractor={item => item.payment_id}
+                />
               </View>
             </Sidemenu>
-          </Container>
+          </View>
         </SafeAreaView>
       );
     }
@@ -143,7 +151,4 @@ const mapDispatchToProps = dispatch => ({
   onSelect: query => dispatch(actionCreators.filterCampaignsStatus(query)),
   getTransactions: () => dispatch(actionCreators.getTransactions())
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Transactions);
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions);
