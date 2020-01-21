@@ -58,7 +58,6 @@ export default class InvitationRow extends Component {
             height={30}
             style={[
               {
-                shadowOpacity: 0,
                 borderWidth: 1,
                 borderRadius: 30,
                 backgroundColor: globalColors.orange
@@ -80,7 +79,6 @@ export default class InvitationRow extends Component {
             }
             width={30}
             height={30}
-            style={{ shadowOpacity: 0 }}
           />
         </View>
       </View>

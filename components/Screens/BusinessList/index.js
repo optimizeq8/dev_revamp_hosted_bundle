@@ -13,6 +13,7 @@ import styles from "./styles";
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
 import globalStyles from "../../../GlobalStyles";
+import GradientButton from "../../MiniComponents/GradientButton";
 class BusinessList extends Component {
   static navigationOptions = {
     header: null
@@ -124,14 +125,15 @@ class BusinessList extends Component {
               refreshing={this.props.businessesLoading}
             />
           </View>
-          <TouchableOpacity
+          <GradientButton
             style={[
               styles.bottomCard,
               {
                 bottom: this.state.bottomOffset
               }
             ]}
-            onPress={() =>
+            radius={50}
+            onPressAction={() =>
               this.props.navigation.navigate("CreateBusinessAccount")
             }
           >
@@ -140,7 +142,7 @@ class BusinessList extends Component {
               type="MaterialCommunityIcons"
               style={styles.iconStyle}
             />
-          </TouchableOpacity>
+          </GradientButton>
         </View>
       </Container>
     );

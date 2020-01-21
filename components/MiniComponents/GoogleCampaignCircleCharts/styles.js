@@ -1,10 +1,4 @@
 import { StyleSheet, PixelRatio } from "react-native";
-
-import { widthPercentageToDP } from "react-native-responsive-screen";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import { globalColors } from "../../../GlobalStyles";
 
 export const colors = {

@@ -54,6 +54,7 @@ import isStringArabic from "../../isStringArabic";
 import whyDidYouRender from "@welldone-software/why-did-you-render";
 import isEqual from "react-fast-compare";
 import AppUpdateChecker from "../AppUpdateChecker";
+import GradientButton from "../../MiniComponents/GradientButton";
 
 //Logs reasons why a component might be uselessly re-rendering
 whyDidYouRender(React);
@@ -534,16 +535,17 @@ class Dashboard extends Component {
                                 flexDirection: "column"
                               }}
                             >
-                              <TouchableOpacity
+                              <GradientButton
                                 style={styles.button}
-                                onPress={this.handleNewCampaign}
+                                radius={30}
+                                onPressAction={this.handleNewCampaign}
                               >
                                 <Icon
                                   name="plus"
                                   type="MaterialCommunityIcons"
                                   style={{ color: "#fff" }}
                                 />
-                              </TouchableOpacity>
+                              </GradientButton>
                               <Text
                                 style={[
                                   styles.campaignButtonText,

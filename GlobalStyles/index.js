@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 export const globalColors = {
-  orange: "#FF9D00",
+  orange: "#FF790A",
   darkOrange: "#FF790A",
   purple: "#751AFF",
   green: "#66D072",
