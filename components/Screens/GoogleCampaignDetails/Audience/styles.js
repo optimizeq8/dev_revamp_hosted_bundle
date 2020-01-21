@@ -103,15 +103,16 @@ const styles = StyleSheet.create({
   targetTouchable: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 8
   },
   icon: {
     alignSelf: "center",
     color: "#FF9D00",
-    fontSize: 25
+    fontSize: 30
   },
   menutext: {
-    paddingLeft: 15,
+    paddingHorizontal: 15,
     fontSize: 16,
     fontFamily: "montserrat-bold",
     textAlign: "left",
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   menudetails: {
     textAlign: "left",
-    paddingLeft: 15,
+    paddingHorizontal: 15,
     color: "#fff",
     fontFamily: "montserrat-regular",
     fontSize: 14,
@@ -204,6 +205,16 @@ const styles = StyleSheet.create({
   },
   popupOverlay: {
     height: "100%"
+  },
+  proceedButtonRTL: {
+    width: 65,
+    height: 65,
+    backgroundColor: "#FF9D00",
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 4
+    // padding: 20
   }
 });
 

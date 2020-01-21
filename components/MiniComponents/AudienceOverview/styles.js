@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     flexDirection: "column",
     fontFamily: "montserrat-bold",
-    fontSize: 13,
+    fontSize: 12,
     paddingHorizontal: 10
   },
   categoryView: {
@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
   subtext: {
     textAlign: "left",
     fontFamily: "montserrat-light",
-    fontSize: 14,
+    fontSize: 11,
     // paddingTop: 5,
     paddingHorizontal: 10,
     paddingTop: 6,
+    lineHeight: 17,
     color: "#fff"
   },
   title: {

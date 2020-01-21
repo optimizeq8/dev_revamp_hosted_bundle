@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Keyboard,
-  BackHandler
+  BackHandler,
+  I18nManager
 } from "react-native";
 import { Text, Container, Icon, Content } from "native-base";
 import Sidemenu from "../../../MiniComponents/SideMenu";
@@ -482,7 +483,7 @@ class GoogleAdTargetting extends Component {
                     style={styles.targetTouchable}
                   >
                     <View style={globalStyles.row}>
-                      <GenderIcon width={25} height={25} style={styles.icon} />
+                      <GenderIcon width={30} height={30} style={styles.icon} />
 
                       <View style={globalStyles.column}>
                         <Text uppercase style={styles.menutext}>
@@ -500,9 +501,9 @@ class GoogleAdTargetting extends Component {
                     {editCampaign && (
                       <View style={globalStyles.column}>
                         {this.state.gender === "" || this.state.gender ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
+                          <GreenCheckmarkIcon width={30} height={30} />
                         ) : (
-                          <PlusCircleIcon width={25} height={25} />
+                          <PlusCircleIcon width={30} height={30} />
                         )}
                       </View>
                     )}
@@ -517,8 +518,8 @@ class GoogleAdTargetting extends Component {
                     <View style={globalStyles.row}>
                       <AgeIcon
                         fill={globalColors.orange}
-                        width={25}
-                        height={25}
+                        width={30}
+                        height={30}
                         style={styles.icon}
                       />
                       <View style={globalStyles.column}>
@@ -535,9 +536,9 @@ class GoogleAdTargetting extends Component {
                     {editCampaign && (
                       <View>
                         {this.state.age.length !== 0 ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
+                          <GreenCheckmarkIcon width={30} height={30} />
                         ) : (
-                          <PlusCircleIcon width={25} height={25} />
+                          <PlusCircleIcon width={30} height={30} />
                         )}
                       </View>
                     )}
@@ -552,8 +553,8 @@ class GoogleAdTargetting extends Component {
                   >
                     <View style={globalStyles.row}>
                       <LocationIcon
-                        width={25}
-                        height={25}
+                        width={30}
+                        height={30}
                         style={styles.icon}
                       />
 
@@ -568,7 +569,7 @@ class GoogleAdTargetting extends Component {
                         <Text uppercase style={styles.menutext}>
                           {translate("Location")}
                         </Text>
-                        <Text numberOfLines={1} style={styles.menudetails}>
+                        <Text style={styles.menudetails}>
                           {this.state.country !== ""
                             ? translate(
                                 CountriesList.find(
@@ -585,9 +586,9 @@ class GoogleAdTargetting extends Component {
                     {editCampaign && (
                       <View style={globalStyles.column}>
                         {this.state.gender === "" || this.state.gender ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
+                          <GreenCheckmarkIcon width={30} height={30} />
                         ) : (
-                          <PlusCircleIcon width={25} height={25} />
+                          <PlusCircleIcon width={30} height={30} />
                         )}
                       </View>
                     )}
@@ -623,9 +624,9 @@ class GoogleAdTargetting extends Component {
                     {editCampaign && (
                       <View style={globalStyles.column}>
                         {this.state.gender === "" || this.state.gender ? (
-                          <GreenCheckmarkIcon width={25} height={25} />
+                          <GreenCheckmarkIcon width={30} height={30} />
                         ) : (
-                          <PlusCircleIcon width={25} height={25} />
+                          <PlusCircleIcon width={30} height={30} />
                         )}
                       </View>
                     )}
@@ -659,7 +660,13 @@ class GoogleAdTargetting extends Component {
                     duration={300}
                     easing={"ease"}
                     animation={
-                      this.state.selectRegion ? "slideInRight" : "slideOutRight"
+                      this.state.selectRegion
+                        ? I18nManager.isRTL
+                          ? "slideInLeft"
+                          : "slideInRight"
+                        : I18nManager.isRTL
+                        ? "slideOutLeft"
+                        : "slideOutRight"
                     }
                   >
                     <View style={styles.popupOverlay}>
@@ -683,14 +690,23 @@ class GoogleAdTargetting extends Component {
                           loading={this.props.campaign.loading}
                         />
                       </Content>
-                      <LowerButton bottom={4} function={this.setModalVisible} />
+                      <LowerButton
+                        isRTL={I18nManager.isRTL}
+                        style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                        width={I18nManager.isRTL ? 25 : null}
+                        height={I18nManager.isRTL ? 25 : null}
+                        bottom={4}
+                        function={this.setModalVisible}
+                      />
                     </View>
                   </Animatable.View>
                 ) : (
                   <Animatable.View
                     duration={300}
                     easing={"ease"}
-                    animation={"slideInLeft"}
+                    animation={
+                      I18nManager.isRTL ? "slideInRight" : "slideInLeft"
+                    }
                   >
                     <View style={styles.popupOverlay}>
                       <CustomHeader
@@ -710,6 +726,10 @@ class GoogleAdTargetting extends Component {
                         />
                       </Content>
                       <LowerButton
+                        isRTL={I18nManager.isRTL}
+                        style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                        width={I18nManager.isRTL ? 25 : null}
+                        height={I18nManager.isRTL ? 25 : null}
                         bottom={4}
                         function={() => {
                           if (this.state.country) {

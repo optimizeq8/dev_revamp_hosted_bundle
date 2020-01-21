@@ -633,14 +633,21 @@ class GoogleAdInfo extends Component {
                         loading={this.props.campaign.loading}
                       />
                     </Content>
-                    <LowerButton bottom={4} function={this.setModalVisible} />
+                    <LowerButton
+                      isRTL={I18nManager.isRTL}
+                      style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                      width={I18nManager.isRTL ? 25 : null}
+                      height={I18nManager.isRTL ? 25 : null}
+                      bottom={4}
+                      function={this.setModalVisible}
+                    />
                   </View>
                 </Animatable.View>
               ) : (
                 <Animatable.View
                   duration={300}
                   easing={"ease"}
-                  animation={"slideInLeft"}
+                  animation={I18nManager.isRTL ? "slideInRight" : "slideInLeft"}
                 >
                   <View style={styles.popupOverlay}>
                     <CustomHeader
@@ -661,6 +668,10 @@ class GoogleAdInfo extends Component {
                     </Content>
                     <LowerButton
                       bottom={4}
+                      isRTL={I18nManager.isRTL}
+                      style={I18nManager.isRTL ? styles.proceedButtonRTL : {}}
+                      width={I18nManager.isRTL ? 25 : null}
+                      height={I18nManager.isRTL ? 25 : null}
                       function={() => {
                         if (this.state.country) {
                           segmentEventTrack(
