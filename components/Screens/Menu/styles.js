@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
   },
   CloseIcon: {
     position: "absolute",
-    top: heightPercentageToDP("5"),
-    left: widthPercentageToDP("6%"),
+    top: "2%",
+    left: "3%",
     zIndex: 15,
     padding: 10
   },
@@ -138,6 +138,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     zIndex: -1,
     elevation: -2
+  },
+  businessListContainer: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 30
   }
 });
 

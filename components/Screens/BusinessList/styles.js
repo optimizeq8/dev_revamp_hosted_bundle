@@ -23,24 +23,13 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   container: {
-    marginTop: 30,
     backgroundColor: "#0000",
     zIndex: 10
   },
   mainCard: {
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
-    backgroundColor: "#fff",
-    borderColor: "transparent",
-    // flex: 1,
-    marginLeft: 0,
-    marginRight: 0,
-    marginBottom: 0,
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    paddingTop: 15
+    borderColor: "transparent"
   },
   text: {
     textAlign: "center",
@@ -51,17 +40,11 @@ const styles = StyleSheet.create({
   },
   bottomCard: {
     backgroundColor: "#FF9D00",
-    shadowColor: "#6C6C6C",
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: -3 },
-    borderTopStartRadius: 30,
-    borderTopEndRadius: 30,
-    height: hp("14"),
-    // top: 10,
+    borderRadius: 50,
+    height: hp(9),
+    width: hp(9),
     position: "absolute",
-    top: "84%",
-    width: "100%",
+    right: "5%",
     justifyContent: "center"
   },
   gradient: {
@@ -85,7 +68,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#575757",
     textAlign: "left"
-  }
+  },
+  customInputStyle: {
+    backgroundColor: "#0001",
+    height: "100%",
+    width: "90%"
+  },
+  flatlistWrapper: { height: hp(55), marginTop: 10 },
+  iconStyle: { color: "#fff", alignSelf: "center" }
 });
 
 export default styles;

@@ -13,6 +13,7 @@ import rtlStyles from "./rtlStyles";
 import SearchIcon from "../../../assets/SVGs/Search";
 import CloseIcon from "../../../assets/SVGs/Close";
 import isStringArabic from "../../isStringArabic";
+import globalStyles from "../../../GlobalStyles";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -64,7 +65,8 @@ class SearchBar extends Component {
       height,
       businessList,
       transactionSearch,
-      customInputStyle
+      customInputStyle,
+      strokeColor
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
@@ -73,7 +75,11 @@ class SearchBar extends Component {
         style={[styles.searchBarView, { height: height ? height : "70%" }]}
       >
         <Item rounded style={[styles.searchBarItem, customInputStyle]}>
-          <SearchIcon width={18} height={18} stroke="#fff" />
+          <SearchIcon
+            width={18}
+            height={18}
+            stroke={strokeColor ? strokeColor : "#fff"}
+          />
           <Input
             style={[
               I18nManager.isRTL
@@ -105,7 +111,7 @@ class SearchBar extends Component {
                 ? "#rgba(255,255,255,0.4)"
                 : !businessList
                 ? "#fff"
-                : "#000"
+                : globalStyles.darkGrayTextColor.color
             }
             value={this.state.value}
             onChangeText={value => {

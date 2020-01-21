@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import {
   View,
   Animated,
-  Easing,
   TouchableOpacity,
   BackHandler,
   ScrollView,
-  I18nManager,
-  Image
+  I18nManager
 } from "react-native";
-import { Button, Text, Container, Icon } from "native-base";
+import { Text, Container, Icon } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 // import BusinessList from "../BusinessList";
 let BusinessList = null;
@@ -18,13 +16,11 @@ import LoadingScreen from "../../MiniComponents/LoadingScreen";
 import GradientButton from "../../MiniComponents/GradientButton";
 // Icons
 import * as Icons from "../../../assets/SVGs/MenuIcons/index";
-import Background from "../../../assets/SVGs/Background";
 import Logo from "../../../assets/SVGs/Optimize";
 import DownArrowIcon from "../../../assets/SVGs/MenuIcons/DownArrowIcon";
 import BackdropIcon from "../../../assets/SVGs/BackDropIcon";
 
 //browser
-import { openPrivacy, openTerms } from "../../Terms&Conditions";
 
 // Style
 import styles from "./styles";
@@ -37,24 +33,24 @@ import { connect } from "react-redux";
 import isStringArabic from "../../isStringArabic";
 import {
   heightPercentageToDP as hp,
-  widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-navigation";
 import { showMessage } from "react-native-flash-message";
 import segmentEventTrack from "../../segmentEventTrack";
-const imageLogo = require("../../../assets/images/logo01.png");
 
 class Menu extends Component {
-  _draggedValue = new Animated.Value(0);
-
-  draggableRange = {
-    top: hp("80"),
-    bottom: -hp("120")
-  };
   constructor(props) {
     super(props);
-    this.state = { slidePanel: false };
+    this.state = {
+      slidePanel: false,
+      _draggedValue: new Animated.Value(0),
+      panelOffSet: 0,
+      draggableRange: {
+        top: hp("100") - 100,
+        bottom: -10
+      }
+    };
   }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
@@ -67,38 +63,25 @@ class Menu extends Component {
 
   handleBackButton = () => {
     this.closePanel();
-
     this.props.closeAnimation();
     return true;
   };
-  showPanel() {
-    Animated.timing(this._draggedValue, {
-      toValue: this.draggableRange.top,
-      easing: Easing.elastic(1), // Springy
-      duration: 250,
-      useNativeDriver: true
-    }).start();
-  }
+
   closePanel = () => {
     if (BusinessList) {
       BusinessList = null;
     }
-    this._panel.hide();
-    this.setState({ slidePanel: false });
-  };
-  slidePanelShow = () => {
-    if (this.state.slidePanel) {
-      if (BusinessList) {
-        BusinessList = null;
-      }
+    this.setState({ slidePanel: false }, () => {
       this._panel.hide();
-      this.setState({ slidePanel: false });
-    } else {
-      if (!BusinessList) {
-        BusinessList = require("../BusinessList").default;
-      }
-      this.showPanel();
-      this.setState({ slidePanel: true });
+    });
+  };
+  showPanel = () => {
+    this.setState({ slidePanel: true }, () => {
+      this._panel.show();
+    });
+
+    if (!BusinessList) {
+      BusinessList = require("../BusinessList").default;
     }
   };
   handleNavigation = (route, checkForBusinessId = false) => {
@@ -118,6 +101,19 @@ class Menu extends Component {
     }
   };
 
+  /**
+   * Gets the height and y position of the business name text component
+   * so that the panel shows up underneath it on most phones
+   */
+  handlePanelOffset = event => {
+    const layout = event.nativeEvent.layout;
+    this.setState({
+      draggableRange: {
+        ...this.state.draggableRange,
+        top: hp(100) - (layout.height + layout.y)
+      }
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
 
@@ -152,6 +148,7 @@ class Menu extends Component {
                 : this.props.mainBusiness.brandname}
             </Text>
             <Text
+              onLayout={this.handlePanelOffset}
               style={[
                 styles.businessname,
                 this.props.mainBusiness &&
@@ -170,7 +167,7 @@ class Menu extends Component {
 
             <GradientButton
               style={[styles.button]}
-              onPressAction={this.slidePanelShow}
+              onPressAction={this.showPanel}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <Text style={styles.buttonText}>
@@ -361,23 +358,26 @@ class Menu extends Component {
           <SlidingUpPanel
             showBackdrop={false}
             ref={c => (this._panel = c)}
-            draggableRange={this.draggableRange}
+            friction={0.3}
+            draggableRange={this.state.draggableRange}
             allowDragging={false}
-            animatedValue={this._draggedValue}
+            animatedValue={this.state._draggedValue}
           >
             <>
               <TouchableOpacity
                 style={styles.CloseIcon}
-                onPress={() => this.closePanel()}
+                onPress={this.closePanel}
               >
                 <Icons.CloseListIcon />
               </TouchableOpacity>
-              {BusinessList ? (
-                <BusinessList
-                  navigation={this.props.navigation}
-                  screenProps={this.props.screenProps}
-                />
-              ) : null}
+              <View style={styles.businessListContainer}>
+                {BusinessList ? (
+                  <BusinessList
+                    navigation={this.props.navigation}
+                    screenProps={this.props.screenProps}
+                  />
+                ) : null}
+              </View>
             </>
           </SlidingUpPanel>
         </Container>

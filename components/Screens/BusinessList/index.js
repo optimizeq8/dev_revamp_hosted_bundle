@@ -1,9 +1,10 @@
 //Components
 import React, { Component, Fragment } from "react";
-import { View, FlatList } from "react-native";
-import { Button, Text, Container } from "native-base";
+import { View, FlatList, TouchableOpacity } from "react-native";
+import { Text, Container, Icon } from "native-base";
 import SearchBar from "../../MiniComponents/SearchBar";
 import BusinessCard from "../../MiniComponents/BusinessCard";
+import InvitationCard from "./InvitationCard";
 
 // Style
 import styles from "./styles";
@@ -11,9 +12,7 @@ import styles from "./styles";
 //Redux
 import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions";
-import { heightPercentageToDP } from "react-native-responsive-screen";
-
-import InvitationCard from "./InvitationCard";
+import globalStyles from "../../../GlobalStyles";
 class BusinessList extends Component {
   static navigationOptions = {
     header: null
@@ -25,7 +24,8 @@ class BusinessList extends Component {
       filteredBusinesses: [{ businessid: "-1" }].concat(
         //adding that dummy data so that i can show the invitation cards in the flatlist
         this.props.businessAccounts
-      )
+      ),
+      bottomOffset: 0
     };
   }
   componentDidUpdate(prevProps) {
@@ -81,22 +81,39 @@ class BusinessList extends Component {
         </Fragment>
       );
   };
+
+  /**
+   * Gets height and y postion of the Text component so that  the plus button is
+   * a close postion on different phones
+   */
+  handleButtonOffset = event => {
+    const layout = event.nativeEvent.layout;
+    this.setState({
+      bottomOffset: layout.height + layout.y
+    });
+  };
   render() {
     const { translate } = this.props.screenProps;
     return (
       <Container style={styles.container}>
         <View padder style={[styles.mainCard]}>
-          <Text style={styles.title}>{translate("Switch Account")}</Text>
-          <Text style={[styles.text, styles.switchAccountText]}>
+          <Text style={styles.title}>{translate("Switch Business")}</Text>
+          <Text
+            onLayout={this.handleButtonOffset}
+            style={[styles.text, styles.switchAccountText]}
+          >
             {translate("You can switch between businesses here")}
           </Text>
           <SearchBar
             screenProps={this.props.screenProps}
             filterBusinesses={this.filterBusinesses}
             businessList={true}
-            height={"6%"}
+            customInputStyle={styles.customInputStyle}
+            height={"7%"}
+            strokeColor={"#a0a0a0"}
+            placeholderColor={globalStyles.lightGrayTextColor.color}
           />
-          <View style={{ height: heightPercentageToDP(55) }}>
+          <View style={styles.flatlistWrapper}>
             <FlatList
               contentContainerStyle={styles.contentContainer}
               keyExtractor={item => item.businessid}
@@ -107,16 +124,23 @@ class BusinessList extends Component {
               refreshing={this.props.businessesLoading}
             />
           </View>
-          <Button
-            style={[styles.bottomCard]}
+          <TouchableOpacity
+            style={[
+              styles.bottomCard,
+              {
+                bottom: this.state.bottomOffset
+              }
+            ]}
             onPress={() =>
               this.props.navigation.navigate("CreateBusinessAccount")
             }
           >
-            <Text style={styles.subtext}>
-              + {translate("Add a new Business")}{" "}
-            </Text>
-          </Button>
+            <Icon
+              name="plus"
+              type="MaterialCommunityIcons"
+              style={styles.iconStyle}
+            />
+          </TouchableOpacity>
         </View>
       </Container>
     );
