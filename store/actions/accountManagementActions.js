@@ -640,21 +640,6 @@ export const resetBusinessInvitee = () => {
     });
   };
 };
-
-export const getBusinessInvites = () => {
-  return (dispatch, getState) => {
-    createBaseUrl()
-      .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
-      .then(res => res.data)
-      .then(data => {
-        dispatch({
-          payload: data.data,
-          type: actionTypes.SET_BUSINESS_INVITES
-        });
-      });
-  };
-};
-
 //For updating members for multiple businesses at the same time only from the main business of the account
 // export const updateTeamMemberForBusinesses = memberInfo => {
 //   return dispatch => {

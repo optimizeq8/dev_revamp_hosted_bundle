@@ -14,6 +14,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import * as Segment from "expo-analytics-segment";
+import { showMessage } from "react-native-flash-message";
 
 //components
 import Header from "../../../MiniComponents/Header";

@@ -279,7 +279,7 @@ class GoogleAdTargetting extends Component {
   _handleSubmission = () => {
     const info = {
       businessid: this.props.mainBusiness.businessid,
-      campaign_id: this.state.campaignInfo.campaign_id,
+      id: this.state.campaignInfo.id,
       age: this.state.age,
       gender: this.state.gender,
       location: this.state.location,
@@ -287,7 +287,7 @@ class GoogleAdTargetting extends Component {
     };
     const segmentInfo = {
       businessid: this.props.mainBusiness.businessid,
-      campaign_id: this.state.campaignInfo.campaign_id,
+      campaign_id: this.state.campaignInfo.id,
       campaign_age: this.state.age,
       campaign_gender: this.state.gender,
       campaign_location: this.state.location,

@@ -15,8 +15,7 @@ export {
   updateTeamMembers,
   deleteTeamMembers,
   saveBusinessInvitee,
-  resetBusinessInvitee,
-  getBusinessInvites
+  resetBusinessInvitee
 } from "./accountManagementActions";
 
 export {
@@ -33,7 +32,8 @@ export {
   setAuthToken,
   checkForUpdate,
   update_app_status_chat_notification,
-  getBusinessAccounts
+  getBusinessAccounts,
+  getBusinessInvites
 } from "./genericActions";
 
 export {

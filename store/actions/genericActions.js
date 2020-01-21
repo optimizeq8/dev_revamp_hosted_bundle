@@ -7,7 +7,6 @@ import * as SecureStore from "expo-secure-store";
 import { showMessage } from "react-native-flash-message";
 import store from "../index";
 import createBaseUrl from "./createBaseUrl";
-import { getBusinessInvites } from "./accountManagementActions";
 
 export const setAuthToken = token => {
   if (token) {
@@ -147,6 +146,21 @@ export const getBusinessAccounts = () => {
 
         return dispatch({
           type: actionTypes.ERROR_SET_BUSINESS_ACCOUNTS
+        });
+      });
+  };
+};
+
+export const getBusinessInvites = () => {
+  return (dispatch, getState) => {
+    createBaseUrl()
+      .post("verifyTeamInvite", { userid: getState().auth.userInfo.userid })
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        dispatch({
+          payload: data.data,
+          type: actionTypes.SET_BUSINESS_INVITES
         });
       });
   };
