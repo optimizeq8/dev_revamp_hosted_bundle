@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     // marginBottom: heightPercentageToDP(50)
   },
   activebutton: {
-    backgroundColor: "#0000",
     justifyContent: "center",
     width: 55,
     height: 55
