@@ -72,8 +72,19 @@ export default class SingleMetric extends Component {
             >
               {translate(metric)}
             </Text>
-            <Text style={[styles.numbers]}>
-              {formatNumber(metricValue, true)}
+            <Text
+              style={[
+                styles.numbers,
+                ,
+                detail && { fontFamily: "montserrat-regular" }
+              ]}
+            >
+              {formatNumber(
+                Number.isInteger(metricValue)
+                  ? metricValue
+                  : parseFloat(metricValue).toFixed(2),
+                true
+              )}
             </Text>
           </View>
         ) : (

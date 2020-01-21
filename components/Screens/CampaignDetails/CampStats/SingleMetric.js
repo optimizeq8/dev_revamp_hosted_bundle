@@ -52,12 +52,14 @@ export default class SingleMetric extends Component {
             {translate(metric)}
             {"\n "}
             <Text
-              style={[
-                globalStyles.numbers,
-                { fontFamily: "montserrat-regular" }
-              ]}
+              style={[styles.numbers, { fontFamily: "montserrat-regular" }]}
             >
-              {formatNumber(metricValue, true)}
+              {formatNumber(
+                Number.isInteger(metricValue)
+                  ? metricValue
+                  : parseFloat(metricValue).toFixed(2),
+                true
+              )}
             </Text>
           </Text>
         ) : (

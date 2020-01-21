@@ -71,7 +71,7 @@ ${day}/${shortMonths[month]}`;
     }
 
     return (
-      <View style={{ paddingLeft: 30 }}>
+      <View style={{ paddingLeft: 30, bottom: 10 }}>
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal
@@ -117,7 +117,7 @@ ${day}/${shortMonths[month]}`;
               />
             }
             padding={{
-              top: 70,
+              top: 60,
               bottom: this.props.campaignStats.length === 1 ? 50 : 30,
               left: 60,
               right: 50

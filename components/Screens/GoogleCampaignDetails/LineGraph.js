@@ -60,7 +60,7 @@ class LineGraph extends Component {
     }
 
     return (
-      <View style={{ paddingLeft: 30 }}>
+      <View style={{ paddingLeft: 30, bottom: 10 }}>
         <ScrollView
           scrollEnabled={this.props.campaignStats.length > 1}
           horizontal

@@ -52,11 +52,12 @@ class CampaignCircleChart extends Component {
           horizontal
           scrollEnabled={detail && chartExpanded}
           contentContainerStyle={{
-            justifyContent: "flex-start"
+            justifyContent: "flex-start",
+            paddingRight: 30
           }}
           style={{
             maxHeight: "100%",
-            marginHorizontal: detail ? 20 : 0
+            paddingLeft: detail ? 20 : 0
           }}
         >
           {!loading && (
@@ -70,7 +71,7 @@ class CampaignCircleChart extends Component {
               detail={detail}
             />
           )}
-          <View style={{ paddingHorizontal: 12, alignSelf: "center" }}>
+          <View style={{ paddingLeft: 12, alignSelf: "center" }}>
             {detail && (
               <SingleMetric
                 detail={detail}
