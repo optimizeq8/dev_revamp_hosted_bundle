@@ -156,48 +156,53 @@ class ContinueCampaign extends Component {
     const { translate } = this.props.screenProps;
     return (
       <Modal
-        style={{ margin: 0 }}
+        style={styles.modal}
         animationIn="fadeIn"
         animationOut="fadeOut"
         isVisible={this.state.isVisible}
+        hasBackdrop={true}
+        backdropOpacity={1}
+        customBackdrop={
+          <BlurView
+            tint={"dark"}
+            intensity={150}
+            style={styles.customBackdrop}
+          />
+        }
       >
-        <BlurView intensity={95} tint="dark">
-          <SafeAreaView
-            style={styles.safeAreaView}
-            forceInset={{ bottom: "never", top: "always" }}
-          >
-            <View style={styles.popupOverlay}>
-              <CustomHeader
-                screenProps={this.props.screenProps}
-                closeButton={true}
-                navigation={this.props.navigation}
-                title={"Continue Ad Creation"}
-              />
-              <Text style={[styles.text, styles.warningText]}>
-                {translate(
-                  "You were in the middle of creating an ad, would you like to continue"
-                )}
-              </Text>
-              {this.props.data.incompleteCampaign && (
-                <ContinueInfo screenProps={this.props.screenProps} />
-              )}
-              <View style={styles.footerButtons}>
-                <CustomButtons
-                  screenProps={this.props.screenProps}
-                  onPressFunction={() => this.handleContinue()}
-                  content="Resume"
-                  filled
-                />
-                <CustomButtons
-                  screenProps={this.props.screenProps}
-                  onPressFunction={() => this.handleSubmition(false, true)}
-                  content="Create a new ad"
-                />
-              </View>
-            </View>
-            {this.state.resumeLoading && <Loading top={40} />}
-          </SafeAreaView>
-        </BlurView>
+        <SafeAreaView forceInset={{ bottom: "never", top: "always" }}>
+          <CustomHeader
+            screenProps={this.props.screenProps}
+            closeButton={true}
+            navigation={this.props.navigation}
+            title={"Continue Ad Creation"}
+          />
+          <Text style={[styles.text, styles.warningText]}>
+            {translate(
+              "You were in the middle of creating an ad, would you like to continue"
+            )}
+          </Text>
+          {this.props.data.incompleteCampaign && (
+            <ContinueInfo screenProps={this.props.screenProps} />
+          )}
+          <View style={styles.footerButtons}>
+            <CustomButtons
+              buttonStyle={styles.customButton}
+              screenProps={this.props.screenProps}
+              onPressFunction={() => this.handleContinue()}
+              content="Resume"
+              filled
+            />
+            <CustomButtons
+              buttonStyle={styles.customButton}
+              screenProps={this.props.screenProps}
+              onPressFunction={() => this.handleSubmition(false, true)}
+              content="Create a new ad"
+            />
+          </View>
+
+          {this.state.resumeLoading && <Loading top={40} />}
+        </SafeAreaView>
       </Modal>
     );
   }

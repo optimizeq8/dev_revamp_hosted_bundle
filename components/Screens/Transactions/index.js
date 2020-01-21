@@ -1,6 +1,12 @@
 import React, { Component } from "react";
-import { View, BackHandler, Text, I18nManager } from "react-native";
-import { Button } from "native-base";
+import {
+  View,
+  BackHandler,
+  Text,
+  I18nManager,
+  TouchableOpacity
+} from "react-native";
+
 import { SafeAreaView, NavigationEvents, FlatList } from "react-navigation";
 import Sidemenu from "../../MiniComponents/SideMenu";
 import * as Segment from "expo-analytics-segment";
@@ -113,21 +119,14 @@ class Transactions extends Component {
                   />
                 </View>
                 {this.props.filteredTransactions.length !== 0 && (
-                  <Button
+                  <TouchableOpacity
                     style={styles.activebutton}
                     onPress={() => {
                       this._handleSideMenuState(true);
                     }}
                   >
-                    <FilterIcon
-                      onPress={() => {
-                        this._handleSideMenuState(true);
-                      }}
-                      width={30}
-                      height={30}
-                      fill="#FFF"
-                    />
-                  </Button>
+                    <FilterIcon width={30} height={30} fill="#FFF" />
+                  </TouchableOpacity>
                 )}
               </View>
               {this.props.filteredTransactions.length === 0 && (

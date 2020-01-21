@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   safeAreaView: {
-    height: "100%",
-    backgroundColor: "#0000"
+    height: "100%"
   },
-  popupOverlay: {
+  customBackdrop: {
+    flex: 1,
     height: "100%"
   },
   text: {
@@ -24,14 +24,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     width: "100%",
-    top: 20
+    marginTop: 20
   },
   contentStyle: {
-    width: "90%",
+    // width: "90%",
     alignSelf: "center",
-    backgroundColor: "#0005",
-    borderRadius: 35,
-    padding: 25
+    backgroundColor: "#0007",
+    borderRadius: 35
   },
   sections: {
     marginVertical: 10,
@@ -50,9 +49,13 @@ const styles = StyleSheet.create({
   container: {
     height: "50%"
   },
-  previewContainer: {
-    width: "80%",
-    marginHorizontal: 10
+  modal: {
+    margin: 0,
+    justifyContent: "flex-start"
+  },
+  customButton: {
+    borderRadius: 25,
+    height: 50
   }
 });
 
