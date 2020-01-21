@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   button: {
-    marginHorizontal: 8
+    marginHorizontal: 8,
+    overflow: "hidden"
   },
   gradient: {
     height: "100%",

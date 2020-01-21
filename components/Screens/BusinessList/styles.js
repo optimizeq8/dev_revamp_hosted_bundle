@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   bottomCard: {
-    backgroundColor: "#FF9D00",
     borderRadius: 50,
     height: hp(9),
     width: hp(9),

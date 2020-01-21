@@ -61,7 +61,12 @@ class GradientButton extends React.PureComponent {
 
     return (
       <TouchableOpacity
-        style={[styles.button, { height, width }, style]}
+        style={[
+          styles.button,
+          { height, width },
+          style,
+          { borderRadius: radius }
+        ]}
         onPress={
           disabled
             ? null
@@ -73,7 +78,7 @@ class GradientButton extends React.PureComponent {
         }
       >
         <LinearGradient
-          style={[styles.gradient, { borderRadius: radius }]}
+          style={[styles.gradient]}
           colors={
             disabled
               ? disabledColor
