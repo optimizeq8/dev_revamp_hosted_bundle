@@ -1,9 +1,5 @@
-import { StyleSheet, Platform, PixelRatio } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  heightPercentageToDP
-} from "react-native-responsive-screen";
+import { StyleSheet } from "react-native";
+
 import { globalColors } from "../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
@@ -37,64 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 10
   },
-  moneyInputContainer: {
-    flexDirection: "column",
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: 15,
-    alignSelf: "center",
-    justifyContent: "space-around",
-    paddingVertical: 10
-  },
-  budget: {
-    alignSelf: "center",
-    color: "#FF9D00",
-    fontSize: 25 / PixelRatio.getFontScale(),
-    fontFamily: "montserrat-medium",
-    textAlign: "center",
-    width: "100%",
-    paddingBottom: 0,
-    width: "100%"
-  },
-  moreOptionsText: {
-    alignSelf: "center",
-    color: "#FF9D00",
-    fontSize: 14,
-    fontFamily: "montserrat-medium",
-    textAlign: "center",
-    width: "100%",
-    paddingBottom: 30
-  },
-  budgetInstructionText: {
-    color: "#fff",
-    fontSize: 11,
-    alignSelf: "center",
-    paddingHorizontal: 20
-  },
-  sliderContainer: {
-    marginHorizontal: 40,
-    width: "100%",
-    alignSelf: "center",
-    paddingVertical: 10,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingHorizontal: 40
-  },
-  budgetSliderText: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    textAlign: "center",
-    paddingBottom: 10
-  },
-  slider: {
-    width: "100%",
-    height: 20
-  },
-  sliderPlaceHolder: {
-    height: 75,
-    justifyContent: "center"
-  },
+
   targetList: {
     flexDirection: "column",
     marginHorizontal: 40,
@@ -108,7 +47,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     alignSelf: "center",
-    color: "#FF9D00",
+    color: globalColors.orange,
     fontSize: 30
   },
   menutext: {
@@ -209,7 +148,7 @@ const styles = StyleSheet.create({
   proceedButtonRTL: {
     width: 65,
     height: 65,
-    backgroundColor: "#FF9D00",
+    backgroundColor: globalColors.orange,
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",

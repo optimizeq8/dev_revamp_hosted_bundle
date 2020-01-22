@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Platform, StyleSheet, Image } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Platform, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import {
   widthPercentageToDP,
   heightPercentageToDP
 } from "react-native-responsive-screen";
 import { ActivityIndicator } from "react-native-paper";
+import { globalColors } from "../../GlobalStyles";
 
 class MainLoadingScreen extends React.Component {
   state = { visible: true };
@@ -51,7 +52,7 @@ class MainLoadingScreen extends React.Component {
           </>
         )}
         {Platform.OS === "android" ? (
-          <ActivityIndicator color="#FF9D00" size="large" />
+          <ActivityIndicator color={globalColors.orange} size="large" />
         ) : (
           <LottieView
             ref={animation => {

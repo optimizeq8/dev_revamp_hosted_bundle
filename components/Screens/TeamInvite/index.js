@@ -110,7 +110,7 @@ class TeamInvite extends Component {
             }}
           >
             <AddTeamIcon style={{ alignSelf: "center" }} />
-            <Text style={styles.title}>INVITATION</Text>
+            <Text style={styles.title}>{translate("INVITATION")}</Text>
             <Text
               style={[
                 styles.text,

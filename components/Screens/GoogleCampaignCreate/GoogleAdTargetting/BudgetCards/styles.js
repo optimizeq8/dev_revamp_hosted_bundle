@@ -25,7 +25,7 @@ export default StyleSheet.create({
   },
   budget: {
     alignSelf: "center",
-    color: "#FF9D00",
+    color: globalColors.orange,
     fontSize: 19 / PixelRatio.getFontScale(),
     fontFamily: "montserrat-bold",
     textAlign: "center",

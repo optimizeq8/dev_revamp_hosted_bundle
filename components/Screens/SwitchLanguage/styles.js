@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { globalColors } from "../../../GlobalStyles";
 const styles = StyleSheet.create({
   safeAreaViewContainer: {
     flex: 1,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   backRTL: {
     width: 70,
     height: 70,
-    backgroundColor: "#ff9d00",
+    backgroundColor: globalColors.orange,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
