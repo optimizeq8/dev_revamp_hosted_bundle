@@ -120,7 +120,7 @@ class TeamInvite extends Component {
           <GradientButton
             uppercase={true}
             radius={30}
-            onPress={this.handleCheckingInvite}
+            onPressAction={this.handleCheckingInvite}
             style={styles.button}
             textStyle={styles.textButton}
             text={
@@ -136,8 +136,8 @@ class TeamInvite extends Component {
               uppercase={true}
               radius={30}
               transparent={true}
-              onPress={() => this.handleInvite(0, tempInviteId)}
-              style={[styles.button, { borderColor: "#FFF", borderWidth: 1 }]}
+              onPressAction={() => this.handleInvite(0, tempInviteId)}
+              style={[styles.button, styles.borderWhite]}
               textStyle={styles.textButton}
               text={translate("Decline")}
             />

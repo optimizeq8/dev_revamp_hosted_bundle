@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
   businessName: {
     fontFamily: "montserrat-bold",
     width: 250
+  },
+  borderWhite: {
+    borderColor: "#FFF",
+    borderWidth: 1
   }
 });
 
