@@ -136,7 +136,9 @@ class TeamInvite extends Component {
               uppercase={true}
               radius={30}
               transparent={true}
-              onPressAction={() => this.handleInvite(0, tempInviteId)}
+              onPressAction={() =>
+                this.props.handleTeamInvite({ status: 0, v: tempInviteId })
+              }
               style={[styles.button, styles.borderWhite]}
               textStyle={styles.textButton}
               text={translate("Decline")}
