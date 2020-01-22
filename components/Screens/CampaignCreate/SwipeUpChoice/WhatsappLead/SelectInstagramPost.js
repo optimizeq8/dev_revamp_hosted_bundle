@@ -21,6 +21,7 @@ import CustomeHeader from "../../../../MiniComponents/Header";
 import LowerButton from "../../../../MiniComponents/LowerButton";
 import styles from "./styles";
 import segmentEventTrack from "../../../../segmentEventTrack";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 
 class SelectInstagramPost extends React.Component {
   constructor(props) {
@@ -215,7 +216,7 @@ class SelectInstagramPost extends React.Component {
             </Text>
 
             {this.props.instagramPostLoading && (
-              <ActivityIndicator color="#FF9D00" size="large" />
+              <ActivityIndicator color={globalColors.orange} size="large" />
             )}
             {!this.props.instagramPostLoading && this.props.instagramPostList && (
               <FlatList
@@ -258,7 +259,7 @@ class SelectInstagramPost extends React.Component {
                             style={[
                               styles.itemView,
                               {
-                                backgroundColor: "#FF9D00"
+                                backgroundColor: globalColors.orange
                               }
                             ]}
                           >
@@ -280,7 +281,7 @@ class SelectInstagramPost extends React.Component {
                             itemFound + 1 >= 1
                               ? {
                                   borderWidth: 4,
-                                  borderColor: "#FF9D00"
+                                  borderColor: globalColors.orange
                                 }
                               : {}
                           ]}
@@ -292,7 +293,7 @@ class SelectInstagramPost extends React.Component {
               />
             )}
             {this.props.loadingMoreInstaPost && (
-              <ActivityIndicator color="#FF9D00" size="large" />
+              <ActivityIndicator color={globalColors.orange} size="large" />
             )}
             {!this.props.instagramPostLoading &&
               !this.props.loadingMoreInstaPost &&

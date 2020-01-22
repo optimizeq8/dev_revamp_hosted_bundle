@@ -3,6 +3,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP as wp
 } from "react-native-responsive-screen";
+import globalStyles, { globalColors } from "../../../../../GlobalStyles";
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
@@ -128,14 +129,14 @@ const styles = StyleSheet.create({
   },
   kdText: {
     fontFamily: "montserrat-bold-english",
-    color: "#FF9D00",
+    color: globalColors.orange,
     fontSize: 12,
     lineHeight: 22,
     paddingBottom: 5
   },
   priceText: {
     fontFamily: "montserrat-bold-english",
-    color: "#FF9D00",
+    color: globalColors.orange,
     fontSize: 17,
     lineHeight: 22,
     paddingBottom: 5

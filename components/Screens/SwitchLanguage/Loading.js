@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 
 // Style
 import styles from "./styles";
+import { globalColors } from "../../../GlobalStyles";
 
 class SwitchLanguageLoading extends Component {
   componentDidUpdate(prevProps) {
@@ -25,7 +26,7 @@ class SwitchLanguageLoading extends Component {
         forceInset={{ bottom: "never", top: "always" }}
       >
         <View style={styles.loadingView}>
-          <ActivityIndicator color={"#FF9D00"} size="large" />
+          <ActivityIndicator color={globalColors.orange} size="large" />
           <Text style={styles.loadingText}>
             {translate("Switching Language Please wait")} ...
           </Text>

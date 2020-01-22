@@ -6,7 +6,7 @@ import RNImageOrCacheImage from "../../../MiniComponents/RNImageOrCacheImage";
 import PenIcon from "../../../../assets/SVGs/Pen";
 import PlusCircle from "../../../../assets/SVGs/PlusCircle";
 
-import styles from "./styles";
+import styles from "./collectionComponentStyles";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import segmentEventTrack from "../../../segmentEventTrack";
 class CollectionComp extends Component {
@@ -20,54 +20,21 @@ class CollectionComp extends Component {
     } = this.props;
     const { translate } = this.props.screenProps;
     return (
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "#FF9D00",
-            width: hp(5) < 30 ? 60 : 72,
-            // width: 70,
-            paddingVertical: 5,
-            paddingHorizontal: 5,
-            height: 25,
-            borderRadius: 20,
-            marginBottom: -15,
-            zIndex: 1,
-            alignItems: "center"
-            // flex: 1
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 10,
-              textAlign: "center",
-              width: "100%",
-              fontFamily: "montserrat-bold",
-              color: "#FFF"
-            }}
-          >
+      <View style={styles.block}>
+        <View style={styles.headingBlock}>
+          <Text style={styles.productText}>
             {`${translate("Product")} ${collIdx + 1}`}
           </Text>
         </View>
         <TouchableOpacity
-          style={{
-            backgroundColor: collectionAdMedia[collIdx]
-              ? ""
-              : "rgba(0, 0, 0, 0.75)",
-            alignSelf: "center",
-            borderColor: "#FF9D00",
-            borderWidth: 2,
-            width: hp(5) < 30 ? 60 : 72,
-            height: hp(5) < 30 ? 60 : 72,
-            borderRadius: 20,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
+          style={[
+            {
+              backgroundColor: collectionAdMedia[collIdx]
+                ? ""
+                : "rgba(0, 0, 0, 0.75)"
+            },
+            styles.touchViewBlock
+          ]}
           onPress={() => {
             segmentEventTrack("Button clicked to go to Collection Media");
             navigation.push("CollectionMedia", {
@@ -79,14 +46,7 @@ class CollectionComp extends Component {
         >
           {collectionAdMedia[collIdx] ? (
             <RNImageOrCacheImage
-              style={{
-                borderRadius: 18,
-                alignSelf: "center",
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                alignItems: "center"
-              }}
+              style={styles.imageCache}
               media={
                 collectionAdMedia[collIdx][
                   collectionAdMedia[collIdx].localUri ? "localUri" : "media"
@@ -95,13 +55,7 @@ class CollectionComp extends Component {
             />
           ) : (
             <Button
-              style={{
-                width: hp(5) < 30 ? 20 : 30,
-                height: hp(5) < 30 ? 20 : 30,
-                alignSelf: "center",
-                borderRadius: hp(5) < 30 ? 20 : 30,
-                backgroundColor: "#FF9D00"
-              }}
+              style={styles.addButton}
               onPress={() => {
                 segmentEventTrack("Button clicked to go to Collection Media");
                 navigation.push("CollectionMedia", {
@@ -118,7 +72,7 @@ class CollectionComp extends Component {
             </Button>
           )}
           {collectionAdMedia[collIdx] && (
-            <View style={{ position: "absolute", bottom: 6, right: 6 }}>
+            <View style={styles.penView}>
               <PenIcon width={15} height={15} />
             </View>
           )}
