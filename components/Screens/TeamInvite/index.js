@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import AddTeamIcon from "../../../assets/SVGs/AddTeam";
 import * as actionCreators from "../../../store/actions";
 import styles from "./styles";
-import { Button } from "native-base";
+import GradientButton from "../../MiniComponents/GradientButton";
 import * as Segment from "expo-analytics-segment";
 
 import { Bold } from "../../MiniComponents/StyledComponents";
@@ -79,109 +79,72 @@ class TeamInvite extends Component {
     const { translate } = this.props.screenProps;
 
     return (
-      <View style={{ margin: 0 }}>
-        <SafeAreaView
-          style={styles.safeAreaView}
-          forceInset={{ bottom: "never", top: "always" }}
-        >
-          <NavigationEvents
-            onDidFocus={() => {
-              Segment.screen("TeamInvite");
-              this.checkTeamInvite();
-            }}
-          />
-          <Header
-            screenProps={this.props.screenProps}
-            actionButton={() => {
-              this.props.navigation.navigate(
-                userInfo ? "Dashboard" : "Signin",
-                {
-                  v: this.props.tempInviteId,
-                  email: this.props.invitedEmail,
-                  business: this.props.businessInvitee
-                }
-              );
-            }}
-          />
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <AddTeamIcon style={{ alignSelf: "center" }} />
-            <Text style={styles.title}>{translate("INVITATION")}</Text>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontFamily: "montserrat-regular",
-                  width: 250
-                }
-              ]}
-            >
-              {translate("You have been invited to join")}
+      <SafeAreaView
+        style={styles.safeAreaView}
+        forceInset={{ bottom: "never", top: "always" }}
+      >
+        <NavigationEvents
+          onDidFocus={() => {
+            Segment.screen("TeamInvite");
+            this.checkTeamInvite();
+          }}
+        />
+        <Header
+          screenProps={this.props.screenProps}
+          actionButton={() => {
+            this.props.navigation.navigate(userInfo ? "Dashboard" : "Signin", {
+              v: this.props.tempInviteId,
+              email: this.props.invitedEmail,
+              business: this.props.businessInvitee
+            });
+          }}
+        />
+        <View style={styles.containerView}>
+          <AddTeamIcon style={{ alignSelf: "center" }} />
+          <Text style={styles.title}>{translate("INVITATION")}</Text>
+          <Text style={[styles.text, styles.joinText]}>
+            {translate("You have been invited to join")}
+          </Text>
+          <Text style={[styles.text, styles.businessName]}>
+            {businessInvitee}
+          </Text>
+
+          {(wrongEmail || loggedOut) && (
+            <Text style={[styles.wrongEmailText]}>
+              {translate("Please sign in with the correct email to accept")}
+              <Bold>
+                {"\n" + this.props.navigation.getParam("email", false)}
+              </Bold>
             </Text>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontFamily: "montserrat-bold",
-                  width: 250
-                }
-              ]}
-            >
-              {businessInvitee}
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "column",
-              height: "30%",
-              justifyContent: "space-evenly"
-            }}
-          >
-            {(wrongEmail || loggedOut) && (
-              <Text style={[styles.wrongEmailText]}>
-                {translate("Please sign in with the correct email to accept.")}
-                <Bold>
-                  {"\n" + this.props.navigation.getParam("email", false)}
-                </Bold>
-              </Text>
-            )}
-            <Button
-              block
-              onPress={this.handleCheckingInvite}
-              style={styles.button}
-            >
-              <Text style={styles.textButton}>
-                {loggedOut
-                  ? "Sign in"
-                  : wrongEmail
-                  ? "Sign out"
-                  : translate("Accept")}
-              </Text>
-            </Button>
-            {!wrongEmail && (
-              <Button
-                block
-                onPress={() => this.handleInvite(0, tempInviteId)}
-                style={[
-                  styles.button,
-                  {
-                    backgroundColor: "#0000",
-                    borderColor: "#fff",
-                    borderWidth: 0.8
-                  }
-                ]}
-              >
-                <Text style={[styles.textButton]}>{translate("Decline")}</Text>
-              </Button>
-            )}
-          </View>
-          {this.props.teamInviteLoading && <Loading dash />}
-        </SafeAreaView>
-      </View>
+          )}
+          <GradientButton
+            uppercase={true}
+            radius={30}
+            onPress={this.handleCheckingInvite}
+            style={styles.button}
+            textStyle={styles.textButton}
+            text={
+              loggedOut
+                ? translate("Sign in")
+                : wrongEmail
+                ? translate("Logout")
+                : translate("Accept")
+            }
+          ></GradientButton>
+          {!wrongEmail && (
+            <GradientButton
+              uppercase={true}
+              radius={30}
+              transparent={true}
+              onPress={() => this.handleInvite(0, tempInviteId)}
+              style={[styles.button, { borderColor: "#FFF", borderWidth: 1 }]}
+              textStyle={styles.textButton}
+              text={translate("Decline")}
+            />
+          )}
+        </View>
+        {this.props.teamInviteLoading && <Loading dash />}
+      </SafeAreaView>
     );
   }
 }
