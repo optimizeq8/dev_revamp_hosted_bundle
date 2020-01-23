@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import AddTeamIcon from "../../../../assets/SVGs/AddTeam";
@@ -120,7 +120,7 @@ class AddOrEditTeamMember extends Component {
       });
     } else {
       showMessage({
-        message: this.translate("Please fill out the form"),
+        message: this.translate("Please complete all of the fields"),
         type: "warning"
       });
       //incomplete is set to signal the child components to play the animations of shaking
@@ -151,6 +151,30 @@ class AddOrEditTeamMember extends Component {
       //incomplete is set to signal the child components to play the animations of shaking
       this.setState({ incomplete: true });
     }
+  };
+
+  handleDelete = () => {
+    Alert.alert(
+      this.translate("Team member") + this.translate("deletion"),
+      this.translate("Are you sure you want to delete this member"),
+      [
+        {
+          text: this.translate("Cancel"),
+          style: "cancel"
+        },
+        {
+          text: this.translate("Delete"),
+          onPress: () =>
+            this.props.deleteTeamMembers(
+              this.props.navigation.getParam("member", {}).userid,
+              this.props.mainBusiness.businessid,
+              this.props.navigation
+            ),
+          style: "destructive"
+        }
+      ]
+      // { cancelable: false }
+    );
   };
 
   render() {
@@ -232,13 +256,7 @@ class AddOrEditTeamMember extends Component {
               </Text>
             </Button>
             <Button
-              onPress={() =>
-                this.props.deleteTeamMembers(
-                  this.props.navigation.getParam("member", {}).userid,
-                  this.props.mainBusiness.businessid,
-                  this.props.navigation
-                )
-              }
+              onPress={this.handleDelete}
               style={[
                 styles.deleteTeamMember,
                 { backgroundColor: globalColors.red }

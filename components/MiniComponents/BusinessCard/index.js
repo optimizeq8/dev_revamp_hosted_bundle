@@ -10,6 +10,7 @@ import Swipeout from "react-native-swipeout";
 import { ActivityIndicator } from "react-native-paper";
 
 class BusinessCard extends Component {
+  translate = this.props.screenProps.translate;
   businessCategory = businessList.find(
     cat => cat.value === this.props.business.businesscategory
   );
@@ -24,15 +25,15 @@ class BusinessCard extends Component {
       disabled: this.props.business.user_role !== "1",
       onPress: () => {
         Alert.alert(
-          "Business deletion",
-          "Are you sure you want to delete this business?",
+          this.translate("Business") + this.translate("deletion"),
+          this.translate("Are you sure you want to delete this business?"),
           [
             {
-              text: "Cancel",
+              text: this.translate("Cancel"),
               style: "cancel"
             },
             {
-              text: "Delete",
+              text: this.translate("Delete"),
               onPress: () =>
                 this.props.deleteBusinessAccount(
                   this.props.business.businessid

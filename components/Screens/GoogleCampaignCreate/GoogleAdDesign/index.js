@@ -67,6 +67,7 @@ class GoogleAdDesign extends Component {
       finalurlError: "",
       modalVisible: false
     };
+    this.translate = this.props.screenProps.translate;
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
@@ -155,7 +156,7 @@ class GoogleAdDesign extends Component {
       description2Error
     ) {
       showMessage({
-        message: "Please complete all of the feilds",
+        message: this.translate("Please complete all of the fields"),
         type: "warning"
       });
       segmentEventTrack("Error occured on ad design screen sumbit button", {
@@ -327,18 +328,26 @@ class GoogleAdDesign extends Component {
     if (this.state.finalurlError)
       showMessage({
         message:
-          "Invalid link url. make sure to include (http://) or (https://).",
+          this.translate("Please enter a valid URL") +
+          " " +
+          this.translate("Make sure to include (http://) or (https://)"),
         type: "warning",
-        description: "Eg.'https://url.com/path1/path2'"
+        description: this.translate("Eg") + "'https://url.com/path1/path2'"
       });
     else if (!correctPathsLength || !onlyTwoPaths) {
       this.setState({ finalurlError: true });
       showMessage({
-        message: `Website url issue, ${
-          !onlyTwoPaths ? "Only  2 paths are allowed" : "Paths length excceded"
+        message: `${this.translate("Website url issue")}, ${
+          !onlyTwoPaths
+            ? this.translate("Only  2 paths are allowed")
+            : this.translate("Paths length exceeded")
         }`,
         description:
-          "The max length of the url paths are 15 characters each. Eg. 'https://www.example.com/path1/path2'",
+          this.translate(
+            "The max length of the url paths are 15 characters each"
+          ) +
+          this.translate("Eg") +
+          "'https://www.example.com/path1/path2'",
         type: "warning",
         duration: 6000
       });

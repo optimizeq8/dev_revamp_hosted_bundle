@@ -62,6 +62,7 @@ class BusinessList extends Component {
             this.props.userInfo.email === this.props.invitedEmail) ||
           this.props.businessInvites ? (
             <InvitationCard
+              screenProps={this.props.screenProps}
               handleTeamInvite={this.props.handleTeamInvite}
               tempInviteId={this.props.tempInviteId}
               businessInvitee={this.props.businessInvitee}
@@ -78,7 +79,10 @@ class BusinessList extends Component {
               {translate("Businesses")}
             </Text>
           ) : null}
-          <BusinessCard business={business} />
+          <BusinessCard
+            screenProps={this.props.screenProps}
+            business={business}
+          />
         </Fragment>
       );
   };

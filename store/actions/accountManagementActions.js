@@ -334,13 +334,14 @@ export const inviteTeamMember = info => {
     createBaseUrl()
       .post("memberaccount", info)
       .then(res => res.data)
-      .then(data =>
+      .then(data => {
         showMessage({
           message: data.message,
           type: data.success ? "success" : "warning"
-        })
-      )
-      .then(() => NavigationService.navigate("ManageTeam"))
+        });
+        return data;
+      })
+      .then(data => data.success && NavigationService.navigate("ManageTeam"))
       .catch(err => {
         errorMessageHandler(err);
       });
