@@ -117,11 +117,6 @@ class Tutorial extends Component {
             style={styles.gradient}
           />
           <Container style={styles.container}>
-            <Background
-              style={[globalStyles.background]}
-              width={widthPercentageToDP(85)}
-              height={heightPercentageToDP(61)}
-            />
             <Swiper
               backgroundColor={["#0000", "#0000", "#0000", "#0000"]}
               dots

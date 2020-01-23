@@ -93,11 +93,6 @@ class Signin extends Component {
               accessible={false}
             >
               <View style={[styles.touchableViewContainer]}>
-                <Background
-                  style={[globalStyles.background]}
-                  width={widthPercentageToDP(90)}
-                  height={heightPercentageToDP(65)}
-                />
                 {this.props.checkingForToken ? (
                   <LoadingScreen dash={true} />
                 ) : (
